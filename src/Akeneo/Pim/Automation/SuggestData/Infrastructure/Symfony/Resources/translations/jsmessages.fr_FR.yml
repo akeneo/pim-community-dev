@@ -7,6 +7,10 @@ pim_menu:
     franklin: Franklin Insights
 akeneo_suggest_data:
   entity:
+    data_provider:
+      ask_franklin_down: "Votre requête n'a pas pu être traitée. Le serveur Franklin Insights ne répond pas."
+      authentication_error: "Désolé, impossible de s'autentifier à Franklin Insights, car votre token est invalid. Veuillez renseigner un token valide ou contactez-nous."
+      bad_request_error: "Désolé, une erreur s'est produite lors de la communication avec Franklin Insights. Veuillez contacter votre administrateur."
     identifier_mapping:
       plural_label: Identifiants
       flash:
@@ -30,9 +34,11 @@ akeneo_suggest_data:
       constraint:
         duplicate_attribute_code: "Un unique mapping est autorisé par attribut du catalogue"
         missing_or_invalid_identifiers: "Certains mappings d'identifiants sont manquants ou invalides. Attendus: \"{{ expected }}\", trouvé \"{{ given }}\"."
-        attribute_not_found: "L'attribut avec le code \"{{ attributeCode }}\" pour le mapping d'identifiants n'existe pas."
-        mandatory_attribute_mapping: "Le mapping de la Marque et du MPN est obligatoire"
+        mandatory_identifier_mapping: "Le mapping de la Marque et du MPN est obligatoire"
         attribute_type: "Ce type d'attribut ne peux pas être utilisé pour un identifiant"
+        localizable_not_allowed: "Les attributs localisables ne sont pas autorisés en tant qu'identifiants"
+        scopable_not_allowed: "Les attributs déclinés par canal ne sont pas autorisés en tant qu'identifiants"
+        locale_specific_not_allowed: "Les attributs spécifiques à une locale ne sont pas autorisés en tant qu'identifiants"
     attributes_mapping:
       label: Mapping des attributs
       fields:
@@ -56,7 +62,7 @@ akeneo_suggest_data:
       constraint:
         missing_target_key: 'Clé cible manquante pour le mapping'
         missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{ targetKey }}"'
-        invalid_attribute_type_mapping: 'L''attribut de type "{{ targetType }}" ne peut pas être mappé à l''attribut PIM de type "{{ pimType }}"'
+        invalid_attribute_type_mapping: 'Les attributs Franklin ne peuvent pas être mappés au type d''attribut "{{ pimType }}" de votre catalogue'
     product_subscription:
       flash:
         create:
@@ -66,7 +72,6 @@ akeneo_suggest_data:
           success: 'Produit désabonné avec succès à Franklin'
           fail: 'Impossible de désabonner le produit à Franklin'
       constraint:
-        invalid_token: 'Désolé, impossible d''abonner des produits à Franklin Insights, car votre token est invalid. Veuillez renseigner un token valide ou contactez-nous.'
         family_required: 'Désolé, un produit doit appartenir à une famille pour pouvoir s''abonner à Franklin Insights.'
         no_identifiers_mapping: 'Veuillez d''abord mapper les identifiants de votre catalog sur la page Paramètres > Franklin Insights avant d''abonner des produits.'
         insufficient_credits: "Désolé, impossible d'abonner ce produit à Franklin Insights. Vous n’avez pas assez de crédits."
@@ -87,7 +92,7 @@ akeneo_suggest_data:
         edit:
           title: 'Options de l''attribut {{ familyLabel }} - {{ franklinAttributeLabel }}'
           sub_title: 'Rencontrez Franklin, votre <span class="AknDescriptionHeader-title--highlight">assistant IA des informations produit</span> !'
-          description: 'Afin de vous aider à enrichir votre catalogue, Franklin doit connaître la correspondance avec les options d''attributs de votre catalogue. <a href="" target="_blank">En savoir plus</a>'
+          description: 'Afin de vous aider à enrichir votre catalogue, Franklin doit connaître la correspondance avec les options d''attributs de votre catalogue. <a href="#" target="_blank" class="AknDescriptionHeader-link">En savoir plus</a>'
   product:
     edit:
       btn.push: Suggestion de données
@@ -119,8 +124,14 @@ akeneo_suggest_data:
           first_step: 'Afin de vous aider à enrichir votre catalogue, Franklin a besoin de connaître les identifiants de votre catalogue à matcher.'
           second_step: 'Pendant que vous mappez vos identifiants, gardez à l''esprit que les attributs Brand et MPN vont de pair. <a href="#" class="AknDescriptionHeader-link">Voir plus</a>'
       inactive_connection:
-        title: Désolé, rien à afficher pour le moment
-        sub_title: Veuillez activer votre compte dans Système > Connexion Franklin puis revenez sur cette page.
+        title: 'Désolé, rien à afficher pour le moment'
+        sub_title: 'Veuillez activer votre compte dans Système > Connexion Franklin puis revenez sur cette page.'
+      no_active_english_locale:
+        title: 'Franklin Insights est uniquement disponible pour les langues anglaises.'
+        sub_title: 'Restez à l’écoute, de nouvelles langues sont à venir.'
+      save:
+        warning: '{1}Modifier le mapping peut impacter 1 abonnement. Êtes-vous sûr(e) ?|]1,+Inf[Modifier le mapping peut impacter {{ count }} abonnements. Êtes-vous sûr(e) ?'
+        title: 'Attention !'
   mass_edit:
     product:
       operation:

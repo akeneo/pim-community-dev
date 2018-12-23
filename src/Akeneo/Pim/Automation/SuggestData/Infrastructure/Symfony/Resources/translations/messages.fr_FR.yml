@@ -15,6 +15,7 @@ job_execution.summary:
   configuration_validation: Configuration de Franklin Insights
   subscribed: abonné
   unsubscribed: non abonné
+  unsubscription_skipped_not_subscribed: ignoré (non abonné)
 pim_datagrid:
   cells:
     type:

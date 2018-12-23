@@ -4,6 +4,7 @@ akeneo_referenceentity:
   acl:
     reference_entity:
       create: Créer une entité
+      edit: Editer une entité
       delete: Supprimer une entité
     record:
       create: Créer un enregistrement
