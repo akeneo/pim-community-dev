@@ -9,7 +9,7 @@ services:
             - { name: kernel.event_subscriber }
 
     akeneo.pim.automation.suggest_data.subscriber.product_to_variant_product:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subscriber\ProductToVariantProductSubscriber'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product\ProductToVariantProductSubscriber'
         arguments:
             - '@akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
         tags:
@@ -39,7 +39,7 @@ services:
             - { name: kernel.event_subscriber }
 
     akeneo.pim.automation.suggest_data.subscriber.unsubscribe_product_after_product_removal:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subscriber\ProductRemovalSubscriber'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product\ProductRemovalSubscriber'
         arguments:
             - '@akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
         tags:
