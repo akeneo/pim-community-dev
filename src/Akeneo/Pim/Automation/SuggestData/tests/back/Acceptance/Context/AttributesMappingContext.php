@@ -34,7 +34,7 @@ final class AttributesMappingContext implements Context
     private $getAttributesMappingByFamilyHandler;
 
     /** @var SaveAttributesMappingByFamilyHandler */
-    private $updateAttributesMappingByFamilyHandler;
+    private $saveAttributesMappingByFamilyHandler;
 
     /** @var SearchFamiliesHandler */
     private $searchFamiliesHandler;
@@ -56,18 +56,18 @@ final class AttributesMappingContext implements Context
 
     /**
      * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
-     * @param SaveAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
+     * @param SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
      * @param SearchFamiliesHandler $searchFamiliesHandler
      * @param FakeClient $fakeClient
      */
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
-        SaveAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler,
+        SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
         SearchFamiliesHandler $searchFamiliesHandler,
         FakeClient $fakeClient
     ) {
         $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
-        $this->updateAttributesMappingByFamilyHandler = $updateAttributesMappingByFamilyHandler;
+        $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
         $this->searchFamiliesHandler = $searchFamiliesHandler;
         $this->fakeClient = $fakeClient;
 
@@ -85,7 +85,7 @@ final class AttributesMappingContext implements Context
     {
         $requestAttributesMapping = $this->buildAttributesMappingRequest($table);
         $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestAttributesMapping);
-        $this->updateAttributesMappingByFamilyHandler->handle($command);
+        $this->saveAttributesMappingByFamilyHandler->handle($command);
 
         $this->originalAttributesMapping = $this->fakeClient->getAttributesMapping();
     }
@@ -102,7 +102,7 @@ final class AttributesMappingContext implements Context
 
         try {
             $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestMapping);
-            $this->updateAttributesMappingByFamilyHandler->handle($command);
+            $this->saveAttributesMappingByFamilyHandler->handle($command);
         } catch (\Exception $e) {
             $this->thrownException = $e;
         }
@@ -148,7 +148,7 @@ final class AttributesMappingContext implements Context
     {
         try {
             $command = new SaveAttributesMappingByFamilyCommand($familyCode, []);
-            $this->updateAttributesMappingByFamilyHandler->handle($command);
+            $this->saveAttributesMappingByFamilyHandler->handle($command);
         } catch (\Exception $e) {
             $this->thrownException = $e;
         }

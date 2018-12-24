@@ -34,18 +34,18 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
     private $getAttributesMappingHandler;
 
     /** @var SaveAttributesMappingByFamilyHandler */
-    private $updateAttributesMappingHandler;
+    private $saveAttributesMappingHandler;
 
     /**
      * @param GetAttributesMappingByFamilyHandler $getAttributesMappingHandler
-     * @param SaveAttributesMappingByFamilyHandler $updateAttributesMappingHandler
+     * @param SaveAttributesMappingByFamilyHandler $saveAttributesMappingHandler
      */
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingHandler,
-        SaveAttributesMappingByFamilyHandler $updateAttributesMappingHandler
+        SaveAttributesMappingByFamilyHandler $saveAttributesMappingHandler
     ) {
         $this->getAttributesMappingHandler = $getAttributesMappingHandler;
-        $this->updateAttributesMappingHandler = $updateAttributesMappingHandler;
+        $this->saveAttributesMappingHandler = $saveAttributesMappingHandler;
     }
 
     /**
@@ -76,7 +76,7 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
         $newMapping = $this->buildNewAttributesMapping($attributesMapping, $pimAttributeCodes);
 
         $command = new SaveAttributesMappingByFamilyCommand($familyCode, $newMapping);
-        $this->updateAttributesMappingHandler->handle($command);
+        $this->saveAttributesMappingHandler->handle($command);
     }
 
     /**

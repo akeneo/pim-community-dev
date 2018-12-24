@@ -34,9 +34,9 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
     public function let(
         StepExecution $stepExecution,
         GetAttributesMappingByFamilyHandler $getAttributesMappingHandler,
-        SaveAttributesMappingByFamilyHandler $updateAttributesMappingHandler
+        SaveAttributesMappingByFamilyHandler $saveAttributesMappingHandler
     ): void {
-        $this->beConstructedWith($getAttributesMappingHandler, $updateAttributesMappingHandler);
+        $this->beConstructedWith($getAttributesMappingHandler, $saveAttributesMappingHandler);
 
         $stepExecution->getJobParameters()->willReturn(new JobParameters([
             'pim_attribute_codes' => ['pim_color', 'pim_size'],
@@ -54,7 +54,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
 
     public function it_calls_franklin_with_the_new_mapping(
         $getAttributesMappingHandler,
-        $updateAttributesMappingHandler
+        $saveAttributesMappingHandler
     ): void {
         $franklinResponse = new AttributesMappingResponse();
         $franklinResponse
@@ -64,7 +64,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
 
         $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery('router'))->willReturn($franklinResponse);
 
-        $updateAttributesMappingHandler->handle(new SaveAttributesMappingByFamilyCommand('router', [
+        $saveAttributesMappingHandler->handle(new SaveAttributesMappingByFamilyCommand('router', [
             'franklin_size' => [
                 'franklinAttribute' => ['type' => 'text'],
                 'attribute' => null,
@@ -85,7 +85,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
 
     public function it_does_not_call_franklin_if_the_attribute_is_not_in_family_attribute_mapping(
         $getAttributesMappingHandler,
-        $updateAttributesMappingHandler
+        $saveAttributesMappingHandler
     ): void {
         $franklinResponse = new AttributesMappingResponse();
         $franklinResponse->addAttribute(new AttributeMapping('franklin_weight', null, 'text', 'pim_weight', 1, null));
@@ -94,20 +94,20 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
             ->handle(new GetAttributesMappingByFamilyQuery('router'))
             ->willReturn($franklinResponse);
 
-        $updateAttributesMappingHandler->handle()->shouldNotBeCalled();
+        $saveAttributesMappingHandler->handle()->shouldNotBeCalled();
 
         $this->execute();
     }
 
     public function it_does_not_update_the_mapping_if_the_mapping_is_empty(
         $getAttributesMappingHandler,
-        $updateAttributesMappingHandler
+        $saveAttributesMappingHandler
     ): void {
         $getAttributesMappingHandler
             ->handle(new GetAttributesMappingByFamilyQuery('router'))
             ->willReturn(new AttributesMappingResponse());
 
-        $updateAttributesMappingHandler->handle()->shouldNotBeCalled();
+        $saveAttributesMappingHandler->handle()->shouldNotBeCalled();
 
         $this->execute();
     }

@@ -45,24 +45,24 @@ class AttributeMappingController
     private $attributesMappingNormalizer;
 
     /** @var SaveAttributesMappingByFamilyHandler */
-    private $updateAttributesMappingByFamilyHandler;
+    private $saveAttributesMappingByFamilyHandler;
 
     /**
      * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
-     * @param SaveAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
+     * @param SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
      * @param SearchFamiliesHandler $searchFamiliesHandler
      * @param FamiliesNormalizer $familiesNormalizer
      * @param AttributesMappingNormalizer $attributesMappingNormalizer
      */
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
-        SaveAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler,
+        SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
         SearchFamiliesHandler $searchFamiliesHandler,
         FamiliesNormalizer $familiesNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer
     ) {
         $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
-        $this->updateAttributesMappingByFamilyHandler = $updateAttributesMappingByFamilyHandler;
+        $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
         $this->searchFamiliesHandler = $searchFamiliesHandler;
         $this->familiesNormalizer = $familiesNormalizer;
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
@@ -133,7 +133,7 @@ class AttributeMappingController
         }
 
         $command = new SaveAttributesMappingByFamilyCommand($identifier, $data['mapping']);
-        $this->updateAttributesMappingByFamilyHandler->handle($command);
+        $this->saveAttributesMappingByFamilyHandler->handle($command);
 
         /*
         $familyMapping = $this->getOrCreateFamilyMapping($data['code'])
