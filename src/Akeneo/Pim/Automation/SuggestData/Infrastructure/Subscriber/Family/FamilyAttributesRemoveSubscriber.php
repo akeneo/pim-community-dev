@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class FamilySubscriber implements EventSubscriberInterface
+class FamilyAttributesRemoveSubscriber implements EventSubscriberInterface
 {
     /** @var FindFamilyAttributesNotInQueryInterface */
     private $query;

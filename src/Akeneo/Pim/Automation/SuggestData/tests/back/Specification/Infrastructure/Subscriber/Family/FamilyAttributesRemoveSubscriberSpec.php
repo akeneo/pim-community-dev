@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Family;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Family\FamilySubscriber;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Family\FamilyAttributesRemoveSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Domain\FamilyAttribute\Query\FindFamilyAttributesNotInQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -24,7 +24,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class FamilySubscriberSpec extends ObjectBehavior
+class FamilyAttributesRemoveSubscriberSpec extends ObjectBehavior
 {
     public function let(
         FindFamilyAttributesNotInQueryInterface $query,
@@ -35,7 +35,7 @@ class FamilySubscriberSpec extends ObjectBehavior
 
     public function it_is_a_family_subscriber(): void
     {
-        $this->shouldHaveType(FamilySubscriber::class);
+        $this->shouldHaveType(FamilyAttributesRemoveSubscriber::class);
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 

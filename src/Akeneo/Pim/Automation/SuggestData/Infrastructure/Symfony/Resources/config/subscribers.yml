@@ -31,7 +31,7 @@ services:
             - { name: kernel.event_subscriber }
 
     akeneo.pim.automation.suggest_data.subscriber.family:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Family\FamilySubscriber'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Family\FamilyAttributesRemoveSubscriber'
         arguments:
             - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.find_family_attributes_not_in'
             - '@akeneo.pim.automation.suggest_data.application.mapping.service.remove_attributes_from_mapping'
