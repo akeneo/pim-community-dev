@@ -90,6 +90,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      */
     public function withoutIncludingSubCategoriesSelectCategoryAndAttributeOnRootProductModel(): void
     {
+        sleep(1);
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['shoes']],
             ['description', Operators::STARTS_WITH, 'Superb'],
@@ -109,6 +110,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      */
     public function includingSubCategoriesSelectCategoryAndAttributeOnRootProductModel(): void
     {
+        sleep(1);
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['shoes', 'men', 'women']],
             ['description', Operators::STARTS_WITH, 'Superb'],
@@ -127,6 +129,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      */
     public function withoutIncludingSubCategoriesSelectCategoryOnRootProductModelAndFilterOnAttributeInSubProductModel(): void
     {
+        sleep(1);
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['shoes']],
             ['size', Operators::IN_LIST, ['s']],
@@ -145,6 +148,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      */
     public function withoutIncludingSubCategoriesSelectCategoryOnRootProductModelAndFilterOnAttributeInProductVariant()
     : void {
+        sleep(1);
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['shoes']],
             ['color', Operators::IN_LIST, ['blue']],
@@ -163,6 +167,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      */
     public function selectCategoryOnVariantProductAndFilterOnAttributeSetInProductModel()
     : void {
+        sleep(1);
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['men']],
             ['description', Operators::STARTS_WITH, 'Superb'],
@@ -181,6 +186,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      */
     public function includingSubCategoriesFilterAttributeSetOnRootProductModelAndSelectCategoryOnSubProductModel()
     : void {
+        sleep(1);
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['collection-2018', 'winter-2018']],
             ['description', Operators::STARTS_WITH, 'Superb'],
@@ -200,6 +206,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      */
     public function filterAttributeSetOnRootProductModelAndSelectCategoryOnProductVariant(): void
     {
+        sleep(1);
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['women']],
             ['description', Operators::STARTS_WITH, 'Superb'],
@@ -214,6 +221,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      */
     public function showAllUnclassifiedAndFilterOnAttribute(): void
     {
+        sleep(1);
         $result = $this->executeFilter([
             ['categories', Operators::UNCLASSIFIED, []],
             ['description', Operators::EQUALS, 'quantum mechanics']

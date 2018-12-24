@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use function var_dump;
 
 /**
  * Product query builder provides shortcuts to ease the appliance of filters and sorters on fields or attributes

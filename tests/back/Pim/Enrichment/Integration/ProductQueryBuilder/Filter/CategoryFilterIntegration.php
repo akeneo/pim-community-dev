@@ -81,6 +81,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
      */
     public function withoutIncludingSubCategoriesAggregateResultsTowardsRootProductModel(): void
     {
+        sleep(5);
         $result = $this->executeFilter([['categories', Operators::IN_LIST, ['shoes']]]);
         $this->assert($result, ['model-shoe']);
     }
@@ -93,6 +94,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
      */
     public function withoutIncludingSubCategoriesAggregateResultsTowardsSubProductModel(): void
     {
+        sleep(5);
         $result = $this->executeFilter([['categories', Operators::IN_LIST, ['collection-2018']]]);
         $this->assert($result, ['model-m']);
     }
@@ -105,6 +107,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
      */
     public function withoutIncludingSubCategoriesWhenNoAggregationIsPossibleShowProductVariant(): void
     {
+        sleep(5);
         $result = $this->executeFilter([['categories', Operators::IN_LIST, ['women']]]);
         $this->assert($result, ['red-s', 'red-m', 'another-shoe']);
     }
@@ -116,6 +119,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
      */
     public function showAllUnclassified(): void
     {
+        sleep(5);
         $result = $this->executeFilter([['categories', Operators::UNCLASSIFIED, []]]);
         $this->assert($result, ['unclassified-product']);
     }
@@ -128,6 +132,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
      */
     public function includingSubCategoriesAggregateResultsTowardsRootProductModel(): void
     {
+        sleep(5);
         // User selects the "shoes" category
         $result = $this->executeFilter(
             [['categories', Operators::IN_LIST, ['shoes', 'men', 'women', 'collection-2018']]]
@@ -143,6 +148,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
      */
     public function includingSubCategoriesAggregateResultsTowardsSubProductModel(): void
     {
+        sleep(5);
         $result = $this->executeFilter([['categories', Operators::IN_LIST, ['collection-2018', 'winter-2018']]]);
         $this->assert($result, ['model-m', 'another-shoe']);
     }
