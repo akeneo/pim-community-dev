@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\AttributeOption;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\RemoveAttributeOptionFromMappingInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\AttributeOption\AttributeOptionDeletedSubscriber;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\AttributeOption\AttributeOptionRemoveSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AttributeOptionDeletedSubscriberSpec extends ObjectBehavior
+class AttributeOptionRemoveSubscriberSpec extends ObjectBehavior
 {
     public function let(RemoveAttributeOptionFromMappingInterface $removeAttributeOptionFromMapping): void
     {
@@ -35,7 +35,7 @@ class AttributeOptionDeletedSubscriberSpec extends ObjectBehavior
 
     public function it_is_a_product_family_removal_subscriber(): void
     {
-        $this->shouldHaveType(AttributeOptionDeletedSubscriber::class);
+        $this->shouldHaveType(AttributeOptionRemoveSubscriber::class);
     }
 
     public function it_is_an_event_subscriber(): void

@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductNotSu
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product\ProductRemovalSubscriber;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product\ProductRemoveSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
@@ -52,7 +52,7 @@ class ProductSubscriptionContext implements Context
     /** @var null|\Exception */
     private $thrownException;
 
-    /** @var ProductRemovalSubscriber */
+    /** @var ProductRemoveSubscriber */
     private $productRemovalSubscriber;
 
     /**
@@ -61,7 +61,7 @@ class ProductSubscriptionContext implements Context
      * @param SubscribeProductHandler $subscribeProductHandler
      * @param DataFixturesContext $dataFixturesContext
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
-     * @param ProductRemovalSubscriber $productRemovalSubscriber
+     * @param ProductRemoveSubscriber $productRemovalSubscriber
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
@@ -69,7 +69,7 @@ class ProductSubscriptionContext implements Context
         SubscribeProductHandler $subscribeProductHandler,
         DataFixturesContext $dataFixturesContext,
         UnsubscribeProductHandler $unsubscribeProductHandler,
-        ProductRemovalSubscriber $productRemovalSubscriber
+        ProductRemoveSubscriber $productRemovalSubscriber
     ) {
         $this->productRepository = $productRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;

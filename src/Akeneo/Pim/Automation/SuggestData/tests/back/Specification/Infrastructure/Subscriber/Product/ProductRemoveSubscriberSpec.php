@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class ProductRemovalSubscriberSpec extends ObjectBehavior
+class ProductRemoveSubscriberSpec extends ObjectBehavior
 {
     public function let(UnsubscribeProductHandler $unsubscribeProductHandler): void
     {

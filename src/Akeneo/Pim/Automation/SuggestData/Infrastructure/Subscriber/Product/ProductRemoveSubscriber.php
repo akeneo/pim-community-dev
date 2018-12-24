@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class ProductRemovalSubscriber implements EventSubscriberInterface
+class ProductRemoveSubscriber implements EventSubscriberInterface
 {
     /** @var UnsubscribeProductHandler */
     private $unsubscribeProductHandler;

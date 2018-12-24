@@ -16,7 +16,7 @@ services:
             - { name: kernel.event_subscriber }
 
     akeneo.pim.automation.suggest_data.subscriber.remove_attribute_from_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Attribute\AttributeDeletedSubscriber'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Attribute\AttributeRemoveSubscriber'
         arguments:
             - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.select_family_codes_by_attribute_query'
             - '@akeneo.pim.automation.suggest_data.application.mapping.service.remove_attributes_from_mapping'
@@ -24,7 +24,7 @@ services:
             - { name: kernel.event_subscriber }
 
     akeneo.pim.automation.suggest_data.subscriber.remove_option_from_attribute_option_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\AttributeOption\AttributeOptionDeletedSubscriber'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\AttributeOption\AttributeOptionRemoveSubscriber'
         arguments:
             - '@akeneo.pim.automation.suggest_data.application.mapping.service.remove_option_from_attribute_options_mapping'
         tags:
@@ -39,7 +39,7 @@ services:
             - { name: kernel.event_subscriber }
 
     akeneo.pim.automation.suggest_data.subscriber.unsubscribe_product_after_product_removal:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product\ProductRemovalSubscriber'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product\ProductRemoveSubscriber'
         arguments:
             - '@akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
         tags:

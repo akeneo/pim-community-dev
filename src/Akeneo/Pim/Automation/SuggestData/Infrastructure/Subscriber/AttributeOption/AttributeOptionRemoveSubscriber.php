@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AttributeOptionDeletedSubscriber implements EventSubscriberInterface
+class AttributeOptionRemoveSubscriber implements EventSubscriberInterface
 {
     /** @var RemoveAttributeOptionFromMappingInterface */
     private $removeAttributeOptionsFromMapping;

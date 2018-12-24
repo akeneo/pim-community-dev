@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Attribute;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Attribute\AttributeDeletedSubscriber;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Attribute\AttributeRemoveSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AttributeDeletedSubscriberSpec extends ObjectBehavior
+class AttributeRemoveSubscriberSpec extends ObjectBehavior
 {
     public function let(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
@@ -38,7 +38,7 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
 
     public function it_is_a_product_family_removal_subscriber(): void
     {
-        $this->shouldHaveType(AttributeDeletedSubscriber::class);
+        $this->shouldHaveType(AttributeRemoveSubscriber::class);
     }
 
     public function it_is_an_event_subscriber(): void
