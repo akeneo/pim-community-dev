@@ -24,7 +24,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
- * Handles the UpdateIdentifiersMapping command.
+ * Handles the saveIdentifiersMapping command.
  * Validates that all attributes exist and creates an IdentifiersMapping entity to save it.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -87,7 +87,7 @@ class SaveIdentifiersMappingHandler
             $identifiersMapping->map($franklinIdentifier, $pimAttribute);
         }
 
-        $this->identifiersMappingProvider->updateIdentifiersMapping($identifiersMapping);
+        $this->identifiersMappingProvider->saveIdentifiersMapping($identifiersMapping);
         $this->subscriptionRepository->emptySuggestedData();
         $this->identifiersMappingRepository->save($identifiersMapping);
     }

@@ -70,7 +70,7 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier(null)->shouldNotBeCalled();
 
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
-        $identifiersMappingProvider->updateIdentifiersMapping(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingProvider->saveIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$command]);
     }
@@ -129,7 +129,7 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
             ->map('asin', $id->getWrappedObject())
         ;
 
-        $identifiersMappingProvider->updateIdentifiersMapping($identifiersMapping)->shouldBeCalled();
+        $identifiersMappingProvider->saveIdentifiersMapping($identifiersMapping)->shouldBeCalled();
         $identifiersMappingRepository->save($identifiersMapping)->shouldBeCalled();
         $subscriptionRepository->emptySuggestedData()->shouldBeCalled();
 
@@ -152,7 +152,7 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('model')->willReturn($model);
         $model->getType()->willReturn('unknown_attribute_type');
-        $identifiersMappingProvider->updateIdentifiersMapping(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingProvider->saveIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
         $this->shouldThrow(InvalidMappingException::class)->during('handle', [$command]);
     }
@@ -186,7 +186,7 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $ean->isLocaleSpecific()->willReturn(false);
 
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
-        $identifiersMappingProvider->updateIdentifiersMapping(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingProvider->saveIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
         $this->shouldThrow(InvalidMappingException::class)->during('handle', [$command]);
     }

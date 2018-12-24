@@ -47,7 +47,7 @@ class IdentifiersMappingProvider extends AbstractProvider implements Identifiers
     /**
      * {@inheritdoc}
      */
-    public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
+    public function saveIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
     {
         $this->api->setToken($this->getToken());
         $normalizer = new IdentifiersMappingNormalizer();

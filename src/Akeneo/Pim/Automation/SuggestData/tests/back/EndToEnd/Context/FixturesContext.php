@@ -121,7 +121,7 @@ class FixturesContext extends PimContext
     {
         $mappedIdentifiers = $this->getTableNodeAsArrayWithoutHeaders($table);
 
-        $this->updateIdentifiersMapping($mappedIdentifiers);
+        $this->saveIdentifiersMapping($mappedIdentifiers);
     }
 
     /**
@@ -133,7 +133,7 @@ class FixturesContext extends PimContext
      */
     public function theProductIsSubscribedToFranklin(string $identifier): void
     {
-        $this->updateIdentifiersMapping(['asin' => 'asin']);
+        $this->saveIdentifiersMapping(['asin' => 'asin']);
 
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
@@ -157,7 +157,7 @@ class FixturesContext extends PimContext
      *
      * @throws InvalidMappingException
      */
-    private function updateIdentifiersMapping(array $mappedIdentifiers): void
+    private function saveIdentifiersMapping(array $mappedIdentifiers): void
     {
         $franklinIdentifiers = IdentifiersMapping::FRANKLIN_IDENTIFIERS;
 

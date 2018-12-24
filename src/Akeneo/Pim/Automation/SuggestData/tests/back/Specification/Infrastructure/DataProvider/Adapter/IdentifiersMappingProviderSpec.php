@@ -51,7 +51,7 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
 
         $api->update(Argument::any())->shouldBeCalled();
 
-        $this->updateIdentifiersMapping($mapping);
+        $this->saveIdentifiersMapping($mapping);
     }
 
     public function it_throws_an_exception_if_ask_franklin_was_down(
@@ -65,6 +65,6 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
         $api->update(Argument::any())->willThrow($catchedException);
 
         $thrownException = DataProviderException::serverIsDown($catchedException);
-        $this->shouldThrow($thrownException)->during('updateIdentifiersMapping', [$mapping]);
+        $this->shouldThrow($thrownException)->during('saveIdentifiersMapping', [$mapping]);
     }
 }

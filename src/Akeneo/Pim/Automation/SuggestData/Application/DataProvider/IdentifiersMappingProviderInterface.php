@@ -28,5 +28,5 @@ interface IdentifiersMappingProviderInterface
      *
      * @throws DataProviderException
      */
-    public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void;
+    public function saveIdentifiersMapping(IdentifiersMapping $identifiersMapping): void;
 }
