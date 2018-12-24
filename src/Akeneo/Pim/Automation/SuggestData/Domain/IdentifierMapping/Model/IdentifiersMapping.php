@@ -31,30 +31,30 @@ class IdentifiersMapping implements \IteratorAggregate
     ];
 
     /** @var array */
-    private $identifiers;
+    private $mapping;
 
-    private $formerIdentifiers;
+    private $formerMapping;
 
     /**
      * @param array $identifiers
      */
     public function __construct()
     {
-        $this->identifiers = array_fill_keys(self::FRANKLIN_IDENTIFIERS, null);
+        $this->mapping = array_fill_keys(self::FRANKLIN_IDENTIFIERS, null);
 
-        $this->formerIdentifiers = $this->identifiers;
+        $this->formerMapping = $this->mapping;
 
-        foreach (array_keys($this->identifiers) as $identifier) {
-            $this->identifiers[$identifier] = new IdentifierMapping($identifier, null);
+        foreach (array_keys($this->mapping) as $identifier) {
+            $this->mapping[$identifier] = new IdentifierMapping($identifier, null);
         }
     }
 
     /**
      * @return array
      */
-    public function getIdentifiers(): array
+    public function getMapping(): array
     {
-        return $this->identifiers;
+        return $this->mapping;
     }
 
     /**
@@ -64,20 +64,28 @@ class IdentifiersMapping implements \IteratorAggregate
      */
     public function getMappedAttribute(string $name): ?AttributeInterface
     {
-        if (array_key_exists($name, $this->identifiers)) {
-            return $this->identifiers[$name]->getAttribute();
+        if (array_key_exists($name, $this->mapping)) {
+            return $this->mapping[$name]->getAttribute();
         }
 
         return null;
     }
 
+    /**
+     * Map a franklin identifier to a catalog attribute.
+     *
+     * @param string $franklinIdentifierCode
+     * @param AttributeInterface|null $attribute
+     *
+     * @return IdentifiersMapping
+     */
     public function map(string $franklinIdentifierCode, ?AttributeInterface $attribute): self
     {
         if (!in_array($franklinIdentifierCode, self::FRANKLIN_IDENTIFIERS)) {
             throw new \InvalidArgumentException(sprintf('Invalid identifier %s', $franklinIdentifierCode));
         }
 
-        $identifierMapping = $this->identifiers[$franklinIdentifierCode];
+        $identifierMapping = $this->mapping[$franklinIdentifierCode];
         $identifierMapping->setAttribute($attribute);
 
         return $this;
@@ -88,7 +96,7 @@ class IdentifiersMapping implements \IteratorAggregate
      */
     public function getIterator(): iterable
     {
-        return new \ArrayIterator($this->identifiers);
+        return new \ArrayIterator($this->mapping);
     }
 
     /**
@@ -96,7 +104,7 @@ class IdentifiersMapping implements \IteratorAggregate
      */
     public function isEmpty(): bool
     {
-        return empty($this->identifiers) || empty(array_filter($this->identifiers, function (IdentifierMapping $identifierMapping) {
+        return empty($this->mapping) || empty(array_filter($this->mapping, function (IdentifierMapping $identifierMapping) {
             return null !== $identifierMapping->getAttribute();
         }));
     }

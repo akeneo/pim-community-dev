@@ -76,7 +76,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $productRepository->find(42)->willReturn($product);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getIdentifiers()->willReturn([
+        $identifiersMapping->getMapping()->willReturn([
             'brand' => new IdentifierMapping('brand', null),
             'ean' => new IdentifierMapping('ean', null),
             'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
@@ -113,7 +113,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $productRepository->find(42)->willReturn($product);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getIdentifiers()->willReturn([
+        $identifiersMapping->getMapping()->willReturn([
             'brand' => new IdentifierMapping('brand', null),
             'ean' => new IdentifierMapping('ean', null),
             'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
@@ -150,7 +150,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $productRepository->find(42)->willReturn($product);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getIdentifiers()->willReturn([
+        $identifiersMapping->getMapping()->willReturn([
             'brand' => new IdentifierMapping('brand', null),
             'ean' => new IdentifierMapping('ean', null),
             'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
@@ -188,7 +188,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $productRepository->find(42)->willReturn($product);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getIdentifiers()->willReturn([
+        $identifiersMapping->getMapping()->willReturn([
             'brand' => new IdentifierMapping('brand', null),
             'ean' => new IdentifierMapping('ean', null),
             'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
@@ -229,7 +229,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $productRepository->find(42)->willReturn($product);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getIdentifiers()->willReturn([
+        $identifiersMapping->getMapping()->willReturn([
             'brand' => new IdentifierMapping('brand', $brand->getWrappedObject()),
             'ean' => new IdentifierMapping('ean', $ean->getWrappedObject()),
             'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
@@ -276,7 +276,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $productRepository->find(42)->willReturn($product);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getIdentifiers()->willReturn([
+        $identifiersMapping->getMapping()->willReturn([
             'brand' => new IdentifierMapping('brand', $brand->getWrappedObject()),
             'ean' => new IdentifierMapping('ean', $ean->getWrappedObject()),
             'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
@@ -319,7 +319,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $productRepository->find(42)->willReturn($product);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getIdentifiers()->willReturn([
+        $identifiersMapping->getMapping()->willReturn([
             'brand' => new IdentifierMapping('brand', null),
             'ean' => new IdentifierMapping('ean', null),
             'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),

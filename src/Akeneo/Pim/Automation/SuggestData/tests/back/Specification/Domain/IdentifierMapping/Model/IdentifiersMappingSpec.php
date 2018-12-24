@@ -37,7 +37,7 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->map('upc', $ean);
         $this->map('asin', $sku);
 
-        $this->getIdentifiers()->shouldBeLike([
+        $this->getMapping()->shouldBeLike([
             'brand' => new IdentifierMapping('brand', $manufacturer->getWrappedObject()),
             'mpn' => new IdentifierMapping('mpn', $model->getWrappedObject()),
             'upc' => new IdentifierMapping('upc', $ean->getWrappedObject()),

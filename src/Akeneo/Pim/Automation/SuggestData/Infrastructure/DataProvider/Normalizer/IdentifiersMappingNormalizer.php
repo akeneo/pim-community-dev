@@ -38,7 +38,7 @@ class IdentifiersMappingNormalizer
             ];
         }
 
-        foreach ($mapping->getIdentifiers() as $franklinIdentifierCode => $identifier) {
+        foreach ($mapping->getMapping() as $franklinIdentifierCode => $identifier) {
             $attribute = $identifier->getAttribute();
             if (null !== $attribute) {
                 $labels = [];

@@ -25,11 +25,11 @@ class IdentifiersMappingNormalizer
      *
      * @return array
      */
-    public function normalize(IdentifiersMapping $mapping): array
+    public function normalize(IdentifiersMapping $identifiersMapping): array
     {
         $normalizedMapping = [];
 
-        foreach ($mapping->getIdentifiers() as $franklinIdentifierCode => $identifier) {
+        foreach ($identifiersMapping->getMapping() as $franklinIdentifierCode => $identifier) {
             $normalizedMapping[$franklinIdentifierCode] = null;
             $attribute = $identifier->getAttribute();
             if (null !== $attribute) {

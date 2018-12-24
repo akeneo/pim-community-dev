@@ -47,7 +47,7 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
     public function it_updates_the_identifiers_mapping($api, IdentifiersMapping $mapping): void
     {
         $api->setToken(Argument::type('string'))->shouldBeCalled();
-        $mapping->getIdentifiers()->willReturn([]);
+        $mapping->getMapping()->willReturn([]);
 
         $api->save(Argument::any())->shouldBeCalled();
 
@@ -59,7 +59,7 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
         IdentifiersMapping $mapping
     ): void {
         $api->setToken(Argument::type('string'))->shouldBeCalled();
-        $mapping->getIdentifiers()->willReturn([]);
+        $mapping->getMapping()->willReturn([]);
 
         $catchedException = new FranklinServerException();
         $api->save(Argument::any())->willThrow($catchedException);
