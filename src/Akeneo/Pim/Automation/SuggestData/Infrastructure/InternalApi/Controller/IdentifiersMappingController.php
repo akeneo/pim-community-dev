@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception\DataProviderException;
@@ -31,19 +31,19 @@ class IdentifiersMappingController
     /** @var GetIdentifiersMappingHandler */
     private $getIdentifiersMappingHandler;
 
-    /** @var UpdateIdentifiersMappingHandler */
-    private $updateIdentifiersMappingHandler;
+    /** @var SaveIdentifiersMappingHandler */
+    private $saveIdentifiersMappingHandler;
 
     /**
      * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
-     * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
+     * @param SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
      */
     public function __construct(
         GetIdentifiersMappingHandler $getIdentifiersMappingHandler,
-        UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
+        SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
     ) {
         $this->getIdentifiersMappingHandler = $getIdentifiersMappingHandler;
-        $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
+        $this->saveIdentifiersMappingHandler = $saveIdentifiersMappingHandler;
     }
 
     /**
@@ -56,8 +56,8 @@ class IdentifiersMappingController
         $identifiersMapping = json_decode($request->getContent(), true);
 
         try {
-            $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
-            $this->updateIdentifiersMappingHandler->handle($command);
+            $command = new SaveIdentifiersMappingCommand($identifiersMapping);
+            $this->saveIdentifiersMappingHandler->handle($command);
 
             return new JsonResponse(json_encode($identifiersMapping));
         } catch (InvalidMappingException $exception) {

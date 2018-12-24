@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -29,7 +29,7 @@ use Prophecy\Argument;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
+class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
 {
     public function let(
         AttributeRepositoryInterface $attributeRepository,
@@ -47,7 +47,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
 
     public function it_is_an_update_identifiers_mapping_handler(): void
     {
-        $this->shouldHaveType(UpdateIdentifiersMappingHandler::class);
+        $this->shouldHaveType(SaveIdentifiersMappingHandler::class);
     }
 
     public function it_throws_an_exception_if_an_attribute_does_not_exist(
@@ -56,7 +56,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         AttributeInterface $model
     ): void {
-        $command = new UpdateIdentifiersMappingCommand(
+        $command = new SaveIdentifiersMappingCommand(
             [
                 'mpn' => 'model',
                 'upc' => null,
@@ -85,7 +85,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         AttributeInterface $ean,
         AttributeInterface $id
     ): void {
-        $command = new UpdateIdentifiersMappingCommand(
+        $command = new SaveIdentifiersMappingCommand(
             [
                 'brand' => 'manufacturer',
                 'mpn' => 'model',
@@ -141,7 +141,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $model
     ): void {
-        $command = new UpdateIdentifiersMappingCommand(
+        $command = new SaveIdentifiersMappingCommand(
             [
                 'mpn' => 'model',
                 'upc' => null,
@@ -164,7 +164,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         AttributeInterface $manufacturer,
         AttributeInterface $ean
     ): void {
-        $command = new UpdateIdentifiersMappingCommand(
+        $command = new SaveIdentifiersMappingCommand(
             [
                 'brand' => 'manufacturer',
                 'mpn' => null,
@@ -198,7 +198,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         AttributeInterface $model,
         AttributeInterface $ean
     ): void {
-        $command = new UpdateIdentifiersMappingCommand(
+        $command = new SaveIdentifiersMappingCommand(
             [
                 'brand' => null,
                 'mpn' => 'model',
@@ -231,7 +231,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         IdentifiersMappingWebService $identifiersMappingWebService,
         AttributeInterface $attrEan
     ): void {
-        $command = new UpdateIdentifiersMappingCommand(
+        $command = new SaveIdentifiersMappingCommand(
             [
                 'brand' => null,
                 'mpn' => null,
@@ -261,7 +261,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         IdentifiersMappingWebService $identifiersMappingWebService,
         AttributeInterface $attrAsin
     ): void {
-        $command = new UpdateIdentifiersMappingCommand(
+        $command = new SaveIdentifiersMappingCommand(
             [
                 'brand' => null,
                 'mpn' => null,
@@ -291,7 +291,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         IdentifiersMappingWebService $identifiersMappingWebService,
         AttributeInterface $attrAsin
     ): void {
-        $command = new UpdateIdentifiersMappingCommand(
+        $command = new SaveIdentifiersMappingCommand(
             [
                 'brand' => null,
                 'mpn' => null,

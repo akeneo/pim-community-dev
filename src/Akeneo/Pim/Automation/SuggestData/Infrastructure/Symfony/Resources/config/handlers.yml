@@ -16,7 +16,7 @@ services:
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
 
     akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler'
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveIdentifiersMappingHandler'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'

@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\Identifiers
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class UpdateIdentifiersMappingCommand
+class SaveIdentifiersMappingCommand
 {
     /** @var array */
     private $identifiersMapping;

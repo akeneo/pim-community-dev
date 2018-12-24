@@ -29,7 +29,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class UpdateIdentifiersMappingHandler
+class SaveIdentifiersMappingHandler
 {
     /** @var array */
     private const ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER = [
@@ -68,14 +68,14 @@ class UpdateIdentifiersMappingHandler
     }
 
     /**
-     * @param UpdateIdentifiersMappingCommand $updateIdentifiersMappingCommand
+     * @param SaveIdentifiersMappingCommand $command
      *
      * @throws InvalidMappingException
      * @throws DataProviderException
      */
-    public function handle(UpdateIdentifiersMappingCommand $updateIdentifiersMappingCommand): void
+    public function handle(SaveIdentifiersMappingCommand $command): void
     {
-        $identifiers = $updateIdentifiersMappingCommand->getIdentifiersMapping();
+        $identifiers = $command->getIdentifiersMapping();
         $identifiers = $this->replaceAttributeCodesByAttributes($identifiers);
 
         $this->validateMappedIdentifiers($identifiers);

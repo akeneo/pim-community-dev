@@ -20,7 +20,7 @@ const template = require('akeneo/suggest-data/template/settings/identifiers-mapp
  * Maps Franklin identifiers with akeneo attributes.
  *
  * The attribute types authorized for the identifiers mapping are defined in
- * UpdateIdentifiersMappingHandler::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER
+ * SaveIdentifiersMappingHandler::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */

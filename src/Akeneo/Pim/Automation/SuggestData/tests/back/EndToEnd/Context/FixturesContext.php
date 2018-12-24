@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\InvalidMappingException;
@@ -33,8 +33,8 @@ use Webmozart\Assert\Assert;
  */
 class FixturesContext extends PimContext
 {
-    /** @var UpdateIdentifiersMappingHandler */
-    private $updateIdentifiersMappingHandler;
+    /** @var SaveIdentifiersMappingHandler */
+    private $saveIdentifiersMappingHandler;
 
     /** @var SubscribeProductHandler */
     private $subscribeProductHandler;
@@ -62,7 +62,7 @@ class FixturesContext extends PimContext
 
     /**
      * @param string $mainContextClass
-     * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
+     * @param SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
      * @param SubscribeProductHandler $subscribeProductHandler
      * @param EntityBuilder $attributeBuilder
      * @param BulkSaverInterface $attributeSaver
@@ -74,7 +74,7 @@ class FixturesContext extends PimContext
      */
     public function __construct(
         string $mainContextClass,
-        UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler,
+        SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler,
         SubscribeProductHandler $subscribeProductHandler,
         EntityBuilder $attributeBuilder,
         BulkSaverInterface $attributeSaver,
@@ -86,7 +86,7 @@ class FixturesContext extends PimContext
     ) {
         parent::__construct($mainContextClass);
 
-        $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
+        $this->saveIdentifiersMappingHandler = $saveIdentifiersMappingHandler;
         $this->subscribeProductHandler = $subscribeProductHandler;
         $this->attributeBuilder = $attributeBuilder;
         $this->attributeSaver = $attributeSaver;
@@ -164,8 +164,8 @@ class FixturesContext extends PimContext
         $emptyIdentifiersMapping = array_fill_keys($franklinIdentifiers, null);
         $identifiersMapping = array_merge($emptyIdentifiersMapping, $mappedIdentifiers);
 
-        $updateIdentifierCommand = new UpdateIdentifiersMappingCommand($identifiersMapping);
-        $this->updateIdentifiersMappingHandler->handle($updateIdentifierCommand);
+        $updateIdentifierCommand = new SaveIdentifiersMappingCommand($identifiersMapping);
+        $this->saveIdentifiersMappingHandler->handle($updateIdentifierCommand);
     }
 
     /**

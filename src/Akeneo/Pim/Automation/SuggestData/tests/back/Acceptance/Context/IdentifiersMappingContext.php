@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
@@ -42,8 +42,8 @@ class IdentifiersMappingContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var UpdateIdentifiersMappingHandler */
-    private $updateIdentifiersMappingHandler;
+    /** @var SaveIdentifiersMappingHandler */
+    private $saveIdentifiersMappingHandler;
 
     /** @var FakeClient */
     private $fakeClient;
@@ -56,20 +56,20 @@ class IdentifiersMappingContext implements Context
 
     /**
      * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
-     * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
+     * @param SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param FakeClient $fakeClient
      */
     public function __construct(
         GetIdentifiersMappingHandler $getIdentifiersMappingHandler,
-        UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler,
+        SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         AttributeRepositoryInterface $attributeRepository,
         FakeClient $fakeClient
     ) {
         $this->getIdentifiersMappingHandler = $getIdentifiersMappingHandler;
-        $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
+        $this->saveIdentifiersMappingHandler = $saveIdentifiersMappingHandler;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->attributeRepository = $attributeRepository;
         $this->fakeClient = $fakeClient;
@@ -95,8 +95,8 @@ class IdentifiersMappingContext implements Context
     {
         $this->originalIdentifiersMapping = $this->extractIdentifiersMappingFromTable($table);
 
-        $command = new UpdateIdentifiersMappingCommand($this->originalIdentifiersMapping);
-        $this->updateIdentifiersMappingHandler->handle($command);
+        $command = new SaveIdentifiersMappingCommand($this->originalIdentifiersMapping);
+        $this->saveIdentifiersMappingHandler->handle($command);
     }
 
     /**
@@ -108,8 +108,8 @@ class IdentifiersMappingContext implements Context
     {
         $identifiersMapping = $this->extractIdentifiersMappingFromTable($table);
         try {
-            $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
-            $this->updateIdentifiersMappingHandler->handle($command);
+            $command = new SaveIdentifiersMappingCommand($identifiersMapping);
+            $this->saveIdentifiersMappingHandler->handle($command);
         } catch (\Exception $exception) {
             $this->thrownException = $exception;
         }
@@ -121,8 +121,8 @@ class IdentifiersMappingContext implements Context
     public function theIdentifiersMappingIsSavedWithEmptyValues(): void
     {
         try {
-            $command = new UpdateIdentifiersMappingCommand([]);
-            $this->updateIdentifiersMappingHandler->handle($command);
+            $command = new SaveIdentifiersMappingCommand([]);
+            $this->saveIdentifiersMappingHandler->handle($command);
         } catch (\Exception $e) {
             $this->thrownException = $e;
         }

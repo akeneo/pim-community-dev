@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use PhpSpec\ObjectBehavior;
@@ -21,7 +21,7 @@ use PhpSpec\ObjectBehavior;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
+class SaveIdentifiersMappingCommandSpec extends ObjectBehavior
 {
     public function it_is_an_update_identifiers_mapping_command(): void
     {
@@ -32,7 +32,7 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
             'asin' => 'id',
         ]);
 
-        $this->shouldHaveType(UpdateIdentifiersMappingCommand::class);
+        $this->shouldHaveType(SaveIdentifiersMappingCommand::class);
     }
 
     public function it_returns_identifiers_mapping(): void
@@ -78,7 +78,7 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidMappingException::missingOrInvalidIdentifiersInMapping(
                 $given,
-                UpdateIdentifiersMappingCommand::class
+                SaveIdentifiersMappingCommand::class
             )
         )->duringInstantiation();
     }
@@ -93,7 +93,7 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
         ]);
 
         $this->shouldThrow(
-            InvalidMappingException::duplicateAttributeCode(UpdateIdentifiersMappingCommand::class)
+            InvalidMappingException::duplicateAttributeCode(SaveIdentifiersMappingCommand::class)
         )->duringInstantiation();
     }
 }
