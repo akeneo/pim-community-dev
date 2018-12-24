@@ -7,7 +7,7 @@ tests/legacy/features/pim/enrichment/product/mass-action/quick-export/quick_expo
 tests/legacy/features/pim/enrichment/product/mass-edit/edit-common-attribute/edit_common_attributes_channel.feature:32
 tests/legacy/features/pim/enrichment/product/mass-edit/edit-common-attribute/edit_common_attributes.feature:299
 tests/legacy/features/pim/enrichment/product/pef/association/update_associations.feature:17
-tests/legacy/features/pim/enrichment/product/pef/association/update_associations.feature:25
+tests/legacy/features/pim/enrichment/product/pef/association/update_associations.feature:26
 tests/legacy/features/pim/structure/attribute/browse/filter.feature:12
 tests/legacy/features/pim/structure/product-group/browse_product_groups.feature:28
 tests/legacy/features/platform/acl/assert_acl.feature:55
