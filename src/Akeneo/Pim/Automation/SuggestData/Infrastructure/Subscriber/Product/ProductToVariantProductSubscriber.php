@@ -20,6 +20,9 @@ class ProductToVariantProductSubscriber implements EventSubscriberInterface
     /** @var UnsubscribeProductHandler */
     private $unsubscribeProductHandler;
 
+    /**
+     * @param UnsubscribeProductHandler $unsubscribeProductHandler
+     */
     public function __construct(UnsubscribeProductHandler $unsubscribeProductHandler)
     {
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;

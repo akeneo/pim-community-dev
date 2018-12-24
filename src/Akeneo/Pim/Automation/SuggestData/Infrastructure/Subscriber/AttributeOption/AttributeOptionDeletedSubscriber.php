@@ -27,6 +27,9 @@ class AttributeOptionDeletedSubscriber implements EventSubscriberInterface
     /** @var RemoveAttributeOptionFromMappingInterface */
     private $removeAttributeOptionsFromMapping;
 
+    /**
+     * @param RemoveAttributeOptionFromMappingInterface $removeAttributeOptionsFromMapping
+     */
     public function __construct(RemoveAttributeOptionFromMappingInterface $removeAttributeOptionsFromMapping)
     {
         $this->removeAttributeOptionsFromMapping = $removeAttributeOptionsFromMapping;
