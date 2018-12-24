@@ -38,24 +38,25 @@ class AttributeOptionsMappingContext implements Context
     private $getAttributeOptionsMappingHandler;
 
     /** @var AttributeOptionsMapping */
-    private $attributeOptionsMapping;
+    private $retrievedAttributeOptionsMapping;
 
     /** @var string */
-    private $familyCode;
+    private $retrievedFamilyCode;
 
     /** @var string */
-    private $franklinAttributeId;
+    private $retrievedFranklinAttributeId;
 
     /** @var SaveAttributeOptionsMappingHandler */
     private $saveAttributeOptionsMappingHandler;
 
-    /**
-     * @var FakeClient
-     */
+    /** @var FakeClient */
     private $fakeClient;
 
     /** @var \Exception */
     private $thrownException;
+
+    /** @var array */
+    private $originalAttributeOptionsMapping;
 
     /**
      * @param GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
@@ -73,18 +74,6 @@ class AttributeOptionsMappingContext implements Context
     }
 
     /**
-     * @Given a predefined options mapping between Franklin attribute :attrId and PIM attribute :attrCode for family :family as follows:
-     *
-     * @param mixed $attrId
-     * @param mixed $attrCode
-     * @param mixed $family
-     */
-    public function aPredefinedAttributeOptionsMapping($attrId, $attrCode, $family, TableNode $optionsMapping): void
-    {
-        $this->saveAttributeOptionsMapping($attrId, $attrCode, $family, $optionsMapping);
-    }
-
-    /**
      * @When I retrieve the attribute options mapping for the family :familyCode and the attribute :franklinAttributeId
      *
      * @param mixed $familyCode
@@ -94,44 +83,96 @@ class AttributeOptionsMappingContext implements Context
         $familyCode,
         $franklinAttributeId
     ): void {
-        $this->familyCode = $familyCode;
-        $this->franklinAttributeId = $franklinAttributeId;
+        $this->retrievedFamilyCode = $familyCode;
+        $this->retrievedFranklinAttributeId = $franklinAttributeId;
 
         $query = new GetAttributeOptionsMappingQuery(
             new FamilyCode($familyCode),
             new FranklinAttributeId($franklinAttributeId)
         );
-        $this->attributeOptionsMapping = $this->getAttributeOptionsMappingHandler->handle($query);
-        Assert::isInstanceOf($this->attributeOptionsMapping, AttributeOptionsMapping::class);
+        $this->retrievedAttributeOptionsMapping = $this->getAttributeOptionsMappingHandler->handle($query);
+        Assert::isInstanceOf($this->retrievedAttributeOptionsMapping, AttributeOptionsMapping::class);
     }
 
     /**
-     * @When the Franklin :attrId options are mapped to the PIM :attrCode options for the family :family as follows:
+     * @Given a predefined options mapping between Franklin attribute :franklinAttrId and PIM attribute :catalogAttrCode for family :familyCode as follows:
      *
-     * @param $attrId
-     * @param $attrCode
-     * @param $family
-     * @param TableNode $optionsMapping
+     * @param string $franklinAttrId
+     * @param string $catalogAttrCode
+     * @param string $familyCode
+     * @param TableNode $table
+     */
+    public function aPredefinedAttributeOptionsMapping(
+        $franklinAttrId,
+        $catalogAttrCode,
+        $familyCode,
+        TableNode $table
+    ): void {
+        $optionsMapping = $this->extractAttributeOptionsMappingFromTable($table);
+
+        $command = new SaveAttributeOptionsMappingCommand(
+            new FamilyCode($familyCode),
+            new AttributeCode($catalogAttrCode),
+            new FranklinAttributeId($franklinAttrId),
+            new AttributeOptions($optionsMapping)
+        );
+        $this->saveAttributeOptionsMappingHandler->handle($command);
+
+        $this->originalAttributeOptionsMapping = $this->fakeClient->getOptionsMapping();
+    }
+
+    /**
+     * @When the Franklin :franklinAttrId options are mapped to the PIM :catalogAttrCode options for the family :familyCode as follows:
+     *
+     * @param string $franklinAttrId
+     * @param string $catalogAttrCode
+     * @param string $familyCode
+     * @param TableNode $table
      */
     public function theAttributeOptionsAreMappedAsFollows(
-        $attrId,
-        $attrCode,
-        $family,
-        TableNode $optionsMapping
+        $franklinAttrId,
+        $catalogAttrCode,
+        $familyCode,
+        TableNode $table
     ): void {
-        $this->saveAttributeOptionsMapping($attrId, $attrCode, $family, $optionsMapping);
+        $attributeOptionsMapping = $this->extractAttributeOptionsMappingFromTable($table);
+
+        try {
+            $command = new SaveAttributeOptionsMappingCommand(
+                new FamilyCode($familyCode),
+                new AttributeCode($catalogAttrCode),
+                new FranklinAttributeId($franklinAttrId),
+                new AttributeOptions($attributeOptionsMapping)
+            );
+            $this->saveAttributeOptionsMappingHandler->handle($command);
+        } catch (\Exception $e) {
+            $this->thrownException = $e;
+        }
     }
 
     /**
-     * @When the Franklin :attrId options are mapped to the PIM :family :attrCode options with an empty mapping
+     * @When the Franklin :franklinAttrId options are mapped to the PIM :familyCode :catalogAttrCode options with an empty mapping
      *
-     * @param mixed $attrId
-     * @param mixed $attrCode
-     * @param mixed $family
+     * @param string $franklinAttrId
+     * @param string $catalogAttrCode
+     * @param string $familyCode
      */
-    public function theAttributeOptionsAreMappedWithAnEmptyMapping($attrId, $attrCode, $family): void
-    {
-        $this->saveAttributeOptionsMapping($attrId, $attrCode, $family, new TableNode([]));
+    public function theAttributeOptionsAreMappedWithAnEmptyMapping(
+        $franklinAttrId,
+        $catalogAttrCode,
+        $familyCode
+    ): void {
+        try {
+            $command = new SaveAttributeOptionsMappingCommand(
+                new FamilyCode($familyCode),
+                new AttributeCode($catalogAttrCode),
+                new FranklinAttributeId($franklinAttrId),
+                new AttributeOptions([])
+            );
+            $this->saveAttributeOptionsMappingHandler->handle($command);
+        } catch (\Exception $e) {
+            $this->thrownException = $e;
+        }
     }
 
     /**
@@ -139,15 +180,15 @@ class AttributeOptionsMappingContext implements Context
      */
     public function theRetrievedAttributeOptionsMappingShouldBe(TableNode $expectedMappingTable): void
     {
-        Assert::eq($this->familyCode, $this->attributeOptionsMapping->familyCode());
-        Assert::eq($this->franklinAttributeId, $this->attributeOptionsMapping->franklinAttributeId());
+        Assert::eq($this->retrievedFamilyCode, $this->retrievedAttributeOptionsMapping->familyCode());
+        Assert::eq($this->retrievedFranklinAttributeId, $this->retrievedAttributeOptionsMapping->franklinAttributeId());
 
         Assert::count(
-            $this->attributeOptionsMapping->mapping(),
+            $this->retrievedAttributeOptionsMapping->mapping(),
             count($expectedMappingTable->getHash())
         );
 
-        foreach ($this->attributeOptionsMapping->mapping() as $index => $attributeOptionMapping) {
+        foreach ($this->retrievedAttributeOptionsMapping->mapping() as $index => $attributeOptionMapping) {
             $expectedRow = $expectedMappingTable->getHash()[$index];
             Assert::eq($attributeOptionMapping->franklinAttributeId(), $expectedRow['franklin_attribute_id']);
             Assert::eq($attributeOptionMapping->catalogAttributeCode(), $expectedRow['catalog_attribute_code']);
@@ -203,8 +244,10 @@ class AttributeOptionsMappingContext implements Context
      *
      * @param string $expectedStatus
      * @param int $status
+     *
+     * @throws \Exception
      */
-    private function assertStatus($expectedStatus, $status): void
+    private function assertStatus(string $expectedStatus, int $status): void
     {
         switch ($expectedStatus) {
             case 'pending':
@@ -221,10 +264,15 @@ class AttributeOptionsMappingContext implements Context
         }
     }
 
-    private function saveAttributeOptionsMapping($attrId, $attrCode, $family, TableNode $optionsMapping): void
+    /**
+     * @param TableNode $table
+     *
+     * @return array
+     */
+    private function extractAttributeOptionsMappingFromTable(TableNode $table): array
     {
         $attributeOptions = [];
-        foreach ($optionsMapping->getHash() as $option) {
+        foreach ($table->getHash() as $option) {
             $attributeOptions[$option['franklin_attribute_option_id']] = [
                 'franklinAttributeOptionCode' => [
                     'label' => $option['franklin_attribute_option_label'],
@@ -234,16 +282,6 @@ class AttributeOptionsMappingContext implements Context
             ];
         }
 
-        try {
-            $command = new SaveAttributeOptionsMappingCommand(
-                new FamilyCode($family),
-                new AttributeCode($attrCode),
-                new FranklinAttributeId($attrId),
-                new AttributeOptions($attributeOptions)
-            );
-            $this->saveAttributeOptionsMappingHandler->handle($command);
-        } catch (\Exception $e) {
-            $this->thrownException = $e;
-        }
+        return $attributeOptions;
     }
 }
