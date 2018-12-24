@@ -4,7 +4,7 @@ legacy:
             paths:
                 - tests/legacy/features
             filters:
-                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated'
+                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@skip-circle-ci&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated'
             contexts:
                 - Context\FeatureContext:
                     -
