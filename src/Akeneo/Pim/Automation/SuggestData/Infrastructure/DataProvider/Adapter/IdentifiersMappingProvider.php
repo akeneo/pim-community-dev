@@ -53,7 +53,7 @@ class IdentifiersMappingProvider extends AbstractProvider implements Identifiers
         $normalizer = new IdentifiersMappingNormalizer();
 
         try {
-            $this->api->update($normalizer->normalize($identifiersMapping));
+            $this->api->save($normalizer->normalize($identifiersMapping));
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {

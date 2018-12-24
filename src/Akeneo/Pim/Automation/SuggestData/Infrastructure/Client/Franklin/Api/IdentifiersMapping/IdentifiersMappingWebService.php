@@ -36,7 +36,7 @@ class IdentifiersMappingWebService extends AbstractApi implements AuthenticatedA
      * @throws FranklinServerException
      * @throws InvalidTokenException
      */
-    public function update(array $mapping): void
+    public function save(array $mapping): void
     {
         $route = $this->uriGenerator->generate('/api/mapping/identifiers');
 

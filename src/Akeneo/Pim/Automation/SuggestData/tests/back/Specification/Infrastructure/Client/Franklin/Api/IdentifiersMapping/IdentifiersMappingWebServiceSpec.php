@@ -54,7 +54,7 @@ class IdentifiersMappingWebServiceSpec extends ObjectBehavior
             'form_params' => $normalizedMapping,
         ])->shouldBeCalled();
 
-        $this->update($normalizedMapping);
+        $this->save($normalizedMapping);
     }
 
     public function it_throws_an_exception_if_the_client_throws_a_server_exception(
@@ -69,7 +69,7 @@ class IdentifiersMappingWebServiceSpec extends ObjectBehavior
             'form_params' => $normalizedMapping,
         ])->willThrow(ServerException::class);
 
-        $this->shouldNotThrow(FranklinServerException::class)->during('update', $normalizedMapping);
+        $this->shouldNotThrow(FranklinServerException::class)->during('save', $normalizedMapping);
     }
 
     public function it_throws_an_exception_if_the_client_throws_a_client_exception(
@@ -84,6 +84,6 @@ class IdentifiersMappingWebServiceSpec extends ObjectBehavior
             'form_params' => $normalizedMapping,
         ])->willThrow(ClientException::class);
 
-        $this->shouldNotThrow(BadRequestException::class)->during('update', $normalizedMapping);
+        $this->shouldNotThrow(BadRequestException::class)->during('save', $normalizedMapping);
     }
 }

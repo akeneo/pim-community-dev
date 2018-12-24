@@ -49,7 +49,7 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
         $api->setToken(Argument::type('string'))->shouldBeCalled();
         $mapping->getIdentifiers()->willReturn([]);
 
-        $api->update(Argument::any())->shouldBeCalled();
+        $api->save(Argument::any())->shouldBeCalled();
 
         $this->saveIdentifiersMapping($mapping);
     }
@@ -62,7 +62,7 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
         $mapping->getIdentifiers()->willReturn([]);
 
         $catchedException = new FranklinServerException();
-        $api->update(Argument::any())->willThrow($catchedException);
+        $api->save(Argument::any())->willThrow($catchedException);
 
         $thrownException = DataProviderException::serverIsDown($catchedException);
         $this->shouldThrow($thrownException)->during('saveIdentifiersMapping', [$mapping]);

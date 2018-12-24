@@ -220,7 +220,7 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $ean->isLocaleSpecific()->willReturn(false);
 
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
-        $identifiersMappingWebService->update(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingWebService->save(Argument::any())->shouldNotBeCalled();
 
         $this->shouldThrow(InvalidMappingException::class)->during('handle', [$command]);
     }
@@ -248,7 +248,7 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attrEan->isLocaleSpecific()->willReturn(false);
 
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
-        $identifiersMappingWebService->update(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingWebService->save(Argument::any())->shouldNotBeCalled();
 
         $this
             ->shouldThrow(InvalidMappingException::localizableAttributeNotAllowed('ean'))
@@ -278,7 +278,7 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attrAsin->isLocaleSpecific()->willReturn(false);
 
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
-        $identifiersMappingWebService->update(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingWebService->save(Argument::any())->shouldNotBeCalled();
 
         $this
             ->shouldThrow(InvalidMappingException::scopableAttributeNotAllowed('pim_asin'))
@@ -308,7 +308,7 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attrAsin->isLocaleSpecific()->willReturn(true);
 
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
-        $identifiersMappingWebService->update(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingWebService->save(Argument::any())->shouldNotBeCalled();
 
         $this
             ->shouldThrow(InvalidMappingException::localeSpecificAttributeNotAllowed('pim_asin'))
