@@ -1,1 +1,0 @@
-tests/back/Pim/Enrichment/Integration/Doctrine/Common/Saver/SavingProductModelDescendantsIntegration.php
