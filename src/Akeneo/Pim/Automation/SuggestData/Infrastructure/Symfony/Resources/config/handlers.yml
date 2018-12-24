@@ -65,7 +65,7 @@ services:
             - '%akeneo.pim.automation.suggest_data.application.create_proposals.batch_size%'
 
     akeneo.pim.automation.suggest_data.handler.update_attributes_mapping_by_family:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler'
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler'
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.attribute'

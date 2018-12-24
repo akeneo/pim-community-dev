@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use PhpSpec\ObjectBehavior;
@@ -21,7 +21,7 @@ use PhpSpec\ObjectBehavior;
 /**
  * @author    Romain Monceau <romain@akeneo.com>
  */
-class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
+class SaveAttributesMappingByFamilyCommandSpec extends ObjectBehavior
 {
     private const VALID_MAPPING = [
         'color' => [
@@ -33,7 +33,7 @@ class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
     public function it_is_initializable(): void
     {
         $this->beConstructedWith('family_code', self::VALID_MAPPING);
-        $this->shouldHaveType(UpdateAttributesMappingByFamilyCommand::class);
+        $this->shouldHaveType(SaveAttributesMappingByFamilyCommand::class);
     }
 
     public function it_returns_the_family_code(): void

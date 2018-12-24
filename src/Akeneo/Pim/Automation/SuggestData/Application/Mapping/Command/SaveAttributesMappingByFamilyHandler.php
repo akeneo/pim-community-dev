@@ -23,7 +23,7 @@ use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class UpdateAttributesMappingByFamilyHandler
+class SaveAttributesMappingByFamilyHandler
 {
     /** @var FamilyRepositoryInterface */
     private $familyRepository;
@@ -56,9 +56,9 @@ class UpdateAttributesMappingByFamilyHandler
     }
 
     /**
-     * @param UpdateAttributesMappingByFamilyCommand $command
+     * @param SaveAttributesMappingByFamilyCommand $command
      */
-    public function handle(UpdateAttributesMappingByFamilyCommand $command): void
+    public function handle(SaveAttributesMappingByFamilyCommand $command): void
     {
         $this->validate($command);
 
@@ -73,9 +73,9 @@ class UpdateAttributesMappingByFamilyHandler
      * Validates that the family exists.
      * Validates that the attribute exists.
      *
-     * @param UpdateAttributesMappingByFamilyCommand $command
+     * @param SaveAttributesMappingByFamilyCommand $command
      */
-    private function validate(UpdateAttributesMappingByFamilyCommand $command): void
+    private function validate(SaveAttributesMappingByFamilyCommand $command): void
     {
         $familyCode = $command->getFamilyCode();
         if (null === $this->familyRepository->findOneByIdentifier($familyCode)) {

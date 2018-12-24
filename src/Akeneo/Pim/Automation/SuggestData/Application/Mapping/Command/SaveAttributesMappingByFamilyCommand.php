@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\Attrib
 /**
  * @author    Romain Monceau <romain@akeneo.com>
  */
-class UpdateAttributesMappingByFamilyCommand
+class SaveAttributesMappingByFamilyCommand
 {
     /** @var string */
     private $familyCode;

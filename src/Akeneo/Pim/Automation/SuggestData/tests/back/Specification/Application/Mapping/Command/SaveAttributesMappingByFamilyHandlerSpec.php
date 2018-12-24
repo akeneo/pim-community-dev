@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -29,7 +29,7 @@ use Prophecy\Argument;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
+class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 {
     public function let(
         FamilyRepositoryInterface $familyRepository,
@@ -47,14 +47,14 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 
     public function it_is_initializabel(): void
     {
-        $this->shouldHaveType(UpdateAttributesMappingByFamilyHandler::class);
+        $this->shouldHaveType(SaveAttributesMappingByFamilyHandler::class);
     }
 
     public function it_throws_an_exception_if_family_does_not_exist($familyRepository): void
     {
         $familyRepository->findOneByIdentifier('router')->willReturn(null);
 
-        $command = new UpdateAttributesMappingByFamilyCommand('router', [
+        $command = new SaveAttributesMappingByFamilyCommand('router', [
             'color' => [
                 'franklinAttribute' => ['type' => 'multiselect'],
                 'attribute' => 'tshirt_style',
@@ -70,7 +70,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $familyRepository->findOneByIdentifier('router')->willReturn(Argument::type(FamilyInterface::class));
         $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn(null);
 
-        $command = new UpdateAttributesMappingByFamilyCommand('router', [
+        $command = new SaveAttributesMappingByFamilyCommand('router', [
             'memory' => [
                 'franklinAttribute' => [
                     'label' => 'Memory',
@@ -90,7 +90,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributeRepository,
         AttributeInterface $attribute
     ): void {
-        $command = new UpdateAttributesMappingByFamilyCommand('router', [
+        $command = new SaveAttributesMappingByFamilyCommand('router', [
             'memory' => [
                 'franklinAttribute' => [
                     'label' => 'Memory',
@@ -132,7 +132,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                 'attribute' => 'product_weight',
             ],
         ];
-        $command = new UpdateAttributesMappingByFamilyCommand('router', $attributeMapping);
+        $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
         $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
 
@@ -173,7 +173,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                 'attribute' => 'random_access_memory',
             ],
         ];
-        $command = new UpdateAttributesMappingByFamilyCommand('router', $attributeMapping);
+        $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
         $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
 
@@ -198,7 +198,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                 'attribute' => 'random_access_memory',
             ],
         ];
-        $command = new UpdateAttributesMappingByFamilyCommand('router', $attributeMapping);
+        $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
         $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
 
@@ -224,7 +224,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                 'attribute' => 'random_access_memory',
             ],
         ];
-        $command = new UpdateAttributesMappingByFamilyCommand('router', $attributeMapping);
+        $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
         $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
 

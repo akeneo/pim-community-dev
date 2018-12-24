@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Context;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler;
@@ -33,7 +33,7 @@ final class AttributesMappingContext implements Context
     /** @var GetAttributesMappingByFamilyHandler */
     private $getAttributesMappingByFamilyHandler;
 
-    /** @var UpdateAttributesMappingByFamilyHandler */
+    /** @var SaveAttributesMappingByFamilyHandler */
     private $updateAttributesMappingByFamilyHandler;
 
     /** @var SearchFamiliesHandler */
@@ -56,13 +56,13 @@ final class AttributesMappingContext implements Context
 
     /**
      * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
-     * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
+     * @param SaveAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
      * @param SearchFamiliesHandler $searchFamiliesHandler
      * @param FakeClient $fakeClient
      */
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
-        UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler,
+        SaveAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler,
         SearchFamiliesHandler $searchFamiliesHandler,
         FakeClient $fakeClient
     ) {
@@ -84,7 +84,7 @@ final class AttributesMappingContext implements Context
     public function aPredefinedAttributesMapping(string $familyCode, TableNode $table): void
     {
         $requestAttributesMapping = $this->buildAttributesMappingRequest($table);
-        $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $requestAttributesMapping);
+        $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestAttributesMapping);
         $this->updateAttributesMappingByFamilyHandler->handle($command);
 
         $this->originalAttributesMapping = $this->fakeClient->getAttributesMapping();
@@ -101,7 +101,7 @@ final class AttributesMappingContext implements Context
         $requestMapping = $this->buildAttributesMappingRequest($table);
 
         try {
-            $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $requestMapping);
+            $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestMapping);
             $this->updateAttributesMappingByFamilyHandler->handle($command);
         } catch (\Exception $e) {
             $this->thrownException = $e;
@@ -147,7 +147,7 @@ final class AttributesMappingContext implements Context
     public function theAttributesMappingIsUpdatedWithAnEmptyMapping(string $familyCode): void
     {
         try {
-            $command = new UpdateAttributesMappingByFamilyCommand($familyCode, []);
+            $command = new SaveAttributesMappingByFamilyCommand($familyCode, []);
             $this->updateAttributesMappingByFamilyHandler->handle($command);
         } catch (\Exception $e) {
             $this->thrownException = $e;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
@@ -34,7 +34,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
     public function let(
         StepExecution $stepExecution,
         GetAttributesMappingByFamilyHandler $getAttributesMappingHandler,
-        UpdateAttributesMappingByFamilyHandler $updateAttributesMappingHandler
+        SaveAttributesMappingByFamilyHandler $updateAttributesMappingHandler
     ): void {
         $this->beConstructedWith($getAttributesMappingHandler, $updateAttributesMappingHandler);
 
@@ -64,7 +64,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
 
         $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery('router'))->willReturn($franklinResponse);
 
-        $updateAttributesMappingHandler->handle(new UpdateAttributesMappingByFamilyCommand('router', [
+        $updateAttributesMappingHandler->handle(new SaveAttributesMappingByFamilyCommand('router', [
             'franklin_size' => [
                 'franklinAttribute' => ['type' => 'text'],
                 'attribute' => null,

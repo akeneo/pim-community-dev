@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler;
@@ -44,19 +44,19 @@ class AttributeMappingController
     /** @var AttributesMappingNormalizer */
     private $attributesMappingNormalizer;
 
-    /** @var UpdateAttributesMappingByFamilyHandler */
+    /** @var SaveAttributesMappingByFamilyHandler */
     private $updateAttributesMappingByFamilyHandler;
 
     /**
      * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
-     * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
+     * @param SaveAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
      * @param SearchFamiliesHandler $searchFamiliesHandler
      * @param FamiliesNormalizer $familiesNormalizer
      * @param AttributesMappingNormalizer $attributesMappingNormalizer
      */
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
-        UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler,
+        SaveAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler,
         SearchFamiliesHandler $searchFamiliesHandler,
         FamiliesNormalizer $familiesNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer
@@ -132,7 +132,7 @@ class AttributeMappingController
             throw new BadRequestHttpException('No mapping have been sent');
         }
 
-        $command = new UpdateAttributesMappingByFamilyCommand($identifier, $data['mapping']);
+        $command = new SaveAttributesMappingByFamilyCommand($identifier, $data['mapping']);
         $this->updateAttributesMappingByFamilyHandler->handle($command);
 
         /*
