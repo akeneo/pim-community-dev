@@ -79,5 +79,7 @@ class FindActivatedCurrenciesIntegration extends TestCase
         $mobile->setCurrencies([$eur, $adp, $afa]);
         $mobile->setCategory($master);
         $this->get('pim_catalog.saver.channel')->save($mobile);
+
+        sleep(5);
     }
 }
