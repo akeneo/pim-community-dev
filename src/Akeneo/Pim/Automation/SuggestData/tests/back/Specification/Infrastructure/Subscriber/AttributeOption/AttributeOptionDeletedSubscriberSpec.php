@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\AttributeOption;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\RemoveAttributeOptionFromMappingInterface;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber\AttributeOptionDeletedSubscriber;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\AttributeOption\AttributeOptionDeletedSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;

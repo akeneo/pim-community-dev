@@ -24,7 +24,7 @@ services:
             - { name: kernel.event_subscriber }
 
     akeneo.pim.automation.suggest_data.subscriber.remove_option_from_attribute_option_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber\AttributeOptionDeletedSubscriber'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\AttributeOption\AttributeOptionDeletedSubscriber'
         arguments:
             - '@akeneo.pim.automation.suggest_data.application.mapping.service.remove_option_from_attribute_options_mapping'
         tags:
