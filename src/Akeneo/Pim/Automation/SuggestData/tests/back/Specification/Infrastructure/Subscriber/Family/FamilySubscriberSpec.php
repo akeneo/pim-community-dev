@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Family;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber\FamilySubscriber;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Family\FamilySubscriber;
 use Akeneo\Pim\Automation\SuggestData\Domain\FamilyAttribute\Query\FindFamilyAttributesNotInQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
