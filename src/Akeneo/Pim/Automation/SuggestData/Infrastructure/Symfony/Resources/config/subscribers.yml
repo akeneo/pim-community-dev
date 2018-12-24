@@ -1,6 +1,6 @@
 services:
     akeneo.pim.automation.suggest_data.subscriber.product_family_update:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subscriber\ProductFamilyUpdateSubscriber'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product\ProductFamilyUpdateSubscriber'
         arguments:
             - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.product.select_product_family_id_query'
             - '@akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
