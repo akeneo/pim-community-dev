@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Family;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Family\FamilyAttributesRemoveSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Domain\FamilyAttribute\Query\FindFamilyAttributesNotInQueryInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Family\FamilyAttributesRemoveSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;

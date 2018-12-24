@@ -17,8 +17,8 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\Un
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UpdateSubscriptionFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UpdateSubscriptionFamilyHandler;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product\ProductFamilyUpdateSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Product\SelectProductFamilyIdQuery;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product\ProductFamilyUpdateSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
