@@ -100,7 +100,7 @@ Feature: Execute a job
     When I edit the "SKU-001" product
     And I visit the "Associations" column tab
     And I visit the "Cross sell" association type
-    And I press the "Add associations" button
+    And I press the "Add associations" button and wait for modal
     Then I check the rows "SKU-002"
     And I press the "Confirm" button in the popin
     And the following CSV file to import:
@@ -126,7 +126,7 @@ Feature: Execute a job
     When I edit the "SKU-001" product
     And I visit the "Associations" column tab
     And I visit the "Cross sell" association type
-    And I press the "Add associations" button
+    And I press the "Add associations" button and wait for modal
     Then I check the rows "SKU-002"
     And I press the "Confirm" button in the popin
     And the following CSV file to import:
@@ -152,7 +152,7 @@ Feature: Execute a job
     When I edit the "SKU-001" product
     And I visit the "Associations" column tab
     And I visit the "Cross sell" association type
-    And I press the "Add associations" button
+    And I press the "Add associations" button and wait for modal
     Then I check the rows "SKU-002"
     And I press the "Confirm" button in the popin
     And the following CSV file to import:
@@ -180,13 +180,13 @@ Feature: Execute a job
     When I edit the "SKU-001" product
     And I visit the "Associations" column tab
     And I visit the "Cross sell" association type
-    And I press the "Add associations" button
+    And I press the "Add associations" button and wait for modal
     Then I check the rows "SKU-002"
     And I press the "Confirm" button in the popin
     When I edit the "SKU-001" product
     And I visit the "Associations" column tab
     And I visit the "Upsell" association type
-    And I press the "Add associations" button
+    And I press the "Add associations" button and wait for modal
     Then I check the rows "SKU-002"
     And I press the "Confirm" button in the popin
     And the following CSV file to import:
@@ -218,7 +218,7 @@ Feature: Execute a job
     When I edit the "SKU-001" product
     And I visit the "Associations" column tab
     And I visit the "Cross sell" association type
-    And I press the "Add associations" button
+    And I press the "Add associations" button and wait for modal
     And I check the rows "SKU-002"
     And I press the "Confirm" button in the popin
     And the following CSV file to import:
