@@ -16,7 +16,7 @@ services:
             - { name: kernel.event_subscriber }
 
     akeneo.pim.automation.suggest_data.subscriber.remove_attribute_from_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber\AttributeDeletedSubscriber'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Attribute\AttributeDeletedSubscriber'
         arguments:
             - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.select_family_codes_by_attribute_query'
             - '@akeneo.pim.automation.suggest_data.application.mapping.service.remove_attributes_from_mapping'
