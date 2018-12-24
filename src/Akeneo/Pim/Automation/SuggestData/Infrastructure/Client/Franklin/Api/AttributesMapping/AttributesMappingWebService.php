@@ -70,7 +70,7 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
      * @param string $familyCode
      * @param array $mapping
      */
-    public function update(string $familyCode, array $mapping): void
+    public function save(string $familyCode, array $mapping): void
     {
         $route = $this->uriGenerator->generate(sprintf('/api/mapping/%s/attributes', $familyCode));
 

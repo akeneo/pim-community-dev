@@ -62,7 +62,7 @@ class SaveAttributesMappingByFamilyHandler
     {
         $this->validate($command);
 
-        $this->attributesMappingProvider->updateAttributesMapping(
+        $this->attributesMappingProvider->saveAttributesMapping(
             $command->getFamilyCode(),
             $command->getAttributesMapping()
         );

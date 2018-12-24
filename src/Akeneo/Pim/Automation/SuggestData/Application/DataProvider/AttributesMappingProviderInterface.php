@@ -31,5 +31,5 @@ interface AttributesMappingProviderInterface
      * @param string $familyCode
      * @param array $attributesMapping
      */
-    public function updateAttributesMapping(string $familyCode, array $attributesMapping): void;
+    public function saveAttributesMapping(string $familyCode, array $attributesMapping): void;
 }

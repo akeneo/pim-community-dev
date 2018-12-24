@@ -69,13 +69,13 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
     /**
      * {@inheritdoc}
      */
-    public function updateAttributesMapping(string $familyCode, array $attributesMapping): void
+    public function saveAttributesMapping(string $familyCode, array $attributesMapping): void
     {
         $this->api->setToken($this->getToken());
         $normalizer = new AttributesMappingNormalizer();
         $mapping = $normalizer->normalize($attributesMapping);
 
-        $this->api->update($familyCode, $mapping);
+        $this->api->save($familyCode, $mapping);
     }
 
     /**

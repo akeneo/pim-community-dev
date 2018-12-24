@@ -79,8 +79,8 @@ class AttributesMappingProviderSpec extends ObjectBehavior
         $familyCode = 'foobar';
         $attributesMapping = [];
 
-        $api->update($familyCode, Argument::any())->shouldBeCalled();
+        $api->save($familyCode, Argument::any())->shouldBeCalled();
 
-        $this->updateAttributesMapping($familyCode, $attributesMapping);
+        $this->saveAttributesMapping($familyCode, $attributesMapping);
     }
 }

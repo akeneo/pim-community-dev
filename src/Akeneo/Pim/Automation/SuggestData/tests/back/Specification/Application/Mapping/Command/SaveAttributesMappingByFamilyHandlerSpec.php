@@ -149,7 +149,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $weightAttribute->isLocaleSpecific()->willReturn(false);
 
         $attributesMappingProvider
-            ->updateAttributesMapping('router', $command->getAttributesMapping())
+            ->saveAttributesMapping('router', $command->getAttributesMapping())
             ->shouldBeCalled();
 
         $subscriptionRepository
