@@ -30,7 +30,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 /**
  * @author Willy MESNAGE <willy.mesnage@akeneo.com>
  */
-class AttributeMappingController
+class AttributesMappingController
 {
     /** @var GetAttributesMappingByFamilyHandler */
     private $getAttributesMappingByFamilyHandler;

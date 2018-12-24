@@ -22,7 +22,7 @@ services:
            - '@akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping'
 
     akeneo.pim.automation.suggest_data.controller.attributes_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller\AttributeMappingController'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller\AttributesMappingController'
         arguments:
             - '@akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
             - '@akeneo.pim.automation.suggest_data.handler.update_attributes_mapping_by_family'
