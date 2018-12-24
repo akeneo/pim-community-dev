@@ -51,7 +51,7 @@ class IdentifiersMappingController
      *
      * @return JsonResponse
      */
-    public function updateIdentifiersMappingAction(Request $request): JsonResponse
+    public function saveIdentifiersMappingAction(Request $request): JsonResponse
     {
         $identifiersMapping = json_decode($request->getContent(), true);
 

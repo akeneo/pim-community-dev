@@ -4,7 +4,7 @@ akeneo_suggest_data_identifiers_mapping_edit:
 
 akeneo_suggest_data_identifiers_mapping_save:
     path: /
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.identifiers_mapping:updateIdentifiersMappingAction }
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.identifiers_mapping:saveIdentifiersMappingAction }
     methods: [POST]
 
 akeneo_suggest_data_identifiers_mapping_get:
