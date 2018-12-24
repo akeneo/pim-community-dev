@@ -1,5 +1,1 @@
-tests/back/Pim/Enrichment/EndToEnd/Product/Product/ExternalApi/SuccessLargeAndOrderedListProductEndToEnd.php
-tests/back/Pim/Enrichment/EndToEnd/Product/ProductModel/ExternalApi/LargeAndOrderedListProductModelEndToEnd.php
-tests/back/Pim/Enrichment/Integration/Product/RemoveProductModelIntegration.php
-tests/back/Pim/Enrichment/Integration/ProductQueryBuilder/Filter/CategoryFilterIntegration.php
-tests/back/Pim/Enrichment/Integration/ProductQueryBuilder/SearchOnAttributesAndCategoriesIntegration.php
+tests/back/Pim/Enrichment/Integration/Doctrine/Common/Saver/SavingProductModelDescendantsIntegration.php
