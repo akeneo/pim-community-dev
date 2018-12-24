@@ -29,10 +29,8 @@ $rules = [
             'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException',
 
             // Events
-            'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\EventDispatcher\GenericEvent',
-            'Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent',
 
             // TODO remove all links by reference
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
@@ -85,19 +83,6 @@ $rules = [
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
             'Akeneo\Pim\Automation\SuggestData\Application',
-
-            // External dependencies
-            'Symfony\Component\HttpFoundation',
-            'Symfony\Component\HttpKernel\Exception',
-            'Symfony\Component\Translation',
-            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
-        ]
-    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi'),
-
-    $builder->only(
-        [
-            'Akeneo\Pim\Automation\SuggestData\Domain',
-            'Akeneo\Pim\Automation\SuggestData\Application',
             'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client',
 
             // TODO public constant
@@ -126,20 +111,13 @@ $rules = [
             'Akeneo\Pim\Automation\SuggestData\Domain',
             'Akeneo\Pim\Automation\SuggestData\Application',
 
-            'Akeneo\Pim\WorkOrganization\Workflow\Component',
-            'Akeneo\Tool\Component\StorageUtils',
-
             // External dependencies
-            'Symfony\Component\EventDispatcher',
-
-            // TODO remove all links by reference
-            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-
-            // TODO relationship between bounded context (query data though repository)
-            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
+            'Symfony\Component\HttpFoundation',
+            'Symfony\Component\HttpKernel\Exception',
+            'Symfony\Component\Translation',
+            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         ]
-    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal'),
+    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi'),
 
     $builder->only(
         [
@@ -162,6 +140,50 @@ $rules = [
             'Oro\Bundle\ConfigBundle\Entity\Config',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence'),
+
+    $builder->only(
+        [
+            'Akeneo\Pim\Automation\SuggestData\Domain',
+            'Akeneo\Pim\Automation\SuggestData\Application',
+
+            'Akeneo\Pim\WorkOrganization\Workflow\Component',
+            'Akeneo\Tool\Component\StorageUtils',
+
+            // External dependencies
+            'Symfony\Component\EventDispatcher',
+
+            // TODO remove all links by reference
+            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+
+            // TODO relationship between bounded context (query data though repository)
+            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
+        ]
+    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal'),
+
+    $builder->only(
+        [
+            'Akeneo\Pim\Automation\SuggestData\Domain',
+            'Akeneo\Pim\Automation\SuggestData\Application',
+
+            // External dependencies
+            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
+            'Symfony\Component\EventDispatcher\GenericEvent',
+
+            // Akeneo external bounded contexts
+            'Akeneo\Tool\Component\StorageUtils\StorageEvents',
+            'Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent',
+
+            'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
+            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+
+            'Akeneo\Channel\Component\Model\ChannelInterface',
+            'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        ]
+    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber'),
 
     $builder->only(
         [
