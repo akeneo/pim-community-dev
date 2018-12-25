@@ -47,6 +47,7 @@ Feature: Edit a user groups and roles
     When I logout
     And I am logged in as "Mary"
     And I am on the Role index page
+    And I should see the text "Roles"
     Then I should not be able to access the edit "User" Role page
     When I logout
     And I am logged in as "Peter"

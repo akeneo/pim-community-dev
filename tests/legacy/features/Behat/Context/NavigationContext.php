@@ -414,11 +414,18 @@ class NavigationContext extends PimContext implements PageObjectAware
      */
     public function openPage($pageName, array $options = [])
     {
-        $this->currentPage = $pageName;
+        $this->spin(function () use ($pageName, $options) {
+            try {
+                $this->currentPage = $pageName;
+                $this->getCurrentPage()->open($options);
+            } catch (UnexpectedPageException $e) {
+                return false;
+            }
 
-        $page = $this->getCurrentPage()->open($options);
+            return true;
+        }, sprintf('Impossible to open page "%s"', $pageName));
 
-        return $page;
+        return $this->getCurrentPage();
     }
 
     /**
