@@ -1,0 +1,49 @@
+Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription:
+    type: entity
+    table: pim_franklin_insights_product_subscription
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    indexes:
+        franklin_insights_subscription_idx:
+            columns:
+                - subscription_id
+        franklin_insights_product_idx:
+            columns:
+                - product_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        subscriptionId:
+            type: string
+            column: subscription_id
+            nullable: false
+        productId:
+            type: integer
+            column: product_id
+            nullable: false
+        rawSuggestedData:
+            type: native_json
+            column: raw_suggested_data
+            nullable: true
+        isMappingMissing:
+            type: boolean
+            column: misses_mapping
+            nullable: true
+        requestedAsin:
+            type: string
+            column: requested_asin
+            nullable: true
+        requestedUpc:
+            type: string
+            column: requested_upc
+            nullable: true
+        requestedBrand:
+            type: string
+            column: requested_brand
+            nullable: true
+        requestedMpn:
+            type: string
+            column: requested_mpn
+            nullable: true

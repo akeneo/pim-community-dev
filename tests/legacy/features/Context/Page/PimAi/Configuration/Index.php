@@ -21,5 +21,5 @@ use Context\Page\Product\Index as BaseIndex;
 class Index extends BaseIndex
 {
     /** @var string */
-    protected $path = '#/suggest-data/connection/edit';
+    protected $path = '#/franklin-insights/connection/edit';
 }

@@ -3,7 +3,7 @@ imports:
     - { resource: parameters_test.yml }
     - { resource: security_test.yml }
     - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Common/Resources/helpers.yml }
-    - { resource: ../../src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/pim/data_providers.yml }
+    - { resource: ../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/pim/data_providers.yml }
 
 framework:
     test: ~

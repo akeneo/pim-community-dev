@@ -1,0 +1,19 @@
+services:
+    akeneo.pim.automation.franklin_insights.normalizers.suggested_data:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard\SuggestedDataNormalizer'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
+            - '@akeneo_measure.measure_converter'
+
+    akeneo.pim.automation.franklin_insights.normalizers.attributes_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer'
+
+    akeneo.pim.automation.franklin_insights.normalizers.families:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesNormalizer'
+
+    akeneo.pim.automation.franklin_insights.normalizer.connection_status:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\ConnectionStatusNormalizer'
+
+    akeneo.pim.automation.franklin_insights.normalizer.product_subscription_status:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\ProductSubscriptionStatusNormalizer'

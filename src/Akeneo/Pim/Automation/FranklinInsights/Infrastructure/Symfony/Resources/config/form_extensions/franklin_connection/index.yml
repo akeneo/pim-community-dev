@@ -1,0 +1,64 @@
+extensions:
+    akeneo-franklin-insights-franklin-connection-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    akeneo-franklin-insights-franklin-connection-index-grid-container:
+        module: pim/common/simple-view
+        parent: akeneo-franklin-insights-franklin-connection-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    akeneo-franklin-insights-franklin-connection-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: akeneo-franklin-insights-franklin-connection-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    akeneo-franklin-insights-franklin-connection-index-title:
+        module: pim/common/grid-title
+        parent: akeneo-franklin-insights-franklin-connection-index
+        targetZone: title
+        config:
+            countable: false
+            title: akeneo_franklin_insights.connection.page_title
+
+    akeneo-franklin-insights-franklin-connection-index-description-header:
+        module: akeneo/franklin-insights/view/common/description-header
+        parent: akeneo-franklin-insights-franklin-connection-index
+        targetZone: content
+        position: 10
+        config:
+            template: pim/template/common/description-header
+            templateParams:
+                title: akeneo_franklin_insights.connection.module.title.sub_title
+                illustration: Helpcenter-settings.svg
+                description:
+                    - akeneo_franklin_insights.connection.module.title.description.first_step
+                    - akeneo_franklin_insights.connection.module.title.description.second_step
+
+    akeneo-franklin-insights-franklin-connection-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: akeneo-franklin-insights-franklin-connection-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: akeneo-franklin-insights-franklin-connection
+
+    akeneo-franklin-insights-franklin-connection-edit:
+        module: akeneo/franklin-insights/view/franklin-connection/edit
+        parent: akeneo-franklin-insights-franklin-connection-index
+        template: akeneo/franklin-insights/template/franklin-connection/edit
+        targetZone: content
+        position: 90
+        config:
+            tokenLabelContent: akeneo_franklin_insights.connection.module.activation.label
+            tokenFieldTitle: akeneo_franklin_insights.connection.module.activation.activation_code
+            tokenFieldPlaceholder: akeneo_franklin_insights.connection.module.activation.paste_activation_code
+            tokenSavePreActivationTitle: akeneo_franklin_insights.connection.module.activation.activate
+            tokenSavePostActivationTitle:  akeneo_franklin_insights.connection.module.activation.activated
+            code: franklin

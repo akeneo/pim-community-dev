@@ -1,0 +1,32 @@
+services:
+    akeneo_e2e.context.franklin_insights.builder.attribute:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        shared: false
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+
+    akeneo_e2e.context.franklin_insights.builder.attribute_group:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        shared: false
+        arguments:
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@validator'
+
+    akeneo_e2e.context.franklin_insights.builder.family:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        shared: false
+        arguments:
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@validator'
+
+    akeneo_e2e.context.franklin_insights.builder.product:
+        class: 'Akeneo\Test\Common\EntityWithValue\Builder\Product'
+        shared: false
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'

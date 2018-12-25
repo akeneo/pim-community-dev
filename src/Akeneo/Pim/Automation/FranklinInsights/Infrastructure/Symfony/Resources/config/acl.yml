@@ -1,0 +1,13 @@
+akeneo_franklin_insights_product_subscription:
+    type: action
+    label: akeneo_franklin_insights.acl.franklin_insights.index
+    group_name: pim_enrich.acl_group.product
+
+akeneo_franklin_insights_connection:
+    type: action
+    label: akeneo_franklin_insights.acl.franklin.title
+
+akeneo_franklin_insights_settings_mapping:
+    type: action
+    label: akeneo_franklin_insights.acl.settings.mapping
+    group_name: akeneo_franklin_insights.acl_group.franklin_insights

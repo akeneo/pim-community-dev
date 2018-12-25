@@ -1,0 +1,40 @@
+extensions:
+    akeneo-franklin-insights-settings-identifiers-mapping-index-inactive-connection:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    akeneo-franklin-insights-settings-identifiers-mapping-index-inactive-connection-breadcrumb:
+        module: pim/common/breadcrumbs
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-index-inactive-connection
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: akeneo-franklin-insights-menu-settings-mapping
+
+    akeneo-franklin-insights-settings-identifiers-mapping-index-inactive-connection-user-navigation:
+        module: pim/menu/user-navigation
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-index-inactive-connection
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    akeneo-franklin-insights-settings-identifiers-mapping-index-inactive-connection-title:
+        module: pim/common/grid-title
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-index-inactive-connection
+        targetZone: title
+        config:
+            title: akeneo_franklin_insights.settings.page_title
+            countable: false
+
+    akeneo-franklin-insights-settings-identifiers-mapping-index-inactive-connection-content:
+        module: pim/common/simple-view
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-index-inactive-connection
+        targetZone: content
+        config:
+            template: pim/template/common/no-data
+            templateParams:
+                hint: akeneo_franklin_insights.settings.module.inactive_connection.title
+                subHint: akeneo_franklin_insights.settings.module.inactive_connection.sub_title
+                imageClass: AknGridContainer-noDataImage
