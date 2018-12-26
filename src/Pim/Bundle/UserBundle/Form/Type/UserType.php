@@ -273,14 +273,6 @@ class UserType extends AbstractType
                 ]
             )
             ->add(
-                'birthday',
-                DateType::class,
-                [
-                    'label'    => 'Date of birth',
-                    'required' => false,
-                ]
-            )
-            ->add(
                 'imageFile',
                 FileType::class,
                 [
