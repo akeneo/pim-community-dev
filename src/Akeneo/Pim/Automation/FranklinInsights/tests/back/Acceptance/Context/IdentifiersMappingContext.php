@@ -16,6 +16,7 @@ namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetIdentifiersMappingQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
@@ -53,6 +54,9 @@ class IdentifiersMappingContext implements Context
 
     /** @var array */
     private $originalIdentifiersMapping;
+
+    /** @var IdentifiersMapping */
+    private $retrievedIdentifiersMapping;
 
     /**
      * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
@@ -125,6 +129,45 @@ class IdentifiersMappingContext implements Context
             $this->saveIdentifiersMappingHandler->handle($command);
         } catch (\Exception $e) {
             $this->thrownException = $e;
+        }
+    }
+
+    /**
+     * @When I retrieve the identifiers mapping
+     */
+    public function iRetrieveTheIdentifiersMapping()
+    {
+        try {
+            $query = new GetIdentifiersMappingQuery();
+            $this->retrievedIdentifiersMapping = $this->getIdentifiersMappingHandler->handle($query);
+        } catch (\Exception $e) {
+            $this->thrownException = $e;
+        }
+    }
+
+    /**
+     * @Then the retrieved identifiers mapping should be empty
+     */
+    public function theRetrievedIdentifiersMappingShouldBeEmpty()
+    {
+        Assert::assertTrue($this->retrievedIdentifiersMapping->isEmpty());
+    }
+
+    /**
+     * @Then the retrieved identifiers mapping should be:
+     */
+    public function theRetrievedIdentifiersMappingShouldBe(TableNode $table)
+    {
+        Assert::assertFalse($this->retrievedIdentifiersMapping->isEmpty());
+
+        $expectedIdentifiersMapping = $this->extractIdentifiersMappingFromTable($table);
+        foreach ($expectedIdentifiersMapping as $expectedIdentifier => $expectedMappedAttribute) {
+            $mappedAttribute = $this->retrievedIdentifiersMapping->getMappedAttribute($expectedIdentifier);
+            if (null === $expectedMappedAttribute) {
+                Assert::assertNull($mappedAttribute);
+            } else {
+                Assert::assertEquals($expectedMappedAttribute, $mappedAttribute->getCode());
+            }
         }
     }
 
