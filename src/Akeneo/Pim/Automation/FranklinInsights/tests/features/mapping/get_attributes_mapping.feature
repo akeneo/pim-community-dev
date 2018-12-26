@@ -4,7 +4,7 @@ Feature: Retrieve some family attributes from Franklin
   Background:
     Given Franklin is configured with a valid token
 
-  Scenario: Successfully retrieve the attributes mapping
+  Scenario: Successfully retrieve an attributes mapping
     Given the family "router"
     When I retrieve the attributes mapping for the family "router"
     Then the retrieved attributes mapping for the family "router" should be:
@@ -12,7 +12,7 @@ Feature: Retrieve some family attributes from Franklin
       | product_weight        | Product Weight         | metric                |                    | pending |
       | color                 | Color                  | multiselect           | product color      | active  |
 
-  Scenario: Successfully retrieve the attributes mapping with unknown attribute type
+  Scenario: Successfully retrieve an attributes mapping with unknown attribute type
     Given the family "webcam"
     When I retrieve the attributes mapping for the family "webcam"
     Then the retrieved attributes mapping for the family "webcam" should be:
@@ -24,17 +24,17 @@ Feature: Retrieve some family attributes from Franklin
     When I retrieve the attributes mapping for the family "camcorders"
     Then the retrieved attributes mapping should be empty
 
-  Scenario: Fail to retrieve the attributes mapping from an unexisting family
+  Scenario: Fail to retrieve an attributes mapping from an unexisting family
     When I retrieve the attributes mapping for the family "unexisting"
     Then a non existing family message for attributes mapping should be sent
 
-  Scenario: Fail to retrieve the attributes mapping when the token is invalid
+  Scenario: Fail to retrieve an attributes mapping when the token is invalid
     Given the family "webcam"
     And Franklin is configured with an expired token
     When I retrieve the attributes mapping for the family "webcam"
     Then an authentication error message should be sent
 
-  Scenario: Fail to retrieve the attributes mapping when Franklin is down
+  Scenario: Fail to retrieve an attributes mapping when Franklin is down
     Given the family "webcam"
     And Franklin server is down
     When I retrieve the attributes mapping for the family "webcam"
