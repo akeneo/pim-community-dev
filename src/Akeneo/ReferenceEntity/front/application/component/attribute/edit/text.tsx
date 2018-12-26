@@ -145,6 +145,7 @@ const TextView = ({
             >
               <Checkbox
                 id="pim_reference_entity.attribute.edit.input.is_rich_text_editor"
+                readOnly={!rights.attribute.edit}
                 value={attribute.isRichTextEditor.booleanValue()}
                 onChange={(isrichTextEditor: boolean) =>
                   onAdditionalPropertyUpdated(
