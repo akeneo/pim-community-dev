@@ -3,28 +3,51 @@ jobs:
   build:
     machine:
       enabled: true
+      docker_layer_caching: true
     steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
       - checkout
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+                - ".git"
       - run:
           name: Copy env file
-          command: |
-            cp .env.dist .env
-            cp behat.yml.dist behat.yml
+          command: cp .env.dist .env
       - run:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs
       - run:
-            name: Setup the parameters.yml files
-            command: ./bin/docker/pim-setup.sh
+          name: Setup the parameters.yml files
+          command: ./bin/docker/pim-setup.sh
       - run:
-            name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
-            command: chmod 777 ../project -R
+          name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
+          command: chmod 777 ../project -R
       - run:
           name: Start containers
           command: docker-compose up -d
+      - restore_cache:
+          name: Restore cache - node_modules
+          keys:
+            - node-modules-v4-{{ checksum "yarn.lock" }}
+      - restore_cache:
+          name: Restore cache - composer
+          keys:
+            - composer-v4-{{ checksum "composer.lock" }}
+      - restore_cache:
+          name: Restore cache - vendor
+          keys:
+            - vendor-v4-{{ checksum "composer.lock" }}
       - run:
           name: Install dependencies
           command: ./bin/docker/pim-dependencies.sh
+      - run:
+          name: Change permissions after restoring cache
+          command: sudo chmod 777 ../project -R
       - run:
           name: Pim installation
           command: |
@@ -34,6 +57,18 @@ jobs:
       - run:
           name: Change permissions on project dir in order to archive the project into the workspace
           command: sudo chmod 777 ../project -R
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: node-modules-v4-{{ checksum "yarn.lock" }}
+      - save_cache:
+          paths:
+            - ./.composer
+          key: composer-v4-{{ checksum "composer.lock" }}
+      - save_cache:
+          paths:
+            - ./vendor
+          key: vendor-v4-{{ checksum "composer.lock" }}
       - persist_to_workspace:
           root: ~/
           paths:
@@ -42,6 +77,7 @@ jobs:
   test_phpunit:
       machine:
           enabled: true
+          docker_layer_caching: true
       parallelism: 7
       steps:
           - attach_workspace:
@@ -68,6 +104,7 @@ jobs:
   test_legacy_behat:
     machine:
       enabled: true
+      docker_layer_caching: true
     parallelism: 7
     steps:
       - attach_workspace:
