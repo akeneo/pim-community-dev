@@ -120,3 +120,10 @@ services:
             - '@__symfony__.akeneo_file_storage.file_storage.filesystem_provider'
         tags:
             - { name: fob.context_service }
+
+    akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_attribute_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Collection\CreateOrUpdateAttributeContext
+        arguments:
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+        tags:
+            - { name: fob.context_service }

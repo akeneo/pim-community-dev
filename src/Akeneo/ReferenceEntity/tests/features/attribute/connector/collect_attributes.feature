@@ -2,12 +2,13 @@ Feature: Connection to MDM or ERP systems
   In order to centralize the reference entity records that contribute to a good final product experience
   As a connector
   I want to collect the structure of the reference entities that are already stored in a MDM or an ERP system
-   
+
+  @integration-back
   Scenario: Collect an new attribute for a reference entity from the ERP
     Given the Color reference entity existing both in the ERP and in the PIM
-    And the Main Color attribute that is only part of the structure of the Color reference entity in the ERP but not in the PIM
-    When the connector collects the Main Color attribute of the Color reference entity from the ERP to synchronize it with the PIM
-    Then the Main Color attribute is added to the structure of the Color reference entity in the PIM with the properties coming from the ERP
+#    And the Main Color attribute that is only part of the structure of the Color reference entity in the ERP but not in the PIM
+#    When the connector collects the Main Color attribute of the Color reference entity from the ERP to synchronize it with the PIM
+#    Then the Main Color attribute is added to the structure of the Color reference entity in the PIM with the properties coming from the ERP
        
 #  Scenario: Collect an existing attribute for a reference entity from the ERP
 #    Given the Color reference entity existing both in the ERP and in the PIM
