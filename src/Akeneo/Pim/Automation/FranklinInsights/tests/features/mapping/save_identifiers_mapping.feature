@@ -55,10 +55,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | upc           | pim_upc        |
     Then the identifiers mapping should be saved as follows:
       | franklin_code | attribute_code |
-      | brand         |                |
-      | mpn           |                |
       | upc           | pim_upc        |
-      | asin          |                |
 
     Examples:
       | attribute_type         |
@@ -130,7 +127,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
     Given an empty identifiers mapping
     When the identifiers are mapped as follows:
       | franklin_code | attribute_code |
-      | brand         | burger         |
+      | brand         | unexisting     |
     Then the identifiers mapping should not be saved
     And a not existing identifier attribute message should be sent
 
