@@ -4,23 +4,22 @@
     "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_create_or_update",
     "query": {
       "referenceEntityIdentifier": "color",
-      "attributeIdentifier": "main_color"
+      "attributeCode": "main_color"
     },
     "body": {
-      "code":  "description",
+      "code":  "main_color",
       "labels":  {
-        "en_US":  "Description",
-        "fr_FR":  "Description"
+        "en_US":  "Main color",
+        "fr_FR":  "Couleur principale"
       },
       "type":  "text",
-      "localizable":  true,
-      "scopable":  false,
-      "is_required_for_completeness":  true,
-      "max_characters":  null,
-      "is_textarea":  true,
-      "is_rich_text_editor":  true,
-      "validation_rule":  null,
-      "validation_regexp":  null
+      "value_per_locale": true,
+      "value_per_channel": false,
+      "is_required_for_completeness": true,
+      "max_characters": 155,
+      "is_textarea": false,
+      "validation_rule":  "regular_expression",
+      "validation_regexp":  "/\\w+/"
     }
   },
   "response": {

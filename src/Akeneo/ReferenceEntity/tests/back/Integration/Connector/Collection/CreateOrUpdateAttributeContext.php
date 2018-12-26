@@ -15,12 +15,25 @@ namespace Akeneo\ReferenceEntity\Integration\Connector\Collection;
 
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateAttributeContext implements Context
 {
@@ -35,17 +48,25 @@ class CreateOrUpdateAttributeContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
     /** @var null|string */
     private $requestContract;
+
+    /** @var null|Response */
+    private $pimResponse;
 
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         OauthAuthenticatedClientFactory $clientFactory,
-        WebClientHelper $webClientHelper
+        WebClientHelper $webClientHelper,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -83,5 +104,41 @@ class CreateOrUpdateAttributeContext implements Context
             $client,
             self::REQUEST_CONTRACT_DIR . $this->requestContract
         );
+    }
+
+    /**
+     * @Then the Main Color attribute is added to the structure of the Color reference entity in the PIM with the properties coming from the ERP
+     */
+    public function theMainColorAttributeIsAddedToTheStructureOfTheColorReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'successful_main_color_reference_entity_attribute_creation.json'
+        );
+
+        $referenceEntityIdentifier = 'color';
+
+        $identifier = AttributeIdentifier::create(
+            (string) 'color',
+            (string) 'main_color',
+            md5('color_main_color')
+        );
+
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        $expectedAttribute = TextAttribute::createText(
+            $identifier,
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString('main_color'),
+            LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegularExpression::fromString('/\w+/')
+        );
+
+        Assert::assertEquals($expectedAttribute, $attribute);
     }
 }

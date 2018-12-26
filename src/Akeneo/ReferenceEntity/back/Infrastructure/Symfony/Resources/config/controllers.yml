@@ -223,13 +223,12 @@ services:
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\CreateOrUpdateAttributeAction
-    #        arguments:
-    #            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
-    #            - '@validator'
-    #            - '@akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'
-    #            - '@akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler'
-    #            - '@router'
-    #            - '@akeneo_referenceentity.infrastructure.connector.api.reference_entity_validator'
+        arguments:
+            - '@akeneo_referenceentity.application.registry.create_attribute_command_factory_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.attribute_exists'
+            - '@akeneo_referenceentity.application.attribute.create_attribute_handler'
+            - '@router'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionAction

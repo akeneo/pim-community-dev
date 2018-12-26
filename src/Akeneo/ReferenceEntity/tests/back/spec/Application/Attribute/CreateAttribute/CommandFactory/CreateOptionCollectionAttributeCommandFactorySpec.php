@@ -47,10 +47,9 @@ class CreateOptionCollectionAttributeCommandFactorySpec extends ObjectBehavior
         $command = [
             'reference_entity_identifier' => 'designer',
             'code' => 'picture',
-            // 'labels' => ['fr_FR' => 'Portrait'], // For the test purpose, this one is missing
             'order' => 1,
             'is_required' => false,
-            'value_per_channel' => false,
+            //'value_per_channel' => false, // For the test purpose, this one is missing
             'value_per_locale' => false,
         ];
 

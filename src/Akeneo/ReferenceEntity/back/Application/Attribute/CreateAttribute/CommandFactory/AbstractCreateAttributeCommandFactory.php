@@ -29,7 +29,7 @@ abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeC
 
         $command->code = $normalizedCommand['code'];
         $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'];
-        $command->labels = $normalizedCommand['labels'];
+        $command->labels = $normalizedCommand['labels'] ?? [];
         $command->order = $normalizedCommand['order'] ?? null;
         $command->isRequired = $normalizedCommand['is_required'] ?? false;
         $command->valuePerChannel = $normalizedCommand['value_per_channel'];
@@ -44,7 +44,6 @@ abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeC
     private function checkCommonProperties(array $nomalizedCommand): void
     {
         $keysToCheck = [
-            'labels',
             'code',
             'reference_entity_identifier',
             'value_per_channel',

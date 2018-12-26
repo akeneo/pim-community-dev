@@ -107,7 +107,7 @@ akeneo_reference_entities_reference_entity_attribute_rest_connector_get:
     methods: [GET]
 
 akeneo_reference_entities_reference_entity_attribute_rest_connector_create_or_update:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes/{attributeIdentifier}'
+    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes/{attributeCode}'
     defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute.create_or_update }
     methods: [PATCH]
 
