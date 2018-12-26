@@ -47,4 +47,11 @@ class CreateOrUpdateAttributeContext implements Context
 
         $this->referenceEntityRepository->create($referenceEntity);
     }
+
+    /**
+     * @Given the Main Color attribute that is only part of the structure of the Color reference entity in the ERP but not in the PIM
+     */
+    public function theMainColorAttributeThatIsOnlyPartOfTheStructureOfTheColorReferenceEntityInTheERPButNotInThePIM()
+    {
+    }
 }
