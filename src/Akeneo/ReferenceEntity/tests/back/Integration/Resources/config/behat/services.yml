@@ -125,5 +125,7 @@ services:
         class: Akeneo\ReferenceEntity\Integration\Connector\Collection\CreateOrUpdateAttributeContext
         arguments:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
         tags:
             - { name: fob.context_service }

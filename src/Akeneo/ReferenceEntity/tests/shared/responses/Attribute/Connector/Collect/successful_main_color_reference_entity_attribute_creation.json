@@ -1,0 +1,33 @@
+{
+  "request": {
+    "method": "PATCH",
+    "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_create_or_update",
+    "query": {
+      "referenceEntityIdentifier": "color",
+      "attributeIdentifier": "main_color"
+    },
+    "body": {
+      "code":  "description",
+      "labels":  {
+        "en_US":  "Description",
+        "fr_FR":  "Description"
+      },
+      "type":  "text",
+      "localizable":  true,
+      "scopable":  false,
+      "is_required_for_completeness":  true,
+      "max_characters":  null,
+      "is_textarea":  true,
+      "is_rich_text_editor":  true,
+      "validation_rule":  null,
+      "validation_regexp":  null
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": "",
+    "headers": {
+      "location": "http://localhost/api/rest/v1/reference-entities/color/attributes/main_color"
+    }
+  }
+}
