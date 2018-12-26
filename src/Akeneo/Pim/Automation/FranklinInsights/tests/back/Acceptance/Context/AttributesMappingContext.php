@@ -20,6 +20,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -45,11 +47,8 @@ final class AttributesMappingContext implements Context
     /** @var array */
     private $retrievedFamilies;
 
-    /** @var array */
+    /** @var AttributesMappingResponse */
     private $retrievedAttributesMapping;
-
-    /** @var \Exception */
-    private $thrownException;
 
     /** @var array */
     private $originalAttributesMapping;
@@ -83,8 +82,9 @@ final class AttributesMappingContext implements Context
      */
     public function aPredefinedAttributesMapping(string $familyCode, TableNode $table): void
     {
-        $requestAttributesMapping = $this->buildAttributesMappingRequest($table);
-        $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestAttributesMapping);
+        $requestedAttributesMapping = $this->extractAttributesMappingFromTable($table);
+
+        $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestedAttributesMapping);
         $this->saveAttributesMappingByFamilyHandler->handle($command);
 
         $this->originalAttributesMapping = $this->fakeClient->getAttributesMapping();
@@ -98,10 +98,10 @@ final class AttributesMappingContext implements Context
      */
     public function theAttributesAreMappedForTheFamilyAsFollows(string $familyCode, TableNode $table): void
     {
-        $requestMapping = $this->buildAttributesMappingRequest($table);
+        $requestedAttributesMapping = $this->extractAttributesMappingFromTable($table);
 
         try {
-            $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestMapping);
+            $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestedAttributesMapping);
             $this->saveAttributesMappingByFamilyHandler->handle($command);
         } catch (\Exception $e) {
             $this->thrownException = $e;
@@ -131,12 +131,16 @@ final class AttributesMappingContext implements Context
     /**
      * @When I retrieve the attributes mapping for the family :familyCode
      *
-     * @param mixed $familyCode
+     * @param string $familyCode
      */
     public function iRetrievesTheAttributesMappingForTheFamily($familyCode): void
     {
-        $query = new GetAttributesMappingByFamilyQuery($familyCode);
-        $this->retrievedAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle($query);
+        try {
+            $query = new GetAttributesMappingByFamilyQuery($familyCode);
+            $this->retrievedAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle($query);
+        } catch (\Exception $e) {
+            $this->thrownException = $e;
+        }
     }
 
     /**
@@ -162,11 +166,8 @@ final class AttributesMappingContext implements Context
      */
     public function theRetrievedAttributesMappingShouldBe(string $familyCode, TableNode $expectedAttributes): void
     {
-        $query = new GetAttributesMappingByFamilyQuery($familyCode);
-        $attributesMappingResponse = $this->getAttributesMappingByFamilyHandler->handle($query);
-
         $attributesMapping = [];
-        foreach ($attributesMappingResponse as $attribute) {
+        foreach ($this->retrievedAttributesMapping as $attribute) {
             $attributesMapping[] = [
                 'target_attribute_code' => $attribute->getTargetAttributeCode(),
                 'target_attribute_label' => $attribute->getTargetAttributeLabel(),
@@ -177,6 +178,15 @@ final class AttributesMappingContext implements Context
         }
 
         Assert::eq($this->buildExpectedAttributesMapping($expectedAttributes), $attributesMapping);
+    }
+
+    /**
+     * @Then the retrieved attributes mapping should be empty
+     */
+    public function theRetrievedAttributesMappingShouldBeEmpty()
+    {
+        Assert::null($this->thrownException);
+        Assert::count($this->retrievedAttributesMapping->getIterator(), 0);
     }
 
     /**
@@ -230,6 +240,26 @@ final class AttributesMappingContext implements Context
     }
 
     /**
+     * @Then a non existing family message for attributes mapping should be sent
+     */
+    public function aNonExistingFamilyMessageForAttributesMappingShouldBeSent()
+    {
+        Assert::isInstanceOf($this->thrownException, \InvalidArgumentException::class);
+    }
+
+    /**
+     * @Then a token invalid message for attributes mapping should be sent
+     */
+    public function aTokenInvalidMessageForAttributesMappingShouldBeSent()
+    {
+        Assert::isInstanceOf($this->thrownException, DataProviderException::class);
+        Assert::eq(
+            $this->thrownException->getMessage(),
+            DataProviderException::authenticationError()->getMessage()
+        );
+    }
+
+    /**
      * @param TableNode $expectedAttributes
      *
      * @return array|TableNode
@@ -263,11 +293,11 @@ final class AttributesMappingContext implements Context
      *
      * @return array
      */
-    private function buildAttributesMappingRequest(TableNode $table): array
+    private function extractAttributesMappingFromTable(TableNode $table): array
     {
-        $requestAttributesMapping = [];
+        $requestedAttributesMapping = [];
         foreach ($table->getColumnsHash() as $mapping) {
-            $requestAttributesMapping[$mapping['target_attribute_code']] = [
+            $requestedAttributesMapping[$mapping['target_attribute_code']] = [
                 'franklinAttribute' => [
                     'label' => 'A label',
                     'type' => 'text',
@@ -277,7 +307,7 @@ final class AttributesMappingContext implements Context
             ];
         }
 
-        return $requestAttributesMapping;
+        return $requestedAttributesMapping;
     }
 
     /**

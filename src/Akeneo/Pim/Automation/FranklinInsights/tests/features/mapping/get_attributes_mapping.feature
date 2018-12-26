@@ -25,8 +25,19 @@ Feature: Retrieve some family attributes from Franklin
     Then the retrieved attributes mapping should be empty
 
   Scenario: Fail to retrieve the attributes mapping from an unexisting family
+    When I retrieve the attributes mapping for the family "unexisting"
+    Then a non existing family message for attributes mapping should be sent
 
   Scenario: Fail to retrieve the attributes mapping when the token is invalid
+    Given the family "webcam"
+    And Franklin is configured with an expired token
+    When I retrieve the attributes mapping for the family "webcam"
+    Then a token invalid message for attributes mapping should be sent
 
   Scenario: Fail to retrieve the attributes mapping when Franklin is down
+    Given the family "webcam"
+    And Franklin server is down
+    When I retrieve the attributes mapping for the family "webcam"
+    And a data provider error message should be sent
+
 
