@@ -3,50 +3,46 @@
 namespace Specification\Akeneo\Pim\Permission\Bundle\Datagrid\Product;
 
 use Akeneo\Pim\Permission\Bundle\Datagrid\Product\RowActionsConfigurator;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProduct;
+use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProductModel;
+use Akeneo\Pim\Permission\Bundle\User\UserContext;
+use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
+use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductModel;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\Pim\Permission\Component\Attributes;
-use Prophecy\Argument;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class RowActionsConfiguratorSpec extends ObjectBehavior
 {
     function let(
         DatagridConfiguration $datagridConfiguration,
         ConfigurationRegistry $registry,
-        AuthorizationCheckerInterface $authorizationChecker,
-        IdentifiableObjectRepositoryInterface $productRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        LocaleRepositoryInterface $localeRepository,
-        TokenInterface $token,
         UserInterface $user,
-        ResultRecordInterface $record,
-        ProductInterface $product,
-        ProductModelInterface $productModel,
-        LocaleInterface $locale,
-        TokenStorageInterface $tokenStorage
+        ResultRecordInterface $productRow,
+        ResultRecordInterface $productModelRow,
+        FetchUserRightsOnProduct $fetchUserRightsOnProduct,
+        FetchUserRightsOnProductModel $fetchUserRightsOnProductModel,
+        UserContext $userContext
     ) {
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
+        $productRow->getValue('identifier')->willReturn('product_identifier');
+        $productRow->getValue('dataLocale')->willReturn('en_US');
+        $productRow->getValue('document_type')->willReturn('product');
 
-        $record->getValue('identifier')->willReturn('foo');
-        $record->getValue('dataLocale')->willReturn('en_US');
-        $record->getValue('document_type')->willReturn('product');
-        $localeRepository->findOneBy(['code' => 'en_US'])->willReturn($locale);
-        $productRepository->findOneByIdentifier('foo')->willReturn($product);
-        $productModelRepository->findOneByIdentifier('foo')->willReturn($productModel);
+        $productModelRow->getValue('identifier')->willReturn('product_model_identifier');
+        $productModelRow->getValue('dataLocale')->willReturn('en_US');
+        $productModelRow->getValue('document_type')->willReturn('product_model');
 
-        $this->beConstructedWith($registry, $authorizationChecker, $productRepository, $localeRepository, $productModelRepository);
+        $userContext->getUser()->willReturn($user);
+        $user->getId()->willReturn(1);
+
+        $this->beConstructedWith(
+            $registry,
+            $fetchUserRightsOnProduct,
+            $fetchUserRightsOnProductModel,
+            $userContext
+        );
     }
 
     function it_is_initializable()
@@ -54,133 +50,172 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $this->shouldHaveType(RowActionsConfigurator::class);
     }
 
-    function it_configures_the_grid($datagridConfiguration, $authorizationChecker)
+    function it_is_possible_for_the_user_to_view_the_product($productRow, $fetchUserRightsOnProduct)
     {
-        $authorizationChecker->isGranted(Attributes::EDIT, Argument::any())->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, Argument::any())->willReturn(true);
-
-        $this->configure($datagridConfiguration);
-    }
-
-    function it_configures_the_view_actions_for_a_row($record, $product, $authorizationChecker)
-    {
-        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, Argument::any())->willReturn(true);
-
+        $fetchUserRightsOnProduct->fetch('product_identifier', 1)->willReturn(
+            new UserRightsOnProduct('product_identifier', 1, 0, 0, 1)
+        );
         $closure = $this->getActionConfigurationClosure();
-        $closure($record)->shouldReturn(
+        $closure($productRow)->shouldReturn(
             [
                 'show' => true,
                 'edit' => false,
                 'edit_categories' => false,
                 'delete' => false,
-                'toggle_status' => false
+                'toggle_status' => false,
             ]
         );
     }
 
-    function it_configures_the_edit_actions_for_a_row($record, $product, $authorizationChecker, $locale)
+    function it_is_possible_for_the_user_to_apply_a_draft_on_product_or_to_enrich_the_product($productRow, $fetchUserRightsOnProduct)
     {
-        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale)->willReturn(true);
-
-        $closure = $this->getActionConfigurationClosure();
-        $closure($record)->shouldReturn(
-            [
-                'show' => false,
-                'edit' => true,
-                'edit_categories' => true,
-                'delete' => true,
-                'toggle_status' => true
-            ]
+        $fetchUserRightsOnProduct->fetch('product_identifier', 1)->willReturn(
+            new UserRightsOnProduct('product_identifier', 1, 1, 0, 1)
         );
-    }
-
-    function it_hides_actions_except_the_show_for_a_row_if_user_can_not_edit_the_product(
-        $record,
-        $product,
-        $authorizationChecker,
-        $locale
-    ) {
-        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale)->willReturn(false);
-
         $closure = $this->getActionConfigurationClosure();
-        $closure($record)->shouldReturn(
-            [
-                'show' => false,
-                'edit' => true,
-                'edit_categories' => true,
-                'delete' => true,
-                'toggle_status' => true
-            ]
-        );
-    }
-
-    function it_hides_the_edit_categories_and_delete_actions_if_user_does_not_own_the_product(
-        $record,
-        $product,
-        $authorizationChecker,
-        $locale
-    ) {
-        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale)->willReturn(true);
-
-        $closure = $this->getActionConfigurationClosure();
-        $closure($record)->shouldReturn(
+        $closure($productRow)->shouldReturn(
             [
                 'show' => false,
                 'edit' => true,
                 'edit_categories' => false,
                 'delete' => false,
-                'toggle_status' => false
+                'toggle_status' => false,
             ]
         );
     }
 
-    function it_shows_the_edit_categories_for_product_models (
-        $record,
-        $productModel,
-        $authorizationChecker
-    ) {
-        $record->getValue('document_type')->willReturn('product_model');
-
-        $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::OWN, $productModel)->willReturn(false);
-
-        $closure = $this->getActionConfigurationClosure();
-        $closure($record)->shouldReturn(
-            [
-                'show' => false,
-                'edit' => true,
-                'edit_categories' => false,
-                'delete' => false,
-                'toggle_status' => false
-            ]
+    function it_is_possible_for_the_user_to_categorize_the_product($productRow, $fetchUserRightsOnProduct)
+    {
+        $fetchUserRightsOnProduct->fetch('product_identifier', 1)->willReturn(
+            new UserRightsOnProduct('product_identifier', 1, 1, 1, 1)
         );
-    }
-
-    function it_shows_the_delete_action_for_product_models (
-        $record,
-        $productModel,
-        $authorizationChecker
-    ) {
-        $record->getValue('document_type')->willReturn('product_model');
-
-        $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::OWN, $productModel)->willReturn(true);
-
         $closure = $this->getActionConfigurationClosure();
-        $closure($record)->shouldReturn(
+        $closure($productRow)->shouldReturn(
             [
                 'show' => false,
                 'edit' => true,
                 'edit_categories' => true,
                 'delete' => true,
-                'toggle_status' => true
+                'toggle_status' => true,
+            ]
+        );
+    }
+
+    function it_is_possible_for_the_user_to_delete_the_product($productRow, $fetchUserRightsOnProduct)
+    {
+        $fetchUserRightsOnProduct->fetch('product_identifier', 1)->willReturn(
+            new UserRightsOnProduct('product_identifier', 1, 1, 1, 1)
+        );
+        $closure = $this->getActionConfigurationClosure();
+        $closure($productRow)->shouldReturn(
+            [
+                'show' => false,
+                'edit' => true,
+                'edit_categories' => true,
+                'delete' => true,
+                'toggle_status' => true,
+            ]
+        );
+    }
+
+    function it_is_possible_for_the_user_to_disable_or_enable_the_product($productRow, $fetchUserRightsOnProduct)
+    {
+        $fetchUserRightsOnProduct->fetch('product_identifier', 1)->willReturn(
+            new UserRightsOnProduct('product_identifier', 1, 1, 1, 1)
+        );
+        $closure = $this->getActionConfigurationClosure();
+        $closure($productRow)->shouldReturn(
+            [
+                'show' => false,
+                'edit' => true,
+                'edit_categories' => true,
+                'delete' => true,
+                'toggle_status' => true,
+            ]
+        );
+    }
+
+    function it_is_possible_for_the_user_to_view_the_product_model($productModelRow, $fetchUserRightsOnProductModel)
+    {
+        $fetchUserRightsOnProductModel->fetch('product_model_identifier', 1)->willReturn(
+            new UserRightsOnProductModel('product_model_identifier', 1, 0, 0, 1)
+        );
+        $closure = $this->getActionConfigurationClosure();
+        $closure($productModelRow)->shouldReturn(
+            [
+                'show' => true,
+                'edit' => false,
+                'edit_categories' => false,
+                'delete' => false,
+                'toggle_status' => false,
+            ]
+        );
+    }
+
+    function it_is_possible_for_the_user_to_apply_a_draft_on_product_model_or_to_enrich_the_product_model($productModelRow, $fetchUserRightsOnProductModel)
+    {
+        $fetchUserRightsOnProductModel->fetch('product_model_identifier', 1)->willReturn(
+            new UserRightsOnProductModel('product_model_identifier', 1, 1, 0, 1)
+        );
+        $closure = $this->getActionConfigurationClosure();
+        $closure($productModelRow)->shouldReturn(
+            [
+                'show' => false,
+                'edit' => true,
+                'edit_categories' => false,
+                'delete' => false,
+                'toggle_status' => false,
+            ]
+        );
+    }
+
+    function it_is_possible_for_the_user_to_categorize_the_product_model($productModelRow, $fetchUserRightsOnProductModel)
+    {
+        $fetchUserRightsOnProductModel->fetch('product_model_identifier', 1)->willReturn(
+            new UserRightsOnProductModel('product_model_identifier', 1, 1, 1, 1)
+        );
+        $closure = $this->getActionConfigurationClosure();
+        $closure($productModelRow)->shouldReturn(
+            [
+                'show' => false,
+                'edit' => true,
+                'edit_categories' => true,
+                'delete' => true,
+                'toggle_status' => true,
+            ]
+        );
+    }
+
+    function it_is_possible_for_the_user_to_delete_the_product_model($productModelRow, $fetchUserRightsOnProductModel)
+    {
+        $fetchUserRightsOnProductModel->fetch('product_model_identifier', 1)->willReturn(
+            new UserRightsOnProductModel('product_model_identifier', 1, 1, 1, 1)
+        );
+        $closure = $this->getActionConfigurationClosure();
+        $closure($productModelRow)->shouldReturn(
+            [
+                'show' => false,
+                'edit' => true,
+                'edit_categories' => true,
+                'delete' => true,
+                'toggle_status' => true,
+            ]
+        );
+    }
+
+    function it_is_possible_for_the_user_to_enable_or_disable_the_product_model($productModelRow, $fetchUserRightsOnProductModel)
+    {
+        $fetchUserRightsOnProductModel->fetch('product_model_identifier', 1)->willReturn(
+            new UserRightsOnProductModel('product_model_identifier', 1, 1, 1, 1)
+        );
+        $closure = $this->getActionConfigurationClosure();
+        $closure($productModelRow)->shouldReturn(
+            [
+                'show' => false,
+                'edit' => true,
+                'edit_categories' => true,
+                'delete' => true,
+                'toggle_status' => true,
             ]
         );
     }
