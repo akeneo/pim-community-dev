@@ -124,7 +124,6 @@ export default connect(
       rights: {
         record: {
           edit: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            securityContext.isGranted('akeneo_referenceentity_record_delete') &&
             canEditReferenceEntity(),
           delete: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
