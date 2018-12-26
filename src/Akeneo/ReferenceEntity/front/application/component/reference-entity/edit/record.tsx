@@ -155,6 +155,7 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
           breadcrumbConfiguration={breadcrumbConfiguration}
           onLocaleChanged={events.onLocaleChanged}
           onChannelChanged={events.onChannelChanged}
+          displayActions={this.props.rights.record.create || this.props.rights.record.deleteAll}
         />
         {0 !== recordCount ? (
           <Table

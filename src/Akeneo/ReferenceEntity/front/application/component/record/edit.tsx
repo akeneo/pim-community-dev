@@ -47,7 +47,6 @@ interface StateProps {
   };
   rights: {
     record: {
-      create: boolean;
       edit: boolean;
       delete: boolean;
     }
@@ -179,7 +178,9 @@ class RecordEditView extends React.Component<EditProps> {
                         <div className="AknTitleContainer-buttonsContainer">
                           <div className="user-menu">
                             <PimView
-                              className="AknTitleContainer-userMenu"
+                              className={`AknTitleContainer-userMenu ${
+                                this.props.rights.record.edit ? '' : 'AknTitleContainer--withoutMargin'
+                              }`}
                               viewName="pim-reference-entity-index-user-navigation"
                             />
                           </div>
@@ -275,8 +276,6 @@ export default connect(
       },
       rights: {
         record: {
-          create: securityContext.isGranted('akeneo_referenceentity_record_create') &&
-            canEditReferenceEntity(),
           edit: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             canEditReferenceEntity(),
           delete: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
