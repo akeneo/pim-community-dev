@@ -24,7 +24,7 @@ Feature: Subscribe a product to Franklin
       | upc           | pim_upc        |
     When I subscribe the product "product_without_family" to Franklin
     Then the product "product_without_family" should not be subscribed
-    And an invalid family message should be sent
+    And a family required message should be sent
 
   Scenario: Fail to subscribe a product that does not have any values on mapped identifiers
     Given Franklin is configured with a valid token

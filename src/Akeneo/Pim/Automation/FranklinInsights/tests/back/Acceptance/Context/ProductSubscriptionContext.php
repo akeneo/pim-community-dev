@@ -196,9 +196,9 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
-     * @Then an invalid family message should be sent
+     * @Then a family required message should be sent
      */
-    public function anInvalidFamilyMessageShouldBeSent(): void
+    public function aFamilyRequiredMessageShouldBeSent(): void
     {
         $thrownException = ExceptionContext::getThrownException();
         Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
