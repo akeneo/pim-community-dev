@@ -26,6 +26,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_referenceentity.infrastructure.persistence.repository.media_file:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\MediaFile\SqlMediaFileRepository
+        arguments:
+            - '@pim_api.repository.media_file'
+
     # Reference entities query functions
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityExists

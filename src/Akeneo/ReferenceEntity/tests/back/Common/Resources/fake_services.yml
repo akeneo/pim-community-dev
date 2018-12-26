@@ -19,6 +19,9 @@ services:
     akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityPermissionRepository
 
+    akeneo_referenceentity.infrastructure.persistence.repository.media_file:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryMediaFileRepository
+
     # Query functions
     akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_items:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityItems
