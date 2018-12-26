@@ -9,7 +9,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Elasticsearch\IndexConfiguration
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class SearchSelfAndAncestors extends AbstractPimCatalogProductModel
+class SearchSelfAndAncestorsIntegration extends AbstractPimCatalogProductModel
 {
     /**
      * Find all products and products models with Id + documents which are ancestors of this document
