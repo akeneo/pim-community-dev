@@ -55,7 +55,7 @@ Feature: Subscribe a product to Franklin
     And Franklin is configured with an expired token
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
-    And a token invalid message for subscription should be sent
+    And an authentication error message should be sent
 
   Scenario: Fail to subscribe a product when there is not enough money on Franklin account
     Given Franklin is configured with a valid token
@@ -98,7 +98,7 @@ Feature: Subscribe a product to Franklin
     And Franklin server is down
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
-    And an invalid subscription message should be sent
+    And a data provider error message should be sent
   # Improve test of thrown message
 
 #  Scenario: Fail to subscribe a product variant to Franklin

@@ -40,6 +40,7 @@ final class ProductFetchingContext implements Context
         try {
             $this->fetchProductsHandler->handle(new FetchProductsCommand());
         } catch (\Exception $e) {
+            ExceptionContext::setThrownException($e);
         }
     }
 

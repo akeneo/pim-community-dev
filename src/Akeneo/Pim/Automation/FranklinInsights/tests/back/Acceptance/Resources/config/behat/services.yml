@@ -70,7 +70,7 @@ services:
             - { name: 'fob.context_service' }
 
     akeneo_acceptance.context.franklin_insights.attributes_mapping:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Context\AttributesMappingContext'
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\AttributesMappingContext'
         arguments:
             - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.get_attributes_mapping_by_family'
             - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.update_attributes_mapping_by_family'
@@ -80,7 +80,7 @@ services:
             - { name: 'fob.context_service' }
 
     akeneo_acceptance.context.franklin_insights.attribute_options_mapping:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Context\AttributeOptionsMappingContext'
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\AttributeOptionsMappingContext'
         arguments:
             - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.get_attribute_options_mapping_by_family_and_attribute'
             - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.save_attribute_options_mapping'
@@ -103,5 +103,10 @@ services:
             - '@__symfony__.pim_catalog.repository.channel'
             - '@__symfony__.pim_catalog.updater.channel'
             - '@__symfony__.akeneo.pim.automation.franklin_insights.subscriber.channel_update'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.franklin_insights.exception:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ExceptionContext'
         tags:
             - { name: 'fob.context_service' }

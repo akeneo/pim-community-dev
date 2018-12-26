@@ -111,6 +111,7 @@ Feature: Map the PIM attributes with Franklin attributes
       | product_weight        | weight             | active  |
       | color                 | color              | active  |
     Then the attributes mapping should not be saved
+    And an authentication error message should be sent
 
   Scenario: Fails to map Franklin attributes with localizable PIM attributes
     Given the family "router"

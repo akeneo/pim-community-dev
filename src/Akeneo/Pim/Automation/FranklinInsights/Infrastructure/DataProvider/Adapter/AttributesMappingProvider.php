@@ -16,8 +16,12 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Ada
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingWebService;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 
@@ -48,7 +52,17 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
     public function getAttributesMapping(string $familyCode): AttributesMappingResponse
     {
         $this->api->setToken($this->getToken());
-        $apiResponse = $this->api->fetchByFamily($familyCode);
+
+        try {
+            $apiResponse = $this->api->fetchByFamily($familyCode);
+        } catch (FranklinServerException $e) {
+            throw DataProviderException::serverIsDown($e);
+        } catch (InvalidTokenException $e) {
+            throw DataProviderException::authenticationError($e);
+        } catch (BadRequestException $e) {
+            throw DataProviderException::badRequestError($e);
+        }
+
 
         $attributesMapping = new AttributesMappingResponse();
         foreach ($apiResponse as $attribute) {
@@ -75,7 +89,15 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
         $normalizer = new AttributesMappingNormalizer();
         $mapping = $normalizer->normalize($attributesMapping);
 
-        $this->api->save($familyCode, $mapping);
+        try {
+            $this->api->save($familyCode, $mapping);
+        } catch (FranklinServerException $e) {
+            throw DataProviderException::serverIsDown($e);
+        } catch (InvalidTokenException $e) {
+            throw DataProviderException::authenticationError($e);
+        } catch (BadRequestException $e) {
+            throw DataProviderException::badRequestError($e);
+        }
     }
 
     /**

@@ -49,9 +49,6 @@ class ProductSubscriptionContext implements Context
     /** @var UnsubscribeProductHandler */
     private $unsubscribeProductHandler;
 
-    /** @var null|\Exception */
-    private $thrownException;
-
     /** @var ProductRemoveSubscriber */
     private $productRemovalSubscriber;
 
@@ -92,7 +89,7 @@ class ProductSubscriptionContext implements Context
             $command = new SubscribeProductCommand($product->getId());
             $this->subscribeProductHandler->handle($command);
         } catch (\Exception $e) {
-            $this->thrownException = $e;
+            ExceptionContext::setThrownException($e);
         }
     }
 
@@ -110,7 +107,7 @@ class ProductSubscriptionContext implements Context
             $command = new UnsubscribeProductCommand($product->getId());
             $this->unsubscribeProductHandler->handle($command);
         } catch (\Exception $e) {
-            $this->thrownException = $e;
+            ExceptionContext::setThrownException($e);
         }
     }
 
@@ -203,10 +200,11 @@ class ProductSubscriptionContext implements Context
      */
     public function anInvalidFamilyMessageShouldBeSent(): void
     {
-        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
         Assert::eq(
             ProductSubscriptionException::familyRequired()->getMessage(),
-            $this->thrownException->getMessage()
+            $thrownException->getMessage()
         );
     }
 
@@ -215,10 +213,11 @@ class ProductSubscriptionContext implements Context
      */
     public function anInvalidValuesMessageShouldBeSent(): void
     {
-        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
         Assert::eq(
             ProductSubscriptionException::invalidMappedValues()->getMessage(),
-            $this->thrownException->getMessage()
+            $thrownException->getMessage()
         );
     }
 
@@ -227,19 +226,8 @@ class ProductSubscriptionContext implements Context
      */
     public function anAlreadySubscribedMessageShouldBeSent(): void
     {
-        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
-    }
-
-    /**
-     * @Then a not enough credit message should be sent
-     */
-    public function aNotEnoughCreditMessageShouldBeSent(): void
-    {
-        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
-        Assert::eq(
-            ProductSubscriptionException::insufficientCredits()->getMessage(),
-            $this->thrownException->getMessage()
-        );
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
     }
 
     /**
@@ -247,10 +235,11 @@ class ProductSubscriptionContext implements Context
      */
     public function anInvalidMpnAndBrandMessageShouldBeSent(): void
     {
-        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
         Assert::eq(
             ProductSubscriptionException::invalidMappedValues()->getMessage(),
-            $this->thrownException->getMessage()
+            $thrownException->getMessage()
         );
     }
 
@@ -259,10 +248,11 @@ class ProductSubscriptionContext implements Context
      */
     public function aFranklinSubscriptionErrorMessageShouldBeSent(): void
     {
-        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
         Assert::eq(
             ProductSubscriptionException::dataProviderError()->getMessage(),
-            $this->thrownException->getMessage()
+            $thrownException->getMessage()
         );
     }
 
@@ -271,19 +261,7 @@ class ProductSubscriptionContext implements Context
      */
     public function anInvalidSubscriptionMessageShouldBeSent(): void
     {
-        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
-    }
-
-    /**
-     * @Then a token invalid message for subscription should be sent
-     */
-    public function aTokenInvalidMessageForSubscriptionShouldBeSent(): void
-    {
-        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
-        Assert::eq(
-            ProductSubscriptionException::invalidToken()->getMessage(),
-            $this->thrownException->getMessage()
-        );
+        Assert::isInstanceOf(ExceptionContext::getThrownException(), ProductSubscriptionException::class);
     }
 
     /**
@@ -291,7 +269,20 @@ class ProductSubscriptionContext implements Context
      */
     public function aProductNotSubscribedMessageShouldBeSent(): void
     {
-        Assert::isInstanceOf($this->thrownException, ProductNotSubscribedException::class);
+        Assert::isInstanceOf(ExceptionContext::getThrownException(), ProductNotSubscribedException::class);
+    }
+
+    /**
+     * @Then a not enough credit message should be sent
+     */
+    public function aNotEnoughCreditMessageShouldBeSent(): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            ProductSubscriptionException::insufficientCredits()->getMessage()
+        );
     }
 
     /**

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -219,6 +220,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
      * @param RequestCollection $clientRequests
      *
      * @throws ProductSubscriptionException
+     * @throws DataProviderException
      *
      * @return ApiResponse
      */
@@ -226,12 +228,14 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     {
         try {
             return $this->api->subscribe($clientRequests);
+        } catch (FranklinServerException $e) {
+            throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
-            throw ProductSubscriptionException::invalidToken();
+            throw DataProviderException::authenticationError($e);
         } catch (InsufficientCreditsException $e) {
             throw ProductSubscriptionException::insufficientCredits();
-        } catch (BadRequestException | FranklinServerException $e) {
-            throw new ProductSubscriptionException($e->getMessage(), $e->getCode());
+        } catch (BadRequestException $e) {
+            throw DataProviderException::badRequestError($e);
         }
 
         return $clientResponse->content();

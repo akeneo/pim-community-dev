@@ -32,7 +32,7 @@ Feature: Retrieve some family attributes from Franklin
     Given the family "webcam"
     And Franklin is configured with an expired token
     When I retrieve the attributes mapping for the family "webcam"
-    Then a token invalid message for attributes mapping should be sent
+    Then an authentication error message should be sent
 
   Scenario: Fail to retrieve the attributes mapping when Franklin is down
     Given the family "webcam"

@@ -17,9 +17,11 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Ab
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -27,12 +29,7 @@ use GuzzleHttp\Exception\ServerException;
 class AttributesMappingWebService extends AbstractApi implements AuthenticatedApiInterface
 {
     /**
-     * @param string $familyCode
-     *
-     * @throws BadRequestException
-     * @throws FranklinServerException
-     *
-     * @return AttributesMapping
+     * {@inheritdoc}
      */
     public function fetchByFamily(string $familyCode): AttributesMapping
     {
@@ -58,6 +55,10 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
                 )
             );
         } catch (ClientException $e) {
+            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+                throw new InvalidTokenException('The Franklin token is missing or invalid');
+            }
+
             throw new BadRequestException(sprintf(
                 'Something went wrong when fetching the family attributes of family "%s" : %s',
                 $familyCode,
@@ -67,15 +68,34 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
     }
 
     /**
-     * @param string $familyCode
-     * @param array $mapping
+     * {@inheritdoc}
      */
     public function save(string $familyCode, array $mapping): void
     {
         $route = $this->uriGenerator->generate(sprintf('/api/mapping/%s/attributes', $familyCode));
 
-        $this->httpClient->request('PUT', $route, [
-            'form_params' => $mapping,
-        ]);
+        try {
+            $this->httpClient->request('PUT', $route, [
+                'form_params' => $mapping,
+            ]);
+        } catch (ServerException $e) {
+            throw new FranklinServerException(
+                sprintf(
+                    'Something went wrong on Franklin side when fetching the family attributes of family "%s" : %s',
+                    $familyCode,
+                    $e->getMessage()
+                )
+            );
+        } catch (ClientException $e) {
+            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+                throw new InvalidTokenException('The Franklin token is missing or invalid');
+            }
+
+            throw new BadRequestException(sprintf(
+                'Something went wrong when fetching the family attributes of family "%s" : %s',
+                $familyCode,
+                $e->getMessage()
+            ));
+        }
     }
 }

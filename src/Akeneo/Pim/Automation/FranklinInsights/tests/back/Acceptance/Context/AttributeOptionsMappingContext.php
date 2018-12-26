@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Context;
+namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributeOptionsMappingCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributeOptionsMappingHandler;
@@ -25,6 +25,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ExceptionContext;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -51,9 +52,6 @@ class AttributeOptionsMappingContext implements Context
 
     /** @var FakeClient */
     private $fakeClient;
-
-    /** @var \Exception */
-    private $thrownException;
 
     /** @var array */
     private $originalAttributeOptionsMapping;
@@ -146,7 +144,7 @@ class AttributeOptionsMappingContext implements Context
             );
             $this->saveAttributeOptionsMappingHandler->handle($command);
         } catch (\Exception $e) {
-            $this->thrownException = $e;
+            ExceptionContext::setThrownException($e);
         }
     }
 
@@ -171,7 +169,7 @@ class AttributeOptionsMappingContext implements Context
             );
             $this->saveAttributeOptionsMappingHandler->handle($command);
         } catch (\Exception $e) {
-            $this->thrownException = $e;
+            ExceptionContext::setThrownException($e);
         }
     }
 
@@ -236,7 +234,7 @@ class AttributeOptionsMappingContext implements Context
         $clientAttributeOptionsMapping = $this->fakeClient->getOptionsMapping();
 
         Assert::isEmpty($clientAttributeOptionsMapping);
-        Assert::isInstanceOf($this->thrownException, \Exception::class);
+        Assert::isInstanceOf(ExceptionContext::getThrownException(), \Exception::class);
     }
 
     /**

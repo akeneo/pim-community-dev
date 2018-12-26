@@ -257,6 +257,7 @@ acceptance:
                 - akeneo_acceptance.context.franklin_insights.attributes_mapping
                 - akeneo_acceptance.context.franklin_insights.attribute_options_mapping
                 - akeneo_acceptance.context.franklin_insights.channel
+                - akeneo_acceptance.context.franklin_insights.exception
             filters:
                 tags: '@acceptance-back'
         platform:

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Context;
+namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
@@ -21,8 +21,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamil
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ExceptionContext;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -104,7 +104,7 @@ final class AttributesMappingContext implements Context
             $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestedAttributesMapping);
             $this->saveAttributesMappingByFamilyHandler->handle($command);
         } catch (\Exception $e) {
-            $this->thrownException = $e;
+            ExceptionContext::setThrownException($e);
         }
     }
 
@@ -133,13 +133,13 @@ final class AttributesMappingContext implements Context
      *
      * @param string $familyCode
      */
-    public function iRetrievesTheAttributesMappingForTheFamily($familyCode): void
+    public function iRetrieveTheAttributesMappingForTheFamily($familyCode): void
     {
         try {
             $query = new GetAttributesMappingByFamilyQuery($familyCode);
             $this->retrievedAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle($query);
         } catch (\Exception $e) {
-            $this->thrownException = $e;
+            ExceptionContext::setThrownException($e);
         }
     }
 
@@ -154,7 +154,7 @@ final class AttributesMappingContext implements Context
             $command = new SaveAttributesMappingByFamilyCommand($familyCode, []);
             $this->saveAttributesMappingByFamilyHandler->handle($command);
         } catch (\Exception $e) {
-            $this->thrownException = $e;
+            ExceptionContext::setThrownException($e);
         }
     }
 
@@ -185,7 +185,7 @@ final class AttributesMappingContext implements Context
      */
     public function theRetrievedAttributesMappingShouldBeEmpty()
     {
-        Assert::null($this->thrownException);
+        Assert::null(ExceptionContext::getThrownException());
         Assert::count($this->retrievedAttributesMapping->getIterator(), 0);
     }
 
@@ -236,7 +236,7 @@ final class AttributesMappingContext implements Context
             Assert::isEmpty($clientMapping);
         }
 
-        Assert::isInstanceOf($this->thrownException, \Exception::class);
+        Assert::isInstanceOf(ExceptionContext::getThrownException(), \Exception::class);
     }
 
     /**
@@ -244,19 +244,7 @@ final class AttributesMappingContext implements Context
      */
     public function aNonExistingFamilyMessageForAttributesMappingShouldBeSent()
     {
-        Assert::isInstanceOf($this->thrownException, \InvalidArgumentException::class);
-    }
-
-    /**
-     * @Then a token invalid message for attributes mapping should be sent
-     */
-    public function aTokenInvalidMessageForAttributesMappingShouldBeSent()
-    {
-        Assert::isInstanceOf($this->thrownException, DataProviderException::class);
-        Assert::eq(
-            $this->thrownException->getMessage(),
-            DataProviderException::authenticationError()->getMessage()
-        );
+        Assert::isInstanceOf(ExceptionContext::getThrownException(), \InvalidArgumentException::class);
     }
 
     /**

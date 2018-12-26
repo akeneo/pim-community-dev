@@ -22,6 +22,7 @@ final class ProductSubscriptionException extends \Exception
     private const CONSTRAINT_KEY = 'akeneo_franklin_insights.entity.product_subscription.constraint.%s';
 
     /**
+     * @deprecated
      * @return ProductSubscriptionException
      */
     public static function invalidToken(): ProductSubscriptionException
@@ -38,6 +39,7 @@ final class ProductSubscriptionException extends \Exception
     }
 
     /**
+     * @deprecated
      * @return ProductSubscriptionException
      */
     public static function invalidIdentifiersMapping(): ProductSubscriptionException
@@ -54,6 +56,7 @@ final class ProductSubscriptionException extends \Exception
     }
 
     /**
+     * @deprecated
      * @return ProductSubscriptionException
      */
     public static function invalidMappedValues(): ProductSubscriptionException
@@ -62,6 +65,7 @@ final class ProductSubscriptionException extends \Exception
     }
 
     /**
+     * @deprecated
      * @return ProductSubscriptionException
      */
     public static function dataProviderError(): ProductSubscriptionException
