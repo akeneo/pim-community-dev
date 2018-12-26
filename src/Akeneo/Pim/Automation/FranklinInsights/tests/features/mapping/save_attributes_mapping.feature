@@ -48,14 +48,16 @@ Feature: Map the PIM attributes with Franklin attributes
       | target_attribute_code | pim_attribute_code | status  |
       | product_weight        | weight             | active  |
     Then the attributes mapping should not be saved
+    And an unknown family message should be sent
 
-  Scenario: Fails to save the attributes mapping if one on the mapped attribute does not exist
+  Scenario: Fails to save the attributes mapping if an attribute does not exist
     Given the family "router"
     And Franklin is configured with a valid token
     When the attributes are mapped for the family "router" as follows:
       | target_attribute_code | pim_attribute_code | status  |
       | color                 | unknown_attribute  | active   |
     Then the attributes mapping should not be saved
+    And an unknown attribute message should be sent
 
   Scenario Outline: Fails to save the attributes mapping if an attribute type is invalid
     Given the family "router"
@@ -67,6 +69,7 @@ Feature: Map the PIM attributes with Franklin attributes
       | target_attribute_code | pim_attribute_code | status  |
       | color                 | invalid_type_attr  | active  |
     Then the attributes mapping should not be saved
+    #TODO: Add assertion on message
 
   Examples:
     | attribute_type                  |
@@ -92,6 +95,7 @@ Feature: Map the PIM attributes with Franklin attributes
       | product_weight        | weight             | active  |
       | color                 | color              | active  |
     Then the attributes mapping should not be saved
+    #TODO: Add assertion on message
 
   Scenario: Fails to udate the attributes mapping when Franklin is down
     Given the family "router"
@@ -102,6 +106,7 @@ Feature: Map the PIM attributes with Franklin attributes
       | product_weight        | weight             | active  |
       | color                 | color              | active  |
     Then the attributes mapping should not be saved
+    #TODO: Add assertion on message
 
   Scenario: Fails to udate the attributes mapping when the token is expired
     Given the family "router"
@@ -123,6 +128,7 @@ Feature: Map the PIM attributes with Franklin attributes
       | target_attribute_code | pim_attribute_code | status  |
       | product_weight        | localizable_attr   | active  |
     Then the attributes mapping should not be saved
+    #TODO: Add assertion message
 
   Scenario: Fails to map Franklin attributes with scopable PIM attributes
     Given the family "router"
@@ -134,6 +140,7 @@ Feature: Map the PIM attributes with Franklin attributes
       | target_attribute_code | pim_attribute_code | status  |
       | product_weight        | scopable_attr      | active  |
     Then the attributes mapping should not be saved
+    #TODO: Add assertion message
 
   Scenario: Fails to map Franklin attributes with locale specific PIM attributes
     Given the family "router"
@@ -144,3 +151,4 @@ Feature: Map the PIM attributes with Franklin attributes
       | target_attribute_code | pim_attribute_code | status  |
       | product_weight        | pim_weight         | active  |
     Then the attributes mapping should not be saved
+    #TODO: Add assertion message

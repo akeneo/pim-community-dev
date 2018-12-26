@@ -26,7 +26,7 @@ Feature: Retrieve some family attributes from Franklin
 
   Scenario: Fail to retrieve an attributes mapping from an unexisting family
     When I retrieve the attributes mapping for the family "unexisting"
-    Then a non existing family message for attributes mapping should be sent
+    Then an unknown family message should be sent
 
   Scenario: Fail to retrieve an attributes mapping when the token is invalid
     Given the family "webcam"

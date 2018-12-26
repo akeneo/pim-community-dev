@@ -37,15 +37,13 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
 
         try {
             $response = $this->httpClient->request('GET', $route);
+            $content = json_decode($response->getBody()->getContents(), true);
 
-            $responseContent = $response->getBody()->getContents();
-            $content = json_decode($responseContent, true);
-            if (!array_key_exists('mapping', $content)) {
-                throw new FranklinServerException('No "mapping" key found');
+            if (null === $content || !array_key_exists('mapping', $content)) {
+                throw new FranklinServerException('Response data incorrect! No "mapping" key found');
             }
-            $attributes = $content['mapping'];
 
-            return new AttributesMapping($attributes);
+            return new AttributesMapping($content['mapping']);
         } catch (ServerException | FranklinServerException $e) {
             throw new FranklinServerException(
                 sprintf(
@@ -81,7 +79,7 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
         } catch (ServerException $e) {
             throw new FranklinServerException(
                 sprintf(
-                    'Something went wrong on Franklin side when fetching the family attributes of family "%s" : %s',
+                    'Something went wrong on Franklin side when fetching the attributes mapping of family "%s" : %s',
                     $familyCode,
                     $e->getMessage()
                 )
@@ -92,7 +90,7 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
             }
 
             throw new BadRequestException(sprintf(
-                'Something went wrong when fetching the family attributes of family "%s" : %s',
+                'Something went wrong when fetching the attributes mapping of family "%s" : %s',
                 $familyCode,
                 $e->getMessage()
             ));

@@ -240,14 +240,6 @@ final class AttributesMappingContext implements Context
     }
 
     /**
-     * @Then a non existing family message for attributes mapping should be sent
-     */
-    public function aNonExistingFamilyMessageForAttributesMappingShouldBeSent()
-    {
-        Assert::isInstanceOf(ExceptionContext::getThrownException(), \InvalidArgumentException::class);
-    }
-
-    /**
      * @param TableNode $expectedAttributes
      *
      * @return array|TableNode
