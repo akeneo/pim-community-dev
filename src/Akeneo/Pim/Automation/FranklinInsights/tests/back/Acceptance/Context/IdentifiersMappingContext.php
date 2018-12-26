@@ -150,6 +150,7 @@ class IdentifiersMappingContext implements Context
      */
     public function theRetrievedIdentifiersMappingShouldBeEmpty()
     {
+        Assert::assertNull($this->thrownException);
         Assert::assertTrue($this->retrievedIdentifiersMapping->isEmpty());
     }
 
@@ -158,6 +159,7 @@ class IdentifiersMappingContext implements Context
      */
     public function theRetrievedIdentifiersMappingShouldBe(TableNode $table)
     {
+        Assert::assertNull($this->thrownException);
         Assert::assertFalse($this->retrievedIdentifiersMapping->isEmpty());
 
         $expectedIdentifiersMapping = $this->extractIdentifiersMappingFromTable($table);
