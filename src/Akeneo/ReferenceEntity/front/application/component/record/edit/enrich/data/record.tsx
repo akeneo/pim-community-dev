@@ -13,7 +13,7 @@ const View = ({
   onChange,
   channel,
   locale,
-  rights
+  rights,
 }: {
   value: Value;
   channel: ChannelReference;
@@ -23,7 +23,7 @@ const View = ({
     record: {
       edit: boolean;
       delete: boolean;
-    }
+    };
   };
 }) => {
   if (!(value.data instanceof RecordData)) {

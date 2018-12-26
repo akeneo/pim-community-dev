@@ -23,7 +23,7 @@ const ActionRow = memo(
       record: {
         edit: boolean;
         delete: boolean;
-      }
+      };
     };
   } & {
     onRedirectToRecord: (record: NormalizedRecord) => void;
@@ -49,9 +49,9 @@ const ActionRow = memo(
         : '';
 
     const label = getLabel(record.labels, locale, record.code);
-    const accesButtonClassName = (rights.record.edit) ?
-      "AknIconButton AknIconButton--small AknIconButton--edit AknButtonList-item":
-      "AknIconButton AknIconButton--small AknIconButton--view AknButtonList-item";
+    const accesButtonClassName = rights.record.edit
+      ? 'AknIconButton AknIconButton--small AknIconButton--edit AknButtonList-item'
+      : 'AknIconButton AknIconButton--small AknIconButton--view AknButtonList-item';
 
     return (
       <tr
@@ -127,7 +127,7 @@ const ActionRows = memo(
       record: {
         edit: boolean;
         delete: boolean;
-      }
+      };
     };
   }) => {
     if (placeholder) {

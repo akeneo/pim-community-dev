@@ -38,7 +38,7 @@ interface TableState {
       edit: boolean;
       deleteAll: boolean;
       delete: boolean;
-    }
+    };
   };
 }
 

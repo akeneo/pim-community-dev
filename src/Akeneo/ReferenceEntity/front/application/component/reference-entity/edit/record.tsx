@@ -56,7 +56,7 @@ interface StateProps {
       edit: boolean;
       deleteAll: boolean;
       delete: boolean;
-    }
+    };
   };
   confirmDelete: {
     isActive: boolean;
@@ -250,17 +250,17 @@ export default connect(
       recordCount: state.recordCount,
       rights: {
         record: {
-          create: securityContext.isGranted('akeneo_referenceentity_record_create') &&
-            canEditReferenceEntity(),
-          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            canEditReferenceEntity(),
-          deleteAll: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+          create: securityContext.isGranted('akeneo_referenceentity_record_create') && canEditReferenceEntity(),
+          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') && canEditReferenceEntity(),
+          deleteAll:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_records_delete_all') &&
             canEditReferenceEntity(),
-          delete: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+          delete:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
             canEditReferenceEntity(),
-        }
+        },
       },
       confirmDelete,
     };

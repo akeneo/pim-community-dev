@@ -49,7 +49,7 @@ interface StateProps {
     record: {
       edit: boolean;
       delete: boolean;
-    }
+    };
   };
   record: NormalizedRecord;
   structure: {
@@ -188,7 +188,10 @@ class RecordEditView extends React.Component<EditProps> {
                             {this.getSecondaryActions(this.props.rights.record.delete)}
                             {this.props.rights.record.edit ? (
                               <div className="AknTitleContainer-rightButton">
-                                <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
+                                <button
+                                  className="AknButton AknButton--apply"
+                                  onClick={this.props.events.onSaveEditForm}
+                                >
                                   {__('pim_reference_entity.record.button.save')}
                                 </button>
                               </div>
@@ -276,12 +279,12 @@ export default connect(
       },
       rights: {
         record: {
-          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            canEditReferenceEntity(),
-          delete: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') && canEditReferenceEntity(),
+          delete:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
             canEditReferenceEntity(),
-        }
+        },
       },
       confirmDelete,
     };

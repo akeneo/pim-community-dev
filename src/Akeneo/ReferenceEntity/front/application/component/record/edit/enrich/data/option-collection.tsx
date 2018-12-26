@@ -9,7 +9,12 @@ import OptionCollectionData, {
 import {OptionCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option-collection';
 import __ from 'akeneoreferenceentity/tools/translator';
 
-const View = ({value, onChange, locale, rights}: {
+const View = ({
+  value,
+  onChange,
+  locale,
+  rights,
+}: {
   value: Value;
   locale: LocaleReference;
   onChange: (value: Value) => void;
@@ -17,7 +22,7 @@ const View = ({value, onChange, locale, rights}: {
     record: {
       edit: boolean;
       delete: boolean;
-    }
+    };
   };
 }) => {
   if (!(value.data instanceof OptionCollectionData)) {

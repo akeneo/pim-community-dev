@@ -23,7 +23,7 @@ const View = ({
     record: {
       edit: boolean;
       delete: boolean;
-    }
+    };
   };
 }) => {
   if (!(value.data instanceof RecordCollectionData)) {

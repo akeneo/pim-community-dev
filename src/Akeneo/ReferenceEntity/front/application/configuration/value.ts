@@ -16,7 +16,7 @@ export type ViewGenerator = React.SFC<{
     record: {
       edit: boolean;
       delete: boolean;
-    }
+    };
   };
 }>;
 export type CellView = React.SFC<{value: NormalizedValue}>;

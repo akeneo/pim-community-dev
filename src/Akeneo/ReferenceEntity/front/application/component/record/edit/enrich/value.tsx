@@ -20,7 +20,7 @@ export default (
     record: {
       edit: boolean;
       delete: boolean;
-    }
+    };
   }
 ) => {
   const visibleValues = record

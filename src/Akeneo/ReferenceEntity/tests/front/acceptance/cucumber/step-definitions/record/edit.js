@@ -347,7 +347,9 @@ module.exports = async function(cucumber) {
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    const isDisabledSelectField = await enrich.isDisabledSelectField('pim_reference_entity.record.enrich.option_collection');
+    const isDisabledSelectField = await enrich.isDisabledSelectField(
+      'pim_reference_entity.record.enrich.option_collection'
+    );
 
     assert.strictEqual(isDisabledSelectField, true);
   });
@@ -357,7 +359,9 @@ module.exports = async function(cucumber) {
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    const isDisabledRecordSelectField = await enrich.isDisabledRecordSelectField('pim_reference_entity.record.enrich.linked_brand');
+    const isDisabledRecordSelectField = await enrich.isDisabledRecordSelectField(
+      'pim_reference_entity.record.enrich.linked_brand'
+    );
 
     assert.strictEqual(isDisabledRecordSelectField, true);
   });
@@ -367,7 +371,9 @@ module.exports = async function(cucumber) {
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    const isDisabledRecordSelectField = await enrich.isDisabledRecordSelectField('pim_reference_entity.record.enrich.linked_cities');
+    const isDisabledRecordSelectField = await enrich.isDisabledRecordSelectField(
+      'pim_reference_entity.record.enrich.linked_cities'
+    );
 
     assert.strictEqual(isDisabledRecordSelectField, true);
   });

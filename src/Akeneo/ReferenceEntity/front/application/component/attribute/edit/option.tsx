@@ -436,7 +436,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
                 >
                   {__('pim_reference_entity.attribute.create.confirm')}
                 </button>
-              ) : null }
+              ) : null}
               <div
                 title={__('pim_reference_entity.attribute.create.cancel')}
                 className="AknFullPage-cancel cancel"
@@ -445,8 +445,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
                 onKeyPress={event => {
                   if (Key.Space === event.key) this.cancelManageOptions();
                 }}
-              >
-              </div>
+              />
             </div>
           </div>
         ) : null}

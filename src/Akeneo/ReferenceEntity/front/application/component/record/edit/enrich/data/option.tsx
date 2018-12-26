@@ -7,7 +7,12 @@ import OptionData, {denormalize as denormalizeOptionData} from 'akeneoreferencee
 import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
 import __ from 'akeneoreferenceentity/tools/translator';
 
-const View = ({value, onChange, locale, rights}: {
+const View = ({
+  value,
+  onChange,
+  locale,
+  rights,
+}: {
   value: Value;
   locale: LocaleReference;
   onChange: (value: Value) => void;
@@ -15,7 +20,7 @@ const View = ({value, onChange, locale, rights}: {
     record: {
       edit: boolean;
       delete: boolean;
-    }
+    };
   };
 }) => {
   if (!(value.data instanceof OptionData)) {

@@ -93,7 +93,10 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                   </div>
                   <div className="AknFieldContainer" data-code="label">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.record.create.input.label">
+                      <label
+                        className="AknFieldContainer-label"
+                        htmlFor="pim_reference_entity.record.create.input.label"
+                      >
                         {__('pim_reference_entity.record.create.input.label')}
                       </label>
                     </div>
@@ -122,7 +125,10 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                   </div>
                   <div className="AknFieldContainer" data-code="code">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.record.create.input.code">
+                      <label
+                        className="AknFieldContainer-label"
+                        htmlFor="pim_reference_entity.record.create.input.code"
+                      >
                         {__('pim_reference_entity.record.create.input.code')}
                       </label>
                     </div>
@@ -172,8 +178,7 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
           title="{__('pim_reference_entity.record.create.cancel')}"
           className="AknFullPage-cancel cancel"
           onClick={this.props.events.onCancel}
-        >
-        </div>
+        />
       </div>
     );
   }

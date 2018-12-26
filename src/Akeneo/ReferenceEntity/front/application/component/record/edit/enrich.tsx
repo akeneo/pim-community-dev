@@ -27,7 +27,7 @@ interface StateProps {
     record: {
       edit: boolean;
       delete: boolean;
-    }
+    };
   };
 }
 
@@ -123,14 +123,14 @@ export default connect(
       },
       rights: {
         record: {
-          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            canEditReferenceEntity(),
-          delete: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') && canEditReferenceEntity(),
+          delete:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
             canEditReferenceEntity(),
-        }
-      }
-  };
+        },
+      },
+    };
   },
   (dispatch: any): DispatchProps => {
     return {

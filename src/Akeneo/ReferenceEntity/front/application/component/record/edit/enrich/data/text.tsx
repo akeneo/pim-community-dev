@@ -7,7 +7,12 @@ import {ConcreteTextAttribute} from 'akeneoreferenceentity/domain/model/attribut
 import RichTextEditor from 'akeneoreferenceentity/application/component/app/rich-text-editor';
 import Key from 'akeneoreferenceentity/tools/key';
 
-const View = ({value, onChange, onSubmit, rights}: {
+const View = ({
+  value,
+  onChange,
+  onSubmit,
+  rights,
+}: {
   value: Value;
   onChange: (value: Value) => void;
   onSubmit: () => void;
@@ -15,7 +20,7 @@ const View = ({value, onChange, onSubmit, rights}: {
     record: {
       edit: boolean;
       delete: boolean;
-    }
+    };
   };
 }) => {
   if (!(value.data instanceof TextData && value.attribute instanceof ConcreteTextAttribute)) {
@@ -37,11 +42,7 @@ const View = ({value, onChange, onSubmit, rights}: {
     <React.Fragment>
       {value.attribute.isTextarea.booleanValue() ? (
         value.attribute.isRichTextEditor.booleanValue() ? (
-          <RichTextEditor
-            value={value.data.stringValue()}
-            onChange={onValueChange}
-            readOnly={!rights.record.edit}
-          />
+          <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} readOnly={!rights.record.edit} />
         ) : (
           <textarea
             id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
