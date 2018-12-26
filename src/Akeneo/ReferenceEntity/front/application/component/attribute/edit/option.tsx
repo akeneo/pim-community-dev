@@ -27,7 +27,6 @@ import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/
 import Close from 'akeneoreferenceentity/application/component/app/icon/close';
 import Flag from 'akeneoreferenceentity/tools/component/flag';
 import {NormalizedReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import {getTextInputClassName} from 'akeneoreferenceentity/tools/css-tools';
 
 const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) => {
   return (
@@ -132,6 +131,9 @@ const optionRow = ({
   onFocusPreviousField: (index: number, field: Field) => void;
 }) => {
   const displayDeleteRowButton: boolean = !isLastRow && editMode;
+  const inputTextClassName = `AknTextField AknTextField--light 
+    ${!editMode ? 'AknTextField--disabled' : ''} 
+  `;
 
   return (
     <React.Fragment key={index}>
@@ -148,7 +150,7 @@ const optionRow = ({
                       : ''
                   }
                   type="text"
-                  className={getTextInputClassName(editMode)}
+                  className={inputTextClassName}
                   id={`pim_reference_entity.attribute.edit.input.${code}_${index}.label`}
                   name="label"
                   value={undefined === label ? '' : label}

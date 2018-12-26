@@ -14,7 +14,6 @@ import {IsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text
 import {MaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
 import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 import Key from 'akeneoreferenceentity/tools/key';
-import {getTextInputClassName} from 'akeneoreferenceentity/tools/css-tools';
 
 const AttributeValidationRuleItemView = ({
   isOpen,
@@ -74,6 +73,10 @@ const TextView = ({
     };
   };
 }) => {
+  const inputTextClassName = `AknTextField AknTextField--light 
+    ${!rights.attribute.edit ? 'AknTextField--disabled' : ''} 
+  `;
+
   return (
     <React.Fragment>
       <div className="AknFieldContainer" data-code="maxLength">
@@ -85,7 +88,7 @@ const TextView = ({
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
-            className={getTextInputClassName(rights.attribute.edit)}
+            className={inputTextClassName}
             id="pim_reference_entity.attribute.edit.input.max_length"
             name="max_length"
             readOnly={!rights.attribute.edit}
@@ -208,7 +211,7 @@ const TextView = ({
             <div className="AknFieldContainer-inputContainer">
               <input
                 type="text"
-                className={getTextInputClassName(rights.attribute.edit)}
+                className={inputTextClassName}
                 id="pim_reference_entity.attribute.edit.input.regular_expression"
                 name="regular_expression"
                 placeholder="/[a-z]+[0-9]*/"

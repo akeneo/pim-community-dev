@@ -10,7 +10,6 @@ import {
 } from 'akeneoreferenceentity/domain/model/attribute/type/image/allowed-extensions';
 import {MaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
 import Key from 'akeneoreferenceentity/tools/key';
-import {getTextInputClassName} from 'akeneoreferenceentity/tools/css-tools';
 
 const ImageView = ({
   attribute,
@@ -31,6 +30,10 @@ const ImageView = ({
     };
   };
 }) => {
+  const inputTextClassName = `AknTextField AknTextField--light 
+    ${!rights.attribute.edit ? 'AknTextField--disabled' : ''} 
+  `;
+
   return (
     <React.Fragment>
       <div className="AknFieldContainer" data-code="maxFileSize">
@@ -42,7 +45,7 @@ const ImageView = ({
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
-            className={getTextInputClassName(rights.attribute.edit)}
+            className={inputTextClassName}
             id="pim_reference_entity.attribute.edit.input.max_file_size"
             name="max_file_size"
             value={attribute.maxFileSize.stringValue()}
