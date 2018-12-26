@@ -1,0 +1,93 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_reference_entities_records_rest_connector_create_or_update",
+        "query": {
+            "referenceEntityIdentifier": "brand"
+        },
+        "body": [
+            {
+                "code": "kartell",
+                "labels": {
+                    "en_US": "Kartell updated english label",
+                    "fr_FR": "Kartell updated french label"
+                },
+                "values": {
+                    "name": [
+                        {
+                            "channel": null,
+                            "locale": "en_US",
+                            "data": "Kartell updated english name"
+                        },
+                        {
+                            "channel": null,
+                            "locale": "fr_FR",
+                            "data": null
+                        }
+                    ],
+                    "description": [
+                        {
+                            "locale": "en_US",
+                            "channel": "ecommerce",
+                            "data": "Kartell english description"
+                        }
+                    ]
+                }
+            },
+            {
+                "code": "lexon",
+                "labels": {
+                    "en_US": "Lexon updated english label"
+                },
+                "values": {
+                    "name": [
+                        {
+                            "channel": null,
+                            "locale": "en_US",
+                            "data": "Updated Lexon english name"
+                        }
+                    ],
+                    "description": [
+                        {
+                            "locale": "en_US",
+                            "channel": "ecommerce",
+                            "data": null
+                        }
+                    ]
+                }
+            },
+            {
+                "code": "fatboy",
+                "labels": {
+                    "en_US": "Fatboy label"
+                },
+                "values": {
+                    "name": [
+                        {
+                            "channel": null,
+                            "locale": "en_US",
+                            "data": "Fatboy name"
+                        }
+                    ]
+                }
+            }
+       ]
+    },
+    "response": {
+        "status": 200,
+        "body": [
+            {
+                "code": "kartell",
+                "status_code": 204
+            },
+            {
+                "code": "lexon",
+                "status_code": 204
+            },
+            {
+                "code": "fatboy",
+                "status_code": 201
+            }
+        ]
+    }
+}

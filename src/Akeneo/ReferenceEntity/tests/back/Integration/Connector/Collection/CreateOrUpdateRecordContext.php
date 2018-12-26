@@ -182,39 +182,11 @@ class CreateOrUpdateRecordContext implements Context
         $this->loadBrandReferenceEntity();
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
+        $this->loadBrandKartellRecord();
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
-
-        $mainImageInfo = new FileInfo();
-        $mainImageInfo
-            ->setOriginalFilename('kartell.jpg')
-            ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
-
-        $record = Record::create(
-            RecordIdentifier::fromString('brand_kartell_fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
-            RecordCode::fromString('kartell'),
-            ['en_US' => 'Kartell English label'],
-            Image::fromFileInfo($mainImageInfo),
-            ValueCollection::fromValues([
-                Value::create(
-                    AttributeIdentifier::fromString('name_brand_fingerprint'),
-                    ChannelReference::noReference(),
-                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-                    TextData::fromString('Kartell english name')
-                ),
-                Value::create(
-                    AttributeIdentifier::fromString('name_brand_fingerprint'),
-                    ChannelReference::noReference(),
-                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-                    TextData::fromString('Kartell french name')
-                )
-            ])
-        );
-
-        $this->recordRepository->create($record);
     }
 
     /**
@@ -315,6 +287,133 @@ class CreateOrUpdateRecordContext implements Context
         );
     }
 
+    /**
+     * @Given some records of the Brand reference entity existing in the ERP but not in the PIM
+     */
+    public function someRecordsOfTheBrandReferenceEntityExistingInTheErpButNotInThePim()
+    {
+        $this->loadBrandReferenceEntity();
+        $this->loadDescriptionAttribute();
+        $this->loadNameAttribute();
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+    }
+
+    /**
+     * @Given some records of the Brand reference entity existing in the ERP and in the PIM but with different information
+     */
+    public function someRecordsOfTheBrandReferenceEntityExistingInTheErpAndInThePimButWithDifferentInformation()
+    {
+        $this->loadBrandKartellRecord();
+        $this->loadBrandLexonRecord();
+    }
+
+    /**
+     * @When the connector collects these records from the ERP to synchronize them with the PIM
+     */
+    public function theConnectorCollectsTheseRecordsFromTheErpToSynchronizeThemWithThePim()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_records_synchronization.json'
+        );
+    }
+
+    /**
+     * @Then the records that existed only in the ERP are correctly created in the PIM
+     */
+    public function theRecordsThatExistedOnlyInTheErpAreCorrectlyCreatedInThePim()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_records_synchronization.json'
+        );
+
+        $fatboyRecord = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('fatboy')
+        );
+
+        $expectedFatboyRecord = Record::create(
+            $fatboyRecord->getIdentifier(),
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('fatboy'),
+            ['en_US' => 'Fatboy label'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Fatboy name')
+                )
+            ])
+        );
+
+        \PHPUnit\Framework\Assert::assertEquals($expectedFatboyRecord, $fatboyRecord);
+    }
+
+    /**
+     * @Then the records existing both in the ERP and the PIM are correctly synchronized in the PIM with the information from the ERP
+     */
+    public function theRecordsExistingBothInTheErpAndThePimAreCorrectlySynchronizedInThePimWithTheInformationFromTheErp()
+    {
+        $expectedKartellRecord = Record::create(
+            RecordIdentifier::fromString('brand_kartell_fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('kartell'),
+            ['en_US' => 'Kartell updated english label', 'fr_FR' => 'Kartell updated french label'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Kartell updated english name')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('description_brand_fingerprint'),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Kartell english description')
+                )
+            ])
+        );
+
+        $kartellRecord = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('kartell')
+        );
+
+        \PHPUnit\Framework\Assert::assertEquals($expectedKartellRecord, $kartellRecord);
+
+        $expectedLexonRecord = Record::create(
+            RecordIdentifier::fromString('brand_lexon_fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('lexon'),
+            ['en_US' => 'Lexon updated english label'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Updated Lexon english name')
+                )
+            ])
+        );
+
+        $lexonRecord = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('lexon')
+        );
+
+        \PHPUnit\Framework\Assert::assertEquals($expectedLexonRecord, $lexonRecord);
+    }
+
     private function loadBrandReferenceEntity(): void
     {
         $referenceEntity = ReferenceEntity::create(
@@ -362,5 +461,64 @@ class CreateOrUpdateRecordContext implements Context
         );
 
         $this->attributeRepository->create($name);
+    }
+
+    private function loadBrandKartellRecord(): void
+    {
+        $mainImageInfo = new FileInfo();
+        $mainImageInfo
+            ->setOriginalFilename('kartell.jpg')
+            ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
+
+        $record = Record::create(
+            RecordIdentifier::fromString('brand_kartell_fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('kartell'),
+            ['en_US' => 'Kartell English label'],
+            Image::fromFileInfo($mainImageInfo),
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Kartell english name')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Kartell french name')
+                )
+            ])
+        );
+
+        $this->recordRepository->create($record);
+    }
+
+    private function loadBrandLexonRecord(): void
+    {
+        $record = Record::create(
+            RecordIdentifier::fromString('brand_lexon_fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('lexon'),
+            ['en_US' => 'Lexon'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Lexon name')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('description_brand_fingerprint'),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Lexon description')
+                )
+            ])
+        );
+
+        $this->recordRepository->create($record);
     }
 }
