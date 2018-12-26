@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>

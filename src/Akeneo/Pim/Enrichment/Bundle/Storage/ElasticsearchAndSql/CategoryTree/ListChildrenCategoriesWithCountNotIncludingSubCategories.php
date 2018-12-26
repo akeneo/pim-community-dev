@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\CategoryTree;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -74,9 +72,9 @@ class ListChildrenCategoriesWithCountNotIncludingSubCategories implements Query\
      * - it executes two requests(SQL +ES) to get children of A
      * - then, two requests to get children of B
      *
-     * @param array           $categoryIdsInPath
-     * @param LocaleInterface $translationLocaleCode
-     * @param int|null        $categoryIdToFilterWith
+     * @param array     $categoryIdsInPath
+     * @param string    $translationLocaleCode
+     * @param int|null  $categoryIdToFilterWith
      *
      * @return ChildCategory[]
      */

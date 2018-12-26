@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
