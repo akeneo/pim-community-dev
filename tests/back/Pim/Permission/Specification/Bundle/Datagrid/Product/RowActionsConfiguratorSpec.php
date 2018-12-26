@@ -58,11 +58,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $closure = $this->getActionConfigurationClosure();
         $closure($productRow)->shouldReturn(
             [
-                'show'            => true,
-                'edit'            => false,
+                'show' => true,
+                'edit' => false,
                 'edit_categories' => false,
-                'delete'          => false,
-                'toggle_status'   => false,
+                'delete' => false,
+                'toggle_status' => false,
             ]
         );
     }
@@ -75,11 +75,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $closure = $this->getActionConfigurationClosure();
         $closure($productRow)->shouldReturn(
             [
-                'show'            => false,
-                'edit'            => true,
+                'show' => false,
+                'edit' => true,
                 'edit_categories' => false,
-                'delete'          => false,
-                'toggle_status'   => false,
+                'delete' => false,
+                'toggle_status' => false,
             ]
         );
     }
@@ -92,11 +92,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $closure = $this->getActionConfigurationClosure();
         $closure($productRow)->shouldReturn(
             [
-                'show'            => false,
-                'edit'            => true,
+                'show' => false,
+                'edit' => true,
                 'edit_categories' => true,
-                'delete'          => true,
-                'toggle_status'   => true,
+                'delete' => true,
+                'toggle_status' => true,
             ]
         );
     }
@@ -109,11 +109,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $closure = $this->getActionConfigurationClosure();
         $closure($productRow)->shouldReturn(
             [
-                'show'            => false,
-                'edit'            => true,
+                'show' => false,
+                'edit' => true,
                 'edit_categories' => true,
-                'delete'          => true,
-                'toggle_status'   => true,
+                'delete' => true,
+                'toggle_status' => true,
             ]
         );
     }
@@ -126,11 +126,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $closure = $this->getActionConfigurationClosure();
         $closure($productRow)->shouldReturn(
             [
-                'show'            => false,
-                'edit'            => true,
+                'show' => false,
+                'edit' => true,
                 'edit_categories' => true,
-                'delete'          => true,
-                'toggle_status'   => true,
+                'delete' => true,
+                'toggle_status' => true,
             ]
         );
     }
@@ -143,11 +143,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $closure = $this->getActionConfigurationClosure();
         $closure($productModelRow)->shouldReturn(
             [
-                'show'            => true,
-                'edit'            => false,
+                'show' => true,
+                'edit' => false,
                 'edit_categories' => false,
-                'delete'          => false,
-                'toggle_status'   => false,
+                'delete' => false,
+                'toggle_status' => false,
             ]
         );
     }
@@ -160,11 +160,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $closure = $this->getActionConfigurationClosure();
         $closure($productModelRow)->shouldReturn(
             [
-                'show'            => false,
-                'edit'            => true,
+                'show' => false,
+                'edit' => true,
                 'edit_categories' => false,
-                'delete'          => false,
-                'toggle_status'   => false,
+                'delete' => false,
+                'toggle_status' => false,
             ]
         );
     }
@@ -177,11 +177,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $closure = $this->getActionConfigurationClosure();
         $closure($productModelRow)->shouldReturn(
             [
-                'show'            => false,
-                'edit'            => true,
+                'show' => false,
+                'edit' => true,
                 'edit_categories' => true,
-                'delete'          => true,
-                'toggle_status'   => true,
+                'delete' => true,
+                'toggle_status' => true,
             ]
         );
     }
@@ -194,11 +194,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $closure = $this->getActionConfigurationClosure();
         $closure($productModelRow)->shouldReturn(
             [
-                'show'            => false,
-                'edit'            => true,
+                'show' => false,
+                'edit' => true,
                 'edit_categories' => true,
-                'delete'          => true,
-                'toggle_status'   => true,
+                'delete' => true,
+                'toggle_status' => true,
             ]
         );
     }
@@ -211,11 +211,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $closure = $this->getActionConfigurationClosure();
         $closure($productModelRow)->shouldReturn(
             [
-                'show'            => false,
-                'edit'            => true,
+                'show' => false,
+                'edit' => true,
                 'edit_categories' => true,
-                'delete'          => true,
-                'toggle_status'   => true,
+                'delete' => true,
+                'toggle_status' => true,
             ]
         );
     }
