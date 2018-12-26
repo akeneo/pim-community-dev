@@ -31,20 +31,20 @@ final class UserRightsOnProductModel
     private $numberOfCategories;
 
     /**
-     * @param string $productIdentifier
+     * @param string $productModelCode
      * @param int    $userId
      * @param int    $numberOfEditableCategories
      * @param int    $numberOfOwnableCategories
      * @param int    $numberOfCategories
      */
     public function __construct(
-        string $productIdentifier,
+        string $productModelCode,
         int $userId,
         int $numberOfEditableCategories,
         int $numberOfOwnableCategories,
         int $numberOfCategories
     ) {
-        $this->productModelCode = $productIdentifier;
+        $this->productModelCode = $productModelCode;
         $this->userId = $userId;
         $this->numberOfEditableCategories = $numberOfEditableCategories;
         $this->numberOfOwnableCategories = $numberOfOwnableCategories;
