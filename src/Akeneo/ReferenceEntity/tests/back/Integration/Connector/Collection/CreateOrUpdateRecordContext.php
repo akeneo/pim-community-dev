@@ -414,6 +414,52 @@ class CreateOrUpdateRecordContext implements Context
         \PHPUnit\Framework\Assert::assertEquals($expectedLexonRecord, $lexonRecord);
     }
 
+    /**
+     * @When the connector collects records from the ERP among which some records have data that do not comply with the business rules
+     */
+    public function theConnectorCollectsRecordsFromTheErpAmongWhichSomeRecordsHaveDataThatDoNotComplyWithTheBusinessRules()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'collect_brand_records_with_unprocessable_records.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector which records have data that do not comply with the business rules and what are the errors
+     */
+    public function thePimNotifiesTheConnectorWhichRecordsHaveDataThatDoNotComplyWithTheBusinessRulesAndWhatAreTheErrors()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'collect_brand_records_with_unprocessable_records.json'
+        );
+    }
+
+    /**
+     * @When the connector collects a number of records exceeding the maximum number of records in one request
+     */
+    public function theConnectorCollectsANumberOfRecordsExceedingTheMaximumNumberOfRecordsInOneRequest()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'too_many_records_to_process.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector that there were too many records to collect in one request
+     */
+    public function thePimNotifiesTheConnectorThatThereWereTooManyRecordsToCollectInOneRequest()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'too_many_records_to_process.json'
+        );
+    }
+
     private function loadBrandReferenceEntity(): void
     {
         $referenceEntity = ReferenceEntity::create(

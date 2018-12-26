@@ -11,3 +11,5 @@ parameters:
     reference_entity_connector_records_limit_per_page: 100
     # Number of reference entities per page for the connector
     reference_entity_connector_reference_entities_limit_per_page: 200
+    # Maximum number of records to process in a single API request
+    reference_entity_connector_maximum_records_to_process_per_request: 100

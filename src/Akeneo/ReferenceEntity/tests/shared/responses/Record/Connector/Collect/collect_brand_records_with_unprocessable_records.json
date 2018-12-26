@@ -1,0 +1,103 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_reference_entities_records_rest_connector_create_or_update",
+        "query": {
+            "referenceEntityIdentifier": "brand"
+        },
+        "body": [
+            {
+                "code": "kartell",
+                "labels": {
+                    "en_US": "Kartell english label",
+                    "fr_FR": null
+                },
+                "main_image": null,
+                "values":  [
+                    {
+                        "locale": "en_US",
+                        "channel": null,
+                        "data": null
+                    },
+                    {
+                        "locale": "fr_FR",
+                        "channel": null,
+                        "data": "Kartell french description."
+                    }
+                ]
+            },
+            {
+                "code": "lexon",
+                "labels": {
+                    "en_US": "Lexon updated english label"
+                },
+                "values": {
+                    "name": [
+                        {
+                            "channel": null,
+                            "locale": "en_US",
+                            "data": "Updated Lexon english name"
+                        }
+                    ],
+                    "description": [
+                        {
+                            "locale": "en_US",
+                            "channel": "ecommerce",
+                            "data": null
+                        }
+                    ]
+                }
+            },
+            {
+                "code": "fatboy",
+                "labels": {
+                    "en_AU": "Fatboy label"
+                },
+                "values": {
+                    "name": [
+                        {
+                            "channel": null,
+                            "locale": "en_US",
+                            "data": "Fatboy name"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "body": [
+            {
+                "code": "kartell",
+                "status_code": 422,
+                "message": "The record has an invalid format.",
+                "errors": [
+                    {
+                        "property": "labels.fr_FR",
+                        "message": "NULL value found, but a string is required"
+                    },
+                    {
+                        "property": "values",
+                        "message": "Array value found, but an object is required"
+                    }
+                ]
+            },
+            {
+                "code": "lexon",
+                "status_code": 204
+            },
+            {
+                "code": "fatboy",
+                "status_code": 422,
+                "message": "The record has data that does not comply with the business rules.",
+                "errors": [
+                    {
+                        "property": "labels",
+                        "message": "The locale \"en_AU\" is not activated."
+                    }
+                ]
+            }
+        ]
+    }
+}
