@@ -71,4 +71,20 @@ final class ExceptionContext implements Context
             DataProviderException::authenticationError(new \Exception())->getMessage()
         );
     }
+
+    /**
+     * @Then an unknown family message should be sent
+     */
+    public function anUnknownFamilyMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf(self::$thrownException, \InvalidArgumentException::class);
+    }
+
+    /**
+     * @Then an unknown attribute message should be sent
+     */
+    public function anUnknownAttributeMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf(self::$thrownException, \InvalidArgumentException::class);
+    }
 }

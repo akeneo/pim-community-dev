@@ -17,9 +17,11 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Ab
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionsMapping;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -39,7 +41,9 @@ class OptionsMappingWebService extends AbstractApi implements AuthenticatedApiIn
             $response = $this->httpClient->request('GET', $route);
             $responseData = json_decode($response->getBody()->getContents(), true);
 
-            $this->validateResponseData($responseData);
+            if (null === $responseData || !array_key_exists('mapping', $responseData)) {
+                throw new FranklinServerException('Response data incorrect! No "mapping" key found');
+            }
 
             return new OptionsMapping($responseData['mapping']);
         } catch (ServerException | FranklinServerException $e) {
@@ -53,6 +57,10 @@ class OptionsMappingWebService extends AbstractApi implements AuthenticatedApiIn
                 )
             );
         } catch (ClientException $e) {
+            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+                throw new InvalidTokenException('The Franklin token is missing or invalid');
+            }
+
             throw new BadRequestException(
                 sprintf(
                     'Something went wrong when fetching the options mapping for attribute "%s" and family "%s": %s',
@@ -73,9 +81,31 @@ class OptionsMappingWebService extends AbstractApi implements AuthenticatedApiIn
             sprintf('/api/mapping/%s/attributes/%s/options', $familyCode, $franklinAttributeId)
         );
 
-        $this->httpClient->request('PUT', $route, [
-            'form_params' => $attributeOptionsMapping,
-        ]);
+        try {
+            $this->httpClient->request('PUT', $route, [
+                'form_params' => $attributeOptionsMapping,
+            ]);
+        } catch (ServerException $e) {
+            throw new FranklinServerException(
+                sprintf(
+                    'Something went wrong on Franklin side when fetching the options mapping of family "%s" and attribute "%s" : %s',
+                    $familyCode,
+                    $franklinAttributeId,
+                    $e->getMessage()
+                )
+            );
+        } catch (ClientException $e) {
+            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+                throw new InvalidTokenException('The Franklin token is missing or invalid');
+            }
+
+            throw new BadRequestException(sprintf(
+                'Something went wrong when fetching the options mapping of family "%s" and attribute "%s" : %s',
+                $familyCode,
+                $franklinAttributeId,
+                $e->getMessage()
+            ));
+        }
     }
 
     /**
@@ -85,12 +115,8 @@ class OptionsMappingWebService extends AbstractApi implements AuthenticatedApiIn
      */
     private function validateResponseData($responseData): void
     {
-        if (null === $responseData) {
-            throw new FranklinServerException();
-        }
-
-        if (!array_key_exists('mapping', $responseData)) {
-            throw new FranklinServerException();
+        if (null === $responseData || !array_key_exists('mapping', $responseData)) {
+            throw new FranklinServerException('Response data incorrect');
         }
     }
 }

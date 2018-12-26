@@ -16,10 +16,14 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Ada
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributeOptionsMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingWebService;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
 
@@ -52,9 +56,18 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
         FranklinAttributeId $franklinAttributeId
     ): ReadAttributeOptionsMapping {
         $this->api->setToken($this->getToken());
-        $franklinOptionsMapping = $this
-            ->api
-            ->fetchByFamilyAndAttribute((string) $familyCode, (string) $franklinAttributeId);
+
+        try {
+            $franklinOptionsMapping = $this
+                ->api
+                ->fetchByFamilyAndAttribute((string) $familyCode, (string) $franklinAttributeId);
+        } catch (FranklinServerException $e) {
+            throw DataProviderException::serverIsDown($e);
+        } catch (InvalidTokenException $e) {
+            throw DataProviderException::authenticationError($e);
+        } catch (BadRequestException $e) {
+            throw DataProviderException::badRequestError($e);
+        }
 
         $converter = new AttributeOptionsMappingConverter();
 

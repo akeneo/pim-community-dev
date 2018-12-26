@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttri
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject\AttributeOptions;
@@ -72,27 +73,6 @@ class AttributeOptionsMappingContext implements Context
     }
 
     /**
-     * @When I retrieve the attribute options mapping for the family :familyCode and the attribute :franklinAttributeId
-     *
-     * @param mixed $familyCode
-     * @param mixed $franklinAttributeId
-     */
-    public function iRetrieveTheAttributeOptionsMappingForTheFamilyAndTheAttribute(
-        $familyCode,
-        $franklinAttributeId
-    ): void {
-        $this->retrievedFamilyCode = $familyCode;
-        $this->retrievedFranklinAttributeId = $franklinAttributeId;
-
-        $query = new GetAttributeOptionsMappingQuery(
-            new FamilyCode($familyCode),
-            new FranklinAttributeId($franklinAttributeId)
-        );
-        $this->retrievedAttributeOptionsMapping = $this->getAttributeOptionsMappingHandler->handle($query);
-        Assert::isInstanceOf($this->retrievedAttributeOptionsMapping, AttributeOptionsMapping::class);
-    }
-
-    /**
      * @Given a predefined options mapping between Franklin attribute :franklinAttrId and PIM attribute :catalogAttrCode for family :familyCode as follows:
      *
      * @param string $franklinAttrId
@@ -117,6 +97,30 @@ class AttributeOptionsMappingContext implements Context
         $this->saveAttributeOptionsMappingHandler->handle($command);
 
         $this->originalAttributeOptionsMapping = $this->fakeClient->getOptionsMapping();
+    }
+
+    /**
+     * @When I retrieve the attribute options mapping for the family :familyCode and the attribute :franklinAttributeId
+     *
+     * @param mixed $familyCode
+     * @param mixed $franklinAttributeId
+     */
+    public function iRetrieveTheAttributeOptionsMappingForTheFamilyAndTheAttribute(
+        $familyCode,
+        $franklinAttributeId
+    ): void {
+        $this->retrievedFamilyCode = $familyCode;
+        $this->retrievedFranklinAttributeId = $franklinAttributeId;
+
+        try {
+            $query = new GetAttributeOptionsMappingQuery(
+                new FamilyCode($familyCode),
+                new FranklinAttributeId($franklinAttributeId)
+            );
+            $this->retrievedAttributeOptionsMapping = $this->getAttributeOptionsMappingHandler->handle($query);
+        } catch (\Exception $e) {
+            ExceptionContext::setThrownException($e);
+        }
     }
 
     /**
@@ -181,6 +185,7 @@ class AttributeOptionsMappingContext implements Context
         Assert::eq($this->retrievedFamilyCode, $this->retrievedAttributeOptionsMapping->familyCode());
         Assert::eq($this->retrievedFranklinAttributeId, $this->retrievedAttributeOptionsMapping->franklinAttributeId());
 
+        Assert::isInstanceOf($this->retrievedAttributeOptionsMapping, AttributeOptionsMapping::class);
         Assert::count(
             $this->retrievedAttributeOptionsMapping->mapping(),
             count($expectedMappingTable->getHash())
@@ -192,6 +197,22 @@ class AttributeOptionsMappingContext implements Context
             Assert::eq($attributeOptionMapping->catalogAttributeCode(), $expectedRow['catalog_attribute_code']);
             $this->assertStatus($expectedRow['status'], $attributeOptionMapping->status());
         }
+    }
+
+    /**
+     * @Then the retrieved attribute options should be empty
+     */
+    public function theRetrievedAttributeOptionsShouldBeEmpty()
+    {
+        Assert::count($this->retrievedAttributeOptionsMapping->mapping(), 0);
+    }
+
+    /**
+     * @Then an invalid attribute message should be sent
+     */
+    public function anInvalidAttributeMessageShouldBeSent()
+    {
+        Assert::eq(ExceptionContext::getThrownException(), \InvalidArgumentException::class);
     }
 
     /**
