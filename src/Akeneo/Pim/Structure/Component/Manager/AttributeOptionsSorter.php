@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Structure\Component\Manager;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Oro\Bundle\SecurityBundle\Acl\Persistence\Batch;
 
 /**
  * Sort attribute options and save them.
