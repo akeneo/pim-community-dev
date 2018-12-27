@@ -32,6 +32,13 @@ Feature: Connection to e-commerce platforms and marketplaces
     Then the PIM notifies the connector about an error indicating that the attribute is not part of the structure of the Brand reference entity
 
   @integration-back
+  Scenario: Notify an error when  collection the options of an attribute that does not support options
+    Given the Brand reference entity
+    And the Label text attribute that is part of the structure of the Brand reference entity
+    When the connector requests all the options of the Label attribute for the Brand reference entity
+    Then the PIM notifies the connector about an error indicating that the attribute does not support options
+    
+  @integration-back
   Scenario: Get an option of a single option attribute for a given reference entity
     Given the Brand reference entity
     And the Nationality single option attribute that is part of the structure of the Brand reference entity
