@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7899: Remove Date of Birth field
+- PIM-7926: Fix the parent property setter when "enabled comparison" is set to false in an import job definition
 
 # 2.3.22 (2018-12-21)
 

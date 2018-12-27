@@ -110,6 +110,75 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         )->shouldReturn($expected);
     }
 
+    function it_sets_to_null_an_empty_parent_attribute_value(
+        $familyRepository,
+        $productRepository,
+        $attributeRepository,
+        FamilyInterface $family,
+        ProductInterface $product,
+        Collection $familyAttributes,
+        Collection $familyAttributeCodes,
+        AttributeInterface $attribute
+    ) {
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+
+        $familyRepository->findOneByIdentifier('Summer Tshirt')->willReturn($family);
+        $family->getAttributes()->willReturn($familyAttributes);
+        $familyAttributes->map(Argument::any())->willReturn($familyAttributeCodes);
+        $familyAttributeCodes->toArray()->willReturn(['sku', 'description']);
+
+        $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
+
+        $product->isVariant()->willReturn(false);
+
+        $expected = [
+            'identifier' => 'tshirt',
+            'family' => 'Summer Tshirt',
+            'parent' => null,
+            'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'tshirt',
+                    ],
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'mobile',
+                        'data' => 'My awesome description',
+                    ],
+                ],
+            ],
+        ];
+
+        $this->filter(
+            [
+                'identifier' => 'tshirt',
+                'family' => 'Summer Tshirt',
+                'parent' => '',
+                'values' => [
+                    'sku' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'tshirt',
+                        ],
+                    ],
+                    'description' => [
+                        [
+                            'locale' => 'en_US',
+                            'scope' => 'mobile',
+                            'data' => 'My awesome description',
+                        ],
+                    ],
+                ],
+            ]
+        )->shouldReturn($expected);
+    }
+
     function it_filters_the_attributes_that_does_not_belong_to_a_family_variant(
         $productModelRepository,
         $productRepository,
