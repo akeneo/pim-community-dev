@@ -147,16 +147,6 @@ extensions:
             label: pim_user_management.entity.user.properties.phone
             readOnly: true
 
-    pim-user-show-birthday:
-        module: pim/form/common/fields/date
-        parent: pim-user-show-general-tab-content
-        position: 90
-        targetZone: content
-        config:
-            fieldName: birthday
-            label: pim_user_management.entity.user.properties.birthday
-            readOnly: true
-
     pim-user-show-avatar:
         module: pim/form/common/fields/media
         parent: pim-user-show-general-tab-content

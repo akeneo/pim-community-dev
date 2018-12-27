@@ -47,9 +47,6 @@ class User implements UserInterface
     /** @var string */
     protected $nameSuffix;
 
-    /** @var \DateTime */
-    protected $birthday;
-
     /**
      * Image filename
      *
@@ -290,14 +287,6 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getBirthday()
-    {
-        return $this->birthday;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getImage()
     {
         return $this->image;
@@ -504,16 +493,6 @@ class User implements UserInterface
     public function setNameSuffix($nameSuffix)
     {
         $this->nameSuffix = $nameSuffix;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBirthday(\DateTime $birthday = null)
-    {
-        $this->birthday = $birthday;
-
-        return $this;
     }
 
     /**

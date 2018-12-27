@@ -179,15 +179,6 @@ extensions:
             fieldName: phone
             label: pim_user_management.entity.user.properties.phone
 
-    pim-user-edit-form-birthday:
-        module: pim/form/common/fields/date
-        parent: pim-user-edit-form-general-tab-content
-        position: 90
-        targetZone: content
-        config:
-            fieldName: birthday
-            label: pim_user_management.entity.user.properties.birthday
-
     pim-user-edit-form-avatar:
         module: pim/form/common/fields/media
         parent: pim-user-edit-form-general-tab-content

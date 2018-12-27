@@ -13,6 +13,7 @@
 - PIM-7660: Improve performance of the product grid by using a dedicated read model
 - PIM-7499: Improve the performance of the completeness widget in the dashboard
 - PIM-7371: Improve the performance of the category tree in the product grid
+- PIM-7839: Remove date of birth
 
 ## Enhancements
 
@@ -1246,3 +1247,4 @@
 - Change constructor of `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface\FamilySaver`, remove second argument `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileValidator` to add an array of string (extension to mime type mapping) 
 - Add `pim_configuration` table. Don't forget to run the `doctrine:migrations:migrate` command.
+- Remove methods `getBirthday` and `setBirthday` of `Akeneo\UserManagement\Component\Model\UserInterface` and `Akeneo\UserManagement\Component\Model\User`

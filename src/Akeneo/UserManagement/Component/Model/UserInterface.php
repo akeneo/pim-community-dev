@@ -43,13 +43,6 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function getEmail();
 
     /**
-     * Return birthday
-     *
-     * @return \DateTime
-     */
-    public function getBirthday();
-
-    /**
      * {@inheritDoc}
      */
     public function getPlainPassword();
@@ -188,13 +181,6 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      * @return string
      */
     public function getFullName();
-
-    /**
-     * @param  \DateTime $birthday [optional] New birthday value. Null by default.
-     *
-     * @return UserInterface
-     */
-    public function setBirthday(\DateTime $birthday = null);
 
     /**
      * @param  string $image [optional] New image file name. Null by default.
