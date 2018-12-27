@@ -73,6 +73,19 @@ final class ExceptionContext implements Context
     }
 
     /**
+     * @Then a bad request message should be sent
+     */
+    public function aBadRequestMessageShouldBeSent(): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, DataProviderException::class);
+        Assert::eq(
+            DataProviderException::badRequestError()->getMessage(),
+            $thrownException->getMessage()
+        );
+    }
+
+    /**
      * @Then an unknown family message should be sent
      */
     public function anUnknownFamilyMessageShouldBeSent(): void

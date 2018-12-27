@@ -13,7 +13,7 @@ Feature: Map some attribute options with Franklin attribute options
       | color_2               | color2                 | active   |
       | color_3               |                        | inactive |
 
-  Scenario: Successfully retrieve an empty attribute options mapping
+  Scenario: Successfully retrieve an empty attribute options mapping (happens also on unexisting attribute)
     Given the family "router"
     When I retrieve the attribute options mapping for the family "router" and the attribute "product_weight"
     Then the retrieved attribute options should be empty
@@ -21,11 +21,6 @@ Feature: Map some attribute options with Franklin attribute options
   Scenario: Fail to retrieve an attribute options mapping from an unexisting family
     When I retrieve the attribute options mapping for the family "router" and the attribute "color"
     Then an unknown family message should be sent
-
-#  Scenario: Fail to retrieve an attribute options mapping from an unexisting attribute
-#    Given the family "router"
-#    When I retrieve the attribute options mapping for the family "router" and the attribute "hardware"
-#    Then an invalid attribute message should be sent
 
   Scenario: Fail to retrieve an attribute options mapping when the token is invalid
     Given the family "router"

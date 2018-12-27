@@ -20,4 +20,8 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\
  */
 class InsufficientCreditsException extends ClientException
 {
+    public function __construct()
+    {
+        parent::__construct('Not enough credits on Franklin to subscribe.');
+    }
 }

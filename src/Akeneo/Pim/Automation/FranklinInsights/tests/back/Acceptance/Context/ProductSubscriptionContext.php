@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Comma
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
@@ -239,19 +240,6 @@ class ProductSubscriptionContext implements Context
         Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
         Assert::eq(
             ProductSubscriptionException::invalidMappedValues()->getMessage(),
-            $thrownException->getMessage()
-        );
-    }
-
-    /**
-     * @Then a Franklin subscription error message should be sent
-     */
-    public function aFranklinSubscriptionErrorMessageShouldBeSent(): void
-    {
-        $thrownException = ExceptionContext::getThrownException();
-        Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
-        Assert::eq(
-            ProductSubscriptionException::dataProviderError()->getMessage(),
             $thrownException->getMessage()
         );
     }

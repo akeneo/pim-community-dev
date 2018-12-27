@@ -67,6 +67,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
      * @param ProductSubscriptionRequest $subscriptionRequest
      *
      * @throws ProductSubscriptionException
+     * @throws DataProviderException
      *
      * @return ProductSubscriptionResponse
      */
@@ -83,7 +84,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
         $subscriptions = $this->doSubscribe($clientRequest)->subscriptions();
 
         if (null === $subscriptions->first()) {
-            throw ProductSubscriptionException::dataProviderError();
+            throw DataProviderException::badRequestError();
         }
 
         return $this->buildSubscriptionResponse($subscriptions->first());
@@ -93,6 +94,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
      * @param ProductSubscriptionRequest[] $subscriptionRequests
      *
      * @throws ProductSubscriptionException
+     * @throws DataProviderException
      *
      * @return ProductSubscriptionResponseCollection
      */
@@ -120,17 +122,22 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     }
 
     /**
-     * @throws ProductSubscriptionException
+     * @return SubscriptionsCursor
      *
-     * @return \Iterator
+     * @throws DataProviderException
      */
     public function fetch(): \Iterator
     {
         $this->api->setToken($this->getToken());
+
         try {
             $subscriptionsPage = $this->api->fetchProducts();
-        } catch (ClientException $e) {
-            throw new ProductSubscriptionException($e->getMessage());
+        } catch (FranklinServerException $e) {
+            throw DataProviderException::serverIsDown($e);
+        } catch (InvalidTokenException $e) {
+            throw DataProviderException::authenticationError($e);
+        } catch (BadRequestException $e) {
+            throw DataProviderException::badRequestError($e);
         }
 
         return new SubscriptionsCursor($subscriptionsPage);
@@ -139,21 +146,28 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     /**
      * @param string $subscriptionId
      *
-     * @throws ProductSubscriptionException
+     * @throws DataProviderException
      */
     public function unsubscribe(string $subscriptionId): void
     {
         $this->api->setToken($this->getToken());
+
         try {
             $this->api->unsubscribeProduct($subscriptionId);
-        } catch (ClientException $e) {
-            throw new ProductSubscriptionException($e->getMessage());
+        } catch (FranklinServerException $e) {
+            throw DataProviderException::serverIsDown($e);
+        } catch (InvalidTokenException $e) {
+            throw DataProviderException::authenticationError($e);
+        } catch (BadRequestException $e) {
+            throw DataProviderException::badRequestError($e);
         }
     }
 
     /**
      * @param string $subscriptionId
      * @param FamilyInterface $family
+     *
+     * @throws DataProviderException
      */
     public function updateFamilyInfos(string $subscriptionId, FamilyInterface $family): void
     {
@@ -162,8 +176,12 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
             $normalizer = new FamilyNormalizer();
             $familyInfos = $normalizer->normalize($family);
             $this->api->updateFamilyInfos($subscriptionId, $familyInfos);
-        } catch (ClientException $e) {
-            throw ProductSubscriptionException::dataProviderError();
+        } catch (FranklinServerException $e) {
+            throw DataProviderException::serverIsDown($e);
+        } catch (InvalidTokenException $e) {
+            throw DataProviderException::authenticationError($e);
+        } catch (BadRequestException $e) {
+            throw DataProviderException::badRequestError($e);
         }
     }
 

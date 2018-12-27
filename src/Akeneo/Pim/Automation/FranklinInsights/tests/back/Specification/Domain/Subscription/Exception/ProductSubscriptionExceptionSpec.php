@@ -22,12 +22,6 @@ class ProductSubscriptionExceptionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(\Exception::class);
     }
 
-    public function it_throws_an_invalid_token_message(): void
-    {
-        $this->beConstructedThrough('invalidToken');
-        $this->getMessage()->shouldReturn('akeneo_franklin_insights.entity.product_subscription.constraint.invalid_token');
-    }
-
     public function it_throws_an_insufficient_credits_message(): void
     {
         $this->beConstructedThrough('insufficientCredits');

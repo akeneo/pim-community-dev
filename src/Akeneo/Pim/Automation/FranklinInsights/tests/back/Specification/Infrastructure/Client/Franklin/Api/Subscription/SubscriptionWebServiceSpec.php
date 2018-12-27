@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Subscription;
 
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Subscription\RequestCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionsCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebService;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Client;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\InsufficientCreditsException;
@@ -35,8 +37,9 @@ use Psr\Http\Message\StreamInterface;
  */
 class SubscriptionWebServiceSpec extends ObjectBehavior
 {
-    public function let(UriGenerator $uriGenerator, GuzzleClient $httpClient): void
+    public function let(GuzzleClient $httpClient): void
     {
+        $uriGenerator = new UriGenerator('BASE_URI');
         $this->beConstructedWith($uriGenerator, $httpClient);
     }
 
@@ -55,97 +58,106 @@ class SubscriptionWebServiceSpec extends ObjectBehavior
         $this->shouldImplement(SubscriptionWebService::class);
     }
 
-    public function it_calls_a_delete_request_on_subscription_id($uriGenerator, $httpClient): void
-    {
-        $subscriptionId = 'foo-bar';
-
-        $uriGenerator
-            ->generate('/api/subscriptions/' . $subscriptionId)
-            ->willReturn('unsubscription-route');
-
-        $httpClient->request('DELETE', 'unsubscription-route')->shouldBeCalled();
-
-        $this->unsubscribeProduct($subscriptionId)->shouldReturn(null);
-    }
-
-    public function it_throws_franklin_server_exception_on_server_exception($uriGenerator, $httpClient): void
-    {
-        $subscriptionId = 'foo-bar';
-
-        $uriGenerator
-            ->generate('/api/subscriptions/' . $subscriptionId)
-            ->willReturn('unsubscription-route');
-
+    public function it_throws_an_insufficient_credit_exception_on_subscription(
         $httpClient
-            ->request('DELETE', 'unsubscription-route')
-            ->willThrow(ServerException::class);
+    ): void {
+        $request = new Request('POST', 'BASE_URI/my/uri');
+        $response = new Response(402);
+        $clientException = new ClientException('An exception message', $request, $response);
+        $httpClient->request('POST', 'BASE_URI/api/subscriptions', ['form_params' => []])->willThrow($clientException);
 
         $this
-            ->shouldThrow(
-                new FranklinServerException('Something went wrong on Franklin side during product subscription: ')
-            )
-            ->during('unsubscribeProduct', [$subscriptionId]);
+            ->shouldThrow(new InsufficientCreditsException())
+            ->during('subscribe', [new RequestCollection()]);
     }
 
-    public function it_throws_bad_request_exception_on_client_exception($uriGenerator, $httpClient): void
+    public function it_calls_a_delete_request_for_unsubscription($httpClient): void
     {
-        $subscriptionId = 'foo-bar';
+        $httpClient->request('DELETE', 'BASE_URI/api/subscriptions/foo-bar')->shouldBeCalled();
 
-        $uriGenerator
-            ->generate('/api/subscriptions/' . $subscriptionId)
-            ->willReturn('unsubscription-route');
+        $this->unsubscribeProduct('foo-bar')->shouldReturn(null);
+    }
 
+    public function it_throws_franklin_server_exception_when_server_exception_occurs_during_unsubscription(
         $httpClient
-            ->request('DELETE', 'unsubscription-route')
-            ->willThrow(ClientException::class);
+    ): void {
+        $httpClient->request('DELETE', 'BASE_URI/api/subscriptions/foo-bar')->willThrow(ServerException::class);
 
-        $this
-            ->shouldThrow(
-                new BadRequestException('Something went wrong during product subscription: ')
-            )
-            ->during('unsubscribeProduct', [$subscriptionId]);
+        $this->shouldThrow(FranklinServerException::class)->during('unsubscribeProduct', ['foo-bar']);
+    }
+
+    public function it_throws_bad_request_exception_when_client_exception_occurs_during_unsubscription(
+        $httpClient
+    ): void {
+        $httpClient->request('DELETE', 'BASE_URI/api/subscriptions/foo-bar')->willThrow(ClientException::class);
+
+        $this->shouldThrow(BadRequestException::class)->during('unsubscribeProduct', ['foo-bar']);
     }
 
     // Next specs are about fetchProducts() and nothing is needed more about this method.
     public function it_fetches_product_subscriptions(
-        $uriGenerator,
         $httpClient,
         ResponseInterface $response,
         StreamInterface $stream
     ): void {
-        $uriGenerator->generate('/api/subscriptions/updated-since/yesterday')->willReturn('route')->shouldBeCalled();
-        $httpClient->request('GET', 'route')->willReturn($response)->shouldBeCalled();
+        $httpClient
+            ->request('GET', 'BASE_URI/api/subscriptions/updated-since/yesterday')
+            ->willReturn($response);
 
-        $data = <<<JSON
-            {
-              "_links": {
-                "subscription": []
-              },
-              "_embedded": {
-                "subscription": []
-              },
-              "total": 0,
-              "limit": 100
-            }
-JSON;
-
+        $jsonData = $this->loadFakeFetchJsonData();
         $response->getBody()->willReturn($stream);
-        $stream->getContents()->willReturn($data);
+        $stream->getContents()->willReturn($jsonData);
 
         $subscriptionsPage = $this->fetchProducts();
         $subscriptionsPage->shouldReturnAnInstanceOf(SubscriptionsCollection::class);
     }
 
     public function it_fetches_product_subscriptions_from_an_uri(
-        $uriGenerator,
         $httpClient,
         ResponseInterface $response,
         StreamInterface $stream
     ): void {
-        $uriGenerator->getBaseUri()->willReturn('BASE_URI')->shouldBeCalled();
         $httpClient->request('GET', 'BASE_URI/my/uri')->willReturn($response)->shouldBeCalled();
 
-        $data = <<<JSON
+        $jsonData = $this->loadFakeFetchJsonData();
+        $response->getBody()->willReturn($stream);
+        $stream->getContents()->willReturn($jsonData);
+
+        $this->fetchProducts('/my/uri')->shouldReturnAnInstanceOf(SubscriptionsCollection::class);
+    }
+
+    public function it_throws_a_franklin_server_exception_if_something_went_wrong_with_franklin_during_fetching(
+        $httpClient
+    ): void {
+        $httpClient->request('GET', 'BASE_URI/my/uri')->willThrow(ServerException::class);
+
+        $this->shouldThrow(FranklinServerException::class)->during('fetchProducts', ['/my/uri']);
+    }
+
+    public function it_throws_an_invalid_token_exception_during_fetching($httpClient): void
+    {
+        $request = new Request('GET', '/my/uri');
+        $response = new Response(403);
+        $clientException = new ClientException('An exception message', $request, $response);
+
+        $httpClient->request('GET', 'BASE_URI/my/uri')->willThrow($clientException);
+
+        $this->shouldThrow(InvalidTokenException::class)->during('fetchProducts', ['/my/uri']);
+    }
+
+    public function it_throws_a_bad_request_exception_during_fetching($httpClient): void
+    {
+        $httpClient->request('GET', 'BASE_URI/my/uri')->willThrow(ClientException::class);
+
+        $this->shouldThrow(BadRequestException::class)->during('fetchProducts', ['/my/uri']);
+    }
+
+    /**
+     * @return string
+     */
+    private function loadFakeFetchJsonData()
+    {
+        return <<<JSON
             {
               "_links": {
                 "subscription": []
@@ -157,79 +169,5 @@ JSON;
               "limit": 100
             }
 JSON;
-
-        $response->getBody()->willReturn($stream);
-        $stream->getContents()->willReturn($data);
-
-        $subscriptionsPage = $this->fetchProducts('/my/uri');
-        $subscriptionsPage->shouldReturnAnInstanceOf(SubscriptionsCollection::class);
-    }
-
-    public function it_throws_a_franklin_server_exception_if_something_went_wrong_with_franklin(
-        $uriGenerator,
-        $httpClient
-    ): void {
-        $request = new Request('GET', '/my/uri');
-        $response = new Response(500);
-        $clientException = new ServerException('An exception message', $request, $response);
-
-        $uriGenerator->getBaseUri()->willReturn('BASE_URI');
-        $httpClient->request('GET', 'BASE_URI/my/uri')->willThrow($clientException);
-
-        $this
-            ->shouldThrow(
-                new FranklinServerException(
-                    'Something went wrong on Franklin side during product subscription: An exception message.'
-                )
-            )
-            ->during('fetchProducts', ['/my/uri']);
-    }
-
-    public function it_throws_an_insufficient_credit_exception($uriGenerator, $httpClient): void
-    {
-        $request = new Request('GET', '/my/uri');
-        $response = new Response(402);
-        $clientException = new ClientException('An exception message', $request, $response);
-
-        $uriGenerator->getBaseUri()->willReturn('BASE_URI');
-        $httpClient->request('GET', 'BASE_URI/my/uri')->willThrow($clientException);
-
-        $this
-            ->shouldThrow(
-                new InsufficientCreditsException('Not enough credits on Franklin to subscribe.')
-            )
-            ->during('fetchProducts', ['/my/uri']);
-    }
-
-    public function it_throws_an_invalid_token_exception($uriGenerator, $httpClient): void
-    {
-        $request = new Request('GET', '/my/uri');
-        $response = new Response(403);
-        $clientException = new ClientException('An exception message', $request, $response);
-
-        $uriGenerator->getBaseUri()->willReturn('BASE_URI');
-        $httpClient->request('GET', 'BASE_URI/my/uri')->willThrow($clientException);
-
-        $this
-            ->shouldThrow(
-                new InvalidTokenException('The Franklin token is missing or invalid.')
-            )
-            ->during('fetchProducts', ['/my/uri']);
-    }
-
-    public function it_throws_a_bad_request_exception($uriGenerator, $httpClient): void
-    {
-        $request = new Request('GET', '/my/uri');
-        $response = new Response(400);
-        $clientException = new ClientException('You did something wrong', $request, $response);
-
-        $uriGenerator->getBaseUri()->willReturn('BASE_URI');
-        $httpClient->request('GET', 'BASE_URI/my/uri')->willThrow($clientException);
-
-        $this
-            ->shouldThrow(
-                new BadRequestException('Something went wrong during product subscription: You did something wrong.')
-            )
-            ->during('fetchProducts', ['/my/uri']);
     }
 }

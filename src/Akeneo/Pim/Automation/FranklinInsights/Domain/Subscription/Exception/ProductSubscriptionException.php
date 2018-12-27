@@ -22,15 +22,6 @@ final class ProductSubscriptionException extends \Exception
     private const CONSTRAINT_KEY = 'akeneo_franklin_insights.entity.product_subscription.constraint.%s';
 
     /**
-     * @deprecated
-     * @return ProductSubscriptionException
-     */
-    public static function invalidToken(): ProductSubscriptionException
-    {
-        return new static(sprintf(static::CONSTRAINT_KEY, 'invalid_token'), 422);
-    }
-
-    /**
      * @return ProductSubscriptionException
      */
     public static function insufficientCredits(): ProductSubscriptionException
@@ -39,7 +30,6 @@ final class ProductSubscriptionException extends \Exception
     }
 
     /**
-     * @deprecated
      * @return ProductSubscriptionException
      */
     public static function invalidIdentifiersMapping(): ProductSubscriptionException
@@ -56,20 +46,10 @@ final class ProductSubscriptionException extends \Exception
     }
 
     /**
-     * @deprecated
      * @return ProductSubscriptionException
      */
     public static function invalidMappedValues(): ProductSubscriptionException
     {
         return new static(sprintf(static::CONSTRAINT_KEY, 'invalid_mapped_values'));
-    }
-
-    /**
-     * @deprecated
-     * @return ProductSubscriptionException
-     */
-    public static function dataProviderError(): ProductSubscriptionException
-    {
-        return new static(sprintf(static::CONSTRAINT_KEY, 'data_provider_error'));
     }
 }

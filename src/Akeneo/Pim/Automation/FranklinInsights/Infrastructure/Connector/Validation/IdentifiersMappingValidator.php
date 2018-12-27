@@ -39,6 +39,7 @@ class IdentifiersMappingValidator implements ValidatorInterface
     public function validate($value): void
     {
         if ($this->identifiersMappingRepo->find()->isEmpty()) {
+            // TODO: to rework APAI-390
             throw new ValidationException('Identifiers mapping is empty');
         }
     }

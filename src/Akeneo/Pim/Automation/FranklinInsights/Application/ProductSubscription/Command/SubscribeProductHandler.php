@@ -95,6 +95,7 @@ class SubscribeProductHandler
 
         $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {
+            // TODO: To rework APAI-390
             throw new ProductSubscriptionException('No mapping defined');
         }
 

@@ -63,7 +63,6 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
             throw DataProviderException::badRequestError($e);
         }
 
-
         $attributesMapping = new AttributesMappingResponse();
         foreach ($apiResponse as $attribute) {
             $attribute = new DomainAttributeMapping(

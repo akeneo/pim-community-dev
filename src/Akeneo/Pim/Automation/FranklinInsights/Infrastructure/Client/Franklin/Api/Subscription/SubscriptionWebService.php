@@ -65,7 +65,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
             ));
         } catch (ClientException $e) {
             if (Response::HTTP_PAYMENT_REQUIRED === $e->getCode()) {
-                throw new InsufficientCreditsException('Not enough credits on Franklin to subscribe');
+                throw new InsufficientCreditsException();
             }
             if (Response::HTTP_FORBIDDEN === $e->getCode()) {
                 throw new InvalidTokenException('The Franklin token is missing or invalid');
@@ -79,7 +79,13 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
     }
 
     /**
-     * {@inheritdoc}
+     * @param string|null $uri
+     *
+     * @return SubscriptionsCollection
+     *
+     * @throws BadRequestException
+     * @throws FranklinServerException
+     * @throws InvalidTokenException
      */
     public function fetchProducts(string $uri = null): SubscriptionsCollection
     {
@@ -101,9 +107,6 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
                 sprintf('Something went wrong on Franklin side during product subscription: %s.', $e->getMessage())
             );
         } catch (ClientException $e) {
-            if (Response::HTTP_PAYMENT_REQUIRED === $e->getCode()) {
-                throw new InsufficientCreditsException('Not enough credits on Franklin to subscribe.');
-            }
             if (Response::HTTP_FORBIDDEN === $e->getCode()) {
                 throw new InvalidTokenException('The Franklin token is missing or invalid.');
             }
@@ -115,7 +118,11 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $subscriptionId
+     *
+     * @throws BadRequestException
+     * @throws FranklinServerException
+     * @throws InvalidTokenException
      */
     public function unsubscribeProduct(string $subscriptionId): void
     {
@@ -127,7 +134,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
             $this->httpClient->request('DELETE', $route);
         } catch (ServerException $e) {
             throw new FranklinServerException(
-                sprintf('Something went wrong on Franklin side during product subscription: %s', $e->getMessage())
+                sprintf('Something went wrong on Franklin side during product unsubscription: %s', $e->getMessage())
             );
         } catch (ClientException $e) {
             if (Response::HTTP_FORBIDDEN === $e->getCode()) {
@@ -135,7 +142,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
             }
 
             throw new BadRequestException(
-                sprintf('Something went wrong during product subscription: %s', $e->getMessage())
+                sprintf('Something went wrong during product unsubscription: %s', $e->getMessage())
             );
         }
     }
@@ -143,6 +150,10 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
     /**
      * @param string $subscriptionId
      * @param array $familyInfos
+     *
+     * @throws BadRequestException
+     * @throws FranklinServerException
+     * @throws InvalidTokenException
      */
     public function updateFamilyInfos(string $subscriptionId, array $familyInfos): void
     {

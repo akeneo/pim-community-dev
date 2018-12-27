@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Validation;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Validator\ConnectionValidator as AppConnectionValidator;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Validation\ConnectionValidator;
 use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidationException;
 use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidatorInterface;
@@ -44,7 +45,7 @@ class ConnectionValidatorSpec extends ObjectBehavior
     {
         $connectionValidator->isValid()->willReturn(false);
 
-        $this->shouldThrow(new ValidationException('Token is invalid or expired'))
+        $this->shouldThrow(new ValidationException(DataProviderException::authenticationError()->getMessage()))
              ->during('validate', [Argument::any()]);
     }
 

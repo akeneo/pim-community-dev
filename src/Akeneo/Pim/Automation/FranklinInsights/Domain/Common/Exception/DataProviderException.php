@@ -33,7 +33,7 @@ final class DataProviderException extends \Exception
         string $message,
         array $messageParams,
         int $code,
-        \Exception $previous
+        \Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
 
@@ -49,7 +49,7 @@ final class DataProviderException extends \Exception
     {
         $message = sprintf(self::CONSTRAINT_KEY, 'ask_franklin_down');
 
-        return new static($message, [], 500, $previousException);
+        return new self($message, [], 500, $previousException);
     }
 
     /**
@@ -57,23 +57,23 @@ final class DataProviderException extends \Exception
      *
      * @return DataProviderException
      */
-    public static function authenticationError(\Exception $previousException): self
+    public static function authenticationError(\Exception $previousException = null): self
     {
         $message = sprintf(self::CONSTRAINT_KEY, 'authentication_error');
 
-        return new static($message, [], 403, $previousException);
+        return new self($message, [], 403, $previousException);
     }
 
     /**
-     * @param \Exception $previousException
+     * @param \Exception|null $previousException
      *
      * @return DataProviderException
      */
-    public static function badRequestError(\Exception $previousException): self
+    public static function badRequestError(\Exception $previousException = null): self
     {
         $message = sprintf(self::CONSTRAINT_KEY, 'bad_request_error');
 
-        return new static($message, [], 500, $previousException);
+        return new self($message, [], 500, $previousException);
     }
 
     /**
