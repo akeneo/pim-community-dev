@@ -26,7 +26,7 @@ class CategorySpec extends ObjectBehavior
                 'fr_FR' => 'Ma superbe catégorie',
                 'en_US' => 'My awesome category',
             ],
-            'code'     => 'ERROR',
+            'code'     => 'mycode',
             'parent'   => 'master',
         ]);
     }
