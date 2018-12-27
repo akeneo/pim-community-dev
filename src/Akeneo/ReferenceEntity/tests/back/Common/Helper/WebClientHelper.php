@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Common\Helper;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -148,6 +149,27 @@ HTML;
         $client->request($request['method'], $url, [], [], $headers, $body);
 
         return $client->getResponse();
+    }
+
+    public function assertStreamedResponseFromFile(StreamedResponse $response, string $responseContent, string $relativeFilePath): void
+    {
+        $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
+        if (null === $expectedResponse) {
+            throw new \RuntimeException(
+                sprintf('Impossible to load "%s" file, the file is not be present or is malformed', $relativeFilePath)
+            );
+        }
+
+        $statusCodeErrorMessage = sprintf(
+            'Expected response status code is not the same as the actual. Failed with content %s',
+            $response->getContent()
+        );
+        Assert::assertSame($expectedResponse['response']['status'], $response->getStatusCode(), $statusCodeErrorMessage);
+        Assert::assertSame($expectedResponse['response']['body'], $responseContent, 'Expected response content is not the same as the actual.');
+
+        if (isset($expectedResponse['response']['headers'])) {
+            $this->assertResponseHeaders($expectedResponse['response']['headers'], $response);
+        }
     }
 
     private function assertFromFile(Response $response, string $relativeFilePath): void
