@@ -21,7 +21,10 @@ use Webmozart\Assert\Assert;
  */
 class RightLevel
 {
-    public const LEVELS = ['view', 'edit'];
+    private const VIEW = 'view';
+    private const EDIT = 'edit';
+
+    public const LEVELS = [self::VIEW, self::EDIT];
 
     /** @var string */
     private $rightLevel;
@@ -40,12 +43,12 @@ class RightLevel
 
     public static function edit(): self
     {
-        return new self('edit');
+        return new self(self::EDIT);
     }
 
     public static function view(): self
     {
-        return new self('view');
+        return new self(self::VIEW);
     }
 
     public function normalize(): string
