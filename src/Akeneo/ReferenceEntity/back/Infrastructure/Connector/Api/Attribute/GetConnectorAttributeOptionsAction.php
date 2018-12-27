@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInt
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeSupportsOptions;
 
 class GetConnectorAttributeOptionsAction
 {
@@ -31,14 +32,19 @@ class GetConnectorAttributeOptionsAction
     /** @var AttributeExistsInterface */
     private $attributeExists;
 
+    /** @var AttributeSupportsOptions */
+    private $attributeSupportsOptions;
+
     public function __construct(
         FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery,
         ReferenceEntityExistsInterface $referenceEntityExists,
-        AttributeExistsInterface $attributeExists
+        AttributeExistsInterface $attributeExists,
+        AttributeSupportsOptions $attributeSupportsOptions
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->findConnectorAttributeOptionsQuery = $findConnectorAttributeOptionsQuery;
         $this->attributeExists = $attributeExists;
+        $this->attributeSupportsOptions = $attributeSupportsOptions;
     }
 
     /**
@@ -75,12 +81,14 @@ class GetConnectorAttributeOptionsAction
             ));
         }
 
-        $attributeOptions = ($this->findConnectorAttributeOptionsQuery)($referenceEntityIdentifier, $attributeCode);
-        $normalizedAttributeOptions = [];
+        $attributeSupportsOptions = ($this->attributeSupportsOptions)($referenceEntityIdentifier, $attributeCode);
 
-        if (null === $attributeOptions) {
+        if (false === $attributeSupportsOptions) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not support options.', $attributeCode));
         }
+
+        $attributeOptions = ($this->findConnectorAttributeOptionsQuery)($referenceEntityIdentifier, $attributeCode);
+        $normalizedAttributeOptions = [];
 
         foreach ($attributeOptions as $attributeOption) {
             $normalizedAttributeOptions[] = $attributeOption->normalize();

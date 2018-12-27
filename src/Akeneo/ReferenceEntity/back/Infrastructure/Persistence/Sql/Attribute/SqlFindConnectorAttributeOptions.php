@@ -41,12 +41,12 @@ class SqlFindConnectorAttributeOptions implements FindConnectorAttributeOptionsI
     /**
      * @return ConnectorAttribute
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): ?array
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): array
     {
         return $this->fetch($referenceEntityIdentifier, $attributeCode);
     }
 
-    private function fetch(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): ?array
+    private function fetch(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): array
     {
         $query = <<<SQL
         SELECT additional_properties
@@ -74,14 +74,13 @@ SQL;
     /**
      * @return ConnectorAttribute
      */
-    private function hydrateAttributeOptions(array $result): ?array
+    private function hydrateAttributeOptions(array $result): array
     {
         $additionalProperties = json_decode($result['additional_properties'], true) ?? [];
-
         $options = $additionalProperties['options'] ?? null;
 
         if (null === $options) {
-            return null;
+            throw new \LogicException('Attribute %s has no options');
         }
 
         $connectorOptions = [];
