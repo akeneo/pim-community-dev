@@ -354,6 +354,11 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\UserGroup\SqlFindUserGroupsForSecurityIdentifier
         arguments:
             - '@database_connection'
+            -
+    akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlGetAttributeIdentifier
+        arguments:
+            - '@database_connection'
 
     # Reference entities permissions queries
     akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_permissions_details:
