@@ -3,6 +3,7 @@ jobs:
   build:
     machine:
       enabled: true
+      docker_layer_caching: true
     steps:
       - checkout
       - run:
@@ -14,32 +15,87 @@ jobs:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs
       - run:
-            name: Setup the parameters.yml files
-            command: ./bin/docker/pim-setup.sh
+          name: Setup the parameters.yml files
+          command: ./bin/docker/pim-setup.sh
       - run:
-            name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
-            command: chmod 777 ../project -R
+          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+          command: sudo chown -R 1000:1000 ../project
       - run:
           name: Start containers
           command: docker-compose up -d
+      - restore_cache:
+          name: Restore cache - node_modules
+          keys:
+            - node-modules-v4-{{ checksum "yarn.lock" }}
+      - restore_cache:
+          name: Restore cache - vendor
+          keys:
+            - vendor-v4-{{ checksum "composer.lock" }}
+      - run:
+          name: Change owner on project dir after restoring cache
+          command: sudo chown -R 1000:1000 ../project
       - run:
           name: Install dependencies
           command: ./bin/docker/pim-dependencies.sh
       - run:
           name: Pim installation
           command: |
-            docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
-            docker-compose run --rm node yarn run webpack-dev
-            docker-compose run --rm node yarn run webpack-test
-      - run:
-          name: Change permissions on project dir in order to archive the project into the workspace
-          command: sudo chmod 777 ../project -R
+              docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
+              docker-compose run --rm node yarn run webpack-dev
+              docker-compose run --rm node yarn run webpack-test
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: node-modules-v4-{{ checksum "yarn.lock" }}
+      - save_cache:
+          paths:
+            - ./vendor
+          key: vendor-v4-{{ checksum "composer.lock" }}
       - persist_to_workspace:
           root: ~/
           paths:
             - project
 
-  test_phpunit:
+  test_static_back:
+      machine:
+          enabled: true
+          docker_layer_caching: true
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command:
+                    docker-compose up -d fpm
+          - run:
+                name: PhpSpec
+                command:
+                    docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+          - run:
+                name: PhpCsFixer
+                command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+          - run:
+                name: PhpCoupling Detector
+                command: |
+                    docker-compose exec -T fpm vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src
+                    docker-compose exec -T fpm vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Structure/.php_cd.php src/Akeneo/Pim/Structure
+                    docker-compose exec -T fpm vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
+                    docker-compose exec -T fpm vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Channel/.php_cd.php src/Akeneo/Channel
+          - run:
+                name: PHPStan
+                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
+          - run:
+                name: Check Pullup
+                command: docker-compose exec -T fpm bin/check-pullup
+          - store_test_results:
+                path: var/tests
+          - store_artifacts:
+                path: var/tests
+
+  test_phpunit_integration:
       machine:
           enabled: true
       parallelism: 7
@@ -90,53 +146,6 @@ jobs:
           path: var/tests/behat
       - store_artifacts:
           path: var/tests/behat
-
-  test_static_back:
-    docker:
-      - image: akeneo/fpm:php-7.2
-        environment:
-          COMPOSER_MEMORY_LIMIT: 5G
-        user: docker
-    parallelism: 2
-    steps:
-      - checkout
-      - run:
-          name: Composer
-          command: composer update --no-ansi --no-scripts --no-interaction --no-progress --prefer-dist --no-suggest
-      - run:
-          name: Setup tests results folder
-          command: |
-            mkdir -p ~/test/results/phpspec
-            mkdir -p ~/test/results/phpcsfixer
-            mkdir -p var/logs
-      - run:
-          name: PhpSpec
-          command: |
-            TESTFILES=$(circleci tests split toto.txt)
-            vendor/bin/phpspec run ${TESTFILES} --format=junit > ~/test/results/phpspec/junit_output.xml
-      - run:
-          name: PhpCoupling Detector
-          command: |
-            vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src
-            vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Structure/.php_cd.php src/Akeneo/Pim/Structure
-            vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
-            vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Channel/.php_cd.php src/Akeneo/Channel
-      - run:
-          name: PhpCsFixer
-          command: vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ~/test/results/phpcsfixer/junit_output.xml
-      - run:
-          name: PHPStan
-          command: vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
-      - run:
-          name: Check Pullup
-          command: bin/check-pullup
-      #    - run:
-      #        name: Acceptance
-      #        command: vendor/bin/behat --strict -p acceptance -vv
-      - store_test_results:
-          path: ~/test/results
-      - store_artifacts:
-          path: ~/test/results
 
   test_static_front:
     docker:
@@ -199,10 +208,17 @@ workflows:
 #          type: approval
       - build:
           requires:
-#              - wait_for_user_approval
-#      - test_phpunit:
-#          requires:
-#            - build
-      - test_legacy_behat:
+#            - wait_for_user_approval
+      - test_static_back:
           requires:
             - build
+#      - test_phpunit_integration:
+#          requires:
+#            - build
+#            - test_static_back
+#      - test_phpunit_end_to_end:
+#          requires:
+#            - test_phpunit_integration
+#      - test_legacy_behat:
+#          requires:
+#            - build

@@ -67,13 +67,13 @@ class ProductBuilderSpec extends ObjectBehavior
             'mysku'
         );
 
-        $familyRepository->findOneByIdentifier("tshirt")->willReturn($tshirtFamily);
+        $familyRepository->findOneByIdentifier('tshirt')->willReturn($tshirtFamily);
         $tshirtFamily->getId()->shouldBeCalled();
         $tshirtFamily->getAttributes()->willReturn([]);
 
         $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any())->shouldBeCalled();
 
-        $product = $this->createProduct('mysku', 'toto');
+        $product = $this->createProduct('mysku', 'tshirt');
         $product->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
 }
