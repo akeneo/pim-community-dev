@@ -2,13 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -48,35 +44,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     public function generateMissingForProduct(ProductInterface $product)
     {
         $this->calculateProductCompletenesses($product);
-    }
-
-    /**
-     * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
-     * @param array            $filters
-     *
-     * @return ProductQueryBuilderInterface
-     */
-    protected function createProductQueryBuilderForMissings(
-        ChannelInterface $channel = null,
-        LocaleInterface $locale = null,
-        ?array $filters = null
-    ) {
-        $defaultFilters = [
-            ['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null],
-            ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null],
-        ];
-
-        $options = ['filters' => $filters ?? $defaultFilters];
-
-        if (null !== $channel) {
-            $options['default_scope'] = $channel->getCode();
-        }
-        if (null !== $locale) {
-            $options['default_locale'] = $locale->getCode();
-        }
-
-        return $this->pqbFactory->create($options);
     }
 
     /**
