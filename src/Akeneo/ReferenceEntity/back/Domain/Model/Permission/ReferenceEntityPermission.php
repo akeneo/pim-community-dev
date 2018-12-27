@@ -37,7 +37,17 @@ class ReferenceEntityPermission
     ) {
         Assert::allIsInstanceOf($permissions, UserGroupPermission::class);
         Assert::minCount($permissions, 1, 'There should be at least one permission to set for the reference entity');
+        $this->assertUniquePermissions($permissions);
 
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->permissions = $permissions;
+    }
+
+    /**
+     * @param UserGroupPermission $permissions
+     */
+    private function assertUniquePermissions(array $permissions): void
+    {
         $userGroup = [];
         foreach ($permissions as $permission) {
             $userGroupIdentifier = $permission->getUserGroupIdentifier()->normalize();
@@ -46,12 +56,8 @@ class ReferenceEntityPermission
                     sprintf('Permission for user group %s already exists', $userGroupIdentifier)
                 );
             }
-
             $userGroup[] = $userGroupIdentifier;
         }
-
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $this->permissions = $permissions;
     }
 
     /**
