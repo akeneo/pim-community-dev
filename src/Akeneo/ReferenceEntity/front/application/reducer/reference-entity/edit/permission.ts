@@ -1,6 +1,6 @@
 import {PermissionConfiguration} from 'akeneoreferenceentity/tools/component/permission';
-import {FormState, createFormState} from 'web/bundles/akeneoreferenceentity/application/reducer/state';
-import ValidationError from 'web/bundles/akeneoreferenceentity/domain/model/validation-error';
+import {FormState, createFormState} from 'akeneoreferenceentity/application/reducer/state';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 
 export interface PermissionState {
   data: PermissionConfiguration;
@@ -30,7 +30,7 @@ const permission = (
       state = {...state, errors: []};
       break;
     case 'PERMISSION_EDITION_PERMISSION_UPDATED':
-      state = {...state, data: permission};
+      state = {...state, data: permission, state: {...state.state, isDirty: isDirty(state, state.data)}};
       break;
     case 'PERMISSION_EDITION_ERROR_OCCURED':
       state = {...state, errors};

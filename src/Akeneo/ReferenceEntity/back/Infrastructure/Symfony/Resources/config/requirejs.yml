@@ -75,6 +75,9 @@ config:
                     property:
                         label: pim_reference_entity.reference_entity.tab.properties
                         view: '@akeneoreferenceentity/application/component/reference-entity/edit/properties'
+                    permission:
+                        label: pim_reference_entity.reference_entity.tab.permission
+                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/permission'
             akeneo_reference_entities_record_edit:
                 tabs:
                     enrich:

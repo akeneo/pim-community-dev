@@ -7,8 +7,9 @@ import {
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
-import PermissionCollectionEditor, {PermissionConfiguration, Group as UserGroup, RightLevel} from 'web/bundles/akeneoreferenceentity/tools/component/permission';
-import {FormState} from 'web/bundles/akeneoreferenceentity/application/reducer/state';
+import PermissionCollectionEditor, {PermissionConfiguration, Group as UserGroup, RightLevel} from 'akeneoreferenceentity/tools/component/permission';
+import {FormState} from 'akeneoreferenceentity/application/reducer/state';
+import {permissionEditionUpdated} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 
@@ -114,11 +115,11 @@ export default connect(
   (dispatch: any): DispatchProps => {
     return {
       events: {
-        onPermissionUpdated: () => {
-          // dispatch(saveReferenceEntity());
+        onPermissionUpdated: (permission: PermissionConfiguration) => {
+          dispatch(permissionEditionUpdated(permission));
         },
         onSavePermissionEditForm: () => {
-          // dispatch(saveReferenceEntity());
+          // dispatch(permissionEditionUpdated(permission));
         },
       },
     };

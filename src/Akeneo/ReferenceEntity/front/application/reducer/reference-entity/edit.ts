@@ -8,9 +8,7 @@ import createAttribute, {
   CreateState as CreateAttributeState,
 } from 'akeneoreferenceentity/application/reducer/attribute/create';
 import structure, {StructureState} from 'akeneoreferenceentity/application/reducer/structure';
-import permission, {
-  PermissionState,
-} from 'web/bundles/akeneoreferenceentity/application/reducer/reference-entity/edit/permission';
+import permission, {PermissionState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit/permission';
 import attributes, {ListState} from 'akeneoreferenceentity/application/reducer/attribute/list';
 import attribute, {EditState as EditAttributeState} from 'akeneoreferenceentity/application/reducer/attribute/edit';
 import {

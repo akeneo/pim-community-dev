@@ -1,6 +1,6 @@
 import ValueData from 'akeneoreferenceentity/domain/model/record/data';
 import OptionCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
-import {OptionAttribute} from 'web/bundles/akeneoreferenceentity/domain/model/attribute/type/option';
+import {OptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
 
 class InvalidTypeError extends Error {}
 

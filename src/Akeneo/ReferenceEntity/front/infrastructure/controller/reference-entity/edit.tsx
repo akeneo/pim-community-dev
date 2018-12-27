@@ -150,7 +150,7 @@ class ReferenceEntityEditController extends BaseController {
 
     const state = this.store.getState();
 
-    return state.form.state.isDirty || state.attribute.isDirty || state.options.isDirty;
+    return state.form.state.isDirty || state.attribute.isDirty || state.options.isDirty || state.permission.isDirty;
   }
 }
 

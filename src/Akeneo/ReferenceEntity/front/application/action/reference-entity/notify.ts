@@ -30,3 +30,11 @@ export const notifyReferenceEntityDeletionErrorOccured = (errors: ValidationErro
 
   return notify('error', firstError.message);
 };
+
+export const notifyPermissionWellSaved = () => {
+  return notify('success', 'pim_reference_entity.permission.notification.save.success');
+};
+
+export const notifyPermissionSaveFailed = () => {
+  return notify('error', 'pim_reference_entity.permission.notification.save.fail');
+};
