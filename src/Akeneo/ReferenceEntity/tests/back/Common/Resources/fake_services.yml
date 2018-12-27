@@ -145,6 +145,11 @@ services:
     akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_permissions_details:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityPermissionsDetails
 
+    akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryGetAttributeIdentifier
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
         class: Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy
