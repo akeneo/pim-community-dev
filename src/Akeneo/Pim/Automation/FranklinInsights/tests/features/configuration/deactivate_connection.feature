@@ -9,4 +9,4 @@ Feature: Automatically deactivate Franklin Insights
     And the following "ecommerce" channel with locales "fr_FR, en_US"
     And Franklin is configured with a valid token
     When a product manager deactivates all english locales
-    Then Franklin is not activated
+    Then Franklin should not be activated

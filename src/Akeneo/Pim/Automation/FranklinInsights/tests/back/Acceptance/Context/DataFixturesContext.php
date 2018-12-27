@@ -16,6 +16,7 @@ namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryIdentifiersMappingRepository;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
@@ -80,9 +81,11 @@ class DataFixturesContext implements Context
 
     /** @var InMemoryAttributeOptionRepository */
     private $attributeOptionRepository;
-    /**
-     * @var FakeClient
-     */
+
+    /** @var InMemoryIdentifiersMappingRepository */
+    private $identifiersMappingRepository;
+
+    /** @var FakeClient */
     private $fakeClient;
 
     /**
@@ -100,6 +103,7 @@ class DataFixturesContext implements Context
      * @param EntityBuilder $categoryBuilder
      * @param InMemoryCategoryRepository $categoryRepository
      * @param InMemoryAttributeOptionRepository $attributeOptionRepository
+     * @param InMemoryIdentifiersMappingRepository $identifiersMappingRepository
      * @param FakeClient $fakeClient
      */
     public function __construct(
@@ -117,6 +121,7 @@ class DataFixturesContext implements Context
         EntityBuilder $categoryBuilder,
         InMemoryCategoryRepository $categoryRepository,
         InMemoryAttributeOptionRepository $attributeOptionRepository,
+        InMemoryIdentifiersMappingRepository $identifiersMappingRepository,
         FakeClient $fakeClient
     ) {
         $this->productRepository = $productRepository;
@@ -133,6 +138,7 @@ class DataFixturesContext implements Context
         $this->categoryBuilder = $categoryBuilder;
         $this->categoryRepository = $categoryRepository;
         $this->attributeOptionRepository = $attributeOptionRepository;
+        $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->fakeClient = $fakeClient;
     }
 
@@ -348,6 +354,20 @@ class DataFixturesContext implements Context
             'available_locales' => [$localeCode],
         ]);
         $this->attributeRepository->save($attribute);
+    }
+
+    /**
+     * This should be a real attribute removal but not done due to in memory repository architecture.
+     *
+     * @When I delete the attribute mapped to :franklinIdentifier
+     *
+     * @param string $franklinIdentifier
+     */
+    public function iDeleteTheAttributeMappedTo(string $franklinIdentifier): void
+    {
+        $identifiersMapping = $this->identifiersMappingRepository->find();
+        $identifiersMapping->map($franklinIdentifier, null);
+        $this->identifiersMappingRepository->save($identifiersMapping);
     }
 
     /**

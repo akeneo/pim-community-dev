@@ -6,7 +6,7 @@ Feature: Subscribe a product to Franklin
 
   @end-to-end @javascript @critical
   Scenario: Successfully subscribe a product to Franklin
-    Given a system administrator configures Franklin using a valid token
+    Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
     And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |

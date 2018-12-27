@@ -6,16 +6,15 @@ Feature: Franklin configuration
 
   Scenario: The system administrator can retrieve his token
     Given Franklin is configured with a valid token
-    When a system administrator retrieves the Franklin configuration
-    Then Franklin valid token is retrieved
+    When I retrieve Franklin's configuration
+    Then the retrieved token should be valid
 
   Scenario: The system administrator can retrieve his expired token
     Given Franklin is configured with an expired token
-    When a system administrator retrieves the Franklin configuration
-    Then Franklin expired token is retrieved
+    When I retrieve Franklin's configuration
+    Then the retrieved token should be expired
 
-    #token = nul
-#  Scenario: The system administrator can retrieve his configuration when there is no token defined
-#    Given Franklin is not activated
-#    When a system administrator retrieves the Franklin configuration
-#    Then Franklin should not retrieve any token
+  Scenario: The system administrator can retrieve his configuration when there is no token defined
+    Given Franklin has not been configured
+    When I retrieve Franklin's configuration
+    Then no token should be retrieved

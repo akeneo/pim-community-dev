@@ -52,12 +52,12 @@ final class FranklinConfigurationContext extends PimContext
     }
 
     /**
-     * @When a system administrator configures Franklin using a valid token
+     * @Given Franklin is configured with a valid token
      *
      * @throws \Context\Spin\TimeoutException
      * @throws \Exception
      */
-    public function franklinIsConfiguredWithValidToken(): void
+    public function franklinIsConfiguredWithAValidToken(): void
     {
         $this->loadDefaultCatalog();
         $this->loginAsAdmin();
@@ -65,11 +65,11 @@ final class FranklinConfigurationContext extends PimContext
     }
 
     /**
-     * @Then Franklin is activated
+     * @Then Franklin should be activated
      *
      * @throws \Context\Spin\TimeoutException
      */
-    public function franklinIsActivated(): void
+    public function franklinShouldBeActivated(): void
     {
         $this->checkFranklinConfigurationIsSaved();
         $this->checkActivationButtonIsGreen();

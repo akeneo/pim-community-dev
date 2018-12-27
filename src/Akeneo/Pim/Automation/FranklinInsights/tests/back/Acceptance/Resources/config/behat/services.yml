@@ -4,8 +4,14 @@ services:
         arguments:
             - '@__symfony__.akeneo.pim.automation.franklin_insights.application.configuration.command.activate_connection_handler'
             - '@__symfony__.akeneo.pim.automation.franklin_insights.application.configuration.query.get_configuration_handler'
-            - '@__symfony__.akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
             - '@__symfony__.akeneo.pim.automation.franklin_insights.repository.configuration'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.franklin_insights.status:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\StatusContext'
+        arguments:
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
         tags:
             - { name: 'fob.context_service' }
 
@@ -37,6 +43,7 @@ services:
             - '@test.category.builder'
             - '@__symfony__.pim_catalog.repository.category'
             - '@__symfony__.pim_catalog.repository.attribute_option'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
             - '@__symfony__.akeneo.pim.automation.franklin_insights.franklin_client.http_client'
         tags:
             - { name: 'fob.context_service' }

@@ -6,14 +6,14 @@ Feature: Unsubscribe a product to Franklin
 
   @end-to-end @javascript @critical
   Scenario: Successfully unsubscribe a product from Franklin
-    Given a system administrator configures Franklin using a valid token
+    Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
     And the product "B00EYZY6AC" is subscribed to Franklin
     When I unsubscribe the product "B00EYZY6AC"
     Then the product "B00EYZY6AC" should not be subscribed
 
   Scenario: Successfully unsubscribe a deleted product from Franklin
-    Given a system administrator configures Franklin using a valid token
+    Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
     And the product "B00EYZY6AC" is subscribed to Franklin
     When I delete the product "B00EYZY6AC"

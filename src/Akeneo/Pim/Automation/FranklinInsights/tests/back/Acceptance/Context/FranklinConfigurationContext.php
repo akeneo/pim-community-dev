@@ -17,8 +17,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command\Act
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command\ActivateConnectionHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConfigurationHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConfigurationQuery;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
@@ -41,9 +39,6 @@ final class FranklinConfigurationContext implements Context
     /** @var GetConfigurationHandler */
     private $getConfigurationHandler;
 
-    /** @var GetConnectionStatusHandler */
-    private $getConnectionStatusHandler;
-
     /**
      * Make this context stateful. Useful for testing configuration retrieval.
      *
@@ -54,18 +49,15 @@ final class FranklinConfigurationContext implements Context
     /**
      * @param ActivateConnectionHandler $activateConnectionHandler
      * @param GetConfigurationHandler $getConfigurationHandler
-     * @param GetConnectionStatusHandler $getConnectionStatusHandler
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
         ActivateConnectionHandler $activateConnectionHandler,
         GetConfigurationHandler $getConfigurationHandler,
-        GetConnectionStatusHandler $getConnectionStatusHandler,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
         $this->activateConnectionHandler = $activateConnectionHandler;
         $this->getConfigurationHandler = $getConfigurationHandler;
-        $this->getConnectionStatusHandler = $getConnectionStatusHandler;
         $this->configurationRepository = $configurationRepository;
         $this->retrievedConfiguration = null;
     }
@@ -101,9 +93,9 @@ final class FranklinConfigurationContext implements Context
     }
 
     /**
-     * @When a system administrator configures Franklin using a valid token
+     * @When I configure Franklin using a valid token
      */
-    public function configuresFranklinUsingValidToken(): void
+    public function iConfigureFranklinUsingValidToken(): void
     {
         try {
             $command = new ActivateConnectionCommand(new Token(FakeClient::VALID_TOKEN));
@@ -114,9 +106,9 @@ final class FranklinConfigurationContext implements Context
     }
 
     /**
-     * @When a system administrator configures Franklin using an invalid token
+     * @When I configure Franklin using an invalid token
      */
-    public function configuresFranklinUsingAnInvalidToken(): void
+    public function iConfiguresFranklinUsingAnInvalidToken(): void
     {
         try {
             $command = new ActivateConnectionCommand(new Token(FakeClient::INVALID_TOKEN));
@@ -127,63 +119,55 @@ final class FranklinConfigurationContext implements Context
     }
 
     /**
-     * @When a system administrator retrieves the Franklin configuration
+     * @When I retrieve Franklin's configuration
      */
-    public function retrievesTheConfiguration(): void
+    public function iRetrieveFranklinsConfiguration(): void
     {
         $this->retrievedConfiguration = $this->getConfigurationHandler->handle(new GetConfigurationQuery());
     }
 
     /**
-     * @Then Franklin is activated
+     * @Then Franklin should be activated
      */
-    public function franklinIsActivated(): void
+    public function franklinShouldBeActivated(): void
     {
-        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
-        Assert::true($connectionStatus->isActive());
+        $configuration = $this->configurationRepository->find();
+        Assert::eq($configuration->getToken(), FakeClient::VALID_TOKEN);
     }
 
     /**
-     * @Then Franklin is not activated
+     * @Then Franklin should not be activated
      */
-    public function franklinIsNotActivated(): void
+    public function franklinShouldNotBeActivated(): void
     {
-        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
-        Assert::false($connectionStatus->isActive());
+        $configuration = $this->configurationRepository->find();
+        Assert::notEq($configuration->getToken(), FakeClient::VALID_TOKEN);
     }
 
     /**
-     * @Then the identifiers mapping should be valid
+     * @Then the retrieved token should be valid
      */
-    public function theIdentifiersMappingShouldBeValid(): void
-    {
-        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
-        Assert::true($connectionStatus->isIdentifiersMappingValid());
-    }
-
-    /**
-     * @Then identifiers mapping should not be valid
-     */
-    public function identifiersMappingShouldNotBeValid(): void
-    {
-        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
-        Assert::false($connectionStatus->isIdentifiersMappingValid());
-    }
-
-    /**
-     * @Then Franklin valid token is retrieved
-     */
-    public function aValidTokenIsRetrieved(): void
+    public function theRetrievedTokenShouldBeValid(): void
     {
         Assert::eq(FakeClient::VALID_TOKEN, $this->retrievedConfiguration->getToken());
     }
 
     /**
-     * @Then Franklin expired token is retrieved
+     * @Then the retrieved token should be expired
      */
-    public function anExpiredTokenIsRetrieved(): void
+    public function theRetrievedTokenShouldBeExpired(): void
     {
         Assert::eq(FakeClient::INVALID_TOKEN, $this->retrievedConfiguration->getToken());
+    }
+
+    /**
+     * @Then no token should be retrieved
+     */
+    public function noTokenShouldBeRetrieved(): void
+    {
+        $configuration = $this->configurationRepository->find();
+        Assert::isInstanceOf($configuration, Configuration::class);
+        Assert::null($configuration->getToken());
     }
 
     /**
@@ -202,6 +186,7 @@ final class FranklinConfigurationContext implements Context
 
     /**
      * @Then a connection invalid message should be sent
+     * TODO: DUPLICATE
      */
     public function aConnectionInvalidMessageShouldBeSent(): void
     {
