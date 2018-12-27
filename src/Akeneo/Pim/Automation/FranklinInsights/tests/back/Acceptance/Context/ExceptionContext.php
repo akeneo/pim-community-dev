@@ -18,7 +18,7 @@ use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
 
 /**
- * Static context to handle exceptions
+ * Static stateful context to store caught exceptions and check common ones.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */

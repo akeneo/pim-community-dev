@@ -17,7 +17,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttri
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject\AttributeOptions;
@@ -26,7 +25,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
-use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ExceptionContext;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -202,7 +200,7 @@ class AttributeOptionsMappingContext implements Context
     /**
      * @Then the retrieved attribute options should be empty
      */
-    public function theRetrievedAttributeOptionsShouldBeEmpty()
+    public function theRetrievedAttributeOptionsShouldBeEmpty(): void
     {
         Assert::count($this->retrievedAttributeOptionsMapping->mapping(), 0);
     }
@@ -210,7 +208,7 @@ class AttributeOptionsMappingContext implements Context
     /**
      * @Then an invalid attribute message should be sent
      */
-    public function anInvalidAttributeMessageShouldBeSent()
+    public function anInvalidAttributeMessageShouldBeSent(): void
     {
         Assert::eq(ExceptionContext::getThrownException(), \InvalidArgumentException::class);
     }

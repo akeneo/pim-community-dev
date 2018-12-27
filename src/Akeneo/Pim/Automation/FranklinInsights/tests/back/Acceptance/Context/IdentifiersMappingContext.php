@@ -132,7 +132,7 @@ class IdentifiersMappingContext implements Context
     /**
      * @When I retrieve the identifiers mapping
      */
-    public function iRetrieveTheIdentifiersMapping()
+    public function iRetrieveTheIdentifiersMapping(): void
     {
         try {
             $query = new GetIdentifiersMappingQuery();
@@ -175,7 +175,7 @@ class IdentifiersMappingContext implements Context
     /**
      * @Then the retrieved identifiers mapping should be empty
      */
-    public function theRetrievedIdentifiersMappingShouldBeEmpty()
+    public function theRetrievedIdentifiersMappingShouldBeEmpty(): void
     {
         Assert::assertNull(ExceptionContext::getThrownException());
         Assert::assertTrue($this->retrievedIdentifiersMapping->isEmpty());
@@ -184,7 +184,7 @@ class IdentifiersMappingContext implements Context
     /**
      * @Then the retrieved identifiers mapping should be:
      */
-    public function theRetrievedIdentifiersMappingShouldBe(TableNode $table)
+    public function theRetrievedIdentifiersMappingShouldBe(TableNode $table): void
     {
         Assert::assertNull(ExceptionContext::getThrownException());
         Assert::assertFalse($this->retrievedIdentifiersMapping->isEmpty());

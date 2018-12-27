@@ -22,7 +22,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamil
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
-use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ExceptionContext;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -183,7 +182,7 @@ final class AttributesMappingContext implements Context
     /**
      * @Then the retrieved attributes mapping should be empty
      */
-    public function theRetrievedAttributesMappingShouldBeEmpty()
+    public function theRetrievedAttributesMappingShouldBeEmpty(): void
     {
         Assert::null(ExceptionContext::getThrownException());
         Assert::count($this->retrievedAttributesMapping->getIterator(), 0);

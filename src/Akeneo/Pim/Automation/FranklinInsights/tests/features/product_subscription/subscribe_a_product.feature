@@ -99,7 +99,6 @@ Feature: Subscribe a product to Franklin
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
     And a data provider error message should be sent
-  # Improve test of thrown message
 
 #  Scenario: Fail to subscribe a product variant to Franklin
 #    Given Franklin is configured with a valid token

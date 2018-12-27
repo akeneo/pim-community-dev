@@ -68,7 +68,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
                 throw new InsufficientCreditsException();
             }
             if (Response::HTTP_FORBIDDEN === $e->getCode()) {
-                throw new InvalidTokenException('The Franklin token is missing or invalid');
+                throw new InvalidTokenException();
             }
 
             throw new BadRequestException(sprintf(
@@ -81,11 +81,11 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
     /**
      * @param string|null $uri
      *
-     * @return SubscriptionsCollection
-     *
      * @throws BadRequestException
      * @throws FranklinServerException
      * @throws InvalidTokenException
+     *
+     * @return SubscriptionsCollection
      */
     public function fetchProducts(string $uri = null): SubscriptionsCollection
     {
@@ -108,7 +108,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
             );
         } catch (ClientException $e) {
             if (Response::HTTP_FORBIDDEN === $e->getCode()) {
-                throw new InvalidTokenException('The Franklin token is missing or invalid.');
+                throw new InvalidTokenException();
             }
 
             throw new BadRequestException(
@@ -138,7 +138,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
             );
         } catch (ClientException $e) {
             if (Response::HTTP_FORBIDDEN === $e->getCode()) {
-                throw new InvalidTokenException('The Franklin token is missing or invalid');
+                throw new InvalidTokenException();
             }
 
             throw new BadRequestException(
@@ -175,7 +175,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
             );
         } catch (ClientException $e) {
             if (Response::HTTP_FORBIDDEN === $e->getCode()) {
-                throw new InvalidTokenException('The Franklin token is missing or invalid');
+                throw new InvalidTokenException();
             }
 
             throw new BadRequestException(

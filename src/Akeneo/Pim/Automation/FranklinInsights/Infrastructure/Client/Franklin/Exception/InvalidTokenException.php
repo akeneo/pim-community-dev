@@ -20,4 +20,8 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\
  */
 class InvalidTokenException extends ClientException
 {
+    public function __construct()
+    {
+        parent::__construct('The Franklin token is missing or invalid');
+    }
 }

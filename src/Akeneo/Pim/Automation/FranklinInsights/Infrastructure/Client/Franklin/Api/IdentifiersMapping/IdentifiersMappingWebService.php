@@ -51,7 +51,7 @@ class IdentifiersMappingWebService extends AbstractApi implements AuthenticatedA
             ));
         } catch (ClientException $e) {
             if (Response::HTTP_FORBIDDEN === $e->getCode()) {
-                throw new InvalidTokenException('The Franklin token is missing or invalid');
+                throw new InvalidTokenException();
             }
 
             throw new BadRequestException(sprintf(

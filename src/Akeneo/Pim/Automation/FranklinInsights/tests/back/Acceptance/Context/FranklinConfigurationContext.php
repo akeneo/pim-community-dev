@@ -153,9 +153,9 @@ final class FranklinConfigurationContext implements Context
     }
 
     /**
-     * @Then identifiers mapping should be valid
+     * @Then the identifiers mapping should be valid
      */
-    public function identifiersMappingShouldBeValid(): void
+    public function theIdentifiersMappingShouldBeValid(): void
     {
         $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
         Assert::true($connectionStatus->isIdentifiersMappingValid());

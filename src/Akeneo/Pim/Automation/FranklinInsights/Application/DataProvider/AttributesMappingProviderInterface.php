@@ -24,9 +24,9 @@ interface AttributesMappingProviderInterface
     /**
      * @param string $familyCode
      *
-     * @return AttributesMappingResponse
-     *
      * @throws DataProviderException
+     *
+     * @return AttributesMappingResponse
      */
     public function getAttributesMapping(string $familyCode): AttributesMappingResponse;
 
