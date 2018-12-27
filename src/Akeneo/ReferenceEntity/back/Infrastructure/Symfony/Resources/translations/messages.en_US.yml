@@ -14,6 +14,7 @@ akeneo_referenceentity:
         attribute:
             create: Add an attribute to a reference entity
             edit: Edit an attribute of a reference entity
-        options:
+            delete: Delete an attribute of a reference entity
+        option:
             edit: Edit options
             delete: Remove an option

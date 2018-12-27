@@ -20,6 +20,7 @@ Feature: Delete one record
   Scenario: Deleting a record
     Given a valid record
     And the user has the following rights:
+      | akeneo_referenceentity_record_edit   | true |
       | akeneo_referenceentity_record_delete | true |
     When the user deletes the record
     Then the user should see a success message on the edit page
@@ -28,5 +29,6 @@ Feature: Delete one record
   Scenario: Cannot delete a record without the rights
     Given a valid record
     And the user has the following rights:
+      | akeneo_referenceentity_record_edit   | true  |
       | akeneo_referenceentity_record_delete | false |
     Then the user should not see the delete button

@@ -24,6 +24,7 @@ Feature: Delete all reference entity record
       | designer_starck_1 | starck | {"en_US": "Philippe Starck" } |
       | designer_coco_2   | coco   | {"en_US": "Coco"}             |
     And the user has the following rights:
+      | akeneo_referenceentity_record_edit        | true |
       | akeneo_referenceentity_records_delete_all | true |
     And the user asks for the reference entity "designer"
     When the user deletes all the reference entity records
@@ -37,6 +38,7 @@ Feature: Delete all reference entity record
       | designer_starck_1 | starck | {"en_US": "Philippe Starck" } |
       | designer_coco_2   | coco   | {"en_US": "Coco"}             |
     And the user has the following rights:
+      | akeneo_referenceentity_record_edit        | true |
       | akeneo_referenceentity_records_delete_all | true |
     And the user asks for the reference entity "designer"
     When the user cannot delete all the reference entity records
@@ -50,6 +52,7 @@ Feature: Delete all reference entity record
       | designer_starck_1 | starck | {"en_US": "Philippe Starck" } |
       | designer_coco_2   | coco   | {"en_US": "Coco"}             |
     And the user has the following rights:
+      | akeneo_referenceentity_record_edit        | true  |
       | akeneo_referenceentity_records_delete_all | false |
     And the user asks for the reference entity "designer"
     Then the user should not see the delete all button

@@ -25,7 +25,6 @@ import {getAttributeView} from 'akeneoreferenceentity/application/configuration/
 import Key from 'akeneoreferenceentity/tools/key';
 import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
-import {getTextInputClassName} from 'akeneoreferenceentity/tools/css-tools';
 
 interface OwnProps {
   rights: {
@@ -136,6 +135,9 @@ class Edit extends React.Component<EditProps> {
 
   render(): JSX.Element | JSX.Element[] | null {
     const label = this.props.attribute.getLabel(this.props.context.locale);
+    const inputTextClassName = `AknTextField AknTextField--light ${
+      !this.props.rights.attribute.edit ? 'AknTextField--disabled' : ''
+    }`;
 
     return (
       <React.Fragment>
@@ -161,7 +163,7 @@ class Edit extends React.Component<EditProps> {
                     ref={(input: HTMLInputElement) => {
                       this.labelInput = input;
                     }}
-                    className={getTextInputClassName(this.props.rights.attribute.edit)}
+                    className={inputTextClassName}
                     id="pim_reference_entity.attribute.edit.input.label"
                     name="label"
                     value={this.props.attribute.getLabel(this.props.context.locale, false)}

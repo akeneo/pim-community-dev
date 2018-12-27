@@ -15,7 +15,13 @@ export default (
   locale: LocaleReference,
   errors: ValidationError[],
   onValueChange: (value: Value) => void,
-  onFieldSubmit: () => void
+  onFieldSubmit: () => void,
+  rights: {
+    record: {
+      edit: boolean;
+      delete: boolean;
+    };
+  }
 ) => {
   const visibleValues = record
     .getValueCollection()
@@ -57,6 +63,7 @@ export default (
               onSubmit={onFieldSubmit}
               channel={channel}
               locale={locale}
+              rights={rights}
             />
           </ErrorBoundary>
         </div>

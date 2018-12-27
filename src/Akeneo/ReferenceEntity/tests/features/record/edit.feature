@@ -445,48 +445,92 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Updating a record details
     Given a valid record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record
     Then the user should see a success message on the edit page
 
   @acceptance-front
+  Scenario: User can't update a record details without the edit rights
+    Given a valid record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | false |
+    Then the user cannot save the record
+
+  @acceptance-front
   Scenario: Updating a record with a simple text value
     Given a valid record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with a simple text value
     Then the user should see a success message on the edit page
 
   @acceptance-front
   Scenario: Updating a record with an invalid simple text value
     Given a valid record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with an invalid simple text value
     Then the user should see the validation error on the edit page : "This value is not a valid URL."
 
   @acceptance-front
+  Scenario: User can't update a simple text value without the edit rights
+    Given a valid record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | false |
+    Then the user cannot update the simple text value
+
+  @acceptance-front
   Scenario: Updating a record with a simple option value
     Given a valid record with an option attribute
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with a simple option value
     Then the user should see a success message on the edit page
 
   @acceptance-front
   Scenario: Updating a record with an invalid simple option value
     Given a valid record with an option attribute
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with an invalid simple option value
     Then the user should see the validation error on the edit page : "The option with code \"red\" does not exist for this attribute"
 
   @acceptance-front
+  Scenario: User can't update a simple option value without the edit rights
+    Given a valid record with an option attribute
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | false |
+    Then the user cannot update the simple option value
+
+  @acceptance-front
   Scenario: Updating a record with a multiple option value
     Given a valid record with an option collection attribute
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with a multiple option value
     Then the user should see a success message on the edit page
 
   @acceptance-front
   Scenario: Updating a record with an invalid multiple option value
     Given a valid record with an option collection attribute
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with an invalid multiple option value
     Then the user should see the validation error on the edit page : "The option with code \"red\" does not exist for this attribute"
 
   @acceptance-front
+  Scenario: User can't update a multiple option value without the edit rights
+    Given a valid record with an option collection attribute
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | false |
+    Then the user cannot update the multiple option value
+
+  @acceptance-front
   Scenario: Display bullet point for the completeness when a required field isn't filled
     Given a valid record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
     When the user ask for the record
     Then the user should see a completeness bullet point on the required field: "website"
     When the user fill the "website" field with: "http://the-website.com"
@@ -495,6 +539,8 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Display completeness percentage on a record with required fields
     Given a valid record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
     When the user ask for the record
     Then the user should see the completeness percentage with a value of "0%"
     When the user fill the "website" field with: "http://the-website.com"
@@ -503,14 +549,32 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Updating a record with a single record linked
     Given a valid record with a reference entity single link attribute
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with a single record linked
     Then the user should see a success message on the edit page
 
   @acceptance-front
+  Scenario: User can't update a single record linked value without the edit rights
+    Given a valid record with a reference entity single link attribute
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | false |
+    Then the user cannot update the single record linked value
+
+  @acceptance-front
   Scenario: Updating a record with a multiple record linked
     Given a valid record with a reference entity multiple link attribute
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with a multiple record linked
     Then the user should see a success message on the edit page
+
+  @acceptance-front
+  Scenario: User can't update a multiple record linked value without the edit rights
+    Given a valid record with a reference entity multiple link attribute
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | false |
+    Then the user cannot update the multiple record linked value
 
 #  Todo : Fix random call for the preview image
 #  @acceptance-front

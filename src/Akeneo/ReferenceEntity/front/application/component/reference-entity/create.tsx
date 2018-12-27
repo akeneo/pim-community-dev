@@ -129,10 +129,7 @@ class Create extends React.Component<CreateProps> {
                     </div>
                     {getErrorsView(this.props.errors, 'code')}
                   </div>
-                  <button
-                    className="AknButton AknButton--apply ok"
-                    onClick={this.props.events.onSubmit}
-                  >
+                  <button className="AknButton AknButton--apply ok" onClick={this.props.events.onSubmit}>
                     {__('pim_reference_entity.reference_entity.create.confirm')}
                   </button>
                 </div>

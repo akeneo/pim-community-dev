@@ -64,6 +64,13 @@ Feature: Create a record
     And the user saves the record
     Then the record creation form should be displayed
 
+  @acceptance-front
+  Scenario: User doesn't have the right to create a record
+    Given the user has the following rights:
+      | akeneo_referenceentity_record_create | false |
+    When the user asks for the reference entity "designer"
+    Then the user cannot create a record
+
 #  @acceptance-front
 #  Scenario: Cannot create a record with invalid identifier
 #    When the user asks for the reference entity "designer"

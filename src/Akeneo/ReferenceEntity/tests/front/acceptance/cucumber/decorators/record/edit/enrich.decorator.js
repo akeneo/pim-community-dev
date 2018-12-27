@@ -24,8 +24,28 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     await field.type(value);
   };
 
+  const isDisabledTextField = async id => {
+    try {
+      await page.waitForSelector(`.AknTextField[id="${id}"].AknTextField--disabled`, {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  };
+
   const fillSelectField = async (id, value) => {
     await page.select(`.AknSelectField[id="${id}"]`, value);
+  };
+
+  const isDisabledSelectField = async id => {
+    try {
+      await page.waitForSelector(`.AknSelectField[id="${id}"]:disabled`, {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
   };
 
   const fillRecordSelectField = async (id, value) => {
@@ -39,6 +59,16 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     );
 
     await field.type(value);
+  };
+
+  const isDisabledRecordSelectField = async id => {
+    try {
+      await page.waitForSelector(`.record-selector[id="${id}"]:disabled`, {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
   };
 
   const fillUploadField = async (id, value) => {
@@ -109,9 +139,12 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     setLabel,
     getTabCode,
     fillField,
+    isDisabledTextField,
     fillUploadField,
     fillSelectField,
+    isDisabledSelectField,
     fillRecordSelectField,
+    isDisabledRecordSelectField,
     clickOnDeleteButton,
     hasDeleteButton,
     isFilled,

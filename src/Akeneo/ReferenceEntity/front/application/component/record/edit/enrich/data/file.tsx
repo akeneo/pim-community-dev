@@ -5,7 +5,20 @@ import FileData, {create} from 'akeneoreferenceentity/domain/model/record/data/f
 import __ from 'akeneoreferenceentity/tools/translator';
 import File from 'akeneoreferenceentity/domain/model/file';
 
-const View = ({value, onChange}: {value: Value; onChange: (value: Value) => void}) => {
+const View = ({
+  value,
+  onChange,
+  rights,
+}: {
+  value: Value;
+  onChange: (value: Value) => void;
+  rights: {
+    record: {
+      edit: boolean;
+      delete: boolean;
+    };
+  };
+}) => {
   if (!(value.data instanceof FileData)) {
     return null;
   }
@@ -18,6 +31,7 @@ const View = ({value, onChange}: {value: Value; onChange: (value: Value) => void
       })}
       image={value.data.getFile()}
       wide={true}
+      readOnly={!rights.record.edit}
       onImageChange={(image: File) => {
         const newData = create(image);
         const newValue = value.setData(newData);
