@@ -164,7 +164,7 @@ jobs:
             name: Yarn Unit
             command: docker-compose run --rm node yarn run unit
         - run:
-            name: Yarn acceptance
+            name: Front acceptance tests
             command: |
               docker-compose run --rm node yarn run webpack-test
               MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
@@ -173,6 +173,9 @@ workflows:
   build_and_test:
     jobs:
       - build
+      - test_static_back:
+          requires:
+            - build
       - test_static_front:
           requires:
             - build
