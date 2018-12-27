@@ -48,8 +48,7 @@ const View = ({
             id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
             className={`AknTextareaField AknTextareaField--light
             ${value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''}
-            ${!rights.record.edit ? 'AknTextField--disabled' : ''}
-            `}
+            ${!rights.record.edit ? 'AknTextField--disabled' : ''}`}
             value={value.data.stringValue()}
             onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
               onValueChange(event.currentTarget.value);
@@ -61,9 +60,8 @@ const View = ({
         <input
           id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
           className={`AknTextField AknTextField--narrow AknTextField--light
-            ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}
-            ${!rights.record.edit ? 'AknTextField--disabled' : ''}
-            `}
+          ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}
+          ${!rights.record.edit ? 'AknTextField--disabled' : ''}`}
           value={value.data.stringValue()}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             onValueChange(event.currentTarget.value);

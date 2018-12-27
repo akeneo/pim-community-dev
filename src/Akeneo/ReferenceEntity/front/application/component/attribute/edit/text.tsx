@@ -73,9 +73,9 @@ const TextView = ({
     };
   };
 }) => {
-  const inputTextClassName = `AknTextField AknTextField--light 
-    ${!rights.attribute.edit ? 'AknTextField--disabled' : ''} 
-  `;
+  const inputTextClassName = `AknTextField AknTextField--light ${
+    !rights.attribute.edit ? 'AknTextField--disabled' : ''
+  }`;
 
   return (
     <React.Fragment>

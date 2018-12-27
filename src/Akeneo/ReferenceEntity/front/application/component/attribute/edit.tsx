@@ -135,9 +135,9 @@ class Edit extends React.Component<EditProps> {
 
   render(): JSX.Element | JSX.Element[] | null {
     const label = this.props.attribute.getLabel(this.props.context.locale);
-    const inputTextClassName = `AknTextField AknTextField--light 
-      ${!this.props.rights.attribute.edit ? 'AknTextField--disabled' : ''} 
-    `;
+    const inputTextClassName = `AknTextField AknTextField--light ${
+      !this.props.rights.attribute.edit ? 'AknTextField--disabled' : ''
+    }`;
 
     return (
       <React.Fragment>

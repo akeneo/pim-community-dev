@@ -131,9 +131,7 @@ const optionRow = ({
   onFocusPreviousField: (index: number, field: Field) => void;
 }) => {
   const displayDeleteRowButton: boolean = !isLastRow && editMode;
-  const inputTextClassName = `AknTextField AknTextField--light 
-    ${!editMode ? 'AknTextField--disabled' : ''} 
-  `;
+  const inputTextClassName = `AknTextField AknTextField--light ${!editMode ? 'AknTextField--disabled' : ''}`;
 
   return (
     <React.Fragment key={index}>

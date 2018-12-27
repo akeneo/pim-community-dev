@@ -61,6 +61,9 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
 
   render() {
     const record = denormalizeRecord(this.props.form.data);
+    const inputTextClassName = `AknTextField AknTextField--narrow AknTextField--light ${
+      !this.props.rights.record.edit ? 'AknTextField--disabled' : ''
+    }`;
 
     return (
       <div className="AknSubsection">
@@ -80,9 +83,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
                 type="text"
                 name="label"
                 id="pim_reference_entity.record.enrich.label"
-                className={`AknTextField AknTextField--narrow AknTextField--light
-                  ${!this.props.rights.record.edit ? 'AknTextField--disabled' : ''}
-                `}
+                className={inputTextClassName}
                 value={record.getLabel(this.props.context.locale, false)}
                 onChange={this.updateLabel}
                 onKeyDown={this.keyDown}
