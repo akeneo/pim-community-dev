@@ -18,9 +18,9 @@ class RightLevelSpec extends ObjectBehavior
 
     function it_can_directly_construct_view_right_level()
     {
-        $this->beConstructedThrough('edit');
+        $this->beConstructedThrough('view');
 
-        $this->normalize()->shouldReturn('edit');
+        $this->normalize()->shouldReturn('view');
     }
 
     function it_normalizes_itself()

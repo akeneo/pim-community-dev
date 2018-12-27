@@ -350,7 +350,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
 
-    akeneo.referencentity.infrastructure.persistence.permission.query.can_edit_reference_entity:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlCanEditReferenceEntity
+    akeneo.referencentity.infrastructure.persistence.permission.query.find_user_groups_for_security_identifier:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\UserGroup\SqlFindUserGroupsForSecurityIdentifier
         arguments:
             - '@database_connection'
