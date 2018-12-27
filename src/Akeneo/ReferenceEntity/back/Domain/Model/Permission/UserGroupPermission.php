@@ -55,4 +55,9 @@ class UserGroupPermission
     {
         return $this->userGroupIdentifier;
     }
+
+    public function isAllowedToEdit(): bool
+    {
+        return $this->rightLevel->equals(RightLevel::edit());
+    }
 }

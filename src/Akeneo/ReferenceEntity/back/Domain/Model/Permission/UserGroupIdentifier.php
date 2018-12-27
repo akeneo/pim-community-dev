@@ -36,4 +36,9 @@ class UserGroupIdentifier
     {
         return $this->identifier;
     }
+
+    public function equals(UserGroupIdentifier $otherUserGroupIdentifier): bool
+    {
+        return $this->identifier === $otherUserGroupIdentifier->identifier;
+    }
 }

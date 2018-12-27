@@ -14,12 +14,30 @@ class UserGroupPermissionSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', [
             UserGroupIdentifier::fromInteger(25),
-            RightLevel::fromString('view')
+            RightLevel::fromString('view'),
         ]);
 
         $this->normalize()->shouldReturn([
             'user_group_identifier' => 25,
-            'right_level' => 'view',
+            'right_level'           => 'view',
         ]);
+    }
+
+    function it_asks_the_right_level_to_know_if_it_can_edit()
+    {
+        $this->beConstructedThrough('create', [
+            UserGroupIdentifier::fromInteger(1),
+            RightLevel::fromString('edit'),
+        ]);
+        $this->isAllowedToEdit()->shouldReturn(true);
+    }
+
+    function it_asks_the_right_level_to_know_if_it_cannot_edit()
+    {
+        $this->beConstructedThrough('create', [
+            UserGroupIdentifier::fromInteger(1),
+            RightLevel::fromString('view'),
+        ]);
+        $this->isAllowedToEdit()->shouldReturn(false);
     }
 }

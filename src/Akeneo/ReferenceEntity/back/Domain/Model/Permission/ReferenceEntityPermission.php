@@ -36,7 +36,6 @@ class ReferenceEntityPermission
         array $permissions
     ) {
         Assert::allIsInstanceOf($permissions, UserGroupPermission::class);
-        Assert::minCount($permissions, 1, 'There should be at least one permission to set for the reference entity');
         $this->assertUniquePermissions($permissions);
 
         $this->referenceEntityIdentifier = $referenceEntityIdentifier;
@@ -92,5 +91,58 @@ class ReferenceEntityPermission
     public function getPermissions(): array
     {
         return $this->permissions;
+    }
+
+    /**
+     * @param UserGroupIdentifier $userGroupIdentifiers
+     */
+    public function isAllowedToEdit(array $userGroupIdentifiers): bool
+    {
+        Assert::allIsInstanceOf($userGroupIdentifiers, UserGroupIdentifier::class);
+
+        if (empty($this->permissions)) {
+            return true;
+        }
+        $userGroupPermissions = $this->findUserGroupPermissions($userGroupIdentifiers);
+
+        return $this->hasEditPermission($userGroupPermissions);
+    }
+
+    /**
+     * @param UserGroupIdentifier $userGroupIdentifiers
+     *
+     * @return UserGroupPermission[]
+     */
+    private function findUserGroupPermissions(array $userGroupIdentifiers): array
+    {
+        $userGroupPermissions = array_filter(
+            $this->permissions,
+            function (UserGroupPermission $userGroupPermission) use ($userGroupIdentifiers) {
+                foreach ($userGroupIdentifiers as $userGroupIdentifier) {
+                    if ($userGroupPermission->getUserGroupIdentifier()->equals($userGroupIdentifier)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        );
+
+        return $userGroupPermissions;
+    }
+
+    /**
+     * @param UserGroupPermission[] $userGroupPermissions
+     */
+    private function hasEditPermission($userGroupPermissions): bool
+    {
+        $editPermissions = array_filter(
+            $userGroupPermissions,
+            function (UserGroupPermission $userGroupPermission) {
+                return $userGroupPermission->isAllowedToEdit();
+            }
+        );
+
+        return 0 !== \count($editPermissions);
     }
 }
