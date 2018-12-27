@@ -17,7 +17,7 @@ class FamilySpec extends ObjectBehavior
     {
         $this->addAttribute($sku)->shouldReturn($this);
         $this->addAttribute($name)->shouldReturn($this);
-        $this->hasAttribute($sku)->shouldReturn(false);
+        $this->hasAttribute($sku)->shouldReturn(true);
         $this->hasAttribute($name)->shouldReturn(true);
     }
 
