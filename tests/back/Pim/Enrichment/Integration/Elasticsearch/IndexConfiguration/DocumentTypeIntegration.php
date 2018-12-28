@@ -14,6 +14,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
  */
 class DocumentTypeIntegration extends AbstractPimCatalogTestCase
 {
+    /**
+     * @test
+     */
     public function it_tests_the_equals_operator_on_product_models()
     {
         $documentType = str_replace('\\', '\\\\', ProductModelInterface::class);
@@ -40,6 +43,9 @@ class DocumentTypeIntegration extends AbstractPimCatalogTestCase
         );
     }
 
+    /**
+     * @test
+     */
     public function it_tests_the_equals_operator_on_products()
     {
         $documentType = str_replace('\\', '\\\\', ProductInterface::class);
