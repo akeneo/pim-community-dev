@@ -23,7 +23,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\EditAction
         arguments:
             - '@akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler'
-            - '@akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@reference_entity_serializer'
             - '@validator'
@@ -32,7 +32,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\DeleteAction
         arguments:
         - '@oro_security.security_facade'
-        - '@akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
+        - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
         - '@security.token_storage'
         - '@serializer'
         - '@validator'
@@ -45,7 +45,7 @@ services:
             - '@akeneo_referenceentity.application.attribute.create_attribute_handler'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order'
             - '@akeneo_referenceentity.application.registry.create_attribute_command_factory_registry'
-            - '@akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@serializer'
             - '@validator'
@@ -62,7 +62,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.application.factory.edit_attribute_command_factory'
             - '@akeneo_referenceentity.application.attribute.edit_attribute_handler'
-            - '@akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@serializer'
             - '@validator'
@@ -73,7 +73,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.application.attribute.delete_attribute_handler'
             - '@oro_security.security_facade'
-            - '@akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
 
     #  Records
@@ -81,7 +81,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\CreateAction
         arguments:
             - '@akeneo_referenceentity.application.record.create_record_handler'
-            - '@akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@reference_entity_serializer'
             - '@validator'
@@ -103,7 +103,7 @@ services:
             - '@akeneo_referenceentity.application.factory.record.edit_record_command_factory'
             - '@akeneo_referenceentity.application.record.edit_record_handler'
             - '@validator'
-            - '@akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@serializer'
 
@@ -112,7 +112,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.application.record.delete_record_handler'
             - '@oro_security.security_facade'
-            - '@akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
 
     akeneo_referenceentity.infrastructure.action.record.delete_all:
@@ -120,7 +120,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.application.record.delete_all_reference_entity_records_handler'
             - '@oro_security.security_facade'
-            - '@akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
 
     akeneo_referenceentity.infrastructure.connector.action.record.get:
