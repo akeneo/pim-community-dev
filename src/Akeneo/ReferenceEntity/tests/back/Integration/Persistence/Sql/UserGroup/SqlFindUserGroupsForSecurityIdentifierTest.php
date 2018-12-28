@@ -34,7 +34,7 @@ class SqlFindUserGroupsForSecurityIdentifierTest extends SqlIntegrationTestCase
         $normalizedUserGroupIdentifiers = array_map(
             function (UserGroupIdentifier $userGroupIdentifier) {
                 return $userGroupIdentifier->normalize();
-                },
+            },
             $userGroupIdentifiers
         );
 

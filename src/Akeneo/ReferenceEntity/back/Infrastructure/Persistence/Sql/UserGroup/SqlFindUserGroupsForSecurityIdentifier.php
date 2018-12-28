@@ -32,7 +32,6 @@ class SqlFindUserGroupsForSecurityIdentifier implements FindUserGroupsForSecurit
         $results = $this->fetchUserGroupIdentifiers($securityIdentifier);
 
         return $this->hydrateUserGroupIdentifiers($results);
-
     }
 
     private function fetchUserGroupIdentifiers(SecurityIdentifier $securityIdentifier): array

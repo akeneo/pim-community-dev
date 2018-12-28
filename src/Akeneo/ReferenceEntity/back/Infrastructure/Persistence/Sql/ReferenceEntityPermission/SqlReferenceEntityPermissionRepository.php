@@ -70,7 +70,6 @@ SQL;
     public function getByReferenceEntityIdentifier(
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ): ReferenceEntityPermission {
-
         $fetch = <<<SQL
         SELECT reference_entity_identifier, user_group_identifier, right_level
         FROM akeneo_reference_entity_reference_entity_permissions
