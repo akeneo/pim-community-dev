@@ -7,9 +7,10 @@ import {
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
-import PermissionCollectionEditor, {PermissionConfiguration, Group as UserGroup, RightLevel} from 'akeneoreferenceentity/tools/component/permission';
+import PermissionCollectionEditor, {PermissionConfiguration, Group as UserGroup} from 'akeneoreferenceentity/tools/component/permission';
 import {FormState} from 'akeneoreferenceentity/application/reducer/state';
 import {permissionEditionUpdated} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
+import {RightLevel} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 
@@ -52,6 +53,10 @@ class Properties extends React.Component<StateProps & DispatchProps> {
   render() {
     const referenceEntity = denormalizeReferenceEntity(this.props.referenceEntity);
 
+    const permissionMock = this.state.userGroups.reduce((permissions: PermissionConfiguration, userGroup: any) => {
+      return {...permissions, [userGroup.name]: RightLevel.Edit};
+    }, {})
+
     return (
       <React.Fragment>
         <Header
@@ -80,12 +85,12 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           <header className="AknSubsection-title">
             <span className="group-label">{__('pim_reference_entity.reference_entity.permission.title')}</span>
           </header>
-          <div className="AknFormContainer AknFormContainer--withPadding">
+          <div className="AknFormContainer AknFormContainer--wide">
             <PermissionCollectionEditor
-              groups={this.state.userGroups}
               entityName={'reference_entity'}//To Change
-              value={this.props.permission.data}
-              prioritizedRightLevels={Object.keys(this.props.permission.data) as RightLevel[]}
+              // value={this.props.permission.data}
+              value={permissionMock}
+              prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
               onChange={(newValue: PermissionConfiguration) => {
                   this.props.events.onPermissionUpdated(newValue)
               }}
