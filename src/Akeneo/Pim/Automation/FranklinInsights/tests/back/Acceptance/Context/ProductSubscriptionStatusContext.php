@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionStatus;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Behat\Behat\Context\Context;
@@ -26,7 +27,7 @@ use PHPUnit\Framework\Assert;
 class ProductSubscriptionStatusContext implements Context
 {
     /** @var ProductSubscriptionStatus|null */
-    private $productSubscriptionStatus;
+    private $retrievedSubscriptionStatus;
 
     /** @var GetProductSubscriptionStatusHandler */
     private $getProductSubscriptionStatusHandler;
@@ -59,7 +60,7 @@ class ProductSubscriptionStatusContext implements Context
         }
 
         $query = new GetProductSubscriptionStatusQuery($product->getId());
-        $this->productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle($query);
+        $this->retrievedSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle($query);
     }
 
     /**
@@ -67,7 +68,7 @@ class ProductSubscriptionStatusContext implements Context
      */
     public function theSubscriptionStatusShouldNotHaveAnyFamily(): void
     {
-        Assert::assertFalse($this->productSubscriptionStatus->hasFamily());
+        Assert::assertFalse($this->retrievedSubscriptionStatus->hasFamily());
     }
 
     /**
@@ -75,7 +76,7 @@ class ProductSubscriptionStatusContext implements Context
      */
     public function theSubscriptionStatusShouldHaveAFamily(): void
     {
-        Assert::assertTrue($this->productSubscriptionStatus->hasFamily());
+        Assert::assertTrue($this->retrievedSubscriptionStatus->hasFamily());
     }
 
     /**
@@ -83,7 +84,7 @@ class ProductSubscriptionStatusContext implements Context
      */
     public function theSubscriptionStatusShouldIndicateThatTheMappingValuesAreNotFilled(): void
     {
-        Assert::assertFalse($this->productSubscriptionStatus->isMappingFilled());
+        Assert::assertFalse($this->retrievedSubscriptionStatus->isMappingFilled());
     }
 
     /**
@@ -91,7 +92,7 @@ class ProductSubscriptionStatusContext implements Context
      */
     public function theSubscriptionStatusShouldIndicateThatTheMappingValuesAreFilled(): void
     {
-        Assert::assertTrue($this->productSubscriptionStatus->isMappingFilled());
+        Assert::assertTrue($this->retrievedSubscriptionStatus->isMappingFilled());
     }
 
     /**
@@ -99,7 +100,7 @@ class ProductSubscriptionStatusContext implements Context
      */
     public function theSubscriptionStatusShouldNotBeSubscribed(): void
     {
-        Assert::assertFalse($this->productSubscriptionStatus->isSubscribed());
+        Assert::assertFalse($this->retrievedSubscriptionStatus->isSubscribed());
     }
 
     /**
@@ -107,6 +108,32 @@ class ProductSubscriptionStatusContext implements Context
      */
     public function theSubscriptionStatusShouldBeSubscribed(): void
     {
-        Assert::assertTrue($this->productSubscriptionStatus->isSubscribed());
+        Assert::assertTrue($this->retrievedSubscriptionStatus->isSubscribed());
+    }
+
+    /**
+     * @Then the subscription status should indicate that the product is not a variant
+     */
+    public function theSubscriptionStatusShouldIndicateThatTheProductIsNotAVariant(): void
+    {
+        Assert::assertFalse($this->retrievedSubscriptionStatus->isProductVariant());
+    }
+
+    /**
+     * @Then the subscription status should indicate that the product is a variant
+     */
+    public function theSubscriptionStatusShouldIndicateThatTheProductIsAVariant(): void
+    {
+        Assert::assertTrue($this->retrievedSubscriptionStatus->isProductVariant());
+    }
+
+    /**
+     * @Then the subscription status should indicate that Franklin is activated
+     */
+    public function theSubscriptionStatusShouldIndicateThatFranklinIsActivated(): void
+    {
+        $connectionStatus = $this->retrievedSubscriptionStatus->getConnectionStatus();
+        Assert::assertInstanceOf(ConnectionStatus::class, $connectionStatus);
+        Assert::assertTrue($connectionStatus->isActive());
     }
 }

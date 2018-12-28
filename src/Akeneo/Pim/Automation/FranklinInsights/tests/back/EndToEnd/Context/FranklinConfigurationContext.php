@@ -43,7 +43,7 @@ final class FranklinConfigurationContext extends PimContext
 
     /**
      * @Given Franklin has not been configured
-     * 
+     *
      * @throws \Exception
      */
     public function franklinHasNotBeenConfigured(): void
