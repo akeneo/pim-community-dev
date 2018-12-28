@@ -46,8 +46,9 @@ final class FranklinConfigurationContext extends PimContext
      */
     public function franklinHasNotBeenConfigured(): void
     {
-        $configuration = $this->configurationRepository->find();
+        $this->loadDefaultCatalog();
 
+        $configuration = $this->configurationRepository->find();
         Assert::null($configuration->getToken());
     }
 
