@@ -19,7 +19,7 @@ class SqlFindUserGroupsForSecurityIdentifierTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findUserGroupsForSecurityIdentifiers = $this->get('akeneo.referencentity.infrastructure.persistence.permission.query.find_user_groups_for_security_identifier');
+        $this->findUserGroupsForSecurityIdentifiers = $this->get('akeneo.referencentity.infrastructure.persistence.query.find_user_groups_for_security_identifier');
         $this->resetDB();
     }
 

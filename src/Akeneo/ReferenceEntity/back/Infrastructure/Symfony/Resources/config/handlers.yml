@@ -20,7 +20,7 @@ services:
         class: Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission'
-            - '@akeneo.referencentity.infrastructure.persistence.permission.query.find_user_groups_for_security_identifier'
+            - '@akeneo.referencentity.infrastructure.persistence.query.find_user_groups_for_security_identifier'
 
     akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler:
         class: Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsHandler
