@@ -39,5 +39,3 @@ Feature: Retrieve some family attributes from Franklin
     And Franklin server is down
     When I retrieve the attributes mapping for the family "webcam"
     And a data provider error message should be sent
-
-

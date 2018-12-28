@@ -19,6 +19,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
@@ -189,15 +191,42 @@ final class AttributesMappingContext implements Context
     }
 
     /**
-     * @Then the attributes mapping should be saved as follows:
+     * @Then Franklin's attribute :franklinAttribute should not be mapped
      *
-     * @param TableNode $expectedMapping
+     * @param string $franklinAttribute
      */
-    public function theAttributesMappingShouldBeSavedAsFollows(TableNode $expectedMapping): void
+    public function franklinsAttributeShouldNotBeMapped($franklinAttribute): void
     {
-        $clientMapping = $this->fakeClient->getAttributesMapping();
+        $attributesMapping = $this->fakeClient->getAttributesMapping();
+        foreach ($attributesMapping as $attributeMapping) {
+            if ($franklinAttribute === $attributeMapping['from']['id']) {
+                Assert::null($attributeMapping['to']);
+                Assert::eq('inactive', $attributeMapping['status']);
 
-        $this->assertAttributesMappingSentToFranklin($expectedMapping, $clientMapping);
+                return;
+            }
+        }
+        Assert::true(false, 'Expectation not found for Franklin\'s attribute: ' . $franklinAttribute);
+    }
+
+    /**
+     * @Then Franklin's attribute :franklinAttribute should be mapped to :pimAttributeCode
+     *
+     * @param string $franklinAttribute
+     * @param string $pimAttributeCode
+     */
+    public function franklinsAttributeShouldBeMappedTo($franklinAttribute, $pimAttributeCode): void
+    {
+        $attributesMapping = $this->fakeClient->getAttributesMapping();
+        foreach ($attributesMapping as $attributeMapping) {
+            if ($franklinAttribute === $attributeMapping['from']['id']) {
+                Assert::eq($pimAttributeCode, $attributeMapping['to']['id']);
+                Assert::eq('active', $attributeMapping['status']);
+
+                return;
+            }
+        }
+        Assert::true(false, 'Expectation not found for Franklin\'s attribute: ' . $franklinAttribute);
     }
 
     /**
@@ -236,6 +265,70 @@ final class AttributesMappingContext implements Context
         }
 
         Assert::isInstanceOf(ExceptionContext::getThrownException(), \Exception::class);
+    }
+
+    /**
+     * @Then an empty attributes mapping message should be sent
+     */
+    public function anEmptyAttributesMappingMessageShouldBeSent(): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, InvalidMappingException::class);
+        Assert::eq($thrownException->getMessage(), InvalidMappingException::emptyMapping()->getMessage());
+    }
+
+    /**
+     * @Then an invalid :attributeType attribute type mapping message should be sent
+     *
+     * @param string $attributeType
+     */
+    public function anInvalidAttributeTypeMappingMessageShouldBeSent($attributeType): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, AttributeMappingException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            AttributeMappingException::incompatibleAttributeTypeMapping($attributeType)->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid localizable attribute message should be sent
+     */
+    public function anInvalidLocalizableAttributeMessageShouldBeSent(): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, AttributeMappingException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            AttributeMappingException::localizableAttributeNotAllowed()->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid scopable attribute message should be sent
+     */
+    public function anInvalidScopableAttributeMessageShouldBeSent(): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, AttributeMappingException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            AttributeMappingException::scopableAttributeNotAllowed()->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid locale specific attribute message should be sent
+     */
+    public function anInvalidLocaleSpecificAttributeMessageShouldBeSent(): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, AttributeMappingException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            AttributeMappingException::localeSpecificAttributeNotAllowed()->getMessage()
+        );
     }
 
     /**
@@ -282,31 +375,10 @@ final class AttributesMappingContext implements Context
                     'type' => 'text',
                 ],
                 'attribute' => $mapping['pim_attribute_code'],
-                'status' => (int) $this->getStatusMapping()[$mapping['status']],
+                'status' => 'pending',
             ];
         }
 
         return $requestedAttributesMapping;
-    }
-
-    /**
-     * @param TableNode $expectedMapping
-     * @param $clientMapping
-     */
-    private function assertAttributesMappingSentToFranklin(TableNode $expectedMapping, $clientMapping): void
-    {
-        $statusMapping = $this->getStatusMapping();
-
-        $attributesMapping = [];
-        foreach ($clientMapping as $attribute) {
-            $attributesMapping[] = [
-                'target_attribute_code' => $attribute['from']['id'],
-                'pim_attribute_code' => !empty($attribute['to']['id']) ? $attribute['to']['id'] : '',
-                'pim_attribute_type' => $attribute['to']['type'] ?? '',
-                'status' => $statusMapping[$attribute['status']],
-            ];
-        }
-
-        Assert::eq($this->buildExpectedAttributesMapping($expectedMapping), $attributesMapping);
     }
 }

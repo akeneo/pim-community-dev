@@ -90,10 +90,14 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
         $normalizer = new AttributeOptionsMappingNormalizer();
         $normalizedMapping = $normalizer->normalize($attributeOptionsMapping);
 
-        $this->api->update(
-            (string) $familyCode,
-            (string) $franklinAttributeId,
-            $normalizedMapping
-        );
+        try {
+            $this->api->update((string) $familyCode, (string) $franklinAttributeId, $normalizedMapping);
+        } catch (BadRequestException $e) {
+            throw DataProviderException::badRequestError($e);
+        } catch (FranklinServerException $e) {
+            throw DataProviderException::serverIsDown($e);
+        } catch (InvalidTokenException $e) {
+            throw DataProviderException::authenticationError($e);
+        }
     }
 }

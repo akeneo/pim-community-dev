@@ -9,44 +9,38 @@ Feature: Map the PIM attributes with Franklin attributes
     Given the family "router"
     And Franklin is configured with a valid token
     When the attributes are mapped for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | product_weight        |                    | pending |
-      | color                 | color              | active  |
-    Then the attributes mapping should be saved as follows:
-      | target_attribute_code | pim_attribute_code | pim_attribute_type | status   |
-      | product_weight        |                    |                    | inactive |
-      | color                 | color              | select             | active   |
-
-    #Then Franklin attribute "product_weight" should not be mapped (inactive)
-    #And Franklin attribute "color" should be mapped to PIM "product_color" (activated)
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        |                    |
+      | color                 | color              |
+    Then Franklin's attribute product_weight should not be mapped
+    And Franklin's attribute color should be mapped to color
 
   Scenario: Successfully udpdate the attributes mapping
     Given the family "router"
     And Franklin is configured with a valid token
     And a predefined attributes mapping for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | product_weight        |                    | pending |
-      | color                 | color              | active  |
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        |                    |
+      | color                 | color              |
     When the attributes are mapped for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | product_weight        | weight             | active  |
-      | color                 | color              | active  |
-    Then the attributes mapping should be saved as follows:
-      | target_attribute_code | pim_attribute_code | pim_attribute_type | status   |
-      | product_weight        | weight             | number             | active   |
-      | color                 | color              | select             | active   |
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        | weight             |
+      | color                 | color              |
+    Then Franklin's attribute product_weight should be mapped to weight
+    And Franklin's attribute color should be mapped to color
 
   Scenario: Fails to save an empty attribute mapping
     Given the family "router"
     And Franklin is configured with a valid token
     When the attributes mapping for the family "router" is updated with an empty mapping
     Then the attributes mapping should not be saved
+    And an empty attributes mapping message should be sent
 
   Scenario: Fails to save the attributes mapping if the family does not exist
     Given Franklin is configured with a valid token
     When the attributes are mapped for the family "unknown" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | product_weight        | weight             | active  |
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        | weight             |
     Then the attributes mapping should not be saved
     And an unknown family message should be sent
 
@@ -54,8 +48,8 @@ Feature: Map the PIM attributes with Franklin attributes
     Given the family "router"
     And Franklin is configured with a valid token
     When the attributes are mapped for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | color                 | unknown_attribute  | active   |
+      | target_attribute_code | pim_attribute_code |
+      | color                 | unknown_attribute  |
     Then the attributes mapping should not be saved
     And an unknown attribute message should be sent
 
@@ -66,10 +60,10 @@ Feature: Map the PIM attributes with Franklin attributes
       | invalid_type_attr | <attribute_type> |
     And Franklin is configured with a valid token
     When the attributes are mapped for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | color                 | invalid_type_attr  | active  |
+      | target_attribute_code | pim_attribute_code |
+      | color                 | invalid_type_attr  |
     Then the attributes mapping should not be saved
-    #TODO: Add assertion on message
+    And an invalid <attribute_type> attribute type mapping message should be sent
 
   Examples:
     | attribute_type                  |
@@ -86,35 +80,35 @@ Feature: Map the PIM attributes with Franklin attributes
     Given the family "router"
     And Franklin is configured with a valid token
     And a predefined attributes mapping for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | product_weight        |                    | pending |
-      | color                 | color              | active  |
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        |                    |
+      | color                 | color              |
     And Franklin server is down
     When the attributes are mapped for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | product_weight        | weight             | active  |
-      | color                 | color              | active  |
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        | weight             |
+      | color                 | color              |
     Then the attributes mapping should not be saved
-    #TODO: Add assertion on message
+    And a data provider error message should be sent
 
   Scenario: Fails to udate the attributes mapping when Franklin is down
     Given the family "router"
     And Franklin is configured with a valid token
     And Franklin server is down
     When the attributes are mapped for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | product_weight        | weight             | active  |
-      | color                 | color              | active  |
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        | weight             |
+      | color                 | color              |
     Then the attributes mapping should not be saved
-    #TODO: Add assertion on message
+    And a data provider error message should be sent
 
-  Scenario: Fails to udate the attributes mapping when the token is expired
+  Scenario: Fails to udate the attributes mapping when the token is invalid
     Given the family "router"
     And Franklin is configured with an expired token
     When the attributes are mapped for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | product_weight        | weight             | active  |
-      | color                 | color              | active  |
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        | weight             |
+      | color                 | color              |
     Then the attributes mapping should not be saved
     And an authentication error message should be sent
 
@@ -125,10 +119,10 @@ Feature: Map the PIM attributes with Franklin attributes
       | code              | type             | localizable |
       | localizable_attr  | pim_catalog_text | true        |
     When the attributes are mapped for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | product_weight        | localizable_attr   | active  |
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        | localizable_attr   |
     Then the attributes mapping should not be saved
-    #TODO: Add assertion message
+    And an invalid localizable attribute message should be sent
 
   Scenario: Fails to map Franklin attributes with scopable PIM attributes
     Given the family "router"
@@ -137,10 +131,10 @@ Feature: Map the PIM attributes with Franklin attributes
       | code              | type             | scopable |
       | scopable_attr     | pim_catalog_text | true     |
     When the attributes are mapped for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | product_weight        | scopable_attr      | active  |
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        | scopable_attr      |
     Then the attributes mapping should not be saved
-    #TODO: Add assertion message
+    And an invalid scopable attribute message should be sent
 
   Scenario: Fails to map Franklin attributes with locale specific PIM attributes
     Given the family "router"
@@ -148,7 +142,7 @@ Feature: Map the PIM attributes with Franklin attributes
     And the following locales "en_US"
     And the following text attribute "pim_weight" specific to locale en_US
     When the attributes are mapped for the family "router" as follows:
-      | target_attribute_code | pim_attribute_code | status  |
-      | product_weight        | pim_weight         | active  |
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        | pim_weight         |
     Then the attributes mapping should not be saved
-    #TODO: Add assertion message
+    And an invalid locale specific attribute message should be sent
