@@ -93,23 +93,6 @@ class SqlFindConnectorAttributeOptionsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_null_if_attribute_does_not_support_options()
-    {
-        $referenceEntityIdentifier = 'reference_entity_whatever';
-        $this->createReferenceEntity($referenceEntityIdentifier);
-        $this->createImageAttribute($referenceEntityIdentifier);
-
-        $foundOptions = ($this->findConnectorAttributeOption)(
-            ReferenceEntityIdentifier::fromString('reference_entity'),
-            AttributeCode::fromString('image')
-        );
-
-        $this->assertSame(null, $foundOptions);
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_empty_array_if_attribute_has_no_options()
     {
         $referenceEntityIdentifier = 'reference_entity_test';
