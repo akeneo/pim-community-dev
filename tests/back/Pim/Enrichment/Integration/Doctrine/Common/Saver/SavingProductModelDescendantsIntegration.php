@@ -57,9 +57,7 @@ class SavingProductModelDescendantsIntegration extends TestCase
             $this->launcher->launchConsumerOnce();
         }
 
-        // Since we set the "wait refresh" of ES to false, we have to wait for ES to actually refresh its shards
-        // Cf. https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-refresh.html
-        sleep(5);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $this->assertDocumentIdsForSearch(
             [
