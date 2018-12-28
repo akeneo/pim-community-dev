@@ -39,6 +39,14 @@ services:
         - '@akeneo_referenceentity.application.reference_entity.delete_reference_entity_handler'
 
     # Reference Entity Permissions
+    akeneo_referenceentity.infrastructure.action.reference_entity_permission.get:
+        class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntityPermission\GetAction
+        arguments:
+            - '@akeneo_referenceentity.application.reference_entity.permission.set_reference_entity_permissions_handler'
+            - '@validator'
+            - '@serializer'
+
+    # Reference Entity Permissions
     akeneo_referenceentity.infrastructure.action.reference_entity_permission.set:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntityPermission\SetAction
         arguments:
