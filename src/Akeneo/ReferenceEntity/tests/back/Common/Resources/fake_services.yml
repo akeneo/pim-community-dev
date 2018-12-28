@@ -133,8 +133,14 @@ services:
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels
 
-    akeneo.referencentity.infrastructure.persistence.permission.query.can_edit_reference_entity:
-        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryCanEditReferenceEntityStub
+    akeneo.referencentity.infrastructure.persistence.permission.query.find_user_groups_for_security_identifier:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindUserGroupsForSecurityIdentifier
+
+    akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler:
+        class: Akeneo\ReferenceEntity\Common\Fake\CanEditReferenceEntityQueryHandlerStub
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission'
+            - '@akeneo.referencentity.infrastructure.persistence.permission.query.find_user_groups_for_security_identifier'
 
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:

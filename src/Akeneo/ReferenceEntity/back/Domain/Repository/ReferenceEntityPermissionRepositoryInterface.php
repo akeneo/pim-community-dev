@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Domain\Repository;
 
 use Akeneo\ReferenceEntity\Domain\Model\Permission\ReferenceEntityPermission;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -21,5 +22,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Permission\ReferenceEntityPermission;
  */
 interface ReferenceEntityPermissionRepositoryInterface
 {
+    public function getByReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityPermission): ReferenceEntityPermission;
+
     public function save(ReferenceEntityPermission $referenceEntityPermission): void;
 }

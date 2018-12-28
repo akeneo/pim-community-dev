@@ -163,7 +163,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
     private function forbidsEdit(): void
     {
-        $this->get('akeneo.referencentity.infrastructure.persistence.permission.query.can_edit_reference_entity')
+        $this->get('akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler')
             ->forbid();
     }
 

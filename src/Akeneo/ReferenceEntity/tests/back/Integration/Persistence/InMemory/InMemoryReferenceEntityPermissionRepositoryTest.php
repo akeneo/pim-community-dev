@@ -50,4 +50,33 @@ class InMemoryReferenceEntityPermissionRepositoryTest extends TestCase
             RightLevel::fromString('edit')
         ));
     }
+
+    /**
+     * @test
+     */
+    public function it_returns_the_reference_entity()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $expectedReferenceEntityPermission = ReferenceEntityPermission::create(
+            $referenceEntityIdentifier,
+            [UserGroupPermission::create(UserGroupIdentifier::fromInteger(12), RightLevel::fromString('view'))]
+        );
+        $this->inMemoryReferenceEntityPermissionRepository->save($expectedReferenceEntityPermission);
+
+        $actualReferenceEntityPermission = $this->inMemoryReferenceEntityPermissionRepository->getByReferenceEntityIdentifier($referenceEntityIdentifier);
+
+        $this->assertEquals($expectedReferenceEntityPermission, $actualReferenceEntityPermission);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_empty_reference_entity_permission_if_it_has_none()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $actualReferenceEntityPermission = $this->inMemoryReferenceEntityPermissionRepository->getByReferenceEntityIdentifier($referenceEntityIdentifier);
+        $expectedReferenceEntityPermission = ReferenceEntityPermission::create($referenceEntityIdentifier, []);
+
+        $this->assertEquals($expectedReferenceEntityPermission->normalize(), $actualReferenceEntityPermission->normalize());
+    }
 }

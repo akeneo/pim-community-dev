@@ -33,10 +33,11 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_saves_a_reference_entity_permission()
+    public function it_saves_and_returns_a_reference_entity_permission()
     {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $referenceEntityPermission = ReferenceEntityPermission::create(
-            ReferenceEntityIdentifier::fromString('designer'),
+            $referenceEntityIdentifier,
             [
                 UserGroupPermission::create(
                     UserGroupIdentifier::fromInteger(10),
@@ -45,25 +46,41 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
                 UserGroupPermission::create(
                     UserGroupIdentifier::fromInteger(11),
                     RightLevel::fromString('view')
-                )
+                ),
             ]
         );
 
         $this->repository->save($referenceEntityPermission);
+        $referenceEntityPermission = $this->repository->getByReferenceEntityIdentifier($referenceEntityIdentifier);
 
-        $this->thereShouldBePermissionsInDatabase([
+        $this->assertEquals($referenceEntityPermission->normalize(), [
+            'reference_entity_identifier' => 'designer',
+            'permissions'                 => [
                 [
-                    'reference_entity_identifier' => 'designer',
-                    'user_group_identifier'       => '10',
-                    'right_level'                 => 'edit',
+                    'user_group_identifier' => 10,
+                    'right_level'           => 'edit',
                 ],
                 [
-                    'reference_entity_identifier' => 'designer',
-                    'user_group_identifier'       => '11',
-                    'right_level'                 => 'view',
+                    'user_group_identifier' => 11,
+                    'right_level'           => 'view',
                 ],
-            ]
+            ],
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_reference_entity_permission_with_no_user_group_permission_when_there_are_no_permissions_set_for_it()
+    {
+        $referenceEntityPermission = $this->repository->getByReferenceEntityIdentifier(
+            ReferenceEntityIdentifier::fromString('designer')
         );
+
+        $this->assertEquals($referenceEntityPermission->normalize(), [
+            'reference_entity_identifier' => 'designer',
+            'permissions'                 => [],
+        ]);
     }
 
     /**
@@ -77,7 +94,7 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
                 UserGroupPermission::create(
                     UserGroupIdentifier::fromInteger(10),
                     RightLevel::fromString('edit')
-                )
+                ),
             ]
         );
 
@@ -96,7 +113,7 @@ class SqlReferenceEntityPermissionRepositoryTest extends SqlIntegrationTestCase
                 UserGroupPermission::create(
                     UserGroupIdentifier::fromInteger(999),
                     RightLevel::fromString('edit')
-                )
+                ),
             ]
         );
 

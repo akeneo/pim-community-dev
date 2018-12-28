@@ -11,12 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Permission;
+namespace Akeneo\ReferenceEntity\Domain\Query\UserGroup;
 
 use Akeneo\ReferenceEntity\Domain\Model\Permission\UserGroupIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
 
-interface FindUserGroupForSecurityIdentifierInterface
+interface FindUserGroupsForSecurityIdentifierInterface
 {
-    public function __invoke(SecurityIdentifier $securityIdentifier): ?UserGroupIdentifier;
+    /**
+     * @return UserGroupIdentifier[]
+     */
+    public function __invoke(SecurityIdentifier $securityIdentifier): array;
 }

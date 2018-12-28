@@ -16,5 +16,5 @@ class SetReferenceEntityPermissionsCommand
     public $referenceEntityIdentifier;
 
     /** @var SetUserGroupPermissionCommand[] */
-    public $permissionsByUserGroup;
+    public $permissionsByUserGroup = [];
 }

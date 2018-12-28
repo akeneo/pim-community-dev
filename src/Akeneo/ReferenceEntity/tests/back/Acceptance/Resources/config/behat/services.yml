@@ -67,7 +67,7 @@ services:
         arguments:
         - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
         - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission'
-        - '@__symfony__.akeneo_referenceentity.application.reference_entity.permission.set_reference_entity_permissions_handler'
+        - '@__symfony__.akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
         - '@akeneo_referenceentity.tests.back.acceptance.context.exception_context'
         tags:
         - { name: fob.context_service }

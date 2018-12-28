@@ -21,10 +21,13 @@ use Webmozart\Assert\Assert;
  */
 class RightLevel
 {
-    public const LEVELS = ['none', 'view', 'edit'];
+    private const VIEW = 'view';
+    private const EDIT = 'edit';
+
+    public const LEVELS = [self::VIEW, self::EDIT];
 
     /** @var string */
-    public $rightLevel;
+    private $rightLevel;
 
     private function __construct(string $rightLevel)
     {
@@ -38,8 +41,23 @@ class RightLevel
         return new self($rightLevel);
     }
 
+    public static function edit(): self
+    {
+        return new self(self::EDIT);
+    }
+
+    public static function view(): self
+    {
+        return new self(self::VIEW);
+    }
+
     public function normalize(): string
     {
         return $this->rightLevel;
+    }
+
+    public function equals(RightLevel $otherRightLevel): bool
+    {
+        return $this->rightLevel === $otherRightLevel->rightLevel;
     }
 }

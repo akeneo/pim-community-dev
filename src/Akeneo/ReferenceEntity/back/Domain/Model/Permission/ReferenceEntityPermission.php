@@ -36,8 +36,17 @@ class ReferenceEntityPermission
         array $permissions
     ) {
         Assert::allIsInstanceOf($permissions, UserGroupPermission::class);
-        Assert::minCount($permissions, 1, 'There should be at least one permission to set for the reference entity');
+        $this->assertUniquePermissions($permissions);
 
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->permissions = $permissions;
+    }
+
+    /**
+     * @param UserGroupPermission $permissions
+     */
+    private function assertUniquePermissions(array $permissions): void
+    {
         $userGroup = [];
         foreach ($permissions as $permission) {
             $userGroupIdentifier = $permission->getUserGroupIdentifier()->normalize();
@@ -46,12 +55,8 @@ class ReferenceEntityPermission
                     sprintf('Permission for user group %s already exists', $userGroupIdentifier)
                 );
             }
-
             $userGroup[] = $userGroupIdentifier;
         }
-
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $this->permissions = $permissions;
     }
 
     /**
@@ -86,5 +91,66 @@ class ReferenceEntityPermission
     public function getPermissions(): array
     {
         return $this->permissions;
+    }
+
+    /**
+     * @param UserGroupIdentifier $userGroupIdentifiers
+     */
+    public function isAllowedToEdit(array $userGroupIdentifiers): bool
+    {
+        Assert::allIsInstanceOf($userGroupIdentifiers, UserGroupIdentifier::class);
+        if ($this->areAllUserGroupsAllowedToEdit()) {
+            return true;
+        }
+        $userGroupPermissions = $this->findPermissionsByUserGroupIdentifiers($userGroupIdentifiers);
+
+        return $this->hasEditPermission($userGroupPermissions);
+    }
+
+    /**
+     * If there are no permissions set for the reference entity (at its creation for instance), it means that every
+     * user is allowed to edit.
+     */
+    private function areAllUserGroupsAllowedToEdit(): bool
+    {
+        return empty($this->permissions);
+    }
+
+    /**
+     * @param UserGroupIdentifier $userGroupIdentifiers
+     *
+     * @return UserGroupPermission[]
+     */
+    private function findPermissionsByUserGroupIdentifiers(array $userGroupIdentifiers): array
+    {
+        $permissions = array_filter(
+            $this->permissions,
+            function (UserGroupPermission $userGroupPermission) use ($userGroupIdentifiers) {
+                foreach ($userGroupIdentifiers as $userGroupIdentifier) {
+                    if ($userGroupPermission->getUserGroupIdentifier()->equals($userGroupIdentifier)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        );
+
+        return $permissions;
+    }
+
+    /**
+     * @param UserGroupPermission[] $userGroupPermissions
+     */
+    private function hasEditPermission(array $userGroupPermissions): bool
+    {
+        $editPermissions = array_filter(
+            $userGroupPermissions,
+            function (UserGroupPermission $userGroupPermission) {
+                return $userGroupPermission->isAllowedToEdit();
+            }
+        );
+
+        return !empty($editPermissions);
     }
 }
