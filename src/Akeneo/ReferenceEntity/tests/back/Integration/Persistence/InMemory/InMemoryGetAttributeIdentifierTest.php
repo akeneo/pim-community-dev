@@ -80,8 +80,7 @@ class InMemoryGetAttributeIdentifierTest extends TestCase
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $attributeCode,
         AttributeIdentifier $identifier
-    ): AttributeIdentifier
-    {
+    ): AttributeIdentifier {
         $textAttribute = TextAttribute::createText(
             $identifier,
             $referenceEntityIdentifier,

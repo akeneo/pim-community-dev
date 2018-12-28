@@ -33,8 +33,7 @@ class SqlGetAttributeIdentifier implements GetAttributeIdentifierInterface
     public function withReferenceEntityAndCode(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $attributeCode
-    ): AttributeIdentifier
-    {
+    ): AttributeIdentifier {
         $query = <<<SQL
             SELECT identifier
             FROM akeneo_reference_entity_attribute

@@ -31,8 +31,7 @@ class InMemoryGetAttributeIdentifier implements GetAttributeIdentifierInterface
     public function withReferenceEntityAndCode(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $attributeCode
-    ): AttributeIdentifier
-    {
+    ): AttributeIdentifier {
         $attributes = $this->attributeRepository->getAttributes();
 
         foreach ($attributes as $attribute) {

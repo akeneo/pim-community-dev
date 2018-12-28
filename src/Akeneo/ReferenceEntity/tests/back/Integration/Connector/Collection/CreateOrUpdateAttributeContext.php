@@ -81,8 +81,6 @@ class CreateOrUpdateAttributeContext implements Context
         );
 
         $this->referenceEntityRepository->create($referenceEntity);
-
-        $this->requestContract = 'successful_main_color_reference_entity_attribute_creation.json';
     }
 
     /**
@@ -90,6 +88,7 @@ class CreateOrUpdateAttributeContext implements Context
      */
     public function theMainColorAttributeThatIsOnlyPartOfTheStructureOfTheColorReferenceEntityInTheERPButNotInThePIM()
     {
+        $this->requestContract = 'successful_main_color_reference_entity_attribute_creation.json';
     }
 
     /**
@@ -141,5 +140,63 @@ class CreateOrUpdateAttributeContext implements Context
 
         Assert::assertEquals($expectedAttribute, $attribute);
     }
-}
 
+    /**
+     * @Given the Main Color attribute that is both part of the structure of the Color reference entity in the ERP and in the PIM but with some unsynchronized properties
+     */
+    public function theMainColorAttributeThatIsBothPartOfTheStructureOfTheColorReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
+    {
+        $attribute = TextAttribute::createText(
+            AttributeIdentifier::fromString('main_color_identifier'),
+            ReferenceEntityIdentifier::fromString('color'),
+            AttributeCode::fromString('main_color'),
+            LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::noLimit(),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+        $this->attributeRepository->create($attribute);
+
+        $this->requestContract = 'successful_main_color_reference_entity_attribute_update.json';
+    }
+
+    /**
+     * @Then the properties of the Main Color attribute are updated in the PIM with the properties coming from the ERP
+     */
+    public function thePropertiesOfTheMainColorAttributeAreUpdatedInThePIMWithThePropertiesComingFromTheERP()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'successful_main_color_reference_entity_attribute_update.json'
+        );
+
+        $referenceEntityIdentifier = 'color';
+
+        $identifier = AttributeIdentifier::create(
+            (string) 'color',
+            (string) 'main_color',
+            md5('color_main_color')
+        );
+
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        $expectedAttribute = TextAttribute::createText(
+            $identifier,
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString('main_color'),
+            LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegularExpression::fromString('/\w+/')
+        );
+
+        Assert::assertEquals($expectedAttribute, $attribute);
+    }
+}

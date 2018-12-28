@@ -6,15 +6,15 @@ Feature: Connection to MDM or ERP systems
   @integration-back
   Scenario: Collect an new attribute for a reference entity from the ERP
     Given the Color reference entity existing both in the ERP and in the PIM
-#    And the Main Color attribute that is only part of the structure of the Color reference entity in the ERP but not in the PIM
-#    When the connector collects the Main Color attribute of the Color reference entity from the ERP to synchronize it with the PIM
-#    Then the Main Color attribute is added to the structure of the Color reference entity in the PIM with the properties coming from the ERP
+    And the Main Color attribute that is only part of the structure of the Color reference entity in the ERP but not in the PIM
+    When the connector collects the Main Color attribute of the Color reference entity from the ERP to synchronize it with the PIM
+    Then the Main Color attribute is added to the structure of the Color reference entity in the PIM with the properties coming from the ERP
        
-#  Scenario: Collect an existing attribute for a reference entity from the ERP
-#    Given the Color reference entity existing both in the ERP and in the PIM
-#    And the Main Color attribute that is both part of the structure of the Color reference entity in the ERP and in the PIM but with some unsynchronized properties
-#    When the connector collects the Main Color attribute of the Color reference entity from the ERP to synchronize it with the PIM
-#    Then the properties of the Main Color attribute are updated in the PIM with the properties coming from the ERP
+  Scenario: Collect an existing attribute for a reference entity from the ERP
+    Given the Color reference entity existing both in the ERP and in the PIM
+    And the Main Color attribute that is both part of the structure of the Color reference entity in the ERP and in the PIM but with some unsynchronized properties
+    When the connector collects the Main Color attribute of the Color reference entity from the ERP to synchronize it with the PIM
+    Then the properties of the Main Color attribute are updated in the PIM with the properties coming from the ERP
 #
 #  Scenario: Notify an error when distributing an attribute of a non-existent reference entity
 #    Given some reference entities
