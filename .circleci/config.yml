@@ -40,7 +40,7 @@ jobs:
       - run:
           name: Pim installation
           command: |
-              docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
+              docker-compose exec fpm bin/console --env=behat pim:install --force --clean
               docker-compose run --rm node yarn run webpack-dev
               docker-compose run --rm node yarn run webpack-test
       - save_cache:
@@ -94,6 +94,29 @@ jobs:
                 path: var/tests
           - store_artifacts:
                 path: var/tests
+
+  test_acceptance_back:
+      machine:
+          enabled: true
+          docker_layer_caching: true
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: |
+                    docker-compose up -d fpm
+          - run:
+                name: Acceptance back
+                command:
+                    docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
+          - store_test_results:
+                path: var/tests/behat
+          - store_artifacts:
+                path: var/tests/behat
 
   test_phpunit_integration:
       machine:
@@ -168,6 +191,7 @@ jobs:
             command: |
               docker-compose run --rm node yarn run webpack-test
               MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+
 workflows:
   version: 2
   build_and_test:
@@ -177,5 +201,8 @@ workflows:
           requires:
             - build
       - test_static_front:
+          requires:
+            - build
+      - test_acceptance_back:
           requires:
             - build
