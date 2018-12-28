@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
@@ -64,7 +65,7 @@ final class FranklinConfigurationContext extends PimContext
         $this->loadDefaultCatalog();
 
         $configuration = $this->configurationRepository->find();
-        $configuration->setToken('valid-token');
+        $configuration->setToken(new Token('valid-token'));
         $this->configurationRepository->save($configuration);
     }
 
