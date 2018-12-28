@@ -234,6 +234,26 @@ class AttributeOptionsMappingContext implements Context
     }
 
     /**
+     * @Then Franklin option :franklinOptionId should not be mapped
+     *
+     * @param string $franklinOptionId
+     */
+    public function franklinOptionShouldNotBeMapped(string $franklinOptionId): void
+    {
+        $optionsMapping = $this->fakeClient->getOptionsMapping();
+        foreach ($optionsMapping as $optionMapping) {
+            if ($franklinOptionId === $optionMapping['from']['id']) {
+                Assert::null($optionMapping['to']);
+                Assert::eq('inactive', $optionMapping['status']);
+
+                return;
+            }
+        }
+
+        Assert::true(false, 'Expected assertion not found for Franklin\'s attribute option: ' . $franklinOptionId);
+    }
+
+    /**
      * @Then the attribute options mapping should not be saved
      */
     public function theAttributeOptionsMappingShouldNotBeSaved(): void
