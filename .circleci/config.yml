@@ -177,6 +177,7 @@ jobs:
   test_legacy_behat:
     machine:
       enabled: true
+      docker_layer_caching: true
     parallelism: 7
     steps:
       - attach_workspace:
