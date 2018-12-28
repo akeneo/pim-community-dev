@@ -1,0 +1,17 @@
+{
+    "request": {
+        "method": "POST",
+        "route": "akeneo_reference_entities_reference_entity_permission_set_rest",
+        "query": {
+            "referenceEntityIdentifier": "designer"
+        },
+        "body": [
+            {"user_group_identifier": 2, "name": "IT Manager", "right_level": "edit"},
+            {"user_group_identifier": 1, "name": "Marketing", "right_level": "view"}
+        ]
+    },
+    "response": {
+        "status": 204,
+        "body": ""
+    }
+}

@@ -9,6 +9,8 @@ pim_reference_entity:
                 should_have_no_record: 'You cannot delete this entity because records exist for this entity'
             reference_entity_attributes:
                 should_not_be_linked: 'You can not delete this entity because reference entity attributes are related to this entity'
+            reference_entity_permissions:
+                at_least_one_user_group_should_have_edit_permission: 'At least one user group should have edit permission on this entity'
             product_attributes:
                 should_not_be_linked: 'You can not delete this entity because product attributes are related to this entity'
             should_exist: 'The reference entity "%reference_entity_code%" was not found.'

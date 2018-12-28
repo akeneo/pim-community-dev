@@ -68,6 +68,11 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.reference_entity.there_should_be_less_reference_entity_than_limit' }
 
+    akeneo_referenceentity.validator.reference_entity_permission.at_least_one_user_group_should_have_edit_permission:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntityPermission\AtLeastOneUserGroupShouldHaveEditPermissionValidator
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.reference_entity_permission.at_least_one_user_group_should_have_edit_permission' }
+
     akeneo_referenceentity.infrastructure.validation.attribute.edit_command_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\EditCommandsValidator
         arguments:

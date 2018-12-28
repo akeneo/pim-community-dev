@@ -82,6 +82,11 @@ akeneo_reference_entities_attribute_edit_rest:
     defaults: { _controller: akeneo_referenceentity.infrastructure.action.attribute.edit }
     methods: [POST]
 
+akeneo_reference_entities_reference_entity_permission_set_rest:
+    path: '/rest/reference_entity/{referenceEntityIdentifier}/permissions'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity_permission.set }
+    methods: [POST]
+
 # API Connector
 akeneo_reference_entities_reference_entity_rest_connector_get:
     path: '/api/rest/v1/reference-entities/{code}'

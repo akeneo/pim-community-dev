@@ -344,3 +344,7 @@ Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditOp
     properties:
         options:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptions: ~
+
+Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsCommand:
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntityPermission\AtLeastOneUserGroupShouldHaveEditPermission: ~
