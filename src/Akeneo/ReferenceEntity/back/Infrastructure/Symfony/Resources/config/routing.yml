@@ -148,6 +148,11 @@ akeneo_reference_entities_media_file_rest_connector_download:
     requirements:
         fileCode: ([a-zA-Z0-9_./]+)
 
+akeneo_reference_entities_media_file_rest_connector_upload:
+    path: '/api/rest/v1/reference-entities-media-files'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.media_file_upload }
+    methods: [POST]
+
 akeneo_reference_entities_record_rest_connector_create_or_update:
     path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/records/{code}'
     defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.record.create_or_update }
