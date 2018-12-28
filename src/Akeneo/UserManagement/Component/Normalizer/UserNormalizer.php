@@ -87,7 +87,6 @@ class UserNormalizer implements NormalizerInterface
             'last_name'                 => $user->getLastName(),
             'name_suffix'               => $user->getNameSuffix(),
             'phone'                     => $user->getPhone(),
-            'birthday'                  => $user->getBirthday() ? $user->getBirthday()->format('Y-m-d') : null,
             'image'                     => $user->getImagePath(),
             'last_login'                => $user->getLastLogin() ? $user->getLastLogin()->getTimestamp() : null,
             'login_count'               => $user->getLoginCount(),

@@ -172,9 +172,6 @@ class UserUpdater implements ObjectUpdaterInterface
 
                 $this->userManager->updatePassword($user);
                 break;
-            case 'birthday':
-                $user->setBirthday(new \DateTime($data));
-                break;
             case 'catalog_default_locale':
                 $user->setCatalogLocale($this->findLocale('catalog_default_locale', $data));
                 break;

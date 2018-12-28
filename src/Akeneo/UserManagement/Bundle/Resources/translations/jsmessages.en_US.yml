@@ -51,7 +51,6 @@ pim_user_management:
                 last_name: Last name
                 name_suffix: Name suffix
                 phone: Phone
-                birthday: Birthday
                 avatar: Avatar
                 email: Email
                 catalog_locale: Catalog locale

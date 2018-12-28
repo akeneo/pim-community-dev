@@ -45,8 +45,6 @@ Akeneo\UserManagement\Component\Model\User:
             - Akeneo\UserManagement\Bundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters: ~
         nameSuffix:
             - Akeneo\UserManagement\Bundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters: ~
-        birthday:
-            - Date:         ~
         imageFile:
             - Image:        ~
         uiLocale:
