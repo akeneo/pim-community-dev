@@ -194,7 +194,7 @@ jobs:
 
 workflows:
   version: 2
-  build_and_test:
+  pull_request:
     jobs:
       - wait_for_user_approval:
           type: approval
@@ -210,3 +210,30 @@ workflows:
       - test_acceptance_back:
           requires:
             - build
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
+      - test_static_back:
+          requires:
+            - build
+      - test_static_front:
+          requires:
+            - build
+      - test_acceptance_back:
+          requires:
+            - build
+      - test_phpunit_integration:
+          requires:
+            - test_static_back
+            - test_static_front
+            - test_acceptance_back
+      - test_legacy_behat:
+          requires:
+            - test_phpunit_integration
