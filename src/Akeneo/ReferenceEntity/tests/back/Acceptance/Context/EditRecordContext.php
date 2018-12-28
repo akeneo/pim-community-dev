@@ -20,6 +20,7 @@ use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditReco
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileStorer;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
@@ -89,7 +90,7 @@ final class EditRecordContext implements Context
     private const DUMMY_IMAGE_SIZE = 10;
     private const DUMMY_IMAGE_MIMETYPE = 'image/png';
     private const DUMMY_IMAGE_EXTENSION = 'png';
-    private const UPDATED_IMAGE_FILEPATH = '/a/b/updated_filename.png';
+    private const UPDATED_IMAGE_FILEPATH = InMemoryFileStorer::FILES_PATH . 'updated_filename.png';
     private const UPDATED_IMAGE_FILENAME = 'updated_filename.png';
 
     private const TEXT_ATTRIBUTE_CODE = 'name';
@@ -118,8 +119,7 @@ final class EditRecordContext implements Context
     private const FILE_TOO_BIG = 'too_big.jpeg';
     private const FILE_TOO_BIG_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
     . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::FILE_TOO_BIG;
-    private const UPDATED_DUMMY_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
-    . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::UPDATED_DUMMY_FILENAME;
+    private const UPDATED_DUMMY_FILE_FILEPATH = InMemoryFileStorer::FILES_PATH . self::UPDATED_DUMMY_FILENAME;
     private const WRONG_IMAGE_SIZE = 20000;
     private const WRONG_EXTENSION = 'gif';
     private const WRONG_EXTENSION_FILENAME = 'wrong_extension.gif';
