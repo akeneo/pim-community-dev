@@ -83,7 +83,7 @@ final class AttributesMappingContext implements Context
      */
     public function aPredefinedAttributesMapping(string $familyCode, TableNode $table): void
     {
-        $requestedAttributesMapping = $this->extractAttributesMappingFromTable($table);
+        $requestedAttributesMapping = $this->extractPersistedAttributesMappingFromTable($table);
 
         $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestedAttributesMapping);
         $this->saveAttributesMappingByFamilyHandler->handle($command);
@@ -99,7 +99,7 @@ final class AttributesMappingContext implements Context
      */
     public function theAttributesAreMappedForTheFamilyAsFollows(string $familyCode, TableNode $table): void
     {
-        $requestedAttributesMapping = $this->extractAttributesMappingFromTable($table);
+        $requestedAttributesMapping = $this->extractPersistedAttributesMappingFromTable($table);
 
         try {
             $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestedAttributesMapping);
@@ -163,22 +163,20 @@ final class AttributesMappingContext implements Context
      * @Then the retrieved attributes mapping for the family :familyCode should be:
      *
      * @param string $familyCode
-     * @param TableNode $expectedAttributes
+     * @param TableNode $table
      */
-    public function theRetrievedAttributesMappingShouldBe(string $familyCode, TableNode $expectedAttributes): void
+    public function theRetrievedAttributesMappingShouldBe(string $familyCode, TableNode $table): void
     {
-        $attributesMapping = [];
-        foreach ($this->retrievedAttributesMapping as $attribute) {
-            $attributesMapping[] = [
-                'target_attribute_code' => $attribute->getTargetAttributeCode(),
-                'target_attribute_label' => $attribute->getTargetAttributeLabel(),
-                'target_attribute_type' => $attribute->getTargetAttributeType(),
-                'pim_attribute_code' => $attribute->getPimAttributeCode(),
-                'status' => $attribute->getStatus(),
-            ];
-        }
+        $expectedAttributes = $table->getHash();
 
-        Assert::eq($this->buildExpectedAttributesMapping($expectedAttributes), $attributesMapping);
+        foreach ($this->retrievedAttributesMapping as $index => $attributeMapping) {
+            /* @var AttributeMapping $attributeMapping */
+            Assert::eq($attributeMapping->getTargetAttributeCode(), $expectedAttributes[$index]['target_attribute_code']);
+            Assert::eq($attributeMapping->getTargetAttributeLabel(), $expectedAttributes[$index]['target_attribute_label']);
+            Assert::eq($attributeMapping->getTargetAttributeType(), $expectedAttributes[$index]['target_attribute_type']);
+            Assert::eq($attributeMapping->getPimAttributeCode(), $expectedAttributes[$index]['pim_attribute_code']);
+            Assert::eq($attributeMapping->getStatus(), $this->getAttributeMappingStatus($expectedAttributes[$index]['status']));
+        }
     }
 
     /**
@@ -332,32 +330,20 @@ final class AttributesMappingContext implements Context
     }
 
     /**
-     * @param TableNode $expectedAttributes
+     * @param mixed $franklinStatus
      *
-     * @return array|TableNode
+     * @return int
      */
-    private function buildExpectedAttributesMapping(TableNode $expectedAttributes)
+    private function getAttributeMappingStatus($franklinStatus): int
     {
-        $statusMapping = $this->getStatusMapping();
-
-        $expectedAttributes = $expectedAttributes->getColumnsHash();
-        foreach ($expectedAttributes as $index => $attribute) {
-            $expectedAttributes[$index]['status'] = $statusMapping[$attribute['status']];
+        switch ($franklinStatus) {
+            case 'pending':
+                return AttributeMapping::ATTRIBUTE_PENDING;
+            case 'active':
+                return AttributeMapping::ATTRIBUTE_MAPPED;
+            case 'inactive':
+                return AttributeMapping::ATTRIBUTE_UNMAPPED;
         }
-
-        return $expectedAttributes;
-    }
-
-    /**
-     * @return array
-     */
-    private function getStatusMapping(): array
-    {
-        return [
-            'pending' => AttributeMapping::ATTRIBUTE_PENDING,
-            'active' => AttributeMapping::ATTRIBUTE_MAPPED,
-            'inactive' => AttributeMapping::ATTRIBUTE_UNMAPPED,
-        ];
     }
 
     /**
@@ -365,7 +351,7 @@ final class AttributesMappingContext implements Context
      *
      * @return array
      */
-    private function extractAttributesMappingFromTable(TableNode $table): array
+    private function extractPersistedAttributesMappingFromTable(TableNode $table): array
     {
         $requestedAttributesMapping = [];
         foreach ($table->getColumnsHash() as $mapping) {
