@@ -66,4 +66,30 @@ class StatusContext implements Context
     {
         Assert::false($this->retrievedConnectionStatus->isIdentifiersMappingValid());
     }
+
+    /**
+     * @Then Franklin connection status should be activated
+     */
+    public function franklinConnectionStatusShouldBeActivated(): void
+    {
+        Assert::true($this->retrievedConnectionStatus->isActive());
+    }
+
+    /**
+     * @Then Franklin connection status should not be activated
+     */
+    public function franklinConnectionStatusShouldNotBeActivated(): void
+    {
+        Assert::false($this->retrievedConnectionStatus->isActive());
+    }
+
+    /**
+     * @Then there should have :expectedCount product(s) subscribed to Franklin
+     *
+     * @param int $expectedCount
+     */
+    public function thereShouldHaveProductsSubscribedToFranklin($expectedCount): void
+    {
+        Assert::eq($this->retrievedConnectionStatus->productSubscriptionCount(), $expectedCount);
+    }
 }

@@ -14,7 +14,7 @@ Feature: Franklin configuration
     Given Franklin has not been configured
     When I configure Franklin using an invalid token
     Then Franklin should not be activated
-    And a token invalid message for configuration should be sent
+    And a connection invalid message should be sent
 
   Scenario: The system administrator configures a new token to replace an expired one
     Given Franklin is configured with an expired token
@@ -25,7 +25,7 @@ Feature: Franklin configuration
     Given Franklin is configured with an expired token
     When I configure Franklin using an invalid token
     Then Franklin should not be activated
-    And a token invalid message for configuration should be sent
+    And a connection invalid message should be sent
 
   Scenario: Dealing with error on activation when Franklin server is down
     Given Franklin has not been configured

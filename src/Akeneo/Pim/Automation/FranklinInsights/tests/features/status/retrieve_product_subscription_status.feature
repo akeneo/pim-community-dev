@@ -2,7 +2,7 @@
 Feature: Fetch product subscription status
   In order to know if product is already subscribed and if I can subscribe
   As the System
-  I want to fetch product subscription statuses
+  I want to fetch product subscription status
 
   Scenario: I retrieved the product subscription status for a product without family
     Given the product without family "product_without_family"
@@ -19,3 +19,19 @@ Feature: Fetch product subscription status
     And the product "B00EYZY6AC" is subscribed to Franklin
     When I retrieve the product subscription status of the product "B00EYZY6AC"
     Then the product subscription status has subscribed product
+
+  Scenario: I retrieved the product subscription status for a product which has no values for the identifiers mapping
+    Given the product "606449099812" of the family "router"
+    And a predefined identifiers mapping as follows:
+      | franklin_code | attribute_code |
+      | asin          | asin           |
+    When I retrieve the product subscription status of the product "606449099812"
+    Then the product subscription status indicates that mapping is not filled
+
+  Scenario: I retrieved the product subscription status for a product which has values for the identifiers mapping
+    Given the product "606449099812" of the family "router"
+    And a predefined identifiers mapping as follows:
+      | franklin_code | attribute_code |
+      | upc           | pim_upc        |
+    When I retrieve the product subscription status of the product "606449099812"
+    Then the product subscription status indicates that mapping is filled
