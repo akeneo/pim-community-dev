@@ -131,7 +131,6 @@ module.exports = async function(cucumber) {
     } else {
       await attributes.view(attributeIdentifier);
     }
-
   };
 
   Then('the user edit the attribute {string}', async function(attributeIdentifier) {
@@ -210,7 +209,7 @@ module.exports = async function(cucumber) {
     await attributes.remove(attributeIdentifier);
   });
 
-  Then('the user cannot delete the attribute {string}', async function (attributeIdentifier) {
+  Then('the user cannot delete the attribute {string}', async function(attributeIdentifier) {
     await showAttributesTab(this.page);
     await editAttribute(this.page, attributeIdentifier, false);
 

@@ -30,8 +30,8 @@ Feature: Delete an attribute linked to a reference entity
     When the user deletes the attribute "name" linked to the reference entity "designer"
     And the user should see the deleted notification
     Then there should be the following attributes:
-      | code     | type  |
-      | name     | text  |
+      | code | type |
+      | name | text |
 
   @acceptance-front
   Scenario: Cannot delete a text attribute linked to a reference entity
@@ -46,7 +46,7 @@ Feature: Delete an attribute linked to a reference entity
       | portrait | image |
     When the user cannot delete the attribute "name" linked to the reference entity "designer"
     Then the user should see the delete notification error
-    Then there should be the following attributes:
+    And there should be the following attributes:
       | code     | type  |
       | name     | text  |
       | portrait | image |
