@@ -49,9 +49,9 @@ class ProductSubscriptionStatusContext implements Context
     /**
      * @param string $identifier
      *
-     * @When I retrieve the product subscription status of the product ":identifier"
+     * @When I retrieve the subscription status of the product ":identifier"
      */
-    public function iRetrieveTheProductSubscriptionStatusOfTheProduct($identifier): void
+    public function iRetrieveTheSubscriptionStatusOfTheProduct($identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
         if (null === $product) {
@@ -63,74 +63,50 @@ class ProductSubscriptionStatusContext implements Context
     }
 
     /**
-     * @Then the product subscription status has no family
+     * @Then the subscription status should not have any family
      */
-    public function theProductSubscriptionStatusHasNoFamily(): void
+    public function theSubscriptionStatusShouldNotHaveAnyFamily(): void
     {
-        if (null === $this->productSubscriptionStatus) {
-            throw new \BadMethodCallException('No product subscription status to check.');
-        }
-
         Assert::assertFalse($this->productSubscriptionStatus->hasFamily());
     }
 
     /**
-     * @Then the product subscription status has family
+     * @Then the subscription status should have a family
      */
-    public function theProductSubscriptionStatusHasFamily(): void
+    public function theSubscriptionStatusShouldHaveAFamily(): void
     {
-        if (null === $this->productSubscriptionStatus) {
-            throw new \BadMethodCallException('No product subscription status to check.');
-        }
-
         Assert::assertTrue($this->productSubscriptionStatus->hasFamily());
     }
 
     /**
-     * @Then the product subscription status indicates that mapping is not filled
+     * @Then the subscription status should indicate that the mapping values are not filled
      */
-    public function theProductSubscriptionStatusIndicatesThatMappingIsNotFilled(): void
+    public function theSubscriptionStatusShouldIndicateThatTheMappingValuesAreNotFilled(): void
     {
-        if (null === $this->productSubscriptionStatus) {
-            throw new \BadMethodCallException('No product subscription status to check.');
-        }
-
         Assert::assertFalse($this->productSubscriptionStatus->isMappingFilled());
     }
 
     /**
-     * @Then the product subscription status indicates that mapping is filled
+     * @Then the subscription status should indicate that the mapping values are filled
      */
-    public function theProductSubscriptionStatusIndicatesThatMappingIsFilled(): void
+    public function theSubscriptionStatusShouldIndicateThatTheMappingValuesAreFilled(): void
     {
-        if (null === $this->productSubscriptionStatus) {
-            throw new \BadMethodCallException('No product subscription status to check.');
-        }
-
         Assert::assertTrue($this->productSubscriptionStatus->isMappingFilled());
     }
 
     /**
-     * @Then the product subscription status has no subscribed product
+     * @Then the subscription status should not be subscribed
      */
-    public function theProductSubscriptionStatusHasNoSubscribedProduct(): void
+    public function theSubscriptionStatusShouldNotBeSubscribed(): void
     {
-        if (null === $this->productSubscriptionStatus) {
-            throw new \BadMethodCallException('No product subscription status to check.');
-        }
-
         Assert::assertFalse($this->productSubscriptionStatus->isSubscribed());
     }
 
     /**
-     * @Then the product subscription status has subscribed product
+     * @Then the subscription status should be subscribed
      */
-    public function theProductSubscriptionStatusHasSubscribedProduct(): void
+    public function theSubscriptionStatusShouldBeSubscribed(): void
     {
-        if (null === $this->productSubscriptionStatus) {
-            throw new \BadMethodCallException('No product subscription status to check.');
-        }
-
         Assert::assertTrue($this->productSubscriptionStatus->isSubscribed());
     }
 }
