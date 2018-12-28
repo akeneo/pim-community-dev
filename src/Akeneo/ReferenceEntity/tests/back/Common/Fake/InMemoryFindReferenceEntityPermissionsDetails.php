@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission\FindReferenceEntityPermissionsDetailsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission\PermissionDetails;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepositoryInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -27,12 +24,13 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepository
  */
 class InMemoryFindReferenceEntityPermissionsDetails implements FindReferenceEntityPermissionsDetailsInterface
 {
-    /** @var ReferenceEntityPermissionRepositoryInterface */
-    private $repository;
+    /** @var array */
+    public $result = [];
 
-    public function __construct(ReferenceEntityPermissionRepositoryInterface $repository)
+    public function save(array $permissions): void
     {
-        $this->repository = $repository;
+        Assert::allIsInstanceOf($permissions, PermissionDetails::class);
+        $this->results = $permissions;
     }
 
     /**
@@ -40,5 +38,6 @@ class InMemoryFindReferenceEntityPermissionsDetails implements FindReferenceEnti
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
+        return $this->result;
     }
 }

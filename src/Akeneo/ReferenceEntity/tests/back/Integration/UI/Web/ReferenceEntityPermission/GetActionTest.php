@@ -6,6 +6,7 @@ namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntityPermission;
 
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntityPermission\PermissionDetails;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -23,9 +24,11 @@ class GetActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
+        $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
+
     }
 
     /**
@@ -42,5 +45,23 @@ class GetActionTest extends ControllerIntegrationTestCase
     public function it_shows_an_empty_list_of_permissions()
     {
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'show_empty.json');
+    }
+
+    private function loadFixtures(): void
+    {
+        $query = $this->get('akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_permissions_details');
+        $permission = new PermissionDetails();
+        $permission->userGroupIdentifier = 10;
+        $permission->userGroupName = 'Catalog Manager';
+        $permission->rightLevel = 'edit';
+        $permissions[] = $permission;
+
+        $permission = new PermissionDetails();
+        $permission->userGroupIdentifier = 11;
+        $permission->userGroupName = 'IT support';
+        $permission->rightLevel = 'view';
+        $permissions[] = $permission;
+
+        $query->save($permissions);
     }
 }

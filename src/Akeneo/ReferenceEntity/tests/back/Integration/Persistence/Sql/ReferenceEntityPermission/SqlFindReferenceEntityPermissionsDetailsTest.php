@@ -93,10 +93,12 @@ SQL;
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission')->save($referenceEntityPermission);
     }
 
-    private function assertPermissions(array $expectedNormalizedPermissionsDetails, array $actualPermissionsDetails): void
-    {
+    private function assertPermissions(
+        array $expectedNormalizedPermissionsDetails,
+        array $actualPermissionsDetails
+    ): void {
         $actualNormalizedPermissionDetails = array_map(
-            function(PermissionDetails $permissionDetails) {
+            function (PermissionDetails $permissionDetails) {
                 return $permissionDetails->normalize();
             },
             $actualPermissionsDetails
