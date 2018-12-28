@@ -445,6 +445,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Updating a record details
     Given a valid record
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record
@@ -453,6 +454,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: User can't update a record details without the edit rights
     Given a valid record
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | false |
     Then the user cannot save the record
@@ -460,6 +462,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Updating a record with a simple text value
     Given a valid record
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with a simple text value
@@ -468,6 +471,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Updating a record with an invalid simple text value
     Given a valid record
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with an invalid simple text value
@@ -476,6 +480,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: User can't update a simple text value without the edit rights
     Given a valid record
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | false |
     Then the user cannot update the simple text value
@@ -483,6 +488,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Updating a record with a simple option value
     Given a valid record with an option attribute
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with a simple option value
@@ -491,6 +497,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Updating a record with an invalid simple option value
     Given a valid record with an option attribute
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with an invalid simple option value
@@ -499,6 +506,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: User can't update a simple option value without the edit rights
     Given a valid record with an option attribute
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | false |
     Then the user cannot update the simple option value
@@ -506,6 +514,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Updating a record with a multiple option value
     Given a valid record with an option collection attribute
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with a multiple option value
@@ -514,6 +523,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Updating a record with an invalid multiple option value
     Given a valid record with an option collection attribute
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with an invalid multiple option value
@@ -522,6 +532,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: User can't update a multiple option value without the edit rights
     Given a valid record with an option collection attribute
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | false |
     Then the user cannot update the multiple option value
@@ -529,6 +540,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Display bullet point for the completeness when a required field isn't filled
     Given a valid record
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | true |
     When the user ask for the record
@@ -539,6 +551,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Display completeness percentage on a record with required fields
     Given a valid record
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | true |
     When the user ask for the record
@@ -549,6 +562,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Updating a record with a single record linked
     Given a valid record with a reference entity single link attribute
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with a single record linked
@@ -557,6 +571,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: User can't update a single record linked value without the edit rights
     Given a valid record with a reference entity single link attribute
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | false |
     Then the user cannot update the single record linked value
@@ -564,6 +579,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Updating a record with a multiple record linked
     Given a valid record with a reference entity multiple link attribute
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | true |
     When the user saves the valid record with a multiple record linked
@@ -572,6 +588,7 @@ Feature: Edit an record
   @acceptance-front
   Scenario: User can't update a multiple record linked value without the edit rights
     Given a valid record with a reference entity multiple link attribute
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_record_edit | false |
     Then the user cannot update the multiple record linked value

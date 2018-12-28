@@ -19,7 +19,7 @@ import File from 'akeneoreferenceentity/domain/model/file';
 const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
+import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/user';
 
 interface StateProps {
   form: EditionFormState;
@@ -143,11 +143,13 @@ export default connect(
       },
       rights: {
         referenceEntity: {
-          edit: securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') && canEditReferenceEntity(),
+          edit:
+            securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') &&
+            canEditReferenceEntity(state.user.permission.referenceEntity),
           delete:
             securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') &&
             securityContext.isGranted('akeneo_referenceentity_reference_entity_delete') &&
-            canEditReferenceEntity(),
+            canEditReferenceEntity(state.user.permission.referenceEntity),
         },
       },
       confirmDelete: state.confirmDelete,

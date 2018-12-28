@@ -43,10 +43,12 @@ const View = ({
         referenceEntityIdentifier={attribute.recordType.getReferenceEntityIdentifier()}
         readOnly={!rights.record.edit}
         onChange={(recordCode: RecordCode) => {
-          const newData = create(recordCode);
-          const newValue = value.setData(newData);
+          if (rights.record.edit) {
+            const newData = create(recordCode);
+            const newValue = value.setData(newData);
 
-          onChange(newValue);
+            onChange(newValue);
+          }
         }}
       />
     </div>

@@ -31,7 +31,7 @@ import Locale from 'akeneoreferenceentity/domain/model/locale';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
 import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
+import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/user';
 
 const securityContext = require('pim/security-context');
 
@@ -247,16 +247,22 @@ export default connect(
       },
       rights: {
         record: {
-          create: securityContext.isGranted('akeneo_referenceentity_record_create') && canEditReferenceEntity(),
-          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') && canEditReferenceEntity(),
+          create:
+            securityContext.isGranted('akeneo_referenceentity_record_create') &&
+            canEditReferenceEntity(state.user.permission.referenceEntity),
+          edit:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            canEditReferenceEntity(state.user.permission.referenceEntity),
           deleteAll:
+            securityContext.isGranted('akeneo_referenceentity_record_create') &&
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_records_delete_all') &&
-            canEditReferenceEntity(),
+            canEditReferenceEntity(state.user.permission.referenceEntity),
           delete:
+            securityContext.isGranted('akeneo_referenceentity_record_create') &&
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(),
+            canEditReferenceEntity(state.user.permission.referenceEntity),
         },
       },
       confirmDelete: state.confirmDelete,

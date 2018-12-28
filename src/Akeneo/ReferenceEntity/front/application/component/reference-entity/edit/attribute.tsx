@@ -20,7 +20,7 @@ import {getAttributeIcon} from 'akeneoreferenceentity/application/configuration/
 import Key from 'akeneoreferenceentity/tools/key';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 import {EditOptionState} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
+import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/user';
 
 const securityContext = require('pim/security-context');
 
@@ -289,12 +289,16 @@ export default connect(
       },
       rights: {
         attribute: {
-          create: securityContext.isGranted('akeneo_referenceentity_attribute_create') && canEditReferenceEntity(),
-          edit: securityContext.isGranted('akeneo_referenceentity_attribute_edit') && canEditReferenceEntity(),
+          create:
+            securityContext.isGranted('akeneo_referenceentity_attribute_create') &&
+            canEditReferenceEntity(state.user.permission.referenceEntity),
+          edit:
+            securityContext.isGranted('akeneo_referenceentity_attribute_edit') &&
+            canEditReferenceEntity(state.user.permission.referenceEntity),
           delete:
             securityContext.isGranted('akeneo_referenceentity_attribute_edit') &&
             securityContext.isGranted('akeneo_referenceentity_attribute_delete') &&
-            canEditReferenceEntity(),
+            canEditReferenceEntity(state.user.permission.referenceEntity),
         },
       },
       referenceEntity: denormalizeReferenceEntity(state.form.data),

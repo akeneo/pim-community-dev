@@ -208,7 +208,6 @@ module.exports = async function(cucumber) {
   Then('the user should not see the add attribute button', async function () {
     await answerChannelList.apply(this);
     await loadAttributeTab(this.page);
-    debugger;
     const header = await await getElement(this.page, 'Header');
     await header.hasNoCreateButton();
   });

@@ -84,7 +84,10 @@
           "locale": "fr_FR",
           "data": "green"
         }
-      ]
+      ],
+      "permission": {
+        "edit": true
+      }
     }
   }
 }

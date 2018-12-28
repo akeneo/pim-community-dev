@@ -62,8 +62,8 @@ Feature: Edit a reference entity
     When the user changes the reference entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then the saved reference entity "designer" will be:
-      | identifier | labels                                       | image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+      | identifier | labels                                       | image | permission     |
+      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  | {"edit": true} |
     And the user saves the changes
     And the user shouldn't be notified that modification have been made
     And the user should see the saved notification

@@ -12,6 +12,9 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
   };
 
   const fillField = async (id, value) => {
+    await page.waitForSelector(`.AknTextField[id="${id}"]`);
+    await page.waitForSelector(`.AknTextField[id="${id}"]:not(.AknTextField--disabled)`);
+
     const field = await nodeElement.$(`.AknTextField[id="${id}"]`);
     await page.evaluate(
       (properties, id) => {
@@ -50,6 +53,8 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
 
   const fillRecordSelectField = async (id, value) => {
     const field = await nodeElement.$(`.record-selector[id="${id}"]`);
+    await page.waitForSelector(`.record-selector[id="${id}"]:not(.record-selector--disabled)`);
+
     await page.evaluate(
       (properties, id) => {
         return (properties.querySelector(`.record-selector[id="${id}"]`).value = '');
@@ -101,6 +106,8 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
   };
 
   const clickOnDeleteButton = async () => {
+    await page.waitForSelector('.AknDropdown-menuLink:first-child');
+
     // As the button doesn't have any size, we need to make it clickable by giving him a size
     await page.evaluate(edit => {
       const button = edit.querySelectorAll('.AknDropdown-menuLink');

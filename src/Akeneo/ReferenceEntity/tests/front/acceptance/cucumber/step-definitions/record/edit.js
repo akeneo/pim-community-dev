@@ -40,6 +40,7 @@ module.exports = async function(cucumber) {
   });
 
   Given('a valid record with an option attribute', async function() {
+    await answerLocaleList.apply(this);
     const requestContract = getRequestContract('Record/RecordDetails/ok/option.json');
     currentRequestContract = requestContract;
 
@@ -47,6 +48,7 @@ module.exports = async function(cucumber) {
   });
 
   Given('a valid record with an option collection attribute', async function() {
+    await answerLocaleList.apply(this);
     const requestContract = getRequestContract('Record/RecordDetails/ok/option_collection.json');
     currentRequestContract = requestContract;
 
@@ -54,6 +56,7 @@ module.exports = async function(cucumber) {
   });
 
   Given('an invalid record', async function() {
+    await answerLocaleList.apply(this);
     const requestContract = getRequestContract('Record/RecordDetails/not_found.json');
     currentRequestContract = requestContract;
 
@@ -61,6 +64,7 @@ module.exports = async function(cucumber) {
   });
 
   Given('a valid record with a reference entity single link attribute', async function() {
+    await answerLocaleList.apply(this);
     const requestContract = getRequestContract('Record/RecordDetails/ok/record.json');
     currentRequestContract = requestContract;
 
@@ -68,8 +72,15 @@ module.exports = async function(cucumber) {
   });
 
   Given('a valid record with a reference entity multiple link attribute', async function() {
+    await answerLocaleList.apply(this);
     const requestContract = getRequestContract('Record/RecordDetails/ok/record_collection.json');
     currentRequestContract = requestContract;
+
+    return await listenRequest(this.page, requestContract);
+  });
+
+  Given('the user has the locale permission to edit the record', async function() {
+    const requestContract = getRequestContract('Permission/Locale/ok.json');
 
     return await listenRequest(this.page, requestContract);
   });
@@ -108,7 +119,6 @@ module.exports = async function(cucumber) {
   };
 
   const loadEditRecord = async function(requestContractPath) {
-    await answerLocaleList.apply(this);
     await askForRecord.apply(this, [
       currentRequestContract.request.query.recordCode,
       currentRequestContract.request.query.referenceEntityIdentifier,
@@ -158,6 +168,7 @@ module.exports = async function(cucumber) {
     const enrich = await editPage.getEnrich();
     await enrich.fillField('pim_reference_entity.record.enrich.name', 'Starck');
     await editPage.save();
+    // debugger;
   });
 
   When('the user updates the valid record with an image value', async function() {

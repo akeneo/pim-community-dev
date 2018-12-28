@@ -21,6 +21,12 @@ config:
                         warmup: false
                         urls:
                             list: pimee_security_permissions_rest
+                locale-permission:
+                    module: pim/base-fetcher
+                    options:
+                        warmup: false
+                        urls:
+                            list: pimee_security_locales_permissions_rest
         pim/controller-registry:
             defaultController:
                 module: pim/controller/template

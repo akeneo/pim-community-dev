@@ -37,6 +37,7 @@ module.exports = async function(cucumber) {
         referenceEntityBuilder.withImage(null);
       }
       referenceEntityBuilder.withAttributes([]);
+      referenceEntityBuilder.withPermission(referenceEntity.permission);
 
       return referenceEntityBuilder.build();
     });

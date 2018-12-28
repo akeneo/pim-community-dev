@@ -4,8 +4,8 @@ import * as $ from 'jquery';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 const routing = require('routing');
-import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
+import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import recordFetcher, {RecordResult} from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
@@ -154,8 +154,8 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
             const initialValue = element.val();
             recordFetcher
               .fetch(this.props.referenceEntityIdentifier, RecordCode.create(initialValue))
-              .then((record: Record) => {
-                callback(this.formatItem(record.normalize()));
+              .then((recordResult: RecordResult) => {
+                callback(this.formatItem(recordResult.record.normalize()));
               });
           }
         },
@@ -217,11 +217,12 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
 
   render(): JSX.Element | JSX.Element[] {
     const {referenceEntityIdentifier, ...props} = this.props;
+    const className = `record-selector ${this.props.readOnly ? 'record-selector--disabled' : ''}`;
 
     return (
       <React.Fragment>
         <input
-          className="record-selector"
+          className={className}
           {...props}
           type="hidden"
           value={this.normalizeValue(this.props.value)}

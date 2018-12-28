@@ -38,7 +38,10 @@
           "locale": "en_US",
           "data": null
         }
-      ]
+      ],
+      "permission": {
+        "edit": true
+      }
     }
   }
 }

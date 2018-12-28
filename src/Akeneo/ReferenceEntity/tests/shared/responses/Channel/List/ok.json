@@ -2,7 +2,9 @@
     "request": {
         "method": "GET",
         "route": "pim_enrich_channel_rest_index",
-        "query": {}
+        "query": {
+            "filter_locales": false
+        }
     },
     "response": {
         "status": 200,

@@ -8,6 +8,139 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
     await page.reload();
   }, timeout);
 
+  it('It fetches one record', async () => {
+    const requestContract = getRequestContract('Record/RecordDetails/ok.json');
+
+    await listenRequest(page, requestContract);
+
+    const response = await page.evaluate(async () => {
+      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/record').default;
+
+      const referenceEntityIdentifierModule = 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+      const referenceEntityIdentifier = require(referenceEntityIdentifierModule).createIdentifier('designer');
+      const recordIdentifier = require(referenceEntityIdentifierModule).createIdentifier('starck');
+
+      return await fetcher.fetch(referenceEntityIdentifier, recordIdentifier);
+    });
+
+    expect(response).toEqual({
+      permission: {edit: true, referenceEntityIdentifier: {identifier: 'designer'}},
+      record: {
+        code: {code: 'starck'},
+        identifier: {identifier: 'designer_starck_a1677570-a278-444b-ab46-baa1db199392'},
+        image: {},
+        labelCollection: {labels: {fr_FR: 'Philippe Starck'}},
+        referenceEntityIdentifier: {identifier: 'designer'},
+        valueCollection: {
+          values: [
+            {
+              attribute: {
+                code: {code: 'name'},
+                identifier: {identifier: 'name_designer_fingerprint'},
+                isRequired: false,
+                isRichTextEditor: {isRichTextEditor: false},
+                isTextarea: {isTextarea: false},
+                labelCollection: {labels: {fr_FR: 'Nom'}},
+                maxLength: {maxLength: 25},
+                order: 0,
+                referenceEntityIdentifier: {identifier: 'designer'},
+                regularExpression: {regularExpression: null},
+                type: 'text',
+                validationRule: {validationRule: 'none'},
+                valuePerChannel: false,
+                valuePerLocale: false,
+              },
+              channel: {channelReference: null},
+              data: {textData: 'Philippe Starck'},
+              locale: {localeReference: null},
+            },
+            {
+              attribute: {
+                code: {code: 'description'},
+                identifier: {identifier: 'description_designer_fingerprint'},
+                isRequired: false,
+                isRichTextEditor: {isRichTextEditor: true},
+                isTextarea: {isTextarea: true},
+                labelCollection: {labels: {fr_FR: 'Description'}},
+                maxLength: {maxLength: 25},
+                order: 1,
+                referenceEntityIdentifier: {identifier: 'designer'},
+                regularExpression: {regularExpression: null},
+                type: 'text',
+                validationRule: {validationRule: 'none'},
+                valuePerChannel: false,
+                valuePerLocale: true,
+              },
+              channel: {channelReference: null},
+              data: {textData: ''},
+              locale: {localeReference: 'en_US'},
+            },
+            {
+              attribute: {
+                code: {code: 'description'},
+                identifier: {identifier: 'description_designer_fingerprint'},
+                isRequired: false,
+                isRichTextEditor: {isRichTextEditor: true},
+                isTextarea: {isTextarea: true},
+                labelCollection: {labels: {fr_FR: 'Description'}},
+                maxLength: {maxLength: 25},
+                order: 1,
+                referenceEntityIdentifier: {identifier: 'designer'},
+                regularExpression: {regularExpression: null},
+                type: 'text',
+                validationRule: {validationRule: 'none'},
+                valuePerChannel: false,
+                valuePerLocale: true,
+              },
+              channel: {channelReference: null},
+              data: {textData: ''},
+              locale: {localeReference: 'fr_FR'},
+            },
+            {
+              attribute: {
+                code: {code: 'website'},
+                identifier: {identifier: 'website_designer_fingerprint'},
+                isRequired: true,
+                isRichTextEditor: {isRichTextEditor: false},
+                isTextarea: {isTextarea: false},
+                labelCollection: {labels: {fr_FR: 'Website'}},
+                maxLength: {maxLength: 25},
+                order: 2,
+                referenceEntityIdentifier: {identifier: 'designer'},
+                regularExpression: {regularExpression: null},
+                type: 'text',
+                validationRule: {validationRule: 'url'},
+                valuePerChannel: false,
+                valuePerLocale: false,
+              },
+              channel: {channelReference: null},
+              data: {textData: ''},
+              locale: {localeReference: null},
+            },
+            {
+              attribute: {
+                allowedExtensions: {allowedExtensions: ['png']},
+                code: {code: 'portrait'},
+                identifier: {identifier: 'portrait_designer_fingerprint'},
+                isRequired: false,
+                labelCollection: {labels: {en_US: 'Portrait', fr_FR: 'Image autobiographique'}},
+                maxFileSize: {maxFileSize: '200.10'},
+                order: 3,
+                referenceEntityIdentifier: {identifier: 'designer'},
+                type: 'image',
+                valuePerChannel: false,
+                valuePerLocale: false,
+              },
+              channel: {channelReference: null},
+              data: {fileData: {}},
+              locale: {localeReference: null},
+            },
+          ],
+        },
+      },
+    });
+  });
+
   it('It search for records', async () => {
     const requestContract = getRequestContract('Record/Search/ok.json');
 

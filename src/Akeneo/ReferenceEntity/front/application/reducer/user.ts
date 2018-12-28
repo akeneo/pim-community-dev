@@ -1,23 +1,32 @@
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
+import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
+import {ReferenceEntityPermission} from 'akeneoreferenceentity/domain/model/permission/reference-entity';
+
 
 export interface UserState {
   defaultCatalogLocale: string;
   catalogLocale: string;
   catalogChannel: string;
   uiLocale: string;
+  permission: {
+    locale: LocalePermission[];
+    referenceEntity: ReferenceEntityPermission;
+  };
 }
 
 class InvalidArgumentError extends Error {}
 
 export default (
-  state: UserState = {
-    defaultCatalogLocale: '',
-    catalogLocale: '',
-    catalogChannel: '',
-    uiLocale: '',
-  },
-  action: {type: string; target: string; locale?: string; channel?: string; channels?: Channel[]}
+  state: UserState = {permission: {locale: [], referenceEntity: {referenceEntityIdentifier: null, edit: false}}},
+  action: {
+    type: string;
+    target: string;
+    locale: string;
+    channel: string;
+    localePermissions: LocalePermission[];
+    referenceEntityPermission: ReferenceEntityPermission;
+  }
 ): UserState => {
   switch (action.type) {
     case 'DEFAULT_LOCALE_CHANGED':
@@ -47,6 +56,18 @@ export default (
 
       state = {...state, [`${action.target}Channel`]: action.channel, [`${action.target}Locale`]: newLocale};
       break;
+    case 'LOCALE_PERMISSIONS_CHANGED':
+      state = {
+        ...state,
+        permission: {...state.permission, locale: action.localePermissions},
+      };
+      break;
+    case 'REFERENCE_ENTITY_PERMISSIONS_CHANGED':
+      state = {
+        ...state,
+        permission: {...state.permission, referenceEntity: action.referenceEntityPermission},
+      };
+      break;
     default:
       break;
   }
@@ -54,6 +75,7 @@ export default (
   return state;
 };
 
+<<<<<<< HEAD
 /**
  * When there is the channel and the locale switcher on a page, the locale list is defined by the channel. Indeed, each channel contains a list of locales. So if you have the following channels:
  * - ecommerce
@@ -73,4 +95,20 @@ const getCatalogLocale = (channels: Channel[], channelCode: string, localeCode: 
   }
 
   return channel.locales[0].code;
+=======
+export const canEditReferenceEntity = (referenceEntityPermission: ReferenceEntityPermission) => {
+  return referenceEntityPermission.edit;
+};
+
+export const canEditLocale = (localesPermission: LocalePermission[], currentLocale: string) => {
+  const localePermission = localesPermission.find((localePermission: LocalePermission) => {
+    return localePermission.code === currentLocale;
+  });
+
+  if (undefined === localePermission) {
+    return false;
+  }
+
+  return localePermission.edit;
+>>>>>>> e677738ca7... PIM-7916: add permissions endpoint only for locales
 };

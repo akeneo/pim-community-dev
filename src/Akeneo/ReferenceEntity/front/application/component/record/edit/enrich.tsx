@@ -13,7 +13,7 @@ import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel
 import renderValues from 'akeneoreferenceentity/application/component/record/edit/enrich/value';
 import Value from 'akeneoreferenceentity/domain/model/record/value';
 import Key from 'akeneoreferenceentity/tools/key';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
+import {canEditReferenceEntity, canEditLocale} from 'akeneoreferenceentity/application/reducer/user';
 
 const securityContext = require('pim/security-context');
 
@@ -90,6 +90,8 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
                 ref={(input: HTMLInputElement) => {
                   this.labelInput = input;
                 }}
+                disabled={!this.props.rights.record.edit}
+                readOnly={!this.props.rights.record.edit}
               />
               <Flag locale={createLocaleFromCode(this.props.context.locale)} displayLanguage={false} />
             </div>
@@ -120,11 +122,15 @@ export default connect(
       },
       rights: {
         record: {
-          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') && canEditReferenceEntity(),
+          edit:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            canEditReferenceEntity(state.user.permission.referenceEntity) &&
+            canEditLocale(state.user.permission.locale, locale),
           delete:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(),
+            canEditReferenceEntity(state.user.permission.referenceEntity) &&
+            canEditLocale(state.user.permission.locale, locale),
         },
       },
     };

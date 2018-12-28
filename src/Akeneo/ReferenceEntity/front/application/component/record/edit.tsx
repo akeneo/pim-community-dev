@@ -16,7 +16,6 @@ import {
 } from 'akeneoreferenceentity/application/action/record/edit';
 import {deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
 import EditState from 'akeneoreferenceentity/application/component/app/edit-state';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
 import File from 'akeneoreferenceentity/domain/model/file';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
@@ -29,8 +28,9 @@ import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/applicat
 import Key from 'akeneoreferenceentity/tools/key';
 import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import CompletenessLabel from '../app/completeness';
 import {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
+import CompletenessLabel from 'akeneoreferenceentity/application/component/app/completeness';
+import {canEditReferenceEntity, canEditLocale} from 'akeneoreferenceentity/application/reducer/user';
 
 const securityContext = require('pim/security-context');
 
@@ -142,6 +142,7 @@ class RecordEditView extends React.Component<EditProps> {
                     alt={__('pim_reference_entity.record.img', {'{{ label }}': label})}
                     image={record.getImage()}
                     onImageChange={this.props.events.onImageUpdated}
+                    readOnly={!this.props.rights.record.edit}
                   />
                   <div className="AknTitleContainer-mainContainer AknTitleContainer-mainContainer--contained">
                     <div>
@@ -276,11 +277,14 @@ export default connect(
       },
       rights: {
         record: {
-          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') && canEditReferenceEntity(),
+          edit:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            canEditReferenceEntity(state.user.permission.referenceEntity),
           delete:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(),
+            canEditReferenceEntity(state.user.permission.referenceEntity) &&
+            canEditLocale(state.user.permission.locale, locale),
         },
       },
       confirmDelete: state.confirmDelete,

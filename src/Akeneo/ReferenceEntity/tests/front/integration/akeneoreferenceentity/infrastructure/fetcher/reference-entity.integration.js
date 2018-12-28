@@ -56,7 +56,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
 
         interceptedRequest.respond({
           contentType: 'application/json',
-          body: JSON.stringify({...referenceEntity, record_count: 123}),
+          body: JSON.stringify(referenceEntity),
         });
       }
     });
@@ -87,6 +87,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
           originalFilename: 'sofa.jpg',
         },
       },
+      permission: {edit: true, referenceEntityIdentifier: {identifier: 'sofa'}},
     });
   });
 });
