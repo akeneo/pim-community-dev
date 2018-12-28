@@ -196,7 +196,11 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - wait_for_user_approval:
+          type: approval
+      - build:
+          requires:
+            - wait_for_user_approval
       - test_static_back:
           requires:
             - build
