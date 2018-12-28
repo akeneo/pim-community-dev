@@ -92,6 +92,8 @@ class SaveAttributesMappingByFamilyHandler
 
     /**
      * @param AttributeMapping $attributeMapping
+     *
+     * @throws AttributeMappingException
      */
     private function validateAndFillAttribute(AttributeMapping $attributeMapping): void
     {

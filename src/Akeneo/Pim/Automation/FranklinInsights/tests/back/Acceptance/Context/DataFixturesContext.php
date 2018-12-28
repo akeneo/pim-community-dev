@@ -143,6 +143,23 @@ class DataFixturesContext implements Context
     }
 
     /**
+     * @param string $attributeOptionCodes
+     * @param string $attributeCode
+     *
+     * @Given the predefined options :attributeOptionCodes for the attribute :attributeCode
+     */
+    public function thePredefinedAttributeOptions(string $attributeOptionCodes, string $attributeCode): void
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        foreach ($this->toArray($attributeOptionCodes) as $attributeOptionCode) {
+            $attributeOption = new AttributeOption();
+            $attributeOption->setCode($attributeOptionCode);
+            $attributeOption->setAttribute($attribute);
+            $this->attributeOptionRepository->save($attributeOption);
+        }
+    }
+
+    /**
      * @param string $attributes
      *
      * @Given /the predefined attributes? (.*)/
@@ -294,23 +311,6 @@ class DataFixturesContext implements Context
             }
 
             $this->familyRepository->save($family);
-        }
-    }
-
-    /**
-     * @Given the following attribute options for the attribute :attributeCode:
-     *
-     * @param $attributeCode
-     * @param TableNode $options
-     */
-    public function theFollowingAttributeOptions($attributeCode, TableNode $options): void
-    {
-        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-        foreach ($options->getHash() as $option) {
-            $attributeOption = new AttributeOption();
-            $attributeOption->setCode($option['code']);
-            $attributeOption->setAttribute($attribute);
-            $this->attributeOptionRepository->save($attributeOption);
         }
     }
 

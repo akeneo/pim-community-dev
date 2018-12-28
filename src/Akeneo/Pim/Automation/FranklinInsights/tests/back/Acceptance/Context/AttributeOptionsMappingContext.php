@@ -24,7 +24,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -214,35 +213,24 @@ class AttributeOptionsMappingContext implements Context
     }
 
     /**
-     * @Then the attribute options mapping should be:
+     * @Then Franklin option :franklinOptionId should be mapped to :pimOptionCode
      *
-     * @param TableNode $optionsMapping
+     * @param string $franklinOptionId
+     * @param string $pimOptionCode
      */
-    public function theAttributeOptionsMappingShouldBe(TableNode $optionsMapping): void
+    public function franklinOptionShouldBeMappedTo(string $franklinOptionId, string $pimOptionCode): void
     {
-        $expectedOptionsMapping = [];
-        foreach ($optionsMapping->getHash() as $option) {
-            $to = null;
-            if (!empty($option['catalog_attribute_option_code'])) {
-                $to = [
-                    'id' => $option['catalog_attribute_option_code'],
-                    'label' => null,
-                ];
-            }
+        $optionsMapping = $this->fakeClient->getOptionsMapping();
+        foreach ($optionsMapping as $optionMapping) {
+            if ($franklinOptionId === $optionMapping['from']['id']) {
+                Assert::eq($pimOptionCode, $optionMapping['to']['id']);
+                Assert::eq('active', $optionMapping['status']);
 
-            $expectedOptionsMapping[] = [
-                'from' => [
-                    'id' => $option['franklin_attribute_option_id'],
-                    'label' => [
-                        'en_US' => $option['franklin_attribute_option_label'],
-                    ],
-                ],
-                'to' => $to,
-                'status' => null === $to ? OptionMapping::STATUS_INACTIVE : OptionMapping::STATUS_ACTIVE,
-            ];
+                return;
+            }
         }
 
-        Assert::eq($expectedOptionsMapping, $this->fakeClient->getOptionsMapping());
+        Assert::true(false, 'Expected assertion not found for Franklin\'s attribute option: ' . $franklinOptionId);
     }
 
     /**
@@ -254,6 +242,22 @@ class AttributeOptionsMappingContext implements Context
 
         Assert::isEmpty($clientAttributeOptionsMapping);
         Assert::isInstanceOf(ExceptionContext::getThrownException(), \Exception::class);
+    }
+
+    /**
+     * @Then a wrong option attribute message should be sent
+     */
+    public function aWrongOptionAttributeMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf(ExceptionContext::getThrownException(), \InvalidArgumentException::class);
+    }
+
+    /**
+     * @Then an empty attribute options mapping message should be sent
+     */
+    public function anEmptyAttributeOptionsMappingMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf(ExceptionContext::getThrownException(), \InvalidArgumentException::class);
     }
 
     /**
