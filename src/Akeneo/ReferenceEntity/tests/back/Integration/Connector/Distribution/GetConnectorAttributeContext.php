@@ -115,10 +115,10 @@ class GetConnectorAttributeContext implements Context
     private function createBrandReferenceEntity()
     {
         $referenceEntityIdentifier = 'brand_test';
-        $attributeIdentifier = 'description';
+        $attributeCode = 'description';
 
         $textAttribute = TextAttribute::createText(
-            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
+            AttributeIdentifier::create($referenceEntityIdentifier, $attributeCode, 'test'),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
