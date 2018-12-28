@@ -72,14 +72,14 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
         ];
 
         $router->generate(
-            'akeneo_reference_entities_media_file_rest_connector_get',
+            'akeneo_reference_entities_media_file_rest_connector_download',
             ['fileCode' => 'philippeStarck.jpg'],
             UrlGeneratorInterface::ABSOLUTE_URL
         )
             ->willReturn('http://localhost/api/rest/v1/reference-entities-media-files/philippeStarck.jpg');
 
         $router->generate(
-            'akeneo_reference_entities_media_file_rest_connector_get',
+            'akeneo_reference_entities_media_file_rest_connector_download',
             ['fileCode' => 'starck-cover.jpg'],
             UrlGeneratorInterface::ABSOLUTE_URL
         )

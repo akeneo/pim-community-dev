@@ -92,7 +92,7 @@ class AddHalDownloadLinkToRecordImages
     private function generateImageUrl(string $imageCode): string
     {
         return $this->router->generate(
-            'akeneo_reference_entities_media_file_rest_connector_get',
+            'akeneo_reference_entities_media_file_rest_connector_download',
             ['fileCode' => $imageCode],
             UrlGeneratorInterface::ABSOLUTE_URL
         );

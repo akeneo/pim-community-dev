@@ -1,0 +1,16 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_reference_entities_media_file_rest_connector_download",
+        "query": {
+            "fileCode": "0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_unknown.jpg"
+        }
+    },
+    "response": {
+        "status": 404,
+        "body": {
+            "code": 404,
+            "message": "Media file \"0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_unknown.jpg\" does not exist."
+        }
+    }
+}
