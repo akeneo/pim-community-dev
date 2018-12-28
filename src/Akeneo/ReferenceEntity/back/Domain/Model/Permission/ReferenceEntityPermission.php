@@ -99,7 +99,7 @@ class ReferenceEntityPermission
     public function isAllowedToEdit(array $userGroupIdentifiers): bool
     {
         Assert::allIsInstanceOf($userGroupIdentifiers, UserGroupIdentifier::class);
-        if ($this->isEverybodyAllowed()) {
+        if ($this->areAllUserGroupsAllowedToEdit()) {
             return true;
         }
         $userGroupPermissions = $this->findPermissionsByUserGroupIdentifiers($userGroupIdentifiers);
@@ -111,7 +111,7 @@ class ReferenceEntityPermission
      * If there are no permissions set for the reference entity (at its creation for instance), it means that every
      * user is allowed to edit.
      */
-    private function isEverybodyAllowed(): bool
+    private function areAllUserGroupsAllowedToEdit(): bool
     {
         return empty($this->permissions);
     }
@@ -142,7 +142,7 @@ class ReferenceEntityPermission
     /**
      * @param UserGroupPermission[] $userGroupPermissions
      */
-    private function hasEditPermission($userGroupPermissions): bool
+    private function hasEditPermission(array $userGroupPermissions): bool
     {
         $editPermissions = array_filter(
             $userGroupPermissions,
