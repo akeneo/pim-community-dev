@@ -8,8 +8,8 @@ services:
         tags:
             - { name: 'fob.context_service' }
 
-    akeneo_acceptance.context.franklin_insights.status:
-        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\StatusContext'
+    akeneo_acceptance.context.franklin_insights.connection_status:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ConnectionStatusContext'
         arguments:
             - '@__symfony__.akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
         tags:
