@@ -78,4 +78,12 @@ class ProposalContext implements Context
     {
         Assert::false($this->proposalUpsert->hasProposalForProduct($identifier, ProposalAuthor::USERNAME));
     }
+
+    /**
+     * @Then there should not have any proposal
+     */
+    public function thereShouldNotHaveAnyProposal(): void
+    {
+        Assert::false($this->proposalUpsert->hasProposal());
+    }
 }

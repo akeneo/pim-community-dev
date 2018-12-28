@@ -83,4 +83,12 @@ class InMemoryProposalUpsert implements ProposalUpsertInterface
     {
         return array_key_exists(sprintf('%s-%s', $identifier, $author), $this->drafts);
     }
+
+    /**
+     * @return bool
+     */
+    public function hasProposal(): bool
+    {
+        return !empty($this->drafts);
+    }
 }
