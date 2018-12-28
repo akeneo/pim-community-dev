@@ -29,8 +29,9 @@ class GetAction
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
         $referenceEntityPermissionDetails = ($this->findReferenceEntityPermissionsDetails)($referenceEntityIdentifier);
+        $result = $this->normalizePermissionDetails($referenceEntityPermissionDetails);
 
-        return new JsonResponse($this->normalizePermissionDetails($referenceEntityPermissionDetails));
+        return new JsonResponse($result);
     }
 
     private function getReferenceEntityIdentifierOr404(string $identifier): ReferenceEntityIdentifier
@@ -42,7 +43,10 @@ class GetAction
         }
     }
 
-    private function normalizePermissionDetails($referenceEntityPermissionDetails): array
+    /**
+     * @param PermissionDetails[] $referenceEntityPermissionDetails
+     */
+    private function normalizePermissionDetails(array $referenceEntityPermissionDetails): array
     {
         return array_map(function (PermissionDetails $permissionDetails) {
             return $permissionDetails->normalize();

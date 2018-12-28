@@ -24,11 +24,9 @@ class GetActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
-
     }
 
     /**
@@ -36,6 +34,7 @@ class GetActionTest extends ControllerIntegrationTestCase
      */
     public function it_shows_the_list_of_permissions_for_an_enriched_entity()
     {
+        $this->loadFixtures();
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'show.json');
     }
 
@@ -51,13 +50,13 @@ class GetActionTest extends ControllerIntegrationTestCase
     {
         $query = $this->get('akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_permissions_details');
         $permission = new PermissionDetails();
-        $permission->userGroupIdentifier = 10;
+        $permission->userGroupIdentifier = 1;
         $permission->userGroupName = 'Catalog Manager';
         $permission->rightLevel = 'edit';
         $permissions[] = $permission;
 
         $permission = new PermissionDetails();
-        $permission->userGroupIdentifier = 11;
+        $permission->userGroupIdentifier = 2;
         $permission->userGroupName = 'IT support';
         $permission->rightLevel = 'view';
         $permissions[] = $permission;

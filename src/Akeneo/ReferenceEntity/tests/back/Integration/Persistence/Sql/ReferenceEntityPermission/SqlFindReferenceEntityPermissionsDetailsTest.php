@@ -24,7 +24,7 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
     {
         parent::setUp();
 
-        $this->query = $this->get('akeneo.referencentity.infrastructure.persistence.permission.query.find_reference_entity_permissions_details');
+        $this->query = $this->get('akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_permissions_details');
         $this->resetDB();
         $this->loadFixtures();
     }

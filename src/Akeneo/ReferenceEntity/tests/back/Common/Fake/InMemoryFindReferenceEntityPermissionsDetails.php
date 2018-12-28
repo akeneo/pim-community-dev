@@ -25,7 +25,7 @@ use Webmozart\Assert\Assert;
 class InMemoryFindReferenceEntityPermissionsDetails implements FindReferenceEntityPermissionsDetailsInterface
 {
     /** @var array */
-    public $result = [];
+    public $results = [];
 
     public function save(array $permissions): void
     {
@@ -38,6 +38,6 @@ class InMemoryFindReferenceEntityPermissionsDetails implements FindReferenceEnti
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        return $this->result;
+        return $this->results;
     }
 }

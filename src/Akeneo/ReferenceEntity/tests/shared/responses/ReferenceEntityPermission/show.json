@@ -1,17 +1,24 @@
 {
-    "request": {
-        "method": "GET",
-        "route": "akeneo_reference_entities_reference_entity_permission_get_rest",
-        "query": {
-            "referenceEntityIdentifier": "designer"
-        },
-        "body": [
-            {"user_group_identifier": 2, "name": "IT Manager", "right_level": "edit"},
-            {"user_group_identifier": 1, "name": "Marketing", "right_level": "view"}
-        ]
-    },
-    "response": {
-        "status": 204,
-        "body": ""
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_reference_entity_permission_get_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer"
     }
+  },
+  "response": {
+    "status": 200,
+    "body": [
+      {
+        "user_group_identifier": 1,
+        "user_group_name": "Catalog Manager",
+        "right_level": "edit"
+      },
+      {
+        "user_group_identifier": 2,
+        "user_group_name": "IT support",
+        "right_level": "view"
+      }
+    ]
+  }
 }

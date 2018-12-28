@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class SetActionTest extends ControllerIntegrationTestCase
 {
-    private const REFERENCE_ENTITY_PERMISSION_SET_ROUTE = 'akeneo_reference_entities_reference_entity_permission_set_rest';
     private const RESPONSES_DIR = 'ReferenceEntityPermission/';
 
     /** @var Client */
