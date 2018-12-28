@@ -54,12 +54,24 @@ final class FranklinConfigurationContext extends PimContext
     /**
      * @Given Franklin is configured with a valid token
      *
-     * @throws \Context\Spin\TimeoutException
      * @throws \Exception
      */
     public function franklinIsConfiguredWithAValidToken(): void
     {
         $this->loadDefaultCatalog();
+
+        $configuration = $this->configurationRepository->find();
+        $configuration->setToken('valid-token');
+        $this->configurationRepository->save($configuration);
+    }
+
+    /**
+     * @When I configure Franklin using a valid token
+     *
+     * @throws \Context\Spin\TimeoutException
+     */
+    public function iConfigureFranklinUsingAValidToken(): void
+    {
         $this->loginAsAdmin();
         $this->configureValidToken();
     }

@@ -357,9 +357,7 @@ class DataFixturesContext implements Context
     }
 
     /**
-     * This should be a real attribute removal but not done due to in memory repository architecture.
-     *
-     * @When I delete the attribute mapped to :franklinIdentifier
+     * @Given I delete the attribute mapped to :franklinIdentifier
      *
      * @param string $franklinIdentifier
      */

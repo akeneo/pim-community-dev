@@ -95,7 +95,7 @@ final class FranklinConfigurationContext implements Context
     /**
      * @When I configure Franklin using a valid token
      */
-    public function iConfigureFranklinUsingValidToken(): void
+    public function iConfigureFranklinUsingAValidToken(): void
     {
         try {
             $command = new ActivateConnectionCommand(new Token(FakeClient::VALID_TOKEN));

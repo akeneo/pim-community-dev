@@ -38,9 +38,20 @@ Feature: Define the identifiers mapping status
       | franklin_code | attribute_code |
       | brand         | pim_brand      |
       | mpn           | mpn            |
-    When I delete the attribute mapped to brand
-    And I retrieve the connection status
+    And I delete the attribute mapped to brand
+    When I retrieve the connection status
     Then the identifiers mapping should not be valid
+
+  Scenario: An identifiers mapping is valid when MPN is mapped without BRAND but ASIN is mapped
+    Given the predefined attributes pim_brand, mpn and asin
+    And a predefined identifiers mapping as follows:
+      | franklin_code | attribute_code |
+      | brand         | pim_brand      |
+      | mpn           | mpn            |
+      | asin          | asin           |
+    And I delete the attribute mapped to brand
+    When I retrieve the connection status
+    Then the identifiers mapping should be valid
 
   Scenario: An identifiers mapping is not valid if BRAND is mapped without MPN
     Given the predefined attributes pim_brand and mpn
@@ -48,9 +59,20 @@ Feature: Define the identifiers mapping status
       | franklin_code | attribute_code |
       | brand         | pim_brand      |
       | mpn           | mpn            |
-    When I delete the attribute mapped to mpn
-    And I retrieve the connection status
+    And I delete the attribute mapped to mpn
+    When I retrieve the connection status
     Then the identifiers mapping should not be valid
+
+  Scenario: An identifiers mapping is valid when BRAND is mapped without MPN but ASIN is mapped
+    Given the predefined attributes pim_brand, mpn and asin
+    And a predefined identifiers mapping as follows:
+      | franklin_code | attribute_code |
+      | brand         | pim_brand      |
+      | mpn           | mpn            |
+      | asin          | asin           |
+    And I delete the attribute mapped to mpn
+    When I retrieve the connection status
+    Then the identifiers mapping should be valid
 
   Scenario: An identifiers mapping is not valid if nothing is mapped
     Given an empty identifiers mapping
