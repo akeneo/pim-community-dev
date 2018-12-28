@@ -108,6 +108,8 @@ services:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
+        tags:
+            - { name: fob.context_service }
 
     akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_attribute_options_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Distribution\GetConnectorAttributeOptionsContext

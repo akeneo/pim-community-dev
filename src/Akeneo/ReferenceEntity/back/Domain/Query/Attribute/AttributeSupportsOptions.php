@@ -27,7 +27,7 @@ class AttributeSupportsOptions
 
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): bool
     {
-        $identifier = ($this->getAttributeIdentifier)($referenceEntityIdentifier, $attributeCode);
+        $identifier = $this->getAttributeIdentifier->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
 
         return ($attribute instanceof OptionCollectionAttribute || $attribute instanceof OptionAttribute);
