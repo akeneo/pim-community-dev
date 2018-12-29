@@ -37,8 +37,9 @@ class SavingProductModelDescendantsIntegration extends TestCase
     public function testIndexingProductModelDescendantsOnUnitarySave()
     {
         $this->createProductsAndProductModelsTree('seed');
-
         $this->get('doctrine.orm.entity_manager')->clear();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        sleep(5);
 
         $rootProductModel = $this->get('pim_catalog.repository.product_model')
             ->findOneByIdentifier('seed_root_product_model');
@@ -87,9 +88,11 @@ class SavingProductModelDescendantsIntegration extends TestCase
     public function testProductModelDescendantsCompletenessIsCalculatedOnUnitarySave()
     {
         $this->createProductsAndProductModelsTree('seed');
+        $this->get('doctrine.orm.entity_manager')->clear();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        sleep(5);
 
         $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 5);
-
         $this->get('doctrine.orm.entity_manager')->clear();
 
         $rootProductModel = $this->get('pim_catalog.repository.product_model')
@@ -108,6 +111,8 @@ class SavingProductModelDescendantsIntegration extends TestCase
         while ($this->launcher->hasJobInQueue()) {
             $this->launcher->launchConsumerOnce();
         }
+
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 10);
     }
