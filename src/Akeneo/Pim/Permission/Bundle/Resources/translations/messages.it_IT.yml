@@ -37,10 +37,6 @@ category.permissions:
   apply_on_children.label: Applica le modifiche sui figli
   apply_on_children.help: Copiare le modifiche ai permessi su tutti i figli, i permessi esistenti sui figli vengono mantenuti
 locale.permissions:
-  view.label: Consentita la visualizzazione delle informazioni di prodotto
-  view.help: Consentita la visualizzazione delle informazioni dl prodotto in questa lingua
-  edit.label: Consentita la modifica delle informazioni di prodotto
-  edit.help: Consenti di modificare le informazioni di prodotto in questa lingua (implica il permesso Visualizza)
   no_access_to_products: Non hai accesso ai dati di prodotto in nessuna delle lingue attivate. Si prega di contattare l'amministratore
 flash.locale.updated: Le lingua e i permessi sono stati aggiornati
 pim_enrich:
