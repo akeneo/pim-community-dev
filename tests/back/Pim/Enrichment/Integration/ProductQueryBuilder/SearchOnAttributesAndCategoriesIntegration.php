@@ -78,7 +78,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
         $this->createStructure();
         $this->createDataset();
 
-        sleep(1);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     /**

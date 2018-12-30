@@ -21,7 +21,9 @@ class RemoveProductModelIntegration extends TestCase
     {
         $this->arrange();
 
-        sleep(2); // the product need to be indexed...
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
 
         $productModelRemover = $this->get('pim_catalog.remover.product_model');
         $productModelRepository = $this->get('pim_catalog.repository.product_model');
