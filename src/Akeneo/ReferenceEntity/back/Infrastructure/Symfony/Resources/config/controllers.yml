@@ -269,3 +269,4 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_options'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.infrastructure.persistence.query.attribute_exists'
+            - '@akeneo_referenceentity.domain.persistence.query.attribute_supports_options'

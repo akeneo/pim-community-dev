@@ -19,13 +19,17 @@ use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
@@ -64,6 +68,9 @@ class GetConnectorAttributeOptionsContext implements Context
     /** @var null|Response **/
     private $nonExistentAttributeResponse;
 
+    /** @var null|Response */
+    private $optionsNotSupportedResponse;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -94,6 +101,52 @@ class GetConnectorAttributeOptionsContext implements Context
         $this->referenceEntityRepository->create($referenceEntity);
 
         return $referenceEntity;
+    }
+
+    private function createLabelAttribute()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand_3');
+        $attributeIdentifier = AttributeIdentifier::fromString('label_identifier');
+
+        $textAttribute = TextAttribute::createText(
+            $attributeIdentifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('label'),
+            LabelCollection::fromArray(['en_US' => 'Label']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+
+        $this->attributeRepository->create($textAttribute);
+
+        $connectorAttribute = new ConnectorAttribute(
+            $textAttribute->getCode(),
+            LabelCollection::fromArray(['en_US' => 'Label', 'fr_FR' => 'Label']),
+            'text',
+            AttributeValuePerLocale::fromBoolean($textAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($textAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(true),
+            [
+                'max_length' => $textAttribute->getMaxLength()->intValue(),
+                'is_textarea' => false,
+                'is_rich_text_editor' => false,
+                'validation_rule' => null,
+                'regular_expression' => null
+            ]
+        );
+
+        $this->findConnectorAttributeOptions->save(
+            $referenceEntityIdentifier,
+            $textAttribute->getCode(),
+            $connectorAttribute
+        );
+
+        return $connectorAttribute;
     }
 
     private function createNationalityAttribute()
@@ -151,7 +204,7 @@ class GetConnectorAttributeOptionsContext implements Context
         );
 
         $this->findConnectorAttributeOptions->save(
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand_3'),
+            ReferenceEntityIdentifier::fromString('brand_3'),
             AttributeCode::fromString('nationality'),
             $connectorAttribute
         );
@@ -317,6 +370,39 @@ class GetConnectorAttributeOptionsContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->nonExistentAttributeResponse,
             self::REQUEST_CONTRACT_DIR . "not_found_attribute_for_reference_entity_attribute_option.json"
+        );
+    }
+
+    /**
+     * @Given /^the Label text attribute that is part of the structure of the Brand reference entity$/
+     */
+    public function theLabelTextAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntity()
+    {
+        $this->createBrandReferenceEntity();
+        $this->createLabelAttribute();
+    }
+
+    /**
+     * @When /^the connector requests all the options of the Label attribute for the Brand reference entity$/
+     */
+    public function theConnectorRequestsAllTheOptionsOfTheLabelAttributeForTheBrandReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->optionsNotSupportedResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."options_not_supported_for_reference_entity_attribute.json"
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that the attribute does not support options$/
+     */
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeDoesNotSupportOptions()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->optionsNotSupportedResponse,
+            self::REQUEST_CONTRACT_DIR . "options_not_supported_for_reference_entity_attribute.json"
         );
     }
 }
