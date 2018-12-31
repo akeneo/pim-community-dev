@@ -258,11 +258,11 @@ workflows:
   nightly:
       triggers:
           - schedule:
-                cron: "0 0 * * *"
+                cron: "0 15 * * *"
                 filters:
                     branches:
                         only:
-                            - master
+                            - test-circle-pit 
       jobs:
           - build
           - test_static_back:
@@ -279,6 +279,9 @@ workflows:
                     - test_static_back
                     - test_static_front
                     - test_acceptance_back
-          - test_legacy_behat:
+          - test_phpunit_end_to_end:
                 requires:
                     - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
