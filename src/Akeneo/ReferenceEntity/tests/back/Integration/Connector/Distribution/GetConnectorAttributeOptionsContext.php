@@ -85,6 +85,137 @@ class GetConnectorAttributeOptionsContext implements Context
         $this->attributeRepository = $attributeRepository;
     }
 
+    /**
+     * @Given /^the 4 options of the Nationality single option attribute$/
+     */
+    public function theOptionsOfTheNationalitySingleOptionAttribute()
+    {
+        $this->createBrandReferenceEntity();
+        $this->createNationalityAttribute();
+    }
+
+    /**
+     * @When /^the connector requests all the options of the Nationality attribute for the Brand reference entity$/
+     */
+    public function theConnectorRequestsAllTheOptionsOfTheNationalityAttributeForTheBrandReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->optionsResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."successful_nationality_options_for_brand_reference_entity.json"
+        );
+    }
+
+    /**
+     * @Then /^the PIM returns the 4 options of the Nationality attribute for the Brand reference entity$/
+     */
+    public function thePIMReturnsTheOptionsOfTheNationalityAttributeForTheBrandReferenceEntity()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->optionsResponse,
+            self::REQUEST_CONTRACT_DIR . "successful_nationality_options_for_brand_reference_entity.json"
+        );
+    }
+
+    /**
+     * @Given /^the 4 options of the Sales Area multiple options attribute$/
+     */
+    public function theOptionsOfTheSalesAreaMultipleOptionsAttribute()
+    {
+        $this->createBrandReferenceEntity();
+        $this->createSalesAreaAttribute();
+    }
+
+    /**
+     * @When /^the connector requests all the options of the Sales Area attribute for the Brand reference entity$/
+     */
+    public function theConnectorRequestsAllTheOptionsOfTheSalesAreaAttributeForTheBrandReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->multiOptionResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."successful_sales_area_options_for_brand_reference_entity.json"
+        );
+    }
+
+    /**
+     * @Then /^the PIM returns the (\d+) options of the Sales Area attribute for the Brand Reference entity$/
+     */
+    public function thePIMReturnsTheOptionsOfTheSalesAreaAttributeForTheBrandReferenceEntity($arg1)
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->multiOptionResponse,
+            self::REQUEST_CONTRACT_DIR . "successful_sales_area_options_for_brand_reference_entity.json"
+        );
+    }
+
+    /**
+     * @Given /^the Brand reference entity with no attribute in its structure$/
+     */
+    public function theBrandReferenceEntityWithNoAttributeInItsStructure()
+    {
+        $this->createBrandReferenceEntity();
+    }
+
+    /**
+     * @When /^the connector requests the options of an attribute that is not part of the structure of the given reference entity$/
+     */
+    public function theConnectorRequestsTheOptionsOfAnAttributeThatIsNotPartOfTheStructureOfTheGivenReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->nonExistentAttributeResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."not_found_attribute_for_reference_entity_attribute_option.json"
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that the attribute is not part of the structure of the Brand reference entity$/
+     */
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeIsNotPartOfTheStructureOfTheBrandReferenceEntity()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->nonExistentAttributeResponse,
+            self::REQUEST_CONTRACT_DIR . "not_found_attribute_for_reference_entity_attribute_option.json"
+        );
+    }
+
+    /**
+     * @Given /^the Label text attribute that is part of the structure of the Brand reference entity$/
+     */
+    public function theLabelTextAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntity()
+    {
+        $this->createBrandReferenceEntity();
+        $this->createLabelAttribute();
+    }
+
+    /**
+     * @When /^the connector requests all the options of the Label attribute for the Brand reference entity$/
+     */
+    public function theConnectorRequestsAllTheOptionsOfTheLabelAttributeForTheBrandReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->optionsNotSupportedResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."options_not_supported_for_reference_entity_attribute.json"
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that the attribute does not support options$/
+     */
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeDoesNotSupportOptions()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->optionsNotSupportedResponse,
+            self::REQUEST_CONTRACT_DIR . "options_not_supported_for_reference_entity_attribute.json"
+        );
+    }
+
     private function createBrandReferenceEntity()
     {
         $identifier = ReferenceEntityIdentifier::fromString('brand_3');
@@ -273,136 +404,5 @@ class GetConnectorAttributeOptionsContext implements Context
         );
 
         return $connectorAttribute;
-    }
-
-    /**
-     * @Given /^the 4 options of the Nationality single option attribute$/
-     */
-    public function theOptionsOfTheNationalitySingleOptionAttribute()
-    {
-        $this->createBrandReferenceEntity();
-        $this->createNationalityAttribute();
-    }
-
-    /**
-     * @When /^the connector requests all the options of the Nationality attribute for the Brand reference entity$/
-     */
-    public function theConnectorRequestsAllTheOptionsOfTheNationalityAttributeForTheBrandReferenceEntity()
-    {
-        $client = $this->clientFactory->logIn('julia');
-
-        $this->optionsResponse = $this->webClientHelper->requestFromFile(
-            $client,
-            self::REQUEST_CONTRACT_DIR ."successful_nationality_options_for_brand_reference_entity.json"
-        );
-    }
-
-    /**
-     * @Then /^the PIM returns the 4 options of the Nationality attribute for the Brand reference entity$/
-     */
-    public function thePIMReturnsTheOptionsOfTheNationalityAttributeForTheBrandReferenceEntity()
-    {
-        $this->webClientHelper->assertJsonFromFile(
-            $this->optionsResponse,
-            self::REQUEST_CONTRACT_DIR . "successful_nationality_options_for_brand_reference_entity.json"
-        );
-    }
-
-    /**
-     * @Given /^the 4 options of the Sales Area multiple options attribute$/
-     */
-    public function theOptionsOfTheSalesAreaMultipleOptionsAttribute()
-    {
-        $this->createBrandReferenceEntity();
-        $this->createSalesAreaAttribute();
-    }
-
-    /**
-     * @When /^the connector requests all the options of the Sales Area attribute for the Brand reference entity$/
-     */
-    public function theConnectorRequestsAllTheOptionsOfTheSalesAreaAttributeForTheBrandReferenceEntity()
-    {
-        $client = $this->clientFactory->logIn('julia');
-
-        $this->multiOptionResponse = $this->webClientHelper->requestFromFile(
-            $client,
-            self::REQUEST_CONTRACT_DIR ."successful_sales_area_options_for_brand_reference_entity.json"
-        );
-    }
-
-    /**
-     * @Then /^the PIM returns the (\d+) options of the Sales Area attribute for the Brand Reference entity$/
-     */
-    public function thePIMReturnsTheOptionsOfTheSalesAreaAttributeForTheBrandReferenceEntity($arg1)
-    {
-        $this->webClientHelper->assertJsonFromFile(
-            $this->multiOptionResponse,
-            self::REQUEST_CONTRACT_DIR . "successful_sales_area_options_for_brand_reference_entity.json"
-        );
-    }
-
-    /**
-     * @Given /^the Brand reference entity with no attribute in its structure$/
-     */
-    public function theBrandReferenceEntityWithNoAttributeInItsStructure()
-    {
-        $this->createBrandReferenceEntity();
-    }
-
-    /**
-     * @When /^the connector requests the options of an attribute that is not part of the structure of the given reference entity$/
-     */
-    public function theConnectorRequestsTheOptionsOfAnAttributeThatIsNotPartOfTheStructureOfTheGivenReferenceEntity()
-    {
-        $client = $this->clientFactory->logIn('julia');
-
-        $this->nonExistentAttributeResponse = $this->webClientHelper->requestFromFile(
-            $client,
-            self::REQUEST_CONTRACT_DIR ."not_found_attribute_for_reference_entity_attribute_option.json"
-        );
-    }
-
-    /**
-     * @Then /^the PIM notifies the connector about an error indicating that the attribute is not part of the structure of the Brand reference entity$/
-     */
-    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeIsNotPartOfTheStructureOfTheBrandReferenceEntity()
-    {
-        $this->webClientHelper->assertJsonFromFile(
-            $this->nonExistentAttributeResponse,
-            self::REQUEST_CONTRACT_DIR . "not_found_attribute_for_reference_entity_attribute_option.json"
-        );
-    }
-
-    /**
-     * @Given /^the Label text attribute that is part of the structure of the Brand reference entity$/
-     */
-    public function theLabelTextAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntity()
-    {
-        $this->createBrandReferenceEntity();
-        $this->createLabelAttribute();
-    }
-
-    /**
-     * @When /^the connector requests all the options of the Label attribute for the Brand reference entity$/
-     */
-    public function theConnectorRequestsAllTheOptionsOfTheLabelAttributeForTheBrandReferenceEntity()
-    {
-        $client = $this->clientFactory->logIn('julia');
-
-        $this->optionsNotSupportedResponse = $this->webClientHelper->requestFromFile(
-            $client,
-            self::REQUEST_CONTRACT_DIR ."options_not_supported_for_reference_entity_attribute.json"
-        );
-    }
-
-    /**
-     * @Then /^the PIM notifies the connector about an error indicating that the attribute does not support options$/
-     */
-    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeDoesNotSupportOptions()
-    {
-        $this->webClientHelper->assertJsonFromFile(
-            $this->optionsNotSupportedResponse,
-            self::REQUEST_CONTRACT_DIR . "options_not_supported_for_reference_entity_attribute.json"
-        );
     }
 }
