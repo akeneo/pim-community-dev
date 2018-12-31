@@ -19,8 +19,7 @@ class AttributeSupportsOptions
     public function __construct(
         GetAttributeIdentifierInterface $getAttributeIdentifier,
         AttributeRepositoryInterface $attributeRepository
-    )
-    {
+    ) {
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->attributeRepository = $attributeRepository;
     }
