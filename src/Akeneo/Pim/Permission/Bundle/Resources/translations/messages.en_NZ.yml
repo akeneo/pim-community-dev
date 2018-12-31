@@ -37,10 +37,6 @@ category.permissions:
   apply_on_children.label: Apply changes on children
   apply_on_children.help: Copy the permissions changes on all children, existing permissions on children are kept
 locale.permissions:
-  view.label: Allowed to view product information
-  view.help: Allow to view the product information in this locale
-  edit.label: Allowed to edit product information
-  edit.help: Allow to edit the product information in this locale (implies the view permission)
   no_access_to_products: You don't have access to product data in any activated locale, please contact your administrator
 flash.locale.updated: The locale and permissions have been updated
 pim_enrich:

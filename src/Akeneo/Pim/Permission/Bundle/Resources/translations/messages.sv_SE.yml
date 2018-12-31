@@ -35,10 +35,6 @@ category.permissions:
   apply_on_children.label: Tillämpa ändringar på elementen
   apply_on_children.help: Kopiera behörigheter ändringarna på alla elementen, befintliga behörigheter för element hålls
 locale.permissions:
-  view.label: Tillåtet att Visa produktinformation
-  view.help: Tillåt för att se produktinformationen i detta språk
-  edit.label: Får redigera produktinformation
-  edit.help: Tillåt för att redigera produktinformationen i detta locale (innebär behörigheten Visa)
   no_access_to_products: Du har inte tillgång till produktdata i någon av de aktiverade språk, kontakta administratören
 flash.locale.updated: De nationella inställningar och behörigheter har uppdaterats
 pim_enrich:
