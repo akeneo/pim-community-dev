@@ -408,7 +408,7 @@ class DataGridContext extends PimContext implements PageObjectAware
             return strtolower(trim($filter->getHtml()));
         }, $this->getCurrentPage()->getFiltersList());
 
-        foreach($arrayFilters as $filter) {
+        foreach ($arrayFilters as $filter) {
             if (array_search($filter, $existingFiltersArray) === false) {
                 throw $this->createExpectationException(
                     sprintf('Expected to see filter %s as available', $filter)
