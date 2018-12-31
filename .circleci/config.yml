@@ -121,13 +121,14 @@ jobs:
   test_phpunit_integration:
       machine:
           enabled: true
+          docker_layer_caching: true
       parallelism: 7
       steps:
           - attach_workspace:
                 at: ~/
           - run:
-                name: Change permissions on project dir in order to archive the project into the workspace
-                command: sudo chmod 777 ../project -R
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
                 command: |
@@ -144,6 +145,36 @@ jobs:
           - store_artifacts:
                 path: var/tests/phpunit
 
+  test_phpunit_end_to_end:
+      machine:
+          enabled: true
+          docker_layer_caching: true
+      parallelism: 7
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: |
+                    docker-compose up -d
+          - run:
+                name: Install database
+                command: |
+                    sleep 25 # wait mysql to be up
+                    docker-compose exec fpm bin/console --env=behat pim:install:db
+          - run:
+                name: PHPunit End to end
+                command: |
+                    TESTFILES=$(circleci tests glob "tests/back/**/*EndToEnd.php" | circleci tests split)
+                    .circleci/run_phpunit.sh $TESTFILES
+          - store_test_results:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/tests/phpunit
+
   test_legacy_behat:
     machine:
       enabled: true
@@ -152,8 +183,8 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-            name: Change permissions on project dir in order to archive the project into the workspace
-            command: sudo chmod 777 ../project -R
+            name: Change owner on project dir in order to archive the project into the workspace
+            command: sudo chown -R 1000:1000 ../project
       - run:
           name: Start containers
           command: |
