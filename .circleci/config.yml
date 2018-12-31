@@ -8,9 +8,7 @@ jobs:
       - checkout
       - run:
           name: Copy env file
-          command: |
-            cp .env.dist .env
-            cp behat.yml.dist behat.yml
+          command: cp .env.dist .env
       - run:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs
@@ -179,6 +177,7 @@ jobs:
   test_legacy_behat:
     machine:
       enabled: true
+      docker_layer_caching: true
     parallelism: 7
     steps:
       - attach_workspace:
@@ -255,6 +254,7 @@ workflows:
           - test_legacy_behat:
                 requires:
                     - test_phpunit_end_to_end
+
   nightly:
       triggers:
           - schedule:
@@ -262,7 +262,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - test-circle-pit 
+                            - test-circle-pit
       jobs:
           - build
           - test_static_back:
