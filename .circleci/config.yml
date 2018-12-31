@@ -121,23 +121,55 @@ jobs:
   test_phpunit_integration:
       machine:
           enabled: true
+          docker_layer_caching: true
       parallelism: 7
       steps:
           - attach_workspace:
                 at: ~/
           - run:
-                name: Change permissions on project dir in order to archive the project into the workspace
-                command: sudo chmod 777 ../project -R
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
+                command: docker-compose up -d
+          - run:
+                name: Install database
                 command: |
-                    docker-compose up -d
                     sleep 25 # wait mysql to be up
                     docker-compose exec fpm bin/console --env=behat pim:install:db
           - run:
                 name: PHPunit Integration
                 command: |
-                    TESTFILES=$(cat .circleci/phpunit.txt | circleci tests split)
+                    TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" | circleci tests split)
+                    .circleci/run_phpunit.sh $TESTFILES
+          - store_test_results:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/tests/phpunit
+
+  test_phpunit_end_to_end:
+      machine:
+          enabled: true
+          docker_layer_caching: true
+      parallelism: 7
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: docker-compose up -d
+          - run:
+                name: Install database
+                command: |
+                    sleep 25 # wait mysql to be up
+                    docker-compose exec fpm bin/console --env=behat pim:install:db
+          - run:
+                name: PHPunit End to end
+                command: |
+                    TESTFILES=$(circleci tests glob "tests/back/**/*EndToEnd.php" | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
@@ -152,14 +184,16 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-            name: Change permissions on project dir in order to archive the project into the workspace
-            command: sudo chmod 777 ../project -R
+            name: Change owner on project dir in order to archive the project into the workspace
+            command: sudo chown -R 1000:1000 ../project
       - run:
-          name: Start containers
-          command: |
-            docker-compose up -d
-            sleep 25 # wait mysql to be up
-            docker-compose exec fpm bin/console --env=behat pim:install:db
+            name: Start containers
+            command: docker-compose up -d
+      - run:
+            name: Install database
+            command: |
+                sleep 25 # wait mysql to be up
+                docker-compose exec fpm bin/console --env=behat pim:install:db
       - run:
           name: Behat
           command: |
@@ -195,45 +229,56 @@ jobs:
 workflows:
   version: 2
   pull_request:
-    jobs:
-      - wait_for_user_approval:
-          type: approval
-      - build:
-          requires:
-            - wait_for_user_approval
-      - test_static_back:
-          requires:
-            - build
-      - test_static_front:
-          requires:
-            - build
-      - test_acceptance_back:
-          requires:
-            - build
+      jobs:
+          - wait_for_user_approval:
+                type: approval
+          - build:
+                requires:
+                    - wait_for_user_approval
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
   nightly:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - build
-      - test_static_back:
-          requires:
-            - build
-      - test_static_front:
-          requires:
-            - build
-      - test_acceptance_back:
-          requires:
-            - build
-      - test_phpunit_integration:
-          requires:
-            - test_static_back
-            - test_static_front
-            - test_acceptance_back
-      - test_legacy_behat:
-          requires:
-            - test_phpunit_integration
+      triggers:
+          - schedule:
+                cron: "0 0 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_integration

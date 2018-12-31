@@ -31,7 +31,7 @@ class FindActivatedCurrenciesIntegration extends TestCase
     public function testReturnsMultipleActivatedCurrenciesForAChannel()
     {
         $this->addEURToEcommerce();
-        Assert::assertSame(
+        $this->assertSameWithoutOrder(
             $this->get('pim_catalog.query.find_activated_currencies')->forChannel('ecommerce'),
             ['USD', 'EUR']
         );
@@ -40,7 +40,7 @@ class FindActivatedCurrenciesIntegration extends TestCase
     public function testReturnsAllActivatedCurrenciesForAllChannels()
     {
         $this->addAdditionalCurrenciesToMobile();
-        Assert::assertSame(
+        $this->assertSameWithoutOrder(
             $this->get('pim_catalog.query.find_activated_currencies')->forAllChannels('ecommerce'),
             ['USD', 'EUR', 'ADP', 'AFA']
         );
@@ -79,5 +79,17 @@ class FindActivatedCurrenciesIntegration extends TestCase
         $mobile->setCurrencies([$eur, $adp, $afa]);
         $mobile->setCategory($master);
         $this->get('pim_catalog.saver.channel')->save($mobile);
+    }
+
+    private function assertSameWithoutOrder(array $expected, array $actual): void
+    {
+        Assert::assertEquals(
+            $expected,
+            $actual,
+            '',
+            0.0,
+            10,
+            true
+        );
     }
 }
