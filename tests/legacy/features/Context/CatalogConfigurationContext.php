@@ -3,6 +3,8 @@
 namespace Context;
 
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Akeneo\Test\IntegrationTestsBundle\Loader\DatabaseSchemaHandler;
+use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
@@ -12,8 +14,9 @@ use Pim\Behat\Context\PimContext;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 /**
  * A context for initializing catalog configuration
@@ -47,6 +50,10 @@ class CatalogConfigurationContext extends PimContext
         return $this;
     }
 
+    private $databaseSchemaHandler;
+    private $systemUserAuthenticator;
+    const CACHE_DIR = '/pim-legacy-tests-data-cache/';
+
     /**
      * @param string $catalog
      *
@@ -54,12 +61,140 @@ class CatalogConfigurationContext extends PimContext
      */
     public function aCatalogConfiguration($catalog)
     {
+        $time = microtime(true);
+
+        $this->databaseSchemaHandler = new DatabaseSchemaHandler($this->getKernel());
+        $this->systemUserAuthenticator = new SystemUserAuthenticator($this->getKernel()->getContainer());
+
         $this->initializeReferenceRepository();
 
-        $this->loadCatalog($this->getConfigurationFiles($catalog));
+        $this->resetElasticsearchIndex();
+        $files = $this->getConfigurationFiles($catalog);
+        $fixturesHash = $this->getHashForFiles($files);
 
-        $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
+        $dumpFile = sys_get_temp_dir().self::CACHE_DIR.$fixturesHash.'.sql';
+
+        if (file_exists($dumpFile)) {
+            $this->databaseSchemaHandler->reset();
+
+            $this->restoreDatabase($dumpFile);
+            $this->clearAclCache();
+
+            $this->systemUserAuthenticator->createSystemUser();
+
+            $this->indexProductModels();
+            $this->indexProducts();
+
+            $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
+//            var_dump("File already existing !" . $dumpFile);
+//            var_dump(microtime(true) - $time);
+
+//            return;
+        } else {
+
+            $this->databaseSchemaHandler->reset();
+            $this->clearAclCache();
+
+            $this->loadCatalog($files);
+
+            $this->dumpDatabase($dumpFile);
+
+            $this->systemUserAuthenticator->createSystemUser();
+
+            $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
+
+//            var_dump("File stored !" . $dumpFile);
+//            var_dump(microtime(true) - $time);
+        }
     }
+
+    protected function resetElasticsearchIndex(): void
+    {
+        $clientRegistry = $this->getKernel()->getContainer()->get('akeneo_elasticsearch.registry.clients');
+        $clients = $clientRegistry->getClients();
+
+        foreach ($clients as $client) {
+            $client->resetIndex();
+        }
+    }
+
+    protected function getHashForFiles(array $files): string
+    {
+        $hashes = array_map('sha1_file', $files);
+
+        return sha1(implode(':', $hashes));
+    }
+
+    protected function restoreDatabase($filepath): void
+    {
+        $this->execCommand([
+            'mysql',
+            '-h '.$this->getKernel()->getContainer()->getParameter('database_host'),
+            '-u '.$this->getKernel()->getContainer()->getParameter('database_user'),
+            '-p'.$this->getKernel()->getContainer()->getParameter('database_password'),
+            $this->getKernel()->getContainer()->getParameter('database_name'),
+            '< '.$filepath,
+        ]);
+    }
+
+    protected function clearAclCache(): void
+    {
+        $aclManager = $this->getKernel()->getContainer()->get('oro_security.acl.manager');
+        $aclManager->clearCache();
+    }
+
+    protected function indexProducts(): void
+    {
+        $products = $this->getKernel()->getContainer()->get('pim_catalog.repository.product')->findAll();
+        $this->getKernel()->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
+    }
+
+    protected function indexProductModels(): void
+    {
+        $productModels = $this->getKernel()->getContainer()->get('pim_catalog.repository.product_model')->findAll();
+        $this->getKernel()->getContainer()->get('pim_catalog.elasticsearch.indexer.product_model')->indexAll($productModels);
+    }
+
+    protected function dumpDatabase($filepath): void
+    {
+        $dir = dirname($filepath);
+        if (!file_exists($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
+        $this->execCommand([
+            'mysqldump',
+            '-h '.$this->getKernel()->getContainer()->getParameter('database_host'),
+            '-u '.$this->getKernel()->getContainer()->getParameter('database_user'),
+            '-p'.$this->getKernel()->getContainer()->getParameter('database_password'),
+            '--no-create-info',
+            '--quick',
+            $this->getKernel()->getContainer()->getParameter('database_name'),
+            '> '.$filepath,
+        ]);
+    }
+
+    protected function execCommand(array $arguments, $timeout = 120): string
+    {
+        $process = new Process(implode(' ', $arguments));
+        $process->setTimeout($timeout);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        return $process->getOutput();
+    }
+
+
+
+
+
+
+
+
+
 
 
     /**
