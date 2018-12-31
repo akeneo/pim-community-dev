@@ -131,8 +131,10 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
+                command: docker-compose up -d
+          - run:
+                name: Install database
                 command: |
-                    docker-compose up -d
                     sleep 25 # wait mysql to be up
                     docker-compose exec fpm bin/console --env=behat pim:install:db
           - run:
@@ -158,8 +160,7 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
-                command: |
-                    docker-compose up -d
+                command: docker-compose up -d
           - run:
                 name: Install database
                 command: |
@@ -186,11 +187,13 @@ jobs:
             name: Change owner on project dir in order to archive the project into the workspace
             command: sudo chown -R 1000:1000 ../project
       - run:
-          name: Start containers
-          command: |
-            docker-compose up -d
-            sleep 25 # wait mysql to be up
-            docker-compose exec fpm bin/console --env=behat pim:install:db
+            name: Start containers
+            command: docker-compose up -d
+      - run:
+            name: Install database
+            command: |
+                sleep 25 # wait mysql to be up
+                docker-compose exec fpm bin/console --env=behat pim:install:db
       - run:
           name: Behat
           command: |
