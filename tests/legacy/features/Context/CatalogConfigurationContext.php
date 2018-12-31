@@ -2,16 +2,12 @@
 
 namespace Context;
 
-use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Context\Loader\ReferenceDataLoader;
-use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
-use Doctrine\Common\DataFixtures\ReferenceRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Context\Loader\FixturesLoader;
 use Pim\Behat\Context\PimContext;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -29,8 +25,8 @@ class CatalogConfigurationContext extends PimContext
     /** @var array Additional catalog configuration directories */
     protected $extraDirectories = [];
 
-    /** @var ReferenceRepository Fixture reference repository */
-    protected $referenceRepository;
+    /** @var FixturesLoader */
+    private $fixturesLoader;
 
     /**
      * Add an additional directory for catalog configuration files
@@ -53,13 +49,12 @@ class CatalogConfigurationContext extends PimContext
      */
     public function aCatalogConfiguration($catalog)
     {
-        $this->initializeReferenceRepository();
+        if (null === $this->fixturesLoader) {
+            $this->fixturesLoader = new FixturesLoader($this->getContainer());
+        }
 
-        $this->loadCatalog($this->getConfigurationFiles($catalog));
-
-        $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
+        $this->fixturesLoader->load($this->getConfigurationFiles($catalog));
     }
-
 
     /**
      * @param string $entity
@@ -69,7 +64,6 @@ class CatalogConfigurationContext extends PimContext
     public function thereIsNoSuchEntityInTheCatalog($entity)
     {
         $db = $this->getMainContext()->getContainer()->get('doctrine.dbal.default_connection');
-        $tablesToPurge = [];
 
         switch ($entity) {
             case 'product':
@@ -196,24 +190,6 @@ class CatalogConfigurationContext extends PimContext
         }
 
         return $files;
-    }
-
-    /**
-     * Initialize the reference repository
-     */
-    protected function initializeReferenceRepository()
-    {
-        $this->referenceRepository = new ReferenceRepository($this->getEntityManager());
-        $listener                  = new ORMReferenceListener($this->referenceRepository);
-        $this->getEntityManager()->getEventManager()->addEventSubscriber($listener);
-    }
-
-    /**
-     * @return EntityManagerInterface
-     */
-    protected function getEntityManager()
-    {
-        return $this->getMainContext()->getEntityManager();
     }
 
     /**
