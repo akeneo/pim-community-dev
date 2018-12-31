@@ -245,6 +245,9 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.attribute_exists'
             - '@akeneo_referenceentity.application.attribute.create_attribute_handler'
             - '@router'
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_referenceentity.application.factory.edit_attribute_command_factory'
+            - '@akeneo_referenceentity.application.attribute.edit_attribute_handler'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionAction
