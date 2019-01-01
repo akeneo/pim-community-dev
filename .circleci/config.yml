@@ -183,21 +183,53 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
+            name: Copy project to execute two parallel scripts
+            command: cp -R ../project ../project2
+      - run:
             name: Change owner on project dir in order to archive the project into the workspace
-            command: sudo chown -R 1000:1000 ../project
+            command: |
+                sudo chown -R 1000:1000 ../project
+                sudo chown -R 1000:1000 ../project2
       - run:
             name: Start containers
-            command: docker-compose up -d
+            command: |
+                docker-compose up -d
+
+                cd ../project2
+                export DOCKER_PORT_HTTP=8082
+                export DOCKER_PORT_HTTP_BEHAT=8083
+                docker-compose up -d
+                cd ../project
       - run:
             name: Install database
             command: |
                 sleep 25 # wait mysql to be up
                 docker-compose exec fpm bin/console --env=behat pim:install:db
+
+                cd ../project2
+                docker-compose exec fpm bin/console --env=behat pim:install:db
+                cd ../project
       - run:
           name: Behat
           command: |
-            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy | circleci tests split)
-            .circleci/run_behat.sh $TESTFILES
+              TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy | circleci tests split)
+
+              ALL_SCENARIOS=(${TESTFILES})
+              NUMBER_SCENARIOS=${#ALL_SCENARIOS[@]}
+              FIRST_HALF_SCENARIOS=${ALL_SCENARIOS[@]::$(($NUMBER_SCENARIOS / 2 ))}
+              SECOND_HALF_SCENARIOS=${ALL_SCENARIOS[@]:$(($NUMBER_SCENARIOS / 2 ))}
+
+              .circleci/run_behat.sh ${FIRST_HALF_SCENARIOS[@]} &
+              PROJECT_1_PID=$!
+
+              cd ../project2
+              .circleci/run_behat.sh ${SECOND_HALF_SCENARIOS[@]} &
+              PROJECT_2_PID=$!
+
+              FAIL=true
+              wait $PROJECT_1_PID || FAIL=false
+              wait $PROJECT_2_PID || FAIL=false
+              [[ "$FAIL" == true ]]
       - store_test_results:
           path: var/tests/behat
       - store_artifacts:
