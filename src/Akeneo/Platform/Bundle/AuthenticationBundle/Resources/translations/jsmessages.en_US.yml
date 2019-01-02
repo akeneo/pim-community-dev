@@ -10,6 +10,9 @@ authentication:
                 update_successful: The configuration has been saved
                 update_failed: The configuration could not be saved
                 fields_not_ready: "The configuration cannot be saved right now. The following fields are not ready: {{ fields }}"
+            warning:
+                title: Warning
+                description: If you're going to enable the SSO authentication your current session will be invalid. You will be logged out and redirected to your Identity Provider after saving the configuration.
             section:
                 activation:
                     title: SSO activation

@@ -15,6 +15,16 @@ class ConfigurationController extends BaseController {
         form.trigger('pim_enrich:form:can-leave', event);
       });
 
+      // Reload to page after SSO has been enabled
+      const isEnabledInitialState = data.is_enabled;
+      form.on('pim_enrich:form:entity:post_save', () => {
+        const isEnabledCurrentState = form.getFormData().is_enabled;
+
+        if (!isEnabledInitialState && isEnabledCurrentState) {
+          setTimeout(() => window.location.reload(), 1000);
+        }
+      });
+
       form.setData(data[0]);
       form
         .setElement(this.$el)
