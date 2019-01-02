@@ -1,8 +1,11 @@
 # 1.7.x
 
+# 1.7.36 (2018-12-11)
+
 ## Bug fixes
 
--PIM-7841: Allow users to set regional locales for UI (en_NZ, pt_PT and pt_BR)
+- PIM-7841: Allow users to set regional locales for UI (en_NZ, pt_PT and pt_BR)
+- PIM-7911: Product quick export with grid context only exports selected locale 
 
 # 1.7.35 (2018-11-26)
 
@@ -29,6 +32,7 @@
 - PIM-7614: Reduce SQL queries and loading time on the product edit form
 
 ## BC Breaks
+
 - PIM-7614: New method getPresenterByAttributeType() on PresenterRegistryInterface
 
 # 1.7.31 (2018-08-22)
