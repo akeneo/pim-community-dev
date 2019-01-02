@@ -57,8 +57,3 @@ services:
         class: Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProductModel
         arguments:
             - '@database_connection'
-
-    pimee_security.query.find_reference_entity_where_user_group_is_last_to_have_edit_right:
-        class: Akeneo\Pim\Permission\Bundle\Persistence\Query\UserGroup\SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight
-        arguments:
-            - '@database_connection'

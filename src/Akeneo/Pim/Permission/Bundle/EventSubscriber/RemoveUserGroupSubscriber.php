@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\EventSubscriber;
 
-use Akeneo\Pim\Permission\Bundle\Persistence\Query\UserGroup\SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight;
 use Akeneo\Pim\Permission\Component\Exception\ResourceDeletionDeniedException;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\GroupInterface;

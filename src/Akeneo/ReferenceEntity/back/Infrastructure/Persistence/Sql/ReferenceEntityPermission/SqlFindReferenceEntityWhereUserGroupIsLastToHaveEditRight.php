@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Permission\Bundle\Persistence\Query\UserGroup;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission;
 
 use Doctrine\DBAL\Connection;
 use PDO;

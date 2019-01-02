@@ -377,3 +377,8 @@ services:
         arguments:
             - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_where_user_group_is_last_to_have_edit_right:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight
+        arguments:
+            - '@database_connection'

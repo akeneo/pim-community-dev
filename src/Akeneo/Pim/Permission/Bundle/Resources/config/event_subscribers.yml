@@ -49,6 +49,6 @@ services:
     pimee_security.subscriber.remove_user_group:
         class: Akeneo\Pim\Permission\Bundle\EventSubscriber\RemoveUserGroupSubscriber
         arguments:
-            - '@pimee_security.query.find_reference_entity_where_user_group_is_last_to_have_edit_right'
+            - '@akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_where_user_group_is_last_to_have_edit_right'
         tags:
             - { name: kernel.event_subscriber }
