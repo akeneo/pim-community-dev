@@ -50,6 +50,18 @@ extensions:
         config:
             entity: sso_configuration
 
+    authentication-sso-configuration-warning:
+        module: pim/common/simple-view
+        parent: authentication-sso-configuration
+        targetZone: content
+        position: 90
+        config:
+            template: pim/template/authentication/sso/configuration/warning
+            templateParams:
+                illustration: User.svg
+                title: authentication.sso.configuration.warning.title
+                description: authentication.sso.configuration.warning.description
+
     authentication-sso-configuration-sections:
         module: pim/common/simple-view
         parent: authentication-sso-configuration

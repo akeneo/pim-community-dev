@@ -54,22 +54,6 @@ security:
             stateless:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
 
-        main:
-            pattern:                        ^/
-            provider:                       chain_provider
-            form_login:
-                csrf_token_generator:       security.csrf.token_manager
-                check_path:                 pim_user_security_check
-                login_path:                 pim_user_security_login
-                use_forward:                true
-            logout:
-                path:                       pim_user_security_logout
-            remember_me:
-                secret:                     "%secret%"
-                name:                       BAPRM
-                lifetime:                   1209600   # stay logged for two weeks
-            anonymous:                      false
-
         sso:
             pattern:   ^/
             anonymous: true
@@ -85,6 +69,22 @@ security:
                 use_forward: true
             logout:
                 path: saml_logout
+
+        main:
+            pattern:                        ^/
+            provider:                       chain_provider
+            form_login:
+                csrf_token_generator:       security.csrf.token_manager
+                check_path:                 pim_user_security_check
+                login_path:                 pim_user_security_login
+                use_forward:                true
+            logout:
+                path:                       pim_user_security_logout
+            remember_me:
+                secret:                     "%secret%"
+                name:                       BAPRM
+                lifetime:                   1209600   # stay logged for two weeks
+            anonymous:                      false
 
     access_control:
         - { path: ^/admin/, role: ROLE_ADMIN }
