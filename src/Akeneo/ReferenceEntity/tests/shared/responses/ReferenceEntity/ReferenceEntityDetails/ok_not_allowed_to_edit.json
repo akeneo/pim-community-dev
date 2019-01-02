@@ -134,7 +134,7 @@
                 }
             ],
             "permission": {
-                "edit": true
+                "edit": false
             }
         }
     }

@@ -18,6 +18,8 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\GetAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
+            - '@security.token_storage'
 
     akeneo_referenceentity.infrastructure.action.reference_entity.edit:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\EditAction
