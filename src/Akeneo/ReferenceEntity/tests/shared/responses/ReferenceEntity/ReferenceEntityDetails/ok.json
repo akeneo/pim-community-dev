@@ -133,7 +133,9 @@
                     ]
                 }
             ],
-            "is_allowed_to_edit": true
+            "permission": {
+                "edit": true
+            }
         }
     }
 }

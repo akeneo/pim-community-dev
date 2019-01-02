@@ -31,7 +31,7 @@ class ReferenceEntityDetails
     public const IMAGE = 'image';
     public const RECORD_COUNT = 'record_count';
     public const ATTRIBUTES = 'attributes';
-    public const IS_ALLOWED_TO_EDIT = 'is_allowed_to_edit';
+    public const PERMISSION = 'permission';
 
     /** @var ReferenceEntityIdentifier */
     public $identifier;
@@ -51,6 +51,8 @@ class ReferenceEntityDetails
     /** @var bool */
     public $isAllowedToEdit = true;
 
+    private const EDIT_PERMISSION = 'edit';
+
     public function normalize(): array
     {
         return [
@@ -61,7 +63,9 @@ class ReferenceEntityDetails
             self::ATTRIBUTES   => array_map(function (AttributeDetails $attribute) {
                 return $attribute->normalize();
             }, $this->attributes),
-            self::IS_ALLOWED_TO_EDIT  => $this->isAllowedToEdit,
+            self::PERMISSION => [
+                self::EDIT_PERMISSION => $this->isAllowedToEdit,
+            ],
         ];
     }
 }

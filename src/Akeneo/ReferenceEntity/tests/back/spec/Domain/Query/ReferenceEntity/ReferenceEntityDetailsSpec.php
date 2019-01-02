@@ -54,7 +54,9 @@ class ReferenceEntityDetailsSpec extends ObjectBehavior
                         'code' => 'name'
                     ]
                 ],
-                'is_allowed_to_edit' => false
+                'permission' => [
+                    'edit' => false
+                ]
             ]
         );
     }
