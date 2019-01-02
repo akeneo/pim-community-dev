@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -78,7 +76,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * @param FileStorerInterface                     $fileStorer
      * @param FileFetcherInterface                    $fileFetcher
      * @param MetadataBuilderRegistry                 $metadaBuilderRegistry
-     * @param                                         $filesystemAlias
+     * @param string                                  $filesystemAlias
      */
     public function __construct(
         ChannelConfigurationRepositoryInterface $configurationRepository,
@@ -169,7 +167,11 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      */
     protected function retrieveSourceFileInfo(VariationInterface $variation)
     {
-        if (null === $sourceFileInfo = $variation->getSourceFileInfo()) {
+        $sourceFileInfo = $variation->getSourceFileInfo();
+        if (null === $sourceFileInfo) {
+            $sourceFileInfo = $variation->getReference()->getFileInfo();
+        }
+        if (null === $sourceFileInfo) {
             throw new \LogicException(sprintf('The variation "%s" has no source file.', $variation->getId()));
         }
 

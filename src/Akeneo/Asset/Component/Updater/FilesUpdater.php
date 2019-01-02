@@ -88,7 +88,6 @@ class FilesUpdater implements FilesUpdaterInterface
     public function deleteVariationFile(VariationInterface $variation)
     {
         $variation->setFileInfo(null);
-        $variation->setSourceFileInfo(null);
         $variation->setLocked(true);
     }
 

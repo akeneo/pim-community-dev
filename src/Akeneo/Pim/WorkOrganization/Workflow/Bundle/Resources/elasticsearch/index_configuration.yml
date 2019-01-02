@@ -22,6 +22,7 @@ mappings:
                 normalizer: 'identifier_normalizer'
             parent:
                 type: 'keyword'
+                normalizer: 'identifier_normalizer'
         dynamic_templates:
             -
                 label_scopable_localizable_structure:

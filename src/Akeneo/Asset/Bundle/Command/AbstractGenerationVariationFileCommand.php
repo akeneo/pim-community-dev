@@ -94,6 +94,41 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
     }
 
     /**
+     * @param AssetInterface $asset
+     */
+    protected function buildAsset(AssetInterface $asset)
+    {
+        $this->getReferenceBuilder()->buildMissingLocalized($asset);
+        foreach ($asset->getReferences() as $reference) {
+            $this->getVariationBuilder()->buildMissing($reference);
+        }
+    }
+
+    /**
+     * @return ReferenceBuilderInterface
+     */
+    protected function getReferenceBuilder()
+    {
+        return $this->getContainer()->get('pimee_product_asset.builder.reference');
+    }
+
+    /**
+     * @return VariationBuilderInterface
+     */
+    protected function getVariationBuilder()
+    {
+        return $this->getContainer()->get('pimee_product_asset.builder.variation');
+    }
+
+    /**
+     * @return AssetSaver
+     */
+    protected function getAssetSaver()
+    {
+        return $this->getContainer()->get('pimee_product_asset.saver.asset');
+    }
+
+    /**
      * @param AssetInterface  $asset
      * @param LocaleInterface $locale
      *
@@ -149,13 +184,5 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
     protected function getAssetRepository()
     {
         return $this->getContainer()->get('pimee_product_asset.repository.asset');
-    }
-
-    /**
-     * @return VariationBuilderInterface
-     */
-    protected function getVariationBuilder()
-    {
-        return $this->getContainer()->get('pimee_product_asset.builder.variation');
     }
 }

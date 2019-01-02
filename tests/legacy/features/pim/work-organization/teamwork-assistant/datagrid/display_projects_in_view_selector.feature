@@ -115,7 +115,7 @@ Feature: Display teamwork assistant projects in the datagrid view selector
     When I fill in the following information in the popin:
       | project-label       | Tech project       |
       | project-description | Technical project. |
-      | project-due-date    | 12/13/2039         |
+      | project-due-date    | 12/13/2066         |
     And I press the "Save" button
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"

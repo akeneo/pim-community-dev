@@ -1,5 +1,25 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7899: Remove Date of Birth field
+
+# 2.3.22 (2018-12-21)
+
+## Bug fixes
+
+- PIM-7924: Raise more information for error messages on command lines for asset variation generations
+- PIM-7922: Fix commandline for asset variation generation by using by default the asset reference.
+- PIM-7869: Fix asset invalid code when mass uploading an asset with a "." in the filename
+- PIM-7910: Search parent filter is now case insensitive
+- PIM-7928: Asset variations are well generate through the command `pim:asset:generate-variation-files-from-reference`.
+- PIM-7929: Asset variations are well generate through the command `pim:asset:generate-missing-variation-files`.
+- PIM-7931: When a new Channel or Locale is added, assets are well updated.
+
+ ## Elasticsearch
+ 
+ - Please re-index the products and product models by launching the commands `console akeneo:elasticsearch:reset-indexes -e prod` and `pim:product:index --all -e prod`.
+ 
 # 2.3.21 (2018-12-07)
 
 # 2.3.20 (2018-12-06)
