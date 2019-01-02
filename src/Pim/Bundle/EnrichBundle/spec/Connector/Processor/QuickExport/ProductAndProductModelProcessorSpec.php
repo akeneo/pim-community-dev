@@ -100,6 +100,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $user->getRoles()->willReturn([]);
         $tokenStorage->setToken(Argument::type(UsernamePasswordToken::class))->shouldBeCalled();
 
+        $jobParameters->has('selected_locales')->willReturn(true);
+        $jobParameters->get('selected_locales')->willReturn(['en_US']);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('scope')->willReturn(true);
         $jobParameters->get('scope')->willReturn('ecommerce');
@@ -150,6 +152,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $user->getRoles()->willReturn([]);
         $tokenStorage->setToken(Argument::type(UsernamePasswordToken::class))->shouldBeCalled();
 
+        $jobParameters->has('selected_locales')->willReturn(true);
+        $jobParameters->get('selected_locales')->willReturn(['en_US']);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('scope')->willReturn(true);
         $jobParameters->get('scope')->willReturn('ecommerce');
@@ -200,6 +204,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $user->getRoles()->willReturn([]);
         $tokenStorage->setToken(Argument::type(UsernamePasswordToken::class))->shouldBeCalled();
 
+        $jobParameters->has('selected_locales')->willReturn(true);
+        $jobParameters->get('selected_locales')->willReturn(['en_US']);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('scope')->willReturn(true);
         $jobParameters->get('scope')->willReturn('ecommerce');
@@ -253,6 +259,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $user->getRoles()->willReturn([]);
         $tokenStorage->setToken(Argument::type(UsernamePasswordToken::class))->shouldBeCalled();
 
+        $jobParameters->has('selected_locales')->willReturn(true);
+        $jobParameters->get('selected_locales')->willReturn(['en_US']);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('scope')->willReturn(true);
         $jobParameters->get('scope')->willReturn('ecommerce');
@@ -315,6 +323,8 @@ class ProductAndProductModelProcessorSpec extends ObjectBehavior
         $user->getRoles()->willReturn([]);
         $tokenStorage->setToken(Argument::type(UsernamePasswordToken::class))->shouldBeCalled();
 
+        $jobParameters->has('selected_locales')->willReturn(true);
+        $jobParameters->get('selected_locales')->willReturn(['en_US']);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('scope')->willReturn(true);
         $jobParameters->get('scope')->willReturn('ecommerce');

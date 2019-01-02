@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -42,6 +43,7 @@ class ProductQuickExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['filters'] = [];
         $constraintFields['selected_properties'] = null;
+        $constraintFields['selected_locales'] = new Optional(null);
         $constraintFields['with_media'] = new Type('bool');
         $constraintFields['locale'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['scope'] = new NotBlank(['groups' => 'Execution']);

@@ -90,7 +90,9 @@ class ProductExportController
      */
     public function indexAction(Request $request)
     {
-        $displayedColumnsOnly = (bool) $request->get('_displayedColumnsOnly');
+        // If the parameter _displayedColumnOnly is set, it means it's a grid context. We didn't change the name of the
+        // parameter to avoid BC.
+        $withGridContext = (bool) $request->get('_displayedColumnsOnly');
         $jobCode = $request->get('_jobCode');
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(['code' => $jobCode]);
 
@@ -110,8 +112,8 @@ class ProductExportController
             }
         }
 
-        if ($displayedColumnsOnly) {
-            $gridName = $request->get('gridName') ?? 'product_grid';
+        if ($withGridContext) {
+            $gridName = (null !== $request->get('gridName')) ? $request->get('gridName') : 'product_grid';
             if (isset($request->get($gridName)['_parameters'])) {
                 $columns = explode(',', $request->get($gridName)['_parameters']['view']['columns']);
             } else {
