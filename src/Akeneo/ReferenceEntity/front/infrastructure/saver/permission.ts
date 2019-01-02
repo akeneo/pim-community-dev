@@ -1,15 +1,15 @@
 // import {postJSON} from 'akeneoreferenceentity/tools/fetch';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import handleError from 'akeneoreferenceentity/infrastructure/tools/error-handler';
-import {PermissionConfiguration} from 'akeneoreferenceentity/tools/component/permission';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {NormalizedPermissionCollection} from 'web/bundles/akeneoreferenceentity/domain/model/reference-entity/permission';
 
 // const routing = require('routing');
 
 export interface ReferenceEntitySaver {
   save: (
     referenceEntityIdentifier: ReferenceEntityIdentifier,
-    permission: PermissionConfiguration
+    permissions: NormalizedPermissionCollection
   ) => Promise<ValidationError[] | null>;
 }
 
@@ -20,7 +20,7 @@ export class PermissionSaverImplementation implements ReferenceEntitySaver {
 
   async save(
     _referenceEntityIdentifier: ReferenceEntityIdentifier,
-    _permission: PermissionConfiguration
+    _permissions: NormalizedPermissionCollection
   ): Promise<ValidationError[] | null> {
     return await Promise.resolve(null).catch(handleError);
   }

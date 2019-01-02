@@ -7,17 +7,21 @@ import {
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
-import PermissionCollectionEditor, {PermissionConfiguration, Group as UserGroup} from 'akeneoreferenceentity/tools/component/permission';
+import PermissionCollectionEditor from 'akeneoreferenceentity/tools/component/permission';
 import {FormState} from 'akeneoreferenceentity/application/reducer/state';
 import {permissionEditionUpdated} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
-import {RightLevel} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
+import {RightLevel, denormalizePermissionCollection, PermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 
 const fetcherRegistry = require('pim/fetcher-registry');
+
+type UserGroup = {
+  name: string;
+}
 
 interface StateProps {
   referenceEntity: NormalizedReferenceEntity;
   permission: {
-    data: PermissionConfiguration,
+    data: PermissionCollection,
     state: FormState;
   },
   context: {
@@ -30,7 +34,7 @@ interface StateProps {
 
 interface DispatchProps {
   events: {
-    onPermissionUpdated: (updatedConfiguration: PermissionConfiguration) => void;
+    onPermissionUpdated: (updatedConfiguration: PermissionCollection) => void;
     onSavePermissionEditForm: () => void;
   };
 }
@@ -52,10 +56,6 @@ class Properties extends React.Component<StateProps & DispatchProps> {
 
   render() {
     const referenceEntity = denormalizeReferenceEntity(this.props.referenceEntity);
-
-    const permissionMock = this.state.userGroups.reduce((permissions: PermissionConfiguration, userGroup: any) => {
-      return {...permissions, [userGroup.name]: RightLevel.Edit};
-    }, {})
 
     return (
       <React.Fragment>
@@ -88,10 +88,9 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           <div className="AknFormContainer AknFormContainer--wide">
             <PermissionCollectionEditor
               entityName={'reference_entity'}//To Change
-              // value={this.props.permission.data}
-              value={permissionMock}
+              value={this.props.permission.data}
               prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
-              onChange={(newValue: PermissionConfiguration) => {
+              onChange={(newValue: PermissionCollection) => {
                   this.props.events.onPermissionUpdated(newValue)
               }}
             />
@@ -108,7 +107,10 @@ export default connect(
 
     return {
       referenceEntity: state.form.data,
-      permission: state.permission,
+      permission: {
+        data: denormalizePermissionCollection(state.permission.data),
+        state: state.permission.state
+      },
       context: {
         locale,
       },
@@ -120,7 +122,7 @@ export default connect(
   (dispatch: any): DispatchProps => {
     return {
       events: {
-        onPermissionUpdated: (permission: PermissionConfiguration) => {
+        onPermissionUpdated: (permission: PermissionCollection) => {
           dispatch(permissionEditionUpdated(permission));
         },
         onSavePermissionEditForm: () => {

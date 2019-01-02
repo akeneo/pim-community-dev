@@ -6,8 +6,6 @@ import {RightLevel, PermissionCollection} from 'akeneoreferenceentity/domain/mod
 type GroupName = string;
 type EntityName = string;
 
-export type PermissionConfiguration = {[groupCode: string]: RightLevel}
-
 type PermissionEditorProps = {
   groupCode: GroupName;
   prioritizedRightLevels: RightLevel[]

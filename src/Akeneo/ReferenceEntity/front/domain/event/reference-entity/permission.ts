@@ -1,11 +1,11 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import {PermissionConfiguration} from 'akeneoreferenceentity/tools/component/permission';
+import {PermissionCollection} from 'web/bundles/akeneoreferenceentity/domain/model/reference-entity/permission';
 
-export const permissionEditionReceived = (permission: PermissionConfiguration) => {
-  return {type: 'PERMISSION_EDITION_RECEIVED', permission};
+export const permissionEditionReceived = (permissions: PermissionCollection) => {
+  return {type: 'PERMISSION_EDITION_RECEIVED', permissions: permissions.normalize()};
 };
-export const permissionEditionUpdated = (permission: PermissionConfiguration) => {
-  return {type: 'PERMISSION_EDITION_PERMISSION_UPDATED', permission};
+export const permissionEditionUpdated = (permissions: PermissionCollection) => {
+  return {type: 'PERMISSION_EDITION_PERMISSION_UPDATED', permissions: permissions.normalize()};
 };
 export const permissionEditionSubmission = () => {
   return {type: 'PERMISSION_EDITION_SUBMISSION'};

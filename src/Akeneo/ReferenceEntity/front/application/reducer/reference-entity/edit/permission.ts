@@ -1,36 +1,36 @@
-import {PermissionConfiguration} from 'akeneoreferenceentity/tools/component/permission';
 import {FormState, createFormState} from 'akeneoreferenceentity/application/reducer/state';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import {NormalizedPermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 
 export interface PermissionState {
-  data: PermissionConfiguration;
+  data: NormalizedPermissionCollection;
   state: FormState;
   errors: ValidationError[];
 }
 
 const initState = () => ({
-  data: {},
+  data: [],
   state: createFormState(),
   errors: [],
 });
 
-const isDirty = (state: PermissionState, newData: PermissionConfiguration) => {
+const isDirty = (state: PermissionState, newData: NormalizedPermissionCollection) => {
   return state.state.originalData !== JSON.stringify(newData);
 };
 
 const permission = (
   state: PermissionState = initState(),
-  {type, permission, errors}: {type: string; permission: PermissionConfiguration; errors: ValidationError[]}
+  {type, permissions, errors}: {type: string; permissions: NormalizedPermissionCollection; errors: ValidationError[]}
 ) => {
   switch (type) {
     case 'PERMISSION_EDITION_RECEIVED':
-      state = {...state, data: permission, state: {isDirty: false, originalData: JSON.stringify(permission)}};
+      state = {...state, data: permissions, state: {isDirty: false, originalData: JSON.stringify(permissions)}};
       break;
     case 'PERMISSION_EDITION_SUBMISSION':
       state = {...state, errors: []};
       break;
     case 'PERMISSION_EDITION_PERMISSION_UPDATED':
-      state = {...state, data: permission, state: {...state.state, isDirty: isDirty(state, state.data)}};
+      state = {...state, data: permissions, state: {...state.state, isDirty: isDirty(state, state.data)}};
       break;
     case 'PERMISSION_EDITION_ERROR_OCCURED':
       state = {...state, errors};

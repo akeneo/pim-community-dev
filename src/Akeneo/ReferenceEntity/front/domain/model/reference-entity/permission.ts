@@ -1,5 +1,3 @@
-import permission from 'web/bundles/akeneoreferenceentity/application/hydrator/permission';
-
 export enum RightLevel {
   None = 'none',
   View = 'view',
@@ -86,12 +84,13 @@ class PermissionImplementation implements Permission {
   }
 }
 
-type NormalizedPermissionCollection = NormalizedPermission[];
+export type NormalizedPermissionCollection = NormalizedPermission[];
 
 export interface PermissionCollection {
   getPermission(userGroupName: UserGroupName): Permission;
   setPermission(userGroupName: UserGroupName, rightLevel: RightLevel): PermissionCollection;
   setAllPermissions(rightLevel: RightLevel): PermissionCollection;
+  normalize(): NormalizedPermissionCollection;
 }
 
 class PermissionCollectionImplementation implements PermissionCollection {
