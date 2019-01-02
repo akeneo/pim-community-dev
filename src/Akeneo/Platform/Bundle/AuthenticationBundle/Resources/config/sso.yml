@@ -17,7 +17,7 @@ services:
             - '@akeneo_authentication.sso.configuration.create_or_update_handler'
             - '@akeneo_authentication.sso.configuration.repository'
 
-    akeneno_authentication.sso.configuration.ui.normalizer:
+    akeneo_authentication.sso.configuration.ui.normalizer:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI\Normalizer'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
@@ -32,7 +32,10 @@ services:
             - '@akeneo_authentication.sso.configuration.repository'
             - '%hslavich_onelogin_saml.settings%'
 
-    akeneno_authentication.sso.firewall_map:
+    hslavich_onelogin_saml.saml_token_factory:
+        class: Akeneo\Platform\Bundle\AuthenticationBundle\Sso\SamlTokenFactory
+
+    akeneo_authentication.sso.firewall_map:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\FirewallMap'
         decorates: 'security.firewall.map'
         decoration_inner_name: 'security.firewall.map.inner'
