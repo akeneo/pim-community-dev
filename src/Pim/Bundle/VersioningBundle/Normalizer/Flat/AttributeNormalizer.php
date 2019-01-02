@@ -94,7 +94,6 @@ class AttributeNormalizer implements NormalizerInterface
         } else {
             $data = [];
             foreach ($options as $option) {
-                $item = [];
                 $data[] = 'Code:' . $option->getCode();
             }
             $options = implode(self::GROUP_SEPARATOR, $data);
