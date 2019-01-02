@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\FamilyAttribute;
+namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\FindFamilyAttributesNotInQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\SelectRemovedFamilyAttributeCodesQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class FindFamilyAttributesNotInQuery implements FindFamilyAttributesNotInQueryInterface
+class SelectRemovedFamilyAttributeCodesQuery implements SelectRemovedFamilyAttributeCodesQueryInterface
 {
     /** @var Connection */
     private $connection;
@@ -35,7 +35,7 @@ class FindFamilyAttributesNotInQuery implements FindFamilyAttributesNotInQueryIn
     /**
      * {@inheritdoc}
      */
-    public function findFamilyAttributesNotIn(string $familyCode, array $attributeCodes): array
+    public function execute(string $familyCode, array $currentAttributeCodes): array
     {
         $query = <<<SQL
 SELECT attribute.code as family_attribute_code
@@ -50,18 +50,16 @@ INNER JOIN pim_catalog_attribute as attribute
 WHERE family.code = :family_code AND attribute.code NOT IN (:attribute_codes)
 SQL;
 
-        $bindValues = ['family_code' => $familyCode, 'attribute_codes' => $attributeCodes];
+        $bindValues = ['family_code' => $familyCode, 'attribute_codes' => $currentAttributeCodes];
         $bindTypes = ['family_code' => \PDO::PARAM_STR, 'attribute_codes' => Connection::PARAM_STR_ARRAY];
         $statement = $this->connection->executeQuery($query, $bindValues, $bindTypes);
         $results = $statement->fetchAll();
 
-        $removedAttributes = array_map(
+        return array_map(
             function ($results) {
                 return $results['family_attribute_code'];
             },
             $results
         );
-
-        return $removedAttributes;
     }
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Family;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\FindFamilyAttributesNotInQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\SelectRemovedFamilyAttributeCodesQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -25,18 +25,18 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class FamilyAttributesRemoveSubscriber implements EventSubscriberInterface
 {
-    /** @var FindFamilyAttributesNotInQueryInterface */
+    /** @var SelectRemovedFamilyAttributeCodesQueryInterface */
     private $query;
 
     /** @var RemoveAttributesFromMappingInterface */
     private $removeAttributesFromMapping;
 
     /**
-     * @param FindFamilyAttributesNotInQueryInterface $query
+     * @param SelectRemovedFamilyAttributeCodesQueryInterface $query
      * @param RemoveAttributesFromMappingInterface $removeAttributesFromMapping
      */
     public function __construct(
-        FindFamilyAttributesNotInQueryInterface $query,
+        SelectRemovedFamilyAttributeCodesQueryInterface $query,
         RemoveAttributesFromMappingInterface $removeAttributesFromMapping
     ) {
         $this->query = $query;
@@ -63,7 +63,7 @@ class FamilyAttributesRemoveSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $removedAttributes = $this->query->findFamilyAttributesNotIn($family->getCode(), $family->getAttributeCodes());
+        $removedAttributes = $this->query->execute($family->getCode(), $family->getAttributeCodes());
 
         $this->removeAttributesFromMapping->process([$family->getCode()], $removedAttributes);
     }

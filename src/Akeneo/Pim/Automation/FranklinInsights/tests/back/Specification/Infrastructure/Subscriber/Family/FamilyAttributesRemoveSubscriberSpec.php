@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Family;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\FindFamilyAttributesNotInQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\SelectRemovedFamilyAttributeCodesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Family\FamilyAttributesRemoveSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class FamilyAttributesRemoveSubscriberSpec extends ObjectBehavior
 {
     public function let(
-        FindFamilyAttributesNotInQueryInterface $query,
+        SelectRemovedFamilyAttributeCodesQueryInterface $query,
         RemoveAttributesFromMappingInterface $removeAttributesFromMapping
     ): void {
         $this->beConstructedWith($query, $removeAttributesFromMapping);
