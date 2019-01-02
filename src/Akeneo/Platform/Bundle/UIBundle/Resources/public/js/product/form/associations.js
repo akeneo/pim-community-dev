@@ -63,13 +63,12 @@ define(
                 'click .add-associations': 'addAssociations'
             },
             datagrids: {},
-            config: {},
 
             /**
              * {@inheritdoc}
              */
             initialize: function (meta) {
-                this.config = meta.config;
+                BaseForm.prototype.initialize.apply(this, arguments);
 
                 state = {
                     associationTarget: 'products'
@@ -116,8 +115,6 @@ define(
                         }
                     }
                 };
-
-                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

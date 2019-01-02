@@ -39,7 +39,6 @@ define(
             template: _.template(template),
             resultsPerPage: 20,
             queryTimer: null,
-            config: {},
             currentViewType: null,
             currentView: null,
             initialView: null,
@@ -53,15 +52,6 @@ define(
 
             events: {
                 'click .view-type-item': 'switchViewType'
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (meta) {
-                this.config = meta.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

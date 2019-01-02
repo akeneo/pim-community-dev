@@ -23,7 +23,7 @@ define(
              * {@inheritdoc}
              */
             initialize(config) {
-                this.config = config.config;
+                BaseForm.prototype.initialize.apply(this, arguments);
 
                 mediator.once('grid_load:start', this.setupCount.bind(this));
                 mediator.on('grid_load:complete', this.setupCount.bind(this));

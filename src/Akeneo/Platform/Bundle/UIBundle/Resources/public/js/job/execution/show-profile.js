@@ -17,15 +17,6 @@ define(
     function ($, _, __, Redirect, Routing) {
         return Redirect.extend({
             /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
-
-                Redirect.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
              * Get the route to redirect to
              *
              * @return {string}

@@ -36,18 +36,6 @@ define([
             },
 
             /**
-             * {@inheritdoc}
-             *
-             * @param {string} config.tab The main tab to highlight
-             * @param {string} [config.item] The sub item to highlight (optional)
-             */
-            initialize: function (config) {
-                this.config = config.config;
-
-                return BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
              * This method will configure the breadcrumb. The configuration of this module contains backbone extension
              * codes related to the menu. To avoid duplication of the labels, we load the configuration of these modules
              * to bring back the labels into this module.

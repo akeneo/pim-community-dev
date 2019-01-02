@@ -33,7 +33,7 @@ define(
              * {@inheritdoc}
              */
             initialize: function (config) {
-                this.config = config.config;
+                BaseForm.prototype.initialize.apply(this, arguments);
 
                 if (this.config.hasOwnProperty('updateSuccessMessage')) {
                     this.updateSuccessMessage = __(this.config.updateSuccessMessage);
@@ -41,8 +41,6 @@ define(
                 if (this.config.hasOwnProperty('updateFailureMessage')) {
                     this.updateFailureMessage = __(this.config.updateFailureMessage);
                 }
-
-                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

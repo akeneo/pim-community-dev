@@ -28,17 +28,6 @@ define([
     FormRegistry
 ) {
     return BaseForm.extend({
-        config: {},
-
-        /**
-         * {@inheritdoc}
-         */
-        initialize: function (config) {
-            this.config = config.config;
-
-            BaseForm.prototype.initialize.apply(this, arguments);
-        },
-
         /**
          * {@inheritdoc}
          */

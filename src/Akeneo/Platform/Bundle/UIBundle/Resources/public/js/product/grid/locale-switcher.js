@@ -31,21 +31,11 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            config: {},
             locales: [],
             id: 'locale-switcher',
             className: 'AknDropdown AknColumn-block locale-switcher',
             events: {
                 'click [data-locale]': 'changeLocale'
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            initialize(config) {
-                this.config = config.config;
-
-                return BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

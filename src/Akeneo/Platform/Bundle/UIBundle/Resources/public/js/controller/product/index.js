@@ -32,15 +32,6 @@ define(
             /**
             * {@inheritdoc}
             */
-            initialize(options) {
-                this.config = Object.assign(this.config, options.config || {});
-
-                return BaseController.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-            * {@inheritdoc}
-            */
             renderForm() {
                 this.selectMenuTab();
 

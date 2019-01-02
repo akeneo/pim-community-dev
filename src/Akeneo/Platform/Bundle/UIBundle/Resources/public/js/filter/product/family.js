@@ -13,7 +13,6 @@ define([
 ], function (_, __, BaseFilter, Routing, template, fetcherRegistry, userContext, i18n) {
     return BaseFilter.extend({
         shortname: 'family',
-        config: {},
         template: _.template(template),
         events: {
             'change [name="filter-value"]': 'updateState'
@@ -23,13 +22,11 @@ define([
          * {@inheritdoc}
          */
         initialize: function (config) {
-            this.config = config.config;
-
             this.selectOptions = {
                 allowClear: true,
                 multiple: true,
                 ajax: {
-                    url: Routing.generate(this.config.url),
+                    url: Routing.generate(config.url),
                     quietMillis: 250,
                     cache: true,
                     data: function (term, page) {

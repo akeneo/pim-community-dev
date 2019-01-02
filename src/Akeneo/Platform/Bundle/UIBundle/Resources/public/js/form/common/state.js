@@ -36,17 +36,15 @@ define(
              * {@inheritdoc}
              */
             initialize: function (meta) {
-                this.config = _.extend({}, {
+                BaseForm.prototype.initialize.apply(this, _.extend({}, {
                     confirmationMessage: 'pim_enrich.entity.fallback.module.edit.discard_changes',
                     confirmationTitle: 'pim_enrich.entity.fallback.module.edit.leave',
                     message: 'pim_common.entity_updated'
-                }, meta.config);
+                }, meta.config));
 
                 this.confirmationMessage = __(this.config.confirmationMessage, {entity: __(this.config.entity)});
                 this.confirmationTitle   = __(this.config.confirmationTitle);
                 this.message             = __(this.config.message);
-
-                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

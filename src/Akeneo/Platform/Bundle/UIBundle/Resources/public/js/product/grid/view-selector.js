@@ -27,15 +27,6 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize(options) {
-                this.config = Object.assign(this.config, options.config || {});
-
-                return BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             render() {
                 FormBuilder.getFormMeta('pim-grid-view-selector')
                     .then(FormBuilder.buildForm)

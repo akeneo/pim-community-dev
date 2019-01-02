@@ -57,13 +57,6 @@ define([
             /**
              * {@inheritdoc}
              */
-            initialize: function (config) {
-                this.config = config.config;
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             configure: function () {
                 this.listenTo(
                     this.getRoot(),

@@ -15,13 +15,6 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (options) {
-                this.config = options.config;
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             renderForm: function (route, path) {
                 var query = path.replace(route.route.tokens[0][1], '');
                 var parameters = _.chain(query.split('&'))

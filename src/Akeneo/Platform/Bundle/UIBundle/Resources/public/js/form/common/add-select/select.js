@@ -44,7 +44,6 @@ define(
             template: _.template(template),
             lineView: LineView,
             footerView: FooterView,
-            config: {},
             resultsPerPage: null,
             selection: [],
             itemViews: [],
@@ -80,7 +79,7 @@ define(
              * {@inheritdoc}
              */
             initialize: function (meta) {
-                this.config = $.extend(true, {}, this.defaultConfig, meta.config);
+                BaseForm.prototype.initialize.apply(this, $.extend(true, {}, this.defaultConfig, meta.config));
 
                 if (_.isNull(this.config.mainFetcher)) {
                     throw new Error('Fetcher code must be provided in config');

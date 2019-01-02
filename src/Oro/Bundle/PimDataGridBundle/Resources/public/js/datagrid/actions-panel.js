@@ -55,7 +55,7 @@ define(
             mediator.once('grid_load:start', this.setupActions.bind(this));
             mediator.on('grid_load:complete', this.setupActions.bind(this));
 
-            return BaseForm.prototype.initialize.apply(this, arguments);
+            BaseForm.prototype.initialize.apply(this, arguments);
         },
 
         /**

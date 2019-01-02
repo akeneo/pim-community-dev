@@ -15,6 +15,7 @@ const mediator = require('oro/mediator');
 class BaseView extends Backbone.View<any> implements View {
   private parent: View | null = null;
   private extensions: {[code: string]: View};
+  protected config: any = {};
 
   readonly preUpdateEventName: string = 'pim_enrich:form:entity:pre_update';
   readonly postUpdateEventName: string = 'pim_enrich:form:entity:post_update';
@@ -28,13 +29,29 @@ class BaseView extends Backbone.View<any> implements View {
   /**
    * {@inheritdoc}
    */
-  constructor(config: any) {
-    super(config);
+  constructor(meta: any) {
+    super(meta);
 
     this.extensions = {};
     this.zones = {};
     this.targetZone = '';
     this.configured = false;
+    this.initialize(meta);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  initialize(meta: any) {
+    let config = this.config;
+    if (undefined === config) {
+      config = {};
+    }
+    if (undefined === meta) {
+      meta = {};
+    }
+
+    this.config = Object.assign(config, meta.config || {});
   }
 
   /**

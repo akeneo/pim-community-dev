@@ -74,16 +74,6 @@ class SectionView extends BaseView {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  constructor(options: {config: SectionConfig}) {
-    super(options);
-
-    this.config = {...this.config, ...options.config};
-    this.hideHint = false;
-  }
-
-  /**
    * If the hint key is in localStorage, don't show it on first render
    * @return {Boolean}
    */

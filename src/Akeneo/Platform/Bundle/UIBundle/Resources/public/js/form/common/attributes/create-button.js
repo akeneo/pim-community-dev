@@ -41,15 +41,6 @@ define(
             templateModal: _.template(templateModal),
 
             /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
              * Create the dialog modal and bind clicks
              */
             createModal: function (attributeTypesMap) {

@@ -40,10 +40,9 @@ define(
              * {@inheritdoc}
              */
             initialize: function (meta) {
-                this.config = meta.config;
-                this.navigationItems = [];
+                BaseForm.prototype.initialize.apply(this, arguments);
 
-                return BaseForm.prototype.initialize.apply(this, arguments);
+                this.navigationItems = [];
             },
 
             /**

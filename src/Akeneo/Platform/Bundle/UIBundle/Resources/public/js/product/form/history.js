@@ -51,10 +51,6 @@ define(
             initialize: function (config) {
                 this.actions = {};
 
-                if (undefined !== config) {
-                    this.config = config.config;
-                }
-
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 

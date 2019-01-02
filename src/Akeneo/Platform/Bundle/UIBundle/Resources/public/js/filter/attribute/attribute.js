@@ -31,17 +31,6 @@ define([
 ) {
     return BaseFilter.extend({
         /**
-         * {@inherit}
-         */
-        initialize: function (config) {
-            if (undefined !== config) {
-                this.config = config.config;
-            }
-
-            return BaseFilter.prototype.initialize.apply(this, arguments);
-        },
-
-        /**
          * Sets the scope code on which this filter operates.
          *
          * @param {string} scope

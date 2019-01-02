@@ -52,7 +52,6 @@ class FiltersSelector extends BaseView {
   constructor(options: {config: any}) {
     super({...options, ...{className: 'filter-box'}});
 
-    this.config = {...this.config, ...options.config};
     this.modules = {};
     this.datagridCollection = null;
     this.silent = false;

@@ -47,17 +47,6 @@ define([
         modelDateFormat: 'yyyy-MM-dd HH:mm:ss',
 
         /**
-         * Initializes configuration.
-         *
-         * @param config
-         */
-        initialize: function (config) {
-            this.config = config.config;
-
-            return BaseFilter.prototype.initialize.apply(this, arguments);
-        },
-
-        /**
          * {@inheritdoc}
          */
         configure: function () {

@@ -35,15 +35,6 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (config) {
-                this.config = config.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             configure: function () {
                 this.onExtensions('add-attribute:add', function (event) {
                     this.addFilters(event.codes).then(function () {

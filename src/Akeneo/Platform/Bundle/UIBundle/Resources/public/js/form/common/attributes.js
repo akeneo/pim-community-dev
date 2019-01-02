@@ -125,15 +125,6 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (meta) {
-                this.config = meta.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,

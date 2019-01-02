@@ -17,12 +17,11 @@ type InterfaceNormalizedDatagridView = {
 }
 
 class DefaultProductGridView extends BaseSelect {
-  private config: any;
-
-  constructor(options: {config: any}) {
-    super(options);
-
-    this.config = {...this.config, ...options.config};
+  /**
+   * {@inheritdoc}
+   */
+  constructor(meta: any) {
+    super(meta);
   }
 
   /**

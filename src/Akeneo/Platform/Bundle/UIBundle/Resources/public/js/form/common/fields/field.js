@@ -27,7 +27,6 @@ define([
     return BaseForm.extend({
         className: 'AknFieldContainer',
         containerTemplate: _.template(template),
-        config: {},
         elements: {},
         fieldName: null,
         errors: [],
@@ -37,7 +36,7 @@ define([
          * {@inheritdoc}
          */
         initialize(meta) {
-            this.config = meta.config;
+            BaseForm.prototype.initialize.apply(this, arguments);
 
             if (undefined === this.config.fieldName) {
                 throw new Error('This view must be configured with a field name.');
@@ -46,8 +45,6 @@ define([
             this.fieldName = this.config.fieldName;
             this.readOnly = this.config.readOnly || false;
             this.errors = [];
-
-            BaseForm.prototype.initialize.apply(this, arguments);
         },
 
         /**

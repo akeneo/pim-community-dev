@@ -25,10 +25,9 @@ define([
      * {@inheritdoc}
      */
         initialize: function(config) {
-            this.config = config.config;
-            this.identifier = this.config.identifier || 'code';
-
             BaseForm.prototype.initialize.apply(this, arguments);
+
+            this.identifier = this.config.identifier || 'code';
         },
 
         /**

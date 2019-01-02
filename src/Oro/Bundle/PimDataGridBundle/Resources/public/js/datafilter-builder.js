@@ -33,7 +33,7 @@ define(
              * {@inheritdoc}
              */
             initialize(options = {}) {
-                this.config = Object.assign(this.config, options.config || {});
+                BaseForm.prototype.initialize.apply(this, arguments);
 
                 mediator.once('datagrid_collection_set_after', this.initHandler.bind(this));
                 mediator.once('hash_navigation_request:start', function() {
@@ -41,8 +41,6 @@ define(
                         mediator.off('datagrid_collection_set_after', this.initHandler.bind(this));
                     }
                 });
-
-                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

@@ -38,15 +38,6 @@ define([
             },
 
             /**
-             * @param {Object} meta
-             */
-            initialize: function (meta) {
-                this.config = meta.config;
-
-                return BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
              * {@inheritdoc}
              */
             configure: function () {

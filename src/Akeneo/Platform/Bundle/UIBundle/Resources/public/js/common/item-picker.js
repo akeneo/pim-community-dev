@@ -60,8 +60,9 @@ define(
              * {@inheritdoc}
              */
             initialize: function (config) {
+                BaseForm.prototype.initialize.apply(this, arguments);
+
                 this.datagridModel = null;
-                this.config = config.config;
                 this.title = __(this.config.title);
 
                 if (undefined === this.config.datagridName) {
@@ -73,8 +74,6 @@ define(
                         'You have to add parameter "categoryTreeRoute" to the configuration of this module.'
                     );
                 }
-
-                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

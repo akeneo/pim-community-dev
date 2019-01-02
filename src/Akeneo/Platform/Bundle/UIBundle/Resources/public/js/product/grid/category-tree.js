@@ -34,15 +34,6 @@ define(
             },
 
             /**
-             * @inheritdoc
-             */
-            initialize(options) {
-                this.config = Object.assign(this.config, options.config || {});
-
-                return BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
              * @inheritDoc
              */
             configure() {

@@ -20,16 +20,6 @@ function (
     return BaseForm.extend({
         className: 'tab-content',
         template: _.template(template),
-        config: {},
-
-        /**
-         * {@inheritdoc}
-         */
-        initialize: function (config) {
-            this.config = config.config;
-
-            BaseForm.prototype.initialize.apply(this, arguments);
-        },
 
         /**
          * {@inheritdoc}

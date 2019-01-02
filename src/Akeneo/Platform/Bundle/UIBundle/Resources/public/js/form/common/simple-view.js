@@ -23,20 +23,17 @@ define([
     requireContext
 ) {
     return BaseForm.extend({
-        config: {},
         template: null,
 
         /**
          * {@inheritdoc}
          */
         initialize: function (meta) {
-            this.config = meta.config;
+            BaseForm.prototype.initialize.apply(this, arguments);
 
             if (_.has(meta, 'forwarded-events')) {
                 this.forwardMediatorEvents(meta['forwarded-events']);
             }
-
-            BaseForm.prototype.initialize.apply(this, arguments);
         },
 
         /**

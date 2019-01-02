@@ -28,17 +28,15 @@ define(
         LoadingMask
     ) {
         return BaseForm.extend({
-            config: {},
             loadingMask: null,
 
             /**
              * @inheritdoc
              */
             initialize(options) {
-                this.config = options.config;
-                this.loadingMask = new LoadingMask();
+                BaseForm.prototype.initialize.apply(this, arguments);
 
-                return BaseForm.prototype.initialize.apply(this, arguments);
+                this.loadingMask = new LoadingMask();
             },
 
             /**

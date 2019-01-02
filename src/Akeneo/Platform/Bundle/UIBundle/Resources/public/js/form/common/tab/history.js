@@ -20,10 +20,9 @@ define([
              * @param {Object} meta
              */
             initialize: function (meta) {
-                this.config = _.extend({}, meta.config);
-                this.config.modelDependent = false;
+                return BaseForm.prototype.initialize.apply(this, arguments);
 
-                return BaseForm.prototype.initialize.call(this, arguments);
+                this.config.modelDependent = false;
             },
 
             /**

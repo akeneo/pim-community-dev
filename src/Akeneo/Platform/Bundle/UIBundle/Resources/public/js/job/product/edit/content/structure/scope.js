@@ -30,20 +30,8 @@ define(
         i18n
     ) {
         return BaseForm.extend({
-            config: {},
             className: 'AknFieldContainer',
             template: _.template(template),
-
-            /**
-             * Initializes configuration.
-             *
-             * @param {Object} config
-             */
-            initialize: function (config) {
-                this.config = config.config;
-
-                return BaseForm.prototype.initialize.apply(this, arguments);
-            },
 
             /**
              * Renders scopes dropdown.

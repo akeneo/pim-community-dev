@@ -18,13 +18,11 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
                 }
             },
 
-            /**
-             * @inheritdoc
-             */
-            initialize(options) {
-                this.options = options.config;
-
+            initialize(a) {
+                debugger;
                 BaseForm.prototype.initialize.apply(this, arguments);
+                console.log(this.config);
+                debugger;
             },
 
             /**

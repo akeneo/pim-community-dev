@@ -32,19 +32,9 @@ define(
         modalTemplate,
     ) {
         return BaseForm.extend({
-            config: {},
             template: _.template(template),
             modalTemplate: _.template(modalTemplate),
             validationErrors: [],
-
-            /**
-             * {@inheritdoc}
-             */
-            initialize(meta) {
-                this.config = meta.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
 
             /**
              * {@inheritdoc}

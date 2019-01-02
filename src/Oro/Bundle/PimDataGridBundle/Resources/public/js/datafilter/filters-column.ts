@@ -67,7 +67,6 @@ class FiltersColumn extends BaseView {
   constructor(options: {config: FiltersConfig}) {
     super(options);
 
-    this.config = {...this.config, ...options.config};
     this.defaultFilters = [];
     this.gridCollection = {};
     this.ignoredFilters = ['scope'];

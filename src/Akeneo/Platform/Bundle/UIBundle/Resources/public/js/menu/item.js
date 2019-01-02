@@ -37,12 +37,10 @@ define(
              * {@inheritdoc}
              */
             initialize: function (config) {
-                this.config = config.config;
+                BaseForm.prototype.initialize.apply(this, arguments);
 
                 mediator.on('pim_menu:highlight:item', this.highlight, this);
                 mediator.on('pim_menu:redirect:item', this.redirect, this);
-
-                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

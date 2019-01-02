@@ -41,15 +41,6 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (meta) {
-                this.config = _.extend({}, meta.config);
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             configure: function () {
                 this.listenTo(
                     this.getRoot(),

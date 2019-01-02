@@ -10,13 +10,6 @@ const Routing = require('routing');
  */
 class DefaultGridView extends BaseView {
   private datagridAliases: string[] = [];
-  private config: any;
-
-  constructor(options: {config: any}) {
-    super(options);
-
-    this.config = {...this.config, ...options.config};
-  }
 
   /**
    * {@inheritdoc}

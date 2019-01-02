@@ -20,7 +20,7 @@ interface HeaderConfig {
  */
 class HeaderView extends BaseView {
   readonly headerTemplate = _.template(template);
-  public config: HeaderConfig;
+  protected readonly config: HeaderConfig;
 
   /**
    * Initialize
@@ -29,8 +29,6 @@ class HeaderView extends BaseView {
    */
   constructor(options: {config: HeaderConfig}) {
     super(options);
-
-    this.config = {...this.config, ...options.config};
   }
 
   /**

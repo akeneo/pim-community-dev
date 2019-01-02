@@ -54,7 +54,7 @@ define(
                 initLayout();
                 initSignin();
 
-                return BaseForm.prototype.initialize.apply(this, arguments);
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

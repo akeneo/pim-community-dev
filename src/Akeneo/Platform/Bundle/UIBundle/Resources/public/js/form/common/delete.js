@@ -52,7 +52,7 @@ define(
              * @param {Object} meta
              */
             initialize: function (meta) {
-                this.config = _.extend({}, {
+                BaseForm.prototype.initialize.apply(this, _.extend({}, {
                     trans: {
                         title: 'pim_enrich.entity.fallback.module.delete.item',
                         content: 'pim_common.confirm_deletion',
@@ -62,7 +62,7 @@ define(
                         buttonText: 'pim_common.delete'
                     },
                     redirect: 'oro_default'
-                }, meta.config);
+                }, meta.config));
             },
 
             /**

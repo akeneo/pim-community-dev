@@ -41,7 +41,7 @@ define([
                 new Error('You must specify gridName for the display-selector');
             }
 
-            return BaseForm.prototype.initialize.apply(this, arguments);
+            BaseForm.prototype.initialize.apply(this, arguments);
         },
 
         /**

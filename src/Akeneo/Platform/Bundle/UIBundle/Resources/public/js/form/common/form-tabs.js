@@ -31,18 +31,15 @@ define(
 
             currentKey: 'current_form_tab',
 
-            config: {},
-
             /**
              * {@inheritdoc}
              */
             initialize: function (meta) {
-                this.config = _.extend({}, {
+                BaseForm.prototype.initialize.apply(this, _.extend({}, {
                     centered: false
-                }, meta.config);
-                this.tabs = [];
+                }, meta.config));
 
-                BaseForm.prototype.initialize.apply(this, arguments);
+                this.tabs = [];
             },
 
             /**

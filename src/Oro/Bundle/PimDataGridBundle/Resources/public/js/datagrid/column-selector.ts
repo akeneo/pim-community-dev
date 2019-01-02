@@ -33,7 +33,6 @@ interface DatagridCollection extends Backbone.Collection<any> {
 
 class ColumnSelector extends BaseView {
   public attributeGroupSelector: string;
-  public config: any;
   public datagridCollection: DatagridCollection;
   public datagridElement: any;
   public debounceSearchTimer: any;
@@ -64,7 +63,6 @@ class ColumnSelector extends BaseView {
     this.loadedColumns = {};
     this.searchInputSelector = 'input[type="search"]';
     this.attributeGroupSelector = '[data-attributes] [data-group]';
-    this.config = {...this.config, ...options.config};
   }
 
   /**

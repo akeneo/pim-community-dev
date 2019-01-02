@@ -18,15 +18,6 @@ define([
         /**
          * {@inherit}
          */
-        initialize: function (config) {
-            this.config = config.config;
-
-            BaseForm.prototype.initialize.apply(this, arguments);
-        },
-
-        /**
-         * {@inherit}
-         */
         configure: function () {
             this.listenTo(this.getRoot(), 'pim_enrich:form:filter:set-default', this.addFilter.bind(this));
 

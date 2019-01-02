@@ -41,10 +41,9 @@ define(
              * {@inheritdoc}
              */
             initialize(meta) {
-                this.config = _.defaults(meta.config, {fieldModules: {}, codeFieldModule: null});
-                this.globalErrors = [];
+                BaseForm.prototype.initialize.apply(this, _.defaults(meta.config, {fieldModules: {}, codeFieldModule: null}));
 
-                BaseForm.prototype.initialize.apply(this, arguments);
+                this.globalErrors = [];
             },
 
             /**

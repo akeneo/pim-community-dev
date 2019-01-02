@@ -40,7 +40,6 @@ define(
              * {@inheritdoc}
              */
             initialize: function (config) {
-                this.config = config.config;
                 this.items = [];
 
                 mediator.on('pim_menu:highlight:tab', this.highlight, this);

@@ -34,7 +34,6 @@ define(
              * {@inheritdoc}
              */
             initialize: function (config) {
-                this.config = config.config;
                 this.setStatus('isLoading');
 
                 BaseForm.prototype.initialize.apply(this, arguments);

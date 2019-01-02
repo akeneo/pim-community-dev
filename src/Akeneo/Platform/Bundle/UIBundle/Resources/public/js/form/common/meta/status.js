@@ -25,11 +25,10 @@ define(
              * {@inheritdoc}
              */
             initialize: function (meta) {
-                this.config = meta.config;
-                this.label   = __(this.config.label);
-                this.value   = __(this.config.value);
-
                 BaseForm.prototype.initialize.apply(this, arguments);
+
+                this.label = __(this.config.label);
+                this.value = __(this.config.value);
             },
 
             /**
