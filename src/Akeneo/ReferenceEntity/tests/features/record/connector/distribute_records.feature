@@ -58,3 +58,10 @@ Feature: Connection to e-commerce platforms and marketplaces
     Given the Brand reference entity with some records
     When the connector requests all records of the Brand reference entity with the information of a provided locale that does not exist
     Then the PIM notifies the connector about an error indicating that the provided locale does not exist
+
+  @integration-back
+  Scenario: Get the records of a reference entity that were updated since a provided date
+    Given 10 records for the Brand reference entity that were last updated on the 10th of October 2018
+    And 5 records for the Brand reference entity that were updated on the 15th of October 2018
+    When the connector requests all records of the Brand reference entity updated since the 14th of October 2018
+    Then the PIM returns the 5 records of the Brand reference entity that were updated on the 15th of October 2018

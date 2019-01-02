@@ -34,6 +34,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
@@ -487,5 +488,37 @@ class GetConnectorRecordsContext implements Context
             $this->unprocessableEntityResponse,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_brand_records_for_non_existent_locale.json'
         );
+    }
+
+    /**
+     * @Given /^10 records for the Brand reference entity that were last updated on the 10th of October (\d+)$/
+     */
+    public function recordsForTheBrandReferenceEntityThatWereLastUpdatedOnThe10thOfOctober()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^5 records for the Brand reference entity that were updated on the 15th of October 2018$/
+     */
+    public function recordsForTheBrandReferenceEntityThatWereUpdatedOnThe15thOfOctober()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When /^the connector requests all records of the Brand reference entity updated since the 14th of October 2018$/
+     */
+    public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityUpdatedSinceThe14thOfOctober()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then /^the PIM returns the 5 records of the Brand reference entity that were updated on the 15th of October 2018$/
+     */
+    public function thePIMReturnsTheRecordsOfTheBrandReferenceEntityThatWereUpdatedOnThe15thOfOctober()
+    {
+        throw new PendingException();
     }
 }
