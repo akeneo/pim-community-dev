@@ -123,7 +123,7 @@ SQL;
 UPDATE pim_franklin_insights_product_subscription s
 INNER JOIN pim_catalog_product p ON p.id = s.product_id
 INNER JOIN pim_catalog_family f ON f.id = p.family_id
-SET s.raw_suggested_data = NULL, s.misses_mapping = NULL
+SET s.raw_suggested_data = NULL, s.misses_mapping = false
 WHERE s.raw_suggested_data IS NOT NULL
 AND f.code = :familyCode;
 SQL;
