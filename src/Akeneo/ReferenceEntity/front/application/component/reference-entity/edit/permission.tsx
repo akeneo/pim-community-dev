@@ -11,6 +11,7 @@ import PermissionCollectionEditor from 'akeneoreferenceentity/tools/component/pe
 import {FormState} from 'akeneoreferenceentity/application/reducer/state';
 import {permissionEditionUpdated} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
 import {RightLevel, denormalizePermissionCollection, PermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
+import {savePermission} from 'akeneoreferenceentity/application/action/reference-entity/permission';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 
@@ -125,7 +126,7 @@ export default connect(
           dispatch(permissionEditionUpdated(permission));
         },
         onSavePermissionEditForm: () => {
-          // dispatch(permissionEditionUpdated(permission));
+          dispatch(savePermission());
         },
       },
     };
