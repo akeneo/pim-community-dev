@@ -35,12 +35,16 @@ class SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight
 
     public function __invoke(int $userGroupId): array
     {
-        $sql = "SELECT reference_entity_identifier
-                FROM akeneo_reference_entity_reference_entity_permissions
-                WHERE right_level = 'edit'
-                GROUP BY reference_entity_identifier, user_group_identifier
-                HAVING user_group_identifier = :userGroupIdentifier
-                AND COUNT(*) = 1";
+        $sql = "SELECT perm1.reference_entity_identifier, COUNT(*) as nb
+                FROM akeneo_reference_entity_reference_entity_permissions perm1
+                INNER JOIN akeneo_reference_entity_reference_entity_permissions perm2
+                 ON perm1.reference_entity_identifier = perm2.reference_entity_identifier
+                 AND perm1.right_level = perm2.right_level
+                 AND perm1.right_level = 'edit'
+                 AND perm1.user_group_identifier = :userGroupIdentifier
+                GROUP BY perm1.reference_entity_identifier
+                HAVING nb = 1;
+        ";
 
         $statement = $this->sqlConnection->executeQuery(
             $sql,
