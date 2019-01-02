@@ -48,11 +48,12 @@ services:
             - '@validator'
             - '@serializer'
 
-    # Reference Entity Permissions
     akeneo_referenceentity.infrastructure.action.reference_entity_permission.set:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntityPermission\SetAction
         arguments:
             - '@akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
+            - '@security.token_storage'
             - '@validator'
             - '@serializer'
 
