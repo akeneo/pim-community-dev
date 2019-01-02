@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_records_rest_connector_get",
+    "query": {
+      "referenceEntityIdentifier": "Brand",
+      "search": "{\"updated\":[{\"operator\":\">\",\"value\":\"2018-07-04T10:00:00+00:00\"}]}"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "_links": {
+        "self": {
+          "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search=\"{\\\"updated\\\":[{\\\"operator\\\":\\\">\\\",\\\"value\\\":\\\"2018-07-04T10:00:00+00:00\\\"}]}\""
+        },
+        "first": {
+          "href": "http://localhost/api/rest/v1/reference-entities/brand/records"
+        }
+      },
+      "_embedded": {
+        "items": []
+      }
+    }
+  }
+}

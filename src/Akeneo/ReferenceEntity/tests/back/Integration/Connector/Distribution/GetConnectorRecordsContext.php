@@ -70,6 +70,12 @@ class GetConnectorRecordsContext implements Context
     /** @var null|Response */
     private $unprocessableEntityResponse;
 
+    /** @var null|Response */
+    private $updatedSinceWrongFormatResponse;
+
+    /** @var null|Response */
+    private $updatedSinceResponse;
+
     /** @var InMemoryChannelExists */
     private $channelExists;
 
@@ -511,7 +517,12 @@ class GetConnectorRecordsContext implements Context
      */
     public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityUpdatedSinceThe14thOfOctober()
     {
-        throw new PendingException();
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->updatedSinceResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'updated_entity_brand_records_for_wrong_format.json'
+        );
     }
 
     /**
@@ -519,6 +530,33 @@ class GetConnectorRecordsContext implements Context
      */
     public function thePIMReturnsTheRecordsOfTheBrandReferenceEntityThatWereUpdatedOnThe15thOfOctober()
     {
-        throw new PendingException();
+        $this->webClientHelper->assertJsonFromFile(
+            $this->updatedSinceResponse,
+            self::REQUEST_CONTRACT_DIR . 'updated_since_brand_records_page_1.json'
+        );
+    }
+
+    /**
+     * @When /^the connector requests records that were updated since a date that does not have the right format$/
+     */
+    public function theConnectorRequestsRecordsThatWereUpdatedSinceADateThatDoesNotHaveTheRightFormat()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->updatedSinceWrongFormatResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'updated_entity_brand_records_for_wrong_format.json'
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that the date format is not the expected one$/
+     */
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheDateFormatIsNotTheExpectedOne()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->updatedSinceWrongFormatResponse,
+            self::REQUEST_CONTRACT_DIR . 'updated_entity_brand_records_for_wrong_format.json'
+        );
     }
 }
