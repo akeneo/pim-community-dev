@@ -45,3 +45,10 @@ services:
             - '@pimee_security.manager.job_profile_access'
         tags:
             - { name: kernel.event_subscriber }
+
+    pimee_security.subscriber.remove_user_group:
+        class: Akeneo\Pim\Permission\Bundle\EventSubscriber\RemoveUserGroupSubscriber
+        arguments:
+            - '@pimee_security.query.check_user_group_removable'
+        tags:
+            - { name: kernel.event_subscriber }
