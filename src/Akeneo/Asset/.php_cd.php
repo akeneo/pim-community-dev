@@ -17,18 +17,38 @@ $rules = [
         'Symfony\Component',
         'Akeneo\Tool',
         'Akeneo\Asset',
-        'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface', // Asset are reference data
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface', // Asset are reference data
-        'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface', // Asset are reference data
-        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface',
         'Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface', // Asset need to be versioned
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface',
         'Akeneo\Tool\Component\Connector',
         'Symfony\Bundle\FrameworkBundle',
         'Sensio\Bundle\FrameworkExtraBundle',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
+
+        // TIP-949: Assets should not be Reference Data
+        'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface',
+
+        // TIP-950: Asset should not be linked to Locale
+        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+
+        // TIP-951: Asset should not be linked to Channel
+        'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
+
+        // TIP-952: Asset should not be linked to User
+        'Akeneo\UserManagement\Component\Model\UserInterface',
+
+        // TIP-953: Compute product completeness from an Asset event
+        'Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface',
+
+        // TIP-954: Move AssetCollectionType
+        'Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType',
+
+        // TIP-955: Asset should not depend on Enrichment types
+        'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType',
+
         'Akeneo\Platform\Bundle\NotificationBundle', // TODO: you should find a way to push notifications to the platform instead of coupling asset to the platform
         'Akeneo\Platform\Component\CatalogVolumeMonitoring', // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
         'Akeneo\UserManagement\Bundle\Context\UserContext', // TODO: We should not dependend on this context
@@ -52,6 +72,7 @@ $rules = [
         'Akeneo\Pim\Permission\Bundle\Form\EventListener\CategoryPermissionsSubscriber',
         'Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException',
         // TODO: we must not depend on PIM BC
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface',
         'Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators', // Should we move them in Akeneo\Tool?
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
@@ -62,11 +83,7 @@ $rules = [
         'Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface', // Related to the front end
         'Akeneo\Platform\Bundle\UIBundle\Flash\Message', // Related to the front end
-        'Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType', // TODO move to enrichment
         'Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor', // it should go in Akeneo\Tool
-        'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', // Related to the front end (symfony form type)
-        'Pim\Bundle\EnrichBundle\Form\Type\LightEntityType', // Related to the front end (symfony form type)
-        'Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface', // Related to the front end (used to build form type)
         // TODO: we must not depend on Platefom
         'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
@@ -85,28 +102,34 @@ $rules = [
         'Akeneo\Tool\Component',
         'Doctrine\Common',
         'Akeneo\Asset\Component',
-        // Asset are reference data
-        'Pim\Component\ReferenceData\Model\ReferenceDataInterface',
-        'Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface',
+
+        // TIP-949: Assets should not be Reference Data
         'Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue',
-        // TODO: EASY PICK: move ImageNormalizer to enrichment.
+
+        // TIP-950: Asset should not be linked to Locale
+        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+
+        // TIP-951: Asset should not be linked to Channel
+        'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
+
+        // TIP-952: Asset should not be linked to User
+        'Akeneo\UserManagement\Component\Model\UserInterface',
+        'Akeneo\UserManagement\Component\Factory\DefaultProperty',
+
+        // TIP-956: Move ImageNormalizer to Enrichment
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer',
-        'Akeneo\UserManagement\Component\Factory\DefaultProperty',
+
+        // TIP-957: Move Events to component
+        'Akeneo\Asset\Bundle\Event\AssetEvent',
+
         // Todo: Remove pim dependencies
         'Doctrine\ORM\QueryBuilder', // TODO: some repository return QueryBuidler object.
-        // TODO: EASY PICK Move the the component
-        'Akeneo\Asset\Bundle\Event\AssetEvent',
-        // TODO: We should use id instead of reference
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\UserManagement\Component\Model\UserInterface',
-        // TODO: we should not repository from the other BC
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         // TODO: we must not depend on PIM BC
         'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',
         // TODO: security
