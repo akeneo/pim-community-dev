@@ -9,6 +9,7 @@ type PermissionEditorProps = {
   groupCode: GroupName;
   prioritizedRightLevels: RightLevel[]
   value: RightLevel;
+  readOnly: boolean;
   onChange: (groupCode: GroupName, newValue: RightLevel) => void
 }
 
@@ -38,12 +39,14 @@ class PermissionEditor extends React.Component<PermissionEditorProps> {
                   `AknPermission-barLeft ${
                     pillIsLowerOrAtThisLevel ? 'AknPermission-barLeft--active' : ''
                   } ${
+                    this.props.readOnly ? 'AknPermission-barLeft--disabled' : ''
+                  } ${
                     isFirstColumn ? 'AknPermission-barLeft--transparent' : ''
                   }`
                 } />
                 <div
                   className={
-                    `AknPermission-pill ${pillIsLowerOrAtThisLevel ? 'AknPermission-pill--active' : ''}`
+                    `AknPermission-pill ${pillIsLowerOrAtThisLevel ? 'AknPermission-pill--active' : ''} ${this.props.readOnly ? 'AknPermission-pill--disabled' : ''}`
                   }
                   onClick={() => {
                     onChange(groupCode, rightLevel)
@@ -53,6 +56,8 @@ class PermissionEditor extends React.Component<PermissionEditorProps> {
                 </div>
                 <div className={`AknPermission-barRight ${
                   pillIsHigher ? 'AknPermission-barRight--active' : ''
+                } ${
+                  this.props.readOnly ? 'AknPermission-barRight--disabled' : ''
                 } ${
                   isLastColumn ? 'AknPermission-barRight--transparent' : ''
                 }`} />
@@ -66,9 +71,10 @@ class PermissionEditor extends React.Component<PermissionEditorProps> {
 }
 
 type PermissionCollectionEditorProps = {
-  value: PermissionCollection,
-  prioritizedRightLevels: RightLevel[]
-  onChange: (newValue: PermissionCollection) => void
+  value: PermissionCollection;
+  readOnly: boolean;
+  prioritizedRightLevels: RightLevel[];
+  onChange: (newValue: PermissionCollection) => void;
 }
 
 export default class PermissionCollectionEditor extends React.Component<PermissionCollectionEditorProps> {
@@ -115,6 +121,7 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
           {this.props.value.map((permission: Permission) => (
             <PermissionEditor
               key={permission.getUserGroupIdentifier()}
+              readOnly={this.props.readOnly}
               groupCode={permission.getUserGroupName()}
               value={permission.getRightLevel()}
               prioritizedRightLevels={this.props.prioritizedRightLevels}

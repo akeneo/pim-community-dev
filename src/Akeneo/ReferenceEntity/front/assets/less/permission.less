@@ -8,10 +8,12 @@
 
   &-groupName {
     padding: 6px 0;
+    cursor: default;
   }
 
   &-level {
     padding: 0 !important;
+    cursor: default;
   }
 
   &-row {
@@ -41,6 +43,8 @@
     height: 24px;
     border-radius: 24px;
     padding: 4px;
+    background-color: white;
+    transition: background-color .3s ease-in-out;
 
     &:not(&--active) {
       border: 1px solid @AknMediumGrey;
@@ -48,6 +52,18 @@
 
     &:hover {
       cursor: pointer;
+    }
+
+    &--active {
+      background-color: @AknGreen;
+    }
+
+    &--disabled {
+      background-color: lighten(@AknGreen, 20%);
+
+      &:hover {
+        cursor: not-allowed;
+      }
     }
   }
 
@@ -58,17 +74,14 @@
     &--active {
       background-color: @AknGreen;
     }
+
+    &--disabled {
+      background-color: lighten(@AknGreen, 20%);
+      cursor: not-allowed;
+    }
+
     &--transparent {
       background-color: transparent;
-    }
-  }
-
-  &-pill {
-    background-color: white;
-    transition: background-color .3s ease-in-out;
-
-    &--active {
-      background-color: @AknGreen;
     }
   }
 }

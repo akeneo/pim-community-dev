@@ -12,8 +12,10 @@ import {FormState} from 'akeneoreferenceentity/application/reducer/state';
 import {permissionEditionUpdated} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
 import {RightLevel, denormalizePermissionCollection, PermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 import {savePermission} from 'akeneoreferenceentity/application/action/reference-entity/permission';
+import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
 
 const fetcherRegistry = require('pim/fetcher-registry');
+const securityContext = require('pim/security-context');
 
 type UserGroup = {
   name: string;
@@ -28,8 +30,10 @@ interface StateProps {
   context: {
     locale: string;
   },
-  acls: {
-    edit: boolean
+  rights: {
+    referenceEntity: {
+      edit: boolean
+    }
   }
 }
 
@@ -64,7 +68,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           label={referenceEntity.getLabel(this.props.context.locale)}
           image={referenceEntity.getImage()}
           primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.acls.edit ? (
+            return this.props.rights.referenceEntity.edit ? (
               <button
                 className="AknButton AknButton--apply"
                 onClick={this.props.events.onSavePermissionEditForm}
@@ -88,6 +92,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           </header>
           <div className="AknFormContainer AknFormContainer--wide">
             <PermissionCollectionEditor
+              readOnly={!this.props.rights.referenceEntity.edit}
               value={this.props.permission.data}
               prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
               onChange={(newValue: PermissionCollection) => {
@@ -114,8 +119,10 @@ export default connect(
       context: {
         locale,
       },
-      acls: {
-        edit: true
+      rights: {
+        referenceEntity: {
+          edit: securityContext.isGranted('akeneo_referenceentity_reference_entity_manage_permission') && canEditReferenceEntity(),
+        }
       }
     };
   },
