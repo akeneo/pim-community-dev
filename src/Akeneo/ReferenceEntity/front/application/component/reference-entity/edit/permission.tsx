@@ -87,11 +87,10 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           </header>
           <div className="AknFormContainer AknFormContainer--wide">
             <PermissionCollectionEditor
-              entityName={'reference_entity'}//To Change
               value={this.props.permission.data}
               prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
               onChange={(newValue: PermissionCollection) => {
-                  this.props.events.onPermissionUpdated(newValue)
+                this.props.events.onPermissionUpdated(newValue)
               }}
             />
           </div>

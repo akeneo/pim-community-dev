@@ -10,6 +10,7 @@ import referenceEntityReducer from 'akeneoreferenceentity/application/reducer/re
 import referenceEntityFetcher, {
   ReferenceEntityResult,
 } from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
+import permissionFetcher from 'akeneoreferenceentity/infrastructure/fetcher/permission';
 import {
   referenceEntityEditionReceived,
   referenceEntityRecordCountUpdated,
@@ -29,6 +30,8 @@ import {updateFilter, removeFilter} from 'akeneoreferenceentity/application/even
 import {getFilter, getCompletenessFilter} from 'akeneoreferenceentity/tools/filter';
 import {attributeListGotUpdated} from 'akeneoreferenceentity/application/action/attribute/list';
 import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
+import {PermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
+import {permissionEditionReceived} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -52,6 +55,10 @@ class ReferenceEntityEditController extends BaseController {
         const referenceEntityIdentifier = referenceEntityResult.referenceEntity.getIdentifier().stringValue();
         const userSearch = this.getUserSearch(referenceEntityIdentifier);
         const completenessFilter = this.getCompletenessFilter(referenceEntityIdentifier);
+
+        permissionFetcher.fetch(referenceEntityResult.referenceEntity.getIdentifier()).then((permissions: PermissionCollection) => {
+          this.store.dispatch(permissionEditionReceived(permissions));
+        });
 
         // Not idea, maybe we should discuss about it
         await this.store.dispatch(updateChannels() as any);

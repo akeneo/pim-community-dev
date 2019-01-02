@@ -91,6 +91,7 @@ export interface PermissionCollection {
   setPermission(userGroupName: UserGroupName, rightLevel: RightLevel): PermissionCollection;
   setAllPermissions(rightLevel: RightLevel): PermissionCollection;
   normalize(): NormalizedPermissionCollection;
+  map<T>(callback: (permission: Permission, index?: number, array?: Permission[]) => T): T[];
 }
 
 class PermissionCollectionImplementation implements PermissionCollection {
@@ -146,6 +147,10 @@ class PermissionCollectionImplementation implements PermissionCollection {
         return permission;
       })
     );
+  }
+
+  map(callback: (permission: Permission, index?: number, array?: Permission[]) => any) {
+    return this.permissions.map(callback);
   }
 
   normalize() {

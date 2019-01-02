@@ -1,10 +1,9 @@
 import * as React from 'react';
 import Tick from 'akeneoreferenceentity/application/component/app/icon/tick';
-import {RightLevel, PermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
+import Permission, {RightLevel, PermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 
 
 type GroupName = string;
-type EntityName = string;
 
 type PermissionEditorProps = {
   groupCode: GroupName;
@@ -68,7 +67,6 @@ class PermissionEditor extends React.Component<PermissionEditorProps> {
 
 type PermissionCollectionEditorProps = {
   value: PermissionCollection,
-  entityName: EntityName;
   prioritizedRightLevels: RightLevel[]
   onChange: (newValue: PermissionCollection) => void
 }
@@ -114,11 +112,11 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
                 </td>
             ))}
           </tr>
-          {Object.keys(this.props.value).map((groupCode: string) => (
+          {this.props.value.map((permission: Permission) => (
             <PermissionEditor
-              key={groupCode}
-              groupCode={groupCode}
-              value={this.props.value.getPermission(groupCode).getRightLevel()}
+              key={permission.getUserGroupIdentifier()}
+              groupCode={permission.getUserGroupName()}
+              value={permission.getRightLevel()}
               prioritizedRightLevels={this.props.prioritizedRightLevels}
               onChange={this.onPermissionUpdated.bind(this)}
             />
