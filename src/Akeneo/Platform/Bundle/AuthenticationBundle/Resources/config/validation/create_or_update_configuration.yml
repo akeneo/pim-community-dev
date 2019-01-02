@@ -1,0 +1,24 @@
+Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfiguration:
+    properties:
+        code:
+            - NotBlank: ~
+        identityProviderEntityId:
+            - NotBlank: ~
+            - Url: ~
+        identityProviderSignOnUrl:
+            - NotBlank: ~
+            - Url: ~
+        identityProviderLogoutUrl:
+            - NotBlank: ~
+            - Url: ~
+        identityProviderPublicCertificate:
+            - NotBlank: ~
+            - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\IsCertificateValid: ~
+        serviceProviderEntityId:
+            - NotBlank: ~
+            - Url: ~
+        serviceProviderPublicCertificate:
+            - NotBlank: ~
+            - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\IsCertificateValid: ~
+        serviceProviderPrivateCertificate:
+            - NotBlank: ~

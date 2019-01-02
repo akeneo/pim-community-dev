@@ -7,6 +7,7 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\Certificate;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Code;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\EntityId;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\IdentityProvider;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\IsEnabled;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
@@ -39,9 +40,11 @@ class SqlRepositorySpec extends ObjectBehavior
     {
         $config = new Configuration(
             new Code('authentication_sso'),
+            new IsEnabled(false),
             new IdentityProvider(
                 new EntityId('https://idp.jambon.com'),
-                new Url('https://idp.jambon.com/'),
+                new Url('https://idp.jambon.com/signon'),
+                new Url('https://idp.jambon.com/logout'),
                 new Certificate('public_certificate')
             ),
             new ServiceProvider(
@@ -56,9 +59,11 @@ class SqlRepositorySpec extends ObjectBehavior
         ;
         $statement->bindValue('code', 'authentication_sso', Type::STRING)->shouldBeCalled();
         $statement->bindValue('values', [
+            'isEnabled'        => false,
             'identityProvider' => [
                 'entityId'          => 'https://idp.jambon.com',
-                'url'               => 'https://idp.jambon.com/',
+                'signOnUrl'         => 'https://idp.jambon.com/signon',
+                'logoutUrl'         => 'https://idp.jambon.com/logout',
                 'publicCertificate' => 'public_certificate',
             ],
             'serviceProvider' => [
@@ -84,16 +89,18 @@ class SqlRepositorySpec extends ObjectBehavior
             ->willReturn(
                 [
                     'code'   => 'authentication_sso',
-                    'values' => '{"identityProvider":{"entityId":"https:\/\/idp.jambon.com","url":"https:\/\/idp.jambon.com\/","publicCertificate":"public_certificate"},"serviceProvider":{"entityId":"https:\/\/sp.jambon.com","publicCertificate":"public_certificate","privateCertificate":"private_certificate"}}'
+                    'values' => '{"isEnabled":true,"identityProvider":{"entityId":"https:\/\/idp.jambon.com","signOnUrl":"https:\/\/idp.jambon.com\/signon","logoutUrl":"https:\/\/idp.jambon.com\/logout","publicCertificate":"public_certificate"},"serviceProvider":{"entityId":"https:\/\/sp.jambon.com","publicCertificate":"public_certificate","privateCertificate":"private_certificate"}}'
                 ]
             )
         ;
 
         $expectedConfig = new Configuration(
             new Code('authentication_sso'),
+            new IsEnabled(true),
             new IdentityProvider(
                 new EntityId('https://idp.jambon.com'),
-                new Url('https://idp.jambon.com/'),
+                new Url('https://idp.jambon.com/signon'),
+                new Url('https://idp.jambon.com/logout'),
                 new Certificate('public_certificate')
             ),
             new ServiceProvider(

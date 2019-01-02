@@ -14,7 +14,8 @@ class IdentityProviderSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             new EntityId('https://idp.jambon.com'),
-            new Url('https://idp.jambon.com/'),
+            new Url('https://idp.jambon.com/singon'),
+            new Url('https://idp.jambon.com/logout'),
             new Certificate('public_certificate')
         );
 
@@ -25,14 +26,16 @@ class IdentityProviderSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('fromArray', [[
             'entityId'          => 'https://idp.jambon.com',
-            'url'               => 'https://idp.jambon.com/',
+            'signOnUrl'         => 'https://idp.jambon.com/signon',
+            'logoutUrl'         => 'https://idp.jambon.com/logout',
             'publicCertificate' => 'public_certificate',
         ]]);
 
         $this->toArray()->shouldReturn(
             [
                 'entityId'          => 'https://idp.jambon.com',
-                'url'               => 'https://idp.jambon.com/',
+                'signOnUrl'         => 'https://idp.jambon.com/signon',
+                'logoutUrl'         => 'https://idp.jambon.com/logout',
                 'publicCertificate' => 'public_certificate',
             ]
         );

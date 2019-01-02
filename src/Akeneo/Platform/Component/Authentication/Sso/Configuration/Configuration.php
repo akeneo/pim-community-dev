@@ -24,6 +24,9 @@ final class Configuration
     /** @var Code */
     private $code;
 
+    /** @var IsEnabled */
+    private $isEnabled;
+
     /** @var IdentityProvider */
     private $identityProvider;
 
@@ -32,10 +35,12 @@ final class Configuration
 
     public function __construct(
         Code $code,
+        IsEnabled $isEnabled,
         IdentityProvider $identityProvider,
         ServiceProvider $serviceProvider
     ) {
         $this->code = $code;
+        $this->isEnabled = $isEnabled;
         $this->identityProvider = $identityProvider;
         $this->serviceProvider = $serviceProvider;
     }
@@ -44,6 +49,7 @@ final class Configuration
     {
         return new self(
             new Code($code),
+            new IsEnabled($content['isEnabled']),
             IdentityProvider::fromArray($content['identityProvider']),
             ServiceProvider::fromArray($content['serviceProvider'])
         );
@@ -52,6 +58,7 @@ final class Configuration
     public function toArray(): array
     {
         return [
+            'isEnabled'        => $this->isEnabled->toBoolean(),
             'identityProvider' => $this->identityProvider->toArray(),
             'serviceProvider'  => $this->serviceProvider->toArray(),
         ];
@@ -60,5 +67,10 @@ final class Configuration
     public function code(): Code
     {
         return $this->code;
+    }
+
+    public function isEnabled(): IsEnabled
+    {
+        return $this->isEnabled;
     }
 }
