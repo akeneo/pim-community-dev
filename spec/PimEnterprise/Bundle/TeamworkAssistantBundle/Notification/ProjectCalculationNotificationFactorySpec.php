@@ -55,14 +55,14 @@ class ProjectCalculationNotificationFactorySpec extends ObjectBehavior
         $jobParameters->get('project_code')->willReturn('project_code');
         $projectRepository->findOneBy(['code' => 'project_code'])->willReturn($project);
         $project->getOwner()->willReturn($owner);
-        $project->getDueDate()->willReturn('12/13/2018');
+        $project->getDueDate()->willReturn('12/13/2066');
         $project->getLabel()->willReturn('project label');
         $owner->getUiLocale()->willReturn($locale);
         $locale->getCode()->willReturn('en_US');
         $datePresenter->present(
-            '12/13/2018',
+            '12/13/2066',
             ['locale' => 'en_US']
-        )->willReturn('12/13/2018');
+        )->willReturn('12/13/2066');
         $batchStatus->isUnsuccessful()->willReturn(true);
         $jobInstance->getType()->willReturn('import');
         $jobInstance->getLabel()->willReturn('Import');

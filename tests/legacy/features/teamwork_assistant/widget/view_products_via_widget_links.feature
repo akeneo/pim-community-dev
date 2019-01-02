@@ -91,7 +91,7 @@ Feature: View products via widget completeness links
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
-      | project-due-date    | 12/13/2018             |
+      | project-due-date    | 12/13/2066             |
     And I press the "Save" button
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
