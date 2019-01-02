@@ -57,3 +57,8 @@ services:
         class: Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProductModel
         arguments:
             - '@database_connection'
+
+    pimee_security.query.check_user_group_removable:
+        class: Akeneo\Pim\Permission\Bundle\Persistence\Query\UserGroup\SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight
+        arguments:
+            - '@database_connection'
