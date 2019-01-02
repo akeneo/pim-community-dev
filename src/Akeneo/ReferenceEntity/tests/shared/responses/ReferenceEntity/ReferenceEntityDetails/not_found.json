@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_reference_entity_get_rest",
+    "query": {
+      "identifier": "wrong_identifier"
+    }
+  },
+  "response": {
+    "status": 404
+  }
+}

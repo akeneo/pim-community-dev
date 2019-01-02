@@ -44,7 +44,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    private const RECORD_DETAIL_ROUTE = 'akeneo_reference_entities_record_get_rest';
+    private const RESPONSES_DIR = 'Record/RecordDetails/';
 
     /** @var Client */
     private $client;
@@ -54,8 +54,6 @@ class GetActionTest extends ControllerIntegrationTestCase
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
-
-    private const RESPONSES_DIR = 'Record/RecordDetails/';
 
     public function setUp()
     {
