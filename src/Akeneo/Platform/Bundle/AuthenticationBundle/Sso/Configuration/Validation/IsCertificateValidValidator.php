@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Validates that a X509 certificate is well formatted.
+ * Validates that a X509 certificate is well formatted and has not expired.
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */

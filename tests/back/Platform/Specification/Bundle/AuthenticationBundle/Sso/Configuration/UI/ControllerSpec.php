@@ -50,6 +50,7 @@ class ControllerSpec extends ObjectBehavior
             ]
         );
         $request = new Request([], [], [], [], [], [], $requestContent);
+        $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $validator->validate(Argument::type(CreateOrUpdateConfiguration::class))
             ->willReturn(new ConstraintViolationList())
@@ -78,6 +79,7 @@ class ControllerSpec extends ObjectBehavior
             ]
         );
         $request = new Request([], [], [], [], [], [], $requestContent);
+        $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $command = new CreateOrUpdateConfiguration(
             'authentication_sso',
