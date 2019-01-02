@@ -58,7 +58,7 @@ services:
         arguments:
             - '@database_connection'
 
-    pimee_security.query.check_user_group_removable:
+    pimee_security.query.find_reference_entity_where_user_group_is_last_to_have_edit_right:
         class: Akeneo\Pim\Permission\Bundle\Persistence\Query\UserGroup\SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight
         arguments:
             - '@database_connection'
