@@ -108,22 +108,24 @@ Feature: Export products
     And the following attributes:
       | code                      | type             | localizable | available_locales | group |
       | locale_specific_attribute | pim_catalog_text | 1           | en_US,fr_FR       | other |
+    And the following family:
+      | code                  | requirements-tablet           | requirements-ecommerce | attributes                     |
+      | family_local_specific | sku,locale_specific_attribute | sku                    | name,locale_specific_attribute |
     And the following products:
-      | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
-      | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
-      | tshirt-black | tshirts |                              | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
+      | sku          | family                | categories                   |
+      | tshirt-white | family_local_specific | men_2013, men_2014, men_2015 |
+      | tshirt-black | family_local_specific |                              |
     And the following product values:
       | product      | attribute                 | value               | locale | scope |
-      | tshirt-white | name                      | White t-shirt       | en_US  |       |
-      | tshirt-white | name                      | White t-shirt       | en_GB  |       |
+      | tshirt-white | name                      | White t-shirt EN    | en_US  |       |
+      | tshirt-white | name                      | White t-shirt GB    | en_GB  |       |
       | tshirt-white | name                      | T-shirt blanc       | fr_FR  |       |
       | tshirt-white | name                      | Weißes T-Shirt      | de_DE  |       |
-      | tshirt-white | locale_specific_attribute | specific attribute  | fr_FR  |       |
-      | tshirt-white | locale_specific_attribute | attribut specifique | en_US  |       |
-      | tshirt-black | name                      | Black t-shirt       | en_US  |       |
-      | tshirt-black | name                      | Black t-shirt       | en_GB  |       |
+      | tshirt-white | locale_specific_attribute | specific attribute  | en_US  |       |
+      | tshirt-white | locale_specific_attribute | attribut specifique | fr_FR  |       |
+      | tshirt-black | name                      | Black t-shirt EN    | en_US  |       |
+      | tshirt-black | name                      | Black t-shirt GB    | en_GB  |       |
       | tshirt-black | name                      | T-shirt noir        | fr_FR  |       |
-      | tshirt-black | name                      | Schwarzes T-Shirt   | de_DE  |       |
       | tshirt-black | name                      | Schwarzes T-Shirt   | de_DE  |       |
     And I launched the completeness calculator
     And I am logged in as "Julia"
@@ -132,8 +134,8 @@ Feature: Export products
     And I wait for the "tablet_product_export" job to finish
     Then exported file of "tablet_product_export" should contain:
     """
-    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-tablet;datasheet;description-en_GB-tablet;description-en_US-tablet;enabled;family;groups;handmade;image;legend-en_GB;legend-en_US;locale_specific_attribute-en_US;manufacturer;material;name-en_GB;name-en_US;number_in_stock-tablet;price-EUR;price-GBP;price-USD;release_date-tablet;size;thumbnail;washing_temperature;washing_temperature-unit;weight;weight-unit
-    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;1;tshirts;;0;;;;"attribut specifique";american_apparel;cotton;"White t-shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;;;
+    sku;categories;enabled;family;groups;locale_specific_attribute-en_US;name-en_GB;name-en_US
+    tshirt-white;men_2013,men_2014,men_2015;1;family_local_specific;;specific attribute;White t-shirt GB;White t-shirt EN
     """
 
   @jira https://akeneo.atlassian.net/browse/PIM-4182
