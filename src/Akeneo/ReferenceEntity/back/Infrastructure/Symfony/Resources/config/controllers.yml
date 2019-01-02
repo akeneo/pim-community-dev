@@ -116,6 +116,8 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\GetAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
+            - '@security.token_storage'
 
     akeneo_referenceentity.infrastructure.action.record.edit:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\EditAction

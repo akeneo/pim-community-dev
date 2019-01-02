@@ -186,7 +186,8 @@ class GetActionTest extends ControllerIntegrationTestCase
             RecordCode::fromString('starck'),
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
             Image::createEmpty(),
-            $values
+            $values,
+            true
         );
 
         $findRecordDetails = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_details');
