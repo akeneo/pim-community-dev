@@ -40,7 +40,7 @@ class RemoveUserGroupSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::PRE_REMOVE => ['checkUserGroupPermissionsOnReferenceEntity'],
+            StorageEvents::PRE_REMOVE => 'checkUserGroupPermissionsOnReferenceEntity',
         ];
     }
 
