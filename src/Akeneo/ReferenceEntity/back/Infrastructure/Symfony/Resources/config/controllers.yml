@@ -54,6 +54,7 @@ services:
             - '@akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
             - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
+            - '@oro_security.security_facade'
             - '@validator'
             - '@serializer'
 
