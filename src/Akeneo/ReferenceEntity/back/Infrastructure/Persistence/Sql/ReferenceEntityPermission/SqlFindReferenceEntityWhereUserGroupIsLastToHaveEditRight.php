@@ -35,15 +35,15 @@ class SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight
 
     public function __invoke(int $userGroupId): array
     {
-        $sql = "SELECT perm1.reference_entity_identifier, COUNT(*) as nb
+        $sql = "SELECT perm1.reference_entity_identifier, COUNT(*) as cartesian_product
                 FROM akeneo_reference_entity_reference_entity_permissions perm1
                 INNER JOIN akeneo_reference_entity_reference_entity_permissions perm2
-                 ON perm1.reference_entity_identifier = perm2.reference_entity_identifier
-                 AND perm1.right_level = perm2.right_level
-                 AND perm1.right_level = 'edit'
-                 AND perm1.user_group_identifier = :userGroupIdentifier
+                    ON perm1.reference_entity_identifier = perm2.reference_entity_identifier
+                    AND perm1.right_level = perm2.right_level
+                    AND perm1.right_level = 'edit'
+                    AND perm1.user_group_identifier = :userGroupIdentifier
                 GROUP BY perm1.reference_entity_identifier
-                HAVING nb = 1;
+                HAVING cartesian_product = 1;
         ";
 
         $statement = $this->sqlConnection->executeQuery(
@@ -52,12 +52,6 @@ class SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight
             ['userGroupId' => PDO::PARAM_INT]
         );
 
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        $referenceEntityIdentifiers = array_map(function (array $result) {
-            return $result['reference_entity_identifier'];
-        }, $results);
-
-        return $referenceEntityIdentifiers;
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
     }
 }
