@@ -12,7 +12,7 @@
     "body": {
       "_links": {
         "self": {
-          "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search=\"{\\\"updated\\\":[{\\\"operator\\\":\\\">\\\",\\\"value\\\":\\\"2018-07-04T10:00:00+00:00\\\"}]}\""
+          "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search={\"updated\":[{\"operator\":\">\",\"value\":\"2018-07-04T10:00:00+00:00\"}]}"
         },
         "first": {
           "href": "http://localhost/api/rest/v1/reference-entities/brand/records"

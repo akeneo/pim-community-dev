@@ -27,6 +27,7 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -83,12 +84,14 @@ class GetConnectorRecordsAction
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
             $channelReferenceValuesFilter = ChannelReference::createfromNormalized($request->get('channel', null));
             $localeIdentifiersValuesFilter = $this->getLocaleIdentifiersValuesFilterFromRequest($request);
+            $updatedSinceFilter = $this->getUpdatedSinceFilterFromRequest($request);
             $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
                 $referenceEntityIdentifier,
                 $channelReferenceValuesFilter,
                 $localeIdentifiersValuesFilter,
                 $this->limit->intValue(),
-                $searchAfterCode
+                $searchAfterCode,
+                $updatedSinceFilter
             );
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
@@ -148,5 +151,25 @@ class GetConnectorRecordsAction
 
 
         return LocaleIdentifierCollection::fromNormalized($locales);
+    }
+
+    private function getUpdatedSinceFilterFromRequest(Request $request): array
+    {
+        $searchQuery = $request->get('search', '');
+        $search = json_decode($searchQuery, true);
+
+        if (null === $search)
+        {
+            throw new BadRequestHttpException('Search query parameter should be valid JSON.');
+        }
+
+        // TODO - Make VO and validate:
+        // 1. "Structure of filter \"updated\" should respect this structure: {\"updated\":[{\"operator\": \"my_operator\", \"value\": \"my_value\"}]}"
+        // 2. "Filter on property \"updated\" does not support operator \"bla\""
+        // 3. "Property \"updated\" expects a string with the ISO 8601 format, \"bla\" given."
+        $search['updated'][0]['field'] = 'updated';
+        $updatedSince = $search['updated'][0];
+
+        return $updatedSince;
     }
 }
