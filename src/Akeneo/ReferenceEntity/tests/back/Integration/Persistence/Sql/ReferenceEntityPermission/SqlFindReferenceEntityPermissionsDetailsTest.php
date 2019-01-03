@@ -26,7 +26,6 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
 
         $this->query = $this->get('akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_permissions_details');
         $this->resetDB();
-        $this->loadFixtures();
     }
 
     /**
@@ -34,6 +33,7 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
      */
     public function it_finds_the_reference_entity_permissions_details()
     {
+        $this->loadFixtures();
         $permissions = ($this->query)(ReferenceEntityIdentifier::fromString('designer'));
         $this->assertPermissions(
             [
@@ -49,6 +49,7 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
      */
     public function it_sets_a_default_right_level_for_new_user_groups()
     {
+        $this->loadFixtures();
         $this->createNewUserGroup();
         $permissions = ($this->query)(ReferenceEntityIdentifier::fromString('designer'));
         $this->assertPermissions(
@@ -56,6 +57,21 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
                 ['user_group_identifier' => 10, 'user_group_name' => 'Catalog Manager', 'right_level' => 'edit'],
                 ['user_group_identifier' => 11, 'user_group_name' => 'IT support', 'right_level' => 'view'],
                 ['user_group_identifier' => 12, 'user_group_name' => 'New user group', 'right_level' => 'view'],
+            ],
+            $permissions
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_a_default_right_level_for_new_user_groups_when_there_are_no_permissions_set()
+    {
+        $this->createNewUserGroup();
+        $permissions = ($this->query)(ReferenceEntityIdentifier::fromString('designer'));
+        $this->assertPermissions(
+            [
+                ['user_group_identifier' => 12, 'user_group_name' => 'New user group', 'right_level' => 'edit'],
             ],
             $permissions
         );

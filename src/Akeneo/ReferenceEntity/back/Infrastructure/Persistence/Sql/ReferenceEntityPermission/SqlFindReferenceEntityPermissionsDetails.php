@@ -34,11 +34,8 @@ class SqlFindReferenceEntityPermissionsDetails implements FindReferenceEntityPer
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        $permissionDetails = $this->fetchPermissions($referenceEntityIdentifier);
-        if (empty($permissionDetails)) {
-            return [];
-        }
         $userGroups = $this->fetchUserGroups();
+        $permissionDetails = $this->fetchPermissions($referenceEntityIdentifier);
 
         return $this->hydrate($userGroups, $permissionDetails);
     }
@@ -89,7 +86,8 @@ SQL;
 
     private function getRightLevel(array $userGroup, array $normalizedPermissionDetails): string
     {
-        $rightLevel = RightLevel::VIEW;
+        $rightLevel = empty($normalizedPermissionDetails) ? RightLevel::EDIT : RightLevel::VIEW;
+
         $platform = $this->sqlConnection->getDatabasePlatform();
         $userGroupIdentifier = Type::getType(Type::INTEGER)
             ->convertToPhpValue($userGroup['user_group_identifier'], $platform);
