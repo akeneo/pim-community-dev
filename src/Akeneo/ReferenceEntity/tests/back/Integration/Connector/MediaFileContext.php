@@ -49,6 +49,9 @@ class MediaFileContext implements Context
     /** @var Response */
     private $notFoundResponse;
 
+    /** @var Response */
+    private $uploadResponse;
+
     /** @var string */
     private $downloadedMediaFile;
 
@@ -136,6 +139,30 @@ class MediaFileContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->notFoundResponse,
             self::REQUEST_CONTRACT_DIR ."not_found_image_download.json"
+        );
+    }
+
+    /**
+     * @When the connector collects the image of a record from the DAM to synchronize it with the PIM
+     */
+    public function theConnectorCollectsTheImageOfARecordFromTheDamToSynchronizeItWithThePim()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->uploadResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."successful_image_upload.json"
+        );
+    }
+
+    /**
+     * @Then the image is correctly uploaded inside the PIM
+     */
+    public function theImageIsCorrectlyUploadedInsideThePim()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->uploadResponse,
+            self::REQUEST_CONTRACT_DIR ."successful_image_upload.json"
         );
     }
 }

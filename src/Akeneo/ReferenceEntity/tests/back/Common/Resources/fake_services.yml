@@ -201,3 +201,6 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub
         arguments:
             - '@oneup_flysystem.mount_manager'
+
+    akeneo_file_storage.file_storage.file.file_storer:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFileStorer
