@@ -47,6 +47,14 @@ class NotFoundReferenceEntityContext implements Context
     /** @var null|string */
     private $notFoundAttributeForReferenceEntityRequestContract;
 
+    /** @var null|Response */
+    private $notFoundReferenceEntityForAttributeOptionResponse;
+
+    /** @var null|string */
+    private $notFoundReferenceEntityForAttributeOptionContract;
+
+
+
     public function __construct(OauthAuthenticatedClientFactory $clientFactory, WebClientHelper $webClientHelper)
     {
         $this->clientFactory = $clientFactory;
@@ -118,8 +126,18 @@ class NotFoundReferenceEntityContext implements Context
     public function theConnectorRequestsANonExistentAttributeOfAGivenReferenceEntity()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->notFoundAttributeForReferenceEntityRequestContract = self::ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_attribute_for_reference_entity.json";
-        $this->notFoundAttributeForReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundAttributeForReferenceEntityRequestContract);
+        $this->notFoundReferenceEntityRequestContract = self::ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_attribute_for_reference_entity.json";
+        $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
+    }
+
+    /**
+     * @When /^the connector requests the options of an attribute for a non\-existent reference entity$/
+     */
+    public function theConnectorRequestsTheOptionsOfAnAttributeForANonExistentReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->notFoundReferenceEntityRequestContract = self::ATTRIBUTE_REQUEST_CONTRACT_DIR . "options_for_non_existent_reference_entity.json";
+        $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
     }
 
     /**
@@ -127,6 +145,6 @@ class NotFoundReferenceEntityContext implements Context
      */
     public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeDoesNotExistForTheBrandReferenceEntity()
     {
-        $this->webClientHelper->assertJsonFromFile($this->notFoundAttributeForReferenceEntityResponse, $this->notFoundAttributeForReferenceEntityRequestContract);
+        $this->webClientHelper->assertJsonFromFile($this->notFoundReferenceEntityResponse, $this->notFoundReferenceEntityRequestContract);
     }
 }

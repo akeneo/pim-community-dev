@@ -35,7 +35,6 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorRefer
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetConnectorAttributeOptionContext implements Context
@@ -87,6 +86,121 @@ class GetConnectorAttributeOptionContext implements Context
         $this->findConnectorAttributeOption = $findConnectorAttributeOption;
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
+    }
+
+    /**
+     * @Given /^the Nationality single option attribute that is part of the structure of the Brand reference entity$/
+     */
+    public function theNationalitySingleOptionAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntity()
+    {
+        $this->referenceEntity = $this->createBrandReferenceEntity();
+        $this->singleOptionAttribute = $this->createSingleOptionAttribute('nationality');
+    }
+
+    /**
+     * @Given /^the French option that is one of the options of the Nationality attribute$/
+     */
+    public function theFrenchOptionThatIsOneOfTheOptionsOfTheNationalityAttribute()
+    {
+        $this->createOptionForSingleOptionAttribute();
+    }
+
+    /**
+     * @When /^the connector requests the French option of the Nationality attribute for the Brand reference entity$/
+     */
+    public function theConnectorRequestsTheFrenchOptionOfTheNationalityAttributeForTheBrandReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->optionResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."successful_french_nationality_option_for_brand_reference_entity.json"
+        );
+    }
+
+    /**
+     * @Then /^the PIM returns the French option$/
+     */
+    public function thePIMReturnsTheFrenchOption()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->optionResponse,
+            self::REQUEST_CONTRACT_DIR . "successful_french_nationality_option_for_brand_reference_entity.json"
+        );
+    }
+
+    /**
+     * @Given /^the Sales Area multiple options attribute that is part of the structure of the Brand reference entity$/
+     */
+    public function theSalesAreaMultipleOptionsAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntity()
+    {
+        $this->referenceEntity = $this->createBrandReferenceEntity();
+        $this->multiOptionAttribute = $this->createMultiOptionAttribute('sales_area');
+    }
+
+    /**
+     * @Given /^the Asia option that is one of the options of the Sales Area attribute$/
+     */
+    public function theAsiaOptionThatIsOneOfTheOptionsOfTheSalesAreaAttribute()
+    {
+        $this->createOptionForMultiOptionAttribute();
+    }
+
+    /**
+     * @When /^the connector requests the Asia option of the Sales Area attribute for the Brand reference entity$/
+     */
+    public function theConnectorRequestsTheAsiaOptionOfTheSalesAreaAttributeForTheBrandReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->multiOptionResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."successful_asia_sales_area_option_for_brand_reference_entity.json"
+        );
+    }
+
+    /**
+     * @Then /^the PIM returns the Asia option$/
+     */
+    public function thePIMReturnsTheAsiaOption()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->multiOptionResponse,
+            self::REQUEST_CONTRACT_DIR . "successful_asia_sales_area_option_for_brand_reference_entity.json"
+        );
+    }
+
+    /**
+     * @Given /^the Nationality single option attribute that is part of the structure of the Brand reference entity but has no options yet$/
+     */
+    public function theNationalitySingleOptionAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntityButHasNoOptionsYet()
+    {
+        $this->referenceEntity = $this->createBrandReferenceEntity();
+        $this->singleOptionAttribute = $this->createSingleOptionAttribute('nationality');
+    }
+
+    /**
+     * @When /^the connector requests a non\-existent option for a given attribute for a given reference entity$/
+     */
+    public function theConnectorRequestsANonExistentOptionForAGivenAttributeForAGivenReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->nonExistentAttributeOptionResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."non_existent_option_for_reference_entity_attribute.json"
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that the option is non existent for the Nationality attribute and the Brand reference entity$/
+     */
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheOptionIsNonExistentForTheNationalityAttributeAndTheBrandReferenceEntity()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->nonExistentAttributeOptionResponse,
+            self::REQUEST_CONTRACT_DIR . "non_existent_option_for_reference_entity_attribute.json"
+        );
     }
 
     private function createBrandReferenceEntity()
@@ -212,121 +326,6 @@ class GetConnectorAttributeOptionContext implements Context
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand_2'),
             AttributeCode::fromString('sales_area'),
             $connectorAttribute
-        );
-    }
-
-    /**
-     * @Given /^the Nationality single option attribute that is part of the structure of the Brand reference entity$/
-     */
-    public function theNationalitySingleOptionAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntity()
-    {
-        $this->referenceEntity = $this->createBrandReferenceEntity();
-        $this->singleOptionAttribute = $this->createSingleOptionAttribute('nationality');
-    }
-
-    /**
-     * @Given /^the French option that is one of the options of the Nationality attribute$/
-     */
-    public function theFrenchOptionThatIsOneOfTheOptionsOfTheNationalityAttribute()
-    {
-        $this->createOptionForSingleOptionAttribute();
-    }
-
-    /**
-     * @When /^the connector requests the French option of the Nationality attribute for the Brand reference entity$/
-     */
-    public function theConnectorRequestsTheFrenchOptionOfTheNationalityAttributeForTheBrandReferenceEntity()
-    {
-        $client = $this->clientFactory->logIn('julia');
-
-        $this->optionResponse = $this->webClientHelper->requestFromFile(
-            $client,
-            self::REQUEST_CONTRACT_DIR ."successful_french_nationality_option_for_brand_reference_entity.json"
-        );
-    }
-
-    /**
-     * @Then /^the PIM returns the French option$/
-     */
-    public function thePIMReturnsTheFrenchOption()
-    {
-        $this->webClientHelper->assertJsonFromFile(
-            $this->optionResponse,
-            self::REQUEST_CONTRACT_DIR . "successful_french_nationality_option_for_brand_reference_entity.json"
-        );
-    }
-
-    /**
-     * @Given /^the Sales Area multiple options attribute that is part of the structure of the Brand reference entity$/
-     */
-    public function theSalesAreaMultipleOptionsAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntity()
-    {
-        $this->referenceEntity = $this->createBrandReferenceEntity();
-        $this->multiOptionAttribute = $this->createMultiOptionAttribute('sales_area');
-    }
-
-    /**
-     * @Given /^the Asia option that is one of the options of the Sales Area attribute$/
-     */
-    public function theAsiaOptionThatIsOneOfTheOptionsOfTheSalesAreaAttribute()
-    {
-        $this->createOptionForMultiOptionAttribute();
-    }
-
-    /**
-     * @When /^the connector requests the Asia option of the Sales Area attribute for the Brand reference entity$/
-     */
-    public function theConnectorRequestsTheAsiaOptionOfTheSalesAreaAttributeForTheBrandReferenceEntity()
-    {
-        $client = $this->clientFactory->logIn('julia');
-
-        $this->multiOptionResponse = $this->webClientHelper->requestFromFile(
-            $client,
-            self::REQUEST_CONTRACT_DIR ."successful_asia_sales_area_option_for_brand_reference_entity.json"
-        );
-    }
-
-    /**
-     * @Then /^the PIM returns the Asia option$/
-     */
-    public function thePIMReturnsTheAsiaOption()
-    {
-        $this->webClientHelper->assertJsonFromFile(
-            $this->multiOptionResponse,
-            self::REQUEST_CONTRACT_DIR . "successful_asia_sales_area_option_for_brand_reference_entity.json"
-        );
-    }
-
-    /**
-     * @Given /^the Nationality single option attribute that is part of the structure of the Brand reference entity but has no options yet$/
-     */
-    public function theNationalitySingleOptionAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntityButHasNoOptionsYet()
-    {
-        $this->referenceEntity = $this->createBrandReferenceEntity();
-        $this->singleOptionAttribute = $this->createSingleOptionAttribute('nationality');
-    }
-
-    /**
-     * @When /^the connector requests a non\-existent option for a given attribute for a given reference entity$/
-     */
-    public function theConnectorRequestsANonExistentOptionForAGivenAttributeForAGivenReferenceEntity()
-    {
-        $client = $this->clientFactory->logIn('julia');
-
-        $this->nonExistentAttributeOptionResponse = $this->webClientHelper->requestFromFile(
-            $client,
-            self::REQUEST_CONTRACT_DIR ."non_existent_option_for_reference_entity_attribute.json"
-        );
-    }
-
-    /**
-     * @Then /^the PIM notifies the connector about an error indicating that the option is non existent for the Nationality attribute and the Brand reference entity$/
-     */
-    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheOptionIsNonExistentForTheNationalityAttributeAndTheBrandReferenceEntity()
-    {
-        $this->webClientHelper->assertJsonFromFile(
-            $this->nonExistentAttributeOptionResponse,
-            self::REQUEST_CONTRACT_DIR . "non_existent_option_for_reference_entity_attribute.json"
         );
     }
 }

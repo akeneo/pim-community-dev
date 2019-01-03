@@ -125,6 +125,12 @@ services:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_options:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeOptions
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindConnectorRecordsByIdentifiers
         arguments:
@@ -365,3 +371,9 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlFindReferenceEntityPermissionsDetails
         arguments:
             - '@database_connection'
+
+    akeneo_referenceentity.domain.persistence.query.attribute_supports_options:
+        class: Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeSupportsOptions
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'

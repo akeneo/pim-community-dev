@@ -126,6 +126,11 @@ akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get:
     defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.get }
     methods: [GET]
 
+akeneo_reference_entities_reference_entity_attribute_options_rest_connector_get:
+    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes/{attributeCode}/options'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_options.get }
+    methods: [GET]
+
 akeneo_reference_entities_record_rest_connector_get:
     path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/records/{code}'
     defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.record.get }
