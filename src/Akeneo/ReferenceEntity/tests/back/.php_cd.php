@@ -31,6 +31,7 @@ $rules = [
         'Symfony',
         'Webmozart\Assert\Assert',
         'JsonSchema\Validator',
+        'PDO',
 
         // TODO: reference entities should not depend on PIM
         'Akeneo\Pim\Enrichment\ReferenceEntity\Component',
