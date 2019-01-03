@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Permission\Bundle\EventSubscriber;
+namespace spec\Akeneo\ReferenceEntity\Infrastructure\EventSubscriber;
 
-use Akeneo\Pim\Permission\Component\Exception\ResourceDeletionDeniedException;
+use Akeneo\ReferenceEntity\Infrastructure\EventSubscriber\ResourceDeletionDeniedException;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;

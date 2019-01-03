@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Permission\Component\Exception;
+namespace Akeneo\ReferenceEntity\Infrastructure\EventSubscriber;
 
 /**
  * Deletion denied for a resource.
