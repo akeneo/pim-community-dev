@@ -2,12 +2,13 @@ image:
   pim:
     repository: eu.gcr.io/akeneo-ci/pim-enterprise-cloud
 backup:
-  enabled: true
+  enabled: false
   
 nfs:
   persistence:
     storageClass: standard
-
+pim:
+  defaultCatalog: icecat
 mysql:
   common:
     class: standard

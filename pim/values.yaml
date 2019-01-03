@@ -73,7 +73,7 @@ certmanager:
 image:
   pim:
     repository: eu.gcr.io/akeneo-cloud/pim-enterprise-cloud
-    tag: v2.3.15
+# image.pim.tag is added by the Jenkinsfile when running the CI, manually use "--set image.pim.tag x.y.z-AB"
     pullPolicy: IfNotPresent
   httpd:
     repository: httpd

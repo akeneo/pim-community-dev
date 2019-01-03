@@ -1,13 +1,20 @@
-# master
+# 2.3.22-00
 ### Features
- - [CLOUD-767] Add pim-onboarder bundle.
+- Require "akeneo/pim-enterprise-dev": "2.3.22"
+- [CLOUD-767] Fix env conf when onboarder enabled for the fpm-init command 
+
+# 2.3.21-01
+### Features
+- [CLOUD-767] Add pim-onboarder bundle.
+- add dump-require-paths && yarn run webpack to the fpm-init command 
+- hook-delete-policy for upgrade hooks changed to "before-hook-creation"
 
 # 2.0.0
 ## Features
- - Chart can be deployed on the clusters starting from cloud-saas v3.0.0
- - Logging and Monitoring is now handled by Stackdriver
- - Error Reporting is enabled for fpm
+- Chart can be deployed on the clusters starting from cloud-saas v3.0.0
+- Logging and Monitoring is now handled by Stackdriver
+- Error Reporting is enabled for fpm
 
 # 0.1.0
 ## Features
- - First release of the chart
+- First release of the chart

@@ -44,7 +44,7 @@ spec:
         - name: pim-install
           image:  {{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www/ && chown -R www-data:www-data /data && su -m -l www-data -s /bin/bash -c "php bin/console pim:install";']
+          command: ['sh', '-c', 'export HOME=/var/www/ && chown -R www-data:www-data /data && su -m -l www-data -s /bin/bash -c "php bin/console pim:install"']
           env:
             - name: PIM_INSTALLER_DATA
               value: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
