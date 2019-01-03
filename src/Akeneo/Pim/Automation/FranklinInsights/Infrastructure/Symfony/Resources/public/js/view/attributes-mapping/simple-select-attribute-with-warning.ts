@@ -20,6 +20,7 @@ interface Config {
     label: string;
     choiceRoute: string;
     types: string[];
+    families: string[] | null;
   };
   className: string;
 }
