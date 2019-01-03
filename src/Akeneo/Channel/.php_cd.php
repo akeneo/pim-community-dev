@@ -26,7 +26,7 @@ $rules = [
         'Symfony\Component',
         'Doctrine\Common',
         'Akeneo\Tool\Component',
-        // TODO: Review the functionnal as it a real problem
+        // TIP-942: Channel should not be linked to Category
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
         // TODO: The Repository should be moved to Akeneo\Tool\Component
         'Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface',
@@ -38,8 +38,7 @@ $rules = [
         // TODO: Channels are currently tied to PIM_CATALOG_METRIC, to be able to convert units
         // TODO: Functionnal problem
         'Akeneo\Pim\Structure\Component\AttributeTypes',
-        // TODO: Channels are currently tied to PIM_CATALOG_METRIC, to be able to convert units,
-        // TODO: Create an interface in Channel/Component and an implementation in Channel/Bundle which uses it as it is allowed
+        // TIP-941: Channel should not be linked to Attribute
         'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager',
     ])->in('Akeneo\Channel\Component'),
 ];

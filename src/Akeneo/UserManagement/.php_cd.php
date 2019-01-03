@@ -16,21 +16,20 @@ $rules = [
         // TODO: The feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',
 
-        // TODO: The user as a default locale and default channel
-        // TODO: A representation of the user should belong elsewhere where it is really useful to have those information
+        // TIP-945: User Management should not depend on Channel and Enrichment
         'Akeneo\Channel\Component\Model\LocaleInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
-        // TODO: We use it to encode the user's password, Bundle dependency
+        // TIP-944: UserManager used in component
         'Akeneo\UserManagement\Bundle\Manager\UserManager',
 
         // TODO: This dependency should be removed, Bundle dependency
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
 
-        // TODO: We should not depend on Platform
+        // TIP-947: UI Locale Provider should be part of UserManagement
         'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider'
     ])->in('Akeneo\UserManagement\Component'),
     $builder->only([
@@ -47,8 +46,7 @@ $rules = [
         // TODO: We should not depend on Platform
         'Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker',
 
-        // TODO: The user as a default locale and default channel and default category tree
-        // TODO: A representation of the user should belong elsewhere where it is really useful to have those information
+        // TIP-945: User Management should not depend on Channel and Enrichment
         'Akeneo\Channel\Component\Model\ChannelInterface',
         'Akeneo\Channel\Component\Model\Channel',
         'Akeneo\Channel\Component\Model\LocaleInterface',
