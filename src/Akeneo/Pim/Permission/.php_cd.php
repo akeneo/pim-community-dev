@@ -23,6 +23,9 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory',
         'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface',
 
         // TIP-1000: Permissions should not be linked to Locale
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
