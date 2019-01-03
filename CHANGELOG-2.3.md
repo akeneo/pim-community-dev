@@ -3,6 +3,12 @@
 ## Bug fixes
 
 - PIM-7899: Remove Date of Birth field
+- PIM-7938: Cascade delete missing attributes for published product completeness
+
+
+## Migrations
+
+Please run the doctrine migrations command in order to update the DB schema: `bin/console doctrine:migrations:migrate --env=prod`
 
 # 2.3.22 (2018-12-21)
 

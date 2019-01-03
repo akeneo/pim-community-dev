@@ -61,3 +61,4 @@ PimEnterprise\Component\Workflow\Model\PublishedProductCompleteness:
                 inverseJoinColumns:
                     missing_attribute_id:
                         referencedColumnName: id
+                        onDelete: CASCADE
