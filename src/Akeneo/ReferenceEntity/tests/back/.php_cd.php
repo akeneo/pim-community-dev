@@ -32,6 +32,7 @@ $rules = [
         'Webmozart\Assert\Assert',
         'JsonSchema\Validator',
         'PDO',
+        'Akeneo\UserManagement\Component\Model\GroupInterface', // Because of an EventSubscriber on UserGroup deletion
 
         // TODO: reference entities should not depend on PIM
         'Akeneo\Pim\Enrichment\ReferenceEntity\Component',
