@@ -117,6 +117,26 @@ class SsoContext implements Context
     }
 
     /**
+     * @Given a configuration with invalid public and private key pair
+     */
+    public function aConfigurationWithInvalidPublicAndPrivateKeyPair(): void
+    {
+        $this->command = new CreateOrUpdateConfiguration(
+            'authentication_sso',
+            true,
+            'https://idp.jambon.com',
+            'https://idp.jambon.com/login',
+            'https://idp.jambon.com/logout',
+            'MIIDYDCCAkigAwIBAgIJAOGDWOB07tCyMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTgwOTE0MDkzMDEzWhcNMjgwOTEzMDkzMDEzWjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4J5iDNmrQLn4NHVvjTR0Z+xqmW6mYWFP/MxI4D4urwv6J0CLZppxfcSXLYogxrC5U+JxlF7jv9CM6Dpvkc4xBFyCNVIKAwBh/W+fL85m48Fd7Nh1VW+fK8ZBDUKFfuRxK+H/0shU96z2onVB6uYiNxF0+26MwZwjecLIh6st+pEKzd2aUNgB9RYPJWqdxw8R5mZH2EfzjTDKyomAeENcVW6zK9kQP6YNC7T8mYaUus4jhAcC/jV8Iqy7Oc1h+tEQV3rqFLLKezuNZWufoOrzaPoKMOkXgasxtadM1wU9InIpiO6pWPCwNc6TLpmZCcry6yIoveMx5fzMGjgxmmmUrwIDAQABo1MwUTAdBgNVHQ4EFgQUitGGamyDFTInis6Umd+Wc+NoFoMwHwYDVR0jBBgwFoAUitGGamyDFTInis6Umd+Wc+NoFoMwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEA05pnfsR6Atm9Wx+fdaFG7DVnrQjLDXRCXqkRJ09ygrpJlIF6YBPXcYA0kidoVlBbkZhWzz1ht5i1BYKzKdWzB2BQZLUnkaM8UotKFjdHu7/7vnM7w/n3S5zx3gtoCMSegp9vk6H2wjsPYfR0mVJOYcFzRY48bdQLV6nJRU3gV+ZikM/u92xArcaTCS6l4YEBCqJWtvlVojc6nwwv262t6NJ8NHRHqV98aoNMO4ltjFIkXa0xtNqYo7pI01kkTlPrignb4djZjCpdwu/lZJTy4FAra4lTdu2j4nn8QxNKDoBIrsNx6b+C767Mtf1f3JSRMAvt/IE4Wjp5IIAeLsTHSA==',
+            'https://my-pim.com/saml/metadata',
+            'MIIDYDCCAkigAwIBAgIJALap6dVB8+8VMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTgwOTIxMTIwMjA1WhcNMjgwOTIwMTIwMjA1WjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwpLmvVwtzHwHZvENivz0lYsQ3m6gnqrHXdkszonaF253ariYO7TYQlcCv/wDtewB4AQtc1BEklHsFyyaPGUtsDu14lU02DP1Zt2GH4QgCcwP9/4iODoDbRMTatguBMYb0oRUL/Q73fJ168BX81fdpMC46GcZ6gTGDmNGlEAy5vBh0uawsL5vActWfboSIvpJ2sE3NUFXUriwSotrmisnrx9VS5MyYvdjbLQWlFlwpSRcocxu7N99zvDhgh4uzH0z6YR+2zbY8Zt3h+3DN6ocfkFpytvHD1/aF4CvdwZE77BRZKcc6GTHTYr0MCtips0HCIbHJfmO8DQngJaAWu1fLwIDAQABo1MwUTAdBgNVHQ4EFgQUA/D2T/3PnBMcY/TCSvVc7dnPNqswHwYDVR0jBBgwFoAUA/D2T/3PnBMcY/TCSvVc7dnPNqswDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAIithf+spSzTC0AlQuPuCMjCiLzn3HpRP1JvSsE0uL/SB69o1PveArywSGIJYGrORMYkL5LebTIs2mU6Tqe00+NmhvX6wdiotEShdDdgjZC1EKygcnFIF3q1CjfH0WrYMLAvhR2+qEJgLdiedLfmdGknUrM+mA7/AaZ+ZnlTOzhQau9t4ULmrCixQjvDpO/hqb0okaIjQ4XGew9AW/x8v7g0piba3RcBE0vdykDFcoLIzfx1ZS8twH2i+749DNUH3/6HTlEY2ggu6tUE0GCMxozRQ9SbNMd0Bylmo9mva4AfpED+dU4kDG2idxkho/j4kq7fAFLzn7XzKiCphMqeSzQ==',
+            'invalid_private_key'
+        );
+
+        $this->buildErrors($this->command);
+    }
+
+    /**
      * @Then I should have no validation errors
      */
     public function iShouldHaveNoValidationErrors(): void
