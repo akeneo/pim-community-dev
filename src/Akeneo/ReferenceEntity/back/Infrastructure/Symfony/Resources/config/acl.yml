@@ -13,6 +13,11 @@ akeneo_referenceentity_reference_entity_delete:
     label: akeneo_referenceentity.acl.reference_entity.delete
     group_name: akeneo_referenceentity.acl_group.reference_entity
 
+akeneo_referenceentity_reference_entity_manage_permission:
+    type: action
+    label: akeneo_referenceentity.acl.reference_entity.manage_permission
+    group_name: akeneo_referenceentity.acl_group.reference_entity
+
 akeneo_referenceentity_record_create:
     type: action
     label: akeneo_referenceentity.acl.record.create

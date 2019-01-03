@@ -29,6 +29,9 @@ class SetActionTest extends ControllerIntegrationTestCase
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
         $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
+
+        $securityFacadeStub = $this->get('oro_security.security_facade');
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_reference_entity_manage_permission', true);
     }
 
     /**
@@ -92,9 +95,40 @@ class SetActionTest extends ControllerIntegrationTestCase
         Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
+    /** @test */
+    public function it_returns_an_error_when_the_user_do_not_have_the_rights()
+    {
+        $this->revokeSetPermissionAcls();
+        $postContent = [
+            'identifier' => 'designer',
+            'labels'     => [
+                'en_US' => 'foo',
+            ],
+        ];
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::SET_REFERENCE_ENTITY_PERMISSION_ROUTE,
+            ['referenceEntityIdentifier' => 'designer'],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            $postContent
+        );
+
+        $this->webClientHelper->assert403Forbidden($this->client->getResponse());
+    }
+
     private function forbidsEdit(): void
     {
         $this->get('akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler')
             ->forbid();
+    }
+
+    private function revokeSetPermissionAcls(): void
+    {
+        $securityFacadeStub = $this->get('oro_security.security_facade');
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_reference_entity_manage_permission', false);
     }
 }

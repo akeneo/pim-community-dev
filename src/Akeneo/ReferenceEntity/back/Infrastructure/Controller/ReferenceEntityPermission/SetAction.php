@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenc
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetUserGroupPermissionCommand;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,6 +43,9 @@ class SetAction
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var SecurityFacade */
+    private $securityFacade;
+
     /** @var ValidatorInterface */
     private $validator;
 
@@ -52,12 +56,14 @@ class SetAction
         SetReferenceEntityPermissionsHandler $setReferenceEntityPermissionsHandler,
         CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
         TokenStorageInterface $tokenStorage,
+        SecurityFacade $securityFacade,
         ValidatorInterface $validator,
         Serializer $serializer
     ) {
         $this->setReferenceEntityPermissionsHandler = $setReferenceEntityPermissionsHandler;
         $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
         $this->tokenStorage = $tokenStorage;
+        $this->securityFacade = $securityFacade;
         $this->validator = $validator;
         $this->serializer = $serializer;
     }
@@ -105,6 +111,6 @@ class SetAction
         $query->referenceEntityIdentifier = $referenceEntityIdentifier;
         $isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($query);
 
-        return $isAllowedToEdit;
+        return $this->securityFacade->isGranted('akeneo_referenceentity_reference_entity_manage_permission') && $isAllowedToEdit;
     }
 }
