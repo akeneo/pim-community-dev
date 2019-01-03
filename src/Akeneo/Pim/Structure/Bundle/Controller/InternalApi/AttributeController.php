@@ -177,6 +177,10 @@ class AttributeController
             $options['useable_as_grid_filter'] = $request->get('useable_as_grid_filter') === 'true';
         }
 
+        if ($request->get('families', null) !== null) {
+            $options['families'] = $request->get('families');
+        }
+
         if (empty($options)) {
             $options = $request->get(
                 'options',
