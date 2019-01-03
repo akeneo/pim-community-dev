@@ -157,18 +157,7 @@ class GetConnectorRecordsAction
     {
         $searchQuery = $request->get('search', '');
         $search = json_decode($searchQuery, true);
-
-        if (null === $search)
-        {
-            throw new BadRequestHttpException('Search query parameter should be valid JSON.');
-        }
-
-        // TODO - Make VO and validate:
-        // 1. "Structure of filter \"updated\" should respect this structure: {\"updated\":[{\"operator\": \"my_operator\", \"value\": \"my_value\"}]}"
-        // 2. "Filter on property \"updated\" does not support operator \"bla\""
-        // 3. "Property \"updated\" expects a string with the ISO 8601 format, \"bla\" given."
-        $search['updated'][0]['field'] = 'updated';
-        $updatedSince = $search['updated'][0];
+        $updatedSince = array_merge($search['updated'][0], ['field' => 'updated']);
 
         return $updatedSince;
     }

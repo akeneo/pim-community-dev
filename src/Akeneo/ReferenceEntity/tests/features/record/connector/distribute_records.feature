@@ -67,7 +67,7 @@ Feature: Connection to e-commerce platforms and marketplaces
     Then the PIM returns the 5 records of the Brand reference entity that were updated on the 15th of October 2018
 
   @integration-back
-  Scenario: Notify about an error when getting the records of a reference entity that were updated since a date that is not have the right format
+  Scenario: Notify about an error when getting the records of a reference entity that were updated since a date that does not have the right format
     Given the Brand reference entity with some records
     When the connector requests records that were updated since a date that does not have the right format
     Then the PIM notifies the connector about an error indicating that the date format is not the expected one
