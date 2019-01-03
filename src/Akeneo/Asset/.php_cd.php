@@ -18,7 +18,7 @@ $rules = [
         'Akeneo\Tool',
         'Akeneo\Asset',
         'Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface', // Asset need to be versioned
-        'Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface',
+        'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
         'Akeneo\Tool\Component\Connector',
         'Symfony\Bundle\FrameworkBundle',
         'Sensio\Bundle\FrameworkExtraBundle',
