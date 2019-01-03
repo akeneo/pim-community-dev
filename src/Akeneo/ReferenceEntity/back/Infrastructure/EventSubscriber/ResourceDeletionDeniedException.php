@@ -22,6 +22,6 @@ class ResourceDeletionDeniedException extends \LogicException
 {
     public function __construct(string $message)
     {
-        $this->message = $message;
+        parent::__construct($message);
     }
 }
