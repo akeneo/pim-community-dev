@@ -94,6 +94,63 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ->during('subscribe', [$productSubscriptionRequest]);
     }
 
+    public function it_throws_an_exception_if_data_provider_response_has_warnings(
+        $identifiersMappingRepository,
+        $subscriptionApi,
+        ProductInterface $product,
+        AttributeInterface $ean,
+        AttributeInterface $sku,
+        ValueInterface $eanValue,
+        ValueInterface $skuValue,
+        FamilyInterface $family
+    ): void {
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping->map('upc', $ean->getWrappedObject());
+        $identifiersMapping->map('asin', $sku->getWrappedObject());
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+
+        $ean->getCode()->willReturn('ean');
+        $sku->getCode()->willReturn('sku');
+
+        $product->getId()->willReturn(42);
+        $product->getFamily()->willReturn($family);
+        $product->getValue('ean')->willReturn($eanValue);
+        $product->getValue('sku')->willReturn($skuValue);
+
+        $eanValue->hasData()->willReturn(true);
+        $skuValue->hasData()->willReturn(true);
+        $eanValue->__toString()->willReturn('123456789');
+        $skuValue->__toString()->willReturn('987654321');
+
+        $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
+        $product->getId()->willReturn(42);
+
+        $family->getTranslations()->willReturn([]);
+        $family->getCode()->willReturn('a_family');
+
+        $request = new RequestCollection();
+        $request->add(new Request(
+            [
+                'upc' => '123456789',
+                'asin' => '987654321',
+            ],
+            42,
+            [
+                'code' => 'a_family',
+                'label' => [],
+            ]
+        ));
+        $subscriptionApi->subscribe($request)->willReturn(
+            new ApiResponse(
+                new SubscriptionCollection($this->fakeApiResponse()),
+                new WarningCollection($this->fakeApiResponse(true))
+            )
+        );
+
+        $this->shouldThrow(ProductSubscriptionException::invalidMappedValues())
+            ->during('subscribe', [$productSubscriptionRequest]);
+    }
+
     public function it_bulk_subscribes_product_to_franklin(
         $identifiersMappingRepository,
         $subscriptionApi,
@@ -293,8 +350,20 @@ class SubscriptionProviderSpec extends ObjectBehavior
     /**
      * @return array
      */
-    private function fakeApiResponse(): array
+    private function fakeApiResponse(bool $withErrors = false): array
     {
+        $errors = [];
+        if (true === $withErrors) {
+            $errors = [
+                [
+                    'message' => 'warning message 1',
+                    'entry' => [
+                        'tracker_id' => '44',
+                    ],
+                ],
+            ];
+        }
+
         return [
             '_embedded' => [
                 'subscription' => [
@@ -314,7 +383,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
                         'misses_mapping' => false,
                     ],
                 ],
-                'warnings' => [],
+                'warnings' => $errors,
             ],
         ];
     }

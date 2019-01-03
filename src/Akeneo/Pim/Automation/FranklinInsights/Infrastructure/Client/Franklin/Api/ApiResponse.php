@@ -55,4 +55,12 @@ final class ApiResponse
     {
         return $this->warnings;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasWarnings(): bool
+    {
+        return count($this->warnings->toArray()) > 0;
+    }
 }
