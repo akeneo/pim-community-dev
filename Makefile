@@ -34,4 +34,4 @@ enrichment-coupling:
 	$(PHP_EXEC) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Enrichment/.php_cd.php src/Akeneo/Pim/Enrichment
 
 .PHONY: coupling ## Run the coupling-detector on Everything
-coupling: structure-coupling user-management-coupling channel-coupling
+coupling: structure-coupling user-management-coupling channel-coupling enrichment-coupling
