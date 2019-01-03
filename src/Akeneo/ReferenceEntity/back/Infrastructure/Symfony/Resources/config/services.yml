@@ -10,6 +10,13 @@ services:
             - { name: kernel.event_subscriber }
             - { name: 'console.command'}
 
+    akeneo_referenceentity.event_subscriber.remove_user_group:
+        class: Akeneo\ReferenceEntity\Infrastructure\EventSubscriber\RemoveUserGroupSubscriber
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_where_user_group_is_last_to_have_edit_right'
+        tags:
+            - { name: kernel.event_subscriber }
+
     akeneo_referenceentity.updater.adder.reference_entity_collection:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Updater\Adder\ReferenceEntityCollectionAdder
         arguments:

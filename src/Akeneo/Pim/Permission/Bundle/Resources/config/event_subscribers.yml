@@ -45,10 +45,3 @@ services:
             - '@pimee_security.manager.job_profile_access'
         tags:
             - { name: kernel.event_subscriber }
-
-    pimee_security.subscriber.remove_user_group:
-        class: Akeneo\Pim\Permission\Bundle\EventSubscriber\RemoveUserGroupSubscriber
-        arguments:
-            - '@akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_where_user_group_is_last_to_have_edit_right'
-        tags:
-            - { name: kernel.event_subscriber }
