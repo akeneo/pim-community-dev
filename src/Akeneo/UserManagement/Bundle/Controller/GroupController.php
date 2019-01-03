@@ -2,7 +2,6 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller;
 
-use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\UserEvents;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -59,7 +58,12 @@ class GroupController extends Controller
         }
 
         $remover = $this->get('pim_user.remover.user_group');
-        $remover->remove($group);
+
+        try {
+            $remover->remove($group);
+        } catch (\Exception $exception) {
+            return new JsonResponse(['message' => $exception->getMessage()], 500);
+        };
 
         return new JsonResponse('', 204);
     }
