@@ -12,9 +12,7 @@ define(
     function (Backbone, $, _, Routing, NotificationList, Indicator, notificationTpl, notificationFooterTpl) {
         'use strict';
 
-        if ('locked' === sessionStorage.getItem('notificationRefreshLocked')) {
-            sessionStorage.setItem('notificationRefreshLocked', 'available');
-        }
+        const NOTIFICATION_TIMEOUT_ID = 'notifications_timeout_ids';
 
         return Backbone.View.extend({
             options: {
@@ -28,8 +26,6 @@ define(
             },
 
             freezeCount: false,
-
-            refreshTimeout: null,
 
             template: _.template(notificationTpl),
 
@@ -102,21 +98,16 @@ define(
             },
 
             scheduleRefresh: function () {
-                if ('locked' === sessionStorage.getItem('notificationRefreshLocked')) {
-                    return;
-                }
-                if (null !== this.refreshTimeout) {
-                    clearTimeout(this.refreshTimeout);
+                const timeoutId = sessionStorage.getItem(NOTIFICATION_TIMEOUT_ID);
+                if (timeoutId !== null && timeoutId !== '') {
+                    clearTimeout(parseInt(timeoutId));
                 }
 
-                this.refreshTimeout = setTimeout(this.refresh.bind(this), this.options.refreshInterval);
+                const newTimeoutId = setTimeout(this.refresh.bind(this), this.options.refreshInterval);
+                sessionStorage.setItem(NOTIFICATION_TIMEOUT_ID, newTimeoutId + '');
             },
 
             refresh: function () {
-                if ('locked' === sessionStorage.getItem('notificationRefreshLocked')) {
-                    return;
-                }
-                sessionStorage.setItem('notificationRefreshLocked', 'locked');
                 $.getJSON(Routing.generate('pim_notification_notification_count_unread'))
                     .then(_.bind(function (count) {
                         sessionStorage.setItem('notificationRefreshLocked', 'available');

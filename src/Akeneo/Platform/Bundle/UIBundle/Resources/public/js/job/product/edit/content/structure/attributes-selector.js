@@ -174,7 +174,8 @@ define(
                         options: {
                             excluded_identifiers: this.getSelected(),
                             page: this.attributeListPage,
-                            limit: 20
+                            limit: 20,
+                            locale: userContext.get('catalogLocale')
                         }
                     };
 
