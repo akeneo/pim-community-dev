@@ -1,4 +1,3 @@
-tests/legacy/features/pim/enrichment/product/mass-edit/edit-common-attribute/edit_common_attributes_channel.feature:32
 tests/legacy/features/user-management/group/edit_user_group_assignations.feature:40
 tests/legacy/features/pim/enrichment/product/datagrid/filtering/filter_products.feature:62
 tests/legacy/features/pim/enrichment/product/mass-action/quick-export/quick_export_with_localized_data.feature:52
