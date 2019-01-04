@@ -14,6 +14,7 @@
 - PIM-7499: Improve the performance of the completeness widget in the dashboard
 - PIM-7371: Improve the performance of the category tree in the product grid
 - PIM-7839: Remove date of birth
+- GITHUB-8234 & GITHUB-8383: Fix constraints on attribute code. Cheers @oliverde8 & @navneetbhardwaj !
 
 ## Enhancements
 
