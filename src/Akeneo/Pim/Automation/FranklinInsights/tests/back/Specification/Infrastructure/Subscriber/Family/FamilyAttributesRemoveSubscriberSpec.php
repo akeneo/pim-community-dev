@@ -23,14 +23,15 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Webmozart\Assert\Assert;
 
 class FamilyAttributesRemoveSubscriberSpec extends ObjectBehavior
 {
     public function let(
-        SelectRemovedFamilyAttributeCodesQueryInterface $query,
+        SelectRemovedFamilyAttributeCodesQueryInterface $selectRemovedFamilyAttributeCodesQuery,
         RemoveAttributesFromMappingInterface $removeAttributesFromMapping
     ): void {
-        $this->beConstructedWith($query, $removeAttributesFromMapping);
+        $this->beConstructedWith($selectRemovedFamilyAttributeCodesQuery, $removeAttributesFromMapping);
     }
 
     public function it_is_a_family_subscriber(): void
@@ -41,12 +42,14 @@ class FamilyAttributesRemoveSubscriberSpec extends ObjectBehavior
 
     public function it_subscribes_to_events(): void
     {
-        $this::getSubscribedEvents()->shouldReturn([StorageEvents::PRE_SAVE => 'updateAttributesMapping']);
+        Assert::eq(
+            [StorageEvents::PRE_SAVE, StorageEvents::POST_SAVE],
+            array_keys($this::getSubscribedEvents()->getWrappedObject())
+        );
     }
 
-    public function it_updates_attributes_mapping_linked_to_the_removed_attributes_from_the_family(
-        $query,
-        $removeAttributesFromMapping,
+    public function it_finds_attributes_removed_from_the_family(
+        $selectRemovedFamilyAttributeCodesQuery,
         GenericEvent $event,
         FamilyInterface $family
     ): void {
@@ -57,33 +60,54 @@ class FamilyAttributesRemoveSubscriberSpec extends ObjectBehavior
         $family->getAttributeCodes()->willReturn(['sku', 'name', 'description', 'size', 'color']);
 
         $removedAttributes = ['brand', 'type'];
-        $query
-            ->findFamilyAttributesNotIn('shoes', ['sku', 'name', 'description', 'size', 'color'])
+        $selectRemovedFamilyAttributeCodesQuery
+            ->execute('shoes', ['sku', 'name', 'description', 'size', 'color'])
             ->willReturn($removedAttributes);
 
-        $removeAttributesFromMapping
-            ->process(['shoes'], $removedAttributes)
-            ->shouldBeCalled();
+        $this->onFamilyAttributesRemoved($event);
+    }
+
+    public function it_updates_attributes_mapping_when_there_are_some_attributes_removed_from_the_family(
+        $selectRemovedFamilyAttributeCodesQuery,
+        $removeAttributesFromMapping,
+        GenericEvent $event,
+        FamilyInterface $family
+    ): void {
+        $event->getSubject()->willReturn($family);
+
+        $family->getId()->willReturn(2);
+        $family->getCode()->willReturn('shoes');
+        $family->getAttributeCodes()->willReturn(['sku', 'name', 'size', 'color']);
+
+        $removedAttributeCodes = ['brand', 'type'];
+        $selectRemovedFamilyAttributeCodesQuery
+            ->execute('shoes', ['sku', 'name', 'size', 'color'])
+            ->willReturn($removedAttributeCodes);
+
+        $this->onFamilyAttributesRemoved($event);
+
+        $removeAttributesFromMapping->process(['shoes'], $removedAttributeCodes)->shouldBeCalled();
 
         $this->updateAttributesMapping($event);
     }
 
     public function it_does_nothing_if_event_does_not_come_from_a_family(
-        $query,
+        $selectRemovedFamilyAttributeCodesQuery,
         $removeAttributesFromMapping,
         GenericEvent $event,
         ProductInterface $product
     ): void {
         $event->getSubject()->willReturn($product);
 
-        $query->findFamilyAttributesNotIn(Argument::cetera())->shouldNotBeCalled();
+        $selectRemovedFamilyAttributeCodesQuery->execute(Argument::cetera())->shouldNotBeCalled();
         $removeAttributesFromMapping->process(Argument::cetera())->shouldNotBeCalled();
 
+        $this->onFamilyAttributesRemoved($event)->shouldReturn(null);
         $this->updateAttributesMapping($event)->shouldReturn(null);
     }
 
     public function it_does_nothing_if_event_comes_from_a_newly_created_family(
-        $query,
+        $selectRemovedFamilyAttributeCodesQuery,
         $removeAttributesFromMapping,
         GenericEvent $event,
         FamilyInterface $family
@@ -92,9 +116,33 @@ class FamilyAttributesRemoveSubscriberSpec extends ObjectBehavior
 
         $family->getId()->willReturn(null);
 
-        $query->findFamilyAttributesNotIn(Argument::cetera())->shouldNotBeCalled();
+        $selectRemovedFamilyAttributeCodesQuery->execute(Argument::cetera())->shouldNotBeCalled();
         $removeAttributesFromMapping->process(Argument::cetera())->shouldNotBeCalled();
 
+        $this->onFamilyAttributesRemoved($event)->shouldReturn(null);
         $this->updateAttributesMapping($event)->shouldReturn(null);
+    }
+
+    public function it_does_not_launch_job_when_there_are_no_attribute_codes_removed_from_the_family(
+        $selectRemovedFamilyAttributeCodesQuery,
+        $removeAttributesFromMapping,
+        GenericEvent $event,
+        FamilyInterface $family
+    ): void {
+        $event->getSubject()->willReturn($family);
+
+        $family->getId()->willReturn(2);
+        $family->getCode()->willReturn('shoes');
+        $family->getAttributeCodes()->willReturn(['sku', 'name', 'size', 'color']);
+
+        $selectRemovedFamilyAttributeCodesQuery
+            ->execute('shoes', ['sku', 'name', 'size', 'color'])
+            ->willReturn([]);
+
+        $this->onFamilyAttributesRemoved($event);
+
+        $removeAttributesFromMapping->process(['shoes'], [])->shouldNotBeCalled();
+
+        $this->updateAttributesMapping($event);
     }
 }

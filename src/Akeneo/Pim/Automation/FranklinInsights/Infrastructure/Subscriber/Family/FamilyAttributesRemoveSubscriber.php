@@ -26,20 +26,23 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class FamilyAttributesRemoveSubscriber implements EventSubscriberInterface
 {
     /** @var SelectRemovedFamilyAttributeCodesQueryInterface */
-    private $query;
+    private $selectRemovedFamilyAttributeCodesQuery;
 
     /** @var RemoveAttributesFromMappingInterface */
     private $removeAttributesFromMapping;
 
+    /** @var string[] */
+    private $removedAttributeCodes;
+
     /**
-     * @param SelectRemovedFamilyAttributeCodesQueryInterface $query
+     * @param SelectRemovedFamilyAttributeCodesQueryInterface $selectRemovedFamilyAttributeCodesQuery
      * @param RemoveAttributesFromMappingInterface $removeAttributesFromMapping
      */
     public function __construct(
-        SelectRemovedFamilyAttributeCodesQueryInterface $query,
+        SelectRemovedFamilyAttributeCodesQueryInterface $selectRemovedFamilyAttributeCodesQuery,
         RemoveAttributesFromMappingInterface $removeAttributesFromMapping
     ) {
-        $this->query = $query;
+        $this->selectRemovedFamilyAttributeCodesQuery = $selectRemovedFamilyAttributeCodesQuery;
         $this->removeAttributesFromMapping = $removeAttributesFromMapping;
     }
 
@@ -49,8 +52,25 @@ class FamilyAttributesRemoveSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::PRE_SAVE => 'updateAttributesMapping',
+            StorageEvents::PRE_SAVE => 'onFamilyAttributesRemoved',
+            StorageEvents::POST_SAVE => 'updateAttributesMapping',
         ];
+    }
+
+    /**
+     * @param GenericEvent $event
+     */
+    public function onFamilyAttributesRemoved(GenericEvent $event): void
+    {
+        $family = $event->getSubject();
+        if (!$family instanceof FamilyInterface || null === $family->getId()) {
+            return;
+        }
+
+        $this->removedAttributeCodes = $this->selectRemovedFamilyAttributeCodesQuery->execute(
+            $family->getCode(),
+            $family->getAttributeCodes()
+        );
     }
 
     /**
@@ -63,8 +83,10 @@ class FamilyAttributesRemoveSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $removedAttributes = $this->query->execute($family->getCode(), $family->getAttributeCodes());
+        if (empty($this->removedAttributeCodes)) {
+            return;
+        }
 
-        $this->removeAttributesFromMapping->process([$family->getCode()], $removedAttributes);
+        $this->removeAttributesFromMapping->process([$family->getCode()], $this->removedAttributeCodes);
     }
 }
