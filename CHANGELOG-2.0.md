@@ -1,5 +1,15 @@
 # 2.0.x
 
+# 2.0.45 (2018-12-18)
+
+## Bug fixes
+
+- PIM-7903: replace mb_ereg_replace function call by a preg_replace because mbstring is not an extension required by the PIM
+
+# 2.0.44 (2018-11-29)
+
+# 2.0.43 (2018-11-27)
+
 ## Bug fixes
 
 - PIM-7873: Fix consistency between TWA widget numbers and the datagrid view (backport PIM-7723)

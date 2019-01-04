@@ -50,6 +50,8 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
                 $locale = $this->retrieveLocale($localeCode);
             }
 
+            $this->buildAsset($asset);
+            $this->getAssetSaver()->save($asset);
             $reference = $this->retrieveReference($asset, $locale);
         } catch (\LogicException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
@@ -66,7 +68,7 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
 
             switch ($item->getState()) {
                 case ProcessedItem::STATE_ERROR:
-                    $msg = sprintf('<error>%s\n%s</error>', $msg, $item->getReason());
+                    $msg = sprintf("<error>%s\n%s</error>", $msg, $item->getReason());
                     break;
                 case ProcessedItem::STATE_SKIPPED:
                     $msg = sprintf('%s <comment>Skipped (%s)</comment>', $msg, $item->getReason());
