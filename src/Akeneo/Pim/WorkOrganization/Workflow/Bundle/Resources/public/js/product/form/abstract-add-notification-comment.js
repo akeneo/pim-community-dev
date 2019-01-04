@@ -12,7 +12,6 @@ define(
         'backbone',
         'oro/mediator',
         'pim/form',
-        'pim/template/common/modal-with-illustration',
         'pimee/template/product/meta/notification-comment'
     ],
     function (
@@ -21,11 +20,9 @@ define(
         Backbone,
         mediator,
         BaseForm,
-        modalTemplate,
         template
     ) {
         return BaseForm.extend({
-            modalTemplate: _.template(modalTemplate),
             template: _.template(template),
             events: {
                 'input textarea': 'updateCounter'

@@ -14,7 +14,6 @@ define(
         'backbone',
         'pim/form',
         'teamwork-assistant/templates/grid/view-selector/create-project',
-        'pim/template/common/modal-with-illustration',
         'teamwork-assistant/project/create-form'
     ],
     function (
@@ -24,12 +23,10 @@ define(
         Backbone,
         BaseForm,
         template,
-        templateModal,
         CreateForm
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            templateModal: _.template(templateModal),
             tagName: 'span',
             className: 'create-project-button',
             fieldsStatuses: {},
@@ -75,7 +72,6 @@ define(
                     content: this.form,
                     picture: 'illustrations/Project.svg',
                     okText: __('pim_common.save'),
-                    template: this.templateModal,
                     okCloses: false,
                 });
 
