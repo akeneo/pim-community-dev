@@ -17,15 +17,12 @@ define(
         'backbone',
         'oro/translator',
         'pim/router',
-        'pim/template/common/modal-with-illustration',
         'bootstrap-modal'
     ],
-    function ($, _, Backbone, __, router, template) {
+    function ($, _, Backbone, __, router) {
         'use strict';
 
         const Dialog = {
-            template: _.template(template),
-
             /**
              * Returns class name for modal illustration
              */
@@ -109,7 +106,6 @@ define(
                     okText: __(buttonText) || __('pim_common.ok'),
                     cancelText: __('pim_common.cancel'),
                     buttonClass: buttonClass || 'AknButton--action',
-                    template: this.template,
                     allowCancel: true,
                     illustrationClass: illustrationClass || this.getIllustrationClass(subTitle)
                 });

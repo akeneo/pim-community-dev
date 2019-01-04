@@ -13,8 +13,7 @@ define(
         'oro/loading-mask',
         'pim/router',
         'oro/messenger',
-        'pim/template/form/creation/modal',
-        'pim/template/common/modal-with-illustration'
+        'pim/template/form/creation/modal'
     ],
     function (
         $,
@@ -28,13 +27,11 @@ define(
         LoadingMask,
         router,
         messenger,
-        template,
-        modalTemplate,
+        template
     ) {
         return BaseForm.extend({
             config: {},
             template: _.template(template),
-            modalTemplate: _.template(modalTemplate),
             validationErrors: [],
 
             /**
@@ -77,7 +74,6 @@ define(
                     content: '',
                     okText: __('pim_common.save'),
                     okCloses: false,
-                    template: this.modalTemplate,
                 });
                 modal.open();
                 this.setElement(modal.$('.modal-body')).render();

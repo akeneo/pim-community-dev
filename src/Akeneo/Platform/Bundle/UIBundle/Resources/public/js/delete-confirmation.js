@@ -3,12 +3,10 @@ define(
         'underscore',
         'oro/translator',
         'oro/modal',
-        'pim/template/common/modal-with-illustration'
     ], function (
         _,
         __,
-        Modal,
-        confirmModalTemplate
+        Modal
     ) {
     'use strict';
 
@@ -20,7 +18,6 @@ define(
      * @extends oro.Modal
      */
     return Modal.extend({
-        confirmModalTemplate: _.template(confirmModalTemplate),
         /**
          * @param {Object} options
          */
@@ -28,7 +25,6 @@ define(
             options = _.extend({
                 title: __('pim_common.confirm_deletion'),
                 okText: __('pim_common.ok'),
-                template: this.confirmModalTemplate,
                 buttonClass: 'AknButton--important',
                 illustrationClass: 'delete',
                 cancelText: __('pim_common.cancel'),

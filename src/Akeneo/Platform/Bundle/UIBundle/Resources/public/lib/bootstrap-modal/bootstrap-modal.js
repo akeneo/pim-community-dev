@@ -13,7 +13,6 @@
  * ok: The user clicked OK
  */
 (function($, _, Backbone) {
-  // This template is defined here: src/Akeneo/Platform/Bundle/UIBundle/Resources/public/templates/common/modal-with-illustration.html
   var template = _.template('\
     <div class="AknFullPage">\
       <div class="AknFullPage-content AknFullPage-content--withIllustration">\

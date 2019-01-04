@@ -16,7 +16,6 @@ define(
         'backbone',
         'pim/form',
         'pim/template/grid/view-selector/create-view',
-        'pim/template/common/modal-with-illustration',
         'pim/template/form/creation/modal',
         'pim/template/grid/view-selector/create-view-label-input',
         'pim/datagrid/state',
@@ -30,7 +29,6 @@ define(
         Backbone,
         BaseForm,
         template,
-        templateModal,
         templateModalContent,
         templateInput,
         DatagridState,
@@ -39,7 +37,6 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            innerTemplateModal: _.template(templateModal),
             templateModalContent: _.template(templateModalContent),
             templateInput: _.template(templateInput),
             tagName: 'span',
@@ -78,7 +75,6 @@ define(
                     title: __('pim_common.create'),
                     picture: 'illustrations/Views.svg',
                     okText: __('pim_common.save'),
-                    template: this.innerTemplateModal,
                     okCloses: false,
                     content: this.templateModalContent({
                         fields: this.templateInput({
