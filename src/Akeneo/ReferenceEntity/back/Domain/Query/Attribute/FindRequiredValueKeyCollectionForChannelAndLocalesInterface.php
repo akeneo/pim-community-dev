@@ -14,20 +14,20 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
- * Find the list of required keys for the given reference entity, on the given channel & locale.
+ * Find the list of required keys for the given reference entity, on the given channel & locales.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-interface FindRequiredValueKeyCollectionForChannelAndLocaleInterface
+interface FindRequiredValueKeyCollectionForChannelAndLocalesInterface
 {
     public function __invoke(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ChannelIdentifier $channelIdentifier,
-        LocaleIdentifier $localeIdentifier
+        LocaleIdentifierCollection $localeIdentifierCollectionCollection
     ): ValueKeyCollection;
 }

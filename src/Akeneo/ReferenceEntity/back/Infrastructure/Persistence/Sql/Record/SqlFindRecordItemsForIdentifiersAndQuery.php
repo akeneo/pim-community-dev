@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersAndQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRequiredValueKeyCollectionForChannelAndLocale;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRequiredValueKeyCollectionForChannelAndLocales;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -37,15 +37,15 @@ class SqlFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsForIden
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var SqlFindRequiredValueKeyCollectionForChannelAndLocale */
-    private $findRequiredValueKeyCollectionForChannelAndLocale;
+    /** @var SqlFindRequiredValueKeyCollectionForChannelAndLocales */
+    private $findRequiredValueKeyCollectionForChannelAndLocales;
 
     public function __construct(
         Connection $sqlConnection,
-        SqlFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredValueKeyCollectionForChannelAndLocale
+        SqlFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocale
     ) {
         $this->sqlConnection = $sqlConnection;
-        $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
+        $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocale;
     }
 
     /**
@@ -72,13 +72,13 @@ SQL;
         $referenceEntityFilter = $query->getFilter('reference_entity');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityFilter['value']);
         $channelIdentifier = ChannelIdentifier::fromCode($query->getChannel());
-        $localeIdentifier = LocaleIdentifier::fromCode($query->getLocale());
+        $localeIdentifiers = LocaleIdentifierCollection::fromNormalized([$query->getLocale()]);
 
         /** @var ValueKeyCollection $requiredValueKeyCollection */
-        $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
+        $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocales)(
             $referenceEntityIdentifier,
             $channelIdentifier,
-            $localeIdentifier
+            $localeIdentifiers
         );
         $requiredValueKeys = $requiredValueKeyCollection->normalize();
 
