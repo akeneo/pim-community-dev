@@ -38,7 +38,7 @@ final class IsCertificateValidValidator extends ConstraintValidator
             return;
         }
 
-        if (false === $this->x509->loadX509($certificate)) {
+        if (!$this->x509->loadX509($certificate) || !$this->x509->validateSignature(false)) {
             $this->context
                 ->buildViolation($constraint->invalidMessage)
                 ->addViolation()

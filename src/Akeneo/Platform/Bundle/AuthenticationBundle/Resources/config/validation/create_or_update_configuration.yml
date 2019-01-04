@@ -1,4 +1,9 @@
 Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfiguration:
+    constraints:
+        - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\MatchingPublicAndPrivateCertificates:
+            message: Service Provider public and private certificates must match.
+            publicCertificatePropertyName: serviceProviderPublicCertificate
+            privateCertificatePropertyName: serviceProviderPrivateCertificate
     properties:
         code:
             - NotBlank: ~

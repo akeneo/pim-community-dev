@@ -259,6 +259,7 @@ acceptance:
         platform:
             paths:
                 - '%paths.base%/tests/features/volume-monitoring'
+                - '%paths.base%/tests/features/authentication'
                 - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/volume-monitoring'
             contexts_services:
                 - test.catalog_volume_limits.report_context

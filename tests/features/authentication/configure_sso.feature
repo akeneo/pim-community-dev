@@ -50,4 +50,9 @@ Feature: Configure the SSO
 
   @acceptance-back
   Scenario: Reject a configuration with private certificate not matching the public certificate
-    // TODO
+    Given a configuration with invalid public and private key pair
+    Then I should have the following validation errors:
+      | path                              | message                                                      |
+      | serviceProviderPublicCertificate  | Service Provider public and private certificates must match. |
+      | serviceProviderPrivateCertificate | Service Provider public and private certificates must match. |
+
