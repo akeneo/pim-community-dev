@@ -16,8 +16,28 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Akeneo\Pim\WorkOrganization\Workflow\Component',
 
-        // TODO: EASY PICK! to remove, this exception is never fired
+        // TIP-979: Remove ServerErrorResponseException
         'Elasticsearch\Common\Exceptions\ServerErrorResponseException',
+
+        // TIP-980: Workflow should not be linked to User
+        // TIP-982: Rework User/Draft link
+        'Akeneo\UserManagement\Component\Model\UserInterface',
+
+        // TIP-981: Workflow should not be linked to Asset
+        'Akeneo\Asset\Component\Repository\AssetRepositoryInterface',
+        'Akeneo\Asset\Component\Model\AssetInterface',
+        'Akeneo\Asset\Bundle\AttributeType\AttributeTypes',
+
+        // TIP-984: Workflow should not be linked to Channel
+        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Component\Model\ChannelInterface',
+
+        // TIP-985: Workflow should not be linked to Currency
+        'Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface',
+
+        // TIP-986: Workflow should not be linked to Locale
+        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Component\Model\LocaleInterface',
 
         //TODO: It uses the permissions
         'Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException',
@@ -38,30 +58,22 @@ $rules = [
         //TODO: We should integrate by database instead of using external repository
         'Akeneo\UserManagement\Bundle\Manager\UserManager',
         'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
-        'Akeneo\Asset\Component\Repository\AssetRepositoryInterface',
         'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
-        //TODO: EASY PICK! to remove, not used
+        // TIP-983: Workflow should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface',
+        'Akeneo\Pim\Structure\Component\AttributeTypes',
+        'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
 
         //TODO Link by id instead of reference
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\UserManagement\Component\Model\UserInterface',
-        'Akeneo\Asset\Component\Model\AssetInterface',
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
 
         //TODO: We should rely on type given by a type system and not on public constants
-        'Akeneo\Asset\Bundle\AttributeType\AttributeTypes',
-        'Akeneo\Pim\Structure\Component\AttributeTypes',
         'Akeneo\Pim\Permission\Component\Attributes',
 
         //TODO: It uses the PQB
@@ -87,9 +99,9 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Command\UpdateProductCommand',
         'Akeneo\Pim\Enrichment\Bundle\Command\QueryProductCommand',
 
-        // TODO: published products are totally coupled to products
+        // TIP-987: Published should be less coupled to Product
+        // TIP-988: Split Published vs Draft/Proposal
         'Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface',
-        'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
         'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
@@ -128,6 +140,9 @@ $rules = [
         'Symfony\Component',
         'Akeneo\Tool\Component',
 
+        // TIP-983: Workflow should not be linked to Attribute
+        'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+
         // TODO: a component should not use a bundle
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
 
@@ -145,7 +160,8 @@ $rules = [
         'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
         'Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface',
 
-        // TODO: published products are totally coupled to products
+        // TIP-987: Published should be less coupled to Product
+        // TIP-988: Split Published vs Draft/Proposal
         'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
@@ -159,7 +175,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface',
         'Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface',
-        'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
         'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
         'Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection',
@@ -169,10 +184,11 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductUniqueData',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor',
 
-        //TODO: used to normalize proposals notifications of the user
+        // TIP-980: Workflow should not be linked to User
+        // TIP-982: Rework User/Draft link
         'Akeneo\UserManagement\Component\Model\UserInterface',
 
-        //TODO: EASY PICK! not not use this constraint just a regular string
+        // TIP-989 Do not use a PIM/Enrichment constraint
         'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString',
 
         //TODO: It uses the PQB
@@ -184,7 +200,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer',
 
-        //TODO: EASY PICK! move it into the component
+        // TIP-990: Move classes to component
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper',
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftManager',
 
