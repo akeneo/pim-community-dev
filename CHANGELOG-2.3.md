@@ -1,4 +1,8 @@
 # 2.3.x
+ 
+## Bug fixes
+
+- PIM-7934: Fix translations of product model import
 
 # 2.3.23 (2019-01-03)
  
