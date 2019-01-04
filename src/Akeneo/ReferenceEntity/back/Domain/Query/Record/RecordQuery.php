@@ -134,14 +134,13 @@ class RecordQuery
         ChannelReference $channelReferenceValuesFilter,
         LocaleIdentifierCollection $localeIdentifiersValuesFilter,
         int $size,
-        ?RecordCode $searchAfterCode
+        ?RecordCode $searchAfterCode,
+        array $filters
     ): RecordQuery {
-        $filters = [
-            [
-                'field' => 'reference_entity',
-                'operator' => '=',
-                'value' => (string) $referenceEntityIdentifier
-            ]
+        $filters[] = [
+            'field'    => 'reference_entity',
+            'operator' => '=',
+            'value'    => (string)$referenceEntityIdentifier
         ];
 
         return new RecordQuery(

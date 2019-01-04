@@ -61,10 +61,8 @@ Feature: Connection to e-commerce platforms and marketplaces
 
   @integration-back
   Scenario: Get all the complete records of a given reference entity for a provided channel and provided locales
-    Given 5 records for the Brand reference entity on the Ecommerce channel that are incomplete for the French locale but complete for the English locale
-    And 10 records for the Brand reference entity on the Ecommerce channel that are complete for the French locale but that are incomplete for the English locale
-    And 20 records for the Brand reference entity on the Ecommerce channel that are both complete for the French and the English locale
+    Given 2 records for the Brand reference entity on the Ecommerce channel that are incomplete for the French locale but complete for the English locale
+    And 2 records for the Brand reference entity on the Ecommerce channel that are complete for the French locale but that are incomplete for the English locale
+    And 2 records for the Brand reference entity on the Ecommerce channel that are both complete for the French and the English locale
     When the connector requests all complete records of the Brand reference entity on the Ecommerce channel for the French and English locales
-    Then the PIM returns the 20 complete records of the Brand reference entity on the Ecommerce channel for the French and English locales
-
-  
+    Then the PIM returns the 2 complete records of the Brand reference entity on the Ecommerce channel for the French and English locales

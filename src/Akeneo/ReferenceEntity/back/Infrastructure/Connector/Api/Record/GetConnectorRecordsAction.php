@@ -27,6 +27,7 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -77,6 +78,10 @@ class GetConnectorRecordsAction
      */
     public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
     {
+        // TODO validate search filters with json-schema
+        $rawSearchFilters = $this->getSearchFiltersFromRequest($request);
+        $searchFilters = $this->formatSearchFilters($rawSearchFilters);
+
         try {
             $searchAfter = $request->get('search_after', null);
             $searchAfterCode = null !== $searchAfter ? RecordCode::fromString($searchAfter) : null;
@@ -88,7 +93,8 @@ class GetConnectorRecordsAction
                 $channelReferenceValuesFilter,
                 $localeIdentifiersValuesFilter,
                 $this->limit->intValue(),
-                $searchAfterCode
+                $searchAfterCode,
+                $searchFilters
             );
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
@@ -135,6 +141,7 @@ class GetConnectorRecordsAction
             'query_parameters'    => [
                 'channel' => $request->get('channel', null),
                 'locales' => $request->get('locales', null),
+                'search'  => $request->get('search', null),
             ],
         ];
 
@@ -148,5 +155,39 @@ class GetConnectorRecordsAction
 
 
         return LocaleIdentifierCollection::fromNormalized($locales);
+    }
+
+    private function getSearchFiltersFromRequest(Request $request): array
+    {
+        $search = $request->get('search', null);
+        if (null === $search) {
+            return [];
+        }
+
+        $filters = json_decode($search, true);
+        if (null === $filters) {
+            throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
+        }
+
+        return $filters;
+    }
+
+    private function formatSearchFilters(array $rawFilters): array
+    {
+        $formattedFilters = [];
+
+        if (isset($rawFilters['complete'])) {
+            $formattedFilters[] = [
+                'field'    => 'complete',
+                'operator' => $rawFilters['complete']['operator'],
+                'value'    => $rawFilters['complete']['value'],
+                'context'  => [
+                    'channel' => $rawFilters['complete']['channel'],
+                    'locales' => $rawFilters['complete']['locales'],
+                ],
+            ];
+        }
+
+        return $formattedFilters;
     }
 }

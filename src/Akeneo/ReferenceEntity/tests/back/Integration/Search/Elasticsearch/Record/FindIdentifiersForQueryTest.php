@@ -433,7 +433,8 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             10,
-            RecordCode::fromString('alessi')
+            RecordCode::fromString('alessi'),
+            []
         );
 
         $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);
@@ -453,7 +454,8 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             10,
-            null
+            null,
+            []
         );
 
         $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);
