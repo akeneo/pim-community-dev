@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Bug fixes
+
+- GITHUB-8234 & GITHUB-8383: Fix constraints on attribute code. Cheers @oliverde8 & @navneetbhardwaj !
+
 # 2.0.45 (2018-12-18)
 
 ## Bug fixes
