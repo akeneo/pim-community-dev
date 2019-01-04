@@ -20,6 +20,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface', // Asset are reference data
         'Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface', // Asset are reference data
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface', // Asset are reference data
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface',
         'Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface', // Asset need to be versioned
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
@@ -108,7 +109,6 @@ $rules = [
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         // TODO: we must not depend on PIM BC
         'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface',
         // TODO: security
         'Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager',
         // TODO: we should rework permission to avoid this kind coupling (permissions are a sub part of PIM BC)
