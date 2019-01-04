@@ -5,6 +5,20 @@ export enum RightLevel {
   Own = 'own',
 }
 
+export const lowerLevel = (rightLevel: RightLevel): RightLevel => {
+  switch (rightLevel) {
+    case RightLevel.None:
+    case RightLevel.View:
+      return RightLevel.None;
+    case RightLevel.Edit:
+      return RightLevel.View;
+    case RightLevel.Own:
+      return RightLevel.Edit;
+  }
+
+  throw new InvalidArgumentError(`The right level "${rightLevel}" is not valid`);
+};
+
 type UserGroupIdentifier = number;
 type UserGroupName = string;
 
@@ -91,6 +105,7 @@ export interface PermissionCollection {
   setPermission(userGroupName: UserGroupName, rightLevel: RightLevel): PermissionCollection;
   setAllPermissions(rightLevel: RightLevel): PermissionCollection;
   normalize(): NormalizedPermissionCollection;
+  isEmpty(): boolean;
   map<T>(callback: (permission: Permission, index?: number, array?: Permission[]) => T): T[];
 }
 
@@ -151,6 +166,10 @@ class PermissionCollectionImplementation implements PermissionCollection {
 
   map(callback: (permission: Permission, index?: number, array?: Permission[]) => any) {
     return this.permissions.map(callback);
+  }
+
+  isEmpty() {
+    return 0 === this.permissions.length;
   }
 
   normalize() {

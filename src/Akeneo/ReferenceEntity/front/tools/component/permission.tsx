@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Tick from 'akeneoreferenceentity/application/component/app/icon/tick';
-import Permission, {RightLevel, PermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
+import Permission, {RightLevel, PermissionCollection, lowerLevel} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 
 
 type GroupName = string;
@@ -19,20 +19,23 @@ class PermissionEditor extends React.Component<PermissionEditorProps> {
     const groupRightLevelIndex = prioritizedRightLevels.indexOf(value);
 
     return (
-      <tr className="AknPermission-row">
+      <tr className="AknPermission-row" data-user-group-code={groupCode}>
         <td className="AknPermission-groupName AknGrid-bodyCell AknGrid-bodyCell--big">
           {groupCode}
         </td>
         {prioritizedRightLevels.map((rightLevel: RightLevel, currentRightLevelIndex: number) => {
+          const isNoneLevel = rightLevel === RightLevel.None;
           const isFirstColumn = currentRightLevelIndex === 0;
           const isLastColumn = currentRightLevelIndex === prioritizedRightLevels.length - 1;
           const pillIsHigher = currentRightLevelIndex < groupRightLevelIndex;
           const pillIsLowerOrAtThisLevel = currentRightLevelIndex <= groupRightLevelIndex;
+          const pillIsAtThisLevel = currentRightLevelIndex === groupRightLevelIndex;
 
           return (
             <td
               className="AknPermission-level AknGrid-bodyCell"
               key={rightLevel}
+              data-right-level={rightLevel}
             >
               <div className="AknPermission-rightLevel">
                 <div className={
@@ -49,10 +52,10 @@ class PermissionEditor extends React.Component<PermissionEditorProps> {
                     `AknPermission-pill ${pillIsLowerOrAtThisLevel ? 'AknPermission-pill--active' : ''} ${this.props.readOnly ? 'AknPermission-pill--disabled' : ''}`
                   }
                   onClick={() => {
-                    onChange(groupCode, rightLevel)
+                    pillIsAtThisLevel && !isFirstColumn ? onChange(groupCode, lowerLevel(rightLevel)) : onChange(groupCode, rightLevel);
                   }}
                 >
-                  {!isFirstColumn && pillIsLowerOrAtThisLevel ? <Tick className="AknPermission-pillTick"/> : null}
+                  {!isNoneLevel && pillIsLowerOrAtThisLevel ? <Tick className="AknPermission-pillTick"/> : null}
                 </div>
                 <div className={`AknPermission-barRight ${
                   pillIsHigher ? 'AknPermission-barRight--active' : ''
@@ -79,11 +82,15 @@ type PermissionCollectionEditorProps = {
 
 export default class PermissionCollectionEditor extends React.Component<PermissionCollectionEditorProps> {
   private onPermissionUpdated(groupCode: GroupName, newValue: RightLevel) {
-    this.props.onChange(this.props.value.setPermission(groupCode, newValue));
+    if (!this.props.readOnly) {
+      this.props.onChange(this.props.value.setPermission(groupCode, newValue));
+    }
   }
 
   private onAllPermissionUpdated(newValue: RightLevel) {
-    this.props.onChange(this.props.value.setAllPermissions(newValue));
+    if (!this.props.readOnly) {
+      this.props.onChange(this.props.value.setAllPermissions(newValue));
+    }
   }
 
   render() {
@@ -101,7 +108,7 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
           </tr>
         </thead>
         <tbody>
-          <tr className="AknPermission-row">
+          <tr className="AknPermission-row AknPermission-row--massAction">
             <td className="AknPermission-level AknGrid-bodyCell"></td>
             {this.props.prioritizedRightLevels.map((rightLevel: RightLevel) => (
               <td
@@ -109,7 +116,9 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
                 className="AknPermission-level AknGrid-bodyCell"
                 onClick={() => {
                   this.onAllPermissionUpdated(rightLevel)
-                }}>
+                }}
+                data-right-level={rightLevel}
+              >
                   <div className="AknPermission-rightLevel">
                     <div className="AknPermission-barLeft AknPermission-barLeft--transparent" />
                     <div className="AknPermission-pill"></div>

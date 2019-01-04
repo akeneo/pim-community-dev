@@ -30,7 +30,7 @@ const permission = (
       state = {...state, errors: []};
       break;
     case 'PERMISSION_EDITION_PERMISSION_UPDATED':
-      state = {...state, data: permissions, state: {...state.state, isDirty: isDirty(state, state.data)}};
+      state = {...state, data: permissions, state: {...state.state, isDirty: isDirty(state, permissions)}};
       break;
     case 'PERMISSION_EDITION_ERROR_OCCURED':
       state = {...state, errors};

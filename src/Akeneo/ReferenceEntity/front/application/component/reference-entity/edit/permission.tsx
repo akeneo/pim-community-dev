@@ -68,7 +68,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           label={referenceEntity.getLabel(this.props.context.locale)}
           image={referenceEntity.getImage()}
           primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.rights.referenceEntity.edit ? (
+            return this.props.rights.referenceEntity.edit && !this.props.permission.data.isEmpty() ? (
               <button
                 className="AknButton AknButton--apply"
                 onClick={this.props.events.onSavePermissionEditForm}
