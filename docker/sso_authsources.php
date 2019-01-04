@@ -9,25 +9,25 @@ $config = array(
     'example-userpass' => array(
         'exampleauth:UserPass',
         'admin:admin' => array(
-            'uid' => array('admin'),
+            'akeneo_uid' => array('admin'),
         ),
         'julia:julia' => array(
-            'uid' => array('julia'),
+            'akeneo_uid' => array('julia'),
         ),
         'peter:peter' => array(
-            'uid' => array('peter'),
+            'akeneo_uid' => array('peter'),
         ),
         'mary:mary' => array(
-            'uid' => array('mary'),
+            'akeneo_uid' => array('mary'),
         ),
         'sandra:sandra' => array(
-            'uid' => array('sandra'),
+            'akeneo_uid' => array('sandra'),
         ),
         'pamela:pamela' => array(
-            'uid' => array('pamela'),
+            'akeneo_uid' => array('pamela'),
         ),
         'julien:julien' => array(
-            'uid' => array('julien'),
+            'akeneo_uid' => array('julien'),
         ),
     ),
 
