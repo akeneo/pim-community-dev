@@ -15,7 +15,7 @@ Feature: Quick export products with user permissions applied
     And I am on the "de_DE" locale page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | Allowed to view product information | IT support |
+      | Allowed to view information | IT support |
     And I save the locale
     And I am on the "Other" attribute group page
     And I visit the "Permissions" tab
@@ -44,7 +44,7 @@ Feature: Quick export products with user permissions applied
     And I am on the "de_DE" locale page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | Allowed to view product information | IT support |
+      | Allowed to view information | IT support |
     And I save the locale
     And I am on the "Other" attribute group page
     And I visit the "Permissions" tab
@@ -76,7 +76,7 @@ Feature: Quick export products with user permissions applied
     And I am on the "de_DE" locale page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | Allowed to view product information | IT support |
+      | Allowed to view information | IT support |
     And I save the locale
     When I am on the products grid
     And I select rows blackhoodie and greenhoodie
