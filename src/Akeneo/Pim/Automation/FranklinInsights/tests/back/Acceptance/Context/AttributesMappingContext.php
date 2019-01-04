@@ -330,6 +330,19 @@ final class AttributesMappingContext implements Context
     }
 
     /**
+     * @Then an invalid duplicated pim attribute message should be sent
+     */
+    public function anInvalidDuplicatedPimAttributeMessageShouldBeSent(): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, AttributeMappingException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            AttributeMappingException::duplicatedPimAttribute()->getMessage()
+        );
+    }
+
+    /**
      * @param mixed $franklinStatus
      *
      * @return int

@@ -80,6 +80,16 @@ class AttributeMappingException extends \Exception
     }
 
     /**
+     * @return AttributeMappingException
+     */
+    public static function duplicatedPimAttribute(): self
+    {
+        $message = sprintf(static::CONSTRAINT_KEY, 'duplicated_pim_attribute');
+
+        return new static($message, []);
+    }
+
+    /**
      * @return array
      */
     public function getMessageParams(): array

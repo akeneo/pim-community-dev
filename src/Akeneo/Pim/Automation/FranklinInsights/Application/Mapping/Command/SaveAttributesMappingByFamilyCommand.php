@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 
@@ -95,6 +96,24 @@ class SaveAttributesMappingByFamilyCommand
                 $mappingRow['franklinAttribute']['type'],
                 $mappingRow['attribute']
             );
+        }
+
+        $this->validatePimAttributesAreNotUsedTwiceInTheSameMapping($mapping);
+    }
+
+    /**
+     * @param array $mapping
+     *
+     * @throws AttributeMappingException
+     */
+    private function validatePimAttributesAreNotUsedTwiceInTheSameMapping(array $mapping): void
+    {
+        $mapping = array_filter($mapping, function ($value) {
+            return null !== $value['attribute'];
+        });
+
+        if (count($mapping) !== count(array_unique($mapping, SORT_REGULAR))) {
+            throw AttributeMappingException::duplicatedPimAttribute();
         }
     }
 }

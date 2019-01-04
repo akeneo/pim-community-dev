@@ -146,3 +146,13 @@ Feature: Map the PIM attributes with Franklin attributes
       | product_weight        | pim_weight         |
     Then the attributes mapping should not be saved
     And an invalid locale specific attribute message should be sent
+
+  Scenario: Fails to map the same attribute twice with a franklin attribute
+    Given the family "router"
+    And Franklin is configured with a valid token
+    When the attributes are mapped for the family "router" as follows:
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        | color              |
+      | color                 | color              |
+    Then the attributes mapping should not be saved
+    And an invalid duplicated pim attribute message should be sent

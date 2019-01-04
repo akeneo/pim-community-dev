@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use PhpSpec\ObjectBehavior;
@@ -86,5 +87,31 @@ class SaveAttributesMappingByFamilyCommandSpec extends ObjectBehavior
         $this
             ->shouldNotThrow(InvalidMappingException::expectedKey('color', 'status'))
             ->duringInstantiation();
+    }
+
+    public function it_throws_an_exception_if_a_pim_attribute_is_used_twice_or_more(): void
+    {
+        $mapping = [
+            'main_color' => [
+                'franklinAttribute' => ['type' => 'multiselect'],
+                'attribute' => 'pim_color',
+            ],
+            'secondary_color' => [
+                'franklinAttribute' => ['type' => 'multiselect'],
+                'attribute' => 'pim_color',
+            ],
+            'test' => [
+                'franklinAttribute' => ['type' => 'text'],
+                'attribute' => null,
+            ],
+            'test2' => [
+                'franklinAttribute' => ['type' => 'text'],
+                'attribute' => null,
+            ],
+        ];
+
+        $this->beConstructedWith('family_code', $mapping);
+
+        $this->shouldThrow(AttributeMappingException::duplicatedPimAttribute())->duringInstantiation();
     }
 }
