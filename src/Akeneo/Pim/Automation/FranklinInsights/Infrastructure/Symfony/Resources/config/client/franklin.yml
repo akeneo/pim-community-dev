@@ -21,7 +21,7 @@ services:
     akeneo.pim.automation.franklin_insights.franklin_client.guzzle_client:
         class: 'GuzzleHttp\Client'
         arguments:
-            - {verify: false, handler: '@akeneo.pim.automation.franklin_insights.franklin_client.guzzle_stack'}
+            - {verify: false, timeout: 10, handler: '@akeneo.pim.automation.franklin_insights.franklin_client.guzzle_stack'}
 
     akeneo.pim.automation.franklin_insights.franklin_client.http_client:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\GuzzleClient'
