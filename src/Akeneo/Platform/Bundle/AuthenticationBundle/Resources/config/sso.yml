@@ -16,12 +16,18 @@ services:
             - '@pim_internal_api_serializer'
             - '@akeneo_authentication.sso.configuration.create_or_update_handler'
             - '@akeneo_authentication.sso.configuration.repository'
+            - '@akeneo_authentication.sso.configuration.service_provider_default_configuration'
             - '@akeneo_authentication.sso.log.create_archive'
 
     akeneo_authentication.sso.configuration.ui.normalizer:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI\Normalizer'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
+
+    akeneo_authentication.sso.configuration.service_provider_default_configuration:
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\ServiceProviderDefaultConfiguration'
+        arguments:
+            - '%env(AKENEO_PIM_URL)%'
 
     onelogin_auth:
         class: 'OneLogin\Saml2\Auth'
