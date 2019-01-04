@@ -56,9 +56,11 @@ class ReferenceEntityEditController extends BaseController {
         const userSearch = this.getUserSearch(referenceEntityIdentifier);
         const completenessFilter = this.getCompletenessFilter(referenceEntityIdentifier);
 
-        permissionFetcher.fetch(referenceEntityResult.referenceEntity.getIdentifier()).then((permissions: PermissionCollection) => {
-          this.store.dispatch(permissionEditionReceived(permissions));
-        });
+        permissionFetcher
+          .fetch(referenceEntityResult.referenceEntity.getIdentifier())
+          .then((permissions: PermissionCollection) => {
+            this.store.dispatch(permissionEditionReceived(permissions));
+          });
 
         // Not idea, maybe we should discuss about it
         await this.store.dispatch(updateChannels() as any);

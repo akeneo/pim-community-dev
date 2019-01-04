@@ -8,10 +8,11 @@ Feature: Display the sidebar
       | identifier | labels                                       |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
     And the following configured tabs:
-      | code      |
-      | record    |
-      | attribute |
-      | property  |
+      | code       |
+      | record     |
+      | attribute  |
+      | property   |
+      | permission |
 
   @acceptance-front
   Scenario: Display the sidebar with the tabs configured

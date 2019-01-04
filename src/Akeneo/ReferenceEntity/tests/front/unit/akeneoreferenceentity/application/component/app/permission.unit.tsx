@@ -1,5 +1,8 @@
 import PermissionCollectionEditor from 'akeneoreferenceentity/tools/component/permission';
-import {denormalizePermissionCollection, RightLevel} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
+import {
+  denormalizePermissionCollection,
+  RightLevel,
+} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 
 import * as React from 'react';
 import {mount} from 'enzyme';
@@ -8,12 +11,15 @@ const assertRightLevel = (element: any, groupName: string, rightLevel: string) =
   ['none', 'view', 'edit', 'own'].reduce((previous: string[], current: string) => {
     expect(
       element
-        .find(`.AknPermission-row[data-user-group-code="${groupName}"] .AknPermission-level[data-right-level="${current}"]`).exists('.AknPermission-pill--active')
+        .find(
+          `.AknPermission-row[data-user-group-code="${groupName}"] .AknPermission-level[data-right-level="${current}"]`
+        )
+        .exists('.AknPermission-pill--active')
     ).toBe(!previous.includes(rightLevel));
 
     return [...previous, current];
   }, []);
-}
+};
 
 const permissions = denormalizePermissionCollection([
   {
@@ -35,7 +41,7 @@ const permissions = denormalizePermissionCollection([
     user_group_identifier: 4,
     user_group_name: 'Other',
     right_level: 'none',
-  }
+  },
 ]);
 
 describe('>>>COMPONENT --- permission', () => {
@@ -44,8 +50,8 @@ describe('>>>COMPONENT --- permission', () => {
       <PermissionCollectionEditor
         value={permissions}
         readOnly={false}
-        onChange={(newPermissions) => {
-          console.log(newPermissions)
+        onChange={newPermissions => {
+          console.log(newPermissions);
         }}
         prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
       />
@@ -63,17 +69,19 @@ describe('>>>COMPONENT --- permission', () => {
       <PermissionCollectionEditor
         value={permissions}
         readOnly={false}
-        onChange={(newPermissions) => {
-          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('edit')
-          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('edit')
-          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('edit')
-          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('edit')
+        onChange={newPermissions => {
+          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('edit');
+          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('edit');
+          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('edit');
+          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('edit');
         }}
         prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
       />
     );
 
-    permissionsEditor.find(`.AknPermission-row--massAction .AknPermission-level[data-right-level="edit"] .AknPermission-pill`).simulate('click')
+    permissionsEditor
+      .find(`.AknPermission-row--massAction .AknPermission-level[data-right-level="edit"] .AknPermission-pill`)
+      .simulate('click');
   });
 
   test('Mass update rights at none', () => {
@@ -82,17 +90,19 @@ describe('>>>COMPONENT --- permission', () => {
       <PermissionCollectionEditor
         value={permissions}
         readOnly={false}
-        onChange={(newPermissions) => {
-          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('none')
-          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('none')
-          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('none')
-          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none')
+        onChange={newPermissions => {
+          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('none');
+          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('none');
+          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('none');
+          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none');
         }}
         prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
       />
     );
 
-    permissionsEditor.find(`.AknPermission-row--massAction .AknPermission-level[data-right-level="none"] .AknPermission-pill`).simulate('click')
+    permissionsEditor
+      .find(`.AknPermission-row--massAction .AknPermission-level[data-right-level="none"] .AknPermission-pill`)
+      .simulate('click');
   });
 
   test('Mass update rights on read only', () => {
@@ -101,17 +111,19 @@ describe('>>>COMPONENT --- permission', () => {
       <PermissionCollectionEditor
         value={permissions}
         readOnly={true}
-        onChange={(newPermissions) => {
-          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('view')
-          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('edit')
-          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('own')
-          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none')
+        onChange={newPermissions => {
+          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('view');
+          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('edit');
+          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('own');
+          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none');
         }}
         prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
       />
     );
 
-    permissionsEditor.find(`.AknPermission-row--massAction .AknPermission-level[data-right-level="edit"] .AknPermission-pill`).simulate('click')
+    permissionsEditor
+      .find(`.AknPermission-row--massAction .AknPermission-level[data-right-level="edit"] .AknPermission-pill`)
+      .simulate('click');
   });
 
   test('Update one right', () => {
@@ -120,17 +132,21 @@ describe('>>>COMPONENT --- permission', () => {
       <PermissionCollectionEditor
         value={permissions}
         readOnly={false}
-        onChange={(newPermissions) => {
-          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('view')
-          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('own')
-          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('own')
-          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none')
+        onChange={newPermissions => {
+          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('view');
+          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('own');
+          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('own');
+          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none');
         }}
         prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
       />
     );
 
-    permissionsEditor.find(`.AknPermission-row[data-user-group-code="Translator"] .AknPermission-level[data-right-level="own"] .AknPermission-pill`).simulate('click')
+    permissionsEditor
+      .find(
+        `.AknPermission-row[data-user-group-code="Translator"] .AknPermission-level[data-right-level="own"] .AknPermission-pill`
+      )
+      .simulate('click');
   });
 
   test('Update one right', () => {
@@ -139,17 +155,21 @@ describe('>>>COMPONENT --- permission', () => {
       <PermissionCollectionEditor
         value={permissions}
         readOnly={true}
-        onChange={(newPermissions) => {
-          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('view')
-          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('own')
-          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('own')
-          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none')
+        onChange={newPermissions => {
+          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('view');
+          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('own');
+          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('own');
+          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none');
         }}
         prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
       />
     );
 
-    permissionsEditor.find(`.AknPermission-row[data-user-group-code="Translator"] .AknPermission-level[data-right-level="own"] .AknPermission-pill`).simulate('click')
+    permissionsEditor
+      .find(
+        `.AknPermission-row[data-user-group-code="Translator"] .AknPermission-level[data-right-level="own"] .AknPermission-pill`
+      )
+      .simulate('click');
   });
 
   test('Toggle one right', () => {
@@ -158,16 +178,20 @@ describe('>>>COMPONENT --- permission', () => {
       <PermissionCollectionEditor
         value={permissions}
         readOnly={false}
-        onChange={(newPermissions) => {
-          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('view')
-          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('edit')
-          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('edit')
-          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none')
+        onChange={newPermissions => {
+          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('view');
+          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('edit');
+          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('edit');
+          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none');
         }}
         prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
       />
     );
 
-    permissionsEditor.find(`.AknPermission-row[data-user-group-code="IT"] .AknPermission-level[data-right-level="own"] .AknPermission-pill`).simulate('click')
+    permissionsEditor
+      .find(
+        `.AknPermission-row[data-user-group-code="IT"] .AknPermission-level[data-right-level="own"] .AknPermission-pill`
+      )
+      .simulate('click');
   });
 });

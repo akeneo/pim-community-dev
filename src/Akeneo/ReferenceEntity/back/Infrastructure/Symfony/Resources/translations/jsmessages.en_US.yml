@@ -85,12 +85,6 @@ pim_reference_entity:
       save:
         success: Reference entity permissions successfully updated.
         fail: At least one user group should have edit permission on this entity
-      create:
-        success: Reference entity permissions successfully created.
-        fail: An error occured during the creation of the reference entity permissions
-      delete:
-        success: Reference entity permissions successfully deleted.
-        fail: An error occured during the deletion of the reference entity permissions
   record:
     validation:
       limit_reached: 'You cannot create the record "{{ %record_label% }}" because you have reached the limit of {{ %limit% }} records for this reference entity'

@@ -3,14 +3,19 @@ import {connect} from 'react-redux';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {
-  denormalizeReferenceEntity, NormalizedReferenceEntity,
+  denormalizeReferenceEntity,
+  NormalizedReferenceEntity,
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
 import PermissionCollectionEditor from 'akeneoreferenceentity/tools/component/permission';
 import {FormState} from 'akeneoreferenceentity/application/reducer/state';
 import {permissionEditionUpdated} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
-import {RightLevel, denormalizePermissionCollection, PermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
+import {
+  RightLevel,
+  denormalizePermissionCollection,
+  PermissionCollection,
+} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 import {savePermission} from 'akeneoreferenceentity/application/action/reference-entity/permission';
 import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
 
@@ -19,22 +24,22 @@ const securityContext = require('pim/security-context');
 
 type UserGroup = {
   name: string;
-}
+};
 
 interface StateProps {
   referenceEntity: NormalizedReferenceEntity;
   permission: {
-    data: PermissionCollection,
+    data: PermissionCollection;
     state: FormState;
-  },
+  };
   context: {
     locale: string;
-  },
+  };
   rights: {
     referenceEntity: {
-      edit: boolean
-    }
-  }
+      edit: boolean;
+    };
+  };
 }
 
 interface DispatchProps {
@@ -47,16 +52,18 @@ interface DispatchProps {
 class Properties extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
   state: {
-    userGroups: UserGroup[]
+    userGroups: UserGroup[];
   } = {
-    userGroups: []
+    userGroups: [],
   };
 
   componentDidMount() {
-    fetcherRegistry.getFetcher('user-group')
-      .fetchAll().then((userGroups: UserGroup[]) => {
+    fetcherRegistry
+      .getFetcher('user-group')
+      .fetchAll()
+      .then((userGroups: UserGroup[]) => {
         this.setState({userGroups});
-      })
+      });
   }
 
   render() {
@@ -96,7 +103,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
               value={this.props.permission.data}
               prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
               onChange={(newValue: PermissionCollection) => {
-                this.props.events.onPermissionUpdated(newValue)
+                this.props.events.onPermissionUpdated(newValue);
               }}
             />
           </div>
@@ -114,16 +121,18 @@ export default connect(
       referenceEntity: state.form.data,
       permission: {
         data: denormalizePermissionCollection(state.permission.data),
-        state: state.permission.state
+        state: state.permission.state,
       },
       context: {
         locale,
       },
       rights: {
         referenceEntity: {
-          edit: securityContext.isGranted('akeneo_referenceentity_reference_entity_manage_permission') && canEditReferenceEntity(),
-        }
-      }
+          edit:
+            securityContext.isGranted('akeneo_referenceentity_reference_entity_manage_permission') &&
+            canEditReferenceEntity(),
+        },
+      },
     };
   },
   (dispatch: any): DispatchProps => {
