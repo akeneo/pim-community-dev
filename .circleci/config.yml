@@ -123,7 +123,7 @@ jobs:
       machine:
           enabled: true
           docker_layer_caching: true
-      parallelism: 7
+      parallelism: 20
       steps:
           - attach_workspace:
                 at: ~/
@@ -152,7 +152,7 @@ jobs:
       machine:
           enabled: true
           docker_layer_caching: true
-      parallelism: 7
+      parallelism: 20
       steps:
           - attach_workspace:
                 at: ~/
@@ -181,7 +181,7 @@ jobs:
     machine:
       enabled: true
       docker_layer_caching: true
-    parallelism: 7
+    parallelism: 20
     steps:
       - attach_workspace:
           at: ~/
@@ -258,14 +258,696 @@ workflows:
                 requires:
                     - test_phpunit_end_to_end
 
-  nightly:
+  nightly_1:
       triggers:
           - schedule:
-                cron: "0 15 * * *"
+                cron: "0 0 * * *"
                 filters:
                     branches:
                         only:
-                            - test-circle-pit
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_2:
+      triggers:
+          - schedule:
+                cron: "0 1 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_3:
+      triggers:
+          - schedule:
+                cron: "0 2 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_4:
+      triggers:
+          - schedule:
+                cron: "0 3 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_5:
+      triggers:
+          - schedule:
+                cron: "0 4 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_6:
+      triggers:
+          - schedule:
+                cron: "0 5 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_7:
+      triggers:
+          - schedule:
+                cron: "0 6 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_8:
+      triggers:
+          - schedule:
+                cron: "0 7 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_9:
+      triggers:
+          - schedule:
+                cron: "0 8 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_10:
+      triggers:
+          - schedule:
+                cron: "0 9 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_11:
+      triggers:
+          - schedule:
+                cron: "0 10 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_12:
+      triggers:
+          - schedule:
+                cron: "0 11 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_13:
+      triggers:
+          - schedule:
+                cron: "0 12 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_14:
+      triggers:
+          - schedule:
+                cron: "0 13 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_15:
+      triggers:
+          - schedule:
+                cron: "0 14 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_17:
+      triggers:
+          - schedule:
+                cron: "0 16 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_18:
+      triggers:
+          - schedule:
+                cron: "0 17 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_19:
+      triggers:
+          - schedule:
+                cron: "0 18 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_20:
+      triggers:
+          - schedule:
+                cron: "0 19 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_21:
+      triggers:
+          - schedule:
+                cron: "0 20 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_22:
+      triggers:
+          - schedule:
+                cron: "0 21 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_23:
+      triggers:
+          - schedule:
+                cron: "0 22 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
+      jobs:
+          - build
+          - test_static_back:
+                requires:
+                    - build
+          - test_static_front:
+                requires:
+                    - build
+          - test_acceptance_back:
+                requires:
+                    - build
+          - test_phpunit_integration:
+                requires:
+                    - test_static_back
+                    - test_static_front
+                    - test_acceptance_back
+          - test_phpunit_end_to_end:
+                requires:
+                    - test_phpunit_integration
+          - test_legacy_behat:
+                requires:
+                    - test_phpunit_end_to_end
+
+  nightly_24:
+      triggers:
+          - schedule:
+                cron: "0 23 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-ci
       jobs:
           - build
           - test_static_back:
