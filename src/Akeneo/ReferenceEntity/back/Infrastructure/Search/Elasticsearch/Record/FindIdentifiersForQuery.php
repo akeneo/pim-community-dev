@@ -145,11 +145,27 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             ];
         }
 
+        if (null !== $updatedFilter && !empty($updatedFilter['value'] && '>' === $updatedFilter['operator']))
+        {
+            $query['query']['constant_score']['filter']['bool']['filter'][] = [
+                'range' => [
+                   'updated_at' => ['gt' => $this->getFormattedDate($updatedFilter['value']),
+                ]
+            ];
+        }
+
         if (null !== $completeFilter) {
             $query = $this->getCompleteFilterQuery($recordQuery, $referenceEntityCode, $completeFilter, $query);
         }
 
         return $query;
+    }
+
+    private function getFormattedDate(string $date)
+    {
+        $createdDate =  \DateTime::createFromFormat(\DateTime::ISO8601, $date);
+
+        return $createdDate->format('YYYY-mm-dd hh:mm:ss', $createdDate);
     }
 
     private function getTerms(array $searchFilter): string
