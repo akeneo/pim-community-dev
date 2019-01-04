@@ -13,43 +13,43 @@
  * ok: The user clicked OK
  */
 (function($, _, Backbone) {
-
-  //Set custom template settings
-  var _interpolateBackup = _.templateSettings;
-  _.templateSettings = {
-    interpolate: /\{\{(.+?)\}\}/g,
-    evaluate: /<%([\s\S]+?)%>/g
-  }
-
+  // This template is defined here: src/Akeneo/Platform/Bundle/UIBundle/Resources/public/templates/common/modal-with-illustration.html
   var template = _.template('\
-    <% if (title) { %>\
-      <div class="modal-header">\
-        <% if (allowCancel) { %>\
-          <a class="close">×</a>\
-        <% } %>\
-        <h3>{{title}}</h3>\
-      </div>\
-    <% } %>\
-    <div class="modal-body {{ (!buttons && !title) ? \'modal-full-body\' : \'\' }}">{{content}}</div>\
-    <% if (buttons) { %>\
-      <div class="AknButtonList AknButtonList--right modal-footer">\
-        <% if (allowCancel) { %>\
-          <% if (cancelText) { %>\
-            <a href="#" title="{{cancelText}}" class="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text">\
-              {{cancelText}}\
-            </a>\
+    <div class="AknFullPage">\
+      <div class="AknFullPage-content AknFullPage-content--withIllustration">\
+        <div>\
+          <% if (typeof picture !== \'undefined\') { %>\
+            <img src="bundles/pimui/images/<%- picture %>" alt="<%- picture %>"/>\
+          <% } else { %>\
+            <div class="AknFullPage-image AknFullPage-illustration<% if (typeof illustrationClass !== \'undefined\') { %> AknFullPage-illustration--<%- illustrationClass %><% } %>"></div>\
           <% } %>\
-        <% } %>\
-        <a title="{{okText}}" class="AknButtonList-item AknButton AknButton--apply ok icons-holder-text">\
-          {{okText}}\
-        </a>\
+        </div>\
+        <div>\
+          <div class="AknFullPage-titleContainer">\
+            <% if (typeof subtitle !== \'undefined\') { %>\
+              <div class="AknFullPage-subTitle"><%- subtitle %></div>\
+            <% } %>\
+            <div class="AknFullPage-title"><%- title %></div>\
+            <% if (typeof innerDescription !== \'undefined\') { %>\
+              <div class="AknFullPage-description">\
+                <%- innerDescription %>\
+              </div>\
+            <% } %>\
+          </div>\
+          <div class="modal-body"><%= content %></div>\
+          <div class="AknButtonList">\
+            <% if (typeof cancelText !== undefined) { %>\
+              <div class="AknButton AknButton--grey AknButtonList-item cancel"><%- cancelText %></div>\
+            <% } %>\
+            <div title="<%- okText %>" class="AknButton AknButtonList-item AknButton--apply<% if (typeof buttonClass !== \'undefined\') { %> <%- buttonClass %><% } %> ok"><%- okText %></div>\
+          </div>\
+        </div>\
       </div>\
-    <% } %>\
+    </div>\
+    <% if (typeof cancelText === undefined && (typeof allowCancel === \'undefined\' || allowCancel)) { %>\
+      <div class="AknFullPage-cancel cancel"></div>\
+    <%\ } %>\
   ');
-
-  //Reset to users' template settings
-  _.templateSettings = _interpolateBackup;
-
 
   var Modal = Backbone.View.extend({
 

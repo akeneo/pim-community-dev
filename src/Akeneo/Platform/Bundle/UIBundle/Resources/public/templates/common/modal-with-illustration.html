@@ -1,10 +1,12 @@
+<# This template is used here src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib/bootstrap-modal/bootstrap-modal.js
+   don't forget to update the changes in this file too. #>
 <div class="AknFullPage">
   <div class="AknFullPage-content AknFullPage-content--withIllustration">
     <div>
       <% if (typeof picture !== 'undefined') { %>
         <img src="bundles/pimui/images/<%- picture %>" alt="<%- picture %>"/>
       <% } else { %>
-        <div class="AknFullPage-image AknFullPage-illustration AknFullPage-illustration--<%- illustrationClass %>"> </div>
+        <div class="AknFullPage-image AknFullPage-illustration<% if (typeof illustrationClass !== 'undefined') { %> AknFullPage-illustration--<%- illustrationClass %><% } %>"></div>
       <% } %>
     </div>
     <div>
