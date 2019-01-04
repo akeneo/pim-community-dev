@@ -57,6 +57,8 @@ class SaveAttributesMappingByFamilyHandler
 
     /**
      * @param SaveAttributesMappingByFamilyCommand $command
+     *
+     * @throws AttributeMappingException
      */
     public function handle(SaveAttributesMappingByFamilyCommand $command): void
     {
@@ -116,25 +118,32 @@ class SaveAttributesMappingByFamilyHandler
      */
     private function validate(string $familyCode, array $attributesMapping): void
     {
-        if (null === $this->familyRepository->findOneByIdentifier($familyCode)) {
+        $family = $this->familyRepository->findOneByIdentifier($familyCode);
+        if (null === $family) {
             throw new \InvalidArgumentException(sprintf('Family "%s" not found', $familyCode));
         }
 
+        $validAttributeCodes = $family->getAttributeCodes();
         foreach ($attributesMapping as $attributeMapping) {
             if (null !== $attributeMapping->getPimAttributeCode()) {
-                $this->validateAndFillAttribute($attributeMapping);
+                $this->validateAndFillAttribute($attributeMapping, $validAttributeCodes);
             }
         }
     }
 
     /**
      * @param AttributeMapping $attributeMapping
+     * @param string[] $validAttributeCodes
      *
      * @throws AttributeMappingException
      */
-    private function validateAndFillAttribute(AttributeMapping $attributeMapping): void
+    private function validateAndFillAttribute(AttributeMapping $attributeMapping, array $validAttributeCodes): void
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeMapping->getPimAttributeCode());
+
+        if (!in_array($attribute->getCode(), $validAttributeCodes)) {
+            throw AttributeMappingException::attributeNotInFamilyNotAllowed();
+        }
 
         $this->validateAttributeType($attribute->getType());
 

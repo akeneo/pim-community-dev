@@ -65,12 +65,15 @@ Feature: Map the PIM attributes with Franklin attributes
     And an unknown attributes message should be sent
 
   Scenario Outline: Fails to save the attributes mapping if an attribute type is invalid
-    Given the family "router"
-    And the following attribute:
-      | code              | type             |
-      | invalid_type_attr | <attribute_type> |
+    Given the following attribute:
+      | code              | type                   |
+      | invalid_type_attr | <attribute_type>       |
+      | identifier        | pim_catalog_identifier |
+    And the following family:
+      | code  | label-en_US | attributes        |
+      | phone | Phone       | invalid_type_attr |
     And Franklin is configured with a valid token
-    When the attributes are mapped for the family "router" as follows:
+    When the attributes are mapped for the family "phone" as follows:
       | target_attribute_code | pim_attribute_code |
       | color                 | invalid_type_attr  |
     Then the attributes mapping should not be saved
@@ -126,37 +129,47 @@ Feature: Map the PIM attributes with Franklin attributes
   Scenario: Fails to map Franklin attributes with localizable PIM attributes
     Given the family "router"
     And Franklin is configured with a valid token
-    And the following attribute:
-      | code              | type             | localizable |
-      | localizable_attr  | pim_catalog_text | true        |
     When the attributes are mapped for the family "router" as follows:
       | target_attribute_code | pim_attribute_code |
-      | product_weight        | localizable_attr   |
+      | product_weight        | name               |
     Then the attributes mapping should not be saved
     And an invalid localizable attribute message should be sent
 
   Scenario: Fails to map Franklin attributes with scopable PIM attributes
     Given the family "router"
     And Franklin is configured with a valid token
-    And the following attribute:
-      | code              | type             | scopable |
-      | scopable_attr     | pim_catalog_text | true     |
     When the attributes are mapped for the family "router" as follows:
       | target_attribute_code | pim_attribute_code |
-      | product_weight        | scopable_attr      |
+      | product_weight        | specifications     |
     Then the attributes mapping should not be saved
     And an invalid scopable attribute message should be sent
 
   Scenario: Fails to map Franklin attributes with locale specific PIM attributes
-    Given the family "router"
-    And Franklin is configured with a valid token
+    Given Franklin is configured with a valid token
     And the following locales "en_US"
     And the following text attribute "pim_weight" specific to locale en_US
-    When the attributes are mapped for the family "router" as follows:
+    And the following attribute:
+      | code              | type                   |
+      | identifier        | pim_catalog_identifier |
+    And the following family:
+      | code  | label-en_US | attributes |
+      | phone | Phone       | pim_weight |
+    When the attributes are mapped for the family "phone" as follows:
       | target_attribute_code | pim_attribute_code |
       | product_weight        | pim_weight         |
     Then the attributes mapping should not be saved
     And an invalid locale specific attribute message should be sent
+
+  Scenario: Fails to save the attributes mapping when a pim attribute is not in the selected family
+    Given the family "webcam"
+    And the predefined attributes connectivity
+    And Franklin is configured with a valid token
+    When the attributes are mapped for the family "webcam" as follows:
+      | target_attribute_code | pim_attribute_code |
+      | product_weight        | connectivity       |
+      | color                 | color              |
+    Then the attributes mapping should not be saved
+    And an attribute not in family not allowed message should be sent
 
   Scenario: Fails to map the same attribute twice with a franklin attribute
     Given the family "router"

@@ -21,10 +21,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\A
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -51,7 +51,9 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_family_does_not_exist(
-        $familyRepository, $attributeRepository, AttributeInterface $attribute
+        $familyRepository,
+        $attributeRepository,
+        AttributeInterface $attribute
     ): void {
         $attribute->getCode()->willReturn('tshirt_style');
         $attributeRepository->findBy(['code' => ['tshirt_style']])->willReturn([$attribute]);
@@ -85,7 +87,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributeRepository,
         $attributesMappingProvider,
         $subscriptionRepository,
-        AttributeInterface $memoryAttribute
+        AttributeInterface $memoryAttribute,
+        FamilyInterface $family
     ): void {
         $attributeMapping = [
             'memory' => [
@@ -105,7 +108,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
+        $familyRepository->findOneByIdentifier('router')->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['sku', 'random_access_memory', 'product_weight']);
 
         $memoryAttribute->getCode()->willReturn('random_access_memory');
         $attributeRepository
@@ -133,10 +137,11 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_throws_an_exception_if_mapping_type_is_invalid(
+    public function it_throws_an_exception_if_an_attribute_is_not_in_family(
         $familyRepository,
         $attributeRepository,
-        AttributeInterface $attribute
+        FamilyInterface $family,
+        AttributeInterface $memoryAttribute
     ): void {
         $command = new SaveAttributesMappingByFamilyCommand('router', [
             'memory' => [
@@ -148,15 +153,47 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             ],
         ]);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
+        $familyRepository->findOneByIdentifier('router')->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['sku', 'description']);
 
-        $attribute->getCode()->willReturn('random_access_memory');
         $attributeRepository
             ->findBy(['code' => ['random_access_memory']])
+            ->willReturn([$memoryAttribute]);
+        $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($memoryAttribute);
+        $memoryAttribute->getCode()->willReturn('random_access_memory');
+
+        $this
+            ->shouldThrow(AttributeMappingException::attributeNotInFamilyNotAllowed())
+            ->during('handle', [$command]);
+    }
+
+    public function it_throws_an_exception_if_mapping_type_is_invalid(
+        $familyRepository,
+        $attributeRepository,
+        AttributeInterface $attribute,
+        FamilyInterface $family
+    ): void {
+        $command = new SaveAttributesMappingByFamilyCommand('router', [
+            'memory' => [
+                'franklinAttribute' => [
+                    'label' => 'Release date',
+                    'type' => 'text',
+                ],
+                'attribute' => 'release_date',
+            ],
+        ]);
+
+        $familyRepository->findOneByIdentifier('router')->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['sku', 'release_date']);
+
+        $attribute->getCode()->willReturn('release_date');
+        $attributeRepository
+            ->findBy(['code' => ['release_date']])
             ->willReturn([$attribute]);
 
-        $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('release_date')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::DATE);
+        $attribute->getCode()->willReturn('release_date');
 
         $this->shouldThrow(AttributeMappingException::class)->during('handle', [$command]);
     }
@@ -167,7 +204,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributesMappingProvider,
         $subscriptionRepository,
         AttributeInterface $memoryAttribute,
-        AttributeInterface $weightAttribute
+        AttributeInterface $weightAttribute,
+        FamilyInterface $family
     ): void {
         $attributeMapping = [
             'memory' => [
@@ -187,7 +225,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
+        $familyRepository->findOneByIdentifier('router')->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['sku', 'random_access_memory', 'product_weight']);
 
         $memoryAttribute->getCode()->willReturn('random_access_memory');
         $weightAttribute->getCode()->willReturn('product_weight');
@@ -201,12 +240,14 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $memoryAttribute->isLocalizable()->willReturn(false);
         $memoryAttribute->isScopable()->willReturn(false);
         $memoryAttribute->isLocaleSpecific()->willReturn(false);
+        $memoryAttribute->getCode()->willReturn('random_access_memory');
 
         $attributeRepository->findOneByIdentifier('product_weight')->willReturn($weightAttribute);
         $weightAttribute->getType()->willReturn(AttributeTypes::TEXT);
         $weightAttribute->isLocalizable()->willReturn(false);
         $weightAttribute->isScopable()->willReturn(false);
         $weightAttribute->isLocaleSpecific()->willReturn(false);
+        $weightAttribute->getCode()->willReturn('product_weight');
 
         $attributesMappingProvider
             ->saveAttributesMapping('router', $command->getAttributesMapping())
@@ -222,7 +263,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     public function it_throws_an_exception_if_an_attribute_is_localizable(
         $familyRepository,
         $attributeRepository,
-        AttributeInterface $memoryAttribute
+        AttributeInterface $memoryAttribute,
+        FamilyInterface $family
     ): void {
         $attributeMapping = [
             'memory' => [
@@ -237,7 +279,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 
         $attributeRepository->findBy(['code' => ['random_access_memory']])->willReturn([$memoryAttribute]);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
+        $familyRepository->findOneByIdentifier('router')->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['sku', 'random_access_memory']);
 
         $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($memoryAttribute);
         $memoryAttribute->getType()->willReturn(AttributeTypes::METRIC);
@@ -250,7 +293,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     public function it_throws_an_exception_if_an_attribute_is_scopable(
         $familyRepository,
         $attributeRepository,
-        AttributeInterface $memoryAttribute
+        AttributeInterface $memoryAttribute,
+        FamilyInterface $family
     ): void {
         $attributeMapping = [
             'memory' => [
@@ -263,7 +307,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
+        $familyRepository->findOneByIdentifier('router')->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['sku', 'random_access_memory']);
 
         $attributeRepository->findBy(['code' => ['random_access_memory']])->willReturn([$memoryAttribute]);
 
@@ -279,7 +324,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     public function it_throws_an_exception_if_an_attribute_is_locale_specific(
         $familyRepository,
         $attributeRepository,
-        AttributeInterface $memoryAttribute
+        AttributeInterface $memoryAttribute,
+        FamilyInterface $family
     ): void {
         $attributeMapping = [
             'memory' => [
@@ -292,7 +338,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
+        $familyRepository->findOneByIdentifier('router')->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['sku', 'random_access_memory']);
 
         $attributeRepository->findBy(['code' => ['random_access_memory']])->willReturn([$memoryAttribute]);
         $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($memoryAttribute);

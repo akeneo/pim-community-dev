@@ -82,6 +82,16 @@ class AttributeMappingException extends \Exception
     /**
      * @return AttributeMappingException
      */
+    public static function attributeNotInFamilyNotAllowed(): self
+    {
+        $message = sprintf(static::CONSTRAINT_KEY, 'attribute_not_in_family_not_allowed');
+
+        return new static($message, []);
+    }
+
+    /**
+     * @return AttributeMappingException
+     */
     public static function duplicatedPimAttribute(): self
     {
         $message = sprintf(static::CONSTRAINT_KEY, 'duplicated_pim_attribute');
