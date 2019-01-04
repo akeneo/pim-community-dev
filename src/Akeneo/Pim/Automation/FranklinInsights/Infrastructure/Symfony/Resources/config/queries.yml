@@ -10,7 +10,7 @@ services:
             - '@database_connection'
 
     akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.find_family_attributes_not_in:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\FindFamilyAttributesNotInQuery'
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectRemovedFamilyAttributeCodesQuery'
         arguments:
             - '@database_connection'
 
