@@ -1,0 +1,3 @@
+pimee_sso_configuration:
+    type: action
+    label: authentication.sso.acl.title

@@ -62,6 +62,9 @@ final class Controller
         $this->createArchive = $createArchive;
     }
 
+    /*
+     * @AclAncestor("pimee_sso_configuration")
+     */
     public function saveAction(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
@@ -98,6 +101,9 @@ final class Controller
         return new JsonResponse();
     }
 
+    /*
+     * @AclAncestor("pimee_sso_configuration")
+     */
     public function getAction(): JsonResponse
     {
         try {
@@ -122,6 +128,9 @@ final class Controller
         }
     }
 
+    /*
+     * @AclAncestor("pimee_sso_configuration")
+     */
     public function downloadAuthenticationLogsAction()
     {
         try

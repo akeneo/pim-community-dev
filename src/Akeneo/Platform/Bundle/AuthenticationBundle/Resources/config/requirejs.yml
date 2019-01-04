@@ -4,6 +4,7 @@ config:
             controllers:
                 authentication_sso_configuration_edit:
                     module: pim/authentication/sso/configuration/controller
+                    aclResourceId: pimee_sso_configuration
 
     paths:
         pim/authentication/sso/configuration/controller: akeneoauthentication/js/sso/configuration/controller.ts

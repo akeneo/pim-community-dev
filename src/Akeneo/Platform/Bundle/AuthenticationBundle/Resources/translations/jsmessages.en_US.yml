@@ -1,7 +1,7 @@
-pim_menu.item.sso: SSO
+pim_menu.item.sso: SAML based Single Sign-On
 
 pim_title:
-    authentication_sso_configuration_edit: SSO configuration
+    authentication_sso_configuration_edit: SAML based Single Sign-On configuration
 
 authentication:
     sso:
@@ -34,3 +34,5 @@ authentication:
                     label: Public certificate
                 private_certificate:
                     label: Private certificate
+        acl:
+            title: Manage the Single Sign-On
