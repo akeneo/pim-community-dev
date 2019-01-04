@@ -44,6 +44,7 @@ job_execution.summary:
         skipped: skipped, extension in white list
     product_skipped_no_diff: skipped product (no differences)
     product_skipped_no_associations: skipped product (no associations detected)
+    product_model_skipped_no_associations: skipped product model (no associations detected)
     product_model_skipped_no_diff: skipped product model (no differences)
     item_position: read lines
     skipped_in_root_product_model: skipped product model with parent
@@ -193,6 +194,7 @@ batch_jobs:
         import_root_product_model.label: Root product model import
         import_sub_product_model.label: Sub product model import
         import_product_model_descendants.label: Compute product model descendants
+        import_associations.label: Association import
     xlsx_group_export:
         label: Group export in XLSX
         export.label: Group export
