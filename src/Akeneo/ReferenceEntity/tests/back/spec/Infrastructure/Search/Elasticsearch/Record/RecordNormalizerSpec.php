@@ -13,7 +13,6 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\SearchableRecordItem;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRequiredValueKeyCollectionForChannelAndLocale;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer;
 use PhpSpec\ObjectBehavior;

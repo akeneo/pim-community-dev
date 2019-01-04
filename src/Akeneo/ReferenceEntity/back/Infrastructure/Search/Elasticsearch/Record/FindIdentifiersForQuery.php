@@ -15,8 +15,9 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocaleInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
@@ -35,16 +36,16 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     /** @var Client */
     private $recordClient;
 
-    /** @var FindRequiredValueKeyCollectionForChannelAndLocaleInterface  */
+    /** @var FindRequiredValueKeyCollectionForChannelAndLocalesInterface  */
     private $findRequiredValueKeyCollectionForChannelAndLocale;
 
     /**
      * @param Client $recordClient
-     * @param FindRequiredValueKeyCollectionForChannelAndLocaleInterface $findRequiredValueKeyCollectionForChannelAndLocale
+     * @param FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale
      */
     public function __construct(
         Client $recordClient,
-        FindRequiredValueKeyCollectionForChannelAndLocaleInterface $findRequiredValueKeyCollectionForChannelAndLocale
+        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale
     ) {
         $this->recordClient = $recordClient;
         $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
@@ -166,21 +167,24 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     private function getRequiredValueKeys(
         $referenceEntityCode,
         ChannelIdentifier $channel,
-        LocaleIdentifier $locale
+        LocaleIdentifierCollection $locales
     ): ValueKeyCollection {
         return ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
             ReferenceEntityIdentifier::fromString($referenceEntityCode),
             $channel,
-            $locale
+            $locales
         );
     }
 
     private function getCompleteFilterQuery(RecordQuery $recordQuery, $referenceEntityCode, $completeFilter, $query)
     {
+        $channel = isset($completeFilter['context']['channel']) ? $completeFilter['context']['channel'] : $recordQuery->getChannel();
+        $locales = isset($completeFilter['context']['locales']) ? $completeFilter['context']['locales'] : [$recordQuery->getLocale()];
+
         $requiredValueKeys = $this->getRequiredValueKeys(
             $referenceEntityCode,
-            ChannelIdentifier::fromCode($recordQuery->getChannel()),
-            LocaleIdentifier::fromCode($recordQuery->getLocale())
+            ChannelIdentifier::fromCode($channel),
+            LocaleIdentifierCollection::fromNormalized($locales)
         );
         if (true === $completeFilter['value']) {
             $clauses = array_map(function (string $requiredValueKey) {

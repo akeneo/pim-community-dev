@@ -6,13 +6,13 @@ namespace Akeneo\ReferenceEntity\Common\Fake;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocaleInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 
-class InMemoryFindRequiredValueKeyCollectionForChannelAndLocale implements FindRequiredValueKeyCollectionForChannelAndLocaleInterface
+class InMemoryFindRequiredValueKeyCollectionForChannelAndLocales implements FindRequiredValueKeyCollectionForChannelAndLocalesInterface
 {
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
@@ -31,25 +31,25 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocale implements FindR
     public function __invoke(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ChannelIdentifier $channelIdentifier,
-        LocaleIdentifier $localeIdentifier
+        LocaleIdentifierCollection $localeIdentifierCollection
     ): ValueKeyCollection {
         $attributes = $this->attributeRepository->findByReferenceEntity($referenceEntityIdentifier);
         $valueKeys = [];
 
         $channelCode = $channelIdentifier->normalize();
-        $localeCode = $localeIdentifier->normalize();
+        $localeCodes = $localeIdentifierCollection->normalize();
 
         /** @var AbstractAttribute $attribute */
         foreach ($attributes as $attribute) {
             if ($attribute->hasValuePerChannel() && $attribute->hasValuePerLocale()) {
                 foreach ($this->activatedChannelCodes as $activatedChannelCode) {
-                    foreach ($this->activatedLocaleCodes as $activatedLocaleCode) {
-                        if ($activatedChannelCode === $channelCode && $activatedLocaleCode === $localeCode) {
+                    foreach ($localeCodes as $localeCode) {
+                        if ($activatedChannelCode === $channelCode && in_array($localeCode, $this->activatedLocaleCodes)) {
                             $valueKeys[] = sprintf(
                                 '%s_%s_%s',
                                 (string) $attribute->getIdentifier(),
                                 $activatedChannelCode,
-                                $activatedLocaleCode
+                                $localeCode
                             );
                         }
                     }
@@ -65,12 +65,12 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocale implements FindR
                     }
                 }
             } elseif ($attribute->hasValuePerLocale()) {
-                foreach ($this->activatedLocaleCodes as $activatedLocaleCode) {
-                    if ($activatedLocaleCode === $localeCode) {
+                foreach ($localeCodes as $localeCode) {
+                    if (in_array($localeCode, $this->activatedLocaleCodes)) {
                         $valueKeys[] = sprintf(
                             '%s_%s',
                             (string) $attribute->getIdentifier(),
-                            $activatedLocaleCode
+                            $localeCode
                         );
                     }
                 }

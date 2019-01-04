@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
@@ -33,18 +33,18 @@ class InMemoryFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsFo
     /** @var RecordRepositoryInterface */
     private $recordRepository;
 
-    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocale */
-    private $findRequiredValueKeyCollectionForChannelAndLocale;
+    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
+    private $findRequiredValueKeyCollectionForChannelAndLocales;
 
     public function __construct(
         RecordRepositoryInterface $recordRepository,
-        InMemoryFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredValueKeyCollectionForChannelAndLocale
+        InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocales
     ) {
         $this->recordRepository = $recordRepository;
-        $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
+        $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocales;
 
-        $this->findRequiredValueKeyCollectionForChannelAndLocale->setActivatedLocales(['en_US']);
-        $this->findRequiredValueKeyCollectionForChannelAndLocale->setActivatedChannels(['ecommerce']);
+        $this->findRequiredValueKeyCollectionForChannelAndLocales->setActivatedLocales(['en_US']);
+        $this->findRequiredValueKeyCollectionForChannelAndLocales->setActivatedChannels(['ecommerce']);
     }
 
     /**
@@ -55,13 +55,13 @@ class InMemoryFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsFo
         $referenceEntityFilter = $query->getFilter('reference_entity');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityFilter['value']);
         $channelIdentifier = ChannelIdentifier::fromCode($query->getChannel());
-        $localeIdentifier = LocaleIdentifier::fromCode($query->getLocale());
+        $localeIdentifiers = LocaleIdentifierCollection::fromNormalized([$query->getLocale()]);
 
         /** @var ValueKeyCollection $requiredValueKeyCollection */
-        $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
+        $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocales)(
             $referenceEntityIdentifier,
             $channelIdentifier,
-            $localeIdentifier
+            $localeIdentifiers
         );
         $requiredValueKeys = $requiredValueKeyCollection->normalize();
 
