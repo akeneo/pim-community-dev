@@ -16,6 +16,7 @@ services:
             - '@pim_internal_api_serializer'
             - '@akeneo_authentication.sso.configuration.create_or_update_handler'
             - '@akeneo_authentication.sso.configuration.repository'
+            - '@akeneo_authentication.sso.log.create_archive'
 
     akeneo_authentication.sso.configuration.ui.normalizer:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI\Normalizer'
@@ -31,6 +32,12 @@ services:
         arguments:
             - '@akeneo_authentication.sso.configuration.repository'
             - '%hslavich_onelogin_saml.settings%'
+
+    akeneo_authentication.sso.log.create_archive:
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive'
+        arguments:
+            - '%logs_dir%'
+            - '%tmp_storage_dir%'
 
     hslavich_onelogin_saml.saml_token_factory:
         class: Akeneo\Platform\Bundle\AuthenticationBundle\Sso\SamlTokenFactory
