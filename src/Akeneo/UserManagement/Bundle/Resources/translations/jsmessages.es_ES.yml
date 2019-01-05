@@ -28,7 +28,6 @@ pim_user_management:
         last_name: Apellidos
         name_suffix: Sufijo del nombre
         phone: Teléfono
-        birthday: Cumpleaños
         avatar: Avatar
         email: Correo Electrónico
         catalog_locale: Local de catálogo

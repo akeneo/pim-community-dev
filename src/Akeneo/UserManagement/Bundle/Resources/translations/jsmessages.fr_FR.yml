@@ -43,7 +43,6 @@ pim_user_management:
         last_name: Nom
         name_suffix: Suffixe de nom
         phone: Téléphone
-        birthday: Date d’anniversaire
         avatar: Photo
         email: Email
         catalog_locale: Locale du catalogue
