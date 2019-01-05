@@ -63,6 +63,8 @@ akeneo_suggest_data:
         missing_target_key: 'Clé cible manquante pour le mapping'
         missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{ targetKey }}"'
         invalid_attribute_type_mapping: 'Les attributs Franklin ne peuvent pas être mappés au type d''attribut "{{ pimType }}" de votre catalogue'
+        scopable_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM décliné par canal'
+        locale_specific_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM spécifique à une locale'
     product_subscription:
       flash:
         create:
