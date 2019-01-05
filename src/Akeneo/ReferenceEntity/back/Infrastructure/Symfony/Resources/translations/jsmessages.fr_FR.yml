@@ -130,6 +130,9 @@ pim_reference_entity:
         description: Vous avez fait défiler les 500 premiers résultats sur {{ total }} enregistrements. Pour en voir plus, essayez avec des critères de recherche plus précis.
       completeness:
         title_no_required: Aucun attribut requis
+        title_non_complete: 0 sur {{ required }} attributs complets
+        title_ongoing: '{{ complete }} attributs sur {{ required }} complets'
+        title_complete: Tous les {{ required }} attributs complets
     tab:
       enrich: Enrichir
     notification:
@@ -177,8 +180,11 @@ pim_reference_entity:
         code: Code (requis)
         label: Libellé
         type: Type d'attribut
+        record_type: Entité référentielle à lier (obligatoire)
         value_per_locale: Valeur par locale
         value_per_channel: Valeur par canal
+      placeholder:
+        record_type: Sélectionnez votre entité référentielle liée
       confirm: Enregistrer
     edit:
       delete: Supprimer l'attribut
@@ -189,6 +195,7 @@ pim_reference_entity:
         code: Code (requis)
         label: Libellé
         type: Type d'attribut
+        record_type: Entité référentielle liée (obligatoire)
         value_per_locale: Valeur par locale
         value_per_channel: Valeur par canal
         is_required: Requis pour la complétude
@@ -253,4 +260,5 @@ pim_enrich:
         section:
           type_specific: Paramètres spécifiques
         reference_entity:
+          identifier: Entité référentielle liée (obligatoire)
           default_label: Veuillez sélectionner une entité référentielle
