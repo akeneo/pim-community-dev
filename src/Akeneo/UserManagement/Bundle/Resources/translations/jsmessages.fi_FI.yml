@@ -18,7 +18,6 @@ pim_user_management:
         middle_name: Toinen nimi
         last_name: Sukunimi
         name_suffix: Nimen liite
-        birthday: Syntymäpäivä
         avatar: Avatar
         email: Sähköpostiosoite
         catalog_locale: Katalogin lokaatio

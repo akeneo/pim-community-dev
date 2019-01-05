@@ -18,7 +18,6 @@ pim_user_management:
         middle_name: ミドルネーム
         last_name: 姓
         name_suffix: 尊称
-        birthday: 誕生日
         avatar: アバター
         email: 電子メール
         catalog_locale: カタログのロケール

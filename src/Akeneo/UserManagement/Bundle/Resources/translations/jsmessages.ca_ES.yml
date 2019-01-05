@@ -43,7 +43,6 @@ pim_user_management:
         last_name: Segon cognom
         name_suffix: Sufix del nom
         phone: Telèfon
-        birthday: Aniversari
         avatar: Avatar
         email: Adreça electrònica
         catalog_locale: Catàleg de configuracions regionals

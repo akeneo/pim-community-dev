@@ -18,7 +18,6 @@ pim_user_management:
         middle_name: Mellemnavn
         last_name: Efternavn
         name_suffix: Navnesuffiks
-        birthday: Fødselsdag
         avatar: Avatar
         email: E-mail
         catalog_locale: Katalog landestandard
