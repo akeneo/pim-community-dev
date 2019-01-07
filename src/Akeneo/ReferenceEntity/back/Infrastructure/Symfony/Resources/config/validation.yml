@@ -152,6 +152,10 @@ Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Locale\LocalesShouldBeActivated:
                   payload:
                       standardPropertyName: locales
+        filters:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\UpdatedDateShouldBeValid:
+                  payload:
+                      standardPropertyName: filters
 
 # Attributes
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\EditUploadedFileValueCommand:

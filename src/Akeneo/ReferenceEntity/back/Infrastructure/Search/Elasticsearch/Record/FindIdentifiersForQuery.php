@@ -149,7 +149,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         {
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'range' => [
-                   'updated_at' => ['gt' => $this->getFormattedDate($updatedFilter['value']),
+                   'updated_at' => ['gt' => $this->getFormattedDate($updatedFilter['value'])]
                 ]
             ];
         }
@@ -163,9 +163,10 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 
     private function getFormattedDate(string $date)
     {
-        $createdDate =  \DateTime::createFromFormat(\DateTime::ISO8601, $date);
-
-        return $createdDate->format('YYYY-mm-dd hh:mm:ss', $createdDate);
+        return $date;
+//        $createdDate =  \DateTime::createFromFormat(\DateTime::ISO8601, $date);
+//
+//        return $createdDate->format('YYYY-mm-dd hh:mm:ss', $createdDate);
     }
 
     private function getTerms(array $searchFilter): string

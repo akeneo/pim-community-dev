@@ -14,25 +14,22 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class UpdatedDateValidator extends ConstraintValidator
+class UpdatedDateShouldBeValid extends Constraint
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($filters, Constraint $constraint)
+    public const ERROR_MESSAGE = 'Updated date is not valid';
+
+    public function getTargets()
     {
-        // Get updated from filters
-//        if (null === $filters['updated']) {
-//            $this->context->buildViolation(UpdatedDateShouldBeValid::ERROR_MESSAGE)
-//                ->setParameter('updated', [])
-//                ->atPath('channel')
-//                ->addViolation();
-//        }
+        return self::PROPERTY_CONSTRAINT;
+    }
+
+    public function validatedBy()
+    {
+        return 'akeneo_referenceentity.validator.record.updated_date_should_be_valid';
     }
 }
