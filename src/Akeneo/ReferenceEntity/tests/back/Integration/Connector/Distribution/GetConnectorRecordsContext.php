@@ -14,11 +14,23 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiers;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -26,11 +38,14 @@ use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
@@ -57,7 +72,7 @@ class GetConnectorRecordsContext implements Context
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var InMemoryAttributeRepository */
     private $attributeRepository;
 
     /** @var array */
@@ -78,15 +93,19 @@ class GetConnectorRecordsContext implements Context
     /** @var InMemoryFindActivatedLocalesByIdentifiers */
     private $findActivatedLocalesByIdentifiers;
 
+    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
+    private $findRequiredValueKeyCollectionForChannelAndLocales;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindRecordIdentifiersForQuery $findRecordIdentifiersForQuery,
         InMemoryFindConnectorRecordsByIdentifiers $findConnectorRecords,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        AttributeRepositoryInterface $attributeRepository,
+        InMemoryAttributeRepository $attributeRepository,
         InMemoryChannelExists $channelExists,
-        InMemoryFindActivatedLocalesByIdentifiers $findActivatedLocalesByIdentifiers
+        InMemoryFindActivatedLocalesByIdentifiers $findActivatedLocalesByIdentifiers,
+        InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocales
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -97,6 +116,7 @@ class GetConnectorRecordsContext implements Context
         $this->findRecordIdentifiersForQuery = $findRecordIdentifiersForQuery;
         $this->channelExists = $channelExists;
         $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
+        $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocales;
     }
 
     /**
@@ -487,5 +507,322 @@ class GetConnectorRecordsContext implements Context
             $this->unprocessableEntityResponse,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_brand_records_for_non_existent_locale.json'
         );
+    }
+
+    /**
+     * @Given /^([\d]+) records for the Brand reference entity on the Ecommerce channel that are incomplete for the French locale but complete for the English locale$/
+     */
+    public function recordsForTheBrandReferenceEntityOnTheEcommerceChannelThatAreIncompleteForTheFrenchLocaleButCompleteForTheEnglishLocale(int $numberOfRecords)
+    {
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
+        $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('fr_FR'));
+        $this->loadBrandReferenceEntity();
+        $this->loadRequiredAttribute();
+        $this->loadNotRequiredAttribute();
+
+        for ($i = 1; $i <= $numberOfRecords; $i++) {
+            $rawRecordCode = sprintf('incomplete_french_%d', $i);
+            $recordCode = RecordCode::fromString($rawRecordCode);
+            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+            $labelCollection = [
+                'en_US' => sprintf('Incomplete french Brand record number %d', $i)
+            ];
+
+            $record = Record::create(
+                $recordIdentifier,
+                ReferenceEntityIdentifier::fromString('brand'),
+                $recordCode,
+                $labelCollection,
+                Image::createEmpty(),
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
+                        ChannelReference::createfromNormalized('ecommerce'),
+                        LocaleReference::createFromNormalized('en_US'),
+                        TextData::fromString('Required attribute ecommerce en_US')
+                    ),
+                    Value::create(
+                        AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
+                        ChannelReference::createfromNormalized('ecommerce'),
+                        LocaleReference::createFromNormalized('en_US'),
+                        TextData::fromString('Not Required attribute ecommerce en_US')
+                    ),
+                    Value::create(
+                        AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
+                        ChannelReference::createfromNormalized('ecommerce'),
+                        LocaleReference::createFromNormalized('fr_FR'),
+                        TextData::fromString('Not Required attribute ecommerce fr_FR')
+                    )
+                ])
+            );
+
+            $this->findRecordIdentifiersForQuery->add($record);
+
+            $connectorRecord = new ConnectorRecord(
+                $recordCode,
+                LabelCollection::fromArray($labelCollection),
+                Image::createEmpty(),
+                [
+                    'required_attribute' => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => 'ecommerce',
+                            'data'    => 'Required attribute ecommerce en_US'
+                        ]
+                    ],
+                    'not_required_attribute' => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => 'ecommerce',
+                            'data'    => 'Not required attribute ecommerce en_US'
+                        ],
+                        [
+                            'locale'  => 'fr_FR',
+                            'channel' => 'ecommerce',
+                            'data'    => 'Not required attribute ecommerce fr_FR'
+                        ]
+                    ]
+                ]
+            );
+
+            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+        }
+    }
+
+    /**
+     * @Given /^([\d]+) records for the Brand reference entity on the Ecommerce channel that are complete for the French locale but that are incomplete for the English locale$/
+     */
+    public function recordsForTheBrandReferenceEntityOnTheEcommerceChannelThatAreCompleteForTheFrenchLocaleButThatAreIncompleteForTheEnglishLocale(int $numberOfRecords)
+    {
+        for ($i = 1; $i <= $numberOfRecords; $i++) {
+            $rawRecordCode = sprintf('incomplete_english_%d', $i);
+            $recordCode = RecordCode::fromString($rawRecordCode);
+            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+            $labelCollection = [
+                'en_US' => sprintf('Incomplete english Brand record number %d', $i)
+            ];
+
+            $record = Record::create(
+                $recordIdentifier,
+                ReferenceEntityIdentifier::fromString('brand'),
+                $recordCode,
+                $labelCollection,
+                Image::createEmpty(),
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
+                        ChannelReference::createfromNormalized('ecommerce'),
+                        LocaleReference::createFromNormalized('fr_FR'),
+                        TextData::fromString('Required attribute ecommerce fr_FR')
+                    ),
+                    Value::create(
+                        AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
+                        ChannelReference::createfromNormalized('ecommerce'),
+                        LocaleReference::createFromNormalized('en_US'),
+                        TextData::fromString('Not Required attribute ecommerce en_US')
+                    ),
+                    Value::create(
+                        AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
+                        ChannelReference::createfromNormalized('ecommerce'),
+                        LocaleReference::createFromNormalized('fr_FR'),
+                        TextData::fromString('Not Required attribute ecommerce fr_FR')
+                    )
+                ])
+            );
+
+            $this->findRecordIdentifiersForQuery->add($record);
+
+            $connectorRecord = new ConnectorRecord(
+                $recordCode,
+                LabelCollection::fromArray($labelCollection),
+                Image::createEmpty(),
+                [
+                    'required_attribute' => [
+                        [
+                            'locale'  => 'fr_FR',
+                            'channel' => 'ecommerce',
+                            'data'    => 'Required attribute ecommerce fr_FR'
+                        ]
+                    ],
+                    'not_required_attribute' => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => 'ecommerce',
+                            'data'    => 'Not required attribute ecommerce en_US'
+                        ],
+                        [
+                            'locale'  => 'fr_FR',
+                            'channel' => 'ecommerce',
+                            'data'    => 'Not required attribute ecommerce fr_FR'
+                        ]
+                    ]
+                ]
+            );
+
+            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+        }
+    }
+
+    /**
+     * @Given /^([\d]+) records for the Brand reference entity on the Ecommerce channel that are both complete for the French and the English locale$/
+     */
+    public function recordsForTheBrandReferenceEntityOnTheEcommerceChannelThatAreBothCompleteForTheFrenchAndTheEnglishLocale(int $numberOfRecords)
+    {
+        $this->findRequiredValueKeyCollectionForChannelAndLocales->setActivatedChannels(['ecommerce']);
+        $this->findRequiredValueKeyCollectionForChannelAndLocales->setActivatedLocales(['en_US', 'fr_FR']);
+
+        for ($i = 1; $i <= $numberOfRecords; $i++) {
+            $rawRecordCode = sprintf('complete_brand_record_%d', $i);
+            $recordCode = RecordCode::fromString($rawRecordCode);
+            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+            $labelCollection = [
+                'en_US' => sprintf('Complete Brand record number %d', $i)
+            ];
+
+            $record = Record::create(
+                $recordIdentifier,
+                ReferenceEntityIdentifier::fromString('brand'),
+                $recordCode,
+                $labelCollection,
+                Image::createEmpty(),
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
+                        ChannelReference::createfromNormalized('ecommerce'),
+                        LocaleReference::createFromNormalized('en_US'),
+                        TextData::fromString('Required attribute ecommerce en_US')
+                    ),
+                    Value::create(
+                        AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
+                        ChannelReference::createfromNormalized('ecommerce'),
+                        LocaleReference::createFromNormalized('fr_FR'),
+                        TextData::fromString('Required attribute ecommerce fr_FR')
+                    ),
+                    Value::create(
+                        AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
+                        ChannelReference::createfromNormalized('ecommerce'),
+                        LocaleReference::createFromNormalized('en_US'),
+                        TextData::fromString('Not Required attribute ecommerce en_US')
+                    ),
+                    Value::create(
+                        AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
+                        ChannelReference::createfromNormalized('ecommerce'),
+                        LocaleReference::createFromNormalized('fr_FR'),
+                        TextData::fromString('Not Required attribute ecommerce fr_FR')
+                    )
+                ])
+            );
+
+            $this->findRecordIdentifiersForQuery->add($record);
+
+            $connectorRecord = new ConnectorRecord(
+                $recordCode,
+                LabelCollection::fromArray($labelCollection),
+                Image::createEmpty(),
+                [
+                    'required_attribute' => [
+                        [
+                            'locale'  => 'fr_FR',
+                            'channel' => 'ecommerce',
+                            'data'    => 'Required attribute ecommerce fr_FR'
+                        ],
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => 'ecommerce',
+                            'data'    => 'Required attribute ecommerce en_US'
+                        ]
+                    ],
+                    'not_required_attribute' => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => 'ecommerce',
+                            'data'    => 'Not required attribute ecommerce en_US'
+                        ],
+                        [
+                            'locale'  => 'fr_FR',
+                            'channel' => 'ecommerce',
+                            'data'    => 'Not required attribute ecommerce fr_FR'
+                        ]
+                    ]
+                ]
+            );
+
+            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+        }
+    }
+
+    /**
+     * @When the connector requests all complete records of the Brand reference entity on the Ecommerce channel for the French and English locales
+     */
+    public function theConnectorRequestsAllCompleteRecordsOfTheBrandReferenceEntityOnTheEcommerceChannelForTheFrenchAndEnglishLocales()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->recordPages[1] = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'successful_complete_brand_records.json'
+        );
+    }
+
+    /**
+     * @Then the PIM returns the 2 complete records of the Brand reference entity on the Ecommerce channel for the French and English locales
+     */
+    public function thePimReturnsThe2CompleteRecordsOfTheBrandReferenceEntityOnTheEcommerceChannelForTheFrenchAndEnglishLocales()
+    {
+        Assert::keyExists($this->recordPages, 1, 'The page 1 has not been loaded');
+
+        $this->webClientHelper->assertJsonFromFile(
+            $this->recordPages[1],
+            self::REQUEST_CONTRACT_DIR . 'successful_complete_brand_records.json'
+        );
+    }
+
+    private function loadBrandReferenceEntity(): void
+    {
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand'),
+            [],
+            Image::createEmpty()
+        );
+
+        $this->referenceEntityRepository->create($referenceEntity);
+    }
+
+    private function loadRequiredAttribute(): void
+    {
+        $attribute = TextAttribute::createText(
+            AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            AttributeCode::fromString('required_attribute'),
+            LabelCollection::fromArray(['en_US' => 'Required attribute']),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+
+        $this->attributeRepository->create($attribute);
+    }
+
+    private function loadNotRequiredAttribute(): void
+    {
+        $attribute = TextAttribute::createText(
+            AttributeIdentifier::create('brand', 'not_required_attribute', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            AttributeCode::fromString('not_required_attribute'),
+            LabelCollection::fromArray(['en_US' => 'Not required attribute']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+
+        $this->attributeRepository->create($attribute);
     }
 }

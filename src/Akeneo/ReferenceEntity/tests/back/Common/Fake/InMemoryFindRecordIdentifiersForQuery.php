@@ -91,10 +91,13 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
                 return true;
             }
 
+            $channel = isset($completeFilter['context']['channel']) ? $completeFilter['context']['channel'] : $query->getChannel();
+            $locales = isset($completeFilter['context']['locales']) ? $completeFilter['context']['locales'] : [$query->getLocale()];
+
             $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
                 $record->getReferenceEntityIdentifier(),
-                ChannelIdentifier::fromCode($query->getChannel()),
-                LocaleIdentifierCollection::fromNormalized([$query->getLocale()])
+                ChannelIdentifier::fromCode($channel),
+                LocaleIdentifierCollection::fromNormalized($locales)
             );
 
             $recordValues = $record->getValues();
