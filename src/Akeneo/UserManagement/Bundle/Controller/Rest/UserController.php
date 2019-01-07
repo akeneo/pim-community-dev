@@ -134,6 +134,7 @@ class UserController
      */
     public function getAction($identifier): JsonResponse
     {
+        $identifier = urldecode($identifier);
         $user = $this->repository->findOneByIdentifier($identifier);
 
         return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
@@ -265,6 +266,8 @@ class UserController
 
     private function getUserOr404($username): ?UserInterface
     {
+
+        $username = urldecode($username);
         $user = $this->repository->findOneByIdentifier($username);
 
         if (null === $user) {
