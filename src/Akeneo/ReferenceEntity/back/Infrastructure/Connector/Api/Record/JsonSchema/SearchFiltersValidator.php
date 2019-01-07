@@ -54,8 +54,9 @@ class SearchFiltersValidator
                             'minItems' => 1
                         ],
                     ]
-                ],
+                ]
             ],
+            'additionalProperties' => false
         ];
     }
 }

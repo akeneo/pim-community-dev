@@ -167,3 +167,10 @@ services:
             - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.infrastructure.validation.reference_entity.label_collection' }
+
+    akeneo_referenceentity.infrastructure.validation.record.filter_records_by_completeness:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\FilterRecordsByCompletenessValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.infrastructure.validation.record.filter_records_by_completeness' }
