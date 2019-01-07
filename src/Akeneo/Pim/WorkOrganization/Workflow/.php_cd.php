@@ -74,7 +74,11 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
 
         //TODO: We should rely on type given by a type system and not on public constants
+        'Akeneo\Asset\Bundle\AttributeType\AttributeTypes',
         'Akeneo\Pim\Permission\Component\Attributes',
+
+        // TIP-1017: Do not use public constants of AttributeTypes
+        'Akeneo\Pim\Structure\Component\AttributeTypes',
 
         //TODO: It uses the PQB
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch',
@@ -118,11 +122,13 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry',
 
-        //TODO: It uses a widget
+        // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',
 
-        //TODO: It sends notification
+        // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\NotificationBundle',
+
+        // TIP-1014: Do not use custom Flash Messages
         'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
 
         //TODO: It uses the locale resolver to get the current locale, should be a contextual parameter
@@ -140,6 +146,9 @@ $rules = [
         'Symfony\Component',
         'Akeneo\Tool\Component',
 
+        // TIP-1011: Create a Versioning component
+        'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
+
         // TIP-983: Workflow should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
 
@@ -151,6 +160,8 @@ $rules = [
 
         // TODO usage of public constant
         'Akeneo\Pim\Permission\Component\Attributes',
+
+        // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
 
         //TODO: relationship between bounded context (query data though repository)

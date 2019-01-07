@@ -19,6 +19,7 @@ $rules = [
         'Sensio\Bundle\FrameworkExtraBundle',
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component',
 
+        // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
         // TIP-966: TWA should not be linked to Locale
         'Akeneo\Channel\Component\Model\LocaleInterface',
 
@@ -32,7 +33,7 @@ $rules = [
         // TODO: Inverse the dependency (should be a standalone JS component)
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',
 
-        // TODO: The dependency to Platform is not normal, rework the Bundle
+        // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
         'Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface',
         'Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory',

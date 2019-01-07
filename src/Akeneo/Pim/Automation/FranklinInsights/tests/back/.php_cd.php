@@ -16,7 +16,8 @@ $rules = [
             // TODO remove all links by reference
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-            // TODO public constant
+
+            // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Domain'),
@@ -43,7 +44,8 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
-            // TODO public constant
+
+            // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Application'),
@@ -85,7 +87,7 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Application',
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client',
 
-            // TODO public constant
+            // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
 
             // TODO remove all links by reference
@@ -206,7 +208,7 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
             'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
-            // TODO public constant
+            // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony'),

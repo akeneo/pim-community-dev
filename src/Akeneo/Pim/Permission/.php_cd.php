@@ -84,6 +84,8 @@ $rules = [
 
         //TODO: Public constants
         'Akeneo\UserManagement\Component\Model\User',
+
+        // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Asset\Bundle\AttributeType\AttributeTypes',
 
         //TODO: It uses jobs (maybe ImportExportBundle is not part of the Platform)
@@ -103,7 +105,7 @@ $rules = [
         'Liip\ImagineBundle\Imagine\Filter\FilterManager',
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper',
 
-        //TODO: It uses filters
+        // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\AbstractFilter',
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
@@ -132,9 +134,13 @@ $rules = [
         'Oro\Bundle\FilterBundle',
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\DatagridViewTypes',
 
-        //TODO: It uses the UI
+        // TIP-1014: Do not use custom Flash Messages
         'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
+
+        //TODO: It uses the UI
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
+
+        // TIP-1009: Remove TranslatedLabelsProviderInterface from Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
 
         //TODO: just because we override ProductFieldsBuilder
