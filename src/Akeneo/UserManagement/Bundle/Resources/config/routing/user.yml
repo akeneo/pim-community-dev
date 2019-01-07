@@ -4,7 +4,7 @@ pim_user_index:
 pim_user_edit:
     path: /{code}/edit
     requirements:
-        code: '[a-zA-Z0-9_]+'
+        code: '[a-zA-Z0-9_\-\.@%]+'
 
 pim_user_logout_redirect:
     path: /logout/redirect

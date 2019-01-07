@@ -8,14 +8,14 @@ pim_user_user_rest_get:
     defaults: { _controller: pim_user.controller.user_rest:getAction }
     methods: [GET]
     requirements:
-        identifier: '[a-zA-Z0-9_]+'
+        identifier: '[a-zA-Z0-9_\-\.@%]+'
 
 pim_user_user_rest_post:
     path: /{identifier}
     defaults: { _controller: pim_user.controller.user_rest:postAction }
     methods: [POST]
     requirements:
-        identifier: '[a-zA-Z0-9_]+'
+        identifier: '[a-zA-Z0-9_\-\.@%]+'
 
 pim_user_user_rest_create:
     path: /
@@ -27,4 +27,4 @@ pim_user_user_rest_delete:
     defaults: { _controller: pim_user.controller.user_rest:deleteAction }
     methods: [DELETE]
     requirements:
-        identifier: '[a-zA-Z0-9_]+'
+        identifier: '[a-zA-Z0-9_\-\.@%]+'

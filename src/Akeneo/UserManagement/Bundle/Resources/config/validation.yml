@@ -10,6 +10,9 @@ Akeneo\UserManagement\Component\Model\User:
             - Length:
                 min:        3
                 max:        255
+            - Regex:
+                pattern: '/^[a-zA-Z0-9_\-\.@]+$/'
+                message: 'The username accepts only: alphanumerical, dot (.), dash (-), underscore (_) and at sign (@) characters.'
             - Akeneo\UserManagement\Bundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters: ~
         email:
             - NotBlank:     ~
