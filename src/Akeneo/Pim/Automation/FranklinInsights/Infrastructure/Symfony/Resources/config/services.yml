@@ -1,0 +1,36 @@
+services:
+    akeneo.pim.automation.franklin_insights.proposal.create_proposal:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\ProposalUpsert'
+        arguments:
+            - '@pim_catalog.repository.product_without_permission'
+            - '@pimee_workflow.updater.product_without_permission'
+            - '@pimee_workflow.product.builder.draft'
+            - '@pimee_workflow.saver.product_draft'
+            - '@event_dispatcher'
+            - '@pim_connector.doctrine.cache_clearer'
+
+    akeneo.pim.automation.franklin_insights.application.mapping.service.remove_attributes_from_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\RemoveAttributesFromMapping'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@security.token_storage'
+
+    akeneo.pim.automation.franklin_insights.application.mapping.service.remove_option_from_attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\RemoveAttributeOptionFromMapping'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@security.token_storage'
+
+    akeneo.pim.automation.franklin_insights.application.subscription.service.resubscribe_products:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\ResubscribeProducts'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@security.token_storage'
+
+    akeneo.pim.automation.franklin_insights.proposal.factory.suggested_data:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Factory\ProposalSuggestedDataFactory'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.normalizers.suggested_data'

@@ -1,7 +1,7 @@
 #!groovy
 @Library("k8s-utils@2.x")
 
-String[] legacyFeatures = ["tests/legacy/features", "src/Akeneo/Pim/Automation/SuggestData/tests/features", "vendor/akeneo/pim-community-dev/tests/legacy/features"]
+String[] legacyFeatures = ["tests/legacy/features", "src/Akeneo/Pim/Automation/FranklinInsights/tests/features", "vendor/akeneo/pim-community-dev/tests/legacy/features"]
 String ceBranch = "master"
 String ceOwner = "akeneo"
 String launchUnitTests = "yes"
@@ -26,7 +26,7 @@ stage("Build") {
                 choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
                 choice(choices: 'yes\nno', description: 'Run end to end tests in PhpUnit', name: 'launchPhpUnitEndToEndTests'),
                 choice(choices: 'yes\nno', description: 'Run end to end tests (whole Legacy Behat suite)', name: 'launchEndToEndTests'),
-                string(defaultValue: 'tests/legacy/features,src/Akeneo/Pim/Automation/SuggestData/tests/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end scenarios to run', name: 'legacyFeatures'),
+                string(defaultValue: 'tests/legacy/features,src/Akeneo/Pim/Automation/FranklinInsights/tests/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end scenarios to run', name: 'legacyFeatures'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
             ])
@@ -86,8 +86,8 @@ stage("Test") {
                 testif(
                     condition: launchUnitTests.equals("yes"),
                     container: tag,
-                    script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Pim/Automation/SuggestData/tests/back/.php_cs.php --format=junit > %workspace%/php_cs_fixer_suggest_data_output.xml",
-                    junit: "php_cs_fixer_suggest_data_output.xml"
+                    script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Pim/Automation/FranklinInsights/tests/back/.php_cs.php --format=junit > %workspace%/php_cs_fixer_franklin_insights_output.xml",
+                    junit: "php_cs_fixer_franklin_insights_output.xml"
                 )
             },
             "back-check-pullup": {testif(
@@ -104,7 +104,7 @@ stage("Test") {
                 testif(
                     condition: launchUnitTests.equals("yes"),
                     container: tag,
-                    script: "cd /var/www/pim && yarn run tslint -c src/Akeneo/Pim/Automation/SuggestData/tests/front/tslint.json src/Akeneo/Pim/Automation/SuggestData/**/*.ts"
+                    script: "cd /var/www/pim && yarn run tslint -c src/Akeneo/Pim/Automation/FranklinInsights/tests/front/tslint.json src/Akeneo/Pim/Automation/FranklinInsights/**/*.ts"
                 )
             },
             "front-unit": {testif(

@@ -1,0 +1,5 @@
+services:
+    akeneo.pim.automation.franklin_insights.franklin_client.http_client:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.uri_generator'

@@ -1,0 +1,14 @@
+akeneo_franklin_insights_subscribe:
+    path: /{productId}
+    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.product_subscription:subscribeAction }
+    methods: [POST]
+
+akeneo_franklin_insights_unsubscribe:
+    path: /{productId}
+    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.product_subscription:unsubscribeAction }
+    methods: [DELETE]
+
+akeneo_franklin_insights_franklin_subscription_status:
+    path: /{productId}/status
+    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.product_subscription:getProductSubscriptionStatusAction }
+    methods: [GET]

@@ -1,0 +1,20 @@
+services:
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_family_id_query:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Product\SelectProductFamilyIdQuery'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_codes_by_attribute_query:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectFamilyCodesByAttributeQuery'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.find_family_attributes_not_in:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectRemovedFamilyAttributeCodesQuery'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_identifier_values_query:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectProductIdentifierValuesQuery'
+        arguments:
+            - '@database_connection'

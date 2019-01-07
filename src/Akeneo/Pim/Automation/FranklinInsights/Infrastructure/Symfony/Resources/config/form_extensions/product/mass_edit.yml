@@ -1,0 +1,19 @@
+extensions:
+    akeneo-franklin-insights-mass-product-edit-configure:
+        module: akeneo/franklin-insights/view/mass-edit/franklin-insights-operation
+        parent: pim-mass-product-edit
+        position: 230
+        aclResourceId: akeneo_franklin_insights_product_subscription
+        config:
+            title: pim_enrich.mass_edit.product.title
+            label: akeneo_franklin_insights.mass_edit.product.operation.franklin_insights.label
+            labelCount: akeneo_franklin_insights.mass_edit.product.operation.franklin_insights.label_count
+            description: akeneo_franklin_insights.mass_edit.product.operation.franklin_insights.description
+            code: franklin_insights
+            jobInstanceCode: franklin_insights_%s_products
+            icon: icon-robot
+            illustration: robot
+            subscribeLabel: akeneo_franklin_insights.mass_edit.product.operation.franklin_insights.subscribe_label
+            unsubscribeLabel: akeneo_franklin_insights.mass_edit.product.operation.franklin_insights.unsubscribe_label
+            franklinActivationConstraint: akeneo_franklin_insights.mass_edit.product.operation.franklin_insights.constraint.franklin_activation
+            invalidMappingConstraint: akeneo_franklin_insights.mass_edit.product.operation.franklin_insights.constraint.invalid_mapping

@@ -1,0 +1,17 @@
+services:
+    akeneo.pim.automation.franklin_insights.repository.configuration:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryConfigurationRepository'
+
+    akeneo.pim.automation.franklin_insights.repository.identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryIdentifiersMappingRepository'
+
+    akeneo.pim.automation.franklin_insights.repository.product_subscription:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.product'
+
+    akeneo.pim.automation.franklin_insights.repository.search_family:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryFamilyRepository'
+        arguments:
+            - '@pim_catalog.repository.family'

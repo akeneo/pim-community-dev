@@ -1,0 +1,37 @@
+services:
+    akeneo.pim.automation.franklin_insights.controller.product_subscription:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\ProductSubscriptionController'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.handler.subscribe_product'
+            - '@akeneo.pim.automation.franklin_insights.handler.get_product_subscription_status'
+            - '@akeneo.pim.automation.franklin_insights.product_subscription.handler.unsubscribe_product'
+            - '@akeneo.pim.automation.franklin_insights.normalizer.product_subscription_status'
+
+    akeneo.pim.automation.franklin_insights.controller.franklin:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\FranklinConnectionController'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.command.activate_connection_handler'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_configuration_handler'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
+            - '@akeneo.pim.automation.franklin_insights.normalizer.connection_status'
+
+    akeneo.pim.automation.franklin_insights.controller.identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\IdentifiersMappingController'
+        arguments:
+           - '@akeneo.pim.automation.franklin_insights.handler.get_identifiers_mapping'
+           - '@akeneo.pim.automation.franklin_insights.handler.update_identifiers_mapping'
+
+    akeneo.pim.automation.franklin_insights.controller.attributes_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\AttributesMappingController'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.handler.get_attributes_mapping_by_family'
+            - '@akeneo.pim.automation.franklin_insights.handler.update_attributes_mapping_by_family'
+            - '@akeneo.pim.automation.franklin_insights.handler.get_families'
+            - '@akeneo.pim.automation.franklin_insights.normalizers.families'
+            - '@akeneo.pim.automation.franklin_insights.normalizers.attributes_mapping'
+
+    akeneo.pim.automation.franklin_insights.controller.attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\AttributeOptionsMappingController'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.handler.get_attribute_options_mapping_by_family_and_attribute'
+            - '@akeneo.pim.automation.franklin_insights.handler.save_attribute_options_mapping'

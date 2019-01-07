@@ -32,8 +32,8 @@
             <directory suffix="Integration.php">../vendor/akeneo/pim-community-dev/src</directory>
             <directory suffix="Integration.php">../vendor/akeneo/pim-community-dev/tests</directory>
         </testsuite>
-        <testsuite name="Suggest_Data">
-            <directory suffix="Integration.php">../src/Akeneo/Pim/Automation/SuggestData/tests/back/Integration</directory>
+        <testsuite name="Franklin_Insights">
+            <directory suffix="Integration.php">../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Integration</directory>
         </testsuite>
         <testsuite name="End_to_End">
             <directory suffix="EndToEnd.php">../tests/back</directory>

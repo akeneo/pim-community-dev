@@ -1,0 +1,12 @@
+services:
+    akeneo.pim.automation.franklin_insights.event_subscriber.init_franklin_insights_fixtures:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Install\EventSubscriber\InitFranklinInsightsFixturesSubscriber'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    akeneo.pim.automation.franklin_insights.event_subscriber.franklin_proposals_creation:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Event\Subscriber\FranklinProposalsCreationSubscriber'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+        tags:
+            - { name: 'kernel.event_subscriber' }

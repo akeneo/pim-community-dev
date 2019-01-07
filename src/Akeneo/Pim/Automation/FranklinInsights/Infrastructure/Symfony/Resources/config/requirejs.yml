@@ -1,0 +1,90 @@
+config:
+    config:
+        # Controllers
+        pim/controller-registry:
+            controllers:
+                akeneo_franklin_insights_connection_edit:
+                    module: akeneo/franklin-insights/controller/connection
+                    aclResourceId: akeneo_franklin_insights_connection
+                akeneo_franklin_insights_identifiers_mapping_edit:
+                    module: akeneo/franklin-insights/controller/identifiers-mapping
+                    aclResourceId: akeneo_franklin_insights_settings_mapping
+                akeneo_franklin_insights_attributes_mapping_index:
+                    module: akeneo/franklin-insights/controller/attributes-mapping-index
+                    aclResourceId: akeneo_franklin_insights_settings_mapping
+                akeneo_franklin_insights_attributes_mapping_edit:
+                    module: akeneo/franklin-insights/controller/attributes-mapping-edit
+                    aclResourceId: akeneo_franklin_insights_settings_mapping
+
+        # Savers configuration
+        akeneo/franklin-insights/saver/franklin-connection:
+            url: akeneo_franklin_insights_connection_post
+
+        akeneo/franklin-insights/saver/identifiers-mapping:
+            url: akeneo_franklin_insights_identifiers_mapping_save
+
+        # Fetchers
+        pim/fetcher-registry:
+            fetchers:
+                identifiers-mapping:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: akeneo_franklin_insights_identifiers_mapping_get
+                attributes-mapping-by-family:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: akeneo_sugggest_data_attributes_mapping_get
+                attribute-options-mapping:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: akeneo_franklin_insights_attribute_options_mapping_get
+
+    paths:
+        # Common
+        pimee/common/filterable: akeneofranklininsights/js/common/filterable.ts
+
+        # Controller
+        akeneo/franklin-insights/controller/connection: akeneofranklininsights/js/controller/connection.ts
+        akeneo/franklin-insights/controller/identifiers-mapping: akeneofranklininsights/js/controller/identifiers-mapping.ts
+        akeneo/franklin-insights/controller/attributes-mapping-index: akeneofranklininsights/js/controller/attributes-mapping-index.ts
+        akeneo/franklin-insights/controller/attributes-mapping-edit: akeneofranklininsights/js/controller/attributes-mapping-edit.ts
+
+        # Savers
+        akeneo/franklin-insights/saver/franklin-connection: akeneofranklininsights/js/saver/franklin-connection
+        akeneo/franklin-insights/saver/identifiers-mapping: akeneofranklininsights/js/saver/identifiers-mapping
+        akeneo/franklin-insights/saver/identifiers-mapping-form: akeneofranklininsights/js/saver/identifiers-mapping-form.ts
+        akeneo/franklin-insights/saver/attribute-options-mapping: akeneofranklininsights/js/saver/attribute-options-mapping.ts
+        akeneo/franklin-insights/saver/attribute-options-mapping-form: akeneofranklininsights/js/saver/attribute-options-mapping-form.ts
+
+        # View
+        akeneo/franklin-insights/view/settings/attributes-mapping/state: akeneofranklininsights/js/view/attributes-mapping/state.ts
+        akeneo/franklin-insights/view/settings/attributes-mapping/family-selector: akeneofranklininsights/js/view/attributes-mapping/family-selector.ts
+        akeneo/franklin-insights/view/settings/attributes-mapping/table: akeneofranklininsights/js/view/attributes-mapping/table.ts
+        akeneo/franklin-insights/view/settings/identifiers-mapping/table: akeneofranklininsights/js/view/identifiers-mapping/table.ts
+        akeneo/franklin-insights/view/settings/attribute-options-mapping/edit: akeneofranklininsights/js/view/attribute-options-mapping/edit.ts
+        akeneo/franklin-insights/view/settings/mapping/common/tabs: akeneofranklininsights/js/view/common/tabs.ts
+        akeneo/franklin-insights/view/common/description-header: akeneofranklininsights/js/view/common/description-header.ts
+        akeneo/franklin-insights/view/common/front-search-filter: akeneofranklininsights/js/view/common/front-search-filter.ts
+        akeneo/franklin-insights/view/common/status-filter: akeneofranklininsights/js/view/common/status-filter.ts
+        akeneo/franklin-insights/view/franklin-connection/edit: akeneofranklininsights/js/view/franklin-connection/edit.ts
+        akeneo/franklin-insights/view/mass-edit/franklin-insights-operation: akeneofranklininsights/js/view/mass-edit/franklin-insights-operation.ts
+        akeneo/franklin-insights/view/product-edit-form/subscription-status-switcher: akeneofranklininsights/js/view/product-edit-form/subscription-status-switcher.ts
+
+        # Templates
+        akeneo/franklin-insights/template/settings/identifiers-mapping/table: akeneofranklininsights/templates/identifiers-mapping/table.html
+        akeneo/franklin-insights/template/settings/attribute-options-mapping/edit: akeneofranklininsights/templates/attribute-options-mapping/edit.html
+        akeneo/franklin-insights/template/settings/attribute-options-mapping/modal: akeneofranklininsights/templates/attribute-options-mapping/modal.html
+        akeneo/franklin-insights/template/settings/attributes-mapping/table: akeneofranklininsights/templates/attributes-mapping/table.html
+        akeneo/franklin-insights/template/settings/attributes-mapping/family-mapping: akeneofranklininsights/templates/attributes-mapping/family-mapping.html
+        akeneo/franklin-insights/template/settings/attributes-mapping/family-line: akeneofranklininsights/templates/attributes-mapping/family-line.html
+        akeneo/franklin-insights/template/settings/attributes-mapping/warning: akeneofranklininsights/templates/attributes-mapping/warning.html
+        akeneo/franklin-insights/template/common/status-filter: akeneofranklininsights/templates/common/status-filter.html
+        akeneo/franklin-insights/template/common/tabs: akeneofranklininsights/templates/common/tabs.html
+        akeneo/franklin-insights/template/common/simple-select-attribute: akeneofranklininsights/templates/common/simple-select-attribute.html
+        akeneo/franklin-insights/template/franklin-connection/edit: akeneofranklininsights/templates/franklin-connection/edit.html
+        akeneo/franklin-insights/template/mass-edit/franklin-insights-operation: akeneofranklininsights/templates/mass-edit/franklin-insights-operation.html
+        akeneo/franklin-insights/template/product-edit-form/subscription-status-switcher: akeneofranklininsights/templates/product-edit-form/subscription-status-switcher.html
+        akeneo/franklin-insights/template/product-edit-form/subscription-status-switcher-read-only: akeneofranklininsights/templates/product-edit-form/subscription-status-switcher-read-only.html
