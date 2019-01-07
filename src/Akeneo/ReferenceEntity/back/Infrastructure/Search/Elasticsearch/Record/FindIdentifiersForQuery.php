@@ -147,7 +147,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 
         if (null !== $updatedFilter && !empty($updatedFilter['value'] && '>' === $updatedFilter['operator']))
         {
-            $query['query']['constant_score']['filter']['bool']['filter'][] = [
+            $query['query']['bool']['should']['bool']['filter'][] = [
                 'range' => [
                    'updated_at' => ['gt' => $this->getFormattedDate($updatedFilter['value'])]
                 ]
@@ -157,7 +157,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         if (null !== $completeFilter) {
             $query = $this->getCompleteFilterQuery($recordQuery, $referenceEntityCode, $completeFilter, $query);
         }
-
+        
         return $query;
     }
 

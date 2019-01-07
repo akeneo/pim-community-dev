@@ -156,9 +156,14 @@ class GetConnectorRecordsAction
         return LocaleIdentifierCollection::fromNormalized($locales);
     }
 
-    private function getUpdatedSinceFilterFromRequest(Request $request): array
+    private function getUpdatedSinceFilterFromRequest(Request $request): ?array
     {
         $searchQuery = $request->get('search', '');
+
+        if (null == $searchQuery) {
+            return null;
+        }
+
         $search = json_decode($searchQuery, true);
         $updatedSince = array_merge($search['updated'][0], ['field' => 'updated']);
 
