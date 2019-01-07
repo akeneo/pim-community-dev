@@ -24,6 +24,11 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory',
         'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',
 
+        // TIP-1000: Permissions should not be linked to Locale
+        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Component\Model\Locale',
+
         //TODO: It uses the PQB
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
@@ -39,20 +44,20 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
         // TODO: we put everything related to permissions at the same place
         'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',
         'Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository',
         'Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobInstanceRepository',
-        // TODO: EASY PICK ProductMassActionRepository should not use the publish product repository, is it dead code?
+
+        // TIP-996: Permission should not be linked to Workflow
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface',
+
+        // TIP-1002: Permissions should not be linked to Channel
+        'Akeneo\Channel\Component\Model\ChannelInterface',
 
         //TODO: Link by id instead of reference
         'Akeneo\Asset\Component\Model\CategoryInterface',
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\Channel\Component\Model\Locale',
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
@@ -104,7 +109,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ProductEditDataFilter',
 
-        //TODO: it overrides Processors => good examples to show what should not be overriden
+        // TIP-1003: Do not override Community services
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AddAttributeValueProcessor',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AddProductValueProcessor',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\EditAttributesProcessor',
@@ -112,8 +117,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\RemoveProductValueProcessor',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\UpdateProductValueProcessor',
         'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable',
-
-        //TODO: Because it overrides normalizer => good examples to show what should not be overriden
+        // good examples to show what should not be overriden
         'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\IncompleteValuesNormalizer',
@@ -135,7 +139,8 @@ $rules = [
 
         //TODO: just because we override ProductFieldsBuilder
         'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',
-        //TODO: EASY PICK RegisterSerializerPass should go in Tool
+
+        // TIP-995: Move RegisterSerializerPass to Tool
         'Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass',
         //TODO: we should not inject the userContext as a service
         'Akeneo\UserManagement\Bundle\Context\UserContext',
@@ -148,21 +153,25 @@ $rules = [
         'Doctrine\Common',
         'Akeneo\Tool',
 
-        //TODO: EASY PICK: should be in component
+        // TIP-998: Move Access entities to component
         'Akeneo\Pim\Permission\Bundle\Entity\AssetCategoryAccess',
         'Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess',
+
+        // TIP-997: Create interfaces for Access repositories
+        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
         'Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery',
 
-        //TODO: EASY PICK: Interface in component + implementation in bundle
-        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
-
-        //TODO: Move in component + Rework that
+        // TIP-999: Move managers to component
         'Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager',
         'Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager',
 
-        //TODO: Link by id instead of reference
-        'Akeneo\Channel\Component\Model\ChannelInterface',
+        // TIP-1000: Permissions should not be linked to Locale
         'Akeneo\Channel\Component\Model\LocaleInterface',
+
+        // TIP-1002: Permissions should not be linked to Channel
+        'Akeneo\Channel\Component\Model\ChannelInterface',
+
+        //TODO: Link by id instead of reference
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
 
         // TODO: review the voters/filters implementation
@@ -176,7 +185,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
 
-        //TODO: It overrides a default behavior
+        // TIP-1003: Do not override Community services
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface',
