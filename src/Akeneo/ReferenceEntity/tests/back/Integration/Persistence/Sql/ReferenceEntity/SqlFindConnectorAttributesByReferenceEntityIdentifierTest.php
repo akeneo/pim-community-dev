@@ -104,7 +104,7 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString('regex'),
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
@@ -118,7 +118,7 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-            AttributeOrder::fromInteger(2),
+            AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -130,6 +130,18 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
         $this->attributeRepository->create($imageAttribute);
 
         return [
+            new ConnectorAttribute(
+                $imageAttribute->getCode(),
+                LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
+                'image',
+                AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
+                AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
+                AttributeIsRequired::fromBoolean(true),
+                [
+                    'max_file_size' => '10',
+                    'allowed_extensions' => ['jpg']
+                ]
+            ),
             new ConnectorAttribute(
                 $textAttribute->getCode(),
                 LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
@@ -143,18 +155,6 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
                     'is_rich_text_editor' => false,
                     'validation_rule' => AttributeValidationRule::REGULAR_EXPRESSION,
                     'regular_expression' => $textAttribute->getRegularExpression()->normalize()
-                ]
-            ),
-            new ConnectorAttribute(
-                $imageAttribute->getCode(),
-                LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-                'image',
-                AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
-                AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
-                AttributeIsRequired::fromBoolean(true),
-                [
-                    'max_file_size' => '10',
-                    'allowed_extensions' => ['jpg']
                 ]
             )
         ];
