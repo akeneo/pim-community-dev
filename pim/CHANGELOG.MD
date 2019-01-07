@@ -1,10 +1,13 @@
 
 # New version
 
-## 2.3.23-00
-- Update akeneo/pim-enterprise-dev to 2.3.23
+## 2.3.23-02
+- Deploy/infra changes only: clean and homogenize with helm-onboarer (mailgun_login)
 
 # Precedent versions
+
+## 2.3.23-01
+- Update akeneo/pim-enterprise-dev to 2.3.23
 
 ## 2.3.22-00
 ### Features
