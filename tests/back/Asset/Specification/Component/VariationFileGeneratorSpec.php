@@ -25,7 +25,7 @@ use Prophecy\Argument;
 
 class VariationFileGeneratorSpec extends ObjectBehavior
 {
-    public const STORAGE_FS = 'my_storage';
+    const STORAGE_FS = 'my_storage';
 
     function let(
         ChannelConfigurationRepositoryInterface $channelConfigurationRepository,
@@ -128,9 +128,10 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         )->during('generate', [$variation]);
     }
 
-    function it_throws_an_exception_if_the_variation_has_no_source_file($variation)
+    function it_throws_an_exception_if_the_variation_has_no_source_file($variation, $reference)
     {
         $variation->getSourceFileInfo()->willReturn(null);
+        $reference->getFileInfo()->willReturn(null);
 
         $this->shouldThrow(
             new \LogicException('The variation "16" has no source file.')

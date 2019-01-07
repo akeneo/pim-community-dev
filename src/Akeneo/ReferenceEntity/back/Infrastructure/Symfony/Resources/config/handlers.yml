@@ -16,10 +16,16 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
 
-    akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler:
-        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQueryHandler
+    akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler:
+        class: Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler
         arguments:
-            - '@akeneo.referencentity.infrastructure.persistence.permission.query.can_edit_reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission'
+            - '@akeneo.referencentity.infrastructure.persistence.query.find_user_groups_for_security_identifier'
+
+    akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler:
+        class: Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission'
 
     # Attributes
     akeneo_referenceentity.application.attribute.create_attribute_handler:

@@ -103,4 +103,24 @@ class OptionAttributeSpec extends ObjectBehavior
         ];
         $this->shouldThrow(\InvalidArgumentException::class)->during('setOptions', [$duplicates]);
     }
+
+    function it_determines_if_a_given_option_code_exists_in_the_collection()
+    {
+        $this->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray(['fr_FR' => 'rouge'])
+                ),
+                AttributeOption::create(
+                    OptionCode::fromString('green'),
+                    LabelCollection::fromArray(['fr_FR' => 'vert'])
+                ),
+            ]
+        );
+
+        $this->hasAttributeOption(OptionCode::fromString('red'))->shouldReturn(true);
+        $this->hasAttributeOption(OptionCode::fromString('green'))->shouldReturn(true);
+        $this->hasAttributeOption(OptionCode::fromString('pink'))->shouldReturn(false);
+    }
 }

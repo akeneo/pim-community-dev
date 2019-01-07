@@ -37,10 +37,6 @@ category.permissions:
   apply_on_children.label: Aplicar canvis en els fills
   apply_on_children.help: Copiar els canvis de permisos a tots els fills. Se'n mantindran tots els seus permisos actuals
 locale.permissions:
-  view.label: Permet visualitzar la informació del producte
-  view.help: Permet visualitzar la informació del producte en aquesta configuració regional
-  edit.label: Permet editar la informació del producte
-  edit.help: Permet editar la informació del producte en aquesta configuració regional (això implica l'autorització de la vista)
   no_access_to_products: No teniu accés a les dades de producte en cap de les configuracions regionals activades, contacteu amb l'administrador
 flash.locale.updated: S'han actualitzat la configuració regional i els permisos
 pim_enrich:

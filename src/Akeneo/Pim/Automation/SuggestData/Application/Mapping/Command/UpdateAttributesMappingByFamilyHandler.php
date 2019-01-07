@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\EmptySuggestedDataAndMissingMappingQueryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
@@ -34,25 +34,25 @@ class UpdateAttributesMappingByFamilyHandler
     /** @var AttributesMappingProviderInterface */
     private $attributesMappingProvider;
 
-    /** @var EmptySuggestedDataAndMissingMappingQueryInterface */
-    private $emptySuggestedDataAndMissingMappingQuery;
+    /** @var ProductSubscriptionRepositoryInterface */
+    private $subscriptionRepository;
 
     /**
      * @param FamilyRepositoryInterface $familyRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param AttributesMappingProviderInterface $attributesMappingProvider
-     * @param EmptySuggestedDataAndMissingMappingQueryInterface $emptySuggestedDataAndMissingMappingQuery
+     * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
         AttributesMappingProviderInterface $attributesMappingProvider,
-        EmptySuggestedDataAndMissingMappingQueryInterface $emptySuggestedDataAndMissingMappingQuery
+        ProductSubscriptionRepositoryInterface $subscriptionRepository
     ) {
         $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
         $this->attributesMappingProvider = $attributesMappingProvider;
-        $this->emptySuggestedDataAndMissingMappingQuery = $emptySuggestedDataAndMissingMappingQuery;
+        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     /**
@@ -66,7 +66,7 @@ class UpdateAttributesMappingByFamilyHandler
             $command->getFamilyCode(),
             $command->getAttributesMapping()
         );
-        $this->emptySuggestedDataAndMissingMappingQuery->execute($command->getFamilyCode());
+        $this->subscriptionRepository->emptySuggestedDataAndMissingMappingByFamily($command->getFamilyCode());
     }
 
     /**
@@ -103,6 +103,18 @@ class UpdateAttributesMappingByFamilyHandler
         }
 
         $this->validateAttributeType($attribute->getType());
+
+        if ($attribute->isLocalizable()) {
+            throw AttributeMappingException::localizableAttributeNotAllowed();
+        }
+
+        if ($attribute->isScopable()) {
+            throw AttributeMappingException::scopableAttributeNotAllowed();
+        }
+
+        if ($attribute->isLocaleSpecific()) {
+            throw AttributeMappingException::localeSpecificAttributeNotAllowed();
+        }
 
         $attributeMapping->setAttribute($attribute);
     }

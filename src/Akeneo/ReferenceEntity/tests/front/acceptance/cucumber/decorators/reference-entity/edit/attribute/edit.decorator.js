@@ -14,6 +14,16 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     await label.type(value);
   };
 
+  const disabledLabel = async () => {
+    try {
+      await page.waitForSelector('.AknFieldContainer[data-code="label"] .AknTextField--disabled');
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  };
+
   const setIsRequired = async value => {
     const required = await nodeElement.$('.AknFieldContainer[data-code="isRequired"] .AknCheckbox');
     const currentValue = await required.getProperty('data-checked');
@@ -23,6 +33,16 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     }
   };
 
+  const disabledIsRequired = async () => {
+    try {
+      await page.waitForSelector('.AknFieldContainer[data-code="isRequired"] .AknCheckbox--disabled');
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  };
+
   const setIsTextarea = async value => {
     const required = await nodeElement.$('.AknFieldContainer[data-code="isTextarea"] .AknCheckbox');
     const currentValue = await required.getProperty('data-checked');
@@ -30,6 +50,16 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     if (value != currentValue._remoteObject.value) {
       await required.click();
     }
+  };
+
+  const disabledIsTextarea = async () => {
+    try {
+      await page.waitForSelector('.AknFieldContainer[data-code="isTextarea"] .AknCheckbox--disabled');
+    } catch (error) {
+      return false;
+    }
+
+    return true;
   };
 
   const setIsRichTextEditor = async value => {
@@ -47,6 +77,16 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     );
 
     await validationRule.click();
+  };
+
+  const disabledValidationRule = async () => {
+    try {
+      await page.waitForSelector('.AknFieldContainer[data-code="validationRule"] .AknDropdown-menu', {hidden: true});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
   };
 
   const setRegularExpression = async value => {
@@ -67,6 +107,16 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     await maxLength.type(value);
   };
 
+  const disabledMaxLength = async () => {
+    try {
+      await page.waitForSelector('.AknFieldContainer[data-code="maxLength"] .AknTextField--disabled');
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  };
+
   const setMaxFileSize = async value => {
     const maxFileSize = await nodeElement.$('.AknFieldContainer[data-code="maxFileSize"] .AknTextField');
     await page.evaluate(properties => {
@@ -74,6 +124,16 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     }, nodeElement);
 
     await maxFileSize.type(value);
+  };
+
+  const disabledMaxFileSize = async () => {
+    try {
+      await page.waitForSelector('.AknFieldContainer[data-code="maxFileSize"] .AknTextField--disabled');
+    } catch (error) {
+      return false;
+    }
+
+    return true;
   };
 
   const setAllowedExtensions = async value => {
@@ -91,6 +151,16 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     await allowedExtensions.type(value);
   };
 
+  const disabledAllowedExtensions = async () => {
+    try {
+      await page.waitForSelector('.AknFieldContainer[data-code="allowedExtensions"] select:disabled');
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  };
+
   const showManageOptionModal = async () => {
     page.waitForSelector('.AknButton[data-code="manageOption"]');
     await page.evaluate(edit => {
@@ -102,7 +172,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
 
     const button = await nodeElement.$('.AknButton[data-code="manageOption"]');
     await button.click();
-    await page.waitForSelector('.AknFullPage--modal');
+    await page.waitForSelector('.modal');
   };
 
   const hasSuccessNotification = async () => {
@@ -122,14 +192,21 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
   return {
     isVisible,
     setLabel,
+    disabledLabel,
     setIsRequired,
+    disabledIsRequired,
     setIsTextarea,
+    disabledIsTextarea,
     setIsRichTextEditor,
     setValidationRule,
+    disabledValidationRule,
     setRegularExpression,
     setMaxLength,
+    disabledMaxLength,
     setMaxFileSize,
+    disabledMaxFileSize,
     setAllowedExtensions,
+    disabledAllowedExtensions,
     isLoaded,
     showManageOptionModal,
     hasSuccessNotification,

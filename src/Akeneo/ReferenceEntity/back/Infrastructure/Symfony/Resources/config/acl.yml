@@ -13,9 +13,19 @@ akeneo_referenceentity_reference_entity_delete:
     label: akeneo_referenceentity.acl.reference_entity.delete
     group_name: akeneo_referenceentity.acl_group.reference_entity
 
+akeneo_referenceentity_reference_entity_manage_permission:
+    type: action
+    label: akeneo_referenceentity.acl.reference_entity.manage_permission
+    group_name: akeneo_referenceentity.acl_group.reference_entity
+
 akeneo_referenceentity_record_create:
     type: action
     label: akeneo_referenceentity.acl.record.create
+    group_name: akeneo_referenceentity.acl_group.reference_entity
+
+akeneo_referenceentity_record_edit:
+    type: action
+    label: akeneo_referenceentity.acl.record.edit
     group_name: akeneo_referenceentity.acl_group.reference_entity
 
 akeneo_referenceentity_record_delete:
@@ -41,4 +51,14 @@ akeneo_referenceentity_attribute_delete:
 akeneo_referenceentity_attribute_edit:
     type: action
     label: akeneo_referenceentity.acl.attribute.edit
+    group_name: akeneo_referenceentity.acl_group.reference_entity
+
+akeneo_referenceentity_option_edit:
+    type: action
+    label: akeneo_referenceentity.acl.option.edit
+    group_name: akeneo_referenceentity.acl_group.reference_entity
+
+akeneo_referenceentity_option_delete:
+    type: action
+    label: akeneo_referenceentity.acl.option.delete
     group_name: akeneo_referenceentity.acl_group.reference_entity

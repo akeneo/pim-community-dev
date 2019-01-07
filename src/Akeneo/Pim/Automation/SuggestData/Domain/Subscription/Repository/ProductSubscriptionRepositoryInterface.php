@@ -46,7 +46,22 @@ interface ProductSubscriptionRepositoryInterface
     public function delete(ProductSubscription $subscription): void;
 
     /**
+     * Empty all suggested data.
+     */
+    public function emptySuggestedData(): void;
+
+    /**
      * @param int[] $productIds
      */
-    public function emptySuggestedData(array $productIds): void;
+    public function emptySuggestedDataByProducts(array $productIds): void;
+
+    /**
+     * @param string $familyCode
+     */
+    public function emptySuggestedDataAndMissingMappingByFamily(string $familyCode): void;
+
+    /**
+     * @return int
+     */
+    public function count(): int;
 }

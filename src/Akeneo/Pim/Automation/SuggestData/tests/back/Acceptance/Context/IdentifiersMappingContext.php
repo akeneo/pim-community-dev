@@ -16,6 +16,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -49,6 +50,9 @@ class IdentifiersMappingContext implements Context
 
     /** @var \Exception */
     private $thrownException;
+
+    /** @var array */
+    private $originalIdentifiersMapping;
 
     /**
      * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
@@ -84,13 +88,14 @@ class IdentifiersMappingContext implements Context
      *
      * @param TableNode $table
      *
+     * @throws DataProviderException
      * @throws InvalidMappingException
      */
     public function aPredefinedIdentifiersMapping(TableNode $table): void
     {
-        $identifiersMapping = $this->extractIdentifiersMappingFromTable($table);
+        $this->originalIdentifiersMapping = $this->extractIdentifiersMappingFromTable($table);
 
-        $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
+        $command = new UpdateIdentifiersMappingCommand($this->originalIdentifiersMapping);
         $this->updateIdentifiersMappingHandler->handle($command);
     }
 
@@ -105,8 +110,8 @@ class IdentifiersMappingContext implements Context
         try {
             $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
             $this->updateIdentifiersMappingHandler->handle($command);
-        } catch (InvalidMappingException $e) {
-            $this->thrownException = $e;
+        } catch (\Exception $exception) {
+            $this->thrownException = $exception;
         }
     }
 
@@ -118,9 +123,30 @@ class IdentifiersMappingContext implements Context
         try {
             $command = new UpdateIdentifiersMappingCommand([]);
             $this->updateIdentifiersMappingHandler->handle($command);
-        } catch (InvalidMappingException $e) {
+        } catch (\Exception $e) {
             $this->thrownException = $e;
         }
+    }
+
+    /**
+     * @Then an invalid mapping message should be sent
+     */
+    public function anInvalidMappingMessageShouldBeSent(): void
+    {
+        Assert::assertInstanceOf(\Exception::class, $this->thrownException);
+        Assert::assertNotEmpty($this->thrownException->getMessage());
+    }
+
+    /**
+     * @Then a data provider error message should be sent
+     */
+    public function aDataProviderErrorMessageShouldBeSent(): void
+    {
+        Assert::assertInstanceOf(DataProviderException::class, $this->thrownException);
+        Assert::assertEquals(
+            DataProviderException::serverIsDown(new \Exception())->getMessage(),
+            $this->thrownException->getMessage()
+        );
     }
 
     /**
@@ -128,16 +154,127 @@ class IdentifiersMappingContext implements Context
      */
     public function theIdentifiersMappingShouldNotBeSaved(): void
     {
-        $this->assertIdentifiersMappingIsEmpty();
+        if (null === $this->originalIdentifiersMapping) {
+            $this->assertIdentifiersMappingIsEmpty();
+        } else {
+            $this->assertIdentifiersMappingPersisted($this->originalIdentifiersMapping);
+            $this->assertIdentifiersMappingSentToFranklin($this->originalIdentifiersMapping);
+        }
     }
 
     /**
-     * @Then the retrieved identifiers mapping should be the following:
+     * @Then an invalid identifier :pimAttributeCode attribute type message should be sent
+     *
+     * @param string $pimAttributeCode
+     */
+    public function anInvalidIdentifierAttributeTypeMessageShouldBeSent(string $pimAttributeCode): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::attributeType('foo', $pimAttributeCode)->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid identifier :pimAttributeCode localizable message should be sent
+     *
+     * @param string $pimAttributeCode
+     */
+    public function anInvalidIdentifierLocalizableMessageShouldBeSent(string $pimAttributeCode): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::localizableAttributeNotAllowed($pimAttributeCode)->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid identifier :pimAttributeCode scopable message should be sent
+     *
+     * @param string $pimAttributeCode
+     */
+    public function anInvalidIdentifierScopableMessageShouldBeSent(string $pimAttributeCode): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::scopableAttributeNotAllowed($pimAttributeCode)->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid identifier :pimAttributeCode locale specific message should be sent
+     *
+     * @param string $pimAttributeCode
+     */
+    public function anInvalidIdentifierLocaleSpecificMessageShouldBeSent(string $pimAttributeCode): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::localeSpecificAttributeNotAllowed($pimAttributeCode)->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then a not existing identifier attribute message should be sent
+     */
+    public function aNotExistingIdentifierAttributeMessageShouldBeSent(): void
+    {
+        Assert::assertInstanceOf(\InvalidArgumentException::class, $this->thrownException);
+    }
+
+    /**
+     * @Then a missing or invalid identifiers message should be sent
+     */
+    public function aMissingOrInvalidIdentifiersMessageShouldBeSent(): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::missingOrInvalidIdentifiersInMapping([], 'foo')->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then a duplicate identifiers attribute message should be sent
+     */
+    public function aDuplicateIdentifiersAttributeMessageShouldBeSent(): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::duplicateAttributeCode('', '')->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid brand mpn identifier message should be sent
+     */
+    public function anInvalidBrandMpnIdentifierMessageShouldBeSent(): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::mandatoryAttributeMapping('foo', 'brand')->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then an authentication error message should be sent
+     */
+    public function aTokenInvalidMessageForIdentifiersMappingShouldBeSent(): void
+    {
+        Assert::assertEquals(
+            DataProviderException::authenticationError(new \Exception())->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then the identifiers mapping should be saved as follows:
      *
      * @param TableNode $table
      */
-    public function theRetrievedIdentifiersMappingIsTheFollowing(TableNode $table): void
+    public function theIdentifiersMappingShouldBeSavedAsFollows(TableNode $table): void
     {
+        Assert::assertNull($this->thrownException);
+
         $expectedIdentifiersMapping = $this->extractIdentifiersMappingFromTable($table);
 
         $this->assertIdentifiersMappingSentToFranklin($expectedIdentifiersMapping);
@@ -231,11 +368,11 @@ class IdentifiersMappingContext implements Context
         Assert::assertCount(count($expectedMappings), $persistedMappings);
 
         foreach ($expectedMappings as $expectedFranklinCode => $expectedPimCode) {
-            $persistedMapping = $persistedMappings->getIdentifier($expectedFranklinCode);
-            if (null === $persistedMapping) {
+            $mappedAttribute = $persistedMappings->getMappedAttribute($expectedFranklinCode);
+            if (null === $mappedAttribute) {
                 Assert::assertNull($expectedPimCode);
             } else {
-                Assert::assertEquals($expectedPimCode, $persistedMapping->getCode());
+                Assert::assertEquals($expectedPimCode, $mappedAttribute->getCode());
             }
         }
     }
@@ -245,9 +382,8 @@ class IdentifiersMappingContext implements Context
      */
     private function assertIdentifiersMappingIsEmpty(): void
     {
-        $persistedIdentifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
-
-        Assert::assertEquals([], $persistedIdentifiers);
+        $persistedIdentifiersMapping = $this->identifiersMappingRepository->find();
+        Assert::assertTrue($persistedIdentifiersMapping->isEmpty());
         Assert::assertEquals([], $this->fakeClient->getIdentifiersMapping());
     }
 

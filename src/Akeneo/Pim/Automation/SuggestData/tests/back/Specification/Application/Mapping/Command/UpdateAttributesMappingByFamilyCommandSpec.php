@@ -23,9 +23,16 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
 {
+    private const VALID_MAPPING = [
+        'color' => [
+            'franklinAttribute' => ['type' => 'multiselect'],
+            'attribute' => 'tshirt_style',
+        ],
+    ];
+
     public function it_is_initializable(): void
     {
-        $this->beConstructedWith('family_code', []);
+        $this->beConstructedWith('family_code', self::VALID_MAPPING);
         $this->shouldHaveType(UpdateAttributesMappingByFamilyCommand::class);
     }
 
@@ -33,17 +40,13 @@ class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
     {
         $familyCode = 'family_code';
 
-        $this->beConstructedWith($familyCode, []);
+        $this->beConstructedWith($familyCode, self::VALID_MAPPING);
         $this->getFamilyCode()->shouldReturn($familyCode);
     }
 
     public function it_returns_an_attribute_mapping(): void
     {
-        $mapping = ['color' => [
-            'franklinAttribute' => ['type' => 'multiselect'],
-            'attribute' => 'tshirt_style',
-        ]];
-        $this->beConstructedWith('family_code', $mapping);
+        $this->beConstructedWith('family_code', self::VALID_MAPPING);
 
         $attributesMapping = $this->getAttributesMapping();
         $attributesMapping->shouldHaveCount(1);

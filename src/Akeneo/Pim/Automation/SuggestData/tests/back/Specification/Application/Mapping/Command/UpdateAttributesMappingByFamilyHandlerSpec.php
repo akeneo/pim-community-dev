@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMapping
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\AttributeMappingException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\EmptySuggestedDataAndMissingMappingQueryInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -35,13 +35,13 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
         AttributesMappingProviderInterface $attributesMappingProvider,
-        EmptySuggestedDataAndMissingMappingQueryInterface $emptySuggestedDataAndMissingMappingQuery
+        ProductSubscriptionRepository $subscriptionRepository
     ): void {
         $this->beConstructedWith(
             $familyRepository,
             $attributeRepository,
             $attributesMappingProvider,
-            $emptySuggestedDataAndMissingMappingQuery
+            $subscriptionRepository
         );
     }
 
@@ -54,7 +54,12 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     {
         $familyRepository->findOneByIdentifier('router')->willReturn(null);
 
-        $command = new UpdateAttributesMappingByFamilyCommand('router', []);
+        $command = new UpdateAttributesMappingByFamilyCommand('router', [
+            'color' => [
+                'franklinAttribute' => ['type' => 'multiselect'],
+                'attribute' => 'tshirt_style',
+            ],
+        ]);
         $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$command]);
     }
 
@@ -107,7 +112,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $familyRepository,
         $attributeRepository,
         $attributesMappingProvider,
-        $emptySuggestedDataAndMissingMappingQuery,
+        $subscriptionRepository,
         AttributeInterface $memoryAttribute,
         AttributeInterface $weightAttribute
     ): void {
@@ -133,16 +138,102 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($memoryAttribute);
         $memoryAttribute->getType()->willReturn(AttributeTypes::METRIC);
+        $memoryAttribute->isLocalizable()->willReturn(false);
+        $memoryAttribute->isScopable()->willReturn(false);
+        $memoryAttribute->isLocaleSpecific()->willReturn(false);
 
         $attributeRepository->findOneByIdentifier('product_weight')->willReturn($weightAttribute);
         $weightAttribute->getType()->willReturn(AttributeTypes::TEXT);
+        $weightAttribute->isLocalizable()->willReturn(false);
+        $weightAttribute->isScopable()->willReturn(false);
+        $weightAttribute->isLocaleSpecific()->willReturn(false);
 
         $attributesMappingProvider
             ->updateAttributesMapping('router', $command->getAttributesMapping())
             ->shouldBeCalled();
 
-        $emptySuggestedDataAndMissingMappingQuery->execute($command->getFamilyCode())->shouldBeCalled();
+        $subscriptionRepository
+            ->emptySuggestedDataAndMissingMappingByFamily($command->getFamilyCode())
+            ->shouldBeCalled();
 
         $this->handle($command);
+    }
+
+    public function it_throws_an_exception_if_an_attribute_is_localizable(
+        $familyRepository,
+        $attributeRepository,
+        AttributeInterface $memoryAttribute
+    ): void {
+        $attributeMapping = [
+            'memory' => [
+                'franklinAttribute' => [
+                    'label' => 'Memory',
+                    'type' => 'metric',
+                ],
+                'attribute' => 'random_access_memory',
+            ],
+        ];
+        $command = new UpdateAttributesMappingByFamilyCommand('router', $attributeMapping);
+
+        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
+
+        $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($memoryAttribute);
+        $memoryAttribute->getType()->willReturn(AttributeTypes::METRIC);
+        $memoryAttribute->isLocalizable()->willReturn(true);
+
+        $this->shouldThrow(AttributeMappingException::class)->during('handle', [$command]);
+    }
+
+    public function it_throws_an_exception_if_an_attribute_is_scopable(
+        $familyRepository,
+        $attributeRepository,
+        AttributeInterface $memoryAttribute
+    ): void {
+        $attributeMapping = [
+            'memory' => [
+                'franklinAttribute' => [
+                    'label' => 'Memory',
+                    'type' => 'metric',
+                ],
+                'attribute' => 'random_access_memory',
+            ],
+        ];
+        $command = new UpdateAttributesMappingByFamilyCommand('router', $attributeMapping);
+
+        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
+
+        $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($memoryAttribute);
+        $memoryAttribute->getType()->willReturn(AttributeTypes::METRIC);
+        $memoryAttribute->isLocalizable()->willReturn(false);
+        $memoryAttribute->isScopable()->willReturn(true);
+
+        $this->shouldThrow(AttributeMappingException::class)->during('handle', [$command]);
+    }
+
+    public function it_throws_an_exception_if_an_attribute_is_locale_specific(
+        $familyRepository,
+        $attributeRepository,
+        AttributeInterface $memoryAttribute
+    ): void {
+        $attributeMapping = [
+            'memory' => [
+                'franklinAttribute' => [
+                    'label' => 'Memory',
+                    'type' => 'metric',
+                ],
+                'attribute' => 'random_access_memory',
+            ],
+        ];
+        $command = new UpdateAttributesMappingByFamilyCommand('router', $attributeMapping);
+
+        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
+
+        $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($memoryAttribute);
+        $memoryAttribute->getType()->willReturn(AttributeTypes::METRIC);
+        $memoryAttribute->isLocalizable()->willReturn(false);
+        $memoryAttribute->isScopable()->willReturn(false);
+        $memoryAttribute->isLocaleSpecific()->willReturn(true);
+
+        $this->shouldThrow(AttributeMappingException::class)->during('handle', [$command]);
     }
 }

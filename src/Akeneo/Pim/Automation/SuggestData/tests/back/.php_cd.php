@@ -151,10 +151,12 @@ $rules = [
             // External dependencies
             'Doctrine',
 
+            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
             // TODO: link by ID instead of reference
             'Akeneo\Pim\Structure\Component\Model\Family',
             'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
 
             // Oro config is used
             'Oro\Bundle\ConfigBundle\Entity\Config',
@@ -180,6 +182,7 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
+            'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
             // TODO public constant
             'Akeneo\Pim\Structure\Component\AttributeTypes',

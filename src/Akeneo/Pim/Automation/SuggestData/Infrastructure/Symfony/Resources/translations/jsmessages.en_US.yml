@@ -9,6 +9,10 @@ pim_menu:
 
 akeneo_suggest_data:
     entity:
+        data_provider:
+            ask_franklin_down: "Your request has not been delivered. Franklin Insights server does not respond."
+            authentication_error: "Sorry, failed to authenticate to Franklin Insights, your token is invalid. Please enter a valid token or contact us for help."
+            bad_request_error: "Sorry, an problem occured communicating with Franklin Insights. Please contact your administrator."
         identifier_mapping:
             plural_label: Identifiers
             flash:
@@ -32,9 +36,11 @@ akeneo_suggest_data:
             constraint:
                 duplicate_attribute_code: "One mapping allowed per catalog attribute"
                 missing_or_invalid_identifiers: "Some identifiers mapping keys are missing or invalid. Expected: \"{{ expected }}\", got \"{{ given }}\"."
-                attribute_not_found: "Attribute with attribute code \"{{ attributeCode }}\" for the identifiers mapping does not exist."
-                mandatory_attribute_mapping: "Brand & MPN mapping required"
+                mandatory_identifier_mapping: "Brand & MPN mapping required"
                 attribute_type: "The type of this attribute can not be set as identifier"
+                localizable_not_allowed: "Localizable attributes are not allowed as identifier"
+                scopable_not_allowed: "Scopable attributes are not allowed as identifier"
+                locale_specific_not_allowed: "Locale specific attributes are not allowed as identifier"
         attributes_mapping:
             label: Attributes mapping
             fields:
@@ -59,6 +65,10 @@ akeneo_suggest_data:
                 missing_target_key: 'Missing target key for mapping'
                 missing_attribute_key: 'Missing {{ expectedKey }} key for mapping with target key "{{ targetKey }}"'
                 invalid_attribute_type_mapping: 'Franklin attributes cannot be mapped to PIM attribute type "{{ pimType }}"'
+                empty_mapping: 'Franklin attributes cannot be mapped with an empty mapping'
+                localizable_not_allowed: 'Franklin attributes cannot be mapped to a PIM localizable attribute'
+                scopable_not_allowed: 'Franklin attributes cannot be mapped to a PIM scopable attribute'
+                locale_specific_not_allowed: 'Franklin attributes cannot be mapped to a PIM locale specific attribute'
         product_subscription:
             flash:
                 create:
@@ -68,7 +78,6 @@ akeneo_suggest_data:
                     success: 'Product successfully unsubscribed from Franklin'
                     fail: 'Impossible to unsubscribe product from Franklin'
             constraint:
-                invalid_token: 'Sorry, failed to subscribe products to Franklin Insights, your token is invalid. Please enter a valid token or contact us for help.'
                 family_required: 'Sorry, a product family is required in order to subscribe the product to Franklin Insights.'
                 no_identifiers_mapping: 'Please map your catalog product identifiers at Settings > Franklin Insights before subscribing products.'
                 insufficient_credits: "Sorry, failed to subscribe product to Franklin Insights. You don't have enough credit."
@@ -124,8 +133,14 @@ akeneo_suggest_data:
                     first_step: 'In order to help you enrich your catalog, Franklin will need to know your catalog identifiers that match his.'
                     second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="#" class="AknDescriptionHeader-link">Read more</a>'
             inactive_connection:
-                title: Sorry, nothing to show here yet
-                sub_title: Please activate your account on System > Franklin connection and come back.
+                title: 'Sorry, nothing to show here yet'
+                sub_title: 'Please activate your account on System > Franklin connection and come back.'
+            no_active_english_locale:
+                title: 'Franklin insights is only available for English locales.'
+                sub_title: 'Stay tuned, locales are coming.'
+            save:
+                warning: '{1}Changing the mapping may impact 1 subscription. Are you sure?|]1,+Inf[Changing the mapping may impact {{ count }} subscriptions. Are you sure?'
+                title: 'Warning!'
 
     mass_edit:
         product:

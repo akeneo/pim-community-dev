@@ -11,7 +11,7 @@ import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
 import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
-import {getSubscriptionStatus} from '../../fetcher/subscription';
+import {getSubscriptionStatus} from '../../fetcher/subscription-status';
 import SubscriptionStatus from '../../model/subscription-status';
 
 const __ = require('oro/translator');

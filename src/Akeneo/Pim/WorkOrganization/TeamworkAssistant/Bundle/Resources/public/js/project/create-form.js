@@ -262,9 +262,6 @@ define(
                     }
 
                     this.$el.html(this.templateModal({
-                        subTitleLabel: __('teamwork_assistant.grid.view_selector.projects'),
-                        titleLabel: __('pim_common.create'),
-                        picture: 'illustrations/Project.svg',
                         fields: this.template({
                             channelLabel: __('pim_enrich.entity.channel.uppercase_label'),
                             channelValue: channelValue,

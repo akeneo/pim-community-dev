@@ -35,10 +35,6 @@ category.permissions:
   apply_on_children.label: Änderung auf die Kindelemente anwenden
   apply_on_children.help: Die Änderungen an den Berechtigungen auf alle Kindelemente kopieren. Bestehende Berechtigungen bei Kindelementen werden beibehalten.
 locale.permissions:
-  view.label: Berechtigt Produktinformationen anzuzeigen
-  view.help: Erlauben, die Produkteinformationen in diesem Gebietsschema anzusehen
-  edit.label: Berechtigt Produktinformationen zu bearbeiten
-  edit.help: Erlauben, die Produkteinformationen in diesem Gebietsschema zu bearbeiten (beinhaltet die Berechtigung anzuzeigen)
   no_access_to_products: Sie haben keinen Zugriff auf Produktinformationen in ausgewählten Gebietsschemata . Bitte kontaktieren Sie Ihren Administrator.
 flash.locale.updated: Das Gebietsschema und die Berechtigungen wurden erfolgreich aktualisiert
 pim_enrich:

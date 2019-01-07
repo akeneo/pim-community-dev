@@ -37,10 +37,6 @@ category.permissions:
   apply_on_children.label: Anvend ændringer på underliggende kategorier
   apply_on_children.help: Kopier tilladelses ændringer på alle underliggende elementer, eksisterende tilladelser bibeholdes
 locale.permissions:
-  view.label: Rettighed til at se produktinformation
-  view.help: Rettighed til at se produktinformation i denne landestandard
-  edit.label: Rettighed til at redigere oplysninger om produktet
-  edit.help: Rettighed til at redigere produkt oplysningerne i denne landestandard (indebærer tilladelsen visning)
   no_access_to_products: Du har ikke adgang til produktdata i nogen af de aktiverede landestandard, kontakt venligst administratoren
 flash.locale.updated: Landestandard og rettighederne er blevet opdateret
 pim_enrich:

@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\EmptySuggestedDataQueryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -45,50 +46,56 @@ class UpdateIdentifiersMappingHandler
     /** @var IdentifiersMappingProviderInterface */
     private $identifiersMappingProvider;
 
-    /** @var EmptySuggestedDataQueryInterface */
-    private $emptySuggestedDataQuery;
+    /** @var ProductSubscriptionRepositoryInterface */
+    private $subscriptionRepository;
 
     /**
      * @param AttributeRepositoryInterface $attributeRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param IdentifiersMappingProviderInterface $identifiersMappingProvider
-     * @param EmptySuggestedDataQueryInterface $emptySuggestedDataQuery
+     * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingProviderInterface $identifiersMappingProvider,
-        EmptySuggestedDataQueryInterface $emptySuggestedDataQuery
+        ProductSubscriptionRepositoryInterface $subscriptionRepository
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->identifiersMappingProvider = $identifiersMappingProvider;
-        $this->emptySuggestedDataQuery = $emptySuggestedDataQuery;
+        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     /**
      * @param UpdateIdentifiersMappingCommand $updateIdentifiersMappingCommand
      *
      * @throws InvalidMappingException
+     * @throws DataProviderException
      */
     public function handle(UpdateIdentifiersMappingCommand $updateIdentifiersMappingCommand): void
     {
         $identifiers = $updateIdentifiersMappingCommand->getIdentifiersMapping();
         $identifiers = $this->replaceAttributeCodesByAttributes($identifiers);
 
-        $this->validateAttributeTypes($identifiers);
+        $this->validateMappedIdentifiers($identifiers);
         $this->validateThatBrandAndMpnAreNotSavedAlone($identifiers);
 
-        $identifiersMapping = new IdentifiersMapping($identifiers);
+        $identifiersMapping = $this->identifiersMappingRepository->find();
+
+        foreach ($identifiers as $franklinIdentifier => $pimAttribute) {
+            $identifiersMapping->map($franklinIdentifier, $pimAttribute);
+        }
+
         $this->identifiersMappingProvider->updateIdentifiersMapping($identifiersMapping);
-        $this->emptySuggestedDataQuery->execute();
+        $this->subscriptionRepository->emptySuggestedData();
         $this->identifiersMappingRepository->save($identifiersMapping);
     }
 
     /**
      * @param array $identifiers
      *
-     * @throws InvalidMappingException If attribute does not exist
+     * @throws \InvalidArgumentException If attribute does not exist
      *
      * @return array
      */
@@ -100,7 +107,9 @@ class UpdateIdentifiersMappingHandler
                 $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
                 if (!$attribute instanceof AttributeInterface) {
-                    throw InvalidMappingException::attributeNotFound($attributeCode, static::class, $franklinCode);
+                    throw new \InvalidArgumentException(
+                        sprintf('Attribute "%s" does not exist', $attributeCode)
+                    );
                 }
 
                 $identifiers[$franklinCode] = $attribute;
@@ -112,8 +121,10 @@ class UpdateIdentifiersMappingHandler
 
     /**
      * @param array $identifiers
+     *
+     * @throws InvalidMappingException
      */
-    private function validateAttributeTypes(array $identifiers): void
+    private function validateMappedIdentifiers(array $identifiers): void
     {
         foreach ($identifiers as $identifier => $attribute) {
             if (empty($attribute)) {
@@ -125,6 +136,18 @@ class UpdateIdentifiersMappingHandler
                     static::class,
                     $identifier
                 );
+            }
+
+            if ($attribute->isLocalizable()) {
+                throw InvalidMappingException::localizableAttributeNotAllowed($attribute->getCode());
+            }
+
+            if ($attribute->isScopable()) {
+                throw InvalidMappingException::scopableAttributeNotAllowed($attribute->getCode());
+            }
+
+            if ($attribute->isLocaleSpecific()) {
+                throw InvalidMappingException::localeSpecificAttributeNotAllowed($attribute->getCode());
             }
         }
     }

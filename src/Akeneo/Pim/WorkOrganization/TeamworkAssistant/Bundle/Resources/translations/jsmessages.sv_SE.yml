@@ -24,7 +24,6 @@ teamwork_assistant:
     title: Redigera projekt
   create_project_modal:
     saved: Projektet har sparats, du kommer att meddelas när beräkningen är klar.
-    title: Skapa projekt
   widget:
     no_project: Du har inga aktuella projekt
     description: Beskrivning

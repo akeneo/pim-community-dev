@@ -38,7 +38,8 @@ class IdentifiersMappingNormalizer
             ];
         }
 
-        foreach ($mapping->getIdentifiers() as $identifier => $attribute) {
+        foreach ($mapping->getIdentifiers() as $franklinIdentifierCode => $identifier) {
+            $attribute = $identifier->getAttribute();
             if (null !== $attribute) {
                 $labels = [];
                 $translations = $attribute->getTranslations();
@@ -48,8 +49,8 @@ class IdentifiersMappingNormalizer
                     }
                 }
 
-                $normalizedMapping[$identifier]['status'] = 'active';
-                $normalizedMapping[$identifier]['to'] = [
+                $normalizedMapping[$franklinIdentifierCode]['status'] = 'active';
+                $normalizedMapping[$franklinIdentifierCode]['to'] = [
                     'id' => $attribute->getCode(),
                     'label' => $labels,
                 ];

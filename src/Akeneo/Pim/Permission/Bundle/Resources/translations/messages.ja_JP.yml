@@ -35,10 +35,6 @@ category.permissions:
   apply_on_children.label: 子要素に変更を適用します。
   apply_on_children.help: 全ての子要素の権限をコピーし、すでに存在する権限は保持される
 locale.permissions:
-  view.label: 製品情報の表示を許可
-  view.help: このロケールで製品情報を表示することを許可する
-  edit.label: 製品情報の編集を許可
-  edit.help: このロケール内の製品情報の編集を許可する (アクセス権限の許可を意味する)
   no_access_to_products: 全ての有効なロケールにおいて、製品データへのアクセス権限がありません。管理者に問い合わせてください。
 flash.locale.updated: ロケールおよびアクセス権限が更新されました
 pim_enrich:

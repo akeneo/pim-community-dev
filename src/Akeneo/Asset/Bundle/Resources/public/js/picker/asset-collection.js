@@ -13,11 +13,12 @@ define(
         'oro/translator',
         'backbone',
         'pimee/template/picker/asset-collection',
+        'pim/template/common/modal-centered',
         'pimee/template/picker/asset-collection-preview',
         'pim/fetcher-registry',
         'pim/form-builder',
         'routing',
-        'backbone/bootstrap-modal',
+        'bootstrap-modal',
         'pim/security-context'
     ], (
         $,
@@ -25,7 +26,8 @@ define(
         __,
         Backbone,
         template,
-        templateModal,
+        manageAssetModalTemplate,
+        previewModalTemplate,
         FetcherRegistry,
         FormBuilder,
         Routing,
@@ -42,7 +44,8 @@ define(
                 'click .asset-thumbnail-item': 'updateAssetsFromPreview',
                 'click .upload-assets': 'uploadAssets'
             },
-            modalTemplate: _.template(templateModal),
+            previewModalTemplate: _.template(previewModalTemplate),
+            manageAssetModalTemplate: _.template(manageAssetModalTemplate),
 
             /**
              * {@inheritdoc}
@@ -155,17 +158,17 @@ define(
 
                 FormBuilder.build('pimee-product-asset-picker-form').then(form => {
                     let modal = new Backbone.BootstrapModal({
-                        className: 'modal modal--fullPage modal--topButton',
                         modalOptions: {
                             backdrop: 'static',
                             keyboard: false
                         },
-                        allowCancel: true,
                         okCloses: false,
-                        title: '',
+                        title: __('pimee_product_asset.form.product.asset.title'),
+                        innerDescription: __('pimee_product_asset.form.product.asset.description'),
                         content: '',
-                        cancelText: ' ',
-                        okText: __('pim_common.confirm')
+                        okText: __('pim_common.confirm'),
+                        template: this.manageAssetModalTemplate,
+                        innerClassName: 'AknFullPage--full',
                     });
                     modal.open();
 
@@ -226,26 +229,27 @@ define(
 
                 FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.data).then(function (assets) {
                     const modal = new Backbone.BootstrapModal({
-                        className: 'modal modal--fullPage modal--topButton',
                         modalOptions: {
                             backdrop: 'static',
                             keyboard: false
                         },
-                        allowCancel: true,
                         okCloses: false,
-                        template: this.modalTemplate,
-                        assets: assets,
-                        locale: this.context.locale,
-                        scope: this.context.scope,
-                        content: '',
-                        thumbnailFilter: 'thumbnail',
-                        assetCollectionPreviewTitle: __('pimee_product_asset.form.product.asset.preview_title'),
-                        downloadLabel: __('pimee_product_asset.form.product.asset.download'),
-                        removeLabel: __('pimee_product_asset.form.product.asset.remove'),
-                        yesLabel: __('pimee_product_asset.form.product.asset.yes'),
-                        noLabel: __('pimee_product_asset.form.product.asset.no'),
-                        confirmLabel: __('pimee_product_asset.form.product.asset.assetRemoveConfirmationLabel'),
-                        canRemoveAsset: aclGranted && 'view' !== editMode
+                        template: this.manageAssetModalTemplate,
+                        title: __('pimee_product_asset.form.product.asset.preview_title'),
+                        okText: '',
+                        innerDescription: ' ',
+                        content: this.previewModalTemplate({
+                            assets,
+                            locale: this.context.locale,
+                            scope: this.context.scope,
+                            thumbnailFilter: 'thumbnail',
+                            downloadLabel: __('pimee_product_asset.form.product.asset.download'),
+                            removeLabel: __('pimee_product_asset.form.product.asset.remove'),
+                            yesLabel: __('pimee_product_asset.form.product.asset.yes'),
+                            noLabel: __('pimee_product_asset.form.product.asset.no'),
+                            confirmLabel: __('pimee_product_asset.form.product.asset.assetRemoveConfirmationLabel'),
+                            canRemoveAsset: aclGranted && 'view' !== editMode,
+                        }),
                     });
                     modal.open();
 

@@ -1,3 +1,4 @@
+
 Feature: Lists all attributes related to a reference entity
   In order to see the structure of a reference entity
   As a user
@@ -6,6 +7,8 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: Edit the attribute text
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     When the user asks for the reference entity "designer"
     And the user edit the attribute "name"
     And the attribute property "maxFileSize" should not be visible
@@ -28,8 +31,23 @@ Feature: Lists all attributes related to a reference entity
     And the user edits the attribute property "RegularExpression" with value "nice!"
 
   @acceptance-front
+  Scenario: User can't edit the text attribute
+    Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | false |
+    When the user asks for the reference entity "designer"
+    And the user looks at the attribute "name"
+    Then the user can't edit the attribute property "Label"
+    And the user can't edit the attribute property "IsRequired"
+    And the user can't edit the attribute property "MaxLength"
+    And the user can't edit the attribute property "IsTextarea"
+    And the user can't edit the attribute property "ValidationRule"
+
+  @acceptance-front
   Scenario: Edit the image attribute
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     When the user asks for the reference entity "designer"
     And the user edit the attribute "portrait"
     And the attribute property "isRichTextEditor" should not be visible
@@ -43,8 +61,22 @@ Feature: Lists all attributes related to a reference entity
     And the user edits the attribute property "AllowedExtensions" with value "gif"
 
   @acceptance-front
+  Scenario: User can't edit the image attribute
+    Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | false |
+    When the user asks for the reference entity "designer"
+    And the user looks at the attribute "portrait"
+    Then the user can't edit the attribute property "Label"
+    And the user can't edit the attribute property "IsRequired"
+    And the user can't edit the attribute property "MaxFileSize"
+    And the user can't edit the attribute property "AllowedExtensions"
+
+  @acceptance-front
   Scenario: Edit the option attribute
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     When the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     And the attribute property "isRichTextEditor" should not be visible
@@ -56,8 +88,20 @@ Feature: Lists all attributes related to a reference entity
     And the user edits the attribute property "IsRequired" with value "true"
 
   @acceptance-front
+  Scenario: User can't edit the option attribute
+    Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | false |
+    When the user asks for the reference entity "designer"
+    And the user looks at the attribute "favorite_color"
+    Then the user can't edit the attribute property "Label"
+    And the user can't edit the attribute property "IsRequired"
+
+  @acceptance-front
   Scenario: Edit the option collection attribute
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     When the user asks for the reference entity "designer"
     And the user edit the attribute "colors"
     And the attribute property "isRichTextEditor" should not be visible
@@ -69,8 +113,20 @@ Feature: Lists all attributes related to a reference entity
     And the user edits the attribute property "IsRequired" with value "true"
 
   @acceptance-front
+  Scenario: User can't edit the option attribute
+    Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | false |
+    When the user asks for the reference entity "designer"
+    And the user looks at the attribute "colors"
+    Then the user can't edit the attribute property "Label"
+    And the user can't edit the attribute property "IsRequired"
+
+  @acceptance-front
   Scenario: Manage the list of options by adding a new option code
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     And the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     When the user manages the options of the attribute
@@ -83,6 +139,8 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: Fill in the label of an option to the list of available options of an option attribute
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     And the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     When the user manages the options of the attribute
@@ -92,6 +150,8 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: Remove an option from the list
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     And the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     When the user manages the options of the attribute
@@ -102,6 +162,8 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: Go to the next label to enrich when the user presses enter
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     And the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     When the user manages the options of the attribute
@@ -111,6 +173,8 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: Go to the next code to enrich when the user presses enter
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     And the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     And the user manages the options of the attribute
@@ -123,6 +187,8 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: The user cancels the changes made to the list
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     And the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     And the user manages the options of the attribute
@@ -132,6 +198,8 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: The translation helper is initialized with the first option of the list
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     And the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     When the user manages the options of the attribute
@@ -140,6 +208,8 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: The user switches locales updates the option list
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     And the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     And the user manages the options of the attribute
@@ -149,8 +219,10 @@ Feature: Lists all attributes related to a reference entity
     And the translation helper displays "Red"
 
   # @acceptance-front
-   Scenario: A validation occured because the code is not valid
+  Scenario: A validation occured because the code is not valid
     Given a valid reference entity
+     And the user has the following rights:
+       | akeneo_referenceentity_attribute_edit   | true |
     And the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     And the user manages the options of the attribute
@@ -160,9 +232,11 @@ Feature: Lists all attributes related to a reference entity
     Then the user cannot save the options successfully because the option is not valid
     And there is an error message next to the "gre-een" field
 
-#  @acceptance-front
+  #  @acceptance-front
   Scenario: A validation occured because the code is duplicated
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     And the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     And the user manages the options of the attribute
@@ -174,8 +248,21 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: A validation occured because the number of attribute options has reached the limit
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
     And the user asks for the reference entity "designer"
     And the user edit the attribute "favorite_color"
     And the user manages the options of the attribute
     When the user cannot save the options successfully because the limit of options is reached
     Then there is an error message next to the translator
+
+  @acceptance-front
+  Scenario: Manage the list of options by adding a new option code
+    Given a valid reference entity
+    And the user asks for the reference entity "designer"
+    And the user looks at the attribute "favorite_color"
+    When the user manages the options of the attribute
+    Then the code of the "red" option should be locked
+    And the label of the "red" option should be locked
+    And the user cannot remove the "red" option
+    And the user cannot add a new option

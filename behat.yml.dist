@@ -244,6 +244,9 @@ acceptance:
             paths:
                 - '%paths.base%/src/Akeneo/Pim/Automation/SuggestData/tests/features'
             contexts_services:
+                - test.attribute.context
+                - test.channel.context
+                - test.locale.context
                 - akeneo_acceptance.context.suggest_data.franklin
                 - akeneo_acceptance.context.suggest_data.identifiers_mapping
                 - akeneo_acceptance.context.suggest_data.product_subscription
@@ -251,9 +254,9 @@ acceptance:
                 - akeneo_acceptance.context.suggest_data.data_fixtures
                 - akeneo_acceptance.context.suggest_data.product_fetching
                 - akeneo_acceptance.context.suggest_data.proposal
-                - test.attribute.context
                 - akeneo_acceptance.context.suggest_data.attributes_mapping
                 - akeneo_acceptance.context.suggest_data.attribute_options_mapping
+                - akeneo_acceptance.context.suggest_data.channel
             filters:
                 tags: '@acceptance-back'
         platform:

@@ -7,5 +7,6 @@ services:
             - '@pim_user.updater.user'
             - '@pim_user.saver.user'
             - '@validator'
+            - '@pim_catalog.repository.locale'
         tags:
             - { name: 'console.command' }

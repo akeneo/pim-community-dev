@@ -37,10 +37,6 @@ category.permissions:
   apply_on_children.label: Aplicar cambios a la sub-categoría
   apply_on_children.help: Copiar los cambios de permisos en todas las sub-categorías, los permisos existentes en sub-categorías son mantenidos
 locale.permissions:
-  view.label: Autorizado a ver la información del producto
-  view.help: Autorizar a ver la información del producto in este locale
-  edit.label: Autorizado a editar la información del producto
-  edit.help: Autorizar a editar la información del producto en este locale (permiso de lectura implícito)
   no_access_to_products: Usted no tiene acceso a la información del producto en ningún local activo. Por favor contacte a su administrador.
 flash.locale.updated: El local y los permisos han sido actualizados
 pim_enrich:

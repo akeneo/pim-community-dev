@@ -3,9 +3,26 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
 
   const isLockedOptionCode = async code => {
     await page.waitForSelector(`.AknOptionEditor-translator tr[data-code="${code}"]`, {timeout: 2000});
-    const codeInput = await nodeElement.$(`tr[data-code="${code}"] input[name="code"]`);
+    await nodeElement.$(`tr[data-code="${code}"] input[name="code"].AknTextField--disabled`);
+
+    return true;
+  };
+
+  const isLockedOptionLabel = async code => {
+    await page.waitForSelector(`.AknOptionEditor-translator tr[data-code="${code}"]`, {timeout: 2000});
+    const codeInput = await nodeElement.$(`tr[data-code="${code}"] input[name="label"]`);
 
     return null !== codeInput.$('.AknTextField--disabled');
+  };
+
+  const hasNewOption = async () => {
+    try {
+      await page.waitForSelector('tr[data-code=""] input[name="code"]', {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
   };
 
   const newOptionCode = async code => {
@@ -43,10 +60,19 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
     await removeOptionButton.click();
   };
 
+  const hasRemoveOptionButton = async code => {
+    try {
+      await page.waitForSelector(`tr[data-code="${code}"] .AknOptionEditor-remove`, {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  };
+
   const save = async () => {
     await page.evaluate(edit => {
-      const button = edit.querySelector('.AknButton.AknButton--apply.AknButtonList-item');
-
+      const button = edit.querySelector('.AknButton.AknButton--apply');
       button.style.width = '100px';
       button.style.height = '100px';
     }, nodeElement);
@@ -56,7 +82,13 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
   };
 
   const cancel = async () => {
-    const cancelButton = await nodeElement.$('.AknButtonList-item.cancel');
+    await page.evaluate(edit => {
+      const button = edit.querySelector('.AknFullPage-cancel');
+      button.style.width = '100px';
+      button.style.height = '100px';
+    }, nodeElement);
+
+    const cancelButton = await nodeElement.$('.AknFullPage-cancel');
     await cancelButton.click();
   };
 
@@ -141,11 +173,14 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
 
   return {
     isLockedOptionCode,
+    isLockedOptionLabel,
+    hasNewOption,
     newOptionCode,
     newOptionLabel,
     getOptionCodeValue,
     removeOption,
     hasOption,
+    hasRemoveOptionButton,
     save,
     cancel,
     codeHasLabel,

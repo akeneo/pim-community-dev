@@ -23,15 +23,14 @@ services:
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@security.token_storage'
 
-    akeneo.pim.automation.suggest_data.proposal.factory.suggested_data:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\ProposalSuggestedDataFactory'
-        arguments:
-            - '@akeneo.pim.automation.suggest_data.normalizers.suggested_data'
-
-    akeneo.pim.automation.suggest_data.launcher.job_launcher:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Launcher\JobLauncher'
+    akeneo.pim.automation.suggest_data.application.subscription.service.resubscribe_products:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\JobLauncher\ResubscribeProducts'
         arguments:
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@security.token_storage'
 
+    akeneo.pim.automation.suggest_data.proposal.factory.suggested_data:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\ProposalSuggestedDataFactory'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.normalizers.suggested_data'

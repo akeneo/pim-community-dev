@@ -62,6 +62,16 @@ services:
         tags:
             - { name: fob.context_service }
 
+    akeneo_referenceentity.tests.back.acceptance.context.set_reference_entity_permission_context:
+        class: Akeneo\ReferenceEntity\Acceptance\Context\SetReferenceEntityPermissionContext
+        arguments:
+        - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+        - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission'
+        - '@__symfony__.akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
+        - '@akeneo_referenceentity.tests.back.acceptance.context.exception_context'
+        tags:
+        - { name: fob.context_service }
+
     akeneo_referenceentity.tests.back.acceptance.context.create_attribute_context:
         class: Akeneo\ReferenceEntity\Acceptance\Context\CreateAttributeContext
         arguments:

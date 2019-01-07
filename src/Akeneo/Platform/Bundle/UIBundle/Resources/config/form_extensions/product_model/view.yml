@@ -125,7 +125,7 @@ extensions:
         config:
             removeAttributeRoute: pim_enrich_product_remove_attribute_rest
             removeAttributeACL: pim_enrich_product_remove_attribute
-            tabTitle: pim_enrich.form.product.tab.attributes.title
+            tabTitle: pim_enrich.entity.attribute.plural_label
             deletionFailed: pim_enrich.entity.attribute.flash.delete.fail
 
     pimee-product-model-view-form-categories:

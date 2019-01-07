@@ -35,6 +35,8 @@ services:
             - '@pimee_product_asset.repository.asset_category'
             - '@pimee_product_asset.repository.category'
             - '@pimee_product_asset.manager.category'
+            - '@pimee_product_asset.builder.reference'
+            - '@pimee_product_asset.builder.variation'
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
@@ -56,7 +58,7 @@ services:
             - '%tmp_storage_dir%'
 
     pimee_product_asset.controller.category_tree:
-        class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\CategoryTreeController'
+        class: 'Akeneo\Asset\Bundle\Controller\UI\AssetCategoryTreeController'
         arguments:
             - '@event_dispatcher'
             - '@pimee_product_asset.context.user'
@@ -68,11 +70,12 @@ services:
             - { related_entity: asset, form_type: '%pimee_product_asset.form.type.category.class%', acl: pimee_product_asset, route: pimee_asset }
             - '@pimee_product_asset.repository.asset_category_access'
             - '@security.token_storage'
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
+            - '@templating'
+            - '@form.factory'
+            - '@session'
 
     pimee_product_asset.controller.category_tree_asset_picker:
-        class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\CategoryTreeController'
+        class: 'Akeneo\Asset\Bundle\Controller\UI\AssetCategoryTreeController'
         arguments:
             - '@event_dispatcher'
             - '@pimee_product_asset.context.user'
@@ -84,8 +87,9 @@ services:
             - { related_entity: asset, form_type: '%pimee_product_asset.form.type.category.class%', acl: pimee_product_asset_picker, route: pimee_asset_picker }
             - '@pimee_product_asset.repository.asset_category_access'
             - '@security.token_storage'
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
+            - '@templating'
+            - '@form.factory'
+            - '@session'
 
     pimee_product_asset.controller.rest.asset_category:
         class: '%pimee_product_asset.controller.rest.asset_category.class%'

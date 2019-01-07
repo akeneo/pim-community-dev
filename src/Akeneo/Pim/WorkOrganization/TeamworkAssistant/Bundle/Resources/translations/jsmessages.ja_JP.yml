@@ -25,7 +25,6 @@ teamwork_assistant:
     title: プロジェクトの編集
   create_project_modal:
     saved: プロジェクトが保存されました、計算が終了するときに通知されます。
-    title: プロジェクトを作成
   widget:
     no_project: プロジェクトは現在ありません
     no_project_create: プロジェクトを新規作成

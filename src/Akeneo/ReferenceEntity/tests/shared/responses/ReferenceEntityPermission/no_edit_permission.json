@@ -1,0 +1,59 @@
+{
+    "request": {
+        "method": "POST",
+        "route": "akeneo_reference_entities_reference_entity_permission_set_rest",
+        "query": {
+            "referenceEntityIdentifier": "designer"
+        },
+        "body": [
+            {"user_group_identifier": 2, "name": "IT Manager", "right_level": "view"},
+            {"user_group_identifier": 1, "name": "Marketing", "right_level": "view"}
+        ]
+    },
+    "response": {
+        "status": 400,
+        "body": [
+            {
+                "messageTemplate": "pim_reference_entity.reference_entity.validation.reference_entity_permissions.at_least_one_user_group_should_have_edit_permission",
+                "parameters": [],
+                "plural": null,
+                "message": "At least one user group should have edit permission on this entity",
+                "root": {
+                    "referenceEntityIdentifier": "designer",
+                    "permissionsByUserGroup": [
+                        {
+                            "userGroupIdentifier": 2,
+                            "rightLevel": "view"
+                        },
+                        {
+                            "userGroupIdentifier": 1,
+                            "rightLevel": "view"
+                        }
+                    ]
+                },
+                "propertyPath": "",
+                "invalidValue": {
+                    "referenceEntityIdentifier": "designer",
+                    "permissionsByUserGroup": [
+                        {
+                            "userGroupIdentifier": 2,
+                            "rightLevel": "view"
+                        },
+                        {
+                            "userGroupIdentifier": 1,
+                            "rightLevel": "view"
+                        }
+                    ]
+                },
+                "constraint": {
+                    "targets": "class",
+                    "defaultOption": null,
+                    "requiredOptions": [],
+                    "payload": null
+                },
+                "cause": null,
+                "code": null
+            }
+        ]
+    }
+}

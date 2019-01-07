@@ -77,7 +77,6 @@ $rules = [
         'Akeneo\Channel\Component\Model\ChannelInterface',
         'Akeneo\UserManagement\Component\Model\GroupInterface',
         'Akeneo\UserManagement\Component\Model\UserInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
 
         // TODO: the project should not be linked to a datagrid view, we should use project filter instead
         'Oro\Bundle\PimDataGridBundle\Entity\DatagridView',
@@ -86,11 +85,10 @@ $rules = [
         // TODO: usage of public constant
         'Akeneo\Pim\Permission\Component\Attributes',
 
-        // TODO: A component should not depend on a bundle
-        'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\RefreshProjectCompletenessJobLauncher',
+        // TODO EASY PICK: Move interface to component
         'Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface',
 
-        // TODO: TWA should have its own exceptions.
+        // TODO: EASY PICK TWA should have its own exceptions.
         'Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException',
 
         // TODO: pre processed data are computed thanks to value complete checker

@@ -24,14 +24,14 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class FranklinProposalsCreationSubscriber implements EventSubscriberInterface
 {
     /** @var ProductSubscriptionRepositoryInterface */
-    private $subscriptionrepository;
+    private $subscriptionRepository;
 
     /**
-     * @param ProductSubscriptionRepositoryInterface $subscriptionrepository
+     * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
      */
-    public function __construct(ProductSubscriptionRepositoryInterface $subscriptionrepository)
+    public function __construct(ProductSubscriptionRepositoryInterface $subscriptionRepository)
     {
-        $this->subscriptionrepository = $subscriptionrepository;
+        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     /**
@@ -54,6 +54,6 @@ class FranklinProposalsCreationSubscriber implements EventSubscriberInterface
             throw new \InvalidArgumentException('Event\'s subject must be an array');
         }
 
-        $this->subscriptionrepository->emptySuggestedData($productIds);
+        $this->subscriptionRepository->emptySuggestedDataByProducts($productIds);
     }
 }

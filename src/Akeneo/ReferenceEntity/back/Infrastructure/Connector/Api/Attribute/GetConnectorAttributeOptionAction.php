@@ -1,0 +1,74 @@
+<?php
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
+
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionInterface;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+
+class GetConnectorAttributeOptionAction
+{
+    /** @var FindConnectorAttributeOptionInterface */
+    private $findConnectorAttributeOptionQuery;
+
+    /** @var ReferenceEntityExistsInterface */
+    private $referenceEntityExists;
+
+    public function __construct(
+        FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery,
+        ReferenceEntityExistsInterface $referenceEntityExists
+    ) {
+        $this->referenceEntityExists = $referenceEntityExists;
+        $this->findConnectorAttributeOptionQuery = $findConnectorAttributeOptionQuery;
+    }
+
+    /**
+     * @throws UnprocessableEntityHttpException
+     * @throws NotFoundHttpException
+     */
+    public function __invoke(string $referenceEntityIdentifier, string $attributeCode, string $optionCode): JsonResponse
+    {
+        try {
+            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+        } catch (\Exception $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage());
+        }
+
+        $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
+
+        if (false === $referenceEntityExists) {
+            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
+        }
+
+        try {
+            $attributeCode = AttributeCode::fromString($attributeCode);
+            $optionCode = OptionCode::fromString($optionCode);
+        } catch (\Exception $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage());
+        }
+
+        $attributeOption = ($this->findConnectorAttributeOptionQuery)($referenceEntityIdentifier, $attributeCode, $optionCode);
+
+        if (null === $attributeOption) {
+            throw new NotFoundHttpException(sprintf('Attribute option "%s" does not exist for the attribute "%s".', $optionCode, $attributeCode));
+        }
+
+        $normalizedAttributeOption = $attributeOption->normalize();
+
+        return new JsonResponse($normalizedAttributeOption);
+    }
+}

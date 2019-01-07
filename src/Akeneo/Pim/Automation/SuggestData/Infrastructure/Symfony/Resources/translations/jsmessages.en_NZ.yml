@@ -30,8 +30,6 @@ akeneo_suggest_data:
       constraint:
         duplicate_attribute_code: "One mapping allowed per catalog attribute"
         missing_or_invalid_identifiers: "Some identifiers mapping keys are missing or invalid. Expected: \"{{ expected }}\", got \"{{ given }}\"."
-        attribute_not_found: "Attribute with attribute code \"{{ attributeCode }}\" for the identifiers mapping does not exist."
-        mandatory_attribute_mapping: "Brand & MPN mapping required"
         attribute_type: "The type of this attribute can not be set as identifier"
     attributes_mapping:
       label: Attributes mapping
@@ -55,7 +53,6 @@ akeneo_suggest_data:
       constraint:
         missing_target_key: 'Missing target key for mapping'
         missing_attribute_key: 'Missing {{ expectedKey }} key for mapping with target key "{{ targetKey }}"'
-        invalid_attribute_type_mapping: 'The external attribute type "{{ targetType }}" cannot be mapped to PIM attribute type "{{ pimType }}"'
     product_subscription:
       flash:
         create:
@@ -65,7 +62,6 @@ akeneo_suggest_data:
           success: 'Product successfully unsubscribed from Franklin'
           fail: 'Impossible to unsubscribe product from Franklin'
       constraint:
-        invalid_token: 'Sorry, failed to subscribe products to Franklin Insights, your token is invalid. Please enter a valid token or contact us for help.'
         family_required: 'Sorry, a product family is required in order to subscribe the product to Franklin Insights.'
         no_identifiers_mapping: 'Please map your catalog product identifiers at Settings > Franklin Insights before subscribing products.'
         insufficient_credits: "Sorry, failed to subscribe product to Franklin Insights. You don't have enough credit."
@@ -85,7 +81,6 @@ akeneo_suggest_data:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} attribute options'
           sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
-          description: 'In order to help enrich your catalog, Franklin will need to know your catalog attribute options that match his. <a href="" target="_blank">Read more</a>'
   product:
     edit:
       btn.push: Suggest data
@@ -117,8 +112,8 @@ akeneo_suggest_data:
           first_step: 'In order to help you enrich your catalog, Franklin will need to know your catalog identifiers that match his.'
           second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="#" class="AknDescriptionHeader-link">Read more</a>'
       inactive_connection:
-        title: Sorry, nothing to show here yet
-        sub_title: Please activate your account on System > Franklin connection and come back.
+        title: 'Sorry, nothing to show here yet'
+        sub_title: 'Please activate your account on System > Franklin connection and come back.'
   mass_edit:
     product:
       operation:

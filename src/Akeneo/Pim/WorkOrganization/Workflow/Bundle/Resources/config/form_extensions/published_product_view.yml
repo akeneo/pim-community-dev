@@ -121,7 +121,7 @@ extensions:
         targetZone: container
         position: 90
         config:
-            tabTitle: pim_enrich.form.product.tab.attributes.title
+            tabTitle: pim_enrich.entity.attribute.plural_label
 
     pimee-published-product-view-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector

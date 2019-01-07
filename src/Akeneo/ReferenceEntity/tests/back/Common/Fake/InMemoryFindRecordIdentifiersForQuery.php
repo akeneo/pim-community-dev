@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
@@ -29,11 +29,11 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     /** @var Record[] */
     private $records = [];
 
-    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocale */
+    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
     private $findRequiredValueKeyCollectionForChannelAndLocale;
 
     public function __construct(
-        InMemoryFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredValueKeyCollectionForChannelAndLocale
+        InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocale
     ) {
         $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
     }
@@ -94,7 +94,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
                 $record->getReferenceEntityIdentifier(),
                 ChannelIdentifier::fromCode($query->getChannel()),
-                LocaleIdentifier::fromCode($query->getLocale())
+                LocaleIdentifierCollection::fromNormalized([$query->getLocale()])
             );
 
             $recordValues = $record->getValues();

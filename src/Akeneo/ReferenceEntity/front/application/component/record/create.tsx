@@ -74,105 +74,111 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
 
   render(): JSX.Element | JSX.Element[] | null {
     return (
-      <div className="modal in modal--fullPage" aria-hidden="false" style={{zIndex: 1041}}>
+      <div className="modal in" aria-hidden="false" style={{zIndex: 1041}}>
         <div className="modal-body  creation">
-          <div className="AknFullPage AknFullPage--modal">
-            <div className="AknFullPage-content">
-              <div className="AknFullPage-left">
+          <div className="AknFullPage">
+            <div className="AknFullPage-content AknFullPage-content--withIllustration">
+              <div>
                 <img src="bundles/pimui/images/illustrations/Records.svg" className="AknFullPage-image" />
               </div>
-              <div className="AknFullPage-right">
-                <div className="AknFullPage-subTitle">{__('pim_reference_entity.record.create.subtitle')}</div>
-                <div className="AknFullPage-title">
-                  {__('pim_reference_entity.record.create.title', {
-                    entityLabel: this.props.referenceEntity.getLabel(this.props.context.locale).toLowerCase(),
-                  })}
-                </div>
-                <div className="AknFieldContainer" data-code="label">
-                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                    <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.record.create.input.label">
-                      {__('pim_reference_entity.record.create.input.label')}
-                    </label>
+              <div>
+                <div className="AknFormContainer">
+                  <div className="AknFullPage-titleContainer">
+                    <div className="AknFullPage-subTitle">{__('pim_reference_entity.record.create.subtitle')}</div>
+                    <div className="AknFullPage-title">
+                      {__('pim_reference_entity.record.create.title', {
+                        entityLabel: this.props.referenceEntity.getLabel(this.props.context.locale).toLowerCase(),
+                      })}
+                    </div>
                   </div>
-                  <div className="AknFieldContainer-inputContainer">
-                    <input
-                      ref={this.labelInput}
-                      type="text"
-                      className="AknTextField AknTextField--light"
-                      id="pim_reference_entity.record.create.input.label"
-                      name="label"
-                      value={
-                        undefined === this.props.data.labels[this.props.context.locale]
-                          ? ''
-                          : this.props.data.labels[this.props.context.locale]
-                      }
-                      onChange={this.onLabelUpdate}
-                      onKeyPress={this.onKeyPress}
-                    />
-                    <Flag
-                      locale={createLocaleFromCode(this.props.context.locale)}
-                      displayLanguage={false}
-                      className="AknFieldContainer-inputSides"
-                    />
-                  </div>
-                  {getErrorsView(this.props.errors, 'labels')}
-                </div>
-                <div className="AknFieldContainer" data-code="code">
-                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                    <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.record.create.input.code">
-                      {__('pim_reference_entity.record.create.input.code')}
-                    </label>
-                  </div>
-                  <div className="AknFieldContainer-inputContainer">
-                    <input
-                      type="text"
-                      className="AknTextField AknTextField--light"
-                      id="pim_reference_entity.record.create.input.code"
-                      name="code"
-                      value={this.props.data.code}
-                      onChange={this.onRecordCodeUpdate}
-                      onKeyPress={this.onKeyPress}
-                    />
-                  </div>
-                  {getErrorsView(this.props.errors, 'code')}
-                </div>
-                <div className="AknFieldContainer" data-code="create_another">
-                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                    <label
-                      className="AknFieldContainer-label"
-                      htmlFor="pim_reference_entity.record.create.input.create_another"
-                    >
-                      <Checkbox
-                        id="pim_reference_entity.record.create.input.create_another"
-                        value={this.state.createAnother}
-                        onChange={(newValue: boolean) => this.setState({createAnother: newValue})}
+                  <div className="AknFieldContainer" data-code="label">
+                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                      <label
+                        className="AknFieldContainer-label"
+                        htmlFor="pim_reference_entity.record.create.input.label"
+                      >
+                        {__('pim_reference_entity.record.create.input.label')}
+                      </label>
+                    </div>
+                    <div className="AknFieldContainer-inputContainer">
+                      <input
+                        ref={this.labelInput}
+                        type="text"
+                        className="AknTextField AknTextField--light"
+                        id="pim_reference_entity.record.create.input.label"
+                        name="label"
+                        value={
+                          undefined === this.props.data.labels[this.props.context.locale]
+                            ? ''
+                            : this.props.data.labels[this.props.context.locale]
+                        }
+                        onChange={this.onLabelUpdate}
+                        onKeyPress={this.onKeyPress}
                       />
-                      <span>{__('pim_reference_entity.record.create.input.create_another')}</span>
-                    </label>
+                      <Flag
+                        locale={createLocaleFromCode(this.props.context.locale)}
+                        displayLanguage={false}
+                        className="AknFieldContainer-inputSides"
+                      />
+                    </div>
+                    {getErrorsView(this.props.errors, 'labels')}
                   </div>
-                  <div className="AknFieldContainer-inputContainer" />
+                  <div className="AknFieldContainer" data-code="code">
+                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                      <label
+                        className="AknFieldContainer-label"
+                        htmlFor="pim_reference_entity.record.create.input.code"
+                      >
+                        {__('pim_reference_entity.record.create.input.code')}
+                      </label>
+                    </div>
+                    <div className="AknFieldContainer-inputContainer">
+                      <input
+                        type="text"
+                        className="AknTextField AknTextField--light"
+                        id="pim_reference_entity.record.create.input.code"
+                        name="code"
+                        value={this.props.data.code}
+                        onChange={this.onRecordCodeUpdate}
+                        onKeyPress={this.onKeyPress}
+                      />
+                    </div>
+                    {getErrorsView(this.props.errors, 'code')}
+                  </div>
+                  <div className="AknFieldContainer" data-code="create_another">
+                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                      <label
+                        className="AknFieldContainer-label"
+                        htmlFor="pim_reference_entity.record.create.input.create_another"
+                      >
+                        <Checkbox
+                          id="pim_reference_entity.record.create.input.create_another"
+                          value={this.state.createAnother}
+                          onChange={(newValue: boolean) => this.setState({createAnother: newValue})}
+                        />
+                        <span>{__('pim_reference_entity.record.create.input.create_another')}</span>
+                      </label>
+                    </div>
+                    <div className="AknFieldContainer-inputContainer" />
+                  </div>
+                  <button
+                    className="AknButton AknButton--apply ok"
+                    onClick={() => {
+                      this.props.events.onSubmit(this.state.createAnother);
+                    }}
+                  >
+                    {__('pim_reference_entity.record.create.confirm')}
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="AknButtonList AknButtonList--right modal-footer">
-          <span
-            title="{__('pim_reference_entity.record.create.cancel')}"
-            className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
-            onClick={this.props.events.onCancel}
-          >
-            {__('pim_reference_entity.record.create.cancel')}
-          </span>
-          <button
-            className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
-            onClick={() => {
-              this.props.events.onSubmit(this.state.createAnother);
-            }}
-          >
-            {__('pim_reference_entity.record.create.confirm')}
-          </button>
-        </div>
+        <div
+          title="{__('pim_reference_entity.record.create.cancel')}"
+          className="AknFullPage-cancel cancel"
+          onClick={this.props.events.onCancel}
+        />
       </div>
     );
   }

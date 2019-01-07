@@ -6,7 +6,7 @@ namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForIdentifiersAndQuery;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocale;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -54,7 +54,7 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
     /** @var RecordIdentifier */
     private $cocoIdentifier;
 
-    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocale */
+    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
     private $inMemoryRequiredQuery;
 
     /** @var InMemoryFindRecordItemsForIdentifiersAndQuery */
@@ -64,7 +64,7 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
     {
         $this->recordRepository = new InMemoryRecordRepository();
         $this->attributeRepository = new InMemoryAttributeRepository();
-        $this->inMemoryRequiredQuery = new InMemoryFindRequiredValueKeyCollectionForChannelAndLocale(
+        $this->inMemoryRequiredQuery = new InMemoryFindRequiredValueKeyCollectionForChannelAndLocales(
             $this->attributeRepository
         );
 

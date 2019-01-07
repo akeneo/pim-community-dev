@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoreferenceentity/application/reducer/record/edit';
-import {recordLabelUpdated, saveRecord, recordValueUpdated} from 'akeneoreferenceentity/application/action/record/edit';
+import {recordLabelUpdated, recordValueUpdated, saveRecord} from 'akeneoreferenceentity/application/action/record/edit';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {EditionFormState} from 'akeneoreferenceentity/application/reducer/record/edit/form';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
@@ -13,12 +13,21 @@ import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel
 import renderValues from 'akeneoreferenceentity/application/component/record/edit/enrich/value';
 import Value from 'akeneoreferenceentity/domain/model/record/value';
 import Key from 'akeneoreferenceentity/tools/key';
+import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
+
+const securityContext = require('pim/security-context');
 
 interface StateProps {
   form: EditionFormState;
   context: {
     locale: string;
     channel: string;
+  };
+  rights: {
+    record: {
+      edit: boolean;
+      delete: boolean;
+    };
   };
 }
 
@@ -52,6 +61,9 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
 
   render() {
     const record = denormalizeRecord(this.props.form.data);
+    const inputTextClassName = `AknTextField AknTextField--narrow AknTextField--light ${
+      !this.props.rights.record.edit ? 'AknTextField--disabled' : ''
+    }`;
 
     return (
       <div className="AknSubsection">
@@ -71,7 +83,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
                 type="text"
                 name="label"
                 id="pim_reference_entity.record.enrich.label"
-                className="AknTextField AknTextField--narrow AknTextField--light"
+                className={inputTextClassName}
                 value={record.getLabel(this.props.context.locale, false)}
                 onChange={this.updateLabel}
                 onKeyDown={this.keyDown}
@@ -89,7 +101,8 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
             createLocaleReference(this.props.context.locale),
             this.props.form.errors,
             this.props.events.form.onValueChange,
-            this.props.events.form.onSubmit
+            this.props.events.form.onSubmit,
+            this.props.rights
           )}
         </div>
       </div>
@@ -108,6 +121,15 @@ export default connect(
       context: {
         locale,
         channel,
+      },
+      rights: {
+        record: {
+          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') && canEditReferenceEntity(),
+          delete:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            securityContext.isGranted('akeneo_referenceentity_record_delete') &&
+            canEditReferenceEntity(),
+        },
       },
     };
   },

@@ -10,90 +10,90 @@
   "response": {
     "status": 200,
     "body": {
-      "identifier":"designer_starck_a1677570-a278-444b-ab46-baa1db199392",
-      "reference_entity_identifier":"designer",
-      "code":"starck",
-      "labels":{
-        "fr_FR":"Philippe Starck"
+      "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
+      "reference_entity_identifier": "designer",
+      "code": "starck",
+      "labels": {
+        "fr_FR": "Philippe Starck"
       },
-      "image":null,
-      "values":[
+      "image": null,
+      "values": [
         {
-          "attribute":{
-            "identifier":"name_designer_fingerprint",
-            "reference_entity_identifier":"designer",
-            "code":"name",
-            "labels":{
-              "fr_FR":"Nom"
+          "attribute": {
+            "identifier": "name_designer_fingerprint",
+            "reference_entity_identifier": "designer",
+            "code": "name",
+            "labels": {
+              "fr_FR": "Nom"
             },
-            "order":0,
-            "is_required":false,
-            "value_per_channel":false,
-            "value_per_locale":false,
-            "type":"text",
-            "max_length":25,
-            "is_textarea":false,
-            "is_rich_text_editor":false,
-            "validation_rule":"none",
-            "regular_expression":null
+            "order": 0,
+            "is_required": false,
+            "value_per_channel": false,
+            "value_per_locale": false,
+            "type": "text",
+            "max_length": 25,
+            "is_textarea": false,
+            "is_rich_text_editor": false,
+            "validation_rule": "none",
+            "regular_expression": null
           },
-          "channel":null,
-          "locale":null,
-          "data":"Philippe Starck"
+          "channel": null,
+          "locale": null,
+          "data": "Philippe Starck"
         },
         {
-          "attribute":{
-            "identifier":"description_designer_fingerprint",
-            "reference_entity_identifier":"designer",
-            "code":"description",
-            "labels":{
-              "fr_FR":"Description"
+          "attribute": {
+            "identifier": "description_designer_fingerprint",
+            "reference_entity_identifier": "designer",
+            "code": "description",
+            "labels": {
+              "fr_FR": "Description"
             },
-            "order":1,
-            "is_required":false,
-            "value_per_channel":false,
-            "value_per_locale":true,
-            "type":"text",
-            "max_length":25,
-            "is_textarea":true,
-            "is_rich_text_editor":true,
-            "validation_rule":"none",
-            "regular_expression":null
+            "order": 1,
+            "is_required": false,
+            "value_per_channel": false,
+            "value_per_locale": true,
+            "type": "text",
+            "max_length": 25,
+            "is_textarea": true,
+            "is_rich_text_editor": true,
+            "validation_rule": "none",
+            "regular_expression": null
           },
-          "channel":null,
-          "locale":"en_US",
-          "data":null
+          "channel": null,
+          "locale": "en_US",
+          "data": null
         },
         {
-          "attribute":{
-            "identifier":"description_designer_fingerprint",
-            "reference_entity_identifier":"designer",
-            "code":"description",
-            "labels":{
-              "fr_FR":"Description"
+          "attribute": {
+            "identifier": "description_designer_fingerprint",
+            "reference_entity_identifier": "designer",
+            "code": "description",
+            "labels": {
+              "fr_FR": "Description"
             },
-            "order":1,
-            "is_required":false,
-            "value_per_channel":false,
-            "value_per_locale":true,
-            "type":"text",
-            "max_length":25,
-            "is_textarea":true,
-            "is_rich_text_editor":true,
-            "validation_rule":"none",
-            "regular_expression":null
+            "order": 1,
+            "is_required": false,
+            "value_per_channel": false,
+            "value_per_locale": true,
+            "type": "text",
+            "max_length": 25,
+            "is_textarea": true,
+            "is_rich_text_editor": true,
+            "validation_rule": "none",
+            "regular_expression": null
           },
-          "channel":null,
-          "locale":"fr_FR",
-          "data":null
+          "channel": null,
+          "locale": "fr_FR",
+          "data": null
         },
         {
-          "attribute":{
-            "identifier":"website_designer_fingerprint",
-            "reference_entity_identifier":"designer",
-            "code":"website",
-            "labels":{
-              "fr_FR":"Website"
+          "attribute": {
+            "identifier": "website_designer_fingerprint",
+            "reference_entity_identifier": "designer",
+            "code": "website",
+            "labels": {
+              "fr_FR": "Website"
             },
             "order": 2,
             "is_required": true,
@@ -111,13 +111,13 @@
           "data": null
         },
         {
-          "attribute":{
-            "identifier":"portrait_designer_fingerprint",
-            "reference_entity_identifier":"designer",
-            "code":"portrait",
-            "labels":{
-              "fr_FR":"Image autobiographique",
-              "en_US":"Portrait"
+          "attribute": {
+            "identifier": "portrait_designer_fingerprint",
+            "reference_entity_identifier": "designer",
+            "code": "portrait",
+            "labels": {
+              "fr_FR": "Image autobiographique",
+              "en_US": "Portrait"
             },
             "order": 3,
             "is_required": false,
@@ -125,13 +125,18 @@
             "value_per_locale": false,
             "type": "image",
             "max_file_size": "200.10",
-            "allowed_extensions": ["png"]
+            "allowed_extensions": [
+              "png"
+            ]
           },
           "channel": null,
           "locale": null,
           "data": null
         }
-      ]
+      ],
+      "permission": {
+        "edit": true
+      }
     }
   }
 }

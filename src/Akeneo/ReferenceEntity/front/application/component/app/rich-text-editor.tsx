@@ -4,7 +4,12 @@ const {Editor} = require('react-draft-wysiwyg');
 const htmlToDraft = require('html-to-draftjs').default;
 const draftToHtml = require('draftjs-to-html');
 
-type RichTextEditorProps = {value: string; onChange: (value: string) => void};
+type RichTextEditorProps = {
+  value: string;
+  onChange: (value: string) => void;
+  readOnly: boolean;
+};
+
 type RichTextEditorState = {editorState?: any};
 
 const draftToRaw = (editorState: any) => {
@@ -49,6 +54,7 @@ export default class RichTextEditor extends React.Component<RichTextEditorProps,
     return (
       <React.Fragment>
         <Editor
+          toolbarHidden={this.props.readOnly}
           toolbar={{
             options: [
               'inline',
@@ -72,6 +78,8 @@ export default class RichTextEditor extends React.Component<RichTextEditorProps,
           editorState={editorState}
           editorClassName="AknTextareaField AknTextareaField--light"
           onEditorStateChange={this.onEditorStateChange}
+          readOnly={this.props.readOnly}
+          disabled={this.props.readOnly}
         />
       </React.Fragment>
     );

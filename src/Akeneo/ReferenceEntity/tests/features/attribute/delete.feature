@@ -15,6 +15,9 @@ Feature: Delete an attribute linked to a reference entity
   @acceptance-front
   Scenario: Delete a text attribute linked to a reference entity
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
+      | akeneo_referenceentity_attribute_delete | true |
     And the following attributes for the reference entity "designer":
       | code     | type  | labels                                  |
       | name     | text  | {"en_US": "Name", "fr_FR": "Name"}      |
@@ -27,27 +30,46 @@ Feature: Delete an attribute linked to a reference entity
     When the user deletes the attribute "name" linked to the reference entity "designer"
     And the user should see the deleted notification
     Then there should be the following attributes:
-      | code     | type  |
-      | name     | text  |
+      | code | type |
+      | name | text |
 
   @acceptance-front
   Scenario: Cannot delete a text attribute linked to a reference entity
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
+      | akeneo_referenceentity_attribute_delete | true |
     And the user asks for the reference entity "designer"
     Then there should be the following attributes:
       | code     | type  |
       | name     | text  |
       | portrait | image |
-    When the user cannot deletes the attribute "name" linked to the reference entity "designer"
+    When the user cannot delete the attribute "name" linked to the reference entity "designer"
     Then the user should see the delete notification error
-    Then there should be the following attributes:
+    And there should be the following attributes:
       | code     | type  |
       | name     | text  |
       | portrait | image |
 
   @acceptance-front
+  Scenario: User doesn't have the right to delete a text attribute linked to a reference entity
+    Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | false |
+      | akeneo_referenceentity_attribute_delete | false |
+    And the user asks for the reference entity "designer"
+    Then there should be the following attributes:
+      | code     | type  |
+      | name     | text  |
+      | portrait | image |
+    Then the user cannot delete the attribute "name"
+
+  @acceptance-front
   Scenario: Cancel a text attribute deletion
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
+      | akeneo_referenceentity_attribute_delete | true |
     And the user asks for the reference entity "designer"
     Then there should be the following attributes:
       | code     | type  |

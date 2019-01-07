@@ -31,7 +31,6 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
     }
 
     public function it_normalizes_identifiers_mapping(
-        IdentifiersMapping $mapping,
         AttributeInterface $attributeSku,
         AttributeInterface $attributeBrand,
         AttributeTranslationInterface $brandEN,
@@ -40,13 +39,11 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
         \ArrayIterator $brandTransIterator,
         ArrayCollection $skuTranslations
     ): void {
-        $mapping->getIdentifiers()->willReturn(
-            [
-                'mpn' => $attributeSku,
-                'brand' => $attributeBrand,
-                'ean' => null,
-            ]
-        );
+        $mapping = new IdentifiersMapping();
+        $mapping
+            ->map('mpn', $attributeSku->getWrappedObject())
+            ->map('brand', $attributeBrand->getWrappedObject());
+
         $attributeSku->getCode()->willReturn('sku');
         $attributeSku->getTranslations()->willReturn($skuTranslations);
 

@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repositor
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -81,21 +82,65 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function emptySuggestedData(array $productIds): void
+    public function emptySuggestedData(): void
+    {
+        $query = <<<SQL
+UPDATE pim_suggest_data_product_subscription
+SET raw_suggested_data = NULL
+WHERE raw_suggested_data IS NOT NULL;
+SQL;
+        $this->em->getConnection()->executeQuery($query);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function emptySuggestedDataByProducts(array $productIds): void
     {
         if (empty($productIds)) {
             return;
         }
 
-        $qb = $this->em->createQueryBuilder();
-        $qb->update(ProductSubscription::class, 'subscription')
-           ->set('subscription.rawSuggestedData', ':rawSuggestedData')
-           ->where(
-               $qb->expr()->in('subscription.productId', ':productIds')
-           )
-           ->setParameter('rawSuggestedData', null)
-           ->setParameter('productIds', $productIds);
+        $query = <<<SQL
+UPDATE pim_suggest_data_product_subscription
+SET raw_suggested_data = NULL 
+WHERE raw_suggested_data IS NOT NULL
+AND product_id IN (:productIds);
+SQL;
+        $this->em->getConnection()->executeQuery(
+            $query,
+            ['productIds' => $productIds],
+            ['productIds' => Connection::PARAM_STR_ARRAY]
+        );
+    }
 
-        $qb->getQuery()->execute();
+    /**
+     * {@inheritdoc}
+     */
+    public function emptySuggestedDataAndMissingMappingByFamily(string $familyCode): void
+    {
+        $query = <<<SQL
+UPDATE pim_suggest_data_product_subscription s
+INNER JOIN pim_catalog_product p ON p.id = s.product_id
+INNER JOIN pim_catalog_family f ON f.id = p.family_id
+SET s.raw_suggested_data = NULL, s.misses_mapping = NULL
+WHERE s.raw_suggested_data IS NOT NULL
+AND f.code = :familyCode;
+SQL;
+        $this->em->getConnection()->executeQuery($query, ['familyCode' => $familyCode]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count(): int
+    {
+        $sql = <<<SQL
+SELECT COUNT(1) AS product_subscription_count from pim_suggest_data_product_subscription;
+SQL;
+        $statement = $this->em->getConnection()->executeQuery($sql);
+        $result = $statement->fetch();
+
+        return intval($result['product_subscription_count']);
     }
 }

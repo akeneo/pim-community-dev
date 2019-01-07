@@ -33,4 +33,9 @@ interface ConfigurationRepositoryInterface
      * @param Configuration $configuration
      */
     public function save(Configuration $configuration): void;
+
+    /**
+     * Clears the current configuration.
+     */
+    public function clear(): void;
 }

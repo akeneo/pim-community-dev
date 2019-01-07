@@ -15,11 +15,10 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\A
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AbstractApi;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * TODO: No specs for this class.
- *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class AuthenticationWebService extends AbstractApi
@@ -43,7 +42,7 @@ class AuthenticationWebService extends AbstractApi
             if (Response::HTTP_OK !== $response->getStatusCode()) {
                 return false;
             }
-        } catch (ClientException $e) {
+        } catch (ServerException | ClientException $e) {
             return false;
         }
 

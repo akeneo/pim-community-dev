@@ -30,11 +30,10 @@ $rules = [
         'Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface',
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
-        // TODO: To remove
+        // TODO: EASY PICK Duplicate code in controller
         'Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver',
 
-        // TODO: Problem on product value presentation (new tool or something else?)
-        // TODO: UserContext shouldn't be injected in any service it is a contextual parameter
+        // TODO: Extract presenter to tool (it should not rely on product value anymore)
         'Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface',
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
     ])->in('Akeneo\Pim\Automation\RuleEngine\Bundle'),
@@ -43,19 +42,19 @@ $rules = [
         'Akeneo\Tool\Component',
         'Doctrine\Common',
 
-        // TODO: Check how to decouple that from the enrichment
+        // TODO: should it be part of the enrichment public API?
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
-        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface',
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface', // the engine creates a fake product to allow validation
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext', // used to version products when a rule is applied
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager', // used to version products when a rule is applied
@@ -67,7 +66,7 @@ $rules = [
         // TODO: the component should not use a bundle => split the Tool\RuleEngine into Bundle + Component
         'Akeneo\Tool\Bundle\RuleEngineBundle',
 
-        // TODO: called in ProductRuleSelector but not used => remove the dependency
+        // TODO: EASY PICK called in ProductRuleSelector but not used => remove the dependency
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
 
     ])->in('Akeneo\Pim\Automation\RuleEngine\Component'),

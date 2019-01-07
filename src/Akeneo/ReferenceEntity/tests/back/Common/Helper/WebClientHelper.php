@@ -15,7 +15,9 @@ namespace Akeneo\ReferenceEntity\Common\Helper;
 
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -56,6 +58,7 @@ class WebClientHelper
         );
         Assert::assertSame($statusCode, $response->getStatusCode(), $errorMessage);
         if ($expectedContent !== '') {
+            Assert::assertEquals($expectedContent, $response->getContent(), 'Expected response content is not the same as the actual.');
             Assert::assertJsonStringEqualsJsonString($expectedContent, $response->getContent(), 'Expected response content is not the same as the actual.');
         }
     }
@@ -132,22 +135,42 @@ HTML;
 
     public function requestFromFile(Client $client, string $relativeFilePath): Response
     {
-        $requestFile = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
-        if (null === $requestFile) {
+        $fileData = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
+        if (null === $fileData) {
             throw new \RuntimeException(
                 sprintf('Impossible to load "%s" file, the file is not be present or is malformed', $relativeFilePath)
             );
         }
-        $request = $requestFile['request'];
-        $headers = [
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            'CONTENT_TYPE'          => 'application/json',
-        ];
+        $request = $fileData['request'];
+        $headers = $this->getRequestHeaders($request);
+        $requestFiles = $this->getRequestFiles($request);
         $body = $this->getBody($request);
         $url = $this->router->generate($request['route'], $request['query']);
-        $client->request($request['method'], $url, [], [], $headers, $body);
+
+        $client->request($request['method'], $url, [], $requestFiles, $headers, $body);
 
         return $client->getResponse();
+    }
+
+    public function assertStreamedResponseFromFile(StreamedResponse $response, string $responseContent, string $relativeFilePath): void
+    {
+        $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
+        if (null === $expectedResponse) {
+            throw new \RuntimeException(
+                sprintf('Impossible to load "%s" file, the file is not be present or is malformed', $relativeFilePath)
+            );
+        }
+
+        $statusCodeErrorMessage = sprintf(
+            'Expected response status code is not the same as the actual. Failed with content %s',
+            $response->getContent()
+        );
+        Assert::assertSame($expectedResponse['response']['status'], $response->getStatusCode(), $statusCodeErrorMessage);
+        Assert::assertSame($expectedResponse['response']['body'], $responseContent, 'Expected response content is not the same as the actual.');
+
+        if (isset($expectedResponse['response']['headers'])) {
+            $this->assertResponseHeaders($expectedResponse['response']['headers'], $response);
+        }
     }
 
     private function assertFromFile(Response $response, string $relativeFilePath): void
@@ -190,5 +213,36 @@ HTML;
             Assert::assertTrue($response->headers->has($headerKey), 'Expected header does not exist.');
             Assert::assertSame($headerValue, $response->headers->get($headerKey), 'Expected header has not the same value in the response.');
         }
+    }
+
+    private function getRequestHeaders(array $request): array
+    {
+        $headers = [
+            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            'CONTENT_TYPE'          => 'application/json',
+        ];
+
+        if (isset($request['headers'])) {
+            $headers = array_merge($headers, $request['headers']);
+        }
+
+        return $headers;
+    }
+
+    private function getRequestFiles(array $request): array
+    {
+        $files = [];
+
+        if (isset($request['files'])) {
+            $files = array_map(function ($requestFile) {
+                return new UploadedFile(
+                    self::SHARED_RESPONSES_FILE_PATH_PREFIX . $requestFile['path'],
+                    $requestFile['name'],
+                    $requestFile['mime_type']
+                );
+            }, $request['files']);
+        }
+
+        return $files;
     }
 }

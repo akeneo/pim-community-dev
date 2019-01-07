@@ -12,11 +12,14 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
 
+use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
+use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Get one Reference entity by its identifier
@@ -29,9 +32,20 @@ class GetAction
     /** @var FindReferenceEntityDetailsInterface */
     private $findOneReferenceEntityQuery;
 
-    public function __construct(FindReferenceEntityDetailsInterface $findOneReferenceEntityQuery)
-    {
+    /** @var CanEditReferenceEntityQueryHandler */
+    private $canEditReferenceEntityQueryHandler;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
+    public function __construct(
+        FindReferenceEntityDetailsInterface $findOneReferenceEntityQuery,
+        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        TokenStorageInterface $tokenStorage
+    ) {
         $this->findOneReferenceEntityQuery = $findOneReferenceEntityQuery;
+        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(string $identifier): JsonResponse
@@ -58,6 +72,16 @@ class GetAction
             throw new NotFoundHttpException();
         }
 
-        return $result;
+        return $this->hydratePermissions($result);
+    }
+
+    private function hydratePermissions(ReferenceEntityDetails $referenceEntityDetails): ReferenceEntityDetails
+    {
+        $canEditQuery = new CanEditReferenceEntityQuery();
+        $canEditQuery->referenceEntityIdentifier = (string) $referenceEntityDetails->identifier;
+        $canEditQuery->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $referenceEntityDetails->isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($canEditQuery);
+
+        return $referenceEntityDetails;
     }
 }

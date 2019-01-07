@@ -42,10 +42,11 @@ $rules = [
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
         // TODO: we put everything related to permissions at the same place
-        'Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface',
+        'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',
         'Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository',
         'Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobInstanceRepository',
-        'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',
+        // TODO: EASY PICK ProductMassActionRepository should not use the publish product repository, is it dead code?
+        'Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface',
 
         //TODO: Link by id instead of reference
         'Akeneo\Asset\Component\Model\CategoryInterface',
@@ -134,7 +135,7 @@ $rules = [
 
         //TODO: just because we override ProductFieldsBuilder
         'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',
-        //TODO: RegisterSerializerPass should go in Tool
+        //TODO: EASY PICK RegisterSerializerPass should go in Tool
         'Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass',
         //TODO: we should not inject the userContext as a service
         'Akeneo\UserManagement\Bundle\Context\UserContext',
@@ -147,11 +148,15 @@ $rules = [
         'Doctrine\Common',
         'Akeneo\Tool',
 
-        //TODO: It is linked to the bundle
+        //TODO: EASY PICK: should be in component
         'Akeneo\Pim\Permission\Bundle\Entity\AssetCategoryAccess',
         'Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess',
         'Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery',
+
+        //TODO: EASY PICK: Interface in component + implementation in bundle
         'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
+
+        //TODO: Move in component + Rework that
         'Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager',
         'Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager',
 

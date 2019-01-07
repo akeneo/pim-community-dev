@@ -62,19 +62,21 @@ class Create extends React.Component<CreateProps> {
 
   render(): JSX.Element | JSX.Element[] | null {
     return (
-      <div className="modal in modal--fullPage" aria-hidden="false" style={{zIndex: 1041}}>
+      <div className="modal in" aria-hidden="false" style={{zIndex: 1041}}>
         <div>
-          <div className="AknFullPage AknFullPage--modal">
-            <div className="AknFullPage-content">
-              <div className="AknFullPage-left">
+          <div className="AknFullPage">
+            <div className="AknFullPage-content AknFullPage-content--withIllustration">
+              <div>
                 <img src="bundles/pimui/images/illustrations/Reference-entities.svg" className="AknFullPage-image" />
               </div>
-              <div className="AknFullPage-right">
-                <div className="AknFullPage-subTitle">
-                  {__('pim_reference_entity.reference_entity.create.subtitle')}
+              <div>
+                <div className="AknFullPage-titleContainer">
+                  <div className="AknFullPage-subTitle">
+                    {__('pim_reference_entity.reference_entity.create.subtitle')}
+                  </div>
+                  <div className="AknFullPage-title">{__('pim_reference_entity.reference_entity.create.title')}</div>
                 </div>
-                <div className="AknFullPage-title">{__('pim_reference_entity.reference_entity.create.title')}</div>
-                <div>
+                <div className="AknFormContainer">
                   <div className="AknFieldContainer" data-code="label">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
@@ -127,27 +129,20 @@ class Create extends React.Component<CreateProps> {
                     </div>
                     {getErrorsView(this.props.errors, 'code')}
                   </div>
+                  <button className="AknButton AknButton--apply ok" onClick={this.props.events.onSubmit}>
+                    {__('pim_reference_entity.reference_entity.create.confirm')}
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="AknButtonList AknButtonList--right modal-footer">
-          <span
-            title="{__('pim_reference_entity.reference_entity.create.cancel')}"
-            className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
-            onClick={this.props.events.onCancel}
-            tabIndex={0}
-          >
-            {__('pim_reference_entity.reference_entity.create.cancel')}
-          </span>
-          <button
-            className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
-            onClick={this.props.events.onSubmit}
-          >
-            {__('pim_reference_entity.reference_entity.create.confirm')}
-          </button>
-        </div>
+        <div
+          title="{__('pim_reference_entity.reference_entity.create.cancel')}"
+          className="AknFullPage-cancel cancel"
+          onClick={this.props.events.onCancel}
+          tabIndex={0}
+        />
       </div>
     );
   }

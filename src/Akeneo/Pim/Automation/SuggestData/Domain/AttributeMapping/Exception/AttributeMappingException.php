@@ -20,6 +20,7 @@ class AttributeMappingException extends \Exception
 {
     /** @var string */
     private const CONSTRAINT_KEY = 'akeneo_suggest_data.entity.attributes_mapping.constraint.%s';
+
     /** @var array */
     private $messageParams;
 
@@ -46,6 +47,36 @@ class AttributeMappingException extends \Exception
         $message = sprintf(static::CONSTRAINT_KEY, 'invalid_attribute_type_mapping');
 
         return new static($message, ['pimType' => $pimAttributeType]);
+    }
+
+    /**
+     * @return AttributeMappingException
+     */
+    public static function localizableAttributeNotAllowed(): self
+    {
+        $message = sprintf(static::CONSTRAINT_KEY, 'localizable_not_allowed');
+
+        return new static($message, []);
+    }
+
+    /**
+     * @return AttributeMappingException
+     */
+    public static function scopableAttributeNotAllowed(): self
+    {
+        $message = sprintf(static::CONSTRAINT_KEY, 'scopable_not_allowed');
+
+        return new static($message, []);
+    }
+
+    /**
+     * @return AttributeMappingException
+     */
+    public static function localeSpecificAttributeNotAllowed(): self
+    {
+        $message = sprintf(static::CONSTRAINT_KEY, 'locale_specific_not_allowed');
+
+        return new static($message, []);
     }
 
     /**

@@ -18,12 +18,14 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\GetAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
+            - '@security.token_storage'
 
     akeneo_referenceentity.infrastructure.action.reference_entity.edit:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\EditAction
         arguments:
             - '@akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler'
-            - '@akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@reference_entity_serializer'
             - '@validator'
@@ -32,11 +34,29 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\DeleteAction
         arguments:
         - '@oro_security.security_facade'
-        - '@akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler'
+        - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
         - '@security.token_storage'
         - '@serializer'
         - '@validator'
         - '@akeneo_referenceentity.application.reference_entity.delete_reference_entity_handler'
+
+    # Reference Entity Permissions
+    akeneo_referenceentity.infrastructure.action.reference_entity_permission.get:
+        class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntityPermission\GetAction
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_permissions_details'
+            - '@validator'
+            - '@serializer'
+
+    akeneo_referenceentity.infrastructure.action.reference_entity_permission.set:
+        class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntityPermission\SetAction
+        arguments:
+            - '@akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@serializer'
 
     # Attributes
     akeneo_referenceentity.infrastructure.action.attribute.create:
@@ -45,7 +65,7 @@ services:
             - '@akeneo_referenceentity.application.attribute.create_attribute_handler'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order'
             - '@akeneo_referenceentity.application.registry.create_attribute_command_factory_registry'
-            - '@akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@serializer'
             - '@validator'
@@ -62,7 +82,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.application.factory.edit_attribute_command_factory'
             - '@akeneo_referenceentity.application.attribute.edit_attribute_handler'
-            - '@akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@serializer'
             - '@validator'
@@ -73,7 +93,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.application.attribute.delete_attribute_handler'
             - '@oro_security.security_facade'
-            - '@akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
 
     #  Records
@@ -81,7 +101,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\CreateAction
         arguments:
             - '@akeneo_referenceentity.application.record.create_record_handler'
-            - '@akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@reference_entity_serializer'
             - '@validator'
@@ -96,6 +116,8 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\GetAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
+            - '@security.token_storage'
 
     akeneo_referenceentity.infrastructure.action.record.edit:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\EditAction
@@ -103,7 +125,7 @@ services:
             - '@akeneo_referenceentity.application.factory.record.edit_record_command_factory'
             - '@akeneo_referenceentity.application.record.edit_record_handler'
             - '@validator'
-            - '@akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@serializer'
 
@@ -112,7 +134,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.application.record.delete_record_handler'
             - '@oro_security.security_facade'
-            - '@akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
 
     akeneo_referenceentity.infrastructure.action.record.delete_all:
@@ -120,7 +142,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.application.record.delete_all_reference_entity_records_handler'
             - '@oro_security.security_facade'
-            - '@akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler'
+            - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
 
     akeneo_referenceentity.infrastructure.connector.action.record.get:
@@ -171,6 +193,16 @@ services:
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_reference_entity_image'
             - '%reference_entity_connector_reference_entities_limit_per_page%'
 
+    akeneo_referenceentity.infrastructure.connector.action.reference_entity.create_or_update:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\CreateOrUpdateReferenceEntityAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@validator'
+            - '@akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'
+            - '@akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler'
+            - '@router'
+            - '@akeneo_referenceentity.infrastructure.connector.api.reference_entity_validator'
+
     akeneo_referenceentity.infrastructure.connector.action.record.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\CreateOrUpdateRecordAction
         arguments:
@@ -182,6 +214,21 @@ services:
             - '@router'
             - '@akeneo_referenceentity.infrastructure.connector.api.record_validator'
             - '@validator'
+
+    akeneo_referenceentity.infrastructure.connector.action.records.create_or_update:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\CreateOrUpdateRecordsAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
+            - '@akeneo_referenceentity.application.factory.record.connector.edit_record_command_factory'
+            - '@akeneo_referenceentity.application.record.edit_record_handler'
+            - '@akeneo_referenceentity.application.record.create_record_handler'
+            - '@router'
+            - '@validator'
+            - '@pim_api.normalizer.exception.violation'
+            - '@akeneo_referenceentity.infrastructure.connector.api.record_validator'
+            - '@akeneo_referenceentity.infrastructure.connector.api.record_list_validator'
+            - '%reference_entity_connector_maximum_records_to_process_per_request%'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attributes.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorReferenceEntityAttributesAction
@@ -195,3 +242,41 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+
+    akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute.create_or_update:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\CreateOrUpdateAttributeAction
+        arguments:
+            - '@akeneo_referenceentity.application.registry.create_attribute_command_factory_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.attribute_exists'
+            - '@akeneo_referenceentity.application.attribute.create_attribute_handler'
+            - '@router'
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_referenceentity.application.factory.edit_attribute_command_factory'
+            - '@akeneo_referenceentity.application.attribute.edit_attribute_handler'
+
+    akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.get:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_option'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+
+    akeneo_referenceentity.infrastructure.connector.action.media_file_download:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\MediaFile\DownloadMediaFileAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.media_file'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+
+    akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_options.get:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionsAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_options'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.attribute_exists'
+            - '@akeneo_referenceentity.domain.persistence.query.attribute_supports_options'
+
+    akeneo_referenceentity.infrastructure.connector.action.media_file_upload:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\MediaFile\UploadMediaFileAction
+        arguments:
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@router'

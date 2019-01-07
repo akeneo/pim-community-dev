@@ -17,6 +17,8 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscript
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
 
@@ -25,6 +27,13 @@ use Webmozart\Assert\Assert;
  */
 class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 {
+    public function let(
+        FamilyRepositoryInterface $familyRepository,
+        ProductRepositoryInterface $productRepository
+    ): void {
+        $this->beConstructedWith($familyRepository, $productRepository);
+    }
+
     public function it_is_a_product_subscription_repository(): void
     {
         $this->shouldImplement(ProductSubscriptionRepositoryInterface::class);
@@ -91,7 +100,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $this->findOneByProductId(42)->shouldReturn(null);
     }
 
-    public function it_empties_suggested_data_for_specified_ids(): void
+    public function it_empties_suggested_data_for_specified_product_ids(): void
     {
         $subscription = new ProductSubscription(42, 'fake-subscription-id', []);
         $subscription->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
@@ -99,7 +108,24 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $this->save($subscription);
         Assert::false($subscription->getSuggestedData()->isEmpty());
 
-        $this->emptySuggestedData([42]);
+        $this->emptySuggestedDataByProducts([42]);
         Assert::true($subscription->getSuggestedData()->isEmpty());
+    }
+
+    public function it_empties_suggested_data(): void
+    {
+        $subscription1 = new ProductSubscription(42, 'fake-id', []);
+        $subscription1->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
+        $subscription2 = new ProductSubscription(43, 'other-fake-id', []);
+        $subscription2->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'bar', 'value' => 'baz']]));
+        Assert::false($subscription1->getSuggestedData()->isEmpty());
+        Assert::false($subscription2->getSuggestedData()->isEmpty());
+
+        $this->save($subscription1);
+        $this->save($subscription2);
+
+        $this->emptySuggestedData();
+        Assert::true($subscription1->getSuggestedData()->isEmpty());
+        Assert::true($subscription2->getSuggestedData()->isEmpty());
     }
 }

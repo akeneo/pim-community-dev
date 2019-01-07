@@ -13,17 +13,22 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only([
         'Doctrine',
+        'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Symfony\Component',
         'Akeneo\Tool',
         'Akeneo\Asset',
         'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface', // Asset are reference data
         'Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface', // Asset are reference data
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface', // Asset are reference data
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface',
         'Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface', // Asset need to be versioned
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface',
         'Akeneo\Tool\Component\Connector',
+        'Symfony\Bundle\FrameworkBundle',
+        'Sensio\Bundle\FrameworkExtraBundle',
+        'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Akeneo\Platform\Bundle\NotificationBundle', // TODO: you should find a way to push notifications to the platform instead of coupling asset to the platform
         'Akeneo\Platform\Component\CatalogVolumeMonitoring', // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
         'Akeneo\UserManagement\Bundle\Context\UserContext', // TODO: We should not dependend on this context
@@ -31,12 +36,7 @@ $rules = [
         // TODO: We should use id instead of reference
         'Akeneo\Channel\Component\Model\LocaleInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\UserManagement\Component\Model\UserInterface',
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        // TODO: Do we need these dependencies?
-        'Symfony\Bundle\FrameworkBundle',
-        'Sensio\Bundle\FrameworkExtraBundle',
         // TODO: We should burn the Datagrid but this BC uses the datagrid.
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',
@@ -47,7 +47,6 @@ $rules = [
         'Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager',
         'Akeneo\Pim\Permission\Bundle\User\UserContext',
         'Akeneo\Pim\Permission\Component\Attributes',
-        'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Akeneo\Pim\Permission\Bundle\Form\Type\CategoryPermissionsType',
         'Akeneo\Pim\Permission\Bundle\Form\Type\GroupsType',
         'Akeneo\Pim\Permission\Bundle\Form\EventListener\CategoryPermissionsSubscriber',
@@ -63,13 +62,12 @@ $rules = [
         'Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface', // Related to the front end
         'Akeneo\Platform\Bundle\UIBundle\Flash\Message', // Related to the front end
-        'Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType',
+        'Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType', // TODO move to enrichment
         'Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor', // it should go in Akeneo\Tool
         'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', // Related to the front end (symfony form type)
         'Pim\Bundle\EnrichBundle\Form\Type\LightEntityType', // Related to the front end (symfony form type)
         'Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface', // Related to the front end (used to build form type)
-        'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer',
         // TODO: we must not depend on Platefom
         'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\SwitchType', // Related to the front end (symfony form type)
@@ -93,14 +91,14 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue',
+        // TODO: EASY PICK: move ImageNormalizer to enrichment.
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer',
         'Akeneo\UserManagement\Component\Factory\DefaultProperty',
         // Todo: Remove pim dependencies
         'Doctrine\ORM\QueryBuilder', // TODO: some repository return QueryBuidler object.
-        'Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager', // TODO: security
-        // TODO: we should not use public constant
+        // TODO: EASY PICK Move the the component
         'Akeneo\Asset\Bundle\Event\AssetEvent',
         // TODO: We should use id instead of reference
         'Akeneo\Channel\Component\Model\LocaleInterface',
@@ -109,10 +107,12 @@ $rules = [
         // TODO: we should not repository from the other BC
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        // TODO: we should rework permission to avoid this kind coupling (permissions are a sub part of PIM BC)
-        'Oro\Bundle\SecurityBundle\SecurityFacade',
         // TODO: we must not depend on PIM BC
         'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',
+        // TODO: security
+        'Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager',
+        // TODO: we should rework permission to avoid this kind coupling (permissions are a sub part of PIM BC)
+        'Oro\Bundle\SecurityBundle\SecurityFacade',
     ])->in('Akeneo\Asset\Component'),
 ];
 

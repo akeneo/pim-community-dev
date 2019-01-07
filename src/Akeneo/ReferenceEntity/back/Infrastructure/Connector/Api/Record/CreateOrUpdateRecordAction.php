@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector\EditRecordCommandFactory;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -108,17 +109,8 @@ class CreateOrUpdateRecordAction
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        try {
-            $createRecordCommand = $this->createRecordCommandIfNeeded($referenceEntityIdentifier, $recordCode);
-            $editRecordCommand = $this->editRecordCommandFactory->create($referenceEntityIdentifier, $normalizedRecord);
-        } catch (\InvalidArgumentException $exception) {
-            throw new UnprocessableEntityHttpException($exception->getMessage());
-        }
-
-        $violations = $this->recordDataValidator->validate($editRecordCommand);
-        if ($violations->count() > 0) {
-            throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
-        }
+        $createRecordCommand = $this->createValidatedRecordCommandIfNeeded($referenceEntityIdentifier, $recordCode);
+        $editRecordCommand = $this->createValidatedEditCommand($referenceEntityIdentifier, $normalizedRecord);
 
         $responseStatusCode = Response::HTTP_NO_CONTENT;
 
@@ -132,7 +124,7 @@ class CreateOrUpdateRecordAction
         return $this->createResponse($responseStatusCode, $referenceEntityIdentifier, $recordCode);
     }
 
-    private function createRecordCommandIfNeeded(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?CreateRecordCommand
+    private function createValidatedRecordCommandIfNeeded(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?CreateRecordCommand
     {
         if ($this->recordExists->withReferenceEntityAndCode($referenceEntityIdentifier, $recordCode)) {
             return null;
@@ -143,7 +135,28 @@ class CreateOrUpdateRecordAction
         $command->referenceEntityIdentifier = $referenceEntityIdentifier->normalize();
         $command->labels = [];
 
+        $violations = $this->recordDataValidator->validate($command);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
+        }
+
         return $command;
+    }
+
+    private function createValidatedEditCommand(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): EditRecordCommand
+    {
+        try {
+            $editRecordCommand = $this->editRecordCommandFactory->create($referenceEntityIdentifier, $normalizedRecord);
+        } catch (\InvalidArgumentException $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
+        $violations = $this->recordDataValidator->validate($editRecordCommand);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
+        }
+
+        return $editRecordCommand;
     }
 
     private function getNormalizedRecordFromRequest(Request $request): array

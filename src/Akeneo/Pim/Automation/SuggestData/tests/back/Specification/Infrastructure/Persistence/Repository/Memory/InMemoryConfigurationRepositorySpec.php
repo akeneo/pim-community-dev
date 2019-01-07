@@ -57,4 +57,16 @@ class InMemoryConfigurationRepositorySpec extends ObjectBehavior
 
         $this->find()->shouldReturn($configuration);
     }
+
+    public function it_clears_the_configuration(): void
+    {
+        $configuration = new Configuration();
+        $configuration->setToken(new Token('foo'));
+        $this->save($configuration);
+
+        $this->clear();
+
+        $storedConfiguration = $this->find();
+        $storedConfiguration->getToken()->shouldReturn(null);
+    }
 }

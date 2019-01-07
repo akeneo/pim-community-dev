@@ -37,10 +37,10 @@ category.permissions:
   apply_on_children.label: Appliquer les changements aux sous-catégories
   apply_on_children.help: Appliquer les changements de permissions à toutes les sous-catégories, les permissions existantes sur les sous-catégories sont conservées
 locale.permissions:
-  view.label: Autorisé à voir les informations produits
-  view.help: Permet de voir les informations produits dans cette locale
-  edit.label: Autorisé à éditer les informations produits
-  edit.help: Permet d'éditer les informations produits dans cette locale (sous entend les droits de lecture)
+  view.label: Autorisé à voir les informations
+  view.help: Permet de voir les informations dans cette locale
+  edit.label: Autorisé à éditer les informations
+  edit.help: Permet d'éditer les informations dans cette locale (sous entend les droits de lecture)
   no_access_to_products: Vous n'avez accès à aucune information produit dans aucune locale, contactez votre administrateur pour résoudre le problème
 flash.locale.updated: Les locales et les permissions ont bien étés mises à jour
 pim_enrich:

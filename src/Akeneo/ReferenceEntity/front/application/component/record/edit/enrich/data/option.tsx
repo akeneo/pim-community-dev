@@ -7,7 +7,22 @@ import OptionData, {denormalize as denormalizeOptionData} from 'akeneoreferencee
 import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
 import __ from 'akeneoreferenceentity/tools/translator';
 
-const View = ({value, onChange, locale}: {value: Value; locale: LocaleReference; onChange: (value: Value) => void}) => {
+const View = ({
+  value,
+  onChange,
+  locale,
+  rights,
+}: {
+  value: Value;
+  locale: LocaleReference;
+  onChange: (value: Value) => void;
+  rights: {
+    record: {
+      edit: boolean;
+      delete: boolean;
+    };
+  };
+}) => {
   if (!(value.data instanceof OptionData)) {
     return null;
   }
@@ -32,7 +47,7 @@ const View = ({value, onChange, locale}: {value: Value; locale: LocaleReference;
         data={availableOptions}
         value={data.stringValue()}
         multiple={false}
-        readOnly={false}
+        readOnly={!rights.record.edit}
         configuration={{
           allowClear: true,
           placeholder: __('pim_reference_entity.attribute.options.no_value'),

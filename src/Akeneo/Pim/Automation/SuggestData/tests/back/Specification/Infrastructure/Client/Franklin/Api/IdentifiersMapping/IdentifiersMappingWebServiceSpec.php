@@ -15,8 +15,12 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\GuzzleClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\UriGenerator;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use PhpSpec\ObjectBehavior;
 
 class IdentifiersMappingWebServiceSpec extends ObjectBehavior
@@ -45,13 +49,41 @@ class IdentifiersMappingWebServiceSpec extends ObjectBehavior
         $normalizedMapping = ['foo' => 'bar'];
         $generatedRoute = '/api/mapping/identifiers';
 
-        $uriGenerator->generate('/api/mapping/identifiers')
-            ->shouldBeCalled()
-            ->willReturn($generatedRoute);
+        $uriGenerator->generate('/api/mapping/identifiers')->willReturn($generatedRoute);
         $httpClient->request('PUT', $generatedRoute, [
             'form_params' => $normalizedMapping,
         ])->shouldBeCalled();
 
         $this->update($normalizedMapping);
+    }
+
+    public function it_throws_an_exception_if_the_client_throws_a_server_exception(
+        UriGenerator $uriGenerator,
+        GuzzleClient $httpClient
+    ): void {
+        $normalizedMapping = ['foo' => 'bar'];
+        $generatedRoute = '/api/mapping/identifiers';
+
+        $uriGenerator->generate('/api/mapping/identifiers')->willReturn($generatedRoute);
+        $httpClient->request('PUT', $generatedRoute, [
+            'form_params' => $normalizedMapping,
+        ])->willThrow(ServerException::class);
+
+        $this->shouldNotThrow(FranklinServerException::class)->during('update', $normalizedMapping);
+    }
+
+    public function it_throws_an_exception_if_the_client_throws_a_client_exception(
+        UriGenerator $uriGenerator,
+        GuzzleClient $httpClient
+    ): void {
+        $normalizedMapping = ['foo' => 'bar'];
+        $generatedRoute = '/api/mapping/identifiers';
+
+        $uriGenerator->generate('/api/mapping/identifiers')->willReturn($generatedRoute);
+        $httpClient->request('PUT', $generatedRoute, [
+            'form_params' => $normalizedMapping,
+        ])->willThrow(ClientException::class);
+
+        $this->shouldNotThrow(BadRequestException::class)->during('update', $normalizedMapping);
     }
 }

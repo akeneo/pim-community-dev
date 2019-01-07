@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Read\Connection
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 
 /**
  * Checks if a suggest data connection is active or not.
@@ -35,19 +36,25 @@ class GetConnectionStatusHandler
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
+    /** @var ProductSubscriptionRepositoryInterface */
+    private $productSubscriptionRepository;
+
     /**
      * @param ConfigurationRepositoryInterface $configurationRepository
      * @param AuthenticationProviderInterface $authenticationProvider
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+     * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      */
     public function __construct(
         ConfigurationRepositoryInterface $configurationRepository,
         AuthenticationProviderInterface $authenticationProvider,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository
     ) {
         $this->configurationRepository = $configurationRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->authenticationProvider = $authenticationProvider;
+        $this->productSubscriptionRepository = $productSubscriptionRepository;
     }
 
     /**
@@ -57,11 +64,16 @@ class GetConnectionStatusHandler
     {
         $identifiersMapping = $this->identifiersMappingRepository->find();
         $configuration = $this->configurationRepository->find();
-        if (!$configuration->getToken() instanceof Token) {
-            return new ConnectionStatus(false, $identifiersMapping->isValid());
+        $productSubscriptionCount = $this->productSubscriptionRepository->count();
+        $isActive = false;
+        if ($configuration->getToken() instanceof Token) {
+            $isActive = $this->authenticationProvider->authenticate($configuration->getToken());
         }
-        $isActive = $this->authenticationProvider->authenticate($configuration->getToken());
 
-        return new ConnectionStatus($isActive, $identifiersMapping->isValid());
+        return new ConnectionStatus(
+            $isActive,
+            $identifiersMapping->isValid(),
+            $productSubscriptionCount
+        );
     }
 }

@@ -23,7 +23,6 @@ import ReferenceEntityIdentifier, {
   createIdentifier as createReferenceIdentifier,
 } from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import RecordCode, {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
-const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import {getDataCellView, CellView} from 'akeneoreferenceentity/application/configuration/value';
@@ -32,6 +31,9 @@ import Locale from 'akeneoreferenceentity/domain/model/locale';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
 import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
+import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
+
+const securityContext = require('pim/security-context');
 
 interface StateProps {
   context: {
@@ -48,10 +50,13 @@ interface StateProps {
     filters: Filter[];
   };
   recordCount: number;
-  acls: {
-    createRecord: boolean;
-    deleteAllRecords: boolean;
-    delete: boolean;
+  rights: {
+    record: {
+      create: boolean;
+      edit: boolean;
+      deleteAll: boolean;
+      delete: boolean;
+    };
   };
   confirmDelete: {
     isActive: boolean;
@@ -120,7 +125,7 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
   }
 
   render() {
-    const {context, grid, events, referenceEntity, acls, confirmDelete, recordCount} = this.props;
+    const {context, grid, events, referenceEntity, rights, confirmDelete, recordCount} = this.props;
 
     return (
       <React.Fragment>
@@ -128,14 +133,14 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
           label={referenceEntity.getLabel(context.locale)}
           image={referenceEntity.getImage()}
           primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return acls.createRecord ? (
+            return rights.record.create ? (
               <button className="AknButton AknButton--action" onClick={events.onRecordCreationStart} ref={defaultFocus}>
                 {__('pim_reference_entity.record.button.create')}
               </button>
             ) : null;
           }}
           secondaryActions={() => {
-            return acls.deleteAllRecords ? (
+            return rights.record.deleteAll ? (
               <SecondaryAction
                 onOpenDeleteAllRecordsModal={() => {
                   events.onOpenDeleteAllRecordsModal();
@@ -150,6 +155,7 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
           breadcrumbConfiguration={breadcrumbConfiguration}
           onLocaleChanged={events.onLocaleChanged}
           onChannelChanged={events.onChannelChanged}
+          displayActions={this.props.rights.record.create || this.props.rights.record.deleteAll}
         />
         {0 !== recordCount ? (
           <Table
@@ -164,6 +170,7 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
             grid={grid}
             cellViews={this.state.cellViews}
             referenceEntity={referenceEntity}
+            rights={rights}
           />
         ) : (
           <div className="AknGridContainer-noData">
@@ -241,10 +248,19 @@ export default connect(
         filters,
       },
       recordCount: state.recordCount,
-      acls: {
-        createRecord: securityContext.isGranted('akeneo_referenceentity_record_create'),
-        deleteAllRecords: securityContext.isGranted('akeneo_referenceentity_records_delete_all'),
-        delete: securityContext.isGranted('akeneo_referenceentity_reference_entity_delete'),
+      rights: {
+        record: {
+          create: securityContext.isGranted('akeneo_referenceentity_record_create') && canEditReferenceEntity(),
+          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') && canEditReferenceEntity(),
+          deleteAll:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            securityContext.isGranted('akeneo_referenceentity_records_delete_all') &&
+            canEditReferenceEntity(),
+          delete:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            securityContext.isGranted('akeneo_referenceentity_record_delete') &&
+            canEditReferenceEntity(),
+        },
       },
       confirmDelete,
     };

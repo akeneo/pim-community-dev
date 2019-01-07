@@ -50,10 +50,9 @@ class CreateRecordAttributeCommandFactorySpec extends ObjectBehavior
         $command = [
             'reference_entity_identifier' => 'designer',
             'code' => 'mentor',
-            // 'labels' => ['fr_FR' => 'Mentor'], // For the test purpose, this one is missing
             'order' => 1,
             'is_required' => false,
-            'value_per_channel' => false,
+            //'value_per_channel' => false, // For the test purpose, this one is missing
             'value_per_locale' => false,
             'record_type' => 'designer',
         ];

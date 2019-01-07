@@ -10,13 +10,18 @@ services:
             - '@akeneo.pim.automation.suggest_data.application.configuration.validator.connection'
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
 
+    akeneo.pim.automation.suggest_data.application.configuration.command.deactivate_connection_handler:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\DeactivateConnectionHandler'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.configuration'
+
     akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.data_provider.identifiers_mapping'
-            - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.empty_suggested_data_query'
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
 
     akeneo.pim.automation.suggest_data.handler.subscribe_product:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler'
@@ -65,7 +70,7 @@ services:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.attribute'
             - '@akeneo.pim.automation.suggest_data.data_provider.attributes_mapping'
-            - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.empty_suggested_data_and_missing_mapping_query'
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
 
     akeneo.pim.automation.suggest_data.handler.save_attribute_options_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingHandler'
@@ -107,6 +112,7 @@ services:
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
             - '@akeneo.pim.automation.suggest_data.data_provider.authentication'
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
 
     akeneo.pim.automation.suggest_data.application.configuration.query.get_configuration_handler:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationHandler'

@@ -8,10 +8,10 @@
  */
 
 import {EventsHash} from 'backbone';
+import * as Backbone from 'backbone';
 import * as $ from 'jquery';
 import NormalizedAttribute from 'pim/model/attribute';
 import BaseView = require('pimui/js/view/base');
-import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 import * as _ from 'underscore';
 import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
@@ -23,6 +23,7 @@ const FetcherRegistry = require('pim/fetcher-registry');
 const FormBuilder = require('pim/form-builder');
 const Router = require('pim/router');
 const template = require('akeneo/suggest-data/template/settings/attributes-mapping/table');
+const modalTemplate = require('pim/template/common/modal-centered');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 
@@ -96,6 +97,7 @@ class AttributeMapping extends BaseView {
   private static readonly ATTRIBUTE_TYPES_BUTTONS_VISIBILITY = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
 
   private readonly template = _.template(template);
+  private readonly modalTemplate = _.template(modalTemplate);
   private readonly config: Config = {
     labels: {
       pending: '',
@@ -321,38 +323,37 @@ class AttributeMapping extends BaseView {
       form: BaseView,
       normalizedFamily: any,
     ) => {
-      this.attributeOptionsMappingModal = new BootstrapModal({
-        className: 'modal modal--fullPage modal--topButton',
+      const familyLabel = i18n.getLabel(
+        normalizedFamily.labels,
+        UserContext.get('catalogLocale'),
+        normalizedFamily.code,
+      );
+
+      const formContent = form.getExtension('content') as AttributeOptionsMapping;
+      formContent
+        .setFamilyCode(familyCode)
+        .setCatalogAttributeCode(catalogAttributeCode)
+        .setFranklinAttributeCode(franklinAttributeCode);
+
+      this.attributeOptionsMappingModal = new (Backbone as any).BootstrapModal({
         modalOptions: {
           backdrop: 'static',
           keyboard: false,
         },
-        allowCancel: true,
         okCloses: false,
-        title: '',
-        content: '',
-        cancelText: ' ',
+        title: __('akeneo_suggest_data.entity.attribute_options_mapping.module.edit.title', {
+          familyLabel,
+          franklinAttributeLabel,
+        }),
+        content: form,
+        template: this.modalTemplate,
+        innerClassName: 'AknFullPage--full AknFullPage--fixedWidth',
+        okText: '',
       });
       this.attributeOptionsMappingModal.open();
       this.attributeOptionsMappingForm = form;
 
-      const familyLabel = i18n.getLabel(
-          normalizedFamily.labels,
-          UserContext.get('catalogLocale'),
-          normalizedFamily.code,
-      );
-      const formContent = form.getExtension('content') as AttributeOptionsMapping;
-      formContent
-        .setFamilyLabel(familyLabel)
-        .setFamilyCode(familyCode)
-        .setFranklinAttributeLabel(franklinAttributeLabel)
-        .setCatalogAttributeCode(catalogAttributeCode)
-        .setFranklinAttributeCode(franklinAttributeCode);
-
       this.listenTo(form, 'pim_enrich:form:entity:post_save', this.closeAttributeOptionsMappingModal.bind(this));
-
-      $('.modal .ok').remove();
-      form.setElement(this.attributeOptionsMappingModal.$('.modal-body')).render();
 
       this.attributeOptionsMappingModal.on('cancel', this.closeAttributeOptionsMappingModal.bind(this));
     });

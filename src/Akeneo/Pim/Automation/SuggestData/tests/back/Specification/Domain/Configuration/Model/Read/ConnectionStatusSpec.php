@@ -23,31 +23,37 @@ class ConnectionStatusSpec extends ObjectBehavior
 {
     public function it_is_a_suggest_data_connection_status(): void
     {
-        $this->beConstructedWith(true, true);
+        $this->beConstructedWith(true, true, 0);
         $this->shouldBeAnInstanceOf(ConnectionStatus::class);
     }
 
     public function it_returns_if_the_connection_status_is_active(): void
     {
-        $this->beConstructedWith(true, true);
+        $this->beConstructedWith(true, true, 0);
         $this->isActive()->shouldReturn(true);
     }
 
     public function it_returns_if_the_connection_status_is_not_active(): void
     {
-        $this->beConstructedWith(false, true);
+        $this->beConstructedWith(false, true, 0);
         $this->isActive()->shouldReturn(false);
     }
 
     public function it_returns_if_the_identifiers_mapping_is_valid(): void
     {
-        $this->beConstructedWith(true, true);
+        $this->beConstructedWith(true, true, 0);
         $this->isIdentifiersMappingValid()->shouldReturn(true);
     }
 
     public function it_returns_if_the_identifiers_mapping_is_not_valid(): void
     {
-        $this->beConstructedWith(true, false);
+        $this->beConstructedWith(true, false, 0);
         $this->isIdentifiersMappingValid()->shouldReturn(false);
+    }
+
+    public function it_returns_count(): void
+    {
+        $this->beConstructedWith(true, false, 42);
+        $this->productSubscriptionCount()->shouldReturn(42);
     }
 }

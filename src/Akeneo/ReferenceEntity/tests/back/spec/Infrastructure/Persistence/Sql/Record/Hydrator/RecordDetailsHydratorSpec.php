@@ -49,6 +49,9 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
             'labels' => $labels,
             'image' => null,
             'values' => [],
+            'permission' => [
+                'edit' => true
+            ]
         ]);
     }
 

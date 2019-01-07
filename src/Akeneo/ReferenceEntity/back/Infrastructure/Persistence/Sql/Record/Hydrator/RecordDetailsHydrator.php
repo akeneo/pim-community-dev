@@ -73,7 +73,8 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
             RecordCode::fromString($recordCode),
             LabelCollection::fromArray($labels),
             $recordImage,
-            $allValues
+            $allValues,
+            true
         );
 
         return $recordDetails;

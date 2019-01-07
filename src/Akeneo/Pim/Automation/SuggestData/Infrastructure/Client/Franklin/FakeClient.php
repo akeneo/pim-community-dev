@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin;
 
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -74,7 +75,7 @@ class FakeClient implements ClientInterface
 
         // Simulates that Franklin server is down
         if ($this->serverIsDown) {
-            return new \GuzzleHttp\Psr7\Response(Response::HTTP_GATEWAY_TIMEOUT);
+            throw new ServerException('Server is down.', new Request($method, $uri));
         }
 
         if ('stats' === $uri) {
@@ -110,6 +111,14 @@ class FakeClient implements ClientInterface
     public function getIdentifiersMapping(): array
     {
         return $this->identifiersMapping;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributesMapping(): array
+    {
+        return $this->attributesMapping;
     }
 
     /**

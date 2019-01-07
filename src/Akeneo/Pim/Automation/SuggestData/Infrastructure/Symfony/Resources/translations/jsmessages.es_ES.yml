@@ -26,4 +26,4 @@ akeneo_suggest_data:
   settings:
     module:
       inactive_connection:
-        title: Lo sentimos, no hay nada que mostrar aquí todavía
+        title: 'Lo sentimos, no hay nada que mostrar aquí todavía'

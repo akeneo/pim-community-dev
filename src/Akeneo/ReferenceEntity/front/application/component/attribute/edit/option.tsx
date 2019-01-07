@@ -78,12 +78,22 @@ type StateProps = {
   numberOfLockedOptions: any;
 };
 
+type OwnProps = {
+  rights: {
+    attribute: {
+      create: boolean;
+      edit: boolean;
+      delete: boolean;
+    };
+  };
+};
+
 enum Field {
   Code,
   Label,
 }
 
-interface ManageOptionsProps extends StateProps, DispatchProps {}
+interface ManageOptionsProps extends StateProps, OwnProps, DispatchProps {}
 
 const optionRow = ({
   code,
@@ -93,6 +103,7 @@ const optionRow = ({
   numberOfLockedOptions,
   locale,
   errors,
+  editMode,
   labelInputReference,
   codeInputReference,
   onOptionEditionCodeUpdated,
@@ -109,6 +120,7 @@ const optionRow = ({
   numberOfLockedOptions: any;
   locale: string;
   errors: ValidationError[];
+  editMode: boolean;
   labelInputReference: React.RefObject<HTMLInputElement>;
   codeInputReference: React.RefObject<HTMLInputElement>;
   onOptionEditionCodeUpdated: (code: string, id: any) => void;
@@ -118,91 +130,97 @@ const optionRow = ({
   onFocusNextField: (index: number, field: Field) => void;
   onFocusPreviousField: (index: number, field: Field) => void;
 }) => {
+  const displayDeleteRowButton: boolean = !isLastRow && editMode;
+  const inputTextClassName = `AknTextField AknTextField--light ${!editMode ? 'AknTextField--disabled' : ''}`;
+
   return (
     <React.Fragment key={index}>
-      <tr data-code={code} className="AknOptionEditor-row">
-        <td>
-          <div className="AknFieldContainer">
-            <div className="AknFieldContainer-inputContainer">
-              <input
-                ref={labelInputReference}
-                placeholder={
-                  isLastRow
-                    ? __('pim_reference_entity.attribute.edit.input.manage_options.option.label.placeholder')
-                    : ''
-                }
-                type="text"
-                className="AknTextField AknTextField--light"
-                id={`pim_reference_entity.attribute.edit.input.${code}_${index}.label`}
-                name="label"
-                value={undefined === label ? '' : label}
-                onFocus={() => {
-                  onOptionEditionSelected(index);
-                }}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  onOptionEditionLabelUpdated(event.currentTarget.value, locale, index);
-                }}
-                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (Key.Enter === event.key) {
-                    if (event.shiftKey) {
-                      onFocusPreviousField(index, Field.Label);
-                    } else {
-                      onFocusNextField(index, Field.Label);
-                    }
+      {!isLastRow || editMode ? (
+        <tr data-code={code} className="AknOptionEditor-row">
+          <td>
+            <div className="AknFieldContainer">
+              <div className="AknFieldContainer-inputContainer">
+                <input
+                  ref={labelInputReference}
+                  placeholder={
+                    isLastRow
+                      ? __('pim_reference_entity.attribute.edit.input.manage_options.option.label.placeholder')
+                      : ''
                   }
-                }}
-              />
-            </div>
-            {!isLastRow ? getErrorsView(errors, `options.${index}`) : null}
-          </div>
-        </td>
-        <td>
-          <div className="AknFieldContainer">
-            <div className="AknFieldContainer-inputContainer">
-              <input
-                ref={codeInputReference}
-                type="text"
-                className={
-                  'AknTextField AknTextField--light' +
-                  (index <= numberOfLockedOptions - 1 ? ' AknTextField--disabled' : '')
-                }
-                tabIndex={index <= numberOfLockedOptions - 1 ? -1 : 0}
-                id={`pim_reference_entity.attribute.edit.input.${code}_${index}.code`}
-                name="code"
-                value={undefined === code ? '' : code}
-                onFocus={() => {
-                  onOptionEditionSelected(index);
-                }}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  onOptionEditionCodeUpdated(event.currentTarget.value, index);
-                }}
-                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (Key.Enter === event.key) {
-                    if (event.shiftKey) {
-                      onFocusPreviousField(index, Field.Code);
-                    } else {
-                      onFocusNextField(index, Field.Code);
+                  type="text"
+                  className={inputTextClassName}
+                  id={`pim_reference_entity.attribute.edit.input.${code}_${index}.label`}
+                  name="label"
+                  value={undefined === label ? '' : label}
+                  onFocus={() => {
+                    onOptionEditionSelected(index);
+                  }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    onOptionEditionLabelUpdated(event.currentTarget.value, locale, index);
+                  }}
+                  onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                    if (Key.Enter === event.key) {
+                      if (event.shiftKey) {
+                        onFocusPreviousField(index, Field.Label);
+                      } else {
+                        onFocusNextField(index, Field.Label);
+                      }
                     }
-                  }
-                }}
-              />
+                  }}
+                  readOnly={!editMode}
+                />
+              </div>
+              {!isLastRow ? getErrorsView(errors, `options.${index}`) : null}
             </div>
-          </div>
-        </td>
-        <td>
-          {!isLastRow ? (
-            <Close
-              onClick={() => onOptionEditionDelete(index)}
-              onKeyPress={(event: React.KeyboardEvent<SVGElement>) => {
-                if (Key.Space === event.key) onOptionEditionDelete(index);
-              }}
-              color="#67768A"
-              className="AknOptionEditor-remove"
-              tabIndex={0}
-            />
-          ) : null}
-        </td>
-      </tr>
+          </td>
+          <td>
+            <div className="AknFieldContainer">
+              <div className="AknFieldContainer-inputContainer">
+                <input
+                  ref={codeInputReference}
+                  type="text"
+                  className={
+                    'AknTextField AknTextField--light' +
+                    (index <= numberOfLockedOptions - 1 && !editMode ? ' AknTextField--disabled' : '')
+                  }
+                  tabIndex={index <= numberOfLockedOptions - 1 ? -1 : 0}
+                  id={`pim_reference_entity.attribute.edit.input.${code}_${index}.code`}
+                  name="code"
+                  value={undefined === code ? '' : code}
+                  onFocus={() => {
+                    onOptionEditionSelected(index);
+                  }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    onOptionEditionCodeUpdated(event.currentTarget.value, index);
+                  }}
+                  onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                    if (Key.Enter === event.key) {
+                      if (event.shiftKey) {
+                        onFocusPreviousField(index, Field.Code);
+                      } else {
+                        onFocusNextField(index, Field.Code);
+                      }
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          </td>
+          <td>
+            {displayDeleteRowButton ? (
+              <Close
+                onClick={() => onOptionEditionDelete(index)}
+                onKeyPress={(event: React.KeyboardEvent<SVGElement>) => {
+                  if (Key.Space === event.key) onOptionEditionDelete(index);
+                }}
+                color="#67768A"
+                className="AknOptionEditor-remove"
+                tabIndex={0}
+              />
+            ) : null}
+          </td>
+        </tr>
+      ) : null}
     </React.Fragment>
   );
 };
@@ -318,20 +336,18 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
     return (
       <React.Fragment>
         {this.props.isActive ? (
-          <div className="modal in modal--fullPage manageOptionModal" aria-hidden="false" style={{zIndex: 1041}}>
-            <div className="AknFullPage-content AknFullPage-content--column">
-              <div>
-                <div className="AknFullPage-subTitle">
-                  {__('pim_reference_entity.attribute.options.sub_title')} / {this.props.referenceEntity.code}
-                </div>
-                <div className="AknFullPage-title">
-                  {__('pim_reference_entity.attribute.edit.input.manage_options.quick_edit.label')}
-                </div>
-              </div>
-            </div>
+          <div className="modal in manageOptionModal" aria-hidden="false" style={{zIndex: 1041}}>
             <div>
-              <div className="AknFullPage AknFullPage--modal">
-                <div className="AknFullPage-content AknFullPage-content--visible">
+              <div className="AknFullPage AknFullPage--full">
+                <div className="AknFullPage-content">
+                  <div className="AknFullPage-titleContainer">
+                    <div className="AknFullPage-subTitle">
+                      {__('pim_reference_entity.attribute.options.sub_title')} / {this.props.referenceEntity.code}
+                    </div>
+                    <div className="AknFullPage-title">
+                      {__('pim_reference_entity.attribute.edit.input.manage_options.quick_edit.label')}
+                    </div>
+                  </div>
                   <div className="AknOptionEditor">
                     <div className="AknSubsection AknOptionEditor-translator">
                       <div className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--light">
@@ -370,6 +386,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
                               numberOfLockedOptions: this.props.numberOfLockedOptions,
                               locale: this.props.locale,
                               errors: this.props.errors,
+                              editMode: this.props.rights.attribute.edit,
                               labelInputReference: this.labelInputReferences[index],
                               codeInputReference: this.codeInputReferences[index],
                               onOptionEditionCodeUpdated: this.props.events.onOptionEditionCodeUpdated,
@@ -410,23 +427,23 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
               </div>
             </div>
             <div className="AknButtonList AknButtonList--right modal-footer">
-              <button
-                className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text confirm"
-                onClick={this.props.events.onOptionEditionSubmission}
-              >
-                {__('pim_reference_entity.attribute.create.confirm')}
-              </button>
-              <span
+              {this.props.rights.attribute.edit ? (
+                <button
+                  className="AknButton AknButton--apply AknFullPage-ok ok confirm"
+                  onClick={this.props.events.onOptionEditionSubmission}
+                >
+                  {__('pim_reference_entity.attribute.create.confirm')}
+                </button>
+              ) : null}
+              <div
                 title={__('pim_reference_entity.attribute.create.cancel')}
-                className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
+                className="AknFullPage-cancel cancel"
                 onClick={this.cancelManageOptions.bind(this)}
                 tabIndex={0}
                 onKeyPress={event => {
                   if (Key.Space === event.key) this.cancelManageOptions();
                 }}
-              >
-                {__('pim_reference_entity.attribute.create.cancel')}
-              </span>
+              />
             </div>
           </div>
         ) : null}

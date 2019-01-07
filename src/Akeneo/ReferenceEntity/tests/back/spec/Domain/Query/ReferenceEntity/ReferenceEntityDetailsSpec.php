@@ -33,6 +33,7 @@ class ReferenceEntityDetailsSpec extends ObjectBehavior
         $this->attributes = [
             $name
         ];
+        $this->isAllowedToEdit = false;
 
         $name->normalize()->willReturn(['code' => 'name']);
 
@@ -52,6 +53,9 @@ class ReferenceEntityDetailsSpec extends ObjectBehavior
                     [
                         'code' => 'name'
                     ]
+                ],
+                'permission' => [
+                    'edit' => false
                 ]
             ]
         );

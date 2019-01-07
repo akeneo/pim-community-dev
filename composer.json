@@ -65,6 +65,7 @@
         "behat/symfony2-extension": "2.1.4",
         "behat/transliterator":"1.2.0",
         "kriswallsmith/buzz": "^0.15",
+        "league/flysystem-memory": "^1.0",
         "pdepend/pdepend": "2.1.*",
         "phpmd/phpmd": "1.*",
         "phpspec/phpspec": "~3.4.2",

@@ -54,12 +54,9 @@ services:
         class: '%pimee_security.datagrid.configuration.product.row_actions_configurator.class%'
         arguments:
             - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
-            - '@security.authorization_checker'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.product_model'
-
-
+            - '@pimee_security.product_grid.query.fetch_user_rights_on_product'
+            - '@pimee_security.product_grid.query.fetch_user_rights_on_product_model'
+            - '@pim_user.context.user'
 
     pim_datagrid.extension.filter:
         class: 'Akeneo\Pim\Permission\Bundle\Datagrid\Extension\Filter\FilterExtension'

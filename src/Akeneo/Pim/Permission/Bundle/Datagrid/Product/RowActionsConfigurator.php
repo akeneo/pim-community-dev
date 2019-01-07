@@ -11,14 +11,13 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\Product;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProduct;
+use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProductModel;
+use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Row actions configurator for product grid
@@ -35,37 +34,31 @@ class RowActionsConfigurator implements ConfiguratorInterface
     /** @var ConfigurationRegistry */
     protected $registry;
 
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
+    /** @var FetchUserRightsOnProduct */
+    protected $fetchUserRightsOnProduct;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productRepository;
+    /** @var FetchUserRightsOnProductModel */
+    protected $fetchUserRightsOnProductModel;
 
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productModelRepository;
+    /** @var UserContext */
+    protected $userContext;
 
     /**
-     * @param ConfigurationRegistry                 $registry
-     * @param AuthorizationCheckerInterface         $authorizationChecker
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param LocaleRepositoryInterface             $localeRepository
-     * @param IdentifiableObjectRepositoryInterface       $productModelRepository
+     * @param ConfigurationRegistry         $registry
+     * @param FetchUserRightsOnProduct      $fetchUserRightsOnProduct
+     * @param FetchUserRightsOnProductModel $fetchUserRightsOnProductModel
+     * @param UserContext                   $userContext
      */
     public function __construct(
         ConfigurationRegistry $registry,
-        AuthorizationCheckerInterface $authorizationChecker,
-        IdentifiableObjectRepositoryInterface $productRepository,
-        LocaleRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository = null
+        FetchUserRightsOnProduct $fetchUserRightsOnProduct,
+        FetchUserRightsOnProductModel $fetchUserRightsOnProductModel,
+        UserContext $userContext
     ) {
         $this->registry = $registry;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->productRepository = $productRepository;
-        $this->localeRepository = $localeRepository;
-        $this->productModelRepository = $productModelRepository;
+        $this->fetchUserRightsOnProduct = $fetchUserRightsOnProduct;
+        $this->fetchUserRightsOnProductModel = $fetchUserRightsOnProductModel;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -86,36 +79,40 @@ class RowActionsConfigurator implements ConfiguratorInterface
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            $product = $this->getProductRepository($record)->findOneByIdentifier($record->getValue('identifier'));
-            $editGranted = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
-            $ownershipGranted = $editGranted && $this->authorizationChecker->isGranted(Attributes::OWN, $product);
-
-            return [
-                'show'            => !$editGranted,
-                'edit'            => $editGranted,
-                'edit_categories' => $ownershipGranted,
-                'delete'          => $ownershipGranted,
-                'toggle_status'   => $ownershipGranted
-            ];
+            if ($record->getValue('document_type') === self::PRODUCT_MODEL_TYPE) {
+                return $this->getProductModelRights($record);
+            } else {
+                return $this->getProductRights($record);
+            }
         };
     }
 
-    /**
-     * Returns the repository for a product or product model
-     *
-     * @param ResultRecordInterface $record
-     *
-     * @return IdentifiableObjectRepositoryInterface
-     */
-    private function getProductRepository(ResultRecordInterface $record): IdentifiableObjectRepositoryInterface
+    protected function getProductModelRights(ResultRecordInterface $record): array
     {
-        $productType = $record->getValue('document_type');
+        $user = $this->userContext->getUser();
+        $userRight = $this->fetchUserRightsOnProductModel->fetch($record->getValue('identifier'), $user->getId());
 
-        if (self::PRODUCT_MODEL_TYPE === $productType) {
-            return $this->productModelRepository;
-        }
+        return [
+            'show'            => !($userRight->canApplyDraftOnProductModel() || $userRight->isProductModelEditable()),
+            'edit'            => $userRight->canApplyDraftOnProductModel() || $userRight->isProductModelEditable(),
+            'edit_categories' => $userRight->isProductModelEditable(),
+            'delete'          => $userRight->isProductModelEditable(),
+            'toggle_status'   => $userRight->isProductModelEditable()
+        ];
+    }
 
-        return $this->productRepository;
+    protected function getProductRights(ResultRecordInterface $record): array
+    {
+        $user = $this->userContext->getUser();
+        $userRight = $this->fetchUserRightsOnProduct->fetch($record->getValue('identifier'), $user->getId());
+
+        return [
+            'show'            => !($userRight->canApplyDraftOnProduct() || $userRight->isProductEditable()),
+            'edit'            => $userRight->canApplyDraftOnProduct() || $userRight->isProductEditable(),
+            'edit_categories' => $userRight->isProductEditable(),
+            'delete'          => $userRight->isProductEditable(),
+            'toggle_status'   => $userRight->isProductEditable()
+        ];
     }
 
     /**
@@ -145,16 +142,6 @@ class RowActionsConfigurator implements ConfiguratorInterface
             '[action_configuration]',
             $this->getActionConfigurationClosure()
         );
-    }
-
-    /**
-     * Get row action configuration
-     *
-     * @return array
-     */
-    protected function getActionConfiguration()
-    {
-        return $this->actionConfiguration;
     }
 
     /**

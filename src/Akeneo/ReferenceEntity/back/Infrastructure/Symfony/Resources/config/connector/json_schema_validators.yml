@@ -5,6 +5,9 @@ services:
             - '@akeneo_referenceentity.infrastructure.connector.api.record_properties_validator'
             - '@akeneo_referenceentity.infrastructure.connector.api.record_values_validator'
 
+    akeneo_referenceentity.infrastructure.connector.api.record_list_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordListValidator
+
     akeneo_referenceentity.infrastructure.connector.api.record_values_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValuesValidator
         arguments:
@@ -48,3 +51,6 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\OptionCollectionTypeValidator
         tags:
             - { name: akeneo_referenceentity.connector.api.record_value_validator }
+
+    akeneo_referenceentity.infrastructure.connector.api.reference_entity_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\JsonSchema\ReferenceEntityValidator

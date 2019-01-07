@@ -26,7 +26,17 @@ import Key from 'akeneoreferenceentity/tools/key';
 import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 
-interface StateProps {
+interface OwnProps {
+  rights: {
+    attribute: {
+      create: boolean;
+      edit: boolean;
+      delete: boolean;
+    };
+  };
+}
+
+interface StateProps extends OwnProps {
   context: {
     locale: string;
   };
@@ -59,7 +69,14 @@ const getAdditionalProperty = (
   onAdditionalPropertyUpdated: (property: string, value: any) => void,
   onSubmit: () => void,
   errors: ValidationError[],
-  locale: string
+  locale: string,
+  rights: {
+    attribute: {
+      create: boolean;
+      edit: boolean;
+      delete: boolean;
+    };
+  }
 ): JSX.Element => {
   const AttributeView = getAttributeView(attribute);
 
@@ -70,6 +87,7 @@ const getAdditionalProperty = (
       onSubmit={onSubmit}
       errors={errors}
       locale={locale}
+      rights={rights}
     />
   );
 };
@@ -117,6 +135,10 @@ class Edit extends React.Component<EditProps> {
 
   render(): JSX.Element | JSX.Element[] | null {
     const label = this.props.attribute.getLabel(this.props.context.locale);
+    const inputTextClassName = `AknTextField AknTextField--light ${
+      !this.props.rights.attribute.edit ? 'AknTextField--disabled' : ''
+    }`;
+
     return (
       <React.Fragment>
         <div className={`AknQuickEdit ${!this.props.isActive ? 'AknQuickEdit--hidden' : ''}`} ref="quickEdit">
@@ -141,12 +163,13 @@ class Edit extends React.Component<EditProps> {
                     ref={(input: HTMLInputElement) => {
                       this.labelInput = input;
                     }}
-                    className="AknTextField AknTextField--light"
+                    className={inputTextClassName}
                     id="pim_reference_entity.attribute.edit.input.label"
                     name="label"
                     value={this.props.attribute.getLabel(this.props.context.locale, false)}
                     onChange={this.onLabelUpdate}
                     onKeyPress={this.onKeyPress}
+                    readOnly={!this.props.rights.attribute.edit}
                   />
                   <Flag
                     locale={createLocaleFromCode(this.props.context.locale)}
@@ -198,10 +221,13 @@ class Edit extends React.Component<EditProps> {
                       id="pim_reference_entity.attribute.edit.input.is_required"
                       value={this.props.attribute.isRequired}
                       onChange={this.props.events.onIsRequiredUpdated}
+                      readOnly={!this.props.rights.attribute.edit}
                     />
                     <span
                       onClick={() => {
-                        this.props.events.onIsRequiredUpdated(!this.props.attribute.isRequired);
+                        if (this.props.rights.attribute.edit) {
+                          this.props.events.onIsRequiredUpdated(!this.props.attribute.isRequired);
+                        }
                       }}
                     >
                       {__('pim_reference_entity.attribute.edit.input.is_required')}
@@ -216,23 +242,26 @@ class Edit extends React.Component<EditProps> {
                   this.props.events.onAdditionalPropertyUpdated,
                   this.props.events.onSubmit,
                   this.props.errors,
-                  this.props.context.locale
+                  this.props.context.locale,
+                  this.props.rights
                 )}
               </ErrorBoundary>
             </div>
             <footer className="AknSubsection-footer AknSubsection-footer--sticky">
-              <span
-                className="AknButton AknButton--delete"
-                tabIndex={0}
-                onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
-                  if (Key.Space === event.key) this.props.events.onOpenDeleteModal();
-                }}
-                onClick={() => this.props.events.onOpenDeleteModal()}
-                style={{flex: 1}}
-              >
-                <Trash color="#D4604F" className="AknButton-animatedIcon" />
-                {__('pim_reference_entity.attribute.edit.delete')}
-              </span>
+              {this.props.rights.attribute.delete ? (
+                <span
+                  className="AknButton AknButton--delete"
+                  tabIndex={0}
+                  onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
+                    if (Key.Space === event.key) this.props.events.onOpenDeleteModal();
+                  }}
+                  onClick={() => this.props.events.onOpenDeleteModal()}
+                  style={{flex: 1}}
+                >
+                  <Trash color="#D4604F" className="AknButton-animatedIcon" />
+                  {__('pim_reference_entity.attribute.edit.delete')}
+                </span>
+              ) : null}
               <span
                 title={__('pim_reference_entity.attribute.edit.cancel')}
                 className="AknButton AknButton--small AknButton--grey AknButton--spaced"
@@ -244,17 +273,19 @@ class Edit extends React.Component<EditProps> {
               >
                 {__('pim_reference_entity.attribute.edit.cancel')}
               </span>
-              <span
-                title={__('pim_reference_entity.attribute.edit.save')}
-                className="AknButton AknButton--small AknButton--apply AknButton--spaced"
-                tabIndex={0}
-                onClick={this.props.events.onSubmit}
-                onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
-                  if (Key.Space === event.key) this.props.events.onSubmit();
-                }}
-              >
-                {__('pim_reference_entity.attribute.edit.save')}
-              </span>
+              {this.props.rights.attribute.edit ? (
+                <span
+                  title={__('pim_reference_entity.attribute.edit.save')}
+                  className="AknButton AknButton--small AknButton--apply AknButton--spaced"
+                  tabIndex={0}
+                  onClick={this.props.events.onSubmit}
+                  onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
+                    if (Key.Space === event.key) this.props.events.onSubmit();
+                  }}
+                >
+                  {__('pim_reference_entity.attribute.edit.save')}
+                </span>
+              ) : null}
             </footer>
           </div>
         </div>
@@ -274,11 +305,12 @@ class Edit extends React.Component<EditProps> {
 }
 
 export default connect(
-  (state: EditState): StateProps => {
+  (state: EditState, ownProps: OwnProps): StateProps => {
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
     const confirmDelete = state.confirmDelete;
 
     return {
+      ...ownProps,
       isActive: state.attribute.isActive,
       attribute: denormalizeAttribute(state.attribute.data),
       errors: state.attribute.errors,

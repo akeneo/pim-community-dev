@@ -75,6 +75,7 @@ services:
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.update_attributes_mapping_by_family'
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_families'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.franklin_client.http_client'
         tags:
             - { name: 'fob.context_service' }
 
@@ -93,5 +94,14 @@ services:
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.create_proposals'
             - '@__symfony__.akeneo.pim.automation.suggest_data.proposal.create_proposal'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.product_subscription'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.suggest_data.channel:
+        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\ChannelContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.channel'
+            - '@__symfony__.pim_catalog.updater.channel'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.subscriber.channel_update'
         tags:
             - { name: 'fob.context_service' }

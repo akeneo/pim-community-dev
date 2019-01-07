@@ -18,6 +18,7 @@ default:
                 - akeneo_referenceentity.tests.back.acceptance.context.edit_record_context
                 - akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context
                 - akeneo_referenceentity.tests.back.acceptance.context.index_records_context
+                - akeneo_referenceentity.tests.back.acceptance.context.set_reference_entity_permission_context
             filters:
                 tags: '@acceptance-back'
         integration:
@@ -25,6 +26,8 @@ default:
                 - '%paths.base%/../features'
             contexts_services:
                 - akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_record_context
+                - akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_reference_entity_context
+                - akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_attribute_context
                 - akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_record_context
                 - akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_records_context
                 - akeneo_referenceentity.tests.back.integration.connector.distribution.not_found_reference_entity_context
@@ -32,6 +35,8 @@ default:
                 - akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_reference_entities_context
                 - akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_attributes_context
                 - akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_attribute_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_attribute_option_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_attribute_options_context
             filters:
                 tags: '@integration-back'
     extensions:

@@ -1,0 +1,13 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_reference_entities_reference_entity_permission_get_rest",
+        "query": {
+            "referenceEntityIdentifier": "designer"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": []
+    }
+}

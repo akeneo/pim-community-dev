@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Webmozart\Assert\Assert;
@@ -54,9 +55,17 @@ class OptionCollectionAttribute extends AbstractAttribute
                 \count($attributeOptions)
             )
         );
-        $this->assertNoDuplicates($attributeOptions);
 
-        $this->attributeOptions = $attributeOptions;
+        $this->attributeOptions = [];
+
+        foreach ($attributeOptions as $attributeOption) {
+            $optionCode = (string) $attributeOption->getCode();
+            if (array_key_exists($optionCode, $this->attributeOptions)) {
+                throw new \InvalidArgumentException('Expected to have a unique set of option codes');
+            }
+
+            $this->attributeOptions[$optionCode] = $attributeOption;
+        }
     }
 
     public function normalize(): array
@@ -68,7 +77,7 @@ class OptionCollectionAttribute extends AbstractAttribute
                     function (AttributeOption $attributeOption) {
                         return $attributeOption->normalize();
                     },
-                    $this->attributeOptions
+                    $this->getAttributeOptions()
                 ),
             ]
         );
@@ -79,26 +88,16 @@ class OptionCollectionAttribute extends AbstractAttribute
      */
     public function getAttributeOptions(): array
     {
-        return $this->attributeOptions;
+        return array_values($this->attributeOptions);
+    }
+
+    public function hasAttributeOption(OptionCode $optionCode): bool
+    {
+        return array_key_exists((string) $optionCode, $this->attributeOptions);
     }
 
     protected function getType(): string
     {
         return self::ATTRIBUTE_TYPE;
-    }
-
-    /**
-     * @param AttributeOption[] $attributeOptions
-     */
-    private function assertNoDuplicates(array $attributeOptions): void
-    {
-        $optionCodes = array_map(
-            function (AttributeOption $attributeOption) {
-                return $attributeOption->getCode();
-            },
-            $attributeOptions
-        );
-        $uniqueCodes = array_unique($optionCodes);
-        Assert::eq(\count($optionCodes), \count($uniqueCodes), 'Expected to have a unique set of option codes');
     }
 }

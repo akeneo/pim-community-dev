@@ -23,7 +23,7 @@ module.exports = async function(cucumber) {
       decorator: Header,
     },
     Modal: {
-      selector: '.modal--fullPage',
+      selector: '.modal',
       decorator: Modal,
     },
     Records: {
@@ -112,7 +112,7 @@ module.exports = async function(cucumber) {
 
   Then('the record creation form should be displayed', async function() {
     await this.page.waitFor(1000);
-    await this.page.waitFor('.modal--fullPage .AknFullPage-content .AknFieldContainer');
+    await this.page.waitFor('.modal .AknFullPage-content .AknFieldContainer');
   });
 
   When('the user saves the record', async function() {
@@ -141,5 +141,15 @@ module.exports = async function(cucumber) {
 
   Then('the record will be saved', async function() {
     await saveRecord(this.page);
+  });
+
+  Then('the user cannot create a record', async function () {
+    const sidebar = await await getElement(this.page, 'Sidebar');
+    await sidebar.clickOnTab('record');
+
+    const header = await await getElement(this.page, 'Header');
+    const isCreateButtonVisible = await header.isCreateButtonVisible();
+
+    assert.strictEqual(isCreateButtonVisible, false);
   });
 };

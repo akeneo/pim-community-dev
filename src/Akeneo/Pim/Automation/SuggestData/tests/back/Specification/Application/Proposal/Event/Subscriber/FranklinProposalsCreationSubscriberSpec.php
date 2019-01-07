@@ -25,9 +25,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class FranklinProposalsCreationSubscriberSpec extends ObjectBehavior
 {
-    public function let(ProductSubscriptionRepositoryInterface $subscriptionrepository): void
+    public function let(ProductSubscriptionRepositoryInterface $subscriptionRepository): void
     {
-        $this->beConstructedWith($subscriptionrepository);
+        $this->beConstructedWith($subscriptionRepository);
     }
 
     public function it_is_an_event_subscriber(): void
@@ -42,13 +42,13 @@ class FranklinProposalsCreationSubscriberSpec extends ObjectBehavior
 
     public function it_subscribes_to_proposals_created_event(): void
     {
-        $this::getSubscribedEvents()->shouldHaveKey(SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED);
+        $this->getSubscribedEvents()->shouldHaveKey(SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED);
     }
 
-    public function it_empties_suggested_data_from_subscriptions($subscriptionrepository): void
+    public function it_empties_suggested_data_from_subscriptions($subscriptionRepository): void
     {
-        $subscriptionrepository
-            ->emptySuggestedData([72, 355])
+        $subscriptionRepository
+            ->emptySuggestedDataByProducts([72, 355])
             ->shouldBeCalled();
 
         $this->emptySuggestedData(new GenericEvent([72, 355]));

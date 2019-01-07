@@ -33,24 +33,29 @@ class RecordDetails
     private const LABELS = 'labels';
     private const IMAGE = 'image';
     private const VALUES = 'values';
+    private const PERMISSION = 'permission';
+    private const EDIT_PERMISSION = 'edit';
 
     /** @var RecordIdentifier */
-    private $identifier;
+    public $identifier;
 
     /** @var ReferenceEntityIdentifier */
-    private $referenceEntityIdentifier;
+    public $referenceEntityIdentifier;
 
     /** @var RecordCode */
-    private $code;
+    public $code;
 
     /** @var LabelCollection */
-    private $labels;
+    public $labels;
 
     /** @var Image */
-    private $image;
+    public $image;
 
     /** @var array */
-    private $values;
+    public $values;
+
+    /** @var boolean */
+    public $isAllowedToEdit = true;
 
     public function __construct(
         RecordIdentifier $identifier,
@@ -58,7 +63,8 @@ class RecordDetails
         RecordCode $code,
         LabelCollection $labels,
         Image $image,
-        array $values
+        array $values,
+        bool $isAllowedToEdit
     ) {
         $this->identifier = $identifier;
         $this->referenceEntityIdentifier = $referenceEntityIdentifier;
@@ -66,17 +72,21 @@ class RecordDetails
         $this->labels = $labels;
         $this->values = $values;
         $this->image = $image;
+        $this->isAllowedToEdit = $isAllowedToEdit;
     }
 
     public function normalize(): array
     {
         return [
-            self::IDENTIFIER                 => $this->identifier->normalize(),
+            self::IDENTIFIER                  => $this->identifier->normalize(),
             self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier->normalize(),
-            self::CODE                       => $this->code->normalize(),
-            self::LABELS                     => $this->labels->normalize(),
-            self::IMAGE                      => $this->image->normalize(),
-            self::VALUES                     => $this->values,
+            self::CODE                        => $this->code->normalize(),
+            self::LABELS                      => $this->labels->normalize(),
+            self::IMAGE                       => $this->image->normalize(),
+            self::VALUES                      => $this->values,
+            self::PERMISSION                  => [
+                self::EDIT_PERMISSION => $this->isAllowedToEdit,
+            ],
         ];
     }
 }

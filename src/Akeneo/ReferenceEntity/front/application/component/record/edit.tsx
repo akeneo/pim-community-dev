@@ -16,7 +16,7 @@ import {
 } from 'akeneoreferenceentity/application/action/record/edit';
 import {deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
 import EditState from 'akeneoreferenceentity/application/component/app/edit-state';
-const securityContext = require('pim/security-context');
+import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
 import File from 'akeneoreferenceentity/domain/model/file';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
@@ -31,6 +31,8 @@ import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-r
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import CompletenessLabel from '../app/completeness';
 
+const securityContext = require('pim/security-context');
+
 interface StateProps {
   sidebar: {
     tabs: Tab[];
@@ -43,9 +45,11 @@ interface StateProps {
     locale: string;
     channel: string;
   };
-  acls: {
-    create: boolean;
-    delete: boolean;
+  rights: {
+    record: {
+      edit: boolean;
+      delete: boolean;
+    };
   };
   record: NormalizedRecord;
   structure: {
@@ -174,17 +178,24 @@ class RecordEditView extends React.Component<EditProps> {
                         <div className="AknTitleContainer-buttonsContainer">
                           <div className="user-menu">
                             <PimView
-                              className="AknTitleContainer-userMenu"
+                              className={`AknTitleContainer-userMenu ${
+                                this.props.rights.record.edit ? '' : 'AknTitleContainer--withoutMargin'
+                              }`}
                               viewName="pim-reference-entity-index-user-navigation"
                             />
                           </div>
                           <div className="AknButtonList">
-                            {this.getSecondaryActions(this.props.acls.delete)}
-                            <div className="AknTitleContainer-rightButton">
-                              <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
-                                {__('pim_reference_entity.record.button.save')}
-                              </button>
-                            </div>
+                            {this.getSecondaryActions(this.props.rights.record.delete)}
+                            {this.props.rights.record.edit ? (
+                              <div className="AknTitleContainer-rightButton">
+                                <button
+                                  className="AknButton AknButton--apply"
+                                  onClick={this.props.events.onSaveEditForm}
+                                >
+                                  {__('pim_reference_entity.record.button.save')}
+                                </button>
+                              </div>
+                            ) : null}
                           </div>
                         </div>
                       </div>
@@ -266,9 +277,14 @@ export default connect(
         locales: state.structure.locales,
         channels: state.structure.channels,
       },
-      acls: {
-        create: securityContext.isGranted('akeneo_referenceentity_record_create'),
-        delete: securityContext.isGranted('akeneo_referenceentity_record_delete'),
+      rights: {
+        record: {
+          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') && canEditReferenceEntity(),
+          delete:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            securityContext.isGranted('akeneo_referenceentity_record_delete') &&
+            canEditReferenceEntity(),
+        },
       },
       confirmDelete,
     };

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifierMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -53,7 +54,12 @@ final class ProductSubscriptionRequest
     public function getMappedValues(IdentifiersMapping $mapping): array
     {
         $mapped = [];
-        foreach ($mapping as $franklinCode => $mappedAttribute) {
+        foreach ($mapping as $franklinCode => $identifierMapping) {
+            if (!$identifierMapping instanceof IdentifierMapping) {
+                continue;
+            }
+
+            $mappedAttribute = $identifierMapping->getAttribute();
             if (!$mappedAttribute instanceof AttributeInterface) {
                 continue;
             }
