@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI;
 
+use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Certificate;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Code;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
@@ -33,9 +34,17 @@ class ControllerSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         CreateOrUpdateConfigurationHandler $createOrUpdateConfigHandler,
         Repository $repository,
-        ServiceProviderDefaultConfiguration $serviceProviderDefaultConfiguration
+        ServiceProviderDefaultConfiguration $serviceProviderDefaultConfiguration,
+        CreateArchive $createArchive
     ) {
-        $this->beConstructedWith($validator, $normalizer, $createOrUpdateConfigHandler, $repository, $serviceProviderDefaultConfiguration);
+        $this->beConstructedWith(
+            $validator,
+            $normalizer,
+            $createOrUpdateConfigHandler,
+            $repository,
+            $serviceProviderDefaultConfiguration,
+            $createArchive
+        );
     }
 
     function it_saves_configuration($validator, $createOrUpdateConfigHandler)

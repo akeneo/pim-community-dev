@@ -55,3 +55,6 @@ services:
         arguments:
             - '@security.firewall.map.inner'
             - '@akeneo_authentication.sso.configuration.repository'
+
+    akeneo_authentication.sso.user.fatcory:
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User\Factory'
