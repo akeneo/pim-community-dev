@@ -177,6 +177,7 @@ services:
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_record_images'
             - '%reference_entity_connector_records_limit_per_page%'
             - '@validator'
+            - '@akeneo_referenceentity.infrastructure.connector.api.search_filters_validator'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\GetConnectorReferenceEntityAction

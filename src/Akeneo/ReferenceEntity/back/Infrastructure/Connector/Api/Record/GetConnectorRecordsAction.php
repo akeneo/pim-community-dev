@@ -22,11 +22,14 @@ use Akeneo\ReferenceEntity\Domain\Query\Limit;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\Hal\AddHalDownloadLinkToRecordImages;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\SearchFiltersValidator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -56,13 +59,17 @@ class GetConnectorRecordsAction
     /** @var ValidatorInterface */
     private $validator;
 
+    /** @var SearchFiltersValidator */
+    private $searchFiltersValidator;
+
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
         SearchConnectorRecord $searchConnectorRecord,
         PaginatorInterface $halPaginator,
         AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
         int $limit,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        SearchFiltersValidator $searchFiltersValidator
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->searchConnectorRecord = $searchConnectorRecord;
@@ -70,6 +77,7 @@ class GetConnectorRecordsAction
         $this->halPaginator = $halPaginator;
         $this->addHalLinksToImageValues = $addHalLinksToImageValues;
         $this->validator = $validator;
+        $this->searchFiltersValidator = $searchFiltersValidator;
     }
 
     /**
@@ -78,9 +86,15 @@ class GetConnectorRecordsAction
      */
     public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
     {
-        // TODO validate search filters with json-schema
-        $rawSearchFilters = $this->getSearchFiltersFromRequest($request);
-        $searchFilters = $this->formatSearchFilters($rawSearchFilters);
+        $searchFilters = $this->getSearchFiltersFromRequest($request);
+        $searchFiltersErrors = !empty($searchFilters) ? $this->searchFiltersValidator->validate($searchFilters) : [];
+        if (!empty($searchFiltersErrors)) {
+            return new JsonResponse([
+                'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message' => 'The search filters have an invalid format.',
+                'errors'  => JsonSchemaErrorsFormatter::format($searchFiltersErrors),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         try {
             $searchAfter = $request->get('search_after', null);
@@ -94,7 +108,7 @@ class GetConnectorRecordsAction
                 $localeIdentifiersValuesFilter,
                 $this->limit->intValue(),
                 $searchAfterCode,
-                $searchFilters
+                $this->formatSearchFilters($searchFilters)
             );
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
