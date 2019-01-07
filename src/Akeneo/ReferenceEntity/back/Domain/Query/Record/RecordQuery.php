@@ -135,7 +135,7 @@ class RecordQuery
         LocaleIdentifierCollection $localeIdentifiersValuesFilter,
         int $size,
         ?RecordCode $searchAfterCode,
-        ?array $updatedSinceFilter
+        ?array $updatedSinceFilter = null
     ): RecordQuery {
         $filters = [
             [

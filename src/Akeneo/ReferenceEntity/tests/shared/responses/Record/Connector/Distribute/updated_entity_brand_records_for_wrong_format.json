@@ -3,15 +3,21 @@
     "method": "GET",
     "route": "akeneo_reference_entities_records_rest_connector_get",
     "query": {
-      "referenceEntityIdentifier": "Brand",
-      "search": "{\"updated\":[{\"operator\":\">\",\"value\":\"2018-07-04T10:00:00+00:00\"}]}"
+      "referenceEntityIdentifier": "brand",
+      "search": "{\"updated\":[{\"operator\":\">\",\"value\":\"abc123\"}]}"
     }
   },
   "response": {
     "status": 422,
     "body": {
       "code": 422,
-      "message": "Property \"updated\" expects a string with the ISO 8601 format, \"bla\" given."
+      "message": "Invalid query parameters",
+      "errors": [
+        {
+          "property": "filters",
+          "message": "Property \"updated\" expects a string with the ISO 8601 format, \"abc123\" given."
+        }
+      ]
     }
   }
 }
