@@ -42,9 +42,6 @@ Akeneo\UserManagement\Component\Model\User:
             length: 255
             nullable: true
             column: name_suffix
-        birthday:
-            type: date
-            nullable: true
         image:
             type: string
             length: 255

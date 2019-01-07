@@ -84,9 +84,7 @@ define(
                         attributeGroups: attributeGroups,
                         attributeCount: attributeCount,
                         currentGroup: this.currentGroup,
-                        selectedAttributes: selectedAttributes,
-                        title: __('pim_enrich.entity.attribute.plural_label'),
-                        description: __('pim_enrich.export.product.filter.attributes_selector.description')
+                        selectedAttributes: selectedAttributes
                     }));
 
                     this.initializeSortable();
@@ -176,7 +174,8 @@ define(
                         options: {
                             excluded_identifiers: this.getSelected(),
                             page: this.attributeListPage,
-                            limit: 20
+                            limit: 20,
+                            locale: userContext.get('catalogLocale')
                         }
                     };
 

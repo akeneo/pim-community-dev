@@ -65,7 +65,6 @@ class UserNormalizerSpec extends ObjectBehavior
             'last_name'                 => null,
             'name_suffix'               => null,
             'phone'                     => null,
-            'birthday'                  => null,
             'image'                     => null,
             'last_login'                => null,
             'login_count'               => 0,

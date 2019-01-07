@@ -6,6 +6,11 @@ const mediator = require('oro/mediator');
 const __ = require('oro/translator');
 const Routing = require('routing');
 const DatagridState = require('pim/datagrid/state');
+const buttonTemplate = require('pim/template/datagrid/column-selector/button');
+const columnsTemplate = require('pim/template/datagrid/column-selector/columns');
+const innerModalTemplate = require('pim/template/datagrid/column-selector/modal');
+const selectedTemplate = require('pim/template/datagrid/column-selector/selected');
+const modalTemplate = require('pim/template/common/modal-centered');
 
 interface AttributeGroup {
   code: string;
@@ -40,65 +45,11 @@ class ColumnSelector extends BaseView {
   public searchInputSelector: string;
   public hideButton: boolean;
 
-  public buttonTemplate: string = `<div class="AknGridToolbar-actionButton"><a class="AknActionButton configure-columns" title="<%- label %>" data-open><%- label %></a></div>`;
-
-  public modalTemplate: string = `<div class="AknFullPage-upperTitle">
-    <div class="AknFullPage-title"><%- title %></div>
-    <div class="AknFullPage-description"><%- description %></div>
-  </div>
-  <div id="column-configurator"><div class="AknColumnConfigurator">
-    <div class="AknColumnConfigurator-column AknColumnConfigurator-column--gray">
-      <div class="AknColumnConfigurator-columnHeader"><%- attributeGroupsLabel %></div>
-      <div class="AknColumnConfigurator-listContainer" data-attributes>
-        <ul class="AknVerticalList nav-list">
-          <li class="AknVerticalList-item AknVerticalList-item--selectable tab active" data-group data-value="">
-              All Groups
-          </li>
-          <% _.each(groups, (group) => { %>
-            <li class="AknVerticalList-item AknVerticalList-item--selectable tab" data-group data-value="<%- group.code %>">
-                <%- group.label %><span class="AknBadge"><%- group.count %></span>
-            </li>
-          <% }) %>
-        </ul>
-      </div>
-    </div>
-    <div class="AknColumnConfigurator-column">
-      <div class="AknColumnConfigurator-columnHeader"> <input class="AknTextField AknColumnConfigurator-searchInput" type="search" placeholder="<%- _.__('pim_datagrid.column_configurator.search') %>"/> </div>
-      <div class="AknColumnConfigurator-listContainer more" data-columns></div>
-    </div>
-    <div class="AknColumnConfigurator-column">
-        <div class="AknColumnConfigurator-columnHeader"><%- _.__("pim_datagrid.column_configurator.displayed_columns") %>
-          <button class="AknButton AknButton--grey reset"><%- _.__("pim_datagrid.column_configurator.clear") %></button>
-         </div>
-         <div class="AknColumnConfigurator-listContainer" data-columns-selected></div>
-    </div>
-  </div>
-  </div>
-`;
-
-  public columnsTemplate: string = `
-    <ul id="column-list" class="AknVerticalList connected-sortable">
-        <% _.each(columns, function(column) { %>
-          <li class="AknVerticalList-item AknVerticalList-item--movable" data-value="<%- column.code %>" data-group="<%- column.group %>">
-              <div><%- column.label %></div>
-          </li>
-        <% }); %>
-    </ul>
-  `;
-
-  public selectedTemplate: string = `
-    <ul id="column-selection" class="AknVerticalList connected-sortable ui-sortable">
-        <% _.each(columns, (column) => { %>
-          <li class="AknVerticalList-item AknVerticalList-item--movable" data-value="<%- column.code %>" data-group="<%- column.group %>">
-            <div><%- column.label %></div>
-            <% if (column.removable) { %>
-              <div class="AknVerticalList-delete action" title="<%- _.__('pim_datagrid.column_configurator.remove_column') %>"></div>
-            <% } %>
-          </li>
-        <% }) %>
-        <div class="AknMessageBox AknMessageBox--error AknMessageBox--hide alert alert-error"><%- _.__('pim_datagrid.column_configurator.min_message') %></div>
-    </ul>
-  `;
+  private buttonTemplate: ((...data: any[]) => string) = _.template(buttonTemplate);
+  private innerModalTemplate: ((...data: any[]) => string) = _.template(innerModalTemplate);
+  private columnsTemplate: ((...data: any[]) => string) = _.template(columnsTemplate);
+  private selectedTemplate: ((...data: any[]) => string) = _.template(selectedTemplate);
+  private modalTemplate: ((...data: any[]) => string) = _.template(modalTemplate);
 
   public events(): Backbone.EventsHash {
     return {
@@ -148,7 +99,7 @@ class ColumnSelector extends BaseView {
   renderColumnSelector(): BaseView {
     if (true === this.hideButton) return this;
 
-    this.$el.html(_.template(this.buttonTemplate)({label: __('pim_datagrid.column_configurator.label')}));
+    this.$el.html(this.buttonTemplate({label: __('pim_datagrid.column_configurator.label')}));
 
     return this;
   }
@@ -301,7 +252,7 @@ class ColumnSelector extends BaseView {
     this.modal.$el
       .find('[data-columns]')
       .empty()
-      .append(_.template(this.columnsTemplate)({columns: unSelectedColumns}));
+      .append(this.columnsTemplate({columns: unSelectedColumns}));
 
     const sortedColumns = _.map(selectedColumns, (column: Column) => column).sort((a: Column, b: Column) => {
       return a.sortOrder - b.sortOrder;
@@ -310,7 +261,7 @@ class ColumnSelector extends BaseView {
     this.modal.$el
       .find('[data-columns-selected]')
       .empty()
-      .append(_.template(this.selectedTemplate)({columns: sortedColumns}));
+      .append(this.selectedTemplate({columns: sortedColumns}));
 
     this.modal.$el.on('click', '#column-selection .action', this.unselectColumn.bind(this));
     this.setSortable();
@@ -441,19 +392,16 @@ class ColumnSelector extends BaseView {
 
     this.fetchAttributeGroups().then(groups => {
       const modal = new (<any>Backbone).BootstrapModal({
-        className: 'modal modal--fullPage modal--topButton column-configurator-modal',
-        modalOptions: {backdrop: 'static', keyboard: false},
-        allowCancel: true,
         okCloses: false,
-        cancelText: __('pim_common.cancel'),
         title: __('pim_datagrid.column_configurator.title'),
-        content: _.template(this.modalTemplate)({
+        innerDescription: __('pim_datagrid.column_configurator.description'),
+        okText: __('pim_common.apply'),
+        template: this.modalTemplate,
+        innerClassName: 'AknFullPage--full',
+        content: this.innerModalTemplate({
           groups,
           attributeGroupsLabel: __('pim_enrich.entity.attribute_group.plural_label'),
-          title: __('pim_datagrid.column_configurator.title'),
-          description: __('pim_datagrid.column_configurator.description'),
         }),
-        okText: __('pim_common.apply'),
       });
 
       modal.open();

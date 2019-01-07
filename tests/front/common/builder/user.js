@@ -8,7 +8,6 @@ class UserBuilder {
       middleName: null,
       lastName: 'Doe',
       nameSuffix: null,
-      birthday: null,
       image: null,
       lastLogin: 1518092814,
       loginCount: 18,

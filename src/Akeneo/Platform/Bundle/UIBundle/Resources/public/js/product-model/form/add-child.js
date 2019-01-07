@@ -12,12 +12,14 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'pim/form',
         'routing',
         'pim/template/product-model-edit-form/add-child-form'
     ], (
         $,
         _,
+        __,
         BaseForm,
         Routing,
         template
@@ -30,7 +32,10 @@ define(
              */
             render() {
                 const illustrationClass = this.getIllustrationClass();
-                this.$el.html(this.template({ illustrationClass }));
+                this.$el.html(this.template({
+                    illustrationClass,
+                    okText: __('pim_common.save'),
+                }));
                 this.renderExtensions();
             },
 

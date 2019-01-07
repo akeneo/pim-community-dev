@@ -18,7 +18,6 @@ pim_user_management:
         middle_name: Отчество
         last_name: Фамилия
         name_suffix: Суффикс имени
-        birthday: День рождения
         avatar: Аватар
         email: Email
         catalog_locale: Локаль каталога

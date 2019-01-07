@@ -19,7 +19,6 @@ pim_user_management:
         last_name: Nachname
         name_suffix: Namenssuffix
         phone: Telefon
-        birthday: Geburtstag
         avatar: Benutzerbild
         email: E-Mail
         catalog_locale: Katalog-Gebietsschema

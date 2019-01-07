@@ -22,6 +22,7 @@ pim_title:
 confirmation:
     remove:
         user: Are you sure you want to delete this user?
+        group: Are you sure you want to delete this group?
 
 pim_enrich:
     entity:
@@ -51,7 +52,6 @@ pim_user_management:
                 last_name: Last name
                 name_suffix: Name suffix
                 phone: Phone
-                birthday: Birthday
                 avatar: Avatar
                 email: Email
                 catalog_locale: Catalog locale

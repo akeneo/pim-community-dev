@@ -12,11 +12,7 @@ define(
              * {@inheritdoc}
              */
             execute: function () {
-                return formModalCreator.createModal(
-                    this.model.get(this.propertyCode),
-                    this.fetcher,
-                    'modal modal--fullPage modal--alignTop'
-                );
+                return formModalCreator.createModal(this.model.get(this.propertyCode), this.fetcher);
             }
         });
     }

@@ -119,8 +119,6 @@ define([
 
             this.$el.html(
                 this.template({
-                    title: __('pim_datagrid.column_configurator.title'),
-                    description: __('pim_datagrid.column_configurator.description'),
                     attributeGroupsLabel: __('pim_enrich.entity.attribute_group.plural_label'),
                     groups:  groups,
                     columns: this.collection.toJSON()

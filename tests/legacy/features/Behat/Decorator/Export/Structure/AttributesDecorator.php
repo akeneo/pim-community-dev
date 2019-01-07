@@ -46,7 +46,7 @@ class AttributesDecorator extends ElementDecorator
     protected function getModal()
     {
         $modal = $this->spin(function () {
-            return $this->getBody()->find('css', '.column-configurator-modal');
+            return $this->getBody()->find('css', '.modal');
         }, 'Cannot find the select filter modal');
 
         return $this->decorate($modal, [AttributeSelectorDecorator::class]);

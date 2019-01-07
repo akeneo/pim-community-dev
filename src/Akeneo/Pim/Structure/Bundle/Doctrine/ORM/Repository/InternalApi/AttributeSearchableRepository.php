@@ -69,6 +69,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                 'scopable'               => null,
                 'is_locale_specific'     => null,
                 'useable_as_grid_filter' => null,
+                'families'               => null,
             ]
         );
         $resolver->setAllowedTypes('identifiers', 'array');
@@ -85,6 +86,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver->setAllowedTypes('scopable', ['bool', 'null']);
         $resolver->setAllowedTypes('is_locale_specific', ['bool', 'null']);
         $resolver->setAllowedTypes('useable_as_grid_filter', ['bool', 'null']);
+        $resolver->setAllowedTypes('families', ['array', 'null']);
 
         $options = $resolver->resolve($options);
 
@@ -176,6 +178,12 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         if (null !== $options['types']) {
             $qb->andWhere('a.type in (:types)');
             $qb->setParameter('types', $options['types']);
+        }
+
+        if (null !== $options['families']) {
+            $qb->leftJoin('a.families', 'af');
+            $qb->andWhere('af.code IN (:families)');
+            $qb->setParameter('families', $options['families']);
         }
 
         $qb->leftJoin('a.group', 'ag');

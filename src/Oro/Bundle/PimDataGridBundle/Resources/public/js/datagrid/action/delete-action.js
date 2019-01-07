@@ -104,23 +104,27 @@ define([
              * @return {oro.Modal}
              */
             getErrorDialog: function(response) {
-                if (!this.errorModal) {
-                    let message = '';
+                let message = '';
+
+                if (typeof response === 'string') {
+                    message = response;
+                } else {
                     try {
                         message = JSON.parse(response).message;
                     } catch(e) {
                         message = __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail');
                     }
-
-                    this.errorModal = new Modal({
-                        title: __('pim_datagrid.delete_error.title'),
-                        content:
-                            '' === message ?
-                            __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail'):
-                            message,
-                        cancelText: false
-                    });
                 }
+
+                this.errorModal = new Modal({
+                    title: __('pim_datagrid.delete_error.title'),
+                    content:
+                        '' === message ?
+                        __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail'):
+                        message,
+                    cancelText: false
+                });
+
                 return this.errorModal;
             }
         });

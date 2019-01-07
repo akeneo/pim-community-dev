@@ -22,7 +22,7 @@ use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
  * to be compatible with XLSX files and localization.
  *
  * To get a real standardized from the flat format, please
- * see {@link \Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductDelocalized }
+ * see {@link \Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized }
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

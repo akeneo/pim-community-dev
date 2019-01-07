@@ -30,6 +30,7 @@ Feature: Choose and order product grids columns
     Given I display the columns SKU, Family and Name
     When I've removed the "name" attribute
     And I am on the products grid
+    And reload the page
     Then I should see the columns Family and SKU
 
   @jira https://akeneo.atlassian.net/browse/PIM-4861

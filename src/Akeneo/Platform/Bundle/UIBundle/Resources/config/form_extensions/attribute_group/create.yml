@@ -2,6 +2,14 @@ extensions:
     pim-attribute-group-create-form:
         module: pim/form/common/edit-form
 
+    pim-attribute-group-create-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-attribute-group-create-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-attribute-group
+
     pim-attribute-group-create-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-attribute-group-create-form
