@@ -10,7 +10,7 @@ pim_menu:
 akeneo_franklin_insights:
     entity:
         data_provider:
-            ask_franklin_down: "Your request has not been delivered. Franklin Insights server does not respond."
+            ask_franklin_down: "Sorry, something went wrong. Please try again later."
             authentication_error: "Sorry, failed to authenticate to Franklin Insights, your token is invalid. Please enter a valid token or contact us for help."
             bad_request_error: "Sorry, an problem occured communicating with Franklin Insights. Please contact your administrator."
         identifier_mapping:
