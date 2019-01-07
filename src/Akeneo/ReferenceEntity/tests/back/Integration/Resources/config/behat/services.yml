@@ -56,8 +56,8 @@ services:
         tags:
         - { name: fob.context_service }
 
-    akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_record_context:
-        class: Akeneo\ReferenceEntity\Integration\Connector\Collection\CreateOrUpdateRecordContext
+    akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_record_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect\CreateOrUpdateRecordContext
         arguments:
             - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
             - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
@@ -103,8 +103,8 @@ services:
         tags:
             - { name: fob.context_service }
 
-    akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_reference_entity_context:
-        class: Akeneo\ReferenceEntity\Integration\Connector\Collection\CreateOrUpdateReferenceEntityContext
+    akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_reference_entity_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect\CreateOrUpdateReferenceEntityContext
         arguments:
             - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
             - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
@@ -126,8 +126,8 @@ services:
         tags:
             - { name: fob.context_service }
 
-    akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_attribute_context:
-        class: Akeneo\ReferenceEntity\Integration\Connector\Collection\CreateOrUpdateAttributeContext
+    akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_attribute_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect\CreateOrUpdateAttributeContext
         arguments:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
