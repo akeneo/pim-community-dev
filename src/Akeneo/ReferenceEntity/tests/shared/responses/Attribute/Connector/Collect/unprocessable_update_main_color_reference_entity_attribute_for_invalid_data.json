@@ -1,0 +1,34 @@
+{
+  "request": {
+    "method": "PATCH",
+    "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_create_or_update",
+    "query": {
+      "referenceEntityIdentifier": "color",
+      "attributeCode": "main_color"
+    },
+    "body": {
+      "code":  "main_color",
+      "type":  "text",
+      "value_per_locale": true,
+      "value_per_channel": false,
+      "is_required_for_completeness": true,
+      "max_characters": 133,
+      "is_textarea": false,
+      "validation_rule":  "invalid_rule",
+      "validation_regexp":  "/\\w+/"
+    }
+  },
+  "response": {
+    "status": 422,
+    "body": {
+      "code": 422,
+      "message": "The attribute has data that does not comply with the business rules.",
+      "errors": [
+        {
+          "property": "validation_rule",
+          "message": "The value you selected is not a valid choice."
+        }
+      ]
+    }
+  }
+}

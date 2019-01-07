@@ -1,0 +1,43 @@
+{
+  "request": {
+    "method": "PATCH",
+    "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_create_or_update",
+    "query": {
+      "referenceEntityIdentifier": "color",
+      "attributeCode": "main_color"
+    },
+    "body": {
+      "code":  "main_color",
+      "type":  "text",
+      "labels": [
+        "Wrong label format"
+      ],
+      "unknown_property": "michel"
+    }
+  },
+  "response": {
+    "status": 422,
+    "body": {
+      "code": 422,
+      "message": "The attribute has an invalid format.",
+      "errors": [
+        {
+          "property": "value_per_locale",
+          "message": "The property value_per_locale is required"
+        },
+        {
+          "property": "value_per_channel",
+          "message": "The property value_per_channel is required"
+        },
+        {
+          "property": "labels",
+          "message": "Array value found, but an object is required"
+        },
+        {
+          "property": "",
+          "message": "The property unknown_property is not defined and the definition does not allow additional properties"
+        }
+      ]
+    }
+  }
+}

@@ -27,7 +27,8 @@ class NotFoundReferenceEntityContext implements Context
 {
     private const RECORD_REQUEST_CONTRACT_DIR = 'Record/Connector/Distribute/';
     private const REFERENCE_ENTITY_REQUEST_CONTRACT_DIR = 'ReferenceEntity/Connector/Distribute/';
-    private const ATTRIBUTE_REQUEST_CONTRACT_DIR = 'Attribute/Connector/Distribute/';
+    private const DISTRIBIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR = 'Attribute/Connector/Distribute/';
+    private const COLLECT_ATTRIBUTE_REQUEST_CONTRACT_DIR = 'Attribute/Connector/Collect/';
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -105,7 +106,7 @@ class NotFoundReferenceEntityContext implements Context
     public function theConnectorRequestsTheStructureOfANonExistentReferenceEntity()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->notFoundReferenceEntityRequestContract = self::ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_attributes.json";
+        $this->notFoundReferenceEntityRequestContract = self::DISTRIBIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_attributes.json";
         $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
     }
 
@@ -115,7 +116,7 @@ class NotFoundReferenceEntityContext implements Context
     public function theConnectorRequestsAGivenAttributeOfANonExistentReferenceEntity()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->notFoundReferenceEntityRequestContract = self::ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_attribute.json";
+        $this->notFoundReferenceEntityRequestContract = self::DISTRIBIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_attribute.json";
         $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
     }
 
@@ -126,7 +127,7 @@ class NotFoundReferenceEntityContext implements Context
     public function theConnectorRequestsANonExistentAttributeOfAGivenReferenceEntity()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->notFoundReferenceEntityRequestContract = self::ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_attribute_for_reference_entity.json";
+        $this->notFoundReferenceEntityRequestContract = self::DISTRIBIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_attribute_for_reference_entity.json";
         $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
     }
 
@@ -136,7 +137,7 @@ class NotFoundReferenceEntityContext implements Context
     public function theConnectorRequestsTheOptionsOfAnAttributeForANonExistentReferenceEntity()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->notFoundReferenceEntityRequestContract = self::ATTRIBUTE_REQUEST_CONTRACT_DIR . "options_for_non_existent_reference_entity.json";
+        $this->notFoundReferenceEntityRequestContract = self::DISTRIBIBUTE_ATTRIBUTE_REQUEST_CONTRACT_DIR . "options_for_non_existent_reference_entity.json";
         $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
     }
 
@@ -146,5 +147,16 @@ class NotFoundReferenceEntityContext implements Context
     public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeDoesNotExistForTheBrandReferenceEntity()
     {
         $this->webClientHelper->assertJsonFromFile($this->notFoundReferenceEntityResponse, $this->notFoundReferenceEntityRequestContract);
+    }
+
+
+    /**
+     * @When /^the connector collects an attribute of a non\-existent reference entity$/
+     */
+    public function theConnectorCollectsAnAttributeOfANonExistentReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->notFoundReferenceEntityRequestContract = self::COLLECT_ATTRIBUTE_REQUEST_CONTRACT_DIR . 'not_found_reference_entity_for_an_attribute.json';
+        $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
     }
 }

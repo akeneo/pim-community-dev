@@ -54,3 +54,28 @@ services:
 
     akeneo_referenceentity.infrastructure.connector.api.reference_entity_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\JsonSchema\ReferenceEntityValidator
+
+    akeneo_referenceentity.infrastructure.connector.api.creation_attribute_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeCreationValidator
+        arguments:
+            - !tagged akeneo_referenceentity.connector.api.attribute_validator
+
+    akeneo_referenceentity.infrastructure.connector.api.image_attribute_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\ImageAttributeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.attribute_validator }
+
+    akeneo_referenceentity.infrastructure.connector.api.option_attribute_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\OptionAttributeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.attribute_validator }
+
+    akeneo_referenceentity.infrastructure.connector.api.record_attribute_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\RecordAttributeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.attribute_validator }
+
+    akeneo_referenceentity.infrastructure.connector.api.text_attribute_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\TextAttributeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.attribute_validator }
