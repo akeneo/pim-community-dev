@@ -81,6 +81,8 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
                 return in_array($record->getCode(), $codes);
             }
 
+            // add filter for updated date
+
             throw new \LogicException(
                 sprintf('Unknown operator %s for code filter', $codeFilter['operator'])
             );

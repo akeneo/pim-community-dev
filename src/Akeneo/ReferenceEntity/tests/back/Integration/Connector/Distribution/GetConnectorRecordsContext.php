@@ -501,6 +501,7 @@ class GetConnectorRecordsContext implements Context
      */
     public function recordsForTheBrandReferenceEntityThatWereLastUpdatedOnThe10thOfOctober()
     {
+        // send query to elasticsearch to change the updated dates
         throw new PendingException();
     }
 
