@@ -2,7 +2,6 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -55,7 +54,8 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifier implements FindConne
             value_per_locale,
             additional_properties
         FROM akeneo_reference_entity_attribute
-        WHERE reference_entity_identifier = :reference_entity_identifier;
+        WHERE reference_entity_identifier = :reference_entity_identifier
+        ORDER BY attribute_order ASC;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $query,
