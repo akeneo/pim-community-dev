@@ -71,8 +71,12 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             if (null === $updatedFilter) {
                 return true;
             }
-            
-            return true;
+
+            $updatedSinceDate = (new \DateTime($updatedFilter['value']))->getTimestamp();
+            $recordDate = (new \DateTime())->getTimestamp();
+
+            // @TODO - date from record
+            return  $recordDate > $updatedSinceDate;
         }));
 
         $records = array_values(array_filter($records, function (Record $record) use ($codeFilter): bool {
