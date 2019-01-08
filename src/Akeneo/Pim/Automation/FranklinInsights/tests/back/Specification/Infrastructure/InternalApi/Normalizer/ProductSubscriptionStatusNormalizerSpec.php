@@ -21,7 +21,7 @@ class ProductSubscriptionStatusNormalizerSpec extends ObjectBehavior
 {
     public function it_normalizes_a_product_subscription_status(): void
     {
-        $connectionStatus = new ConnectionStatus(true, true, 42);
+        $connectionStatus = new ConnectionStatus(true, true, true, 42);
         $productSubscriptionStatus = new ProductSubscriptionStatus(
             $connectionStatus,
             true,
@@ -39,7 +39,7 @@ class ProductSubscriptionStatusNormalizerSpec extends ObjectBehavior
             'isProductVariant' => true,
         ]);
 
-        $connectionStatus = new ConnectionStatus(false, false, 42);
+        $connectionStatus = new ConnectionStatus(false, false, false, 42);
         $productSubscriptionStatus = new ProductSubscriptionStatus(
             $connectionStatus,
             false,

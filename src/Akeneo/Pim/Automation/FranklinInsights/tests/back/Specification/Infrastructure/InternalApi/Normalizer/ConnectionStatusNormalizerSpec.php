@@ -29,7 +29,7 @@ class ConnectionStatusNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_a_connection_status(): void
     {
-        $connectionStatus = new ConnectionStatus(true, true, 42);
+        $connectionStatus = new ConnectionStatus(true, true, true, 42);
 
         $this->normalize($connectionStatus)->shouldReturn([
             'isActive' => true,
@@ -37,7 +37,7 @@ class ConnectionStatusNormalizerSpec extends ObjectBehavior
             'productSubscriptionCount' => 42,
         ]);
 
-        $anotherConnectionStatus = new ConnectionStatus(false, false, 42);
+        $anotherConnectionStatus = new ConnectionStatus(false, false, false, 42);
 
         $this->normalize($anotherConnectionStatus)->shouldReturn([
             'isActive' => false,

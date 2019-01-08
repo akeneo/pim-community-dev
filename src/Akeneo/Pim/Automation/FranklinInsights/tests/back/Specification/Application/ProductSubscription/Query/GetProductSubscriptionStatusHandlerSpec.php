@@ -70,7 +70,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn($productSubscription);
 
-        $connectionStatus = new ConnectionStatus(false, false, 0);
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -107,7 +107,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
 
-        $connectionStatus = new ConnectionStatus(false, false, 0);
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -144,7 +144,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
 
-        $connectionStatus = new ConnectionStatus(false, false, 0);
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -182,7 +182,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
 
-        $connectionStatus = new ConnectionStatus(false, false, 0);
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -223,7 +223,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
 
-        $connectionStatus = new ConnectionStatus(false, false, 0);
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -270,7 +270,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
 
-        $connectionStatus = new ConnectionStatus(false, false, 0);
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -313,7 +313,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn($productSubscription);
 
-        $connectionStatus = new ConnectionStatus(true, true, 0);
+        $connectionStatus = new ConnectionStatus(true, true, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);

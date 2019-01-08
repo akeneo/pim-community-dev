@@ -12,6 +12,7 @@ Feature: Fetch connection status
       | asin          | asin           |
     When I retrieve the connection status
     Then Franklin connection status should be activated
+    And Franklin connection status should be valid
     And the identifiers mapping should be valid
     And there should have 0 product subscribed to Franklin
 
@@ -19,17 +20,20 @@ Feature: Fetch connection status
     When I retrieve the connection status
     Then Franklin connection status should not be activated
     And the identifiers mapping should not be valid
+    And Franklin connection status should not be valid
 
   Scenario: I retrieve the connection status with an expired token
     Given Franklin is configured with an expired token
     When I retrieve the connection status
-    Then Franklin connection status should not be activated
+    Then Franklin connection status should be activated
+    And Franklin connection status should not be valid
 
   Scenario: I retrieve the connection status when Franklin server is down
     Given Franklin is configured with a valid token
     And Franklin server is down
     When I retrieve the connection status
-    Then Franklin connection status should not be activated
+    Then Franklin connection status should be activated
+    And Franklin connection status should not be valid
 
   Scenario: I retrieve the connection status with the subscriptions count
     Given Franklin is configured with a valid token

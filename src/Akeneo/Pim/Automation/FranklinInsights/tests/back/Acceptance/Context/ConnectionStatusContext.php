@@ -44,7 +44,7 @@ class ConnectionStatusContext implements Context
     public function iRetrieveTheConnectionStatus(): void
     {
         try {
-            $query = new GetConnectionStatusQuery();
+            $query = new GetConnectionStatusQuery(true);
             $this->retrievedConnectionStatus = $this->getConnectionStatusHandler->handle($query);
         } catch (\Exception $e) {
             ExceptionContext::setThrownException($e);
@@ -91,5 +91,21 @@ class ConnectionStatusContext implements Context
     public function thereShouldHaveProductsSubscribedToFranklin($expectedCount): void
     {
         Assert::eq($this->retrievedConnectionStatus->productSubscriptionCount(), $expectedCount);
+    }
+
+    /**
+     * @Then Franklin connection status should be valid
+     */
+    public function theConnectionStatusShouldBeValid(): void
+    {
+        Assert::true($this->retrievedConnectionStatus->isValid());
+    }
+
+    /**
+     * @Then Franklin connection status should not be valid
+     */
+    public function theConnectionStatusShouldNotBeValid(): void
+    {
+        Assert::false($this->retrievedConnectionStatus->isValid());
     }
 }
