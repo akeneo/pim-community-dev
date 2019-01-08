@@ -52,3 +52,4 @@ doctrine_cache:
             chain:
                 providers: [doctrine_cache.providers.pim_apcu, doctrine_cache.providers.pim_array]
             namespace: '%doctrine_cache_namespace%'
+
