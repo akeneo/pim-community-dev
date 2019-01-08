@@ -91,6 +91,7 @@ services:
         class: '%pim_analytics.data_collector.storage.class%'
         arguments:
             - '%database_host%'
+            - '%database_port%'
             - '%database_name%'
             - '%database_user%'
             - '%database_password%'
