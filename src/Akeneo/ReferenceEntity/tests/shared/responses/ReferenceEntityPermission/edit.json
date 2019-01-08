@@ -6,8 +6,8 @@
             "referenceEntityIdentifier": "designer"
         },
         "body": [
-            {"user_group_identifier": 2, "name": "IT Manager", "right_level": "edit"},
-            {"user_group_identifier": 1, "name": "Marketing", "right_level": "view"}
+            {"user_group_identifier": 1, "name": "Catalog Manager", "right_level": "edit"},
+            {"user_group_identifier": 2, "name": "IT support", "right_level": "edit"}
         ]
     },
     "response": {

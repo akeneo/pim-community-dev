@@ -19,12 +19,7 @@ import {
 import {savePermission} from 'akeneoreferenceentity/application/action/reference-entity/permission';
 import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
 
-const fetcherRegistry = require('pim/fetcher-registry');
 const securityContext = require('pim/security-context');
-
-type UserGroup = {
-  name: string;
-};
 
 interface StateProps {
   referenceEntity: NormalizedReferenceEntity;
@@ -51,20 +46,6 @@ interface DispatchProps {
 
 class Properties extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
-  state: {
-    userGroups: UserGroup[];
-  } = {
-    userGroups: [],
-  };
-
-  componentDidMount() {
-    fetcherRegistry
-      .getFetcher('user-group')
-      .fetchAll()
-      .then((userGroups: UserGroup[]) => {
-        this.setState({userGroups});
-      });
-  }
 
   render() {
     const referenceEntity = denormalizeReferenceEntity(this.props.referenceEntity);
