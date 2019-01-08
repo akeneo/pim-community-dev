@@ -110,7 +110,7 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
     ): void {
         $request->get('identifier')->willReturn(null);
         $productRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
-        $connectionStatus = new ConnectionStatus(true, true, 42);
+        $connectionStatus = new ConnectionStatus(true, true, true, 42);
         $getConnectionStatusHandler
             ->handle(Argument::type(GetConnectionStatusQuery::class))
             ->willReturn($connectionStatus);

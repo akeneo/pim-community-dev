@@ -58,6 +58,8 @@ class GetConnectionStatusHandler
     }
 
     /**
+     * @param GetConnectionStatusQuery $query
+     *
      * @return ConnectionStatus
      */
     public function handle(GetConnectionStatusQuery $query): ConnectionStatus
@@ -65,13 +67,17 @@ class GetConnectionStatusHandler
         $identifiersMapping = $this->identifiersMappingRepository->find();
         $configuration = $this->configurationRepository->find();
         $productSubscriptionCount = $this->productSubscriptionRepository->count();
-        $isActive = false;
-        if ($configuration->getToken() instanceof Token) {
-            $isActive = $this->authenticationProvider->authenticate($configuration->getToken());
+
+        $isActive = $configuration->getToken() instanceof Token;
+
+        $isValid = false;
+        if ($query->checkTokenValidity() && true === $isActive) {
+            $isValid = $this->authenticationProvider->authenticate($configuration->getToken());
         }
 
         return new ConnectionStatus(
             $isActive,
+            $isValid,
             $identifiersMapping->isValid(),
             $productSubscriptionCount
         );

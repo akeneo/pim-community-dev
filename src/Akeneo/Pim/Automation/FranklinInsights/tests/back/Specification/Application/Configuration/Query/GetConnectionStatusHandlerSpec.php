@@ -33,7 +33,8 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
         ConfigurationRepositoryInterface $configurationRepository,
         AuthenticationProviderInterface $authenticationProvider,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
+        IdentifiersMapping $identifiersMapping
     ): void {
         $this->beConstructedWith(
             $configurationRepository,
@@ -41,104 +42,61 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
             $identifiersMappingRepository,
             $productSubscriptionRepository
         );
-    }
 
-    public function it_checks_that_a_connection_is_active(
-        IdentifiersMapping $identifiersMapping,
-        GetConnectionStatusQuery $query,
-        $authenticationProvider,
-        $configurationRepository,
-        $identifiersMappingRepository,
-        $productSubscriptionRepository
-    ): void {
         $configuration = new Configuration();
         $configuration->setToken(new Token('bar'));
 
         $configurationRepository->find()->willReturn($configuration);
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->isValid()->willReturn(true);
+
+        $productSubscriptionRepository->count()->willReturn(0);
+    }
+
+    public function it_checks_that_a_connection_is_active(): void
+    {
+        $this->handle(new GetConnectionStatusQuery(false))->shouldReturnAnActiveStatus();
+    }
+
+    public function it_checks_that_a_connection_is_inactive($configurationRepository): void
+    {
+        $configurationRepository->find()->willReturn(new Configuration());
+
+        $this->handle(new GetConnectionStatusQuery(false))->shouldReturnAnInactiveStatus();
+    }
+
+    public function it_checks_that_an_identifiers_mapping_is_valid(): void
+    {
+        $this->handle(new GetConnectionStatusQuery(false))->shouldReturnValidIdentifiersMappingStatus();
+    }
+
+    public function it_checks_that_an_identifiers_mapping_is_invalid($identifiersMapping): void
+    {
+        $identifiersMapping->isValid()->willReturn(false);
+        $this->handle(new GetConnectionStatusQuery(false))->shouldReturnInvalidIdentifiersMappingStatus();
+    }
+
+    public function it_checks_that_it_counts_product_subscriptions($productSubscriptionRepository): void
+    {
+        $productSubscriptionRepository->count()->willReturn(42);
+        $this->handle(new GetConnectionStatusQuery(false))->shouldReturnProductSubscriptions();
+    }
+
+    public function it_checks_that_a_connection_is_valid($authenticationProvider): void
+    {
         $authenticationProvider->authenticate('bar')->willReturn(true);
 
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->isValid()->willReturn(false);
-
-        $productSubscriptionRepository->count()->willReturn(0);
-
-        $this->handle($query)->shouldReturnAnActiveStatus();
+        $expectedConnectionStatus = new ConnectionStatus(true, true, true, 0);
+        $this->handle(new GetConnectionStatusQuery(true))->shouldBeLike($expectedConnectionStatus);
     }
 
-    public function it_checks_that_a_connection_is_inactive(
-        IdentifiersMapping $identifiersMapping,
-        GetConnectionStatusQuery $query,
-        $authenticationProvider,
-        $configurationRepository,
-        $identifiersMappingRepository,
-        $productSubscriptionRepository
-    ): void {
-        $configuration = new Configuration();
-        $configuration->setToken(new Token('bar'));
-
-        $configurationRepository->find()->willReturn($configuration);
+    public function it_checks_that_a_connection_is_invalid($authenticationProvider): void
+    {
         $authenticationProvider->authenticate('bar')->willReturn(false);
 
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->isValid()->willReturn(false);
-
-        $productSubscriptionRepository->count()->willReturn(0);
-
-        $this->handle($query)->shouldReturnAnInactiveStatus();
-    }
-
-    public function it_checks_that_an_identifiers_mapping_is_valid(
-        IdentifiersMapping $identifiersMapping,
-        GetConnectionStatusQuery $query,
-        $configurationRepository,
-        $identifiersMappingRepository,
-        $productSubscriptionRepository
-    ): void {
-        $configuration = new Configuration();
-        $configurationRepository->find()->willReturn($configuration);
-
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->isValid()->willReturn(true);
-
-        $productSubscriptionRepository->count()->willReturn(0);
-
-        $this->handle($query)->shouldReturnValidIdentifiersMappingStatus();
-    }
-
-    public function it_checks_that_an_identifiers_mapping_is_invalid(
-        IdentifiersMapping $identifiersMapping,
-        GetConnectionStatusQuery $query,
-        $configurationRepository,
-        $identifiersMappingRepository,
-        $productSubscriptionRepository
-    ): void {
-        $configuration = new Configuration();
-        $configurationRepository->find()->willReturn($configuration);
-
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->isValid()->willReturn(false);
-
-        $productSubscriptionRepository->count()->willReturn(0);
-
-        $this->handle($query)->shouldReturnInvalidIdentifiersMappingStatus();
-    }
-
-    public function it_checks_that_it_counts_product_subscriptions(
-        IdentifiersMapping $identifiersMapping,
-        GetConnectionStatusQuery $query,
-        $configurationRepository,
-        $identifiersMappingRepository,
-        $productSubscriptionRepository
-    ): void {
-        $configuration = new Configuration();
-        $configurationRepository->find()->willReturn($configuration);
-
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->isValid()->willReturn(true);
-
-        $productSubscriptionRepository->count()->willReturn(42);
-
-        $this->handle($query)->shouldReturnProductSubscriptions();
+        $expectedConnectionStatus = new ConnectionStatus(true, false, true, 0);
+        $this->handle(new GetConnectionStatusQuery(true))->shouldBeLike($expectedConnectionStatus);
     }
 
     /**

@@ -64,7 +64,7 @@ class ProductSubscriptionControllerSpec extends ObjectBehavior
         $getProductSubscriptionStatusHandler,
         $productSubscriptionStatusNormalizer
     ): void {
-        $connectionStatus = new ConnectionStatus(true, true, 0);
+        $connectionStatus = new ConnectionStatus(true, true, true, 0);
         $productSubscriptionStatus = new ProductSubscriptionStatus(
             $connectionStatus,
             true,

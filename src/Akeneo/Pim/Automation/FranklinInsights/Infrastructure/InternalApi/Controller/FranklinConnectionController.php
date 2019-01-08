@@ -82,7 +82,7 @@ class FranklinConnectionController
      */
     public function isActiveAction(): Response
     {
-        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
+        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery(true));
 
         return new JsonResponse($this->connectionStatusNormalizer->normalize($connectionStatus));
     }

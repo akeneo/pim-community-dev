@@ -23,8 +23,13 @@ class GetConnectionStatusQuerySpec extends ObjectBehavior
 {
     public function it_is_a_get_connection_status_query(): void
     {
-        $this->beConstructedWith();
-
+        $this->beConstructedWith(true);
         $this->shouldHaveType(GetConnectionStatusQuery::class);
+    }
+
+    public function it_returns_token_validity_check(): void
+    {
+        $this->beConstructedWith(false);
+        $this->checkTokenValidity()->shouldReturn(false);
     }
 }

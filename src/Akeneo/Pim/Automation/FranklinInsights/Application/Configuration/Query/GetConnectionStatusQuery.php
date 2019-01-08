@@ -18,4 +18,22 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query
  */
 class GetConnectionStatusQuery
 {
+    /** @var bool */
+    private $checkTokenValidity;
+
+    /**
+     * @param bool $checkTokenValidity
+     */
+    public function __construct(bool $checkTokenValidity)
+    {
+        $this->checkTokenValidity = $checkTokenValidity;
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkTokenValidity(): bool
+    {
+        return $this->checkTokenValidity;
+    }
 }
