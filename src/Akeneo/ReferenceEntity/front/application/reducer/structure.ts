@@ -35,3 +35,19 @@ export default combineReducers({
   locales,
   channels,
 });
+
+export const getCatalogLocale = (channels: Channel[], channelCode: string, localeCode: string) => {
+  const channel = channels.find((channel: Channel) => channel.code === channelCode);
+
+  if (undefined === channel || channel.locales.map((locale: Locale) => locale.code).includes(localeCode)) {
+    return localeCode;
+  }
+
+  return channel.locales[0].code;
+};
+
+export const getLocales = (channels: Channel[], channelCode: string) => {
+  const channel = channels.find((channel: Channel) => channel.code === channelCode);
+
+  return undefined === channel ? [] : channel.locales;
+};

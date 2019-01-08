@@ -1,14 +1,19 @@
 export interface UserState {
-  defaultCatalogLocale?: string;
-  catalogLocale?: string;
-  catalogChannel?: string;
-  uiLocale?: string;
+  defaultCatalogLocale: string;
+  catalogLocale: string;
+  catalogChannel: string;
+  uiLocale: string;
 }
 
 class InvalidArgumentError extends Error {}
 
 export default (
-  state: UserState = {},
+  state: UserState = {
+    defaultCatalogLocale: '',
+    catalogLocale: '',
+    catalogChannel: '',
+    uiLocale: '',
+  },
   action: {type: string; target: string; locale?: string; channel?: string}
 ): UserState => {
   switch (action.type) {

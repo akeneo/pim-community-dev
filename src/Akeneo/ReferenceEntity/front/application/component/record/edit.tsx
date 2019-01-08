@@ -30,6 +30,7 @@ import Key from 'akeneoreferenceentity/tools/key';
 import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import CompletenessLabel from '../app/completeness';
+import {getLocales, getCatalogLocale} from 'akeneoreferenceentity/application/reducer/structure';
 
 const securityContext = require('pim/security-context');
 
@@ -255,10 +256,6 @@ export default connect(
   (state: State): StateProps => {
     const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
     const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
-    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-    const channel =
-      undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
-    const confirmDelete = state.confirmDelete;
 
     return {
       sidebar: {
@@ -269,12 +266,12 @@ export default connect(
         isDirty: state.form.state.isDirty,
       },
       context: {
-        locale,
-        channel,
+        locale: getCatalogLocale(state.structure.channels, state.user.catalogChannel, state.user.catalogLocale),
+        channel: state.user.catalogChannel,
       },
       record: state.form.data,
       structure: {
-        locales: state.structure.locales,
+        locales: getLocales(state.structure.channels, state.user.catalogChannel),
         channels: state.structure.channels,
       },
       rights: {
@@ -286,7 +283,7 @@ export default connect(
             canEditReferenceEntity(),
         },
       },
-      confirmDelete,
+      confirmDelete: state.confirmDelete,
     };
   },
   (dispatch: any): DispatchProps => {

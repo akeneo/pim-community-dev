@@ -78,7 +78,7 @@ const ChannelSwitcher = ({
       ItemView={ChannelItemView}
       ButtonView={ChannelButtonView}
       onSelectionChange={(channel: DropdownElement) => onChannelChange(channel.original)}
-      className={className}
+      className={`channel-switcher ${className}`}
     />
   );
 };

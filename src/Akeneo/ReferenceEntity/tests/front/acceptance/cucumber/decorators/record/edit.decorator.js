@@ -1,6 +1,7 @@
 const Enrich = require('./edit/enrich.decorator');
 const Sidebar = require('../reference-entity/app/sidebar.decorator');
 const LocaleSwitcher = require('../reference-entity/app/locale-switcher.decorator');
+const ChannelSwitcher = require('../reference-entity/app/channel-switcher.decorator');
 
 const config = {
   Sidebar: {
@@ -14,6 +15,10 @@ const config = {
   LocaleSwitcher: {
     selector: '.locale-switcher',
     decorator: LocaleSwitcher,
+  },
+  ChannelSwitcher: {
+    selector: '.channel-switcher',
+    decorator: ChannelSwitcher,
   },
 };
 
@@ -32,6 +37,10 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
 
   const getLocaleSwitcher = async () => {
     return await await getElement(page, 'LocaleSwitcher');
+  };
+
+  const getChannelSwitcher = async () => {
+    return await await getElement(page, 'ChannelSwitcher');
   };
 
   const getCompletenessValue = async () => {
@@ -110,6 +119,7 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     isLoaded,
     getSidebar,
     getLocaleSwitcher,
+    getChannelSwitcher,
     getCompletenessValue,
     getEnrich,
     isUpdated,

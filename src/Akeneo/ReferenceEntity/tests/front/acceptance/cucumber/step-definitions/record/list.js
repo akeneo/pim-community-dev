@@ -5,6 +5,7 @@ const Records = require('../../decorators/reference-entity/edit/records.decorato
 const Modal = require('../../decorators/delete/modal.decorator');
 const {getRequestContract, listenRequest, askForReferenceEntity} = require('../../tools');
 const LocaleSwitcher = require('../../decorators/reference-entity/app/locale-switcher.decorator');
+const ChannelSwitcher = require('../../decorators/reference-entity/app/channel-switcher.decorator');
 
 const {
   decorators: {createElementDecorator},
@@ -36,6 +37,10 @@ module.exports = async function(cucumber) {
     LocaleSwitcher: {
       selector: '.locale-switcher',
       decorator: LocaleSwitcher,
+    },
+    ChannelSwitcher: {
+      selector: '.channel-switcher',
+      decorator: ChannelSwitcher,
     },
   };
 
@@ -229,6 +234,7 @@ module.exports = async function(cucumber) {
     const requestContract = getRequestContract('Record/Search/no_result_fr.json');
 
     await listenRequest(this.page, requestContract);
+    await (await await getElement(this.page, 'ChannelSwitcher')).switchChannel('mobile');
     await (await await getElement(this.page, 'LocaleSwitcher')).switchLocale('fr_FR');
   });
 

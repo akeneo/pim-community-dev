@@ -1,6 +1,7 @@
 const Properties = require('./edit/properties.decorator');
 const Sidebar = require('./app/sidebar.decorator');
 const LocaleSwitcher = require('./app/locale-switcher.decorator');
+const ChannelSwitcher = require('./app/channel-switcher.decorator');
 
 const config = {
   Sidebar: {
@@ -14,6 +15,10 @@ const config = {
   LocaleSwitcher: {
     selector: '.locale-switcher',
     decorator: LocaleSwitcher,
+  },
+  ChannelSwitcher: {
+    selector: '.channel-switcher',
+    decorator: ChannelSwitcher,
   },
 };
 
@@ -32,6 +37,10 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
 
   const getLocaleSwitcher = async () => {
     return await await getElement(page, 'LocaleSwitcher');
+  };
+
+  const getChannelSwitcher = async () => {
+    return await await getElement(page, 'ChannelSwitcher');
   };
 
   const getProperties = async () => {
@@ -93,6 +102,7 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     isLoaded,
     getSidebar,
     getLocaleSwitcher,
+    getChannelSwitcher,
     getProperties,
     isUpdated,
     isSaved,

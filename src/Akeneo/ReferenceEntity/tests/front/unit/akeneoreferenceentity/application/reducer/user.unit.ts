@@ -6,7 +6,12 @@ describe('akeneo > reference entity > application > reducer --- user', () => {
       type: 'GRID_GO_FIRST_PAGE',
     });
 
-    expect(newState).toEqual({});
+    expect(newState).toEqual({
+      catalogChannel: '',
+      catalogLocale: '',
+      defaultCatalogLocale: '',
+      uiLocale: '',
+    });
   });
 
   test('I ignore other commands', () => {
