@@ -37,14 +37,19 @@ class InstallerCommand extends ContainerAwareCommand implements EventSubscriberI
     /** @var AssetsInstaller */
     private $assetInstaller;
 
+    /** @var string */
+    private $catalogName;
+
     public function __construct(
         FixturesInstaller $fixturesInstaller,
-        AssetsInstaller $assetInstaller
+        AssetsInstaller $assetInstaller,
+        string $catalogName
     ) {
         parent::__construct(self::RESET_FIXTURES_COMMAND_NAME);
 
         $this->fixturesInstaller = $fixturesInstaller;
         $this->assetInstaller = $assetInstaller;
+        $this->catalogName = $catalogName;
 
         parent::__construct();
     }
@@ -80,8 +85,7 @@ class InstallerCommand extends ContainerAwareCommand implements EventSubscriberI
 
     public function loadFixtures(): void
     {
-        $catalogName = $this->getContainer()->getParameter('installer_data');
-        $this->fixturesInstaller->loadCatalog($catalogName);
+        $this->fixturesInstaller->loadCatalog($this->catalogName);
     }
 
     public function installAssets(GenericEvent $event): void
@@ -93,7 +97,7 @@ class InstallerCommand extends ContainerAwareCommand implements EventSubscriberI
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->fixturesInstaller->createSchema();
         $this->fixturesInstaller->loadCatalog(FixturesInstaller::ICE_CAT_DEMO_DEV_CATALOG);
