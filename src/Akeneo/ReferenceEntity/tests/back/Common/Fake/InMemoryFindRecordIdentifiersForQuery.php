@@ -29,6 +29,9 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     /** @var Record[] */
     private $records = [];
 
+    /** @var \DateTime[] */
+    private $updatedDateByRecord = [];
+
     /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocale */
     private $findRequiredValueKeyCollectionForChannelAndLocale;
 
@@ -41,6 +44,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     public function add(Record $record): void
     {
         $this->records[] = $record;
+        $this->updatedDateByRecord[(string) $record->getIdentifier()] = $this->dateRepository->getCurrentDate();
     }
 
     /**
@@ -65,18 +69,6 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
                 || '' === $fullTextFilter['value']
                 || false !== strpos((string) $record->getCode(), $fullTextFilter['value'])
                 || false !== strpos($record->getLabel($query->getLocale()), $fullTextFilter['value']);
-        }));
-
-        $records = array_values(array_filter($records, function (Record $record) use ($updatedFilter) {
-            if (null === $updatedFilter) {
-                return true;
-            }
-
-            $updatedSinceDate = (new \DateTime($updatedFilter['value']))->getTimestamp();
-            $recordDate = (new \DateTime())->getTimestamp();
-
-            // @TODO - date from record
-            return  $recordDate > $updatedSinceDate;
         }));
 
         $records = array_values(array_filter($records, function (Record $record) use ($codeFilter): bool {
@@ -154,6 +146,18 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
 
             $records = array_slice($records, 0, $query->getSize());
         }
+
+        $records = array_values(array_filter($records, function (Record $record) use ($updatedFilter) {
+            if (null === $updatedFilter) {
+                return true;
+            }
+
+            $updatedSinceDate = (new \DateTime($updatedFilter['value']))->getTimestamp();
+            $recordDate = $this->updatedDateByRecord[(string) $record->getIdentifier()];
+
+            // @TODO - date from record
+            return $recordDate > $updatedSinceDate;
+        }));
 
         $result = new IdentifiersForQueryResult();
         $result->total = count($records);

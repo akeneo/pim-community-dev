@@ -501,6 +501,8 @@ class GetConnectorRecordsContext implements Context
      */
     public function recordsForTheBrandReferenceEntityThatWereLastUpdatedOnThe10thOfOctober()
     {
+        $this->dateRepository->setCurrentDate(new \DateTime('2018-10-10'));
+
         for ($i = 1; $i <= 5; $i++) {
             $rawRecordCode = sprintf('brand_%d', $i);
             $recordCode = RecordCode::fromString($rawRecordCode);
@@ -544,6 +546,8 @@ class GetConnectorRecordsContext implements Context
      */
     public function recordsForTheBrandReferenceEntityThatWereUpdatedOnThe15thOfOctober()
     {
+        $this->dateRepository->setCurrentDate(new \DateTime('2018-10-15'));
+
         for ($i = 5; $i <= 10; $i++) {
             $rawRecordCode = sprintf('brand_%d', $i);
             $recordCode = RecordCode::fromString($rawRecordCode);
