@@ -145,7 +145,12 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
      */
     private function updateSubscriptionFamily(int $productId, FamilyInterface $family): void
     {
-        $command = new UpdateSubscriptionFamilyCommand($productId, $family);
-        $this->updateSubscriptionFamilyHandler->handle($command);
+        try {
+            $command = new UpdateSubscriptionFamilyCommand($productId, $family);
+            $this->updateSubscriptionFamilyHandler->handle($command);
+        } catch (ProductNotSubscribedException $e) {
+            // Silently catch exception if the product is not subscribed
+            // We don't check it here as the handler already checks it. No need to do it twice
+        }
     }
 }
