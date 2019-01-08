@@ -53,6 +53,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
         $codeFilter = ($query->hasFilter('code')) ? $query->getFilter('code') : null;
         $codeLabelFilter = ($query->hasFilter('code_label')) ? $query->getFilter('code_label') : null;
         $completeFilter = ($query->hasFilter('complete')) ? $query->getFilter('complete') : null;
+        $updatedFilter = ($query->hasFilter('updated')) ? $query->getFilter('updated'): null;
 
         $records = array_values(array_filter($this->records, function (Record $record) use ($referenceEntityFilter) {
             return '' === $referenceEntityFilter['value']
@@ -64,6 +65,14 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
                 || '' === $fullTextFilter['value']
                 || false !== strpos((string) $record->getCode(), $fullTextFilter['value'])
                 || false !== strpos($record->getLabel($query->getLocale()), $fullTextFilter['value']);
+        }));
+
+        $records = array_values(array_filter($records, function (Record $record) use ($updatedFilter) {
+            if (null === $updatedFilter) {
+                return true;
+            }
+            
+            return true;
         }));
 
         $records = array_values(array_filter($records, function (Record $record) use ($codeFilter): bool {
@@ -80,8 +89,6 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             if ('IN' === $codeFilter['operator']) {
                 return in_array($record->getCode(), $codes);
             }
-
-            // add filter for updated date
 
             throw new \LogicException(
                 sprintf('Unknown operator %s for code filter', $codeFilter['operator'])

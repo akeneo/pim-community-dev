@@ -501,8 +501,42 @@ class GetConnectorRecordsContext implements Context
      */
     public function recordsForTheBrandReferenceEntityThatWereLastUpdatedOnThe10thOfOctober()
     {
-        // send query to elasticsearch to change the updated dates
-        throw new PendingException();
+        for ($i = 1; $i <= 5; $i++) {
+            $rawRecordCode = sprintf('brand_%d', $i);
+            $recordCode = RecordCode::fromString($rawRecordCode);
+            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+            $labelCollection = [];
+            $mainImage = Image::createEmpty();
+
+            $record = Record::create(
+                $recordIdentifier,
+                ReferenceEntityIdentifier::fromString('brand_1'),
+                $recordCode,
+                $labelCollection,
+                $mainImage,
+                ValueCollection::fromValues([])
+            );
+
+            $this->findRecordIdentifiersForQuery->add($record);
+
+            $connectorRecord = new ConnectorRecord(
+                $recordCode,
+                LabelCollection::fromArray($labelCollection),
+                $mainImage,
+                []
+            );
+
+            $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
+            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+        }
+
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand_1'),
+            [],
+            Image::createEmpty()
+        );
+
+        $this->referenceEntityRepository->create($referenceEntity);
     }
 
     /**
@@ -510,7 +544,34 @@ class GetConnectorRecordsContext implements Context
      */
     public function recordsForTheBrandReferenceEntityThatWereUpdatedOnThe15thOfOctober()
     {
-        throw new PendingException();
+        for ($i = 5; $i <= 10; $i++) {
+            $rawRecordCode = sprintf('brand_%d', $i);
+            $recordCode = RecordCode::fromString($rawRecordCode);
+            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+            $labelCollection = [];
+            $mainImage = Image::createEmpty();
+
+            $record = Record::create(
+                $recordIdentifier,
+                ReferenceEntityIdentifier::fromString('brand_1'),
+                $recordCode,
+                $labelCollection,
+                $mainImage,
+                ValueCollection::fromValues([])
+            );
+
+            $this->findRecordIdentifiersForQuery->add($record);
+
+            $connectorRecord = new ConnectorRecord(
+                $recordCode,
+                LabelCollection::fromArray($labelCollection),
+                $mainImage,
+                []
+            );
+
+            $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
+            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+        }
     }
 
     /**
@@ -522,7 +583,7 @@ class GetConnectorRecordsContext implements Context
 
         $this->updatedSinceResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'updated_entity_brand_records_for_wrong_format.json'
+            self::REQUEST_CONTRACT_DIR . 'updated_since_brand_records_page_1.json'
         );
     }
 

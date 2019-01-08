@@ -145,8 +145,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             ];
         }
 
-        if (null !== $updatedFilter && !empty($updatedFilter['value'] && '>' === $updatedFilter['operator']))
-        {
+        if (null !== $updatedFilter && !empty($updatedFilter['value'] && '>' === $updatedFilter['operator'])) {
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'range' => [
                    'updated_at' => ['gt' => $this->getFormattedDate($updatedFilter['value'])]
@@ -161,7 +160,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         return $query;
     }
 
-    private function getFormattedDate(string $updatedDate)
+    private function getFormattedDate(string $updatedDate): int
     {
         $date = new \DateTime($updatedDate);
 

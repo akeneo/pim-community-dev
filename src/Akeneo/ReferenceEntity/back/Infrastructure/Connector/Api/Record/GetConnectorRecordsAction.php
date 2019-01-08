@@ -97,9 +97,6 @@ class GetConnectorRecordsAction
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        // Make an updatedat validator that accepts all the filters and checks the date format
-        // RecordQuery will accept a string
-        // Put the dateTime in elasticsearch in FindIdentifiersForQuery
         $violations = $this->validator->validate($recordQuery);
         if ($violations->count() > 0) {
             throw new ViolationHttpException($violations, 'Invalid query parameters');

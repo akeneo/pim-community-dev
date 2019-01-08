@@ -40,8 +40,9 @@ class UpdatedDateValidator extends ConstraintValidator
         }
     }
 
-    private function getUpdatedFilter(array $filters): ?array {
-        $updatedFilter = current(array_filter($filters, function ($filter)  {
+    private function getUpdatedFilter(array $filters): ?array
+    {
+        $updatedFilter = current(array_filter($filters, function ($filter) {
             return $filter['field'] === (string) 'updated';
         }));
 
@@ -58,7 +59,6 @@ class UpdatedDateValidator extends ConstraintValidator
             new \DateTime($date);
             return true;
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
             return false;
         }
     }

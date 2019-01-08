@@ -3,8 +3,8 @@
     "method": "GET",
     "route": "akeneo_reference_entities_records_rest_connector_get",
     "query": {
-      "referenceEntityIdentifier": "Brand",
-      "search": "{\"updated\":[{\"operator\":\">\",\"value\":\"2018-07-04T10:00:00+00:00\"}]}"
+      "referenceEntityIdentifier": "brand_1",
+      "search": "{\"updated\":[{\"operator\":\">\",\"value\":\"2018-10-14T10:00:00+00:00\"}]}"
     }
   },
   "response": {
@@ -12,10 +12,10 @@
     "body": {
       "_links": {
         "self": {
-          "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search={\"updated\":[{\"operator\":\">\",\"value\":\"2018-07-04T10:00:00+00:00\"}]}"
+          "href": "http://localhost/api/rest/v1/reference-entities/brand_1/records"
         },
         "first": {
-          "href": "http://localhost/api/rest/v1/reference-entities/brand/records"
+          "href": "http://localhost/api/rest/v1/reference-entities/brand_1/records"
         }
       },
       "_embedded": {
