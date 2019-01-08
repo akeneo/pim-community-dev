@@ -64,6 +64,16 @@ final class AttributeOptionsMapping
     }
 
     /**
+     * Sort alphabetically the attributes mapping.
+     */
+    public function sort(): void
+    {
+        usort($this->mapping, function ($a, $b) {
+            return $a->franklinAttributeLabel() <=> $b->franklinAttributeLabel();
+        });
+    }
+
+    /**
      * @param string $attributeOptionCode
      *
      * @return bool

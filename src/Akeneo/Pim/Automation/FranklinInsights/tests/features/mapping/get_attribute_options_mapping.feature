@@ -9,9 +9,9 @@ Feature: Map some attribute options with Franklin attribute options
     When I retrieve the attribute options mapping for the family "router" and the attribute "color"
     Then the retrieved attribute options mapping should be:
       | franklin_attribute_id | catalog_attribute_code | status   |
-      | color_1               |                        | pending  |
-      | color_2               | color2                 | active   |
-      | color_3               |                        | inactive |
+      | black                 |                        | inactive |
+      | blue                  | color2                 | active   |
+      | red                   |                        | pending  |
 
   Scenario: Successfully retrieve an empty attribute options mapping (happens also on unexisting attribute)
     Given the family "router"
