@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Comma
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Product\SelectProductFamilyIdQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product\ProductFamilyUpdateSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -54,47 +55,48 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-    public function it_subscribes_pre_save_event(): void
+    public function it_subscribes_pre_save_and_post_save_events(): void
     {
         $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::PRE_SAVE);
+        $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
     }
 
     public function it_is_only_applied_when_event_subject_is_a_product(
-        GenericEvent $event,
-        FamilyInterface $family,
-        UnsubscribeProductHandler $unsubscribeProductHandler,
-        UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler
+        $unsubscribeProductHandler,
+        $updateSubscriptionFamilyHandler,
+        FamilyInterface $family
     ): void {
-        $event->getSubject()->willReturn($family);
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
         $updateSubscriptionFamilyHandler->handle(Argument::any())->shouldNotBeCalled();
 
-        $this->onPreSave($event);
+        $this->onPreSave(new GenericEvent($family->getWrappedObject()));
+        $this->onPostSave(new GenericEvent($family->getWrappedObject()));
     }
 
     public function it_is_not_applied_on_product_creation(
-        GenericEvent $event,
+        $selectProductFamilyIdQuery,
+        $unsubscribeProductHandler,
+        $updateSubscriptionFamilyHandler,
         ProductInterface $product,
-        UnsubscribeProductHandler $unsubscribeProductHandler,
-        UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler
+        ProductInterface $savedProduct
     ): void {
-        $event->getSubject()->willReturn($product);
         $product->getId()->willReturn(null);
+        $savedProduct->getId()->willReturn(42);
 
+        $selectProductFamilyIdQuery->execute(Argument::any())->shouldNotBeCalled();
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
         $updateSubscriptionFamilyHandler->handle(Argument::any())->shouldNotBeCalled();
 
-        $this->onPreSave($event);
+        $this->onPreSave(new GenericEvent($product->getWrappedObject()));
+        $this->onPostSave(new GenericEvent($savedProduct->getWrappedObject()));
     }
 
     public function it_does_not_do_anything_if_previous_family_was_null(
-        GenericEvent $event,
-        ProductInterface $product,
-        UnsubscribeProductHandler $unsubscribeProductHandler,
-        UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler,
-        $selectProductFamilyIdQuery
+        $selectProductFamilyIdQuery,
+        $unsubscribeProductHandler,
+        $updateSubscriptionFamilyHandler,
+        ProductInterface $product
     ): void {
-        $event->getSubject()->willReturn($product);
         $product->getId()->willReturn(1);
         $product->getFamily()->willReturn(null);
         $selectProductFamilyIdQuery->execute(1)->willReturn(null);
@@ -102,49 +104,49 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
         $updateSubscriptionFamilyHandler->handle(Argument::any())->shouldNotBeCalled();
 
-        $this->onPreSave($event);
-    }
-
-    public function it_does_not_unsubscribe_if_product_family_is_set(
-        GenericEvent $event,
-        ProductInterface $product,
-        FamilyInterface $family,
-        UnsubscribeProductHandler $unsubscribeProductHandler
-    ): void {
-        $event->getSubject()->willReturn($product);
-        $product->getId()->willReturn(1);
-        $product->getFamily()->willReturn($family);
-
-        $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
-
-        $this->onPreSave($event);
+        $this->onPreSave(new GenericEvent($product->getWrappedObject()));
+        $this->onPostSave(new GenericEvent($product->getWrappedObject()));
     }
 
     public function it_unsubscribes_the_product_when_product_has_a_family_removed(
-        GenericEvent $event,
-        ProductInterface $product,
-        UnsubscribeProductHandler $unsubscribeProductHandler,
-        $selectProductFamilyIdQuery
+        $selectProductFamilyIdQuery,
+        $unsubscribeProductHandler,
+        ProductInterface $product
     ): void {
-        $event->getSubject()->willReturn($product);
         $product->getId()->willReturn(1);
         $product->getFamily()->willReturn(null);
         $selectProductFamilyIdQuery->execute(1)->willReturn(42);
 
         $unsubscribeProductHandler->handle(new UnsubscribeProductCommand(1))->shouldBeCalled();
 
-        $this->onPreSave($event);
+        $this->onPreSave(new GenericEvent($product->getWrappedObject()));
+        $this->onPostSave(new GenericEvent($product->getWrappedObject()));
+    }
+
+    public function it_silently_fails_during_unsubscription_if_the_product_is_not_subscribed(
+        $selectProductFamilyIdQuery,
+        $unsubscribeProductHandler,
+        ProductInterface $product
+    ): void {
+        $product->getId()->willReturn(1);
+        $product->getFamily()->willReturn(null);
+        $selectProductFamilyIdQuery->execute(1)->willReturn(42);
+
+        $unsubscribeProductHandler->handle(new UnsubscribeProductCommand(1))->willThrow(
+            ProductNotSubscribedException::class
+        );
+
+        $this->onPreSave(new GenericEvent($product->getWrappedObject()));
+        $this->onPostSave(new GenericEvent($product->getWrappedObject()));
     }
 
     public function it_does_not_update_the_subscription_family_if_the_product_family_has_not_changed(
-        GenericEvent $event,
+        $selectProductFamilyIdQuery,
+        $unsubscribeProductHandler,
+        $updateSubscriptionFamilyHandler,
         ProductInterface $product,
-        FamilyInterface $family,
-        UnsubscribeProductHandler $unsubscribeProductHandler,
-        UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler,
-        $selectProductFamilyIdQuery
+        FamilyInterface $family
     ): void {
-        $event->getSubject()->willReturn($product);
         $product->getId()->willReturn(42);
         $product->getFamily()->willReturn($family);
         $family->getId()->willReturn(56);
@@ -153,18 +155,17 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
         $updateSubscriptionFamilyHandler->handle(Argument::cetera())->shouldNotBeCalled();
 
-        $this->onPreSave($event);
+        $this->onPreSave(new GenericEvent($product->getWrappedObject()));
+        $this->onPostSave(new GenericEvent($product->getWrappedObject()));
     }
 
     public function it_updates_the_subscription_family_if_the_product_family_has_changed(
-        GenericEvent $event,
+        $selectProductFamilyIdQuery,
+        $unsubscribeProductHandler,
+        $updateSubscriptionFamilyHandler,
         ProductInterface $product,
-        FamilyInterface $family,
-        UnsubscribeProductHandler $unsubscribeProductHandler,
-        UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler,
-        $selectProductFamilyIdQuery
+        FamilyInterface $family
     ): void {
-        $event->getSubject()->willReturn($product);
         $product->getId()->willReturn(42);
         $product->getFamily()->willReturn($family);
         $family->getId()->willReturn(144);
@@ -175,6 +176,28 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
             ->handle(new UpdateSubscriptionFamilyCommand(42, $family->getWrappedObject()))
             ->shouldBeCalled();
 
-        $this->onPreSave($event);
+        $this->onPreSave(new GenericEvent($product->getWrappedObject()));
+        $this->onPostSave(new GenericEvent($product->getWrappedObject()));
+    }
+
+    public function it_silently_fails_during_subscription_update_if_product_is_not_subscribed(
+        $selectProductFamilyIdQuery,
+        $unsubscribeProductHandler,
+        $updateSubscriptionFamilyHandler,
+        ProductInterface $product,
+        FamilyInterface $family
+    ): void {
+        $product->getId()->willReturn(42);
+        $product->getFamily()->willReturn($family);
+        $family->getId()->willReturn(144);
+        $selectProductFamilyIdQuery->execute(42)->willReturn(56);
+
+        $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
+        $updateSubscriptionFamilyHandler
+            ->handle(new UpdateSubscriptionFamilyCommand(42, $family->getWrappedObject()))
+            ->willThrow(ProductNotSubscribedException::class);
+
+        $this->onPreSave(new GenericEvent($product->getWrappedObject()));
+        $this->onPostSave(new GenericEvent($product->getWrappedObject()));
     }
 }

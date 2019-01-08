@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 
 /**
@@ -41,12 +42,14 @@ class UpdateSubscriptionFamilyHandler
 
     /**
      * @param UpdateSubscriptionFamilyCommand $command
+     *
+     * @throws ProductNotSubscribedException
      */
     public function handle(UpdateSubscriptionFamilyCommand $command): void
     {
         $subscription = $this->productSubscriptionRepository->findOneByProductId($command->productId());
         if (null === $subscription) {
-            return;
+            throw ProductNotSubscribedException::notSubscribed($command->productId());
         }
 
         $this->subscriptionProvider->updateFamilyInfos($subscription->getSubscriptionId(), $command->family());
