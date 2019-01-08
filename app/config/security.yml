@@ -62,7 +62,7 @@ security:
                 username_attribute: akeneo_uid
                 check_path: saml_acs
                 login_path: saml_login
-                user_factory: akeneo_authentication.sso.user.fatcory
+                user_factory: akeneo_authentication.sso.user.factory
             form_login:
                 csrf_token_generator: security.csrf.token_manager
                 login_path: saml_login

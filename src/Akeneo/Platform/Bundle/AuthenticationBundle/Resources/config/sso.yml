@@ -46,7 +46,7 @@ services:
             - '%tmp_storage_dir%'
 
     hslavich_onelogin_saml.saml_token_factory:
-        class: Akeneo\Platform\Bundle\AuthenticationBundle\Sso\SamlTokenFactory
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\SamlTokenFactory'
 
     akeneo_authentication.sso.firewall_map:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\FirewallMap'
@@ -56,5 +56,12 @@ services:
             - '@security.firewall.map.inner'
             - '@akeneo_authentication.sso.configuration.repository'
 
-    akeneo_authentication.sso.user.fatcory:
+    akeneo_authentication.sso.user.factory:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User\Factory'
+
+    akeneo_authentication.sso.user.unknown_user_exception_listener:
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User\UnknownUserExceptionListener'
+        arguments:
+            - '@templating'
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

@@ -1,0 +1,12 @@
+{% extends 'PimUserBundle::layout.html.twig' %}
+
+{% block bodyClass %}{% endblock %}
+
+{% block content %}
+    <div class="AknInfoBlock AknInfoBlock--error">
+        <img src="/bundles/pimui/images/illustration-error-404.svg"/>
+        <div class="AknMessageBox AknMessageBox--danger AknMessageBox--centered">
+            {{ 'authentication.sso.unknown_user_error'|trans }}
+        </div>
+    </div>
+{% endblock content %}
