@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\At
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use PhpSpec\ObjectBehavior;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -42,5 +43,35 @@ class AttributesMappingResponseSpec extends ObjectBehavior
         $this->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', 1, null));
         $this->hasPimAttribute(new AttributeCode('pim_color'))->shouldReturn(true);
         $this->hasPimAttribute(new AttributeCode('burger'))->shouldReturn(false);
+    }
+
+    public function it_sorts_attributes_mapping(): void
+    {
+        $attrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMapping::ATTRIBUTE_PENDING);
+        $attrSize = new AttributeMapping('size', 'Size', 'select', 'pim_size', AttributeMapping::ATTRIBUTE_MAPPED);
+        $attrColor = new AttributeMapping('color', 'Color', 'select', null, AttributeMapping::ATTRIBUTE_PENDING);
+        $attrLabel = new AttributeMapping('label', 'Label', 'text', null, AttributeMapping::ATTRIBUTE_UNMAPPED);
+        $attrHeight = new AttributeMapping('height', 'Height', 'metric', null, AttributeMapping::ATTRIBUTE_UNMAPPED);
+
+        $this
+            ->addAttribute($attrWeight)
+            ->addAttribute($attrSize)
+            ->addAttribute($attrColor)
+            ->addAttribute($attrLabel)
+            ->addAttribute($attrHeight);
+
+        $franklinAttrCodes = [];
+        foreach ($this->getIterator()->getWrappedObject() as $attrMapping) {
+            $franklinAttrCodes[] = $attrMapping;
+        }
+        Assert::eq($franklinAttrCodes, [$attrWeight, $attrSize, $attrColor, $attrLabel, $attrHeight]);
+
+        $this->sort()->shouldReturn(null);
+
+        $franklinAttrCodes = [];
+        foreach ($this->getIterator()->getWrappedObject() as $attrMapping) {
+            $franklinAttrCodes[] = $attrMapping;
+        }
+        Assert::eq($franklinAttrCodes, [$attrColor, $attrHeight, $attrLabel, $attrSize, $attrWeight]);
     }
 }

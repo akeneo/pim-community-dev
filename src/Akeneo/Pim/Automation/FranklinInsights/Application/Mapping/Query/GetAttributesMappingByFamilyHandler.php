@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
@@ -44,13 +45,18 @@ class GetAttributesMappingByFamilyHandler
     /**
      * @param GetAttributesMappingByFamilyQuery $query
      *
+     * @throws DataProviderException
+     *
      * @return AttributesMappingResponse
      */
     public function handle(GetAttributesMappingByFamilyQuery $query): AttributesMappingResponse
     {
         $this->ensureFamilyExists($query->getFamilyCode());
 
-        return $this->attributesMappingProvider->getAttributesMapping($query->getFamilyCode());
+        $attributesMapping = $this->attributesMappingProvider->getAttributesMapping($query->getFamilyCode());
+        $attributesMapping->sort();
+
+        return $attributesMapping;
     }
 
     /**

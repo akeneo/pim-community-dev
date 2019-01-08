@@ -57,6 +57,16 @@ class AttributesMappingResponse implements \IteratorAggregate
     }
 
     /**
+     * Sort alphabetically the attributes mapping.
+     */
+    public function sort(): void
+    {
+        usort($this->attributes, function ($a, $b) {
+            return $a->getTargetAttributeLabel() <=> $b->getTargetAttributeLabel();
+        });
+    }
+
+    /**
      * @return \Iterator
      */
     public function getIterator(): \Iterator
