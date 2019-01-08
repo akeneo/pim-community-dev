@@ -37,6 +37,9 @@ final class AttributeOptionsMapping
         $this->familyCode = $familyCode;
         $this->franklinAttributeId = $franklinAttributeId;
         $this->mapping = $mapping;
+        usort($this->mapping, function ($a, $b) {
+            return $a->franklinAttributeLabel() <=> $b->franklinAttributeLabel();
+        });
     }
 
     /**
@@ -61,16 +64,6 @@ final class AttributeOptionsMapping
     public function mapping(): array
     {
         return $this->mapping;
-    }
-
-    /**
-     * Sort alphabetically the attributes mapping.
-     */
-    public function sort(): void
-    {
-        usort($this->mapping, function ($a, $b) {
-            return $a->franklinAttributeLabel() <=> $b->franklinAttributeLabel();
-        });
     }
 
     /**

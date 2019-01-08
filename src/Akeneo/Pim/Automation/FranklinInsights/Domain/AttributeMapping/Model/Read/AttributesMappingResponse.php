@@ -36,6 +36,9 @@ class AttributesMappingResponse implements \IteratorAggregate
     public function addAttribute(AttributeMapping $attribute): self
     {
         $this->attributes[] = $attribute;
+        usort($this->attributes, function ($a, $b) {
+            return $a->getTargetAttributeLabel() <=> $b->getTargetAttributeLabel();
+        });
 
         return $this;
     }
@@ -54,16 +57,6 @@ class AttributesMappingResponse implements \IteratorAggregate
         }
 
         return false;
-    }
-
-    /**
-     * Sort alphabetically the attributes mapping.
-     */
-    public function sort(): void
-    {
-        usort($this->attributes, function ($a, $b) {
-            return $a->getTargetAttributeLabel() <=> $b->getTargetAttributeLabel();
-        });
     }
 
     /**

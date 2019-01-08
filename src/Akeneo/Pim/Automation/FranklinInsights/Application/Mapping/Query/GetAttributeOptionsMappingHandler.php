@@ -54,12 +54,9 @@ class GetAttributeOptionsMappingHandler
             );
         }
 
-        $attributeOptionsMapping = $this->attributeOptionsMappingProvider->getAttributeOptionsMapping(
+        return $this->attributeOptionsMappingProvider->getAttributeOptionsMapping(
             $query->familyCode(),
             $query->franklinAttributeId()
         );
-        $attributeOptionsMapping->sort();
-
-        return $attributeOptionsMapping;
     }
 }

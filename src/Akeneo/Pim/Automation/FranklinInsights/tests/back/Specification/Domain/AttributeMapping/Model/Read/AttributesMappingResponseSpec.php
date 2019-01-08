@@ -64,14 +64,6 @@ class AttributesMappingResponseSpec extends ObjectBehavior
         foreach ($this->getIterator()->getWrappedObject() as $attrMapping) {
             $franklinAttrCodes[] = $attrMapping;
         }
-        Assert::eq($franklinAttrCodes, [$attrWeight, $attrSize, $attrColor, $attrLabel, $attrHeight]);
-
-        $this->sort()->shouldReturn(null);
-
-        $franklinAttrCodes = [];
-        foreach ($this->getIterator()->getWrappedObject() as $attrMapping) {
-            $franklinAttrCodes[] = $attrMapping;
-        }
         Assert::eq($franklinAttrCodes, [$attrColor, $attrHeight, $attrLabel, $attrSize, $attrWeight]);
     }
 }

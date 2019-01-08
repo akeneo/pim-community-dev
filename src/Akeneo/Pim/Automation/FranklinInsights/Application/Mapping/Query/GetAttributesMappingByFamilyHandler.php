@@ -53,10 +53,7 @@ class GetAttributesMappingByFamilyHandler
     {
         $this->ensureFamilyExists($query->getFamilyCode());
 
-        $attributesMapping = $this->attributesMappingProvider->getAttributesMapping($query->getFamilyCode());
-        $attributesMapping->sort();
-
-        return $attributesMapping;
+        return $this->attributesMappingProvider->getAttributesMapping($query->getFamilyCode());
     }
 
     /**

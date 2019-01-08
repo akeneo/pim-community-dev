@@ -51,10 +51,6 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
 
         $this->beConstructedWith('router', 'color', [$colorRed, $colorBlue, $colorBlack]);
 
-        $this->mapping()->shouldReturn([$colorRed, $colorBlue, $colorBlack]);
-
-        $this->sort()->shouldReturn(null);
-
         $this->mapping()->shouldReturn([$colorBlack, $colorBlue, $colorRed]);
     }
 }
