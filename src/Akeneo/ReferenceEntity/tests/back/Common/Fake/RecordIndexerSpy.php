@@ -21,10 +21,8 @@ class RecordIndexerSpy implements RecordIndexerInterface
     /** @var array */
     private $indexedReferenceEntities = [];
 
-    public function index(RecordIdentifier $recordIdentifier)
-    {
-        throw new NotImplementedException('index');
-    }
+    /** @var bool */
+    private $isIndexRefreshed = false;
 
     /**
      * Indexes all records belonging to the given reference entity.
@@ -32,6 +30,31 @@ class RecordIndexerSpy implements RecordIndexerInterface
     public function indexByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void
     {
         $this->indexedReferenceEntities[] = $referenceEntityIdentifier->normalize();
+    }
+
+    public function refresh(): void
+    {
+        $this->isIndexRefreshed = true;
+    }
+
+    public function assertReferenceEntityNotIndexed(string $referenceEntityIdentifier)
+    {
+        Assert::assertNotContains($referenceEntityIdentifier, $this->indexedReferenceEntities);
+    }
+
+    public function assertReferenceEntityIndexed(string $referenceEntityIdentifier)
+    {
+        Assert::assertContains($referenceEntityIdentifier, $this->indexedReferenceEntities);
+    }
+
+    public function assertIndexRefreshed()
+    {
+        Assert::assertTrue($this->isIndexRefreshed, 'Index should be refreshed');
+    }
+
+    public function index(RecordIdentifier $recordIdentifier)
+    {
+        throw new NotImplementedException('index');
     }
 
     /**
@@ -50,15 +73,5 @@ class RecordIndexerSpy implements RecordIndexerInterface
         string $recordCode
     ) {
         throw new NotImplementedException('removeRecordByReferenceEntityIdentifierAndCode');
-    }
-
-    public function assertReferenceEntityNotIndexed(string $referenceEntityIdentifier)
-    {
-        Assert::assertNotContains($referenceEntityIdentifier, $this->indexedReferenceEntities);
-    }
-
-    public function assertReferenceEntityIndexed(string $referenceEntityIdentifier)
-    {
-        Assert::assertContains($referenceEntityIdentifier, $this->indexedReferenceEntities);
     }
 }

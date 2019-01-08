@@ -32,4 +32,6 @@ interface RecordIndexerInterface
         string $referenceEntityIdentifier,
         string $recordCode
     );
+
+    public function refresh();
 }

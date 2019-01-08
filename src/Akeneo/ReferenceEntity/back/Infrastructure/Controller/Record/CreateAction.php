@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -38,6 +39,9 @@ class CreateAction
     /** @var CreateRecordHandler */
     private $createRecordHandler;
 
+    /** @var RecordIndexerInterface */
+    private $recordIndexer;
+
     /** @var NormalizerInterface */
     private $normalizer;
 
@@ -55,6 +59,7 @@ class CreateAction
 
     public function __construct(
         CreateRecordHandler $createRecordHandler,
+        RecordIndexerInterface $recordIndexer,
         CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
@@ -62,11 +67,12 @@ class CreateAction
         SecurityFacade $securityFacade
     ) {
         $this->createRecordHandler = $createRecordHandler;
-        $this->validator           = $validator;
+        $this->validator = $validator;
         $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
         $this->tokenStorage = $tokenStorage;
-        $this->normalizer          = $normalizer;
-        $this->securityFacade      = $securityFacade;
+        $this->normalizer = $normalizer;
+        $this->securityFacade = $securityFacade;
+        $this->recordIndexer = $recordIndexer;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response
@@ -94,7 +100,7 @@ class CreateAction
             );
         }
 
-        ($this->createRecordHandler)($command);
+        $this->createRecord($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
@@ -129,5 +135,15 @@ class CreateAction
         $command->labels = $normalizedCommand['labels'] ?? [];
 
         return $command;
+    }
+
+    /**
+     * When creating multiple records in a row using the UI "Create another",
+     * we force refresh of the index so that the grid is up to date when the users dismisses the creation modal.
+     */
+    private function createRecord(CreateRecordCommand $command): void
+    {
+        ($this->createRecordHandler)($command);
+        $this->recordIndexer->refresh();
     }
 }

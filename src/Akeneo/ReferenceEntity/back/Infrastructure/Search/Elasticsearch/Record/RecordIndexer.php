@@ -101,4 +101,9 @@ class RecordIndexer implements RecordIndexerInterface
 
         $this->recordClient->deleteByQuery($queryBody);
     }
+
+    public function refresh(): void
+    {
+        $this->recordClient->refreshIndex();
+    }
 }
