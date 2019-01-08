@@ -32,13 +32,18 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     /** @var \DateTime[] */
     private $updatedDateByRecord = [];
 
+    /** @var InMemoryDateRepository */
+    private $dateRepository;
+
     /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocale */
     private $findRequiredValueKeyCollectionForChannelAndLocale;
 
     public function __construct(
-        InMemoryFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredValueKeyCollectionForChannelAndLocale
+        InMemoryFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredValueKeyCollectionForChannelAndLocale,
+        InMemoryDateRepository $dateRepository
     ) {
         $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
+        $this->dateRepository = $dateRepository;
     }
 
     public function add(Record $record): void
@@ -153,9 +158,8 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             }
 
             $updatedSinceDate = (new \DateTime($updatedFilter['value']))->getTimestamp();
-            $recordDate = $this->updatedDateByRecord[(string) $record->getIdentifier()];
+            $recordDate = ($this->updatedDateByRecord[(string) $record->getIdentifier()])->getTimestamp();
 
-            // @TODO - date from record
             return $recordDate > $updatedSinceDate;
         }));
 

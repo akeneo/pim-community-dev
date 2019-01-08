@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryDateRepository;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
@@ -85,6 +86,9 @@ class GetConnectorRecordsContext implements Context
     /** @var InMemoryFindActivatedLocalesByIdentifiers */
     private $findActivatedLocalesByIdentifiers;
 
+    /** @var InMemoryDateRepository */
+    private $dateRepository;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -93,7 +97,8 @@ class GetConnectorRecordsContext implements Context
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryChannelExists $channelExists,
-        InMemoryFindActivatedLocalesByIdentifiers $findActivatedLocalesByIdentifiers
+        InMemoryFindActivatedLocalesByIdentifiers $findActivatedLocalesByIdentifiers,
+        InMemoryDateRepository $dateRepository
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -104,6 +109,7 @@ class GetConnectorRecordsContext implements Context
         $this->findRecordIdentifiersForQuery = $findRecordIdentifiersForQuery;
         $this->channelExists = $channelExists;
         $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
+        $this->dateRepository = $dateRepository;
     }
 
     /**
