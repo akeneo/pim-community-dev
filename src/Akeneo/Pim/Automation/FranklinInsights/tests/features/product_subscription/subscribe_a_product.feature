@@ -76,7 +76,7 @@ Feature: Subscribe a product to Franklin
       | upc           | pim_upc        |
     When I subscribe the product "invalidupc" to Franklin
     Then the product "invalidupc" should not be subscribed
-    And a bad request message should be sent
+    And an invalid values message should be sent
 
   Scenario: Fail to subscribe a product that does not have MPN and Brand filled together
     Given Franklin is configured with a valid token

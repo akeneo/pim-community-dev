@@ -93,8 +93,8 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
                 if (isset($warnings[$productId])) {
                     // TODO: ask POs for error message
                     $this->stepExecution->addWarning(
-                        'An error was returned by Franklin during subscription: %error%',
-                        ['%error%' => $warnings[$productId]],
+                        'akeneo_franklin_insights.entity.product_subscription.constraint.invalid_mapped_values',
+                        [],
                         new DataInvalidItem(
                             ['identifier' => $item->getProduct()->getIdentifier()]
                         )

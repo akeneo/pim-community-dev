@@ -44,7 +44,11 @@ class SubscriptionWriterSpec extends ObjectBehavior
         IdentifiersMapping $identifiersMapping
     ): void {
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $this->beConstructedWith($subscriptionProvider, $productSubscriptionRepository, $identifiersMappingRepository);
+        $this->beConstructedWith(
+            $subscriptionProvider,
+            $productSubscriptionRepository,
+            $identifiersMappingRepository
+        );
         $this->setStepExecution($stepExecution);
         $this->initialize();
     }
@@ -125,9 +129,10 @@ class SubscriptionWriterSpec extends ObjectBehavior
         $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false, false));
 
         $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
+
         $stepExecution->addWarning(
-            'An error was returned by Franklin during subscription: %error%',
-            ['%error%' => 'Invalid UPC: \'123456\''],
+            'akeneo_franklin_insights.entity.product_subscription.constraint.invalid_mapped_values',
+            [],
             new DataInvalidItem([
                 'identifier' => 'sku_for_my_invalid_upc',
             ])

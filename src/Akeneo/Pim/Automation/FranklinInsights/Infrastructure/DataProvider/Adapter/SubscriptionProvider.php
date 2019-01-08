@@ -80,7 +80,13 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
 
         $clientRequest = new RequestCollection();
         $clientRequest->add($this->buildClientRequest($subscriptionRequest, $identifiersMapping));
-        $subscriptions = $this->doSubscribe($clientRequest)->subscriptions();
+
+        $apiResponse = $this->doSubscribe($clientRequest);
+        if ($apiResponse->hasWarnings()) {
+            throw ProductSubscriptionException::invalidMappedValues();
+        }
+
+        $subscriptions = $apiResponse->subscriptions();
 
         if (null === $subscriptions->first()) {
             throw DataProviderException::badRequestError();
