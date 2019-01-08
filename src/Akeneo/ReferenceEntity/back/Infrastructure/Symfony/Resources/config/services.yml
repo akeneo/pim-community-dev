@@ -13,7 +13,7 @@ services:
             - '%kernel.project_dir%'
 
     akeneo_referenceentity.event_subscriber.installer:
-        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\ReferenceEntityResetFixturesCommand
+        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\InstallerCommand
         arguments:
             - '@akeneo_referenceentity.command.installer.fixtures_installer'
             - '@akeneo_referenceentity.command.installer.assets_installer'

@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceEntityResetFixturesCommand extends ContainerAwareCommand implements EventSubscriberInterface
+class InstallerCommand extends ContainerAwareCommand implements EventSubscriberInterface
 {
     private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:reference-entity:reset-fixtures';
 
