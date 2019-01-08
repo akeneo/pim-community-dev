@@ -123,7 +123,7 @@ jobs:
       machine:
           enabled: true
           docker_layer_caching: true
-      parallelism: 7
+      parallelism: 10
       steps:
           - attach_workspace:
                 at: ~/
@@ -152,7 +152,7 @@ jobs:
       machine:
           enabled: true
           docker_layer_caching: true
-      parallelism: 7
+      parallelism: 10
       steps:
           - attach_workspace:
                 at: ~/
@@ -181,7 +181,7 @@ jobs:
     machine:
       enabled: true
       docker_layer_caching: true
-    parallelism: 7
+    parallelism: 20
     steps:
       - attach_workspace:
           at: ~/
