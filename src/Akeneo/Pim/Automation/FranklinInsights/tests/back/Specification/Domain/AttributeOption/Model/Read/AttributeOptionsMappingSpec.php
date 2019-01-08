@@ -42,4 +42,15 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
         $this->hasPimAttributeOption('unknown')->shouldReturn(false);
         $this->hasPimAttributeOption('pim_red')->shouldReturn(true);
     }
+
+    public function it_sorts_alphabetically(): void
+    {
+        $colorRed = new AttributeOptionMapping('red', 'red', AttributeOptionMapping::STATUS_PENDING, 'pim_red');
+        $colorBlue = new AttributeOptionMapping('blue', 'blue', AttributeOptionMapping::STATUS_PENDING, 'pim_blue');
+        $colorBlack = new AttributeOptionMapping('black', 'black', AttributeOptionMapping::STATUS_PENDING, 'pim_black');
+
+        $this->beConstructedWith('router', 'color', [$colorRed, $colorBlue, $colorBlack]);
+
+        $this->mapping()->shouldReturn([$colorBlack, $colorBlue, $colorRed]);
+    }
 }

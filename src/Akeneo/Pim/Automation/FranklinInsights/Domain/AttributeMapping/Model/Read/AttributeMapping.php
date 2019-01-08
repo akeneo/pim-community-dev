@@ -61,7 +61,7 @@ class AttributeMapping
         ?string $targetAttributeType,
         ?string $pimAttributeCode,
         int $status,
-        ?array $summary
+        ?array $summary = null
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
         $this->targetAttributeLabel = $targetAttributeLabel;

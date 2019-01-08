@@ -2,9 +2,9 @@
   "mapping": [
     {
       "from": {
-        "id": "color_1",
+        "id": "red",
         "label": {
-          "en_US": "Color 1"
+          "en_US": "Red"
         }
       },
       "to": null,
@@ -12,9 +12,9 @@
     },
     {
       "from": {
-        "id": "color_2",
+        "id": "blue",
         "label": {
-          "en_US": "Color 2"
+          "en_US": "Blue"
         }
       },
       "to": {
@@ -24,9 +24,9 @@
     },
     {
       "from": {
-        "id": "color_3",
+        "id": "black",
         "label": {
-          "en_US": "Color 1"
+          "en_US": "Black"
         }
       },
       "to": null,

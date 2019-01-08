@@ -37,6 +37,9 @@ final class AttributeOptionsMapping
         $this->familyCode = $familyCode;
         $this->franklinAttributeId = $franklinAttributeId;
         $this->mapping = $mapping;
+        usort($this->mapping, function ($a, $b) {
+            return $a->franklinAttributeLabel() <=> $b->franklinAttributeLabel();
+        });
     }
 
     /**

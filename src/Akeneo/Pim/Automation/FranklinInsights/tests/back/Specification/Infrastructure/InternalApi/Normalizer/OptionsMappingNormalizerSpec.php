@@ -28,19 +28,19 @@ class OptionsMappingNormalizerSpec extends ObjectBehavior
             'family' => 'router',
             'franklinAttributeCode' => 'color',
             'mapping' => [
-                'color_1' => [
-                    'franklinAttributeOptionCode' => [
-                        'label' => 'red',
-                    ],
-                    'catalogAttributeOptionCode' => 'color1',
-                    'status' => 1,
-                ],
                 'color_2' => [
                     'franklinAttributeOptionCode' => [
                         'label' => 'blue',
                     ],
                     'catalogAttributeOptionCode' => 'color2',
                     'status' => 0,
+                ],
+                'color_1' => [
+                    'franklinAttributeOptionCode' => [
+                        'label' => 'red',
+                    ],
+                    'catalogAttributeOptionCode' => 'color1',
+                    'status' => 1,
                 ],
             ],
         ];
