@@ -138,6 +138,17 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             return false !== strpos($field, $codeLabelFilter['value']);
         }));
 
+        $records = array_values(array_filter($records, function (Record $record) use ($updatedFilter) {
+            if (null === $updatedFilter) {
+                return true;
+            }
+
+            $updatedSinceDate = (new \DateTime($updatedFilter['value']))->getTimestamp();
+            $recordDate = ($this->updatedDateByRecord[(string) $record->getIdentifier()])->getTimestamp();
+
+            return $recordDate >= $updatedSinceDate;
+        }));
+
         if ($query->isPaginatedUsingSearchAfter()) {
             $searchAfterCode = $query->getSearchAfterCode();
             $records = array_values(array_filter($records, function (Record $record) use ($searchAfterCode): bool {
@@ -151,17 +162,6 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
 
             $records = array_slice($records, 0, $query->getSize());
         }
-
-        $records = array_values(array_filter($records, function (Record $record) use ($updatedFilter) {
-            if (null === $updatedFilter) {
-                return true;
-            }
-
-            $updatedSinceDate = (new \DateTime($updatedFilter['value']))->getTimestamp();
-            $recordDate = ($this->updatedDateByRecord[(string) $record->getIdentifier()])->getTimestamp();
-
-            return $recordDate > $updatedSinceDate;
-        }));
 
         $result = new IdentifiersForQueryResult();
         $result->total = count($records);

@@ -61,10 +61,10 @@ Feature: Connection to e-commerce platforms and marketplaces
 
   @integration-back
   Scenario: Get the records of a reference entity that were updated since a provided date
-    Given 10 records for the Brand reference entity that were last updated on the 10th of October 2018
-    And 5 records for the Brand reference entity that were updated on the 15th of October 2018
+    Given 2 records for the Brand reference entity that were last updated on the 10th of October 2018
+    And 2 records for the Brand reference entity that were updated on the 15th of October 2018
     When the connector requests all records of the Brand reference entity updated since the 14th of October 2018
-    Then the PIM returns the 5 records of the Brand reference entity that were updated on the 15th of October 2018
+    Then the PIM returns the 2 records of the Brand reference entity that were updated on the 15th of October 2018
 
   @integration-back
   Scenario: Notify about an error when getting the records of a reference entity that were updated since a date that does not have the right format

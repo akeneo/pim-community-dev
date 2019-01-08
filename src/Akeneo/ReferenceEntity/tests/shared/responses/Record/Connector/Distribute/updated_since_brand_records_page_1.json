@@ -3,7 +3,7 @@
     "method": "GET",
     "route": "akeneo_reference_entities_records_rest_connector_get",
     "query": {
-      "referenceEntityIdentifier": "brand_1",
+      "referenceEntityIdentifier": "brand_test",
       "search": "{\"updated\":[{\"operator\":\">\",\"value\":\"2018-10-14T10:00:00+00:00\"}]}"
     }
   },
@@ -12,14 +12,57 @@
     "body": {
       "_links": {
         "self": {
-          "href": "http://localhost/api/rest/v1/reference-entities/brand_1/records"
+          "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records"
         },
         "first": {
-          "href": "http://localhost/api/rest/v1/reference-entities/brand_1/records"
+          "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records"
+        },
+        "next": {
+          "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records?search_after=brand_2"
         }
       },
       "_embedded": {
-        "items": []
+        "items": [
+          {
+            "_links": {
+              "self": {
+                "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records/brand_0"
+              }
+            },
+            "code": "brand_0",
+            "labels": {
+              "en_US": "test"
+            },
+            "values": [],
+            "main_image": null
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records/brand_1"
+              }
+            },
+            "code": "brand_1",
+            "labels": {
+              "en_US": "test"
+            },
+            "values": [],
+            "main_image": null
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records/brand_2"
+              }
+            },
+            "code": "brand_2",
+            "labels": {
+              "en_US": "test"
+            },
+            "values": [],
+            "main_image": null
+          }
+        ]
       }
     }
   }

@@ -503,22 +503,24 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @Given /^10 records for the Brand reference entity that were last updated on the 10th of October (\d+)$/
+     * @Given /^2 records for the Brand reference entity that were last updated on the 10th of October (\d+)$/
      */
     public function recordsForTheBrandReferenceEntityThatWereLastUpdatedOnThe10thOfOctober()
     {
         $this->dateRepository->setCurrentDate(new \DateTime('2018-10-10'));
 
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 4; $i >= 2; $i--) {
             $rawRecordCode = sprintf('brand_%d', $i);
             $recordCode = RecordCode::fromString($rawRecordCode);
-            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
-            $labelCollection = [];
+            $recordIdentifier = RecordIdentifier::fromString($rawRecordCode);
+            $labelCollection = [
+                'en_US' => 'test'
+            ];
             $mainImage = Image::createEmpty();
 
             $record = Record::create(
                 $recordIdentifier,
-                ReferenceEntityIdentifier::fromString('brand_1'),
+                ReferenceEntityIdentifier::fromString('brand_test'),
                 $recordCode,
                 $labelCollection,
                 $mainImage,
@@ -539,7 +541,7 @@ class GetConnectorRecordsContext implements Context
         }
 
         $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand_1'),
+            ReferenceEntityIdentifier::fromString('brand_test'),
             [],
             Image::createEmpty()
         );
@@ -548,22 +550,24 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @Given /^5 records for the Brand reference entity that were updated on the 15th of October 2018$/
+     * @Given /^2 records for the Brand reference entity that were updated on the 15th of October 2018$/
      */
     public function recordsForTheBrandReferenceEntityThatWereUpdatedOnThe15thOfOctober()
     {
         $this->dateRepository->setCurrentDate(new \DateTime('2018-10-15'));
 
-        for ($i = 5; $i <= 10; $i++) {
+        for ($i = 2; $i >= 0; $i--) {
             $rawRecordCode = sprintf('brand_%d', $i);
             $recordCode = RecordCode::fromString($rawRecordCode);
-            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
-            $labelCollection = [];
+            $recordIdentifier = RecordIdentifier::fromString($rawRecordCode);
+            $labelCollection = [
+                'en_US' => 'test'
+            ];
             $mainImage = Image::createEmpty();
 
             $record = Record::create(
                 $recordIdentifier,
-                ReferenceEntityIdentifier::fromString('brand_1'),
+                ReferenceEntityIdentifier::fromString('brand_test'),
                 $recordCode,
                 $labelCollection,
                 $mainImage,
@@ -598,7 +602,7 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the 5 records of the Brand reference entity that were updated on the 15th of October 2018$/
+     * @Then /^the PIM returns the 2 records of the Brand reference entity that were updated on the 15th of October 2018$/
      */
     public function thePIMReturnsTheRecordsOfTheBrandReferenceEntityThatWereUpdatedOnThe15thOfOctober()
     {
