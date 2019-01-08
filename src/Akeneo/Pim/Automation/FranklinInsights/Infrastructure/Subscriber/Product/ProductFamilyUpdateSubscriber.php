@@ -39,6 +39,12 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
     /** @var UpdateSubscriptionFamilyHandler */
     private $updateSubscriptionFamilyHandler;
 
+    /** @var array */
+    private $productsToUnsubscribe = [];
+
+    /** @var array */
+    private $productsToUpdateSubscriptionFamily = [];
+
     /**
      * @param SelectProductFamilyIdQueryInterface $selectProductFamilyIdQuery
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
@@ -61,6 +67,7 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::PRE_SAVE => 'onPreSave',
+            StorageEvents::POST_SAVE => 'onPostSave',
         ];
     }
 
@@ -86,12 +93,31 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
         }
 
         if (null === $product->getFamily()) {
-            $this->unsubscribeProduct($product->getId());
+            $this->productsToUnsubscribe[] = $product->getId();
 
             return;
         }
 
         if ($product->getFamily()->getId() !== $originalFamilyId) {
+            $this->productsToUpdateSubscriptionFamily[] = $product->getId();
+        }
+    }
+
+    /**
+     * @param GenericEvent $event
+     */
+    public function onPostSave(GenericEvent $event): void
+    {
+        $product = $event->getSubject();
+        if (!$product instanceof ProductInterface) {
+            return;
+        }
+        if (in_array($product->getId(), $this->productsToUnsubscribe, true)) {
+            $this->unsubscribeProduct($product->getId());
+
+            return;
+        }
+        if (in_array($product->getId(), $this->productsToUpdateSubscriptionFamily, true)) {
             $this->updateSubscriptionFamily($product->getId(), $product->getFamily());
         }
     }
