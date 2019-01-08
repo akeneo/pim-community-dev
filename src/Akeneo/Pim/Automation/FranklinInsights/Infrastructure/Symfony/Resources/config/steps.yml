@@ -38,12 +38,14 @@ services:
             - 1
 
     akeneo.pim.automation.franklin_insights.connector.step.fetch_products:
-        class: '%pim_connector.step.tasklet.class%'
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'fetch_products'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@akeneo.pim.automation.franklin_insights.connector.tasklet.fetch_products'
+            - '@akeneo.pim.automation.franklin_insights.connector.reader.suggested_data'
+            - '@akeneo.pim.automation.franklin_insights.connector.processor.suggested_data'
+            - '@akeneo.pim.automation.franklin_insights.connector.writer.suggested_data'
 
     akeneo.pim.automation.franklin_insights.connector.step.create_proposals:
         class: '%pim_connector.step.tasklet.class%'

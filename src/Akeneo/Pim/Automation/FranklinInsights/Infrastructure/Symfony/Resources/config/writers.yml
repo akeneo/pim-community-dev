@@ -10,3 +10,9 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer\UnsubscriptionWriter'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.product_subscription.handler.unsubscribe_product'
+
+    akeneo.pim.automation.franklin_insights.connector.writer.suggested_data:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer\SuggestedDataWriter'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+            - '@doctrine'

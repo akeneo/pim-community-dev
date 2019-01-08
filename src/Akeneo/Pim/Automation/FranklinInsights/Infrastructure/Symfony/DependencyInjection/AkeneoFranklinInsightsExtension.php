@@ -41,6 +41,7 @@ class AkeneoFranklinInsightsExtension extends Extension
         $loader->load('normalizers.yml');
         $loader->load('processors.yml');
         $loader->load('queries.yml');
+        $loader->load('readers.yml');
         $loader->load('repositories.yml');
         $loader->load('services.yml');
         $loader->load('steps.yml');

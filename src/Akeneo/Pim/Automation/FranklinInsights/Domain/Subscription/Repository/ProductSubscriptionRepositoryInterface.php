@@ -26,6 +26,11 @@ interface ProductSubscriptionRepositoryInterface
     public function save(ProductSubscription $subscription): void;
 
     /**
+     * @param array $subscriptions
+     */
+    public function bulkSave(array $subscriptions): void;
+
+    /**
      * @param int $productId
      *
      * @return ProductSubscription|null
@@ -44,6 +49,11 @@ interface ProductSubscriptionRepositoryInterface
      * @param ProductSubscription $subscription
      */
     public function delete(ProductSubscription $subscription): void;
+
+    /**
+     * @param array $subscriptions
+     */
+    public function bulkDelete(array $subscriptions): void;
 
     /**
      * Empty all suggested data.
