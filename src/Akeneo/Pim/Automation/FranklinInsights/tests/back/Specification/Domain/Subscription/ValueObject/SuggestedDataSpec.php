@@ -94,4 +94,18 @@ class SuggestedDataSpec extends ObjectBehavior
     {
         $this->getRawValues()->shouldReturn(null);
     }
+
+    public function it_ignores_empty_suggested_values(): void
+    {
+        $suggestedValueColor = [
+            'pimAttributeCode' => 'color',
+            'value' => 'black',
+        ];
+        $suggestedValueFabric = [
+            'pimAttributeCode' => 'fabric',
+            'value' => null,
+        ];
+        $this->beConstructedWith([$suggestedValueColor, $suggestedValueFabric]);
+        $this->getRawValues()->shouldReturn([$suggestedValueColor]);
+    }
 }
