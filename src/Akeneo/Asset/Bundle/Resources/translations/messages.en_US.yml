@@ -199,6 +199,8 @@ pim_analytics:
         nb_assets: Number of assets
 
 pim_assets_collection: Assets collection
+akeneo_reference_entity: Reference entity single link
+akeneo_reference_entity_collection: Reference entity multiple links
 
 pim_api:
     acl:

@@ -162,8 +162,8 @@ pim_reference_entity:
     type:
       text: Text
       image: Image
-      record: Reference entity simple link
-      record_collection: Reference entity multiple link
+      record: Reference entity single link
+      record_collection: Reference entity multiple links
       option: Single option
       option_collection: Multiple options
     is_required: required for completeness
@@ -257,8 +257,8 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_reference_entity_collection: Reference entity multiple link
-          akeneo_reference_entity: Reference entity simple link
+          akeneo_reference_entity_collection: Reference entity multiple links
+          akeneo_reference_entity: Reference entity single link
         section:
           type_specific: Type specific parameters
         reference_entity:
