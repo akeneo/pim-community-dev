@@ -37,7 +37,7 @@
           </div>\
           <div class="modal-body"><%= content %></div>\
           <div class="AknButtonList">\
-            <% if (typeof cancelText !== undefined) { %>\
+            <% if (typeof cancelText !== undefined && cancelText !== \'\') { %>\
               <div class="AknButton AknButton--grey AknButtonList-item cancel"><%- cancelText %></div>\
             <% } %>\
             <div title="<%- okText %>" class="AknButton AknButtonList-item AknButton--apply<% if (typeof buttonClass !== \'undefined\') { %> <%- buttonClass %><% } %> ok"><%- okText %></div>\

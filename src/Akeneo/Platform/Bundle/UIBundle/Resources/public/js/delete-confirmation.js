@@ -1,12 +1,10 @@
 define(
     [
         'underscore',
-        'oro/translator',
-        'oro/modal',
+        'oro/translator'
     ], function (
         _,
-        __,
-        Modal
+        __
     ) {
     'use strict';
 

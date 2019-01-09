@@ -43,7 +43,6 @@ define(
                     title: title,
                     content: content,
                     okText: __('pim_common.ok'),
-                    template: this.template,
                     buttonClass: 'AknButton--action',
                     illustrationClass: this.getIllustrationClass(subTitle)
                 });

@@ -44,5 +44,5 @@ Feature: Delete an attribute
     When I am on the attributes page
     And I click on the "delete" action of the row which contains "SKU"
     And I confirm the deletion
-    Then I should see the text "Cannot delete this attribute"
+    Then I should see the text "Identifier attribute can not be removed"
     And there should be a "SKU" attribute

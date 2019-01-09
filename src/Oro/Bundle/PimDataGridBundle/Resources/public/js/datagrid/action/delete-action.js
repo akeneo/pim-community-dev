@@ -118,11 +118,12 @@ define([
 
                 this.errorModal = new Modal({
                     title: __('pim_datagrid.delete_error.title'),
-                    content:
-                        '' === message ?
-                        __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail'):
+                    content: '' === message ?
+                        __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail') :
                         message,
-                    cancelText: false
+                    buttonClass: 'AknButton--important',
+                    illustrationClass: 'delete',
+                    cancelText: '',
                 });
 
                 return this.errorModal;

@@ -63,9 +63,10 @@ function (_, Backbone, routing, app, Modal) {
             }
 
             modal = new Modal({
-                title: options.header,
+                title: option.header
                 content: message,
-                cancelText: false
+                buttonClass: 'AknButton--important',
+                cancelText: '',
             });
 
             modal.open();
