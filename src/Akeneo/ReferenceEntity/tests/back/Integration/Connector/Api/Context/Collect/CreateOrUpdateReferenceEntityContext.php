@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Collection;
+namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect;
 
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
