@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -29,7 +30,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         NormalizerInterface $completenessCollectionNormalizer,
         CompletenessCalculatorInterface $completenessCalculator,
         VariantProductRatioInterface $variantProductRatioQuery,
-        ImageAsLabel $imageAsLabel
+        ImageAsLabel $imageAsLabel,
+        CatalogContext $catalogContext
     ) {
         $this->beConstructedWith(
             $imageNormalizer,
@@ -38,7 +40,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             $completenessCollectionNormalizer,
             $completenessCalculator,
             $variantProductRatioQuery,
-            $imageAsLabel
+            $imageAsLabel,
+            $catalogContext
         );
     }
 

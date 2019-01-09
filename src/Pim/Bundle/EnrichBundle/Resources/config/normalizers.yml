@@ -100,6 +100,7 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.association.missing_association_adder'
             - '@pim_catalog.normalizer.standard.product.parent_associations'
+            - '@pim_catalog.context.catalog'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -214,6 +215,7 @@ services:
             - '@pim_catalog.completeness.calculator'
             - '@pim_catalog.doctrine.query.find_variant_product_completeness'
             - '@pim_catalog.product_models.image_as_label'
+            - '@pim_catalog.context.catalog'
 
     pim_enrich.normalizer.variant_navigation:
         class: '%pim_enrich.normalizer.variant_navigation.class%'

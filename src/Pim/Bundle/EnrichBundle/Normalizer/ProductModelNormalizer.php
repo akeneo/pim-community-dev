@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
@@ -84,7 +85,11 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var MissingAssociationAdder */
     private $missingAssociationAdder;
 
+    /** @var CatalogContext */
+    private $catalogContext;
+
     /**
+     * TODO @merge on master, remove null on catalog context
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
      * @param VersionManager                            $versionManager
@@ -103,6 +108,7 @@ class ProductModelNormalizer implements NormalizerInterface
      * @param UserContext                               $userContext
      * @param MissingAssociationAdder                   $missingAssociationAdder
      * @param NormalizerInterface                       $parentAssociationsNormalizer
+     * @param CatalogContext                            $catalogContext
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -122,7 +128,8 @@ class ProductModelNormalizer implements NormalizerInterface
         NormalizerInterface $incompleteValuesNormalizer,
         UserContext $userContext,
         MissingAssociationAdder $missingAssociationAdder,
-        NormalizerInterface $parentAssociationsNormalizer
+        NormalizerInterface $parentAssociationsNormalizer,
+        CatalogContext $catalogContext = null
     ) {
         $this->normalizer = $normalizer;
         $this->versionNormalizer = $versionNormalizer;
@@ -142,6 +149,7 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->userContext = $userContext;
         $this->parentAssociationsNormalizer = $parentAssociationsNormalizer;
         $this->missingAssociationAdder = $missingAssociationAdder;
+        $this->catalogContext = $catalogContext;
     }
 
     /**
@@ -200,6 +208,9 @@ class ProductModelNormalizer implements NormalizerInterface
 
         $scopeCode = $context['channel'] ?? null;
 
+        // TODO @merge on master, remove condition
+        $localeCode = $this->catalogContext->getLocaleCode() ? $this->catalogContext->getLocaleCode() : null;
+
         $normalizedProductModel['meta'] = [
                 'variant_product_completenesses' => $variantProductCompletenesses->values(),
                 'family_variant'            => $normalizedFamilyVariant,
@@ -210,7 +221,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'model_type'                => 'product_model',
                 'attributes_for_this_level' => $levelAttributes,
                 'attributes_axes'           => $axesAttributes,
-                'image'                     => $this->normalizeImage($closestImage, $context),
+                'image'                     => $this->normalizeImage($closestImage, $localeCode),
                 'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
                 'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
                 'required_missing_attributes' => $this->incompleteValuesNormalizer->normalize($productModel, $format, $context),
@@ -270,12 +281,12 @@ class ProductModelNormalizer implements NormalizerInterface
 
     /**
      * @param ValueInterface|null $data
-     * @param array               $context
+     * @param string              $localeCode
      *
      * @return array|null
      */
-    private function normalizeImage(?ValueInterface $data, array $context = []): ?array
+    private function normalizeImage(?ValueInterface $data, ?string $localeCode = null): ?array
     {
-        return $this->imageNormalizer->normalize($data, $context['locale']);
+        return $this->imageNormalizer->normalize($data, $localeCode);
     }
 }
