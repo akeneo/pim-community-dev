@@ -29,7 +29,7 @@ $rules = [
         'Akeneo\Channel\Component\Model\LocaleInterface',
         'Akeneo\Channel\Component\Model\Locale',
 
-        //TODO: It uses the PQB
+        // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface',
@@ -137,19 +137,21 @@ $rules = [
         // TIP-1014: Do not use custom Flash Messages
         'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
 
-        //TODO: It uses the UI
+        // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
 
         // TIP-1009: Remove TranslatedLabelsProviderInterface from Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
 
-        //TODO: just because we override ProductFieldsBuilder
+        // TIP-1023: Drop CatalogContext
         'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',
 
         // TIP-995: Move RegisterSerializerPass to Tool
         'Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass',
-        //TODO: we should not inject the userContext as a service
+
+        // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
+
         //TODO: just because we override ProductController
         'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder'
     ])->in('Akeneo\Pim\Permission\Bundle'),

@@ -35,7 +35,7 @@ $rules = [
         // TIP-1019: Move presenters
         'Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface',
 
-        // TODO: Extract presenter to tool (it should not rely on product value anymore)
+        // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
     ])->in('Akeneo\Pim\Automation\RuleEngine\Bundle'),
     $builder->only([
@@ -50,6 +50,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
 
         // TIP-962: Rule Engine depends on PIM/Enrichment
+        // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
@@ -67,7 +68,7 @@ $rules = [
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext', // used to version products when a rule is applied
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager', // used to version products when a rule is applied
 
-        // TODO: The rule engine sends notifications
+        // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory',
         'Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface',
 

@@ -55,13 +55,24 @@ $rules = [
         // TIP-1014: Do not use custom Flash Messages
         'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
 
-        'Akeneo\Platform\Component\CatalogVolumeMonitoring', // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
-        'Akeneo\UserManagement\Bundle\Context\UserContext', // TODO: We should not dependend on this context
-        'Gedmo\Exception\UnexpectedValueException', // TODO Remove it
-        // TODO: We should use id instead of reference
+        // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
+        'Akeneo\Platform\Component\CatalogVolumeMonitoring',
+
+        // TIP-1024: Drop UserContext
+        'Akeneo\UserManagement\Bundle\Context\UserContext',
+
+        // TODO Remove it
+        'Gedmo\Exception\UnexpectedValueException',
+
+        // TIP-950: Asset should not be linked to Locale
         'Akeneo\Channel\Component\Model\LocaleInterface',
+
+        // TIP-951: Asset should not be linked to Channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
+
+        // TIP-952: Asset should not be linked to User
         'Akeneo\UserManagement\Component\Model\UserInterface',
+
         // TODO: We should burn the Datagrid but this BC uses the datagrid.
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',
@@ -70,26 +81,32 @@ $rules = [
         // TODO: we should rework permission to avoid this kind coupling (permissions are a sub part of PIM BC)
         'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
         'Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager',
-        'Akeneo\Pim\Permission\Bundle\User\UserContext',
         'Akeneo\Pim\Permission\Component\Attributes',
         'Akeneo\Pim\Permission\Bundle\Form\Type\CategoryPermissionsType',
         'Akeneo\Pim\Permission\Bundle\Form\Type\GroupsType',
         'Akeneo\Pim\Permission\Bundle\Form\EventListener\CategoryPermissionsSubscriber',
         'Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException',
-        // TODO: we must not depend on PIM BC
+
+        // TIP-1024: Drop UserContext
+        'Akeneo\Pim\Permission\Bundle\User\UserContext',
+
+        // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface',
         'Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators', // Should we move them in Akeneo\Tool?
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
-        'Akeneo\Pim\Structure\Component\Model\AttributeInterface', // We should not use public constant
-        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+
+        'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', // Related to the front end (symfony form type)
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController', // We should not use public constant
+
+        // TIP-1008: Clean Provider system of Platform
         'Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface', // Related to the front end
-        'Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor', // it should go in Akeneo\Tool
-        'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', // Related to the front end (symfony form type)
-        'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface', // Related to the front end (used to build form type)
+
+        // TODO: We should not rely structure
+        'Akeneo\Pim\Structure\Component\Model\AttributeInterface', // We should not use public constant
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
 
         // TIP-1005: Clean UI form types
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\SwitchType', // Related to the front end (symfony form type)
@@ -98,10 +115,10 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType', // Related to the front end (symfony form type)
+        'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
+        'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
 
-        // TODO: we must not depend on Platefom
-        'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
-        'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
+        // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface', // Related to the front end (symfony form type)
@@ -137,8 +154,8 @@ $rules = [
         // TIP-957: Move Events to component
         'Akeneo\Asset\Bundle\Event\AssetEvent',
 
-        // Todo: Remove pim dependencies
-        'Doctrine\ORM\QueryBuilder', // TODO: some repository return QueryBuidler object.
+        // TODO: some repository return QueryBuidler object.
+        'Doctrine\ORM\QueryBuilder',
         // TODO: we must not depend on PIM BC
         'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',
         // TODO: security
