@@ -106,7 +106,7 @@ class Subscription
                 );
             }
             foreach ($rawSubscription[$key] as $index => $value) {
-                if (!isset($value['name']) || !isset($value['value'])) {
+                if (!isset($value['name']) || !array_key_exists('value', $value)) {
                     throw new \InvalidArgumentException(
                         sprintf('Missing key "name" or "value" for "%s"[%d] in raw suggested data', $key, $index)
                     );

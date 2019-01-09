@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\InvalidSuggestedValueException;
+
 /**
  * It structures data coming from the data provider and allows to create proposals.
  *
@@ -29,7 +31,11 @@ final class SuggestedData implements \IteratorAggregate
     public function __construct(array $values)
     {
         foreach ($values as $value) {
-            $this->values[] = new SuggestedValue($value['pimAttributeCode'], $value['value']);
+            try {
+                $this->values[] = new SuggestedValue($value['pimAttributeCode'], $value['value']);
+            } catch (InvalidSuggestedValueException $e) {
+                // Silently catch value in order to just ignore suggested value
+            }
         }
     }
 
