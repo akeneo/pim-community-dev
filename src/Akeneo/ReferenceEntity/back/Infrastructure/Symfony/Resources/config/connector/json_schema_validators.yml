@@ -79,3 +79,6 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\TextAttributeValidator
         tags:
             - { name: akeneo_referenceentity.connector.api.attribute_validator }
+
+    akeneo_referenceentity.infrastructure.connector.api.search_filters_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\SearchFiltersValidator

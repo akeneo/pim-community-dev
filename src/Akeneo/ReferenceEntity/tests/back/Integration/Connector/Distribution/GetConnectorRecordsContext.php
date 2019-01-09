@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByI
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
@@ -96,6 +97,12 @@ class GetConnectorRecordsContext implements Context
     /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
     private $findRequiredValueKeyCollectionForChannelAndLocales;
 
+    /** @var null|string */
+    private $requestContract;
+
+    /** @var InMemoryFindActivatedLocalesPerChannels */
+    private $findActivatedLocalesPerChannels;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -105,7 +112,8 @@ class GetConnectorRecordsContext implements Context
         InMemoryAttributeRepository $attributeRepository,
         InMemoryChannelExists $channelExists,
         InMemoryFindActivatedLocalesByIdentifiers $findActivatedLocalesByIdentifiers,
-        InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocales
+        InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocales,
+        InMemoryFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -117,6 +125,7 @@ class GetConnectorRecordsContext implements Context
         $this->channelExists = $channelExists;
         $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
         $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocales;
+        $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
     }
 
     /**
@@ -334,10 +343,11 @@ class GetConnectorRecordsContext implements Context
     public function theConnectorRequestAllRecordsOfTheBrandReferenceEntityWithTheInformationOfANonExistentChannel(): void
     {
         $client = $this->clientFactory->logIn('julia');
+        $this->requestContract = 'unprocessable_entity_brand_records_for_non_existent_channel.json';
 
         $this->unprocessableEntityResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_brand_records_for_non_existent_channel.json'
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
         );
     }
 
@@ -348,7 +358,7 @@ class GetConnectorRecordsContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->unprocessableEntityResponse,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_brand_records_for_non_existent_channel.json'
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
         );
     }
 
@@ -491,10 +501,11 @@ class GetConnectorRecordsContext implements Context
     {
         $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
         $client = $this->clientFactory->logIn('julia');
+        $this->requestContract = 'unprocessable_entity_brand_records_for_non_existent_locale.json';
 
         $this->unprocessableEntityResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_brand_records_for_non_existent_locale.json'
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
         );
     }
 
@@ -505,7 +516,7 @@ class GetConnectorRecordsContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->unprocessableEntityResponse,
-            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_brand_records_for_non_existent_locale.json'
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
         );
     }
 
@@ -514,6 +525,7 @@ class GetConnectorRecordsContext implements Context
      */
     public function recordsForTheBrandReferenceEntityOnTheEcommerceChannelThatAreIncompleteForTheFrenchLocaleButCompleteForTheEnglishLocale(int $numberOfRecords)
     {
+        $this->findActivatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
         $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('fr_FR'));
@@ -774,6 +786,34 @@ class GetConnectorRecordsContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->recordPages[1],
             self::REQUEST_CONTRACT_DIR . 'successful_complete_brand_records.json'
+        );
+    }
+
+    /**
+     * @When /^the connector requests all complete records of the Brand reference entity on a channel that does not exist$/
+     */
+    public function theConnectorRequestsAllCompleteRecordsOfTheBrandReferenceEntityOnAChannelThatDoesNotExist()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->requestContract = 'unprocessable_entity_brand_records_filtered_on_completeness_for_a_non_existent_channel.json';
+
+        $this->unprocessableEntityResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @When /^the connector requests all complete records of the Brand reference entity on the Ecommerce channel for a not activated locale$/
+     */
+    public function theConnectorRequestsAllCompleteRecordsOfTheBrandReferenceEntityOnTheEcommerceChannelForANotActivatedLocale()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->requestContract = 'unprocessable_entity_brand_records_filtered_on_completeness_for_a_non_existent_locale.json';
+
+        $this->unprocessableEntityResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
         );
     }
 
