@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7953: Fix back and cancel button link in user profile view and edit template
 - GITHUB-7594: Fix comparison in versioning system. Cheers @mathewrapid !
 
 # 1.7.36 (2018-12-11)
