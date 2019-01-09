@@ -23,6 +23,8 @@ $rules = [
         'Oro\Bundle\PimDataGridBundle',
         // TODO: dependencies related to the front end, remove twig screens
         'Twig_SimpleFunction', // used by the category tree
+
+        // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
 
         // TIP-1009: Remove TranslatedLabelsProviderInterface from Platform
@@ -86,16 +88,18 @@ $rules = [
 
         // TODO: : EASY PICK! API PaginatorInterface should catch ServerErrorResponseException and throw its own exception,
         'Elasticsearch\Common\Exceptions\ServerErrorResponseException',
-        // TODO: we should not inject the UserContext as a service
+
+        // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
-        // TODO: use to find the repository of the reference data (often to check if the reference data exists, sometimes we really need more information)
+
+        // TIP-949: Assets should not be Reference Data
         'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface',
 
         // TIP-1015: Move TableCreator to Platform
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
         'Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface',
 
-        // TODO: widget discussion
+        // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',
 
         // TIP-1014: Do not use custom Flash Messages
@@ -178,10 +182,9 @@ $rules = [
         // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
 
-        // TIP-939: FILTERS
+        // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
-
 
         // TIP-1012: Create a Measure component
         'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
@@ -197,19 +200,21 @@ $rules = [
 
         // TODO it should only be used in the bundle (security, used to check if granted to ACL)
         'Oro\Bundle\SecurityBundle\SecurityFacade',
-        // TODO normalization for front end purpose
+
+        // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
-        // TODO: StructureVersionProvider discussion, for the cache of the frontend
         'Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface',
-        // TODO: do not inject user context as a service
+
+        // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
+
         // TODO: is ProductMassActionRepositoryInterface still used?
         'Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface',
 
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
 
-        // TODO: extract from ValidMetric the enrichment part
+        // TIP-929: Extract the Attribute part of the ValidMetricValidator
         'Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric',
 
         // TIP-1023: Drop CatalogContext
