@@ -123,7 +123,6 @@ config:
 
         # Filters
         pimee/filter/attribute/assets-collection: pimenterpriseui/js/filter/attribute/assets-collection
-        pimee/filter/attribute/reference-entity-collection: pimenterpriseui/js/filter/attribute/reference-entity-collection
 
         # Templates
         pimee/template/product/meta/owner-groups:             pimenterpriseui/templates/product/meta/owner-groups.html
