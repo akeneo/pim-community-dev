@@ -77,6 +77,14 @@ type PermissionCollectionEditorProps = {
 };
 
 export default class PermissionCollectionEditor extends React.Component<PermissionCollectionEditorProps> {
+  private tableHead: React.RefObject<HTMLTableSectionElement>;
+
+  constructor(props: PermissionCollectionEditorProps) {
+    super(props);
+
+    this.tableHead = React.createRef<HTMLTableSectionElement>();
+  }
+
   private onPermissionUpdated(groupCode: GroupName, newValue: RightLevel) {
     if (!this.props.readOnly) {
       this.props.onChange(this.props.value.setPermission(groupCode, newValue));
@@ -90,14 +98,16 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
   }
 
   render() {
+    const topPosition = null !== this.tableHead.current ? this.tableHead.current.getBoundingClientRect().top - 20 : 0;
+
     return (
       <div className="AknGridContainer">
         <table className="AknPermission AknGrid">
-          <thead className="AknPermission-header">
+          <thead className="AknPermission-header" ref={this.tableHead}>
             <tr className="AknGrid-bodyRow">
-              <th className="AknGrid-headerCell AknGrid-headerCell--center" />
+              <th className="AknGrid-headerCell AknGrid-headerCell--center AknGrid-headerCell--sticky" style={{top: `${topPosition}px`}}/>
               {this.props.prioritizedRightLevels.map((rightLevel: RightLevel) => (
-                <th key={rightLevel} className="AknGrid-headerCell AknGrid-headerCell--center">
+                <th key={rightLevel} className="AknGrid-headerCell AknGrid-headerCell--center AknGrid-headerCell--sticky" style={{top: `${topPosition}px`}}>
                 <span
                   className="AknButton AknButton--small"
                   onClick={() => {

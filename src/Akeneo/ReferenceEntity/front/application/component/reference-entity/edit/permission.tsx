@@ -75,7 +75,7 @@ class Permission extends React.Component<StateProps & DispatchProps> {
           breadcrumbConfiguration={breadcrumbConfiguration}
         />
         <div className="AknSubsection">
-          <header className="AknSubsection-title">
+          <header className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--withHeader">
             <span className="group-label">{__('pim_reference_entity.reference_entity.permission.title')}</span>
           </header>
           <div className="AknFormContainer AknFormContainer--wide">
