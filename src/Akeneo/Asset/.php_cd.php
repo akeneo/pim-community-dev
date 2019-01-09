@@ -49,7 +49,12 @@ $rules = [
         // TIP-955: Asset should not depend on Enrichment types
         'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType',
 
-        'Akeneo\Platform\Bundle\NotificationBundle', // TODO: you should find a way to push notifications to the platform instead of coupling asset to the platform
+        // TIP-1013: Rework Notification system
+        'Akeneo\Platform\Bundle\NotificationBundle',
+
+        // TIP-1014: Do not use custom Flash Messages
+        'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
+
         'Akeneo\Platform\Component\CatalogVolumeMonitoring', // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
         'Akeneo\UserManagement\Bundle\Context\UserContext', // TODO: We should not dependend on this context
         'Gedmo\Exception\UnexpectedValueException', // TODO Remove it
@@ -82,17 +87,21 @@ $rules = [
         'Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface', // Related to the front end
-        'Akeneo\Platform\Bundle\UIBundle\Flash\Message', // Related to the front end
         'Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor', // it should go in Akeneo\Tool
+        'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface', // Related to the front end (used to build form type)
-        // TODO: we must not depend on Platefom
-        'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
+
+        // TIP-1005: Clean UI form types
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\SwitchType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\AjaxEntityType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxCreatableEntityTransformerFactory', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType', // Related to the front end (symfony form type)
+
+        // TODO: we must not depend on Platefom
+        'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
+        'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
         'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface', // Related to the front end (symfony form type)

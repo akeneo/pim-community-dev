@@ -25,7 +25,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
 
-        // TODO: Rule engine sends notification
+        // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface',
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
@@ -61,6 +61,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface', // the engine creates a fake product to allow validation
 
+        // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext', // used to version products when a rule is applied
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager', // used to version products when a rule is applied
 
