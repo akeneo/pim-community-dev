@@ -143,4 +143,24 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     {
         return count($this->subscriptions);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function bulkSave(array $subscriptions): void
+    {
+        foreach ($subscriptions as $subscription) {
+            $this->save($subscription);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function bulkDelete(array $subscriptions): void
+    {
+        foreach ($subscriptions as $subscription) {
+            $this->delete($subscription);
+        }
+    }
 }
