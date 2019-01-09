@@ -268,7 +268,7 @@ TODO: change the link!!
         v3.0
         ```
         imports:
-            - { resource: '../../vendor/akeneo/pim-enterprise-dev/Akeneo/Platform/config/pimee.yml' }
+            - { resource: '../../vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/config/pimee.yml' }
         ```    
     
     * The translator now expects the language `en_US`:
