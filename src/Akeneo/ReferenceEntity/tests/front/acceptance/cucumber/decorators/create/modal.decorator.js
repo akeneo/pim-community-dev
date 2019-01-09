@@ -13,10 +13,10 @@ const Modal = async (nodeElement, createElementDecorator, page) => {
   };
   const switchField = async (id, value) => {
     if (value) {
-      const switchElement = await nodeElement.$(`.AknSwitch-input[id="${id}"]:not(:checked)`);
+      const switchElement = await nodeElement.$(`.AknCheckbox[id="${id}"]:not(:checked)`);
       switchElement.click();
     } else {
-      const switchElement = await nodeElement.$(`.AknSwitch-input[id="${id}"]:not(:checked)`);
+      const switchElement = await nodeElement.$(`.AknCheckbox[id="${id}"]:not(:checked)`);
       switchElement.click();
     }
   };

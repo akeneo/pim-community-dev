@@ -156,7 +156,12 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                           value={this.state.createAnother}
                           onChange={(newValue: boolean) => this.setState({createAnother: newValue})}
                         />
-                        <span>{__('pim_reference_entity.record.create.input.create_another')}</span>
+                        <span
+                          onClick={() => {
+                            this.setState({createAnother: !this.state.createAnother});
+                          }}
+                        >{__('pim_reference_entity.record.create.input.create_another')}
+                        </span>
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer" />
