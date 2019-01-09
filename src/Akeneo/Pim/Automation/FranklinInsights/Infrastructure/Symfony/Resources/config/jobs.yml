@@ -48,7 +48,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@akeneo.pim.automation.franklin_insights.connector.step.fetch_products'
-#                - '@akeneo.pim.automation.franklin_insights.connector.step.create_proposals'
+                - '@akeneo.pim.automation.franklin_insights.connector.step.create_proposals'
         tags:
             - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'franklin_insights_fetch_products' }
 
