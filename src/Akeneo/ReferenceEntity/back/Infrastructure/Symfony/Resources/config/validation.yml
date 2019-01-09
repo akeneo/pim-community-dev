@@ -153,7 +153,7 @@ Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
                   payload:
                       standardPropertyName: locales
         filters:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\UpdatedDateShouldBeValid:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\FilterRecordsByUpdatedDate:
                   payload:
                       standardPropertyName: filters
     constraints:

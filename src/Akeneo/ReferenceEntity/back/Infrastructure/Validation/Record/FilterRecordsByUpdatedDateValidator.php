@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -20,23 +21,30 @@ use Symfony\Component\Validator\ConstraintValidator;
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class UpdatedDateValidator extends ConstraintValidator
+class FilterRecordsByUpdatedDateValidator extends ConstraintValidator
 {
+    const SUPPORTED_OPERATOR = '>';
+
     /**
      * {@inheritdoc}
      */
     public function validate($filters, Constraint $constraint)
     {
+        $this->checkConstraintType($constraint);
         $updatedFilter = $this->getUpdatedFilter($filters);
 
         if (null === $updatedFilter) {
             return;
         }
 
-        if (false === $this->dateIsValid($updatedFilter['value'])) {
-            $this->context->buildViolation(sprintf('Property "updated" expects a string with the ISO 8601 format, "%s" given.', $updatedFilter['value']))
-                ->atPath('filters')
-                ->addViolation();
+        $this->validateDate($updatedFilter['value']);
+        $this->validateOperator($updatedFilter['operator']);
+    }
+
+    private function checkConstraintType(Constraint $constraint): void
+    {
+        if (!$constraint instanceof FilterRecordsByUpdatedDate) {
+            throw new UnexpectedTypeException($constraint, FilterRecordsByUpdatedDate::class);
         }
     }
 
@@ -53,13 +61,25 @@ class UpdatedDateValidator extends ConstraintValidator
         return $updatedFilter;
     }
 
-    private function dateIsValid(?string $date): bool
+    private function validateDate(?string $date)
     {
         try {
             new \DateTime($date);
-            return true;
         } catch (\Exception $e) {
-            return false;
+            $this->context->buildViolation(sprintf(FilterRecordsByUpdatedDate::DATE_SHOULD_BE_VALID, $date))
+                ->atPath('updated.value')
+                ->addViolation();
+        }
+    }
+
+    private function validateOperator(?string $operator)
+    {
+        $operatorIsValid = $operator === self::SUPPORTED_OPERATOR;
+
+        if (false === $operatorIsValid) {
+            $this->context->buildViolation(sprintf(FilterRecordsByUpdatedDate::OPERATOR_SHOULD_BE_SUPPORTED, $operator))
+                ->atPath('updated.operator')
+                ->addViolation();
         }
     }
 }

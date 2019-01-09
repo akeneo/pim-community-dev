@@ -152,10 +152,10 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.channel.locales_should_be_activated' }
 
-    akeneo_referenceentity.infrastructure.validation.record.updated_date_should_be_valid:
-        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\UpdatedDateValidator
+    akeneo_referenceentity.infrastructure.validation.record.filter_records_by_updated_date:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\FilterRecordsByUpdatedDateValidator
         tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.updated_date_should_be_valid' }
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.infrastructure.validation.record.filter_records_by_updated_date' }
 
     akeneo_referenceentity.infrastructure.validation.record.edit_value_command:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommandValidator
