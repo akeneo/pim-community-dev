@@ -96,6 +96,13 @@ class AttributeMapping extends BaseView {
   ];
   private static readonly ATTRIBUTE_TYPES_BUTTONS_VISIBILITY = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
 
+  /**
+   * Get the family code from current URL
+   */
+  private static getFamilyCode() {
+    return Router.match(window.location.hash).params.familyCode;
+  }
+
   private readonly template = _.template(template);
   private readonly modalTemplate = _.template(modalTemplate);
   private readonly config: Config = {
@@ -223,6 +230,7 @@ class AttributeMapping extends BaseView {
         choiceRoute: 'pim_enrich_attribute_rest_index',
         types: AttributeMapping.ALLOWED_CATALOG_TYPES,
         perfectMappings: AttributeMapping.PERFECT_MAPPINGS[mapping[franklinAttributeCode].franklinAttribute.type],
+        families: [AttributeMapping.getFamilyCode()],
       },
       className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
     });
@@ -314,7 +322,7 @@ class AttributeMapping extends BaseView {
     const franklinAttributeCode = $line.find('.attribute-selector').data('franklin-attribute-code');
     const catalogAttributeCode =
         $line.find('input[name="mapping.' + franklinAttributeCode + '.attribute"]').val() as string;
-    const familyCode = Router.match(window.location.hash).params.familyCode;
+    const familyCode = AttributeMapping.getFamilyCode();
 
     $.when(
       FormBuilder.build('akeneo-franklin-insights-settings-attribute-options-mapping-edit'),
