@@ -118,16 +118,14 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
             $image = $entity->getImage();
         }
 
-        // TODO @merge on master, remove condition
-        $localeCode = $this->catalogContext->getLocaleCode() ? $this->catalogContext->getLocaleCode() : null;
-
+        // TODO @merge on master, remove condition on catalogContext
         return [
             'id'                 => $entity->getId(),
             'identifier'         => $identifier,
             'axes_values_labels' => $this->getAxesValuesLabelsForLocales($entity, $localeCodes),
             'labels'             => $labels,
             'order'              => $this->getOrder($entity),
-            'image'              => $this->normalizeImage($image, $localeCode),
+            'image'              => $this->normalizeImage($image, $this->catalogContext ? $this->catalogContext->getLocaleCode() : null),
             'model_type'         => $entity instanceof ProductModelInterface ? 'product_model' : 'product',
             'completeness'       => $this->getCompletenessDependingOnEntity($entity)
         ];

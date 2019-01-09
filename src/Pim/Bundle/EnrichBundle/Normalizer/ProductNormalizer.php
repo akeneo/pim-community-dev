@@ -225,6 +225,7 @@ class ProductNormalizer implements NormalizerInterface
 
         $normalizedProduct['parent_associations'] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
 
+        // TODO @merge on master, remove condition on catalogContext
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),
             'id'                => $product->getId(),
