@@ -213,7 +213,8 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric',
         // TODO: should not have a contextual service
         'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',
-        // TODO: EASY PICK! move JobLauncherInterface to component
+
+        // TIP-1020: Move JobLauncherInterface
         'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
