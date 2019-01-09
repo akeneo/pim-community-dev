@@ -68,6 +68,6 @@ class ImageNormalizer extends BaseImageNormalizer
         $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
 
         return (null !== $attribute &&
-            $attribute()->getReferenceDataName() === 'assets');
+            $attribute->getReferenceDataName() === 'assets');
     }
 }
