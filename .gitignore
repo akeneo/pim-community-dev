@@ -38,6 +38,7 @@ composer.phar
 !/bin/console
 !/bin/check-pullup
 !/bin/pim-front.sh
+!/bin/check-services-instantiability
 behat.yml
 /phpspec.yml
 uploads_test/
