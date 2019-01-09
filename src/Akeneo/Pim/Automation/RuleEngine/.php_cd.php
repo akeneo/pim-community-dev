@@ -32,8 +32,10 @@ $rules = [
         // TIP-957: Do not use FQCN resolver
         'Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver',
 
-        // TODO: Extract presenter to tool (it should not rely on product value anymore)
+        // TIP-1019: Move presenters
         'Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface',
+
+        // TODO: Extract presenter to tool (it should not rely on product value anymore)
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
     ])->in('Akeneo\Pim\Automation\RuleEngine\Bundle'),
     $builder->only([
