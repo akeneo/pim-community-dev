@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - GITHUB-7594: Fix comparison in versioning system. Cheers @mathewrapid !
+- PIM-7957: Fix dependencies for doctrine
 
 # 1.7.36 (2018-12-11)
 
