@@ -1,22 +1,19 @@
 services:
-    akeneo.pim.automation.franklin_insights.connector.step.validate_configuration.subscription:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Step\ConfigurationValidatorStep'
+    akeneo.pim.automation.franklin_insights.connector.step.validate_connection:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Step\ConnectionValidationStep'
         arguments:
             - 'validate_configuration'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            -
-                - '@akeneo.pim.automation.franklin_insights.connector.validation.connection_status'
-                - '@akeneo.pim.automation.franklin_insights.connector.validation.identifiers_mapping'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
 
-    akeneo.pim.automation.franklin_insights.connector.step.validate_configuration.unsubscription:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Step\ConfigurationValidatorStep'
+    akeneo.pim.automation.franklin_insights.connector.step.validate_identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Step\IdentifiersMappingValidationStep'
         arguments:
-            - 'validate_configuration'
+            - 'validate_identifiers_mapping'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            -
-                - '@akeneo.pim.automation.franklin_insights.connector.validation.connection_status'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
 
     akeneo.pim.automation.franklin_insights.connector.step.subscribe_products:
         class: '%pim_connector.step.item_step.class%'

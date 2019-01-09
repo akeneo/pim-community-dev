@@ -7,7 +7,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@akeneo.pim.automation.franklin_insights.connector.step.validate_configuration.subscription'
+                - '@akeneo.pim.automation.franklin_insights.connector.step.validate_connection'
+                - '@akeneo.pim.automation.franklin_insights.connector.step.validate_identifiers_mapping'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.subscribe_products'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.create_proposals'
         tags:
@@ -20,7 +21,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@akeneo.pim.automation.franklin_insights.connector.step.validate_configuration.unsubscription'
+                - '@akeneo.pim.automation.franklin_insights.connector.step.validate_connection'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.unsubscribe_products'
         tags:
             - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'mass_edit' }
@@ -32,7 +33,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@akeneo.pim.automation.franklin_insights.connector.step.validate_configuration.subscription'
+                - '@akeneo.pim.automation.franklin_insights.connector.step.validate_connection'
+                - '@akeneo.pim.automation.franklin_insights.connector.step.validate_identifiers_mapping'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.unsubscribe_products'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.subscribe_products'
         tags:

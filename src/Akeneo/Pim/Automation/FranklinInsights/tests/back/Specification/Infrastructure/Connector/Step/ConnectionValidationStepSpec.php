@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Step;
 
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Step\ConfigurationValidatorStep;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidationException;
-use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidatorInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Step\ConnectionValidationStep;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
@@ -31,18 +31,18 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class ConfigurationValidatorStepSpec extends ObjectBehavior
+class ConnectionValidationStepSpec extends ObjectBehavior
 {
     public function let(
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
-        ValidatorInterface $validator
+        GetConnectionStatusHandler $connectionStatusHandler
     ): void {
         $this->beConstructedWith(
             'validate_configuration',
             $eventDispatcher,
             $jobRepository,
-            [$validator]
+            $connectionStatusHandler
         );
     }
 
@@ -54,50 +54,50 @@ class ConfigurationValidatorStepSpec extends ObjectBehavior
 
     public function it_is_a_token_validator_step(): void
     {
-        $this->shouldHaveType(ConfigurationValidatorStep::class);
+        $this->shouldHaveType(ConnectionValidationStep::class);
     }
 
-    public function it_stops_execution_with_failed_validation(
+    public function it_stops_execution_if_connection_status_is_inactive(
         $eventDispatcher,
         $jobRepository,
-        $validator,
+        $connectionStatusHandler,
         StepExecution $execution,
         BatchStatus $status
     ): void {
-        $execution->getStatus()->willReturn($status);
-        $status->getValue()->willReturn(BatchStatus::STARTING);
-        $validator->validate(null)->willThrow(new ValidationException('Invalid configuration'));
+        $connectionStatusHandler
+            ->handle(new GetConnectionStatusQuery(true))
+            ->willReturn(new ConnectionStatus(false, false, false, 0));
 
-        $eventDispatcher->dispatch(EventInterface::BEFORE_STEP_EXECUTION, Argument::any())->shouldBeCalled();
-        $execution->setStartTime(Argument::type(\DateTime::class))->shouldBeCalled();
-        $execution->setStatus(Argument::type(BatchStatus::class))->shouldBeCalled();
-        $jobRepository->updateStepExecution($execution)->shouldBeCalled();
+        $this->executeWithExpectedError($eventDispatcher, $jobRepository, $execution, $status);
+    }
 
-        $execution->upgradeStatus(BatchStatus::FAILED)->shouldBeCalled();
-        $execution->addFailureException(Argument::type(\Exception::class))->shouldBeCalled();
-        $jobRepository->updateStepExecution($execution)->shouldBeCalled();
+    public function it_stops_execution_if_connection_status_is_invalid(
+        $eventDispatcher,
+        $jobRepository,
+        $connectionStatusHandler,
+        StepExecution $execution,
+        BatchStatus $status
+    ): void {
+        $connectionStatusHandler
+            ->handle(new GetConnectionStatusQuery(true))
+            ->willReturn(new ConnectionStatus(true, false, false, 0));
 
-        $eventDispatcher->dispatch(EventInterface::STEP_EXECUTION_ERRORED, Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch(EventInterface::STEP_EXECUTION_COMPLETED, Argument::any())->shouldBeCalled();
-
-        $execution->setEndTime(Argument::type(\DateTime::class))->shouldBeCalled();
-        $execution->setExitStatus(Argument::type(ExitStatus::class))->shouldBeCalled();
-
-        $this->execute($execution);
+        $this->executeWithExpectedError($eventDispatcher, $jobRepository, $execution, $status);
     }
 
     public function it_executes_with_success(
         $eventDispatcher,
         $jobRepository,
-        $validator,
+        $connectionStatusHandler,
         StepExecution $execution,
         BatchStatus $status,
-        ExitStatus $exitStatus,
-        AttributeInterface $asin
+        ExitStatus $exitStatus
     ): void {
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
-        $validator->validate(null)->willReturn(null);
+        $connectionStatusHandler
+            ->handle(new GetConnectionStatusQuery(true))
+            ->willReturn(new ConnectionStatus(true, true, true, 0));
 
         $execution->getExitStatus()->willReturn($exitStatus);
         $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
@@ -118,6 +118,33 @@ class ConfigurationValidatorStepSpec extends ObjectBehavior
         $execution->setExitStatus(Argument::type(ExitStatus::class))->shouldBeCalled();
 
         $execution->addSummaryInfo('configuration_validation', 'OK')->shouldBeCalled();
+
+        $this->execute($execution);
+    }
+
+    private function executeWithExpectedError(
+        $eventDispatcher,
+        $jobRepository,
+        StepExecution $execution,
+        BatchStatus $status
+    ): void {
+        $execution->getStatus()->willReturn($status);
+        $status->getValue()->willReturn(BatchStatus::STARTING);
+
+        $eventDispatcher->dispatch(EventInterface::BEFORE_STEP_EXECUTION, Argument::any())->shouldBeCalled();
+        $execution->setStartTime(Argument::type(\DateTime::class))->shouldBeCalled();
+        $execution->setStatus(Argument::type(BatchStatus::class))->shouldBeCalled();
+        $jobRepository->updateStepExecution($execution)->shouldBeCalled();
+
+        $execution->upgradeStatus(BatchStatus::FAILED)->shouldBeCalled();
+        $execution->addFailureException(Argument::type(\Exception::class))->shouldBeCalled();
+        $jobRepository->updateStepExecution($execution)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(EventInterface::STEP_EXECUTION_ERRORED, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(EventInterface::STEP_EXECUTION_COMPLETED, Argument::any())->shouldBeCalled();
+
+        $execution->setEndTime(Argument::type(\DateTime::class))->shouldBeCalled();
+        $execution->setExitStatus(Argument::type(ExitStatus::class))->shouldBeCalled();
 
         $this->execute($execution);
     }

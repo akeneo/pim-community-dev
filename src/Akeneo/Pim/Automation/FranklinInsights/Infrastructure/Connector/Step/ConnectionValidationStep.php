@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Step;
 
-use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidatorInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidationException;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\AbstractStep;
@@ -22,25 +25,26 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class ConfigurationValidatorStep extends AbstractStep
+class ConnectionValidationStep extends AbstractStep
 {
-    /** @var ValidatorInterface[] */
-    private $validators;
+    /** @var GetConnectionStatusHandler */
+    private $connectionStatusHandler;
 
     /**
      * @param $name
      * @param EventDispatcherInterface $eventDispatcher
      * @param JobRepositoryInterface $jobRepository
-     * @param ValidatorInterface[] $validators
+     * @param GetConnectionStatusHandler $connectionStatusHandler
      */
     public function __construct(
         $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
-        array $validators
+        GetConnectionStatusHandler $connectionStatusHandler
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
-        $this->validators = $validators;
+
+        $this->connectionStatusHandler = $connectionStatusHandler;
     }
 
     /**
@@ -48,8 +52,10 @@ class ConfigurationValidatorStep extends AbstractStep
      */
     protected function doExecute(StepExecution $stepExecution): void
     {
-        foreach ($this->validators as $validator) {
-            $validator->validate(null);
+        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(true));
+
+        if (!$connectionStatus->isValid()) {
+            throw new ValidationException(DataProviderException::authenticationError()->getMessage());
         }
 
         $stepExecution->addSummaryInfo('configuration_validation', 'OK');
