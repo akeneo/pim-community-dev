@@ -1,5 +1,9 @@
 # 1.7.x
 
+## Bug fixes
+
+- GITHUB-7594: Fix comparison in versioning system. Cheers @mathewrapid !
+
 # 1.7.36 (2018-12-11)
 
 ## Bug fixes
