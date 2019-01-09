@@ -95,35 +95,39 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
                     </div>
                   </div>
                   <div className="AknTitleContainer-line">
-                      {grid.isLoading === false && grid.referenceEntities.length === 0 ? (
-                        <div className="AknDescriptionHeader AknDescriptionHeader--sticky AknDescriptionHeader--push">
-                          <div
-                            className="AknDescriptionHeader-icon"
-                            style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Reference-entities.svg")'}}
-                          />
-                          <div className="AknDescriptionHeader-title">
-                            {__('pim_reference_entity.reference_entity.index.grid.help.title')}
-                            <div className="AknDescriptionHeader-description">
-                              {__('pim_reference_entity.reference_entity.index.grid.help.description_part_one')} <br/>
-                              {__('pim_reference_entity.reference_entity.index.grid.help.description_part_two')} <br/>
-                              {__('pim_reference_entity.reference_entity.index.grid.help.description_part_three')} <br/>
-                              {__('pim_reference_entity.reference_entity.index.grid.help.description_part_four')} <a href="https://help.akeneo.com">{__('pim_reference_entity.reference_entity.index.grid.help.description_part_five')}</a><br/>
-                            </div>
+                    {grid.isLoading === false && grid.referenceEntities.length === 0 ? (
+                      <div className="AknDescriptionHeader AknDescriptionHeader--sticky AknDescriptionHeader--push">
+                        <div
+                          className="AknDescriptionHeader-icon"
+                          style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Reference-entities.svg")'}}
+                        />
+                        <div className="AknDescriptionHeader-title">
+                          {__('pim_reference_entity.reference_entity.index.grid.help.title')}
+                          <div className="AknDescriptionHeader-description">
+                            {__('pim_reference_entity.reference_entity.index.grid.help.description_part_one')} <br />
+                            {__('pim_reference_entity.reference_entity.index.grid.help.description_part_two')} <br />
+                            {__('pim_reference_entity.reference_entity.index.grid.help.description_part_three')} <br />
+                            {__('pim_reference_entity.reference_entity.index.grid.help.description_part_four')}{' '}
+                            <a href="https://help.akeneo.com">
+                              {__('pim_reference_entity.reference_entity.index.grid.help.description_part_five')}
+                            </a>
+                            <br />
                           </div>
                         </div>
-                      ) : (
-                        <div className="AknTitleContainer-title">
-                          <span className={grid.isLoading ? 'AknLoadingPlaceHolder' : ''}>
-                            {__(
-                              'pim_reference_entity.reference_entity.index.grid.count',
-                              {
-                                count: grid.referenceEntities.length,
-                              },
-                              grid.referenceEntities.length
-                            )}
-                          </span>
-                        </div>
-                      )}
+                      </div>
+                    ) : (
+                      <div className="AknTitleContainer-title">
+                        <span className={grid.isLoading ? 'AknLoadingPlaceHolder' : ''}>
+                          {__(
+                            'pim_reference_entity.reference_entity.index.grid.count',
+                            {
+                              count: grid.referenceEntities.length,
+                            },
+                            grid.referenceEntities.length
+                          )}
+                        </span>
+                      </div>
+                    )}
                     <div className="AknTitleContainer-state" />
                   </div>
                 </div>

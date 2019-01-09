@@ -21,10 +21,10 @@ pim_reference_entity:
         limit_reached: 'You cannot create the reference entity "{{ %reference_entity_label% }}" because you have reached the limit of {{ %limit% }} reference entities'
     button:
       save: Save
-      save_permission: Save Permissions
+      save_permission: Save
       create: Create
     permission:
-      title: Permissions
+      title: Entity permissions
     title: Entities
     breadcrumb: Reference Entities
     img: The main image of the reference entity named "{{ label }}"
@@ -280,3 +280,6 @@ pim_enrich:
         reference_entity:
           identifier: Related reference entity (required)
           default_label: Please select a reference entity
+
+permission:
+  mass_action: Apply {{ rightLevel }} right on all groups

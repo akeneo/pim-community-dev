@@ -13,4 +13,4 @@ Feature: Set permissions for a reference entity
       | IT support            | view        |
       | Catalog Manager       | edit        |
     Then there should be a 'view' permission right for the user group 'IT support' on the reference entity
-    And there should be a 'edit' permission right for the user group 'Catalog manager' on the reference entity
+    And there should be a 'edit' permission right for the user group 'Catalog Manager' on the reference entity

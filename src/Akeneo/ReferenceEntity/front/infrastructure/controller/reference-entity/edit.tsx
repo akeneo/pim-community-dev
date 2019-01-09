@@ -48,6 +48,9 @@ class ReferenceEntityEditController extends BaseController {
   renderRoute(route: any) {
     const promise = $.Deferred();
 
+    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
+    $(window).on('beforeunload', this.beforeUnload);
+
     referenceEntityFetcher
       .fetch(createIdentifier(route.params.identifier))
       .then(async (referenceEntityResult: ReferenceEntityResult) => {
@@ -77,9 +80,6 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(attributeListGotUpdated(referenceEntityResult.attributes) as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
         this.updateCompletenessFilter(completenessFilter);
-
-        mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
-        $(window).on('beforeunload', this.beforeUnload);
 
         ReactDOM.render(
           <Provider store={this.store}>
@@ -159,7 +159,7 @@ class ReferenceEntityEditController extends BaseController {
 
     const state = this.store.getState();
 
-    return state.form.state.isDirty || state.attribute.isDirty || state.options.isDirty || state.permission.isDirty;
+    return state.form.state.isDirty || state.attribute.isDirty || state.options.isDirty || state.permission.state.isDirty;
   }
 }
 

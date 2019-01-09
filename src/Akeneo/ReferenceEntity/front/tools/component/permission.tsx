@@ -5,6 +5,7 @@ import Permission, {
   PermissionCollection,
   lowerLevel,
 } from 'akeneoreferenceentity/domain/model/reference-entity/permission';
+import __ from 'akeneoreferenceentity/tools/translator';
 
 type GroupName = string;
 
@@ -97,31 +98,22 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
               <th className="AknGrid-headerCell AknGrid-headerCell--center" />
               {this.props.prioritizedRightLevels.map((rightLevel: RightLevel) => (
                 <th key={rightLevel} className="AknGrid-headerCell AknGrid-headerCell--center">
+                <span
+                  className="AknButton AknButton--small"
+                  onClick={() => {
+                    this.onAllPermissionUpdated(rightLevel);
+                  }}
+                  tabIndex={0}
+                  title={__('permission.mass_action', {rightLevel})}
+                  data-right-level={rightLevel}
+                >
                   {rightLevel}
+                </span>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            <tr className="AknPermission-row AknPermission-row--massAction">
-              <td className="AknPermission-level AknGrid-bodyCell" />
-              {this.props.prioritizedRightLevels.map((rightLevel: RightLevel) => (
-                <td
-                  key={rightLevel}
-                  className="AknPermission-level AknGrid-bodyCell"
-                  onClick={() => {
-                    this.onAllPermissionUpdated(rightLevel);
-                  }}
-                  data-right-level={rightLevel}
-                >
-                  <div className="AknPermission-rightLevel">
-                    <div className="AknPermission-barLeft AknPermission-barLeft--transparent" />
-                    <div className="AknPermission-pill" />
-                    <div className="AknPermission-barRight AknPermission-barRight--transparent" />
-                  </div>
-                </td>
-              ))}
-            </tr>
             {this.props.value.map((permission: Permission) => (
               <PermissionEditor
                 key={permission.getUserGroupIdentifier()}

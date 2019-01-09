@@ -50,9 +50,7 @@ describe('>>>COMPONENT --- permission', () => {
       <PermissionCollectionEditor
         value={permissions}
         readOnly={false}
-        onChange={newPermissions => {
-          console.log(newPermissions);
-        }}
+        onChange={newPermissions => {}}
         prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
       />
     );
@@ -106,7 +104,7 @@ describe('>>>COMPONENT --- permission', () => {
   });
 
   test('Mass update rights on read only', () => {
-    expect.assertions(0);
+    expect.assertions(0); // This is intended. The test is to check that the onCHange method is not called
     const permissionsEditor = mount(
       <PermissionCollectionEditor
         value={permissions}

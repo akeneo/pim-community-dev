@@ -44,7 +44,7 @@ interface DispatchProps {
   };
 }
 
-class Properties extends React.Component<StateProps & DispatchProps> {
+class Permission extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
   render() {
@@ -128,4 +128,4 @@ export default connect(
       },
     };
   }
-)(Properties);
+)(Permission);

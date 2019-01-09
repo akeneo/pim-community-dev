@@ -160,7 +160,8 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                           onClick={() => {
                             this.setState({createAnother: !this.state.createAnother});
                           }}
-                        >{__('pim_reference_entity.record.create.input.create_another')}
+                        >
+                          {__('pim_reference_entity.record.create.input.create_another')}
                         </span>
                       </label>
                     </div>

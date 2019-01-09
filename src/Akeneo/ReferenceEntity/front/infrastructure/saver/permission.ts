@@ -6,14 +6,14 @@ import {postJSON} from 'akeneoreferenceentity/tools/fetch';
 
 const routing = require('routing');
 
-export interface ReferenceEntitySaver {
+export interface PermissionSaver {
   save: (
     referenceEntityIdentifier: ReferenceEntityIdentifier,
     permissions: PermissionCollection
   ) => Promise<ValidationError[] | null>;
 }
 
-export class PermissionSaverImplementation implements ReferenceEntitySaver {
+export class PermissionSaverImplementation implements PermissionSaver {
   constructor() {
     Object.freeze(this);
   }

@@ -25,7 +25,7 @@ module.exports = async function(cucumber) {
     });
   });
 
-  Given("the user doesn't have any rights", async function() {
+  Given('the user does not have any rights', async function() {
     listAcls(this.page, []);
   });
 };

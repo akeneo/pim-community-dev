@@ -26,14 +26,6 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     expect(newState).toEqual(initialState);
   });
 
-  test('I can generate a default state', () => {
-    const newState = reducer(undefined, {
-      type: 'ANOTHER_ACTION',
-    });
-
-    expect(newState).toEqual(initialState);
-  });
-
   test('I receive new permissions', () => {
     const newState = reducer(initialState, {
       type: 'PERMISSION_EDITION_RECEIVED',
@@ -147,7 +139,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     });
   });
 
-  test('An error can occure', () => {
+  test('An error can occur', () => {
     const newState = reducer(initialState, {
       type: 'PERMISSION_EDITION_ERROR_OCCURED',
       errors: [

@@ -176,7 +176,9 @@ class Create extends React.Component<CreateProps> {
                 <div className="AknFullPage-titleContainer">
                   <div className="AknFullPage-subTitle">{__('pim_reference_entity.attribute.create.subtitle')}</div>
                   <div className="AknFullPage-title">{__('pim_reference_entity.attribute.create.title')}</div>
-                  <div className="AknFullPage-description">{__('pim_reference_entity.attribute.create.description')}</div>
+                  <div className="AknFullPage-description">
+                    {__('pim_reference_entity.attribute.create.description')}
+                  </div>
                 </div>
                 <div className="AknFormContainer">
                   <div className="AknFieldContainer" data-code="label">
@@ -285,16 +287,17 @@ class Create extends React.Component<CreateProps> {
                         className="AknFieldContainer-label"
                         htmlFor="pim_reference_entity.attribute.create.input.value_per_channel"
                       >
-                      <Checkbox
-                        id="pim_reference_entity.attribute.create.input.value_per_channel"
-                        value={this.props.data.value_per_channel}
-                        onChange={this.props.events.onValuePerChannelUpdated}
-                      />
+                        <Checkbox
+                          id="pim_reference_entity.attribute.create.input.value_per_channel"
+                          value={this.props.data.value_per_channel}
+                          onChange={this.props.events.onValuePerChannelUpdated}
+                        />
                         <span
                           onClick={() => {
                             this.props.events.onValuePerChannelUpdated(!this.props.data.value_per_channel);
                           }}
-                        >{__('pim_reference_entity.attribute.create.input.value_per_channel')}
+                        >
+                          {__('pim_reference_entity.attribute.create.input.value_per_channel')}
                         </span>
                       </label>
                     </div>
@@ -315,7 +318,8 @@ class Create extends React.Component<CreateProps> {
                           onClick={() => {
                             this.props.events.onValuePerLocaleUpdated(!this.props.data.value_per_locale);
                           }}
-                        >{__('pim_reference_entity.attribute.create.input.value_per_locale')}
+                        >
+                          {__('pim_reference_entity.attribute.create.input.value_per_locale')}
                         </span>
                       </label>
                     </div>

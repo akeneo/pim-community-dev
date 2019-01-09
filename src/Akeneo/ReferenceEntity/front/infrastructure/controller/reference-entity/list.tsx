@@ -25,6 +25,8 @@ const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
 
 class ReferenceEntityListController extends BaseController {
   renderRoute() {
+    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
+
     const store = createStore(true)(referenceEntityReducer);
     store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
     store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
@@ -32,8 +34,6 @@ class ReferenceEntityListController extends BaseController {
     store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
     store.dispatch(updateReferenceEntityResults());
     document.addEventListener('keydown', shortcutDispatcher(store));
-
-    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
 
     ReactDOM.render(
       <Provider store={store}>

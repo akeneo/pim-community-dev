@@ -248,7 +248,7 @@ module.exports = async function(cucumber) {
     await properties.labelIsReadOnly();
   });
 
-  Then("the save button shouldn't be displayed", async function() {
+  Then('the save button should not be displayed', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     await editPage.hasNoSaveButton();
   });
