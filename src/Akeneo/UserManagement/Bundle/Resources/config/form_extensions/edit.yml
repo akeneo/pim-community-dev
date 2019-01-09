@@ -306,6 +306,7 @@ extensions:
         position: 20
         config:
             fieldName: roles
+            required: true
             label: pim_user_management.entity.role.plural_label
             isMultiple: true
             allowClear: true

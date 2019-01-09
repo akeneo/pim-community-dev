@@ -70,3 +70,16 @@ extensions:
             fieldName: email
             label: pim_user_management.entity.user.properties.email
             required: true
+
+    pim-user-create-modal-roles:
+        module: pim/user/fields/user-role
+        parent: pim-user-create-modal
+        targetZone: fields
+        position: 45
+        config:
+            fieldName: roles
+            required: true
+            label: pim_user_management.entity.role.plural_label
+            isMultiple: true
+            allowClear: true
+            defaultValue: []
