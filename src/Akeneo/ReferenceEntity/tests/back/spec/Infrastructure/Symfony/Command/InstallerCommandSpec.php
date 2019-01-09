@@ -24,7 +24,7 @@ class InstallerCommandSpec extends ObjectBehavior
         $this->shouldHaveType(InstallerCommand::class);
     }
 
-    function it_subscribed_to_events_dispatched_by_the_pim_installation_process()
+    function it_subscribes_to_events_dispatched_by_the_pim_installation_process()
     {
         $this::getSubscribedEvents()->shouldReturn([
             InstallerEvents::POST_SYMFONY_ASSETS_DUMP => ['installAssets'],
@@ -55,7 +55,7 @@ class InstallerCommandSpec extends ObjectBehavior
         $this->installAssets($event);
     }
 
-    function it_reset_the_schema_and_loads_the_fixtures_when_called_by_the_command_line(
+    function it_resets_the_schema_and_loads_the_fixtures_when_called_by_the_command_line(
         InputInterface $input,
         OutputInterface $output,
         FixturesInstaller $fixturesInstaller
