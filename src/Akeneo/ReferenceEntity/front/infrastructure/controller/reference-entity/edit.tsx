@@ -67,18 +67,7 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(updateFilter('full_text', '=', userSearch));
         this.store.dispatch(attributeListGotUpdated(referenceEntityResult.attributes) as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
-
-        switch (completenessFilter) {
-          case CompletenessValue.All:
-            this.store.dispatch(removeFilter('complete'));
-            break;
-          case CompletenessValue.Yes:
-            this.store.dispatch(updateFilter('complete', '=', true));
-            break;
-          case CompletenessValue.No:
-            this.store.dispatch(updateFilter('complete', '=', false));
-            break;
-        }
+        this.updateCompletenessFilter(completenessFilter);
 
         mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
         $(window).on('beforeunload', this.beforeUnload);
@@ -123,6 +112,20 @@ class ReferenceEntityEditController extends BaseController {
         )
       : CompletenessValue.All;
   };
+
+  updateCompletenessFilter = (completenessFilter: CompletenessValue) => {
+    switch (completenessFilter) {
+      case CompletenessValue.All:
+        this.store.dispatch(removeFilter('complete'));
+        break;
+      case CompletenessValue.Yes:
+        this.store.dispatch(updateFilter('complete', '=', true));
+        break;
+      case CompletenessValue.No:
+        this.store.dispatch(updateFilter('complete', '=', false));
+        break;
+    }
+  }
 
   beforeUnload = () => {
     if (this.isDirty()) {
