@@ -215,13 +215,23 @@ class UserController
         $user = $this->factory->create();
         $content = json_decode($request->getContent(), true);
 
+        $passwordViolations = $this->validatePasswordCreate($content);
+        unset($content['password_repeat']);
+
         $this->updater->update($user, $content);
 
         $violations = $this->validator->validate($user);
 
-        if (count($violations) > 0) {
+        if ($violations->count() > 0 || $passwordViolations->count() > 0) {
             $normalizedViolations = [];
             foreach ($violations as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api',
+                    ['user' => $user]
+                );
+            }
+            foreach ($passwordViolations as $violation) {
                 $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
                     $violation,
                     'internal_api',
@@ -274,6 +284,26 @@ class UserController
         }
 
         return $user;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return ConstraintViolationListInterface
+     */
+    private function validatePasswordCreate(array $data): ConstraintViolationListInterface
+    {
+        $violations = [];
+
+        if (!isset($data['password'])) {
+            return new ConstraintViolationList([]);
+        }
+
+        if (($data['password_repeat'] ?? '') !== $data['password']) {
+            $violations[] = new ConstraintViolation('Password does not match', '', [], '', 'password_repeat', '');
+        }
+
+        return new ConstraintViolationList($violations);
     }
 
     private function validatePassword(UserInterface $user, $data): ConstraintViolationListInterface

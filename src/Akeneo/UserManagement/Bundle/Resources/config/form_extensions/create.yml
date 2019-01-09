@@ -31,6 +31,16 @@ extensions:
             label: pim_user_management.entity.user.properties.password
             required: true
 
+    pim-user-create-modal-password-repeat:
+        module: pim/form/common/fields/password
+        parent: pim-user-create-modal
+        position: 16
+        targetZone: fields
+        config:
+            fieldName: password_repeat
+            label: pim_user_management.entity.user.properties.new_password_repeat
+            required: true
+
     pim-user-create-modal-first-name:
         module: pim/form/common/fields/text
         parent: pim-user-create-modal
