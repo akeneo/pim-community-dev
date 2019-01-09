@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
+namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute;
 
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;

@@ -163,6 +163,7 @@ batch_jobs:
     franklin_insights_subscribe_products:
         label: Franklin Insights bulk subscription
         validate_configuration.label: Validate Franklin Insights configuration
+        validate_identifiers_mapping.label: Validate identifiers mapping
         subscribe_products.label: Subscribe products
     franklin_insights_unsubscribe_products:
         label: Franklin Insights bulk unsubscription

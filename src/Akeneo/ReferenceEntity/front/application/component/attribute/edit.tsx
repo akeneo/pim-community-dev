@@ -306,9 +306,6 @@ class Edit extends React.Component<EditProps> {
 
 export default connect(
   (state: EditState, ownProps: OwnProps): StateProps => {
-    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-    const confirmDelete = state.confirmDelete;
-
     return {
       ...ownProps,
       isActive: state.attribute.isActive,
@@ -316,9 +313,9 @@ export default connect(
       errors: state.attribute.errors,
       isSaving: state.attribute.isSaving,
       context: {
-        locale: locale,
+        locale: state.user.catalogLocale,
       },
-      confirmDelete,
+      confirmDelete: state.confirmDelete,
     } as StateProps;
   },
   (dispatch: any): DispatchProps => {

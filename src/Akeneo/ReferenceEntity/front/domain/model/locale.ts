@@ -7,6 +7,13 @@ export default interface Locale {
 
 class InvalidTypeError extends Error {}
 
+export interface NormalizedLocale {
+  code: string;
+  label: string;
+  region: string;
+  language: string;
+}
+
 export class ConcreteLocale {
   public constructor(
     readonly code: string,
@@ -31,7 +38,7 @@ export class ConcreteLocale {
   }
 }
 
-export const denormalizeLocale = (normalizedLocale: any): Locale => {
+export const denormalizeLocale = (normalizedLocale: NormalizedLocale): Locale => {
   return new ConcreteLocale(
     normalizedLocale.code,
     normalizedLocale.label,

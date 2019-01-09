@@ -156,7 +156,12 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                           value={this.state.createAnother}
                           onChange={(newValue: boolean) => this.setState({createAnother: newValue})}
                         />
-                        <span>{__('pim_reference_entity.record.create.input.create_another')}</span>
+                        <span
+                          onClick={() => {
+                            this.setState({createAnother: !this.state.createAnother});
+                          }}
+                        >{__('pim_reference_entity.record.create.input.create_another')}
+                        </span>
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer" />
@@ -186,16 +191,13 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
 
 export default connect(
   (state: EditState): StateProps => {
-    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-    const referenceEntity = denormalizeReferenceEntity(state.form.data);
-
     return {
       data: state.createRecord.data,
       errors: state.createRecord.errors,
       context: {
-        locale: locale,
+        locale: state.user.catalogLocale,
       },
-      referenceEntity,
+      referenceEntity: denormalizeReferenceEntity(state.form.data),
     };
   },
   (dispatch: any): DispatchProps => {

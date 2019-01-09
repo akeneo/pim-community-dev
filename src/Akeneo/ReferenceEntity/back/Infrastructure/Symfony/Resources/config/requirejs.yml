@@ -43,12 +43,12 @@ config:
                 reducer: '@akeneoreferenceentity/application/reducer/attribute/type/text'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'
             record:
-                icon: bundles/pimui/images/attribute/icon-select.svg
+                icon: bundles/pimui/images/attribute/icon-reference-entity.svg
                 denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record'
                 reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/record.tsx'
             record_collection:
-                icon: bundles/pimui/images/attribute/icon-multiselect.svg
+                icon: bundles/pimui/images/attribute/icon-reference-entity-multiple.svg
                 denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record-collection'
                 reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/record.tsx'
@@ -91,7 +91,7 @@ config:
                     edit:   pim-attribute-form-reference-entity
         pim/form/common/attributes/create-button:
             attribute_icons:
-                akeneo_reference_entity_collection: reference-entity
+                akeneo_reference_entity_collection: reference-entity-multiple
                 akeneo_reference_entity: reference-entity
 
     paths:

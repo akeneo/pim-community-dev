@@ -12,6 +12,7 @@ import {EditState as State} from 'akeneoreferenceentity/application/reducer/refe
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import ChannelSwitcher from 'akeneoreferenceentity/application/component/app/channel-switcher';
+import {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
 
 interface OwnProps {
   label: string;
@@ -146,18 +147,16 @@ class Header extends React.Component<HeaderProps> {
 
 export default connect(
   (state: State, ownProps: OwnProps): StateProps => {
-    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-    const channel =
-      undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
-
     return {
       ...ownProps,
       context: {
-        locale,
-        channel,
+        locale: state.user.catalogLocale,
+        channel: state.user.catalogChannel,
       },
       structure: {
-        locales: state.structure.locales,
+        locales: ownProps.withChannelSwitcher
+          ? getLocales(state.structure.channels, state.user.catalogChannel)
+          : state.structure.locales,
         channels: state.structure.channels,
       },
     };

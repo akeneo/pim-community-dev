@@ -90,7 +90,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
    * Removes the useless catalogLocale field, and adds localizable, is_locale_specific and scopable filters.
    */
   protected select2Data(term: string, page: number): object {
-    return {
+    const result: any = {
       localizable: false,
       is_locale_specific: false,
       scopable: false,
@@ -101,6 +101,12 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
         page,
       },
     };
+
+    if (this.config.families) {
+      result.families = this.config.families;
+    }
+
+    return result;
   }
 
   /**

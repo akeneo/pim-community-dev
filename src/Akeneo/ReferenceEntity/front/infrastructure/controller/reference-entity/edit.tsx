@@ -25,9 +25,10 @@ import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/l
 import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {updateChannels} from 'akeneoreferenceentity/application/action/channel';
-import {updateFilter} from 'akeneoreferenceentity/application/event/search';
-import {getFilter} from 'akeneoreferenceentity/tools/filter';
+import {updateFilter, removeFilter} from 'akeneoreferenceentity/application/event/search';
+import {getFilter, getCompletenessFilter} from 'akeneoreferenceentity/tools/filter';
 import {attributeListGotUpdated} from 'akeneoreferenceentity/application/action/attribute/list';
+import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -50,6 +51,7 @@ class ReferenceEntityEditController extends BaseController {
         this.store = createStore(true)(referenceEntityReducer);
         const referenceEntityIdentifier = referenceEntityResult.referenceEntity.getIdentifier().stringValue();
         const userSearch = this.getUserSearch(referenceEntityIdentifier);
+        const completenessFilter = this.getCompletenessFilter(referenceEntityIdentifier);
 
         // Not idea, maybe we should discuss about it
         await this.store.dispatch(updateChannels() as any);
@@ -58,13 +60,25 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(referenceEntityRecordCountUpdated(referenceEntityResult.recordCount));
         this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
-        this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
+        this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         this.store.dispatch(setUpSidebar('akeneo_reference_entities_reference_entity_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(updateFilter('full_text', '=', userSearch));
         this.store.dispatch(attributeListGotUpdated(referenceEntityResult.attributes) as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
+
+        switch (completenessFilter) {
+          case CompletenessValue.All:
+            this.store.dispatch(removeFilter('complete'));
+            break;
+          case CompletenessValue.Yes:
+            this.store.dispatch(updateFilter('complete', '=', true));
+            break;
+          case CompletenessValue.No:
+            this.store.dispatch(updateFilter('complete', '=', false));
+            break;
+        }
 
         mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
         $(window).on('beforeunload', this.beforeUnload);
@@ -98,6 +112,16 @@ class ReferenceEntityEditController extends BaseController {
           'full_text'
         ).value
       : '';
+  };
+
+  getCompletenessFilter = (referenceEntityIdentifier: string): CompletenessValue => {
+    return null !== sessionStorage.getItem(`pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`)
+      ? getCompletenessFilter(
+          JSON.parse(sessionStorage.getItem(
+            `pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`
+          ) as string)
+        )
+      : CompletenessValue.All;
   };
 
   beforeUnload = () => {

@@ -1,14 +1,4 @@
 services:
-    akeneo.pim.automation.franklin_insights.connector.validation.connection_status:
-        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Validation\ConnectionValidator
-        arguments:
-            - '@akeneo.pim.automation.franklin_insights.application.configuration.validator.connection'
-
-    akeneo.pim.automation.franklin_insights.connector.validation.identifiers_mapping:
-        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Validation\IdentifiersMappingValidator
-        arguments:
-            - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
-
     akeneo.pim.automation.franklin_insights.application.configuration.validator.connection:
         class: Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Validator\ConnectionValidator
         arguments:

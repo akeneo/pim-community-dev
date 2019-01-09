@@ -136,13 +136,10 @@ class Properties extends React.Component<StateProps & DispatchProps> {
 
 export default connect(
   (state: EditState): StateProps => {
-    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-    const confirmDelete = state.confirmDelete;
-
     return {
       form: state.form,
       context: {
-        locale,
+        locale: state.user.catalogLocale,
       },
       rights: {
         referenceEntity: {
@@ -153,7 +150,7 @@ export default connect(
             canEditReferenceEntity(),
         },
       },
-      confirmDelete,
+      confirmDelete: state.confirmDelete,
     };
   },
   (dispatch: any): DispatchProps => {

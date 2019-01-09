@@ -1,5 +1,8 @@
-import Locale, {denormalizeLocale, ConcreteLocale} from 'akeneoreferenceentity/domain/model/locale';
-import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import Locale, {denormalizeLocale, ConcreteLocale, NormalizedLocale} from 'akeneoreferenceentity/domain/model/locale';
+import LabelCollection, {
+  createLabelCollection,
+  NormalizedLabelCollection,
+} from 'akeneoreferenceentity/domain/model/label-collection';
 
 export default interface Channel {
   code: string;
@@ -8,6 +11,12 @@ export default interface Channel {
   getLabel(localeCode: string): string;
 }
 class InvalidTypeError extends Error {}
+
+interface NormalizedChannel {
+  code: string;
+  labels: NormalizedLabelCollection;
+  locales: NormalizedLocale[];
+}
 
 export class ConcreteChannel {
   public constructor(readonly code: string, readonly labelCollection: LabelCollection, readonly locales: Locale[]) {
@@ -30,7 +39,7 @@ export class ConcreteChannel {
   }
 }
 
-export const denormalizeChannel = (rawChannel: any): Channel => {
+export const denormalizeChannel = (rawChannel: NormalizedChannel): Channel => {
   return new ConcreteChannel(
     rawChannel.code,
     createLabelCollection(rawChannel.labels),

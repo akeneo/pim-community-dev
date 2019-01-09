@@ -283,12 +283,9 @@ class AttributesView extends React.Component<CreateProps> {
 
 export default connect(
   (state: EditState): StateProps => {
-    const referenceEntity = denormalizeReferenceEntity(state.form.data);
-    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-
     return {
       context: {
-        locale,
+        locale: state.user.catalogLocale,
       },
       rights: {
         attribute: {
@@ -300,7 +297,7 @@ export default connect(
             canEditReferenceEntity(),
         },
       },
-      referenceEntity,
+      referenceEntity: denormalizeReferenceEntity(state.form.data),
       createAttribute: state.createAttribute,
       editAttribute: state.attribute.isActive,
       options: state.options,

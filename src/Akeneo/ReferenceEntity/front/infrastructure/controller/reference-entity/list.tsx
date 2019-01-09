@@ -28,7 +28,7 @@ class ReferenceEntityListController extends BaseController {
     const store = createStore(true)(referenceEntityReducer);
     store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
     store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
-    store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
+    store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
     store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
     store.dispatch(updateReferenceEntityResults());
     document.addEventListener('keydown', shortcutDispatcher(store));
