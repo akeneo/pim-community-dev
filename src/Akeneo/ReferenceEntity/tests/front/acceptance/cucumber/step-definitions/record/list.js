@@ -93,7 +93,7 @@ module.exports = async function(cucumber) {
         `http://pim.com/rest/reference_entity/${referenceEntityIdentifier}/record` === request.url() &&
         'GET' === request.method()
       ) {
-        answerJson(request, {items: recordsSaved, total: recordsSaved.length});
+        answerJson(request, {items: recordsSaved, matches_count: recordsSaved.length});
       }
     });
   });

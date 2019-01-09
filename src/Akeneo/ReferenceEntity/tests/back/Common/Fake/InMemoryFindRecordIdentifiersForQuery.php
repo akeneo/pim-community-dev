@@ -166,12 +166,19 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             $records = array_slice($records, 0, $query->getSize());
         }
 
-        $result = new IdentifiersForQueryResult();
-        $result->matchesCount = count($records);
-        $result->identifiers = array_map(function (Record $record): string {
+        $identifiers = array_map(function (Record $record): string {
             return (string) $record->getIdentifier();
         }, $records);
+        $result = new IdentifiersForQueryResult($identifiers, count($records));
 
         return $result;
+    }
+
+    /**
+     * @return Record[]
+     */
+    public function getRecords(): array
+    {
+        return $this->records;
     }
 }

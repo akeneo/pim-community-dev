@@ -49,22 +49,19 @@ export const createQuery = (rawState: any): Query => {
 export interface GridState<Element> {
   readonly query: Query;
   readonly items: Element[];
-  readonly total: number;
+  readonly matchesCount: number;
+  readonly totalCount: number;
   readonly isFetching: boolean;
 }
 
 class ConcreteGridState<Element> implements GridState<Element> {
-  readonly query: Query;
-  readonly items: Element[];
-  readonly total: number;
-  readonly isFetching: boolean;
-
-  public constructor(query: Query, items: Element[] = [], total: number = 0, isFetching: boolean = false) {
-    this.query = query;
-    this.items = items;
-    this.total = total;
-    this.isFetching = isFetching;
-  }
+  public constructor(
+    readonly query: Query,
+    readonly items: Element[] = [],
+    readonly matchesCount: number = 0,
+    readonly totalCount: number = 0,
+    readonly isFetching: boolean = false
+  ) {}
 }
 
 export const createState = <Element>(rawState: any): GridState<Element> => {
@@ -75,7 +72,8 @@ export const createState = <Element>(rawState: any): GridState<Element> => {
           filters: [],
         }),
     rawState.items,
-    rawState.total,
+    rawState.matchesCount,
+    rawState.totalCount,
     rawState.isFetching
   );
 };
@@ -85,7 +83,8 @@ export default <Element>(
   action: {
     type: string;
     append: boolean;
-    total: number;
+    matchesCount: number;
+    totalCount: number;
     field: string;
     operator: string;
     value: string;
@@ -100,10 +99,21 @@ export default <Element>(
   }
 
   switch (action.type) {
+    case 'GRID_TOTAL_COUNT_UPDATED':
+      state = {
+        ...state,
+        totalCount: action.totalCount,
+      };
+      break;
     case 'GRID_DATA_RECEIVED':
       state = action.append
-        ? {...state, items: [...state.items, ...action.data.items], total: action.total}
-        : {...state, items: action.data.items, total: action.total};
+        ? {
+            ...state,
+            items: [...state.items, ...action.data.items],
+            matchesCount: action.matchesCount,
+            totalCount: action.totalCount,
+          }
+        : {...state, items: action.data.items, matchesCount: action.matchesCount, totalCount: action.totalCount};
       break;
     case 'GRID_START_LOADING_RESULTS':
       state = {...state, isFetching: true};

@@ -5,8 +5,9 @@ import File from 'akeneoreferenceentity/domain/model/file';
 export const referenceEntityEditionReceived = (referenceEntity: NormalizedReferenceEntity) => {
   return {type: 'REFERENCE_ENTITY_EDITION_RECEIVED', referenceEntity};
 };
+
 export const referenceEntityRecordCountUpdated = (recordCount: number) => {
-  return {type: 'REFERENCE_ENTITY_EDITION_RECORD_COUNT_UPDATED', recordCount};
+  return {type: 'GRID_TOTAL_COUNT_UPDATED', totalCount: recordCount};
 };
 
 export const referenceEntityEditionUpdated = (referenceEntity: NormalizedReferenceEntity) => {

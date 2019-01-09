@@ -28,18 +28,18 @@ class SearchRecordResult
     private const TOTAL_COUNT = 'total_count';
 
     /** @var RecordItem[] */
-    private $recordItems;
+    public $items;
 
     /** @var int */
-    private $matchesCount;
+    public $matchesCount;
 
     /** @var int */
-    private $totalCount;
+    public $totalCount;
 
     public function __construct(array $recordItems, int $matchesCount, int $totalCount)
     {
         Assert::allIsInstanceOf($recordItems, RecordItem::class);
-        $this->recordItems = $recordItems;
+        $this->items = $recordItems;
         $this->matchesCount = $matchesCount;
         $this->totalCount = $totalCount;
     }
@@ -49,7 +49,7 @@ class SearchRecordResult
         return [
             self::ITEMS         => array_map(function (RecordItem $recordItem) {
                 return $recordItem->normalize();
-            }, $this->recordItems),
+            }, $this->items),
             self::MATCHES_COUNT => $this->matchesCount,
             self::TOTAL_COUNT => $this->totalCount,
         ];

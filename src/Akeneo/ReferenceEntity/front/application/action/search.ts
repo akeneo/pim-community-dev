@@ -2,14 +2,6 @@ import {startLoading, stopLoading, goNextPage, goFirstPage} from 'akeneoreferenc
 import {SearchFetcher, Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
 import {dataReceived} from 'akeneoreferenceentity/domain/event/search';
 
-const fetchResults = <Object>(fetcher: SearchFetcher<Object>) => async (
-  query: Query
-): Promise<{items: Object[]; total: number}> => {
-  const {items, total} = await fetcher.search(query);
-
-  return {items, total};
-};
-
 const updateResultsWithFetcher = <Object>(
   fetcher: SearchFetcher<Object>,
   stateToQuery: (state: any) => Promise<Query>
@@ -32,10 +24,10 @@ const updateResultsWithFetcher = <Object>(
       }
 
       const query = await stateToQuery(getState());
-      const {items, total} = await fetchResults<Object>(fetcher)(query);
+      const {items, matchesCount, totalCount} = await fetcher.search(query);
 
       if (requestCount === currentRequestCount) {
-        dispatch(dataReceived<Object>(items, total, append));
+        dispatch(dataReceived<Object>(items, matchesCount, totalCount, append));
         dispatch(stopLoading());
       }
     };

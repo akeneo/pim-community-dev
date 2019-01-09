@@ -45,8 +45,5 @@ export default {
   permission,
   options,
   form,
-  recordCount: (state: number = 0, action: {type: string; recordCount: number}) => {
-    return 'REFERENCE_ENTITY_EDITION_RECORD_COUNT_UPDATED' === action.type ? action.recordCount : state;
-  },
   confirmDelete,
 };

@@ -13,8 +13,14 @@ export interface Query {
   filters: Filter[];
 }
 
+export interface SearchResult<Entity> {
+  items: Entity[];
+  matchesCount: number;
+  totalCount: number;
+}
+
 export interface SearchFetcher<Entity> {
-  search: (query: Query) => Promise<{items: Entity[]; total: number}>;
+  search: (query: Query) => Promise<SearchResult<Entity>>;
 }
 
 export default interface Fetcher<EntityIdentifier, Entity> extends SearchFetcher<Entity> {

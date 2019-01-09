@@ -19,7 +19,6 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
           contentType: 'application/json',
           body: JSON.stringify({
             items: [],
-            total: 0,
           }),
         });
       }
@@ -33,7 +32,6 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
 
     expect(response).toEqual({
       items: [],
-      total: 0,
     });
   });
 

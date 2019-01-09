@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
@@ -36,11 +35,11 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     /** @var Client */
     private $recordClient;
 
-    /** @var FindRequiredValueKeyCollectionForChannelAndLocalesInterface  */
+    /** @var FindRequiredValueKeyCollectionForChannelAndLocalesInterface */
     private $findRequiredValueKeyCollectionForChannelAndLocale;
 
     /**
-     * @param Client $recordClient
+     * @param Client                                                      $recordClient
      * @param FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale
      */
     public function __construct(
@@ -75,7 +74,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 
         $query = [
             '_source' => '_id',
-            'size' => $recordQuery->getSize(),
+            'size'    => $recordQuery->getSize(),
             'query'   => [
                 'constant_score' => [
                     'filter' => [
@@ -109,8 +108,9 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             $terms = $this->getTerms($fullTextFilter);
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'query_string' => [
-                    'default_field' => sprintf('record_full_text_search.%s.%s', $recordQuery->getchannel(), $recordQuery->getlocale()),
-                    'query'         => $terms
+                    'default_field' => sprintf('record_full_text_search.%s.%s', $recordQuery->getchannel(),
+                        $recordQuery->getlocale()),
+                    'query'         => $terms,
                 ],
             ];
         }
@@ -120,7 +120,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'query_string' => [
                     'default_field' => sprintf('record_code_label_search.%s', $recordQuery->getlocale()),
-                    'query'         => $terms
+                    'query'         => $terms,
                 ],
             ];
         }
@@ -128,16 +128,16 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         if (null !== $codeFilter && !empty($codeFilter['value']) && 'NOT IN' === $codeFilter['operator']) {
             $query['query']['constant_score']['filter']['bool']['must_not'][] = [
                 'terms' => [
-                    'code' => $codeFilter['value']
-                ]
+                    'code' => $codeFilter['value'],
+                ],
             ];
         }
 
         if (null !== $codeFilter && !empty($codeFilter['value']) && 'IN' === $codeFilter['operator']) {
             $query['query']['constant_score']['filter']['bool']['must'][] = [
                 'terms' => [
-                    'code' => $codeFilter['value']
-                ]
+                    'code' => $codeFilter['value'],
+                ],
             ];
         }
 

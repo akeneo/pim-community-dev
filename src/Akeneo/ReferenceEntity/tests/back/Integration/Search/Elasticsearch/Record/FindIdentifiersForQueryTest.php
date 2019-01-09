@@ -441,7 +441,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
 
         Assert::assertSame([
             'identifiers' => ['after'],
-            'total' => 1
+            'matches_count' => 1
         ], $matchingidentifiers->normalize());
     }
 

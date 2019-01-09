@@ -14,7 +14,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         size: 200,
       },
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
   });
@@ -33,7 +34,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     const state = createState({
       query: {},
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
 
@@ -41,13 +43,15 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       type: 'GRID_DATA_RECEIVED',
       append: false,
       data: {items: ['first_item', 'second_item']},
-      total: 10,
+      matchesCount: 10,
+      totalCount: 10,
     });
 
     expect(newState).toEqual({
       query: {},
       items: ['first_item', 'second_item'],
-      total: 10,
+      matchesCount: 10,
+      totalCount: 10,
       isFetching: false,
     });
   });
@@ -56,20 +60,23 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     const state = createState({
       query: {},
       items: ['first_item', 'second_item'],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
     const newState = reducer(state, {
       type: 'GRID_DATA_RECEIVED',
       append: true,
       data: {items: ['third_item']},
-      total: 10,
+      matchesCount: 10,
+      totalCount: 10,
     });
 
     expect(newState).toEqual({
       query: {},
       items: ['first_item', 'second_item', 'third_item'],
-      total: 10,
+      matchesCount: 10,
+      totalCount: 10,
       isFetching: false,
     });
   });
@@ -78,7 +85,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     const state = createState({
       query: {},
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
     const newState = reducer(state, {
@@ -88,7 +96,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     expect(newState).toEqual({
       query: {},
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: true,
     });
   });
@@ -97,7 +106,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     const state = createState({
       query: {},
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: true,
     });
     const newState = reducer(state, {
@@ -107,7 +117,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     expect(newState).toEqual({
       query: {},
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
   });
@@ -118,7 +129,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         page: 0,
       },
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
     const newState = reducer(state, {
@@ -130,7 +142,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         page: 1,
       },
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
   });
@@ -141,7 +154,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         page: 10,
       },
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
     const newState = reducer(state, {
@@ -153,7 +167,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         page: 0,
       },
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
   });
@@ -164,7 +179,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         columns: [],
       },
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
     const newState = reducer(state, {
@@ -193,7 +209,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         ],
       },
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
   });
@@ -211,7 +228,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         ],
       },
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
     const newState = reducer(state, {
@@ -234,7 +252,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         ],
       },
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
   });
@@ -258,7 +277,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         ],
       },
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
     const newState = reducer(state, {
@@ -278,7 +298,8 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         ],
       },
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       isFetching: false,
     });
   });

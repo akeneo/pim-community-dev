@@ -18,7 +18,7 @@ interface StateProps {
 
   grid: {
     referenceEntities: ReferenceEntity[];
-    total: number;
+    matchesCount: number;
     isLoading: boolean;
   };
 
@@ -169,7 +169,8 @@ export default connect(
   (state: IndexState): StateProps => {
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
     const referenceEntities = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
-    const total = undefined === state.grid || undefined === state.grid.total ? 0 : state.grid.total;
+    const matchesCount =
+      undefined === state.grid || undefined === state.grid.matchesCount ? 0 : state.grid.matchesCount;
 
     return {
       context: {
@@ -177,7 +178,7 @@ export default connect(
       },
       grid: {
         referenceEntities,
-        total,
+        matchesCount,
         isLoading: state.grid.isFetching && state.grid.items.length === 0,
       },
       create: {

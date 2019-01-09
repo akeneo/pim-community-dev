@@ -44,12 +44,12 @@ interface StateProps {
   grid: {
     records: NormalizedRecord[];
     columns: Column[];
-    total: number;
+    matchesCount: number;
+    totalCount: number;
     isLoading: boolean;
     page: number;
     filters: Filter[];
   };
-  recordCount: number;
   rights: {
     record: {
       create: boolean;
@@ -125,7 +125,7 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
   }
 
   render() {
-    const {context, grid, events, referenceEntity, rights, confirmDelete, recordCount} = this.props;
+    const {context, grid, events, referenceEntity, rights, confirmDelete} = this.props;
 
     return (
       <React.Fragment>
@@ -157,14 +157,14 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
           onChannelChanged={events.onChannelChanged}
           displayActions={this.props.rights.record.create || this.props.rights.record.deleteAll}
         />
-        {0 !== recordCount ? (
+        {0 !== grid.totalCount ? (
           <Table
             onRedirectToRecord={events.onRedirectToRecord}
             onDeleteRecord={events.onOpenDeleteRecordModal}
             onNeedMoreResults={events.onNeedMoreResults}
             onSearchUpdated={events.onSearchUpdated}
             onCompletenessFilterUpdated={events.onCompletenessFilterUpdated}
-            recordCount={recordCount}
+            recordCount={grid.matchesCount}
             locale={context.locale}
             channel={context.channel}
             grid={grid}
@@ -183,33 +183,35 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
             <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.record.no_data.subtitle')}</div>
           </div>
         )}
-        {confirmDelete.isActive && undefined === confirmDelete.identifier && (
-          <DeleteModal
-            message={__('pim_reference_entity.record.delete_all.confirm', {
-              entityIdentifier: referenceEntity.getIdentifier().stringValue(),
-            })}
-            title={__('pim_reference_entity.record.delete.title')}
-            onConfirm={() => {
-              events.onDeleteAllRecords(referenceEntity);
-            }}
-            onCancel={events.onCancelDeleteModal}
-          />
-        )}
-        {confirmDelete.isActive && undefined !== confirmDelete.identifier && (
-          <DeleteModal
-            message={__('pim_reference_entity.record.delete.message', {
-              recordLabel: confirmDelete.label,
-            })}
-            title={__('pim_reference_entity.record.delete.title')}
-            onConfirm={() => {
-              events.onDeleteRecord(
-                referenceEntity.getIdentifier(),
-                createRecordCode(confirmDelete.identifier as string)
-              );
-            }}
-            onCancel={events.onCancelDeleteModal}
-          />
-        )}
+        {confirmDelete.isActive &&
+          undefined === confirmDelete.identifier && (
+            <DeleteModal
+              message={__('pim_reference_entity.record.delete_all.confirm', {
+                entityIdentifier: referenceEntity.getIdentifier().stringValue(),
+              })}
+              title={__('pim_reference_entity.record.delete.title')}
+              onConfirm={() => {
+                events.onDeleteAllRecords(referenceEntity);
+              }}
+              onCancel={events.onCancelDeleteModal}
+            />
+          )}
+        {confirmDelete.isActive &&
+          undefined !== confirmDelete.identifier && (
+            <DeleteModal
+              message={__('pim_reference_entity.record.delete.message', {
+                recordLabel: confirmDelete.label,
+              })}
+              title={__('pim_reference_entity.record.delete.title')}
+              onConfirm={() => {
+                events.onDeleteRecord(
+                  referenceEntity.getIdentifier(),
+                  createRecordCode(confirmDelete.identifier as string)
+                );
+              }}
+              onCancel={events.onCancelDeleteModal}
+            />
+          )}
       </React.Fragment>
     );
   }
@@ -225,7 +227,8 @@ export default connect(
       undefined === state.grid || undefined === state.grid.query || undefined === state.grid.query.columns
         ? []
         : state.grid.query.columns;
-    const total = undefined === state.grid || undefined === state.grid.total ? 0 : state.grid.total;
+    const matchesCount =
+      undefined === state.grid || undefined === state.grid.matchesCount ? 0 : state.grid.matchesCount;
 
     return {
       context: {
@@ -235,13 +238,13 @@ export default connect(
       referenceEntity,
       grid: {
         records,
-        total,
+        matchesCount,
+        totalCount: state.grid.totalCount,
         columns,
         isLoading: state.grid.isFetching,
         page,
         filters,
       },
-      recordCount: state.recordCount,
       rights: {
         record: {
           create: securityContext.isGranted('akeneo_referenceentity_record_create') && canEditReferenceEntity(),

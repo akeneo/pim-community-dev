@@ -30,7 +30,7 @@ export const needMoreResults = () => (dispatch: any, getState: any) => {
   if (
     !getState().grid.isFetching &&
     getState().grid.items.length < MAX_DISPLAYED_RECORDS &&
-    getState().grid.items.length < getState().grid.total
+    getState().grid.items.length < getState().grid.matchesCount
   ) {
     dispatch(updateRecordResults(true));
   }

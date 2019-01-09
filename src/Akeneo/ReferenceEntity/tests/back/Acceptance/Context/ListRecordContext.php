@@ -23,6 +23,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\ReferenceEntity\Domain\Query\Record\SearchRecordResult;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
@@ -33,7 +34,7 @@ use PHPUnit\Framework\Assert;
  */
 final class ListRecordContext implements Context
 {
-    /** IdentifiersForQueryResult */
+    /** @var SearchRecordResult */
     private $result;
 
     /** @var RecordRepositoryInterface */
@@ -129,9 +130,12 @@ final class ListRecordContext implements Context
     public function theSearchResultShouldBe(string $expectedRecordCodes)
     {
         $expectedRecordCodes = explode(',', $expectedRecordCodes);
-        $resultCodes = array_map(function (RecordItem $recordItem): string {
-            return $recordItem->code;
-        }, $this->result->items);
+        $resultCodes = array_map(
+            function (RecordItem $recordItem): string {
+                return $recordItem->code;
+            },
+            $this->result->items
+        );
 
         array_map(function (string $expectedRecordCode) use ($resultCodes) {
             Assert::assertContains($expectedRecordCode, $resultCodes);
@@ -141,12 +145,13 @@ final class ListRecordContext implements Context
     }
 
     /**
-     * @Then /^there should be no result$/
+     * @Then /^there should be no result on a total of (\d+) records$/
      */
-    public function thereShouldBeNoResult()
+    public function thereShouldBeNoResult(int $expectedTotalOfRecords)
     {
-        Assert::assertEquals(0, $this->result->total);
+        Assert::assertEquals(0, $this->result->matchesCount);
         Assert::assertEmpty($this->result->items);
+        Assert::assertEquals($expectedTotalOfRecords, $this->result->totalCount);
     }
 
     /**
@@ -192,7 +197,6 @@ final class ListRecordContext implements Context
             ValueCollection::fromValues([])
         );
         $this->recordRepository->create($record);
-
         $this->findIdentifiersForQuery->add($record);
     }
 }
