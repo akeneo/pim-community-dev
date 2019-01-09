@@ -54,7 +54,6 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
             }
         }
         $this->em->flush();
-        $this->em->clear();
     }
 
     /**
@@ -105,7 +104,6 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
         }
 
         $this->em->flush();
-        $this->em->clear();
     }
 
     /**

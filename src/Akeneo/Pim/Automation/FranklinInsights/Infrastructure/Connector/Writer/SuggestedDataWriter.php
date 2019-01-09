@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -24,12 +25,19 @@ class SuggestedDataWriter implements ItemWriterInterface
     /** @var ProductSubscriptionRepositoryInterface */
     private $subscriptionRepository;
 
+    /** @var EntityManagerInterface */
+    private $em;
+
     /**
      * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
+     * @param EntityManagerInterface $em
      */
-    public function __construct(ProductSubscriptionRepositoryInterface $subscriptionRepository)
-    {
+    public function __construct(
+        ProductSubscriptionRepositoryInterface $subscriptionRepository,
+        EntityManagerInterface $em
+    ) {
         $this->subscriptionRepository = $subscriptionRepository;
+        $this->em = $em;
     }
 
     /**
@@ -53,5 +61,7 @@ class SuggestedDataWriter implements ItemWriterInterface
         if (!empty($toSave)) {
             $this->subscriptionRepository->bulkSave($toSave);
         }
+
+        $this->em->clear();
     }
 }

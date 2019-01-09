@@ -55,7 +55,6 @@ class ProductSubscriptionRepositorySpec extends ObjectBehavior
         $em->persist($subscription)->shouldBeCalled();
         $em->persist($subscription2)->shouldBeCalled();
         $em->flush()->shouldBeCalled();
-        $em->clear()->shouldBeCalled();
 
         $this->bulkSave([$subscription, $subscription2]);
     }
@@ -68,7 +67,6 @@ class ProductSubscriptionRepositorySpec extends ObjectBehavior
         $em->remove($subscription)->shouldBeCalled();
         $em->remove($subscription2)->shouldBeCalled();
         $em->flush()->shouldBeCalled();
-        $em->clear()->shouldBeCalled();
 
         $this->bulkDelete([$subscription, $subscription2]);
     }

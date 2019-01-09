@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Co
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -23,9 +24,11 @@ use PhpSpec\ObjectBehavior;
  */
 class SuggestedDataWriterSpec extends ObjectBehavior
 {
-    public function let(ProductSubscriptionRepositoryInterface $subscriptionRepository): void
-    {
-        $this->beConstructedWith($subscriptionRepository);
+    public function let(
+        ProductSubscriptionRepositoryInterface $subscriptionRepository,
+        EntityManagerInterface $entityManager
+    ): void {
+        $this->beConstructedWith($subscriptionRepository, $entityManager);
     }
 
     public function it_is_a_writer(): void
@@ -33,7 +36,7 @@ class SuggestedDataWriterSpec extends ObjectBehavior
         $this->shouldImplement(ItemWriterInterface::class);
     }
 
-    public function it_writes_and_deletes_subscriptions($subscriptionRepository): void
+    public function it_writes_and_deletes_subscriptions($subscriptionRepository, $entityManager): void
     {
         $subscription1 = new ProductSubscription(11, 'subscription-11', []);
         $subscription2 = new ProductSubscription(12, 'subscription-12', []);
@@ -44,5 +47,7 @@ class SuggestedDataWriterSpec extends ObjectBehavior
         $subscriptionRepository->bulkSave([$subscription1, $subscription3])->shouldBeCalled();
 
         $this->write([$subscription1, $subscription2, $subscription3]);
+
+        $entityManager->clear()->shouldBeCalled();
     }
 }
