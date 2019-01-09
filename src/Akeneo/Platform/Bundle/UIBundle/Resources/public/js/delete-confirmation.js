@@ -1,10 +1,12 @@
 define(
     [
         'underscore',
-        'oro/translator'
+        'oro/translator',
+        'backbone'
     ], function (
         _,
-        __
+        __,
+        Backbone
     ) {
     'use strict';
 
@@ -15,7 +17,7 @@ define(
      * @class   oro.DeleteConfirmation
      * @extends oro.Modal
      */
-    return Modal.extend({
+    return Backbone.BootstrapModal.extend({
         /**
          * @param {Object} options
          */
@@ -30,9 +32,7 @@ define(
 
             arguments[0] = options;
 
-            this.$el.addClass('modal--fullPage');
-
-            Modal.prototype.initialize.apply(this, arguments);
+            Backbone.BootstrapModal.prototype.initialize.apply(this, arguments);
         }
     });
 });

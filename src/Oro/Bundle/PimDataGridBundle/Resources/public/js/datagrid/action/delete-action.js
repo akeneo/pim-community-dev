@@ -4,12 +4,11 @@ define([
         'oro/messenger',
         'oro/translator',
         'pim/dialog',
-        'oro/modal',
         'oro/datagrid/model-action',
         'oro/mediator',
         'pim/user-context'
     ],
-    function(_, messenger, __, Dialog, Modal, ModelAction, mediator, userContext) {
+    function(_, messenger, __, Dialog, ModelAction, mediator, userContext) {
         'use strict';
 
         /**
@@ -20,11 +19,8 @@ define([
          * @extends oro.datagrid.ModelAction
          */
         return ModelAction.extend({
-
-            /** @type oro.Modal */
             errorModal: undefined,
 
-            /** @type oro.Modal */
             confirmModal: undefined,
 
             /**
@@ -82,8 +78,6 @@ define([
 
             /**
              * Get view for confirm modal
-             *
-             * @return {oro.Modal}
              */
             getConfirmDialog: function() {
                 const entityCode = this.getEntityCode();
@@ -116,7 +110,7 @@ define([
                     }
                 }
 
-                this.errorModal = new Modal({
+                this.errorModal = new Backbone.BootstrapModal({
                     title: __('pim_datagrid.delete_error.title'),
                     content: '' === message ?
                         __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail') :

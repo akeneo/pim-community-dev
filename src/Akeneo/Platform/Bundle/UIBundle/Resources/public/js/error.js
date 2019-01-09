@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'routing', 'oro/app', 'oro/modal'],
-function (_, Backbone, routing, app, Modal) {
+define(['underscore', 'backbone', 'routing', 'oro/app'],
+function (_, Backbone, routing, app) {
     'use strict';
 
     var defaults = {
@@ -62,8 +62,8 @@ function (_, Backbone, routing, app, Modal) {
                 message += '<br><b>Debug:</b>' + xhr.responseText;
             }
 
-            modal = new Modal({
-                title: option.header
+            modal = new Backbone.BootstrapModal({
+                title: option.header,
                 content: message,
                 buttonClass: 'AknButton--important',
                 cancelText: '',
