@@ -32,6 +32,9 @@ class SubscriptionsCollection implements \Iterator
     /** @var int */
     private $index;
 
+    /** @var int */
+    private $total;
+
     /**
      * @param SubscriptionWebService $subscriptionWebservice
      * @param array $collection
@@ -44,6 +47,7 @@ class SubscriptionsCollection implements \Iterator
         $this->subscriptions = $collection['_embedded']['subscription'] ?? [];
         $this->nextPageUri = $collection['_links']['next']['href'] ?? null;
         $this->index = 0;
+        $this->total = $collection['total'];
     }
 
     /**
