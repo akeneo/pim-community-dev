@@ -50,9 +50,23 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         $this->shouldHaveType(ProductUpdateSubscriber::class);
     }
 
-    public function it_subscribes_to_post_save_all_event(): void
+    public function it_subscribes_to_post_save_and_post_save_all_events(): void
     {
+        $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE_ALL);
+    }
+
+    public function it_does_nothing_on_non_unitary_post_save(
+        $subscriptionRepository,
+        $selectProductIdentifierValuesQuery,
+        $resubscribeProducts,
+        ProductInterface $product
+    ): void {
+        $subscriptionRepository->findOneByProductId(Argument::any())->shouldNotBeCalled();
+        $selectProductIdentifierValuesQuery->execute(Argument::any())->shouldNotBeCalled();
+        $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
+
+        $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => false]));
     }
 
     public function it_only_processes_products(
@@ -60,12 +74,28 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         $selectProductIdentifierValuesQuery,
         $resubscribeProducts
     ): void {
-        $subscriptionRepository->findByProductIds(Argument::any())->shouldNotBeCalled();
         $selectProductIdentifierValuesQuery->execute(Argument::any())->shouldNotBeCalled();
-
+        $subscriptionRepository->findOneByProductId(Argument::any())->shouldNotBeCalled();
+        $subscriptionRepository->findByProductIds(Argument::any())->shouldNotBeCalled();
         $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
 
-        $this->computeImpactedSubscriptions(new GenericEvent([new \stdClass(), new Attribute()]));
+        $this->onPostSave(new GenericEvent(new \stdClass(), ['unitary' => true]));
+        $this->onPostSaveAll(new GenericEvent([new \stdClass(), new Attribute()]));
+    }
+
+    public function it_does_not_process_an_unsubscribed_product(
+        $subscriptionRepository,
+        $selectProductIdentifierValuesQuery,
+        $resubscribeProducts,
+        ProductInterface $product
+    ): void {
+        $product->getId()->willReturn(42);
+        $subscriptionRepository->findOneByProductId(42)->willReturn(null);
+
+        $selectProductIdentifierValuesQuery->execute(Argument::any())->shouldNotBeCalled();
+        $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
+
+        $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => true]));
     }
 
     public function it_does_not_process_products_if_franklin_insights_is_not_activated(
@@ -80,11 +110,12 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         $connectionStatus = new ConnectionStatus(false, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
 
-        $subscriptionRepository->findOneByProductId(Argument::any())->shouldNotBeCalled();
-        $selectProductIdentifierValuesQuery->execute(42)->shouldNotBeCalled();
+        $subscriptionRepository->findByProductIds(Argument::any())->shouldNotBeCalled();
+        $selectProductIdentifierValuesQuery->execute(Argument::any())->shouldNotBeCalled();
         $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
 
-        $this->computeImpactedSubscriptions(new GenericEvent([$product->getWrappedObject()]));
+        $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => true]));
+        $this->onPostSaveAll(new GenericEvent([$product->getWrappedObject()]));
     }
 
     public function it_does_not_process_unsubscribed_products(
@@ -95,11 +126,11 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
     ): void {
         $product->getId()->willReturn(42);
         $subscriptionRepository->findByProductIds([42])->willReturn([]);
-        $selectProductIdentifierValuesQuery->execute(42)->shouldNotBeCalled();
 
+        $selectProductIdentifierValuesQuery->execute(42)->shouldNotBeCalled();
         $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
 
-        $this->computeImpactedSubscriptions(new GenericEvent([$product->getWrappedObject()]));
+        $this->onPostSaveAll(new GenericEvent([$product->getWrappedObject()]));
     }
 
     public function it_does_not_process_products_with_unchanged_identifier_values(
@@ -108,21 +139,41 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         $resubscribeProducts,
         ProductInterface $product
     ): void {
+        $subscription = new ProductSubscription(42, 'abc-123', ['asin' => 'ABC123']);
         $product->getId()->willReturn(42);
-        $subscriptionRepository->findByProductIds([42])->willReturn(
-            [
-                new ProductSubscription(42, 'abc-123', ['asin' => 'ABC123']),
-            ]
-        );
         $selectProductIdentifierValuesQuery->execute(42)->willReturn(
             new ProductIdentifierValues(
                 ['asin' => 'ABC123', 'upc' => '123456']
             )
         );
+        $subscriptionRepository->findOneByProductId(42)->willReturn($subscription);
+        $subscriptionRepository->findByProductIds([42])->willReturn([$subscription]);
 
         $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
 
-        $this->computeImpactedSubscriptions(new GenericEvent([$product->getWrappedObject()]));
+        $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => true]));
+        $this->onPostsaveAll(new GenericEvent([$product->getWrappedObject()]));
+    }
+
+    public function it_processes_a_product_with_changed_identifier_values(
+        $subscriptionRepository,
+        $selectProductIdentifierValuesQuery,
+        $resubscribeProducts,
+        ProductInterface $product
+    ): void {
+        $product->getId()->willReturn(42);
+        $subscriptionRepository->findOneByProductId(42)->willReturn(
+            new ProductSubscription(42, 'abc-123', ['asin' => 'ABC123', 'upc' => '987654321'])
+        );
+        $selectProductIdentifierValuesQuery->execute(42)->willReturn(
+            new ProductIdentifierValues(
+                ['mpn' => 'Akeneo-PIM', 'brand' => 'Akeneo']
+            )
+        );
+
+        $resubscribeProducts->process([42])->shouldBeCalled();
+
+        $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => true]));
     }
 
     public function it_processes_products_with_changed_identifier_values(
@@ -152,7 +203,7 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         );
         $resubscribeProducts->process([42])->shouldBeCalled();
 
-        $this->computeImpactedSubscriptions(
+        $this->onPostSaveAll(
             new GenericEvent([$product1->getWrappedObject(), $product2->getWrappedObject()])
         );
     }
