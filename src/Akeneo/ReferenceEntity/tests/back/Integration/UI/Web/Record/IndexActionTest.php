@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocale;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
@@ -225,8 +225,8 @@ class IndexActionTest extends ControllerIntegrationTestCase
         );
         $recordRepository->create($recordDyson);
 
-        /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredKeyCollectionQuery */
-        $findRequiredKeyCollectionQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locale');
+        /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredKeyCollectionQuery */
+        $findRequiredKeyCollectionQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales');
         $findRequiredKeyCollectionQuery->setActivatedLocales(['en_US', 'fr_FR']);
         $findRequiredKeyCollectionQuery->setActivatedChannels(['ecommerce']);
         $findIdentifiersForQuery = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query');

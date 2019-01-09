@@ -1,0 +1,36 @@
+{
+  "mapping": [
+    {
+      "from": {
+        "id": "red",
+        "label": {
+          "en_US": "Red"
+        }
+      },
+      "to": null,
+      "status": "pending"
+    },
+    {
+      "from": {
+        "id": "blue",
+        "label": {
+          "en_US": "Blue"
+        }
+      },
+      "to": {
+        "id": "color2"
+      },
+      "status": "active"
+    },
+    {
+      "from": {
+        "id": "black",
+        "label": {
+          "en_US": "Black"
+        }
+      },
+      "to": null,
+      "status": "inactive"
+    }
+  ]
+}

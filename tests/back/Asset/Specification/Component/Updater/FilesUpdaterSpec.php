@@ -55,7 +55,6 @@ class FilesUpdaterSpec extends ObjectBehavior
     {
         $variation->setFileInfo(null)->shouldBeCalled();
         $variation->setLocked(true)->shouldBeCalled();
-        $variation->setSourceFileInfo(null)->shouldBeCalled();
 
         $this->deleteVariationFile($variation);
     }

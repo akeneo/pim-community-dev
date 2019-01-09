@@ -164,7 +164,7 @@ src/
     │   ├── Enrichment
     │   ├── Automation
     │       ├── RuleEngine
-    │       └── SuggestData
+    │       └── FranklinInsights
     │   ├── Permission
     │   └── WorkOrganization
     │       ├── TeamorkAssistant
@@ -349,8 +349,8 @@ TODO: change the link!!
         akeneo_pim_enrichment:
             resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
       
-        pim_suggest_data:
-            resource: "@AkeneoSuggestDataBundle/Resources/config/routing.yml"
+        pim_franklin_insights:
+            resource: "@AkeneoFranklinInsightsBundle/Resources/config/routing.yml"
         
         pimee_reference_entity:
             resource: "@AkeneoReferenceEntityBundle/Resources/config/routing.yml"
@@ -567,7 +567,7 @@ TODO: change the link!!
         - `Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle`
         - `Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle`
         - `Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle`
-        - `Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\AkeneoSuggestDataBundle`
+        - `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\AkeneoFranklinInsightsBundle`
         - `Akeneo\Tool\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle`
     
 6. Update your dependencies:

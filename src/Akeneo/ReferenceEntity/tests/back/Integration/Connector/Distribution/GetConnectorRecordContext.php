@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordByReferenceEntityAndCode;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryMediaFileRepository;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
@@ -40,6 +42,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class GetConnectorRecordContext implements Context
 {
@@ -66,18 +69,37 @@ class GetConnectorRecordContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var InMemoryMediaFileRepository */
+    private $mediaFileRepository;
+
+    /** @var InMemoryFilesystemProviderStub */
+    private $filesystemProvider;
+
+    /** @var null|StreamedResponse */
+    private $mediaFileDownloadResponse;
+
+    /** @var null|string */
+    private $downloadedMediaFile;
+
+    /** @var null|Response */
+    private $imageNotFoundResponse;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindConnectorRecordByReferenceEntityAndCode $findConnectorRecord,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        InMemoryMediaFileRepository $mediaFileRepository,
+        InMemoryFilesystemProviderStub $filesystemProvider
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->findConnectorRecord = $findConnectorRecord;
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->mediaFileRepository = $mediaFileRepository;
+        $this->filesystemProvider = $filesystemProvider;
     }
 
     /**
@@ -230,6 +252,74 @@ class GetConnectorRecordContext implements Context
 
             $this->referenceEntityRepository->create($referenceEntity);
         }
+    }
+
+    /**
+     * @Given /^the Kartell record of the Brand reference entity with a media file in an attribute value$/
+     */
+    public function theKartellRecordOfTheBrandReferenceEntityWithAMediaFileInAnAttributeValue()
+    {
+        $imageFile = new FileInfo();
+        $imageFile->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
+        $imageFile->setMimeType('image/jpeg');
+        $imageFile->setOriginalFilename('kartell.jpg');
+
+        $this->mediaFileRepository->save($imageFile);
+
+        $fileSystem = $this->filesystemProvider->getFileSystem('catalogStorage');
+        $fileSystem->write('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg', 'This represents the binary of an image');
+    }
+
+    /**
+     * @When /^the connector requests to download the media file of this attribute value$/
+     */
+    public function theConnectorRequestsToDownloadTheMediaFileOfThisAttributeValue()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        ob_start();
+        $this->mediaFileDownloadResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."successful_kartell_record_media_file_download.json"
+        );
+
+        $this->downloadedMediaFile = ob_get_clean();
+    }
+
+    /**
+     * @Then /^the PIM returns the media file binary of this attribute value$/
+     */
+    public function thePIMReturnsTheMediaFileBinaryOfThisAttributeValue()
+    {
+        $this->webClientHelper->assertStreamedResponseFromFile(
+            $this->mediaFileDownloadResponse,
+            $this->downloadedMediaFile,
+            self::REQUEST_CONTRACT_DIR ."successful_kartell_record_media_file_download.json"
+        );
+    }
+
+    /**
+     * @When /^the connector requests to download a non existent media file$/
+     */
+    public function theConnectorRequestsToDownloadANonExistentMediaFile()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->imageNotFoundResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."not_found_image_download.json"
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector that the media file does not exist$/
+     */
+    public function thePIMNotifiesTheConnectorThatTheMediaFileDoesNotExist()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->imageNotFoundResponse,
+            self::REQUEST_CONTRACT_DIR ."not_found_image_download.json"
+        );
     }
 
     private function loadNameAttribute(): void

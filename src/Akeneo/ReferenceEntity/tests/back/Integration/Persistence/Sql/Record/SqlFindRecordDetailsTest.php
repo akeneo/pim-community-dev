@@ -130,7 +130,8 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
             $recordCode,
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
             Image::fromFileInfo($imageInfo),
-            $expectedValues
+            $expectedValues,
+            true
         );
 
         $this->assertRecordDetails($expectedStarck, $actualStarck);

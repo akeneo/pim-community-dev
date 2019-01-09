@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Connector\Collection;
 
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
@@ -27,6 +28,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
@@ -51,6 +53,9 @@ class CreateOrUpdateAttributeContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var InMemoryFindActivatedLocalesByIdentifiers */
+    private $activatedLocales;
+
     /** @var null|string */
     private $requestContract;
 
@@ -61,12 +66,14 @@ class CreateOrUpdateAttributeContext implements Context
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->attributeRepository = $attributeRepository;
+        $this->activatedLocales = $activatedLocales;
     }
 
     /**
@@ -79,6 +86,9 @@ class CreateOrUpdateAttributeContext implements Context
             [],
             Image::createEmpty()
         );
+
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
         $this->referenceEntityRepository->create($referenceEntity);
     }
@@ -176,15 +186,11 @@ class CreateOrUpdateAttributeContext implements Context
 
         $referenceEntityIdentifier = 'color';
 
-        $identifier = AttributeIdentifier::create(
-            (string) 'color',
-            (string) 'main_color',
-            md5('color_main_color')
+        $attribute = $this->attributeRepository->getByIdentifier(
+            AttributeIdentifier::fromString('main_color_identifier')
         );
-
-        $attribute = $this->attributeRepository->getByIdentifier($identifier);
         $expectedAttribute = TextAttribute::createText(
-            $identifier,
+            AttributeIdentifier::fromString('main_color_identifier'),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString('main_color'),
             LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
@@ -198,5 +204,79 @@ class CreateOrUpdateAttributeContext implements Context
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
+    }
+
+    /**
+     * @When /^the connector collects the new Main Color attribute whose data does not comply with the business rules$/
+     */
+    public function theConnectorCollectsTheMainColorAttributeWhoseDataDoesNotComplyWithTheBusinessRules()
+    {
+        $this->requestContract = 'unprocessable_creation_main_color_reference_entity_attribute_for_invalid_data.json';
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that the attribute has data that does not comply with the business rules$/
+     */
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttribureHasDataThatDoesNotComplyWithTheBusinessRules()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @When /^the connector collects the existing Main Color attribute whose data does not comply with the business rules$/
+     */
+    public function theConnectorCollectsTheExistingMainColorAttributeWhoseDataDoesNotComplyWithTheBusinessRules()
+    {
+        $this->requestContract = 'unprocessable_update_main_color_reference_entity_attribute_for_invalid_data.json';
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @When /^the connector collects the new Main color attribute with an invalid format$/
+     */
+    public function theConnectorCollectsTheNewMainColorAttributeWithAnInvalidFormat()
+    {
+        $this->requestContract = 'unprocessable_creation_main_color_reference_entity_attribute_for_invalid_format.json';
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that the attribute has an invalid format$/
+     */
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeHasAnInvalidFormat()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @When /^the connector collects the existing Main color attribute with an invalid format$/
+     */
+    public function theConnectorCollectsTheExistingMainColorAttributeWithAnInvalidFormat()
+    {
+        $this->requestContract = 'unprocessable_update_main_color_reference_entity_attribute_for_invalid_format.json';
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
     }
 }

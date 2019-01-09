@@ -1,0 +1,24 @@
+Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping:
+    type: entity
+    table: pim_franklin_insights_franklin_identifier_mapping
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    indexes:
+        franklin_code_idx:
+            columns:
+                - franklin_code
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        franklinCode:
+            type: string
+            column: franklin_code
+    oneToOne:
+        attribute:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
+            joinColumns:
+                attribute_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'

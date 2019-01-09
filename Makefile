@@ -21,9 +21,9 @@ help:
 reference-entity-coupling:
 	$(PHP_EXEC) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back
 
-.PHONY: suggest-data-coupling ## Run the coupling detector on Suggest data
-suggest-data-coupling:
-	$(PHP_EXEC) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/SuggestData/tests/back/.php_cd.php src/Akeneo/Pim/Automation/SuggestData
+.PHONY: franklin-insights-coupling ## Run the coupling detector on Suggest data
+franklin-insights-coupling:
+	$(PHP_EXEC) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/FranklinInsights/tests/back/.php_cd.php src/Akeneo/Pim/Automation/FranklinInsights
 
 .PHONY: asset-coupling ## Run the coupling detector on Asset
 asset-coupling:
@@ -46,4 +46,4 @@ permission-coupling:
 	$(PHP_EXEC) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Permission/.php_cd.php src/Akeneo/Pim/Permission
 
 .PHONY: coupling ## Run the coupling detector on everything
-coupling: twa-coupling asset-coupling suggest-data-coupling reference-entity-coupling rule-engine-coupling workflow-coupling permission-coupling
+coupling: twa-coupling asset-coupling franklin-insights-coupling reference-entity-coupling rule-engine-coupling workflow-coupling permission-coupling

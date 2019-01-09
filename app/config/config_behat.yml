@@ -1,8 +1,8 @@
 imports:
     - { resource: config.yml }
     - { resource: parameters_test.yml }
-    - { resource: ../../src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/pim/data_providers.yml }
-    - { resource: ../../src/Akeneo/Pim/Automation/SuggestData/tests/back/EndToEnd/Resources/config/behat/services.yml }
+    - { resource: ../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/pim/data_providers.yml }
+    - { resource: ../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/EndToEnd/Resources/config/behat/services.yml }
 
 framework:
     test: ~

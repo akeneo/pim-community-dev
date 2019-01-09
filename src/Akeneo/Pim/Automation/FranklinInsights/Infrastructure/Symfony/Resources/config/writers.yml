@@ -1,0 +1,12 @@
+services:
+    akeneo.pim.automation.franklin_insights.connector.writer.subscription:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer\SubscriptionWriter'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.data_provider.product_subscription'
+            - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+            - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
+
+    akeneo.pim.automation.franklin_insights.connector.writer.unsubscription:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer\UnsubscriptionWriter'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.product_subscription.handler.unsubscribe_product'

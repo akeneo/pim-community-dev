@@ -18,15 +18,18 @@ use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -84,6 +87,9 @@ class CreateOrUpdateRecordContext implements Context
 
     /** @var InMemoryFindActivatedLocalesPerChannels */
     private $activatedLocalesPerChannels;
+
+    /** @var null|Response */
+    private $uploadImageResponse;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
@@ -460,6 +466,40 @@ class CreateOrUpdateRecordContext implements Context
         );
     }
 
+    /**
+     * @Given /^the Kartell record of the Brand reference entity without any media file$/
+     */
+    public function theKartellRecordOfTheBrandReferenceEntityWithoutAnyMediaFile()
+    {
+        $this->loadBrandReferenceEntity();
+        $this->loadCoverImageAttribute();
+        $this->loadBrandKartellRecord();
+    }
+
+    /**
+     * @When /^the connector collects a media file for the Kartell record from the DAM to synchronize it with the PIM$/
+     */
+    public function theConnectorCollectsAMediaFileForTheKartellRecordFromTheDAMToSynchronizeItWithThePIM()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->uploadImageResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."successful_image_upload.json"
+        );
+    }
+
+    /**
+     * @Then /^the Kartell record is correctly synchronized with the uploaded media file$/
+     */
+    public function theKartellRecordIsCorrectlySynchronizedWithTheUploadedMediaFile()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->uploadImageResponse,
+            self::REQUEST_CONTRACT_DIR ."successful_image_upload.json"
+        );
+    }
+
     private function loadBrandReferenceEntity(): void
     {
         $referenceEntity = ReferenceEntity::create(
@@ -507,6 +547,24 @@ class CreateOrUpdateRecordContext implements Context
         );
 
         $this->attributeRepository->create($name);
+    }
+
+    private function loadCoverImageAttribute(): void
+    {
+        $image = ImageAttribute::create(
+            AttributeIdentifier::create('brand', 'cover_image', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            AttributeCode::fromString('cover_image'),
+            LabelCollection::fromArray(['en_US' => 'Cover Image']),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('250.2'),
+            AttributeAllowedExtensions::fromList(['jpg'])
+        );
+
+        $this->attributeRepository->create($image);
     }
 
     private function loadBrandKartellRecord(): void

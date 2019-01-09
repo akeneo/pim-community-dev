@@ -135,19 +135,13 @@ class RecordQuery
         LocaleIdentifierCollection $localeIdentifiersValuesFilter,
         int $size,
         ?RecordCode $searchAfterCode,
-        ?array $updatedSinceFilter = null
+        array $filters
     ): RecordQuery {
-        $filters = [
-            [
-                'field' => 'reference_entity',
-                'operator' => '=',
-                'value' => (string) $referenceEntityIdentifier
-            ]
+        $filters[] = [
+            'field'    => 'reference_entity',
+            'operator' => '=',
+            'value'    => (string)$referenceEntityIdentifier
         ];
-
-        if (null !== $updatedSinceFilter) {
-            $filters = array_merge($filters, [ $updatedSinceFilter ]);
-        }
 
         return new RecordQuery(
             ChannelReference::noReference(),

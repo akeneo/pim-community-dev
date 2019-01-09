@@ -12,6 +12,7 @@
 namespace Akeneo\Asset\Bundle\Event;
 
 use Akeneo\Asset\Component\Finder\AssetFinderInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -59,7 +60,10 @@ class MissingVariationsEventSubscriber implements EventSubscriberInterface
     public function onAssetFilesUploaded(AssetEvent $event)
     {
         $variations = $this->finder->retrieveVariationsNotGenerated($event->getSubject());
-        $processed = $this->generator->generate($variations, true);
+        $notLockedVariations = array_filter($variations, function (VariationInterface $variation) {
+            return !$variation->isLocked();
+        });
+        $processed = $this->generator->generate($notLockedVariations, true);
 
         $event->setProcessedList($processed);
 

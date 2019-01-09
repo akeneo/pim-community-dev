@@ -7,6 +7,8 @@ services:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_record_by_reference_entity_and_code'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.media_file'
+            - '@__symfony__.akeneo_file_storage.file_storage.filesystem_provider'
         tags:
             - { name: fob.context_service }
 
@@ -21,6 +23,8 @@ services:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.date'
         tags:
             - { name: fob.context_service }
@@ -112,13 +116,14 @@ services:
         tags:
             - { name: fob.context_service }
 
-    akeneo_referenceentity.tests.back.integration.connector.media_file_context:
-        class: Akeneo\ReferenceEntity\Integration\Connector\MediaFileContext
+    akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_attribute_options_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Distribution\GetConnectorAttributeOptionsContext
         arguments:
             - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
             - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.media_file'
-            - '@__symfony__.akeneo_file_storage.file_storage.filesystem_provider'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_options'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
         tags:
             - { name: fob.context_service }
 
@@ -129,12 +134,6 @@ services:
             - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
             - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-        tags:
-            - { name: fob.context_service }
-
-    akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_attribute_context:
-        class: Akeneo\ReferenceEntity\Integration\Connector\Collection\CreateOrUpdateAttributeContext
-        arguments:
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
         tags:
             - { name: fob.context_service }

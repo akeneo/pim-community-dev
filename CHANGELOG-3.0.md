@@ -197,6 +197,7 @@
 - Change constructor of `Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset\ClassifyAssetsProcessor`. Add argument `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
 - Change constructor of `Akeneo\Asset\Bundle\Doctrine\Common\Saver\AssetReferenceSaver`. Remove argument `Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface`.
 - Change constructor of `Akeneo\Asset\Bundle\Doctrine\Common/Saver/AssetSaver`. Remove argument `Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface`.
+- Change constructor of `Akeneo\Asset\Bundle\Controller\ProductAssetController`. Add arguments `Akeneo\Asset\Component\Builder\ReferenceBuilderInterface` and `Akeneo\Asset\Component\Builder\VariationBuilderInterface`.
 
 ## Security
 

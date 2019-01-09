@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
@@ -29,17 +29,17 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     /** @var Record[] */
     private $records = [];
 
+    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
+    private $findRequiredValueKeyCollectionForChannelAndLocale;
+
     /** @var \DateTime[] */
     private $updatedDateByRecord = [];
 
     /** @var InMemoryDateRepository */
     private $dateRepository;
 
-    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocale */
-    private $findRequiredValueKeyCollectionForChannelAndLocale;
-
     public function __construct(
-        InMemoryFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredValueKeyCollectionForChannelAndLocale,
+        InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocale,
         InMemoryDateRepository $dateRepository
     ) {
         $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
@@ -49,7 +49,6 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     public function add(Record $record): void
     {
         $this->records[] = $record;
-        $this->updatedDateByRecord[(string) $record->getIdentifier()] = $this->dateRepository->getCurrentDate();
     }
 
     /**
@@ -101,10 +100,13 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
                 return true;
             }
 
+            $channel = isset($completeFilter['context']['channel']) ? $completeFilter['context']['channel'] : $query->getChannel();
+            $locales = isset($completeFilter['context']['locales']) ? $completeFilter['context']['locales'] : [$query->getLocale()];
+
             $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
                 $record->getReferenceEntityIdentifier(),
-                ChannelIdentifier::fromCode($query->getChannel()),
-                LocaleIdentifier::fromCode($query->getLocale())
+                ChannelIdentifier::fromCode($channel),
+                LocaleIdentifierCollection::fromNormalized($locales)
             );
 
             $recordValues = $record->getValues();

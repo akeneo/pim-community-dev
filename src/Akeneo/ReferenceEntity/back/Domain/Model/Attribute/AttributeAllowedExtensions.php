@@ -45,6 +45,11 @@ class AttributeAllowedExtensions
         $this->allowedExtensions = $allowedExtensions;
     }
 
+    /**
+     * @param array $allowedExtensions
+     *
+     * @return AttributeAllowedExtensions
+     */
     public static function fromList(array $allowedExtensions) : self
     {
         return new self($allowedExtensions);

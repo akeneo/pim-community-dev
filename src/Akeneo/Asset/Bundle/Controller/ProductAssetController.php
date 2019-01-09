@@ -14,6 +14,8 @@ namespace Akeneo\Asset\Bundle\Controller;
 use Akeneo\Asset\Bundle\Event\AssetEvent;
 use Akeneo\Asset\Bundle\Form\Type\AssetType;
 use Akeneo\Asset\Bundle\Form\Type\CreateAssetType;
+use Akeneo\Asset\Component\Builder\ReferenceBuilderInterface;
+use Akeneo\Asset\Component\Builder\VariationBuilderInterface;
 use Akeneo\Asset\Component\Factory\AssetFactory;
 use Akeneo\Asset\Component\FileStorage;
 use Akeneo\Asset\Component\Model\AssetInterface;
@@ -127,6 +129,12 @@ class ProductAssetController extends Controller
     /** @var CategoryManager */
     protected $categoryManager;
 
+    /** @var ReferenceBuilderInterface */
+    protected $referenceBuilder;
+
+    /** @var VariationBuilderInterface */
+    protected $variationBuilder;
+
     /**
      * @param AssetRepositoryInterface         $assetRepository
      * @param ReferenceRepositoryInterface     $referenceRepository
@@ -148,6 +156,8 @@ class ProductAssetController extends Controller
      * @param AssetCategoryRepositoryInterface $assetCategoryRepo
      * @param CategoryRepositoryInterface      $categoryRepository
      * @param CategoryManager                  $categoryManager
+     * @param ReferenceBuilderInterface        $referenceBuilder
+     * @param VariationBuilderInterface        $variationBuilder
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -169,7 +179,9 @@ class ProductAssetController extends Controller
         FileController $fileController,
         AssetCategoryRepositoryInterface $assetCategoryRepo,
         CategoryRepositoryInterface $categoryRepository,
-        CategoryManager $categoryManager
+        CategoryManager $categoryManager,
+        ReferenceBuilderInterface $referenceBuilder,
+        VariationBuilderInterface $variationBuilder
     ) {
         $this->assetRepository = $assetRepository;
         $this->referenceRepository = $referenceRepository;
@@ -191,6 +203,8 @@ class ProductAssetController extends Controller
         $this->assetCategoryRepo = $assetCategoryRepo;
         $this->categoryRepository = $categoryRepository;
         $this->categoryManager = $categoryManager;
+        $this->referenceBuilder = $referenceBuilder;
+        $this->variationBuilder = $variationBuilder;
     }
 
     /**
@@ -496,6 +510,12 @@ class ProductAssetController extends Controller
     public function editAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
+
+        $this->referenceBuilder->buildMissingLocalized($productAsset);
+        foreach ($productAsset->getReferences() as $reference) {
+            $this->variationBuilder->buildMissing($reference);
+        }
+
         if ($this->isGranted(Attributes::EDIT, $productAsset)) {
             return $this->edit($request, $id);
         }

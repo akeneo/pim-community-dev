@@ -62,6 +62,9 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_option:
         class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributeOption
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_options:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributeOptions
+
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityExists
         arguments:
@@ -115,12 +118,12 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForIdentifiersAndQuery
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locale'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locale'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.date'
 
     akeneo_referenceentity.infrastructure.persistence.query.channel_exists:
@@ -129,8 +132,8 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers
 
-    akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locale:
-        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocale
+    akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
@@ -202,3 +205,6 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub
         arguments:
             - '@oneup_flysystem.mount_manager'
+
+    akeneo_file_storage.file_storage.file.file_storer:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFileStorer

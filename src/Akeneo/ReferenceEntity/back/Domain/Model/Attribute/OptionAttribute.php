@@ -45,6 +45,7 @@ class OptionAttribute extends AbstractAttribute
 
     public function setOptions(array $attributeOptions): void
     {
+        Assert::allIsInstanceOf($attributeOptions, AttributeOption::class);
         $this->attributeOptions = [];
 
         foreach ($attributeOptions as $attributeOption) {

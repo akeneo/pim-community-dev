@@ -1,0 +1,22 @@
+akeneo_franklin_insights:
+  acl:
+    franklin_insights:
+      index: Abonnement de produits à Franklin Insights
+    franklin:
+      title: Gérer la connection à Franklin Insights
+    settings:
+      mapping: Gérer les paramètres de Franklin Insights
+  acl_group:
+    franklin_insights: Paramètres de Franklin Insights
+  mapping_identifier:
+    success: Le mapping a été sauvegardé avec succès
+    error: Une erreur est survenue pendant la sauvegarde du mapping
+job_execution.summary:
+  configuration_validation: Configuration de Franklin Insights
+  subscribed: abonné
+  unsubscribed: non abonné
+  unsubscription_skipped_not_subscribed: ignoré (non abonné)
+pim_datagrid:
+  cells:
+    type:
+      franklin_insights_fetch_products: Franklin Insights

@@ -12,11 +12,11 @@ suites:
         spec_prefix: Specification
 
     ## PIM BC
-    SuggestData:
-        namespace: Akeneo\Pim\Automation\SuggestData
-        psr4_prefix: Akeneo\Pim\Automation\SuggestData
-        spec_path: src/Akeneo/Pim/Automation/SuggestData/tests/back/
-        src_path: src/Akeneo/Pim/Automation/SuggestData
+    FranklinInsights:
+        namespace: Akeneo\Pim\Automation\FranklinInsights
+        psr4_prefix: Akeneo\Pim\Automation\FranklinInsights
+        spec_path: src/Akeneo/Pim/Automation/FranklinInsights/tests/back/
+        src_path: src/Akeneo/Pim/Automation/FranklinInsights
         spec_prefix: Specification
 
     Automation:

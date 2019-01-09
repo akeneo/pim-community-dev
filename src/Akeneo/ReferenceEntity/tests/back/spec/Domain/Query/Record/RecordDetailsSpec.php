@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 use PhpSpec\ObjectBehavior;
 
@@ -19,15 +19,15 @@ class RecordDetailsSpec extends ObjectBehavior
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code,
         LabelCollection $labelCollection
-    )
-    {
+    ) {
         $this->beConstructedWith(
             $identifier,
             $referenceEntityIdentifier,
             $code,
             $labelCollection,
             Image::createEmpty(),
-            []
+            [],
+            true
         );
     }
 
@@ -49,12 +49,15 @@ class RecordDetailsSpec extends ObjectBehavior
         $labelCollection->normalize()->willReturn(['fr_FR' => 'Philippe Starck']);
 
         $this->normalize()->shouldReturn([
-            'identifier' => 'starck_designer_fingerprint',
+            'identifier'                  => 'starck_designer_fingerprint',
             'reference_entity_identifier' => 'designer',
-            'code' => 'starck',
-            'labels' => ['fr_FR' => 'Philippe Starck'],
-            'image' => null,
-            'values' => [],
+            'code'                        => 'starck',
+            'labels'                      => ['fr_FR' => 'Philippe Starck'],
+            'image'                       => null,
+            'values'                      => [],
+            'permission'                  => [
+                'edit' => true,
+            ],
         ]);
     }
 }

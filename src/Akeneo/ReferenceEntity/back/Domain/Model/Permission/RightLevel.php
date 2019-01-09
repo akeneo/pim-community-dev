@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
  */
 class RightLevel
 {
-    private const VIEW = 'view';
-    private const EDIT = 'edit';
+    public const VIEW = 'view';
+    public const EDIT = 'edit';
 
     public const LEVELS = [self::VIEW, self::EDIT];
 

@@ -156,6 +156,8 @@ Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\UpdatedDateShouldBeValid:
                   payload:
                       standardPropertyName: filters
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\FilterRecordsByCompleteness: ~
 
 # Attributes
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\EditUploadedFileValueCommand:
