@@ -122,8 +122,7 @@ class EnterpriseAssertionContext extends BaseAssertionContext
      */
     public function iShouldNotBeAbleToSendTheComment()
     {
-        $modalFooterContent = $this->getCurrentPage()->find('css', '.modal-footer');
-        $disabledOkBtn      = $modalFooterContent->find('css', '.ok.disabled');
+        $disabledOkBtn = $this->getCurrentPage()->find('css', '.modal .ok[disabled=disabled]');
 
         if (null === $disabledOkBtn) {
             throw $this->createExpectationException('Expecting to see the Send button disabled, it was not.');

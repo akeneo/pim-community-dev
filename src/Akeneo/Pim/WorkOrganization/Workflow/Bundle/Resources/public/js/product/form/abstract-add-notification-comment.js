@@ -80,6 +80,13 @@ define(
              */
             render: function () {
                 throw new Error('Must be implemented.');
+            },
+
+            /**
+             * Returns the modal parameters
+             */
+            getModalParameters: function () {
+                throw new Error('Must be implemented.');
             }
         });
     }
