@@ -35,3 +35,9 @@ export default combineReducers({
   locales,
   channels,
 });
+
+export const getLocales = (channels: Channel[], channelCode: string) => {
+  const channel = channels.find((channel: Channel) => channel.code === channelCode);
+
+  return undefined === channel ? [] : channel.locales;
+};

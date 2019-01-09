@@ -1,8 +1,13 @@
 import {localesReceived} from 'akeneoreferenceentity/domain/event/locale';
-import localeFetcher from 'akeneoreferenceentity/infrastructure/fetcher/locale';
+import Locale from 'akeneoreferenceentity/domain/model/locale';
+
+const fetcherRegistry = require('pim/fetcher-registry');
 
 export const updateActivatedLocales = () => async (dispatch: any): Promise<void> => {
-  const locales = await localeFetcher.fetchActivated();
-
-  dispatch(localesReceived(locales));
+  fetcherRegistry
+    .getFetcher('locale')
+    .fetchActivated()
+    .then((locales: Locale[]) => {
+      dispatch(localesReceived(locales));
+    });
 };

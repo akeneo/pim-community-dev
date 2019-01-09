@@ -60,7 +60,7 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(referenceEntityRecordCountUpdated(referenceEntityResult.recordCount));
         this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
-        this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
+        this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         this.store.dispatch(setUpSidebar('akeneo_reference_entities_reference_entity_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));

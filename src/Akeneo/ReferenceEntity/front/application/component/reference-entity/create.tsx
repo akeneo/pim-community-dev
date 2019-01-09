@@ -150,13 +150,11 @@ class Create extends React.Component<CreateProps> {
 
 export default connect(
   (state: IndexState): StateProps => {
-    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-
     return {
       data: state.create.data,
       errors: state.create.errors,
       context: {
-        locale: locale,
+        locale: state.user.catalogLocale,
       },
     } as StateProps;
   },
