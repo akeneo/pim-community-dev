@@ -172,9 +172,4 @@ SQL;
 
         return intval($result['product_subscription_count']);
     }
-
-    public function bulkRemove($argument1): void
-    {
-        // TODO: write logic here
-    }
 }
