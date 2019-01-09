@@ -42,6 +42,7 @@ class GuzzleClient implements ClientInterface
     {
         $options = $options + [
             'headers' => ['Authorization' => $this->token],
+            'timeout' => 10,
         ];
 
         $response = $this->httpClient->request($method, $uri, $options);
