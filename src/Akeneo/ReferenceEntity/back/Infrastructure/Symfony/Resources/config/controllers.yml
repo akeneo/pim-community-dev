@@ -101,6 +101,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\CreateAction
         arguments:
             - '@akeneo_referenceentity.application.record.create_record_handler'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
             - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@reference_entity_serializer'

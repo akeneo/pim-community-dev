@@ -68,6 +68,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
+        $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer')->assertIndexRefreshed();
     }
 
     /**
@@ -94,6 +95,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
+        $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer')->assertIndexRefreshed();
     }
 
     /**

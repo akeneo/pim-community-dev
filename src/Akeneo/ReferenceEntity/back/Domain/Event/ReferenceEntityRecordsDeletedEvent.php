@@ -12,6 +12,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @internal
  */
 class ReferenceEntityRecordsDeletedEvent extends Event
 {

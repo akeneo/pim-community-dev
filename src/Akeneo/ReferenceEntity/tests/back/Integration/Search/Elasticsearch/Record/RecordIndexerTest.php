@@ -109,6 +109,20 @@ class RecordIndexerTest extends SearchIntegrationTestCase
         Assert::assertCount(1, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('another_reference_entity'));
     }
 
+    /**
+     * @test
+     */
+    public function it_refreshes_the_index()
+    {
+        $isExceptionThrown = false;
+        try {
+            $this->recordIndexer->refresh();
+        } catch (\Exception $e) {
+            $isExceptionThrown = true;
+        }
+        Assert::assertFalse($isExceptionThrown, 'An unexpected exception has been thrown');
+    }
+
     private function loadFixtures()
     {
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
