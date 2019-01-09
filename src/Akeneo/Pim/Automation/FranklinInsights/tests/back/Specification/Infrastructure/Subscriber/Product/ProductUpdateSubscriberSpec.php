@@ -60,7 +60,7 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         $selectProductIdentifierValuesQuery,
         $resubscribeProducts
     ): void {
-        $subscriptionRepository->findOneByProductId(Argument::any())->shouldNotBeCalled();
+        $subscriptionRepository->findByProductIds(Argument::any())->shouldNotBeCalled();
         $selectProductIdentifierValuesQuery->execute(Argument::any())->shouldNotBeCalled();
 
         $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
@@ -94,7 +94,7 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(42);
-        $subscriptionRepository->findOneByProductId(42)->willReturn(null);
+        $subscriptionRepository->findByProductIds([42])->willReturn([]);
         $selectProductIdentifierValuesQuery->execute(42)->shouldNotBeCalled();
 
         $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
@@ -109,8 +109,10 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(42);
-        $subscriptionRepository->findOneByProductId(42)->willReturn(
-            new ProductSubscription(42, 'abc-123', ['asin' => 'ABC123'])
+        $subscriptionRepository->findByProductIds([42])->willReturn(
+            [
+                new ProductSubscription(42, 'abc-123', ['asin' => 'ABC123']),
+            ]
         );
         $selectProductIdentifierValuesQuery->execute(42)->willReturn(
             new ProductIdentifierValues(
@@ -131,25 +133,23 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         ProductInterface $product2
     ): void {
         $product1->getId()->willReturn(42);
-        $subscriptionRepository->findOneByProductId(42)->willReturn(
-            new ProductSubscription(42, 'abc-123', ['asin' => 'ABC123', 'upc' => '987654321'])
+        $product2->getId()->willReturn(44);
+        $subscriptionRepository->findByProductIds([42, 44])->willReturn(
+            [
+                new ProductSubscription(42, 'abc-123', ['asin' => 'ABC123', 'upc' => '987654321']),
+                new ProductSubscription(44, 'def-456', ['asin' => 'DEF987']),
+            ]
         );
         $selectProductIdentifierValuesQuery->execute(42)->willReturn(
             new ProductIdentifierValues(
                 ['mpn' => 'Akeneo-PIM', 'brand' => 'Akeneo']
             )
         );
-
-        $product2->getId()->willReturn(44);
-        $subscriptionRepository->findOneByProductId(44)->willReturn(
-            new ProductSubscription(42, 'abc-123', ['asin' => 'DEF987'])
-        );
-        $selectProductIdentifierValuesQuery->execute(42)->willReturn(
+        $selectProductIdentifierValuesQuery->execute(44)->willReturn(
             new ProductIdentifierValues(
                 ['asin' => 'DEF987']
             )
         );
-
         $resubscribeProducts->process([42])->shouldBeCalled();
 
         $this->computeImpactedSubscriptions(

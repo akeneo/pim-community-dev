@@ -75,22 +75,25 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
     public function computeImpactedSubscriptions(GenericEvent $event): void
     {
         $impactedProductIds = [];
+        $productIds = [];
         foreach ($event->getSubject() as $product) {
             if (!$product instanceof ProductInterface) {
                 continue;
             }
+            $productIds[] = $product->getId();
+        }
+        if (empty($productIds)) {
+            return;
+        }
 
-            if (!$this->isFranklinInsightsActivated()) {
-                return;
-            }
+        if (!$this->isFranklinInsightsActivated()) {
+            return;
+        }
 
-            // TODO: find many subscriptions by product ids in order to avoid too may queries
-            $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
-            if (null === $subscription) {
-                continue;
-            }
+        $subscriptions = $this->subscriptionRepository->findByProductIds($productIds);
+        foreach ($subscriptions as $subscription) {
             if (true === $this->wereIdentifierValuesUpdated($subscription)) {
-                $impactedProductIds[] = $product->getId();
+                $impactedProductIds[] = $subscription->getProductId();
             }
         }
 
