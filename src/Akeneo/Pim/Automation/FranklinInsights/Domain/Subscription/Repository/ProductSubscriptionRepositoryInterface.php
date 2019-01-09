@@ -26,7 +26,7 @@ interface ProductSubscriptionRepositoryInterface
     public function save(ProductSubscription $subscription): void;
 
     /**
-     * @param array $subscriptions
+     * @param ProductSubscription[] $subscriptions
      */
     public function bulkSave(array $subscriptions): void;
 
@@ -51,7 +51,7 @@ interface ProductSubscriptionRepositoryInterface
     public function delete(ProductSubscription $subscription): void;
 
     /**
-     * @param array $subscriptions
+     * @param ProductSubscription[] $subscriptions
      */
     public function bulkDelete(array $subscriptions): void;
 
