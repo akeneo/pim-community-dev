@@ -58,13 +58,8 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     {
         $elasticSearchQuery = $this->getElasticSearchQuery($recordQuery);
         $matches = $this->recordClient->search(self::INDEX_TYPE, $elasticSearchQuery);
-        $identifiers = array_map(function (array $hit) {
-            return $hit['_id'];
-        }, $matches['hits']['hits']);
-
-        $queryResult = new IdentifiersForQueryResult();
-        $queryResult->identifiers = $identifiers;
-        $queryResult->total = $matches['hits']['total'];
+        $identifiers = $this->getIdentifiers($matches);
+        $queryResult = new IdentifiersForQueryResult($identifiers, $matches['hits']['total']);
 
         return $queryResult;
     }
@@ -232,5 +227,19 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         }
 
         return $query;
+    }
+
+    /**
+     * @param array $matches
+     *
+     * @return string[]
+     */
+    private function getIdentifiers(array $matches): array
+    {
+        $identifiers = array_map(function (array $hit) {
+            return $hit['_id'];
+        }, $matches['hits']['hits']);
+
+        return $identifiers;
     }
 }

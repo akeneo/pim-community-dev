@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
+use Webmozart\Assert\Assert;
+
 /**
  * Read model representing a search result
  *
@@ -22,19 +24,26 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 class IdentifiersForQueryResult
 {
     private const IDENTIFIERS = 'identifiers';
-    private const TOTAL = 'total';
+    private const MATCHES_COUNT = 'matches_count';
 
     /** @var string[] */
     public $identifiers;
 
     /** @var int */
-    public $total;
+    public $matchesCount;
+
+    public function __construct(array $identifiers, int $matchesCount)
+    {
+        Assert::allString($identifiers);
+        $this->identifiers = $identifiers;
+        $this->matchesCount = $matchesCount;
+    }
 
     public function normalize(): array
     {
         return [
-            self::IDENTIFIERS => $this->identifiers,
-            self::TOTAL       => $this->total,
+            self::IDENTIFIERS   => $this->identifiers,
+            self::MATCHES_COUNT => $this->matchesCount,
         ];
     }
 }

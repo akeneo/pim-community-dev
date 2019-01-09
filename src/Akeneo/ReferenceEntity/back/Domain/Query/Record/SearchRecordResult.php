@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
+use Webmozart\Assert\Assert;
+
 /**
  * Read model representing a search result
  *
@@ -22,21 +24,34 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 class SearchRecordResult
 {
     private const ITEMS = 'items';
-    private const TOTAL = 'total';
+    private const MATCHES_COUNT = 'matches_count';
+    private const TOTAL_COUNT = 'total_count';
 
     /** @var RecordItem[] */
-    public $items;
+    private $recordItems;
 
     /** @var int */
-    public $total;
+    private $matchesCount;
+
+    /** @var int */
+    private $totalCount;
+
+    public function __construct(array $recordItems, int $matchesCount, int $totalCount)
+    {
+        Assert::allIsInstanceOf($recordItems, RecordItem::class);
+        $this->recordItems = $recordItems;
+        $this->matchesCount = $matchesCount;
+        $this->totalCount = $totalCount;
+    }
 
     public function normalize(): array
     {
         return [
-            self::ITEMS => array_map(function (RecordItem $recordItem) {
+            self::ITEMS         => array_map(function (RecordItem $recordItem) {
                 return $recordItem->normalize();
-            }, $this->items),
-            self::TOTAL   => $this->total,
+            }, $this->recordItems),
+            self::MATCHES_COUNT => $this->matchesCount,
+            self::TOTAL_COUNT => $this->totalCount,
         ];
     }
 }
