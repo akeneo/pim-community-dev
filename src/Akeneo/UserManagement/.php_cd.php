@@ -43,7 +43,7 @@ $rules = [
         'FOS\OAuthServerBundle\Entity\ClientManager', // used by API client controller
         'OAuth2\OAuth2', // used by API client controller
 
-        // TODO: We should not depend on Platform
+        // TIP-1007: Clean VisibilityChecker system
         'Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker',
 
         // TIP-945: User Management should not depend on Channel and Enrichment
@@ -55,8 +55,7 @@ $rules = [
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
 
-        // TODO: it should be moved somewhere we could centralize old symfony form
-        // TODO: Used by Role form
+        // TIP-1005: Clean UI form types
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType',
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
