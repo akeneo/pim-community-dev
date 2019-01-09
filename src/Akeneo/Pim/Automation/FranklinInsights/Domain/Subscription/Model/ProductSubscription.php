@@ -124,7 +124,7 @@ class ProductSubscription
     }
 
     /**
-     * Marks a subscription to be cancelled.
+     * Marks a subscription as cancelled.
      */
     public function markAsCancelled(): void
     {
