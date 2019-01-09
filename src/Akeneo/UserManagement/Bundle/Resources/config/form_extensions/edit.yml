@@ -111,7 +111,6 @@ extensions:
             fieldName: enabled
             label: pim_common.status
             required: true
-            readOnly: true
 
     pim-user-edit-form-username:
         module: pim/form/common/fields/text
