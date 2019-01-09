@@ -45,7 +45,7 @@ class SubscriptionsCollection implements \Iterator
     ) {
         $this->subscriptionWebservice = $subscriptionWebservice;
         $this->subscriptions = $collection['_embedded']['subscription'] ?? [];
-        $this->nextPageUri = $collection['_links']['next']['href'] ?? null;
+        $this->nextPageUri = $collection['_links']['next'][0]['href'] ?? null;
         $this->index = 0;
         $this->total = $collection['total'];
     }
