@@ -18,6 +18,7 @@ services:
             - '@akeneo_authentication.sso.configuration.repository'
             - '@akeneo_authentication.sso.configuration.service_provider_default_configuration'
             - '@akeneo_authentication.sso.log.create_archive'
+            - '%env(AKENEO_PIM_URL)%'
 
     akeneo_authentication.sso.configuration.service_provider_default_configuration:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\ServiceProviderDefaultConfiguration'

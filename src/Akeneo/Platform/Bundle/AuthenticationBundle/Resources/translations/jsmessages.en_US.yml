@@ -38,8 +38,7 @@ authentication:
                     label: Certificate
                 private_key:
                     label: Private key
-
-akeneo_authentication:
-    acl:
-        sso:
-            title: Manage the Single Sign-On
+                metadata_url:
+                    label: Metadata URL
+                acs_url:
+                    label: ACS URL

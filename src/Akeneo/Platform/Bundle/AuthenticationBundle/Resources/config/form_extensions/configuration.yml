@@ -169,6 +169,24 @@ extensions:
                 sectionTitle: authentication.sso.configuration.section.service_provider.title
                 dropZone: content
 
+    authentication-sso-configuration-service-provider-metadata-url-field:
+        module: pim/authentication/sso/configuration/fields/readOnlyText
+        parent: authentication-sso-configuration-service-provider-section
+        targetZone: content
+        position: 90
+        config:
+            fieldName: service_provider_metadata_url
+            label: authentication.sso.configuration.field.metadata_url.label
+
+    authentication-sso-configuration-service-provider-acs-url-field:
+        module: pim/authentication/sso/configuration/fields/readOnlyText
+        parent: authentication-sso-configuration-service-provider-section
+        targetZone: content
+        position: 91
+        config:
+            fieldName: service_provider_acs_url
+            label: authentication.sso.configuration.field.acs_url.label
+
     authentication-sso-configuration-service-provider-info:
         module: pim/common/simple-view
         parent: authentication-sso-configuration-service-provider-section

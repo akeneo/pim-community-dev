@@ -9,6 +9,7 @@ config:
     paths:
         pim/authentication/sso/configuration/controller: akeneoauthentication/js/sso/configuration/controller.ts
         pim/authentication/sso/configuration/fields/text: akeneoauthentication/js/sso/configuration/fields/text.ts
+        pim/authentication/sso/configuration/fields/readOnlyText: akeneoauthentication/js/sso/configuration/fields/readOnlyText.ts
         pim/authentication/sso/configuration/fields/textarea: akeneoauthentication/js/sso/configuration/fields/textarea.ts
         pim/authentication/sso/configuration/download-logs-button: akeneoauthentication/js/sso/configuration/download-logs-button.ts
 

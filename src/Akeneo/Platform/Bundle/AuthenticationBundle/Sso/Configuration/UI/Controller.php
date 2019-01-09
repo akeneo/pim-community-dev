@@ -46,13 +46,17 @@ final class Controller
     /** @var CreateArchive */
     private $createArchive;
 
+    /** @var string */
+    private $akeneoPimUrl;
+
     public function __construct(
         ValidatorInterface $validator,
         NormalizerInterface $normalizer,
         CreateOrUpdateConfigurationHandler $createOrUpdateConfigHandler,
         Repository $repository,
         ServiceProviderDefaultConfiguration $serviceProviderDefaultConfiguration,
-        CreateArchive $createArchive
+        CreateArchive $createArchive,
+        string $akeneoPimUrl
     ) {
         $this->validator = $validator;
         $this->normalizer = $normalizer;
@@ -60,6 +64,7 @@ final class Controller
         $this->repository = $repository;
         $this->serviceProviderDefaultConfiguration = $serviceProviderDefaultConfiguration;
         $this->createArchive = $createArchive;
+        $this->akeneoPimUrl = $akeneoPimUrl;
     }
 
     /*
@@ -106,6 +111,11 @@ final class Controller
      */
     public function getAction(): JsonResponse
     {
+        $staticConfiguration = [
+            'service_provider_metadata_url' => sprintf('%s/saml/metadata', $this->akeneoPimUrl),
+            'service_provider_acs_url' => sprintf('%s/saml/acs', $this->akeneoPimUrl),
+        ];
+
         try {
             $config = $this->repository->find(self::CONFIGURATION_CODE);
             $configArray = $config->toArray();
@@ -119,7 +129,7 @@ final class Controller
                 'service_provider_entity_id'    => $configArray['serviceProvider']['entityId'],
                 'service_provider_certificate'  => $configArray['serviceProvider']['certificate'],
                 'service_provider_private_key'  => $configArray['serviceProvider']['privateKey'],
-            ]);
+            ] + $staticConfiguration);
         } catch (ConfigurationNotFound $e) {
             $serviceProvider = $this->serviceProviderDefaultConfiguration->getServiceProvider()->toArray();
 
@@ -132,7 +142,7 @@ final class Controller
                 'service_provider_entity_id'    => $serviceProvider['entityId'],
                 'service_provider_certificate'  => $serviceProvider['certificate'],
                 'service_provider_private_key'  => $serviceProvider['privateKey'],
-            ]);
+            ] + $staticConfiguration);
         }
     }
 
