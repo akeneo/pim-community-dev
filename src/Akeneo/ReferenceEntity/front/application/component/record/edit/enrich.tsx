@@ -14,7 +14,6 @@ import renderValues from 'akeneoreferenceentity/application/component/record/edi
 import Value from 'akeneoreferenceentity/domain/model/record/value';
 import Key from 'akeneoreferenceentity/tools/key';
 import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
-import {getCatalogLocale} from 'akeneoreferenceentity/application/reducer/structure';
 
 const securityContext = require('pim/security-context');
 
@@ -116,7 +115,7 @@ export default connect(
     return {
       form: state.form,
       context: {
-        locale: getCatalogLocale(state.structure.channels, state.user.catalogChannel, state.user.catalogLocale),
+        locale: state.user.catalogLocale,
         channel: state.user.catalogChannel,
       },
       rights: {

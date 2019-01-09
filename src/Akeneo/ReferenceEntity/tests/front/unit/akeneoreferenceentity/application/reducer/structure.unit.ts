@@ -1,4 +1,4 @@
-import reducer from 'akeneoreferenceentity/application/reducer/structure';
+import reducer, {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
 
 describe('akeneo > reference entity > application > reducer --- structure[', () => {
   test('I ignore other commands', () => {
@@ -40,5 +40,34 @@ describe('akeneo > reference entity > application > reducer --- structure[', () 
     );
 
     expect(newState).toEqual({locales: [], channels: ['mobile', 'eccommerce']});
+  });
+
+  test('I can get the list of locales for a channel', () => {
+    expect(getLocales([], 'ecommerce')).toEqual([]);
+    expect(
+      getLocales(
+        [
+          {
+            code: 'ecommerce',
+            locales: [
+              {
+                code: 'en_US',
+              },
+              {
+                code: 'fr_FR',
+              },
+            ],
+          },
+        ],
+        'ecommerce'
+      )
+    ).toEqual([
+      {
+        code: 'en_US',
+      },
+      {
+        code: 'fr_FR',
+      },
+    ]);
   });
 });

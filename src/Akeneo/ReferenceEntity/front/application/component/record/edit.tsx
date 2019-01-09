@@ -30,7 +30,7 @@ import Key from 'akeneoreferenceentity/tools/key';
 import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import CompletenessLabel from '../app/completeness';
-import {getLocales, getCatalogLocale} from 'akeneoreferenceentity/application/reducer/structure';
+import {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
 
 const securityContext = require('pim/security-context');
 
@@ -266,7 +266,7 @@ export default connect(
         isDirty: state.form.state.isDirty,
       },
       context: {
-        locale: getCatalogLocale(state.structure.channels, state.user.catalogChannel, state.user.catalogLocale),
+        locale: state.user.catalogLocale,
         channel: state.user.catalogChannel,
       },
       record: state.form.data,

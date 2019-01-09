@@ -10,6 +10,8 @@ export const uiLocaleChanged = (locale: string) => {
   return {type: 'LOCALE_CHANGED', locale, target: 'ui'};
 };
 
-export const catalogChannelChanged = (channel: string) => {
-  return {type: 'CHANNEL_CHANGED', channel, target: 'catalog'};
+export const catalogChannelChanged = (channel: string) => (dispatch: any, getState: any) => {
+  const channels = undefined === getState().structure ? [] : getState().structure.channels;
+
+  dispatch({type: 'CHANNEL_CHANGED', channel, target: 'catalog', channels});
 };

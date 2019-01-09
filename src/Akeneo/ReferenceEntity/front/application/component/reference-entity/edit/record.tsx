@@ -32,7 +32,6 @@ import Channel from 'akeneoreferenceentity/domain/model/channel';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
 import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
-import {getCatalogLocale} from 'akeneoreferenceentity/application/reducer/structure';
 
 const securityContext = require('pim/security-context');
 
@@ -230,7 +229,7 @@ export default connect(
 
     return {
       context: {
-        locale: getCatalogLocale(state.structure.channels, state.user.catalogLocale, state.user.catalogLocale),
+        locale: state.user.catalogLocale,
         channel: state.user.catalogChannel,
       },
       referenceEntity,

@@ -55,10 +55,40 @@ describe('akeneo > reference entity > application > reducer --- user', () => {
       type: 'CHANNEL_CHANGED',
       target: 'catalog',
       channel: 'ecommerce',
+      channels: [],
     });
 
     expect(newState).toEqual({
       catalogChannel: 'ecommerce',
+    });
+  });
+
+  test('I can change a channel for a given target implying a locale change', () => {
+    const state = {
+      catalogLocale: 'de_DE',
+    };
+    const newState = reducer(state, {
+      type: 'CHANNEL_CHANGED',
+      target: 'catalog',
+      channel: 'ecommerce',
+      channels: [
+        {
+          code: 'ecommerce',
+          locales: [
+            {
+              code: 'en_US',
+            },
+            {
+              code: 'fr_FR',
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(newState).toEqual({
+      catalogChannel: 'ecommerce',
+      catalogLocale: 'en_US',
     });
   });
 
@@ -77,6 +107,13 @@ describe('akeneo > reference entity > application > reducer --- user', () => {
         type: 'CHANNEL_CHANGED',
         target: 'catalog',
         locale: 'ecommerce',
+      });
+    }).toThrow();
+    expect(() => {
+      reducer(state, {
+        type: 'CHANNEL_CHANGED',
+        target: 'catalog',
+        channel: 'ecommerce',
       });
     }).toThrow();
 

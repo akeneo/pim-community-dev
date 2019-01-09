@@ -12,7 +12,7 @@ import {EditState as State} from 'akeneoreferenceentity/application/reducer/refe
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import ChannelSwitcher from 'akeneoreferenceentity/application/component/app/channel-switcher';
-import {getCatalogLocale, getLocales} from 'akeneoreferenceentity/application/reducer/structure';
+import {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
 
 interface OwnProps {
   label: string;
@@ -150,9 +150,7 @@ export default connect(
     return {
       ...ownProps,
       context: {
-        locale: ownProps.withChannelSwitcher
-          ? getCatalogLocale(state.structure.channels, state.user.catalogChannel, state.user.catalogLocale)
-          : state.user.catalogLocale,
+        locale: state.user.catalogLocale,
         channel: state.user.catalogChannel,
       },
       structure: {
