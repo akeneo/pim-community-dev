@@ -49,6 +49,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     public function add(Record $record): void
     {
         $this->records[] = $record;
+        $this->updatedDateByRecord[(string) $record->getIdentifier()] = $this->dateRepository->getCurrentDate();
     }
 
     /**

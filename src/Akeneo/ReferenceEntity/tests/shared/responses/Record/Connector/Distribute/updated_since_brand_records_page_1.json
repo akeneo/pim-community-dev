@@ -12,13 +12,13 @@
     "body": {
       "_links": {
         "self": {
-          "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records"
+          "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records?search=%7B%22updated%22%3A%5B%7B%22operator%22%3A%22%3E%22%2C%22value%22%3A%222018-10-14T10%3A00%3A00%2B00%3A00%22%7D%5D%7D"
         },
         "first": {
-          "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records"
+          "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records?search=%7B%22updated%22%3A%5B%7B%22operator%22%3A%22%3E%22%2C%22value%22%3A%222018-10-14T10%3A00%3A00%2B00%3A00%22%7D%5D%7D"
         },
         "next": {
-          "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records?search_after=brand_2"
+          "href": "http://localhost/api/rest/v1/reference-entities/brand_test/records?search=%7B%22updated%22%3A%5B%7B%22operator%22%3A%22%3E%22%2C%22value%22%3A%222018-10-14T10%3A00%3A00%2B00%3A00%22%7D%5D%7D&search_after=brand_2"
         }
       },
       "_embedded": {

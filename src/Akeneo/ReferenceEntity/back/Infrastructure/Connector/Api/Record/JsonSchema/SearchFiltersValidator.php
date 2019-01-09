@@ -56,7 +56,7 @@ class SearchFiltersValidator
                     ]
                 ],
                 'updated' => [
-                    'type' => 'object',
+                    'type' => 'array',
                     'require' => ['operator', 'value'],
                     'properties' => [
                         'operator' => [
