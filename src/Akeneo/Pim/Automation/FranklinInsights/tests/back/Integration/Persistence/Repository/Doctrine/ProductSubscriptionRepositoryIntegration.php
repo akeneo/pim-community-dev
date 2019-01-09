@@ -93,6 +93,18 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         Assert::assertTrue(null === $result);
     }
 
+    public function test_that_it_retrieves_subscriptions_from_product_ids(): void
+    {
+        $this->insertSubscription(42, 'a-fake-subscription-id', []);
+        $this->insertSubscription(56, 'another-fake-subscription-id', []);
+        $this->insertSubscription(44, 'a-third-subscription-id', []);
+
+        $subscriptions = $this->getRepository()->findByProductIds([12, 56, 98, 40]);
+        Assert::assertCount(1, $subscriptions);
+        Assert::assertSame(56, $subscriptions[0]->getProductId());
+        Assert::assertSame('another-fake-subscription-id', $subscriptions[0]->getSubscriptionId());
+    }
+
     public function test_it_saves_empty_suggested_data_as_null(): void
     {
         $subscription1 = new ProductSubscription(

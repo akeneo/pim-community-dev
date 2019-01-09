@@ -38,6 +38,13 @@ interface ProductSubscriptionRepositoryInterface
     public function findOneByProductId(int $productId): ?ProductSubscription;
 
     /**
+     * @param int[] $productIds
+     *
+     * @return ProductSubscription[]
+     */
+    public function findByProductIds(array $productIds): array;
+
+    /**
      * @param int $limit
      * @param string|null $searchAfter
      *
