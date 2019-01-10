@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.24 (2019-01-10)
+
 ## Bug fixes
 
 - PIM-7964: Fix database migration
