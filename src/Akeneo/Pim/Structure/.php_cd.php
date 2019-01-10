@@ -69,7 +69,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountEntityWithFamilyVariantInterface',
 
         // Coupling issues:
-        // TODO it should be duplicated
+        // TIP-1021: Mass edit should not be linked to Enrichment
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor',
 
         // TIP-907: Functionnal problem we should not create empty associations

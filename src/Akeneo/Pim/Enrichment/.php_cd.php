@@ -101,7 +101,7 @@ $rules = [
         // TIP-1014: Do not use custom Flash Messages
         'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
 
-        // TODO: used in ProductCommentController to retrieve current locale => frontend or not discussion for "contextual" parameters
+        // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
@@ -211,9 +211,11 @@ $rules = [
 
         // TODO: extract from ValidMetric the enrichment part
         'Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric',
-        // TODO: should not have a contextual service
+
+        // TIP-1023: Drop CatalogContext
         'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',
-        // TODO: EASY PICK! move JobLauncherInterface to component
+
+        // TIP-1020: Move JobLauncherInterface
         'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
