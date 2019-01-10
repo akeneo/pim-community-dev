@@ -10,7 +10,7 @@ import {
   NormalizedAttribute,
 } from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
-import OptionCode from 'web/bundles/akeneoreferenceentity/domain/model/attribute/type/option/option-code';
+import OptionCode from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
 
 export interface NormalizedOptionAttribute extends NormalizedAttribute {
   type: 'option';

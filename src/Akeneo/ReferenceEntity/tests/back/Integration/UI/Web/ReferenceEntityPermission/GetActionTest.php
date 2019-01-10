@@ -58,7 +58,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $permission = new PermissionDetails();
         $permission->userGroupIdentifier = 2;
         $permission->userGroupName = 'IT support';
-        $permission->rightLevel = 'view';
+        $permission->rightLevel = 'edit';
         $permissions[] = $permission;
 
         $query->save($permissions);

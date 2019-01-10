@@ -8,6 +8,7 @@ import createAttribute, {
   CreateState as CreateAttributeState,
 } from 'akeneoreferenceentity/application/reducer/attribute/create';
 import structure, {StructureState} from 'akeneoreferenceentity/application/reducer/structure';
+import permission, {PermissionState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit/permission';
 import attributes, {ListState} from 'akeneoreferenceentity/application/reducer/attribute/list';
 import attribute, {EditState as EditAttributeState} from 'akeneoreferenceentity/application/reducer/attribute/edit';
 import {
@@ -28,6 +29,7 @@ export interface EditState {
   form: EditionFormState;
   recordCount: number;
   structure: StructureState;
+  permission: PermissionState;
   confirmDelete: ConfirmDeleteState;
 }
 
@@ -40,6 +42,7 @@ export default {
   attributes,
   attribute,
   structure,
+  permission,
   options,
   form,
   recordCount: (state: number = 0, action: {type: string; recordCount: number}) => {

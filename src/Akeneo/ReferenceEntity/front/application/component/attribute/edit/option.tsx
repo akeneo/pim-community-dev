@@ -126,8 +126,8 @@ const optionRow = ({
     attribute: {
       edit: boolean;
       delete: boolean;
-    }
-  }
+    };
+  };
   labelInputReference: React.RefObject<HTMLInputElement>;
   codeInputReference: React.RefObject<HTMLInputElement>;
   onOptionEditionCodeUpdated: (code: string, id: any) => void;
@@ -138,7 +138,9 @@ const optionRow = ({
   onFocusPreviousField: (index: number, field: Field) => void;
 }) => {
   const displayDeleteRowButton: boolean = !isLastRow && rights.attribute.delete;
-  const inputTextClassName = `AknTextField AknTextField--light ${!rights.attribute.edit ? 'AknTextField--disabled' : ''}`;
+  const inputTextClassName = `AknTextField AknTextField--light ${
+    !rights.attribute.edit ? 'AknTextField--disabled' : ''
+  }`;
 
   return (
     <React.Fragment key={index}>
@@ -478,8 +480,8 @@ export default connect(
             ownProps.rights.attribute.edit &&
             securityContext.isGranted('akeneo_referenceentity_option_delete') &&
             securityContext.isGranted('akeneo_referenceentity_option_edit'),
-        }
-      }
+        },
+      },
     };
   },
   (dispatch: any): DispatchProps => {

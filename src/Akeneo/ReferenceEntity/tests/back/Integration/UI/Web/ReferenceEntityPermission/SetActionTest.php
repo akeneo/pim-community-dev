@@ -39,7 +39,7 @@ class SetActionTest extends ControllerIntegrationTestCase
      */
     public function it_sets_user_group_permission_on_a_reference_entity()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok.json');
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'edit.json');
     }
 
     /**

@@ -11,7 +11,7 @@ const getRequestContract = fileName => {
   );
 };
 
-const listenRequest = async function(page, requestContract) {
+const listenRequest = async function(page, requestContract, once = false) {
   const url = await page.evaluate(
     async (route, query) => {
       const router = require('pim/router');
@@ -32,7 +32,11 @@ const listenRequest = async function(page, requestContract) {
       page.removeListener('request', answerRequest);
     }
   };
-  page.on('request', answerRequest);
+  if (once) {
+    page.once('request', answerRequest);
+  } else {
+    page.on('request', answerRequest);
+  }
 };
 
 const answerLocaleList = async function() {

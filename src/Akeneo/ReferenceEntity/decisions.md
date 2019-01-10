@@ -583,3 +583,48 @@ To support our new search usecases, we need to update the index with the "links"
             ],
         ],
     ]
+
+
+## 07/01/19
+
+### Use of constructor for commands
+
+#### Problem
+
+Let's start by defining what is a command on our (bounded context) BC and how we use them:
+
+- They represent the user intention
+- They are plain php object
+- They don't have any logic nor constructor
+- Their properties are public
+- We create them with the new operator in the infrastructur layer
+
+They are really convenient, simple to create and manipulate.
+
+Here is how we initalize one today:
+
+    $createImageAttributeCommand = new CreateImageAttributeCommand();
+    $createImageAttributeCommand->referenceEntityIdentifier = $referenceEntityIdentifier->normalize();
+    $createImageAttributeCommand->code = 'image';
+    $createImageAttributeCommand->labels = [];
+    $createImageAttributeCommand->order = 1;
+    $createImageAttributeCommand->isRequired = false;
+    $createImageAttributeCommand->valuePerChannel = false;
+    $createImageAttributeCommand->valuePerLocale = false;
+    $createImageAttributeCommand->maxFileSize = '8192';
+    $createImageAttributeCommand->allowedExtensions = [];
+
+We see different isssues here:
+
+- There is no type checks on the properties of the command (so if we do a mistake here, it will fail later in the process and it will be difficult to debug it)
+- If we add a new property to this command, it's not easy to know where to add it
+
+#### Proposed solution
+
+Use proper constructor on our commands.
+
+#### How to?
+
+We will dedicate someone on the next bloom to list all comamnds and create subtasks.
+Then we will be able to create a PR to fix them one by one (use of a feature branch could be possible).
+Then take cards one by one and fix them. It should not create any conflicts

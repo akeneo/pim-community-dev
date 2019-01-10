@@ -12,7 +12,7 @@ const didierIdentifier = createIdentifier('didier');
 const didierLabels = createLabelCollection({en_US: 'Didier'});
 
 describe('akeneo > reference entity > domain > model --- reference entity', () => {
-  test('I can create a new reference entity with a identifier and labels', () => {
+  test('I can create a new reference entity with an identifier and labels', () => {
     expect(createReferenceEntity(michelIdentifier, michelLabels, createEmptyFile()).getIdentifier()).toBe(
       michelIdentifier
     );
