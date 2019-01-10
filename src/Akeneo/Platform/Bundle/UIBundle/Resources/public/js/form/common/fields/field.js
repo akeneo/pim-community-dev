@@ -141,17 +141,23 @@ define([
          * @returns {Promise}
          */
         getTemplateContext() {
+            const templateParams = this.config.templateParams || {};
+
             return $.Deferred()
-                .resolve({
-                    fieldLabel: this.getLabel(),
-                    requiredLabel: this.getRequiredLabel(),
-                    fieldName: this.fieldName,
-                    fieldId: this.getFieldId(),
-                    errors: this.errors,
-                    readOnly: this.isReadOnly(),
-                    required: this.config.required || false,
-                    __: __
-                })
+                .resolve(Object.assign(
+                    {},
+                    {
+                        fieldLabel: this.getLabel(),
+                        requiredLabel: this.getRequiredLabel(),
+                        fieldName: this.fieldName,
+                        fieldId: this.getFieldId(),
+                        errors: this.errors,
+                        readOnly: this.isReadOnly(),
+                        required: this.config.required || false,
+                        __: __
+                    },
+                    templateParams
+                ))
                 .promise();
         },
 
