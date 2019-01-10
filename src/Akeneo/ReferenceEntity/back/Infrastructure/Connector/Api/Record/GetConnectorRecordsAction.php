@@ -202,7 +202,7 @@ class GetConnectorRecordsAction
             ];
         }
 
-        if (isset($rawFilters['updated']) && null !== $rawFilters['updated'][0]) {
+        if (isset($rawFilters['updated'])) {
             $formattedFilters[] = [
                 'field' => 'updated',
                 'operator' => $rawFilters['updated'][0]['operator'],
