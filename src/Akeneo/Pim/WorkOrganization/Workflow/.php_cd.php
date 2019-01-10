@@ -45,14 +45,14 @@ $rules = [
         'Akeneo\Pim\Permission\Component\Authorization\DenyNotGrantedCategorizedEntity',
         'Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory',
 
-        //TODO: We should not rely on a contextual parameter in constructor and use the UserId instead of username
+        // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
         'Akeneo\Pim\Permission\Bundle\User\UserContext',
 
         //TODO: draft should be linked to user by ID (and we should not keep the name of the user in the draft)
         'Akeneo\UserManagement\Component\Event\UserEvent',
 
-        //TODO: should be done in frontend
+        // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
 
         //TODO: We should integrate by database instead of using external repository
@@ -80,10 +80,9 @@ $rules = [
         // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
 
-        //TODO: It uses the PQB
+        // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch',
         'Akeneo\Pim\Enrichment\Bundle\Filter',
-        'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface', //For the reference data filter
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException',
@@ -95,6 +94,11 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException',
         'Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions',
+
+        // TIP-949: Assets should not be Reference Data
+        // TIP-963: Define the Products public API
+        'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface', // For the reference data PQB filter
+
 
         // TODO: Used by twig in the datagrid to create a fake value
         'Akeneo\Pim\Structure\Component\Factory\AttributeFactory',
@@ -131,7 +135,7 @@ $rules = [
         // TIP-1014: Do not use custom Flash Messages
         'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
 
-        //TODO: It uses the locale resolver to get the current locale, should be a contextual parameter
+        // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
 
         //TODO the feature uses the datagrid
@@ -152,7 +156,7 @@ $rules = [
         // TIP-983: Workflow should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
 
-        // TODO: a component should not use a bundle
+        // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
 
         // TODO: createDatagridQueryBuilder method used by datagrid
@@ -202,7 +206,7 @@ $rules = [
         // TIP-989 Do not use a PIM/Enrichment constraint
         'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString',
 
-        //TODO: It uses the PQB
+        // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface',
 

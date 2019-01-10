@@ -27,10 +27,11 @@ $rules = [
         'Akeneo\Channel\Component\Model\ChannelInterface',
 
         // TIP-968: TWA depends on PIM/Enrichment
+        // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
 
-        // TODO: Inverse the dependency (should be a standalone JS component)
+        // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',
 
         // TIP-1013: Rework Notification system
