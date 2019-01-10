@@ -79,6 +79,7 @@ class Permission extends React.Component<StateProps & DispatchProps> {
             <span className="group-label">{__('pim_reference_entity.reference_entity.permission.title')}</span>
           </header>
           <div className="AknFormContainer AknFormContainer--wide">
+            {!this.props.permission.data.isEmpty() ? (
             <PermissionCollectionEditor
               readOnly={!this.props.rights.referenceEntity.edit}
               value={this.props.permission.data}
@@ -87,6 +88,15 @@ class Permission extends React.Component<StateProps & DispatchProps> {
                 this.props.events.onPermissionUpdated(newValue);
               }}
             />
+            ) : (
+              <div className="AknGridContainer-noData">
+                <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--user-group" />
+                <div className="AknGridContainer-noDataTitle">
+                {__('pim_reference_entity.permission.no_data.title')}
+                </div>
+                <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.permission.no_data.subtitle')}</div>
+              </div>
+            )}
           </div>
         </div>
       </React.Fragment>
