@@ -9,7 +9,11 @@
  */
 define(['pim/form/common/delete', 'pim/remover/user'], function (DeleteForm, UserRemover) {
     return DeleteForm.extend({
-        remover: UserRemover
+        remover: UserRemover,
+
+        getIdentifier: function () {
+            return this.getFormData().meta.id;
+        }
     });
 });
 

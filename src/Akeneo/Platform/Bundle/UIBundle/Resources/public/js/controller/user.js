@@ -19,7 +19,7 @@ define([
              */
             renderForm: function (route) {
                 return FetcherRegistry.getFetcher('user').fetch(
-                    route.params.code,
+                    route.params.identifier,
                 ).then((user) => {
                     if (!this.active) {
                         return;

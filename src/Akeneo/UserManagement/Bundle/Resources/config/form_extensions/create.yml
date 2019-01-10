@@ -9,7 +9,8 @@ extensions:
             successMessage: pim_user_management.entity.user.flash.create.success
             editRoute: pim_user_edit
             postUrl: pim_user_user_rest_create
-            routerKey: code
+            routerKey: identifier
+            entityIdentifierParamName: meta.id
 
     pim-user-create-modal-username:
         module: pim/form/common/fields/text

@@ -13,7 +13,8 @@ define(
         'oro/loading-mask',
         'pim/router',
         'oro/messenger',
-        'pim/template/form/creation/modal'
+        'pim/template/form/creation/modal',
+        'pim/common/property'
     ],
     function (
         $,
@@ -27,7 +28,8 @@ define(
         LoadingMask,
         router,
         messenger,
-        template
+        template,
+        propertyAccessor
     ) {
         return BaseForm.extend({
             config: {},
@@ -104,7 +106,13 @@ define(
 
                     let routerParams = {};
 
-                    if (this.config.routerKey) {
+                    if (this.config.routerKey && this.config.entityIdentifierParamName) {
+                        routerParams[this.config.routerKey] = propertyAccessor.accessProperty(
+                            entity,
+                            this.config.entityIdentifierParamName,
+                            ''
+                        );
+                    } else if (this.config.routerKey) {
                         routerParams[this.config.routerKey] = entity[this.config.routerKey];
                     } else {
                         routerParams = {id: entity.meta.id};
