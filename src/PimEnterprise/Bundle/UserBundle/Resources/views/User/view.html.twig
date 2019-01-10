@@ -3,6 +3,7 @@
 
 {% set fullname = entity.fullName|default('N/A') %}
 {% oro_title_set({params : {"%username%": fullname }}) %}
+{% set userBackPath = resource_granted('pim_user_user_index') ? path('oro_user_index') : path('oro_user_profile_view') %}
 
 {% block navButtons %}
     {% if editRoute is defined %}
@@ -27,7 +28,7 @@
     {% if resource_granted('pim_user_user_remove') and entity.id!=app.user.id %}
         {{ UI.deleteButton({
             'dataUrl': path('oro_user_user_delete', {'id': entity.id}),
-            'dataRedirect': path('oro_user_index'),
+            'dataRedirect': userBackPath,
             'aCss': 'AknButtonList-item remove-button',
             'dataId': entity.id,
             'dataMessage': 'Are you sure you want to delete this user?'|trans,
@@ -41,7 +42,7 @@
 {% block pageHeader %}
     {% set breadcrumbs = {
         'entity':      entity,
-        'indexPath':   path('oro_user_index'),
+        'indexPath':   userBackPath,
         'indexLabel': 'Users'|trans,
         'entityTitle': fullname,
         'hasAvatar':   true,
@@ -67,7 +68,7 @@
 {% endblock stats %}
 
 {% block backButton %}
-    {{ elements.backLink(path('oro_user_index')) }}
+    {{ elements.backLink(userBackPath) }}
 {% endblock %}
 
 {% block content_data %}

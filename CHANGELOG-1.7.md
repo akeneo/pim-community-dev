@@ -1,5 +1,7 @@
 # 1.7.x
 
+- PIM-7953: Fix back button link in user profile view template
+
 # 1.7.37 (2019-01-09)
 
 # 1.7.36 (2018-12-11)
