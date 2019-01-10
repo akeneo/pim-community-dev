@@ -88,6 +88,7 @@ class GetConnectorRecordsAction
     {
         $searchFilters = $this->getSearchFiltersFromRequest($request);
         $searchFiltersErrors = !empty($searchFilters) ? $this->searchFiltersValidator->validate($searchFilters) : [];
+
         if (!empty($searchFiltersErrors)) {
             return new JsonResponse([
                 'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,
@@ -199,6 +200,14 @@ class GetConnectorRecordsAction
                     'channel' => $rawFilters['complete']['channel'],
                     'locales' => $rawFilters['complete']['locales'],
                 ],
+            ];
+        }
+
+        if (isset($rawFilters['updated'])) {
+            $formattedFilters[] = [
+                'field' => 'updated',
+                'operator' => current($rawFilters['updated'])['operator'],
+                'value' => current($rawFilters['updated'])['value']
             ];
         }
 

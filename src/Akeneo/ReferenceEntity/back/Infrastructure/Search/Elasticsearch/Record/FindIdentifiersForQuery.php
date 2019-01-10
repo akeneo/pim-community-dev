@@ -76,6 +76,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         $codeLabelFilter = ($recordQuery->hasFilter('code_label')) ? $recordQuery->getFilter('code_label') : null;
         $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
         $completeFilter = ($recordQuery->hasFilter('complete')) ? $recordQuery->getFilter('complete') : null;
+        $updatedFilter = ($recordQuery->hasFilter('updated')) ? $recordQuery->getFilter('updated') : null;
 
         $query = [
             '_source' => '_id',
@@ -145,11 +146,26 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             ];
         }
 
+        if (null !== $updatedFilter && !empty($updatedFilter['value'] && '>' === $updatedFilter['operator'])) {
+            $query['query']['constant_score']['filter']['bool']['filter'][] = [
+                'range' => [
+                   'updated_at' => ['gt' => $this->getFormattedDate($updatedFilter['value'])]
+                ]
+            ];
+        }
+
         if (null !== $completeFilter) {
             $query = $this->getCompleteFilterQuery($recordQuery, $referenceEntityCode, $completeFilter, $query);
         }
 
         return $query;
+    }
+
+    private function getFormattedDate(string $updatedDate): int
+    {
+        $date = new \DateTime($updatedDate);
+
+        return $date->getTimestamp();
     }
 
     private function getTerms(array $searchFilter): string

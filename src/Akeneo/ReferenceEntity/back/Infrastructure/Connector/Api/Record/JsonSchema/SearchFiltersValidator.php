@@ -54,6 +54,24 @@ class SearchFiltersValidator
                             'minItems' => 1
                         ],
                     ]
+                ],
+                'updated' => [
+                    'type' => 'array',
+                    'minItems' => 1,
+                    'items' => [
+                        'type' => 'object',
+                        'required' => ['operator', 'value'],
+                        'properties' => [
+                            'operator' => [
+                                'type' => 'string',
+                                'enum' => ['>']
+                            ],
+                            'value' => [
+                                'type' => 'string',
+                                'format' => 'date-time'
+                            ]
+                        ]
+                    ],
                 ]
             ],
             'additionalProperties' => false

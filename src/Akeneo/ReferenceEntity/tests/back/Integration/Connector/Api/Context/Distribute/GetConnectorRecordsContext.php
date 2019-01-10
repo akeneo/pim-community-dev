@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute;
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryDateRepository;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery;
@@ -47,9 +48,11 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
@@ -85,6 +88,12 @@ class GetConnectorRecordsContext implements Context
     /** @var null|Response */
     private $unprocessableEntityResponse;
 
+    /** @var null|Response */
+    private $updatedSinceWrongFormatResponse;
+
+    /** @var null|Response */
+    private $updatedSinceResponse;
+
     /** @var InMemoryChannelExists */
     private $channelExists;
 
@@ -103,6 +112,9 @@ class GetConnectorRecordsContext implements Context
     /** @var InMemoryFindActivatedLocalesPerChannels */
     private $findActivatedLocalesPerChannels;
 
+    /** @var InMemoryDateRepository */
+    private $dateRepository;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -113,7 +125,8 @@ class GetConnectorRecordsContext implements Context
         InMemoryChannelExists $channelExists,
         InMemoryFindActivatedLocalesByIdentifiers $findActivatedLocalesByIdentifiers,
         InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocales,
-        InMemoryFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels
+        InMemoryFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
+        InMemoryDateRepository $dateRepository
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -126,6 +139,7 @@ class GetConnectorRecordsContext implements Context
         $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
         $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocales;
         $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
+        $this->dateRepository = $dateRepository;
     }
 
     /**
@@ -516,7 +530,7 @@ class GetConnectorRecordsContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->unprocessableEntityResponse,
-            self::REQUEST_CONTRACT_DIR . $this->requestContract
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_brand_records_for_non_existent_locale.json'
         );
     }
 
@@ -864,5 +878,139 @@ class GetConnectorRecordsContext implements Context
         );
 
         $this->attributeRepository->create($attribute);
+    }
+
+    /**
+     * @Given /^2 records for the Brand reference entity that were last updated on the 10th of October (\d+)$/
+     */
+    public function recordsForTheBrandReferenceEntityThatWereLastUpdatedOnThe10thOfOctober()
+    {
+        $this->dateRepository->setCurrentDate(new \DateTime('2018-10-10'));
+
+        for ($i = 4; $i >= 2; $i--) {
+            $rawRecordCode = sprintf('brand_%d', $i);
+            $recordCode = RecordCode::fromString($rawRecordCode);
+            $recordIdentifier = RecordIdentifier::fromString($rawRecordCode);
+            $labelCollection = [
+                'en_US' => 'test'
+            ];
+            $mainImage = Image::createEmpty();
+
+            $record = Record::create(
+                $recordIdentifier,
+                ReferenceEntityIdentifier::fromString('brand_test'),
+                $recordCode,
+                $labelCollection,
+                $mainImage,
+                ValueCollection::fromValues([])
+            );
+
+            $this->findRecordIdentifiersForQuery->add($record);
+
+            $connectorRecord = new ConnectorRecord(
+                $recordCode,
+                LabelCollection::fromArray($labelCollection),
+                $mainImage,
+                []
+            );
+
+            $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
+            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+        }
+
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand_test'),
+            [],
+            Image::createEmpty()
+        );
+
+        $this->referenceEntityRepository->create($referenceEntity);
+    }
+
+    /**
+     * @Given /^2 records for the Brand reference entity that were updated on the 15th of October 2018$/
+     */
+    public function recordsForTheBrandReferenceEntityThatWereUpdatedOnThe15thOfOctober()
+    {
+        $this->dateRepository->setCurrentDate(new \DateTime('2018-10-15'));
+
+        for ($i = 2; $i >= 0; $i--) {
+            $rawRecordCode = sprintf('brand_%d', $i);
+            $recordCode = RecordCode::fromString($rawRecordCode);
+            $recordIdentifier = RecordIdentifier::fromString($rawRecordCode);
+            $labelCollection = [
+                'en_US' => 'test'
+            ];
+            $mainImage = Image::createEmpty();
+
+            $record = Record::create(
+                $recordIdentifier,
+                ReferenceEntityIdentifier::fromString('brand_test'),
+                $recordCode,
+                $labelCollection,
+                $mainImage,
+                ValueCollection::fromValues([])
+            );
+
+            $this->findRecordIdentifiersForQuery->add($record);
+
+            $connectorRecord = new ConnectorRecord(
+                $recordCode,
+                LabelCollection::fromArray($labelCollection),
+                $mainImage,
+                []
+            );
+
+            $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
+            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+        }
+    }
+
+    /**
+     * @When /^the connector requests all records of the Brand reference entity updated since the 14th of October 2018$/
+     */
+    public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityUpdatedSinceThe14thOfOctober()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->updatedSinceResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'updated_since_brand_records_page_1.json'
+        );
+    }
+
+    /**
+     * @Then /^the PIM returns the 2 records of the Brand reference entity that were updated on the 15th of October 2018$/
+     */
+    public function thePIMReturnsTheRecordsOfTheBrandReferenceEntityThatWereUpdatedOnThe15thOfOctober()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->updatedSinceResponse,
+            self::REQUEST_CONTRACT_DIR . 'updated_since_brand_records_page_1.json'
+        );
+    }
+
+    /**
+     * @When /^the connector requests records that were updated since a date that does not have the right format$/
+     */
+    public function theConnectorRequestsRecordsThatWereUpdatedSinceADateThatDoesNotHaveTheRightFormat()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->updatedSinceWrongFormatResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'updated_entity_brand_records_for_wrong_format.json'
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that the date format is not the expected one$/
+     */
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheDateFormatIsNotTheExpectedOne()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->updatedSinceWrongFormatResponse,
+            self::REQUEST_CONTRACT_DIR . 'updated_entity_brand_records_for_wrong_format.json'
+        );
     }
 }

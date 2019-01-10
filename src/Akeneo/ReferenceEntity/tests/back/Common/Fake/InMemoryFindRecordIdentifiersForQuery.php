@@ -32,15 +32,24 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
     private $findRequiredValueKeyCollectionForChannelAndLocale;
 
+    /** @var \DateTime[] */
+    private $updatedDateByRecord = [];
+
+    /** @var InMemoryDateRepository */
+    private $dateRepository;
+
     public function __construct(
-        InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocale
+        InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocale,
+        InMemoryDateRepository $dateRepository
     ) {
         $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
+        $this->dateRepository = $dateRepository;
     }
 
     public function add(Record $record): void
     {
         $this->records[] = $record;
+        $this->updatedDateByRecord[(string) $record->getIdentifier()] = $this->dateRepository->getCurrentDate();
     }
 
     /**
@@ -53,6 +62,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
         $codeFilter = ($query->hasFilter('code')) ? $query->getFilter('code') : null;
         $codeLabelFilter = ($query->hasFilter('code_label')) ? $query->getFilter('code_label') : null;
         $completeFilter = ($query->hasFilter('complete')) ? $query->getFilter('complete') : null;
+        $updatedFilter = ($query->hasFilter('updated')) ? $query->getFilter('updated'): null;
 
         $records = array_values(array_filter($this->records, function (Record $record) use ($referenceEntityFilter) {
             return '' === $referenceEntityFilter['value']
@@ -129,6 +139,17 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             $field = sprintf('%s %s', $record->getCode(), $record->getLabel($query->getLocale()));
 
             return false !== strpos($field, $codeLabelFilter['value']);
+        }));
+
+        $records = array_values(array_filter($records, function (Record $record) use ($updatedFilter) {
+            if (null === $updatedFilter) {
+                return true;
+            }
+
+            $updatedSinceDate = (new \DateTime($updatedFilter['value']))->getTimestamp();
+            $recordDate = ($this->updatedDateByRecord[(string) $record->getIdentifier()])->getTimestamp();
+
+            return $recordDate >= $updatedSinceDate;
         }));
 
         if ($query->isPaginatedUsingSearchAfter()) {
