@@ -559,6 +559,13 @@ class AssertionContext extends PimContext
             return;
         }
 
+        // notification is loaded during the click
+        // but isVisible is not totally reliable, which mean that
+        // we think we load the notification panel but we didn't (DOM not loaded)
+        // sleep is a dirty hack but spinning the click + footer all together does not work
+        sleep(1);
+
+
         $this->spin(function () use ($notificationWidget) {
             $toggle = $notificationWidget->find('css', '.notification-link');
 
