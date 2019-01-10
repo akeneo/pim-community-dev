@@ -3,17 +3,23 @@ terraform {
     bucket = "akecld-terraform"
   }
 }
+
+data "template_file" "mailgun_login" {
+  template = "${format ("srnt-%s-%s", var.pfid, var.google_project_name)}"
+}
+
 resource "random_string" "mailgun_password" {
   length  = 12
   special = false
 }
+
 
 resource "null_resource" "mailgun-credential" {
   provisioner "local-exec" {
     command = <<EOF
 curl -s --user 'api:${var.mailgun_api_key}' \
 		https://api.mailgun.net/v3/domains/${var.mailgun_domain}/credentials \
-		-F login='${var.mailgun_login}@${var.mailgun_domain}' \
+		-F login='${data.template_file.mailgun_login.rendered}@${var.mailgun_domain}' \
 		-F password='${random_string.mailgun_password.result}' ; \
 EOF
   }
@@ -23,7 +29,7 @@ EOF
 
     command = <<EOF
 curl -s --user 'api:${var.mailgun_api_key}' -X DELETE \
-		https://api.mailgun.net/v3/domains/${var.mailgun_domain}/credentials/${var.mailgun_login}@${var.mailgun_domain}
+		https://api.mailgun.net/v3/domains/${var.mailgun_domain}/credentials/${data.template_file.mailgun_login.rendered}@${var.mailgun_domain}
 EOF
   }
 }
