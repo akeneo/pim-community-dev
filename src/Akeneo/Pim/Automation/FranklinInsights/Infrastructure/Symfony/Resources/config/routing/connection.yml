@@ -18,5 +18,5 @@ akeneo_franklin_insights_connection_post:
 
 akeneo_franklin_insights_connection_status_get:
     path: /status
-    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.franklin:isActiveAction }
+    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.franklin:getStatusAction }
     methods: [GET]

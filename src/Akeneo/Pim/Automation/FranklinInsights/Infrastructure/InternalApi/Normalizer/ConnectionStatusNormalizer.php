@@ -31,6 +31,7 @@ final class ConnectionStatusNormalizer
     {
         return [
             'isActive' => $connectionStatus->isActive(),
+            'isValid' => $connectionStatus->isValid(),
             'isIdentifiersMappingValid' => $connectionStatus->isIdentifiersMappingValid(),
             'productSubscriptionCount' => $connectionStatus->productSubscriptionCount(),
         ];

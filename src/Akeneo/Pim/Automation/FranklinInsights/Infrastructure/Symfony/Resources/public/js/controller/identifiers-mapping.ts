@@ -23,7 +23,7 @@ class MappingController extends BaseController {
    * {@inheritdoc}
    */
   public renderForm(): object {
-    return getConnectionStatus()
+    return getConnectionStatus(false)
       .then((connectionStatus: ConnectionStatus) => {
         let formToBuild = 'akeneo-franklin-insights-settings-identifiers-mapping-index-inactive-connection';
         if (connectionStatus.isActive) {

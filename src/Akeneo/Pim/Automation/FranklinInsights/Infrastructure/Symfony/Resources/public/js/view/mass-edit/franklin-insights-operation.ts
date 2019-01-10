@@ -85,7 +85,7 @@ class FranklinInsightsOperation extends Operation {
    * {@inheritdoc}
    */
   public render() {
-    getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
+    getConnectionStatus(true).then((connectionStatus: ConnectionStatus) => {
       if (undefined === this.getFormData().action) {
         this.setAction('subscribe');
       }
@@ -95,7 +95,7 @@ class FranklinInsightsOperation extends Operation {
         errorMessage = __(this.config.invalidMappingConstraint);
         this.getParent().disableNextButton();
       }
-      if (!connectionStatus.isActive) {
+      if (!connectionStatus.isValid) {
         errorMessage = __(this.config.franklinActivationConstraint);
         this.getParent().disableNextButton();
       }
@@ -105,7 +105,7 @@ class FranklinInsightsOperation extends Operation {
         unsubscribeLabel: __(this.config.unsubscribeLabel),
         errorMessage,
         currentAction: this.getFormData().action,
-        isActive: connectionStatus.isActive && connectionStatus.isIdentifiersMappingValid,
+        isActive: connectionStatus.isValid && connectionStatus.isIdentifiersMappingValid,
         readonly: this.readOnly,
       }));
 

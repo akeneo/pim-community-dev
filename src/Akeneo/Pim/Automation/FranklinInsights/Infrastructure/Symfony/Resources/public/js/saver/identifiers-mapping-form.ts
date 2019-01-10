@@ -55,7 +55,7 @@ class MappingSave extends BaseSave {
    * Displays a confirmation modal if there is subscribed products. If not, just save.
    */
   public save(): void {
-    getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
+    getConnectionStatus(false).then((connectionStatus: ConnectionStatus) => {
       if (connectionStatus.productSubscriptionCount > 0) {
         Dialog.confirm(
           __(

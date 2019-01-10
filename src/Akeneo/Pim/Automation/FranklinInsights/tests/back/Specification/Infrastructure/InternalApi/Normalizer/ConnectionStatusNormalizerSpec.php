@@ -33,6 +33,7 @@ class ConnectionStatusNormalizerSpec extends ObjectBehavior
 
         $this->normalize($connectionStatus)->shouldReturn([
             'isActive' => true,
+            'isValid' => true,
             'isIdentifiersMappingValid' => true,
             'productSubscriptionCount' => 42,
         ]);
@@ -41,6 +42,7 @@ class ConnectionStatusNormalizerSpec extends ObjectBehavior
 
         $this->normalize($anotherConnectionStatus)->shouldReturn([
             'isActive' => false,
+            'isValid' => false,
             'isIdentifiersMappingValid' => false,
             'productSubscriptionCount' => 42,
         ]);

@@ -80,9 +80,12 @@ class FranklinConnectionController
     /**
      * @return Response
      */
-    public function isActiveAction(): Response
+    public function getStatusAction(Request $request): Response
     {
-        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery(true));
+        $checkTokenValidity = $request->query->getBoolean('checkValidity', false);
+        $connectionStatus = $this->getConnectionStatusHandler->handle(
+            new GetConnectionStatusQuery($checkTokenValidity)
+        );
 
         return new JsonResponse($this->connectionStatusNormalizer->normalize($connectionStatus));
     }
