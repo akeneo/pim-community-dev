@@ -35,7 +35,7 @@ class UserUpdaterIntegration extends TestCase
         $this->get('pim_user.updater.user')->update($user, [], []);
 
         $errors = $this->get('validator')->validate($user);
-        $this->assertEquals(5, $errors->count());
+        $this->assertEquals(4, $errors->count());
 
         $result = [];
         foreach ($errors as $error) {
