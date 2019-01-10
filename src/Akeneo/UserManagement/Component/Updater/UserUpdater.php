@@ -4,7 +4,6 @@ namespace Akeneo\UserManagement\Component\Updater;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
@@ -438,7 +437,7 @@ class UserUpdater implements ObjectUpdaterInterface
                     $data['filePath']
                 );
             }
-            $fileInfo = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
+            $fileInfo = $this->fileStorer->store($rawFile, 'catalogStorage');
         }
 
         $user->setAvatar($fileInfo);
