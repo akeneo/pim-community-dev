@@ -105,20 +105,27 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
         <table className="AknPermission AknGrid">
           <thead className="AknPermission-header" ref={this.tableHead}>
             <tr className="AknGrid-bodyRow">
-              <th className="AknGrid-headerCell AknGrid-headerCell--center AknGrid-headerCell--sticky" style={{top: `${topPosition}px`}}/>
+              <th
+                className="AknGrid-headerCell AknGrid-headerCell--center AknGrid-headerCell--sticky"
+                style={{top: `${topPosition}px`}}
+              />
               {this.props.prioritizedRightLevels.map((rightLevel: RightLevel) => (
-                <th key={rightLevel} className="AknGrid-headerCell AknGrid-headerCell--center AknGrid-headerCell--sticky" style={{top: `${topPosition}px`}}>
-                <span
-                  className="AknButton AknButton--small"
-                  onClick={() => {
-                    this.onAllPermissionUpdated(rightLevel);
-                  }}
-                  tabIndex={0}
-                  title={__('permission.mass_action', {rightLevel})}
-                  data-right-level={rightLevel}
+                <th
+                  key={rightLevel}
+                  className="AknGrid-headerCell AknGrid-headerCell--center AknGrid-headerCell--sticky"
+                  style={{top: `${topPosition}px`}}
                 >
-                  {rightLevel}
-                </span>
+                  <span
+                    className="AknButton AknButton--small"
+                    onClick={() => {
+                      this.onAllPermissionUpdated(rightLevel);
+                    }}
+                    tabIndex={0}
+                    title={__('permission.mass_action', {rightLevel})}
+                    data-right-level={rightLevel}
+                  >
+                    {rightLevel}
+                  </span>
                 </th>
               ))}
             </tr>

@@ -77,9 +77,7 @@ describe('>>>COMPONENT --- permission', () => {
       />
     );
 
-    permissionsEditor
-      .find(`.AknPermission-row--massAction .AknPermission-level[data-right-level="edit"] .AknPermission-pill`)
-      .simulate('click');
+    permissionsEditor.find(`.AknPermission-header .AknButton[data-right-level="edit"]`).simulate('click');
   });
 
   test('Mass update rights at none', () => {
@@ -98,9 +96,7 @@ describe('>>>COMPONENT --- permission', () => {
       />
     );
 
-    permissionsEditor
-      .find(`.AknPermission-row--massAction .AknPermission-level[data-right-level="none"] .AknPermission-pill`)
-      .simulate('click');
+    permissionsEditor.find(`.AknPermission-header .AknButton[data-right-level="none"]`).simulate('click');
   });
 
   test('Mass update rights on read only', () => {
@@ -116,9 +112,7 @@ describe('>>>COMPONENT --- permission', () => {
       />
     );
 
-    permissionsEditor
-      .find(`.AknPermission-row--massAction .AknPermission-level[data-right-level="edit"] .AknPermission-pill`)
-      .simulate('click');
+    permissionsEditor.find(`.AknPermission-header .AknButton[data-right-level="edit"]`).simulate('click');
   });
 
   test('Update one right', () => {

@@ -84,23 +84,28 @@ class Permission extends React.Component<StateProps & DispatchProps> {
           </header>
           <div className="AknFormContainer AknFormContainer--wide">
             {!this.props.permission.data.isEmpty() ? (
-            <PermissionCollectionEditor
-              readOnly={!this.props.rights.referenceEntity.edit}
-              value={this.props.permission.data}
-              prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
-              onChange={(newValue: PermissionCollection) => {
-                this.props.events.onPermissionUpdated(newValue);
-              }}
-            />
+              <PermissionCollectionEditor
+                readOnly={!this.props.rights.referenceEntity.edit}
+                value={this.props.permission.data}
+                prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
+                onChange={(newValue: PermissionCollection) => {
+                  this.props.events.onPermissionUpdated(newValue);
+                }}
+              />
             ) : (
               <div className="AknGridContainer-noData">
                 <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--user-group" />
                 <div className="AknGridContainer-noDataTitle">
-                {__('pim_reference_entity.permission.no_data.title')}
+                  {__('pim_reference_entity.permission.no_data.title')}
                 </div>
-            <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.permission.no_data.subtitle')} {this.props.rights.userGroup.create ? (
-                <a href={`#${routing.generate('pim_user_group_index')}`} target="_blank">{__('pim_reference_entity.permission.no_data.link')}</a>
-              ) : null}</div>
+                <div className="AknGridContainer-noDataSubtitle">
+                  {__('pim_reference_entity.permission.no_data.subtitle')}{' '}
+                  {this.props.rights.userGroup.create ? (
+                    <a href={`#${routing.generate('pim_user_group_index')}`} target="_blank">
+                      {__('pim_reference_entity.permission.no_data.link')}
+                    </a>
+                  ) : null}
+                </div>
               </div>
             )}
           </div>
@@ -130,8 +135,9 @@ export default connect(
             canEditReferenceEntity(),
         },
         userGroup: {
-          create: securityContext.isGranted('pim_user_group_index') && securityContext.isGranted('pim_user_group_create')
-        }
+          create:
+            securityContext.isGranted('pim_user_group_index') && securityContext.isGranted('pim_user_group_create'),
+        },
       },
     };
   },

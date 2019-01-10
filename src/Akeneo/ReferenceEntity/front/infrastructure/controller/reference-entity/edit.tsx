@@ -134,7 +134,7 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(updateFilter('complete', '=', false));
         break;
     }
-  }
+  };
 
   beforeUnload = () => {
     if (this.isDirty()) {
@@ -159,7 +159,9 @@ class ReferenceEntityEditController extends BaseController {
 
     const state = this.store.getState();
 
-    return state.form.state.isDirty || state.attribute.isDirty || state.options.isDirty || state.permission.state.isDirty;
+    return (
+      state.form.state.isDirty || state.attribute.isDirty || state.options.isDirty || state.permission.state.isDirty
+    );
   }
 }
 
