@@ -1,11 +1,23 @@
 services:
-    akeneo_referenceentity.event_subscriber.installer:
-        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\ReferenceEntityResetFixturesCommand
+    akeneo_referenceentity.command.installer.fixtures_installer:
+        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\FixturesInstaller
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@pim_catalog.command_launcher'
+
+    akeneo_referenceentity.command.installer.assets_installer:
+        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\AssetsInstaller
         arguments:
             - '@filesystem'
             - '%kernel.project_dir%'
-            - '@doctrine.dbal.default_connection'
-            - '@akeneo_file_storage.file_storage.file.file_storer'
+
+    akeneo_referenceentity.event_subscriber.installer:
+        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\InstallerCommand
+        arguments:
+            - '@akeneo_referenceentity.command.installer.fixtures_installer'
+            - '@akeneo_referenceentity.command.installer.assets_installer'
+            - '%installer_data%'
         tags:
             - { name: kernel.event_subscriber }
             - { name: 'console.command'}

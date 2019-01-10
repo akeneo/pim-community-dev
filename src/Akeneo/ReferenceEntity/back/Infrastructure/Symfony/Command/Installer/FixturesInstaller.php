@@ -1,111 +1,42 @@
 <?php
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2017 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
+namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Tool\Component\Console\CommandLauncher;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 
 /**
- * This commands reset the database fixtures for the reference entity.
- * It also is an event listener used during the PIM isntallation.
- *
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityResetFixturesCommand extends ContainerAwareCommand implements EventSubscriberInterface
+class FixturesInstaller
 {
-    private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:reference-entity:reset-fixtures';
+    public const ICE_CAT_DEMO_DEV_CATALOG = 'PimEnterpriseInstallerBundle:icecat_demo_dev';
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
     private const NUMBER_OF_FAKE_RECORD_TO_CREATE = 10000;
 
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var string */
-    private $projectDir;
-
     /** @var Connection */
-    private $dbal;
+    private $sqlConnection;
 
     /** @var FileStorerInterface */
     private $storer;
 
-    public function __construct(Filesystem $filesystem, string $projectDir, Connection $dbal, FileStorerInterface $storer)
-    {
-        parent::__construct(self::RESET_FIXTURES_COMMAND_NAME);
+    /** @var CommandLauncher */
+    private $commandLauncher;
 
-        $this->filesystem = $filesystem;
-        $this->projectDir = $projectDir;
-        $this->dbal = $dbal;
+    public function __construct(
+        Connection $sqlConnection,
+        FileStorerInterface $storer,
+        CommandLauncher $commandLauncher
+    ) {
+        $this->sqlConnection = $sqlConnection;
         $this->storer = $storer;
-
-        parent::__construct();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this
-            ->setName(self::RESET_FIXTURES_COMMAND_NAME)
-            ->setDescription('Resets the fixtures of the reference entity bounded context.')
-            ->setHidden(true);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $this->createSchema();
-        $this->loadFixtures();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            InstallerEvents::POST_SYMFONY_ASSETS_DUMP => ['installAssets'],
-            InstallerEvents::POST_ASSETS_DUMP => ['installAssets'],
-            InstallerEvents::POST_DB_CREATE => ['createSchema'],
-            InstallerEvents::POST_LOAD_FIXTURES => ['loadFixtures'],
-        ];
-    }
-
-    public function installAssets(GenericEvent $event): void
-    {
-        $originDir = __DIR__.'/../../../../front';
-        $targetDir = $this->projectDir.'/web/bundles/akeneoreferenceentity';
-        if ($event->getArgument('symlink')) {
-            $this->relativeSymlinkWithFallback($originDir, $targetDir);
-        } else {
-            $this->hardCopy($originDir, $targetDir);
-        }
+        $this->commandLauncher = $commandLauncher;
     }
 
     public function createSchema(): void
@@ -165,7 +96,7 @@ CREATE TABLE `akeneo_reference_entity_reference_entity_permissions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
 
-        $this->dbal->exec($sql);
+        $this->sqlConnection->exec($sql);
     }
 
     /**
@@ -174,8 +105,12 @@ SQL;
      * ' => \\'
      * " => \\\"
      */
-    public function loadFixtures(): void
+    public function loadCatalog(string $catalogName): void
     {
+        if (self::ICE_CAT_DEMO_DEV_CATALOG !== $catalogName) {
+            return;
+        }
+
         $this->loadCities();
         $this->loadMainColors();
         $this->loadDesigners();
@@ -185,173 +120,6 @@ SQL;
         $this->loadMaterials();
         $this->loadFakeCities();
         $this->indexRecords();
-    }
-
-    /**
-     * Try to create relative symlink.
-     *
-     * Falling back to absolute symlink and finally hard copy.
-     *
-     * @param string $originDir
-     * @param string $targetDir
-     */
-    private function relativeSymlinkWithFallback(string $originDir, string $targetDir): void
-    {
-        try {
-            $this->symlink($originDir, $targetDir, true);
-        } catch (IOException $e) {
-            $this->absoluteSymlinkWithFallback($originDir, $targetDir);
-        }
-    }
-
-    /**
-     * Try to create absolute symlink.
-     *
-     * Falling back to hard copy.
-     *
-     * @param string $originDir
-     * @param string $targetDir
-     */
-    private function absoluteSymlinkWithFallback(string $originDir, string $targetDir): void
-    {
-        try {
-            $this->symlink($originDir, $targetDir);
-        } catch (IOException $e) {
-            // fall back to copy
-            $this->hardCopy($originDir, $targetDir);
-        }
-    }
-
-    /**
-     * Creates symbolic link.
-     *
-     * @param string $originDir
-     * @param string $targetDir
-     * @param bool   $relative
-     *
-     * @throws IOException if link can not be created
-     */
-    private function symlink(string $originDir, string $targetDir, bool $relative = false): void
-    {
-        if ($relative) {
-            $this->filesystem->mkdir(dirname($targetDir));
-            $originDir = $this->filesystem->makePathRelative($originDir, realpath(dirname($targetDir)));
-        }
-        $this->filesystem->symlink($originDir, $targetDir);
-        if (!file_exists($targetDir)) {
-            throw new IOException(sprintf('Symbolic link "%s" was created but appears to be broken.', $targetDir), 0, null, $targetDir);
-        }
-    }
-
-    /**
-     * Copies origin to target.
-     *
-     * @param string $originDir
-     * @param string $targetDir
-     */
-    private function hardCopy(string $originDir, string $targetDir): void
-    {
-        $this->filesystem->mkdir($targetDir, 0777);
-        // We use a custom iterator to ignore VCS files
-        $this->filesystem->mirror($originDir, $targetDir, Finder::create()->ignoreDotFiles(false)->in($originDir));
-    }
-
-    private function uploadImage($code): FileInfoInterface
-    {
-        $path = sprintf('/../Resources/fixtures/files/%s.jpg', $code);
-        $rawFile = new \SplFileInfo(__DIR__.$path);
-
-        return $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
-    }
-
-    private function generateFakeCity(): string
-    {
-        $fakeCity = <<<SQL
-('city_%s_%s','%s%s','city','{"en_US": "%s"}', NULL,'{"region_city_d703b6ad-8a63-40a6-8771-f9b8c9567168": {"data": "%s", "locale": null, "channel": null, "attribute": "region_city_d703b6ad-8a63-40a6-8771-f9b8c9567168"}, "country_city_29aea250-bc94-49b2-8259-bbc116410eb2": {"data": "France", "locale": null, "channel": null, "attribute": "country_city_29aea250-bc94-49b2-8259-bbc116410eb2"}, "weather_city_65ccca01-fcb9-4a5c-ab63-a8a04ef6e2ed": {"data": "%s°C, Wind E at %s km/h, 19 Humidity", "locale": null, "channel": null, "attribute": "weather_city_65ccca01-fcb9-4a5c-ab63-a8a04ef6e2ed"}, "timezone_city_9944f4d6-06c0-484a-8a86-6fe32eefce7d": {"data": "Western European Summer Time", "locale": null, "channel": null, "attribute": "timezone_city_9944f4d6-06c0-484a-8a86-6fe32eefce7d"}, "description_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc_en_US": {"data": "<p><strong>Want to live a charming getaway?</strong></p><p>Forget Venice and discover %s! You will fall for THE trendy and romantic city trip ... %s will charm you with its history, architecture, culture and people. Be enchanted by the soul of %s, strolling through the steep streets with colorful facades of Alfama or Bairro Alto. Admire the sublime views of the Tagus and the Atlantic Ocean from the viewpoints accessible by yellow tram ... There is so much to discover in %s and so little to do to escape the time of a weekend full of poetry . Do not wait any longer !</p>", "locale": "en_US", "channel": null, "attribute": "description_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc"}}')
-SQL;
-        $cityCodes = [
-            'z_nantes',
-            'z_vertou',
-            'z_niort',
-            'z_limoge',
-            'z_bordeaux',
-            'z_toulouse',
-            'z_dijon',
-            'z_digouin',
-            'z_puy_en_velay',
-            'z_marseille',
-            'z_olonne_sur_mer',
-            'z_montaigu',
-            'z_lanion',
-            'z_rennes',
-        ];
-        $code = $cityCodes[array_rand($cityCodes)];
-        $label = str_replace('_', ' ', ucfirst($code));
-        $temp = rand(5, 30);
-        $speed = rand(10, 50);
-        $uuid = Uuid::uuid4()->toString();
-
-        return sprintf($fakeCity, $code, $uuid, $code, str_replace('-', '_', $uuid), $label, $label, $temp, $speed, $label, $label, $label, $label);
-    }
-
-    private function loadFakeCities(): void
-    {
-        $baseSql = <<<SQL
-INSERT INTO `akeneo_reference_entity_record` (`identifier`, `code`, `reference_entity_identifier`, `labels`, `image`, `value_collection`)
-VALUES
-%s;
-SQL;
-
-        $fakeCities = [];
-        for ($i = 1; $i < self::NUMBER_OF_FAKE_RECORD_TO_CREATE; $i++) {
-            if (0 === ($i % 2000)) {
-                $this->dbal->executeUpdate(sprintf($baseSql, implode($fakeCities, ',')));
-                $fakeCities = [];
-            }
-            $fakeCities[] = $this->generateFakeCity();
-        }
-        if (!empty($fakeCities)) {
-            $this->dbal->executeUpdate(sprintf($baseSql, implode($fakeCities, ',')));
-        }
-    }
-
-    private function indexRecords(): void
-    {
-        $command = $this->getApplication()->find('akeneo:reference-entity:index-records');
-        $arguments = ['command' => 'akeneo:reference-entity:index-records', '--all' => true, '--env' => $this->getContainer()->getParameter('kernel.environment')];
-
-        $input = new ArrayInput($arguments);
-        if (0 !== $command->run($input, new NullOutput())) {
-            throw new \RuntimeException('Something went wrong while indexing');
-        }
-    }
-
-    private function loadMainColors(): void
-    {
-        $refEntityImage = $this->uploadImage('maincolor2')->getKey();
-        $blue = $this->uploadImage('mainblue')->getKey();
-        $red = $this->uploadImage('mainred')->getKey();
-        $green = $this->uploadImage('maingreen')->getKey();
-        $black = $this->uploadImage('mainblack')->getKey();
-
-        $sql = <<<SQL
-INSERT INTO `akeneo_reference_entity_reference_entity` (`identifier`, `labels`, `image`)
-VALUES ('maincolor', '{\"en_US\": \"Main Color\"}', '${refEntityImage}')
-;
-INSERT INTO `akeneo_reference_entity_record` (`identifier`, `code`, `reference_entity_identifier`, `labels`, `image`, `value_collection`)
-VALUES
-	('maincolor_blue_fa538845-ef57-4588-ad2e-7c6459383970','blue','maincolor','{"en_US": "Blue", "fr_FR": "Bleu"}','${blue}','[]'),
-	('maincolor_red_d103c7d1-da73-4d66-94e4-aa9adaaf1569','red','maincolor','{"en_US": "Red", "fr_FR": "Rouge"}','${red}','[]'),
-	('maincolor_green_173ecb1d-9440-40e3-83b8-b516720fbe23','green','maincolor','{"en_US": "Green", "fr_FR": "Vert"}','${green}','[]'),
-	('maincolor_black_b155efea-4577-4ba8-af2a-2a80966278f6','black','maincolor','{"en_US": "Black", "fr_FR": "Noir"}','${black}','[]')
-;
-SQL;
-
-        $affectedRows = $this->dbal->executeUpdate($sql);
-
-        if (0 === $affectedRows) {
-            throw new \LogicException('An issue occured while installing the records.');
-        }
     }
 
     private function loadCities(): void
@@ -396,7 +164,35 @@ VALUES
   ('city_new_york_b5150405-4cd6-4743-905f-641d4191d16d','new_york','city','{"en_US": "New-York"}','${newYork}','[]')
 ;
 SQL;
-        $affectedRows = $this->dbal->executeUpdate($sql);
+        $affectedRows = $this->sqlConnection->executeUpdate($sql);
+        if (0 === $affectedRows) {
+            throw new \LogicException('An issue occured while installing the records.');
+        }
+    }
+
+    private function loadMainColors(): void
+    {
+        $refEntityImage = $this->uploadImage('maincolor2')->getKey();
+        $blue = $this->uploadImage('mainblue')->getKey();
+        $red = $this->uploadImage('mainred')->getKey();
+        $green = $this->uploadImage('maingreen')->getKey();
+        $black = $this->uploadImage('mainblack')->getKey();
+
+        $sql = <<<SQL
+INSERT INTO `akeneo_reference_entity_reference_entity` (`identifier`, `labels`, `image`)
+VALUES ('maincolor', '{\"en_US\": \"Main Color\"}', '${refEntityImage}')
+;
+INSERT INTO `akeneo_reference_entity_record` (`identifier`, `code`, `reference_entity_identifier`, `labels`, `image`, `value_collection`)
+VALUES
+	('maincolor_blue_fa538845-ef57-4588-ad2e-7c6459383970','blue','maincolor','{"en_US": "Blue", "fr_FR": "Bleu"}','${blue}','[]'),
+	('maincolor_red_d103c7d1-da73-4d66-94e4-aa9adaaf1569','red','maincolor','{"en_US": "Red", "fr_FR": "Rouge"}','${red}','[]'),
+	('maincolor_green_173ecb1d-9440-40e3-83b8-b516720fbe23','green','maincolor','{"en_US": "Green", "fr_FR": "Vert"}','${green}','[]'),
+	('maincolor_black_b155efea-4577-4ba8-af2a-2a80966278f6','black','maincolor','{"en_US": "Black", "fr_FR": "Noir"}','${black}','[]')
+;
+SQL;
+
+        $affectedRows = $this->sqlConnection->executeUpdate($sql);
+
         if (0 === $affectedRows) {
             throw new \LogicException('An issue occured while installing the records.');
         }
@@ -445,7 +241,7 @@ VALUES
   ('designer_arad_5','arad','designer','{"en_US": "Ron Arad"}','${ronArad}','{"website_designer_5d008f13-a115-4147-8b7f-122a4f1d52d4": {"data": "http://www.ronarad.co.uk/home/", "locale": null, "channel": null, "attribute": "website_designer_5d008f13-a115-4147-8b7f-122a4f1d52d4"}, "birthdate_designer_87939c45-1d85-4134-9579-d594fff65030": {"data": "04/24/1951", "locale": null, "channel": null, "attribute": "birthdate_designer_87939c45-1d85-4134-9579-d594fff65030"}, "coverphoto_designer_e68f7b52-dfbc-4c5b-a316-73c83fdd841a": {"data": {"size": 5396, "filePath": "${ronAradProducts}", "mimeType": "image/jpeg", "extension": "jpeg", "originalFilename": "ronArad_products.jpg"}, "locale": null, "channel": null, "attribute": "coverphoto_designer_e68f7b52-dfbc-4c5b-a316-73c83fdd841a"}, "nationality_designer_df90ead4-8aea-42a0-a517-5554e12631bb_en_US": {"data": "Israelian", "locale": "en_US", "channel": null, "attribute": "nationality_designer_df90ead4-8aea-42a0-a517-5554e12631bb"}, "wikipediapage_designer_8b2aa74c-cc2e-486f-a514-496800214bde_en_US": {"data": "<p><span style=\\\"color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 11px;font-family: Arial, Helvetica, sans-serif;\\\">Among the most influential designers of our time, Ron Arad (Israeli, b. 1951) stands out for his daredevil curiosity about technology and materials and for the versatile nature of his work. Trained at the Jerusalem Academy of Art and at London\\'s Architectural Association, Arad has produced an outstanding array of innovative objects over the past twenty-five years, from almost unlimited series of objects to carbon fiber armchairs and polyurethane bottle racks. He has also designed memorable spaces, some plastic and tactile, others ethereal and digital. This exhibition will be the first major retrospective of Arad\\'s design work in the United States. Arad relies on the computer and its rapid manufacturing capabilities as much as he relies on the soldering apparatus in his metal workshop. His beautiful furniture can even receive and display SMS and Bluetooth messages from mobile phones and Palm Pilots. Idiosyncratic and surprising, and also very beautiful, Arad\\'s designs communicate the joy of invention, pleasure and humor, and pride in the display of their technical and constructive skills. The exhibition will open in Paris in the fall of 2009.</span></p>\\\\n", "locale": "en_US", "channel": null, "attribute": "wikipediapage_designer_8b2aa74c-cc2e-486f-a514-496800214bde"}}')
 ;
 SQL;
-        $affectedRows = $this->dbal->executeUpdate($sql);
+        $affectedRows = $this->sqlConnection->executeUpdate($sql);
         if (0 === $affectedRows) {
             throw new \LogicException('An issue occured while installing the records.');
         }
@@ -507,13 +303,13 @@ VALUES
   ('brand_tomdixon_076948af-6b73-4844-80f3-1a033998874b','tomdixon','brand','{"en_US": "Tom Dixon", "fr_FR": "Tom Dixon"}', '${tomdixon}','{"photo_brand_8587cda6-58c8-47fa-9278-033e1d8c735c": {"data": {"size": 29189, "filePath": "${tomdixonProducts}", "mimeType": "image/jpeg", "extension": "jpg", "originalFilename": "tom-dixon_products.jpg"}, "locale": null, "channel": null, "attribute": "photo_brand_8587cda6-58c8-47fa-9278-033e1d8c735c"}, "founded_brand_fff5387e-64ce-4228-b68e-af8704867761": {"data": "2002", "locale": null, "channel": null, "attribute": "founded_brand_fff5387e-64ce-4228-b68e-af8704867761"}, "founder_brand_eb505477-3139-4c6d-9014-ac8091c2c2de": {"data": "Tom Dixon", "locale": null, "channel": null, "attribute": "founder_brand_eb505477-3139-4c6d-9014-ac8091c2c2de"}, "nationality_brand_f60def21-f44f-449d-9fae-7a4f76cded60": {"data": "United Kingdom", "locale": null, "channel": null, "attribute": "nationality_brand_f60def21-f44f-449d-9fae-7a4f76cded60"}, "description_brand_d794e371-5d9b-4c4b-918b-9714a9b65a71_ecommerce_en_US": {"data": "<p style=\\\"text-align:justify;\\\"></p>\\\\n<p><span style=\\\"color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 11px;font-family: Arial, Helvetica, sans-serif;\\\">Tom Dixon is one of the most original British designers of his generation; and a rebel of the Avant Garde of international design! Awarded the title \\\"Designer of the Year\\\" in 2006, with exhibits in museums throughout the whole world, this self-taught designer has had a truly unusual career. In 1980 Dixon was a rock guitarist, working as a DJ in a club at night, and by day learning how to solder with a friend who ran a garage. He started his career by making furniture from recycled metal. Twenty years later, this self-made man is famous throughout the whole world. After having been artistic director at Habitat, he set up his own firm to make his collections of lighting...</span><br></p>\\\\n", "locale": "en_US", "channel": "ecommerce", "attribute": "description_brand_d794e371-5d9b-4c4b-918b-9714a9b65a71"}}');
 
 SQL;
-        $affectedRows = $this->dbal->executeUpdate($sql);
+        $affectedRows = $this->sqlConnection->executeUpdate($sql);
         if (0 === $affectedRows) {
             throw new \LogicException('An issue occured while installing the records.');
         }
     }
 
-    public function loadColors(): void
+    private function loadColors(): void
     {
         $color = $this->uploadImage('color')->getKey();
         $bleuMarine = $this->uploadImage('bleumarine')->getKey();
@@ -550,9 +346,30 @@ VALUES
 	('color_redchilli_8c28eaa5-673b-4f9c-b5d7-0f48f84e9322','redchilli','color','{"en_US": "Red chilli", "fr_FR": "Rouge piment"}','${rougePiment}','[]')
 ;
 SQL;
-        $affectedRows = $this->dbal->executeUpdate($sql);
+        $affectedRows = $this->sqlConnection->executeUpdate($sql);
         if (0 === $affectedRows) {
             throw new \LogicException('An issue occured while installing the records.');
+        }
+    }
+
+    private function loadFakeCities(): void
+    {
+        $baseSql = <<<SQL
+INSERT INTO `akeneo_reference_entity_record` (`identifier`, `code`, `reference_entity_identifier`, `labels`, `image`, `value_collection`)
+VALUES
+%s;
+SQL;
+
+        $fakeCities = [];
+        for ($i = 1; $i < self::NUMBER_OF_FAKE_RECORD_TO_CREATE; $i++) {
+            if (0 === ($i % 2000)) {
+                $this->sqlConnection->executeUpdate(sprintf($baseSql, implode($fakeCities, ',')));
+                $fakeCities = [];
+            }
+            $fakeCities[] = $this->generateFakeCity();
+        }
+        if (!empty($fakeCities)) {
+            $this->sqlConnection->executeUpdate(sprintf($baseSql, implode($fakeCities, ',')));
         }
     }
 
@@ -588,7 +405,7 @@ VALUES
 ;
 SQL;
 
-        $affectedRows = $this->dbal->executeUpdate($sql);
+        $affectedRows = $this->sqlConnection->executeUpdate($sql);
         if (0 === $affectedRows) {
             throw new \LogicException('An issue occured while installing the records.');
         }
@@ -619,9 +436,53 @@ VALUES
   ('description_material_a36bfe43-7d80-4305-8a05-681f3d6d5ee6','description','material','{\"en_US\": \"Description\"}','text',0,0,0,1,'{\"max_length\": null, \"is_textarea\": true, \"validation_rule\": \"none\", \"regular_expression\": null, \"is_rich_text_editor\": true}')
   ;
 SQL;
-        $affectedRows = $this->dbal->executeUpdate($sql);
+        $affectedRows = $this->sqlConnection->executeUpdate($sql);
         if (0 === $affectedRows) {
             throw new \LogicException('An issue occured while installing the reference entities.');
         }
+    }
+
+    private function generateFakeCity(): string
+    {
+        $fakeCity = <<<SQL
+('city_%s_%s','%s%s','city','{"en_US": "%s"}', NULL,'{"region_city_d703b6ad-8a63-40a6-8771-f9b8c9567168": {"data": "%s", "locale": null, "channel": null, "attribute": "region_city_d703b6ad-8a63-40a6-8771-f9b8c9567168"}, "country_city_29aea250-bc94-49b2-8259-bbc116410eb2": {"data": "France", "locale": null, "channel": null, "attribute": "country_city_29aea250-bc94-49b2-8259-bbc116410eb2"}, "weather_city_65ccca01-fcb9-4a5c-ab63-a8a04ef6e2ed": {"data": "%s°C, Wind E at %s km/h, 19 Humidity", "locale": null, "channel": null, "attribute": "weather_city_65ccca01-fcb9-4a5c-ab63-a8a04ef6e2ed"}, "timezone_city_9944f4d6-06c0-484a-8a86-6fe32eefce7d": {"data": "Western European Summer Time", "locale": null, "channel": null, "attribute": "timezone_city_9944f4d6-06c0-484a-8a86-6fe32eefce7d"}, "description_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc_en_US": {"data": "<p><strong>Want to live a charming getaway?</strong></p><p>Forget Venice and discover %s! You will fall for THE trendy and romantic city trip ... %s will charm you with its history, architecture, culture and people. Be enchanted by the soul of %s, strolling through the steep streets with colorful facades of Alfama or Bairro Alto. Admire the sublime views of the Tagus and the Atlantic Ocean from the viewpoints accessible by yellow tram ... There is so much to discover in %s and so little to do to escape the time of a weekend full of poetry . Do not wait any longer !</p>", "locale": "en_US", "channel": null, "attribute": "description_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc"}}')
+SQL;
+        $cityCodes = [
+            'z_nantes',
+            'z_vertou',
+            'z_niort',
+            'z_limoge',
+            'z_bordeaux',
+            'z_toulouse',
+            'z_dijon',
+            'z_digouin',
+            'z_puy_en_velay',
+            'z_marseille',
+            'z_olonne_sur_mer',
+            'z_montaigu',
+            'z_lanion',
+            'z_rennes',
+        ];
+        $code = $cityCodes[array_rand($cityCodes)];
+        $label = str_replace('_', ' ', ucfirst($code));
+        $temp = random_int(5, 30);
+        $speed = random_int(10, 50);
+        $uuid = Uuid::uuid4()->toString();
+
+        return sprintf($fakeCity, $code, $uuid, $code, str_replace('-', '_', $uuid), $label, $label, $temp, $speed,
+            $label, $label, $label, $label);
+    }
+
+    private function uploadImage($code): FileInfoInterface
+    {
+        $path = sprintf('/../../Resources/fixtures/files/%s.jpg', $code);
+        $rawFile = new \SplFileInfo(__DIR__ . $path);
+
+        return $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
+    }
+
+    private function indexRecords(): void
+    {
+        $this->commandLauncher->executeForeground('akeneo:reference-entity:index-records --all');
     }
 }
