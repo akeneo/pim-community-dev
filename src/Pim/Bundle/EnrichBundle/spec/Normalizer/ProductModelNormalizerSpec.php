@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
@@ -50,7 +51,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         NormalizerInterface $incompleteValuesNormalizer,
         UserContext $userContext,
         MissingAssociationAdder $missingAssociationAdder,
-        NormalizerInterface $parentAssociationsNormalizer
+        NormalizerInterface $parentAssociationsNormalizer,
+        CatalogContext $catalogContext
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -70,7 +72,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $incompleteValuesNormalizer,
             $userContext,
             $missingAssociationAdder,
-            $parentAssociationsNormalizer
+            $parentAssociationsNormalizer,
+            $catalogContext
         );
     }
 
