@@ -88,6 +88,7 @@ class GetConnectorRecordsAction
     {
         $searchFilters = $this->getSearchFiltersFromRequest($request);
         $searchFiltersErrors = !empty($searchFilters) ? $this->searchFiltersValidator->validate($searchFilters) : [];
+
         if (!empty($searchFiltersErrors)) {
             return new JsonResponse([
                 'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,

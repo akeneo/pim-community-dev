@@ -152,10 +152,6 @@ Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Locale\LocalesShouldBeActivated:
                   payload:
                       standardPropertyName: locales
-        filters:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\FilterRecordsByUpdatedDate:
-                  payload:
-                      standardPropertyName: filters
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\FilterRecordsByCompleteness: ~
 

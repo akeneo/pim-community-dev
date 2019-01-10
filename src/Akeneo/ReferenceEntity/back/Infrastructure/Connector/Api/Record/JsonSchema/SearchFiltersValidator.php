@@ -67,7 +67,8 @@ class SearchFiltersValidator
                                 'enum' => ['>']
                             ],
                             'value' => [
-                                'type' => 'string'
+                                'type' => 'string',
+                                'format' => 'date-time'
                             ]
                         ]
                     ],

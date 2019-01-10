@@ -99,6 +99,34 @@ class SearchFiltersValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
+    function it_returns_an_error_when_the_operator_of_the_updated_filter_is_not_supported()
+    {
+        $invalidSearchFilters = [
+            'updated' => [
+                'operator' => '=',
+                'value'    => '2018-10-14T10:00:00+00:00'
+            ]
+        ];
+
+        $errors = $this->validate($invalidSearchFilters);
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
+    function it_returns_an_error_when_the_value_of_the_updated_filter_is_not_a_date_time()
+    {
+        $invalidSearchFilters = [
+            'updated' => [
+                'operator' => '>',
+                'value'    => 'abc123'
+            ]
+        ];
+
+        $errors = $this->validate($invalidSearchFilters);
+        $errors->shouldBeArray();
+        $errors->shouldHaveCount(1);
+    }
+
     function it_returns_all_the_errors_of_invalid_search_filters()
     {
         $invalidSearchFilters = [

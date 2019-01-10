@@ -11,11 +11,11 @@
     "status": 422,
     "body": {
       "code": 422,
-      "message": "Invalid query parameters",
+      "message": "The search filters have an invalid format.",
       "errors": [
         {
-          "property": "filters",
-          "message": "Property \"updated\" expects a string with the ISO 8601 format, \"abc123\" given."
+          "property": "updated[0].value",
+          "message": "Invalid date-time \"abc123\", expected format YYYY-MM-DDThh:mm:ssZ or YYYY-MM-DDThh:mm:ss+hh:mm"
         }
       ]
     }
