@@ -4,6 +4,7 @@
 
 ## Bug fixes
 
+- PIM-7953: Fix back and cancel button link in user profile view and edit template
 - GITHUB-7594: Fix comparison in versioning system. Cheers @mathewrapid !
 - PIM-7957: Fix dependencies for doctrine
 
