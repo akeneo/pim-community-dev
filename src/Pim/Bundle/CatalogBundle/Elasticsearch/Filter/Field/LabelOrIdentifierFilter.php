@@ -79,6 +79,11 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
                 'label.<all_channels>.<all_locales>' => sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
+        $clauses[] = [
+            'wildcard' => [
+                'ancestors.codes' => sprintf('*%s*', $this->escapeValue($value)),
+            ]
+        ];
 
         $this->searchQueryBuilder->addFilter(
             [
