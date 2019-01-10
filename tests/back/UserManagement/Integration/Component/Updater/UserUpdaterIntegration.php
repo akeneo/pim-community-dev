@@ -35,7 +35,7 @@ class UserUpdaterIntegration extends TestCase
         $this->get('pim_user.updater.user')->update($user, [], []);
 
         $errors = $this->get('validator')->validate($user);
-        $this->assertEquals(4, $errors->count());
+        $this->assertEquals(5, $errors->count());
 
         $result = [];
         foreach ($errors as $error) {
@@ -47,6 +47,7 @@ class UserUpdaterIntegration extends TestCase
             'email' => 'This value should not be blank.',
             'firstName' => 'This value should not be blank.',
             'lastName' => 'This value should not be blank.',
+            'roles' => 'You must select at least 1 role.'
         ];
 
         $this->assertEquals($expected, $result);
@@ -62,6 +63,7 @@ class UserUpdaterIntegration extends TestCase
             'password' => 'julia',
             'catalog_default_locale' => 'zh_CN',
             'user_default_locale' => 'fr_FR',
+            'roles' => ['ROLE_CATALOG_MANAGER'],
         ];
         $user = $this->get('pim_user.factory.user')->create();
         $this->get('pim_user.updater.user')->update($user, $data, []);
@@ -82,7 +84,8 @@ class UserUpdaterIntegration extends TestCase
             'password' => 'julia',
             'catalog_default_locale' => 'en_US',
             'user_default_locale' => 'fr_FR',
-            'phone' => '0655443346'
+            'phone' => '0655443346',
+            'roles' => ['ROLE_CATALOG_MANAGER'],
         ];
 
         $user = $this->get('pim_user.factory.user')->create();

@@ -2,6 +2,7 @@
 
 namespace Pim\Behat\Context;
 
+use Akeneo\UserManagement\Component\Model\User;
 use Behat\ChainedStepsExtension\Step;
 use Behat\ChainedStepsExtension\Step\Then;
 use Context\Spin\SpinCapableTrait;
@@ -275,7 +276,24 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $page
      *
      * @Given /^I edit the "([^"]*)" (user)$/
-     * @Given /^I am on the "([^"]*)" (channel|family|user) page$/
+     * @Given /^I am on the "([^"]*)" (user) page$/
+     */
+    public function iAmOnTheUserEditPage($identifier, $page)
+    {
+        /** @var User $user */
+        $user = $this->getKernel()->getContainer()->get('pim_user.repository.user')->findOneByIdentifier($identifier);
+
+        $this->openPage(
+            sprintf('%s edit', ucfirst($page)),
+            ['identifier' => $user->getId()]
+        );
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I am on the "([^"]*)" (channel|family) page$/
      */
     public function iAmOnTheRedoEntityEditPage($identifier, $page)
     {
