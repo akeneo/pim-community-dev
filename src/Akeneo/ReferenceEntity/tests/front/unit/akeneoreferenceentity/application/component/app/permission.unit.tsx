@@ -104,16 +104,13 @@ describe('>>>COMPONENT --- permission', () => {
   });
 
   test('Mass update rights on read only', () => {
-    expect.assertions(0); // This is intended. The test is to check that the onCHange method is not called
+    expect.assertions(0);
     const permissionsEditor = mount(
       <PermissionCollectionEditor
         value={permissions}
         readOnly={true}
         onChange={newPermissions => {
-          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('view');
-          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('edit');
-          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('own');
-          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none');
+          expect(true).toEqual(false); // This is intended. The test is to check that the onChange method is not called
         }}
         prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
       />
@@ -154,10 +151,7 @@ describe('>>>COMPONENT --- permission', () => {
         value={permissions}
         readOnly={true}
         onChange={newPermissions => {
-          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('view');
-          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('own');
-          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('own');
-          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none');
+          expect(true).toEqual(false); // This is intended. The test is to check that the onChange method is not called
         }}
         prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
       />

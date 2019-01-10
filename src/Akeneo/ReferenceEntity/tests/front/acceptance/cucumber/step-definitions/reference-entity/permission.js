@@ -35,8 +35,6 @@ module.exports = async function(cucumber) {
   });
 
   When('the user sets the following permissions for the reference entity:', async function(permissions) {
-    const showRequestContract = getRequestContract('ReferenceEntityPermission/show.json');
-    await listenRequest(this.page, showRequestContract);
     const editView = await await getElement(this.page, 'Edit');
     const permissionView = await editView.getPermission();
 
@@ -46,6 +44,15 @@ module.exports = async function(cucumber) {
     const editRequestContract = getRequestContract('ReferenceEntityPermission/edit.json');
 
     await listenRequest(this.page, editRequestContract);
+  });
+
+  When('the user ask for a reference entity without any user groups', async function() {
+    const showRequestContract = getRequestContract('ReferenceEntityPermission/show_empty.json');
+    await listenRequest(this.page, showRequestContract);
+    const requestContract = getRequestContract('ReferenceEntity/ReferenceEntityDetails/ok.json');
+    await listenRequest(this.page, requestContract);
+
+    await askForReferenceEntity.apply(this, ['designer']);
   });
 
   Then(
@@ -58,4 +65,10 @@ module.exports = async function(cucumber) {
       assert.strictEqual(actualRightLevel, rightLevel);
     }
   );
+
+  Then('the user should be warned that he needs to create user groups first', async function() {
+    const editView = await await getElement(this.page, 'Edit');
+    const permissionView = await editView.getPermission();
+    permissionView.isEmpty();
+  });
 };

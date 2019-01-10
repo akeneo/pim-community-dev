@@ -14,3 +14,10 @@ Feature: Set permissions for a reference entity
       | Catalog Manager       | edit        |
     Then there should be a 'view' permission right for the user group 'IT support' on the reference entity
     And there should be a 'edit' permission right for the user group 'Catalog Manager' on the reference entity
+
+  @acceptance-front
+  Scenario: I get information if there is no user groups
+    Given the user has the following rights:
+      | akeneo_referenceentity_reference_entity_manage_permission | true |
+    When the user ask for a reference entity without any user groups
+    Then the user should be warned that he needs to create user groups first

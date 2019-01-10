@@ -20,6 +20,7 @@ import {savePermission} from 'akeneoreferenceentity/application/action/reference
 import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
 
 const securityContext = require('pim/security-context');
+const routing = require('routing');
 
 interface StateProps {
   referenceEntity: NormalizedReferenceEntity;
@@ -33,6 +34,9 @@ interface StateProps {
   rights: {
     referenceEntity: {
       edit: boolean;
+    };
+    userGroup: {
+      create: boolean;
     };
   };
 }
@@ -94,7 +98,9 @@ class Permission extends React.Component<StateProps & DispatchProps> {
                 <div className="AknGridContainer-noDataTitle">
                 {__('pim_reference_entity.permission.no_data.title')}
                 </div>
-                <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.permission.no_data.subtitle')}</div>
+            <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.permission.no_data.subtitle')} {this.props.rights.userGroup.create ? (
+                <a href={`#${routing.generate('pim_user_group_index')}`} target="_blank">{__('pim_reference_entity.permission.no_data.link')}</a>
+              ) : null}</div>
               </div>
             )}
           </div>
@@ -123,6 +129,9 @@ export default connect(
             securityContext.isGranted('akeneo_referenceentity_reference_entity_manage_permission') &&
             canEditReferenceEntity(),
         },
+        userGroup: {
+          create: securityContext.isGranted('pim_user_group_index') && securityContext.isGranted('pim_user_group_create')
+        }
       },
     };
   },

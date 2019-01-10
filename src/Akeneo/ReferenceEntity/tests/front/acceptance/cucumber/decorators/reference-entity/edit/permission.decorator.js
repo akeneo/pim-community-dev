@@ -32,7 +32,13 @@ const Permission = async (nodeElement, createElementDecorator, page) => {
     return rightLevel;
   };
 
-  return {setPermission, getRightLevel};
+  const isEmpty = async () => {
+    const noDataView = await nodeElement.$('.AknGridContainer-noDataImage--user-group');
+
+    return null !== noDataView;
+  };
+
+  return {setPermission, getRightLevel, isEmpty};
 };
 
 module.exports = Permission;
