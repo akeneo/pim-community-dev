@@ -12,11 +12,12 @@ Feature: Create a user
     Given I am on the users page
     And I press the "Create user" button and wait for modal
     And I fill in the following information:
-      | Username   | jack                 |
-      | First name | Jack                 |
-      | Last name  | Doe                  |
-      | Password   | DoeDoe               |
-      | Email      | jack+doe@example.com |
+      | Username          | jack                 |
+      | First name        | Jack                 |
+      | Last name         | Doe                  |
+      | Password          | DoeDoe               |
+      | Password (repeat) | DoeDoe               |
+      | Email             | jack+doe@example.com |
     When I press the "Save" button
     Then there should be a "jack" user
 
@@ -24,11 +25,12 @@ Feature: Create a user
     Given I am on the users page
     And I press the "Create user" button and wait for modal
     And I fill in the following information:
-      | Username   | jack                |
-      | First name | Jack                |
-      | Last name  | Doe                 |
-      | Password   | DoeDoe              |
-      | Email      | jack.doeexample.com |
+      | Username          | jack                 |
+      | First name        | Jack                 |
+      | Last name         | Doe                  |
+      | Password          | DoeDoe               |
+      | Password (repeat) | DoeDoe               |
+      | Email             | jack.doeexample.com  |
     When I press the "Save" button
     Then I should see the text "This value is not a valid email address."
 
