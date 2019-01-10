@@ -40,5 +40,7 @@ authentication:
                     label: Private key
                 metadata_url:
                     label: Metadata URL
+                    tooltip_label: Copy URL
                 acs_url:
                     label: ACS URL
+                    tooltip_label: Copy URL
