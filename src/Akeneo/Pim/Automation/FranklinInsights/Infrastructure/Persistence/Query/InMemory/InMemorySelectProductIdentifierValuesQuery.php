@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Quer
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 
@@ -46,28 +47,35 @@ class InMemorySelectProductIdentifierValuesQuery implements SelectProductIdentif
     /**
      * {@inheritdoc}
      */
-    public function execute(int $productId): ?ProductIdentifierValues
+    public function execute(array $productIds): ProductIdentifierValuesCollection
     {
+        $result = new ProductIdentifierValuesCollection();
         $mapping = $this->identifiersMappingRepository->find();
-        $product = $this->productRepository->find($productId);
-
-        $mappedIdentifiers = [];
-
-        if ($mapping->isEmpty() || null === $product) {
-            return null;
+        if ($mapping->isEmpty()) {
+            return $result;
         }
 
-        foreach ($mapping as $franklinCode => $identifierMapping) {
-            $mappedAttribute = $identifierMapping->getAttribute();
-            if (null === $mappedAttribute) {
+        foreach ($productIds as $productId) {
+            $product = $this->productRepository->find($productId);
+            if (null === $product) {
                 continue;
             }
-            $value = $product->getValue($mappedAttribute->getCode());
-            if (null !== $value && $value->hasData()) {
-                $mappedIdentifiers[$franklinCode] = (string) $value->getData();
+            $mappedIdentifiers = [];
+
+            foreach ($mapping as $franklinCode => $identifierMapping) {
+                $mappedAttribute = $identifierMapping->getAttribute();
+                if (null === $mappedAttribute) {
+                    continue;
+                }
+                $value = $product->getValue($mappedAttribute->getCode());
+                if (null !== $value && $value->hasData()) {
+                    $mappedIdentifiers[$franklinCode] = (string) $value->getData();
+                }
             }
+
+            $result->add(new ProductIdentifierValues($productId, $mappedIdentifiers));
         }
 
-        return new ProductIdentifierValues($mappedIdentifiers);
+        return $result;
     }
 }

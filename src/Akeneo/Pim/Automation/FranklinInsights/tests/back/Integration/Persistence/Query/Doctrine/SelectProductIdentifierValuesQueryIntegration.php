@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persiste
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\TestCase;
@@ -57,14 +58,28 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
                 'pim_brand' => 'akeneo',
             ]
         );
+        $otherProduct = $this->createProduct(
+            'other_sku',
+            [
+                'ean' => '9876543210',
+            ]
+        );
 
         $this->assertIdentifierValues(
-            $this->getIdentifierValues($product->getId()),
+            $this->getIdentifierValues([$product->getId(), $otherProduct->getId()]),
             [
-                'asin' => 'ABC123',
-                'upc' => '133214',
-                'mpn' => 'pim',
-                'brand' => 'akeneo',
+                $product->getId() => [
+                    'asin' => 'ABC123',
+                    'upc' => '133214',
+                    'mpn' => 'pim',
+                    'brand' => 'akeneo',
+                ],
+                $otherProduct->getId() => [
+                    'asin' => null,
+                    'upc' => '9876543210',
+                    'mpn' => null,
+                    'brand' => null,
+                ],
             ]
         );
     }
@@ -102,33 +117,58 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
         );
 
         $this->assertIdentifierValues(
-            $this->getIdentifierValues($product->getId()),
+            $this->getIdentifierValues([$product->getId()]),
             [
-                'asin' => 'ABC123',
-                'upc' => '133214',
-                'mpn' => null,
-                'brand' => null,
+                $product->getId() => [
+                    'asin' => 'ABC123',
+                    'upc' => '133214',
+                    'mpn' => null,
+                    'brand' => null,
+                ],
             ]
         );
     }
 
-    public function test_that_it_returns_null_if_the_product_does_not_exist(): void
+    public function test_that_it_filters_non_existing_products(): void
     {
         $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
                         ->find();
+        $product = $this->createProduct(
+            'some_sku',
+            [
+                'ean' => '133214',
+                'asin' => 'ABC123',
+                'pim_mpn' => 'pim',
+                'pim_brand' => 'akeneo',
+            ]
+        );
         $mapping->map('upc', $this->getAttribute('ean'));
         $this->saveMapping($mapping);
 
-        Assert::assertNull($this->getIdentifierValues(42));
+        $nonExistingProductId = $product->getId() + 10;
+
+        $result = $this->getIdentifierValues([$product->getId(), $nonExistingProductId]);
+
+        Assert::assertInstanceOf(ProductIdentifierValues::class, $result->get($product->getId()));
+        Assert::assertNull($result->get($nonExistingProductId));
     }
 
-    public function test_that_it_returns_null_if_there_is_no_identifier_mapping(): void
+    public function test_that_it_returns_an_empty_collection_if_there_is_no_identifier_mapping(): void
     {
-        $product = $this->createProduct('some_sku', []);
-        Assert::assertNull($this->getIdentifierValues($product->getId()));
+        $product = $this->createProduct(
+            'some_sku',
+            [
+                'ean' => '133214',
+                'asin' => 'ABC123',
+                'pim_mpn' => 'pim',
+                'pim_brand' => 'akeneo',
+            ]
+        );
+
+        Assert::assertSame(0, $this->getIdentifierValues([$product->getId()])->count());
     }
 
-    public function test_that_it_completes_unmapped_identifiers(): void
+    public function test_that_it_completes_unmapped_identifiers_with_null(): void
     {
         $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
                         ->find();
@@ -146,17 +186,19 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
         );
 
         $this->assertIdentifierValues(
-            $this->getIdentifierValues($product->getId()),
+            $this->getIdentifierValues([$product->getId()]),
             [
-                'asin' => null,
-                'upc' => '133214',
-                'mpn' => null,
-                'brand' => null,
+                $product->getId() => [
+                    'asin' => null,
+                    'upc' => '133214',
+                    'mpn' => null,
+                    'brand' => null,
+                ],
             ]
         );
     }
 
-    public function test_that_it_completes_missing_identifier_values(): void
+    public function test_that_it_completes_missing_identifier_values_with_null(): void
     {
         $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
                         ->find();
@@ -170,12 +212,14 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
         $product = $this->createProduct('some_sku', []);
 
         $this->assertIdentifierValues(
-            $this->getIdentifierValues($product->getId()),
+            $this->getIdentifierValues([$product->getId()]),
             [
-                'asin' => null,
-                'upc' => null,
-                'mpn' => null,
-                'brand' => null,
+                $product->getId() => [
+                    'asin' => null,
+                    'upc' => null,
+                    'mpn' => null,
+                    'brand' => null,
+                ],
             ]
         );
     }
@@ -189,11 +233,11 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
     }
 
     /**
-     * @param int $productId
+     * @param int[] $productIds
      *
-     * @return ProductIdentifierValues|null
+     * @return ProductIdentifierValuesCollection
      */
-    private function getIdentifierValues(int $productId): ?ProductIdentifierValues
+    private function getIdentifierValues(array $productIds): ProductIdentifierValuesCollection
     {
         return $this->getFromTestContainer(
             sprintf(
@@ -201,21 +245,21 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
                 'akeneo.pim.automation.franklin_insights',
                 'infrastructure.persistence.query.product.select_product_identifier_values_query'
             )
-        )->execute($productId);
+        )->execute($productIds);
     }
 
     /**
-     * @param mixed $values
+     * @param ProductIdentifierValuesCollection $actual
      * @param array $expected
      */
-    private function assertIdentifierValues($values, array $expected): void
+    private function assertIdentifierValues(ProductIdentifierValuesCollection $actual, array $expected): void
     {
-        Assert::assertInstanceOf(ProductIdentifierValues::class, $values);
-        $identifierValues = $values->identifierValues();
-        Assert::assertSame(count($expected), count($identifierValues));
-        foreach ($expected as $key => $expectedValue) {
-            Assert::assertArrayHasKey($key, $identifierValues);
-            Assert::assertSame($expectedValue, $identifierValues[$key]);
+        foreach ($expected as $productId => $expectedValues) {
+            $actualValues = $actual->get($productId);
+            Assert::assertInstanceOf(ProductIdentifierValues::class, $actualValues);
+            foreach ($expectedValues as $franklinCode => $expectedValue) {
+                Assert::assertSame($expectedValue, $actualValues->getValue($franklinCode));
+            }
         }
     }
 
