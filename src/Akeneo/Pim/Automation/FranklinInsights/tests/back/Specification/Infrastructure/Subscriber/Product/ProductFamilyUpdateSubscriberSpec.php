@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Product\SelectProductFamilyIdQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product\ProductFamilyUpdateSubscriber;
@@ -36,12 +39,17 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
     public function let(
         SelectProductFamilyIdQuery $selectProductFamilyIdQuery,
         UnsubscribeProductHandler $unsubscribeProductHandler,
-        UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler
+        UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler,
+        GetConnectionStatusHandler $connectionStatusHandler
     ): void {
+        $connectionStatus = new ConnectionStatus(true, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+
         $this->beConstructedWith(
             $selectProductFamilyIdQuery,
             $unsubscribeProductHandler,
-            $updateSubscriptionFamilyHandler
+            $updateSubscriptionFamilyHandler,
+            $connectionStatusHandler
         );
     }
 
@@ -82,6 +90,28 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
     ): void {
         $product->getId()->willReturn(null);
         $savedProduct->getId()->willReturn(42);
+
+        $selectProductFamilyIdQuery->execute(Argument::any())->shouldNotBeCalled();
+        $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
+        $updateSubscriptionFamilyHandler->handle(Argument::any())->shouldNotBeCalled();
+
+        $this->onPreSave(new GenericEvent($product->getWrappedObject()));
+        $this->onPostSave(new GenericEvent($savedProduct->getWrappedObject()));
+    }
+
+    public function it_is_not_applied_if_franklin_insights_is_not_activated(
+        $selectProductFamilyIdQuery,
+        $unsubscribeProductHandler,
+        $updateSubscriptionFamilyHandler,
+        $connectionStatusHandler,
+        ProductInterface $product,
+        ProductInterface $savedProduct
+    ): void {
+        $product->getId()->willReturn(42);
+        $savedProduct->getId()->willReturn(42);
+
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
 
         $selectProductFamilyIdQuery->execute(Argument::any())->shouldNotBeCalled();
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();

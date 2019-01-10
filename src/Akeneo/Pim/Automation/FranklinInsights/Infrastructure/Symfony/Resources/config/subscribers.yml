@@ -5,6 +5,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_family_id_query'
             - '@akeneo.pim.automation.franklin_insights.product_subscription.handler.unsubscribe_product'
             - '@akeneo.pim.automation.franklin_insights.product_subscription.handler.update_subscription_family'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -12,6 +13,7 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product\ProductToVariantProductSubscriber'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.product_subscription.handler.unsubscribe_product'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -20,6 +22,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_codes_by_attribute_query'
             - '@akeneo.pim.automation.franklin_insights.application.mapping.service.remove_attributes_from_mapping'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -27,6 +30,7 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\AttributeOption\AttributeOptionRemoveSubscriber'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.application.mapping.service.remove_option_from_attribute_options_mapping'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -35,6 +39,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.find_family_attributes_not_in'
             - '@akeneo.pim.automation.franklin_insights.application.mapping.service.remove_attributes_from_mapping'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -42,6 +47,7 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product\ProductRemoveSubscriber'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.product_subscription.handler.unsubscribe_product'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -50,6 +56,7 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
             - '@akeneo.pim.automation.franklin_insights.application.configuration.command.deactivate_connection_handler'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -59,5 +66,6 @@ services:
             - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_identifier_values_query'
             - '@akeneo.pim.automation.franklin_insights.application.subscription.service.resubscribe_products'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
         tags:
             - { name: kernel.event_subscriber }

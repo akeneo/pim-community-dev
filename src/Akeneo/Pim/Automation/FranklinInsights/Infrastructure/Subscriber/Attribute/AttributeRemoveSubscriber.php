@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Attribute;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -34,16 +36,22 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
     /** @var array */
     private $familyCodes = [];
 
+    /** @var GetConnectionStatusHandler */
+    private $connectionStatusHandler;
+
     /**
      * @param SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery
      * @param RemoveAttributesFromMappingInterface $removeAttributesFromMapping
+     * @param GetConnectionStatusHandler $connectionStatusHandler
      */
     public function __construct(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
-        RemoveAttributesFromMappingInterface $removeAttributesFromMapping
+        RemoveAttributesFromMappingInterface $removeAttributesFromMapping,
+        GetConnectionStatusHandler $connectionStatusHandler
     ) {
         $this->familyCodesByAttributeQuery = $familyCodesByAttributeQuery;
         $this->removeAttributesFromMapping = $removeAttributesFromMapping;
+        $this->connectionStatusHandler = $connectionStatusHandler;
     }
 
     /**
@@ -67,6 +75,10 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if (!$this->isFranklinInsightsActivated()) {
+            return;
+        }
+
         $this->familyCodes = $this->familyCodesByAttributeQuery->execute($attribute->getCode());
     }
 
@@ -81,5 +93,15 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
         }
 
         $this->removeAttributesFromMapping->process($this->familyCodes, [$attribute->getCode()]);
+    }
+
+    /**
+     * @return bool
+     */
+    private function isFranklinInsightsActivated(): bool
+    {
+        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
+
+        return $connectionStatus->isActive();
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyCommand;
@@ -45,19 +47,25 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
     /** @var array */
     private $productsToUpdateSubscriptionFamily = [];
 
+    /** @var GetConnectionStatusHandler */
+    private $connectionStatusHandler;
+
     /**
      * @param SelectProductFamilyIdQueryInterface $selectProductFamilyIdQuery
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
      * @param UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler
+     * @param GetConnectionStatusHandler $connectionStatusHandler
      */
     public function __construct(
         SelectProductFamilyIdQueryInterface $selectProductFamilyIdQuery,
         UnsubscribeProductHandler $unsubscribeProductHandler,
-        UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler
+        UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler,
+        GetConnectionStatusHandler $connectionStatusHandler
     ) {
         $this->selectProductFamilyIdQuery = $selectProductFamilyIdQuery;
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
         $this->updateSubscriptionFamilyHandler = $updateSubscriptionFamilyHandler;
+        $this->connectionStatusHandler = $connectionStatusHandler;
     }
 
     /**
@@ -84,6 +92,10 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
         }
 
         if (null === $product->getId()) {
+            return;
+        }
+
+        if (!$this->isFranklinInsightsActivated()) {
             return;
         }
 
@@ -152,5 +164,15 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
             // Silently catch exception if the product is not subscribed
             // We don't check it here as the handler already checks it. No need to do it twice
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function isFranklinInsightsActivated(): bool
+    {
+        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
+
+        return $connectionStatus->isActive();
     }
 }

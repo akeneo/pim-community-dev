@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product\ProductToVariantProductSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -29,9 +32,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class ProductToVariantProductSubscriberSpec extends ObjectBehavior
 {
     public function let(
-        UnsubscribeProductHandler $unsubscribeProductHandler
+        UnsubscribeProductHandler $unsubscribeProductHandler,
+        GetConnectionStatusHandler $connectionStatusHandler
     ): void {
-        $this->beConstructedWith($unsubscribeProductHandler);
+        $this->beConstructedWith($unsubscribeProductHandler, $connectionStatusHandler);
+
+        $connectionStatus = new ConnectionStatus(true, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
     }
 
     public function it_is_a_product_family_removal_subscriber(): void
@@ -67,6 +74,23 @@ class ProductToVariantProductSubscriberSpec extends ObjectBehavior
     ): void {
         $event->getSubject()->willReturn($product);
         $product->isVariant()->willReturn(false);
+        $unsubscribeProductHandler->handle()->shouldNotBeCalled();
+
+        $this->onPostSave($event);
+    }
+
+    public function it_does_nothing_franklin_insights_is_not_activated(
+        GenericEvent $event,
+        ProductInterface $product,
+        UnsubscribeProductHandler $unsubscribeProductHandler,
+        $connectionStatusHandler
+    ): void {
+        $event->getSubject()->willReturn($product);
+        $product->isVariant()->willReturn(true);
+
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+
         $unsubscribeProductHandler->handle()->shouldNotBeCalled();
 
         $this->onPostSave($event);

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ResubscribeProductsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
@@ -36,19 +38,25 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
     /** @var ResubscribeProductsInterface */
     private $resubscribeProducts;
 
+    /** @var GetConnectionStatusHandler */
+    private $connectionStatusHandler;
+
     /**
      * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
      * @param SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery
      * @param ResubscribeProductsInterface $resubscribeProducts
+     * @param GetConnectionStatusHandler $connectionStatusHandler
      */
     public function __construct(
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery,
-        ResubscribeProductsInterface $resubscribeProducts
+        ResubscribeProductsInterface $resubscribeProducts,
+        GetConnectionStatusHandler $connectionStatusHandler
     ) {
         $this->subscriptionRepository = $subscriptionRepository;
         $this->selectProductIdentifierValuesQuery = $selectProductIdentifierValuesQuery;
         $this->resubscribeProducts = $resubscribeProducts;
+        $this->connectionStatusHandler = $connectionStatusHandler;
     }
 
     /**
@@ -71,6 +79,11 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
             if (!$product instanceof ProductInterface) {
                 continue;
             }
+
+            if (!$this->isFranklinInsightsActivated()) {
+                return;
+            }
+
             // TODO: find many subscriptions by product ids in order to avoid too may queries
             $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
             if (null === $subscription) {
@@ -121,5 +134,15 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
     private function launchResubscriptionJob(array $productIds): void
     {
         $this->resubscribeProducts->process($productIds);
+    }
+
+    /**
+     * @return bool
+     */
+    private function isFranklinInsightsActivated(): bool
+    {
+        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
+
+        return $connectionStatus->isActive();
     }
 }

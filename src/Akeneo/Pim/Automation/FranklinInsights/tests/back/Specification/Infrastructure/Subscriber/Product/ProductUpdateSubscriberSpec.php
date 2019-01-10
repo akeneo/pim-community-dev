@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ResubscribeProductsInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
@@ -23,9 +26,18 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
     public function let(
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery,
-        ResubscribeProductsInterface $resubscribeProducts
+        ResubscribeProductsInterface $resubscribeProducts,
+        GetConnectionStatusHandler $connectionStatusHandler
     ): void {
-        $this->beConstructedWith($subscriptionRepository, $selectProductIdentifierValuesQuery, $resubscribeProducts);
+        $this->beConstructedWith(
+            $subscriptionRepository,
+            $selectProductIdentifierValuesQuery,
+            $resubscribeProducts,
+            $connectionStatusHandler
+        );
+
+        $connectionStatus = new ConnectionStatus(true, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
     }
 
     public function it_is_an_event_subscriber(): void
@@ -54,6 +66,25 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
 
         $this->computeImpactedSubscriptions(new GenericEvent([new \stdClass(), new Attribute()]));
+    }
+
+    public function it_does_not_process_products_if_franklin_insights_is_not_activated(
+        $subscriptionRepository,
+        $selectProductIdentifierValuesQuery,
+        $resubscribeProducts,
+        $connectionStatusHandler,
+        ProductInterface $product
+    ): void {
+        $product->getId()->willReturn(42);
+
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+
+        $subscriptionRepository->findOneByProductId(Argument::any())->shouldNotBeCalled();
+        $selectProductIdentifierValuesQuery->execute(42)->shouldNotBeCalled();
+        $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
+
+        $this->computeImpactedSubscriptions(new GenericEvent([$product->getWrappedObject()]));
     }
 
     public function it_does_not_process_unsubscribed_products(

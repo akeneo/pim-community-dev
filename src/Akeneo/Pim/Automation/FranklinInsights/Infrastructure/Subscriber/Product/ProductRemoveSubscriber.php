@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
@@ -31,12 +33,19 @@ class ProductRemoveSubscriber implements EventSubscriberInterface
     /** @var UnsubscribeProductHandler */
     private $unsubscribeProductHandler;
 
+    /** @var GetConnectionStatusHandler */
+    private $connectionStatusHandler;
+
     /**
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
+     * @param GetConnectionStatusHandler $connectionStatusHandler
      */
-    public function __construct(UnsubscribeProductHandler $unsubscribeProductHandler)
-    {
+    public function __construct(
+        UnsubscribeProductHandler $unsubscribeProductHandler,
+        GetConnectionStatusHandler $connectionStatusHandler
+    ) {
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
+        $this->connectionStatusHandler = $connectionStatusHandler;
     }
 
     /**
@@ -59,6 +68,10 @@ class ProductRemoveSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if (!$this->isFranklinInsightsActivated()) {
+            return;
+        }
+
         $productId = $event->getSubjectId();
 
         try {
@@ -69,5 +82,15 @@ class ProductRemoveSubscriber implements EventSubscriberInterface
             // We don't check it here as the handler already check it. No need to do it twice
             return;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function isFranklinInsightsActivated(): bool
+    {
+        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
+
+        return $connectionStatus->isActive();
     }
 }

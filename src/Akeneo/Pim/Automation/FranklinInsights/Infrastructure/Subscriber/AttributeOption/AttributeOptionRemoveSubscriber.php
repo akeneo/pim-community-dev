@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\AttributeOption;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributeOptionFromMappingInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -27,12 +29,19 @@ class AttributeOptionRemoveSubscriber implements EventSubscriberInterface
     /** @var RemoveAttributeOptionFromMappingInterface */
     private $removeAttributeOptionsFromMapping;
 
+    /** @var GetConnectionStatusHandler */
+    private $connectionStatusHandler;
+
     /**
      * @param RemoveAttributeOptionFromMappingInterface $removeAttributeOptionsFromMapping
+     * @param GetConnectionStatusHandler $connectionStatusHandler
      */
-    public function __construct(RemoveAttributeOptionFromMappingInterface $removeAttributeOptionsFromMapping)
-    {
+    public function __construct(
+        RemoveAttributeOptionFromMappingInterface $removeAttributeOptionsFromMapping,
+        GetConnectionStatusHandler $connectionStatusHandler
+    ) {
         $this->removeAttributeOptionsFromMapping = $removeAttributeOptionsFromMapping;
+        $this->connectionStatusHandler = $connectionStatusHandler;
     }
 
     /**
@@ -55,9 +64,23 @@ class AttributeOptionRemoveSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if (!$this->isFranklinInsightsActivated()) {
+            return;
+        }
+
         $this->removeAttributeOptionsFromMapping->process(
             $attributeOption->getAttribute()->getCode(),
             $attributeOption->getCode()
         );
+    }
+
+    /**
+     * @return bool
+     */
+    private function isFranklinInsightsActivated(): bool
+    {
+        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
+
+        return $connectionStatus->isActive();
     }
 }

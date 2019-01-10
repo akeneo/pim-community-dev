@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Attribute;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Attribute\AttributeRemoveSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -31,9 +34,13 @@ class AttributeRemoveSubscriberSpec extends ObjectBehavior
 {
     public function let(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
-        RemoveAttributesFromMappingInterface $removeAttributesFromMapping
+        RemoveAttributesFromMappingInterface $removeAttributesFromMapping,
+        GetConnectionStatusHandler $connectionStatusHandler
     ): void {
-        $this->beConstructedWith($familyCodesByAttributeQuery, $removeAttributesFromMapping);
+        $connectionStatus = new ConnectionStatus(true, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+
+        $this->beConstructedWith($familyCodesByAttributeQuery, $removeAttributesFromMapping, $connectionStatusHandler);
     }
 
     public function it_is_a_product_family_removal_subscriber(): void
@@ -50,6 +57,21 @@ class AttributeRemoveSubscriberSpec extends ObjectBehavior
     {
         $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::PRE_REMOVE);
         $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_REMOVE);
+    }
+
+    public function it_is_only_applied_when_franklin_insights_is_activated(
+        GenericEvent $event,
+        AttributeInterface $attribute,
+        $connectionStatusHandler,
+        $familyCodesByAttributeQuery
+    ): void {
+        $event->getSubject()->willReturn($attribute);
+
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+
+        $familyCodesByAttributeQuery->execute(Argument::any())->shouldNotBeCalled();
+        $this->onPreRemove($event);
     }
 
     public function it_is_only_applied_when_an_attribute_is_removed(

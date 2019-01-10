@@ -17,6 +17,9 @@ use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command\DeactivateConnectionCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command\DeactivateConnectionHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Channel\ChannelUpdateSubscriber;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
@@ -29,9 +32,15 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ChannelUpdateSubscriberSpec extends ObjectBehavior
 {
-    public function let(LocaleRepositoryInterface $localeRepository, DeactivateConnectionHandler $deactivateConnectionHandler): void
-    {
-        $this->beConstructedWith($localeRepository, $deactivateConnectionHandler);
+    public function let(
+        LocaleRepositoryInterface $localeRepository,
+        DeactivateConnectionHandler $deactivateConnectionHandler,
+        GetConnectionStatusHandler $connectionStatusHandler
+    ): void {
+        $connectionStatus = new ConnectionStatus(true, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+
+        $this->beConstructedWith($localeRepository, $deactivateConnectionHandler, $connectionStatusHandler);
     }
 
     public function it_is_channel_update_subscriber(): void
@@ -77,5 +86,19 @@ class ChannelUpdateSubscriberSpec extends ObjectBehavior
         $deactivateConnectionHandler->handle(Argument::any())->shouldNotBeCalled();
 
         $this->onPostSave(new GenericEvent(new \StdClass()));
+    }
+
+    public function it_does_nothing_if_franklin_insights_is_not_activated(
+        $localeRepository,
+        $deactivateConnectionHandler,
+        $connectionStatusHandler
+    ): void {
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+
+        $localeRepository->getActivatedLocaleCodes()->shouldNotBeCalled();
+        $deactivateConnectionHandler->handle(Argument::any())->shouldNotBeCalled();
+
+        $this->onPostSave(new GenericEvent(new Channel()));
     }
 }

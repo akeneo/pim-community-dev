@@ -17,6 +17,8 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command\DeactivateConnectionCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Command\DeactivateConnectionHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -32,16 +34,22 @@ class ChannelUpdateSubscriber implements EventSubscriberInterface
     /** @var DeactivateConnectionHandler */
     private $deactivateConnectionHandler;
 
+    /** @var GetConnectionStatusHandler */
+    private $connectionStatusHandler;
+
     /**
      * @param LocaleRepositoryInterface $localeRepository
      * @param DeactivateConnectionHandler $deactivateConnectionHandler
+     * @param GetConnectionStatusHandler $connectionStatusHandler
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
-        DeactivateConnectionHandler $deactivateConnectionHandler
+        DeactivateConnectionHandler $deactivateConnectionHandler,
+        GetConnectionStatusHandler $connectionStatusHandler
     ) {
         $this->localeRepository = $localeRepository;
         $this->deactivateConnectionHandler = $deactivateConnectionHandler;
+        $this->connectionStatusHandler = $connectionStatusHandler;
     }
 
     /**
@@ -65,6 +73,10 @@ class ChannelUpdateSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if (!$this->isFranklinInsightsActivated()) {
+            return;
+        }
+
         if ($this->noEnglishLocaleIsActivated()) {
             $this->deactivateConnectionHandler->handle(new DeactivateConnectionCommand());
         }
@@ -85,5 +97,15 @@ class ChannelUpdateSubscriber implements EventSubscriberInterface
         }
 
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isFranklinInsightsActivated(): bool
+    {
+        $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
+
+        return $connectionStatus->isActive();
     }
 }

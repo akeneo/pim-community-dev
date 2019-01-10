@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Family;
 
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\SelectRemovedFamilyAttributeCodesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Family\FamilyAttributesRemoveSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -29,9 +32,17 @@ class FamilyAttributesRemoveSubscriberSpec extends ObjectBehavior
 {
     public function let(
         SelectRemovedFamilyAttributeCodesQueryInterface $selectRemovedFamilyAttributeCodesQuery,
-        RemoveAttributesFromMappingInterface $removeAttributesFromMapping
+        RemoveAttributesFromMappingInterface $removeAttributesFromMapping,
+        GetConnectionStatusHandler $connectionStatusHandler
     ): void {
-        $this->beConstructedWith($selectRemovedFamilyAttributeCodesQuery, $removeAttributesFromMapping);
+        $connectionStatus = new ConnectionStatus(true, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
+
+        $this->beConstructedWith(
+            $selectRemovedFamilyAttributeCodesQuery,
+            $removeAttributesFromMapping,
+            $connectionStatusHandler
+        );
     }
 
     public function it_is_a_family_subscriber(): void
@@ -98,6 +109,26 @@ class FamilyAttributesRemoveSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $event->getSubject()->willReturn($product);
+
+        $selectRemovedFamilyAttributeCodesQuery->execute(Argument::cetera())->shouldNotBeCalled();
+        $removeAttributesFromMapping->process(Argument::cetera())->shouldNotBeCalled();
+
+        $this->onFamilyAttributesRemoved($event)->shouldReturn(null);
+        $this->updateAttributesMapping($event)->shouldReturn(null);
+    }
+
+    public function it_does_nothing_if_franklin_insights_is_not_activated(
+        $selectRemovedFamilyAttributeCodesQuery,
+        $removeAttributesFromMapping,
+        $connectionStatusHandler,
+        GenericEvent $event,
+        FamilyInterface $family
+    ): void {
+        $event->getSubject()->willReturn($family);
+        $family->getId()->willReturn(2);
+
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
+        $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
 
         $selectRemovedFamilyAttributeCodesQuery->execute(Argument::cetera())->shouldNotBeCalled();
         $removeAttributesFromMapping->process(Argument::cetera())->shouldNotBeCalled();
