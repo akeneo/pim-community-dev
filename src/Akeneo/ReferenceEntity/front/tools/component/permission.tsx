@@ -6,6 +6,7 @@ import Permission, {
   lowerLevel,
 } from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 import __ from 'akeneoreferenceentity/tools/translator';
+import Key from 'akeneoreferenceentity/tools/key';
 
 type GroupName = string;
 
@@ -47,10 +48,18 @@ class PermissionEditor extends React.Component<PermissionEditorProps> {
                   className={`AknPermission-pill ${pillIsLowerOrAtThisLevel ? 'AknPermission-pill--active' : ''} ${
                     this.props.readOnly ? 'AknPermission-pill--disabled' : ''
                   }`}
+                  tabIndex={0}
                   onClick={() => {
                     pillIsAtThisLevel && !isFirstColumn
                       ? onChange(groupCode, lowerLevel(rightLevel))
                       : onChange(groupCode, rightLevel);
+                  }}
+                  onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {
+                    if (Key.Space === event.key) {
+                      pillIsAtThisLevel && !isFirstColumn
+                        ? onChange(groupCode, lowerLevel(rightLevel))
+                        : onChange(groupCode, rightLevel);
+                    }
                   }}
                 >
                   {!isNoneLevel && pillIsLowerOrAtThisLevel ? <Tick className="AknPermission-pillTick" /> : null}
@@ -119,6 +128,11 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
                     className="AknButton AknButton--small"
                     onClick={() => {
                       this.onAllPermissionUpdated(rightLevel);
+                    }}
+                    onKeyDown={(event: React.KeyboardEvent<HTMLSpanElement>) => {
+                      if (Key.Space === event.key) {
+                        this.onAllPermissionUpdated(rightLevel);
+                      }
                     }}
                     tabIndex={0}
                     title={__('permission.mass_action', {rightLevel})}
