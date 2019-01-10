@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Category;
+namespace Pim\Component\Catalog\tests\integration\Category;
 
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -15,48 +15,51 @@ use Pim\Component\Catalog\Model\CategoryInterface;
  */
 class GetDescendentCategoryCodesIntegration extends TestCase
 {
-    // Validates that only the parent category code itself is returned.
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $fixturesLoader = new CategoryTreeFixturesLoader($this->testKernel->getContainer());
+        $fixturesLoader->givenTheCategoryTrees([
+            'ecommerce' => [
+                'ecommerce_accessories' => [
+                    'ecommerce_accessories_belts'      => [],
+                    'ecommerce_accessories_bags'       => [],
+                    'ecommerce_accessories_sunglasses' => [],
+                    'ecommerce_accessories_hats'       => [],
+                    'ecommerce_accessories_scarves'    => [],
+                ],
+            ],
+            'print' => [
+                'print_accessories' => [],
+            ],
+        ]);
+    }
+
+    // Validates that nothing is returned when the parent is a leaf.
     public function testGetDescendentCategoryCodesOfALeafCategory()
     {
-        $parentCategory = $this->fetchCategory('master_accessories_scarves');
+        $parentCategory = $this->fetchCategory('ecommerce_accessories_scarves');
         $descendentCategoryCodes = $this->getDescendantCategoryCodesOf($parentCategory);
 
-        Assert::assertSame(
-            $descendentCategoryCodes,
-            ['master_accessories_scarves']
-        );
+        Assert::assertEmpty($descendentCategoryCodes);
     }
 
     // Validates that category codes from all levels under the parent are returned.
     public function testGetDescendentCategoryCodesOfARoot()
     {
-        $parentCategory = $this->fetchCategory('master');
+        $parentCategory = $this->fetchCategory('ecommerce');
         $descendentCategoryCodes = $this->getDescendantCategoryCodesOf($parentCategory);
 
         Assert::assertSame(
             $descendentCategoryCodes,
             [
-                'master',
-                'master_accessories',
-                'master_accessories_belts',
-                'master_accessories_bags',
-                'master_accessories_sunglasses',
-                'master_accessories_hats',
-                'master_accessories_scarves',
-                'master_men',
-                'master_men_blazers',
-                'master_men_blazers_deals',
-                'master_men_pants',
-                'master_men_pants_shorts',
-                'master_men_pants_jeans',
-                'master_men_shoes',
-                'tshirts',
-                'master_women',
-                'master_women_blouses',
-                'master_women_blouses_deals',
-                'master_women_dresses',
-                'master_women_shirts',
-                'master_women_shoes',
+                'ecommerce_accessories',
+                'ecommerce_accessories_belts',
+                'ecommerce_accessories_bags',
+                'ecommerce_accessories_sunglasses',
+                'ecommerce_accessories_hats',
+                'ecommerce_accessories_scarves',
             ]
         );
     }
@@ -66,7 +69,7 @@ class GetDescendentCategoryCodesIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useFunctionalCatalog('catalog_modeling');
+        return $this->catalog->useMinimalCatalog();
     }
 
     private function fetchCategory(string $code): CategoryInterface

@@ -8,7 +8,7 @@ use Akeneo\Component\Classification\Model\CategoryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
- * Returns codes of all descendent categories of the given category.
+ * Returns codes of all descendents of the given category.
  *
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -29,7 +29,8 @@ final class GetDescendentCategoryCodes
         $sql = <<<SQL
             SELECT category.code as category_code
             FROM pim_catalog_category category 
-            WHERE category.lft >= :parent_category_left AND category.rgt <= :parent_category_right
+            WHERE category.lft > :parent_category_left
+            AND category.rgt < :parent_category_right
             AND category.root = :parent_category_root;
 SQL;
         $rows = $this->connection->executeQuery(

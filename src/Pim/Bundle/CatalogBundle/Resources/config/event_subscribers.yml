@@ -191,3 +191,13 @@ services:
         public: false
         tags:
             - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_subscriber.category.update_indexes_on_category_deletion:
+        class: 'Pim\Bundle\CatalogBundle\EventSubscriber\Category\UpdateIndexesOnCategoryDeletion'
+        arguments:
+            - '@pim_catalog.query.get_descendent_category_codes'
+            - '@akeneo_elasticsearch.client.product'
+            - '@akeneo_elasticsearch.client.product_model'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+        tags:
+            - { name: kernel.event_subscriber }

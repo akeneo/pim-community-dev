@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 /**
