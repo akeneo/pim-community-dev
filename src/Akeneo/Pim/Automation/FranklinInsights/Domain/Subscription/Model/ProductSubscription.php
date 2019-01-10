@@ -50,6 +50,9 @@ class ProductSubscription
     /** @var string */
     private $requestedMpn;
 
+    /** @var bool */
+    private $isCancelled = false;
+
     /**
      * @param int $productId
      * @param string $subscriptionId
@@ -60,6 +63,7 @@ class ProductSubscription
         $this->productId = $productId;
         $this->subscriptionId = $subscriptionId;
         $this->isMappingMissing = false;
+        $this->isCancelled = false;
 
         $this->fillProductIdentifiers($productIdentifiers);
     }
@@ -117,6 +121,22 @@ class ProductSubscription
         $this->isMappingMissing = $isMappingMissing;
 
         return $this;
+    }
+
+    /**
+     * Marks a subscription as cancelled.
+     */
+    public function markAsCancelled(): void
+    {
+        $this->isCancelled = true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCancelled(): bool
+    {
+        return $this->isCancelled;
     }
 
     /**

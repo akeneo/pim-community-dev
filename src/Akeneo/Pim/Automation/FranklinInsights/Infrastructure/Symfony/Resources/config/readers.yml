@@ -1,0 +1,5 @@
+services:
+    akeneo.pim.automation.franklin_insights.connector.reader.suggested_data:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Reader\SuggestedDataReader'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.data_provider.product_subscription'

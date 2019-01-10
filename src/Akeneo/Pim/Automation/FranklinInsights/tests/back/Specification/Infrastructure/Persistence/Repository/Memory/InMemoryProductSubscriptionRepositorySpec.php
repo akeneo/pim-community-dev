@@ -52,6 +52,16 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $this->findOneByProductId(42)->shouldReturn($subscription);
     }
 
+    public function it_bulk_saves_subscriptions(): void
+    {
+        $subscription = new ProductSubscription(42, 'a-fake-subscription', ['sku' => '72527273070']);
+        $subscription2 = new ProductSubscription(43, 'fake-id-43', ['asin' => '123']);
+        $this->bulkSave([$subscription, $subscription2]);
+
+        $this->findOneByProductId(42)->shouldReturn($subscription);
+        $this->findOneByProductId(43)->shouldReturn($subscription2);
+    }
+
     public function it_returns_null_if_you_asked_for_a_product_without_subscription(): void
     {
         $this->findOneByProductId(42)->shouldReturn(null);
@@ -98,6 +108,20 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
         $this->delete($subscription);
         $this->findOneByProductId(42)->shouldReturn(null);
+    }
+
+    public function it_bulk_deletes_subscriptions(): void
+    {
+        $subscription = new ProductSubscription(42, 'fake-id-42', ['asin' => 'ABC']);
+        $subscription2 = new ProductSubscription(43, 'fake-id-43', ['asin' => '123']);
+        $this->bulkSave([$subscription, $subscription2]);
+
+        $this->findOneByProductId(42)->shouldReturn($subscription);
+        $this->findOneByProductId(43)->shouldReturn($subscription2);
+
+        $this->bulkDelete([$subscription, $subscription2]);
+        $this->findOneByProductId(42)->shouldReturn(null);
+        $this->findOneByProductId(43)->shouldReturn(null);
     }
 
     public function it_empties_suggested_data_for_specified_product_ids(): void

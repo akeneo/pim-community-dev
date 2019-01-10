@@ -46,4 +46,28 @@ class ProductSubscriptionRepositorySpec extends ObjectBehavior
 
         $this->delete($subscription)->shouldReturn(null);
     }
+
+    public function it_bulk_save_subscriptions($em): void
+    {
+        $subscription = new ProductSubscription(42, 'fake-id-42', ['asin' => 'ABC']);
+        $subscription2 = new ProductSubscription(43, 'fake-id-43', ['asin' => '123']);
+
+        $em->persist($subscription)->shouldBeCalled();
+        $em->persist($subscription2)->shouldBeCalled();
+        $em->flush()->shouldBeCalled();
+
+        $this->bulkSave([$subscription, $subscription2]);
+    }
+
+    public function it_bulk_delete_subscriptions($em): void
+    {
+        $subscription = new ProductSubscription(42, 'fake-id-42', ['asin' => 'ABC']);
+        $subscription2 = new ProductSubscription(43, 'fake-id-43', ['asin' => '123']);
+
+        $em->remove($subscription)->shouldBeCalled();
+        $em->remove($subscription2)->shouldBeCalled();
+        $em->flush()->shouldBeCalled();
+
+        $this->bulkDelete([$subscription, $subscription2]);
+    }
 }

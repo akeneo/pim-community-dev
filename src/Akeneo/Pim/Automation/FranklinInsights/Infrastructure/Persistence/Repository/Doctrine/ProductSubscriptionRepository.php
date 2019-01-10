@@ -46,6 +46,19 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     /**
      * {@inheritdoc}
      */
+    public function bulkSave(array $subscriptions): void
+    {
+        foreach ($subscriptions as $subscription) {
+            if ($subscription instanceof ProductSubscription) {
+                $this->em->persist($subscription);
+            }
+        }
+        $this->em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOneByProductId(int $productId): ?ProductSubscription
     {
         return $this->em->getRepository(ProductSubscription::class)->findOneByProductId($productId);
@@ -76,6 +89,20 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     public function delete(ProductSubscription $subscription): void
     {
         $this->em->remove($subscription);
+        $this->em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function bulkDelete(array $subscriptions): void
+    {
+        foreach ($subscriptions as $subscription) {
+            if ($subscription instanceof ProductSubscription) {
+                $this->em->remove($subscription);
+            }
+        }
+
         $this->em->flush();
     }
 

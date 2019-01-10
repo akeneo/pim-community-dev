@@ -252,7 +252,6 @@ acceptance:
                 - akeneo_acceptance.context.franklin_insights.product_subscription
                 - akeneo_acceptance.context.franklin_insights.product_subscription_status
                 - akeneo_acceptance.context.franklin_insights.data_fixtures
-                - akeneo_acceptance.context.franklin_insights.product_fetching
                 - akeneo_acceptance.context.franklin_insights.proposal
                 - akeneo_acceptance.context.franklin_insights.attributes_mapping
                 - akeneo_acceptance.context.franklin_insights.attribute_options_mapping

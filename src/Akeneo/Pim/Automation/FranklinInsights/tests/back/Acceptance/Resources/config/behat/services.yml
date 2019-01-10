@@ -68,14 +68,6 @@ services:
         tags:
             - { name: 'fob.context_service' }
 
-    akeneo_acceptance.context.franklin_insights.product_fetching:
-        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ProductFetchingContext'
-        arguments:
-            - '@__symfony__.akeneo.pim.automation.franklin_insights.product_subscription.handler.fetch_products'
-            - '@__symfony__.akeneo.pim.automation.franklin_insights.franklin_client.http_client'
-        tags:
-            - { name: 'fob.context_service' }
-
     akeneo_acceptance.context.franklin_insights.attributes_mapping:
         class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\AttributesMappingContext'
         arguments:

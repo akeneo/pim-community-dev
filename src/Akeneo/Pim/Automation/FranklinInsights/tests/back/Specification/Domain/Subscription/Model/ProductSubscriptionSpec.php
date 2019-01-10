@@ -83,4 +83,12 @@ class ProductSubscriptionSpec extends ObjectBehavior
         $requestedIdentifierValues->shouldNotHaveKey('mpn');
         $requestedIdentifierValues->shouldNotHaveKey('brand');
     }
+
+    public function it_marks_a_subscription_as_cancelled(): void
+    {
+        $this->isCancelled()->shouldReturn(false);
+
+        $this->markAsCancelled();
+        $this->isCancelled()->shouldReturn(true);
+    }
 }

@@ -1,10 +1,4 @@
 services:
-    akeneo.pim.automation.franklin_insights.connector.tasklet.fetch_products:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet\FetchProductsTasklet'
-        public: false
-        arguments:
-            - '@akeneo.pim.automation.franklin_insights.product_subscription.handler.fetch_products'
-
     akeneo.pim.automation.franklin_insights.connector.tasklet.create_proposals:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet\CreateProposalsTasklet'
         public: false

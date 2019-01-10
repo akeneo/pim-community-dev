@@ -27,12 +27,17 @@ class GuzzleClient implements ClientInterface
     /** @var string */
     private $token;
 
+    /** @var int */
+    private $timeout;
+
     /**
      * @param ClientInterface $httpClient
+     * @param int $timeout
      */
-    public function __construct(Client $httpClient)
+    public function __construct(Client $httpClient, int $timeout = 10)
     {
         $this->httpClient = $httpClient;
+        $this->timeout = $timeout;
     }
 
     /**
@@ -42,6 +47,7 @@ class GuzzleClient implements ClientInterface
     {
         $options = $options + [
             'headers' => ['Authorization' => $this->token],
+            'timeout' => $this->timeout,
         ];
 
         $response = $this->httpClient->request($method, $uri, $options);

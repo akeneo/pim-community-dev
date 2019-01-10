@@ -271,7 +271,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
             '_links' => [
                 'subscription' => [],
                 'next' => [
-                    'href' => '/next/uri',
+                    0 => ['href' => '/next/uri'],
                 ],
             ],
             '_embedded' => [
