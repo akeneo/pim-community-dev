@@ -68,4 +68,36 @@ class RequestCollectionSpec extends ObjectBehavior
             ]
         );
     }
+
+    public function it_formats_mpn_and_brand_in_form_params(): void
+    {
+        $this->add(
+            new Request(
+                [
+                    'asin' => 'ABC123',
+                    'upc' => '45678912301',
+                    'mpn' => 'Akeneo-PIM',
+                    'brand' => 'Akeneo',
+                ],
+                42,
+                ['code' => 'laptop']
+            )
+        );
+        $this->toFormParams()->shouldReturn(
+            [
+                [
+                    'asin' => 'ABC123',
+                    'upc' => '45678912301',
+                    'mpn_brand' => [
+                        'mpn' => 'Akeneo-PIM',
+                        'brand' => 'Akeneo',
+                    ],
+                    'tracker_id' => 42,
+                    'family' => [
+                        'code' => 'laptop',
+                    ],
+                ],
+            ]
+        );
+    }
 }

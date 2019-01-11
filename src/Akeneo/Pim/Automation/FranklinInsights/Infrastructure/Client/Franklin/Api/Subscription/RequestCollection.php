@@ -36,12 +36,36 @@ final class RequestCollection
     {
         $params = [];
         foreach ($this->requests as $request) {
-            $params[] = $request->identifiers() + [
+            $params[] = $this->formatIdentifiers($request->identifiers()) + [
                 'tracker_id' => $request->trackerId(),
                 'family' => $request->familyInfos(),
             ];
         }
 
         return $params;
+    }
+
+    /**
+     * @param array $identifiers
+     *
+     * @return array
+     */
+    private function formatIdentifiers(array $identifiers): array
+    {
+        $formatted = [];
+        if (isset($identifiers['asin'])) {
+            $formatted['asin'] = $identifiers['asin'];
+        }
+        if (isset($identifiers['upc'])) {
+            $formatted['upc'] = $identifiers['upc'];
+        }
+        if (isset($identifiers['mpn']) && isset($identifiers['brand'])) {
+            $formatted['mpn_brand'] = [
+                'mpn' => $identifiers['mpn'],
+                'brand' => $identifiers['brand'],
+            ];
+        }
+
+        return $formatted;
     }
 }

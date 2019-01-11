@@ -1,0 +1,14 @@
+{
+    "identifier": "Akeneo_PIM",
+    "family": "router",
+    "categories": [],
+    "enabled": true,
+    "values": {
+        "mpn": [
+            {"locale": null, "scope": null, "data": "75024"}
+        ],
+        "pim_brand": [
+            { "locale": null, "scope": null, "data": "Crown Bolt" }
+        ]
+    }
+}
