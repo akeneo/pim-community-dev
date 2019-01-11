@@ -60,29 +60,55 @@ class SaveAttributesMappingByFamilyHandler
      */
     public function handle(SaveAttributesMappingByFamilyCommand $command): void
     {
-        $this->validate($command);
+        $familyCode = $command->getFamilyCode();
+        $attributesMapping = $command->getAttributesMapping();
+
+        $attributesMapping = $this->filterUnknownAttributes($attributesMapping);
+        if (empty($attributesMapping)) {
+            throw AttributeMappingException::onlyUnknownMappedAttributes();
+        }
+
+        $this->validate($familyCode, $attributesMapping);
 
         $this->attributesMappingProvider->saveAttributesMapping(
-            $command->getFamilyCode(),
-            $command->getAttributesMapping()
+            $familyCode,
+            $attributesMapping
         );
-        $this->subscriptionRepository->emptySuggestedDataAndMissingMappingByFamily($command->getFamilyCode());
+        $this->subscriptionRepository->emptySuggestedDataAndMissingMappingByFamily($familyCode);
+    }
+
+    /**
+     * @param array $attributesMapping
+     *
+     * @return array
+     */
+    private function filterUnknownAttributes(array $attributesMapping): array
+    {
+        return array_filter($attributesMapping, function ($attributeMapping) {
+            $attributeCode = $attributeMapping->getPimAttributeCode();
+            if (null !== $attributeCode) {
+                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+                return null !== $attribute;
+            }
+
+            return true;
+        });
     }
 
     /**
      * Validates that the family exists.
      * Validates that the attribute exists.
      *
-     * @param SaveAttributesMappingByFamilyCommand $command
+     * @param string $familyCode
+     * @param array $attributesMapping
      */
-    private function validate(SaveAttributesMappingByFamilyCommand $command): void
+    private function validate(string $familyCode, array $attributesMapping): void
     {
-        $familyCode = $command->getFamilyCode();
         if (null === $this->familyRepository->findOneByIdentifier($familyCode)) {
             throw new \InvalidArgumentException(sprintf('Family "%s" not found', $familyCode));
         }
 
-        $attributesMapping = $command->getAttributesMapping();
         foreach ($attributesMapping as $attributeMapping) {
             if (null !== $attributeMapping->getPimAttributeCode()) {
                 $this->validateAndFillAttribute($attributeMapping);
@@ -98,11 +124,6 @@ class SaveAttributesMappingByFamilyHandler
     private function validateAndFillAttribute(AttributeMapping $attributeMapping): void
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeMapping->getPimAttributeCode());
-        if (null === $attribute) {
-            throw new \InvalidArgumentException(
-                sprintf('Attribute "%s" not found', $attributeMapping->getPimAttributeCode())
-            );
-        }
 
         $this->validateAttributeType($attribute->getType());
 

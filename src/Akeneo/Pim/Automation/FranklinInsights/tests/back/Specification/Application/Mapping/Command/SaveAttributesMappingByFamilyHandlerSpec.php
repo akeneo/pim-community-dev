@@ -17,10 +17,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMa
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -50,8 +50,10 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(SaveAttributesMappingByFamilyHandler::class);
     }
 
-    public function it_throws_an_exception_if_family_does_not_exist($familyRepository): void
-    {
+    public function it_throws_an_exception_if_family_does_not_exist(
+        $familyRepository, $attributeRepository, AttributeInterface $attribute
+    ): void {
+        $attributeRepository->findOneByIdentifier('tshirt_style')->willReturn($attribute);
         $familyRepository->findOneByIdentifier('router')->willReturn(null);
 
         $command = new SaveAttributesMappingByFamilyCommand('router', [
@@ -63,14 +65,28 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$command]);
     }
 
+    public function it_throws_an_exception_if_all_attributes_are_unknown($attributeRepository): void
+    {
+        $command = new SaveAttributesMappingByFamilyCommand('router', [
+            'color' => [
+                'franklinAttribute' => ['type' => 'multiselect'],
+                'attribute' => 'tshirt_style',
+            ],
+        ]);
+
+        $attributeRepository->findOneByIdentifier('tshirt_style')->willReturn(null);
+
+        $this->shouldThrow(AttributeMappingException::onlyUnknownMappedAttributes())->during('handle', [$command]);
+    }
+
     public function it_throws_an_exception_if_an_attribute_does_not_exist(
         $familyRepository,
-        $attributeRepository
+        $attributeRepository,
+        $attributesMappingProvider,
+        $subscriptionRepository,
+        AttributeInterface $memoryAttribute
     ): void {
-        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::type(FamilyInterface::class));
-        $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn(null);
-
-        $command = new SaveAttributesMappingByFamilyCommand('router', [
+        $attributeMapping = [
             'memory' => [
                 'franklinAttribute' => [
                     'label' => 'Memory',
@@ -78,11 +94,37 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                 ],
                 'attribute' => 'random_access_memory',
             ],
-        ]);
+            'weight' => [
+                'franklinAttribute' => [
+                    'label' => 'Weight',
+                    'type' => 'metric',
+                ],
+                'attribute' => 'product_weight',
+            ],
+        ];
+        $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->during('handle', [$command]);
+        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
+
+        $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($memoryAttribute);
+        $memoryAttribute->getType()->willReturn(AttributeTypes::METRIC);
+        $memoryAttribute->isLocalizable()->willReturn(false);
+        $memoryAttribute->isScopable()->willReturn(false);
+        $memoryAttribute->isLocaleSpecific()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('product_weight')->willReturn(null);
+
+        $expectedAttribute = new AttributeMapping('memory', 'metric', 'random_access_memory');
+        $expectedAttribute->setAttribute($memoryAttribute->getWrappedObject());
+        $attributesMappingProvider
+            ->saveAttributesMapping('router', [$expectedAttribute])
+            ->shouldBeCalled();
+
+        $subscriptionRepository
+            ->emptySuggestedDataAndMissingMappingByFamily($command->getFamilyCode())
+            ->shouldBeCalled();
+
+        $this->handle($command);
     }
 
     public function it_throws_an_exception_if_mapping_type_is_invalid(

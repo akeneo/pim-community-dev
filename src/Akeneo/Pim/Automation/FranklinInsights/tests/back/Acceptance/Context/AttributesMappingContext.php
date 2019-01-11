@@ -208,6 +208,24 @@ final class AttributesMappingContext implements Context
     }
 
     /**
+     * @Then Franklin's attribute :franklinAttribute should not be saved
+     *
+     * @param string $franklinAttribute
+     */
+    public function franklinsAttributeShouldNotBeSaved($franklinAttribute): void
+    {
+        $attributesMapping = $this->fakeClient->getAttributesMapping();
+        $attributeFound = false;
+        foreach ($attributesMapping as $attributeMapping) {
+            if ($franklinAttribute === $attributeMapping['from']['id']) {
+                $attributeFound = true;
+                break;
+            }
+        }
+        Assert::false($attributeFound, 'Franklin\'s attribute: ' . $franklinAttribute . ' should not have been saved');
+    }
+
+    /**
      * @Then Franklin's attribute :franklinAttribute should be mapped to :pimAttributeCode
      *
      * @param string $franklinAttribute
@@ -339,6 +357,19 @@ final class AttributesMappingContext implements Context
         Assert::eq(
             $thrownException->getMessage(),
             AttributeMappingException::duplicatedPimAttribute()->getMessage()
+        );
+    }
+
+    /**
+     * @Then an unknown attributes message should be sent
+     */
+    public function anUnknownAttributesMessageShouldBeSent(): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, AttributeMappingException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            AttributeMappingException::onlyUnknownMappedAttributes()->getMessage()
         );
     }
 
