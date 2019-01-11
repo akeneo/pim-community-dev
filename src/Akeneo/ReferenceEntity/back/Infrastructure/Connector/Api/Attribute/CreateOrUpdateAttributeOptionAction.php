@@ -143,8 +143,7 @@ class CreateOrUpdateAttributeOptionAction
         AttributeCode $attributeCode,
         OptionCode $optionCode,
         array $option
-    ): Response
-    {
+    ): Response {
         $command = new EditAttributeOptionCommand();
         $command->referenceEntityIdentifier = (string) $referenceEntityIdentifier;
         $command->attributeCode = (string) $attributeCode;
@@ -169,8 +168,7 @@ class CreateOrUpdateAttributeOptionAction
         AttributeCode $attributeCode,
         OptionCode $optionCode,
         array $option
-    ): Response
-    {
+    ): Response {
         $command = new AppendAttributeOptionCommand();
         $command->referenceEntityIdentifier = (string) $referenceEntityIdentifier;
         $command->attributeCode = (string) $attributeCode;
