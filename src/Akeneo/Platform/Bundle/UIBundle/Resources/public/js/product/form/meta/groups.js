@@ -157,7 +157,8 @@ define(
                                 productCount: productList.productCount,
                                 identifier:   identifierAttribute,
                                 locale:       UserContext.get('catalogLocale')
-                            })
+                            }),
+                            illustrationClass: 'group',
                         });
 
                         this.groupModal.on('ok', function visitGroup() {

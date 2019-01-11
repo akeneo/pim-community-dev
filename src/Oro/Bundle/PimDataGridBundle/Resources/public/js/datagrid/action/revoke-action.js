@@ -17,14 +17,14 @@ define([
          */
         return DeleteAction.extend({
             getConfirmDialog: function() {
-                const entityType = this.getEntityCode();
+                const entityCode = this.getEntityCode();
 
                 this.confirmModal = Dialog.confirm(
-                    __(`confirmation.remove.${entityType}`),
-                    __('Confirm revocation'),
+                    __(`pim_enrich.entity.${entityCode}.module.revoke.confirm`),
+                    __('pim_common.confirm_revocation'),
                     this.doDelete.bind(this),
                     this.getEntityHint(true)
-                )
+                );
 
                 return this.confirmModal;
             },

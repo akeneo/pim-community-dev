@@ -164,14 +164,14 @@ define(
              * Enable the modal ok button.
              */
             enableOkBtn: function () {
-                this.modal.$('.modal-footer .ok').removeClass('disabled');
+                this.modal.$('.ok').attr('disabled', null).removeClass('AknButton--disabled');
             },
 
             /**
              * Disable the modal ok button.
              */
             disableOkBtn: function () {
-                this.modal.$('.modal-footer .ok').addClass('disabled');
+                this.modal.$('.ok').attr('disabled', 'disabled').addClass('AknButton--disabled');
             }
         });
     }

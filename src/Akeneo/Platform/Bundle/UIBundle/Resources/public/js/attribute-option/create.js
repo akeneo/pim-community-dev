@@ -8,8 +8,7 @@ define(
         'routing',
         'pim/form-builder',
         'oro/messenger',
-        'pim/template/attribute-option/validation-error',
-        'pim/template/common/modal-with-illustration'
+        'pim/template/attribute-option/validation-error'
     ],
     function (
         $,
@@ -18,13 +17,11 @@ define(
         Routing,
         FormBuilder,
         messenger,
-        errorTemplate,
-        templateModal,
+        errorTemplate
     ) {
         var CreateOptionView = Backbone.View.extend({
             errorTemplate: _.template(errorTemplate),
             attribute: null,
-            innerTemplateModal: _.template(templateModal),
 
             initialize: function (options) {
                 this.attribute = options.attribute;
@@ -38,7 +35,6 @@ define(
                         content: form,
                         cancelText: _.__('pim_common.cancel'),
                         okText: _.__('pim_common.add'),
-                        template: this.innerTemplateModal,
                         picture: 'illustrations/Attribute.svg',
                         okCloses: false
                     });

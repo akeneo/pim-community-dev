@@ -1,6 +1,6 @@
 /*global define*/
-define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'oro/modal', 'oro/datagrid/abstract-listener'],
-function($, _, __, mediator, Modal, AbstractListener) {
+define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'oro/datagrid/abstract-listener'],
+function($, _, __, mediator, AbstractListener) {
     'use strict';
 
     /**
@@ -220,10 +220,9 @@ function($, _, __, mediator, Modal, AbstractListener) {
         _openConfirmDialog: function(type, options, callback) {
             this.confirmModal = this.confirmModal || {};
             if (!this.confirmModal[type]) {
-                this.confirmModal[type] = new Modal(_.extend({
+                this.confirmModal[type] = new Backbone.BootstrapModal(_.extend({
                     title: __('pim_common.confirm'),
                     okText: __('pim_common.yes'),
-                    okButtonClass: 'btn-primary btn-large'
                 }, options));
                 this.confirmModal[type].on('ok', _.bind(callback, this));
             }
