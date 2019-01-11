@@ -54,7 +54,7 @@ class ConnectorRecord
         return [
             'code' => $this->code->normalize(),
             'labels' => $this->labelCollection->normalize(),
-            'values' => $this->normalizedValues,
+            'values' => empty($this->normalizedValues) ? (object) []: $this->normalizedValues,
             'main_image' => $this->image->isEmpty() ? null : $this->image->getKey()
         ];
     }
