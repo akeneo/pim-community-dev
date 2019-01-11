@@ -272,6 +272,7 @@ services:
             - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
             - '@akeneo_referenceentity.application.attribute.edit_attribute_option_handler'
+            - '@akeneo_referenceentity.application.attribute.append_attribute_option_handler'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionAction

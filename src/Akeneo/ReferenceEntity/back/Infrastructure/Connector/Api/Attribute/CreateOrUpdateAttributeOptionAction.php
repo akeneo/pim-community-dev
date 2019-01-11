@@ -2,6 +2,7 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
+use Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler;
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler;
@@ -18,7 +19,6 @@ use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatte
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -26,6 +26,9 @@ use Symfony\Component\Routing\Router;
 
 class CreateOrUpdateAttributeOptionAction
 {
+    /** @var Router */
+    private $router;
+
     /** @var AttributeOptionValidatorInterface **/
     private $validator;
 
@@ -47,8 +50,8 @@ class CreateOrUpdateAttributeOptionAction
     /** @var EditAttributeOptionHandler */
     private $editAttributeOptionHandler;
 
-    /** @var Router */
-    private $router;
+    /** @var AppendAttributeOptionHandler */
+    private $appendAttributeOptionHandler;
 
     public function __construct(
         Router $router,
@@ -58,7 +61,8 @@ class CreateOrUpdateAttributeOptionAction
         AttributeSupportsOptions $attributeSupportsOptions,
         GetAttributeIdentifierInterface $getAttributeIdentifier,
         AttributeRepositoryInterface $attributeRepository,
-        EditAttributeOptionHandler $editAttributeOptionHandler
+        EditAttributeOptionHandler $editAttributeOptionHandler,
+        AppendAttributeOptionHandler $appendAttributeOptionHandler
     ) {
         $this->router = $router;
         $this->validator = $validator;
@@ -68,6 +72,7 @@ class CreateOrUpdateAttributeOptionAction
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->attributeRepository = $attributeRepository;
         $this->editAttributeOptionHandler = $editAttributeOptionHandler;
+        $this->appendAttributeOptionHandler = $appendAttributeOptionHandler;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode, string $optionCode): Response
@@ -166,6 +171,22 @@ class CreateOrUpdateAttributeOptionAction
         array $option
     ): Response
     {
+        $command = new AppendAttributeOptionCommand();
+        $command->referenceEntityIdentifier = (string) $referenceEntityIdentifier;
+        $command->attributeCode = (string) $attributeCode;
+        $command->optionCode = (string) $optionCode;
+        $command->labels = $option['labels'];
 
+        ($this->appendAttributeOptionHandler)($command);
+
+        $headers = [
+            'Location' => $this->router->generate('akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get', [
+                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+                'attributeCode' => (string) $attributeCode,
+                'optionCode' => (string) $optionCode
+            ], UrlGeneratorInterface::ABSOLUTE_URL)
+        ];
+
+        return Response::create('', Response::HTTP_CREATED, $headers);
     }
 }
