@@ -16,6 +16,16 @@ Feature: Subscribe a product to Franklin
     Then the product "B00EYZY6AC" should be subscribed
     And there should be a proposal for product B00EYZY6AC
 
+  Scenario: Successfully subscribe a product with brand and MPN to Franklin
+    Given Franklin is configured with a valid token
+    And the product "75024" of the family "camcorders"
+    And a predefined identifiers mapping as follows:
+      | franklin_code | attribute_code |
+      | brand         | pim_brand      |
+      | mpn           | mpn            |
+    When I subscribe the product "75024" to Franklin
+    Then the product "75024" should be subscribed
+
   Scenario: Fail to subscribe a product without family
     Given Franklin is configured with a valid token
     And the product without family "product_without_family"

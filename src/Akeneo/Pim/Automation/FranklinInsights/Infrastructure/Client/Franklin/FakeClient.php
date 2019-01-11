@@ -269,13 +269,20 @@ class FakeClient implements ClientInterface
                     $key = 'asin';
                 } elseif (isset($options['form_params'][0]['upc'])) {
                     $key = 'upc';
-                } elseif (isset($options['form_params'][0]['mpn']) && isset($options['form_params'][0]['brand'])) {
-                    $key = 'mpn-brand';
+                } elseif (isset($options['form_params'][0]['mpn_brand'])) {
+                    $key = 'mpn_brand';
                 } else {
-                    throw new \LogicException('Parameters sent for subscription are incorrects');
+                    throw new \LogicException('Parameters sent for subscription are incorrect');
                 }
-
-                $jsonContent = $this->loadFakeData(sprintf('%s/%s-%s', $uri, $key, $options['form_params'][0][$key]));
+                if ('mpn_brand' === $key) {
+                    $jsonContent = $this->loadFakeData(
+                        sprintf('%s/%s-%s', $uri, $key, $options['form_params'][0][$key]['mpn'])
+                    );
+                } else {
+                    $jsonContent = $this->loadFakeData(
+                        sprintf('%s/%s-%s', $uri, $key, $options['form_params'][0][$key])
+                    );
+                }
 
                 return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $jsonContent);
             case 'PUT':
