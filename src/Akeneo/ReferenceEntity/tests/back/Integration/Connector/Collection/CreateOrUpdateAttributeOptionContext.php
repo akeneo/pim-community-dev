@@ -15,12 +15,30 @@ namespace Akeneo\ReferenceEntity\Integration\Connector\Collection;
 
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
+use PHPUnit\Framework\Assert;
+use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateAttributeOptionContext implements Context
 {
+    private const REQUEST_CONTRACT_DIR = 'Attribute/Connector/Collect/';
+
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
 
@@ -30,14 +48,25 @@ class CreateOrUpdateAttributeOptionContext implements Context
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
 
+    /** @var null|string */
+    private $requestContract;
+
+    /** @var null|Response */
+    private $pimResponse;
+
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         OauthAuthenticatedClientFactory $clientFactory,
-        WebClientHelper $webClientHelper
+        WebClientHelper $webClientHelper,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -45,7 +74,7 @@ class CreateOrUpdateAttributeOptionContext implements Context
      */
     public function theBrandReferenceEntityReferenceEntityExistingBothInTheERPAndInThePIM()
     {
-        throw new PendingException();
+        $this->createBrandReferenceEntity();
     }
 
     /**
@@ -53,15 +82,15 @@ class CreateOrUpdateAttributeOptionContext implements Context
      */
     public function theSalesAreaAttributeExistingBothInTheERPAndInThePIM()
     {
-        throw new PendingException();
+        $this->createSalesAreaAttribute();
     }
 
     /**
-     * @Given /^the USA attribute option that only exist in the ERP but not in the PIM$/
+     * @Given /^the USA attribute option that only exists in the ERP but not in the PIM$/
      */
-    public function theUSAAttributeOptionThatOnlyExistInTheERPButNotInThePIM()
+    public function theUSAAttributeOptionThatOnlyExistsInTheERPButNotInThePIM()
     {
-        throw new PendingException();
+        $this->requestContract = 'successful_usa_attribute_option_creation.json';
     }
 
     /**
@@ -69,7 +98,11 @@ class CreateOrUpdateAttributeOptionContext implements Context
      */
     public function theConnectorCollectsTheUSAAttributeOptionOfTheSalesAreaAttributeOfTheBrandReferenceEntityFromTheERPToSynchronizeItWithThePIM()
     {
-        throw new PendingException();
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
     }
 
     /**
@@ -77,7 +110,31 @@ class CreateOrUpdateAttributeOptionContext implements Context
      */
     public function theUSAAttributeOptionOfTheSalesAreaAttributeIsAddedToTheStructureOfTheBrandReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
     {
-        throw new PendingException();
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'successful_usa_attribute_option_creation.json'
+        );
+
+        $identifier = AttributeIdentifier::fromString('attribute_4');
+
+        $attribute = $this->attributeRepository->getByIdentifier($identifier)->normalize();
+        $expectedAttributeOptions = [
+            [
+                'code' => 'china',
+                'labels' => [
+                    'en_US' => 'China'
+                ]
+            ],
+            [
+                'code' => 'usa',
+                'labels' => [
+                    'en_US' => 'USA',
+                    'fr_FR' => 'Aux Etats-Unis'
+                ]
+            ],
+        ];
+
+        Assert::assertEquals($expectedAttributeOptions, $attribute['options']);
     }
 
     /**
@@ -150,5 +207,42 @@ class CreateOrUpdateAttributeOptionContext implements Context
     public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeDoesAcceptOptions()
     {
         throw new PendingException();
+    }
+
+    private function createBrandReferenceEntity()
+    {
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand_4'),
+            [],
+            Image::createEmpty()
+        );
+
+        $this->referenceEntityRepository->create($referenceEntity);
+    }
+
+    private function createSalesAreaAttribute()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand_4');
+        $attributeIdentifier = AttributeIdentifier::fromString('attribute_4');
+
+        $optionAttribute = OptionCollectionAttribute::create(
+            $attributeIdentifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('sales_area'),
+            LabelCollection::fromArray([ 'fr_FR' => 'Ventes', 'en_US' => 'Sales area']),
+            AttributeOrder::fromInteger(5),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true)
+        );
+
+        $this->attributeRepository->create($optionAttribute);
+
+        $optionAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('china'),
+                LabelCollection::fromArray(['en_US' => 'China'])
+            )
+        ]);
     }
 }
