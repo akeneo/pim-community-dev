@@ -49,6 +49,8 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
      */
     public function initialize(): void
     {
+        $updatedSince = $this->stepExecution->getJobParameters()->get('updated_since');
+        var_dump($updatedSince);
         $this->subscriptionsCursor = $this->subscriptionProvider->fetch();
     }
 
