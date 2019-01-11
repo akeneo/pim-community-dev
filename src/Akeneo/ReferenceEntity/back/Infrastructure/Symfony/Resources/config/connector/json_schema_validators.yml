@@ -60,6 +60,11 @@ services:
         arguments:
             - !tagged akeneo_referenceentity.connector.api.create.attribute_validator
 
+    akeneo_referenceentity.infrastructure.connector.api.attribute_option_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeOptionValidator
+        arguments:
+            - !tagged akeneo_referenceentity.connector.api.attribute_option_validator
+
     akeneo_referenceentity.infrastructure.connector.api.create.image_attribute_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\ImageAttributeValidator
         tags:

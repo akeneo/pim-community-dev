@@ -121,6 +121,11 @@ akeneo_reference_entities_reference_entity_attribute_rest_connector_create_or_up
     defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute.create_or_update }
     methods: [PATCH]
 
+akeneo_reference_entities_reference_entity_attribute_option_rest_connector_create_or_update:
+    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes/{attributeCode}/options/{optionCode}'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.create_or_update }
+    methods: [PATCH]
+
 akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get:
     path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes/{attributeCode}/options/{optionCode}'
     defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.get }
