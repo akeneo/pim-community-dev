@@ -2,6 +2,9 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
+use Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -15,8 +18,11 @@ use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatte
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Router;
 
 class CreateOrUpdateAttributeOptionAction
 {
@@ -38,30 +44,41 @@ class CreateOrUpdateAttributeOptionAction
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var EditAttributeOptionHandler */
+    private $editAttributeOptionHandler;
+
+    /** @var Router */
+    private $router;
+
     public function __construct(
+        Router $router,
         AttributeOptionValidatorInterface $validator,
         ReferenceEntityExistsInterface $referenceEntityExists,
         AttributeExistsInterface $attributeExists,
         AttributeSupportsOptions $attributeSupportsOptions,
         GetAttributeIdentifierInterface $getAttributeIdentifier,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        EditAttributeOptionHandler $editAttributeOptionHandler
     ) {
+        $this->router = $router;
         $this->validator = $validator;
         $this->referenceEntityExists = $referenceEntityExists;
         $this->attributeExists = $attributeExists;
         $this->attributeSupportsOptions = $attributeSupportsOptions;
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->attributeRepository = $attributeRepository;
+        $this->editAttributeOptionHandler = $editAttributeOptionHandler;
     }
 
-    public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode, string $optionCode)
+    public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode, string $optionCode): Response
     {
-        $invalidFormatErrors = $this->validator->validate(json_decode($request->getContent(), true));
+        $option = json_decode($request->getContent(), true);
+        $invalidFormatErrors = $this->validator->validate($option);
 
         if (!empty($invalidFormatErrors)) {
             return new JsonResponse([
                 'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'The attribute has an invalid format.',
+                'message' => 'The attribute option has an invalid format.',
                 'errors' => JsonSchemaErrorsFormatter::format($invalidFormatErrors),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
@@ -111,29 +128,44 @@ class CreateOrUpdateAttributeOptionAction
 
         $optionExists = $attribute->hasAttributeOption($optionCode);
 
-        $optionExists ?
-            $this->editOption($referenceEntityIdentifier, $attributeCode, $optionCode, $request) :
-            $this->createOption($referenceEntityIdentifier, $attributeCode, $optionCode, $request);
+        return $optionExists ?
+            $this->editOption($referenceEntityIdentifier, $attributeCode, $optionCode, $option) :
+            $this->createOption($referenceEntityIdentifier, $attributeCode, $optionCode, $option);
     }
 
     public function editOption(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $attributeCode,
         OptionCode $optionCode,
-        Request $request
-    ) {
-        // Validate the data with json schema validator
-        // Use the handler to update
-        // AppendAttributeOptionCommand
-        // AppendAttributeOptionHandler
-        // Normalize the attribute
+        array $option
+    ): Response
+    {
+        $command = new EditAttributeOptionCommand();
+        $command->referenceEntityIdentifier = (string) $referenceEntityIdentifier;
+        $command->attributeCode = (string) $attributeCode;
+        $command->optionCode = (string) $optionCode;
+        $command->labels = $option['labels'];
+
+        ($this->editAttributeOptionHandler)($command);
+
+        $headers = [
+            'Location' => $this->router->generate('akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get', [
+                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+                'attributeCode' => (string) $attributeCode,
+                'optionCode' => (string) $optionCode
+            ], UrlGeneratorInterface::ABSOLUTE_URL)
+        ];
+
+        return Response::create('', Response::HTTP_CREATED, $headers);
     }
 
     public function createOption(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $attributeCode,
         OptionCode $optionCode,
-        Request $request
-    ) {
+        array $option
+    ): Response
+    {
+
     }
 }

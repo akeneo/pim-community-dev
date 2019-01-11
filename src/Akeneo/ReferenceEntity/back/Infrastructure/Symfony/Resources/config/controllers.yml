@@ -264,12 +264,14 @@ services:
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\CreateOrUpdateAttributeOptionAction
         arguments:
+            - '@router'
             - '@akeneo_referenceentity.infrastructure.connector.api.attribute_option_validator'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.infrastructure.persistence.query.attribute_exists'
             - '@akeneo_referenceentity.domain.persistence.query.attribute_supports_options'
             - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.application.attribute.edit_attribute_option_handler'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionAction
