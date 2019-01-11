@@ -79,7 +79,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $this->shouldThrow(AttributeMappingException::onlyUnknownMappedAttributes())->during('handle', [$command]);
     }
 
-    public function it_throws_an_exception_if_an_attribute_does_not_exist(
+    public function it_saves_only_existing_attributes(
         $familyRepository,
         $attributeRepository,
         $attributesMappingProvider,
