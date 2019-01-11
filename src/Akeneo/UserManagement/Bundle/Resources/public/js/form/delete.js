@@ -11,6 +11,9 @@ define(['pim/form/common/delete', 'pim/remover/user'], function (DeleteForm, Use
     return DeleteForm.extend({
         remover: UserRemover,
 
+        /**
+         * {@inheritdoc}
+         */
         getIdentifier: function () {
             return this.getFormData().meta.id;
         }

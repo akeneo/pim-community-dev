@@ -18,6 +18,7 @@
 - TIP-1018: Adds a script to check container services instantiability (bin/check-services-instantiability)
 - GITHUB-9333: Fix the storage data collector to consider the port number on system information page. Cheers @nei!
 - TIP-899: Improve product export performance by computing headers at the end
+- PIM-7968: Make the user fetchable by id instead of username
 
 ## Enhancements
 

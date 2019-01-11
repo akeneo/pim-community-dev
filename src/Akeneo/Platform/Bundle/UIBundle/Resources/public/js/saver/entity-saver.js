@@ -42,7 +42,7 @@ define([
             /**
              * Sets the identifierProperty for the url
              *
-             * @param {string }identifierProperty
+             * @param {string} identifierProperty
              */
             setIdentifierProperty: function (identifierProperty) {
                 this.identifierProperty = identifierProperty;

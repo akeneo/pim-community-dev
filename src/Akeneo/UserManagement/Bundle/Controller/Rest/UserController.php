@@ -275,13 +275,13 @@ class UserController
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function getUserOr404($identifier): ?UserInterface
+    private function getUserOr404($identifier): UserInterface
     {
         $user = $this->repository->findOneBy(['id' => $identifier]);
 
         if (null === $user) {
             throw new NotFoundHttpException(
-                sprintf('Username with id "%s" not found', $id)
+                sprintf('Username with id "%s" not found', $identifier)
             );
         }
 
@@ -302,7 +302,7 @@ class UserController
         }
 
         if (($data['password_repeat'] ?? '') !== $data['password']) {
-            $violations[] = new ConstraintViolation('Password does not match', '', [], '', 'password_repeat', '');
+            $violations[] = new ConstraintViolation('Passwords do not match', '', [], '', 'password_repeat', '');
         }
 
         return new ConstraintViolationList($violations);

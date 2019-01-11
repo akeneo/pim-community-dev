@@ -91,9 +91,9 @@ define(
                 this.showLoadingMask();
                 this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
-                let entityIdProperty = this.config.entityIdentifierParamName || 'code';
-                let identifierProperty = this.config.identifierParamName || 'identifier';
-                let entityId = propertyAccessor.accessProperty(this.getFormData(), entityIdProperty, '');
+                const entityIdProperty = this.config.entityIdentifierParamName || 'code';
+                const identifierProperty = this.config.identifierParamName || 'identifier';
+                const entityId = propertyAccessor.accessProperty(this.getFormData(), entityIdProperty, '');
 
                 return EntitySaver
                     .setUrl(this.config.url)
