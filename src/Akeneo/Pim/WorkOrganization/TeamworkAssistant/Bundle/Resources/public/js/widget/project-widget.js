@@ -122,9 +122,9 @@ define(
                     return $.Deferred().resolve({}).promise();
                 }
 
-                let formData = this.getFormData();
+                const formData = this.getFormData();
 
-                if (formData.currentContributor !== undefined) {
+                if (undefined !== formData.currentContributor) {
                     return FetcherRegistry.getFetcher('user').fetch(formData.currentContributor.meta.id);
                 }
 
