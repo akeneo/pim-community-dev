@@ -138,14 +138,6 @@ class CreateOrUpdateAttributeOptionContext implements Context
     }
 
     /**
-     * @When /^the connector collects an attribute option of a non\-existent reference entity$/
-     */
-    public function theConnectorCollectsAnAttributeOptionOfANonExistentReferenceEntity()
-    {
-        throw new PendingException();
-    }
-
-    /**
      * @Given /^some attributes that structure the Brand reference entity$/
      */
     public function someAttributesThatStructureTheBrandReferenceEntity()

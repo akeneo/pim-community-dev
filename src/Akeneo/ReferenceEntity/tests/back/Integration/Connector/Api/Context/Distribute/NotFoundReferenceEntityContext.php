@@ -159,4 +159,14 @@ class NotFoundReferenceEntityContext implements Context
         $this->notFoundReferenceEntityRequestContract = self::COLLECT_ATTRIBUTE_REQUEST_CONTRACT_DIR . 'not_found_reference_entity_for_an_attribute.json';
         $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
     }
+
+    /**
+     * @When /^the connector collects an attribute option of a non\-existent reference entity$/
+     */
+    public function theConnectorCollectsAnAttributeOptionOfANonExistentReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->notFoundReferenceEntityRequestContract = self::COLLECT_ATTRIBUTE_REQUEST_CONTRACT_DIR . 'not_found_reference_entity_for_an_attribute_option.json';
+        $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
+    }
 }

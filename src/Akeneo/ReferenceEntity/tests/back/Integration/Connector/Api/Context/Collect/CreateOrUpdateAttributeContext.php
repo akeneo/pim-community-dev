@@ -222,7 +222,7 @@ class CreateOrUpdateAttributeContext implements Context
     /**
      * @Then /^the PIM notifies the connector about an error indicating that the attribute has data that does not comply with the business rules$/
      */
-    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttribureHasDataThatDoesNotComplyWithTheBusinessRules()
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeHasDataThatDoesNotComplyWithTheBusinessRules()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
