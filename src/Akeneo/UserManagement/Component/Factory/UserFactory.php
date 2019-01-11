@@ -13,6 +13,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
+use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 
 /**
  * Creates and configures a user instance.
@@ -34,6 +35,9 @@ class UserFactory implements SimpleFactoryInterface
 
     /** @var GroupRepositoryInterface */
     protected $groupRepository;
+    
+    /** @var RoleRepositoryInterface */
+    protected $roleRepository;
 
     /** @var string */
     protected $userClass;
@@ -46,6 +50,7 @@ class UserFactory implements SimpleFactoryInterface
      * @param ChannelRepositoryInterface $channelRepository
      * @param CategoryRepositoryInterface $categoryRepository
      * @param GroupRepositoryInterface $groupRepository
+     * @param RoleRepositoryInterface $roleRepository
      * @param string $userClass
      * @param DefaultProperty[] $defaultProperties
      */
@@ -54,6 +59,7 @@ class UserFactory implements SimpleFactoryInterface
         ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $categoryRepository,
         GroupRepositoryInterface $groupRepository,
+        RoleRepositoryInterface $roleRepository,
         string $userClass,
         DefaultProperty ...$defaultProperties
     ) {
@@ -61,6 +67,7 @@ class UserFactory implements SimpleFactoryInterface
         $this->channelRepository = $channelRepository;
         $this->categoryRepository = $categoryRepository;
         $this->groupRepository = $groupRepository;
+        $this->roleRepository = $roleRepository;
         $this->userClass = $userClass;
         $this->defaultProperties = $defaultProperties;
     }
@@ -85,6 +92,9 @@ class UserFactory implements SimpleFactoryInterface
         }
         if (null !== $group = $this->getDefaultGroup()) {
             $user->addGroup($group);
+        }
+        if (null !== $role = $this->roleRepository->findOneByIdentifier('ROLE_USER')) {
+            $user->addRole($role);
         }
 
         return array_reduce($this->defaultProperties, function ($user, DefaultProperty $defaultProperty) {

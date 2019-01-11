@@ -21,6 +21,10 @@ define([
              * {@inheritdoc}
              */
             getUrl: function (identifier) {
+                if (this.identifierProperty !== undefined) {
+                    return Routing.generate(this.url, { [this.identifierProperty] : identifier });
+                }
+
                 return Routing.generate(this.url, { identifier: identifier });
             },
 
@@ -31,6 +35,17 @@ define([
              */
             setUrl: function (url) {
                 this.url = url;
+
+                return this;
+            },
+
+            /**
+             * Sets the identifierProperty for the url
+             *
+             * @param {string} identifierProperty
+             */
+            setIdentifierProperty: function (identifierProperty) {
+                this.identifierProperty = identifierProperty;
 
                 return this;
             }

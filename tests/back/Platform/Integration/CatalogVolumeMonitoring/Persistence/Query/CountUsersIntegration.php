@@ -37,7 +37,8 @@ class CountUsersIntegration extends QueryTestCase
                 'last_name' => 'lastname_' . rand(),
                 'password' => rand(),
                 'catalog_default_locale' => 'en_US',
-                'user_default_locale' => 'en_US'
+                'user_default_locale' => 'en_US',
+                'roles' => ['ROLE_USER'],
             ]);
             $i++;
         }

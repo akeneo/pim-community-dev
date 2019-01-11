@@ -63,7 +63,7 @@ function (_, Backbone, routing, app) {
             }
 
             modal = new Backbone.BootstrapModal({
-                title: option.header,
+                title: options.header,
                 content: message,
                 buttonClass: 'AknButton--important',
                 cancelText: '',

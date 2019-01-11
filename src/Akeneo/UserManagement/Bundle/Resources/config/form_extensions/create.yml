@@ -9,7 +9,8 @@ extensions:
             successMessage: pim_user_management.entity.user.flash.create.success
             editRoute: pim_user_edit
             postUrl: pim_user_user_rest_create
-            routerKey: code
+            routerKey: identifier
+            entityIdentifierParamName: meta.id
 
     pim-user-create-modal-username:
         module: pim/form/common/fields/text
@@ -29,6 +30,16 @@ extensions:
         config:
             fieldName: password
             label: pim_user_management.entity.user.properties.password
+            required: true
+
+    pim-user-create-modal-password-repeat:
+        module: pim/form/common/fields/password
+        parent: pim-user-create-modal
+        position: 16
+        targetZone: fields
+        config:
+            fieldName: password_repeat
+            label: pim_user_management.entity.user.properties.password_repeat
             required: true
 
     pim-user-create-modal-first-name:

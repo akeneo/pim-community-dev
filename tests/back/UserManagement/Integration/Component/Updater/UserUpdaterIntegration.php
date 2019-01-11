@@ -62,6 +62,7 @@ class UserUpdaterIntegration extends TestCase
             'password' => 'julia',
             'catalog_default_locale' => 'zh_CN',
             'user_default_locale' => 'fr_FR',
+            'roles' => ['ROLE_CATALOG_MANAGER'],
         ];
         $user = $this->get('pim_user.factory.user')->create();
         $this->get('pim_user.updater.user')->update($user, $data, []);
@@ -82,7 +83,8 @@ class UserUpdaterIntegration extends TestCase
             'password' => 'julia',
             'catalog_default_locale' => 'en_US',
             'user_default_locale' => 'fr_FR',
-            'phone' => '0655443346'
+            'phone' => '0655443346',
+            'roles' => ['ROLE_CATALOG_MANAGER'],
         ];
 
         $user = $this->get('pim_user.factory.user')->create();
