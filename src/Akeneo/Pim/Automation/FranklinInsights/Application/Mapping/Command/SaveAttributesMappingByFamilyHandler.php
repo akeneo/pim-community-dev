@@ -84,15 +84,26 @@ class SaveAttributesMappingByFamilyHandler
      */
     private function filterUnknownAttributes(array $attributesMapping): array
     {
-        return array_filter($attributesMapping, function ($attributeMapping) {
-            $attributeCode = $attributeMapping->getPimAttributeCode();
-            if (null !== $attributeCode) {
-                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        $attributeCodes = [];
+        foreach ($attributesMapping as $attributeMapping) {
+            $attributeCodes[] = $attributeMapping->getPimAttributeCode();
+        }
 
-                return null !== $attribute;
+        $attributes = $this->attributeRepository->findBy(['code' => $attributeCodes]);
+
+        return array_filter($attributesMapping, function ($attributeMapping) use ($attributes) {
+            $attributeCode = $attributeMapping->getPimAttributeCode();
+            if (null === $attributeCode) {
+                return true;
             }
 
-            return true;
+            foreach ($attributes as $attribute) {
+                if ($attributeCode === $attribute->getCode()) {
+                    return true;
+                }
+            }
+
+            return false;
         });
     }
 

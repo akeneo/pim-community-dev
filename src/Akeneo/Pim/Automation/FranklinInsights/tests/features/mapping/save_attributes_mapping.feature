@@ -53,7 +53,7 @@ Feature: Map the PIM attributes with Franklin attributes
       | color                 | unknown_attribute  |
       | product_weight        | weight             |
     Then Franklin's attribute product_weight should be mapped to weight
-    Then Franklin's attribute color should not be saved
+    And Franklin's attribute color should not be saved
 
   Scenario: Fails to save the attributes mapping if all the attributes do not exist
     Given the family "router"
