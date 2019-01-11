@@ -70,11 +70,13 @@ define(
              */
             promptEditProject: function () {
                 var modal = new Backbone.BootstrapModal({
+                    subtitle: __('teamwork_assistant.grid.view_selector.projects'),
                     title: __('teamwork_assistant.edit_project_modal.title'),
                     content: '',
                     cancelText: __('pim_common.cancel'),
                     okText: __('pim_common.save'),
-                    okCloses: false
+                    okCloses: false,
+                    illustrationClass: 'projects'
                 });
 
                 modal.open();
