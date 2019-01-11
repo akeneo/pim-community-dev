@@ -64,7 +64,7 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
             $updatedSince = $this->geLastExecutionDateTime();
         }
 
-        $this->subscriptionsCursor = $this->subscriptionProvider->fetch();
+        $this->subscriptionsCursor = $this->subscriptionProvider->fetch($updatedSince);
     }
 
     /**
