@@ -47,7 +47,6 @@ class UserUpdaterIntegration extends TestCase
             'email' => 'This value should not be blank.',
             'firstName' => 'This value should not be blank.',
             'lastName' => 'This value should not be blank.',
-            'roles' => 'You must select at least 1 role.'
         ];
 
         $this->assertEquals($expected, $result);
