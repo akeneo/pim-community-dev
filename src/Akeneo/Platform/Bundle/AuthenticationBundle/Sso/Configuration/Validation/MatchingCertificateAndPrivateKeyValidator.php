@@ -8,11 +8,11 @@ use phpseclib\File\X509;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class MatchingPublicAndPrivateCertificatesValidator extends ConstraintValidator
+class MatchingCertificateAndPrivateKeyValidator extends ConstraintValidator
 {
     public function validate($command, Constraint $constraint)
     {
-        if (empty($command->{$constraint->privateCertificatePropertyName}) || empty($command->{$constraint->publicCertificatePropertyName})) {
+        if (empty($command->{$constraint->privateKeyPropertyName}) || empty($command->{$constraint->certificatePropertyName})) {
             return;
         }
 
@@ -32,10 +32,10 @@ ZIGGY;
 
         $rsa = new RSA();
         $x509 = new X509();
-        $rsa->loadKey($command->{$constraint->privateCertificatePropertyName});
+        $rsa->loadKey($command->{$constraint->privateKeyPropertyName});
         $signedData = $rsa->sign($data);
 
-        $x509->loadX509($command->{$constraint->publicCertificatePropertyName});
+        $x509->loadX509($command->{$constraint->certificatePropertyName});
         $publicKey = $x509->getPublicKey();
 
         //Sorry for the @ that silent the errors triggered by the following method
@@ -45,12 +45,12 @@ ZIGGY;
         if ($publicKey instanceof RSA && !@$publicKey->verify($data, $signedData)) {
             $this->context
                 ->buildViolation($constraint->message)
-                ->atPath('serviceProviderPublicCertificate')
+                ->atPath($constraint->certificatePropertyName)
                 ->addViolation();
 
             $this->context
                 ->buildViolation($constraint->message)
-                ->atPath('serviceProviderPrivateCertificate')
+                ->atPath($constraint->privateKeyPropertyName)
                 ->addViolation();
         }
     }

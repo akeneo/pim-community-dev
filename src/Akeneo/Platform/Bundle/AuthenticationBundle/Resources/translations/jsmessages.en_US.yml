@@ -30,10 +30,10 @@ authentication:
                     label: Sign-on URL
                 logout_url:
                     label: Logout URL
-                public_certificate:
-                    label: Public certificate
-                private_certificate:
-                    label: Private certificate
+                certificate:
+                    label: Certificate
+                private_key:
+                    label: Private key
 
 akeneo_authentication:
     acl:

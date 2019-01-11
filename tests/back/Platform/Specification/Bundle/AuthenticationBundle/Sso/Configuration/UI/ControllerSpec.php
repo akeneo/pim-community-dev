@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI;
 
 use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfiguration;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfigurationHandler;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Certificate;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Code;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfiguration;
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfigurationHandler;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\EntityId;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\IdentityProvider;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\IsEnabled;
@@ -51,14 +51,14 @@ class ControllerSpec extends ObjectBehavior
     {
         $requestContent = json_encode(
             [
-                'is_enabled'                           => true,
-                'identity_provider_entity_id'          => 'https://idp.jambon.com',
-                'identity_provider_sign_on_url'        => 'https://idp.jambon.com/signon',
-                'identity_provider_logout_url'         => 'https://idp.jambon.com/logout',
-                'identity_provider_public_certificate' => 'public_certificate',
-                'service_provider_entity_id'           => 'https://sp.jambon.com',
-                'service_provider_public_certificate'  => 'public_certificate',
-                'service_provider_private_certificate' => 'private_certificate',
+                'is_enabled'                    => true,
+                'identity_provider_entity_id'   => 'https://idp.jambon.com',
+                'identity_provider_sign_on_url' => 'https://idp.jambon.com/signon',
+                'identity_provider_logout_url'  => 'https://idp.jambon.com/logout',
+                'identity_provider_certificate' => 'certificate',
+                'service_provider_entity_id'    => 'https://sp.jambon.com',
+                'service_provider_certificate'  => 'certificate',
+                'service_provider_private_key'  => 'private_key',
             ]
         );
         $request = new Request([], [], [], [], [], [], $requestContent);
@@ -80,14 +80,14 @@ class ControllerSpec extends ObjectBehavior
     ) {
         $requestContent = json_encode(
             [
-                'is_enabled'                           => true,
-                'identity_provider_entity_id'          => '',
-                'identity_provider_sign_on_url'        => 'https://idp.jambon.com/signon',
-                'identity_provider_logout_url'         => 'https://idp.jambon.com/logout',
-                'identity_provider_public_certificate' => 'public_certificate',
-                'service_provider_entity_id'           => 'https://sp.jambon.com',
-                'service_provider_public_certificate'  => 'public_certificate',
-                'service_provider_private_certificate' => 'private_certificate',
+                'is_enabled'                    => true,
+                'identity_provider_entity_id'   => '',
+                'identity_provider_sign_on_url' => 'https://idp.jambon.com/signon',
+                'identity_provider_logout_url'  => 'https://idp.jambon.com/logout',
+                'identity_provider_certificate' => 'certificate',
+                'service_provider_entity_id'    => 'https://sp.jambon.com',
+                'service_provider_certificate'  => 'certificate',
+                'service_provider_private_key'  => 'private_key',
             ]
         );
         $request = new Request([], [], [], [], [], [], $requestContent);
@@ -99,10 +99,10 @@ class ControllerSpec extends ObjectBehavior
             '',
             'https://idp.jambon.com/signon',
             'https://idp.jambon.com/logout',
-            'public_certificate',
+            'certificate',
             'https://sp.jambon.com',
-            'public_certificate',
-            'private_certificate'
+            'certificate',
+            'private_key'
         );
 
         $validator->validate(Argument::type(CreateOrUpdateConfiguration::class))
@@ -121,9 +121,9 @@ class ControllerSpec extends ObjectBehavior
 
         $normalizedErrors = [
             [
-                'global' => false,
+                'global'  => false,
                 'message' => 'This value should not be blank.',
-                'path' => 'identity_provider_entity_id',
+                'path'    => 'identity_provider_entity_id',
             ]
         ];
 
@@ -146,26 +146,26 @@ class ControllerSpec extends ObjectBehavior
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/signon'),
                 new Url('https://idp.jambon.com/logout'),
-                new Certificate('public_certificate')
+                new Certificate('certificate')
             ),
             new ServiceProvider(
                 new EntityId('https://sp.jambon.com'),
-                new Certificate('public_certificate'),
-                new Certificate('private_certificate')
+                new Certificate('certificate'),
+                new Certificate('private_key')
             )
         );
 
         $repository->find('authentication_sso')->willReturn($config);
 
         $normalizedConfig = [
-            'is_enabled'                           => true,
-            'identity_provider_entity_id'          => 'https://idp.jambon.com',
-            'identity_provider_sign_on_url'        => 'https://idp.jambon.com/signon',
-            'identity_provider_logout_url'         => 'https://idp.jambon.com/logout',
-            'identity_provider_public_certificate' => 'public_certificate',
-            'service_provider_entity_id'           => 'https://sp.jambon.com',
-            'service_provider_public_certificate'  => 'public_certificate',
-            'service_provider_private_certificate' => 'private_certificate',
+            'is_enabled'                    => true,
+            'identity_provider_entity_id'   => 'https://idp.jambon.com',
+            'identity_provider_sign_on_url' => 'https://idp.jambon.com/signon',
+            'identity_provider_logout_url'  => 'https://idp.jambon.com/logout',
+            'identity_provider_certificate' => 'certificate',
+            'service_provider_entity_id'    => 'https://sp.jambon.com',
+            'service_provider_certificate'  => 'certificate',
+            'service_provider_private_key'  => 'private_key',
         ];
 
         $normalizer->normalize($config, 'internal_api')->willReturn($normalizedConfig);
@@ -179,21 +179,21 @@ class ControllerSpec extends ObjectBehavior
 
         $serviceProviderConfiguration = new ServiceProvider(
             new EntityId('https://sp.jambon.com/saml/metadata'),
-            new Certificate('default_public_certificate'),
-            new Certificate('default_private_certificate')
+            new Certificate('default_certificate'),
+            new Certificate('default_private_key')
         );
 
         $serviceProviderDefaultConfiguration->getServiceProvider()->willReturn($serviceProviderConfiguration);
 
         $defaultConfig = [
-            'is_enabled'                           => false,
-            'identity_provider_entity_id'          => '',
-            'identity_provider_sign_on_url'        => '',
-            'identity_provider_logout_url'         => '',
-            'identity_provider_public_certificate' => '',
-            'service_provider_entity_id'           => 'https://sp.jambon.com/saml/metadata',
-            'service_provider_public_certificate'  => 'default_public_certificate',
-            'service_provider_private_certificate' => 'default_private_certificate',
+            'is_enabled'                    => false,
+            'identity_provider_entity_id'   => '',
+            'identity_provider_sign_on_url' => '',
+            'identity_provider_logout_url'  => '',
+            'identity_provider_certificate' => '',
+            'service_provider_entity_id'    => 'https://sp.jambon.com/saml/metadata',
+            'service_provider_certificate'  => 'default_certificate',
+            'service_provider_private_key'  => 'default_private_key',
         ];
 
         $this->getAction()->shouldBeLike(new JsonResponse($defaultConfig));

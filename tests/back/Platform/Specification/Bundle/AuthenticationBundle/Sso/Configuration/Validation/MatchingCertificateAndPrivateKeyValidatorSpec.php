@@ -2,16 +2,16 @@
 
 namespace Specification\Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation;
 
-use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\MatchingPublicAndPrivateCertificates;
-use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\MatchingPublicAndPrivateCertificatesValidator;
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfiguration;
+use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\MatchingCertificateAndPrivateKey;
+use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\MatchingCertificateAndPrivateKeyValidator;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfiguration;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class MatchingPublicAndPrivateCertificatesValidatorSpec extends ObjectBehavior
+class MatchingCertificateAndPrivateKeyValidatorSpec extends ObjectBehavior
 {
     function let(ExecutionContextInterface $context)
     {
@@ -20,7 +20,7 @@ class MatchingPublicAndPrivateCertificatesValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(MatchingPublicAndPrivateCertificatesValidator::class);
+        $this->shouldHaveType(MatchingCertificateAndPrivateKeyValidator::class);
     }
 
     function it_is_a_constraint_validator()
@@ -55,7 +55,7 @@ class MatchingPublicAndPrivateCertificatesValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $builder
     ) {
 
-        $context->buildViolation('Service Provider public and private certificates must match.')
+        $context->buildViolation('Service Provider certificate and private key must match.')
             ->shouldBeCalledTimes(2)
             ->willReturn($builder)
         ;
@@ -81,13 +81,13 @@ class MatchingPublicAndPrivateCertificatesValidatorSpec extends ObjectBehavior
         );
     }
 
-    private function getConstraint(): MatchingPublicAndPrivateCertificates
+    private function getConstraint(): MatchingCertificateAndPrivateKey
     {
-        return new MatchingPublicAndPrivateCertificates(
+        return new MatchingCertificateAndPrivateKey(
             [
-                'message'                        => 'Service Provider public and private certificates must match.',
-                'publicCertificatePropertyName'  => 'serviceProviderPublicCertificate',
-                'privateCertificatePropertyName' => 'serviceProviderPrivateCertificate',
+                'message'                 => 'Service Provider certificate and private key must match.',
+                'certificatePropertyName' => 'serviceProviderCertificate',
+                'privateKeyPropertyName'  => 'serviceProviderPrivateKey',
             ]
         );      
     }

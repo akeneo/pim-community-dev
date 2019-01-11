@@ -5,27 +5,27 @@ Feature: Configure the SSO
 
   @acceptance-back
   Scenario: Accept a valid configuration
-    Given a configuration
+    When I try to save a valid configuration
     Then I should have no validation errors
 
   @acceptance-back
   Scenario: Reject an empty configuration
-    Given an empty configuration
+    When I try to save an empty configuration
     Then I should have the following validation errors:
-      | path                              | message                         |
-      | code                              | This value should not be blank. |
-      | identityProviderEntityId          | This value should not be blank. |
-      | identityProviderSignOnUrl         | This value should not be blank. |
-      | identityProviderLogoutUrl         | This value should not be blank. |
-      | identityProviderPublicCertificate | This value should not be blank. |
-      | serviceProviderEntityId           | This value should not be blank. |
-      | serviceProviderPublicCertificate  | This value should not be blank. |
-      | serviceProviderPrivateCertificate | This value should not be blank. |
+      | path                        | message                         |
+      | code                        | This value should not be blank. |
+      | identityProviderEntityId    | This value should not be blank. |
+      | identityProviderSignOnUrl   | This value should not be blank. |
+      | identityProviderLogoutUrl   | This value should not be blank. |
+      | identityProviderCertificate | This value should not be blank. |
+      | serviceProviderEntityId     | This value should not be blank. |
+      | serviceProviderCertificate  | This value should not be blank. |
+      | serviceProviderPrivateKey   | This value should not be blank. |
 
 
   @acceptance-back
   Scenario: Reject a configuration with invalid URLs
-    Given a configuration with invalid URLs
+    When I try to save a configuration with invalid URLs
     Then I should have the following validation errors:
       | path                      | message                        |
       | identityProviderEntityId  | This value is not a valid URL. |
@@ -35,24 +35,24 @@ Feature: Configure the SSO
 
   @acceptance-back
   Scenario: Reject a configuration with invalid certificates
-    Given a configuration with invalid certificates
+    When I try to save a configuration with invalid certificates
     Then I should have the following validation errors:
-      | path                              | message                          |
-      | identityProviderPublicCertificate | This is not a valid certificate. |
-      | serviceProviderPublicCertificate  | This is not a valid certificate. |
+      | path                        | message                          |
+      | identityProviderCertificate | This is not a valid certificate. |
+      | serviceProviderCertificate  | This is not a valid certificate. |
 
   @acceptance-back
   Scenario: Reject a configuration with expired certificates
-    Given a configuration with an expired IdP public certificate
+    When I try to save a configuration with an expired IdP certificate
     Then I should have the following validation errors:
-      | path                              | message                       |
-      | identityProviderPublicCertificate | This certificate has expired. |
+      | path                        | message                       |
+      | identityProviderCertificate | This certificate has expired. |
 
   @acceptance-back
   Scenario: Reject a configuration with private certificate not matching the public certificate
-    Given a configuration with invalid public and private key pair
+    When I try to save a configuration with invalid certificate and private key pair
     Then I should have the following validation errors:
-      | path                              | message                                                      |
-      | serviceProviderPublicCertificate  | Service Provider public and private certificates must match. |
-      | serviceProviderPrivateCertificate | Service Provider public and private certificates must match. |
+      | path                       | message                                                  |
+      | serviceProviderCertificate | Service Provider certificate and private key must match. |
+      | serviceProviderPrivateKey  | Service Provider certificate and private key must match. |
 

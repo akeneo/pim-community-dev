@@ -31,10 +31,10 @@ class FirewallMap implements FirewallMapInterface
         $context = $this->getFirewallContext($request);
 
         if (null === $context) {
-            return array(array(), null);
+            return [[], null];
         }
 
-        return array($context->getListeners(), $context->getExceptionListener());
+        return [$context->getListeners(), $context->getExceptionListener()];
     }
 
     private function getFirewallContext(Request $request)
@@ -74,6 +74,6 @@ class FirewallMap implements FirewallMapInterface
             return false;
         }
 
-        return $config->isEnabled()->toBoolean();
+        return $config->isEnabled();
     }
 }

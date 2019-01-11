@@ -45,12 +45,12 @@ class SqlRepositorySpec extends ObjectBehavior
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/signon'),
                 new Url('https://idp.jambon.com/logout'),
-                new Certificate('public_certificate')
+                new Certificate('certificate')
             ),
             new ServiceProvider(
                 new EntityId('https://sp.jambon.com'),
-                new Certificate('public_certificate'),
-                new Certificate('private_certificate')
+                new Certificate('certificate'),
+                new Certificate('private_key')
             )
         );
 
@@ -61,15 +61,15 @@ class SqlRepositorySpec extends ObjectBehavior
         $statement->bindValue('values', [
             'isEnabled'        => false,
             'identityProvider' => [
-                'entityId'          => 'https://idp.jambon.com',
-                'signOnUrl'         => 'https://idp.jambon.com/signon',
-                'logoutUrl'         => 'https://idp.jambon.com/logout',
-                'publicCertificate' => 'public_certificate',
+                'entityId'    => 'https://idp.jambon.com',
+                'signOnUrl'   => 'https://idp.jambon.com/signon',
+                'logoutUrl'   => 'https://idp.jambon.com/logout',
+                'certificate' => 'certificate',
             ],
-            'serviceProvider' => [
-                'entityId'           => 'https://sp.jambon.com',
-                'publicCertificate'  => 'public_certificate',
-                'privateCertificate' => 'private_certificate',
+            'serviceProvider'  => [
+                'entityId'    => 'https://sp.jambon.com',
+                'certificate' => 'certificate',
+                'privateKey'  => 'private_key',
             ],
         ], Type::JSON_ARRAY)->shouldBeCalled();
         $statement->execute()->shouldBeCalled();
@@ -89,7 +89,7 @@ class SqlRepositorySpec extends ObjectBehavior
             ->willReturn(
                 [
                     'code'   => 'authentication_sso',
-                    'values' => '{"isEnabled":true,"identityProvider":{"entityId":"https:\/\/idp.jambon.com","signOnUrl":"https:\/\/idp.jambon.com\/signon","logoutUrl":"https:\/\/idp.jambon.com\/logout","publicCertificate":"public_certificate"},"serviceProvider":{"entityId":"https:\/\/sp.jambon.com","publicCertificate":"public_certificate","privateCertificate":"private_certificate"}}'
+                    'values' => '{"isEnabled":true,"identityProvider":{"entityId":"https:\/\/idp.jambon.com","signOnUrl":"https:\/\/idp.jambon.com\/signon","logoutUrl":"https:\/\/idp.jambon.com\/logout","certificate":"certificate"},"serviceProvider":{"entityId":"https:\/\/sp.jambon.com","certificate":"certificate","privateKey":"private_key"}}'
                 ]
             )
         ;
@@ -101,12 +101,12 @@ class SqlRepositorySpec extends ObjectBehavior
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/signon'),
                 new Url('https://idp.jambon.com/logout'),
-                new Certificate('public_certificate')
+                new Certificate('certificate')
             ),
             new ServiceProvider(
                 new EntityId('https://sp.jambon.com'),
-                new Certificate('public_certificate'),
-                new Certificate('private_certificate')
+                new Certificate('certificate'),
+                new Certificate('private_key')
             )
         );
 

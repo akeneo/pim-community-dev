@@ -13,8 +13,8 @@ class ServiceProviderSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             new EntityId('https://sp.jambon.com'),
-            new Certificate('public_certificate'),
-            new Certificate('private_certificate')
+            new Certificate('certificate'),
+            new Certificate('private_key')
         );
 
         $this->shouldHaveType(ServiceProvider::class);
@@ -22,17 +22,19 @@ class ServiceProviderSpec extends ObjectBehavior
 
     function it_can_be_built_from_an_array()
     {
-        $this->beConstructedThrough('fromArray', [[
-            'entityId'           => 'https://sp.jambon.com',
-            'publicCertificate'  => 'public_certificate',
-            'privateCertificate' => 'private_certificate',
-        ]]);
+        $this->beConstructedThrough('fromArray', [
+            [
+                'entityId'    => 'https://sp.jambon.com',
+                'certificate' => 'certificate',
+                'privateKey'  => 'private_key',
+            ]
+        ]);
 
         $this->toArray()->shouldReturn(
             [
-                'entityId'           => 'https://sp.jambon.com',
-                'publicCertificate'  => 'public_certificate',
-                'privateCertificate' => 'private_certificate',
+                'entityId'    => 'https://sp.jambon.com',
+                'certificate' => 'certificate',
+                'privateKey'  => 'private_key',
             ]
         );
     }

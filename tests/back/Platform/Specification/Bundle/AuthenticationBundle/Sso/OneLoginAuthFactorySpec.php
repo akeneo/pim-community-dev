@@ -68,12 +68,12 @@ class OneLoginAuthFactorySpec extends ObjectBehavior
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/signon'),
                 new Url('https://idp.jambon.com/logout'),
-                new Certificate('idp_public_certificate')
+                new Certificate('idp_certificate')
             ),
             new ServiceProvider(
                 new EntityId('https://my.pim.com'),
-                new Certificate('sp_public_certificate'),
-                new Certificate('sp_private_certificate')
+                new Certificate('sp_certificate'),
+                new Certificate('sp_private_key')
             )
         );
         $configRepository->find('authentication_sso')->willReturn($userDefinedConfig);
@@ -81,32 +81,32 @@ class OneLoginAuthFactorySpec extends ObjectBehavior
         $expectedAuth = new Auth(
             [
                 'idp' => [
-                    'entityId' => 'https://idp.jambon.com',
+                    'entityId'            => 'https://idp.jambon.com',
                     'singleSignOnService' => [
-                        'url' => 'https://idp.jambon.com/signon',
+                        'url'     => 'https://idp.jambon.com/signon',
                         'binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
                     ],
                     'singleLogoutService' => [
-                        'url' => 'https://idp.jambon.com/logout',
+                        'url'     => 'https://idp.jambon.com/logout',
                         'binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
                     ],
-                    'x509cert' => 'idp_public_certificate',
+                    'x509cert' => 'idp_certificate',
                 ],
                 'sp' => [
-                    'entityId' => 'https://my.pim.com',
+                    'entityId'                 => 'https://my.pim.com',
                     'assertionConsumerService' => [
-                        'url' => 'https://my.pim.com/saml/acs',
+                        'url'     => 'https://my.pim.com/saml/acs',
                         'binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
                     ],
                     'singleLogoutService' => [
-                        'url' => 'https://my.pim.com/saml/logout',
+                        'url'     => 'https://my.pim.com/saml/logout',
                         'binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
                     ],
-                    'x509cert' => 'sp_public_certificate',
-                    'privateKey' => 'sp_private_certificate',
+                    'x509cert'   => 'sp_certificate',
+                    'privateKey' => 'sp_private_key',
                 ],
                 'security' => [
-                    'authnRequestsSigned' => true
+                    'authnRequestsSigned' => true,
                 ],
             ]
         );

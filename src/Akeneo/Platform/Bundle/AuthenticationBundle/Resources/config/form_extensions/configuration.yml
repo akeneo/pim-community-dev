@@ -137,14 +137,14 @@ extensions:
             fieldName: identity_provider_logout_url
             label: authentication.sso.configuration.field.logout_url.label
 
-    authentication-sso-configuration-identity-provider-public-certificate-field:
+    authentication-sso-configuration-identity-provider-certificate-field:
         module: pim/authentication/sso/configuration/fields/textarea
         parent: authentication-sso-configuration-identity-provider-section
         targetZone: content
         position: 130
         config:
-            fieldName: identity_provider_public_certificate
-            label: authentication.sso.configuration.field.public_certificate.label
+            fieldName: identity_provider_certificate
+            label: authentication.sso.configuration.field.certificate.label
 
     authentication-sso-configuration-service-provider-section:
         module: pim/common/simple-view
@@ -166,20 +166,20 @@ extensions:
             fieldName: service_provider_entity_id
             label: authentication.sso.configuration.field.entity_id.label
 
-    authentication-sso-configuration-service-provider-public-certificate-field:
+    authentication-sso-configuration-service-provider-certificate-field:
         module: pim/authentication/sso/configuration/fields/textarea
         parent: authentication-sso-configuration-service-provider-section
         targetZone: content
         position: 110
         config:
-            fieldName: service_provider_public_certificate
-            label: authentication.sso.configuration.field.public_certificate.label
+            fieldName: service_provider_certificate
+            label: authentication.sso.configuration.field.certificate.label
 
-    authentication-sso-configuration-service-provider-private-certificate-field:
+    authentication-sso-configuration-service-provider-private-key-field:
         module: pim/authentication/sso/configuration/fields/textarea
         parent: authentication-sso-configuration-service-provider-section
         targetZone: content
         position: 120
         config:
-            fieldName: service_provider_private_certificate
-            label: authentication.sso.configuration.field.private_certificate.label
+            fieldName: service_provider_private_key
+            label: authentication.sso.configuration.field.private_key.label

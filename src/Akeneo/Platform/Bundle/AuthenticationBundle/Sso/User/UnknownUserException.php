@@ -21,9 +21,4 @@ final class UnknownUserException extends \RuntimeException
 
         parent::__construct($message, $code, $previous);
     }
-
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
 }

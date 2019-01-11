@@ -5,7 +5,7 @@ services:
             - '@database_connection'
 
     akeneo_authentication.sso.configuration.create_or_update_handler:
-        class: 'Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfigurationHandler'
+        class: 'Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfigurationHandler'
         arguments:
             - '@akeneo_authentication.sso.configuration.repository'
 
@@ -18,11 +18,6 @@ services:
             - '@akeneo_authentication.sso.configuration.repository'
             - '@akeneo_authentication.sso.configuration.service_provider_default_configuration'
             - '@akeneo_authentication.sso.log.create_archive'
-
-    akeneo_authentication.sso.configuration.ui.normalizer:
-        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI\Normalizer'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
 
     akeneo_authentication.sso.configuration.service_provider_default_configuration:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\ServiceProviderDefaultConfiguration'

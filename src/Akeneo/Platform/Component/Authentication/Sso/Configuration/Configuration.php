@@ -69,8 +69,8 @@ final class Configuration
         return $this->code;
     }
 
-    public function isEnabled(): IsEnabled
+    public function isEnabled(): bool
     {
-        return $this->isEnabled;
+        return $this->isEnabled->toBoolean();
     }
 }

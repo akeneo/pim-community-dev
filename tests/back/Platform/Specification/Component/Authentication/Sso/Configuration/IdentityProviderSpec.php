@@ -16,7 +16,7 @@ class IdentityProviderSpec extends ObjectBehavior
             new EntityId('https://idp.jambon.com'),
             new Url('https://idp.jambon.com/singon'),
             new Url('https://idp.jambon.com/logout'),
-            new Certificate('public_certificate')
+            new Certificate('certificate')
         );
 
         $this->shouldHaveType(IdentityProvider::class);
@@ -24,19 +24,21 @@ class IdentityProviderSpec extends ObjectBehavior
 
     function it_can_be_built_from_an_array()
     {
-        $this->beConstructedThrough('fromArray', [[
-            'entityId'          => 'https://idp.jambon.com',
-            'signOnUrl'         => 'https://idp.jambon.com/signon',
-            'logoutUrl'         => 'https://idp.jambon.com/logout',
-            'publicCertificate' => 'public_certificate',
-        ]]);
+        $this->beConstructedThrough('fromArray', [
+            [
+                'entityId'    => 'https://idp.jambon.com',
+                'signOnUrl'   => 'https://idp.jambon.com/signon',
+                'logoutUrl'   => 'https://idp.jambon.com/logout',
+                'certificate' => 'certificate',
+            ]
+        ]);
 
         $this->toArray()->shouldReturn(
             [
-                'entityId'          => 'https://idp.jambon.com',
-                'signOnUrl'         => 'https://idp.jambon.com/signon',
-                'logoutUrl'         => 'https://idp.jambon.com/logout',
-                'publicCertificate' => 'public_certificate',
+                'entityId'    => 'https://idp.jambon.com',
+                'signOnUrl'   => 'https://idp.jambon.com/signon',
+                'logoutUrl'   => 'https://idp.jambon.com/logout',
+                'certificate' => 'certificate',
             ]
         );
     }

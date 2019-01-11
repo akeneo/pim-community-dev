@@ -29,7 +29,7 @@ class SqlRepositoryIntegration extends TestCase
             new ServiceProvider(
                 new EntityId('https://sp.jambon.com'),
                 new Certificate('public_certificate'),
-                new Certificate('private_certificate')
+                new Certificate('private_key')
             )
         );
 
@@ -53,7 +53,7 @@ class SqlRepositoryIntegration extends TestCase
             new ServiceProvider(
                 new EntityId('https://sp.jambon.com'),
                 new Certificate('public_certificate'),
-                new Certificate('private_certificate')
+                new Certificate('private_key')
             )
         );
         $configRepository->save($config);
@@ -68,7 +68,7 @@ class SqlRepositoryIntegration extends TestCase
             new ServiceProvider(
                 new EntityId('https://sp.jambon-sso.com'),
                 new Certificate('public_certificate'),
-                new Certificate('private_certificate')
+                new Certificate('private_key')
             )
         );
         $configRepository->save($newConfig);

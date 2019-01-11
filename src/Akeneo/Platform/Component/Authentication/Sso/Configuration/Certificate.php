@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Component\Authentication\Sso\Configuration;
 
 /**
- * Represents a certificate (e.g. a public or private key) in the configuration.
+ * Represents a certificate (or a private key) in the configuration.
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */

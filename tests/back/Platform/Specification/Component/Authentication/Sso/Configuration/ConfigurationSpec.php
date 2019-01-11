@@ -23,12 +23,12 @@ class ConfigurationSpec extends ObjectBehavior
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/signon'),
                 new Url('https://idp.jambon.com/logout'),
-                new Certificate('public_certificate')
+                new Certificate('certificate')
             ),
             new ServiceProvider(
                 new EntityId('https://sp.jambon.com'),
-                new Certificate('public_certificate'),
-                new Certificate('private_certificate')
+                new Certificate('certificate'),
+                new Certificate('private_key')
             )
         );
 
@@ -44,12 +44,12 @@ class ConfigurationSpec extends ObjectBehavior
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/signon'),
                 new Url('https://idp.jambon.com/logout'),
-                new Certificate('public_certificate')
+                new Certificate('certificate')
             ),
             new ServiceProvider(
                 new EntityId('https://sp.jambon.com'),
-                new Certificate('public_certificate'),
-                new Certificate('private_certificate')
+                new Certificate('certificate'),
+                new Certificate('private_key')
             )
         );
 
@@ -57,15 +57,15 @@ class ConfigurationSpec extends ObjectBehavior
             [
                 'isEnabled'        => true,
                 'identityProvider' => [
-                    'entityId'          => 'https://idp.jambon.com',
-                    'signOnUrl'         => 'https://idp.jambon.com/signon',
-                    'logoutUrl'         => 'https://idp.jambon.com/logout',
-                    'publicCertificate' => 'public_certificate',
+                    'entityId'    => 'https://idp.jambon.com',
+                    'signOnUrl'   => 'https://idp.jambon.com/signon',
+                    'logoutUrl'   => 'https://idp.jambon.com/logout',
+                    'certificate' => 'certificate',
                 ],
-                'serviceProvider' => [
-                    'entityId'           => 'https://sp.jambon.com',
-                    'publicCertificate'  => 'public_certificate',
-                    'privateCertificate' => 'private_certificate',
+                'serviceProvider'  => [
+                    'entityId'    => 'https://sp.jambon.com',
+                    'certificate' => 'certificate',
+                    'privateKey'  => 'private_key',
                 ],
             ]
         );
@@ -82,12 +82,12 @@ class ConfigurationSpec extends ObjectBehavior
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/signon'),
                 new Url('https://idp.jambon.com/logout'),
-                new Certificate('public_certificate')
+                new Certificate('certificate')
             ),
             new ServiceProvider(
                 new EntityId('https://sp.jambon.com'),
-                new Certificate('public_certificate'),
-                new Certificate('private_certificate')
+                new Certificate('certificate'),
+                new Certificate('private_key')
             )
         );
 
@@ -105,16 +105,16 @@ class ConfigurationSpec extends ObjectBehavior
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/signon'),
                 new Url('https://idp.jambon.com/logout'),
-                new Certificate('public_certificate')
+                new Certificate('certificate')
             ),
             new ServiceProvider(
                 new EntityId('https://sp.jambon.com'),
-                new Certificate('public_certificate'),
-                new Certificate('private_certificate')
+                new Certificate('certificate'),
+                new Certificate('private_key')
             )
         );
 
-        $this->isEnabled()->shouldReturn($isEnabled);
+        $this->isEnabled()->shouldReturn(true);
     }
 
     function it_can_be_built_from_an_array()
@@ -126,15 +126,15 @@ class ConfigurationSpec extends ObjectBehavior
                 [
                     'isEnabled'        => true,
                     'identityProvider' => [
-                        'entityId'          => 'https://idp.jambon.com',
-                        'signOnUrl'         => 'https://idp.jambon.com/signon',
-                        'logoutUrl'         => 'https://idp.jambon.com/logout',
-                        'publicCertificate' => 'public_certificate',
+                        'entityId'    => 'https://idp.jambon.com',
+                        'signOnUrl'   => 'https://idp.jambon.com/signon',
+                        'logoutUrl'   => 'https://idp.jambon.com/logout',
+                        'certificate' => 'certificate',
                     ],
-                    'serviceProvider' => [
-                        'entityId'           => 'https://sp.jambon.com',
-                        'publicCertificate'  => 'public_certificate',
-                        'privateCertificate' => 'private_certificate',
+                    'serviceProvider'  => [
+                        'entityId'    => 'https://sp.jambon.com',
+                        'certificate' => 'certificate',
+                        'privateKey'  => 'private_key',
                     ],
                 ]
             ]

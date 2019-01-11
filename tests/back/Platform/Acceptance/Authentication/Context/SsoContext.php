@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Platform\Acceptance\Authentication\Context;
 
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfiguration;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfiguration;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -30,7 +30,7 @@ class SsoContext implements Context
     }
 
     /**
-     * @Given a configuration
+     * @When I try to save a valid configuration
      */
     public function aConfiguration(): void
     {
@@ -50,18 +50,18 @@ class SsoContext implements Context
     }
 
     /**
-     * @Given an empty configuration
+     * @When I try to save an empty configuration
      */
-    public function anEmptyConfiguration(): void
+    public function iTryToSaveAnEmptyConfiguration(): void
     {
         $this->command = new CreateOrUpdateConfiguration('', false, '', '', '', '', '', '', '');
         $this->buildErrors($this->command);
     }
 
     /**
-     * @Given a configuration with invalid URLs
+     * @When I try to save a configuration with invalid URLs
      */
-    public function aConfigurationWithInvalidURLs(): void
+    public function iTryToSaveAConfigurationWithInvalidURLs(): void
     {
         $this->command = new CreateOrUpdateConfiguration(
             'authentication_sso',
@@ -78,9 +78,9 @@ class SsoContext implements Context
     }
 
     /**
-     * @Given a configuration with invalid certificates
+     * @When I try to save a configuration with invalid certificates
      */
-    public function aConfigurationWithInvalidCertificates(): void
+    public function iTryToSaveAConfigurationWithInvalidCertificates(): void
     {
         $this->command = new CreateOrUpdateConfiguration(
             'authentication_sso',
@@ -97,9 +97,9 @@ class SsoContext implements Context
     }
 
     /**
-     * @Given a configuration with an expired IdP public certificate
+     * @When I try to save a configuration with an expired IdP certificate
      */
-    public function aConfigurationWithAnExpiredIdPPublicCertificate(): void
+    public function iTryToSaveAConfigurationWithAnExpiredIdPCertificate(): void
     {
         $this->command = new CreateOrUpdateConfiguration(
             'authentication_sso',
@@ -117,9 +117,9 @@ class SsoContext implements Context
     }
 
     /**
-     * @Given a configuration with invalid public and private key pair
+     * @When I try to save a configuration with invalid certificate and private key pair
      */
-    public function aConfigurationWithInvalidPublicAndPrivateKeyPair(): void
+    public function iTryToSaveAConfigurationWithInvalidPublicAndPrivateKeyPair(): void
     {
         $this->command = new CreateOrUpdateConfiguration(
             'authentication_sso',

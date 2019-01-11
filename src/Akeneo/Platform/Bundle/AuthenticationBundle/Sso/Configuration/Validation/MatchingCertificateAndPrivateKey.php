@@ -9,16 +9,16 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
-final class MatchingPublicAndPrivateCertificates extends Constraint
+final class MatchingCertificateAndPrivateKey extends Constraint
 {
     /** @var string */
     public $message;
 
     /** @var string */
-    public $publicCertificatePropertyName;
+    public $certificatePropertyName;
 
     /** @var string */
-    public $privateCertificatePropertyName;
+    public $privateKeyPropertyName;
 
     /**
      * {@inheritdoc}

@@ -53,10 +53,10 @@ final class OneLoginAuthFactory
         $config['idp']['entityId']                   = $normalizedStoredConfig['identityProvider']['entityId'];
         $config['idp']['singleSignOnService']['url'] = $normalizedStoredConfig['identityProvider']['signOnUrl'];
         $config['idp']['singleLogoutService']['url'] = $normalizedStoredConfig['identityProvider']['logoutUrl'];
-        $config['idp']['x509cert']                   = $normalizedStoredConfig['identityProvider']['publicCertificate'];
+        $config['idp']['x509cert']                   = $normalizedStoredConfig['identityProvider']['certificate'];
         $config['sp']['entityId']                    = $normalizedStoredConfig['serviceProvider']['entityId'];
-        $config['sp']['x509cert']                    = $normalizedStoredConfig['serviceProvider']['publicCertificate'];
-        $config['sp']['privateKey']                  = $normalizedStoredConfig['serviceProvider']['privateCertificate'];
+        $config['sp']['x509cert']                    = $normalizedStoredConfig['serviceProvider']['certificate'];
+        $config['sp']['privateKey']                  = $normalizedStoredConfig['serviceProvider']['privateKey'];
 
         return $config;
     }

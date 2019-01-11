@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Component\Authentication\Sso\Configuration;
+namespace Specification\Akeneo\Platform\Component\Authentication\Sso\Configuration\Application;
 
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfiguration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfiguration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -23,10 +23,10 @@ class CreateOrUpdateConfigurationHandlerSpec extends ObjectBehavior
             'https://idp.jambon.com',
             'https://idp.jambon.com/signon',
             'https://idp.jambon.com/logout',
-            'idp_public_certificate',
+            'idp_certificate',
             'https://sp.jambon.com',
-            'sp_public_certificate',
-            'sp_private_certificate'
+            'sp_certificate',
+            'sp_private_key'
         );
 
         $repository->save(Argument::type(Configuration::class))->shouldBeCalled();

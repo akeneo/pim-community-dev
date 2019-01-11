@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Component\Authentication\Sso\Configuration;
 
 /**
- * Dynamic configuration for a Service Provider, composed of an entity id, a public and a private certificate.
+ * Dynamic configuration for a Service Provider, composed of an entity id, a certificate and a private key.
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
@@ -24,36 +24,36 @@ final class ServiceProvider
     private $entityId;
 
     /** @var Certificate */
-    private $publicCertificate;
+    private $certificate;
 
     /** @var Certificate */
-    private $privateCertificate;
+    private $privateKey;
 
     public function __construct(
         EntityId $entityId,
-        Certificate $publicCertificate,
-        Certificate $privateCertificate
+        Certificate $certificate,
+        Certificate $privateKey
     ) {
-        $this->entityId = $entityId;
-        $this->publicCertificate = $publicCertificate;
-        $this->privateCertificate = $privateCertificate;
+        $this->entityId    = $entityId;
+        $this->certificate = $certificate;
+        $this->privateKey  = $privateKey;
     }
 
     public static function fromArray(array $content): self
     {
         return new self(
             new EntityId($content['entityId']),
-            new Certificate($content['publicCertificate']),
-            new Certificate($content['privateCertificate'])
+            new Certificate($content['certificate']),
+            new Certificate($content['privateKey'])
         );
     }
 
     public function toArray(): array
     {
         return [
-            'entityId'           => (string) $this->entityId,
-            'publicCertificate'  => (string) $this->publicCertificate,
-            'privateCertificate' => (string) $this->privateCertificate,
+            'entityId'    => (string) $this->entityId,
+            'certificate' => (string) $this->certificate,
+            'privateKey'  => (string) $this->privateKey,
         ];
     }
 }

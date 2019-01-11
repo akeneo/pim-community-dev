@@ -64,7 +64,6 @@ README;
         fwrite($readmeFile, $readmeContent);
         fclose($readmeFile);
 
-
         $archive->addFileToArchive($this->getLogArchiveDirectory(), 'README.txt');
     }
 
