@@ -9,9 +9,10 @@ class CopiableTextField extends BaseText {
 
     public events(): EventsHash {
         return {
-            'click .copy': (e: JQueryEventObject) => {
+            'click .copy': (e) => {
 
-                const container = e.target.parentElement;
+                const target = <HTMLElement> e.currentTarget;
+                const container = <HTMLElement> target.parentElement;
 
                 if (null !== container){
                     const input = container.getElementsByTagName('input')[0];
