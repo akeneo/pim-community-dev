@@ -7,8 +7,9 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeSupportsOptions;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeOptionValidatorInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,21 +32,26 @@ class CreateOrUpdateAttributeOptionAction
     /** @var AttributeSupportsOptions  */
     private $attributeSupportsOptions;
 
-    /** @var FindConnectorAttributeByIdentifierAndCodeInterface */
-    private $findConnectorAttributeQuery;
+    /** @var GetAttributeIdentifierInterface */
+    private $getAttributeIdentifier;
+
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
 
     public function __construct(
         AttributeOptionValidatorInterface $validator,
         ReferenceEntityExistsInterface $referenceEntityExists,
         AttributeExistsInterface $attributeExists,
         AttributeSupportsOptions $attributeSupportsOptions,
-        FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery
+        GetAttributeIdentifierInterface $getAttributeIdentifier,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->validator = $validator;
         $this->referenceEntityExists = $referenceEntityExists;
         $this->attributeExists = $attributeExists;
         $this->attributeSupportsOptions = $attributeSupportsOptions;
-        $this->findConnectorAttributeQuery = $findConnectorAttributeQuery;
+        $this->getAttributeIdentifier = $getAttributeIdentifier;
+        $this->attributeRepository = $attributeRepository;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode, string $optionCode)
@@ -94,8 +100,8 @@ class CreateOrUpdateAttributeOptionAction
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not support options.', $attributeCode));
         }
 
-        // TODO - Check to return a hydrated attribute instead
-        $attribute = ($this->findConnectorAttributeQuery)($referenceEntityIdentifier, $attributeCode);
+        $attributeIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
 
         try {
             $optionCode = OptionCode::fromString($optionCode);
