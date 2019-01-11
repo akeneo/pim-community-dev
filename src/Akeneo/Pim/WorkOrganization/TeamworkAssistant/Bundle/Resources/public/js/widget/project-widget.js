@@ -122,7 +122,13 @@ define(
                     return $.Deferred().resolve({}).promise();
                 }
 
-                return FetcherRegistry.getFetcher('user').fetch(this.getFormData().currentContributorUsername);
+                let formData = this.getFormData();
+
+                if (formData.currentContributor !== undefined) {
+                    return FetcherRegistry.getFetcher('user').fetch(formData.currentContributor.meta.id);
+                }
+
+                return FetcherRegistry.getFetcher('user').fetch(formData.currentContributorUsername);
             },
 
             /**
