@@ -65,6 +65,7 @@
             {% endif %}
         {% endset %}
 
+    {% set userBackPath = resource_granted('pim_user_user_index') ? path('oro_user_index') : path('oro_user_profile_view') %}
         {% set buttons %}
             {% if form.vars.value.id and form.vars.value.id != app.user.id %}
               <div class="AknSecondaryActions AknDropdown AknButtonList-item secondary-actions">
@@ -74,7 +75,7 @@
                     {{ elements.deleteLink(
                         path('oro_user_user_delete', {'id': form.vars.value.id}),
                         'pim_user_user_remove',
-                        path('oro_user_index'),
+                        userBackPath,
                         'confirmation.remove.user'|trans({ '%name%': fullname }),
                         'flash.user.removed'|trans,
                         'Confirm deletion'|trans,
