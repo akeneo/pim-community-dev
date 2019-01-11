@@ -14,7 +14,7 @@ define(
         'pim/router',
         'oro/messenger',
         'pim/template/form/creation/modal',
-        'pim/template/common/modal-with-illustration'
+        'pim/common/property'
     ],
     function (
         $,
@@ -29,12 +29,11 @@ define(
         router,
         messenger,
         template,
-        modalTemplate,
+        propertyAccessor
     ) {
         return BaseForm.extend({
             config: {},
             template: _.template(template),
-            modalTemplate: _.template(modalTemplate),
             validationErrors: [],
 
             /**
@@ -77,7 +76,6 @@ define(
                     content: '',
                     okText: __('pim_common.save'),
                     okCloses: false,
-                    template: this.modalTemplate,
                 });
                 modal.open();
                 this.setElement(modal.$('.modal-body')).render();
@@ -108,7 +106,13 @@ define(
 
                     let routerParams = {};
 
-                    if (this.config.routerKey) {
+                    if (this.config.routerKey && this.config.entityIdentifierParamName) {
+                        routerParams[this.config.routerKey] = propertyAccessor.accessProperty(
+                            entity,
+                            this.config.entityIdentifierParamName,
+                            ''
+                        );
+                    } else if (this.config.routerKey) {
                         routerParams[this.config.routerKey] = entity[this.config.routerKey];
                     } else {
                         routerParams = {id: entity.meta.id};

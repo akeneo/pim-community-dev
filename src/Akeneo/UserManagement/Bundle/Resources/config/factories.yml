@@ -6,6 +6,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.category'
             - '@pim_user.repository.group'
+            - '@pim_user.repository.role'
             - 'Akeneo\UserManagement\Component\Model\User'
 
     pim_user.factory.group:

@@ -275,7 +275,23 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $page
      *
      * @Given /^I edit the "([^"]*)" (user)$/
-     * @Given /^I am on the "([^"]*)" (channel|family|user) page$/
+     * @Given /^I am on the "([^"]*)" (user) page$/
+     */
+    public function iAmOnTheUserEditPage($identifier, $page)
+    {
+        $user = $this->getKernel()->getContainer()->get('pim_user.repository.user')->findOneByIdentifier($identifier);
+
+        $this->openPage(
+            sprintf('%s edit', ucfirst($page)),
+            ['identifier' => $user->getId()]
+        );
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I am on the "([^"]*)" (channel|family) page$/
      */
     public function iAmOnTheRedoEntityEditPage($identifier, $page)
     {

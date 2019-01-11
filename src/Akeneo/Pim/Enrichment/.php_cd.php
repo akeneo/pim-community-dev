@@ -23,11 +23,18 @@ $rules = [
         'Oro\Bundle\PimDataGridBundle',
         // TODO: dependencies related to the front end, remove twig screens
         'Twig_SimpleFunction', // used by the category tree
+
+        // TIP-1008: Clean Provider system of Platform
+        'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
+
+        // TIP-1009: Remove TranslatedLabelsProviderInterface from Platform
+        'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
+
+        // TIP-1005: Clean UI form types
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\ObjectIdentifierType',
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType',
         'Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber',
-        'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
-        'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
+
         // TODO: EASY PICK! it should be registered in the structure bundle
         'Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterAttributeTypePass',
 
@@ -75,22 +82,30 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface',
+
+        // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
 
         // TODO: : EASY PICK! API PaginatorInterface should catch ServerErrorResponseException and throw its own exception,
         'Elasticsearch\Common\Exceptions\ServerErrorResponseException',
-        // TODO: we should not inject the UserContext as a service
+
+        // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
-        // TODO: use to find the repository of the reference data (often to check if the reference data exists, sometimes we really need more information)
+
+        // TIP-949: Assets should not be Reference Data
         'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface',
-        // TODO: EASY PICK! move StructureVersion\EventListener\TableCreator to Platform
+
+        // TIP-1015: Move TableCreator to Platform
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
         'Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface',
-        // TODO: widget discussion
+
+        // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',
-        // TODO: remove Flash\Message in CategoryTreeController
+
+        // TIP-1014: Do not use custom Flash Messages
         'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
-        // TODO: used in ProductCommentController to retrieve current locale => frontend or not discussion for "contextual" parameters
+
+        // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
@@ -163,33 +178,49 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface',
+
+        // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
 
-        // TIP-939: FILTERS
+        // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
 
-        // TODO a component should not rely on a bundle
+        // TIP-1012: Create a Measure component
         'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
         'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException',
         'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager',
+
         // TODO: EASY PICK! a component should not rely a concrete implementation => use the right repo interface
         'Doctrine\ORM\EntityRepository',
+
+        // TIP-939: Remove filter system for permissions
+        'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
+        'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
+
         // TODO it should only be used in the bundle (security, used to check if granted to ACL)
         'Oro\Bundle\SecurityBundle\SecurityFacade',
-        // TODO normalization for front end purpose
+
+        // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
-        // TODO: StructureVersionProvider discussion, for the cache of the frontend
         'Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface',
-        // TODO: do not inject user context as a service
+
+        // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
+
         // TODO: is ProductMassActionRepositoryInterface still used?
         'Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface',
-        // TODO: a component should not use a bundle
+
+        // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
-        // TODO: should not have a contextual service
+
+        // TIP-929: Extract the Attribute part of the ValidMetricValidator
+        'Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric',
+
+        // TIP-1023: Drop CatalogContext
         'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',
-        // TODO: EASY PICK! move JobLauncherInterface to component
+
+        // TIP-1020: Move JobLauncherInterface
         'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];

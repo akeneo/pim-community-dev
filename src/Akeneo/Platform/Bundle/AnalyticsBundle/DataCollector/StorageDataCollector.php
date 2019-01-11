@@ -3,6 +3,7 @@
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
+use Doctrine\DBAL\Connection;
 
 /**
  * Collects MySQL version.
@@ -13,30 +14,15 @@ use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
  */
 class StorageDataCollector implements DataCollectorInterface
 {
-    /** @var string */
-    protected $dbHost;
-
-    /** @var string */
-    protected $dbName;
-
-    /** @var string */
-    protected $dbUser;
-
-    /** @var string */
-    protected $dbPassword;
+    /** @var Connection */
+    private $connection;
 
     /**
-     * @param string $dbHost
-     * @param string $dbName
-     * @param string $dbUser
-     * @param string $dbPassword
+     * @param Connection $connection
      */
-    public function __construct($dbHost, $dbName, $dbUser, $dbPassword)
+    public function __construct(Connection $connection)
     {
-        $this->dbHost = $dbHost;
-        $this->dbName = $dbName;
-        $this->dbUser = $dbUser;
-        $this->dbPassword = $dbPassword;
+        $this->connection = $connection;
     }
 
     /**
@@ -44,12 +30,6 @@ class StorageDataCollector implements DataCollectorInterface
      */
     public function collect()
     {
-        $connection = new \PDO(
-            sprintf('mysql:dbname=%s;host=%s', $this->dbName, $this->dbHost),
-            $this->dbUser,
-            $this->dbPassword
-        );
-
-        return ['mysql_version' => $connection->getAttribute(\PDO::ATTR_SERVER_VERSION)];
+        return ['mysql_version' => $this->connection->getWrappedConnection()->getAttribute(\PDO::ATTR_SERVER_VERSION)];
     }
 }

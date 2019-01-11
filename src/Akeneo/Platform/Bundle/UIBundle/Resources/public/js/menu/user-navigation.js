@@ -85,7 +85,7 @@ define(
             userAccount: function () {
                 router.redirectToRoute(
                     'pim_user_edit',
-                    {code: UserContext.get('code')}
+                    {identifier: UserContext.get('meta').id}
                 );
             },
 

@@ -187,8 +187,8 @@ class SectionView extends BaseView {
         hasWarning: axis.hasWarning,
         title: __(`pim_catalog_volume.axis.${name}`),
         warningText: this.config.warningText,
-        meanLabel: __('catalog_volume.mean'),
-        maxLabel: __('catalog_volume.max'),
+        meanLabel: __('pim_catalog_volume.mean'),
+        maxLabel: __('pim_catalog_volume.max'),
         userLocale: userContext.get('uiLocale').split('_')[0],
       });
 

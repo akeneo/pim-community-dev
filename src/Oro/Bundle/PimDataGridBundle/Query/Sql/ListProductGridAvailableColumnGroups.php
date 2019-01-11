@@ -40,9 +40,9 @@ class ListProductGridAvailableColumnGroups implements ListProductGridAvailableCo
         $datagridConfiguration = $this->configurationProvider->getConfiguration('product-grid');
 
         $systemColumns = $datagridConfiguration->offsetGetByPath(
-            sprintf('[%s]', Configuration::COLUMNS_KEY)
+            sprintf('[%s]', Configuration::COLUMNS_KEY), []
         ) + $datagridConfiguration->offsetGetByPath(
-            sprintf('[%s]', Configuration::OTHER_COLUMNS_KEY)
+            sprintf('[%s]', Configuration::OTHER_COLUMNS_KEY), []
         );
 
         $columnGroups = [[

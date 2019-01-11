@@ -40,12 +40,12 @@ datagrid:
                 type: url
                 route: pim_user_edit
                 params:
-                    code: username
+                    identifier: id
             delete_link:
                 type: url
                 route: pim_user_user_rest_delete
                 params:
-                    identifier: username
+                    identifier: id
         sorters:
             columns:
                 username:

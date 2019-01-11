@@ -28,7 +28,6 @@ Akeneo\UserManagement\Component\Model\User:
             - Count:
                 min:        1
                 minMessage: 'pim_user.min_role'
-                groups:     [User]
         namePrefix:
             - Akeneo\UserManagement\Bundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters: ~
         firstName:

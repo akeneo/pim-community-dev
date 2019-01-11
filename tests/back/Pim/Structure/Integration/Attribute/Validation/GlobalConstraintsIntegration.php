@@ -267,7 +267,7 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
         return [
             ['id'], ['associations'], ['associationTypes'], ['category'], ['categoryId'], ['categories'],
             ['completeness'], ['enabled'], ['family'], ['FAMILY'], ['FamilY'], ['groups'], ['products'], ['scope'], ['treeId'], ['values'],
-            ['my_groups'], ['my_products']
+            ['my_groups'], ['my_products'], ['attributes']
         ];
     }
 

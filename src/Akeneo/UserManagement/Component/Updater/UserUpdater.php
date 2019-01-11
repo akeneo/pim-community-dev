@@ -192,9 +192,8 @@ class UserUpdater implements ObjectUpdaterInterface
                 foreach ($data as $code) {
                     $roles[] = $this->findRole($code);
                 }
-                if (count($roles) > 0) {
-                    $user->setRoles($roles);
-                }
+
+                $user->setRoles($roles);
                 break;
             case 'groups':
                 $groups = [];
@@ -437,7 +436,7 @@ class UserUpdater implements ObjectUpdaterInterface
                     $data['filePath']
                 );
             }
-            $fileInfo = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
+            $fileInfo = $this->fileStorer->store($rawFile, 'catalogStorage');
         }
 
         $user->setAvatar($fileInfo);

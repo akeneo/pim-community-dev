@@ -2,9 +2,10 @@ pim_user_index:
     path: /
 
 pim_user_edit:
-    path: /{code}/edit
+    path: /{identifier}/edit
     requirements:
-        code: '[a-zA-Z0-9_]+'
+        identifier: '\d+'
+
 
 pim_user_logout_redirect:
     path: /logout/redirect

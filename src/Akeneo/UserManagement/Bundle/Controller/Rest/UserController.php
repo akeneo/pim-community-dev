@@ -3,12 +3,12 @@
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Event\UserEvent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -41,7 +41,7 @@ class UserController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var ObjectRepository */
     protected $repository;
 
     /** @var ObjectUpdaterInterface */
@@ -72,22 +72,23 @@ class UserController
     private $objectManager;
 
     /**
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param NormalizerInterface                   $normalizer
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param ObjectUpdaterInterface                $updater
-     * @param ValidatorInterface                    $validator
-     * @param SaverInterface                        $saver
-     * @param NormalizerInterface                   $constraintViolationNormalizer
-     * @param UserPasswordEncoderInterface          $encoder
-     * @param EventDispatcherInterface              $eventDispatcher
-     * @param Session                               $session
-     * @param ObjectManager                         $objectManager
+     * @param TokenStorageInterface $tokenStorage
+     * @param NormalizerInterface $normalizer
+     * @param ObjectRepository $repository
+     * @param ObjectUpdaterInterface $updater
+     * @param ValidatorInterface $validator
+     * @param SaverInterface $saver
+     * @param NormalizerInterface $constraintViolationNormalizer
+     * @param SimpleFactoryInterface $factory
+     * @param UserPasswordEncoderInterface $encoder
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param Session $session
+     * @param ObjectManager $objectManager
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
-        IdentifiableObjectRepositoryInterface $repository,
+        ObjectRepository $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         SaverInterface $saver,
@@ -128,19 +129,20 @@ class UserController
     }
 
     /**
-     * @param $identifier
+     * @param int $identifier
      *
      * @return JsonResponse
      */
-    public function getAction($identifier): JsonResponse
+    public function getAction(int $identifier): JsonResponse
     {
-        $user = $this->repository->findOneByIdentifier($identifier);
+        $user = $this->getUserOr404($identifier);
 
         return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
     }
 
     /**
      * @param Request $request
+     * @param int $identifier
      *
      * @return Response
      *
@@ -215,13 +217,23 @@ class UserController
         $user = $this->factory->create();
         $content = json_decode($request->getContent(), true);
 
+        $passwordViolations = $this->validatePasswordCreate($content);
+        unset($content['password_repeat']);
+
         $this->updater->update($user, $content);
 
         $violations = $this->validator->validate($user);
 
-        if (count($violations) > 0) {
+        if ($violations->count() > 0 || $passwordViolations->count() > 0) {
             $normalizedViolations = [];
             foreach ($violations as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api',
+                    ['user' => $user]
+                );
+            }
+            foreach ($passwordViolations as $violation) {
                 $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
                     $violation,
                     'internal_api',
@@ -239,11 +251,11 @@ class UserController
 
     /**
      * @param Request $request
-     * @param string  $identifier
+     * @param int  $identifier
      *
      * @return Response
      */
-    public function deleteAction(Request $request, $identifier): Response
+    public function deleteAction(Request $request, int $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -263,17 +275,37 @@ class UserController
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function getUserOr404($username): ?UserInterface
+    private function getUserOr404($identifier): UserInterface
     {
-        $user = $this->repository->findOneByIdentifier($username);
+        $user = $this->repository->findOneBy(['id' => $identifier]);
 
         if (null === $user) {
             throw new NotFoundHttpException(
-                sprintf('Username with code "%s" not found', $username)
+                sprintf('Username with id "%s" not found', $identifier)
             );
         }
 
         return $user;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return ConstraintViolationListInterface
+     */
+    private function validatePasswordCreate(array $data): ConstraintViolationListInterface
+    {
+        $violations = [];
+
+        if (!isset($data['password'])) {
+            return new ConstraintViolationList([]);
+        }
+
+        if (($data['password_repeat'] ?? '') !== $data['password']) {
+            $violations[] = new ConstraintViolation('Passwords do not match', '', [], '', 'password_repeat', '');
+        }
+
+        return new ConstraintViolationList($violations);
     }
 
     private function validatePassword(UserInterface $user, $data): ConstraintViolationListInterface

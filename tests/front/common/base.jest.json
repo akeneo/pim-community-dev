@@ -2,7 +2,6 @@
   "testPathIgnorePatterns": [
     "node_modules"
   ],
-  "testURL": "http://localhost/",
   "projects": [
     "<rootDir>/web/bundles"
   ],
@@ -21,5 +20,6 @@
     "html"
   ],
   "cacheDirectory": "/tmp/jest",
-  "testURL": "http://localhost/"
+  "testURL": "http://localhost/",
+  "coveragePathIgnorePatterns": ["./lib/"]
 }

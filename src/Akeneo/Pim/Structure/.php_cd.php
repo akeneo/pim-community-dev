@@ -25,21 +25,22 @@ $rules = [
         // TIP-907: Functionnal problem we should not create empty associations
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
 
-        // TODO: Contextual information shouldn't be injected but a parameter method (current Locale for instance)
+        // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
 
         // TIP-910: PIM/Structure should not be linked to Channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
 
-        // TODO form type inheritance/usage
-        // TODO: The forms are probably not used anymore
+        // TIP-939: Remove filter system for permissions
+        'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
+
+        // TIP-1005: Clean UI form types
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType',
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType',
-        'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber',
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType',
 
-        // TODO: Used to filter in search/get action, enrichment shouldn't call something else than `/enrichment`
+        // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface'
     ])->in('Akeneo\Pim\Structure\Bundle'),
@@ -68,20 +69,20 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountEntityWithFamilyVariantInterface',
 
         // Coupling issues:
-        // TODO it should be duplicated
+        // TIP-1021: Mass edit should not be linked to Enrichment
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor',
 
         // TIP-907: Functionnal problem we should not create empty associations
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
 
-        // TODO remove coupling
+        // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
 
-        // TODO: we should find another way to manage permission
+        // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
 
-        // TODO related to the front stuff
+        // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface',

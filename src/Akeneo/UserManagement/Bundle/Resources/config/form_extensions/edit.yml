@@ -54,6 +54,8 @@ extensions:
             updateFailureMessage: pim_user_management.entity.user.flash.update.fail
             notReadyMessage: pim_user_management.entity.user.flash.update.fields_not_ready
             url: pim_user_user_rest_post
+            identifierParamName: identifier
+            entityIdentifierParamName: meta.id
             excludedProperties: ['last_login', 'login_count', 'password']
 
     pim-user-edit-form-secondary-actions:
@@ -111,7 +113,6 @@ extensions:
             fieldName: enabled
             label: pim_common.status
             required: true
-            readOnly: true
 
     pim-user-edit-form-username:
         module: pim/form/common/fields/text
@@ -306,6 +307,7 @@ extensions:
         position: 20
         config:
             fieldName: roles
+            required: true
             label: pim_user_management.entity.role.plural_label
             isMultiple: true
             allowClear: true

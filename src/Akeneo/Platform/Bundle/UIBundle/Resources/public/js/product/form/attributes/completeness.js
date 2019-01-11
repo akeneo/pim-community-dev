@@ -31,11 +31,7 @@ define([
       const field = event.field;
 
       if (_.contains(fieldsToFill, field.attribute.code)) {
-        field.addElement(
-          'badge',
-          'completeness',
-          '<span class="AknBadge AknBadge--small AknBadge--highlight AknBadge--floating"></span>'
-        );
+        field.addElement('badge', 'completeness', '<span class="AknBadge AknBadge--small AknBadge--highlight"></span>');
       }
     },
   });

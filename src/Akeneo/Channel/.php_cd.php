@@ -16,10 +16,14 @@ $rules = [
         'Akeneo\Channel',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Twig_Environment',
-        // TODO: we should remove this dependencies, related to permissions
+
+        // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
-        'Akeneo\Platform\Bundle\UIBundle\Flash\Message', // TODO: fix it
-        // TODO: The current local should be given by $context (third parameter of normalize) instead of depending on UserContext
+
+        // TIP-1014: Do not use custom Flash Messages
+        'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
+
+        // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
     ])->in('Akeneo\Channel\Bundle'),
     $builder->only([
@@ -28,17 +32,20 @@ $rules = [
         'Akeneo\Tool\Component',
         // TIP-942: Channel should not be linked to Category
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
-        // TODO: The Repository should be moved to Akeneo\Tool\Component
+
+        // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface',
-        // TODO: we should remove this dependency, related to permissions for locale, it is an enrichment purpose
-        // TODO: Used in Akeneo\Channel\Component\Normalizer\*\ChannelNormalizer check exactly where is it used
+
+        // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
-        // TODO: The current locale should be given by $context (third parameter of normalize) instead of depending on UserContext
+
+        // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
-        // TODO: Channels are currently tied to PIM_CATALOG_METRIC, to be able to convert units
-        // TODO: Functionnal problem
+
+        // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
-        // TIP-941: Channel should not be linked to Attribute
+
+        // TIP-1012: Create a Measure component
         'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager',
     ])->in('Akeneo\Channel\Component'),
 ];

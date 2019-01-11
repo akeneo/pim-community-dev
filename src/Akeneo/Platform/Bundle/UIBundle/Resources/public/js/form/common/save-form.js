@@ -18,7 +18,8 @@ define(
         'pim/field-manager',
         'pim/i18n',
         'pim/user-context',
-        'pim/router'
+        'pim/router',
+        'pim/common/property'
     ],
     function (
         $,
@@ -30,7 +31,8 @@ define(
         FieldManager,
         i18n,
         UserContext,
-        router
+        router,
+        propertyAccessor
     ) {
         return BaseSave.extend({
             /**
@@ -89,9 +91,14 @@ define(
                 this.showLoadingMask();
                 this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
+                const entityIdProperty = this.config.entityIdentifierParamName || 'code';
+                const identifierProperty = this.config.identifierParamName || 'identifier';
+                const entityId = propertyAccessor.accessProperty(this.getFormData(), entityIdProperty, '');
+
                 return EntitySaver
                     .setUrl(this.config.url)
-                    .save(entity.code, entity, this.config.method || 'POST')
+                    .setIdentifierProperty(identifierProperty)
+                    .save(entityId, entity, this.config.method || 'POST')
                     .then(function (data) {
                         this.postSave(data);
                         this.setData(data);
@@ -99,8 +106,7 @@ define(
 
                         if (this.config.redirectAfter) {
                             var params = {};
-                            var key = this.config.identifierParamName || 'identifier';
-                            params[key] = entity.code;
+                            params[identifierProperty] = entityId;
 
                             router.redirectToRoute(this.config.redirectAfter, params);
                         }

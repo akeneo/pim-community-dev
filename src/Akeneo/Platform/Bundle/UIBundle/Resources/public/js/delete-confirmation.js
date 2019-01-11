@@ -2,13 +2,11 @@ define(
     [
         'underscore',
         'oro/translator',
-        'oro/modal',
-        'pim/template/common/modal-with-illustration'
+        'backbone'
     ], function (
         _,
         __,
-        Modal,
-        confirmModalTemplate
+        Backbone
     ) {
     'use strict';
 
@@ -19,8 +17,7 @@ define(
      * @class   oro.DeleteConfirmation
      * @extends oro.Modal
      */
-    return Modal.extend({
-        confirmModalTemplate: _.template(confirmModalTemplate),
+    return Backbone.BootstrapModal.extend({
         /**
          * @param {Object} options
          */
@@ -28,7 +25,6 @@ define(
             options = _.extend({
                 title: __('pim_common.confirm_deletion'),
                 okText: __('pim_common.ok'),
-                template: this.confirmModalTemplate,
                 buttonClass: 'AknButton--important',
                 illustrationClass: 'delete',
                 cancelText: __('pim_common.cancel'),
@@ -36,9 +32,7 @@ define(
 
             arguments[0] = options;
 
-            this.$el.addClass('modal--fullPage');
-
-            Modal.prototype.initialize.apply(this, arguments);
+            Backbone.BootstrapModal.prototype.initialize.apply(this, arguments);
         }
     });
 });
