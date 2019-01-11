@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\AnalyticsBundle\DataCollector;
+namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
-use Akeneo\Component\Analytics\DataCollectorInterface;
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Doctrine\DBAL\Connection;
 
 /**
