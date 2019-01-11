@@ -274,11 +274,6 @@ services:
             - '@akeneo_referenceentity.application.attribute.edit_attribute_option_handler'
             - '@akeneo_referenceentity.application.attribute.append_attribute_option_handler'
 
-    akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.create_or_update:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\CreateOrUpdateAttributeOptionAction
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.connector.api.attribute_option_validator'
-
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionAction
         arguments:
