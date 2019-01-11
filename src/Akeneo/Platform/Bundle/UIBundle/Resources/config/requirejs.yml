@@ -1057,6 +1057,7 @@ config:
     pim/template/form/delete:                                 pimui/templates/form/delete.html
     pim/template/form/tab/history:                            pimui/templates/form/tab/history.html
     pim/template/form/tab/section:                            pimui/templates/form/tab/section.html
+    pim/template/form/tab/section-large:                      pimui/templates/form/tab/section-large.html
     pim/template/form/tab/sections:                           pimui/templates/form/tab/sections.html
     pim/template/form/grid:                                   pimui/templates/form/grid.html
     pim/template/form/add-select/select:                      pimui/templates/form/add-select/select.html
