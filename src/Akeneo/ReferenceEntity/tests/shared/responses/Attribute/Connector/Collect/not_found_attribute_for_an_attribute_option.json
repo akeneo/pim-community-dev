@@ -3,14 +3,14 @@
     "method": "PATCH",
     "route": "akeneo_reference_entities_reference_entity_attribute_option_rest_connector_create_or_update",
     "query": {
-      "referenceEntityIdentifier": "wrong_reference_entity",
-      "attributeCode": "main_color",
-      "optionCode": "usa"
+      "referenceEntityIdentifier": "brand",
+      "attributeCode": "does_not_exist",
+      "optionCode": "exists"
     },
     "body": {
-      "code": "usa",
-      "labels": {
-        "en_US": "USA"
+      "code":  "exists",
+      "labels":  {
+        "en_US":  "It exists"
       }
     }
   },
@@ -18,7 +18,7 @@
     "status": 404,
     "body": {
       "code": 404,
-      "message":"Reference entity \"wrong_reference_entity\" does not exist."
+      "message":"Attribute \"does_not_exist\" does not exist for reference entity \"brand\"."
     }
   }
 }

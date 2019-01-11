@@ -18,12 +18,16 @@ use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
@@ -142,7 +146,7 @@ class CreateOrUpdateAttributeOptionContext implements Context
      */
     public function someAttributesThatStructureTheBrandReferenceEntity()
     {
-        throw new PendingException();
+        $this->createSomeBrandAttributes();
     }
 
     /**
@@ -150,7 +154,12 @@ class CreateOrUpdateAttributeOptionContext implements Context
      */
     public function theConnectorCollectsAnAttributeOptionOfANonExistentAttribute()
     {
-        throw new PendingException();
+        $this->requestContract = 'not_found_attribute_for_an_attribute_option.json';
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
     }
 
     /**
@@ -158,7 +167,10 @@ class CreateOrUpdateAttributeOptionContext implements Context
      */
     public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeDoesNotExist()
     {
-        throw new PendingException();
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
     }
 
     /**
@@ -236,5 +248,39 @@ class CreateOrUpdateAttributeOptionContext implements Context
                 LabelCollection::fromArray(['en_US' => 'China'])
             )
         ]);
+    }
+
+    private function createSomeBrandAttributes()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $attributeIdentifier = AttributeIdentifier::fromString('sales_identifier');
+
+        $optionAttribute = OptionCollectionAttribute::create(
+            $attributeIdentifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('sales_identifier'),
+            LabelCollection::fromArray([ 'fr_FR' => 'Ventes', 'en_US' => 'Sales']),
+            AttributeOrder::fromInteger(5),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true)
+        );
+
+        $textAttribute = TextAttribute::createText(
+            AttributeIdentifier::create('brand', 'description', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            AttributeCode::fromString('description'),
+            LabelCollection::fromArray(['en_US' => 'Description']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+
+        $this->attributeRepository->create($optionAttribute);
+        $this->attributeRepository->create($textAttribute);
     }
 }

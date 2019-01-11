@@ -166,7 +166,7 @@ class NotFoundReferenceEntityContext implements Context
     public function theConnectorCollectsAnAttributeOptionOfANonExistentReferenceEntity()
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->notFoundReferenceEntityRequestContract = self::COLLECT_ATTRIBUTE_REQUEST_CONTRACT_DIR . 'not_found_reference_entity_for_an_attribute_option.json';
+        $this->notFoundReferenceEntityRequestContract = self::COLLECT_ATTRIBUTE_REQUEST_CONTRACT_DIR . 'not_found_attribute_for_an_attribute_option.json';
         $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
     }
 }
