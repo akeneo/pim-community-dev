@@ -2,7 +2,7 @@ import Channel from 'akeneoreferenceentity/domain/model/channel';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
 import {ReferenceEntityPermission} from 'akeneoreferenceentity/domain/model/permission/reference-entity';
-
+import {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 
 export interface UserState {
   defaultCatalogLocale: string;
@@ -18,12 +18,19 @@ export interface UserState {
 class InvalidArgumentError extends Error {}
 
 export default (
-  state: UserState = {permission: {locale: [], referenceEntity: {referenceEntityIdentifier: null, edit: false}}},
+  state: UserState = {
+    defaultCatalogLocale: '',
+    catalogLocale: '',
+    catalogChannel: '',
+    uiLocale: '',
+    permission: {locale: [], referenceEntity: {referenceEntityIdentifier: '', edit: false}},
+  },
   action: {
     type: string;
     target: string;
     locale: string;
     channel: string;
+    channels: Channel[];
     localePermissions: LocalePermission[];
     referenceEntityPermission: ReferenceEntityPermission;
   }
@@ -75,7 +82,6 @@ export default (
   return state;
 };
 
-<<<<<<< HEAD
 /**
  * When there is the channel and the locale switcher on a page, the locale list is defined by the channel. Indeed, each channel contains a list of locales. So if you have the following channels:
  * - ecommerce
@@ -95,8 +101,16 @@ const getCatalogLocale = (channels: Channel[], channelCode: string, localeCode: 
   }
 
   return channel.locales[0].code;
-=======
-export const canEditReferenceEntity = (referenceEntityPermission: ReferenceEntityPermission) => {
+};
+
+export const canEditReferenceEntity = (
+  referenceEntityPermission: ReferenceEntityPermission,
+  referenceEntityIdentifier: NormalizedIdentifier
+) => {
+  if (referenceEntityPermission.referenceEntityIdentifier !== referenceEntityIdentifier) {
+    return false;
+  }
+
   return referenceEntityPermission.edit;
 };
 
@@ -110,5 +124,4 @@ export const canEditLocale = (localesPermission: LocalePermission[], currentLoca
   }
 
   return localePermission.edit;
->>>>>>> e677738ca7... PIM-7916: add permissions endpoint only for locales
 };

@@ -29,7 +29,7 @@ export class RecordFetcherImplementation implements RecordFetcher {
     return {
       record: hydrator(backendRecord),
       permission: {
-        referenceEntityIdentifier,
+        referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
         edit: backendRecord.permission.edit,
       },
     };

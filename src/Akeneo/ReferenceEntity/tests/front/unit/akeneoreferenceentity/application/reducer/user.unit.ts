@@ -11,7 +11,7 @@ describe('akeneo > reference entity > application > reducer --- user', () => {
       catalogLocale: '',
       defaultCatalogLocale: '',
       uiLocale: '',
-      permission: {locale: [], referenceEntity: {edit: false, referenceEntityIdentifier: null}},
+      permission: {locale: [], referenceEntity: {edit: false, referenceEntityIdentifier: ''}},
     });
   });
 

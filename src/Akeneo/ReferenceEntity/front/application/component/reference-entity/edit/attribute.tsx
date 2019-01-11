@@ -291,14 +291,14 @@ export default connect(
         attribute: {
           create:
             securityContext.isGranted('akeneo_referenceentity_attribute_create') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity),
+            canEditReferenceEntity(state.user.permission.referenceEntity, state.form.data.identifier),
           edit:
             securityContext.isGranted('akeneo_referenceentity_attribute_edit') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity),
+            canEditReferenceEntity(state.user.permission.referenceEntity, state.form.data.identifier),
           delete:
             securityContext.isGranted('akeneo_referenceentity_attribute_edit') &&
             securityContext.isGranted('akeneo_referenceentity_attribute_delete') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity),
+            canEditReferenceEntity(state.user.permission.referenceEntity, state.form.data.identifier),
         },
       },
       referenceEntity: denormalizeReferenceEntity(state.form.data),

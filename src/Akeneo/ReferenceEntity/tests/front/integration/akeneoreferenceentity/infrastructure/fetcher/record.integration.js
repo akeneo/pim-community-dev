@@ -24,7 +24,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
     });
 
     expect(response).toEqual({
-      permission: {edit: true, referenceEntityIdentifier: {identifier: 'designer'}},
+      permission: {edit: true, referenceEntityIdentifier: 'designer'},
       record: {
         code: {code: 'starck'},
         identifier: {identifier: 'designer_starck_a1677570-a278-444b-ab46-baa1db199392'},

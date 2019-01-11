@@ -87,7 +87,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
           originalFilename: 'sofa.jpg',
         },
       },
-      permission: {edit: true, referenceEntityIdentifier: {identifier: 'sofa'}},
+      permission: {edit: true, referenceEntityIdentifier: 'sofa'},
     });
   });
 });

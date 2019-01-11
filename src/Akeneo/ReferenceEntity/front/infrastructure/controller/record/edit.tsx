@@ -52,6 +52,8 @@ class RecordEditController extends BaseController {
       )
       .then((recordResult: RecordResult) => {
         this.store = createStore(true)(recordReducer);
+        this.store.dispatch(updateChannels() as any);
+        this.store = createStore(true)(recordReducer);
         this.store.dispatch(recordEditionReceived(recordResult.record));
         this.store.dispatch(referenceEntityPermissionChanged(recordResult.permission));
         this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
@@ -61,7 +63,6 @@ class RecordEditController extends BaseController {
         this.store.dispatch(setUpSidebar('akeneo_reference_entities_record_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(updateActivatedLocales() as any);
-        this.store.dispatch(updateChannels() as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
 
         fetcherRegistry

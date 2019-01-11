@@ -1,6 +1,6 @@
-import referenceEntityIdentifier from 'akeneoreferenceentity/domain/model/identifier';
+import {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 
 export interface ReferenceEntityPermission {
-  referenceEntityIdentifier: referenceEntityIdentifier | null;
+  referenceEntityIdentifier: NormalizedIdentifier;
   edit: boolean;
 }

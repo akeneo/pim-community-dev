@@ -37,7 +37,7 @@ export class ReferenceEntityFetcherImplementation implements ReferenceEntityFetc
         hydrateAttribute(normalizedAttribute)
       ),
       permission: {
-        referenceEntityIdentifier: identifier,
+        referenceEntityIdentifier: identifier.stringValue(),
         edit: backendReferenceEntity.permission.edit,
       },
     };

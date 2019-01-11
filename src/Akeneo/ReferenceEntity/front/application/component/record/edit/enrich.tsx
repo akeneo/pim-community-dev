@@ -114,22 +114,30 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
 
 export default connect(
   (state: EditState): StateProps => {
+    const locale = state.user.catalogLocale;
+
     return {
       form: state.form,
       context: {
-        locale: state.user.catalogLocale,
+        locale: locale,
         channel: state.user.catalogChannel,
       },
       rights: {
         record: {
           edit:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity) &&
+            canEditReferenceEntity(
+              state.user.permission.referenceEntity,
+              state.form.data.reference_entity_identifier
+            ) &&
             canEditLocale(state.user.permission.locale, locale),
           delete:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity) &&
+            canEditReferenceEntity(
+              state.user.permission.referenceEntity,
+              state.form.data.reference_entity_identifier
+            ) &&
             canEditLocale(state.user.permission.locale, locale),
         },
       },

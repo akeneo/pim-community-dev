@@ -145,11 +145,11 @@ export default connect(
         referenceEntity: {
           edit:
             securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity),
+            canEditReferenceEntity(state.user.permission.referenceEntity, state.form.data.identifier),
           delete:
             securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') &&
             securityContext.isGranted('akeneo_referenceentity_reference_entity_delete') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity),
+            canEditReferenceEntity(state.user.permission.referenceEntity, state.form.data.identifier),
         },
       },
       confirmDelete: state.confirmDelete,

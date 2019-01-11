@@ -168,7 +168,6 @@ module.exports = async function(cucumber) {
     const enrich = await editPage.getEnrich();
     await enrich.fillField('pim_reference_entity.record.enrich.name', 'Starck');
     await editPage.save();
-    // debugger;
   });
 
   When('the user updates the valid record with an image value', async function() {
