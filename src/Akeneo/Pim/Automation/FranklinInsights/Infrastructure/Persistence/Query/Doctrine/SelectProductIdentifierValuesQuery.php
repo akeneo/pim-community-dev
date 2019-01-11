@@ -39,6 +39,11 @@ class SelectProductIdentifierValuesQuery implements SelectProductIdentifierValue
      */
     public function execute(array $productIds): ProductIdentifierValuesCollection
     {
+        $identifierValuesCollection = new ProductIdentifierValuesCollection();
+        if (empty($productIds)) {
+            return $identifierValuesCollection;
+        }
+
         $sql = <<<SQL
 SELECT p.id as productId, JSON_OBJECTAGG(
   m.franklin_code,
@@ -57,7 +62,6 @@ SQL;
         );
         $result = $statement->fetchAll();
 
-        $identifierValuesCollection = new ProductIdentifierValuesCollection();
         foreach ($result as $row) {
             $identifierValuesCollection->add(
                 new ProductIdentifierValues(

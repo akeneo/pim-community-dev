@@ -142,25 +142,25 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
      * re-subscribe a product if an identifier value was added.
      *
      * @param ProductSubscription[] $subscriptions
-     * @param ProductIdentifierValuesCollection $newValuesCollection
+     * @param ProductIdentifierValuesCollection $newIdentifierValuesCollection
      *
      * @return int[]
      */
     private function getProductIdsWithUpdatedIdentifiers(
         array $subscriptions,
-        ProductIdentifierValuesCollection $newValuesCollection
+        ProductIdentifierValuesCollection $newIdentifierValuesCollection
     ): array {
         $updatedProductIds = [];
 
         foreach ($subscriptions as $subscription) {
             $requestedIdentifierValues = $subscription->requestedIdentifierValues();
-            $newValues = $newValuesCollection->get($subscription->getProductId());
-            if (null === $newValues) {
+            $newIdentifierValues = $newIdentifierValuesCollection->get($subscription->getProductId());
+            if (null === $newIdentifierValues) {
                 continue;
             }
 
             foreach ($requestedIdentifierValues as $franklinIdentifierCode => $requestedIdentifierValue) {
-                if (($newValues->getValue($franklinIdentifierCode) ?? null) !== $requestedIdentifierValue) {
+                if (($newIdentifierValues->getValue($franklinIdentifierCode) ?? null) !== $requestedIdentifierValue) {
                     $updatedProductIds[] = $subscription->getProductId();
                     break;
                 }

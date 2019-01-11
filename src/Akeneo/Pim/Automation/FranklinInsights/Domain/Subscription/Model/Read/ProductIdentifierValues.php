@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 
 /**
- * Read model representing the mapped identifier values of a product.
+ * Read model representing the mapped identifier values of a single product.
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */

@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read;
 
 /**
+ * Collection of ProductIdentifierValues read models
+ * Stores the mapped identifier values for several products.
+ *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 final class ProductIdentifierValuesCollection
