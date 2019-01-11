@@ -28,6 +28,8 @@ import Close from 'akeneoreferenceentity/application/component/app/icon/close';
 import Flag from 'akeneoreferenceentity/tools/component/flag';
 import {NormalizedReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 
+const securityContext = require('pim/security-context');
+
 const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) => {
   return (
     <div className="AknFieldContainer AknFieldContainer--packed">
@@ -103,7 +105,7 @@ const optionRow = ({
   numberOfLockedOptions,
   locale,
   errors,
-  editMode,
+  rights,
   labelInputReference,
   codeInputReference,
   onOptionEditionCodeUpdated,
@@ -120,7 +122,12 @@ const optionRow = ({
   numberOfLockedOptions: any;
   locale: string;
   errors: ValidationError[];
-  editMode: boolean;
+  rights: {
+    attribute: {
+      edit: boolean;
+      delete: boolean;
+    };
+  };
   labelInputReference: React.RefObject<HTMLInputElement>;
   codeInputReference: React.RefObject<HTMLInputElement>;
   onOptionEditionCodeUpdated: (code: string, id: any) => void;
@@ -130,12 +137,14 @@ const optionRow = ({
   onFocusNextField: (index: number, field: Field) => void;
   onFocusPreviousField: (index: number, field: Field) => void;
 }) => {
-  const displayDeleteRowButton: boolean = !isLastRow && editMode;
-  const inputTextClassName = `AknTextField AknTextField--light ${!editMode ? 'AknTextField--disabled' : ''}`;
+  const displayDeleteRowButton: boolean = !isLastRow && rights.attribute.delete;
+  const inputTextClassName = `AknTextField AknTextField--light ${
+    !rights.attribute.edit ? 'AknTextField--disabled' : ''
+  }`;
 
   return (
     <React.Fragment key={index}>
-      {!isLastRow || editMode ? (
+      {!isLastRow || rights.attribute.edit ? (
         <tr data-code={code} className="AknOptionEditor-row">
           <td>
             <div className="AknFieldContainer">
@@ -167,7 +176,7 @@ const optionRow = ({
                       }
                     }
                   }}
-                  readOnly={!editMode}
+                  readOnly={!rights.attribute.edit}
                 />
               </div>
               {!isLastRow ? getErrorsView(errors, `options.${index}`) : null}
@@ -181,7 +190,7 @@ const optionRow = ({
                   type="text"
                   className={
                     'AknTextField AknTextField--light' +
-                    (index <= numberOfLockedOptions - 1 && !editMode ? ' AknTextField--disabled' : '')
+                    (index <= numberOfLockedOptions - 1 && !rights.attribute.edit ? ' AknTextField--disabled' : '')
                   }
                   tabIndex={index <= numberOfLockedOptions - 1 ? -1 : 0}
                   id={`pim_reference_entity.attribute.edit.input.${code}_${index}.code`}
@@ -202,6 +211,7 @@ const optionRow = ({
                       }
                     }
                   }}
+                  readOnly={!rights.attribute.edit}
                 />
               </div>
             </div>
@@ -386,7 +396,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
                               numberOfLockedOptions: this.props.numberOfLockedOptions,
                               locale: this.props.locale,
                               errors: this.props.errors,
-                              editMode: this.props.rights.attribute.edit,
+                              rights: this.props.rights,
                               labelInputReference: this.labelInputReferences[index],
                               codeInputReference: this.codeInputReferences[index],
                               onOptionEditionCodeUpdated: this.props.events.onOptionEditionCodeUpdated,
@@ -453,7 +463,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
 }
 
 export default connect(
-  (state: EditState) => {
+  (state: EditState, ownProps: OwnProps) => {
     return {
       ...state.options,
       locale: state.user.catalogLocale,
@@ -463,6 +473,15 @@ export default connect(
       numberOfLockedOptions: state.options.numberOfLockedOptions,
       referenceEntity: state.form.data,
       catalogLocale: state.user.defaultCatalogLocale,
+      rights: {
+        attribute: {
+          edit: ownProps.rights.attribute.edit && securityContext.isGranted('akeneo_referenceentity_option_edit'),
+          delete:
+            ownProps.rights.attribute.edit &&
+            securityContext.isGranted('akeneo_referenceentity_option_delete') &&
+            securityContext.isGranted('akeneo_referenceentity_option_edit'),
+        },
+      },
     };
   },
   (dispatch: any): DispatchProps => {

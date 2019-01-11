@@ -97,6 +97,6 @@ Feature: Edit a reference entity
   @acceptance-front
   Scenario: User can't edit a reference entity without the good rights
     Given a valid reference entity
-    And the user doesn't have any rights
+    And the user does not have any rights
     Then the label of the reference entity "designer" should be read only
-    And the save button shouldn't be displayed
+    And the save button should not be displayed

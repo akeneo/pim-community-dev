@@ -101,6 +101,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\CreateAction
         arguments:
             - '@akeneo_referenceentity.application.record.create_record_handler'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
             - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@reference_entity_serializer'
@@ -177,6 +178,7 @@ services:
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_record_images'
             - '%reference_entity_connector_records_limit_per_page%'
             - '@validator'
+            - '@akeneo_referenceentity.infrastructure.connector.api.search_filters_validator'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\GetConnectorReferenceEntityAction
@@ -254,6 +256,9 @@ services:
             - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_referenceentity.application.factory.edit_attribute_command_factory'
             - '@akeneo_referenceentity.application.attribute.edit_attribute_handler'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@validator'
+            - '@akeneo_referenceentity.infrastructure.connector.api.creation_attribute_validator'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionAction

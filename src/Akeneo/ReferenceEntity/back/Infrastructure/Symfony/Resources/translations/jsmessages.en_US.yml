@@ -2,7 +2,6 @@ pim_title:
   akeneo_reference_entities_reference_entity_index: Create a new entity
   akeneo_reference_entities_reference_entity_edit: Edit a reference entity
   akeneo_reference_entities_record_edit: Edit a record
-
 pim_reference_entity:
   app:
     image:
@@ -22,7 +21,10 @@ pim_reference_entity:
         limit_reached: 'You cannot create the reference entity "{{ %reference_entity_label% }}" because you have reached the limit of {{ %limit% }} reference entities'
     button:
       save: Save
+      save_permission: Save
       create: Create
+    permission:
+      title: Entity permissions
     title: Entities
     breadcrumb: Reference Entities
     img: The main image of the reference entity named "{{ label }}"
@@ -30,6 +32,7 @@ pim_reference_entity:
       records: Records
       attribute: Attributes
       properties: Properties
+      permission: Permissions
     properties:
       title: Entity properties
       identifier: Code
@@ -48,10 +51,17 @@ pim_reference_entity:
     index:
       grid:
         count: '{0} No Reference Entity|{1} {{ count }} Reference Entity|]1,Inf] {{ count }} Reference Entities'
+        help:
+          title: 'Welcome to the Reference Entities!'
+          description_part_one: Enrich shared information about products (e.g. brands, manufacturers, colors, materials, ingredients...).
+          description_part_two: Click on the "Create" button to create your 1st reference entity, set its attributes and records.
+          description_part_three: Then, to link to products, go to “Settings/Attributes” to create a product attribute related to this entity.
+          description_part_four: For more details, we invite you to
+          description_part_five: browse this article.
     create:
       header:
         title: Create
-      subtitle: Entities
+      subtitle: Reference Entities
       title: Create a new entity
       input:
         label: Label
@@ -70,6 +80,15 @@ pim_reference_entity:
       delete:
         success: Reference entity successfully deleted.
         fail: An error occured during the deletion of the reference entity
+  permission:
+    notification:
+      save:
+        success: Reference entity permissions successfully updated.
+        fail: At least one user group should have edit permission on this entity
+    no_data:
+      title: You have no user group
+      subtitle: To manage permission on reference entity you need to have at least one user group.
+      link: Clic here to add your first user group
   record:
     validation:
       limit_reached: 'You cannot create the record "{{ %record_label% }}" because you have reached the limit of {{ %limit% }} records for this reference entity'
@@ -100,7 +119,7 @@ pim_reference_entity:
     create:
       header:
         title: Create
-      subtitle: Entities
+      subtitle: Reference Entities
       title: Add new {{ entityLabel }}
       input:
         label: Label
@@ -162,8 +181,8 @@ pim_reference_entity:
     type:
       text: Text
       image: Image
-      record: Reference entity simple link
-      record_collection: Reference entity multiple link
+      record: Reference entity single link
+      record_collection: Reference entity multiple links
       option: Single option
       option_collection: Multiple options
     is_required: required for completeness
@@ -175,8 +194,9 @@ pim_reference_entity:
     create:
       header:
         title: Create
-      subtitle: Entities
+      subtitle: Reference Entities
       title: Add new record attribute
+      description: The following parameters, except the label, cannot be updated after the attribute creation
       input:
         code: Code (required)
         label: Label
@@ -257,10 +277,13 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_reference_entity_collection: Reference entity multiple link
-          akeneo_reference_entity: Reference entity simple link
+          akeneo_reference_entity_collection: Reference entity multiple links
+          akeneo_reference_entity: Reference entity single link
         section:
           type_specific: Type specific parameters
         reference_entity:
           identifier: Related reference entity (required)
           default_label: Please select a reference entity
+
+permission:
+  mass_action: Apply {{ rightLevel }} right on all groups

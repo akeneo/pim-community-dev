@@ -1,0 +1,9 @@
+extensions:
+    akeneo-franklin-insights-franklin-connection:
+        module: pim/menu/item
+        parent: pim-menu-system-navigation-block
+        aclResourceId: akeneo_franklin_insights_connection
+        position: 130
+        config:
+            title: akeneo_franklin_insights.connection.page_title
+            to: akeneo_franklin_insights_connection_edit

@@ -1,0 +1,72 @@
+services:
+    akeneo.pim.automation.franklin_insights.connector.step.validate_connection:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Step\ConnectionValidationStep'
+        arguments:
+            - 'validate_configuration'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
+
+    akeneo.pim.automation.franklin_insights.connector.step.validate_identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Step\IdentifiersMappingValidationStep'
+        arguments:
+            - 'validate_identifiers_mapping'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
+
+    akeneo.pim.automation.franklin_insights.connector.step.subscribe_products:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'subscribe_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.product'
+            - '@akeneo.pim.automation.franklin_insights.connector.processor.subscription'
+            - '@akeneo.pim.automation.franklin_insights.connector.writer.subscription'
+            - '%pim_enrich.datagrid.product_batch_size%'
+
+    akeneo.pim.automation.franklin_insights.connector.step.unsubscribe_products:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'unsubscribe_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.product'
+            - '@akeneo.pim.automation.franklin_insights.connector.processor.unsubscription'
+            - '@akeneo.pim.automation.franklin_insights.connector.writer.unsubscription'
+            - 1
+
+    akeneo.pim.automation.franklin_insights.connector.step.fetch_products:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'fetch_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.franklin_insights.connector.reader.suggested_data'
+            - '@akeneo.pim.automation.franklin_insights.connector.processor.suggested_data'
+            - '@akeneo.pim.automation.franklin_insights.connector.writer.suggested_data'
+
+    akeneo.pim.automation.franklin_insights.connector.step.create_proposals:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'create_proposals'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.franklin_insights.connector.tasklet.create_proposals'
+
+    akeneo.pim.automation.franklin_insights.connector.step.remove_attribute_from_attributes_mapping:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'update_attribute_mapping'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.franklin_insights.connector.tasklet.remove_attribute_from_attributes_mapping'
+
+    akeneo.pim.automation.franklin_insights.connector.step.remove_option_from_attribute_options_mapping:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'update_attribute_options_mapping'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.franklin_insights.connector.tasklet.remove_option_from_attribute_options_mapping'

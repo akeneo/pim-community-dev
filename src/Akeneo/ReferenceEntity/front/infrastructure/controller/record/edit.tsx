@@ -39,6 +39,9 @@ class RecordEditController extends BaseController {
   renderRoute(route: any) {
     const promise = $.Deferred();
 
+    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
+    $(window).on('beforeunload', this.beforeUnload);
+
     recordFetcher
       .fetch(
         createReferenceEntityIdentifier(route.params.referenceEntityIdentifier),
@@ -49,16 +52,13 @@ class RecordEditController extends BaseController {
         this.store.dispatch(recordEditionReceived(record));
         this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
-        this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
+        this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         this.store.dispatch(setUpSidebar('akeneo_reference_entities_record_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(updateActivatedLocales() as any);
         this.store.dispatch(updateChannels() as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
-
-        mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
-        $(window).on('beforeunload', this.beforeUnload);
 
         ReactDOM.render(
           <Provider store={this.store}>

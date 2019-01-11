@@ -1,0 +1,29 @@
+akeneo_franklin_insights:
+  entity:
+    identifier_mapping:
+      plural_label: Identificadores
+      fields:
+        identifier_label:
+          values:
+            brand: Marca
+            asin: ASIN
+            mpn: MPN
+            upc: UPC
+        status:
+          active: Activo
+          inactive: Inactivo
+    attributes_mapping:
+      fields:
+        franklin_insights:
+          mapped: Activo
+          unmapped: Inactivo
+  connection:
+    module:
+      activation:
+        activation_code: 'Código de activación'
+        activated: 'Habilitado'
+        activate: 'Activar'
+  settings:
+    module:
+      inactive_connection:
+        title: 'Lo sentimos, no hay nada que mostrar aquí todavía'

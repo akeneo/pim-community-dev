@@ -112,15 +112,11 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
 
 export default connect(
   (state: EditState): StateProps => {
-    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-    const channel =
-      undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
-
     return {
       form: state.form,
       context: {
-        locale,
-        channel,
+        locale: state.user.catalogLocale,
+        channel: state.user.catalogChannel,
       },
       rights: {
         record: {

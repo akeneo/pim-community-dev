@@ -43,12 +43,12 @@ config:
                 reducer: '@akeneoreferenceentity/application/reducer/attribute/type/text'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'
             record:
-                icon: bundles/pimui/images/attribute/icon-select.svg
+                icon: bundles/pimui/images/attribute/icon-reference-entity.svg
                 denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record'
                 reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/record.tsx'
             record_collection:
-                icon: bundles/pimui/images/attribute/icon-multiselect.svg
+                icon: bundles/pimui/images/attribute/icon-reference-entity-multiple.svg
                 denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record-collection'
                 reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/record.tsx'
@@ -75,6 +75,9 @@ config:
                     property:
                         label: pim_reference_entity.reference_entity.tab.properties
                         view: '@akeneoreferenceentity/application/component/reference-entity/edit/properties'
+                    permission:
+                        label: pim_reference_entity.reference_entity.tab.permission
+                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/permission'
             akeneo_reference_entities_record_edit:
                 tabs:
                     enrich:
@@ -91,7 +94,7 @@ config:
                     edit:   pim-attribute-form-reference-entity
         pim/form/common/attributes/create-button:
             attribute_icons:
-                akeneo_reference_entity_collection: reference-entity
+                akeneo_reference_entity_collection: reference-entity-multiple
                 akeneo_reference_entity: reference-entity
 
     paths:
@@ -104,3 +107,5 @@ config:
         pim/reference-entity-field: akeneoreferenceentity/infrastructure/product/reference-entity-field.tsx
 
         oro/datafilter/reference-entity-collection-filter: akeneoreferenceentity/infrastructure/product_grid/filter/attribute/reference-entity-collection
+
+        pimee/filter/attribute/reference-entity-collection: pimenterpriseui/js/filter/attribute/reference-entity-collection

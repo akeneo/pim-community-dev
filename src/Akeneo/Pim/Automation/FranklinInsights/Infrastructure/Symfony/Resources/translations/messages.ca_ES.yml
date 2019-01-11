@@ -1,0 +1,21 @@
+akeneo_franklin_insights:
+  acl:
+    franklin_insights:
+      index: Subscripció de productes en massa a Franklin Insights
+    franklin:
+      title: Gestionar la connexió de Franklin Insights
+    settings:
+      mapping: Gestionar la configuració de Franklin Insights
+  acl_group:
+    franklin_insights: Configuració de les estadístiques de Franklin
+  mapping_identifier:
+    success: El mapatge s'ha guardat correctament
+    error: S'ha produït un error durant el guardat del mapatge
+job_execution.summary:
+  configuration_validation: Configuració de les estadístiques de Franklin
+  subscribed: subscrit
+  unsubscribed: subscripció cancel·lada
+pim_datagrid:
+  cells:
+    type:
+      franklin_insights_fetch_products: Estadístiques de Franklin

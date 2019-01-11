@@ -19,10 +19,22 @@ $rules = [
         'Sensio\Bundle\FrameworkExtraBundle',
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component',
 
-        // TODO: Inverse the dependency (should be a standalone JS component)
+        // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
+        // TIP-966: TWA should not be linked to Locale
+        'Akeneo\Channel\Component\Model\LocaleInterface',
+
+        // TIP-967: TWA should not be linked to Channel
+        'Akeneo\Channel\Component\Model\ChannelInterface',
+
+        // TIP-968: TWA depends on PIM/Enrichment
+        // TIP-963: Define the Products public API
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
+
+        // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',
 
-        // TODO: The dependency to Platform is not normal, rework the Bundle
+        // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
         'Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface',
         'Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory',
@@ -33,27 +45,27 @@ $rules = [
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',
 
-        // TODO: remove all links by reference
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-        'Akeneo\UserManagement\Component\Model\GroupInterface',
-        'Akeneo\UserManagement\Component\Model\UserInterface',
+        // TIP-972: TWA should not be linked to User Group
         'Akeneo\UserManagement\Component\Model\Group',
+        'Akeneo\UserManagement\Component\Model\GroupInterface',
+
+        // TIP-973: TWA should not be linked to User
+        'Akeneo\UserManagement\Component\Model\UserInterface',
+
+        // TIP-937: PIM/Enrichment should not be linked to Family
+        'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
 
         // TODO: relationship between bounded context (query data though repository)
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
         'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
 
         // TODO: usage of public constant
         'Akeneo\Pim\Permission\Component\Attributes',
 
-        // TODO: class to duplicate (used for notification)
+        // TIP-976: TWA should not be linked to Workflow
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter',
 
-        // TODO: May be a Tool
+        // TIP-977: Move CommandExecutor to Tool
         'Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor'
     ])->in('Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle'),
     $builder->only([
@@ -62,37 +74,47 @@ $rules = [
         'Doctrine\Common',
         'Gedmo\Sluggable\Util\Urlizer', // used to format the project identifier
 
-        // TODO: relationship between bounded context (query data through repository)
-        'Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository',
-        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
-
-        // TODO: remove all links by reference
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-        'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
-        'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
-        'Akeneo\Channel\Component\Model\CurrencyInterface',
+        // TIP-966: TWA should not be linked to Locale
         'Akeneo\Channel\Component\Model\LocaleInterface',
+
+        // TIP-967: TWA should not be linked to Channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\UserManagement\Component\Model\GroupInterface',
+
+        // TIP-968: TWA depends on PIM/Enrichment
+        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface',
+
+        // TIP-971 ProjectRemoverInterface should not be linked to PIM/Enrichment or PIM/Structure
+        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
+        'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+        'Akeneo\Channel\Component\Model\CurrencyInterface',
+
+        // TIP-972: TWA should not be linked to User Group
         'Akeneo\UserManagement\Component\Model\UserInterface',
 
-        // TODO: the project should not be linked to a datagrid view, we should use project filter instead
+        // TIP-973: TWA should not be linked to User
+        'Akeneo\UserManagement\Component\Model\GroupInterface',
+
+        // TIP-937: PIM/Enrichment should not be linked to Family
+        'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+
+        // TODO: relationship between bounded context (query data through repository)
+        'Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository',
+        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
+
+        // TIP-970: TWA should not be linked to Datagrid View
         'Oro\Bundle\PimDataGridBundle\Entity\DatagridView',
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\DatagridViewTypes',
 
         // TODO: usage of public constant
         'Akeneo\Pim\Permission\Component\Attributes',
 
-        // TODO EASY PICK: Move interface to component
+        // TIP-974: Move CursorableRepositoryInterface to component
         'Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface',
 
-        // TODO: EASY PICK TWA should have its own exceptions.
+        // TIP-975: Use own exceptions
         'Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException',
-
-        // TODO: pre processed data are computed thanks to value complete checker
-        'Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface',
     ])->in('Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component'),
 ];
 

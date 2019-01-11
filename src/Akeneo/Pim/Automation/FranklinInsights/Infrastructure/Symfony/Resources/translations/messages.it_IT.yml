@@ -1,0 +1,10 @@
+akeneo_franklin_insights:
+  acl_group:
+    franklin_insights: Impostazioni Franklin Insights
+  mapping_identifier:
+    success: La mappatura è stata salvata con successo
+    error: Si è verificato un errore al salvataggio della mappatura
+job_execution.summary:
+  configuration_validation: Configurazione Franklin Insights
+  subscribed: iscritto
+  unsubscribed: disiscritto

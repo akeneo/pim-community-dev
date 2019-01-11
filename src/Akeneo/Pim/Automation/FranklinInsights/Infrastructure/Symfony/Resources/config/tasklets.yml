@@ -1,0 +1,22 @@
+services:
+    akeneo.pim.automation.franklin_insights.connector.tasklet.create_proposals:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet\CreateProposalsTasklet'
+        public: false
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.handler.create_proposals'
+
+    akeneo.pim.automation.franklin_insights.connector.tasklet.remove_attribute_from_attributes_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet\RemoveAttributeFromAttributeMappingTasklet'
+        public: false
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.handler.get_attributes_mapping_by_family'
+            - '@akeneo.pim.automation.franklin_insights.handler.update_attributes_mapping_by_family'
+
+    akeneo.pim.automation.franklin_insights.connector.tasklet.remove_option_from_attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet\RemoveOptionFromAttributeOptionsMappingTasklet'
+        public: false
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_codes_by_attribute_query'
+            - '@akeneo.pim.automation.franklin_insights.handler.get_attributes_mapping_by_family'
+            - '@akeneo.pim.automation.franklin_insights.handler.get_attribute_options_mapping_by_family_and_attribute'
+            - '@akeneo.pim.automation.franklin_insights.handler.save_attribute_options_mapping'

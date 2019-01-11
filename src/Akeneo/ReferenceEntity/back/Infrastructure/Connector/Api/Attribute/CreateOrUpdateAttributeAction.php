@@ -13,11 +13,19 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeCreationValidator;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeAction
 {
@@ -45,6 +53,15 @@ class CreateOrUpdateAttributeAction
     /** @var Router */
     private $router;
 
+    /** @var ReferenceEntityExistsInterface */
+    private $referenceEntityExists;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var AttributeCreationValidator */
+    private $jsonSchemaCreateValidator;
+
     public function __construct(
         CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry,
         FindAttributeNextOrderInterface $attributeNextOrder,
@@ -53,7 +70,10 @@ class CreateOrUpdateAttributeAction
         Router $router,
         GetAttributeIdentifierInterface $getAttributeIdentifier,
         EditAttributeCommandFactory $editAttributeCommandFactory,
-        EditAttributeHandler $editAttributeHandler
+        EditAttributeHandler $editAttributeHandler,
+        ReferenceEntityExistsInterface $referenceEntityExists,
+        ValidatorInterface $validator,
+        AttributeCreationValidator $jsonSchemaCreateValidator
     ) {
         $this->createAttributeCommandFactoryRegistry = $createAttributeCommandFactoryRegistry;
         $this->attributeNextOrder = $attributeNextOrder;
@@ -63,6 +83,9 @@ class CreateOrUpdateAttributeAction
         $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->editAttributeCommandFactory = $editAttributeCommandFactory;
         $this->editAttributeHandler = $editAttributeHandler;
+        $this->referenceEntityExists = $referenceEntityExists;
+        $this->validator = $validator;
+        $this->jsonSchemaCreateValidator = $jsonSchemaCreateValidator;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode): Response
@@ -74,19 +97,31 @@ class CreateOrUpdateAttributeAction
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        $normalizedAttribute = $this->getNormalizedAttribute($request, $referenceEntityIdentifier);
+        if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
+            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
+        }
+
         $shouldBeCreated = !$this->attributeExists->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
 
         return $shouldBeCreated ?
-            $this->createAttribute($referenceEntityIdentifier, $attributeCode, $normalizedAttribute) :
-            $this->editAttribute($referenceEntityIdentifier, $attributeCode, $normalizedAttribute);
+            $this->createAttribute($referenceEntityIdentifier, $attributeCode, $request) :
+            $this->editAttribute($referenceEntityIdentifier, $attributeCode, $request);
     }
 
+    /**
+     * The format between the API and the UI is no the same.
+     * Ideally, we should do a factory for this API adapter.
+     */
     private function getNormalizedAttribute(
         Request $request,
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ) {
         $normalizedAttribute = json_decode($request->getContent(), true);
+
+        if (null === $normalizedAttribute) {
+            throw new BadRequestHttpException('Invalid json message received');
+        }
+
         $normalizedAttribute['reference_entity_identifier'] = (string) $referenceEntityIdentifier;
 
         if (isset($normalizedAttribute['validation_regexp'])) {
@@ -109,6 +144,23 @@ class CreateOrUpdateAttributeAction
             unset($normalizedAttribute['max_characters']);
         }
 
+        if (isset($normalizedAttribute['type'])) {
+            switch ($normalizedAttribute['type']) {
+                case 'single_option':
+                    $normalizedAttribute['type'] = 'option';
+                    break;
+                case 'multiple_options':
+                    $normalizedAttribute['type'] = 'option_collection';
+                    break;
+                case 'reference_entity_single_link':
+                    $normalizedAttribute['type'] = 'record';
+                    break;
+                case 'reference_entity_multiple_links':
+                    $normalizedAttribute['type'] = 'record_collection';
+                    break;
+            }
+        }
+
         $normalizedAttribute['reference_entity_identifier'] = (string) $referenceEntityIdentifier;
 
         return $normalizedAttribute;
@@ -117,13 +169,30 @@ class CreateOrUpdateAttributeAction
     private function createAttribute(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $attributeCode,
-        array $normalizedAttribute
+        Request $request
     ): Response {
+        $invalidFormatErrors = $this->jsonSchemaCreateValidator->validate(json_decode($request->getContent(), true));
+
+        if (!empty($invalidFormatErrors)) {
+            return new JsonResponse([
+                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message' => 'The attribute has an invalid format.',
+                'errors' => JsonSchemaErrorsFormatter::format($invalidFormatErrors),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $normalizedAttribute = $this->getNormalizedAttribute($request, $referenceEntityIdentifier);
+
         $createAttributeCommand = $this->createAttributeCommandFactoryRegistry->getFactory($normalizedAttribute)->create($normalizedAttribute);
         // TODO: This should not be part of the Controller logic
         $createAttributeCommand->order = $this->attributeNextOrder->withReferenceEntityIdentifier(
             ReferenceEntityIdentifier::fromString($createAttributeCommand->referenceEntityIdentifier)
         );
+
+        $violations = $this->validator->validate($createAttributeCommand);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException($violations, 'The attribute has data that does not comply with the business rules.');
+        }
 
         ($this->createAttributeHandler)($createAttributeCommand);
 
@@ -140,13 +209,19 @@ class CreateOrUpdateAttributeAction
     private function editAttribute(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $attributeCode,
-        array $normalizedAttribute
+        Request $request
     ): Response {
-        $normalizedAttribute['identifier'] = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+        $normalizedAttribute = $this->getNormalizedAttribute($request, $referenceEntityIdentifier);
+        $normalizedAttribute['identifier'] = (string) $this->getAttributeIdentifier->withReferenceEntityAndCode(
             $referenceEntityIdentifier,
             $attributeCode
         );
-        $editAttributeCommand = $this->editAttributeCommandFactory->getFactory($normalizedAttribute)->create($normalizedAttribute);
+        $editAttributeCommand = $this->editAttributeCommandFactory->create($normalizedAttribute);
+
+        $violations = $this->validator->validate($editAttributeCommand);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException($violations, 'The attribute has data that does not comply with the business rules.');
+        }
 
         ($this->editAttributeHandler)($editAttributeCommand);
 

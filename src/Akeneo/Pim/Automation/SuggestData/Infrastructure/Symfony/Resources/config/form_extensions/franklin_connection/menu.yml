@@ -1,9 +1,0 @@
-extensions:
-    akeneo-suggest-data-franklin-connection:
-        module: pim/menu/item
-        parent: pim-menu-system-navigation-block
-        aclResourceId: akeneo_suggest_data_connection
-        position: 130
-        config:
-            title: akeneo_suggest_data.connection.page_title
-            to: akeneo_suggest_data_connection_edit

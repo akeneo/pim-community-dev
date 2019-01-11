@@ -1,7 +1,7 @@
 import Value, {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import {Attribute} from 'web/bundles/akeneoreferenceentity/domain/model/attribute/attribute';
+import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 
 export class InvalidArgument extends Error {}
 

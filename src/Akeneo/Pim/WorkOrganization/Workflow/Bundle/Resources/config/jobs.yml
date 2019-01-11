@@ -117,6 +117,8 @@ services:
             - '@pim_connector.writer.file.product_quick_export.flat_item_buffer_flusher'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
+            - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
             - ['pim_catalog_file', 'pim_catalog_image']
             - 'filePath'
 
@@ -151,6 +153,8 @@ services:
             - '@pim_connector.writer.file.product_quick_export.flat_item_buffer_flusher'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
+            - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
             - ['pim_catalog_file', 'pim_catalog_image']
             - 'filePath'
 

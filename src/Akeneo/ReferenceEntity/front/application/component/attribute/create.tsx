@@ -5,7 +5,6 @@ import ValidationError from 'akeneoreferenceentity/domain/model/validation-error
 import Flag from 'akeneoreferenceentity/tools/component/flag';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import Switch from 'akeneoreferenceentity/application/component/app/switch';
 import {
   attributeCreationCodeUpdated,
   attributeCreationLabelUpdated,
@@ -24,6 +23,7 @@ import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {isRecordAttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import Key from 'akeneoreferenceentity/tools/key';
+import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 
 interface StateProps {
   context: {
@@ -176,6 +176,9 @@ class Create extends React.Component<CreateProps> {
                 <div className="AknFullPage-titleContainer">
                   <div className="AknFullPage-subTitle">{__('pim_reference_entity.attribute.create.subtitle')}</div>
                   <div className="AknFullPage-title">{__('pim_reference_entity.attribute.create.title')}</div>
+                  <div className="AknFullPage-description">
+                    {__('pim_reference_entity.attribute.create.description')}
+                  </div>
                 </div>
                 <div className="AknFormContainer">
                   <div className="AknFieldContainer" data-code="label">
@@ -278,41 +281,49 @@ class Create extends React.Component<CreateProps> {
                       {getErrorsView(this.props.errors, 'recordType')}
                     </div>
                   ) : null}
-                  <div className="AknFieldContainer" data-code="valuePerLocale">
-                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label
-                        className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.attribute.create.input.value_per_locale"
-                      >
-                        {__('pim_reference_entity.attribute.create.input.value_per_locale')}
-                      </label>
-                    </div>
-                    <div className="AknFieldContainer-inputContainer">
-                      <Switch
-                        id="pim_reference_entity.attribute.create.input.value_per_locale"
-                        value={this.props.data.value_per_locale}
-                        onChange={this.props.events.onValuePerLocaleUpdated}
-                      />
-                    </div>
-                    {getErrorsView(this.props.errors, 'valuePerLocale')}
-                  </div>
                   <div className="AknFieldContainer" data-code="valuePerChannel">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
                         htmlFor="pim_reference_entity.attribute.create.input.value_per_channel"
                       >
-                        {__('pim_reference_entity.attribute.create.input.value_per_channel')}
+                        <Checkbox
+                          id="pim_reference_entity.attribute.create.input.value_per_channel"
+                          value={this.props.data.value_per_channel}
+                          onChange={this.props.events.onValuePerChannelUpdated}
+                        />
+                        <span
+                          onClick={() => {
+                            this.props.events.onValuePerChannelUpdated(!this.props.data.value_per_channel);
+                          }}
+                        >
+                          {__('pim_reference_entity.attribute.create.input.value_per_channel')}
+                        </span>
                       </label>
                     </div>
-                    <div className="AknFieldContainer-inputContainer">
-                      <Switch
-                        id="pim_reference_entity.attribute.create.input.value_per_channel"
-                        value={this.props.data.value_per_channel}
-                        onChange={this.props.events.onValuePerChannelUpdated}
-                      />
-                    </div>
                     {getErrorsView(this.props.errors, 'valuePerChannel')}
+                  </div>
+                  <div className="AknFieldContainer" data-code="valuePerLocale">
+                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                      <label
+                        className="AknFieldContainer-label"
+                        htmlFor="pim_reference_entity.attribute.create.input.value_per_locale"
+                      >
+                        <Checkbox
+                          id="pim_reference_entity.attribute.create.input.value_per_locale"
+                          value={this.props.data.value_per_locale}
+                          onChange={this.props.events.onValuePerLocaleUpdated}
+                        />
+                        <span
+                          onClick={() => {
+                            this.props.events.onValuePerLocaleUpdated(!this.props.data.value_per_locale);
+                          }}
+                        >
+                          {__('pim_reference_entity.attribute.create.input.value_per_locale')}
+                        </span>
+                      </label>
+                    </div>
+                    {getErrorsView(this.props.errors, 'valuePerLocale')}
                   </div>
                   <button className="AknButton AknButton--apply ok" onClick={this.props.events.onSubmit}>
                     {__('pim_reference_entity.attribute.create.confirm')}
@@ -338,13 +349,11 @@ class Create extends React.Component<CreateProps> {
 
 export default connect(
   (state: EditState): StateProps => {
-    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-
     return {
       data: state.createAttribute.data,
       errors: state.createAttribute.errors,
       context: {
-        locale: locale,
+        locale: state.user.catalogLocale,
       },
     } as StateProps;
   },

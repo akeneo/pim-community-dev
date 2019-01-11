@@ -79,6 +79,15 @@ class ReferenceEntitySpec extends ObjectBehavior
         $this->getLabel('fr_FR')->shouldBe('Concepteur');
     }
 
+    public function it_merges_labels_on_update()
+    {
+        $labelCollection = LabelCollection::fromArray(['de_DE' => 'New label']);
+        $this->updateLabels($labelCollection);
+
+        $this->getLabelCodes()->shouldReturn(['en_US', 'fr_FR', 'de_DE']);
+        $this->getLabel('de_DE')->shouldBe('New label');
+    }
+
     public function it_updates_image(Image $image)
     {
         $this->updateImage($image);

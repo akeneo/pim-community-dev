@@ -58,3 +58,36 @@ Feature: Connection to e-commerce platforms and marketplaces
     Given the Brand reference entity with some records
     When the connector requests all records of the Brand reference entity with the information of a provided locale that does not exist
     Then the PIM notifies the connector about an error indicating that the provided locale does not exist
+
+  @integration-back
+  Scenario: Get all the complete records of a given reference entity for a provided channel and provided locales
+    Given 2 records for the Brand reference entity on the Ecommerce channel that are incomplete for the French locale but complete for the English locale
+    And 2 records for the Brand reference entity on the Ecommerce channel that are complete for the French locale but that are incomplete for the English locale
+    And 2 records for the Brand reference entity on the Ecommerce channel that are both complete for the French and the English locale
+    When the connector requests all complete records of the Brand reference entity on the Ecommerce channel for the French and English locales
+    Then the PIM returns the 2 complete records of the Brand reference entity on the Ecommerce channel for the French and English locales
+
+  @integration-back
+  Scenario: Notify about an error when getting all the complete records of a given reference entity for a provided channel that does not exist
+    Given 2 records for the Brand reference entity on the Ecommerce channel that are incomplete for the French locale but complete for the English locale
+    When the connector requests all complete records of the Brand reference entity on a channel that does not exist
+    Then the PIM notifies the connector about an error indicating that the provided channel does not exist
+
+  @integration-back
+  Scenario: Notify about an error when getting all the complete records of a given reference entity for a provided locale is not activated for the provided channel
+    Given 2 records for the Brand reference entity on the Ecommerce channel that are incomplete for the French locale but complete for the English locale
+    When the connector requests all complete records of the Brand reference entity on the Ecommerce channel for a not activated locale
+    Then the PIM notifies the connector about an error indicating that the provided channel does not exist
+
+  @integration-back
+  Scenario: Get the records of a reference entity that were updated since a provided date
+    Given 2 records for the Brand reference entity that were last updated on the 10th of October 2018
+    And 2 records for the Brand reference entity that were updated on the 15th of October 2018
+    When the connector requests all records of the Brand reference entity updated since the 14th of October 2018
+    Then the PIM returns the 2 records of the Brand reference entity that were updated on the 15th of October 2018
+
+  @integration-back
+  Scenario: Notify about an error when getting the records of a reference entity that were updated since a date that does not have the right format
+    Given the Brand reference entity with some records
+    When the connector requests records that were updated since a date that does not have the right format
+    Then the PIM notifies the connector about an error indicating that the date format is not the expected one

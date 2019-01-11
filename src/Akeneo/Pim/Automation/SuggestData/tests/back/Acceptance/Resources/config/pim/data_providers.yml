@@ -1,5 +1,0 @@
-services:
-    akeneo.pim.automation.suggest_data.franklin_client.http_client:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient'
-        arguments:
-            - '@akeneo.pim.automation.suggest_data.franklin_client.uri_generator'

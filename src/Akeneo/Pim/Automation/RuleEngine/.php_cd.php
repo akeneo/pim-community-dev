@@ -21,20 +21,21 @@ $rules = [
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\FilterBundle',
 
-        // TODO: relationship between bounded context (query data though repository)
-        // TODO: Maybe we don't need the whole attribute
+        // TIP-960: Rule Engine should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
 
-        // TODO: Rule engine sends notification
+        // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface',
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
-        // TODO: EASY PICK Duplicate code in controller
+        // TIP-957: Do not use FQCN resolver
         'Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver',
 
-        // TODO: Extract presenter to tool (it should not rely on product value anymore)
+        // TIP-1019: Move presenters
         'Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface',
+
+        // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
     ])->in('Akeneo\Pim\Automation\RuleEngine\Bundle'),
     $builder->only([
@@ -42,7 +43,14 @@ $rules = [
         'Akeneo\Tool\Component',
         'Doctrine\Common',
 
-        // TODO: should it be part of the enrichment public API?
+        // TIP-960: Rule Engine should not be linked to Attribute
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+
+        // TIP-961: Remove dependency to ProductRepositoryInterface
+        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
+
+        // TIP-962: Rule Engine depends on PIM/Enrichment
+        // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
@@ -54,20 +62,18 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface',
-        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface', // the engine creates a fake product to allow validation
+
+        // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext', // used to version products when a rule is applied
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager', // used to version products when a rule is applied
 
-        // TODO: The rule engine sends notifications
+        // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory',
         'Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface',
 
-        // TODO: the component should not use a bundle => split the Tool\RuleEngine into Bundle + Component
+        // TIP-964: Split Tool/RuleEngine into component + bundle
         'Akeneo\Tool\Bundle\RuleEngineBundle',
-
-        // TODO: EASY PICK called in ProductRuleSelector but not used => remove the dependency
-        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
 
     ])->in('Akeneo\Pim\Automation\RuleEngine\Component'),
 ];

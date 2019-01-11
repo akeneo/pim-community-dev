@@ -1,0 +1,83 @@
+{
+  "_links": {
+    "subscription": [
+      {
+        "href": "/api/subscriptions/8ea48c14-2983-4f29-931a-73654272289c"
+      }
+    ]
+  },
+  "_embedded": {
+    "subscription": [
+      {
+        "id": "8ea48c14-2983-4f29-931a-73654272289c",
+        "identifiers": {
+          "upc": null,
+          "asin": null,
+          "mpn_brand": {
+            "mpn": "75024",
+            "brand": "Crown Bolt"
+          }
+        },
+        "attributes": [],
+        "extra": {
+          "family": {
+            "code": "camcorders",
+            "label": {
+              "en_US": "Camcorders"
+            }
+          },
+          "tracker_id": "169"
+        },
+        "created_at": "2018-11-27T13:16:21+00:00",
+        "refreshed_at": "2018-11-27T13:18:58+00:00",
+        "valid_until": "2019-11-27T13:16:21+00:00",
+        "is_cancelled": false,
+        "message": "",
+        "_links": {
+          "self": {
+            "href": "/api/subscriptions/8ea48c14-2983-4f29-931a-73654272289c"
+          },
+          "cancel": {
+            "href": "/api/subscriptions/8ea48c14-2983-4f29-931a-73654272289c",
+            "type": "application/prs.hal-forms+json"
+          },
+          "attributes-mapping": {
+            "href": "/api/mapping/comestic/attributes",
+            "title": "Get attributes mapping"
+          }
+        },
+        "_embedded": {
+          "cancel": {
+            "_links": {
+              "self": {
+                "href": "/api/subscriptions/8ea48c14-2983-4f29-931a-73654272289c"
+              }
+            },
+            "_templates": {
+              "default": {
+                "title": "cancel",
+                "description": "cancel a subscription",
+                "method": "DELETE",
+                "contentType": "application/x-www-form-urlencoded",
+                "properties": []
+              }
+            }
+          }
+        },
+        "mapped_identifiers": [
+          {
+            "name": "pim_brand",
+            "value": "Crown Bolt"
+          },
+          {
+            "name": "mpn",
+            "value": "75024"
+          }
+        ],
+        "mapped_attributes": [],
+        "misses_mapping": true
+      }
+    ],
+    "warnings": []
+  }
+}

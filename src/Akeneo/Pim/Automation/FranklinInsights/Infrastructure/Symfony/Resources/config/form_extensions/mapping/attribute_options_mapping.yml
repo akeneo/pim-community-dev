@@ -1,0 +1,57 @@
+extensions:
+    akeneo-franklin-insights-settings-attribute-options-mapping-edit:
+        module: pim/form/common/edit-form
+        config:
+            template: akeneo/franklin-insights/template/settings/attribute-options-mapping/modal
+
+    akeneo-franklin-insights-settings-attribute-options-mapping-index-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: akeneo-franklin-insights-settings-attribute-options-mapping-edit
+        targetZone: buttons
+        position: 120
+
+    akeneo-franklin-insights-settings-attribute-options-mapping-index-save-form:
+        module: akeneo/franklin-insights/saver/attribute-options-mapping-form
+        parent: akeneo-franklin-insights-settings-attribute-options-mapping-edit
+        targetZone: buttons
+        position: 0
+        config:
+            url: akeneo_franklin_insights_attribute_options_mapping_update
+
+    akeneo-franklin-insights-settings-attribute-options-mapping-edit-content:
+        module: akeneo/franklin-insights/view/settings/attribute-options-mapping/edit
+        parent: akeneo-franklin-insights-settings-attribute-options-mapping-edit
+        config:
+            labels:
+                pending: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.pending
+                mapped: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.mapped
+                unmapped: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.unmapped
+                franklinAttributeOption: akeneo_franklin_insights.entity.attribute_options_mapping.fields.franklin_attribute_option
+                catalogAttributeOption: akeneo_franklin_insights.entity.attribute_options_mapping.fields.catalog_attribute_option
+                attributeOptionStatus: akeneo_franklin_insights.entity.attribute_options_mapping.fields.attribute_option_status
+
+    akeneo-franklin-insights-settings-attribute-options-mapping-edit-description-header:
+        module: pim/common/simple-view
+        parent: akeneo-franklin-insights-settings-attribute-options-mapping-edit-content
+        targetZone: header
+        config:
+            template: pim/template/common/description-header
+            templateParams:
+                title: akeneo_franklin_insights.entity.attribute_options_mapping.module.edit.sub_title
+                illustration: Robot.svg
+                description: akeneo_franklin_insights.entity.attribute_options_mapping.module.edit.description
+
+    akeneo-franklin-insights-settings-attribute-options-mapping-edit-front-search-filter:
+        module: akeneo/franklin-insights/view/common/front-search-filter
+        parent: akeneo-franklin-insights-settings-attribute-options-mapping-edit-content
+        position: 10
+        targetZone: filters
+        config:
+            fieldName: 'franklinAttributeOption'
+
+    akeneo-franklin-insights-settings-attribute-options-mapping-edit-status-filter:
+        module: akeneo/franklin-insights/view/common/status-filter
+        parent: akeneo-franklin-insights-settings-attribute-options-mapping-edit-content
+        position: 20
+        targetZone: filters
+

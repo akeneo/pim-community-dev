@@ -85,7 +85,8 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             100,
-            null
+            null,
+            []
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
@@ -139,7 +140,8 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             ChannelReference::createfromNormalized('ecommerce'),
             LocaleIdentifierCollection::empty(),
             100,
-            null
+            null,
+            []
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
@@ -188,7 +190,8 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             ChannelReference::createfromNormalized('ecommerce'),
             LocaleIdentifierCollection::fromNormalized(['fr_FR']),
             100,
-            null
+            null,
+            []
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
@@ -231,7 +234,8 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             100,
-            null
+            null,
+            []
         );
 
         $recordsFound = ($this->findConnectorRecordsQuery)(['foo', 'bar'], $recordQuery);

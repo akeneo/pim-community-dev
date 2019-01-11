@@ -77,7 +77,8 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             10,
-            null
+            null,
+            []
         ));
 
         $this->assertEquals([$lexonRecord, $alessiRecord], $recordsFound);
@@ -105,7 +106,8 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             10,
-            null
+            null,
+            []
         ));
 
         $this->assertEquals([], $recordsFound);
@@ -184,7 +186,8 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             ChannelReference::createfromNormalized('ecommerce'),
             LocaleIdentifierCollection::empty(),
             10,
-            null
+            null,
+            []
         ));
 
         $this->assertEquals([$expectedConnectorRecord], $recordsFound);
@@ -279,7 +282,8 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
                 'de_DE',
             ]),
             10,
-            null
+            null,
+            []
         ));
 
         $this->assertEquals([$expectedConnectorRecord], $recordsFound);

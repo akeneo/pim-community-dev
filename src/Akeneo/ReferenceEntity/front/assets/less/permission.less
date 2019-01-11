@@ -1,0 +1,90 @@
+@AknMediumGrey: #D9DDE2;
+@AknGreen: #67b373;
+
+.AknPermission {
+  @barThickness: 1px;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  &-groupName {
+    padding: 6px 0;
+    cursor: default;
+  }
+
+  &-level {
+    padding: 0 !important;
+    cursor: default;
+  }
+
+  &-row {
+    height: 54px;
+    border-bottom: 1px solid @AknMediumGrey;
+  }
+
+  &-header {
+    text-transform: capitalize;
+  }
+
+  &-rightLevel {
+    display: flex;
+    align-items: center;
+  }
+
+  &-barLeft {
+    flex: 1;
+    height: @barThickness;
+  }
+
+  &-barRight {
+    flex: 1;
+    height: @barThickness;
+  }
+
+  &-pill {
+    margin: 0 -1px;
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    padding: 4px;
+    background-color: white;
+    transition: background-color .3s ease-in-out;
+
+    &:not(&--active) {
+      border: 1px solid @AknMediumGrey;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &--active {
+      background-color: @AknGreen;
+    }
+
+    &--disabled {
+      opacity: .8;
+
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &-barRight, &-barLeft {
+    background-color: @AknMediumGrey;
+    transition: background-color .3s ease-in-out;
+
+    &--active {
+      background-color: @AknGreen;
+    }
+
+    &--disabled {
+      opacity: .8;
+      cursor: not-allowed;
+    }
+
+    &--transparent {
+      background-color: transparent;
+    }
+  }
+}

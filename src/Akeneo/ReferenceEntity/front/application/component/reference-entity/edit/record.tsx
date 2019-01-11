@@ -183,35 +183,33 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
             <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.record.no_data.subtitle')}</div>
           </div>
         )}
-        {confirmDelete.isActive &&
-          undefined === confirmDelete.identifier && (
-            <DeleteModal
-              message={__('pim_reference_entity.record.delete_all.confirm', {
-                entityIdentifier: referenceEntity.getIdentifier().stringValue(),
-              })}
-              title={__('pim_reference_entity.record.delete.title')}
-              onConfirm={() => {
-                events.onDeleteAllRecords(referenceEntity);
-              }}
-              onCancel={events.onCancelDeleteModal}
-            />
-          )}
-        {confirmDelete.isActive &&
-          undefined !== confirmDelete.identifier && (
-            <DeleteModal
-              message={__('pim_reference_entity.record.delete.message', {
-                recordLabel: confirmDelete.label,
-              })}
-              title={__('pim_reference_entity.record.delete.title')}
-              onConfirm={() => {
-                events.onDeleteRecord(
-                  referenceEntity.getIdentifier(),
-                  createRecordCode(confirmDelete.identifier as string)
-                );
-              }}
-              onCancel={events.onCancelDeleteModal}
-            />
-          )}
+        {confirmDelete.isActive && undefined === confirmDelete.identifier && (
+          <DeleteModal
+            message={__('pim_reference_entity.record.delete_all.confirm', {
+              entityIdentifier: referenceEntity.getIdentifier().stringValue(),
+            })}
+            title={__('pim_reference_entity.record.delete.title')}
+            onConfirm={() => {
+              events.onDeleteAllRecords(referenceEntity);
+            }}
+            onCancel={events.onCancelDeleteModal}
+          />
+        )}
+        {confirmDelete.isActive && undefined !== confirmDelete.identifier && (
+          <DeleteModal
+            message={__('pim_reference_entity.record.delete.message', {
+              recordLabel: confirmDelete.label,
+            })}
+            title={__('pim_reference_entity.record.delete.title')}
+            onConfirm={() => {
+              events.onDeleteRecord(
+                referenceEntity.getIdentifier(),
+                createRecordCode(confirmDelete.identifier as string)
+              );
+            }}
+            onCancel={events.onCancelDeleteModal}
+          />
+        )}
       </React.Fragment>
     );
   }
@@ -220,9 +218,6 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
 export default connect(
   (state: EditState): StateProps => {
     const referenceEntity = denormalizeReferenceEntity(state.form.data);
-    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-    const channel =
-      undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
     const records = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
     const page = undefined === state.grid || undefined === state.grid.query.page ? 0 : state.grid.query.page;
     const filters = undefined === state.grid || undefined === state.grid.query.filters ? [] : state.grid.query.filters;
@@ -231,12 +226,11 @@ export default connect(
         ? []
         : state.grid.query.columns;
     const total = undefined === state.grid || undefined === state.grid.total ? 0 : state.grid.total;
-    const confirmDelete = state.confirmDelete;
 
     return {
       context: {
-        locale,
-        channel,
+        locale: state.user.catalogLocale,
+        channel: state.user.catalogChannel,
       },
       referenceEntity,
       grid: {
@@ -262,7 +256,7 @@ export default connect(
             canEditReferenceEntity(),
         },
       },
-      confirmDelete,
+      confirmDelete: state.confirmDelete,
     };
   },
   (dispatch: any): DispatchProps => {

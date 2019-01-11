@@ -133,7 +133,7 @@ Feature: Create an attribute linked to a reference entity
 
   @acceptance-front
   Scenario: User can't create an attribute without the good rights
-    Given the user doesn't have any rights
+    Given the user does not have any rights
     Then the user should not see the add attribute button
 
   @acceptance-back

@@ -1,0 +1,12 @@
+services:
+    akeneo.pim.automation.franklin_insights.command.init-franklin-user:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\Command\InitFranklinUserCommand'
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@pim_user.saver.user'
+            - '@validator'
+            - '@pim_catalog.repository.locale'
+        tags:
+            - { name: 'console.command' }

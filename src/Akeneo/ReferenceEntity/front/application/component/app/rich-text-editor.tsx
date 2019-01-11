@@ -56,21 +56,7 @@ export default class RichTextEditor extends React.Component<RichTextEditorProps,
         <Editor
           toolbarHidden={this.props.readOnly}
           toolbar={{
-            options: [
-              'inline',
-              'blockType',
-              'fontSize',
-              'fontFamily',
-              'list',
-              'textAlign',
-              'colorPicker',
-              'link',
-              'embedded',
-              'emoji',
-              'image',
-              'remove',
-              'history',
-            ],
+            options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'link', 'embedded', 'image', 'remove'],
             inline: {
               options: ['bold', 'italic'],
             },

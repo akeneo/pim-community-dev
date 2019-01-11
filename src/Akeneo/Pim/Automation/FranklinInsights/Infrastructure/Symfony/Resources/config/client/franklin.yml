@@ -1,0 +1,69 @@
+parameters:
+    akeneo.pim.automation.franklin_insights.franklin_client.request_timeout: 10
+
+services:
+    akeneo.pim.automation.franklin_insights.franklin_client.guzzle.message_formatter:
+        public: false
+        class: 'GuzzleHttp\MessageFormatter'
+        arguments:
+            - "{method} {url} {code} Request: {req_body} Response: {res_body} {phrase} {error}"
+
+    akeneo.pim.automation.franklin_insights.franklin_client.guzzle.logger:
+        public: false
+        class: callback
+        arguments: ['@monolog.logger.franklin', '@akeneo.pim.automation.franklin_insights.franklin_client.guzzle.message_formatter']
+        factory: [GuzzleHttp\Middleware, log]
+
+    akeneo.pim.automation.franklin_insights.franklin_client.guzzle_stack:
+        public: false
+        class: 'GuzzleHttp\HandlerStack'
+        factory: ['GuzzleHttp\HandlerStack', create]
+        calls:
+            - [before, ['http_errors', '@akeneo.pim.automation.franklin_insights.franklin_client.guzzle.logger', 'logger']]
+
+    akeneo.pim.automation.franklin_insights.franklin_client.guzzle_client:
+        class: 'GuzzleHttp\Client'
+        arguments:
+            - {verify: false, handler: '@akeneo.pim.automation.franklin_insights.franklin_client.guzzle_stack'}
+
+    akeneo.pim.automation.franklin_insights.franklin_client.http_client:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\GuzzleClient'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.guzzle_client'
+            - '%akeneo.pim.automation.franklin_insights.franklin_client.request_timeout%'
+
+    akeneo.pim.automation.franklin_insights.franklin_client.uri_generator:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\UriGenerator'
+        public: false
+        arguments:
+            - 'https://pim-ai-master.dev.cloud.akeneo.com'
+
+    akeneo.pim.automation.franklin_insights.franklin_client.subscription:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebService'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.uri_generator'
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+
+    akeneo.pim.automation.franklin_insights.franklin_client.identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingWebService'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.uri_generator'
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+
+    akeneo.pim.automation.franklin_insights.franklin_client.authentication:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Authentication\AuthenticationWebService'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.uri_generator'
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+
+    akeneo.pim.automation.franklin_insights.franklin_client.attributes_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingWebService'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.uri_generator'
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+
+    akeneo.pim.automation.franklin_insights.franklin_client.attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingWebService'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.uri_generator'
+            - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'

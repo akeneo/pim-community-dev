@@ -16,7 +16,7 @@
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
-            "Akeneo\\Pim\\Automation\\SuggestData\\": "src/Akeneo/Pim/Automation/SuggestData"
+            "Akeneo\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/back/Integration/AppKernelTest.php"],
         "exclude-from-classmap": [
@@ -37,7 +37,7 @@
             "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/",
             "Akeneo\\Test\\Acceptance\\": "vendor/akeneo/pim-community-dev/tests/back/Acceptance/",
             "Akeneo\\Test\\Common\\": "vendor/akeneo/pim-community-dev/tests/back/Common/",
-            "Akeneo\\Test\\Pim\\Automation\\SuggestData\\": "src/Akeneo/Pim/Automation/SuggestData/tests/back",
+            "Akeneo\\Test\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights/tests/back",
             "PimEnterprise\\Behat\\": "tests/legacy/features/Behat/",
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/",

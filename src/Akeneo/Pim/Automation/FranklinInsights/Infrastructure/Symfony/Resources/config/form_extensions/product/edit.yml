@@ -1,0 +1,12 @@
+extensions:
+    akeneo-franklin-insights-product-edit-form-subscription-status-switcher:
+        module: akeneo/franklin-insights/view/product-edit-form/subscription-status-switcher
+        parent: pim-product-edit-form-meta
+        targetZone: meta
+        position: 85
+        aclResourceId: akeneo_franklin_insights_product_subscription
+        config:
+            createProductSubscriptionFailMessage: akeneo_franklin_insights.entity.product_subscription.flash.create.fail
+            createProductSubscriptionSuccessMessage: akeneo_franklin_insights.entity.product_subscription.flash.create.success
+            deleteProductSubscriptionFailMessage: akeneo_franklin_insights.entity.product_subscription.flash.delete.fail
+            deleteProductSubscriptionSuccessMessage: akeneo_franklin_insights.entity.product_subscription.flash.delete.success

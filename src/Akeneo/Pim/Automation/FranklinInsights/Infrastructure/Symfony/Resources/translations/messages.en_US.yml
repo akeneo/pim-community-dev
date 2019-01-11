@@ -1,0 +1,28 @@
+akeneo_franklin_insights:
+    acl:
+        franklin_insights:
+            index: Franklin Insights product subscription
+        franklin:
+            title: Manage Franklin Insights connection
+        settings:
+            mapping: Manage Franklin Insights Settings
+    acl_group:
+        franklin_insights: Franklin Insights Settings
+    mapping_identifier:
+        success: The mapping has been successfully saved
+        error: An error occurred while saving the mapping
+    entity:
+        product_subscription:
+            constraint:
+                invalid_mapped_values: 'Sorry, failed to subscribe product to Franklin Insights. Please subscribe the product with a valid combination of identifiers.'
+
+job_execution.summary:
+    configuration_validation: Franklin Insights configuration
+    subscribed: subscribed
+    unsubscribed: unsubscribed
+    unsubscription_skipped_not_subscribed: skipped (not subscribed)
+
+pim_datagrid:
+    cells:
+        type:
+            franklin_insights_fetch_products: Franklin Insights

@@ -1,0 +1,111 @@
+services:
+    akeneo_acceptance.context.franklin_insights.franklin_configuration:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\FranklinConfigurationContext'
+        arguments:
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.application.configuration.command.activate_connection_handler'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.application.configuration.query.get_configuration_handler'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.repository.configuration'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.franklin_insights.connection_status:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ConnectionStatusContext'
+        arguments:
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.franklin_insights.identifiers_mapping:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\IdentifiersMappingContext'
+        arguments:
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.get_identifiers_mapping'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.update_identifiers_mapping'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
+            - '@__symfony__.pim_catalog.repository.attribute'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.franklin_insights.data_fixtures:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\DataFixturesContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.product_without_permission'
+            - '@__symfony__.pim_catalog.builder.product'
+            - '@__symfony__.pim_catalog.factory.value_collection'
+            - '@__symfony__.pim_catalog.repository.family'
+            - '@__symfony__.pim_catalog.factory.family'
+            - '@__symfony__.pim_catalog.repository.attribute'
+            - '@test.family.builder'
+            - '@test.attribute.builder'
+            - '@__symfony__.pim_catalog.repository.attribute_group'
+            - '@test.attribute_group.builder'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.repository.product_subscription'
+            - '@test.category.builder'
+            - '@__symfony__.pim_catalog.repository.category'
+            - '@__symfony__.pim_catalog.repository.attribute_option'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.franklin_insights.product_subscription:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ProductSubscriptionContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.product_without_permission'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.repository.product_subscription'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.subscribe_product'
+            - '@akeneo_acceptance.context.franklin_insights.data_fixtures'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.product_subscription.handler.unsubscribe_product'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.subscriber.unsubscribe_product_after_product_removal'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.franklin_insights.product_subscription_status:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ProductSubscriptionStatusContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.product_without_permission'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.get_product_subscription_status'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.franklin_insights.attributes_mapping:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\AttributesMappingContext'
+        arguments:
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.get_attributes_mapping_by_family'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.update_attributes_mapping_by_family'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.get_families'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.franklin_insights.attribute_options_mapping:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\AttributeOptionsMappingContext'
+        arguments:
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.get_attribute_options_mapping_by_family_and_attribute'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.save_attribute_options_mapping'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.franklin_insights.proposal:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ProposalContext'
+        arguments:
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.create_proposals'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.proposal.create_proposal'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.repository.product_subscription'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.franklin_insights.channel:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ChannelContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.channel'
+            - '@__symfony__.pim_catalog.updater.channel'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.subscriber.channel_update'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.franklin_insights.exception:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ExceptionContext'
+        tags:
+            - { name: 'fob.context_service' }

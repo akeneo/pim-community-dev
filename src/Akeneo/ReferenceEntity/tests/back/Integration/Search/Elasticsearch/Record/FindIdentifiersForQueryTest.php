@@ -393,6 +393,61 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
     /**
      * @test
      */
+    public function updated_date_filter()
+    {
+        $before = [
+            'identifier'            => 'before',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'before',
+            'record_code_label_search' => ['fr_FR' => 'before_ref'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'avant']],
+            'updated_at' => date_create('2010-01-01')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $after = [
+            'identifier'            => 'after',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'after',
+            'record_code_label_search' => ['fr_FR' => 'after_fre'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'apres']],
+            'updated_at' => date_create('2012-01-01')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $this->searchRecordIndexHelper->index([$before, $after]);
+
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'updated',
+                    'operator' => '>',
+                    'value' => '2011-01-01T10:00:00+00:00'
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'date_reference_entity',
+                    'context' => []
+                ]
+            ]
+        ]);
+
+        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+
+        Assert::assertSame([
+            'identifiers' => ['after'],
+            'total' => 1
+        ], $matchingidentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
     public function uncomplete_records_filter()
     {
         $query = RecordQuery::createFromNormalized([
@@ -433,7 +488,8 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             10,
-            RecordCode::fromString('alessi')
+            RecordCode::fromString('alessi'),
+            []
         );
 
         $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);
@@ -453,7 +509,8 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             10,
-            null
+            null,
+            []
         );
 
         $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);

@@ -1,0 +1,32 @@
+{
+  "request": {
+    "method": "PATCH",
+    "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_create_or_update",
+    "query": {
+      "referenceEntityIdentifier": "wrong_reference_entity",
+      "attributeCode": "main_color"
+    },
+    "body": {
+      "code":  "main_color",
+      "labels":  {
+        "en_US":  "Main color",
+        "fr_FR":  "Couleur principale"
+      },
+      "type":  "text",
+      "value_per_locale": true,
+      "value_per_channel": false,
+      "is_required_for_completeness": true,
+      "max_characters": 155,
+      "is_textarea": false,
+      "validation_rule":  "regular_expression",
+      "validation_regexp":  "/\\w+/"
+    }
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "code": 404,
+      "message":"Reference entity \"wrong_reference_entity\" does not exist."
+    }
+  }
+}

@@ -1,6 +1,8 @@
+const Permission = require('./edit/permission.decorator');
 const Properties = require('./edit/properties.decorator');
 const Sidebar = require('./app/sidebar.decorator');
 const LocaleSwitcher = require('./app/locale-switcher.decorator');
+const ChannelSwitcher = require('./app/channel-switcher.decorator');
 
 const config = {
   Sidebar: {
@@ -11,9 +13,17 @@ const config = {
     selector: '.AknDefault-mainContent',
     decorator: Properties,
   },
+  Permission: {
+    selector: '.AknDefault-mainContent',
+    decorator: Permission,
+  },
   LocaleSwitcher: {
     selector: '.locale-switcher',
     decorator: LocaleSwitcher,
+  },
+  ChannelSwitcher: {
+    selector: '.channel-switcher',
+    decorator: ChannelSwitcher,
   },
 };
 
@@ -34,11 +44,22 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     return await await getElement(page, 'LocaleSwitcher');
   };
 
+  const getChannelSwitcher = async () => {
+    return await await getElement(page, 'ChannelSwitcher');
+  };
+
   const getProperties = async () => {
     const sidebar = await await getElement(page, 'Sidebar');
     await sidebar.clickOnTab('property');
 
     return await await getElement(page, 'Properties');
+  };
+
+  const getPermission = async () => {
+    const sidebar = await await getElement(page, 'Sidebar');
+    await sidebar.clickOnTab('permission');
+
+    return await await getElement(page, 'Permission');
   };
 
   const isUpdated = async () => {
@@ -93,7 +114,9 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     isLoaded,
     getSidebar,
     getLocaleSwitcher,
+    getChannelSwitcher,
     getProperties,
+    getPermission,
     isUpdated,
     isSaved,
     save,

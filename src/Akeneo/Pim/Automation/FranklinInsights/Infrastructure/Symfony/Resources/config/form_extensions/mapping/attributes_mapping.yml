@@ -1,0 +1,122 @@
+extensions:
+    akeneo-franklin-insights-settings-attributes-mapping-edit:
+        module: pim/form/common/edit-form
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-breadcrumb:
+        module: pim/common/breadcrumbs
+        parent: akeneo-franklin-insights-settings-attributes-mapping-edit
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: akeneo-franklin-insights-menu-settings-mapping
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: akeneo-franklin-insights-settings-attributes-mapping-edit
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-title:
+        module: pim/common/grid-title
+        parent: akeneo-franklin-insights-settings-attributes-mapping-edit
+        targetZone: title
+        config:
+            countable: false
+            title: akeneo_franklin_insights.settings.page_title
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: akeneo-franklin-insights-settings-attributes-mapping-edit
+        targetZone: buttons
+        position: 120
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-save-form:
+        module: pim/form/common/save-form
+        parent: akeneo-franklin-insights-settings-attributes-mapping-edit
+        targetZone: buttons
+        position: 0
+        config:
+            url: akeneo_franklin_insights_attributes_mapping_update
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-state:
+        module: pim/form/common/state
+        parent: akeneo-franklin-insights-settings-attributes-mapping-edit
+        targetZone: state
+        position: 900
+        config:
+            entity: akeneo_franklin_insights.entity.attributes_mapping.label
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-description-header:
+        module: pim/common/simple-view
+        parent: akeneo-franklin-insights-settings-attributes-mapping-edit
+        targetZone: content
+        position: 10
+        config:
+            template: pim/template/common/description-header
+            templateParams:
+                title: akeneo_franklin_insights.settings.module.title.sub_title
+                illustration: Robot.svg
+                description:
+                    - akeneo_franklin_insights.settings.module.title.description.first_step
+                    - akeneo_franklin_insights.settings.module.title.description.second_step
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-tabs:
+        module: akeneo/franklin-insights/view/settings/mapping/common/tabs
+        parent: akeneo-franklin-insights-settings-attributes-mapping-edit
+        targetZone: content
+        position: 90
+        config:
+            tabs:
+                - { label: akeneo_franklin_insights.entity.identifier_mapping.plural_label, route: akeneo_franklin_insights_identifiers_mapping_edit }
+                - { label: pim_enrich.entity.attribute.plural_label, route: akeneo_franklin_insights_attributes_mapping_index }
+            selected: 1
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-tab-content:
+        module: pim/common/simple-view
+        parent: akeneo-franklin-insights-settings-attributes-mapping-index-tabs
+        config:
+            template: akeneo/franklin-insights/template/settings/attributes-mapping/family-mapping
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-attribute-family-selector:
+        module: akeneo/franklin-insights/view/settings/attributes-mapping/family-selector
+        parent: akeneo-franklin-insights-settings-attributes-mapping-index-tab-content
+        position: 10
+        targetZone: family-selector
+        config:
+            fieldName: code
+            label: pim_enrich.entity.family.uppercase_label
+            choiceRoute: akeneo_sugggest_data_attributes_mapping_list
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-attribute-attributes-mapping:
+        module: akeneo/franklin-insights/view/settings/attributes-mapping/table
+        parent: akeneo-franklin-insights-settings-attributes-mapping-index-tab-content
+        position: 30
+        targetZone: mapping
+        config:
+            labels:
+                pending: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.pending
+                mapped: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.mapped
+                unmapped: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.unmapped
+                franklinAttribute: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_attribute
+                catalogAttribute: akeneo_franklin_insights.entity.identifier_mapping.fields.catalog_attribute
+                attributeMappingStatus: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.label
+                valuesSummary: akeneo_franklin_insights.entity.attributes_mapping.fields.values_summary
+                type: pim_common.type
+                familyMappingPending: akeneo_franklin_insights.entity.attributes_mapping.module.index.family_status.pending
+                familyMappingFull: akeneo_franklin_insights.entity.attributes_mapping.module.index.family_status.full
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-front-search-filter:
+        module: akeneo/franklin-insights/view/common/front-search-filter
+        parent: akeneo-franklin-insights-settings-attributes-mapping-index-attribute-attributes-mapping
+        position: 10
+        targetZone: filters
+        config:
+            fieldName: 'franklinAttribute'
+
+    akeneo-franklin-insights-settings-attributes-mapping-index-status-filter:
+        module: akeneo/franklin-insights/view/common/status-filter
+        parent: akeneo-franklin-insights-settings-attributes-mapping-index-attribute-attributes-mapping
+        position: 20
+        targetZone: filters

@@ -143,51 +143,51 @@ legacy:
                     - '@pim_catalog.repository.product_model'
                     - '@pimee_workflow.repository.product_model_draft'
                     - '@doctrine.orm.entity_manager'
-        suggest-data:
+        franklin-insights:
             paths:
-                - '%paths.base%/src/Akeneo/Pim/Automation/SuggestData/tests/features'
+                - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
             filters:
                 tags: '@end-to-end'
             contexts:
-                - Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FeatureContext:
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext:
                     -
                         base_url: 'http://127.0.0.1/'
                         timeout: 10000
                         window_width: 1280
                         window_height: 1024
                 - Context\EnterpriseFixturesContext:
-                    - 'Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FeatureContext'
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                 - Context\EnterpriseCatalogConfigurationContext:
-                    - 'Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FeatureContext'
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                 - PimEnterprise\Behat\Context\HookContext:
-                    - 'Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FeatureContext'
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - 1280
                     - 1024
                 - PimEnterprise\Behat\Context\NavigationContext:
-                    - 'Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FeatureContext'
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - 'http://127.0.0.1/'
-                - Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FixturesContext:
-                    - 'Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FeatureContext'
-                    - '@akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping'
-                    - '@akeneo.pim.automation.suggest_data.handler.subscribe_product'
-                    - '@akeneo_e2e.context.suggest_data.builder.attribute'
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FixturesContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                    - '@akeneo.pim.automation.franklin_insights.handler.update_identifiers_mapping'
+                    - '@akeneo.pim.automation.franklin_insights.handler.subscribe_product'
+                    - '@akeneo_e2e.context.franklin_insights.builder.attribute'
                     - '@pim_catalog.saver.attribute'
-                    - '@akeneo_e2e.context.suggest_data.builder.family'
+                    - '@akeneo_e2e.context.franklin_insights.builder.family'
                     - '@pim_catalog.saver.family'
-                    - '@akeneo_e2e.context.suggest_data.builder.product'
+                    - '@akeneo_e2e.context.franklin_insights.builder.product'
                     - '@pim_catalog.saver.product'
                     - '@pim_catalog.repository.product'
-                - Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FranklinConfigurationContext:
-                    - 'Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FeatureContext'
-                    - '@akeneo.pim.automation.suggest_data.repository.configuration'
-                - Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\ProductSubscriptionContext:
-                    - 'Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FeatureContext'
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FranklinConfigurationContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                    - '@akeneo.pim.automation.franklin_insights.repository.configuration'
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\ProductSubscriptionContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@pim_catalog.repository.product'
-                    - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
-                - Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\ProposalContext:
+                    - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\ProposalContext:
                     - '@pim_catalog.repository.product'
                     - '@pimee_workflow.repository.product_draft'
-                    - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
+                    - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
@@ -240,23 +240,24 @@ acceptance:
                 - test.channel.context
             filters:
                 tags: '@acceptance-back'
-        suggest-data:
+        franklin-insights:
             paths:
-                - '%paths.base%/src/Akeneo/Pim/Automation/SuggestData/tests/features'
+                - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
             contexts_services:
                 - test.attribute.context
                 - test.channel.context
                 - test.locale.context
-                - akeneo_acceptance.context.suggest_data.franklin
-                - akeneo_acceptance.context.suggest_data.identifiers_mapping
-                - akeneo_acceptance.context.suggest_data.product_subscription
-                - akeneo_acceptance.context.suggest_data.product_subscription_status
-                - akeneo_acceptance.context.suggest_data.data_fixtures
-                - akeneo_acceptance.context.suggest_data.product_fetching
-                - akeneo_acceptance.context.suggest_data.proposal
-                - akeneo_acceptance.context.suggest_data.attributes_mapping
-                - akeneo_acceptance.context.suggest_data.attribute_options_mapping
-                - akeneo_acceptance.context.suggest_data.channel
+                - akeneo_acceptance.context.franklin_insights.franklin_configuration
+                - akeneo_acceptance.context.franklin_insights.identifiers_mapping
+                - akeneo_acceptance.context.franklin_insights.product_subscription
+                - akeneo_acceptance.context.franklin_insights.product_subscription_status
+                - akeneo_acceptance.context.franklin_insights.data_fixtures
+                - akeneo_acceptance.context.franklin_insights.proposal
+                - akeneo_acceptance.context.franklin_insights.attributes_mapping
+                - akeneo_acceptance.context.franklin_insights.attribute_options_mapping
+                - akeneo_acceptance.context.franklin_insights.channel
+                - akeneo_acceptance.context.franklin_insights.connection_status
+                - akeneo_acceptance.context.franklin_insights.exception
             filters:
                 tags: '@acceptance-back'
         platform:
@@ -304,7 +305,7 @@ acceptance:
                - 'vendor/akeneo/pim-community-dev/tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/behat/services.yml'
                - 'tests/back/Asset/Acceptance/Resources/config/behat/services.yml'
                - 'src/Akeneo/ReferenceEntity/tests/back/Acceptance/Resources/config/behat/services.yml'
-               - 'src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/behat/services.yml'
+               - 'src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/behat/services.yml'
                - 'tests/back/Platform/Acceptance/Resources/config/services.yml'
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:

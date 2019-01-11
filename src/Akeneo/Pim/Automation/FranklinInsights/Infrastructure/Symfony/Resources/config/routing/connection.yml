@@ -1,0 +1,22 @@
+akeneo_franklin_insights_connection_edit:
+    path: /edit
+    methods: [GET]
+
+akeneo_franklin_insights_connection_get:
+    path: /
+    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.franklin:getAction }
+    requirements:
+        code: '[\w._-]+'
+    methods: [GET]
+
+akeneo_franklin_insights_connection_post:
+    path: /
+    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.franklin:postAction }
+    requirements:
+        code: '[\w._-]+'
+    methods: [POST]
+
+akeneo_franklin_insights_connection_status_get:
+    path: /status
+    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.franklin:getStatusAction }
+    methods: [GET]
