@@ -16,6 +16,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+$ignoreServiceIds = [
+    'liip_imagine.binary.loader.prototype.filesystem', // Definition is broken on purpose in the Imagine bundle. Not meant to be instantiated by the container.
+];
+
 $inputDefinition = new InputDefinition(array(
   new InputOption('verbose', 'v', InputOption::VALUE_NONE, 'Verbose mode: list all service ids we tried to instantiate.'. false)
 ));
@@ -37,21 +41,24 @@ try {
 $verbosity = $input->getOption('verbose') ? ConsoleOutput::VERBOSITY_VERBOSE : ConsoleOutput::VERBOSITY_NORMAL;
 $output->setVerbosity($verbosity);
 
-
 $kernel = new AppKernel('dev', false);
 $kernel->boot();
 
-$exitStatus = checkServicesInstantiability($kernel->getContainer(), $output);
+$exitStatus = checkServicesInstantiability($kernel->getContainer(), $output, $ignoreServiceIds);
 
 exit ($exitStatus);
 
-function checkServicesInstantiability(ContainerInterface $container, ConsoleOutput $output): int
+function checkServicesInstantiability(ContainerInterface $container, ConsoleOutput $output, array $ignoreServiceIds): int
 {
     $serviceIds = $container->getServiceIds();
 
     $nonInstantiableServices = [];
 
     foreach ($serviceIds as $serviceId) {
+
+        if (in_array($serviceId, $ignoreServiceIds)) {
+            continue;
+        }
 
         if ($output->isVerbose()) {
             $output->writeln("Getting $serviceId");

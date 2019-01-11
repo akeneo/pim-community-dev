@@ -35,7 +35,6 @@ class CommunityRequirements
         'gd',
         'intl',
         'pdo_mysql',
-        'soap',
         'xml',
         'zip',
         'exif',
