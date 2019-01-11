@@ -25,7 +25,7 @@ $rules = [
         // TIP-907: Functionnal problem we should not create empty associations
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
 
-        // TODO: Contextual information shouldn't be injected but a parameter method (current Locale for instance)
+        // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
 
         // TIP-910: PIM/Structure should not be linked to Channel
@@ -78,11 +78,11 @@ $rules = [
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
 
-        // TODO: we should find another way to manage permission
+        // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
 
-        // TODO related to the front stuff
+        // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface',
