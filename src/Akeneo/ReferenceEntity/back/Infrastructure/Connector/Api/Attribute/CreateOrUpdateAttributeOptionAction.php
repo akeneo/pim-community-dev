@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatte
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -78,6 +79,11 @@ class CreateOrUpdateAttributeOptionAction
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode, string $optionCode): Response
     {
         $option = json_decode($request->getContent(), true);
+
+        if (null === $option) {
+            throw new BadRequestHttpException('Invalid json message received');
+        }
+
         $invalidFormatErrors = $this->validator->validate($option);
 
         if (!empty($invalidFormatErrors)) {
