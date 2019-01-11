@@ -64,6 +64,8 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Domain',
             'Akeneo\Pim\Automation\FranklinInsights\Application',
 
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchExecutionDatetimeQuery',
+
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\Batch',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
@@ -75,6 +77,7 @@ $rules = [
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\Validator\Constraints\Collection',
             'Symfony\Component\Validator\Constraints\NotBlank',
+            'Symfony\Component\Validator\Constraints\DateTime',
             'Doctrine\ORM\EntityManagerInterface',
 
             // TODO relationship between bounded context (query data though repository)
@@ -128,6 +131,8 @@ $rules = [
 
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\StorageUtils',
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobInstanceNames',
+            'Akeneo\Tool\Component\Batch\Job\BatchStatus',
 
             // External dependencies
             'Doctrine',
