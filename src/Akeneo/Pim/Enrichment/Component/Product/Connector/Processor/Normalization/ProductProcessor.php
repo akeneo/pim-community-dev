@@ -55,7 +55,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         IdentifiableObjectRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller
+        ?EntityWithFamilyValuesFillerInterface $productValuesFiller = null
     ) {
         $this->normalizer          = $normalizer;
         $this->channelRepository   = $channelRepository;
@@ -72,7 +72,9 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $parameters = $this->stepExecution->getJobParameters();
         $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
-        $this->productValuesFiller->fillMissingValues($product);
+        if ($product instanceof ProductModelInterface) {
+            $this->productValuesFiller->fillMissingValues($product);
+        }
 
         $productStandard = $this->normalizer->normalize(
             $product,

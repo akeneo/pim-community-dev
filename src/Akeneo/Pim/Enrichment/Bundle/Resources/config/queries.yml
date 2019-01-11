@@ -105,3 +105,13 @@ services:
         arguments:
             - '@database_connection'
             - '@pim_catalog.factory.value_collection'
+
+    akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Writer\File\Flat\GenerateHeadersFromFamilyCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Writer\File\Flat\GenerateHeadersFromAttributeCodes'
+        arguments:
+            - '@database_connection'

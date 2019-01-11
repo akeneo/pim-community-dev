@@ -17,6 +17,7 @@
 - GITHUB-8234 & GITHUB-8383: Fix constraints on attribute code. Cheers @oliverde8 & @navneetbhardwaj!
 - TIP-1018: Adds a script to check container services instantiability (bin/check-services-instantiability)
 - GITHUB-9333: Fix the storage data collector to consider the port number on system information page. Cheers @nei!
+- TIP-899: Improve product export performance by computing headers at the end
 
 ## Enhancements
 
