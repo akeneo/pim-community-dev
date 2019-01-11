@@ -129,7 +129,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     /**
      * {@inheritdoc}
      */
-    public function fetch(\DateTime $updatedSince = null): \Iterator
+    public function fetch(\DateTime $updatedSince): \Iterator
     {
         $this->api->setToken($this->getToken());
 

@@ -211,26 +211,28 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
     public function it_fetches_products_subscriptions($subscriptionApi, SubscriptionsCollection $page): void
     {
-        $subscriptionApi->fetchProducts()->willReturn($page);
+        $datetime = new \DateTime('2012-01-01');
+        $subscriptionApi->fetchProducts(null, $datetime)->willReturn($page);
 
-        $cursor = $this->fetch();
-        $cursor->shouldBeAnInstanceOf(SubscriptionsCursor::class);
+        $this->fetch($datetime)->shouldBeAnInstanceOf(SubscriptionsCursor::class);
     }
 
     public function it_throws_a_data_provider_exception_when_server_is_down_on_fetch($subscriptionApi): void
     {
+        $datetime = new \DateTime('2012-01-01');
         $thrownException = new FranklinServerException();
-        $subscriptionApi->fetchProducts()->willThrow($thrownException);
+        $subscriptionApi->fetchProducts(null, $datetime)->willThrow($thrownException);
 
-        $this->shouldThrow(DataProviderException::serverIsDown($thrownException))->during('fetch');
+        $this->shouldThrow(DataProviderException::serverIsDown($thrownException))->during('fetch', [$datetime]);
     }
 
     public function it_throws_a_data_provider_exception_when_token_is_invalid_on_fetch($subscriptionApi): void
     {
+        $datetime = new \DateTime('2012-01-01');
         $thrownException = new InvalidTokenException();
-        $subscriptionApi->fetchProducts()->willThrow($thrownException);
+        $subscriptionApi->fetchProducts(null, $datetime)->willThrow($thrownException);
 
-        $this->shouldThrow(DataProviderException::authenticationError())->during('fetch');
+        $this->shouldThrow(DataProviderException::authenticationError())->during('fetch', [$datetime]);
     }
 
     public function it_unsubscribes_a_subscription($subscriptionApi): void

@@ -54,7 +54,7 @@ interface SubscriptionProviderInterface
      *
      * @return \Iterator
      */
-    public function fetch(\DateTime $updatedSince = null): \Iterator;
+    public function fetch(\DateTime $updatedSince): \Iterator;
 
     /**
      * @param string $subscriptionId
