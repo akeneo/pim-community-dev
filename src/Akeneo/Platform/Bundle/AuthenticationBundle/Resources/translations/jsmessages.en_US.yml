@@ -11,16 +11,20 @@ authentication:
                 update_successful: The configuration has been saved
                 update_failed: The configuration could not be saved
                 fields_not_ready: "The configuration cannot be saved right now. The following fields are not ready: {{ fields }}"
-            warning:
-                title: Warning
-                description: If you're going to enable the SSO authentication your current session will be invalid. You will be logged out and redirected to your Identity Provider after saving the configuration.
             section:
                 activation:
                     title: SSO activation
+                    info:
+                        title: Warning
+                        description: If you're going to enable the SSO authentication your current session will be invalid. You will be logged out and redirected to your Identity Provider after saving the configuration.
                 identity_provider:
-                    title: Identity provider
+                    title: Identity provider (IdP)
+                    info:
+                        description: You can set here all the parameters required to communicate with your IdP. Those information must be provided by your IdP. Please contact your SSO administrator to get them.
                 service_provider:
-                    title: Service provider
+                    title: Service provider (SP)
+                    info:
+                        description: You can find below the information concerning the Service Provider. This is auto-generated values. You can edit them if you need. Those information will have to be provided to your SSO administrator in order to configure the IdP.
             field:
                 activation:
                     label: SSO enabled

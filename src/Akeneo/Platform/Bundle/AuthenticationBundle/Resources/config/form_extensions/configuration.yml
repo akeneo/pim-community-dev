@@ -59,18 +59,6 @@ extensions:
         config:
             entity: sso_configuration
 
-    authentication-sso-configuration-warning:
-        module: pim/common/simple-view
-        parent: authentication-sso-configuration
-        targetZone: content
-        position: 90
-        config:
-            template: pim/template/authentication/sso/configuration/warning
-            templateParams:
-                illustration: User.svg
-                title: authentication.sso.configuration.warning.title
-                description: authentication.sso.configuration.warning.description
-
     authentication-sso-configuration-sections:
         module: pim/common/simple-view
         parent: authentication-sso-configuration
@@ -85,10 +73,22 @@ extensions:
         targetZone: accordion
         position: 100
         config:
-            template: pim/template/form/tab/section
+            template: pim/template/form/tab/section-large
             templateParams:
                 sectionTitle: authentication.sso.configuration.section.activation.title
                 dropZone: content
+
+    authentication-sso-configuration-activation-warning:
+        module: pim/common/simple-view
+        parent: authentication-sso-configuration-activation-section
+        targetZone: afterTitle
+        position: 100
+        config:
+            template: pim/template/common/description-header
+            templateParams:
+                illustration: Api.svg
+                title: authentication.sso.configuration.section.activation.info.title
+                description: authentication.sso.configuration.section.activation.info.description
 
     authentication-sso-configuration-activation-field:
         module: pim/form/common/fields/boolean
@@ -105,10 +105,22 @@ extensions:
         targetZone: accordion
         position: 110
         config:
-            template: pim/template/form/tab/section
+            template: pim/template/form/tab/section-large
             templateParams:
                 sectionTitle: authentication.sso.configuration.section.identity_provider.title
                 dropZone: content
+
+    authentication-sso-configuration-identity-provider-info:
+        module: pim/common/simple-view
+        parent: authentication-sso-configuration-identity-provider-section
+        targetZone: afterTitle
+        position: 100
+        config:
+            template: pim/template/common/description-header
+            templateParams:
+                illustration: Views.svg
+                title: ~
+                description: authentication.sso.configuration.section.identity_provider.info.description
 
     authentication-sso-configuration-identity-provider-entity-id-field:
         module: pim/authentication/sso/configuration/fields/text
@@ -152,10 +164,22 @@ extensions:
         targetZone: accordion
         position: 120
         config:
-            template: pim/template/form/tab/section
+            template: pim/template/form/tab/section-large
             templateParams:
                 sectionTitle: authentication.sso.configuration.section.service_provider.title
                 dropZone: content
+
+    authentication-sso-configuration-service-provider-info:
+        module: pim/common/simple-view
+        parent: authentication-sso-configuration-service-provider-section
+        targetZone: afterTitle
+        position: 100
+        config:
+            template: pim/template/common/description-header
+            templateParams:
+                illustration: Views.svg
+                title: ~
+                description: authentication.sso.configuration.section.service_provider.info.description
 
     authentication-sso-configuration-service-provider-entity-id-field:
         module: pim/authentication/sso/configuration/fields/text
