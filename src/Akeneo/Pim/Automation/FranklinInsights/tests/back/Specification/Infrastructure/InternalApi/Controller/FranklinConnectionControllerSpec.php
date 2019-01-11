@@ -103,25 +103,23 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
         );
     }
 
-    public function it_returns_the_connection_status(
-        Request $request,
-        $productRepository,
-        $getConnectionStatusHandler
-    ): void {
-        $request->get('identifier')->willReturn(null);
+    public function it_returns_the_connection_status($productRepository, $getConnectionStatusHandler): void
+    {
         $productRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $connectionStatus = new ConnectionStatus(true, true, true, 42);
         $getConnectionStatusHandler
             ->handle(Argument::type(GetConnectionStatusQuery::class))
             ->willReturn($connectionStatus);
 
-        $response = $this->isActiveAction($request);
+        $request = new Request(['checkValidity' => true]);
+        $response = $this->getStatusAction($request);
         $response->shouldBeAnInstanceOf(JsonResponse::class);
         $response->isOk()->shouldReturn(true);
 
         Assert::eq(
             [
                 'isActive' => true,
+                'isValid' => true,
                 'isIdentifiersMappingValid' => true,
                 'productSubscriptionCount' => 42,
             ],

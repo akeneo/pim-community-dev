@@ -73,7 +73,7 @@ class GetProductSubscriptionStatusHandler
             throw new \InvalidArgumentException(sprintf('There is no product with id "%s"', $query->getProductId()));
         }
         $productSubscription = $this->productSubscriptionRepository->findOneByProductId($query->getProductId());
-        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery(true));
+        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery(false));
 
         return new ProductSubscriptionStatus(
             $connectionStatus,

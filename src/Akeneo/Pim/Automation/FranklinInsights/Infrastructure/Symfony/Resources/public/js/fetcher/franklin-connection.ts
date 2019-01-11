@@ -27,8 +27,8 @@ export function getConfiguration(): JQueryPromise<any> {
 /**
  * Gets the status of the connection to Franklin.
  */
-export function getConnectionStatus(): JQueryPromise<any> {
-  const url = Routing.generate('akeneo_franklin_insights_connection_status_get');
+export function getConnectionStatus(checkValidity: boolean): JQueryPromise<any> {
+  const url = Routing.generate('akeneo_franklin_insights_connection_status_get', { checkValidity });
 
   return JQuery.get(url);
 }

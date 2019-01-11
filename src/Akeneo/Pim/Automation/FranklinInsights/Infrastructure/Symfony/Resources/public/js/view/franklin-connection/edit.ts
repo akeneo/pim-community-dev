@@ -42,7 +42,7 @@ class EditView extends BaseView {
   };
 
   private storedToken: string = '';
-  private isConnectionActivated: boolean = false;
+  private isConnectionValid: boolean = false;
 
   /**
    * {@inheritdoc}
@@ -85,11 +85,11 @@ class EditView extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
+    getConnectionStatus(true).then((connectionStatus: ConnectionStatus) => {
       const formData = this.getFormData();
 
-      this.isConnectionActivated = connectionStatus.isActive;
-      true === connectionStatus.isActive
+      this.isConnectionValid = connectionStatus.isValid;
+      true === connectionStatus.isValid
         ? this.renderActivatedConnection(formData.token)
         : this.renderUnactivatedConnection(formData.token);
     });
@@ -113,7 +113,7 @@ class EditView extends BaseView {
         Messenger.notify('success', __(response.message));
 
         this.storedToken = data.token;
-        this.isConnectionActivated = true;
+        this.isConnectionValid = true;
         this.renderActivatedConnection(data.token);
       });
   }
@@ -129,7 +129,7 @@ class EditView extends BaseView {
 
     this.setData({token});
 
-    if (true === this.isConnectionActivated) {
+    if (true === this.isConnectionValid) {
       this.storedToken !== token
         ? this.buttonAllowedToActivateConnection()
         : this.buttonDisallowedToActivateConnection();
