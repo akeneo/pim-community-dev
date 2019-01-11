@@ -25,12 +25,6 @@ Feature: Connection to MDM or ERP systems
     Then the PIM notifies the connector about an error indicating that the attribute does not exist
 
   @integration-back
-  Scenario: Notify an error when collecting an attribute option of a non-existent attribute
-    Given some reference entities
-    When the connector collects a non existent attribute option
-    Then the PIM notifies the connector about an error indicating that the attribute option does not exist
-
-  @integration-back
   Scenario: Notify an error when collecting an attribute option of an attribute that does not accept options
     Given the Brand reference entity
     And the Color attribute that structures the Brand reference entity and whose type is text

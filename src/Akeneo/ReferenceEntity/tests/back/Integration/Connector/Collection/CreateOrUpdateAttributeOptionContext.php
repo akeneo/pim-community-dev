@@ -174,27 +174,11 @@ class CreateOrUpdateAttributeOptionContext implements Context
     }
 
     /**
-     * @When /^the connector collects a non existent attribute option$/
-     */
-    public function theConnectorCollectsANonExistentAttributeOption()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then /^the PIM notifies the connector about an error indicating that the attribute option does not exist$/
-     */
-    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeOptionDoesNotExist()
-    {
-        throw new PendingException();
-    }
-
-    /**
      * @Given /^the Color attribute that structures the Brand reference entity and whose type is text$/
      */
     public function theColorAttributeThatStructuresTheBrandReferenceEntityAndWhoseTypeIsText()
     {
-        throw new PendingException();
+        $this->createColorTextAttribute();
     }
 
     /**
@@ -202,7 +186,12 @@ class CreateOrUpdateAttributeOptionContext implements Context
      */
     public function theConnectorCollectsAnAttributeOptionOfAnAttributeThatDoesNotAcceptOptions()
     {
-        throw new PendingException();
+        $this->requestContract = 'attribute_does_not_support_options_for_an_attribute_option.json';
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
     }
 
     /**
@@ -210,7 +199,10 @@ class CreateOrUpdateAttributeOptionContext implements Context
      */
     public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeDoesAcceptOptions()
     {
-        throw new PendingException();
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
     }
 
     private function createBrandReferenceEntity()
@@ -281,6 +273,25 @@ class CreateOrUpdateAttributeOptionContext implements Context
         );
 
         $this->attributeRepository->create($optionAttribute);
+        $this->attributeRepository->create($textAttribute);
+    }
+
+    private function createColorTextAttribute()
+    {
+        $textAttribute = TextAttribute::createText(
+            AttributeIdentifier::create('brand', 'color', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            AttributeCode::fromString('color'),
+            LabelCollection::fromArray(['en_US' => 'Color']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+
         $this->attributeRepository->create($textAttribute);
     }
 }
