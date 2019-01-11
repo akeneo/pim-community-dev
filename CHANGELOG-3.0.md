@@ -9,13 +9,14 @@
 - PIM-7506: Cache default views and columns on the product grid
 - TIP-879: Uses utf8mb4 as encoding for MySQL instead of the less complete utf8
 - Centralizes technical requirements checks to reuse them on standard edition
-- TIP-883: In order to have a clean and independant product aggregate, ProductValue only provides attribute code and no more direct attribute access.
+- TIP-883: In order to have a clean and independent product aggregate, ProductValue only provides attribute code and no more direct attribute access.
 - PIM-7660: Improve performance of the product grid by using a dedicated read model
 - PIM-7499: Improve the performance of the completeness widget in the dashboard
 - PIM-7371: Improve the performance of the category tree in the product grid
 - PIM-7839: Remove date of birth
-- GITHUB-8234 & GITHUB-8383: Fix constraints on attribute code. Cheers @oliverde8 & @navneetbhardwaj !
+- GITHUB-8234 & GITHUB-8383: Fix constraints on attribute code. Cheers @oliverde8 & @navneetbhardwaj!
 - TIP-1018: Adds a script to check container services instantiability (bin/check-services-instantiability)
+- GITHUB-9333: Fix the storage data collector to consider the port number on system information page. Cheers @nei!
 
 ## Enhancements
 
@@ -1250,3 +1251,4 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileValidator` to add an array of string (extension to mime type mapping) 
 - Add `pim_configuration` table. Don't forget to run the `doctrine:migrations:migrate` command.
 - Remove methods `getBirthday` and `setBirthday` of `Akeneo\UserManagement\Component\Model\UserInterface` and `Akeneo\UserManagement\Component\Model\User`
+- Change constructor of `Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\StorageDataCollector`, replace all arguments with `\Doctrine\DBAL\Connection`
