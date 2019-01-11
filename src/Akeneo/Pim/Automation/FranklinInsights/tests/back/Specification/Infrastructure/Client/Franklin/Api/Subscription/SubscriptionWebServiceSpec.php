@@ -136,7 +136,7 @@ class SubscriptionWebServiceSpec extends ObjectBehavior
     public function it_throws_an_invalid_token_exception_during_fetching($httpClient): void
     {
         $request = new Request('GET', '/my/uri');
-        $response = new Response(403);
+        $response = new Response(401);
         $clientException = new ClientException('An exception message', $request, $response);
 
         $httpClient->request('GET', 'BASE_URI/my/uri')->willThrow($clientException);

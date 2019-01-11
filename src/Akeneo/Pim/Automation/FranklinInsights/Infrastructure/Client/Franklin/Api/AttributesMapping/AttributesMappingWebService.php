@@ -53,7 +53,7 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
                 )
             );
         } catch (ClientException $e) {
-            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
                 throw new InvalidTokenException();
             }
 
@@ -85,7 +85,7 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
                 )
             );
         } catch (ClientException $e) {
-            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
                 throw new InvalidTokenException();
             }
 

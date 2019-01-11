@@ -67,7 +67,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
             if (Response::HTTP_PAYMENT_REQUIRED === $e->getCode()) {
                 throw new InsufficientCreditsException();
             }
-            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
                 throw new InvalidTokenException();
             }
 
@@ -107,7 +107,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
                 sprintf('Something went wrong on Franklin side during product subscription: %s.', $e->getMessage())
             );
         } catch (ClientException $e) {
-            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
                 throw new InvalidTokenException();
             }
 
@@ -137,7 +137,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
                 sprintf('Something went wrong on Franklin side during product unsubscription: %s', $e->getMessage())
             );
         } catch (ClientException $e) {
-            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
                 throw new InvalidTokenException();
             }
 
@@ -174,7 +174,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
                 sprintf('Something went wrong on Franklin side during subscription update: %s', $e->getMessage())
             );
         } catch (ClientException $e) {
-            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
                 throw new InvalidTokenException();
             }
 

@@ -50,7 +50,7 @@ class IdentifiersMappingWebService extends AbstractApi implements AuthenticatedA
                 $e->getMessage()
             ));
         } catch (ClientException $e) {
-            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+            if (Response::HTTP_UNAUTHORIZED === $e->getCode()) {
                 throw new InvalidTokenException();
             }
 

@@ -170,7 +170,7 @@ class FakeClient implements ClientInterface
     private function authenticate(string $method, string $uri, array $options): \GuzzleHttp\Psr7\Response
     {
         if (self::VALID_TOKEN !== $options['headers']['Authorization']) {
-            $response = new \GuzzleHttp\Psr7\Response(Response::HTTP_FORBIDDEN);
+            $response = new \GuzzleHttp\Psr7\Response(Response::HTTP_UNAUTHORIZED);
             throw new ClientException('Invalid token', new Request($method, $uri), $response);
         }
 
@@ -189,7 +189,7 @@ class FakeClient implements ClientInterface
     {
         if (self::INVALID_TOKEN === $this->token) {
             $request = new Request($method, $uri);
-            $response = new \GuzzleHttp\Psr7\Response(Response::HTTP_FORBIDDEN);
+            $response = new \GuzzleHttp\Psr7\Response(Response::HTTP_UNAUTHORIZED);
             throw new ClientException('Invalid token', $request, $response);
         }
     }
