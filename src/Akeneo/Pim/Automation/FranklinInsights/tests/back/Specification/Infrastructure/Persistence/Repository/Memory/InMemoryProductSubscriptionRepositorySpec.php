@@ -67,6 +67,22 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $this->findOneByProductId(42)->shouldReturn(null);
     }
 
+    public function it_finds_subscriptions_from_given_product_ids(): void
+    {
+        $subscription1 = new ProductSubscription(44, 'a-fake-subscription', ['sku' => '72527273070']);
+        $this->save($subscription1);
+        $subscription2 = new ProductSubscription(42, 'yet-another-id', []);
+        $this->save($subscription2);
+        $subscription3 = new ProductSubscription(56, 'another-id', []);
+        $this->save($subscription3);
+
+        $subscriptions = $this->findByProductIds([12, 56, 98, 44]);
+        $subscriptions->shouldBeArray();
+        $subscriptions->shouldHaveCount(2);
+        $subscriptions->shouldContain($subscription3);
+        $subscriptions->shouldContain($subscription1);
+    }
+
     public function it_finds_product_subscriptions_with_suggested_data(): void
     {
         $subscription = new ProductSubscription(42, 'a-fake-subscription', ['sku' => '72527273070']);

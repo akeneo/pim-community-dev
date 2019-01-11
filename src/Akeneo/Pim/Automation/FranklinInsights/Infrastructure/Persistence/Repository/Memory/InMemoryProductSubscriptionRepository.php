@@ -69,6 +69,18 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     }
 
     /**
+     * @param array $productIds
+     *
+     * @return array
+     */
+    public function findByProductIds(array $productIds): array
+    {
+        return array_filter($this->subscriptions, function (ProductSubscription $subscription) use ($productIds) {
+            return in_array($subscription->getProductId(), $productIds, true);
+        });
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function findPendingSubscriptions(int $limit, ?string $searchAfter): array

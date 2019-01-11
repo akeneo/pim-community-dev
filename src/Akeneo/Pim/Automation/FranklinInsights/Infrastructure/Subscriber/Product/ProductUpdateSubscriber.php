@@ -65,43 +65,85 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE_ALL => 'computeImpactedSubscriptions',
+            StorageEvents::POST_SAVE => 'onPostSave',
+            StorageEvents::POST_SAVE_ALL => 'onPostSaveAll',
         ];
     }
 
     /**
      * @param GenericEvent $event
      */
-    public function computeImpactedSubscriptions(GenericEvent $event): void
+    public function onPostSave(GenericEvent $event): void
     {
-        $impactedProductIds = [];
-        foreach ($event->getSubject() as $product) {
-            if (!$product instanceof ProductInterface) {
-                continue;
-            }
-
-            if (!$this->isFranklinInsightsActivated()) {
-                return;
-            }
-
-            // TODO: find many subscriptions by product ids in order to avoid too may queries
-            $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
-            if (null === $subscription) {
-                continue;
-            }
-            if (true === $this->wereIdentifierValuesUpdated($subscription)) {
-                $impactedProductIds[] = $product->getId();
-            }
+        $product = $event->getSubject();
+        if (!$product instanceof ProductInterface) {
+            return;
         }
 
-        if (!empty($impactedProductIds)) {
-            $this->launchResubscriptionJob($impactedProductIds);
+        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
+            return;
+        }
+        if (!$this->isFranklinInsightsActivated()) {
+            return;
+        }
+
+        $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
+        if (null !== $subscription) {
+            $this->computeImpactedSubscriptions([$subscription]);
         }
     }
 
     /**
-     * Compare requested identifier values with new identifier values. Here we only want to compare the non-empty
-     * values of the original subscription (we don't want to re-subscribe a product if an identifier value was added).
+     * @param GenericEvent $event
+     */
+    public function onPostSaveAll(GenericEvent $event): void
+    {
+        $products = $event->getSubject();
+        if (!is_array($products)) {
+            return;
+        }
+
+        $productIds = [];
+        foreach ($products as $product) {
+            if ($product instanceof ProductInterface) {
+                $productIds[] = $product->getId();
+            }
+        }
+        if (empty($productIds)) {
+            return;
+        }
+
+        if (!$this->isFranklinInsightsActivated()) {
+            return;
+        }
+
+        $subscriptions = $this->subscriptionRepository->findByProductIds($productIds);
+        if (!empty($subscriptions)) {
+            $this->computeImpactedSubscriptions($subscriptions);
+        }
+    }
+
+    /**
+     * @param ProductSubscription[] $subscriptions
+     */
+    private function computeImpactedSubscriptions(array $subscriptions): void
+    {
+        $impactedProductIds = [];
+        foreach ($subscriptions as $subscription) {
+            if (true === $this->wereIdentifierValuesUpdated($subscription)) {
+                $impactedProductIds[] = $subscription->getProductId();
+            }
+        }
+
+        if (!empty($impactedProductIds)) {
+            $this->resubscribeProducts->process($impactedProductIds);
+        }
+    }
+
+    /**
+     * Compare requested identifier values (from subscription) with new product identifier values.
+     * Here we only compare the non-empty values of the original subscription , as we don't want to
+     * re-subscribe a product if an identifier value was added.
      *
      * @param ProductSubscription $subscription
      *
@@ -124,16 +166,6 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
         }
 
         return false;
-    }
-
-    /**
-     * Launches the re-subscription job for the given productIds.
-     *
-     * @param array $productIds
-     */
-    private function launchResubscriptionJob(array $productIds): void
-    {
-        $this->resubscribeProducts->process($productIds);
     }
 
     /**
