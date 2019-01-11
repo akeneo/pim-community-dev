@@ -1,5 +1,5 @@
 name: pim
-description: Akeneo PIM package
+description: Akeneo PIM - Enterprise Cloud Edition
 icon: https://raw.githubusercontent.com/akeneo/pim-community-dev/2.3/web/favicon.ico
-version: 2.0.0-beta24
-appVersion: 2.3.8
+# version and appVersion : are defined by parameters passed to helm package
+version: 0.0.0-00
