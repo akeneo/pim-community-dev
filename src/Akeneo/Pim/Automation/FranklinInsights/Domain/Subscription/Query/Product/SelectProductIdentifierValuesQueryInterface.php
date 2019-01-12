@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -21,11 +21,11 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\Produc
 interface SelectProductIdentifierValuesQueryInterface
 {
     /**
-     * Retrieves mapped identifer values for a given product.
+     * Retrieves mapped identifer values for given products.
      *
-     * @param int $productId
+     * @param int[] $productIds
      *
-     * @return ProductIdentifierValues|null
+     * @return ProductIdentifierValuesCollection
      */
-    public function execute(int $productId): ?ProductIdentifierValues;
+    public function execute(array $productIds): ProductIdentifierValuesCollection;
 }

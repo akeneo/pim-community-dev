@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetCo
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ResubscribeProductsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -87,10 +88,7 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
-        if (null !== $subscription) {
-            $this->computeImpactedSubscriptions([$subscription]);
-        }
+        $this->computeImpactedSubscriptions([$product->getId()]);
     }
 
     /**
@@ -117,23 +115,21 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $subscriptions = $this->subscriptionRepository->findByProductIds($productIds);
-        if (!empty($subscriptions)) {
-            $this->computeImpactedSubscriptions($subscriptions);
-        }
+        $this->computeImpactedSubscriptions($productIds);
     }
 
     /**
-     * @param ProductSubscription[] $subscriptions
+     * @param array $productIds
      */
-    private function computeImpactedSubscriptions(array $subscriptions): void
+    private function computeImpactedSubscriptions(array $productIds): void
     {
-        $impactedProductIds = [];
-        foreach ($subscriptions as $subscription) {
-            if (true === $this->wereIdentifierValuesUpdated($subscription)) {
-                $impactedProductIds[] = $subscription->getProductId();
-            }
+        $subscriptions = $this->subscriptionRepository->findByProductIds($productIds);
+        if (empty($subscriptions)) {
+            return;
         }
+
+        $newIdentifierValuesCollection = $this->selectProductIdentifierValuesQuery->execute($productIds);
+        $impactedProductIds = $this->getProductIdsWithUpdatedIdentifiers($subscriptions, $newIdentifierValuesCollection);
 
         if (!empty($impactedProductIds)) {
             $this->resubscribeProducts->process($impactedProductIds);
@@ -141,31 +137,37 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Compare requested identifier values (from subscription) with new product identifier values.
-     * Here we only compare the non-empty values of the original subscription , as we don't want to
+     * Compare requested identifier values (from subscriptions) with new product identifier values.
+     * Here we only compare the non-empty values of the original subscriptions, as we don't want to
      * re-subscribe a product if an identifier value was added.
      *
-     * @param ProductSubscription $subscription
+     * @param ProductSubscription[] $subscriptions
+     * @param ProductIdentifierValuesCollection $newIdentifierValuesCollection
      *
-     * @return bool
+     * @return int[]
      */
-    private function wereIdentifierValuesUpdated(ProductSubscription $subscription): bool
-    {
-        // TODO: move this logic into a service, this may be useful in other contexts as well
-        // (e.g: update identifiers mapping)
+    private function getProductIdsWithUpdatedIdentifiers(
+        array $subscriptions,
+        ProductIdentifierValuesCollection $newIdentifierValuesCollection
+    ): array {
+        $updatedProductIds = [];
 
-        $requestedIdentifierValues = $subscription->requestedIdentifierValues();
-        $newIdentifierValues = $this->selectProductIdentifierValuesQuery
-            ->execute($subscription->getProductId())
-            ->identifierValues();
+        foreach ($subscriptions as $subscription) {
+            $requestedIdentifierValues = $subscription->requestedIdentifierValues();
+            $newIdentifierValues = $newIdentifierValuesCollection->get($subscription->getProductId());
+            if (null === $newIdentifierValues) {
+                continue;
+            }
 
-        foreach ($requestedIdentifierValues as $franklinIdentifierCode => $requestedIdentifierValue) {
-            if (($newIdentifierValues[$franklinIdentifierCode] ?? null) !== $requestedIdentifierValue) {
-                return true;
+            foreach ($requestedIdentifierValues as $franklinIdentifierCode => $requestedIdentifierValue) {
+                if (($newIdentifierValues->getValue($franklinIdentifierCode) ?? null) !== $requestedIdentifierValue) {
+                    $updatedProductIds[] = $subscription->getProductId();
+                    break;
+                }
             }
         }
 
-        return false;
+        return $updatedProductIds;
     }
 
     /**

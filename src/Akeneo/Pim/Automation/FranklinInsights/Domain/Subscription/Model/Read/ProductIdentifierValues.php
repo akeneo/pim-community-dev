@@ -16,30 +16,45 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 
 /**
- * Read model representing the mapped identifier values of a product.
+ * Read model representing the mapped identifier values of a single product.
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 final class ProductIdentifierValues
 {
+    /** @var int */
+    private $productId;
+
     /** @var array */
     private $identifierValues;
 
     /**
+     * @param int $productId
      * @param array $identifierValues
      */
-    public function __construct(array $identifierValues)
+    public function __construct(int $productId, array $identifierValues)
     {
+        $this->productId = $productId;
         foreach (IdentifiersMapping::FRANKLIN_IDENTIFIERS as $franklinCode) {
             $this->identifierValues[$franklinCode] = $identifierValues[$franklinCode] ?? null;
         }
     }
 
     /**
-     * @return array
+     * @return int
      */
-    public function identifierValues(): array
+    public function productId(): int
     {
-        return $this->identifierValues;
+        return $this->productId;
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return string|null
+     */
+    public function getValue(string $identifier): ?string
+    {
+        return $this->identifierValues[$identifier] ?? null;
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -36,28 +37,40 @@ class SelectProductIdentifierValuesQuery implements SelectProductIdentifierValue
     /**
      * {@inheritdoc}
      */
-    public function execute(int $productId): ?ProductIdentifierValues
+    public function execute(array $productIds): ProductIdentifierValuesCollection
     {
+        $identifierValuesCollection = new ProductIdentifierValuesCollection();
+        if (empty($productIds)) {
+            return $identifierValuesCollection;
+        }
+
         $sql = <<<SQL
-SELECT p.id, JSON_OBJECTAGG(
+SELECT p.id as productId, JSON_OBJECTAGG(
   m.franklin_code,
   JSON_EXTRACT(p.raw_values, REPLACE('$.%identifier%."<all_channels>"."<all_locales>"', '%identifier%', a.code))
 ) AS mapped_identifier_values
 FROM pim_catalog_product p, pim_franklin_insights_franklin_identifier_mapping m
 LEFT JOIN pim_catalog_attribute a ON m.attribute_id = a.id
-WHERE p.id = :product_id
+WHERE p.id IN (:product_ids)
 GROUP BY p.id;
 SQL;
-        $bindParams = [
-            'product_id' => $productId,
-        ];
-        $statement = $this->connection->executeQuery($sql, $bindParams);
-        $result = $statement->fetch();
 
-        if (!$result) {
-            return null;
+        $statement = $this->connection->executeQuery(
+            $sql,
+            ['product_ids' => $productIds],
+            ['product_ids' => Connection::PARAM_INT_ARRAY]
+        );
+        $result = $statement->fetchAll();
+
+        foreach ($result as $row) {
+            $identifierValuesCollection->add(
+                new ProductIdentifierValues(
+                    (int) $row['productId'],
+                    json_decode($row['mapped_identifier_values'], true)
+                )
+            );
         }
 
-        return new ProductIdentifierValues(json_decode($result['mapped_identifier_values'], true));
+        return $identifierValuesCollection;
     }
 }

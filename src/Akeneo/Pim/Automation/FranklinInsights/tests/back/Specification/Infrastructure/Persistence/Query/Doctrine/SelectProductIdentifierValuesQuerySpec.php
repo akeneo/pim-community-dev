@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectProductIdentifierValuesQuery;
 use Doctrine\DBAL\Connection;
@@ -29,37 +30,32 @@ class SelectProductIdentifierValuesQuerySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(SelectProductIdentifierValuesQuery::class);
     }
 
-    public function it_returns_null_if_the_results_are_empty(
+    public function it_returns_product_identifier_values_collection_read_model(
         $connection,
         Statement $statement
     ): void {
-        $statement->fetch()->willReturn(false);
-        $connection->executeQuery(Argument::type('string'), ['product_id' => 42])->willReturn($statement);
-
-        $this->execute(42)->shouldReturn(null);
-    }
-
-    public function it_returns_a_product_identifier_values_read_model(
-        $connection,
-        Statement $statement
-    ): void {
-        $statement->fetch()->willReturn(
+        $statement->fetchAll()->willReturn(
             [
-                'id' => '42',
-                'mapped_identifier_values' => '{"asin":"ABC456789","upc":"012345678912"}',
+                [
+                    'productId' => '42',
+                    'mapped_identifier_values' => '{"asin":"ABC456789","upc":"012345678912"}',
+                ],
             ]
         );
-        $connection->executeQuery(Argument::type('string'), ['product_id' => 42])->willReturn($statement);
+        $connection->executeQuery(
+            Argument::type('string'),
+            ['product_ids' => [42]],
+            ['product_ids' => Connection::PARAM_INT_ARRAY]
+        )->willReturn($statement);
 
-        $result = $this->execute(42);
-        $result->shouldHaveType(ProductIdentifierValues::class);
-        $result->identifierValues()->shouldBeLike(
-            [
-                'asin' => 'ABC456789',
-                'upc' => '012345678912',
-                'mpn' => null,
-                'brand' => null,
-            ]
-        );
+        $result = $this->execute([42]);
+        $result->shouldHaveType(ProductIdentifierValuesCollection::class);
+        $values = $result->get(42);
+        $values->shouldHaveType(ProductIdentifierValues::class);
+
+        $values->getValue('asin')->shouldReturn('ABC456789');
+        $values->getValue('upc')->shouldReturn('012345678912');
+        $values->getValue('mpn')->shouldReturn(null);
+        $values->getValue('brand')->shouldReturn(null);
     }
 }

@@ -7,9 +7,9 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Pe
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\InMemory\InMemorySelectProductIdentifierValuesQuery;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -35,34 +35,32 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(InMemorySelectProductIdentifierValuesQuery::class);
     }
 
-    public function it_returns_null_if_there_is_no_identifiers_mapping(
-        $productRepository,
+    public function it_returns_an_empty_identifier_values_collection_if_there_is_no_identifiers_mapping(
         $identifiersMappingRepository
     ): void {
-        $productRepository->find(42)->willReturn(new Product());
         $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping());
 
-        $this->execute(42)->shouldReturn(null);
+        $values = $this->execute([42]);
+        $values->count()->shouldReturn(0);
     }
 
-    public function it_returns_null_if_the_product_does_not_exist(
+    public function it_filters_non_existing_products(
         $productRepository,
         $identifiersMappingRepository,
         AttributeInterface $asin
     ): void {
-        $identifiersMappingRepository->find()->willReturn(
-            new IdentifiersMapping(
-                [
-                    'asin' => $asin->getWrappedObject(),
-                ]
-            )
-        );
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping->map('asin', $asin->getWrappedObject());
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $productRepository->find(42)->willReturn(null);
 
-        $this->execute(42)->shouldReturn(null);
+        $values = $this->execute([42]);
+        $values->shouldBeAnInstanceOf(ProductIdentifierValuesCollection::class);
+        $values->count()->shouldReturn(0);
     }
 
-    public function it_returns_mapped_identifier_values_of_a_product(
+    public function it_returns_mapped_identifier_values_of_products(
         $productRepository,
         $identifiersMappingRepository,
         ProductInterface $product,
@@ -84,8 +82,7 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
             ->map('asin', $asin->getWrappedObject())
             ->map('upc', $ean->getWrappedObject())
             ->map('mpn', $mpn->getWrappedObject())
-            ->map('brand', $brand->getWrappedObject())
-        ;
+            ->map('brand', $brand->getWrappedObject());
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $asinValue->hasData()->willReturn(true);
@@ -96,15 +93,14 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
         $product->getValue('mpn')->willReturn(null);
         $product->getValue('brand')->willReturn(null);
 
-        $result = $this->execute(42);
-        $result->shouldBeAnInstanceOf(ProductIdentifierValues::class);
-        $result->identifierValues()->shouldBeLike(
-            [
-                'asin' => 'ABC123',
-                'upc' => null,
-                'mpn' => null,
-                'brand' => null,
-            ]
-        );
+        $result = $this->execute([42]);
+        $result->shouldBeAnInstanceOf(ProductIdentifierValuesCollection::class);
+
+        $values = $result->get(42);
+        $values->shouldBeAnInstanceOf(ProductIdentifierValues::class);
+        $values->getValue('asin')->shouldReturn('ABC123');
+        $values->getValue('upc')->shouldReturn(null);
+        $values->getValue('mpn')->shouldReturn(null);
+        $values->getValue('brand')->shouldReturn(null);
     }
 }
