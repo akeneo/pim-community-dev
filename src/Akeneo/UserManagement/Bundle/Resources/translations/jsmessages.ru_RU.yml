@@ -8,6 +8,7 @@ pim_title:
 confirmation:
   remove:
     user: Вы действительно хотите удалить этого пользователя?
+    group: Вы действительно хотите удалить эту группу?
 pim_user_management:
   entity:
     user:

@@ -8,6 +8,7 @@ pim_title:
 confirmation:
   remove:
     user: Er du sikker på du vil slette denne bruger?
+    group: Er du sikker på du vil slette denne gruppe?
 pim_user_management:
   entity:
     user:

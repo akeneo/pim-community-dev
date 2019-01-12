@@ -8,6 +8,7 @@ pim_title:
 confirmation:
   remove:
     user: Haluatko varmasti poistaa tämän käyttäjän?
+    group: Oletko varma että haluat poistaa tämän ryhmän?
 pim_user_management:
   entity:
     user:

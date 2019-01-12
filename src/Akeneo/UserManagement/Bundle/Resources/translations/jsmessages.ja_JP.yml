@@ -8,6 +8,7 @@ pim_title:
 confirmation:
   remove:
     user: このユーザーを削除してもよろしいですか?
+    group: このグループを削除してもよろしいですか。
 pim_user_management:
   entity:
     user:
