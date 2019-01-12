@@ -164,6 +164,7 @@ batch_jobs:
     import_associations.label: Productassociatie import
   xlsx_product_model_import:
     validation.label: Bestandsvalidatie
+    import_associations.label: Productassociatie import
   xlsx_group_export:
     label: Groep export in XLSX
     export.label: Groepexport

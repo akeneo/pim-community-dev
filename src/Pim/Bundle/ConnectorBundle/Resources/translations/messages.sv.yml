@@ -164,6 +164,7 @@ batch_jobs:
     import_associations.label: Importera associationer
   xlsx_product_model_import:
     validation.label: Filvalidering
+    import_associations.label: Importera associationer
   xlsx_group_export:
     label: Exportera grupper till XLSX
     export.label: Exportera grupper

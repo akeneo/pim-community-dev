@@ -188,6 +188,7 @@ batch_jobs:
     import_root_product_model.label: Импорт корневой модели продукта
     import_sub_product_model.label: Импорт подчиненной модели
     import_product_model_descendants.label: Расчет дочерней модели продукта
+    import_associations.label: Импорт ассоциаций
   xlsx_group_export:
     label: Экспорт групп в XLSX
     export.label: Экспорт групп

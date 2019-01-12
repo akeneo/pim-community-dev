@@ -188,6 +188,7 @@ batch_jobs:
     import_root_product_model.label: Juuritason tuotemallin tuonti
     import_sub_product_model.label: Alatason tuotemallin tuonti
     import_product_model_descendants.label: Lasketaan tuotemallin rakenne
+    import_associations.label: Liitännäisten tuonti
   xlsx_group_export:
     label: Ryhmävienti XLSX-muodossa
     export.label: Ryhmän vienti
