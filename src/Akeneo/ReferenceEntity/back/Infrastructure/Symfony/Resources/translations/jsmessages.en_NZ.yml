@@ -46,7 +46,6 @@ pim_reference_entity:
     create:
       header:
         title: Create
-      subtitle: Entities
       title: Create a new entity
       input:
         label: Label
@@ -95,7 +94,6 @@ pim_reference_entity:
     create:
       header:
         title: Create
-      subtitle: Entities
       title: Add new {{ entityLabel }}
       input:
         label: Label
@@ -145,8 +143,6 @@ pim_reference_entity:
     type:
       text: Text
       image: Image
-      record: Reference entity simple link
-      record_collection: Reference entity multiple link
     is_required: required for completeness
     no_data:
       title: There are no custom attributes for {{ entityLabel }}
@@ -156,7 +152,6 @@ pim_reference_entity:
     create:
       header:
         title: Create
-      subtitle: Entities
       input:
         code: Code (required)
         label: Label
@@ -218,9 +213,6 @@ pim_enrich:
   entity:
     attribute:
       property:
-        type:
-          akeneo_reference_entity_collection: Reference entity multiple link
-          akeneo_reference_entity: Reference entity simple link
         section:
           type_specific: Type specific parameters
         reference_entity:

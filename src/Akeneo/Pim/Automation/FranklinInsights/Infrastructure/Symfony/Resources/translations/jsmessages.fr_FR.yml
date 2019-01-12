@@ -8,7 +8,7 @@ pim_menu:
 akeneo_franklin_insights:
   entity:
     data_provider:
-      ask_franklin_down: "Votre requête n'a pas pu être traitée. Le serveur Franklin Insights ne répond pas."
+      ask_franklin_down: "Un problème est survenu. Réessayez plus tard."
       authentication_error: "Désolé, impossible de s'autentifier à Franklin Insights, car votre token est invalid. Veuillez renseigner un token valide ou contactez-nous."
       bad_request_error: "Désolé, une erreur s'est produite lors de la communication avec Franklin Insights. Veuillez contacter votre administrateur."
     identifier_mapping:
@@ -63,8 +63,11 @@ akeneo_franklin_insights:
         missing_target_key: 'Clé cible manquante pour le mapping'
         missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{ targetKey }}"'
         invalid_attribute_type_mapping: 'Les attributs Franklin ne peuvent pas être mappés au type d''attribut "{{ pimType }}" de votre catalogue'
+        empty_mapping: 'Les attributs Franklin ne peuvent pas être mappés avec un mapping vide'
+        localizable_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM localisable'
         scopable_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM décliné par canal'
         locale_specific_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM spécifique à une locale'
+        duplicated_pim_attribute: 'Un attribut PIM ne peut pas être utilisé plusieurs fois dans le mapping des attributs'
     product_subscription:
       flash:
         create:
@@ -153,6 +156,7 @@ batch_jobs:
   franklin_insights_subscribe_products:
     label: Abonnement en masse à Franklin Insights
     validate_configuration.label: Valider la configuration de Franklin Insights
+    validate_identifiers_mapping.label: Validation du mapping des identifiants
     subscribe_products.label: S'abnonner aux produits
   franklin_insights_unsubscribe_products:
     label: Désabonnement en masse à Franklin Insights

@@ -11,6 +11,10 @@ akeneo_franklin_insights:
   mapping_identifier:
     success: El mapatge s'ha guardat correctament
     error: S'ha produït un error durant el guardat del mapatge
+  entity:
+    product_subscription:
+      constraint:
+        invalid_mapped_values: 'Ho sentim, ha fallat la subscripció del producte a les estadístiques de Franklin. Si us plau subscriu el producte amb una combinació d''identificadors vàlid.'
 job_execution.summary:
   configuration_validation: Configuració de les estadístiques de Franklin
   subscribed: subscrit

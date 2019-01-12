@@ -9,10 +9,12 @@ pim_reference_entity:
   reference_entity:
     button:
       save: Gem
+      save_permission: Gem
       create: Opret
     tab:
       attribute: Egenskaber
       properties: Egenskaber
+      permission: Rettigheder
     properties:
       identifier: Kode
       label: Etiket

@@ -11,12 +11,14 @@ pim_reference_entity:
   reference_entity:
     button:
       save: Guardar
+      save_permission: Guardar
       create: Crear
     title: Entidades
     tab:
       records: Registros
       attribute: Atributos
       properties: Propiedades
+      permission: Permisos
     properties:
       title: Propiedades de la entidad
       identifier: Código
@@ -25,7 +27,6 @@ pim_reference_entity:
     create:
       header:
         title: Crear
-      subtitle: Entidades
       title: Crear una nueva entidad
       input:
         label: Etiqueta
@@ -47,7 +48,6 @@ pim_reference_entity:
     create:
       header:
         title: Crear
-      subtitle: Entidades
       input:
         label: Etiqueta
         code: Código (requerido)
@@ -86,7 +86,6 @@ pim_reference_entity:
     create:
       header:
         title: Crear
-      subtitle: Entidades
       input:
         code: Código (requerido)
         label: Etiqueta

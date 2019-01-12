@@ -11,6 +11,10 @@ akeneo_franklin_insights:
   mapping_identifier:
     success: Le mapping a été sauvegardé avec succès
     error: Une erreur est survenue pendant la sauvegarde du mapping
+  entity:
+    product_subscription:
+      constraint:
+        invalid_mapped_values: 'Désolé, impossible d''abonner ce produit à Franklin Insights. Veuillez vérifier que la combinaison des identifiants est valide.'
 job_execution.summary:
   configuration_validation: Configuration de Franklin Insights
   subscribed: abonné

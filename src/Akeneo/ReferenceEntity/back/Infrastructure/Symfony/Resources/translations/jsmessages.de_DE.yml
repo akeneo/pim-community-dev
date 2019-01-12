@@ -9,10 +9,12 @@ pim_reference_entity:
   reference_entity:
     button:
       save: Speichern
+      save_permission: Speichern
       create: Anlegen
     tab:
       attribute: Attribute
       properties: Eigenschaften
+      permission: Berechtigungen
     properties:
       identifier: Code
       label: Bezeichnung

@@ -9,10 +9,12 @@ pim_reference_entity:
   reference_entity:
     button:
       save: 保存
+      save_permission: 保存
       create: 作成
     tab:
       attribute: 属性
       properties: プロパティ
+      permission: パーミッション
     properties:
       identifier: コード
       label: ラベル

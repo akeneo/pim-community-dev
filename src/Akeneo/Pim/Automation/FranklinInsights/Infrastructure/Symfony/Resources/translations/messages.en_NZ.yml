@@ -11,6 +11,10 @@ akeneo_franklin_insights:
   mapping_identifier:
     success: The mapping has been successfully saved
     error: An error occurred while saving the mapping
+  entity:
+    product_subscription:
+      constraint:
+        invalid_mapped_values: 'Sorry, failed to subscribe product to Franklin Insights. Please subscribe the product with a valid combination of identifiers.'
 job_execution.summary:
   configuration_validation: Franklin Insights configuration
   subscribed: subscribed
