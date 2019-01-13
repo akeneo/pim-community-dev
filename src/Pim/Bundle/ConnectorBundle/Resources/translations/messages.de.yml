@@ -188,6 +188,7 @@ batch_jobs:
     import_root_product_model.label: Produktmodell-Import Hauptebene
     import_sub_product_model.label: Produktmodell-Import Subebene
     import_product_model_descendants.label: Vererbungen der Produktmodelle berechnen
+    import_associations.label: Produktverbindungen-Import
   xlsx_group_export:
     label: Gruppen-Export als XSLX-Datei
     export.label: Gruppen-Export

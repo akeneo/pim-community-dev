@@ -354,7 +354,7 @@ pim_enrich:
         create_label: Créer une nouvelle variante de famille
         create_description: Dans une variante de famille, vous pouvez définir la structure de vos produits avec variantes. Choisissez le nombreux de niveaux variants gérés, les attributs utilisés comme axes de variantes pour chaque niveau. Puis, définissez la répartition des attributs de la famille.
         update_description: Glissez & déposez les attributs au niveau de variante choisi, afin d’avoir ces attributs gérés à ce niveau.
-        update_translation: Traduire le libeillé de la variante de famille
+        update_translation: Traduire le(s) libellé(s) de la variante de famille
         create: Créer
         cancel: Annuler
         code: Code

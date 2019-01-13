@@ -188,6 +188,7 @@ batch_jobs:
     import_root_product_model.label: Importación del modelo del producto base
     import_sub_product_model.label: Importación del modelo del sub producto
     import_product_model_descendants.label: Calcular modelos del producto descendientes
+    import_associations.label: Importar asociaciones
   xlsx_group_export:
     label: Exportar grupos en XLSX
     export.label: Exportar grupos
