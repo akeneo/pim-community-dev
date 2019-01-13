@@ -15,6 +15,7 @@ pim_title:
 confirmation:
   remove:
     user: Sei sicuro di voler eliminare questo utente?
+    group: Sei sicuro di voler eliminare questo gruppo?
 pim_user_management:
   entity:
     user:

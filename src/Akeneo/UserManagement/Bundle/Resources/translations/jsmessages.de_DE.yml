@@ -8,6 +8,7 @@ pim_title:
 confirmation:
   remove:
     user: Möchten Sie diesen Benutzer wirklich löschen?
+    group: Möchten Sie diese Gruppe wirklich löschen?
 pim_user_management:
   entity:
     user:

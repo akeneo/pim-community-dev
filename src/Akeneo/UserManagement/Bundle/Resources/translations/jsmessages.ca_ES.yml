@@ -16,6 +16,7 @@ pim_title:
 confirmation:
   remove:
     user: Esteu segur que voleu eliminar aquest usuari?
+    group: Esteu segur que voleu suprimir aquest grup?
 pim_enrich:
   entity:
     user:
