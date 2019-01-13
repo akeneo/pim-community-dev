@@ -141,8 +141,7 @@ final class Controller
      */
     public function downloadAuthenticationLogsAction()
     {
-        try
-        {
+        try {
             return new BinaryFileResponse(
                 $this->createArchive->create(),
                 Response::HTTP_OK,
@@ -151,7 +150,6 @@ final class Controller
                     'Content-type' => 'application/zip',
                 ]
             );
-
         } catch (\Exception $e) {
             throw new NotFoundHttpException("Unable to find archive file");
         }

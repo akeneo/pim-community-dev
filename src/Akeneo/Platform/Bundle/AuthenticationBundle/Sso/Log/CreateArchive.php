@@ -71,10 +71,9 @@ README;
     {
         $logs = new \GlobIterator($this->logDirectory . DIRECTORY_SEPARATOR . 'authentication*.log');
 
-        if($logs->count() > 0)
-        {
+        if ($logs->count() > 0) {
             $logDirectory = $this->logDirectory;
-            array_map(function(\SplFileInfo $logFile) use ($logDirectory, $archive){
+            array_map(function (\SplFileInfo $logFile) use ($logDirectory, $archive) {
                 $archive->addFileToArchive($logDirectory, $logFile->getFilename());
             }, iterator_to_array($logs));
         }
