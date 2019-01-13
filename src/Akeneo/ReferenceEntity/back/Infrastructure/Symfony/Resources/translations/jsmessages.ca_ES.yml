@@ -21,6 +21,7 @@ pim_reference_entity:
         limit_reached: 'Vostè no pot crear l''entitat de referència "{{ %reference_entity_label% }}" perquè vostè ha arribat al límit d''entitats de referència {{ %limit% }}'
     button:
       save: Desar
+      save_permission: Desar
       create: Crear
     title: Entitats
     img: La imatge principal de l'entitat de referència designada "{{ label }}"
@@ -28,6 +29,7 @@ pim_reference_entity:
       records: Registres
       attribute: Atributs
       properties: Propietats
+      permission: Permisos
     properties:
       title: Propietats de l'entitat
       identifier: Codi
@@ -46,7 +48,6 @@ pim_reference_entity:
     create:
       header:
         title: Crear
-      subtitle: Entitats
       title: Crear una nova entitat
       input:
         label: Etiqueta
@@ -95,7 +96,6 @@ pim_reference_entity:
     create:
       header:
         title: Crear
-      subtitle: Entitats
       title: Afegir nou {{ entityLabel }}
       input:
         label: Etiqueta
@@ -149,8 +149,6 @@ pim_reference_entity:
     type:
       text: Texte
       image: Imatge
-      record: Enllaç simple de l'entitat de referència
-      record_collection: Enllaç múltiple d'entitat de referència
     is_required: necessaris per a la integritat
     no_data:
       title: No hi ha atributs personalitzats per {{ entityLabel }}
@@ -160,7 +158,6 @@ pim_reference_entity:
     create:
       header:
         title: Crear
-      subtitle: Entitats
       input:
         code: Codi (requerit)
         label: Etiqueta
@@ -225,9 +222,6 @@ pim_enrich:
   entity:
     attribute:
       property:
-        type:
-          akeneo_reference_entity_collection: Enllaç múltiple d'entitat de referència
-          akeneo_reference_entity: Enllaç simple de l'entitat de referència
         section:
           type_specific: Escriu els paràmetres específics
         reference_entity:

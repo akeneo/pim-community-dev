@@ -24,9 +24,6 @@ akeneo_franklin_insights:
             upc: UPC
         catalog_attribute: Catalog attribute
         franklin_insights: Franklin identifier status
-        status:
-          active: Active
-          inactive: Inactive
       constraint:
         duplicate_attribute_code: "One mapping allowed per catalog attribute"
         missing_or_invalid_identifiers: "Some identifiers mapping keys are missing or invalid. Expected: \"{{ expected }}\", got \"{{ given }}\"."
@@ -38,8 +35,6 @@ akeneo_franklin_insights:
         franklin_insights:
           label: Franklin attribute status
           pending: Pending
-          mapped: Active
-          unmapped: Inactive
         values_summary: "Values summary: {{ label }}"
       module:
         subscribe:
@@ -101,7 +96,6 @@ akeneo_franklin_insights:
         label: 'Franklin Connector'
         activation_code: 'Activation code'
         paste_activation_code: 'Paste Activation Code'
-        activated: 'Activated'
         activate: 'Activate'
   settings:
     page_title: 'Franklin Insights Settings'

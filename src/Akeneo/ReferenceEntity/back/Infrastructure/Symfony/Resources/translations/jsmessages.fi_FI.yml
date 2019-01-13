@@ -9,10 +9,12 @@ pim_reference_entity:
   reference_entity:
     button:
       save: Tallenna
+      save_permission: Tallenna
       create: Luo
     tab:
       attribute: Attribuutit
       properties: Ominaisuudet
+      permission: Käyttöoikeudet
     properties:
       identifier: Koodi
       label: Nimike

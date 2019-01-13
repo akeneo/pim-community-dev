@@ -21,6 +21,7 @@ pim_reference_entity:
         limit_reached: 'Vous ne pouvez pas créer l’entité référentielle « {{ %reference_entity_label% }} » parce que vous avez atteint la limite de {{ %limit% }} entités référentielles'
     button:
       save: Enregistrer
+      save_permission: Enregistrer
       create: Créer
     title: Entités
     breadcrumb: Entités référentielles
@@ -29,6 +30,7 @@ pim_reference_entity:
       records: Enregistrements
       attribute: Attributs
       properties: Propriétés
+      permission: Permissions
     properties:
       title: Propriétés de l'entité
       identifier: Code
@@ -50,7 +52,7 @@ pim_reference_entity:
     create:
       header:
         title: Créer
-      subtitle: Entités
+      subtitle: Entités référentielles
       title: Créer une nouvelle entité
       input:
         label: Libellé
@@ -99,7 +101,7 @@ pim_reference_entity:
     create:
       header:
         title: Créer
-      subtitle: Entités
+      subtitle: Entités référentielles
       title: Ajouter {{ entityLabel }}
       input:
         label: Libellé
@@ -161,8 +163,6 @@ pim_reference_entity:
     type:
       text: Texte
       image: Image
-      record: Lien simple vers une entité référentielle
-      record_collection: Lien multiple vers une entité référentielle
       option: Option simple
       option_collection: Options multiples
     is_required: requis pour la complétude
@@ -174,7 +174,7 @@ pim_reference_entity:
     create:
       header:
         title: Créer
-      subtitle: Entités
+      subtitle: Entités référentielles
       title: Ajouter un nouvel attribut d’enregistrement
       input:
         code: Code (requis)
@@ -254,11 +254,10 @@ pim_enrich:
   entity:
     attribute:
       property:
-        type:
-          akeneo_reference_entity_collection: Lien multiple vers une entité référentielle
-          akeneo_reference_entity: Lien simple vers une entité référentielle
         section:
           type_specific: Paramètres spécifiques
         reference_entity:
           identifier: Entité référentielle liée (obligatoire)
           default_label: Veuillez sélectionner une entité référentielle
+permission:
+  mass_action: Appliquer {{ rightLevel }} sur tous les groupes

@@ -4,6 +4,10 @@ akeneo_franklin_insights:
   mapping_identifier:
     success: La mappatura è stata salvata con successo
     error: Si è verificato un errore al salvataggio della mappatura
+  entity:
+    product_subscription:
+      constraint:
+        invalid_mapped_values: 'L''iscrizione dei prodotti a Franklin Insights non è andata a buon fine. Iscrivi il prodotto con una combinazione valida di identificatori.'
 job_execution.summary:
   configuration_validation: Configurazione Franklin Insights
   subscribed: iscritto

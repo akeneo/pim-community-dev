@@ -16,6 +16,7 @@ pim_reference_entity:
         should_be_unique: 'Questo codice è già esistente per questa entità.'
     button:
       save: Salva
+      save_permission: Salva
       create: Crea
     title: Entità
     img: Immagine principale dell'entità di riferimento denominata "{{ label }}"
@@ -23,6 +24,7 @@ pim_reference_entity:
       records: Record
       attribute: Attributi
       properties: Proprietà
+      permission: Autorizzazioni
     properties:
       title: Proprietà dell'entità
       identifier: Codice
@@ -37,7 +39,6 @@ pim_reference_entity:
     create:
       header:
         title: Crea
-      subtitle: Entità
       title: Crea una nuova entità
       input:
         label: Etichetta
@@ -80,7 +81,6 @@ pim_reference_entity:
     create:
       header:
         title: Crea
-      subtitle: Entità
       title: Aggiungi nuovo {{ entityLabel }}
       input:
         label: Etichetta
@@ -140,7 +140,6 @@ pim_reference_entity:
     create:
       header:
         title: Crea
-      subtitle: Entità
       input:
         code: Codice (richiesto)
         label: Etichetta
