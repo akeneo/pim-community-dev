@@ -16,8 +16,6 @@ class Version_3_0_20180823184342_switch_to_utf8mb4 extends AbstractMigration
         "acl_object_identities",
         "acl_object_identity_ancestors",
         "acl_security_identities",
-        "acme_reference_data_color",
-        "acme_reference_data_fabric",
         "akeneo_batch_job_execution",
         "akeneo_batch_job_execution_queue",
         "akeneo_batch_job_instance",
