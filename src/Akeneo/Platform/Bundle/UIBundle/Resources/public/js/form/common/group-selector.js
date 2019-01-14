@@ -133,6 +133,9 @@ define(
                 if (_.isUndefined(this.getCurrent()) ||
                     !this.getElements()[this.getCurrent()]
                 ) {
+                    if (!this.elements[this.all.code]) {
+                        this.elements[this.all.code] = this.all;
+                    }
                     this.setCurrent(this.all.code, {silent: true});
                 }
             },

@@ -29,6 +29,7 @@ Feature: Edit a user groups and roles
     And I visit the "Users" tab
     When I check the rows "Peter"
     And I save the role
+    And I should not see the text "There are unsaved changes."
     Then the row "Peter" should be checked
 
   @jira https://akeneo.atlassian.net/browse/PIM-5201
