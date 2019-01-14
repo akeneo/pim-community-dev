@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI;
 
+use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\CertificateMetadata;
 use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfiguration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfigurationHandler;
@@ -129,6 +130,7 @@ final class Controller
                 'service_provider_entity_id'    => $configArray['serviceProvider']['entityId'],
                 'service_provider_certificate'  => $configArray['serviceProvider']['certificate'],
                 'service_provider_private_key'  => $configArray['serviceProvider']['privateKey'],
+                'service_provider_certificate_end_date' => (new CertificateMetadata($configArray['certificate']))->getEndDate(),
             ] + $staticConfiguration);
         } catch (ConfigurationNotFound $e) {
             $serviceProvider = $this->serviceProviderDefaultConfiguration->getServiceProvider()->toArray();
@@ -142,6 +144,7 @@ final class Controller
                 'service_provider_entity_id'    => $serviceProvider['entityId'],
                 'service_provider_certificate'  => $serviceProvider['certificate'],
                 'service_provider_private_key'  => $serviceProvider['privateKey'],
+                'service_provider_certificate_end_date' => (new CertificateMetadata($serviceProvider['certificate']))->getEndDate(),
             ] + $staticConfiguration);
         }
     }
