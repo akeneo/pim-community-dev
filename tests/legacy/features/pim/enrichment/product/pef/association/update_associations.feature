@@ -16,6 +16,7 @@ Feature: Update the product associations
 
   Scenario: Successfully add an association
     Given I press the "Add associations" button and wait for modal
+    And I search "pat"
     And I check the row "patrick"
     And the item picker basket should contain patrick
     When I press the "Confirm" button in the popin
@@ -24,6 +25,7 @@ Feature: Update the product associations
 
   Scenario: Successfully delete an association
     Given I press the "Add associations" button and wait for modal
+    And I search "pat"
     And I check the row "patrick"
     And the item picker basket should contain patrick
     And I press the "Confirm" button in the popin

@@ -19,22 +19,22 @@ class RemoveProductModelIntegration extends TestCase
      */
     public function removing_a_product_model_deletes_its_children_too()
     {
-        [$rootProductModel, $subProductModel, $variant] = $this->arrange();
+        $this->arrange();
 
-        $rootId = $rootProductModel->getId();
-        $subId = $subProductModel->getId();
-        $variantId = $variant->getId();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
 
-        sleep(1); // the product need to be indexed...
+        $productModelRemover = $this->get('pim_catalog.remover.product_model');
+        $productModelRepository = $this->get('pim_catalog.repository.product_model');
+        $productRepository = $this->get('pim_catalog.repository.product');
 
-        $this->getFromTestContainer('pim_catalog.remover.product_model')->remove($rootProductModel);
+        $rootProductModel = $productModelRepository->findOneByIdentifier('root_product_model_two_level');
+        $productModelRemover->remove($rootProductModel);
 
-        $this->getFromTestContainer('doctrine.orm.default_entity_manager')->clear();
-        $productRepository = $this->getFromTestContainer('pim_catalog.repository.product');
-
-        $this->assertNull($productRepository->find($rootId));
-        $this->assertNull($productRepository->find($subId));
-        $this->assertNull($productRepository->find($variantId));
+        $this->assertNull($productModelRepository->findOneByIdentifier('root_product_model_two_level'));
+        $this->assertNull($productModelRepository->findOneByIdentifier('sub_product_model'));
+        $this->assertNull($productRepository->findOneByIdentifier('variant_product_1'));
     }
 
     /**
@@ -42,9 +42,9 @@ class RemoveProductModelIntegration extends TestCase
      */
     private function arrange(): array
     {
-        $this->entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
 
-        $this->entityBuilder->createFamilyVariant(
+        $entityBuilder->createFamilyVariant(
             [
                 'code' => 'two_level_family_variant',
                 'family' => 'familyA3',
@@ -63,21 +63,21 @@ class RemoveProductModelIntegration extends TestCase
             ]
         );
 
-        $rootProductModel = $this->entityBuilder->createProductModel(
+        $rootProductModel = $entityBuilder->createProductModel(
             'root_product_model_two_level',
             'two_level_family_variant',
             null,
             []
         );
 
-        $subProductModel = $this->entityBuilder->createProductModel(
+        $subProductModel = $entityBuilder->createProductModel(
             'sub_product_model',
             'two_level_family_variant',
             $rootProductModel,
             []
         );
 
-        $variant = $this->entityBuilder->createVariantProduct(
+        $variant = $entityBuilder->createVariantProduct(
             'variant_product_1',
             'familyA3',
             'two_level_family_variant',
