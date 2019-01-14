@@ -28,7 +28,11 @@ export class ConcreteImageUploader implements Uploader<Image> {
           xhr: () => {
             const xhr = this.jQuery.ajaxSettings.xhr();
             if (xhr.upload) {
-              xhr.upload.addEventListener('progress', (event: any) => onProgress(event.loaded / event.total), false);
+              xhr.upload.addEventListener(
+                'progress',
+                (event: any) => onProgress(event.loaded / event.matchesCount),
+                false
+              );
             }
 
             return xhr;

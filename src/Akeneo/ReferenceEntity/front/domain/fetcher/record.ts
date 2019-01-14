@@ -6,5 +6,5 @@ import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 export default interface Fetcher {
   fetch: (referenceEntityIdentifier: ReferenceEntityIdentifier, identifier: RecordCode) => Promise<Record>;
   fetchAll: (referenceEntityIdentifier: ReferenceEntityIdentifier) => Promise<Record[]>;
-  search: (query: Query) => Promise<{items: NormalizedRecord[]; total: number}>;
+  search: (query: Query) => Promise<{items: NormalizedRecord[]; matchesCount: number}>;
 }

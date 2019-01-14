@@ -54,7 +54,7 @@ module.exports = async function(cucumber) {
               labels: labels,
             },
           ],
-          total: 1000,
+          matches_count: 1000,
         });
       }
     });
@@ -143,7 +143,7 @@ module.exports = async function(cucumber) {
     await saveRecord(this.page);
   });
 
-  Then('the user cannot create a record', async function () {
+  Then('the user cannot create a record', async function() {
     const sidebar = await await getElement(this.page, 'Sidebar');
     await sidebar.clickOnTab('record');
 

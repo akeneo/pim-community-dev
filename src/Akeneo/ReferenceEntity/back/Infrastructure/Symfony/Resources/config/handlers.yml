@@ -86,6 +86,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers_and_query'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.count_records'
 
     akeneo_referenceentity.application.record.search_connector_record:
         class: Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord

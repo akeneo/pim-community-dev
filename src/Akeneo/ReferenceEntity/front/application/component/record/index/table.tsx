@@ -24,7 +24,7 @@ interface TableState {
   grid: {
     records: NormalizedRecord[];
     columns: Column[];
-    total: number;
+    matchesCount: number;
     isLoading: boolean;
     page: number;
     filters: Filter[];
@@ -273,7 +273,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
                 <div className="AknDescriptionHeader-title">
                   {__('pim_reference_entity.record.grid.more_result.title')}
                   <div className="AknDescriptionHeader-description">
-                    {__('pim_reference_entity.record.grid.more_result.description', {total: grid.total})}
+                    {__('pim_reference_entity.record.grid.more_result.description', {total: grid.matchesCount})}
                   </div>
                 </div>
               </div>

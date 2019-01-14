@@ -2,16 +2,18 @@ import {dataReceived} from 'akeneoreferenceentity/domain/event/search';
 
 describe('akeneo > reference entity > domain > event --- search', () => {
   test('I can create a dataReceived event', () => {
-    expect(dataReceived([], 0, false)).toEqual({
+    expect(dataReceived([], 0, 0, false)).toEqual({
       type: 'GRID_DATA_RECEIVED',
       data: {items: []},
-      total: 0,
+      matchesCount: 0,
+      totalCount: 0,
       append: false,
     });
-    expect(dataReceived(['item'], 1, true)).toEqual({
+    expect(dataReceived(['item'], 1, 1, true)).toEqual({
       type: 'GRID_DATA_RECEIVED',
       data: {items: ['item']},
-      total: 1,
+      matchesCount: 1,
+      totalCount: 1,
       append: true,
     });
   });

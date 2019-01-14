@@ -56,7 +56,7 @@ module.exports = async function(cucumber) {
 
     this.page.on('request', request => {
       if ('http://pim.com/rest/reference_entity' === request.url()) {
-        answerJson(request, {items: referenceEntityResponse, total: 1000});
+        answerJson(request, {items: referenceEntityResponse, matches_count: 1000});
       }
     });
   };

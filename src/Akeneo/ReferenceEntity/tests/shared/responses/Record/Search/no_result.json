@@ -30,7 +30,8 @@
       "status": 200,
       "body": {
           "items": [],
-          "total": 0
+          "matches_count":0,
+          "total_count":3
       }
   }
 }

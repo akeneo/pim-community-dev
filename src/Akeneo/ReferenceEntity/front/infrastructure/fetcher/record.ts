@@ -1,5 +1,5 @@
 import RecordFetcher from 'akeneoreferenceentity/domain/fetcher/record';
-import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
+import {Query, SearchResult} from 'akeneoreferenceentity/domain/fetcher/fetcher';
 import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import hydrator from 'akeneoreferenceentity/application/hydrator/record';
 import hydrateAll from 'akeneoreferenceentity/application/hydrator/hydrator';
@@ -37,7 +37,7 @@ export class RecordFetcherImplementation implements RecordFetcher {
     return hydrateAll<Record>(hydrator)(backendRecords.items);
   }
 
-  async search(query: Query): Promise<{items: NormalizedRecord[]; total: number}> {
+  async search(query: Query): Promise<SearchResult<NormalizedRecord>> {
     const referenceEntityCode = query.filters.find((filter: Filter) => 'reference_entity' === filter.field);
     if (undefined === referenceEntityCode) {
       throw new InvalidArgument('The search repository expect a reference_entity filter');
@@ -50,7 +50,11 @@ export class RecordFetcherImplementation implements RecordFetcher {
       query
     ).catch(errorHandler);
 
-    return backendRecords;
+    return {
+      items: backendRecords.items,
+      matchesCount: backendRecords.matches_count,
+      totalCount: backendRecords.total_count,
+    };
   }
 }
 

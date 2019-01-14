@@ -9,7 +9,7 @@ const {
   tools: {answerJson, convertItemTable},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
-module.exports = async function (cucumber) {
+module.exports = async function(cucumber) {
   const {When, Then} = cucumber;
   const assert = require('assert');
 
@@ -30,13 +30,13 @@ module.exports = async function (cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const saveReferenceEntity = async function (page) {
+  const saveReferenceEntity = async function(page) {
     const requestContract = getRequestContract('ReferenceEntity/Create/ok.json');
 
     return await listenRequest(page, requestContract);
   };
 
-  const listReferenceEntityUpdated = async function (page, identifier, labels) {
+  const listReferenceEntityUpdated = async function(page, identifier, labels) {
     page.on('request', request => {
       if ('http://pim.com/rest/reference_entity' === request.url()) {
         answerJson(request, {
@@ -46,13 +46,13 @@ module.exports = async function (cucumber) {
               labels: labels,
             },
           ],
-          total: 1000,
+          matches_count: 1000,
         });
       }
     });
   };
 
-  const validationMessageShown = async function (page, message) {
+  const validationMessageShown = async function(page, message) {
     page.on('request', request => {
       if ('http://pim.com/rest/reference_entity' === request.url() && 'POST' === request.method()) {
         answerJson(
@@ -77,7 +77,7 @@ module.exports = async function (cucumber) {
     });
   };
 
-  When('the user creates a reference entity {string} with:', async function (identifier, updates) {
+  When('the user creates a reference entity {string} with:', async function(identifier, updates) {
     const referenceEntity = convertItemTable(updates)[0];
 
     await this.page.evaluate(async () => {
@@ -97,12 +97,12 @@ module.exports = async function (cucumber) {
     }
   });
 
-  When('the user saves the reference entity', async function () {
+  When('the user saves the reference entity', async function() {
     const modal = await await getElement(this.page, 'Modal');
     await modal.save();
   });
 
-  Then('there is a reference entity {string} with:', async function (identifier, updates) {
+  Then('there is a reference entity {string} with:', async function(identifier, updates) {
     const referenceEntity = convertItemTable(updates)[0];
 
     listReferenceEntityUpdated(this.page, identifier, referenceEntity.labels);
@@ -116,21 +116,21 @@ module.exports = async function (cucumber) {
     }
   });
 
-  Then('The validation error will be {string}', async function (expectedMessage) {
+  Then('The validation error will be {string}', async function(expectedMessage) {
     await validationMessageShown(this.page, expectedMessage);
   });
 
-  Then('the reference entity will be saved', async function () {
+  Then('the reference entity will be saved', async function() {
     await saveReferenceEntity(this.page);
   });
 
-  Then('a validation message is displayed {string}', async function (expectedMessage) {
+  Then('a validation message is displayed {string}', async function(expectedMessage) {
     const modal = await await getElement(this.page, 'Modal');
     const actualMesssage = await modal.getValidationMessageForCode();
     assert.strictEqual(expectedMessage, actualMesssage);
   });
 
-  Then('the user should not be able to create a reference entity', async function () {
+  Then('the user should not be able to create a reference entity', async function() {
     const header = await await getElement(this.page, 'Header');
     assert.strictEqual(false, await header.isCreateButtonVisible());
   });

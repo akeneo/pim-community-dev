@@ -19,7 +19,7 @@ Feature: Lists all records of a reference entity
   Scenario: Search records of a reference entity with no results
     Given the records "starck,dyson,coco"
     When the user search for "search"
-    Then there should be no result
+    Then there should be no result on a total of 3 records
 
   @acceptance-back
   Scenario: Search records of a reference entity by their code

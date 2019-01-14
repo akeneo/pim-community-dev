@@ -46,7 +46,8 @@
                     }
                 }
             ],
-            "total": 1
+            "matches_count":1,
+            "total_count":3
         }
     }
 }

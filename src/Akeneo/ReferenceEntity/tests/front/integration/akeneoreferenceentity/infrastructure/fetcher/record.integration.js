@@ -60,10 +60,10 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
           image: null,
           values: {
             'description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US': {
-              'attribute': 'description_designer_29aea250-bc94-49b2-8259-bbc116410eb2',
-              'channel': 'ecommerce',
-              'data': 'an awesome designer!',
-              'locale': 'en_US'
+              attribute: 'description_designer_29aea250-bc94-49b2-8259-bbc116410eb2',
+              channel: 'ecommerce',
+              data: 'an awesome designer!',
+              locale: 'en_US',
             },
           },
           completeness: {
@@ -72,7 +72,8 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
           },
         },
       ],
-      total: 2,
+      matchesCount: 2,
+      totalCount: 3,
     });
   });
 
@@ -108,7 +109,8 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
 
     expect(response).toEqual({
       items: [],
-      total: 0,
+      matchesCount: 0,
+      totalCount: 3,
     });
   });
 });
