@@ -63,6 +63,8 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
         $suggestedDataFactory->fromSubscription($subscription)->willReturn(null);
 
         $proposalUpsert->process(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $subscriptionRepository->emptySuggestedDataByProducts([2])->shouldNotBeCalled();
+
         $this->handle(new CreateProposalsCommand());
     }
 
@@ -74,14 +76,17 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
         ProductSubscription $subscription2,
         ProductSubscription $subscription3
     ): void {
+        $subscription1->getProductId()->willReturn(42);
         $subscription1->getSubscriptionId()->shouldNotBeCalled();
         $suggestedDataFactory->fromSubscription($subscription1)->willReturn(
             new ProposalSuggestedData(42, ['foo' => 'bar'])
         );
+        $subscription2->getProductId()->willReturn(56);
         $subscription2->getSubscriptionId()->willReturn('abc');
         $suggestedDataFactory->fromSubscription($subscription2)->willReturn(
             new ProposalSuggestedData(56, ['bar' => 'baz'])
         );
+        $subscription3->getProductId()->willReturn(144);
         $subscription3->getSubscriptionId()->willReturn('def');
         $suggestedDataFactory->fromSubscription($subscription3)->willReturn(
             new ProposalSuggestedData(144, ['test' => 42])
@@ -92,6 +97,8 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
         $subscriptionRepository->findPendingSubscriptions(2, 'def')->willReturn([]);
 
         $proposalUpsert->process(Argument::type('array'), ProposalAuthor::USERNAME)->shouldBeCalledTimes(2);
+        $subscriptionRepository->emptySuggestedDataByProducts([42, 56])->shouldBeCalled();
+        $subscriptionRepository->emptySuggestedDataByProducts([144])->shouldBeCalled();
 
         $this->handle(new CreateProposalsCommand());
     }

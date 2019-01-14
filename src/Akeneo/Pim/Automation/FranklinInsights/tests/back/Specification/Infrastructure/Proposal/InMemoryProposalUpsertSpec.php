@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Event\SubscriptionEvents;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\InMemoryProposalUpsert;
@@ -15,7 +14,6 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -64,11 +62,6 @@ class InMemoryProposalUpsertSpec extends ObjectBehavior
 
         $productUpdater->update($product, ['values' => ['foo' => 'bar']])->shouldBeCalled();
         $productUpdater->update($product2, ['values' => ['test' => 42]])->shouldBeCalled();
-
-        $eventDispatcher->dispatch(
-            SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED,
-            new GenericEvent([343, 1556])
-        )->shouldBeCalled();
 
         $this->process([$suggestedData, $suggestedData2], 'an_author')->shouldReturn(null);
 
