@@ -1,4 +1,5 @@
 web/bundles/*
+!web/bundles/.gitkeep
 web/media/*
 web/css/*
 web/js/*
@@ -58,3 +59,5 @@ package-lock.json
 .yarn-metadata.json
 yarn-error.log
 coverage/*
+app/config/parameters.yml
+app/config/parameters_test.yml

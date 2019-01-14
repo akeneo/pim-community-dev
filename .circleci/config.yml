@@ -1,0 +1,263 @@
+version: 2
+jobs:
+  setup:
+    machine:
+      enabled: true
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - run:
+          name: Copy env file
+          command: cp .env.dist .env
+      - run:
+          name: Copy docker-compose.override.yml.dist
+          command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+      - run:
+          name: Setup tests results folder and log folder
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs
+      - run:
+          name: Setup the parameters.yml files
+          command: ./bin/docker/pim-setup.sh
+      - run:
+          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Start containers
+          command: docker-compose up -d
+      - restore_cache:
+          name: Restore cache - node_modules
+          keys:
+            - node-modules-v7-{{ checksum "yarn.lock" }}
+      - restore_cache:
+          name: Restore cache - vendor
+          keys:
+            - vendor-v7-{{ checksum "composer.lock" }}
+      - run:
+          name: Change owner on project dir after restoring cache
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Install dependencies
+          command: ./bin/docker/pim-dependencies.sh
+      - run:
+          name: Pim database installation
+          command: docker-compose exec fpm bin/console --env=behat pim:install --force --clean
+      - run:
+            name: Pim yarn dev installation
+            command: docker-compose run --rm node yarn run webpack-dev
+      - run:
+            name: Pim yarn test installation
+            command: docker-compose run --rm node yarn run webpack-test
+      - run:
+            name: Change owner on project dir after installing when there is no cache
+            command: sudo chmod -R 777 ../project
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: node-modules-v7-{{ checksum "yarn.lock" }}
+      - save_cache:
+          paths:
+            - ./vendor
+          key: vendor-v7-{{ checksum "composer.lock" }}
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
+
+  back_static_and_acceptance:
+      machine:
+          enabled: true
+          docker_layer_caching: true
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: docker-compose up -d fpm
+          - run:
+                name: PhpSpec
+                command: docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+          - run:
+                name: PhpCsFixer
+                command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+          - run:
+                name: PhpCoupling Detector
+                command: DOCKER=true make coupling
+          - run:
+                name: PHPStan
+                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
+          - run:
+                name: Check Pullup
+                command: docker-compose exec -T fpm bin/check-pullup
+          - run:
+                name: Acceptance back
+                command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
+          - store_test_results:
+                path: var/tests
+          - store_artifacts:
+                path: var/tests
+
+  back_phpunit_integration:
+      machine:
+          enabled: true
+          docker_layer_caching: true
+      parallelism: 10
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: docker-compose up -d
+          - run:
+                name: Install database
+                command: |
+                    sleep 25 # wait mysql to be up
+                    docker-compose exec fpm bin/console --env=behat pim:install:db
+          - run:
+                name: PHPunit Integration
+                command: |
+                    TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" "src/**/*Integration.php" | circleci tests split)
+                    .circleci/run_phpunit.sh $TESTFILES
+          - store_test_results:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/tests/phpunit
+
+  back_phpunit_end_to_end:
+      machine:
+          enabled: true
+          docker_layer_caching: true
+      parallelism: 10
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: docker-compose up -d
+          - run:
+                name: Install database
+                command: |
+                    sleep 25 # wait mysql to be up
+                    docker-compose exec fpm bin/console --env=behat pim:install:db
+          - run:
+                name: PHPunit End to end
+                command: |
+                    TESTFILES=$(circleci tests glob "tests/back/**/*EndToEnd.php" "src/**/*EndToEnd.php" | circleci tests split)
+                    .circleci/run_phpunit.sh $TESTFILES
+          - store_test_results:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/tests/phpunit
+
+  back_behat_legacy:
+    machine:
+      enabled: true
+      docker_layer_caching: true
+    parallelism: 20
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+            name: Change owner on project dir in order to archive the project into the workspace
+            command: sudo chown -R 1000:1000 ../project
+      - run:
+            name: Start containers
+            command: docker-compose up -d
+      - run:
+            name: Install database
+            command: |
+                sleep 25 # wait mysql to be up
+                docker-compose exec fpm bin/console --env=behat pim:install:db
+      - run:
+          name: Behat
+          command: |
+            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy | circleci tests split)
+            .circleci/run_behat.sh $TESTFILES
+      - store_test_results:
+          path: var/tests/behat
+      - store_artifacts:
+          path: var/tests/behat
+
+  front_static_acceptance_and_integration:
+      machine:
+          enabled: true
+          docker_layer_caching: true
+      steps:
+        - attach_workspace:
+            at: ~/
+        - run:
+            name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+            command: sudo chown -R 1000:1000 ../project
+        - run:
+            name: Front linter
+            command: docker-compose run --rm node yarn run lint
+        - run:
+            name: Front unit tests
+            command: docker-compose run --rm node yarn run unit
+        - run:
+            name: Front acceptance tests
+            command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+        - run:
+            name: Front integration tests
+            command: docker-compose run --rm node yarn run integration
+
+workflows:
+  version: 2
+  pull_request:
+      jobs:
+          - wait_for_user_approval:
+                type: approval
+          - setup:
+                requires:
+                    - wait_for_user_approval
+          - back_static_and_acceptance:
+                requires:
+                    - setup
+          - front_static_acceptance_and_integration:
+                requires:
+                    - setup
+          - back_phpunit_integration:
+                requires:
+                    - back_static_and_acceptance
+                    - front_static_acceptance_and_integration
+          - back_phpunit_end_to_end:
+                requires:
+                    - back_phpunit_integration
+          - back_behat_legacy:
+                requires:
+                    - back_phpunit_end_to_end
+
+  nightly:
+      triggers:
+          - schedule:
+                cron: "0 5 * * *"
+                filters:
+                    branches:
+                        only:
+                            - test-circle-pit
+      jobs:
+          - setup
+          - back_static_and_acceptance:
+                requires:
+                    - setup
+          - front_static_acceptance_and_integration:
+                requires:
+                    - setup
+          - back_phpunit_integration:
+                requires:
+                    - back_static_and_acceptance
+                    - front_static_acceptance_and_integration
+          - back_phpunit_end_to_end:
+                requires:
+                    - back_phpunit_integration
+          - back_behat_legacy:
+                requires:
+                    - back_phpunit_end_to_end
