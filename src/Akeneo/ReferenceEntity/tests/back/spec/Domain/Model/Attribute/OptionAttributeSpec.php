@@ -123,4 +123,143 @@ class OptionAttributeSpec extends ObjectBehavior
         $this->hasAttributeOption(OptionCode::fromString('green'))->shouldReturn(true);
         $this->hasAttributeOption(OptionCode::fromString('pink'))->shouldReturn(false);
     }
+
+    function it_gets_an_option_in_the_collection()
+    {
+        $this->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray(['fr_FR' => 'rouge'])
+                ),
+                AttributeOption::create(
+                    OptionCode::fromString('green'),
+                    LabelCollection::fromArray(['fr_FR' => 'vert'])
+                ),
+            ]
+        );
+
+        $this->getAttributeOption(OptionCode::fromString('red'))->shouldBeLike(
+            AttributeOption::create(
+                OptionCode::fromString('red'),
+                LabelCollection::fromArray(['fr_FR' => 'rouge'])
+            )
+        );
+    }
+
+    function it_triggers_exception_when_the_code_does_not_exist()
+    {
+        $this->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray(['fr_FR' => 'rouge'])
+                ),
+                AttributeOption::create(
+                    OptionCode::fromString('green'),
+                    LabelCollection::fromArray(['fr_FR' => 'vert'])
+                ),
+            ]
+        );
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('getAttributeOption', [OptionCode::fromString('blue')]);
+    }
+
+    function it_adds_a_new_option()
+    {
+        $this->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray(['fr_FR' => 'rouge'])
+                )
+            ]
+        );
+
+        $newOption = AttributeOption::create(
+            OptionCode::fromString('green'),
+            LabelCollection::fromArray(['fr_FR' => 'vert'])
+        );
+
+        $this->addOption($newOption);
+
+        $this->getAttributeOptions()->shouldBeLike(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray(['fr_FR' => 'rouge'])
+                ),
+                AttributeOption::create(
+                    OptionCode::fromString('green'),
+                    LabelCollection::fromArray(['fr_FR' => 'vert'])
+                ),
+            ]
+        );
+    }
+
+    function it_cannot_add_a_new_option_if_the_option_already_exists()
+    {
+        $this->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray(['fr_FR' => 'rouge'])
+                )
+            ]
+        );
+
+        $newOption = AttributeOption::create(
+            OptionCode::fromString('red'),
+            LabelCollection::fromArray(['fr_FR' => 'rouge'])
+        );
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('addOption', [$newOption]);
+    }
+
+    function it_updates_an_existing_option()
+    {
+        $this->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray(['fr_FR' => 'rouge'])
+                )
+            ]
+        );
+
+        $option = AttributeOption::create(
+            OptionCode::fromString('red'),
+            LabelCollection::fromArray(['en_US' => 'red'])
+        );
+
+        $this->updateOption($option);
+
+        $this->getAttributeOptions()->shouldBeLike(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray(['en_US' => 'red'])
+                )
+            ]
+        );
+    }
+
+    function it_cannot_update_an_new_option_if_the_option_does_not_exist()
+    {
+        $this->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray(['fr_FR' => 'rouge'])
+                )
+            ]
+        );
+
+        $newOption = AttributeOption::create(
+            OptionCode::fromString('blue'),
+            LabelCollection::fromArray([])
+        );
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('updateOption', [$newOption]);
+    }
 }

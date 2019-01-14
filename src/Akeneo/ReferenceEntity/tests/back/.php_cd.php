@@ -18,6 +18,8 @@ $rules = [
         'Akeneo\Tool\Component',
         'Doctrine\Common',
         'Symfony\Component\EventDispatcher\EventSubscriberInterface',
+        'Symfony\Component\EventDispatcher\Event',
+        'Webmozart\Assert\Assert',
     ])->in('Akeneo\ReferenceEntity\Application'),
     $builder->only([
         'Akeneo\ReferenceEntity\Application',

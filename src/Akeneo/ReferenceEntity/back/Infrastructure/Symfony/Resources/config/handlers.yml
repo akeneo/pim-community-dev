@@ -45,6 +45,19 @@ services:
             - '@akeneo_referenceentity.application.edit_attribute.attribute_updater.attribute_updater_registry'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
+    # Attribute options
+    akeneo_referenceentity.application.attribute.append_attribute_option_handler:
+        class: Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionHandler
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.application.attribute.edit_attribute_option_handler:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionHandler
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
     # Records
     akeneo_referenceentity.application.record.create_record_handler:
         class: Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler

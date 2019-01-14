@@ -174,3 +174,20 @@ services:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.infrastructure.validation.record.filter_records_by_completeness' }
+
+    akeneo_referenceentity.infrastructure.validation.attribute.there_should_less_attribute_options_than_limit:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributeOptionsThanLimitValidator
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '%reference_entity_option_limit_per_list_attribute%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.there_should_be_less_attribute_options_than_limit' }
+
+    akeneo_referenceentity.infrastructure.validation.attribute.attribute_option_should_not_exist:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionShouldNotExistValidator
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.attribute_option_should_not_exist' }

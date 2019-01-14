@@ -68,6 +68,29 @@ class OptionCollectionAttribute extends AbstractAttribute
         }
     }
 
+    public function addOption(AttributeOption $option): void
+    {
+        Assert::maxCount(
+            $this->attributeOptions,
+            self::MAX_OPTIONS - 1,
+            sprintf(
+                'It is not possible to add a new option as a multiselect attribute can have a maximum of %d options',
+                self::MAX_OPTIONS
+            )
+        );
+
+        Assert::false(isset($this->attributeOptions[(string) $option->getCode()]), 'Option already exists in the collection');
+
+        $this->attributeOptions[(string) $option->getCode()] = $option;
+    }
+
+    public function updateOption(AttributeOption $option): void
+    {
+        Assert::true(isset($this->attributeOptions[(string) $option->getCode()]), 'Option cannot be set as it does not exist');
+
+        $this->attributeOptions[(string) $option->getCode()] = $option;
+    }
+
     public function normalize(): array
     {
         return array_merge(
@@ -94,6 +117,15 @@ class OptionCollectionAttribute extends AbstractAttribute
     public function hasAttributeOption(OptionCode $optionCode): bool
     {
         return array_key_exists((string) $optionCode, $this->attributeOptions);
+    }
+
+    public function getAttributeOption(OptionCode $code): AttributeOption
+    {
+        if (!isset($this->attributeOptions[(string) $code])) {
+            throw new \InvalidArgumentException(sprintf('Attribute option "%s" does not exist.', (string) $code));
+        }
+
+        return $this->attributeOptions[(string) $code];
     }
 
     protected function getType(): string

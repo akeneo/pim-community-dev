@@ -350,3 +350,22 @@ Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditOp
 Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntityPermission\AtLeastOneUserGroupShouldHaveEditPermission: ~
+
+# Attribute options
+Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttributeOptionCommand:
+    group_sequence:
+        - AppendAttributeOptionCommand
+        - primary_constraints
+        - secondary_constraints
+    properties:
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        attributeCode:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+        optionCode:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionCode: ~
+        labels:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionShouldNotExist: { groups: [primary_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributeOptionsThanLimit: { groups: [secondary_constraints] }
