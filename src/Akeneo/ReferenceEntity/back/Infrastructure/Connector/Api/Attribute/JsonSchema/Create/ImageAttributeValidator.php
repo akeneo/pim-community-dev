@@ -9,17 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema;
+namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
-class RecordAttributeValidator implements AttributeValidatorInterface
+class ImageAttributeValidator implements AttributeValidatorInterface
 {
-    private const API_RECORD_ATTRIBUTE_TYPE = 'reference_entity_single_link';
-    private const API_RECORD_COLLECTION_ATTRIBUTE_TYPE = 'reference_entity_multiple_links';
+    private const API_IMAGE_ATTRIBUTE_TYPE = 'image';
 
     public function validate(array $normalizedAttribute): array
     {
@@ -32,14 +29,14 @@ class RecordAttributeValidator implements AttributeValidatorInterface
 
     public function forAttributeTypes(): array
     {
-        return [self::API_RECORD_ATTRIBUTE_TYPE, self::API_RECORD_COLLECTION_ATTRIBUTE_TYPE];
+        return [self::API_IMAGE_ATTRIBUTE_TYPE];
     }
 
     private function getJsonSchema(): array
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel', 'reference_entity_code'],
+            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],
@@ -62,8 +59,14 @@ class RecordAttributeValidator implements AttributeValidatorInterface
                 'is_required_for_completeness' => [
                     'type' => [ 'boolean'],
                 ],
-                'reference_entity_code' => [
-                    'type' => [ 'string'],
+                'allowed_extensions' => [
+                    'type' => ['array'],
+                    'items' => [
+                        'type' => 'string',
+                    ]
+                ],
+                'max_file_size' => [
+                    'type' => [ 'integer'],
                 ],
             ],
             'additionalProperties' => false,

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema;
+namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeValidatorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\ImageAttributeValidator;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\ImageAttributeValidator;
 use PhpSpec\ObjectBehavior;
 
 class ImageAttributeValidatorSpec extends ObjectBehavior
@@ -29,7 +29,7 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
         $this->shouldImplement(AttributeValidatorInterface::class);
     }
 
-    function it_is_json_schema_of_text_attribute()
+    function it_is_json_schema_of_image_attribute()
     {
         $this->forAttributeTypes()->shouldContain('image');
     }

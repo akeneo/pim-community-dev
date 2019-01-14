@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -9,13 +11,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema;
+namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
-class ImageAttributeValidator implements AttributeValidatorInterface
+class TextAttributeValidator implements AttributeValidatorInterface
 {
-    private const API_IMAGE_ATTRIBUTE_TYPE = 'image';
+    private const API_TEXT_ATTRIBUTE_TYPE = 'text';
 
     public function validate(array $normalizedAttribute): array
     {
@@ -28,7 +32,7 @@ class ImageAttributeValidator implements AttributeValidatorInterface
 
     public function forAttributeTypes(): array
     {
-        return [self::API_IMAGE_ATTRIBUTE_TYPE];
+        return [self::API_TEXT_ATTRIBUTE_TYPE];
     }
 
     private function getJsonSchema(): array
@@ -58,15 +62,21 @@ class ImageAttributeValidator implements AttributeValidatorInterface
                 'is_required_for_completeness' => [
                     'type' => [ 'boolean'],
                 ],
-                'allowed_extensions' => [
-                    'type' => ['array'],
-                    'items' => [
-                        'type' => 'string',
-                    ]
+                'is_textarea' => [
+                    'type' => [ 'boolean'],
                 ],
-                'max_file_size' => [
+                'is_rich_text_editor' => [
+                    'type' => [ 'boolean'],
+                ],
+                'max_characters' => [
                     'type' => [ 'integer'],
                 ],
+                'validation_rule' => [
+                    'type' => [ 'string'],
+                ],
+                'validation_regexp' => [
+                    'type' => [ 'string'],
+                ]
             ],
             'additionalProperties' => false,
         ];

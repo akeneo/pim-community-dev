@@ -30,6 +30,7 @@ Feature: Connection to MDM or ERP systems
     When the connector collects the new Main color attribute with an invalid format
     Then the PIM notifies the connector about an error indicating that the attribute has an invalid format
 
+  @integration-back
   Scenario: Notify an error when collecting an existing attribute with an invalid format for a given reference entity
     Given the Color reference entity existing both in the ERP and in the PIM
     And the Main Color attribute that is both part of the structure of the Color reference entity in the ERP and in the PIM but with some unsynchronized properties

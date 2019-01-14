@@ -11,17 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema;
+namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\AttributeValidatorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\TextAttributeValidator;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\ImageAttributeValidator;
 use PhpSpec\ObjectBehavior;
 
-class TextAttributeValidatorSpec extends ObjectBehavior
+class ImageAttributeValidatorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(TextAttributeValidator::class);
+        $this->shouldHaveType(ImageAttributeValidator::class);
     }
 
     function it_is_an_attribute_validator()
@@ -29,9 +40,21 @@ class TextAttributeValidatorSpec extends ObjectBehavior
         $this->shouldImplement(AttributeValidatorInterface::class);
     }
 
-    function it_is_json_schema_of_text_attribute()
+    function it_is_json_schema_of_image_attribute()
     {
-        $this->forAttributeTypes()->shouldContain('text');
+        $attribute = ImageAttribute::create(
+            AttributeIdentifier::create('brand', 'photo', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            AttributeCode::fromString('photo'),
+            LabelCollection::fromArray(['en_US' => 'Cover Image']),
+            AttributeOrder::fromInteger(3),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('250.2'),
+            AttributeAllowedExtensions::fromList(['jpg'])
+        );
+        $this->support($attribute)->shouldReturn(true);
     }
 
     function it_does_not_return_any_error_when_the_attribute_is_valid()
@@ -45,11 +68,17 @@ class TextAttributeValidatorSpec extends ObjectBehavior
                 'en_US' => 'Philippe Starck'
             ],
             'is_required_for_completeness' => false,
-            'is_textarea' => false,
-            'max_characters' => 12,
-            'validation_rule' => 'regular_expression',
-            'validation_regexp' => 'foo',
-            'is_rich_text_editor' => true
+            'allowed_extensions' => ['jpg'],
+            'max_file_size' => 10,
+        ];
+
+        $this->validate($attribute)->shouldReturn([]);
+    }
+
+    function it_does_not_return_any_error_when_only_the_code_is_provided()
+    {
+        $attribute = [
+            'code' => 'starck',
         ];
 
         $this->validate($attribute)->shouldReturn([]);
@@ -59,45 +88,6 @@ class TextAttributeValidatorSpec extends ObjectBehavior
     {
         $attribute = [
             'type' => 'text',
-            'value_per_channel' => true,
-            'value_per_locale' => true,
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_is_mandatory_to_provide_the_channel_of_the_attribute()
-    {
-        $attribute = [
-            'code' => 'starck',
-            'type' => 'text',
-            'value_per_locale' => true,
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_is_mandatory_to_provide_the_locale_of_the_attribute()
-    {
-        $attribute = [
-            'code' => 'starck',
-            'type' => 'text',
-            'value_per_channel' => true,
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_is_mandatory_to_provide_the_type_of_the_attribute()
-    {
-        $attribute = [
-            'code' => 'starck',
             'value_per_channel' => true,
             'value_per_locale' => true,
         ];
@@ -210,14 +200,14 @@ class TextAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_is_rich_text_editor_is_not_a_boolean()
+    function it_returns_an_error_when_allowed_extensions_is_not_an_array()
     {
         $attribute = [
             'code' => 'starck',
             'type' => 'text',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'is_rich_text_editor' => 'foo',
+            'allowed_extensions' => 'jpg',
         ];
 
         $errors = $this->validate($attribute);
@@ -225,59 +215,14 @@ class TextAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_is_textarea_is_not_a_boolean()
+    function it_returns_an_error_when_max_file_size_is_not_an_integer()
     {
         $attribute = [
             'code' => 'starck',
             'type' => 'text',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'is_textarea' => 'foo',
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_returns_an_error_when_max_characters_is_not_a_number()
-    {
-        $attribute = [
-            'code' => 'starck',
-            'type' => 'text',
-            'value_per_channel' => true,
-            'value_per_locale' => true,
-            'max_characters' => 'foo',
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_returns_an_error_when_validation_rule_is_not_a_string()
-    {
-        $attribute = [
-            'code' => 'starck',
-            'type' => 'text',
-            'value_per_channel' => true,
-            'value_per_locale' => true,
-            'validation_rule' => 1,
-        ];
-
-        $errors = $this->validate($attribute);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_returns_an_error_when_validation_regexp_is_not_a_string()
-    {
-        $attribute = [
-            'code' => 'starck',
-            'type' => 'text',
-            'value_per_channel' => true,
-            'value_per_locale' => true,
-            'validation_regexp' => 1,
+            'max_file_size' => 'foo',
         ];
 
         $errors = $this->validate($attribute);

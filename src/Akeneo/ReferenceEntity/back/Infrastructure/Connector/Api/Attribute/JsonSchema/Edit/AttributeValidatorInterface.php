@@ -11,7 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema;
+namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
+
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 
 interface AttributeValidatorInterface
 {
@@ -26,5 +28,5 @@ interface AttributeValidatorInterface
      */
     public function validate(array $normalizedAttribute): array;
 
-    public function forAttributeTypes(): array;
+    public function support(AbstractAttribute $attribute): bool;
 }

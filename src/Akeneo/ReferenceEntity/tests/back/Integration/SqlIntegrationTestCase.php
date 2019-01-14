@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Integration;
 
 use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\ResettableContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -57,5 +58,16 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
     protected function overrideContainer(): void
     {
         $this->testKernel->getContainer()->set('event_dispatcher', new EventDispatcherMock());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown()
+    {
+        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
+        $connectionCloser->closeConnections();
+
+        $this->testKernel->shutdown();
     }
 }

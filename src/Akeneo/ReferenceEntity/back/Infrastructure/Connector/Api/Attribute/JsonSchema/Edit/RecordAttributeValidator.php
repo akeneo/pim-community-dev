@@ -9,19 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema;
+namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
-class OptionAttributeValidator implements AttributeValidatorInterface
+class RecordAttributeValidator implements AttributeValidatorInterface
 {
-    private const API_OPTION_ATTRIBUTE_TYPE = 'single_option';
-    private const API_OPTION_COLLECTION_ATTRIBUTE_TYPE = 'multiple_options';
-
     public function validate(array $normalizedAttribute): array
     {
         $record = Validator::arrayToObjectRecursive($normalizedAttribute);
@@ -31,16 +28,16 @@ class OptionAttributeValidator implements AttributeValidatorInterface
         return $validator->getErrors();
     }
 
-    public function forAttributeTypes(): array
+    public function support(AbstractAttribute $attribute): bool
     {
-        return [self::API_OPTION_ATTRIBUTE_TYPE, self::API_OPTION_COLLECTION_ATTRIBUTE_TYPE];
+        return $attribute instanceof RecordAttribute || $attribute instanceof RecordCollectionAttribute;
     }
 
     private function getJsonSchema(): array
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel'],
+            'required' => ['code'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],
@@ -62,6 +59,9 @@ class OptionAttributeValidator implements AttributeValidatorInterface
                 ],
                 'is_required_for_completeness' => [
                     'type' => [ 'boolean'],
+                ],
+                'reference_entity_code' => [
+                    'type' => [ 'string'],
                 ],
             ],
             'additionalProperties' => false,

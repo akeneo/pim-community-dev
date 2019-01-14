@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -11,14 +9,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema;
+namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeValidatorInterface;
 use JsonSchema\Validator;
 
-class TextAttributeValidator implements AttributeValidatorInterface
+class RecordAttributeValidator implements AttributeValidatorInterface
 {
-    private const API_TEXT_ATTRIBUTE_TYPE = 'text';
+    private const API_RECORD_ATTRIBUTE_TYPE = 'reference_entity_single_link';
+    private const API_RECORD_COLLECTION_ATTRIBUTE_TYPE = 'reference_entity_multiple_links';
 
     public function validate(array $normalizedAttribute): array
     {
@@ -31,14 +33,14 @@ class TextAttributeValidator implements AttributeValidatorInterface
 
     public function forAttributeTypes(): array
     {
-        return [self::API_TEXT_ATTRIBUTE_TYPE];
+        return [self::API_RECORD_ATTRIBUTE_TYPE, self::API_RECORD_COLLECTION_ATTRIBUTE_TYPE];
     }
 
     private function getJsonSchema(): array
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel'],
+            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel', 'reference_entity_code'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],
@@ -61,21 +63,9 @@ class TextAttributeValidator implements AttributeValidatorInterface
                 'is_required_for_completeness' => [
                     'type' => [ 'boolean'],
                 ],
-                'is_textarea' => [
-                    'type' => [ 'boolean'],
-                ],
-                'is_rich_text_editor' => [
-                    'type' => [ 'boolean'],
-                ],
-                'max_characters' => [
-                    'type' => [ 'integer'],
-                ],
-                'validation_rule' => [
+                'reference_entity_code' => [
                     'type' => [ 'string'],
                 ],
-                'validation_regexp' => [
-                    'type' => [ 'string'],
-                ]
             ],
             'additionalProperties' => false,
         ];
