@@ -92,7 +92,7 @@
         <tspan x="24.175" y="321.522">(almost all contexts)</tspan>
       </text>
     </g>
-    <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="714,713 714,671 533.736,671 533.736,608.5 598.071,608.5 "/>
+    <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #ff0000" points="714,713 714,671 533.736,671 533.736,608.5 598.071,608.5 "/>
     <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="560,444.5 93.8166,444.5 93.8166,600 93,600 "/>
     <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="-187,600 -180,600 -180,444.5 558.019,444.5 "/>
     <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="657.5,713 657.5,692 392.614,692 392.614,444.5 560,444.5 "/>
@@ -171,9 +171,6 @@
       <tspan x="581.004" y="632.742">u</tspan>
     </text>
     <polyline style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="1066,324.5 1087,324.5 1087,518.25 845.736,518.25 845.736,671 770.736,671 770.736,713 770.5,713 "/>
-    <text font-size="22.5778" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:start;font-family:Lato;font-style:normal;font-weight:700" x="-32.865" y="320.5">
-      <tspan x="-32.865" y="320.5">d</tspan>
-    </text>
     <text font-size="22.5778" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:start;font-family:Lato;font-style:normal;font-weight:700" x="727.4" y="700.5">
       <tspan x="727.4" y="700.5">d</tspan>
     </text>
