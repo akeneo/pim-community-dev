@@ -48,7 +48,7 @@ SELECT
     SUM(s.misses_mapping) as misses_mapping 
 FROM pim_catalog_family f
 INNER JOIN pim_catalog_product p ON p.family_id = f.id
-INNER JOIN pim_franklin_insights_product_subscription s ON s.product_id = p.id
+INNER JOIN pimee_franklin_insights_subscription s ON s.product_id = p.id
 INNER JOIN pim_catalog_family_translation ft ON f.id = ft.foreign_key
 WHERE f.code like :search OR ft.label like :search
 GROUP BY f.code ORDER BY f.id LIMIT :limit OFFSET :offset;

@@ -1,6 +1,6 @@
 Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping:
     type: entity
-    table: pim_franklin_insights_franklin_identifier_mapping
+    table: pimee_franklin_insights_identifier_mapping
     changeTrackingPolicy: DEFERRED_EXPLICIT
     indexes:
         franklin_code_idx:
