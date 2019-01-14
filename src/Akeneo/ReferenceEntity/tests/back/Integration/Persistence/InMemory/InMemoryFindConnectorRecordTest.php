@@ -68,7 +68,7 @@ class InMemoryFindConnectorRecordTest extends TestCase
         );
 
         Assert::assertNotNull($result);
-        Assert::assertSame(
+        Assert::assertEquals(
             $record->normalize(),
             $result->normalize()
         );

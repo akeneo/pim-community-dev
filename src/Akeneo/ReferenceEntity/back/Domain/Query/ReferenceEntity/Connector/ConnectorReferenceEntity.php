@@ -44,9 +44,10 @@ class ConnectorReferenceEntity
 
     public function normalize(): array
     {
+        $normalizedLabels = $this->labelCollection->normalize();
         return [
             'code' => $this->identifier->normalize(),
-            'labels' => $this->labelCollection->normalize(),
+            'labels' => empty($normalizedLabels) ? (object) [] : $normalizedLabels,
             'image' => $this->image->isEmpty() ? null : $this->image->getKey()
         ];
     }

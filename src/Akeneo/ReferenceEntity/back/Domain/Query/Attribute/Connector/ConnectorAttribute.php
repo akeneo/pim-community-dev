@@ -90,9 +90,11 @@ class ConnectorAttribute
 
     public function normalize(): array
     {
+        $normalizedLabels = $this->labelCollection->normalize();
+
         $commonProperties = [
             'code' => $this->code->__toString(),
-            'labels' => $this->labelCollection->normalize(),
+            'labels' => empty($normalizedLabels) ? (object) [] : $normalizedLabels,
             'type' => $this->mapAttributeType($this->type),
             'localizable' => $this->localizable->normalize(),
             'scopable' => $this->scopable->normalize(),

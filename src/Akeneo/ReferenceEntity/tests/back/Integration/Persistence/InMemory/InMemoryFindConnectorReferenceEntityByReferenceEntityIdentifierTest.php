@@ -64,7 +64,7 @@ class InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifierTest extend
         );
 
         Assert::assertNotNull($result);
-        Assert::assertSame(
+        Assert::assertEquals(
             $referenceEntity->normalize(),
             $referenceEntity->normalize()
         );

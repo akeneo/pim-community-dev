@@ -33,9 +33,11 @@ class ConnectorAttributeOption
 
     public function normalize(): array
     {
+        $normalizedLabels = $this->labels->normalize();
+
         return [
             self::OPTION_CODE => (string) $this->code,
-            self::LABELS      => $this->labels->normalize()
+            self::LABELS      => empty($normalizedLabels) ? (object) [] : $normalizedLabels
         ];
     }
 }
