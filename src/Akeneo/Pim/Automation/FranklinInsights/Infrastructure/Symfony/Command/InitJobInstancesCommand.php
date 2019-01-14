@@ -80,6 +80,10 @@ class InitJobInstancesCommand extends ContainerAwareCommand
             $this->createJobInstance(JobInstanceNames::RESUBSCRIBE_PRODUCTS, 'franklin_insights');
         }
 
+        if (!$this->isJobInstanceAlreadyCreated(JobInstanceNames::IDENTIFY_PRODUCTS_TO_RESUBSCRIBE)) {
+            $this->createJobInstance(JobInstanceNames::IDENTIFY_PRODUCTS_TO_RESUBSCRIBE, 'franklin_insights');
+        }
+
         if (!$this->isJobInstanceAlreadyCreated(JobInstanceNames::SYNCHRONIZE)) {
             $this->createJobInstance(JobInstanceNames::SYNCHRONIZE, 'franklin_insights');
         }
