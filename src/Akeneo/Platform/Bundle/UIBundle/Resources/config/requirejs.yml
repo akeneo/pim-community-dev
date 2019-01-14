@@ -1057,6 +1057,7 @@ config:
     pim/template/form/delete:                                 pimui/templates/form/delete.html
     pim/template/form/tab/history:                            pimui/templates/form/tab/history.html
     pim/template/form/tab/section:                            pimui/templates/form/tab/section.html
+    pim/template/form/tab/section-large:                      pimui/templates/form/tab/section-large.html
     pim/template/form/tab/sections:                           pimui/templates/form/tab/sections.html
     pim/template/form/grid:                                   pimui/templates/form/grid.html
     pim/template/form/add-select/select:                      pimui/templates/form/add-select/select.html
@@ -1105,6 +1106,7 @@ config:
     pim/template/form/common/fields/simple-select-async:      pimui/templates/form/common/fields/simple-select-async.html
     pim/template/form/common/fields/text:                     pimui/templates/form/common/fields/text.html
     pim/template/form/common/fields/textarea:                 pimui/templates/form/common/fields/textarea.html
+    pim/template/form/common/fields/textarea-monospaced:      pimui/templates/form/common/fields/textarea-monospaced.html
     pim/template/form/common/fields/metric:                   pimui/templates/form/common/fields/metric.html
     pim/template/form/common/fields/password:                 pimui/templates/form/common/fields/password.html
     pim/template/form/common/fields/number:                   pimui/templates/form/common/fields/number.html
