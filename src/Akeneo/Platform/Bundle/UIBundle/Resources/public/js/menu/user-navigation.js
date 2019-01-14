@@ -76,7 +76,7 @@ define(
              * Redirect user to logout
              */
             logout: function () {
-                router.redirectToRoute('pim_user_security_logout');
+                window.location = router.generate('pim_user_logout_redirect');
             },
 
             /**
