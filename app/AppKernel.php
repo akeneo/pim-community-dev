@@ -183,7 +183,6 @@ class AppKernel extends Kernel
     {
         return [
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-            new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
