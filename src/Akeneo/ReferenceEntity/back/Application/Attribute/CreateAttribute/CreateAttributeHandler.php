@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistryInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 
 /**
@@ -30,12 +31,17 @@ class CreateAttributeHandler
     /** @var AttributeFactoryRegistryInterface */
     private $attributeFactoryRegistry;
 
+    /** @var FindAttributeNextOrderInterface */
+    private $attributeNextOrder;
+
     public function __construct(
         AttributeFactoryRegistryInterface $attributeFactoryRegistry,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        FindAttributeNextOrderInterface $attributeNextOrder
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->attributeFactoryRegistry = $attributeFactoryRegistry;
+        $this->attributeNextOrder = $attributeNextOrder;
     }
 
     public function __invoke(AbstractCreateAttributeCommand $command): void
@@ -45,7 +51,11 @@ class CreateAttributeHandler
             AttributeCode::fromString($command->code)
         );
 
-        $attribute = $this->attributeFactoryRegistry->getFactory($command)->create($command, $identifier);
+        $order = $this->attributeNextOrder->withReferenceEntityIdentifier(
+            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier)
+        );
+
+        $attribute = $this->attributeFactoryRegistry->getFactory($command)->create($command, $identifier, $order);
         $this->attributeRepository->create($attribute);
     }
 }

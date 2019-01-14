@@ -7,6 +7,7 @@ use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttr
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use PhpSpec\ObjectBehavior;
@@ -24,7 +25,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $this->supports(new CreateImageAttributeCommand())->shouldReturn(false);
     }
 
-    function it_creates_a_simple_text_attribute_with_a_command(AttributeIdentifier $identifier)
+    function it_creates_a_simple_text_attribute_with_a_command()
     {
         $command = new CreateTextAttributeCommand();
         $command->referenceEntityIdentifier = 'designer';
@@ -39,9 +40,11 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->validationRule = AttributeValidationRule::NONE;
         $command->regularExpression = AttributeRegularExpression::EMPTY;
 
-        $identifier->__toString()->willReturn('name_designer_test');
-
-        $this->create($command, $identifier)->normalize()->shouldReturn([
+        $this->create(
+            $command,
+            AttributeIdentifier::fromString('name_designer_test'),
+            AttributeOrder::fromInteger(0)
+        )->normalize()->shouldReturn([
             'identifier'                 => 'name_designer_test',
             'reference_entity_identifier' => 'designer',
             'code'                       => 'name',
@@ -59,7 +62,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_a_simple_text_attribute_having_no_validation_with_a_command(AttributeIdentifier $identifier)
+    function it_creates_a_simple_text_attribute_having_no_validation_with_a_command()
     {
         $command = new CreateTextAttributeCommand();
         $command->referenceEntityIdentifier = 'designer';
@@ -74,9 +77,11 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->validationRule = AttributeValidationRule::NONE;
         $command->regularExpression = AttributeRegularExpression::EMPTY;
 
-        $identifier->__toString()->willReturn('name_designer_test');
-
-        $this->create($command, $identifier)->normalize()->shouldReturn([
+        $this->create(
+            $command,
+            AttributeIdentifier::fromString('name_designer_test'),
+            AttributeOrder::fromInteger(0)
+        )->normalize()->shouldReturn([
             'identifier'                 => 'name_designer_test',
             'reference_entity_identifier' => 'designer',
             'code'                       => 'name',
@@ -94,7 +99,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_a_simple_text_attribute_with_no_max_length_limit(AttributeIdentifier $identifier)
+    function it_creates_a_simple_text_attribute_with_no_max_length_limit()
     {
         $command = new CreateTextAttributeCommand();
         $command->referenceEntityIdentifier = 'designer';
@@ -110,9 +115,11 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->validationRule = AttributeValidationRule::NONE;
         $command->regularExpression = AttributeRegularExpression::EMPTY;
 
-        $identifier->__toString()->willReturn('name_designer_test');
-
-        $this->create($command, $identifier)->normalize()->shouldReturn([
+        $this->create(
+            $command,
+            AttributeIdentifier::fromString('name_designer_test'),
+            AttributeOrder::fromInteger(0)
+        )->normalize()->shouldReturn([
             'identifier'                 => 'name_designer_test',
             'reference_entity_identifier' => 'designer',
             'code'                       => 'name',
@@ -130,7 +137,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_a_simple_text_attribute_with_a_regular_expression_validation(AttributeIdentifier $identifier)
+    function it_creates_a_simple_text_attribute_with_a_regular_expression_validation()
     {
         $command = new CreateTextAttributeCommand();
         $command->referenceEntityIdentifier = 'designer';
@@ -147,9 +154,11 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->validationRule = AttributeValidationRule::REGULAR_EXPRESSION;
         $command->regularExpression = '/\w+/';
 
-        $identifier->__toString()->willReturn('name_designer_test');
-
-        $this->create($command, $identifier)->normalize()->shouldReturn([
+        $this->create(
+            $command,
+            AttributeIdentifier::fromString('name_designer_test'),
+            AttributeOrder::fromInteger(0)
+        )->normalize()->shouldReturn([
             'identifier'                 => 'name_designer_test',
             'reference_entity_identifier' => 'designer',
             'code'                       => 'name',
@@ -167,7 +176,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_a_textarea_with_rich_editor(AttributeIdentifier $identifier)
+    function it_creates_a_textarea_with_rich_editor()
     {
         $command = new CreateTextAttributeCommand();
         $command->referenceEntityIdentifier = 'designer';
@@ -181,9 +190,11 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->isTextarea = true;
         $command->isRichTextEditor = true;
 
-        $identifier->__toString()->willReturn('name_designer_test');
-
-        $this->create($command, $identifier)->normalize()->shouldReturn([
+        $this->create(
+            $command,
+            AttributeIdentifier::fromString('name_designer_test'),
+            AttributeOrder::fromInteger(0)
+        )->normalize()->shouldReturn([
             'identifier'                 => 'name_designer_test',
             'reference_entity_identifier' => 'designer',
             'code'                       => 'name',

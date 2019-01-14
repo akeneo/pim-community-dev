@@ -33,6 +33,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.application.registry.attribute_factory'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order'
 
     akeneo_referenceentity.application.attribute.delete_attribute_handler:
         class: Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler

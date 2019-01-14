@@ -42,7 +42,11 @@ class TextAttributeFactory implements AttributeFactoryInterface
         return $command instanceof CreateTextAttributeCommand;
     }
 
-    public function create(AbstractCreateAttributeCommand $command, AttributeIdentifier $identifier): AbstractAttribute
+    public function create(
+        AbstractCreateAttributeCommand $command,
+        AttributeIdentifier $identifier,
+        AttributeOrder $order
+    ): AbstractAttribute
     {
         if (!$this->supports($command)) {
             throw new \RuntimeException(
@@ -62,7 +66,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
                 ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
                 AttributeCode::fromString($command->code),
                 LabelCollection::fromArray($command->labels),
-                AttributeOrder::fromInteger($command->order),
+                $order,
                 AttributeIsRequired::fromBoolean($command->isRequired),
                 AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
                 AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
@@ -76,7 +80,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
             ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
             AttributeCode::fromString($command->code),
             LabelCollection::fromArray($command->labels),
-            AttributeOrder::fromInteger($command->order),
+            $order,
             AttributeIsRequired::fromBoolean($command->isRequired),
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),

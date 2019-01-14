@@ -9,6 +9,7 @@ use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttr
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionCollectionAttributeCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -39,7 +40,11 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
 
-        $this->create($command, AttributeIdentifier::fromString('favorites_color_designer_fingerprint'))->normalize()->shouldReturn([
+        $this->create(
+            $command,
+            AttributeIdentifier::fromString('favorites_color_designer_fingerprint'),
+            AttributeOrder::fromInteger(0)
+        )->normalize()->shouldReturn([
             'identifier' => 'favorites_color_designer_fingerprint',
             'reference_entity_identifier' => 'designer',
             'code' => 'favorites_color',
@@ -60,6 +65,7 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
                 'create', [
                     new CreateTextAttributeCommand(),
                     AttributeIdentifier::fromString('unsupported_attribute'),
+                    AttributeOrder::fromInteger(0)
                 ]
             );
     }

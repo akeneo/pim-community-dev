@@ -8,6 +8,7 @@ use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactor
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordCollectionAttributeCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use PhpSpec\ObjectBehavior;
 
 class RecordCollectionAttributeFactorySpec extends ObjectBehavior
@@ -23,7 +24,7 @@ class RecordCollectionAttributeFactorySpec extends ObjectBehavior
         $this->supports(new CreateImageAttributeCommand())->shouldReturn(false);
     }
 
-    function it_creates_a_record_collection_attribute_with_a_command(AttributeIdentifier $identifier)
+    function it_creates_a_record_collection_attribute_with_a_command()
     {
         $command = new CreateRecordCollectionAttributeCommand();
         $command->referenceEntityIdentifier = 'designer';
@@ -35,9 +36,11 @@ class RecordCollectionAttributeFactorySpec extends ObjectBehavior
         $command->valuePerLocale = false;
         $command->recordType = 'brand';
 
-        $identifier->__toString()->willReturn('brands_designer_fingerprint');
-
-        $this->create($command, $identifier)->normalize()->shouldReturn([
+        $this->create(
+            $command,
+            AttributeIdentifier::fromString('brands_designer_fingerprint'),
+            AttributeOrder::fromInteger(0)
+        )->normalize()->shouldReturn([
             'identifier' => 'brands_designer_fingerprint',
             'reference_entity_identifier' => 'designer',
             'code' => 'brands',
