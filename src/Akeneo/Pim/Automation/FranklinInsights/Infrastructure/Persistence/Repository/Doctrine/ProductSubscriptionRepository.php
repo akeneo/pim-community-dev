@@ -120,7 +120,7 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     public function emptySuggestedData(): void
     {
         $query = <<<SQL
-UPDATE pim_franklin_insights_product_subscription
+UPDATE pimee_franklin_insights_subscription
 SET raw_suggested_data = NULL
 WHERE raw_suggested_data IS NOT NULL;
 SQL;
@@ -137,7 +137,7 @@ SQL;
         }
 
         $query = <<<SQL
-UPDATE pim_franklin_insights_product_subscription
+UPDATE pimee_franklin_insights_subscription
 SET raw_suggested_data = NULL 
 WHERE raw_suggested_data IS NOT NULL
 AND product_id IN (:productIds);
@@ -155,7 +155,7 @@ SQL;
     public function emptySuggestedDataAndMissingMappingByFamily(string $familyCode): void
     {
         $query = <<<SQL
-UPDATE pim_franklin_insights_product_subscription s
+UPDATE pimee_franklin_insights_subscription s
 INNER JOIN pim_catalog_product p ON p.id = s.product_id
 INNER JOIN pim_catalog_family f ON f.id = p.family_id
 SET s.raw_suggested_data = NULL, s.misses_mapping = false
@@ -171,7 +171,7 @@ SQL;
     public function count(): int
     {
         $sql = <<<SQL
-SELECT COUNT(1) AS product_subscription_count from pim_franklin_insights_product_subscription;
+SELECT COUNT(1) AS product_subscription_count from pimee_franklin_insights_subscription;
 SQL;
         $statement = $this->em->getConnection()->executeQuery($sql);
         $result = $statement->fetch();

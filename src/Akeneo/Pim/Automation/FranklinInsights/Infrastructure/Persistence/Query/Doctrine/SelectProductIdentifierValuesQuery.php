@@ -49,7 +49,7 @@ SELECT p.id as productId, JSON_OBJECTAGG(
   m.franklin_code,
   JSON_EXTRACT(p.raw_values, REPLACE('$.%identifier%."<all_channels>"."<all_locales>"', '%identifier%', a.code))
 ) AS mapped_identifier_values
-FROM pim_catalog_product p, pim_franklin_insights_franklin_identifier_mapping m
+FROM pim_catalog_product p, pimee_franklin_insights_identifier_mapping m
 LEFT JOIN pim_catalog_attribute a ON m.attribute_id = a.id
 WHERE p.id IN (:product_ids)
 GROUP BY p.id;

@@ -45,7 +45,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             '
             SELECT product_id, subscription_id, raw_suggested_data, 
             requested_upc, requested_asin, requested_mpn, requested_brand 
-            from pim_franklin_insights_product_subscription;
+            from pimee_franklin_insights_subscription;
         '
         );
         $retrievedSubscriptions = $statement->fetchAll();
@@ -125,7 +125,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         /** @var EntityManager $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
-            'SELECT raw_suggested_data from pim_franklin_insights_product_subscription;'
+            'SELECT raw_suggested_data from pimee_franklin_insights_subscription;'
         );
 
         $subscriptionRows = $statement->fetchAll();
@@ -323,7 +323,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     private function insertSubscription(int $productId, string $subscriptionId, array $suggestedData): void
     {
         $query = <<<SQL
-INSERT INTO pim_franklin_insights_product_subscription (product_id, subscription_id, raw_suggested_data, misses_mapping) 
+INSERT INTO pimee_franklin_insights_subscription (product_id, subscription_id, raw_suggested_data, misses_mapping)
 VALUES (:productId, :subscriptionId, :suggestedData, false)
 SQL;
         $entityManager = $this->get('doctrine.orm.entity_manager');

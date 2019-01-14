@@ -1,6 +1,6 @@
 Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription:
     type: entity
-    table: pim_franklin_insights_product_subscription
+    table: pimee_franklin_insights_subscription
     changeTrackingPolicy: DEFERRED_EXPLICIT
     indexes:
         franklin_insights_subscription_idx:

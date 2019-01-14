@@ -159,7 +159,7 @@ final class FamilyRepositoryIntegration extends TestCase
     private function insertSubscription(int $productId, bool $isMappingMissing): void
     {
         $query = <<<SQL
-INSERT INTO pim_franklin_insights_product_subscription (product_id, subscription_id, misses_mapping) 
+INSERT INTO pimee_franklin_insights_subscription (product_id, subscription_id, misses_mapping) 
 VALUES (:productId, :subscriptionId, :isMappingMissing)
 SQL;
 

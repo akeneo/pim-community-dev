@@ -130,7 +130,7 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
     {
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
-            'SELECT franklin_code, attribute_id from pim_franklin_insights_franklin_identifier_mapping;'
+            'SELECT franklin_code, attribute_id from pimee_franklin_insights_identifier_mapping;'
         );
 
         return $statement->fetchAll();
