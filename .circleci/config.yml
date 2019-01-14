@@ -27,11 +27,11 @@ jobs:
       - restore_cache:
           name: Restore cache - node_modules
           keys:
-            - node-modules-v4-{{ checksum "yarn.lock" }}
+            - node-modules-v7-{{ checksum "yarn.lock" }}
       - restore_cache:
           name: Restore cache - vendor
           keys:
-            - vendor-v4-{{ checksum "composer.lock" }}
+            - vendor-v7-{{ checksum "composer.lock" }}
       - run:
           name: Change owner on project dir after restoring cache
           command: sudo chown -R 1000:1000 ../project
@@ -44,14 +44,17 @@ jobs:
               docker-compose exec fpm bin/console --env=behat pim:install --force --clean
               docker-compose run --rm node yarn run webpack-dev
               docker-compose run --rm node yarn run webpack-test
+      - run:
+            name: Change owner on project dir after installing when there is no cache
+            command: sudo chmod -R 777 ../project
       - save_cache:
           paths:
             - ./node_modules
-          key: node-modules-v4-{{ checksum "yarn.lock" }}
+          key: node-modules-v7-{{ checksum "yarn.lock" }}
       - save_cache:
           paths:
             - ./vendor
-          key: vendor-v4-{{ checksum "composer.lock" }}
+          key: vendor-v7-{{ checksum "composer.lock" }}
       - persist_to_workspace:
           root: ~/
           paths:
