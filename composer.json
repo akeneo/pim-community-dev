@@ -45,11 +45,13 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "3.0.x-dev@dev",
+        "akeneo/pim-community-dev": "AOB-147-dev@dev",
         "phpspec/php-diff": "1.0.2",
         "guzzlehttp/guzzle": "6.3.3",
         "webmozart/assert": "1.3",
-        "justinrainbow/json-schema": "^5.2"
+        "justinrainbow/json-schema": "^5.2",
+        "hslavich/oneloginsaml-bundle": "1.4.0",
+        "phpseclib/phpseclib": "~2.0"
     },
     "require-dev": {
         "akeneo/phpspec-skip-example-extension": "2.0.*",

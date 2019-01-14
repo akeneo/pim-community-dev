@@ -1,0 +1,16 @@
+config:
+    config:
+        pim/controller-registry:
+            controllers:
+                authentication_sso_configuration_edit:
+                    module: pim/authentication/sso/configuration/controller
+                    aclResourceId: pimee_sso_configuration
+
+    paths:
+        pim/authentication/sso/configuration/controller: akeneoauthentication/js/sso/configuration/controller.ts
+        pim/authentication/sso/configuration/fields/text: akeneoauthentication/js/sso/configuration/fields/text.ts
+        pim/authentication/sso/configuration/fields/textarea: akeneoauthentication/js/sso/configuration/fields/textarea.ts
+        pim/authentication/sso/configuration/download-logs-button: akeneoauthentication/js/sso/configuration/download-logs-button.ts
+
+        pim/template/authentication/sso/configuration/download-logs-button: akeneoauthentication/templates/sso/configuration/download-logs-button.html
+        pim/template/authentication/sso/configuration/warning: akeneoauthentication/templates/sso/configuration/warning.html

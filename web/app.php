@@ -1,7 +1,14 @@
 <?php
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Dotenv\Dotenv;
 
 require __DIR__.'/../vendor/autoload.php';
+
+$envFile = __DIR__ . '/../.env';
+if (file_exists($envFile)) {
+    (new Dotenv())->load($envFile);
+}
+
 $kernel = new AppKernel('prod', false);
 //$kernel = new AppCache($kernel);
 

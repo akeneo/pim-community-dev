@@ -91,3 +91,5 @@ parameters:
     count_asset_categories_limit: -1
     count_asset_category_trees_limit: -1
     count_users_limit: -1
+
+    env(AKENEO_PIM_URL): 'http://localhost'

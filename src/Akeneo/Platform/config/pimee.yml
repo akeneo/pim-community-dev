@@ -30,3 +30,28 @@ akeneo_elasticsearch:
             service_name: "akeneo_elasticsearch.client.product_proposal"
             index_name: "%product_proposal_index_name%"
             configuration_files: "%elasticsearch_index_configuration_files%"
+
+hslavich_onelogin_saml:
+    # Basic settings
+    idp:
+        entityId: 'http://idp-server-url/simplesaml/saml2/idp/metadata.php'
+        singleSignOnService:
+            url: 'http://idp-server-url/simplesaml/saml2/idp/SSOService.php'
+            binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
+        singleLogoutService:
+            url: 'http://idp-server-url/simplesaml/saml2/idp/SingleLogoutService.php'
+            binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
+        x509cert: 'SSO_IDP_SERVER_PUBLIC_KEY_VALUE'
+    sp:
+        entityId: '%env(AKENEO_PIM_URL)%' #TODO manage this value dynamically, it is not always the PIM URL, its value could be leaded by customer internal norm.
+        assertionConsumerService:
+            url: '%env(AKENEO_PIM_URL)%/saml/acs'
+            binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
+        singleLogoutService:
+            url: '%env(AKENEO_PIM_URL)%/saml/logout'
+            binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
+        x509cert: 'SSO_SP_CLIENT_PUBLIC_KEY_VALUE'
+        privateKey: 'SSO_SP_CLIENT_PRIVATE_KEY_VALUE'
+    # Optional settings
+    security:
+        authnRequestsSigned:   true

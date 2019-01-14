@@ -1,0 +1,29 @@
+Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfiguration:
+    constraints:
+        - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\MatchingCertificateAndPrivateKey:
+            message: Service Provider certificate and private key must match.
+            certificatePropertyName: serviceProviderCertificate
+            privateKeyPropertyName: serviceProviderPrivateKey
+    properties:
+        code:
+            - NotBlank: ~
+        identityProviderEntityId:
+            - NotBlank: ~
+            - Url: ~
+        identityProviderSignOnUrl:
+            - NotBlank: ~
+            - Url: ~
+        identityProviderLogoutUrl:
+            - NotBlank: ~
+            - Url: ~
+        identityProviderCertificate:
+            - NotBlank: ~
+            - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\IsCertificateValid: ~
+        serviceProviderEntityId:
+            - NotBlank: ~
+            - Url: ~
+        serviceProviderCertificate:
+            - NotBlank: ~
+            - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\IsCertificateValid: ~
+        serviceProviderPrivateKey:
+            - NotBlank: ~

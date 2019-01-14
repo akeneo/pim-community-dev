@@ -85,3 +85,10 @@ fos_js_routing:
 
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+# SSO
+akeneo_authentication:
+    resource: "@AkeneoAuthenticationBundle/Resources/config/routing.yml"
+
+hslavich_saml_sp:
+    resource: "@HslavichOneloginSamlBundle/Resources/config/routing.yml"

@@ -29,6 +29,7 @@
     <testsuites>
         <testsuite name="PIM_Integration_Test">
             <directory suffix="Integration.php">../src</directory>
+            <directory suffix="Integration.php">../tests</directory>
             <directory suffix="Integration.php">../vendor/akeneo/pim-community-dev/src</directory>
             <directory suffix="Integration.php">../vendor/akeneo/pim-community-dev/tests</directory>
         </testsuite>

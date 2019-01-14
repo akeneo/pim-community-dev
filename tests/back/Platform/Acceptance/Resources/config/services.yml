@@ -1,0 +1,7 @@
+services:
+    test.authentication.sso_context:
+        class: 'AkeneoTestEnterprise\Platform\Acceptance\Authentication\Context\SsoContext'
+        arguments:
+            - '@__symfony__.validator'
+        tags:
+            - { name: fob.context_service }
