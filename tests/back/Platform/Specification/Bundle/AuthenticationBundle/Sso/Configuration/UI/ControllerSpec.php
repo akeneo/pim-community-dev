@@ -138,7 +138,7 @@ class ControllerSpec extends ObjectBehavior
         $this->saveAction($request)->shouldBeLike(new JsonResponse($normalizedErrors, 400));
     }
 
-    function it_gives_an_existing_configuration($repository, $normalizer)
+    function it_gives_an_existing_configuration($repository)
     {
         $config = new Configuration(
             new Code('authentication_sso'),
@@ -168,8 +168,6 @@ class ControllerSpec extends ObjectBehavior
             'service_provider_certificate'  => 'certificate',
             'service_provider_private_key'  => 'private_key',
         ];
-
-        $normalizer->normalize($config, 'internal_api')->willReturn($normalizedConfig);
 
         $staticConfiguration = [
             'service_provider_metadata_url' => 'http://my.akeneopim.com/saml/metadata',
