@@ -48,12 +48,14 @@ services:
             - '@akeneo.pim.automation.franklin_insights.connector.writer.suggested_data'
 
     akeneo.pim.automation.franklin_insights.connector.step.create_proposals:
-        class: '%pim_connector.step.tasklet.class%'
+        class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'create_proposals'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@akeneo.pim.automation.franklin_insights.connector.tasklet.create_proposals'
+            - '@akeneo.pim.automation.franklin_insights.connector.reader.pending_subscription'
+            - '@pim_connector.processor.dummy_item'
+            - '@pim_connector.writer.dummy_item'
 
     akeneo.pim.automation.franklin_insights.connector.step.remove_attribute_from_attributes_mapping:
         class: '%pim_connector.step.tasklet.class%'
