@@ -13,4 +13,3 @@ config:
         pim/authentication/sso/configuration/download-logs-button: akeneoauthentication/js/sso/configuration/download-logs-button.ts
 
         pim/template/authentication/sso/configuration/download-logs-button: akeneoauthentication/templates/sso/configuration/download-logs-button.html
-        pim/template/authentication/sso/configuration/warning: akeneoauthentication/templates/sso/configuration/warning.html
