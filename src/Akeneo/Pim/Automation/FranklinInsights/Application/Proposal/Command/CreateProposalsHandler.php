@@ -76,11 +76,12 @@ class CreateProposalsHandler
             foreach ($this->pendingSubscriptions as $subscription) {
                 $data = $this->suggestedDataFactory->fromSubscription($subscription);
                 if (null !== $data) {
-                    $toProcess[] = $data;
+                    $toProcess[$subscription->getProductId()] = $data;
                 }
             }
             if (!empty($toProcess)) {
                 $this->proposalUpsert->process($toProcess, ProposalAuthor::USERNAME);
+                $this->productSubscriptionRepository->emptySuggestedDataByProducts(array_keys($toProcess));
             }
             $this->fetchNextPendingSubscriptions();
         }

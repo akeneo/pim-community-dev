@@ -49,6 +49,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.proposal.factory.suggested_data'
             - '@akeneo.pim.automation.franklin_insights.proposal.create_proposal'
+            - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
 
     akeneo.pim.automation.franklin_insights.handler.create_proposals:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalsHandler'

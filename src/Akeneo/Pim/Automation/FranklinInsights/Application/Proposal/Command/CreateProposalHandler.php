@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Factory\Proposal
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -29,16 +30,22 @@ class CreateProposalHandler
     /** @var ProposalUpsertInterface */
     private $proposalUpsert;
 
+    /** @var ProductSubscriptionRepositoryInterface */
+    private $subscriptionRepository;
+
     /**
      * @param ProposalSuggestedDataFactory $proposalSuggestedDataFactory
      * @param ProposalUpsertInterface $proposalUpsert
+     * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
      */
     public function __construct(
         ProposalSuggestedDataFactory $proposalSuggestedDataFactory,
-        ProposalUpsertInterface $proposalUpsert
+        ProposalUpsertInterface $proposalUpsert,
+        ProductSubscriptionRepositoryInterface $subscriptionRepository
     ) {
         $this->proposalSuggestedDataFactory = $proposalSuggestedDataFactory;
         $this->proposalUpsert = $proposalUpsert;
+        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     /**
@@ -52,6 +59,9 @@ class CreateProposalHandler
 
         if ($proposalSuggestedData instanceof ProposalSuggestedData) {
             $this->proposalUpsert->process([$proposalSuggestedData], ProposalAuthor::USERNAME);
+            $this->subscriptionRepository->emptySuggestedDataByProducts(
+                [$command->getProductSubscription()->getProductId()]
+            );
         }
     }
 }

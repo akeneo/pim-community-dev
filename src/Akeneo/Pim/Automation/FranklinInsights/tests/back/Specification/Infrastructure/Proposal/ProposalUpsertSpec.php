@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Event\SubscriptionEvents;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\ProposalUpsert;
@@ -95,6 +94,7 @@ class ProposalUpsertSpec extends ObjectBehavior
         $otherProductDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
         $otherProductDraft->markAsReady()->shouldBeCalled();
         $draftSaver->save($otherProductDraft)->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
             EntityWithValuesDraftEvents::PRE_READY,
@@ -104,12 +104,6 @@ class ProposalUpsertSpec extends ObjectBehavior
             EntityWithValuesDraftEvents::POST_READY,
             Argument::type(GenericEvent::class)
         )->shouldBeCalledTimes(2);
-
-        $eventDispatcher->dispatch(
-            SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED,
-            new GenericEvent([42, 56])
-        )->shouldBeCalledOnce();
-        $cacheClearer->clear()->shouldBeCalledOnce();
 
         $this->process(
             [
@@ -124,7 +118,6 @@ class ProposalUpsertSpec extends ObjectBehavior
         $productRepository,
         $productUpdater,
         $draftBuilder,
-        $eventDispatcher,
         ProductInterface $product,
         FamilyInterface $family,
         ProductInterface $otherProduct,
@@ -143,7 +136,6 @@ class ProposalUpsertSpec extends ObjectBehavior
         $otherSuggestedData = ['test' => 42];
         $productUpdater->update($otherProduct, ['values' => $otherSuggestedData])->willReturn($otherProduct);
         $draftBuilder->build($otherProduct, 'Franklin')->willThrow(new \LogicException());
-        $eventDispatcher->dispatch(Argument::any())->shouldNotBeCalled();
 
         $this->process(
             [

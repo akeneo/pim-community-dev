@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Event\SubscriptionEvents;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -34,22 +31,16 @@ class InMemoryProposalUpsert implements ProposalUpsertInterface
     /** @var ObjectUpdaterInterface */
     private $productUpdater;
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
     /**
      * @param ProductRepositoryInterface $productRepository
      * @param ObjectUpdaterInterface $productUpdater
-     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        ObjectUpdaterInterface $productUpdater,
-        EventDispatcherInterface $eventDispatcher
+        ObjectUpdaterInterface $productUpdater
     ) {
         $this->productRepository = $productRepository;
         $this->productUpdater = $productUpdater;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -66,11 +57,6 @@ class InMemoryProposalUpsert implements ProposalUpsertInterface
             $this->drafts[$key] = $product->getValues()->toArray();
             $processed[] = $data->getProductId();
         }
-
-        $this->eventDispatcher->dispatch(
-            SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED,
-            new GenericEvent($processed)
-        );
     }
 
     /**

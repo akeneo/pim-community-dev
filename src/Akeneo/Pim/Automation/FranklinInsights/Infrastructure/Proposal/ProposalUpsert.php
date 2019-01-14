@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Event\SubscriptionEvents;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -98,12 +97,6 @@ final class ProposalUpsert implements ProposalUpsertInterface
             } catch (\LogicException $e) {
                 continue;
             }
-        }
-        if (!empty($processed)) {
-            $this->eventDispatcher->dispatch(
-                SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED,
-                new GenericEvent($processed)
-            );
         }
         $this->cacheClearer->clear();
     }

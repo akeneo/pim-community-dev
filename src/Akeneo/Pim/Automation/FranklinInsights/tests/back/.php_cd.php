@@ -29,10 +29,6 @@ $rules = [
             'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
             'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException',
 
-            // Events
-            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
-            'Symfony\Component\EventDispatcher\GenericEvent',
-
             // TODO remove all links by reference
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
