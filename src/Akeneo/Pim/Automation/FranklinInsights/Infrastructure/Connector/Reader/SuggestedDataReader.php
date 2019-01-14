@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Reader;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchExecutionDatetimeQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchProductsExecutionDatetimeQuery;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -28,8 +28,8 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
     /** @var SubscriptionProviderInterface */
     private $subscriptionProvider;
 
-    /** @var SelectLastCompletedFetchExecutionDatetimeQuery */
-    private $selectLastCompletedFetchExecutionDatetimeQuery;
+    /** @var SelectLastCompletedFetchProductsExecutionDatetimeQuery */
+    private $SelectLastCompletedFetchProductsExecutionDatetimeQuery;
 
     /** @var \Iterator */
     private $subscriptionsCursor;
@@ -42,14 +42,14 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
 
     /**
      * @param SubscriptionProviderInterface $subscriptionProvider
-     * @param SelectLastCompletedFetchExecutionDatetimeQuery $selectLastCompletedFetchExecutionDatetimeQuery
+     * @param SelectLastCompletedFetchProductsExecutionDatetimeQuery $SelectLastCompletedFetchProductsExecutionDatetimeQuery
      */
     public function __construct(
         SubscriptionProviderInterface $subscriptionProvider,
-        SelectLastCompletedFetchExecutionDatetimeQuery $selectLastCompletedFetchExecutionDatetimeQuery
+        SelectLastCompletedFetchProductsExecutionDatetimeQuery $SelectLastCompletedFetchProductsExecutionDatetimeQuery
     ) {
         $this->subscriptionProvider = $subscriptionProvider;
-        $this->selectLastCompletedFetchExecutionDatetimeQuery = $selectLastCompletedFetchExecutionDatetimeQuery;
+        $this->SelectLastCompletedFetchProductsExecutionDatetimeQuery = $SelectLastCompletedFetchProductsExecutionDatetimeQuery;
     }
 
     /**
@@ -106,7 +106,7 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
      */
     private function geLastExecutionDateTime()
     {
-        $lastExecutionDatetime = $this->selectLastCompletedFetchExecutionDatetimeQuery->execute();
+        $lastExecutionDatetime = $this->SelectLastCompletedFetchProductsExecutionDatetimeQuery->execute();
         if (null === $lastExecutionDatetime) {
             $lastExecutionDatetime = '2012-10-01';
         }

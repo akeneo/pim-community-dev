@@ -20,6 +20,6 @@ services:
             - '@database_connection'
 
     akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_last_completed_fetch_execution_datetime_query:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchExecutionDatetimeQuery'
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchProductsExecutionDatetimeQuery'
         arguments:
             - '@database_connection'

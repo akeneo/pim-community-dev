@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Reader;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchExecutionDatetimeQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchProductsExecutionDatetimeQuery;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -29,7 +29,7 @@ class SuggestedDataReaderSpec extends ObjectBehavior
 {
     public function let(
         SubscriptionProviderInterface $subscriptionProvider,
-        SelectLastCompletedFetchExecutionDatetimeQuery $query,
+        SelectLastCompletedFetchProductsExecutionDatetimeQuery $query,
         StepExecution $stepExecution
     ): void {
         $this->beConstructedWith($subscriptionProvider, $query);

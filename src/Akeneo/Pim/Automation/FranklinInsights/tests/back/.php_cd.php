@@ -64,7 +64,7 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Domain',
             'Akeneo\Pim\Automation\FranklinInsights\Application',
 
-            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchExecutionDatetimeQuery',
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchProductsExecutionDatetimeQuery',
 
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\Batch',
