@@ -37,21 +37,32 @@ Feature: Map the PIM attributes with Franklin attributes
     And an empty attributes mapping message should be sent
 
   Scenario: Fails to save the attributes mapping if the family does not exist
-    Given Franklin is configured with a valid token
+    Given the family "router"
+    And Franklin is configured with a valid token
     When the attributes are mapped for the family "unknown" as follows:
       | target_attribute_code | pim_attribute_code |
       | product_weight        | weight             |
     Then the attributes mapping should not be saved
     And an unknown family message should be sent
 
-  Scenario: Fails to save the attributes mapping if an attribute does not exist
+  Scenario: Save only the mapping for the existing attributes
     Given the family "router"
     And Franklin is configured with a valid token
     When the attributes are mapped for the family "router" as follows:
       | target_attribute_code | pim_attribute_code |
       | color                 | unknown_attribute  |
-    Then the attributes mapping should not be saved
-    And an unknown attribute message should be sent
+      | product_weight        | weight             |
+    Then Franklin's attribute product_weight should be mapped to weight
+    And Franklin's attribute color should not be saved
+
+  Scenario: Fails to save the attributes mapping if all the attributes do not exist
+    Given the family "router"
+    And Franklin is configured with a valid token
+    When the attributes are mapped for the family "router" as follows:
+      | target_attribute_code | pim_attribute_code |
+      | color                 | unknown_attribute  |
+    Then Franklin's attribute color should not be saved
+    And an unknown attributes message should be sent
 
   Scenario Outline: Fails to save the attributes mapping if an attribute type is invalid
     Given the family "router"

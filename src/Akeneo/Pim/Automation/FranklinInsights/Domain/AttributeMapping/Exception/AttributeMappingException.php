@@ -90,6 +90,16 @@ class AttributeMappingException extends \Exception
     }
 
     /**
+     * @return AttributeMappingException
+     */
+    public static function onlyUnknownMappedAttributes(): self
+    {
+        $message = sprintf(static::CONSTRAINT_KEY, 'only_unknown_mapped_attributes');
+
+        return new static($message, []);
+    }
+
+    /**
      * @return array
      */
     public function getMessageParams(): array
