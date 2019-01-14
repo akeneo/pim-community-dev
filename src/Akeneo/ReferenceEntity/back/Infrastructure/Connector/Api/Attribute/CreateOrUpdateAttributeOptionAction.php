@@ -138,7 +138,7 @@ class CreateOrUpdateAttributeOptionAction
         }
 
         $optionExists = $attribute->hasAttributeOption($optionCode);
-
+        
         return $optionExists ?
             $this->editOption($referenceEntityIdentifier, $attributeCode, $optionCode, $option) :
             $this->createOption($referenceEntityIdentifier, $attributeCode, $optionCode, $option);

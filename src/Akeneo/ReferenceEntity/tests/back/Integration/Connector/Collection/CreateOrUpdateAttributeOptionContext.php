@@ -61,6 +61,9 @@ class CreateOrUpdateAttributeOptionContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var OptionCollectionAttribute */
+    private $optionAttribute;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         OauthAuthenticatedClientFactory $clientFactory,
@@ -221,7 +224,7 @@ class CreateOrUpdateAttributeOptionContext implements Context
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand_4');
         $attributeIdentifier = AttributeIdentifier::fromString('attribute_4');
 
-        $optionAttribute = OptionCollectionAttribute::create(
+        $this->optionAttribute = OptionCollectionAttribute::create(
             $attributeIdentifier,
             $referenceEntityIdentifier,
             AttributeCode::fromString('sales_area'),
@@ -232,9 +235,9 @@ class CreateOrUpdateAttributeOptionContext implements Context
             AttributeValuePerLocale::fromBoolean(true)
         );
 
-        $this->attributeRepository->create($optionAttribute);
+        $this->attributeRepository->create($this->optionAttribute);
 
-        $optionAttribute->setOptions([
+        $this->optionAttribute->setOptions([
             AttributeOption::create(
                 OptionCode::fromString('china'),
                 LabelCollection::fromArray(['en_US' => 'China'])
@@ -293,5 +296,65 @@ class CreateOrUpdateAttributeOptionContext implements Context
         );
 
         $this->attributeRepository->create($textAttribute);
+    }
+
+    private function createAustraliaAttributeOption()
+    {
+        $this->optionAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('australia'),
+                LabelCollection::fromArray(['en_US' => 'Australia'])
+            )
+        ]);
+
+        $this->attributeRepository->update($this->optionAttribute);
+    }
+
+    /**
+     * @Given /^the Australia attribute option of the Sales area attribute of the Brand reference entity in the ERP and in the PIM but with some unsynchronized properties$/
+     */
+    public function theAustraliaAttributeOptionThatIsBothPartOfTheStructureOfTheBrandReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
+    {
+        $this->createAustraliaAttributeOption();
+    }
+
+    /**
+     * @When /^the connector collects the Australia attribute option of the Sales area Attribute of the Brand reference entity from the ERP to synchronize it with the PIM$/
+     */
+    public function theConnectorCollectsTheAustraliaAttributeOptionOfTheSalesAreaAttributeOfTheBrandReferenceEntityFromTheERPToSynchronizeItWithThePIM()
+    {
+        $this->requestContract = 'successful_australia_attribute_option_update.json';
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @Then /^the Australia attribute option of the Sales area attribute is added to the structure of the Brand reference entity in the PIM with the properties coming from the ERP$/
+     */
+    public function theAustraliaAttributeOptionOfTheSalesAreaAttributeIsAddedToTheStructureOfTheBrandReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+
+        $identifier = AttributeIdentifier::fromString('attribute_4');
+        $attribute = $this->attributeRepository->getByIdentifier($identifier)->normalize();
+
+        $expectedAttributeOptions = [
+            [
+                'code' => 'australia',
+                'labels' => [
+                    'fr_FR' => 'Australie',
+                    'en_US' => 'Australia'
+                ]
+            ],
+        ];
+
+        Assert::assertEquals($expectedAttributeOptions, $attribute['options']);
     }
 }

@@ -280,28 +280,4 @@ class CreateOrUpdateAttributeContext implements Context
             self::REQUEST_CONTRACT_DIR . $this->requestContract
         );
     }
-
-    /**
-     * @Given /^the Australia attribute that is both part of the structure of the Brand reference entity in the ERP and in the PIM but with some unsynchronized properties$/
-     */
-    public function theAustraliaAttributeThatIsBothPartOfTheStructureOfTheBrandReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @When /^the connector collects the Australia attribute option of the Sales area Attribute of the Brand reference entity from the ERP to synchronize it with the PIM$/
-     */
-    public function theConnectorCollectsTheAustraliaAttributeOptionOfTheSalesAreaAttributeOfTheBrandReferenceEntityFromTheERPToSynchronizeItWithThePIM()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then /^the Australia attribute option of the Sales area attribute is added to the structure of the Brand reference entity in the PIM with the properties coming from the ERP$/
-     */
-    public function theAustraliaAttributeOptionOfTheSalesAreaAttributeIsAddedToTheStructureOfTheBrandReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
-    {
-        throw new PendingException();
-    }
 }
