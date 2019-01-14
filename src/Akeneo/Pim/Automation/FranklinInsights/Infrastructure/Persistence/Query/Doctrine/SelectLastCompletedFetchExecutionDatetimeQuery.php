@@ -20,7 +20,7 @@ use Doctrine\DBAL\Connection;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class SelectLastCompletedFetchExecutionDatetimeQuery
+class SelectLastCompletedFetchProductsExecutionDatetimeQuery
 {
     /** @var Connection */
     private $connection;
