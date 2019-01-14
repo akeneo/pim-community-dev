@@ -29,7 +29,7 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
     private $subscriptionProvider;
 
     /** @var SelectLastCompletedFetchProductsExecutionDatetimeQuery */
-    private $SelectLastCompletedFetchProductsExecutionDatetimeQuery;
+    private $selectLastCompletedFetchProductsExecutionDatetimeQuery;
 
     /** @var \Iterator */
     private $subscriptionsCursor;
@@ -42,14 +42,14 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
 
     /**
      * @param SubscriptionProviderInterface $subscriptionProvider
-     * @param SelectLastCompletedFetchProductsExecutionDatetimeQuery $SelectLastCompletedFetchProductsExecutionDatetimeQuery
+     * @param SelectLastCompletedFetchProductsExecutionDatetimeQuery $selectLastCompletedFetchProductsExecutionDatetimeQuery
      */
     public function __construct(
         SubscriptionProviderInterface $subscriptionProvider,
-        SelectLastCompletedFetchProductsExecutionDatetimeQuery $SelectLastCompletedFetchProductsExecutionDatetimeQuery
+        SelectLastCompletedFetchProductsExecutionDatetimeQuery $selectLastCompletedFetchProductsExecutionDatetimeQuery
     ) {
         $this->subscriptionProvider = $subscriptionProvider;
-        $this->SelectLastCompletedFetchProductsExecutionDatetimeQuery = $SelectLastCompletedFetchProductsExecutionDatetimeQuery;
+        $this->SelectLastCompletedFetchProductsExecutionDatetimeQuery = $selectLastCompletedFetchProductsExecutionDatetimeQuery;
     }
 
     /**
