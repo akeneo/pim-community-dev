@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 
@@ -27,7 +28,7 @@ class InMemoryFindAttributeNextOrder implements FindAttributeNextOrderInterface
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function withReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): int
+    public function withReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeOrder
     {
         /** @var AbstractAttribute[] $attributes */
         $attributes = $this->attributeRepository->findByReferenceEntity($referenceEntityIdentifier);
@@ -38,6 +39,6 @@ class InMemoryFindAttributeNextOrder implements FindAttributeNextOrderInterface
             $maxOrder = $attributeOrder > $maxOrder ? $attributeOrder : $maxOrder;
         }
 
-        return count($attributes) === 0 ? 0 : ($maxOrder + 1);
+        return count($attributes) === 0 ? AttributeOrder::fromInteger(0) : AttributeOrder::fromInteger($maxOrder + 1);
     }
 }

@@ -113,8 +113,6 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttribute
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
         labels:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
-        order:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
         isRequired:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
@@ -172,8 +170,6 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttribut
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
         labels:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
-        order:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
         isRequired:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
@@ -199,8 +195,6 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordAttribu
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
         labels:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
-        order:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
         isRequired:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
@@ -225,8 +219,6 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordCollect
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
         labels:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
-        order:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
         isRequired:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
@@ -251,8 +243,6 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionAttribu
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
         labels:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
-        order:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
         isRequired:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
@@ -274,8 +264,6 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionCollect
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
         labels:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
-        order:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
         isRequired:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
