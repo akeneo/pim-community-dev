@@ -46,6 +46,7 @@ pim_reference_entity:
     attribute:
         validation:
             options:
+                should_exist: 'The option was not found.'
                 duplicated: 'The option "%option_code%" already exists'
                 too_many: 'You have reached the limit of {{ limit }} attribute options per attribute.'
                 code:
@@ -65,7 +66,6 @@ pim_reference_entity:
                 should_not_be_empty: 'The regular expression cannot be empty.'
             should_be_a_textarea_to_update_is_rich_text_editor: 'A simple text attribute cannot have a rich text editor'
             should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'A text area attribute cannot have a validation rule'
-            should_be_an_attribute_supporting_options: 'The attribute does not support options'
             cannot_set_a_non_empty_regular_expression: 'The attribute should not have a regular expression'
             cannot_update_the_regular_expression: 'Cannot set a regular expression on the text attribute'
             limit_reached: 'You cannot create the attribute "%attribute_label%" because you have reached the limit of %limit% attributes for this reference entity'

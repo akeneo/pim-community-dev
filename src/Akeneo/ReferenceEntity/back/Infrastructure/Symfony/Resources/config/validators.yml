@@ -191,3 +191,11 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.attribute_option_should_not_exist' }
+
+    akeneo_referenceentity.infrastructure.validation.attribute.attribute_option_should_exist:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionShouldExistValidator
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.attribute_option_should_exist' }

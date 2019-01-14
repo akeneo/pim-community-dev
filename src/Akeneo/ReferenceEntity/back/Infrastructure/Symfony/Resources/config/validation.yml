@@ -369,3 +369,19 @@ Akeneo\ReferenceEntity\Application\Attribute\AppendAttributeOption\AppendAttribu
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionShouldNotExist: { groups: [primary_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributeOptionsThanLimit: { groups: [secondary_constraints] }
+
+Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption\EditAttributeOptionCommand:
+    group_sequence:
+        - EditAttributeOptionCommand
+        - other_constraints
+    properties:
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        attributeCode:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+        optionCode:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionCode: ~
+        labels:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionShouldExist: { groups: [other_constraints] }
