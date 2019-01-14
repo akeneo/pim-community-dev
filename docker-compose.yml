@@ -85,6 +85,8 @@ services:
 
   sso-idp-server:
     image: 'kristophjunge/test-saml-idp'
+    ports:
+      - '${DOCKER_PORT_HTTP_SSO_IDP}:8088'
     volumes:
       - './docker/sso_authsources.php:/var/www/simplesamlphp/config/authsources.php'
 
