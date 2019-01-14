@@ -64,7 +64,6 @@ class ImageAttributeFactorySpec extends ObjectBehavior
         $command->labels = [
             'fr_FR' => 'Nom'
         ];
-        $command->order = 0;
         $command->isRequired = true;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
@@ -98,7 +97,6 @@ class ImageAttributeFactorySpec extends ObjectBehavior
         $command->labels = [
             'fr_FR' => 'Nom'
         ];
-        $command->order = 0;
         $command->isRequired = true;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;

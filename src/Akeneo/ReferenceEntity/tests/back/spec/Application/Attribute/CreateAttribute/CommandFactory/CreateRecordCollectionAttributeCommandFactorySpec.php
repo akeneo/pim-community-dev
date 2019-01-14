@@ -27,7 +27,6 @@ class CreateRecordCollectionAttributeCommandFactorySpec extends ObjectBehavior
             'reference_entity_identifier' => 'designer',
             'code' => 'brands',
             'labels' => ['fr_FR' => 'Marques'],
-            'order' => 1,
             'is_required' => true,
             'value_per_channel' => false,
             'value_per_locale' => false,
@@ -38,7 +37,6 @@ class CreateRecordCollectionAttributeCommandFactorySpec extends ObjectBehavior
         $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('brands');
         $command->labels->shouldBeEqualTo(['fr_FR' => 'Marques']);
-        $command->order->shouldBeEqualTo(1);
         $command->isRequired->shouldBeEqualTo(true);
         $command->valuePerChannel->shouldBeEqualTo(false);
         $command->valuePerLocale->shouldBeEqualTo(false);
@@ -51,7 +49,6 @@ class CreateRecordCollectionAttributeCommandFactorySpec extends ObjectBehavior
             'reference_entity_identifier' => 'designer',
             // 'code' => 'brands', // For the test purpose, this one is missing
             'labels' => ['fr_FR' => 'Marques'],
-            'order' => 1,
             'is_required' => true,
             'value_per_channel' => false,
             'value_per_locale' => false,
@@ -68,7 +65,6 @@ class CreateRecordCollectionAttributeCommandFactorySpec extends ObjectBehavior
             'reference_entity_identifier' => 'designer',
             'code' => 'brands',
             'labels' => ['fr_FR' => 'Marques'],
-            'order' => 1,
             'is_required' => true,
             'value_per_channel' => false,
             'value_per_locale' => false,

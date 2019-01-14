@@ -30,7 +30,6 @@ class RecordCollectionAttributeFactorySpec extends ObjectBehavior
         $command->referenceEntityIdentifier = 'designer';
         $command->code = 'brands';
         $command->labels = ['fr_FR' => 'Marques'];
-        $command->order = 0;
         $command->isRequired = true;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;

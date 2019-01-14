@@ -35,7 +35,6 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
         $command->referenceEntityIdentifier = 'designer';
         $command->code = 'favorites_color';
         $command->labels = ['fr_FR' => 'Couleur favorites'];
-        $command->order = 0;
         $command->isRequired = false;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;

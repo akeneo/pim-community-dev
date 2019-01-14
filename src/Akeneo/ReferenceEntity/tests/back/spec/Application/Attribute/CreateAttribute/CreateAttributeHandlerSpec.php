@@ -58,7 +58,6 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
         $textCommand = new CreateTextAttributeCommand();
         $textCommand->referenceEntityIdentifier = 'designer';
         $textCommand->code = 'name';
-        $textCommand->order = 3;
 
         $registry->getFactory($textCommand)->willReturn($factory);
         $factory->create($textCommand, $identifier, AttributeOrder::fromInteger(0))->willReturn($textAttribute);

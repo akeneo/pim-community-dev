@@ -30,7 +30,6 @@ class RecordAttributeFactorySpec extends ObjectBehavior
         $command->referenceEntityIdentifier = 'designer';
         $command->code = 'mentor';
         $command->labels = ['fr_FR' => 'Mentor'];
-        $command->order = 0;
         $command->isRequired = false;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;

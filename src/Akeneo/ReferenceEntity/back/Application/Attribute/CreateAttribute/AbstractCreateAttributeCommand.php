@@ -28,9 +28,6 @@ abstract class AbstractCreateAttributeCommand
     /** @var array */
     public $labels;
 
-    /** @var int */
-    public $order;
-
     /** @var bool */
     public $isRequired;
 

@@ -27,7 +27,6 @@ class CreateRecordAttributeCommandFactorySpec extends ObjectBehavior
             'reference_entity_identifier' => 'designer',
             'code' => 'mentor',
             'labels' => ['fr_FR' => 'Mentor'],
-            'order' => 1,
             'is_required' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
@@ -38,7 +37,6 @@ class CreateRecordAttributeCommandFactorySpec extends ObjectBehavior
         $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('mentor');
         $command->labels->shouldBeEqualTo(['fr_FR' => 'Mentor']);
-        $command->order->shouldBeEqualTo(1);
         $command->isRequired->shouldBeEqualTo(false);
         $command->valuePerChannel->shouldBeEqualTo(false);
         $command->valuePerLocale->shouldBeEqualTo(false);
@@ -50,7 +48,6 @@ class CreateRecordAttributeCommandFactorySpec extends ObjectBehavior
         $command = [
             'reference_entity_identifier' => 'designer',
             'code' => 'mentor',
-            'order' => 1,
             'is_required' => false,
             //'value_per_channel' => false, // For the test purpose, this one is missing
             'value_per_locale' => false,
@@ -67,7 +64,6 @@ class CreateRecordAttributeCommandFactorySpec extends ObjectBehavior
             'reference_entity_identifier' => 'designer',
             'code' => 'mentor',
             'labels' => ['fr_FR' => 'Mentor'],
-            'order' => 1,
             'is_required' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,

@@ -597,7 +597,7 @@ Let's start by defining what is a command on our (bounded context) BC and how we
 - They are plain php object
 - They don't have any logic nor constructor
 - Their properties are public
-- We create them with the new operator in the infrastructur layer
+- We create them with the new operator in the infrastructure layer
 
 They are really convenient, simple to create and manipulate.
 
@@ -607,7 +607,6 @@ Here is how we initalize one today:
     $createImageAttributeCommand->referenceEntityIdentifier = $referenceEntityIdentifier->normalize();
     $createImageAttributeCommand->code = 'image';
     $createImageAttributeCommand->labels = [];
-    $createImageAttributeCommand->order = 1;
     $createImageAttributeCommand->isRequired = false;
     $createImageAttributeCommand->valuePerChannel = false;
     $createImageAttributeCommand->valuePerLocale = false;

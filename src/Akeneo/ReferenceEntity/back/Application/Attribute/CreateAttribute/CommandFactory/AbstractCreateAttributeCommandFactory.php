@@ -30,7 +30,6 @@ abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeC
         $command->code = $normalizedCommand['code'];
         $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'];
         $command->labels = $normalizedCommand['labels'] ?? [];
-        $command->order = $normalizedCommand['order'] ?? null;
         $command->isRequired = $normalizedCommand['is_required'] ?? false;
         $command->valuePerChannel = $normalizedCommand['value_per_channel'];
         $command->valuePerLocale = $normalizedCommand['value_per_locale'];
