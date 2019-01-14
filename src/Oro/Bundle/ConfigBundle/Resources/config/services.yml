@@ -4,8 +4,6 @@ parameters:
     oro_config.twig_extension.class:                                             Oro\Bundle\ConfigBundle\Twig\ConfigExtension
     oro_config.provider.system_configuration.form_provider.class:                Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider
 
-    oro_config.form.config_subscriber.class:                                     Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber
-
 services:
     oro_config.user:
         class:                        '%oro_config.user.class%'
@@ -26,8 +24,3 @@ services:
         arguments:                    ["@oro_config.global"]
         tags:
             - { name: twig.extension }
-
-    oro_config.form.config_subscriber:
-        class: '%oro_config.form.config_subscriber.class%'
-        arguments:
-          - '@oro_config.user'

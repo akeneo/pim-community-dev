@@ -1,3 +1,0 @@
-escape_wsse_authentication:
-    authentication_provider_class: Akeneo\UserManagement\Bundle\Security\WsseUserProvider
-    authentication_listener_class: Oro\Bundle\UserBundle\Security\WsseAuthListener
