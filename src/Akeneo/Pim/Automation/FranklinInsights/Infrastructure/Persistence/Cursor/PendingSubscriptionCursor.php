@@ -27,11 +27,8 @@ class PendingSubscriptionCursor implements \Iterator
     /** @var int */
     private $limit;
 
-    /** @var string */
-    private $searchAfter;
-
     /** @var ProductSubscription[] */
-    private $pendingSubscriptions;
+    private $pendingSubscriptions = [];
 
     /**
      * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
@@ -49,7 +46,7 @@ class PendingSubscriptionCursor implements \Iterator
      */
     public function current()
     {
-        if (null === $this->pendingSubscriptions) {
+        if (empty($this->pendingSubscriptions)) {
             $this->rewind();
         }
 
@@ -57,34 +54,25 @@ class PendingSubscriptionCursor implements \Iterator
     }
 
     /**
-     * Move forward to next element.
-     *
-     * @see https://php.net/manual/en/iterator.next.php
-     * @since 5.0.0
+     * {@inheritdoc}
      */
     public function next(): void
     {
         if (false === next($this->pendingSubscriptions)) {
             $this->pendingSubscriptions = $this->subscriptionRepository->findPendingSubscriptions(
                 $this->limit,
-                end($this->pendingSubscriptions)->getSubscriptionId()
+                end($this->pendingSubscriptions) ? end($this->pendingSubscriptions)->getSubscriptionId() : null
             );
-            reset($this->pendingSubscriptions); // TODO: Not sure it is necessary
+            reset($this->pendingSubscriptions);
         }
     }
 
     /**
-     * Return the key of the current element.
-     *
-     * @see https://php.net/manual/en/iterator.key.php
-     *
-     * @return mixed scalar on success, or null on failure
-     *
-     * @since 5.0.0
+     * {@inheritdoc}
      */
     public function key()
     {
-        if (null === $this->pendingSubscriptions) {
+        if (empty($this->pendingSubscriptions)) {
             $this->rewind();
         }
 
@@ -92,14 +80,7 @@ class PendingSubscriptionCursor implements \Iterator
     }
 
     /**
-     * Checks if current position is valid.
-     *
-     * @see https://php.net/manual/en/iterator.valid.php
-     *
-     * @return bool the return value will be casted to boolean and then evaluated.
-     *              Returns true on success or false on failure
-     *
-     * @since 5.0.0
+     * {@inheritdoc}
      */
     public function valid()
     {
@@ -111,14 +92,10 @@ class PendingSubscriptionCursor implements \Iterator
     }
 
     /**
-     * Rewind the Iterator to the first element.
-     *
-     * @see https://php.net/manual/en/iterator.rewind.php
-     * @since 5.0.0
+     * {@inheritdoc}
      */
     public function rewind(): void
     {
-        $this->pendingSubscriptions = $this->subscriptionRepository->findPendingSubscriptions(25, null);
-        $this->searchAfter = end($this->pendingSubscriptions)->getSubscriptionId();
+        $this->pendingSubscriptions = $this->subscriptionRepository->findPendingSubscriptions($this->limit, null);
     }
 }
