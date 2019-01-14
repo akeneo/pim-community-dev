@@ -50,7 +50,7 @@ services:
                 - '@akeneo.pim.automation.franklin_insights.connector.step.fetch_products'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.create_proposals'
         tags:
-            - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'franklin_insights_fetch_products' }
+            - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'franklin_insights' }
 
     akeneo.pim.automation.franklin_insights.job.remove_attribute_from_attributes_mapping:
         class: '%pim_connector.job.simple_job.class%'
