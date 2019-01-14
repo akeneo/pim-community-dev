@@ -38,7 +38,7 @@ services:
                 - '@akeneo.pim.automation.franklin_insights.connector.step.unsubscribe_products'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.subscribe_products'
         tags:
-            - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'mass_edit' }
+            - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'franklin_insights' }
 
     akeneo.pim.automation.franklin_insights.connector.job.fetch_products:
         class: '%pim_connector.job.simple_job.class%'
@@ -47,10 +47,11 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.pim.automation.franklin_insights.connector.step.validate_connection'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.fetch_products'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.create_proposals'
         tags:
-            - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'franklin_insights_fetch_products' }
+            - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'franklin_insights' }
 
     akeneo.pim.automation.franklin_insights.job.remove_attribute_from_attributes_mapping:
         class: '%pim_connector.job.simple_job.class%'
@@ -59,6 +60,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.pim.automation.franklin_insights.connector.step.validate_connection'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.remove_attribute_from_attributes_mapping'
         tags:
             - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'franklin_insights' }
@@ -70,6 +72,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.pim.automation.franklin_insights.connector.step.validate_connection'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.remove_option_from_attribute_options_mapping'
         tags:
             - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'franklin_insights' }
@@ -100,14 +103,6 @@ services:
                 - 'franklin_insights_subscribe_products'
                 - 'franklin_insights_unsubscribe_products'
                 - 'franklin_insights_resubscribe_products'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-
-    akeneo.pim.automation.franklin_insights.connector.job_parameters.constraint_collection_provider.fetch_products:
-        class: '%akeneo_batch.job.job_parameters.empty_constraint_collection_provider.class%'
-        arguments:
-            -
-                - 'franklin_insights_fetch_products'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -154,14 +149,6 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
-    akeneo.pim.automation.franklin_insights.connector.job_parameters.default_values_provider.fetch_products:
-        class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
-        arguments:
-            -
-                - 'franklin_insights_fetch_products'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.default_values_provider }
-
     akeneo.pim.automation.franklin_insights.connector.job_parameters.default_values_provider.remove_attribute_from_attributes_mapping:
         class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
         arguments:
@@ -193,3 +180,9 @@ services:
                 - 'franklin_insights_synchronize'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo.pim.automation.franklin_insights.connector.job_parameters.fetch_products:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobParameters\DateTimeJobParameterToFetchSubscriptions'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

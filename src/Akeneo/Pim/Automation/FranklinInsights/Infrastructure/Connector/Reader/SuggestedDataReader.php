@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Reader;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchProductsExecutionDatetimeQuery;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -27,6 +28,9 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
     /** @var SubscriptionProviderInterface */
     private $subscriptionProvider;
 
+    /** @var SelectLastCompletedFetchProductsExecutionDatetimeQuery */
+    private $SelectLastCompletedFetchProductsExecutionDatetimeQuery;
+
     /** @var \Iterator */
     private $subscriptionsCursor;
 
@@ -38,10 +42,14 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
 
     /**
      * @param SubscriptionProviderInterface $subscriptionProvider
+     * @param SelectLastCompletedFetchProductsExecutionDatetimeQuery $SelectLastCompletedFetchProductsExecutionDatetimeQuery
      */
-    public function __construct(SubscriptionProviderInterface $subscriptionProvider)
-    {
+    public function __construct(
+        SubscriptionProviderInterface $subscriptionProvider,
+        SelectLastCompletedFetchProductsExecutionDatetimeQuery $SelectLastCompletedFetchProductsExecutionDatetimeQuery
+    ) {
         $this->subscriptionProvider = $subscriptionProvider;
+        $this->SelectLastCompletedFetchProductsExecutionDatetimeQuery = $SelectLastCompletedFetchProductsExecutionDatetimeQuery;
     }
 
     /**
@@ -49,7 +57,14 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
      */
     public function initialize(): void
     {
-        $this->subscriptionsCursor = $this->subscriptionProvider->fetch();
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $updatedSince = $jobParameters->get('updated_since');
+
+        if (null === $updatedSince) {
+            $updatedSince = $this->geLastExecutionDateTime();
+        }
+
+        $this->subscriptionsCursor = $this->subscriptionProvider->fetch($updatedSince);
     }
 
     /**
@@ -82,5 +97,20 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
     public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * @throws \Exception
+     *
+     * @return \DateTime
+     */
+    private function geLastExecutionDateTime()
+    {
+        $lastExecutionDatetime = $this->SelectLastCompletedFetchProductsExecutionDatetimeQuery->execute();
+        if (null === $lastExecutionDatetime) {
+            $lastExecutionDatetime = '2012-10-01';
+        }
+
+        return new \DateTime($lastExecutionDatetime, new \DateTimeZone('UTC'));
     }
 }

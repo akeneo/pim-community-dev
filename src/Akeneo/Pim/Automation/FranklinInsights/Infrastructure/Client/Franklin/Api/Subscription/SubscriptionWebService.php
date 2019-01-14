@@ -80,6 +80,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
 
     /**
      * @param string|null $uri
+     * @param \DateTime|null $updatedSince
      *
      * @throws BadRequestException
      * @throws FranklinServerException
@@ -87,10 +88,10 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
      *
      * @return SubscriptionsCollection
      */
-    public function fetchProducts(string $uri = null): SubscriptionsCollection
+    public function fetchProducts(string $uri = null, \DateTime $updatedSince = null): SubscriptionsCollection
     {
         if (null === $uri) {
-            $dateParam = 'yesterday';
+            $dateParam = (null === $updatedSince) ? 'yesterday' : $updatedSince->format('Y-m-d H:i:s');
             $route = $this->uriGenerator->generate(
                 sprintf('/api/subscriptions/updated-since/%s', $dateParam)
             );

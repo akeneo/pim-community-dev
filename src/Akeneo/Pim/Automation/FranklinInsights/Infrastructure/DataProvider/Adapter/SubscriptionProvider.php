@@ -127,16 +127,14 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     }
 
     /**
-     * @throws DataProviderException
-     *
-     * @return SubscriptionsCursor
+     * {@inheritdoc}
      */
-    public function fetch(): \Iterator
+    public function fetch(\DateTime $updatedSince): \Iterator
     {
         $this->api->setToken($this->getToken());
 
         try {
-            $subscriptionsPage = $this->api->fetchProducts();
+            $subscriptionsPage = $this->api->fetchProducts(null, $updatedSince);
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {

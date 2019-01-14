@@ -3,3 +3,4 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Reader\SuggestedDataReader'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.data_provider.product_subscription'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_last_completed_fetch_execution_datetime_query'

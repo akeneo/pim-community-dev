@@ -48,11 +48,13 @@ interface SubscriptionProviderInterface
     public function bulkSubscribe(array $requests): ProductSubscriptionResponseCollection;
 
     /**
+     * @param \DateTime|null $updatedSince
+     *
      * @throws ProductSubscriptionException
      *
      * @return \Iterator
      */
-    public function fetch(): \Iterator;
+    public function fetch(\DateTime $updatedSince): \Iterator;
 
     /**
      * @param string $subscriptionId
