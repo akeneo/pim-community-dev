@@ -37,5 +37,8 @@ final class JobInstanceNames
     public const RESUBSCRIBE_PRODUCTS = 'franklin_insights_resubscribe_products';
 
     /** @var string */
+    public const IDENTIFY_PRODUCTS_TO_RESUBSCRIBE = 'franklin_insights_identify_products_to_resubscribe';
+
+    /** @var string */
     public const SYNCHRONIZE = 'franklin_insights_synchronize';
 }
