@@ -818,4 +818,6 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogB
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Security\\Elasticsearch\\ProductQueryBuilderFactory/Akeneo\\Pim\\Permission\\Bundle\\Persistence\\ORM\\EntityWithValue\\ProductQueryBuilderFactory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\ProductRepository/Akeneo\\Pim\\Permission\\Bundle\\Persistence\\ORM\\EntityWithValue\\ProductRepository/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Security\\Doctrine\\Common\\Saver\\FilteredEntitySaver/Akeneo\\Pim\\Permission\\Bundle\\Persistence\\ORM\\FilteredEntitySaver/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\UserBundle\\Entity\\User/Akeneo\\UserManagement\\Component\\Model\\User/g'
+find ./app/config/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Model\\Asset/Akeneo\\Asset\\Component\\Model\\Asset/g'
 ```
