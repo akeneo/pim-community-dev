@@ -268,7 +268,7 @@ TODO: change the link!!
         v3.0
         ```
         imports:
-            - { resource: '../../vendor/akeneo/pim-enterprise-dev/Akeneo/Platform/config/pimee.yml' }
+            - { resource: '../../vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/config/pimee.yml' }
         ```    
     
     * The translator now expects the language `en_US`:
@@ -714,11 +714,11 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\Referenc
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Api\\Normalizer\\ProductModelNormalizer/Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Normalizer\\ExternalApi\\ProductModelNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ReferenceDataBundle\\Publisher\\ReferenceDataPublisher/Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Publisher\\ReferenceDataPublisher/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ReferenceDataBundle\\Publisher\\ReferenceDataPublisher/Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Publisher\\ReferenceDataPublisher/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\PimEnterpriseTeamworkAssistantBundle/Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Pim\WorkOrganization\ProductRevert\PimEnterpriseRevertBundle/Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Pim\WorkOrganization\Workflow\Bundle\PimEnterpriseWorkflowBundle/Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Pim\Automation\RuleEngine\Bundle\PimEnterpriseCatalogRuleBundle/Akeneo\Pim\Automation\RuleEngine\Bundle\AkeneoPimRuleEngineBundle/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Asset\Bundle\PimEnterpriseProductAssetBundle/Akeneo\Asset\Bundle\AkeneoAssetBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\WorkOrganization\\TeamworkAssistant\\Bundle\\PimEnterpriseTeamworkAssistantBundle/Akeneo\\Pim\\WorkOrganization\\TeamworkAssistant\\Bundle\\AkeneoPimTeamworkAssistantBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\WorkOrganization\\ProductRevert\\PimEnterpriseRevertBundle/Akeneo\\Pim\\WorkOrganization\\ProductRevert\\AkeneoPimProductRevertBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\PimEnterpriseWorkflowBundle/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\AkeneoPimWorkflowBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\Automation\\RuleEngine\\Bundle\\PimEnterpriseCatalogRuleBundle/Akeneo\\Pim\\Automation\\RuleEngine\\Bundle\\AkeneoPimRuleEngineBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Asset\\Bundle\\PimEnterpriseProductAssetBundle/Akeneo\\Asset\\Bundle\\AkeneoAssetBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset/Akeneo\\Asset\\Component/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Twig\\AttributeExtension/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Twig\\AttributeExtension/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Normalizer\\ProductModelNormalizer/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Normalizer\\ProductModelNormalizer/g'
@@ -818,4 +818,6 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogB
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Security\\Elasticsearch\\ProductQueryBuilderFactory/Akeneo\\Pim\\Permission\\Bundle\\Persistence\\ORM\\EntityWithValue\\ProductQueryBuilderFactory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\ProductRepository/Akeneo\\Pim\\Permission\\Bundle\\Persistence\\ORM\\EntityWithValue\\ProductRepository/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Security\\Doctrine\\Common\\Saver\\FilteredEntitySaver/Akeneo\\Pim\\Permission\\Bundle\\Persistence\\ORM\\FilteredEntitySaver/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\UserBundle\\Entity\\User/Akeneo\\UserManagement\\Component\\Model\\User/g'
+find ./app/config/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Model\\Asset/Akeneo\\Asset\\Component\\Model\\Asset/g'
 ```
