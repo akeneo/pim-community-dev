@@ -199,7 +199,14 @@ final class InMemoryCategoryRepository implements
      */
     public function getTrees()
     {
-        throw new NotImplementedException(__METHOD__);
+        $trees = [];
+        foreach ($this->categories as $category) {
+            if (null === $category->getParent()) {
+                $trees[] = $category;
+            }
+        }
+
+        return $trees;
     }
 
     /**
