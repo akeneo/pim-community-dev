@@ -37,7 +37,6 @@
           "labels": {
             "en_US": "Nice attribute"
           },
-          "order": 0,
           "isRequired": false,
           "valuePerChannel": true,
           "valuePerLocale": false

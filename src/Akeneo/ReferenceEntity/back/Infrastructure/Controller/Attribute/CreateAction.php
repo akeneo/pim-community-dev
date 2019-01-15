@@ -125,10 +125,6 @@ class CreateAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         $command = $this->attributeCommandFactoryRegistry->getFactory($normalizedCommand)->create($normalizedCommand);
-        // TODO: This should not be part of the Controller logic
-        $command->order = $this->attributeNextOrder->withReferenceEntityIdentifier(
-            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier)
-        );
 
         return $command;
     }

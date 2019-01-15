@@ -9,6 +9,7 @@ use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttr
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -34,12 +35,15 @@ class OptionAttributeFactorySpec extends ObjectBehavior
         $command->referenceEntityIdentifier = 'designer';
         $command->code = 'favorite_color';
         $command->labels = ['fr_FR' => 'Couleur favorite'];
-        $command->order = 0;
         $command->isRequired = false;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
 
-        $this->create($command, AttributeIdentifier::fromString('favorite_color_designer_fingerprint'))->normalize()->shouldReturn([
+        $this->create(
+            $command,
+            AttributeIdentifier::fromString('favorite_color_designer_fingerprint'),
+            AttributeOrder::fromInteger(0)
+        )->normalize()->shouldReturn([
             'identifier' => 'favorite_color_designer_fingerprint',
             'reference_entity_identifier' => 'designer',
             'code' => 'favorite_color',
@@ -60,6 +64,7 @@ class OptionAttributeFactorySpec extends ObjectBehavior
                 'create', [
                     new CreateTextAttributeCommand(),
                     AttributeIdentifier::fromString('unsupported_attribute'),
+                    AttributeOrder::fromInteger(0)
                 ]
             );
     }

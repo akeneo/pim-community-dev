@@ -52,7 +52,7 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
 
         $nextOrder = $this->findAttributeNextOrder->withReferenceEntityIdentifier($referenceEntityIdentifier);
 
-        $this->assertEquals(1, $nextOrder);
+        $this->assertEquals(AttributeOrder::fromInteger(1), $nextOrder);
     }
 
     /**
@@ -64,7 +64,7 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
 
         $nextOrder = $this->findAttributeNextOrder->withReferenceEntityIdentifier($referenceEntityIdentifier);
 
-        $this->assertEquals(0, $nextOrder);
+        $this->assertEquals(AttributeOrder::fromInteger(0), $nextOrder);
     }
 
     private function resetDB(): void

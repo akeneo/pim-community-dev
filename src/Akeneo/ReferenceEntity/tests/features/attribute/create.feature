@@ -53,16 +53,6 @@ Feature: Create an attribute linked to a reference entity
     Then an exception is thrown
 
   @acceptance-back
-  Scenario: Cannot create an attribute with the same order for a reference entity
-    When the user creates a text attribute "name" linked to the reference entity "designer" with:
-      | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
-    And the user creates a text attribute "bio" linked to the reference entity "designer" with:
-      | code | labels                                  | is_required | order | value_per_channel | value_per_locale | max_length |
-      | bio  | {"en_US": "Bio", "fr_FR": "Biographie"} | true        | 0     | true              | false            | 44         |
-    Then an exception is thrown
-
-  @acceptance-back
   Scenario Outline: Cannot create an attribute with a reserverd word as code
     When the user creates a text attribute "code" linked to the reference entity "designer" with:
       | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |

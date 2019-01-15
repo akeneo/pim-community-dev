@@ -28,8 +28,11 @@ class OptionCollectionAttributeFactory implements AttributeFactoryInterface
         return $command instanceof CreateOptionCollectionAttributeCommand;
     }
 
-    public function create(AbstractCreateAttributeCommand $command, AttributeIdentifier $identifier): AbstractAttribute
-    {
+    public function create(
+        AbstractCreateAttributeCommand $command,
+        AttributeIdentifier $identifier,
+        AttributeOrder $order
+    ): AbstractAttribute {
         if (!$this->supports($command)) {
             throw new \RuntimeException(
                 sprintf(
@@ -45,7 +48,7 @@ class OptionCollectionAttributeFactory implements AttributeFactoryInterface
             ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
             AttributeCode::fromString($command->code),
             LabelCollection::fromArray($command->labels),
-            AttributeOrder::fromInteger($command->order),
+            $order,
             AttributeIsRequired::fromBoolean($command->isRequired),
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale)

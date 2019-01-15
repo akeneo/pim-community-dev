@@ -25,7 +25,6 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
             'reference_entity_identifier' => 'designer',
             'code' => 'picture',
             'labels' => ['fr_FR' => 'Portrait'],
-            'order' => 1,
             'is_required' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
@@ -37,7 +36,6 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
         $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('picture');
         $command->labels->shouldBeEqualTo(['fr_FR' => 'Portrait']);
-        $command->order->shouldBeEqualTo(1);
         $command->isRequired->shouldBeEqualTo(false);
         $command->valuePerChannel->shouldBeEqualTo(false);
         $command->valuePerLocale->shouldBeEqualTo(false);
@@ -50,7 +48,6 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
         $command = [
             'reference_entity_identifier' => 'designer',
             'code' => 'picture',
-            'order' => 1,
             'is_required' => false,
             //'value_per_channel' => false, // For the test purpose, this one is missing
             'value_per_locale' => false,
@@ -73,7 +70,6 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
         ]);
 
         $command->shouldBeAnInstanceOf(CreateImageAttributeCommand::class);
-        $command->order->shouldBeEqualTo(null);
         $command->isRequired->shouldBeEqualTo(false);
         $command->maxFileSize->shouldBeEqualTo(null);
         $command->allowedExtensions->shouldBeEqualTo([]);

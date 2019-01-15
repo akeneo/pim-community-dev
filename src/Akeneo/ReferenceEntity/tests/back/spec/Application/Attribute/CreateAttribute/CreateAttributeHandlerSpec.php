@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -26,9 +27,10 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
 {
     public function let(
         AttributeRepositoryInterface $repository,
-        AttributeFactoryRegistryInterface $registry
+        AttributeFactoryRegistryInterface $registry,
+        FindAttributeNextOrderInterface $attributeNextOrder
     ) {
-        $this->beConstructedWith($registry, $repository);
+        $this->beConstructedWith($registry, $repository, $attributeNextOrder);
     }
 
     function it_is_initializable()
@@ -40,21 +42,25 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
         AttributeFactoryRegistryInterface $registry,
         AttributeRepositoryInterface $repository,
         AttributeFactoryInterface $factory,
-        AttributeIdentifier $identifier
+        AttributeIdentifier $identifier,
+        $attributeNextOrder
     ) {
         $repository->nextIdentifier(
             Argument::type(ReferenceEntityIdentifier::class),
             Argument::type(AttributeCode::class)
         )->willReturn($identifier);
 
+        $attributeNextOrder
+            ->withReferenceEntityIdentifier(ReferenceEntityIdentifier::fromString('designer'))
+            ->willReturn(AttributeOrder::fromInteger(0));
+
         $textAttribute = $this->getAttribute();
         $textCommand = new CreateTextAttributeCommand();
         $textCommand->referenceEntityIdentifier = 'designer';
         $textCommand->code = 'name';
-        $textCommand->order = 3;
 
         $registry->getFactory($textCommand)->willReturn($factory);
-        $factory->create($textCommand, $identifier)->willReturn($textAttribute);
+        $factory->create($textCommand, $identifier, AttributeOrder::fromInteger(0))->willReturn($textAttribute);
         $repository->create($textAttribute)->shouldBeCalled();
 
         $this->__invoke($textCommand);

@@ -93,85 +93,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
 
     /**
-     * TODO: This test should be an acceptance test once we'll move the logic from the controller
-     *
-     * @test
-     */
-    public function it_automatically_increment_the_attribute_order_on_creation(): void
-    {
-        $this->webClientHelper->callRoute(
-            $this->client,
-            self::CREATE_ATTRIBUTE_ROUTE,
-            [
-                'referenceEntityIdentifier' => 'designer',
-            ],
-            'POST',
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
-            ],
-            [
-                'reference_entity_identifier' => 'designer',
-                'code'                       => 'name',
-                'order'                      => null,
-                'is_required'                => false,
-                'labels'                     => [
-                    'fr_FR' => 'Intel',
-                    'en_US' => 'Intel',
-                ],
-                'type'                       => 'text',
-                'max_length'                 => 255,
-                'value_per_channel'          => true,
-                'value_per_locale'           => true,
-                'is_textarea'                => false,
-                'is_rich_text_editor'        => false,
-                'validation_rule'            => 'none',
-                'regular_expression'         => null
-            ]
-        );
-
-        $this->webClientHelper->callRoute(
-            $this->client,
-            self::CREATE_ATTRIBUTE_ROUTE,
-            [
-                'referenceEntityIdentifier' => 'designer',
-            ],
-            'POST',
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
-            ],
-            [
-                'reference_entity_identifier' => 'designer',
-                'code'                       => 'description',
-                'order'                      => null,
-                'is_required'                => false,
-                'labels'                     => [
-                    'fr_FR' => 'Intel',
-                    'en_US' => 'Intel',
-                ],
-                'type'                       => 'text',
-                'max_length'                 => 2000,
-                'value_per_channel'          => true,
-                'value_per_locale'           => true,
-                'is_textarea'                => true,
-                'is_rich_text_editor'        => false,
-                'validation_rule'            => 'none',
-                'regular_expression'         => null
-            ]
-        );
-
-        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
-        $descriptionAttribute = $attributeRepository->getByIdentifier(
-            AttributeIdentifier::fromString(
-                sprintf('%s_%s_%s', 'description', 'designer', md5('designer_description'))
-            )
-        );
-
-        $this->assertEquals(1, $descriptionAttribute->getOrder()->intValue());
-    }
-
-    /**
      * @test
      */
     public function it_returns_an_error_if_the_code_is_invalid()
@@ -205,11 +126,5 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $activatedLocales = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
         $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
-    }
-
-    private function revokeCreationRights(): void
-    {
-        $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_referenceentity_attribute_create', false);
     }
 }

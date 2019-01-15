@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Doctrine\DBAL\Connection;
@@ -30,7 +31,7 @@ class SqlFindAttributeNextOrder implements FindAttributeNextOrderInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function withReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): int
+    public function withReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeOrder
     {
         $query = <<<SQL
         SELECT MAX(attribute_order)
@@ -43,6 +44,6 @@ SQL;
         $result = $statement->fetchColumn();
         $statement->closeCursor();
 
-        return null === $result ? 0 : (intval($result) + 1);
+        return null === $result ? AttributeOrder::fromInteger(0) : AttributeOrder::fromInteger((intval($result) + 1));
     }
 }

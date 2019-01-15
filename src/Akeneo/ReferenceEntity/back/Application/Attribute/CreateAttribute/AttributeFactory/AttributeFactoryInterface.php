@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\Attribute
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -25,5 +26,9 @@ interface AttributeFactoryInterface
 {
     public function supports(AbstractCreateAttributeCommand $command): bool;
 
-    public function create(AbstractCreateAttributeCommand $command, AttributeIdentifier $identifier): AbstractAttribute;
+    public function create(
+        AbstractCreateAttributeCommand $command,
+        AttributeIdentifier $identifier,
+        AttributeOrder $order
+    ): AbstractAttribute;
 }

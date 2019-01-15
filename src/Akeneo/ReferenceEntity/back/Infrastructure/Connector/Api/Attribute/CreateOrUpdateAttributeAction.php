@@ -194,10 +194,6 @@ class CreateOrUpdateAttributeAction
         $normalizedAttribute = $this->getNormalizedAttribute($normalizedAttribute, $referenceEntityIdentifier);
 
         $createAttributeCommand = $this->createAttributeCommandFactoryRegistry->getFactory($normalizedAttribute)->create($normalizedAttribute);
-        // TODO: This should not be part of the Controller logic
-        $createAttributeCommand->order = $this->attributeNextOrder->withReferenceEntityIdentifier(
-            ReferenceEntityIdentifier::fromString($createAttributeCommand->referenceEntityIdentifier)
-        );
 
         $violations = $this->validator->validate($createAttributeCommand);
         if ($violations->count() > 0) {

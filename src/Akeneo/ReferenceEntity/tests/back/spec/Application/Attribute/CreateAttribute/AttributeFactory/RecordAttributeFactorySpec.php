@@ -8,6 +8,7 @@ use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactor
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordAttributeCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use PhpSpec\ObjectBehavior;
 
 class RecordAttributeFactorySpec extends ObjectBehavior
@@ -23,21 +24,22 @@ class RecordAttributeFactorySpec extends ObjectBehavior
         $this->supports(new CreateImageAttributeCommand())->shouldReturn(false);
     }
 
-    function it_creates_a_record_attribute_with_a_command(AttributeIdentifier $identifier)
+    function it_creates_a_record_attribute_with_a_command()
     {
         $command = new CreateRecordAttributeCommand();
         $command->referenceEntityIdentifier = 'designer';
         $command->code = 'mentor';
         $command->labels = ['fr_FR' => 'Mentor'];
-        $command->order = 0;
         $command->isRequired = false;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
         $command->recordType = 'designer';
 
-        $identifier->__toString()->willReturn('mentor_designer_fingerprint');
-
-        $this->create($command, $identifier)->normalize()->shouldReturn([
+        $this->create(
+            $command,
+            AttributeIdentifier::fromString('mentor_designer_fingerprint'),
+            AttributeOrder::fromInteger(0)
+        )->normalize()->shouldReturn([
             'identifier' => 'mentor_designer_fingerprint',
             'reference_entity_identifier' => 'designer',
             'code' => 'mentor',
