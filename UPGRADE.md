@@ -411,11 +411,10 @@ TODO: change the link!!
         ```
         
         - pim_versioning
-        pim_versioning:
-            resource: "@PimEnterpriseVersioningBundle/Resources/config/routing.yml"
         
         ```yaml
-
+        pim_versioning:
+            resource: "@PimEnterpriseVersioningBundle/Resources/config/routing.yml"
         ```
         
         to
@@ -509,7 +508,7 @@ TODO: change the link!!
         - `Pim\Bundle\DataGridBundle\PimDataGridBundle` now is `Oro\Bundle\PimDataGridBundle\PimDataGridBundle`
         - `Pim\Bundle\UserBundle\PimUserBundle` now is `Akeneo\UserManagement\Bundle\PimUserBundle`
         - `Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle` now is `Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle`
-        - `Pim\Bundle\DashboardBundle\PimDashboardBundle` now is `Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle`
+        - `PimEnterprise\Bundle\DashboardBundle\PimEnterpriseDashboardBundle` now is `Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle`
         - `Pim\Bundle\ImportExportBundle\PimImportExportBundle` now is `Akeneo\Platform\Bundle\ImportExportBundle\PimImportExportBundle`
         - `Pim\Bundle\InstallerBundle\PimInstallerBundle` now is `Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle`
         - `Pim\Bundle\NotificationBundle\PimNotificationBundle` now is `Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle`
@@ -530,7 +529,7 @@ TODO: change the link!!
         - `PimEnterprise\Bundle\CatalogRuleBundle\PimEnterpriseCatalogRuleBundle` now is `Akeneo\Pim\Automation\RuleEngine\Bundle\AkeneoPimRuleEngineBundle`
         - `Akeneo\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle` now is `Akeneo\Tool\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle`
         - `Akeneo\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle` now is `Akeneo\Tool\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle`
-        - `PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle` now is ``
+        - `PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle` now is `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle`
         - `PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle` now is `Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle`
         - `PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle` now is `Akeneo\Platform\Bundle\UIBundle\PimEnterpriseUIBundle`
         - `PimEnterprise\Bundle\ProductAssetBundle\PimEnterpriseProductAssetBundle` now is `Akeneo\Asset\Bundle\AkeneoAssetBundle`
@@ -555,9 +554,9 @@ TODO: change the link!!
         - `PimEnterprise\Bundle\FilterBundle\PimEnterpriseFilterBundle`
         - `PimEnterprise\Bundle\EnrichBundle\PimEnterpriseEnrichBundle`
         - `PimEnterprise\Bundle\DataGridBundle\PimEnterpriseDataGridBundle`
-        - `PimEnterprise\Bundle\DashboardBundle\PimEnterpriseDashboardBundle`
         - `PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle`
         - `PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle`
+        - `Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle`
 
     * The following bundles have been added:
         - `Akeneo\Channel\Bundle\AkeneoChannelBundle`
@@ -568,7 +567,6 @@ TODO: change the link!!
         - `Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle`
         - `Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle`
         - `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\AkeneoFranklinInsightsBundle`
-        - `Akeneo\Tool\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle`
     
 6. Update your dependencies:
 
