@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Reader;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Cursor\PendingSubscriptionCursor;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -24,23 +23,18 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
  */
 class PendingSubscriptionReader implements ItemReaderInterface, StepExecutionAwareInterface
 {
-    /** @var ProductSubscriptionRepositoryInterface */
-    private $subscriptionRepository;
-
     /** @var PendingSubscriptionCursor */
-    private $pendingSubscriptionCursor;
+    private $subscriptionCursor;
 
-    private $firstRead = true;
-
+    /** @var StepExecution */
     private $stepExecution;
 
     /**
-     * @param PendingSubscriptionCursor $pendingSubscriptionCursor
+     * @param PendingSubscriptionCursor $subscriptionCursor
      */
-    public function __construct(
-        PendingSubscriptionCursor $pendingSubscriptionCursor
-    ) {
-        $this->pendingSubscriptionCursor = $pendingSubscriptionCursor;
+    public function __construct(PendingSubscriptionCursor $subscriptionCursor)
+    {
+        $this->subscriptionCursor = $subscriptionCursor;
     }
 
     /**
@@ -49,26 +43,21 @@ class PendingSubscriptionReader implements ItemReaderInterface, StepExecutionAwa
     public function read()
     {
         $pendingSubscription = null;
+        $this->subscriptionCursor->next();
 
-        if ($this->pendingSubscriptionCursor->valid()) {
-            if (!$this->firstRead) {
-                $this->pendingSubscriptionCursor->next();
-            }
-
-            $pendingSubscription = $this->pendingSubscriptionCursor->current();
-            if (false === $pendingSubscription) {
+        if ($this->subscriptionCursor->valid()) {
+            $pendingSubscription = $this->subscriptionCursor->current();
+            if (null === $pendingSubscription) {
                 return null;
             }
             $this->stepExecution->incrementSummaryInfo('read');
         }
 
-        $this->firstRead = false;
-
         return $pendingSubscription;
     }
 
     /**
-     * @param StepExecution $stepExecution
+     * {@inheritdoc}
      */
     public function setStepExecution(StepExecution $stepExecution): void
     {
