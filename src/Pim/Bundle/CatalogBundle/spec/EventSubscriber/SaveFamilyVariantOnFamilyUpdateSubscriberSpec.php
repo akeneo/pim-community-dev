@@ -56,7 +56,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
     function it_validates_and_saves_family_variants_on_family_update_on_unitary_save(
         $validator,
         $familyVariantSaver,
-        $objectDetacher,
         GenericEvent $event,
         FamilyInterface $family,
         Collection $familyVariants,
@@ -80,7 +79,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
 
         $familyVariantSaver->save($familyVariants1)->shouldBeCalled();
         $familyVariantSaver->save($familyVariants2)->shouldBeCalled();
-        $objectDetacher->detachAll([$familyVariants1, $familyVariants2])->shouldBeCalled();
 
         $event->getSubject()->willReturn($family);
         $event->hasArgument('unitary')->willReturn(true);
@@ -149,7 +147,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
     function it_validates_and_saves_family_variants_on_family_update_on_bulk_save(
         $validator,
         $bulkFamilyVariantSaver,
-        $objectDetacher,
         GenericEvent $event,
         FamilyInterface $family,
         Collection $familyVariants,
@@ -172,7 +169,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $constraintViolationList->count()->willReturn(0);
 
         $bulkFamilyVariantSaver->saveAll([$familyVariants1, $familyVariants2])->shouldBeCalled();
-        $objectDetacher->detachAll([$familyVariants1, $familyVariants2])->shouldBeCalled();
 
         $event->getSubject()->willReturn($family);
         $event->hasArgument('unitary')->willReturn(true);
