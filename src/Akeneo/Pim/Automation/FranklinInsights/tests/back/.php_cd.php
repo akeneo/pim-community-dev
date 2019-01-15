@@ -74,7 +74,6 @@ $rules = [
             'Symfony\Component\Validator\Constraints\Collection',
             'Symfony\Component\Validator\Constraints\NotBlank',
             'Symfony\Component\Validator\Constraints\DateTime',
-            'Doctrine\ORM\EntityManagerInterface',
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',

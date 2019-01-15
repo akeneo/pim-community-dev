@@ -1,0 +1,6 @@
+services:
+    akeneo.pim.automation.franklin_insights.subscription.cursor.pending_subscription:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Cursor\PendingSubscriptionCursor'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+            - 100

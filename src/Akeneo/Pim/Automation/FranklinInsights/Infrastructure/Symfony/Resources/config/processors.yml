@@ -14,3 +14,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
 
+    akeneo.pim.automation.franklin_insights.connector.processor.pending_subscription:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Processor\PendingSubscriptionProcessor'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.proposal.factory.suggested_data'

@@ -63,7 +63,7 @@ class InMemoryProposalUpsertSpec extends ObjectBehavior
         $productUpdater->update($product, ['values' => ['foo' => 'bar']])->shouldBeCalled();
         $productUpdater->update($product2, ['values' => ['test' => 42]])->shouldBeCalled();
 
-        $this->process([$suggestedData, $suggestedData2], 'an_author')->shouldReturn(null);
+        $this->process([$suggestedData, $suggestedData2], 'an_author')->shouldReturn(2);
 
         $this->hasProposalForProduct('test', 'an_author')->shouldReturn(true);
         $this->hasProposalForProduct('test2', 'an_author')->shouldReturn(true);
