@@ -131,16 +131,12 @@ class UserController extends Controller
         $tokenStorage = $this->get('security.token_storage')->getToken();
         $currentUser = $tokenStorage ? $tokenStorage->getUser() : null;
         if (is_object($currentUser) && $currentUser->getId() != $id) {
-            $em = $this->get('doctrine.orm.entity_manager');
-            $userClass = $this->container->getParameter('oro_user.entity.class');
-            $user = $em->getRepository($userClass)->find($id);
-
-            if (!$user) {
+            $user = $this->get('pim_user.repository.user')->find($id);
+            if (null === $user) {
                 throw $this->createNotFoundException(sprintf('User with id %d could not be found.', $id));
             }
 
-            $em->remove($user);
-            $em->flush();
+            $this->get('pim_user.remover.user')->remove($user);
 
             return new JsonResponse('', 204);
         } else {
