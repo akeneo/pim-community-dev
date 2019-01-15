@@ -16,3 +16,10 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
             - '@doctrine.orm.entity_manager'
+
+    akeneo.pim.automation.franklin_insights.connector.writer.proposal:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer\ProposalWriter'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.proposal.create_proposal'
+            - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+            - '@doctrine.orm.entity_manager'
