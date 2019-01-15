@@ -19,7 +19,9 @@ Feature: Delete one record
   @acceptance-front
   Scenario: Deleting a record
     Given a valid record
+    And the user has the locale permission to edit the record
     And the user has the following rights:
+      | akeneo_referenceentity_record_create | true |
       | akeneo_referenceentity_record_edit   | true |
       | akeneo_referenceentity_record_delete | true |
     When the user deletes the record
@@ -28,7 +30,9 @@ Feature: Delete one record
   @acceptance-front
   Scenario: Cannot delete a record without the rights
     Given a valid record
+    And the user has the locale permission to edit the record
     And the user has the following rights:
+      | akeneo_referenceentity_record_create | true |
       | akeneo_referenceentity_record_edit   | true  |
       | akeneo_referenceentity_record_delete | false |
     Then the user should not see the delete button

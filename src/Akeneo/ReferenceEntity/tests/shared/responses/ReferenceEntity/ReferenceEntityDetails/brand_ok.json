@@ -19,7 +19,10 @@
               "originalFilename": "brand.jpg"
           },
           "record_count": 12,
-          "attributes": []
+          "attributes": [],
+          "permission": {
+              "edit": true
+          }
       }
   }
 }

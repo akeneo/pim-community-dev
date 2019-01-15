@@ -13,9 +13,8 @@ import {
   notifyRecordSaveFailed,
   notifyRecordSaveValidationError,
 } from 'akeneoreferenceentity/application/action/record/notify';
-import Record from 'akeneoreferenceentity/domain/model/record/record';
 import recordSaver from 'akeneoreferenceentity/infrastructure/saver/record';
-import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
+import recordFetcher, {RecordResult} from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import File from 'akeneoreferenceentity/domain/model/file';
 import {EditState} from 'akeneoreferenceentity/application/reducer/record/edit';
@@ -45,9 +44,9 @@ export const saveRecord = () => async (dispatch: any, getState: () => EditState)
 
   dispatch(recordEditionSucceeded());
   dispatch(notifyRecordWellSaved());
-  const savedRecord: Record = await recordFetcher.fetch(record.getReferenceEntityIdentifier(), record.getCode());
+  const savedRecord: RecordResult = await recordFetcher.fetch(record.getReferenceEntityIdentifier(), record.getCode());
 
-  dispatch(recordEditionReceived(savedRecord));
+  dispatch(recordEditionReceived(savedRecord.record));
 };
 
 export const recordLabelUpdated = (value: string, locale: string) => (dispatch: any, getState: any) => {

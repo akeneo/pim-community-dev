@@ -17,7 +17,13 @@ export default (
     catalogChannel: '',
     uiLocale: '',
   },
-  action: {type: string; target: string; locale?: string; channel?: string; channels?: Channel[]}
+  action: {
+    type: string;
+    target: string;
+    locale: string;
+    channel: string;
+    channels: Channel[];
+  }
 ): UserState => {
   switch (action.type) {
     case 'DEFAULT_LOCALE_CHANGED':

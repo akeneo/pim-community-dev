@@ -16,7 +16,6 @@ import {
 } from 'akeneoreferenceentity/application/action/record/edit';
 import {deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
 import EditState from 'akeneoreferenceentity/application/component/app/edit-state';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
 import File from 'akeneoreferenceentity/domain/model/file';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
@@ -29,8 +28,9 @@ import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/applicat
 import Key from 'akeneoreferenceentity/tools/key';
 import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import CompletenessLabel from '../app/completeness';
 import {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
+import CompletenessLabel from 'akeneoreferenceentity/application/component/app/completeness';
+import {canEditReferenceEntity, canEditLocale} from 'akeneoreferenceentity/application/reducer/right';
 
 const securityContext = require('pim/security-context');
 
@@ -142,6 +142,7 @@ class RecordEditView extends React.Component<EditProps> {
                     alt={__('pim_reference_entity.record.img', {'{{ label }}': label})}
                     image={record.getImage()}
                     onImageChange={this.props.events.onImageUpdated}
+                    readOnly={!this.props.rights.record.edit}
                   />
                   <div className="AknTitleContainer-mainContainer AknTitleContainer-mainContainer--contained">
                     <div>
@@ -256,6 +257,7 @@ export default connect(
   (state: State): StateProps => {
     const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
     const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
+    const locale = state.user.catalogLocale;
 
     return {
       sidebar: {
@@ -266,7 +268,7 @@ export default connect(
         isDirty: state.form.state.isDirty,
       },
       context: {
-        locale: state.user.catalogLocale,
+        locale,
         channel: state.user.catalogChannel,
       },
       record: state.form.data,
@@ -276,11 +278,14 @@ export default connect(
       },
       rights: {
         record: {
-          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') && canEditReferenceEntity(),
+          edit:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier),
           delete:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier) &&
+            canEditLocale(state.right.locale, locale),
         },
       },
       confirmDelete: state.confirmDelete,

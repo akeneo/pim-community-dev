@@ -13,6 +13,7 @@ import ValidationError, {createValidationError} from 'akeneoreferenceentity/doma
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {denormalizePermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
+import {refreshReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/edit';
 
 export const savePermission = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const referenceEntityIdentifier = ReferenceEntityIdentifier.create(getState().form.data.identifier);
@@ -39,4 +40,5 @@ export const savePermission = () => async (dispatch: any, getState: () => EditSt
 
   const updatedPermission = await permissionFetcher.fetch(referenceEntityIdentifier);
   dispatch(permissionEditionReceived(updatedPermission));
+  dispatch(refreshReferenceEntity(referenceEntityIdentifier, false));
 };

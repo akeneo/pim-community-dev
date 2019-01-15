@@ -5,16 +5,17 @@ import * as React from 'react';
 import {Store} from 'redux';
 import __ from 'akeneoreferenceentity/tools/translator';
 import RecordView from 'akeneoreferenceentity/application/component/record/edit';
-import Record from 'akeneoreferenceentity/domain/model/record/record';
 import createStore from 'akeneoreferenceentity/infrastructure/store';
 import recordReducer from 'akeneoreferenceentity/application/reducer/record/edit';
-import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
+import recordFetcher, {RecordResult} from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import {recordEditionReceived} from 'akeneoreferenceentity/domain/event/record/edit';
 import {
   defaultCatalogLocaleChanged,
   catalogLocaleChanged,
   catalogChannelChanged,
   uiLocaleChanged,
+  localePermissionsChanged,
+  referenceEntityPermissionChanged,
 } from 'akeneoreferenceentity/domain/event/user';
 import {setUpSidebar} from 'akeneoreferenceentity/application/action/sidebar';
 import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/locale';
@@ -22,10 +23,12 @@ import {updateChannels} from 'akeneoreferenceentity/application/action/channel';
 import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
 import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
 import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
+const fetcherRegistry = require('pim/fetcher-registry');
 
 const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
   if ('Escape' === event.code) {
@@ -47,9 +50,11 @@ class RecordEditController extends BaseController {
         createReferenceEntityIdentifier(route.params.referenceEntityIdentifier),
         createCode(route.params.recordCode)
       )
-      .then((record: Record) => {
+      .then(async (recordResult: RecordResult) => {
         this.store = createStore(true)(recordReducer);
-        this.store.dispatch(recordEditionReceived(record));
+        await this.store.dispatch(updateChannels() as any);
+        this.store.dispatch(recordEditionReceived(recordResult.record));
+        this.store.dispatch(referenceEntityPermissionChanged(recordResult.permission));
         this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
@@ -57,8 +62,14 @@ class RecordEditController extends BaseController {
         this.store.dispatch(setUpSidebar('akeneo_reference_entities_record_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(updateActivatedLocales() as any);
-        this.store.dispatch(updateChannels() as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
+
+        fetcherRegistry
+          .getFetcher('locale-permission')
+          .fetchAll()
+          .then((localePermissions: LocalePermission[]) => {
+            this.store.dispatch(localePermissionsChanged(localePermissions));
+          });
 
         ReactDOM.render(
           <Provider store={this.store}>

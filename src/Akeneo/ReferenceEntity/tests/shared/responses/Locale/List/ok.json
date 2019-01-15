@@ -3,7 +3,8 @@
       "method": "GET",
       "route": "pim_enrich_locale_rest_index",
       "query": {
-          "activated": true
+          "activated": true,
+          "filter_locales": false
       }
   },
   "response": {

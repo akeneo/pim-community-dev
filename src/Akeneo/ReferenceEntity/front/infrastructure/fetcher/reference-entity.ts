@@ -7,6 +7,7 @@ import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/identi
 import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
 import {Attribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import hydrateAttribute from 'akeneoreferenceentity/application/hydrator/attribute';
+import {ReferenceEntityPermission} from 'akeneoreferenceentity/domain/model/permission/reference-entity';
 
 const routing = require('routing');
 
@@ -20,6 +21,7 @@ export type ReferenceEntityResult = {
   referenceEntity: ReferenceEntity;
   recordCount: number;
   attributes: Attribute[];
+  permission: ReferenceEntityPermission;
 };
 
 export class ReferenceEntityFetcherImplementation implements ReferenceEntityFetcher {
@@ -34,6 +36,10 @@ export class ReferenceEntityFetcherImplementation implements ReferenceEntityFetc
       attributes: backendReferenceEntity.attributes.map((normalizedAttribute: NormalizedAttribute) =>
         hydrateAttribute(normalizedAttribute)
       ),
+      permission: {
+        referenceEntityIdentifier: identifier.stringValue(),
+        edit: backendReferenceEntity.permission.edit,
+      },
     };
   }
 

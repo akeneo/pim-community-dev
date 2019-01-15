@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Controller\InternalApi;
 
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
@@ -123,5 +124,23 @@ class PermissionRestController
                 'job_instances'    => $jobInstances
             ]
         );
+    }
+
+    public function localesPermissionsAction(): JsonResponse
+    {
+        $authorizationChecker = $this->authorizationChecker;
+
+        $locales = array_map(
+            function (Locale $locale) use ($authorizationChecker) {
+                return [
+                    'code' => $locale->getCode(),
+                    'view' => $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale),
+                    'edit' => $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale)
+                ];
+            },
+            $this->userContext->getUserLocales()
+        );
+
+        return new JsonResponse($locales);
     }
 }

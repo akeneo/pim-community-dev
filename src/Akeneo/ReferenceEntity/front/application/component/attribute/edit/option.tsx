@@ -18,7 +18,6 @@ import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attri
 import hydrateAttribute from 'akeneoreferenceentity/application/hydrator/attribute';
 import {AttributeWithOptions} from 'akeneoreferenceentity/domain/model/attribute/type/option';
 import LocaleSwitcher from 'akeneoreferenceentity/application/component/app/locale-switcher';
-import {StructureState} from 'akeneoreferenceentity/application/reducer/structure';
 import {catalogLocaleChanged} from 'akeneoreferenceentity/domain/event/user';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {saveOptions} from 'akeneoreferenceentity/application/action/attribute/edit';
@@ -74,7 +73,9 @@ type StateProps = {
   attribute: NormalizedAttribute;
   errors: ValidationError[];
   locale: string;
-  structure: StructureState;
+  structure: {
+    locales: Locale[];
+  };
   referenceEntity: NormalizedReferenceEntity;
   catalogLocale: string;
   numberOfLockedOptions: any;
@@ -467,7 +468,9 @@ export default connect(
     return {
       ...state.options,
       locale: state.user.catalogLocale,
-      structure: state.structure,
+      structure: {
+        locales: state.structure.locales,
+      },
       attribute: state.attribute.data,
       isDirty: state.options.isDirty,
       numberOfLockedOptions: state.options.numberOfLockedOptions,

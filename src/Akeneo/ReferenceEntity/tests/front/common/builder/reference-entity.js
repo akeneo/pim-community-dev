@@ -14,6 +14,7 @@ class ReferenceEntityBuilder {
       image: null,
       attributes: [],
       record_count: 123,
+      permission: {edit: true},
     };
   }
 
@@ -37,6 +38,12 @@ class ReferenceEntityBuilder {
 
   withAttributes(attributes) {
     this.referenceEntity.attributes = attributes;
+
+    return this;
+  }
+
+  withPermission(permission) {
+    this.referenceEntity.permission = permission;
 
     return this;
   }

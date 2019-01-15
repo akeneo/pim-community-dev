@@ -31,7 +31,7 @@ import Locale from 'akeneoreferenceentity/domain/model/locale';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
 import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
+import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
 
 const securityContext = require('pim/security-context');
 
@@ -183,35 +183,33 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
             <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.record.no_data.subtitle')}</div>
           </div>
         )}
-        {confirmDelete.isActive &&
-          undefined === confirmDelete.identifier && (
-            <DeleteModal
-              message={__('pim_reference_entity.record.delete_all.confirm', {
-                entityIdentifier: referenceEntity.getIdentifier().stringValue(),
-              })}
-              title={__('pim_reference_entity.record.delete.title')}
-              onConfirm={() => {
-                events.onDeleteAllRecords(referenceEntity);
-              }}
-              onCancel={events.onCancelDeleteModal}
-            />
-          )}
-        {confirmDelete.isActive &&
-          undefined !== confirmDelete.identifier && (
-            <DeleteModal
-              message={__('pim_reference_entity.record.delete.message', {
-                recordLabel: confirmDelete.label,
-              })}
-              title={__('pim_reference_entity.record.delete.title')}
-              onConfirm={() => {
-                events.onDeleteRecord(
-                  referenceEntity.getIdentifier(),
-                  createRecordCode(confirmDelete.identifier as string)
-                );
-              }}
-              onCancel={events.onCancelDeleteModal}
-            />
-          )}
+        {confirmDelete.isActive && undefined === confirmDelete.identifier && (
+          <DeleteModal
+            message={__('pim_reference_entity.record.delete_all.confirm', {
+              entityIdentifier: referenceEntity.getIdentifier().stringValue(),
+            })}
+            title={__('pim_reference_entity.record.delete.title')}
+            onConfirm={() => {
+              events.onDeleteAllRecords(referenceEntity);
+            }}
+            onCancel={events.onCancelDeleteModal}
+          />
+        )}
+        {confirmDelete.isActive && undefined !== confirmDelete.identifier && (
+          <DeleteModal
+            message={__('pim_reference_entity.record.delete.message', {
+              recordLabel: confirmDelete.label,
+            })}
+            title={__('pim_reference_entity.record.delete.title')}
+            onConfirm={() => {
+              events.onDeleteRecord(
+                referenceEntity.getIdentifier(),
+                createRecordCode(confirmDelete.identifier as string)
+              );
+            }}
+            onCancel={events.onCancelDeleteModal}
+          />
+        )}
       </React.Fragment>
     );
   }
@@ -247,16 +245,22 @@ export default connect(
       },
       rights: {
         record: {
-          create: securityContext.isGranted('akeneo_referenceentity_record_create') && canEditReferenceEntity(),
-          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') && canEditReferenceEntity(),
+          create:
+            securityContext.isGranted('akeneo_referenceentity_record_create') &&
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
+          edit:
+            securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
           deleteAll:
+            securityContext.isGranted('akeneo_referenceentity_record_create') &&
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_records_delete_all') &&
-            canEditReferenceEntity(),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
           delete:
+            securityContext.isGranted('akeneo_referenceentity_record_create') &&
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
         },
       },
       confirmDelete: state.confirmDelete,

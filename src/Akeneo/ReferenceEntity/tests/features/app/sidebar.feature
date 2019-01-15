@@ -5,8 +5,8 @@ Feature: Display the sidebar
 
   Background:
     Given the following reference entities to list:
-      | identifier | labels                                       |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
+      | identifier | labels                                       | permission     |
+      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | {"edit": true} |
     And the following configured tabs:
       | code       |
       | record     |

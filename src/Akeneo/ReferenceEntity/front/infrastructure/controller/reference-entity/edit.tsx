@@ -20,6 +20,7 @@ import {
   catalogLocaleChanged,
   catalogChannelChanged,
   uiLocaleChanged,
+  referenceEntityPermissionChanged,
 } from 'akeneoreferenceentity/domain/event/user';
 import {setUpSidebar} from 'akeneoreferenceentity/application/action/sidebar';
 import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/locale';
@@ -78,6 +79,8 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(updateFilter('full_text', '=', userSearch));
         this.store.dispatch(attributeListGotUpdated(referenceEntityResult.attributes) as any);
+        this.store.dispatch(referenceEntityPermissionChanged(referenceEntityResult.permission));
+
         document.addEventListener('keydown', shortcutDispatcher(this.store));
         this.updateCompletenessFilter(completenessFilter);
 

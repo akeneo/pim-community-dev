@@ -19,6 +19,8 @@ import referenceEntityFetcher, {
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import File from 'akeneoreferenceentity/domain/model/file';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import {referenceEntityPermissionChanged} from 'akeneoreferenceentity/domain/event/user';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 
 export const saveReferenceEntity = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const referenceEntity = denormalizeReferenceEntity(getState().form.data);
@@ -42,11 +44,19 @@ export const saveReferenceEntity = () => async (dispatch: any, getState: () => E
   dispatch(referenceEntityEditionSucceeded());
   dispatch(notifyReferenceEntityWellSaved());
 
-  const referenceEntityResult: ReferenceEntityResult = await referenceEntityFetcher.fetch(
-    referenceEntity.getIdentifier()
-  );
-  dispatch(referenceEntityRecordCountUpdated(referenceEntityResult.recordCount));
+  dispatch(refreshReferenceEntity(referenceEntity.getIdentifier()));
+};
+
+export const refreshReferenceEntity = (
+  referenceEntityIdentifier: ReferenceEntityIdentifier,
+  refreshDataForm: boolean = false
+) => async (dispatch: any): Promise<void> => {
+  const referenceEntityResult: ReferenceEntityResult = await referenceEntityFetcher.fetch(referenceEntityIdentifier);
+  if (refreshDataForm) {
+    dispatch(referenceEntityRecordCountUpdated(referenceEntityResult.recordCount));
+  }
   dispatch(referenceEntityEditionReceived(referenceEntityResult.referenceEntity.normalize()));
+  dispatch(referenceEntityPermissionChanged(referenceEntityResult.permission));
 };
 
 export const referenceEntityLabelUpdated = (value: string, locale: string) => (

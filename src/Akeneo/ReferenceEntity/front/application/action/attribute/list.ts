@@ -33,6 +33,7 @@ export const attributeListGotUpdated = (attributes: Attribute[]) => (
   getState: () => EditState
 ): void => {
   dispatch(attributeListUpdated(attributes));
+
   dispatch(updateColumns(getColumns(attributes, getState().structure.channels)));
 };
 
