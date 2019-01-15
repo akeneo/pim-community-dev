@@ -8,7 +8,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOptio
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use http\Exception\InvalidArgumentException;
 use Webmozart\Assert\Assert;
 
 /**
