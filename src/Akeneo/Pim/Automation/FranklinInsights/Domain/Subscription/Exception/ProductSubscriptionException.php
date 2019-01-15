@@ -24,6 +24,14 @@ final class ProductSubscriptionException extends \Exception
     /**
      * @return ProductSubscriptionException
      */
+    public static function inactiveConnection(): ProductSubscriptionException
+    {
+        return new static(sprintf(static::CONSTRAINT_KEY, 'inactive_connection'));
+    }
+
+    /**
+     * @return ProductSubscriptionException
+     */
     public static function insufficientCredits(): ProductSubscriptionException
     {
         return new static(sprintf(static::CONSTRAINT_KEY, 'insufficient_credits'));
@@ -51,5 +59,21 @@ final class ProductSubscriptionException extends \Exception
     public static function invalidMappedValues(): ProductSubscriptionException
     {
         return new static(sprintf(static::CONSTRAINT_KEY, 'invalid_mapped_values'));
+    }
+
+    /**
+     * @return ProductSubscriptionException
+     */
+    public static function alreadySubscribedProduct(): ProductSubscriptionException
+    {
+        return new static(sprintf(static::CONSTRAINT_KEY, 'already_subscribed_product'));
+    }
+
+    /**
+     * @return ProductSubscriptionException
+     */
+    public static function variantProduct(): ProductSubscriptionException
+    {
+        return new static(sprintf(static::CONSTRAINT_KEY, 'variant_product'));
     }
 }

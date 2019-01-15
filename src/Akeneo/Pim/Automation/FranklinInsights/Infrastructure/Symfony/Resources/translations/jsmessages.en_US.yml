@@ -87,6 +87,9 @@ akeneo_franklin_insights:
                 invalid_mapped_values: 'Sorry, failed to subscribe product to Franklin Insights. Please subscribe the product with a valid combination of identifiers.'
                 data_provider_error: 'Franklin returned an error while trying to subscribe the product' # TODO: check with POs
                 not_subscribed: 'The product is not subscribed'
+                already_subscribed_product: 'The product is already subscribed.'
+                variant_product: 'Sorry, variant products cannot be subscribed to Franklin Insights.'
+                inactive_connection: 'Sorry, failed to subscribe product to Franklin Insights. Please configure your connection to Franklin Insights.'
             module:
                 product_edit_form:
                     family_required: 'Product family required.'

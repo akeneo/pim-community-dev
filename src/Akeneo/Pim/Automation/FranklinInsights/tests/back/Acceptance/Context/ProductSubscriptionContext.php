@@ -228,6 +228,10 @@ class ProductSubscriptionContext implements Context
     {
         $thrownException = ExceptionContext::getThrownException();
         Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
+        Assert::eq(
+            ProductSubscriptionException::alreadySubscribedProduct()->getMessage(),
+            $thrownException->getMessage()
+        );
     }
 
     /**

@@ -95,8 +95,7 @@ class SubscribeProductHandler
 
         $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {
-            // TODO: To rework APAI-390
-            throw new ProductSubscriptionException('No mapping defined');
+            throw ProductSubscriptionException::invalidIdentifiersMapping();
         }
 
         $subscriptionResponse = $this->subscriptionProvider->subscribe($subscriptionRequest);
@@ -135,9 +134,7 @@ class SubscribeProductHandler
 
         $productSubscription = $this->productSubscriptionRepository->findOneByProductId($productId);
         if (null !== $productSubscription) {
-            throw new ProductSubscriptionException(
-                sprintf('The product with id "%d" is already subscribed', $productId)
-            );
+            throw ProductSubscriptionException::alreadySubscribedProduct();
         }
 
         return $product;

@@ -57,7 +57,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
         $command = new SubscribeProductCommand($productId);
         $this->shouldThrow(
-            new \Exception(
+            new \InvalidArgumentException(
                 sprintf('Could not find product with id "%s"', $productId)
             )
         )->during('handle', [$command]);
@@ -98,7 +98,28 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
         $command = new SubscribeProductCommand($productId);
         $this->shouldThrow(
-            new ProductSubscriptionException(sprintf('The product with id "%d" is already subscribed', $productId))
+            ProductSubscriptionException::alreadySubscribedProduct()
+        )->during('handle', [$command]);
+
+        $createProposalHandler->handle(Argument::cetera())->shouldNotHaveBeenCalled();
+    }
+
+    public function it_throws_an_exception_if_the_identifier_mapping_is_not_defined(
+        $identifiersMappingRepository,
+        $createProposalHandler,
+        ProductRepositoryInterface $productRepository,
+        ProductInterface $product
+    ): void {
+        $productId = 42;
+        $product->getId()->willReturn($productId);
+        $product->getFamily()->willReturn(new Family());
+        $productRepository->find($productId)->willReturn($product);
+
+        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping());
+
+        $command = new SubscribeProductCommand($productId);
+        $this->shouldThrow(
+            ProductSubscriptionException::invalidIdentifiersMapping()
         )->during('handle', [$command]);
 
         $createProposalHandler->handle(Argument::cetera())->shouldNotHaveBeenCalled();
