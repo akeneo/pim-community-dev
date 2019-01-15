@@ -84,10 +84,6 @@ class PendingSubscriptionCursor implements \Iterator
      */
     public function valid()
     {
-        if (null === $this->pendingSubscriptions) {
-            $this->rewind();
-        }
-
         return !empty($this->pendingSubscriptions);
     }
 
