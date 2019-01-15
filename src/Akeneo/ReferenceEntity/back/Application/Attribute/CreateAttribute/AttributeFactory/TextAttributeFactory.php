@@ -46,8 +46,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
         AbstractCreateAttributeCommand $command,
         AttributeIdentifier $identifier,
         AttributeOrder $order
-    ): AbstractAttribute
-    {
+    ): AbstractAttribute {
         if (!$this->supports($command)) {
             throw new \RuntimeException(
                 sprintf(
