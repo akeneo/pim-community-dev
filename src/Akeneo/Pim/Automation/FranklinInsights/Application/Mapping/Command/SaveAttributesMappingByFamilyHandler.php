@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMa
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
@@ -65,7 +66,7 @@ class SaveAttributesMappingByFamilyHandler
         $familyCode = $command->getFamilyCode();
         $attributesMapping = $command->getAttributesMapping();
 
-        $attributesMapping = $this->filterUnknownAttributes($attributesMapping);
+        $attributesMapping = $this->fillAndFilterUnknownAttributes($attributesMapping);
         if (empty($attributesMapping)) {
             throw AttributeMappingException::onlyUnknownMappedAttributes();
         }
@@ -84,7 +85,7 @@ class SaveAttributesMappingByFamilyHandler
      *
      * @return array
      */
-    private function filterUnknownAttributes(array $attributesMapping): array
+    private function fillAndFilterUnknownAttributes(array $attributesMapping): array
     {
         $attributeCodes = [];
         foreach ($attributesMapping as $attributeMapping) {
@@ -125,22 +126,20 @@ class SaveAttributesMappingByFamilyHandler
 
         $validAttributeCodes = $family->getAttributeCodes();
         foreach ($attributesMapping as $attributeMapping) {
-            if (null !== $attributeMapping->getPimAttributeCode()) {
-                $this->validateAndFillAttribute($attributeMapping, $validAttributeCodes);
+            if (null !== $attributeMapping->getAttribute()) {
+                $this->validateAttribute($attributeMapping->getAttribute(), $validAttributeCodes);
             }
         }
     }
 
     /**
-     * @param AttributeMapping $attributeMapping
+     * @param AttributeInterface $attribute
      * @param string[] $validAttributeCodes
      *
      * @throws AttributeMappingException
      */
-    private function validateAndFillAttribute(AttributeMapping $attributeMapping, array $validAttributeCodes): void
+    private function validateAttribute(AttributeInterface $attribute, array $validAttributeCodes): void
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier($attributeMapping->getPimAttributeCode());
-
         if (!in_array($attribute->getCode(), $validAttributeCodes)) {
             throw AttributeMappingException::attributeNotInFamilyNotAllowed();
         }
@@ -158,8 +157,6 @@ class SaveAttributesMappingByFamilyHandler
         if ($attribute->isLocaleSpecific()) {
             throw AttributeMappingException::localeSpecificAttributeNotAllowed();
         }
-
-        $attributeMapping->setAttribute($attribute);
     }
 
     /**
