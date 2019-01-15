@@ -74,7 +74,7 @@ type StateProps = {
   errors: ValidationError[];
   locale: string;
   structure: {
-    locales: Locale[]
+    locales: Locale[];
   };
   referenceEntity: NormalizedReferenceEntity;
   catalogLocale: string;
@@ -469,7 +469,7 @@ export default connect(
       ...state.options,
       locale: state.user.catalogLocale,
       structure: {
-        locales: state.structure.locales
+        locales: state.structure.locales,
       },
       attribute: state.attribute.data,
       isDirty: state.options.isDirty,
