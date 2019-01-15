@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Reader;
 
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Cursor\PendingSubscriptionCursor;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Cursor\PendingSubscriptionCursor;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;

@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Cursor;
+namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Cursor;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Cursor\PendingSubscriptionCursor;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Cursor\PendingSubscriptionCursor;
 use PhpSpec\ObjectBehavior;
 
 /**

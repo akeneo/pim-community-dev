@@ -8,4 +8,4 @@ services:
     akeneo.pim.automation.franklin_insights.connector.reader.pending_subscription:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Reader\PendingSubscriptionReader'
         arguments:
-            - '@akeneo.pim.automation.franklin_insights.persistence.cursor.pending_subscription'
+            - '@akeneo.pim.automation.franklin_insights.subscription.cursor.pending_subscription'
