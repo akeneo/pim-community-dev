@@ -43,7 +43,8 @@ class ControllerSpec extends ObjectBehavior
             $createOrUpdateConfigHandler,
             $repository,
             $serviceProviderDefaultConfiguration,
-            $createArchive
+            $createArchive,
+            'http://my.akeneopim.com'
         );
     }
 
@@ -137,7 +138,7 @@ class ControllerSpec extends ObjectBehavior
         $this->saveAction($request)->shouldBeLike(new JsonResponse($normalizedErrors, 400));
     }
 
-    function it_gives_an_existing_configuration($repository, $normalizer)
+    function it_gives_an_existing_configuration($repository)
     {
         $config = new Configuration(
             new Code('authentication_sso'),
@@ -168,9 +169,12 @@ class ControllerSpec extends ObjectBehavior
             'service_provider_private_key'  => 'private_key',
         ];
 
-        $normalizer->normalize($config, 'internal_api')->willReturn($normalizedConfig);
+        $staticConfiguration = [
+            'service_provider_metadata_url' => 'http://my.akeneopim.com/saml/metadata',
+            'service_provider_acs_url' => 'http://my.akeneopim.com/saml/acs'
+        ];
 
-        $this->getAction()->shouldBeLike(new JsonResponse($normalizedConfig));
+        $this->getAction()->shouldBeLike(new JsonResponse($normalizedConfig + $staticConfiguration));
     }
 
     function it_gives_a_default_configuration($repository, $serviceProviderDefaultConfiguration)
@@ -196,6 +200,11 @@ class ControllerSpec extends ObjectBehavior
             'service_provider_private_key'  => 'default_private_key',
         ];
 
-        $this->getAction()->shouldBeLike(new JsonResponse($defaultConfig));
+        $staticConfiguration = [
+            'service_provider_metadata_url' => 'http://my.akeneopim.com/saml/metadata',
+            'service_provider_acs_url' => 'http://my.akeneopim.com/saml/acs'
+        ];
+
+        $this->getAction()->shouldBeLike(new JsonResponse($defaultConfig + $staticConfiguration));
     }
 }
