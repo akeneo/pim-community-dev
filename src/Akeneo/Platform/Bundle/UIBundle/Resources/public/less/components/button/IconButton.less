@@ -35,12 +35,19 @@
 
   &--light {
     background-color: @AknLightGray;
-    border: 1px solid @AknGrey;
+    border: 1px solid @AknBorderColor;
     color: @AknGrey;
 
     &:hover {
       background-color: @AknGrey;
     }
+  }
+
+  &--glued {
+    height: @AknFormHeight;
+    width: @AknFormHeight;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   &--dark {

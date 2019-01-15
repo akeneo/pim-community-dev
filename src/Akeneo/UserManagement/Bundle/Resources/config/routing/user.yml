@@ -5,3 +5,8 @@ pim_user_edit:
     path: /{identifier}/edit
     requirements:
         identifier: '\d+'
+
+
+pim_user_logout_redirect:
+    path: /logout/redirect
+    defaults: { _controller: PimUserBundle:Security:logoutRedirect }

@@ -26,6 +26,7 @@
 - TIP-898: Allow extension for user via a property named "properties", used on the EE by example
 
 ## BC breaks
+- TIP-1018: Remove SOAP requirements (not used anymore) and WSSE bundle
 - Remove service `@pim_enrich.provider.structure_version.attribute` in favor of `@pim_structure_version.provider.structure_version.attribute`
 - Remove service `@pim_enrich.provider.structure_version.family_variant` in favor of `@pim_structure_version.provider.structure_version.family_variant`
 - Remove service `@pim_enrich.provider.structure_version.group_type` in favor of `@pim_structure_version.provider.structure_version.group_type`
