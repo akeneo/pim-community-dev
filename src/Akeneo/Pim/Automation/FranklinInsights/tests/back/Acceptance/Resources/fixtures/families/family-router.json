@@ -15,7 +15,9 @@
         "release_date",
         "power_device",
         "color",
-        "weight"
+        "weight",
+        "specifications",
+        "connectivity"
     ],
     "attribute_as_label": "name",
     "attribute_as_image": "picture",

@@ -51,4 +51,13 @@ class AttributeMappingExceptionSpec extends ObjectBehavior
         );
         $this->getMessageParams()->shouldReturn(['pimType' => $pimType]);
     }
+
+    public function it_throws_an_exception_attribute_is_not_in_family(): void
+    {
+        $this->beConstructedThrough('attributeNotInFamilyNotAllowed', []);
+
+        $this->getMessage()->shouldReturn(
+            'akeneo_franklin_insights.entity.attributes_mapping.constraint.attribute_not_in_family_not_allowed'
+        );
+    }
 }

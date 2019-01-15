@@ -175,5 +175,27 @@
       "en_US": "Weight",
       "fr_FR": "Poids"
     }
+  },
+  "specifications": {
+    "code": "specifications",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": true,
+    "labels": {
+      "en_US": "Specifications",
+      "fr_FR": "Specifications"
+    }
+  },
+  "connectivity": {
+    "code": "connectivity",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Connectivity",
+      "fr_FR": "Connectivité"
+    }
   }
 }

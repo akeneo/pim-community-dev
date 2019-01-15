@@ -374,6 +374,19 @@ final class AttributesMappingContext implements Context
     }
 
     /**
+     * @Then an attribute not in family not allowed message should be sent
+     */
+    public function anAttributeNotInFamilyNotAllowedMessageShouldBeSent(): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, AttributeMappingException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            AttributeMappingException::attributeNotInFamilyNotAllowed()->getMessage()
+        );
+    }
+
+    /**
      * @param mixed $franklinStatus
      *
      * @return int
