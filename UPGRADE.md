@@ -1491,6 +1491,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doc
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\CompletenessRemover/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\ORM\\CompletenessRemover/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\QueryBuilderUtility/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\ORM\\QueryBuilderUtility/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\ORM\\QueryBuilderUtility/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\ElasticsearchBundle/Akeneo\\Tool\\Bundle\\ElasticsearchBundle/g'
 
 find ./src/ -type f -print0 | xargs -0 sed -i 's/\(UserContext.[gs]et(['\''\"'']\)firstName/\1first_name/gi'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/\(UserContext.[gs]et(['\''\"'']\)lastName/\1last_name/gi'
