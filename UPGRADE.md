@@ -411,11 +411,10 @@ TODO: change the link!!
         ```
         
         - pim_versioning
-        pim_versioning:
-            resource: "@PimEnterpriseVersioningBundle/Resources/config/routing.yml"
         
         ```yaml
-
+        pim_versioning:
+            resource: "@PimEnterpriseVersioningBundle/Resources/config/routing.yml"
         ```
         
         to
