@@ -17,7 +17,7 @@ import {
   PermissionCollection,
 } from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 import {savePermission} from 'akeneoreferenceentity/application/action/reference-entity/permission';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/user';
+import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
 
 const securityContext = require('pim/security-context');
 const routing = require('routing');
@@ -132,7 +132,7 @@ export default connect(
         referenceEntity: {
           edit:
             securityContext.isGranted('akeneo_referenceentity_reference_entity_manage_permission') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity, state.form.data.identifier),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
         },
         userGroup: {
           create:

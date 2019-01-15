@@ -50,10 +50,9 @@ class RecordEditController extends BaseController {
         createReferenceEntityIdentifier(route.params.referenceEntityIdentifier),
         createCode(route.params.recordCode)
       )
-      .then((recordResult: RecordResult) => {
+      .then(async (recordResult: RecordResult) => {
         this.store = createStore(true)(recordReducer);
-        this.store.dispatch(updateChannels() as any);
-        this.store = createStore(true)(recordReducer);
+        await this.store.dispatch(updateChannels() as any);
         this.store.dispatch(recordEditionReceived(recordResult.record));
         this.store.dispatch(referenceEntityPermissionChanged(recordResult.permission));
         this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));

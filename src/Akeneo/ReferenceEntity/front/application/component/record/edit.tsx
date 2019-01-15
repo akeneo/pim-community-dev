@@ -30,7 +30,7 @@ import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-r
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import {getLocales} from 'akeneoreferenceentity/application/reducer/structure';
 import CompletenessLabel from 'akeneoreferenceentity/application/component/app/completeness';
-import {canEditReferenceEntity, canEditLocale} from 'akeneoreferenceentity/application/reducer/user';
+import {canEditReferenceEntity, canEditLocale} from 'akeneoreferenceentity/application/reducer/right';
 
 const securityContext = require('pim/security-context');
 
@@ -280,15 +280,12 @@ export default connect(
         record: {
           edit:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity, state.form.data.reference_entity_identifier),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier),
           delete:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(
-              state.user.permission.referenceEntity,
-              state.form.data.reference_entity_identifier
-            ) &&
-            canEditLocale(state.user.permission.locale, locale),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier) &&
+            canEditLocale(state.right.locale, locale),
         },
       },
       confirmDelete: state.confirmDelete,

@@ -13,7 +13,7 @@ import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel
 import renderValues from 'akeneoreferenceentity/application/component/record/edit/enrich/value';
 import Value from 'akeneoreferenceentity/domain/model/record/value';
 import Key from 'akeneoreferenceentity/tools/key';
-import {canEditReferenceEntity, canEditLocale} from 'akeneoreferenceentity/application/reducer/user';
+import {canEditReferenceEntity, canEditLocale} from 'akeneoreferenceentity/application/reducer/right';
 
 const securityContext = require('pim/security-context');
 
@@ -126,19 +126,13 @@ export default connect(
         record: {
           edit:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            canEditReferenceEntity(
-              state.user.permission.referenceEntity,
-              state.form.data.reference_entity_identifier
-            ) &&
-            canEditLocale(state.user.permission.locale, locale),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier) &&
+            canEditLocale(state.right.locale, locale),
           delete:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(
-              state.user.permission.referenceEntity,
-              state.form.data.reference_entity_identifier
-            ) &&
-            canEditLocale(state.user.permission.locale, locale),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier) &&
+            canEditLocale(state.right.locale, locale),
         },
       },
     };

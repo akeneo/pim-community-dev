@@ -119,6 +119,7 @@ module.exports = async function(cucumber) {
   };
 
   const loadEditRecord = async function(requestContractPath) {
+    await answerChannelList.apply(this);
     await askForRecord.apply(this, [
       currentRequestContract.request.query.recordCode,
       currentRequestContract.request.query.referenceEntityIdentifier,
@@ -132,6 +133,7 @@ module.exports = async function(cucumber) {
   When('the user ask for the record', async function() {
     await answerLocaleList.apply(this);
     await answerChannelList.apply(this);
+
     await askForRecord.apply(this, [
       currentRequestContract.request.query.recordCode,
       currentRequestContract.request.query.referenceEntityIdentifier,
@@ -284,6 +286,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should not see the delete button', async function() {
+    await answerChannelList.apply(this);
     await askForRecord.apply(this, [
       currentRequestContract.request.query.recordCode,
       currentRequestContract.request.query.referenceEntityIdentifier,

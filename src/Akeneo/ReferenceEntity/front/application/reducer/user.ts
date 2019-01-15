@@ -1,18 +1,11 @@
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
-import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
-import {ReferenceEntityPermission} from 'akeneoreferenceentity/domain/model/permission/reference-entity';
-import {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 
 export interface UserState {
   defaultCatalogLocale: string;
   catalogLocale: string;
   catalogChannel: string;
   uiLocale: string;
-  permission: {
-    locale: LocalePermission[];
-    referenceEntity: ReferenceEntityPermission;
-  };
 }
 
 class InvalidArgumentError extends Error {}
@@ -23,7 +16,6 @@ export default (
     catalogLocale: '',
     catalogChannel: '',
     uiLocale: '',
-    permission: {locale: [], referenceEntity: {referenceEntityIdentifier: '', edit: false}},
   },
   action: {
     type: string;
@@ -31,8 +23,6 @@ export default (
     locale: string;
     channel: string;
     channels: Channel[];
-    localePermissions: LocalePermission[];
-    referenceEntityPermission: ReferenceEntityPermission;
   }
 ): UserState => {
   switch (action.type) {
@@ -63,18 +53,6 @@ export default (
 
       state = {...state, [`${action.target}Channel`]: action.channel, [`${action.target}Locale`]: newLocale};
       break;
-    case 'LOCALE_PERMISSIONS_CHANGED':
-      state = {
-        ...state,
-        permission: {...state.permission, locale: action.localePermissions},
-      };
-      break;
-    case 'REFERENCE_ENTITY_PERMISSIONS_CHANGED':
-      state = {
-        ...state,
-        permission: {...state.permission, referenceEntity: action.referenceEntityPermission},
-      };
-      break;
     default:
       break;
   }
@@ -101,27 +79,4 @@ const getCatalogLocale = (channels: Channel[], channelCode: string, localeCode: 
   }
 
   return channel.locales[0].code;
-};
-
-export const canEditReferenceEntity = (
-  referenceEntityPermission: ReferenceEntityPermission,
-  referenceEntityIdentifier: NormalizedIdentifier
-) => {
-  if (referenceEntityPermission.referenceEntityIdentifier !== referenceEntityIdentifier) {
-    return false;
-  }
-
-  return referenceEntityPermission.edit;
-};
-
-export const canEditLocale = (localesPermission: LocalePermission[], currentLocale: string) => {
-  const localePermission = localesPermission.find((localePermission: LocalePermission) => {
-    return localePermission.code === currentLocale;
-  });
-
-  if (undefined === localePermission) {
-    return false;
-  }
-
-  return localePermission.edit;
 };

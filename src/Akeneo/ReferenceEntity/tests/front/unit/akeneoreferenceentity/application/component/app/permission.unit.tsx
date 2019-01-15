@@ -80,6 +80,49 @@ describe('>>>COMPONENT --- permission', () => {
     permissionsEditor.find(`.AknPermission-header .AknButton[data-right-level="edit"]`).simulate('click');
   });
 
+  test('Mass update rights with keyboard', () => {
+    expect.assertions(4);
+    const permissionsEditor = mount(
+      <PermissionCollectionEditor
+        value={permissions}
+        readOnly={false}
+        onChange={newPermissions => {
+          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('edit');
+          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('edit');
+          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('edit');
+          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('edit');
+        }}
+        prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
+      />
+    );
+
+    permissionsEditor.find(`.AknPermission-header .AknButton[data-right-level="edit"]`).simulate('keyDown', {
+      keyCode: 32,
+      which: 32,
+      key: ' ',
+    });
+  });
+
+  test('Mass update rights with keyboard', () => {
+    expect.assertions(0);
+    const permissionsEditor = mount(
+      <PermissionCollectionEditor
+        value={permissions}
+        readOnly={false}
+        onChange={newPermissions => {
+          expect(true).toEqual(false);
+        }}
+        prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
+      />
+    );
+
+    permissionsEditor.find(`.AknPermission-header .AknButton[data-right-level="edit"]`).simulate('keyDown', {
+      keyCode: 40,
+      which: 40,
+      key: 'arrow down',
+    });
+  });
+
   test('Mass update rights at none', () => {
     expect.assertions(4);
     const permissionsEditor = mount(
@@ -138,7 +181,34 @@ describe('>>>COMPONENT --- permission', () => {
       .simulate('click');
   });
 
-  test('Update one right', () => {
+  test('Update one right with keyboard', () => {
+    expect.assertions(4);
+    const permissionsEditor = mount(
+      <PermissionCollectionEditor
+        value={permissions}
+        readOnly={false}
+        onChange={newPermissions => {
+          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('view');
+          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('own');
+          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('own');
+          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none');
+        }}
+        prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
+      />
+    );
+
+    permissionsEditor
+      .find(
+        `.AknPermission-row[data-user-group-code="Translator"] .AknPermission-level[data-right-level="own"] .AknPermission-pill`
+      )
+      .simulate('keyDown', {
+        keyCode: 32,
+        which: 32,
+        key: ' ',
+      });
+  });
+
+  test('Update one right on read only mode', () => {
     expect.assertions(0);
     const permissionsEditor = mount(
       <PermissionCollectionEditor
@@ -179,5 +249,56 @@ describe('>>>COMPONENT --- permission', () => {
         `.AknPermission-row[data-user-group-code="IT"] .AknPermission-level[data-right-level="own"] .AknPermission-pill`
       )
       .simulate('click');
+  });
+
+  test('Toggle one right with keyboard', () => {
+    expect.assertions(4);
+    const permissionsEditor = mount(
+      <PermissionCollectionEditor
+        value={permissions}
+        readOnly={false}
+        onChange={newPermissions => {
+          expect(newPermissions.getPermission('Manager').getRightLevel()).toEqual('view');
+          expect(newPermissions.getPermission('Translator').getRightLevel()).toEqual('edit');
+          expect(newPermissions.getPermission('IT').getRightLevel()).toEqual('edit');
+          expect(newPermissions.getPermission('Other').getRightLevel()).toEqual('none');
+        }}
+        prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
+      />
+    );
+
+    permissionsEditor
+      .find(
+        `.AknPermission-row[data-user-group-code="IT"] .AknPermission-level[data-right-level="own"] .AknPermission-pill`
+      )
+      .simulate('keyDown', {
+        keyCode: 32,
+        which: 32,
+        key: ' ',
+      });
+  });
+
+  test('Toggle one right with keyboard on wrong key', () => {
+    expect.assertions(0);
+    const permissionsEditor = mount(
+      <PermissionCollectionEditor
+        value={permissions}
+        readOnly={false}
+        onChange={newPermissions => {
+          expect(true).toEqual(false);
+        }}
+        prioritizedRightLevels={[RightLevel.None, RightLevel.View, RightLevel.Edit, RightLevel.Own]}
+      />
+    );
+
+    permissionsEditor
+      .find(
+        `.AknPermission-row[data-user-group-code="IT"] .AknPermission-level[data-right-level="own"] .AknPermission-pill`
+      )
+      .simulate('keyDown', {
+        keyCode: 40,
+        which: 40,
+        key: 'arrow down',
+      });
   });
 });

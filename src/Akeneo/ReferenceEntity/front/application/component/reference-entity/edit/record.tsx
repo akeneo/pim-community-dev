@@ -31,7 +31,7 @@ import Locale from 'akeneoreferenceentity/domain/model/locale';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
 import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/user';
+import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
 
 const securityContext = require('pim/security-context');
 
@@ -249,20 +249,20 @@ export default connect(
         record: {
           create:
             securityContext.isGranted('akeneo_referenceentity_record_create') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity, state.form.data.identifier),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
           edit:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity, state.form.data.identifier),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
           deleteAll:
             securityContext.isGranted('akeneo_referenceentity_record_create') &&
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_records_delete_all') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity, state.form.data.identifier),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
           delete:
             securityContext.isGranted('akeneo_referenceentity_record_create') &&
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(state.user.permission.referenceEntity, state.form.data.identifier),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
         },
       },
       confirmDelete: state.confirmDelete,

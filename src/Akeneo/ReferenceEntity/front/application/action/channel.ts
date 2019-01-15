@@ -8,7 +8,7 @@ export const updateChannels = () => async (dispatch: any): Promise<any> => {
   return new Promise((resolve: any, reject: any) => {
     fetcherRegistry
       .getFetcher('channel')
-      .fetchAll()
+      .fetchAll({filter_locales: false})
       .then((backendChannels: any[]) => {
         const channels = hydrateAll<Channel>(hydrator)(backendChannels);
 

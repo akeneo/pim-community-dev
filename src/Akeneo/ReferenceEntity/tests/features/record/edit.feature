@@ -437,6 +437,9 @@ Feature: Edit an record
   @acceptance-front
   Scenario: Display a record labels in the edit form
     Given a valid record
+    And the user has the locale permission to edit the record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
     When the user ask for the record
     Then the record should be:
       | labels                                    |

@@ -1,4 +1,5 @@
 import user, {UserState} from 'akeneoreferenceentity/application/reducer/user';
+import right, {RightState} from 'akeneoreferenceentity/application/reducer/right';
 import sidebar, {SidebarState} from 'akeneoreferenceentity/application/reducer/sidebar';
 import grid, {GridState} from 'akeneoreferenceentity/application/reducer/grid';
 import createRecord, {CreateState as CreateRecordState} from 'akeneoreferenceentity/application/reducer/record/create';
@@ -19,6 +20,7 @@ import confirmDelete, {ConfirmDeleteState} from 'akeneoreferenceentity/applicati
 
 export interface EditState {
   user: UserState;
+  right: RightState;
   sidebar: SidebarState;
   grid: GridState<NormalizedRecord>;
   createRecord: CreateRecordState;
@@ -35,6 +37,7 @@ export interface EditState {
 
 export default {
   user,
+  right,
   sidebar,
   grid,
   createRecord,
