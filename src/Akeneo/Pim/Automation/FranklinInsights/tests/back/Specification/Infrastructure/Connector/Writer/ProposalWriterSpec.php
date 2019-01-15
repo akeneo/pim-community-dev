@@ -57,8 +57,7 @@ class ProposalWriterSpec extends ObjectBehavior
     public function it_writes_proposals_and_empty_associated_suggested_data(
         $proposalUpsert,
         $subscriptionRepository,
-        $em,
-        $stepExecution
+        $em
     ): void {
         $proposalSuggestedData1 = new ProposalSuggestedData(44, ['asin' => 'my-asin']);
         $proposalSuggestedData2 = new ProposalSuggestedData(31, ['upc' => 'my-upc']);
