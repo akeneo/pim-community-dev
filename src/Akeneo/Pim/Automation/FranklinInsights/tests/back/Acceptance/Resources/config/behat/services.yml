@@ -90,7 +90,6 @@ services:
     akeneo_acceptance.context.franklin_insights.proposal:
         class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context\ProposalContext'
         arguments:
-            - '@__symfony__.akeneo.pim.automation.franklin_insights.handler.create_proposals'
             - '@__symfony__.akeneo.pim.automation.franklin_insights.proposal.create_proposal'
             - '@__symfony__.akeneo.pim.automation.franklin_insights.repository.product_subscription'
         tags:

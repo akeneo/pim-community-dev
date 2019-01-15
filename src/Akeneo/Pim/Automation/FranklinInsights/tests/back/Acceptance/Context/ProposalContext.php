@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalsCommand;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalsHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\InMemoryProposalUpsert;
@@ -26,9 +24,6 @@ use Webmozart\Assert\Assert;
  */
 class ProposalContext implements Context
 {
-    /** @var CreateProposalsHandler */
-    private $createProposalsHandler;
-
     /** @var InMemoryProposalUpsert */
     private $proposalUpsert;
 
@@ -36,26 +31,15 @@ class ProposalContext implements Context
     private $subscriptionRepository;
 
     /**
-     * @param CreateProposalsHandler $createProposalsHandler
      * @param InMemoryProposalUpsert $proposalUpsert
      * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
      */
     public function __construct(
-        CreateProposalsHandler $createProposalsHandler,
         InMemoryProposalUpsert $proposalUpsert,
         ProductSubscriptionRepositoryInterface $subscriptionRepository
     ) {
-        $this->createProposalsHandler = $createProposalsHandler;
         $this->proposalUpsert = $proposalUpsert;
         $this->subscriptionRepository = $subscriptionRepository;
-    }
-
-    /**
-     * @When the system creates proposals for suggested data
-     */
-    public function theSystemCreatesProposalsForSuggestedData(): void
-    {
-        $this->createProposalsHandler->handle(new CreateProposalsCommand());
     }
 
     /**
