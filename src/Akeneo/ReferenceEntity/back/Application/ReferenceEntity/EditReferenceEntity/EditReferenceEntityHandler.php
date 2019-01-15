@@ -54,7 +54,6 @@ class EditReferenceEntityHandler
                 $existingImage->isEmpty() ||
                 $existingImage->getKey() !== $editReferenceEntityCommand->image['filePath']
             ) {
-
                 $image = $editReferenceEntityCommand->image;
                 $rawFile = new \SplFileInfo($image['filePath']);
                 $storedFile = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
