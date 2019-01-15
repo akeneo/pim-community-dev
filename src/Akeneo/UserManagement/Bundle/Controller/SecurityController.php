@@ -51,4 +51,3 @@ class SecurityController extends Controller
         return $this->redirect($logoutUrlGenerator->getLogoutUrl());
     }
 }
-        

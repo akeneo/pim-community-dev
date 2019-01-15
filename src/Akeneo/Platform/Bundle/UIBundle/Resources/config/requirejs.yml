@@ -982,6 +982,7 @@ config:
     pim/form/common/fields/simple-select-async:     pimui/js/form/common/fields/simple-select-async
     pim/form/common/fields/multi-select-async:      pimui/js/form/common/fields/multi-select-async
     pim/form/common/fields/text:                    pimui/js/form/common/fields/text
+    pim/form/common/fields/copiable-text:           pimui/js/form/common/fields/copiable-text.ts
     pim/form/common/fields/textarea:                pimui/js/form/common/fields/textarea
     pim/form/common/fields/metric:                  pimui/js/form/common/fields/metric
     pim/form/common/fields/password:                pimui/js/form/common/fields/password.ts
@@ -1105,6 +1106,7 @@ config:
     pim/template/form/common/fields/select:                   pimui/templates/form/common/fields/select.html
     pim/template/form/common/fields/simple-select-async:      pimui/templates/form/common/fields/simple-select-async.html
     pim/template/form/common/fields/text:                     pimui/templates/form/common/fields/text.html
+    pim/template/form/common/fields/copiable-text:            pimui/templates/form/common/fields/copiable-text.html
     pim/template/form/common/fields/textarea:                 pimui/templates/form/common/fields/textarea.html
     pim/template/form/common/fields/textarea-monospaced:      pimui/templates/form/common/fields/textarea-monospaced.html
     pim/template/form/common/fields/metric:                   pimui/templates/form/common/fields/metric.html
