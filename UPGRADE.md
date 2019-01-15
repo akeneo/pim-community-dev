@@ -508,7 +508,7 @@ TODO: change the link!!
         - `Pim\Bundle\DataGridBundle\PimDataGridBundle` now is `Oro\Bundle\PimDataGridBundle\PimDataGridBundle`
         - `Pim\Bundle\UserBundle\PimUserBundle` now is `Akeneo\UserManagement\Bundle\PimUserBundle`
         - `Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle` now is `Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle`
-        - `Pim\Bundle\DashboardBundle\PimDashboardBundle` now is `Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle`
+        - `PimEnterprise\Bundle\DashboardBundle\PimEnterpriseDashboardBundle` now is `Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle`
         - `Pim\Bundle\ImportExportBundle\PimImportExportBundle` now is `Akeneo\Platform\Bundle\ImportExportBundle\PimImportExportBundle`
         - `Pim\Bundle\InstallerBundle\PimInstallerBundle` now is `Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle`
         - `Pim\Bundle\NotificationBundle\PimNotificationBundle` now is `Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle`
@@ -529,7 +529,7 @@ TODO: change the link!!
         - `PimEnterprise\Bundle\CatalogRuleBundle\PimEnterpriseCatalogRuleBundle` now is `Akeneo\Pim\Automation\RuleEngine\Bundle\AkeneoPimRuleEngineBundle`
         - `Akeneo\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle` now is `Akeneo\Tool\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle`
         - `Akeneo\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle` now is `Akeneo\Tool\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle`
-        - `PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle` now is ``
+        - `PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle` now is `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle`
         - `PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle` now is `Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle`
         - `PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle` now is `Akeneo\Platform\Bundle\UIBundle\PimEnterpriseUIBundle`
         - `PimEnterprise\Bundle\ProductAssetBundle\PimEnterpriseProductAssetBundle` now is `Akeneo\Asset\Bundle\AkeneoAssetBundle`
