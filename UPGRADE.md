@@ -554,9 +554,9 @@ TODO: change the link!!
         - `PimEnterprise\Bundle\FilterBundle\PimEnterpriseFilterBundle`
         - `PimEnterprise\Bundle\EnrichBundle\PimEnterpriseEnrichBundle`
         - `PimEnterprise\Bundle\DataGridBundle\PimEnterpriseDataGridBundle`
-        - `PimEnterprise\Bundle\DashboardBundle\PimEnterpriseDashboardBundle`
         - `PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle`
         - `PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle`
+        - `Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle`
 
     * The following bundles have been added:
         - `Akeneo\Channel\Bundle\AkeneoChannelBundle`
@@ -567,7 +567,6 @@ TODO: change the link!!
         - `Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle`
         - `Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle`
         - `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\AkeneoFranklinInsightsBundle`
-        - `Akeneo\Tool\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle`
     
 6. Update your dependencies:
 
