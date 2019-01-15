@@ -47,7 +47,8 @@ extensions:
             url: pim_enrich_attribute_rest_create
             method: PUT
             redirectAfter: pim_enrich_attribute_edit
-            identifierParamName: code
+            identifierParamName: undefined
+            redirectAfterRouteIdentifierParamName: code
             excludedProperties: [empty_value, field_type, filter_types, is_locale_specific]
 
     pim-attribute-create-form-state:

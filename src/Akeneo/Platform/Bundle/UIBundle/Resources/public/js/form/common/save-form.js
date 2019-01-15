@@ -92,8 +92,17 @@ define(
                 this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
                 const entityIdProperty = this.config.entityIdentifierParamName || 'code';
-                const identifierProperty = this.config.identifierParamName || 'identifier';
+                let identifierProperty = 'identifier';
+                if (this.config.identifierParamName !== undefined) {
+                    if (this.config.identifierParamName === 'undefined') {
+                        identifierProperty = undefined;
+                    } else {
+                        identifierProperty = this.configure.identifierParamName;
+                    }
+                }
                 const entityId = propertyAccessor.accessProperty(this.getFormData(), entityIdProperty, '');
+                const redirectAfterRouteIdentifierParamName = this.config.redirectAfterRouteIdentifierParamName
+                    || 'identifier';
 
                 return EntitySaver
                     .setUrl(this.config.url)
@@ -106,7 +115,7 @@ define(
 
                         if (this.config.redirectAfter) {
                             var params = {};
-                            params[identifierProperty] = entityId;
+                            params[redirectAfterRouteIdentifierParamName] = entityId;
 
                             router.redirectToRoute(this.config.redirectAfter, params);
                         }
