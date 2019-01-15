@@ -40,7 +40,7 @@ define(
              */
             postRender: function () {
                 this.$('textarea').summernote({
-                    disableResizeEditor: true,
+                    disableResizeEditor: false,
                     height: 200,
                     iconPrefix: 'icon-',
                     toolbar: [
