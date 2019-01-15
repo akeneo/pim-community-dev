@@ -30,6 +30,7 @@ default:
                 - akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_record_context
                 - akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_reference_entity_context
                 - akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_attribute_context
+                - akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_attribute_option_context
                 - akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_record_context
                 - akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_records_context
                 - akeneo_referenceentity.tests.back.integration.connector.distribute.not_found_reference_entity_context

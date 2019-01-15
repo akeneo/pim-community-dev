@@ -34,6 +34,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -222,7 +223,7 @@ class CreateOrUpdateAttributeContext implements Context
     /**
      * @Then /^the PIM notifies the connector about an error indicating that the attribute has data that does not comply with the business rules$/
      */
-    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttribureHasDataThatDoesNotComplyWithTheBusinessRules()
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeHasDataThatDoesNotComplyWithTheBusinessRules()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,

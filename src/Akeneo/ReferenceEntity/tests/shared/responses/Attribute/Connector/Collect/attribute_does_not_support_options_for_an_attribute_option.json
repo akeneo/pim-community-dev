@@ -1,0 +1,25 @@
+{
+  "request": {
+    "method": "PATCH",
+    "route": "akeneo_reference_entities_reference_entity_attribute_option_rest_connector_create_or_update",
+    "query": {
+      "referenceEntityIdentifier": "brand",
+      "attributeCode": "color",
+      "optionCode": "red"
+    },
+    "body": {
+      "code":  "red",
+      "labels":  {
+        "en_US":  "Red",
+        "fr_FR":  "Rouge"
+      }
+    }
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "code": 404,
+      "message":"Attribute \"color\" does not support options."
+    }
+  }
+}
