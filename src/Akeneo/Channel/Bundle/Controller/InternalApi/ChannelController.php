@@ -82,11 +82,16 @@ class ChannelController
      *
      * @return JsonResponse
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $channels = $this->channelRepository->findAll();
+        $filterLocales = $request->query->getBoolean('filter_locales', true);
 
-        $normalizedChannels = $this->normalizer->normalize($channels, 'internal_api');
+        $normalizedChannels = $this->normalizer->normalize(
+            $channels,
+            'internal_api',
+            ['filter_locales' => $filterLocales]
+        );
 
         return new JsonResponse($normalizedChannels);
     }
