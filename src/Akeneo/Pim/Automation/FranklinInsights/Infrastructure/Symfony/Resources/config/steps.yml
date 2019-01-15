@@ -54,8 +54,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@akeneo.pim.automation.franklin_insights.connector.reader.pending_subscription'
-            - '@pim_connector.processor.dummy_item'
-            - '@pim_connector.writer.dummy_item'
+            - '@akeneo.pim.automation.franklin_insights.connector.processor.pending_subscription'
+            - '@akeneo.pim.automation.franklin_insights.connector.writer.proposal'
 
     akeneo.pim.automation.franklin_insights.connector.step.remove_attribute_from_attributes_mapping:
         class: '%pim_connector.step.tasklet.class%'
