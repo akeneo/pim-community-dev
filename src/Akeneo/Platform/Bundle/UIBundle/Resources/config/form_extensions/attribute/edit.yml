@@ -66,9 +66,10 @@ extensions:
             updateFailureMessage: pim_enrich.entity.attribute.flash.update.fail
             notReadyMessage: pim_enrich.entity.attribute.flash.update.fields_not_ready
             url: pim_enrich_attribute_rest_post
-            redirectAfter: pim_enrich_attribute_edit
             identifierParamName: identifier
             entityIdentifierParamName: code
+            redirectAfter: pim_enrich_attribute_edit
+            redirectAfterRouteIdentifierParamName: code
             excludedProperties: [empty_value, field_type, filter_types, is_locale_specific]
 
     pim-attribute-edit-form-state:
