@@ -25,6 +25,8 @@ interface ProposalUpsertInterface
      *
      * @param ProposalSuggestedData[] $suggestedData
      * @param string $author
+     *
+     * @return int number of proposals created or updated
      */
-    public function process(array $suggestedData, string $author): void;
+    public function process(array $suggestedData, string $author): int;
 }

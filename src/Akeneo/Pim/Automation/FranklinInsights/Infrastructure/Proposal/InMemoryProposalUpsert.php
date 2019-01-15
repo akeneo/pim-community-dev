@@ -46,7 +46,7 @@ class InMemoryProposalUpsert implements ProposalUpsertInterface
     /**
      * {@inheritdoc}
      */
-    public function process(array $suggestedData, string $author): void
+    public function process(array $suggestedData, string $author): int
     {
         $processed = [];
         foreach ($suggestedData as $data) {
@@ -57,6 +57,8 @@ class InMemoryProposalUpsert implements ProposalUpsertInterface
             $this->drafts[$key] = $product->getValues()->toArray();
             $processed[] = $data->getProductId();
         }
+
+        return count($processed);
     }
 
     /**

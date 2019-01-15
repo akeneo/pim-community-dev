@@ -22,7 +22,6 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -40,16 +39,14 @@ class ProposalUpsertSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         EntityWithValuesDraftBuilderInterface $draftBuilder,
         SaverInterface $draftSaver,
-        EventDispatcherInterface $eventDispatcher,
-        EntityManagerClearerInterface $cacheClearer
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $this->beConstructedWith(
             $productRepository,
             $productUpdater,
             $draftBuilder,
             $draftSaver,
-            $eventDispatcher,
-            $cacheClearer
+            $eventDispatcher
         );
     }
 
@@ -65,7 +62,6 @@ class ProposalUpsertSpec extends ObjectBehavior
         $draftBuilder,
         $draftSaver,
         $eventDispatcher,
-        $cacheClearer,
         ProductInterface $product,
         FamilyInterface $family,
         ProductInterface $otherProduct,
@@ -94,7 +90,6 @@ class ProposalUpsertSpec extends ObjectBehavior
         $otherProductDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
         $otherProductDraft->markAsReady()->shouldBeCalled();
         $draftSaver->save($otherProductDraft)->shouldBeCalled();
-        $cacheClearer->clear()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
             EntityWithValuesDraftEvents::PRE_READY,
@@ -111,7 +106,7 @@ class ProposalUpsertSpec extends ObjectBehavior
                 new ProposalSuggestedData(56, $otherSuggestedData),
             ],
             'Franklin'
-        )->shouldReturn(null);
+        )->shouldReturn(2);
     }
 
     public function it_skips_the_proposal_creation_if_there_is_an_error(
@@ -143,7 +138,7 @@ class ProposalUpsertSpec extends ObjectBehavior
                 new ProposalSuggestedData(56, $otherSuggestedData),
             ],
             'Franklin'
-        )->shouldReturn(null);
+        )->shouldReturn(0);
     }
 
     public function it_filters_attributes_that_do_not_belong_to_the_products_family(
@@ -163,6 +158,6 @@ class ProposalUpsertSpec extends ObjectBehavior
                 new ProposalSuggestedData(42, $suggestedData),
             ],
             'Franklin'
-        )->shouldReturn(null);
+        )->shouldReturn(0);
     }
 }

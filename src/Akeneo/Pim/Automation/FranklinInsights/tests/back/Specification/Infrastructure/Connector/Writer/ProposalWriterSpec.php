@@ -21,7 +21,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer\Propo
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -32,10 +31,9 @@ class ProposalWriterSpec extends ObjectBehavior
     public function let(
         ProposalUpsertInterface $proposalUpsert,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        EntityManagerInterface $em,
         StepExecution $stepExecution
     ): void {
-        $this->beConstructedWith($proposalUpsert, $subscriptionRepository, $em);
+        $this->beConstructedWith($proposalUpsert, $subscriptionRepository);
         $this->setStepExecution($stepExecution);
     }
 
@@ -56,17 +54,15 @@ class ProposalWriterSpec extends ObjectBehavior
 
     public function it_writes_proposals_and_empty_associated_suggested_data(
         $proposalUpsert,
-        $subscriptionRepository,
-        $em
+        $subscriptionRepository
     ): void {
         $proposalSuggestedData1 = new ProposalSuggestedData(44, ['asin' => 'my-asin']);
         $proposalSuggestedData2 = new ProposalSuggestedData(31, ['upc' => 'my-upc']);
 
         $proposalUpsert
             ->process([$proposalSuggestedData1, $proposalSuggestedData2], ProposalAuthor::USERNAME)
-            ->shouldBeCalled();
+            ->willReturn(2);
         $subscriptionRepository->emptySuggestedDataByProducts([44, 31])->shouldBeCalled();
-        $em->clear()->shouldBeCalled();
 
         $this->write([$proposalSuggestedData1, $proposalSuggestedData2]);
     }
@@ -74,7 +70,6 @@ class ProposalWriterSpec extends ObjectBehavior
     public function it_increments_the_created_proposals_summary(
         $proposalUpsert,
         $subscriptionRepository,
-        $em,
         $stepExecution
     ): void {
         $proposalSuggestedData1 = new ProposalSuggestedData(44, ['asin' => 'my-asin']);
@@ -82,11 +77,10 @@ class ProposalWriterSpec extends ObjectBehavior
 
         $proposalUpsert
             ->process([$proposalSuggestedData1, $proposalSuggestedData2], ProposalAuthor::USERNAME)
-            ->shouldBeCalled();
+            ->willReturn(2);
         $subscriptionRepository->emptySuggestedDataByProducts([44, 31])->shouldBeCalled();
-        $em->clear()->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('created', 2)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('processed', 2)->shouldBeCalled();
 
         $this->write([$proposalSuggestedData1, $proposalSuggestedData2]);
     }

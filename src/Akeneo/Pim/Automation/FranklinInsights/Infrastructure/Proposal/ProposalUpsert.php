@@ -20,7 +20,6 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -46,37 +45,31 @@ final class ProposalUpsert implements ProposalUpsertInterface
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    /** @var EntityManagerClearerInterface */
-    private $cacheClearer;
-
     /**
      * @param ProductRepositoryInterface $productRepository
      * @param ObjectUpdaterInterface $productUpdater
      * @param EntityWithValuesDraftBuilderInterface $draftBuilder
      * @param SaverInterface $draftSaver
      * @param EventDispatcherInterface $eventDispatcher
-     * @param EntityManagerClearerInterface $cacheClearer
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
         EntityWithValuesDraftBuilderInterface $draftBuilder,
         SaverInterface $draftSaver,
-        EventDispatcherInterface $eventDispatcher,
-        EntityManagerClearerInterface $cacheClearer
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->productRepository = $productRepository;
         $this->productUpdater = $productUpdater;
         $this->draftBuilder = $draftBuilder;
         $this->draftSaver = $draftSaver;
         $this->eventDispatcher = $eventDispatcher;
-        $this->cacheClearer = $cacheClearer;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process(array $suggestedData, string $author): void
+    public function process(array $suggestedData, string $author): int
     {
         $processed = [];
         foreach ($suggestedData as $data) {
@@ -98,7 +91,8 @@ final class ProposalUpsert implements ProposalUpsertInterface
                 continue;
             }
         }
-        $this->cacheClearer->clear();
+
+        return count($processed);
     }
 
     /**

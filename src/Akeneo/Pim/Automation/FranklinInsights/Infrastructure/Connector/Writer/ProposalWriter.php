@@ -19,7 +19,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\Produc
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -32,25 +31,19 @@ class ProposalWriter implements ItemWriterInterface, StepExecutionAwareInterface
     /** @var ProductSubscriptionRepositoryInterface */
     private $subscriptionRepository;
 
-    /** @var EntityManagerInterface */
-    private $em;
-
     /** @var StepExecution */
     private $stepExecution;
 
     /**
      * @param ProposalUpsertInterface $proposalUpsert
      * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
-     * @param EntityManagerInterface $em
      */
     public function __construct(
         ProposalUpsertInterface $proposalUpsert,
-        ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        EntityManagerInterface $em
+        ProductSubscriptionRepositoryInterface $subscriptionRepository
     ) {
         $this->proposalUpsert = $proposalUpsert;
         $this->subscriptionRepository = $subscriptionRepository;
-        $this->em = $em;
     }
 
     /**
@@ -63,11 +56,10 @@ class ProposalWriter implements ItemWriterInterface, StepExecutionAwareInterface
             $productIds[] = $proposalSuggestedData->getProductId();
         }
 
-        $this->proposalUpsert->process($proposalsSuggestedData, ProposalAuthor::USERNAME);
+        $processedCount = $this->proposalUpsert->process($proposalsSuggestedData, ProposalAuthor::USERNAME);
         $this->subscriptionRepository->emptySuggestedDataByProducts($productIds);
-        $this->em->clear();
 
-        $this->stepExecution->incrementSummaryInfo('created', count($productIds));
+        $this->stepExecution->incrementSummaryInfo('processed', $processedCount);
     }
 
     /**
