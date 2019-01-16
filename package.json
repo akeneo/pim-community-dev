@@ -42,7 +42,7 @@
     "prettier": "^1.10.2",
     "puppeteer": "^1.1.1",
     "read-pkg": "2.0.0",
-    "ts-jest": "^23.10.5",
+    "ts-jest": "^22.4.4",
     "tslint": "^5.12.1"
   },
   "dependencies": {
@@ -90,7 +90,7 @@
     "underscore": "1.8.3",
     "webpack": "3.5.5",
     "webpack-cleanup-plugin": "0.5.1",
-    "webpack-livereload-plugin": "0.11.0",
+    "webpack-livereload-plugin": "1.2.0",
     "write-file-webpack-plugin": "4.1.0",
     "yamljs": "0.3.0"
   }
