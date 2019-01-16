@@ -110,9 +110,13 @@ Feature: Subscribe a product to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
     And a data provider error message should be sent
 
-#  Scenario: Fail to subscribe a product variant to Franklin
-#    Given Franklin is configured with a valid token
-#    And the variant product "variant_product"
-#    When I subscribe the product "variant_product" to Franklin
-#    Then the product "variant_product" should not be subscribed
-#    And an invalid variant message should be sent
+  Scenario: Fail to subscribe a product variant to Franklin
+    Given Franklin is configured with a valid token
+    And the variant product "B00EYZY6AC" of the family "router"
+    And a predefined identifiers mapping as follows:
+      | franklin_code | attribute_code |
+      | asin          | asin           |
+      | upc           | pim_upc        |
+    When I subscribe the product "B00EYZY6AC" to Franklin
+    Then the product "B00EYZY6AC" should not be subscribed
+    And an invalid variant message should be sent

@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
@@ -188,6 +189,17 @@ class DataFixturesContext implements Context
     public function theProductOfTheFamily(string $identifier, string $familyCode): void
     {
         $this->loadProduct($identifier, $familyCode);
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $familyCode
+     *
+     * @Given the variant product ":identifier" of the family ":familyCode"
+     */
+    public function theVariantProductOfTheFamily(string $identifier, string $familyCode): void
+    {
+        $this->loadProduct($identifier, $familyCode, true);
     }
 
     /**
@@ -404,13 +416,14 @@ class DataFixturesContext implements Context
     }
 
     /**
-     * Loads a product with its family (if any) and attributes.
+     * Loads a (variant) product with its family (if any) and attributes.
      * Fixture content is in a JSON file in "Resources/config/fixtures/products/".
      *
      * @param string $identifier
-     * @param null|string $familyCode
+     * @param string|null $familyCode
+     * @param bool $isVariant
      */
-    private function loadProduct(string $identifier, ?string $familyCode = null): void
+    private function loadProduct(string $identifier, ?string $familyCode = null, bool $isVariant = false): void
     {
         if (null !== $familyCode) {
             $normalizedProduct = $this->loadJsonFileAsArray(sprintf(
@@ -429,6 +442,9 @@ class DataFixturesContext implements Context
 
         $product = $this->productBuilder->createProduct($identifier, $familyCode);
         $this->setValuesFromRawDataToProduct($product, $normalizedProduct);
+        if ($isVariant) {
+            $product->setParent(new ProductModel());
+        }
 
         $this->productRepository->save($product);
     }

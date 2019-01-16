@@ -248,6 +248,19 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
+     * @Then an invalid variant message should be sent
+     */
+    public function anInvalidVariantMessageShouldBeSent(): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            ProductSubscriptionException::variantProduct()->getMessage()
+        );
+    }
+
+    /**
      * @Then an invalid subscription message should be sent
      */
     public function anInvalidSubscriptionMessageShouldBeSent(): void
