@@ -108,7 +108,7 @@ class FileMetadataBagSpec extends ObjectBehavior
         $this->beConstructedWith($originalData);
 
         $this->get('exif.COMPUTED')->shouldReturn([
-            'Thumbnail.Author' => 'String with illegal unicode characters',
+            'Thumbnail.Author' => 'String with illegal characters',
         ]);
         $this->get('exif.COMPUTED.Thumbnail\.Author')->shouldReturn('String with illegal characters');
     }
