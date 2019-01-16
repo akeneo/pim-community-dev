@@ -76,7 +76,8 @@
         "symfony/polyfill-apcu": "1.4.0",
         "twig/extensions": "1.3.0",
         "twig/twig": "1.36.0",
-        "box/spout": "2.7.2"
+        "box/spout": "2.7.2",
+        "webmozart/assert": "1.3"
     },
     "require-dev": {
         "akeneo/phpspec-skip-example-extension": "2.0.*",
