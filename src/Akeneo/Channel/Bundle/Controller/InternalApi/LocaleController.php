@@ -50,8 +50,9 @@ class LocaleController
      */
     public function indexAction(Request $request)
     {
+        $filterLocales = $request->query->getBoolean('filter_locales', true);
         $locales = $request->get('activated', false) ?
-            $this->getActivated() : $this->localeRepository->findAll();
+            $this->getActivated($filterLocales) : $this->localeRepository->findAll();
         $normalizedLocales = $this->normalizer->normalize($locales, 'internal_api');
 
         return new JsonResponse($normalizedLocales);
@@ -62,10 +63,10 @@ class LocaleController
      *
      * @return mixed
      */
-    protected function getActivated()
+    protected function getActivated(bool $filterLocales)
     {
         $locales = $this->localeRepository->getActivatedLocales();
-        $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
+        $filteredLocales = $filterLocales ? $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view') : $locales;
 
         return $filteredLocales;
     }

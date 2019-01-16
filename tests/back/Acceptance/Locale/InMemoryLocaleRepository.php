@@ -137,7 +137,21 @@ final class InMemoryLocaleRepository implements LocaleRepositoryInterface, Saver
      */
     public function findOneBy(array $criteria)
     {
-        throw new NotImplementedException(__METHOD__);
+        $keepThisLocale = true;
+        foreach ($this->locales as $locale) {
+            foreach ($criteria as $key => $value) {
+                $getter = sprintf('get%s', ucfirst($key));
+                if ($locale->$getter() !== $value) {
+                    $keepThisLocale = false;
+                }
+            }
+
+            if ($keepThisLocale) {
+                return $locale;
+            }
+        }
+
+        return null;
     }
 
     /**

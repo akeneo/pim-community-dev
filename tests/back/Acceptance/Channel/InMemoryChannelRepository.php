@@ -131,7 +131,21 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
      */
     public function findOneBy(array $criteria)
     {
-        throw new NotImplementedException(__METHOD__);
+        $keepThisChannel = true;
+        foreach ($this->channels as $channel) {
+            foreach ($criteria as $key => $value) {
+                $getter = sprintf('get%s', ucfirst($key));
+                if ($channel->$getter() !== $value) {
+                    $keepThisChannel = false;
+                }
+            }
+
+            if ($keepThisChannel) {
+                return $channel;
+            }
+        }
+
+        return null;
     }
 
     /**
