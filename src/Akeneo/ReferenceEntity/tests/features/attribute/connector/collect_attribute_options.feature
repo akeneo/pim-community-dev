@@ -38,3 +38,36 @@ Feature: Connection to MDM or ERP systems
     And the Color attribute that structures the Brand reference entity and whose type is text
     When the connector collects an attribute option of an attribute that does not accept options
     Then the PIM notifies the connector about an error indicating that the attribute does accept options
+
+  @integration-back
+  Scenario: Notify an error when collecting a new attribute option with an invalid format for a given option attribute
+    Given the Brand reference entity reference entity existing both in the ERP and in the PIM
+    And the Sales area attribute existing both in the ERP and in the PIM
+    And the USA attribute option that only exists in the ERP but not in the PIM
+    When the connector collects the USA attribute option with an invalid format
+    Then the PIM notifies the connector about an error indicating that the attribute option has an invalid format
+
+  @integration-back
+  Scenario: Notify an error when collecting an existing attribute option with an invalid format for a given option attribute
+    Given the Brand reference entity reference entity existing both in the ERP and in the PIM
+    And the Sales area attribute existing both in the ERP and in the PIM
+    And the Australia attribute option of the Sales area attribute of the Brand reference entity in the ERP and in the PIM but with some unsynchronized properties
+    When the connector collects the Australia attribute option with an invalid format
+    Then the PIM notifies the connector about an error indicating that the attribute option has an invalid format
+
+  @integration-back
+  Scenario: Notify an error when collecting a new attribute option whose data does not comply with the business rules
+    Given the Brand reference entity reference entity existing both in the ERP and in the PIM
+    And the Sales area attribute existing both in the ERP and in the PIM
+    And the USA attribute option that only exists in the ERP but not in the PIM
+    When the connector collects the USA attribute option whose data does not comply with the business rules
+    Then the PIM notifies the connector about an error indicating that the option attribute has data that does not comply with the business rules
+
+  @integration-back
+  Scenario: Notify an error when collecting an existing attribute whose data does not comply with the business rules
+    Given the Brand reference entity reference entity existing both in the ERP and in the PIM
+    And the Sales area attribute existing both in the ERP and in the PIM
+    And the Australia attribute option of the Sales area attribute of the Brand reference entity in the ERP and in the PIM but with some unsynchronized properties
+    When the connector collects the Australia attribute option whose data does not comply with the business rules
+    Then the PIM notifies the connector about an error indicating that the option attribute has data that does not comply with the business rules
+

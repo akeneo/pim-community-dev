@@ -266,6 +266,7 @@ services:
         arguments:
             - '@router'
             - '@akeneo_referenceentity.infrastructure.connector.api.attribute_option_validator'
+            - '@validator'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.infrastructure.persistence.query.attribute_exists'
             - '@akeneo_referenceentity.domain.persistence.query.attribute_supports_options'

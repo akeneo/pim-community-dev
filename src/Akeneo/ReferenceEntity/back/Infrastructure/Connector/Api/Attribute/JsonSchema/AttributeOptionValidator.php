@@ -13,7 +13,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSche
 
 use JsonSchema\Validator;
 
-class AttributeOptionValidator implements AttributeOptionValidatorInterface
+class AttributeOptionValidator
 {
     public function validate(array $normalizedAttribute): array
     {

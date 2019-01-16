@@ -11,8 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Connector\Collection;
+namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect;
 
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
@@ -30,12 +31,12 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -64,16 +65,21 @@ class CreateOrUpdateAttributeOptionContext implements Context
     /** @var OptionCollectionAttribute */
     private $optionAttribute;
 
+    /** @var InMemoryFindActivatedLocalesByIdentifiers */
+    private $activatedLocales;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->attributeRepository = $attributeRepository;
+        $this->activatedLocales = $activatedLocales;
     }
 
     /**
@@ -216,6 +222,9 @@ class CreateOrUpdateAttributeOptionContext implements Context
             Image::createEmpty()
         );
 
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
         $this->referenceEntityRepository->create($referenceEntity);
     }
 
@@ -281,7 +290,7 @@ class CreateOrUpdateAttributeOptionContext implements Context
 
     private function createColorTextAttribute()
     {
-        $textAttribute = TextAttribute::createText(
+        $this->attributeRepository->create(TextAttribute::createText(
             AttributeIdentifier::create('brand', 'color', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('color'),
@@ -293,9 +302,7 @@ class CreateOrUpdateAttributeOptionContext implements Context
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
-        );
-
-        $this->attributeRepository->create($textAttribute);
+        ));
     }
 
     private function createAustraliaAttributeOption()
@@ -356,5 +363,83 @@ class CreateOrUpdateAttributeOptionContext implements Context
         ];
 
         Assert::assertEquals($expectedAttributeOptions, $attribute['options']);
+    }
+
+    /**
+     * @When /^the connector collects the USA attribute option with an invalid format$/
+     */
+    public function theConnectorCollectsTheUSAAttributeOptionWithAnInvalidFormat()
+    {
+        $this->requestContract = 'unprocessable_creation_usa_attribute_option_for_invalid_format.json';
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that the attribute option has an invalid format$/
+     */
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeOptionHasAnInvalidFormat()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @When /^the connector collects the Australia attribute option with an invalid format$/
+     */
+    public function theConnectorCollectsTheAustraliaAttributeOptionWithAnInvalidFormat()
+    {
+        $this->requestContract = 'unprocessable_update_australia_attribute_option_for_invalid_format.json';
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @When /^the connector collects the USA attribute option whose data does not comply with the business rules$/
+     */
+    public function theConnectorCollectsTheUSAAttributeOptionWhoseDataDoesNotComplyWithTheBusinessRules()
+    {
+        $this->requestContract = 'unprocessable_creation_usa_attribute_option_for_invalid_data.json';
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that the option attribute has data that does not comply with the business rules$/
+     */
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheOptionAttributeHasDataThatDoesNotComplyWithTheBusinessRules()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @When /^the connector collects the Australia attribute option whose data does not comply with the business rules$/
+     */
+    public function theConnectorCollectsTheAustraliaAttributeOptionWhoseDataDoesNotComplyWithTheBusinessRules()
+    {
+        $this->requestContract = 'unprocessable_update_australia_attribute_option_for_invalid_data.json';
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
     }
 }
