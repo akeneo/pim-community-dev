@@ -58,6 +58,14 @@ class FileMetadataBag implements FileMetadataBagInterface
             $data = $data[$key];
         }
 
+        if (is_array($data)) {
+            $data = array_map(function ($value) {
+                return $this->sanitizeNonStandardAsciiCharacters($value);
+            }, $data);
+        } else {
+            $data = $this->sanitizeNonStandardAsciiCharacters($data);
+        }
+
         return $data;
     }
 
@@ -75,5 +83,21 @@ class FileMetadataBag implements FileMetadataBagInterface
     public function all()
     {
         return $this->data;
+    }
+
+    /**
+     * Remove non standard ascii characters between 20 and FF (in hexadecimal)
+     *
+     * @param $value
+     *
+     * @return mixed
+     */
+    private function sanitizeNonStandardAsciiCharacters($value)
+    {
+        if (! is_string($value)) {
+            return $value;
+        }
+
+        return preg_replace('~[^\x20-\xFF]~ui', '', $value);
     }
 }

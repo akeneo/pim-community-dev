@@ -95,4 +95,21 @@ class FileMetadataBagSpec extends ObjectBehavior
         $this->has('exif.IFD0.BlackBalance')->shouldReturn(false);
         $this->has('exif.COMPUTED')->shouldReturn(true);
     }
+
+    function it_cleans_unwanted_characters()
+    {
+        $originalData = [
+            'exif' => [
+                'COMPUTED' => [
+                    'Thumbnail.Author' => "String with \u{0000}illegal\u{9999} characters",
+                ],
+            ],
+        ];
+        $this->beConstructedWith($originalData);
+
+        $this->get('exif.COMPUTED')->shouldReturn([
+            'Thumbnail.Author' => 'String with illegal unicode characters',
+        ]);
+        $this->get('exif.COMPUTED.Thumbnail\.Author')->shouldReturn('String with illegal characters');
+    }
 }
