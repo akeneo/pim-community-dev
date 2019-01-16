@@ -606,7 +606,7 @@ TODO: change the link!!
         - `PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle`
         - `Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle`
 
-    * The following bundles have been added:
+    * The following bundles have been added (order of declaration is important):
         - `Akeneo\Channel\Bundle\AkeneoChannelBundle`
         - `Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle`
         - `Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle`
@@ -615,8 +615,8 @@ TODO: change the link!!
         - `Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle`
         - `Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle`
         - `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\AkeneoFranklinInsightsBundle`
-        - `Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle`
         - `Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle`
+        - `Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle`
 
 6. Add the DotEnv component in all entrypoints of the application
 
