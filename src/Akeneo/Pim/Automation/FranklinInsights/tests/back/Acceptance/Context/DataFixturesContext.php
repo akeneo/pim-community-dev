@@ -199,7 +199,7 @@ class DataFixturesContext implements Context
      */
     public function theVariantProductOfTheFamily(string $identifier, string $familyCode): void
     {
-        $this->loadProduct($identifier, $familyCode, true);
+        $this->loadVariantProduct($identifier, $familyCode);
     }
 
     /**
@@ -416,14 +416,13 @@ class DataFixturesContext implements Context
     }
 
     /**
-     * Loads a (variant) product with its family (if any) and attributes.
+     * Loads a product with its family (if any) and attributes.
      * Fixture content is in a JSON file in "Resources/config/fixtures/products/".
      *
      * @param string $identifier
      * @param string|null $familyCode
-     * @param bool $isVariant
      */
-    private function loadProduct(string $identifier, ?string $familyCode = null, bool $isVariant = false): void
+    private function loadProduct(string $identifier, ?string $familyCode = null): void
     {
         if (null !== $familyCode) {
             $normalizedProduct = $this->loadJsonFileAsArray(sprintf(
@@ -442,9 +441,29 @@ class DataFixturesContext implements Context
 
         $product = $this->productBuilder->createProduct($identifier, $familyCode);
         $this->setValuesFromRawDataToProduct($product, $normalizedProduct);
-        if ($isVariant) {
-            $product->setParent(new ProductModel());
-        }
+
+        $this->productRepository->save($product);
+    }
+
+    /**
+     * Loads a variant product with its family and attributes.
+     * Fixture content is in a JSON file in "Resources/config/fixtures/products/".
+     *
+     * @param string $identifier
+     * @param string $familyCode
+     */
+    private function loadVariantProduct(string $identifier, string $familyCode): void
+    {
+        $normalizedProduct = $this->loadJsonFileAsArray(sprintf(
+            'products/product-%s-%s.json',
+            $familyCode,
+            $identifier
+        ));
+        $this->loadFamily($familyCode);
+
+        $product = $this->productBuilder->createProduct($identifier, $familyCode);
+        $this->setValuesFromRawDataToProduct($product, $normalizedProduct);
+        $product->setParent(new ProductModel());
 
         $this->productRepository->save($product);
     }

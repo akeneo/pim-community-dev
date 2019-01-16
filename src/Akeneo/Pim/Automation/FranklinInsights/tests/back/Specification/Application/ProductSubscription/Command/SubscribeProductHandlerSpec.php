@@ -54,23 +54,6 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(SubscribeProductHandler::class);
     }
 
-    public function it_throws_an_exception_if_the_product_does_not_exist(
-        $productRepository,
-        $createProposalHandler
-    ): void {
-        $productId = 42;
-        $productRepository->find($productId)->willReturn(null);
-
-        $command = new SubscribeProductCommand($productId);
-        $this->shouldThrow(
-            new \InvalidArgumentException(
-                sprintf('Could not find product with id "%s"', $productId)
-            )
-        )->during('handle', [$command]);
-
-        $createProposalHandler->handle(Argument::cetera())->shouldNotHaveBeenCalled();
-    }
-
     public function it_throws_an_exception_if_the_product_cannot_be_subscribed(
         $productRepository,
         $getProductSubscriptionStatusHandler,

@@ -129,18 +129,11 @@ class SubscribeProductHandler
      */
     private function validateProduct(int $productId): ProductInterface
     {
-        $product = $this->productRepository->find($productId);
-        if (null === $product) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find product with id "%d"', $productId)
-            );
-        }
-
         $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle(
             new GetProductSubscriptionStatusQuery($productId)
         );
         $productSubscriptionStatus->validate();
 
-        return $product;
+        return $this->productRepository->find($productId);
     }
 }
