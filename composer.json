@@ -146,18 +146,6 @@
         "symfony-var-dir": "var",
         "symfony-web-dir": "web",
         "symfony-assets-install": "relative",
-        "incenteev-parameters": {	
-            "keep-outdated": true,	
-            "file": "app/config/parameters.yml",	
-            "env-map": {	
-                "env(PIM_DATABASE_HOST)": "PIM_DATABASE_HOST",	
-                "env(PIM_DATABASE_PORT)": "PIM_DATABASE_PORT",	
-                "env(PIM_DATABASE_NAME)": "PIM_DATABASE_NAME",	
-                "env(PIM_DATABASE_USER)": "PIM_DATABASE_USER",	
-                "env(PIM_DATABASE_PASSWORD)": "PIM_DATABASE_PASSWORD",	
-                "index_hosts": "PIM_INDEX_HOSTS"	
-            }	
-        },        
         "branch-alias": {
             "dev-master": "3.0.x-dev",
             "dev-2.3": "2.3.x-dev",
