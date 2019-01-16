@@ -22,6 +22,14 @@ class ProductSubscriptionExceptionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(\Exception::class);
     }
 
+    public function it_throws_an_inactive_connection_message(): void
+    {
+        $this->beConstructedThrough('inactiveConnection');
+        $this->getMessage()->shouldReturn(
+            'akeneo_franklin_insights.entity.product_subscription.constraint.inactive_connection'
+        );
+    }
+
     public function it_throws_an_insufficient_credits_message(): void
     {
         $this->beConstructedThrough('insufficientCredits');
@@ -52,5 +60,21 @@ class ProductSubscriptionExceptionSpec extends ObjectBehavior
         $this
             ->getMessage()
             ->shouldReturn('akeneo_franklin_insights.entity.product_subscription.constraint.invalid_mapped_values');
+    }
+
+    public function it_throws_an_already_subscribed_product_message(): void
+    {
+        $this->beConstructedThrough('alreadySubscribedProduct');
+        $this->getMessage()->shouldReturn(
+            'akeneo_franklin_insights.entity.product_subscription.constraint.already_subscribed_product'
+        );
+    }
+
+    public function it_throws_an_variant_product_message(): void
+    {
+        $this->beConstructedThrough('variantProduct');
+        $this->getMessage()->shouldReturn(
+            'akeneo_franklin_insights.entity.product_subscription.constraint.variant_product'
+        );
     }
 }

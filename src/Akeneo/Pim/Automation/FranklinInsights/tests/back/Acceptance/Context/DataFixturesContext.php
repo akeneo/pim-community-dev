@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
@@ -188,6 +189,17 @@ class DataFixturesContext implements Context
     public function theProductOfTheFamily(string $identifier, string $familyCode): void
     {
         $this->loadProduct($identifier, $familyCode);
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $familyCode
+     *
+     * @Given the variant product ":identifier" of the family ":familyCode"
+     */
+    public function theVariantProductOfTheFamily(string $identifier, string $familyCode): void
+    {
+        $this->loadVariantProduct($identifier, $familyCode);
     }
 
     /**
@@ -408,7 +420,7 @@ class DataFixturesContext implements Context
      * Fixture content is in a JSON file in "Resources/config/fixtures/products/".
      *
      * @param string $identifier
-     * @param null|string $familyCode
+     * @param string|null $familyCode
      */
     private function loadProduct(string $identifier, ?string $familyCode = null): void
     {
@@ -429,6 +441,29 @@ class DataFixturesContext implements Context
 
         $product = $this->productBuilder->createProduct($identifier, $familyCode);
         $this->setValuesFromRawDataToProduct($product, $normalizedProduct);
+
+        $this->productRepository->save($product);
+    }
+
+    /**
+     * Loads a variant product with its family and attributes.
+     * Fixture content is in a JSON file in "Resources/config/fixtures/products/".
+     *
+     * @param string $identifier
+     * @param string $familyCode
+     */
+    private function loadVariantProduct(string $identifier, string $familyCode): void
+    {
+        $normalizedProduct = $this->loadJsonFileAsArray(sprintf(
+            'products/product-%s-%s.json',
+            $familyCode,
+            $identifier
+        ));
+        $this->loadFamily($familyCode);
+
+        $product = $this->productBuilder->createProduct($identifier, $familyCode);
+        $this->setValuesFromRawDataToProduct($product, $normalizedProduct);
+        $product->setParent(new ProductModel());
 
         $this->productRepository->save($product);
     }

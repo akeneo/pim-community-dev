@@ -30,14 +30,12 @@ class IdentifiersMapping implements \IteratorAggregate
         'asin',
     ];
 
-    /** @var array */
+    /** @var IdentifierMapping[] */
     private $mapping;
 
+    /** @var IdentifierMapping[] */
     private $formerMapping;
 
-    /**
-     * @param array $identifiers
-     */
     public function __construct()
     {
         $this->mapping = array_fill_keys(self::FRANKLIN_IDENTIFIERS, null);
@@ -50,7 +48,7 @@ class IdentifiersMapping implements \IteratorAggregate
     }
 
     /**
-     * @return array
+     * @return IdentifierMapping[]
      */
     public function getMapping(): array
     {
@@ -60,7 +58,7 @@ class IdentifiersMapping implements \IteratorAggregate
     /**
      * @param string $name
      *
-     * @return null|AttributeInterface
+     * @return AttributeInterface|null
      */
     public function getMappedAttribute(string $name): ?AttributeInterface
     {

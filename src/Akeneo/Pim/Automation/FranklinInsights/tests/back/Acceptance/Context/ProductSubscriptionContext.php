@@ -203,8 +203,8 @@ class ProductSubscriptionContext implements Context
         $thrownException = ExceptionContext::getThrownException();
         Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
         Assert::eq(
-            ProductSubscriptionException::familyRequired()->getMessage(),
-            $thrownException->getMessage()
+            $thrownException->getMessage(),
+            ProductSubscriptionException::familyRequired()->getMessage()
         );
     }
 
@@ -216,8 +216,8 @@ class ProductSubscriptionContext implements Context
         $thrownException = ExceptionContext::getThrownException();
         Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
         Assert::eq(
-            ProductSubscriptionException::invalidMappedValues()->getMessage(),
-            $thrownException->getMessage()
+            $thrownException->getMessage(),
+            ProductSubscriptionException::invalidMappedValues()->getMessage()
         );
     }
 
@@ -228,6 +228,10 @@ class ProductSubscriptionContext implements Context
     {
         $thrownException = ExceptionContext::getThrownException();
         Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            ProductSubscriptionException::alreadySubscribedProduct()->getMessage()
+        );
     }
 
     /**
@@ -238,8 +242,21 @@ class ProductSubscriptionContext implements Context
         $thrownException = ExceptionContext::getThrownException();
         Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
         Assert::eq(
-            ProductSubscriptionException::invalidMappedValues()->getMessage(),
-            $thrownException->getMessage()
+            $thrownException->getMessage(),
+            ProductSubscriptionException::invalidMappedValues()->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid variant message should be sent
+     */
+    public function anInvalidVariantMessageShouldBeSent(): void
+    {
+        $thrownException = ExceptionContext::getThrownException();
+        Assert::isInstanceOf($thrownException, ProductSubscriptionException::class);
+        Assert::eq(
+            $thrownException->getMessage(),
+            ProductSubscriptionException::variantProduct()->getMessage()
         );
     }
 

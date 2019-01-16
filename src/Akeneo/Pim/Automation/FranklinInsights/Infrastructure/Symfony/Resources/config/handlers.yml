@@ -24,6 +24,7 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\SubscribeProductHandler'
         arguments:
             - '@pim_catalog.repository.product_without_permission'
+            - '@akeneo.pim.automation.franklin_insights.handler.get_product_subscription_status'
             - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
             - '@akeneo.pim.automation.franklin_insights.data_provider.product_subscription'
             - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'

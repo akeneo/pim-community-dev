@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 
 /**
  * Read model containing the status of a product subscription to Franklin.
@@ -96,5 +97,35 @@ final class ProductSubscriptionStatus
     public function isProductVariant(): bool
     {
         return $this->isProductVariant;
+    }
+
+    /**
+     * @throws ProductSubscriptionException
+     */
+    public function validate(): void
+    {
+        if (false === $this->connectionStatus->isActive()) {
+            throw ProductSubscriptionException::inactiveConnection();
+        }
+
+        if (true === $this->isSubscribed) {
+            throw ProductSubscriptionException::alreadySubscribedProduct();
+        }
+
+        if (false === $this->hasFamily) {
+            throw ProductSubscriptionException::familyRequired();
+        }
+
+        if (false === $this->connectionStatus->isIdentifiersMappingValid()) {
+            throw ProductSubscriptionException::invalidIdentifiersMapping();
+        }
+
+        if (false === $this->isMappingFilled) {
+            throw ProductSubscriptionException::invalidMappedValues();
+        }
+
+        if (true === $this->isProductVariant) {
+            throw ProductSubscriptionException::variantProduct();
+        }
     }
 }

@@ -70,7 +70,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn($productSubscription);
 
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
+        $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -107,7 +107,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
 
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
+        $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -144,7 +144,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
 
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
+        $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -182,7 +182,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
 
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
+        $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -205,6 +205,34 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $productSubscriptionStatus->shouldIndicateThatProductHasFamily();
     }
 
+    public function it_returns_a_product_subscription_status_when_identifiers_mapping_is_not_filled(
+        $productSubscriptionRepository,
+        $getConnectionStatusHandler,
+        $productRepository,
+        $identifiersMappingRepository,
+        ProductInterface $product,
+        IdentifiersMapping $identifiersMapping
+    ): void {
+        $query = new GetProductSubscriptionStatusQuery(42);
+
+        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+
+        $connectionStatus = new ConnectionStatus(true, false, false, 0);
+        $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
+
+        $productRepository->find(42)->willReturn($product);
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->getMapping()->willReturn([]);
+
+        $product->getFamily()->willReturn(null);
+        $product->isVariant()->willReturn(false);
+
+        $productSubscriptionStatus = $this->handle($query);
+        $productSubscriptionStatus->shouldIndicateThatIdentifiersMappingIsNotFilled();
+        $productSubscriptionStatus->shouldIndicateThatProductDoesNotFillIdentifiersMapping();
+    }
+
     public function it_returns_a_product_subscription_status_for_a_product_with_identifiers_mapping_filled(
         $productSubscriptionRepository,
         $getConnectionStatusHandler,
@@ -223,7 +251,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
 
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
+        $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -250,6 +278,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $eanValue->getData()->willReturn(12345);
 
         $productSubscriptionStatus = $this->handle($query);
+        $productSubscriptionStatus->shouldIndicateThatIdentifiersMappingIsFilled();
         $productSubscriptionStatus->shouldIndicateThatProductFillsIdentifiersMapping();
     }
 
@@ -270,7 +299,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
 
-        $connectionStatus = new ConnectionStatus(false, false, false, 0);
+        $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -295,6 +324,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $eanValue->getData()->willReturn(null);
 
         $productSubscriptionStatus = $this->handle($query);
+        $productSubscriptionStatus->shouldIndicateThatIdentifiersMappingIsFilled();
         $productSubscriptionStatus->shouldIndicateThatProductDoesNotFillIdentifiersMapping();
     }
 
@@ -313,7 +343,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn($productSubscription);
 
-        $connectionStatus = new ConnectionStatus(true, true, true, 0);
+        $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
         $productRepository->find(42)->willReturn($product);
@@ -356,6 +386,16 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
             },
             'indicateThatProductDoesNotHaveFamily' => function (ProductSubscriptionStatus $productSubscriptionStatus) {
                 return !$productSubscriptionStatus->hasFamily();
+            },
+            'indicateThatIdentifiersMappingIsFilled' => function (
+                ProductSubscriptionStatus $productSubscriptionStatus
+            ) {
+                return $productSubscriptionStatus->getConnectionStatus()->isIdentifiersMappingValid();
+            },
+            'indicateThatIdentifiersMappingIsNotFilled' => function (
+                ProductSubscriptionStatus $productSubscriptionStatus
+            ) {
+                return !$productSubscriptionStatus->getConnectionStatus()->isIdentifiersMappingValid();
             },
             'indicateThatProductFillsIdentifiersMapping' => function (
                 ProductSubscriptionStatus $productSubscriptionStatus
