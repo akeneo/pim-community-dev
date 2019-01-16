@@ -116,8 +116,12 @@ final class ProductSubscriptionStatus
             throw ProductSubscriptionException::familyRequired();
         }
 
-        if (false === $this->isMappingFilled) {
+        if (false === $this->connectionStatus->isIdentifiersMappingValid()) {
             throw ProductSubscriptionException::invalidIdentifiersMapping();
+        }
+
+        if (false === $this->isMappingFilled) {
+            throw ProductSubscriptionException::invalidMappedValues();
         }
 
         if (true === $this->isProductVariant) {

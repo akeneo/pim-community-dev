@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -37,6 +39,9 @@ class SubscribeProductHandler
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
+    /** @var GetProductSubscriptionStatusHandler */
+    private $getProductSubscriptionStatusHandler;
+
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
 
@@ -51,6 +56,7 @@ class SubscribeProductHandler
 
     /**
      * @param ProductRepositoryInterface $productRepository
+     * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      * @param SubscriptionProviderInterface $subscriptionProvider
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
@@ -58,12 +64,14 @@ class SubscribeProductHandler
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
+        GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         SubscriptionProviderInterface $subscriptionProvider,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         CreateProposalHandler $createProposalHandler
     ) {
         $this->productRepository = $productRepository;
+        $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->subscriptionProvider = $subscriptionProvider;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
@@ -73,6 +81,7 @@ class SubscribeProductHandler
     /**
      * @param SubscribeProductCommand $command
      *
+     * @throws \InvalidArgumentException
      * @throws ProductSubscriptionException
      */
     public function handle(SubscribeProductCommand $command): void
@@ -94,9 +103,6 @@ class SubscribeProductHandler
         $subscriptionRequest = new ProductSubscriptionRequest($product);
 
         $identifiersMapping = $this->identifiersMappingRepository->find();
-        if ($identifiersMapping->isEmpty()) {
-            throw ProductSubscriptionException::invalidIdentifiersMapping();
-        }
 
         $subscriptionResponse = $this->subscriptionProvider->subscribe($subscriptionRequest);
         $subscription = new ProductSubscription(
@@ -116,6 +122,7 @@ class SubscribeProductHandler
     /**
      * @param int $productId
      *
+     * @throws \InvalidArgumentException
      * @throws ProductSubscriptionException
      *
      * @return ProductInterface
@@ -128,14 +135,11 @@ class SubscribeProductHandler
                 sprintf('Could not find product with id "%d"', $productId)
             );
         }
-        if (null === $product->getFamily()) {
-            throw ProductSubscriptionException::familyRequired();
-        }
 
-        $productSubscription = $this->productSubscriptionRepository->findOneByProductId($productId);
-        if (null !== $productSubscription) {
-            throw ProductSubscriptionException::alreadySubscribedProduct();
-        }
+        $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle(
+            new GetProductSubscriptionStatusQuery($productId)
+        );
+        $productSubscriptionStatus->validate();
 
         return $product;
     }

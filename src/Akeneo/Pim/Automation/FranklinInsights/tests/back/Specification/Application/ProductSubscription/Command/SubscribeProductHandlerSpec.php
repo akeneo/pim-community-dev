@@ -7,13 +7,17 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Produ
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\SubscribeProductHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
@@ -29,6 +33,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 {
     public function let(
         ProductRepositoryInterface $productRepository,
+        GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionProviderInterface $subscriptionProvider,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
@@ -36,6 +41,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
     ): void {
         $this->beConstructedWith(
             $productRepository,
+            $getProductSubscriptionStatusHandler,
             $subscriptionRepository,
             $subscriptionProvider,
             $identifiersMappingRepository,
@@ -65,14 +71,25 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $createProposalHandler->handle(Argument::cetera())->shouldNotHaveBeenCalled();
     }
 
-    public function it_throws_an_exception_if_the_product_has_no_family(
+    public function it_throws_an_exception_if_the_product_cannot_be_subscribed(
         $productRepository,
+        $getProductSubscriptionStatusHandler,
         $createProposalHandler,
         ProductInterface $product
     ): void {
         $productId = 42;
         $productRepository->find($productId)->willReturn($product);
-        $product->getFamily()->willReturn(null);
+
+        $query = new GetProductSubscriptionStatusQuery($productId);
+        $getProductSubscriptionStatusHandler->handle($query)->willReturn(
+            new ProductSubscriptionStatus(
+                new ConnectionStatus(true, true, true, 42),
+                false,
+                false,
+                true,
+                false
+            )
+        );
 
         $command = new SubscribeProductCommand($productId);
         $this->shouldThrow(
@@ -82,55 +99,13 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $createProposalHandler->handle(Argument::cetera())->shouldNotHaveBeenCalled();
     }
 
-    public function it_throws_an_exception_if_the_product_is_already_subscribed(
-        $productRepository,
-        $subscriptionRepository,
-        $createProposalHandler,
-        ProductInterface $product,
-        ProductSubscription $productSubscription
-    ): void {
-        $productId = 42;
-        $product->getId()->willReturn($productId);
-        $product->getFamily()->willReturn(new Family());
-        $productRepository->find($productId)->willReturn($product);
-
-        $subscriptionRepository->findOneByProductId($productId)->willReturn($productSubscription);
-
-        $command = new SubscribeProductCommand($productId);
-        $this->shouldThrow(
-            ProductSubscriptionException::alreadySubscribedProduct()
-        )->during('handle', [$command]);
-
-        $createProposalHandler->handle(Argument::cetera())->shouldNotHaveBeenCalled();
-    }
-
-    public function it_throws_an_exception_if_the_identifier_mapping_is_not_defined(
-        $identifiersMappingRepository,
-        $createProposalHandler,
-        ProductRepositoryInterface $productRepository,
-        ProductInterface $product
-    ): void {
-        $productId = 42;
-        $product->getId()->willReturn($productId);
-        $product->getFamily()->willReturn(new Family());
-        $productRepository->find($productId)->willReturn($product);
-
-        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping());
-
-        $command = new SubscribeProductCommand($productId);
-        $this->shouldThrow(
-            ProductSubscriptionException::invalidIdentifiersMapping()
-        )->during('handle', [$command]);
-
-        $createProposalHandler->handle(Argument::cetera())->shouldNotHaveBeenCalled();
-    }
-
     public function it_subscribes_a_product_to_the_data_provider(
+        $productRepository,
+        $getProductSubscriptionStatusHandler,
         $subscriptionProvider,
+        $subscriptionRepository,
         $identifiersMappingRepository,
         $createProposalHandler,
-        ProductRepositoryInterface $productRepository,
-        ProductSubscriptionRepositoryInterface $subscriptionRepository,
         ProductInterface $product,
         AttributeInterface $ean,
         ValueInterface $eanValue
@@ -147,6 +122,17 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $product->getFamily()->willReturn(new Family());
         $product->getValue('ean')->willReturn($eanValue);
         $productRepository->find($productId)->willReturn($product);
+
+        $query = new GetProductSubscriptionStatusQuery($productId);
+        $getProductSubscriptionStatusHandler->handle($query)->willReturn(
+            new ProductSubscriptionStatus(
+                new ConnectionStatus(true, true, true, 42),
+                false,
+                true,
+                true,
+                false
+            )
+        );
 
         $ean->getCode()->willReturn('ean');
         $eanValue->hasData()->willReturn(true);

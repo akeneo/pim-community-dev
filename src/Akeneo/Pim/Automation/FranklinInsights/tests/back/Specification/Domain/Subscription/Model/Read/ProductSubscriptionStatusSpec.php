@@ -37,7 +37,7 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
         $this->beAnInstanceOf(ProductSubscriptionStatus::class);
     }
 
-    public function it_indicates_that_the_product_can_be_subscribed(): void
+    public function it_indicates_the_product_can_be_subscribed(): void
     {
         $connectionStatus = new ConnectionStatus(true, true, true, 42);
         $this->beConstructedWith($connectionStatus, false, true, true, false);
@@ -51,7 +51,7 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
         $this->shouldNotThrow(ProductSubscriptionException::class)->during('validate');
     }
 
-    public function it_indicates_that_a_product_already_subscribed_cannot_be_subscribed_again(): void
+    public function it_indicates_a_product_already_subscribed_cannot_be_subscribed_again(): void
     {
         $connectionStatus = new ConnectionStatus(true, true, true, 42);
         $this->beConstructedWith($connectionStatus, true, true, true, false);
@@ -61,7 +61,7 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
         $this->shouldThrow(ProductSubscriptionException::alreadySubscribedProduct())->during('validate');
     }
 
-    public function it_indicates_that_a_product_without_family_cannot_be_subscribed(): void
+    public function it_indicates_a_product_without_family_cannot_be_subscribed(): void
     {
         $connectionStatus = new ConnectionStatus(true, true, true, 42);
         $this->beConstructedWith($connectionStatus, false, false, true, false);
@@ -71,17 +71,25 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
         $this->shouldThrow(ProductSubscriptionException::familyRequired())->during('validate');
     }
 
-    public function it_indicates_that_a_product_cannot_be_subscribed_if_there_is_no_filled_identifiers_mapping(): void
+    public function it_indicates_a_product_cannot_be_subscribed_if_there_is_no_filled_identifiers_mapping(): void
+    {
+        $connectionStatus = new ConnectionStatus(true, true, false, 42);
+        $this->beConstructedWith($connectionStatus, false, true, true, false);
+
+        $this->shouldThrow(ProductSubscriptionException::invalidIdentifiersMapping())->during('validate');
+    }
+
+    public function it_indicates_a_product_cannot_be_subscribed_if_it_has_no_values_for_the_mapped_identifiers(): void
     {
         $connectionStatus = new ConnectionStatus(true, true, true, 42);
         $this->beConstructedWith($connectionStatus, false, true, false, false);
 
         $this->isMappingFilled()->shouldReturn(false);
 
-        $this->shouldThrow(ProductSubscriptionException::invalidIdentifiersMapping())->during('validate');
+        $this->shouldThrow(ProductSubscriptionException::invalidMappedValues())->during('validate');
     }
 
-    public function it_indicates_that_a_variant_product_cannot_be_subscribed(): void
+    public function it_indicates_a_variant_product_cannot_be_subscribed(): void
     {
         $connectionStatus = new ConnectionStatus(true, true, true, 42);
         $this->beConstructedWith($connectionStatus, false, true, true, true);
@@ -91,7 +99,7 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
         $this->shouldThrow(ProductSubscriptionException::variantProduct())->during('validate');
     }
 
-    public function it_indicates_that_a_product_cannot_be_subscribed_if_connection_is_not_active(): void
+    public function it_indicates_a_product_cannot_be_subscribed_if_connection_is_not_active(): void
     {
         $connectionStatus = new ConnectionStatus(false, true, true, 42);
         $this->beConstructedWith($connectionStatus, false, true, true, false);
