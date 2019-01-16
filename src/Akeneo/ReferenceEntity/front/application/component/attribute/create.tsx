@@ -168,7 +168,7 @@ class Create extends React.Component<CreateProps> {
       <div className="modal in" aria-hidden="false" style={{zIndex: 1041}}>
         <div>
           <div className="AknFullPage">
-            <div className="AknFullPage-content AknFullPage-content--withIllustration">
+            <div className="AknFullPage-content AknFullPage-content--withIllustration" style={{overflowX: 'visible'}}>
               <div>
                 <img src="bundles/pimui/images/illustrations/Reference-entities.svg" className="AknFullPage-image" />
               </div>
@@ -233,7 +233,7 @@ class Create extends React.Component<CreateProps> {
                     </div>
                     {getErrorsView(this.props.errors, 'code')}
                   </div>
-                  <div className="AknFieldContainer" data-code="type">
+                  <div className="AknFieldContainer" style={{position: 'static'}} data-code="type">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
@@ -254,7 +254,7 @@ class Create extends React.Component<CreateProps> {
                     {getErrorsView(this.props.errors, 'type')}
                   </div>
                   {isRecordAttributeType(this.props.data.type) ? (
-                    <div className="AknFieldContainer" data-code="record_type">
+                    <div className="AknFieldContainer" style={{position: 'static'}} data-code="record_type">
                       <div className="AknFieldContainer-header AknFieldContainer-header--light">
                         <label
                           className="AknFieldContainer-label"
@@ -281,7 +281,7 @@ class Create extends React.Component<CreateProps> {
                       {getErrorsView(this.props.errors, 'recordType')}
                     </div>
                   ) : null}
-                  <div className="AknFieldContainer" data-code="valuePerChannel">
+                  <div className="AknFieldContainer" style={{position: 'static'}} data-code="valuePerChannel">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
@@ -303,7 +303,7 @@ class Create extends React.Component<CreateProps> {
                     </div>
                     {getErrorsView(this.props.errors, 'valuePerChannel')}
                   </div>
-                  <div className="AknFieldContainer" data-code="valuePerLocale">
+                  <div className="AknFieldContainer" style={{position: 'static'}} data-code="valuePerLocale">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
@@ -325,7 +325,7 @@ class Create extends React.Component<CreateProps> {
                     </div>
                     {getErrorsView(this.props.errors, 'valuePerLocale')}
                   </div>
-                  <button className="AknButton AknButton--apply ok" onClick={this.props.events.onSubmit}>
+                  <button className="AknButton AknButton--apply ok" style={{position: 'static'}} onClick={this.props.events.onSubmit}>
                     {__('pim_reference_entity.attribute.create.confirm')}
                   </button>
                 </div>

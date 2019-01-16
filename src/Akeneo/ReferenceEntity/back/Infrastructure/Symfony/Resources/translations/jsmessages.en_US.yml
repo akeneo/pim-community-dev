@@ -53,11 +53,11 @@ pim_reference_entity:
         count: '{0} No Reference Entity|{1} {{ count }} Reference Entity|]1,Inf] {{ count }} Reference Entities'
         help:
           title: 'Welcome to the Reference Entities!'
-          description_part_one: Enrich shared information about products (e.g. brands, manufacturers, colors, materials, ingredients...).
-          description_part_two: Click on the "Create" button to create your 1st reference entity, set its attributes and records.
-          description_part_three: Then, to link to products, go to “Settings/Attributes” to create a product attribute related to this entity.
-          description_part_four: For more details, we invite you to
-          description_part_five: browse this article.
+          description_part_one: Enrich relevant information related to products (e.g. brands, manufacturers, colors, materials, ingredients...).
+          description_part_two: It will enable you to provide a better Product Experience to your customers.
+          description_part_three: Click on the “Create” button to create your 1st reference entity, set its attributes and records.
+          description_part_four: Then, to link to products, create a product attribute type related to this reference entity.
+          description_part_five: For more details, we invite you to browse this article.
     create:
       header:
         title: Create

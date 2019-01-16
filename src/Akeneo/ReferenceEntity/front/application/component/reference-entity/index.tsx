@@ -107,8 +107,8 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
                             {__('pim_reference_entity.reference_entity.index.grid.help.description_part_one')} <br />
                             {__('pim_reference_entity.reference_entity.index.grid.help.description_part_two')} <br />
                             {__('pim_reference_entity.reference_entity.index.grid.help.description_part_three')} <br />
-                            {__('pim_reference_entity.reference_entity.index.grid.help.description_part_four')}{' '}
-                            <a href="https://help.akeneo.com">
+                            {__('pim_reference_entity.reference_entity.index.grid.help.description_part_four')}{' '} <br />
+                            <a href="https://help.akeneo.com/pim/articles/what-about-reference-entities.html?utm_source=akeneo-app&utm_medium=ref-entities-grid">
                               {__('pim_reference_entity.reference_entity.index.grid.help.description_part_five')}
                             </a>
                             <br />
