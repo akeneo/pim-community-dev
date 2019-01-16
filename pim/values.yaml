@@ -12,8 +12,13 @@ backup:
   zone: nil
   snapshot:
     schedule: "0 0 */1 * * *"
-  export:
-    snapshotAge: 24h
+    retentionPolicy:
+      dailyBackups: 10
+      weeklyBackups: 4
+      monthlyBackups: 12
+      yearlyBackups: 10
+    export:
+      snapshotAge: 24h
 
 common:
   extraLabels: {}
@@ -119,7 +124,7 @@ onboarder:
   pubsub:
     topicPub: default-middleware
     topicCon: default-pimmaster
-    queueName: default-middleware    
+    queueName: default-middleware
   serviceAccount: Y2hhbmdlbWU=
   sso:
     idp:
@@ -188,9 +193,9 @@ catalog:
     minimal:
       path: vendor/akeneo/pim-enterprise-dev/src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/minimal
       class: PimEnterpriseInstallerBundle:minimal
-    icecat: 
+    icecat:
       path: vendor/akeneo/pim-enterprise-dev/src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
       class: PimEnterpriseInstallerBundle:icecat_demo_dev
-    onboarder: 
+    onboarder:
       path: vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder
       class: PimOnboarderBundle:onboarder

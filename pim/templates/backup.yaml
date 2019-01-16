@@ -21,12 +21,10 @@ spec:
       - data-{{ .Release.Name }}-nfs-0
       - pvc-data-{{ .Release.Name }}-mysql-server-0
     export:
-      snapshotAge: {{ .Values.backup.export.snapshotAge }}
-    retention:
-      dailyBackups: 10
-      WeeklyBackups: 4
-      MonthlyBackups: 12
-      YearlyBackups: 10
+      snapshotAge: {{ .Values.backup.snapshot.export.snapshotAge }}
+    retentionPolicy:
+{{toYaml .Values.backup.snapshot.retentionPolicy | indent 6}}
+
 
 # apiVersion: backup.akeneo.com/v1
 # kind: Backup
@@ -47,11 +45,11 @@ spec:
 
 #   snapshot:
 #     schedule: {{ .Values.backup.snapshot.schedule }}
-#     pvcNames:  
+#     pvcNames:
 #       - data-{{ .Release.Name }}-nfs-0
-#       - pvc-data-{{ .Release.Name }}-mysql-server-0  
+#       - pvc-data-{{ .Release.Name }}-mysql-server-0
 #   export:
-#     snapshotAge: {{ .Values.backup.export.snapshotAge }}
+#     snapshotAge: {{ .Values.backup.snapshot.export.snapshotAge }}
 #     bucketUrl: gs://{{ .Values.google.project_id }}-exported-backup-store
 
 {{ end}}
