@@ -231,7 +231,7 @@ TODO: change the link!!
     
     In those files, the following changes occurred:
     
-    * The user provider `oro_user` has been replaced by `pim_user`.
+    * the user provider `oro_user` has been replaced by `pim_user`.
     * the user provider ID `oro_user.security.provider` has been replaced by `pim_user.provider.user`
     * the route `oro_user_security_check` has been replaced by `pim_user_security_check`
     * the route `oro_user_security_login` has been replaced by `pim_user_security_login`
@@ -354,6 +354,14 @@ TODO: change the link!!
         
         pimee_reference_entity:
             resource: "@AkeneoReferenceEntityBundle/Resources/config/routing.yml"
+
+        # SSO
+        akeneo_authentication:
+            resource: "@AkeneoAuthenticationBundle/Resources/config/routing.yml"
+        
+        hslavich_saml_sp:
+            resource: "@HslavichOneloginSamlBundle/Resources/config/routing.yml"
+      
         ```
         
     * The following route configurations have been updated:
@@ -415,6 +423,7 @@ TODO: change the link!!
         ```yaml
         pim_versioning:
             resource: "@PimEnterpriseVersioningBundle/Resources/config/routing.yml"
+
         ```
         
         to
@@ -493,6 +502,45 @@ TODO: change the link!!
         Akeneo\UserManagement\Component\Model\User: sha512
     ```
         
+    A new firewall has been added `sso`, its position in the file is important, it has to be declared before the `main` one.
+    ```yaml
+    sso:
+        pattern:   ^/
+        anonymous: true
+        provider:  chain_provider
+        saml:
+            username_attribute: akeneo_uid
+            check_path: saml_acs
+            login_path: saml_login
+            user_factory: akeneo_authentication.sso.user.factory
+        form_login:
+            csrf_token_generator: security.csrf.token_manager
+            login_path: saml_login
+            check_path: pim_user_security_check
+            use_forward: true
+        logout:
+            path: saml_logout
+
+    main:
+       #... 
+    
+    ```
+    
+    New access control definition has been added in order to handle sso routes
+    ```yaml
+    access_control:
+        #...
+        #Additionnal access control for SSO
+        - { path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/reset-request, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/send-email, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/saml-idp/resume, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
+    
+    ```
+    
 5. Update your **app/AppKernel.php**:
 
     An easy way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
@@ -567,8 +615,52 @@ TODO: change the link!!
         - `Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle`
         - `Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle`
         - `Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\AkeneoFranklinInsightsBundle`
+        - `Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle`
+        - `Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle`
+
+6. Add the DotEnv component in all entrypoints of the application
+
+    We introduced the DotEnv component as there are more and more deployments that use environment variables for configuration values.
+    The DotEnv Symfony component provides a way to set those environment variables in a file that could be overridden by real environment variables.
     
-6. Update your dependencies:
+    Copy the `.env.dist` to `.env` 
+    ```bash
+    cp .env.dist $PIM_DIR/.env
+    # then update the values in the .env file  
+    ``` 
+    
+    The easiest way to update the entrypoints is to copy/paste their content from the latest standard edition and add your custom code if any.
+    
+    ```bash
+    cp web/app.php $PIM_DIR/web/app.php
+    cp web/app_dev.php $PIM_DIR/web/app_dev.php
+    cp bin/console $PIM_DIR/bin/console
+ 
+    ```
+    
+    Or you can add the following code in those entrypoints just after the `require __DIR__.'/../vendor/autoload.php'``:
+    
+    ```php
+    <?php
+    //...
+ 
+    require __DIR__.'/../vendor/autoload.php';
+ 
+    $envFile = __DIR__ . '/../.env';
+    if (file_exists($envFile)) {
+        (new Symfony\Component\Dotenv\Dotenv())->load($envFile);
+    }
+ 
+    ```
+    
+    For now, the following environment variable has to be set in the `.env` file:
+    
+    ```bash
+    AKENEO_PIM_URL=http://your.akeneo-pim.url
+ 
+    ```
+
+7. Update your dependencies:
 
     The easiest way to update your `composer.json` is to copy/paste from the latest standard edition and add your custom dependencies.
     
@@ -601,14 +693,14 @@ TODO: change the link!!
     yarn install
     ```
 
-7. Migrate your database:
+8. Migrate your database: 
 
     ```bash
     rm -rf var/cache
     bin/console doctrine:migration:migrate --env=prod
     ```
 
-8. Then re-generate the PIM assets:
+9. Then re-generate the PIM assets:
 
     ```bash
     bin/console pim:installer:assets --clean --env=prod
