@@ -27,6 +27,19 @@ class AttributeOptionSpec extends ObjectBehavior
         $this->shouldHaveType(AttributeOption::class);
     }
 
+    public function it_updates_its_label()
+    {
+        $this->updateLabels(LabelCollection::fromArray(['de_DE' => 'Rood' ]));
+        $this->normalize()->shouldReturn([
+            'code' => 'red',
+            'labels' => [
+                'fr_FR' => 'Rouge',
+                'en_US' => 'Red',
+                'de_DE' => 'Rood'
+            ]
+        ]);
+    }
+
     public function it_can_normalize_itself()
     {
         $this->normalize()->shouldReturn([

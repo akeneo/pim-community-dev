@@ -69,7 +69,7 @@ class ImageAttributeSpec extends ObjectBehavior
                 'identifier'                 => 'image_designer_test',
                 'reference_entity_identifier' => 'designer',
                 'code'                       => 'image',
-                'labels'                     => ['fr_FR' => 'Portrait', 'de_DE' => 'Porträt'],
+                'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait', 'de_DE' => 'Porträt'],
                 'order'                      => 0,
                 'is_required'                   => true,
                 'value_per_channel'          => true,

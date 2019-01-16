@@ -114,7 +114,7 @@ class EditAttributeOptionContext implements Context
 
         $expectedOption = AttributeOption::create(
             OptionCode::fromString('blue'),
-            LabelCollection::fromArray(['en_US' => 'Blue', 'fr_FR' => 'Bleu'])
+            LabelCollection::fromArray(['de_DE' => 'blauw', 'en_US' => 'Blue', 'fr_FR' => 'Bleu'])
         );
 
         $this->constraintViolationsContext->assertThereIsNoViolations();
@@ -140,7 +140,7 @@ class EditAttributeOptionContext implements Context
         $optionAttribute->setOptions([
             AttributeOption::create(
                 OptionCode::fromString('blue'),
-                LabelCollection::fromArray([])
+                LabelCollection::fromArray(['de_DE' => 'blauw'])
             )
         ]);
 

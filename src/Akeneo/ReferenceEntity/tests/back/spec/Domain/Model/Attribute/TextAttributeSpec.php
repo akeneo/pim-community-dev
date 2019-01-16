@@ -189,7 +189,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'identifier'                 => 'name_designer_test',
                 'reference_entity_identifier' => 'designer',
                 'code'                       => 'name',
-                'labels'                     => ['fr_FR' => 'Désignation', 'de_DE' => 'Bezeichnung'],
+                'labels'                     => ['fr_FR' => 'Désignation', 'en_US' => 'Name', 'de_DE' => 'Bezeichnung'],
                 'order'                      => 0,
                 'is_required'                => true,
                 'value_per_channel'          => true,

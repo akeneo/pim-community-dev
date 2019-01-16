@@ -67,7 +67,7 @@ class RecordAttributeSpec extends ObjectBehavior
                 'identifier' => 'mentor_designer_fingerprint',
                 'reference_entity_identifier' => 'designer',
                 'code' => 'mentor',
-                'labels' => ['fr_FR' => 'Tuteur', 'de_DE' => 'Mentor'],
+                'labels' => ['fr_FR' => 'Tuteur', 'en_US' => 'Mentor', 'de_DE' => 'Mentor'],
                 'order' => 0,
                 'is_required' => true,
                 'value_per_channel' => false,

@@ -110,7 +110,9 @@ abstract class AbstractAttribute
 
     public function updateLabels(LabelCollection $labelCollection): void
     {
-        $this->labelCollection = $labelCollection;
+        $labels = $this->labelCollection->normalize();
+        $updatedLabels = $labelCollection->normalize();
+        $this->labelCollection = LabelCollection::fromArray(array_merge($labels, $updatedLabels));
     }
 
     public function setIsRequired(AttributeIsRequired $isRequired): void

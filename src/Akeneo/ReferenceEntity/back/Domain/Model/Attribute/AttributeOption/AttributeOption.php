@@ -32,6 +32,13 @@ class AttributeOption
         return new self($optionCode, $labelCollection);
     }
 
+    public function updateLabels(LabelCollection $labelCollection)
+    {
+        $labels = $this->labels->normalize();
+        $updatedLabels = $labelCollection->normalize();
+        $this->labels = LabelCollection::fromArray(array_merge($labels, $updatedLabels));
+    }
+
     public function normalize(): array
     {
         return [

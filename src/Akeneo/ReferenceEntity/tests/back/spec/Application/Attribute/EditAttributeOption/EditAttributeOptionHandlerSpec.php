@@ -76,11 +76,10 @@ class EditAttributeOptionHandlerSpec extends ObjectBehavior
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        // TODO: merge labels instead of replacing them
         $expectedOptionAttribute->setOptions([
             AttributeOption::create(
                 OptionCode::fromString('blue'),
-                LabelCollection::fromArray(['en_US' => 'Blue', 'de_DE' => 'Blauw'])
+                LabelCollection::fromArray(['fr_FR' => 'Bleu clair', 'en_US' => 'Blue', 'de_DE' => 'Blauw'])
             )
         ]);
 

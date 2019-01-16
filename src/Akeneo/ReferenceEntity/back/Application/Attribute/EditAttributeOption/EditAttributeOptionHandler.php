@@ -40,13 +40,9 @@ class EditAttributeOptionHandler
         Assert::isInstanceOfAny($attribute, [OptionCollectionAttribute::class, OptionAttribute::class]);
         Assert::true($attribute->hasAttributeOption(OptionCode::fromString($command->optionCode)));
 
-        $option = AttributeOption::create(
-            OptionCode::fromString($command->optionCode),
-            LabelCollection::fromArray($command->labels)
-        );
+        $option = $attribute->getAttributeOption(OptionCode::fromString($command->optionCode));
+        $option->updateLabels(LabelCollection::fromArray($command->labels));
 
-        // TODO: handle partial update of labels
-        $attribute->updateOption($option);
         $this->attributeRepository->update($attribute);
     }
 }
