@@ -47,9 +47,3 @@ services:
   elasticsearch:
     ports:
       - '9210:9200'
-
-  sso-idp-server:
-    environment:
-      SIMPLESAMLPHP_SP_ENTITY_ID: 'http://your-pim-url'
-      SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE: 'http://your-pim-url/saml/acs'
-      SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE: 'http://your-pim-url/saml/logout'
