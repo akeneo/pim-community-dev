@@ -25,7 +25,7 @@ class FiltersColumn extends BaseView {
   public loading: boolean;
   public opened = false;
   public page: number = 1;
-  public timer: number;
+  public timer: any;
   public searchSelector: string;
 
   readonly config: FiltersConfig;
