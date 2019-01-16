@@ -14,15 +14,6 @@ Feature: Edit an identifier attribute
     Then I should see the Max characters and Validation rule fields
     And the fields Unique, Value per channel and Usable in grid should be disabled
 
-  Scenario: Fail to create a second identifier attribute
-    Given I am on the attributes page
-    When I create an "Identifier" attribute
-    And I fill in the following information:
-      | Code            | mySecondId |
-      | Attribute group | Other      |
-    And I press the "Save" button
-    Then I should see the text "An identifier attribute already exists."
-
   Scenario: Successfully edit an identifier attribute
     Given I am on the "SKU" attribute page
     When I fill in the following information:

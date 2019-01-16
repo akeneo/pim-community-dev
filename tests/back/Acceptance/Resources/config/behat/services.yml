@@ -86,13 +86,15 @@ services:
         tags:
             - { name: fob.context_service }
 
-    test.attribute.context:
-        class: 'Akeneo\Test\Acceptance\Attribute\AttributeContext'
+    test.attribute_validation.context:
+        class: 'Akeneo\Test\Acceptance\Attribute\Context\AttributeValidation'
         arguments:
             - '@__symfony__.pim_catalog.repository.attribute'
             - '@test.attribute.builder'
             - '@__symfony__.pim_catalog.repository.attribute_group'
             - '@test.attribute_group.builder'
+            - '@__symfony__.pim_catalog.repository.attribute'
+            - '@__symfony__.validator'
         tags:
             - { name: fob.context_service }
 

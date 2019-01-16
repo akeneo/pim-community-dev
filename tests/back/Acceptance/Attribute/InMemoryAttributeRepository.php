@@ -58,6 +58,7 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
             throw new \InvalidArgumentException('The object argument should be a attribute');
         }
 
+        $attribute->setId(mt_rand());
         $this->attributes->set($attribute->getCode(), $attribute);
     }
 
