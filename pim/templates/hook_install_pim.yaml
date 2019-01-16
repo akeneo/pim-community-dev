@@ -42,7 +42,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: pim-install
-          image:  {{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}
+          image:  {{ printf "%s:%s" .Values.image.pim.repository  .Values.image.pim.tag }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['sh', '-c', 'export HOME=/var/www/ && chown -R www-data:www-data /data && su -m -l www-data -s /bin/bash -c "php bin/console pim:install"']
           env:

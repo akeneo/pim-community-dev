@@ -42,7 +42,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: pim-upgrade
-          image:  {{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}
+          image:  {{ printf "%s:%s" .Values.image.pim.repository  .Values.image.pim.tag }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['sh', '-c', 'export HOME=/var/www && su -m -l www-data -s /bin/bash -c "rm -rf var/cache && bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction"']
           env:
