@@ -188,7 +188,7 @@ mappings:
                 metric_data:
                     path_match: 'values.*-metric.*.data'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 metric_base_data:
                     path_match: 'values.*-metric.*.base_data'
@@ -198,32 +198,32 @@ mappings:
                 metric_unit:
                     path_match: 'values.*-metric.*.unit'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 metric_base_unit:
                     path_match: 'values.*-metric.*.base_unit'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 media_extension:
                     path_match: 'values.*-media.*.extension'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 media_key:
                     path_match: 'values.*-media.*.key'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 media_hash:
                     path_match: 'values.*-media.*.hash'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 media_mime_type:
                     path_match: 'values.*-media.*.mime_type'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 media_original_filename:
                     path_match: 'values.*-media.*.original_filename'
@@ -233,12 +233,12 @@ mappings:
                 media_size:
                     path_match: 'values.*-media.*.size'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 media_storage:
                     path_match: 'values.*-media.*.storage'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 in_group_structure:
                     path_match: 'in_group.*'
@@ -250,37 +250,3 @@ mappings:
                     path_match: 'in_group.*'
                     mapping:
                         type: 'boolean'
-settings:
-    analysis:
-        normalizer:
-            text_normalizer:
-                filter: ['lowercase']
-            family_normalizer:
-                filter: ['lowercase']
-            identifier_normalizer:
-                filter: ['lowercase']
-        char_filter:
-            newline_pattern:
-                pattern: '\\n'
-                type: 'pattern_replace'
-                replacement: ''
-        filter:
-            text_area_truncate:
-                type: 'truncate'
-                length: 100
-        analyzer:
-            textarea_analyzer:
-                filter: ['lowercase']
-                char_filter: ['html_strip', 'newline_pattern']
-                type: 'custom'
-                tokenizer: 'standard'
-            textarea_preprocessed_analyzer:
-                filter: ['lowercase', 'text_area_truncate']
-                char_filter: ['html_strip', 'newline_pattern']
-                type: 'custom'
-                tokenizer: 'keyword'
-    mapping:
-        # ES default value is 1000. This value can be too low for big catalogs.
-        # For more information see https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#mapping-limit-settings
-        total_fields:
-            limit: 10000

@@ -24,6 +24,11 @@ Akeneo PIM v3.0 now expects PHP 7.2.
 
 Akeneo PIM v3.0 now expects MySQL 5.7.22.
 
+### ES version
+
+Akeneo PIM v3.0 now expects Elasticsearch 6.5.4.
+A reindexation of the products (and product models) is required. We'll provide the best way to do it later in this document.
+
 ## Database charset migration
 
 MySQL charset for Akeneo is now utf8mb4, instead of the [flawed utf8](https://www.eversql.com/mysql-utf8-vs-utf8mb4-whats-the-difference-between-utf8-and-utf8mb4/). If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.

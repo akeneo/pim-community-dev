@@ -1,5 +1,5 @@
 #!groovy
-@Library("k8s-utils@2.x")
+@Library("k8s-utils@ES6")
 
 String[] legacyFeatures = ["tests/legacy/features"]
 String launchUnitTests = "yes"
