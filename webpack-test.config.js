@@ -14,7 +14,6 @@ const config = Object.assign({}, prodConfig, {
   },
 });
 
-config.plugins.push(new HtmlWebpackInlineSourcePlugin());
 config.plugins.push(
   new HtmlWebpackPlugin({
     inject: 'head',
@@ -23,5 +22,7 @@ config.plugins.push(
     inlineSource: '.(js)$',
   })
 );
+
+config.plugins.push(new HtmlWebpackInlineSourcePlugin());
 
 module.exports = config;

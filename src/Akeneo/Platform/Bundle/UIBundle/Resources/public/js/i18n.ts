@@ -10,7 +10,7 @@ const flagTemplate = (country: string, language: string, displayLanguage: boolea
 </span>`;
 };
 
-export const getFlag = (locale: string, displayLanguage: boolean = true): string => {
+export const getFlag = (locale?: string, displayLanguage: boolean = true): string => {
   if (!locale) {
     return '';
   }
