@@ -27,6 +27,7 @@ Feature: Edit a product
       | sandal  | name        | My sandals name                      |        |           |
       | sandal  | length      | 29 CENTIMETER                        |        |           |
 
+  @validate-migration
   Scenario: Successfully create, edit and save a product
     Given I am logged in as "Mary"
     And I am on the "sandal" product page
