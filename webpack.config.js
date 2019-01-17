@@ -31,6 +31,8 @@ const webpackConfig = {
     version: true,
   },
   optimization: {
+    moduleIds: 'hashed',
+    nodeEnv: (isProd ? 'production' : 'development'),
     minimizer: [
       new UglifyJsPlugin({
       sourceMap: true,
@@ -197,10 +199,6 @@ const webpackConfig = {
       path.resolve(rootDir, './var'),
       path.resolve(rootDir, './vendor'),
     ]),
-
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
-    }),
   ],
 };
 
