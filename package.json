@@ -79,8 +79,6 @@
     "uglifyjs-webpack-plugin": "2.1.1",
     "underscore": "1.8.3",
     "webpack": "^4.28.4",
-    "webpack-cleanup-plugin": "0.5.1",
-    "webpack-livereload-plugin": "2.2.0",
     "write-file-webpack-plugin": "4.5.0",
     "yamljs": "0.3.0"
   }

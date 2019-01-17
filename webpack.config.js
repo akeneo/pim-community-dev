@@ -6,10 +6,6 @@ const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
-
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const sourcePath = path.join(rootDir, 'web/js/require-paths.js');
 
@@ -196,9 +192,6 @@ const webpackConfig = {
   },
 
   plugins: [
-    // Clean up the dist folder and source maps before rebuild
-    new WebpackCleanupPlugin(),
-
     // Map modules to variables for global use
     new webpack.ProvidePlugin({_: 'underscore', Backbone: 'backbone', $: 'jquery', jQuery: 'jquery'}),
 
@@ -209,9 +202,6 @@ const webpackConfig = {
       path.resolve(rootDir, './var'),
       path.resolve(rootDir, './vendor'),
     ]),
-
-    // Inject live reload to auto refresh the page (hmr not compatible with our app)
-    new LiveReloadPlugin({appendScriptTag: true, ignore: /node_modules/}),
 
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
