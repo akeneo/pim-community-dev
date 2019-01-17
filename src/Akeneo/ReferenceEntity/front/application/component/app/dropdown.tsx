@@ -18,7 +18,7 @@ const DefaultButtonView = ({
   selectedElement: DropdownElement;
   onClick: () => void;
   allowEmpty?: boolean;
-  placeholder?: string;
+  placeholder?: string | null;
   readOnly: boolean;
 }) => {
   const hasPlaceholder = allowEmpty && placeholder && selectedElement.identifier === null;
@@ -141,7 +141,7 @@ class Dropdown extends React.Component<Props, State> {
       placeholder?: string,
       readOnly?: boolean
     ) => {
-      const Button = undefined !== this.props.ButtonView ? this.props.ButtonView : DefaultButtonView;
+      const Button: any = undefined !== this.props.ButtonView ? this.props.ButtonView : DefaultButtonView;
 
       return (
         <Button

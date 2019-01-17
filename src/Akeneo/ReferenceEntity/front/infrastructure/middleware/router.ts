@@ -11,7 +11,7 @@ export default (router: any) => () => (next: any) => (action: any) => {
     if (undefined !== route.params.tab) {
       history.replaceState(
         null,
-        undefined,
+        '',
         '#' + Routing.generate(route.name, {...route.params, tab: action.currentTab})
       );
     }
