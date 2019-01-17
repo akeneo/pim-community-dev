@@ -123,3 +123,13 @@ services:
             - '@__symfony__.validator'
         tags:
             - { name: fob.context_service }
+
+    test.family_validation.context:
+        class: 'Akeneo\Test\Acceptance\Family\Context\FamilyValidation'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.family'
+            - '@test.family.builder'
+            - '@__symfony__.pim_catalog.repository.attribute'
+            - '@__symfony__.validator'
+        tags:
+            - { name: fob.context_service }
