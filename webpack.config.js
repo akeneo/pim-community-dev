@@ -24,20 +24,20 @@ const {aliases, config} = getModulePaths(rootDir, __dirname, sourcePath);
 
 createModuleRegistry(Object.keys(aliases), rootDir);
 
-const babelPresets = [
-  [
-    'babel-preset-env',
-    {
-      targets: {
-        browsers: ['firefox >= 45'],
-      },
-    },
-  ],
-];
+// const babelPresets = [
+//   [
+//     'babel-preset-env',
+//     {
+//       targets: {
+//         browsers: ['firefox >= 45'],
+//       },
+//     },
+//   ],
+// ];
 
-if (isProd) {
-  babelPresets.push('babel-preset-minify');
-}
+// if (isProd) {
+//   babelPresets.push('babel-preset-minify');
+// }
 
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
@@ -159,7 +159,7 @@ const webpackConfig = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: babelPresets,
+            presets: ['@babel/preset-env'],
             cacheDirectory: 'web/cache',
           },
         },
