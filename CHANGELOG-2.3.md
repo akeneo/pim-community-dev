@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.25 (2019-01-17)
+
 ## Bug fixes
 
 - PIM-7965: fix families patch endpoint when updating a family with a family variant 
