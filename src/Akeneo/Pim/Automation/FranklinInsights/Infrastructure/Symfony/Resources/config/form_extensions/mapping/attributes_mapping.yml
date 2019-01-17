@@ -48,20 +48,6 @@ extensions:
         config:
             entity: akeneo_franklin_insights.entity.attributes_mapping.label
 
-    akeneo-franklin-insights-settings-attributes-mapping-index-description-header:
-        module: pim/common/simple-view
-        parent: akeneo-franklin-insights-settings-attributes-mapping-edit
-        targetZone: content
-        position: 10
-        config:
-            template: pim/template/common/description-header
-            templateParams:
-                title: akeneo_franklin_insights.settings.module.title.sub_title
-                illustration: Robot.svg
-                description:
-                    - akeneo_franklin_insights.settings.module.title.description.first_step
-                    - akeneo_franklin_insights.settings.module.title.description.second_step
-
     akeneo-franklin-insights-settings-attributes-mapping-index-tabs:
         module: akeneo/franklin-insights/view/settings/mapping/common/tabs
         parent: akeneo-franklin-insights-settings-attributes-mapping-edit
