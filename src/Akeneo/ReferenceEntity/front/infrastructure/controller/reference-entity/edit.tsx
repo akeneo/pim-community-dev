@@ -34,7 +34,7 @@ import {attributeListGotUpdated} from 'akeneoreferenceentity/application/action/
 import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 import {PermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 import {permissionEditionReceived} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
-import {LocalePermission} from "akeneoreferenceentity/domain/model/permission/locale";
+import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');

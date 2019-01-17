@@ -29,7 +29,7 @@ interface StateProps {
   rights: {
     locale: {
       edit: boolean;
-    },
+    };
     referenceEntity: {
       edit: boolean;
       delete: boolean;
@@ -148,8 +148,7 @@ export default connect(
       },
       rights: {
         locale: {
-          edit:
-            canEditLocale(state.right.locale, locale),
+          edit: canEditLocale(state.right.locale, locale),
         },
         referenceEntity: {
           edit:
