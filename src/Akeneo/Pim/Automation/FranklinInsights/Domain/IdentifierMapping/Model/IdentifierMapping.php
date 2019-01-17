@@ -18,7 +18,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 /**
  * Identifier Mapping doctrine entity.
  */
-class IdentifierMapping
+final class IdentifierMapping
 {
     /** @var int|null */
     private $id;
@@ -53,17 +53,5 @@ class IdentifierMapping
     public function getAttribute(): ?AttributeInterface
     {
         return $this->attribute;
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @return IdentifierMapping
-     */
-    public function setAttribute(?AttributeInterface $attribute): self
-    {
-        $this->attribute = $attribute;
-
-        return $this;
     }
 }

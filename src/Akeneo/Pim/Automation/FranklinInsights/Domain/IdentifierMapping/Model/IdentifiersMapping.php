@@ -82,9 +82,7 @@ class IdentifiersMapping implements \IteratorAggregate
         if (!in_array($franklinIdentifierCode, self::FRANKLIN_IDENTIFIERS)) {
             throw new \InvalidArgumentException(sprintf('Invalid identifier %s', $franklinIdentifierCode));
         }
-
-        $identifierMapping = $this->mapping[$franklinIdentifierCode];
-        $identifierMapping->setAttribute($attribute);
+        $this->mapping[$franklinIdentifierCode] = new IdentifierMapping($franklinIdentifierCode, $attribute);
 
         return $this;
     }
