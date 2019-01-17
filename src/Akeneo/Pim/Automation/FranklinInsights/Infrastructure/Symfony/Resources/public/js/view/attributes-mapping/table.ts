@@ -79,10 +79,10 @@ class AttributeMapping extends BaseView {
 
   /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping */
   private static readonly PERFECT_MAPPINGS: { [attributeType: string]: string[] } = {
-    metric: [ 'pim_catalog_metric' ],
-    select: [ 'pim_catalog_simpleselect' ],
-    multiselect: [ 'pim_catalog_multiselect' ],
-    number: [ 'pim_catalog_number' ],
+    metric: [ 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_metric' ],
+    select: [ 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_simpleselect', 'pim_catalog_multiselect' ],
+    multiselect: [ 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_multiselect', 'pim_catalog_simpleselect' ],
+    number: [ 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number' ],
     text: [ 'pim_catalog_text', 'pim_catalog_textarea' ],
   };
   private static readonly ALLOWED_CATALOG_TYPES: string[] = [
