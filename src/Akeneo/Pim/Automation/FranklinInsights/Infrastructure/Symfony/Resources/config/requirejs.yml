@@ -59,6 +59,10 @@ config:
         akeneo/franklin-insights/saver/attribute-options-mapping: akeneofranklininsights/js/saver/attribute-options-mapping.ts
         akeneo/franklin-insights/saver/attribute-options-mapping-form: akeneofranklininsights/js/saver/attribute-options-mapping-form.ts
 
+        # Deletes
+        akeneo/franklin-insights/delete/attribute: akeneofranklininsights/js/delete/attribute.ts
+        oro/datagrid/delete-confirm:               akeneofranklininsights/js/datagrid/action/delete-confirm.ts
+
         # View
         akeneo/franklin-insights/view/settings/attributes-mapping/state: akeneofranklininsights/js/view/attributes-mapping/state.ts
         akeneo/franklin-insights/view/settings/attributes-mapping/family-selector: akeneofranklininsights/js/view/attributes-mapping/family-selector.ts

@@ -1,0 +1,15 @@
+extensions:
+    # Override of CE attribute delete
+    pim-attribute-edit-form-delete:
+        module: akeneo/franklin-insights/delete/attribute
+        parent: pim-attribute-edit-form-secondary-actions
+        position: 100
+        targetZone: secondary-actions
+        aclResourceId: pim_enrich_attribute_remove
+        config:
+            trans:
+                subTitle: pim_enrich.entity.attribute.plural_label
+                success: pim_enrich.entity.attribute.flash.delete.success
+                fail: pim_enrich.entity.attribute.flash.delete.fail
+                buttonText: pim_common.delete
+            redirect: pim_enrich_attribute_index

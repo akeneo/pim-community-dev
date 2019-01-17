@@ -184,3 +184,9 @@ pim_dashboard:
         last_operations:
             job_type:
                 franklin_insights_fetch_products: Franklin Insights
+
+pim_enrich.entity.attribute:
+    module:
+        save:
+            title: 'Warning!'
+            warning: '{1}Deleting an attribute may impact 1 Franklin subscription. Are you sure?|]1,+Inf[Deleting an attribute may impact {{ count }} Franklin subscriptions. Are you sure?'
