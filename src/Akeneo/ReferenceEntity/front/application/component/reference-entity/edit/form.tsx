@@ -17,6 +17,9 @@ interface FormProps {
   data: NormalizedReferenceEntity;
   errors: ValidationError[];
   rights: {
+    locale: {
+      edit: boolean;
+    },
     referenceEntity: {
       edit: boolean;
       delete: boolean;
@@ -52,6 +55,7 @@ export default class EditForm extends React.Component<FormProps> {
 
   render() {
     const referenceEntity = denormalizeReferenceEntity(this.props.data);
+    const canEditProperties = this.props.rights.referenceEntity.edit && this.props.rights.locale.edit;
 
     return (
       <div>
@@ -93,13 +97,13 @@ export default class EditForm extends React.Component<FormProps> {
               name="label"
               id="pim_reference_entity.reference_entity.properties.label"
               className={`AknTextField AknTextField--light ${
-                true === this.props.rights.referenceEntity.edit ? '' : 'AknTextField--disabled'
+                true === canEditProperties ? '' : 'AknTextField--disabled'
               }`}
               value={referenceEntity.getLabel(this.props.locale, false)}
               onChange={this.updateLabel}
               onKeyDown={this.keyDown}
               ref={this.labelInput}
-              readOnly={!this.props.rights.referenceEntity.edit}
+              readOnly={!canEditProperties}
             />
             <Flag
               locale={createLocaleFromCode(this.props.locale)}
@@ -127,7 +131,7 @@ export default class EditForm extends React.Component<FormProps> {
               image={referenceEntity.getImage()}
               wide={true}
               onImageChange={this.props.onImageUpdated}
-              readOnly={!this.props.rights.referenceEntity.edit}
+              readOnly={!canEditProperties}
             />
           </div>
           {getErrorsView(this.props.errors, 'image')}
