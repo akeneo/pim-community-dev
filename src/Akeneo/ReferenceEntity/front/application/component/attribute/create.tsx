@@ -325,7 +325,11 @@ class Create extends React.Component<CreateProps> {
                     </div>
                     {getErrorsView(this.props.errors, 'valuePerLocale')}
                   </div>
-                  <button className="AknButton AknButton--apply ok" style={{position: 'static'}} onClick={this.props.events.onSubmit}>
+                  <button
+                    className="AknButton AknButton--apply ok"
+                    style={{position: 'static'}}
+                    onClick={this.props.events.onSubmit}
+                  >
                     {__('pim_reference_entity.attribute.create.confirm')}
                   </button>
                 </div>

@@ -41,7 +41,7 @@ class RecordItem
     /** @var array */
     public $labels;
 
-    /** @var string|null */
+    /** @var array */
     public $image;
 
     /** @var []|null */

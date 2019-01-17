@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
@@ -76,11 +77,10 @@ class SqlRecordRepository implements RecordRepositoryInterface
 
     public function create(Record $record): void
     {
-        $serializedLabels = $this->getSerializedLabels($record);
         $insert = <<<SQL
         INSERT INTO akeneo_reference_entity_record
-            (identifier, code, reference_entity_identifier, labels, image, value_collection)
-        VALUES (:identifier, :code, :reference_entity_identifier, :labels, :image, :value_collection);
+            (identifier, code, reference_entity_identifier, value_collection)
+        VALUES (:identifier, :code, :reference_entity_identifier, :value_collection);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
@@ -88,8 +88,6 @@ SQL;
                 'identifier' => (string) $record->getIdentifier(),
                 'code' => (string) $record->getCode(),
                 'reference_entity_identifier' => (string) $record->getReferenceEntityIdentifier(),
-                'labels' => $serializedLabels,
-                'image' => $record->getImage()->isEmpty() ? null : $record->getImage()->getKey(),
                 'value_collection' => $record->getValues()->normalize(),
             ],
             [
@@ -107,18 +105,15 @@ SQL;
 
     public function update(Record $record): void
     {
-        $serializedLabels = $this->getSerializedLabels($record);
         $update = <<<SQL
         UPDATE akeneo_reference_entity_record
-        SET labels = :labels, image = :image, value_collection = :value_collection
+        SET value_collection = :value_collection
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $update,
             [
                 'identifier' => $record->getIdentifier(),
-                'labels' => $serializedLabels,
-                'image' => $record->getImage()->isEmpty() ? null : $record->getImage()->getKey(),
                 'value_collection' => $record->getValues()->normalize(),
             ],
             [
@@ -140,12 +135,8 @@ SQL;
         RecordCode $code
     ): Record {
         $fetch = <<<SQL
-        SELECT identifier, code, reference_entity_identifier, labels, value_collection, fi.image
-        FROM akeneo_reference_entity_record ee
-        LEFT JOIN (
-          SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
-          FROM akeneo_file_storage_file_info
-        ) AS fi ON fi.file_key = ee.image
+        SELECT identifier, code, reference_entity_identifier, value_collection
+        FROM akeneo_reference_entity_record
         WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
@@ -167,18 +158,16 @@ SQL;
     public function getByIdentifier(RecordIdentifier $identifier): Record
     {
         $fetch = <<<SQL
-        SELECT ee.identifier, ee.code, ee.reference_entity_identifier, ee.labels, ee.value_collection, fi.image
-        FROM akeneo_reference_entity_record AS ee
-        LEFT JOIN (
-          SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
-          FROM akeneo_file_storage_file_info
-        ) AS fi ON fi.file_key = ee.image
-        WHERE identifier = :identifier;
+        SELECT record.identifier, record.code, record.reference_entity_identifier, record.value_collection, reference.attribute_as_label, reference.attribute_as_image
+        FROM akeneo_reference_entity_record AS record
+        INNER JOIN akeneo_reference_entity_reference_entity AS reference
+            ON reference.identifier = record.reference_entity_identifier
+        WHERE record.identifier = :record_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
-                'identifier' => (string) $identifier,
+                'record_identifier' => (string) $identifier,
             ]
         );
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
@@ -263,16 +252,6 @@ SQL;
         return intval($count);
     }
 
-    private function getSerializedLabels(Record $record): string
-    {
-        $labels = [];
-        foreach ($record->getLabelCodes() as $localeCode) {
-            $labels[$localeCode] = $record->getLabel($localeCode);
-        }
-
-        return json_encode($labels);
-    }
-
     private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier
     {
         if (!isset($result['reference_entity_identifier'])) {
@@ -290,8 +269,12 @@ SQL;
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($result);
         $valueKeyCollection = ($this->findValueKeyCollection)($referenceEntityIdentifier);
-        $indexedAttributes = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
+        $attributesIndexedByIdentifier = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
 
-        return $this->recordHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
+        return $this->recordHydrator->hydrate(
+            $result,
+            $valueKeyCollection,
+            $attributesIndexedByIdentifier
+        );
     }
 }

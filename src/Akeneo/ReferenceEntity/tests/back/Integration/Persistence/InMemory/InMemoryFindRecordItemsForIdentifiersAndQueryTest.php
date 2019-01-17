@@ -8,6 +8,7 @@ use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForIdentifiersAndQuery;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocales;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
@@ -29,11 +30,15 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @author    Julien Sanchez <julien@akeneo.com>
@@ -44,6 +49,9 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
 {
     /** @var InMemoryRecordRepository */
     private $recordRepository;
+
+    /** @var InMemoryReferenceEntityRepository */
+    private $referenceEntityRepository;
 
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
@@ -56,20 +64,21 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
 
     /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
     private $inMemoryRequiredQuery;
-
     /** @var InMemoryFindRecordItemsForIdentifiersAndQuery */
     private $query;
 
     public function setup()
     {
         $this->recordRepository = new InMemoryRecordRepository();
-        $this->attributeRepository = new InMemoryAttributeRepository();
+        $this->referenceEntityRepository = new InMemoryReferenceEntityRepository(new EventDispatcher());
+        $this->attributeRepository = new InMemoryAttributeRepository(new EventDispatcher());
         $this->inMemoryRequiredQuery = new InMemoryFindRequiredValueKeyCollectionForChannelAndLocales(
             $this->attributeRepository
         );
 
         $this->query = new InMemoryFindRecordItemsForIdentifiersAndQuery(
             $this->recordRepository,
+            $this->referenceEntityRepository,
             $this->inMemoryRequiredQuery
         );
     }
@@ -79,6 +88,8 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
      */
     public function it_return_an_empty_list_of_records_if_identifiers_are_not_matching()
     {
+        $this->loadReferenceEntity();
+
         $query = RecordQuery::createFromNormalized([
             'channel' => 'ecommerce',
             'locale' => 'en_US',
@@ -103,6 +114,7 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
      */
     public function it_return_a_list_of_record_items_for_the_given_identifiers()
     {
+        $this->loadReferenceEntity();
         $this->loadRecords();
         $this->loadAttributes();
 
@@ -131,6 +143,12 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
         ];
         $starkRecordItem->image = null;
         $starkRecordItem->values = [
+            'label_designer_fingerprint_fr_FR' => [
+                'attribute' => 'label_designer_fingerprint',
+                'channel' => null,
+                'locale' => 'fr_FR',
+                'data' => 'Philippe Starck'
+            ],
             'name_designer_fingerprint' => [
                 'attribute' => 'name_designer_fingerprint',
                 'channel' => null,
@@ -154,7 +172,14 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
             'fr_FR' => 'Coco Chanel'
         ];
         $cocoRecordItem->image = null;
-        $cocoRecordItem->values = [];
+        $cocoRecordItem->values = [
+            'label_designer_fingerprint_fr_FR' => [
+                'attribute' => 'label_designer_fingerprint',
+                'channel' => null,
+                'locale' => 'fr_FR',
+                'data' => 'Coco Chanel'
+            ]
+        ];
         $cocoRecordItem->completeness = ['complete' => 0, 'required' => 2];
         ;
 
@@ -173,6 +198,7 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
      */
     public function it_return_a_partial_list_of_record_items_for_the_given_identifiers()
     {
+        $this->loadReferenceEntity();
         $this->loadRecords();
 
         $query = RecordQuery::createFromNormalized([
@@ -209,7 +235,14 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
             'fr_FR' => 'Coco Chanel'
         ];
         $cocoRecordItem->image = null;
-        $cocoRecordItem->values = [];
+        $cocoRecordItem->values = [
+            'label_designer_fingerprint_fr_FR' => [
+                'attribute' => 'label_designer_fingerprint',
+                'channel' => null,
+                'locale' => 'fr_FR',
+                'data' => 'Coco Chanel'
+            ]
+        ];
         $cocoRecordItem->completeness = ['complete' => 0, 'required' => 0];
 
         $normalizedResults = array_map(function (RecordItem $item) {
@@ -220,6 +253,22 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
             [$cocoRecordItem->normalize()],
             $normalizedResults
         );
+    }
+
+    private function loadReferenceEntity(): void
+    {
+        $referenceEntity = ReferenceEntity::createWithAttributes(
+            ReferenceEntityIdentifier::fromString('designer'),
+            [
+                'fr_FR' => 'Concepteur',
+                'en_US' => 'Designer',
+            ],
+            Image::createEmpty(),
+            AttributeAsLabelReference::createFromNormalized('label_designer_fingerprint'),
+            AttributeAsImageReference::createFromNormalized('image_designer_fingerprint')
+        );
+
+        $this->referenceEntityRepository->create($referenceEntity);
     }
 
     private function loadRecords(): void
@@ -233,9 +282,13 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
                 $this->starckIdentifier,
                 $referenceEntityIdentifier,
                 $starkCode,
-                ['fr_FR' => 'Philippe Starck'],
-                Image::createEmpty(),
                 ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_designer_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Philippe Starck')
+                    ),
                     Value::create(
                         AttributeIdentifier::fromString('name_designer_fingerprint'),
                         ChannelReference::noReference(),
@@ -258,9 +311,14 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
                 $this->cocoIdentifier,
                 $referenceEntityIdentifier,
                 $cocoCode,
-                ['fr_FR' => 'Coco Chanel'],
-                Image::createEmpty(),
-                ValueCollection::fromValues([])
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_designer_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Coco Chanel')
+                    ),
+                ])
             )
         );
     }

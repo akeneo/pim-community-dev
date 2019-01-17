@@ -38,7 +38,7 @@ class RecordValidatorSpec extends ObjectBehavior
             'labels' => [
                 'en_US' => 'Philippe Starck'
             ],
-            'main_image' => null,
+            'image' => null,
             'values' => [
                 'nationality' => [
                     [
@@ -65,7 +65,7 @@ class RecordValidatorSpec extends ObjectBehavior
             'labels' => [
                 'en_US' => 'Philippe Starck'
             ],
-            'main_image' => null,
+            'image' => null,
             'values' => [
                 'nationality' => [
                     [
@@ -99,7 +99,7 @@ class RecordValidatorSpec extends ObjectBehavior
             'labels' => [
                 'en_US' => 'Philippe Starck'
             ],
-            'main_image' => null,
+            'image' => null,
             'values' => [
                 'foo' => 'bar',
                 'nationality' => [

@@ -61,9 +61,7 @@
         "root": {
           "referenceEntityIdentifier": "designer",
           "code": "starck",
-          "labels": {
-            "fr_FR": "Philippe Starck"
-          },
+          "labels": {},
           "image": null,
           "editRecordValueCommands": [
             {

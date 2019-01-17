@@ -50,6 +50,9 @@ class RecordValidatorTest extends SqlIntegrationTestCase
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
 
+    /** @var int */
+    private $attributeOrder;
+
     public function setUp()
     {
         parent::setUp();
@@ -57,6 +60,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
         $this->recordValidator = $this->get('akeneo_referenceentity.infrastructure.connector.api.record_validator');
         $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $this->attributeOrder = 2;
 
         $this->resetDB();
         $this->loadReferenceEntity();
@@ -75,11 +79,14 @@ class RecordValidatorTest extends SqlIntegrationTestCase
     {
         $record = [
             'code' => 'kartell',
-            'labels' => [
-                'en_US' => 'Kartell english label',
-            ],
-            'main_image' => null,
             'values' => [
+                'label' => [
+                    [
+                        'locale'  => 'en_US',
+                        'channel' => null,
+                        'data'    => 'Kartell english label'
+                    ]
+                ],
                 'description' => [
                     [
                         'locale'  => 'en_US',
@@ -151,11 +158,14 @@ class RecordValidatorTest extends SqlIntegrationTestCase
     {
         $record = [
             'code' => 'kartell',
-            'labels' => [
-                'en_US' => 'Kartell english label',
-            ],
-            'main_image' => null,
             'values' => [
+                'label' => [
+                    [
+                        'locale'  => 'en_US',
+                        'channel' => null,
+                        'data'    => 'Kartell english label'
+                    ]
+                ],
                 'description' => [
                     [
                         'locale'  => 'en_US',
@@ -261,10 +271,6 @@ class RecordValidatorTest extends SqlIntegrationTestCase
     public function it_does_not_validate_values_if_the_main_structure_is_invalid()
     {
         $record = [
-            'labels' => [
-                'en_US' => null,
-            ],
-            'main_image' => 42,
             'values' => [
                 'foo' => 'bar',
                 'description' => [
@@ -278,7 +284,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
         $errors = $this->recordValidator->validate(ReferenceEntityIdentifier::fromString('brand'), $record);
         $errors = JsonSchemaErrorsFormatter::format($errors);
 
-        $this->assertCount(4, $errors);
+        $this->assertCount(2, $errors);
         $this->assertContains(
             [
                 'property' => 'code',
@@ -290,20 +296,6 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             [
                 'property' => 'values.foo',
                 'message'  => 'String value found, but an array is required'
-            ],
-            $errors
-        );
-        $this->assertContains(
-            [
-                'property' => 'labels.en_US',
-                'message'  => 'NULL value found, but a string is required'
-            ],
-            $errors
-        );
-        $this->assertContains(
-            [
-                'property' => 'main_image',
-                'message'  => 'Integer value found, but a string or a null is required'
             ],
             $errors
         );
@@ -335,7 +327,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger($this->attributeOrder++),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
@@ -353,7 +345,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('country'),
             LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger($this->attributeOrder++),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -370,7 +362,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('designers'),
             LabelCollection::fromArray(['en_US' => 'Designers']),
-            AttributeOrder::fromInteger(2),
+            AttributeOrder::fromInteger($this->attributeOrder++),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(false),
@@ -387,7 +379,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('photo'),
             LabelCollection::fromArray(['en_US' => 'Cover Image']),
-            AttributeOrder::fromInteger(3),
+            AttributeOrder::fromInteger($this->attributeOrder++),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(false),
@@ -405,7 +397,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('main_material'),
             LabelCollection::fromArray(['en_US' => 'Main material']),
-            AttributeOrder::fromInteger(4),
+            AttributeOrder::fromInteger($this->attributeOrder++),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
@@ -421,7 +413,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('products'),
             LabelCollection::fromArray(['en_US' => 'Products']),
-            AttributeOrder::fromInteger(5),
+            AttributeOrder::fromInteger($this->attributeOrder++),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)

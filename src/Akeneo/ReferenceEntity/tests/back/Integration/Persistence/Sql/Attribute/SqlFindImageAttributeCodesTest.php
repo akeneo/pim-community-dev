@@ -68,6 +68,7 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
         $imageAttributeCodes = ($this->findImageAttributeCodes)(ReferenceEntityIdentifier::fromString('designer'));
         $expectedCodes = [
             AttributeCode::fromString('image'),
+            AttributeCode::fromString('main_image'),
             AttributeCode::fromString('second_image')
         ];
 
@@ -102,12 +103,10 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
 
     private function loadAttributesWithImageType(): void
     {
-        $this->loadAttributesWithoutImageType();
-
         $imageAttribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'test'),
             ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('image'),
+            AttributeCode::fromString('main_image'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
@@ -130,8 +129,12 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
             AttributeAllowedExtensions::fromList(['pdf'])
         );
 
+        $referenceEntity = $this->referenceEntityRepository
+            ->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+
         $this->attributesRepository->create($imageAttribute);
         $this->attributesRepository->create($secondImageAttribute);
+        $this->attributesRepository->deleteByIdentifier($referenceEntity->getAttributeAsLabelReference()->getIdentifier());
     }
 
     private function loadAttributesWithoutImageType()
@@ -141,7 +144,7 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -155,7 +158,7 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('email'),
             LabelCollection::fromArray(['en_US' => 'Email']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -164,8 +167,12 @@ class SqlFindImageAttributeCodesTest extends SqlIntegrationTestCase
             AttributeRegularExpression::createEmpty()
         );
 
+        $referenceEntity = $this->referenceEntityRepository
+            ->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+
         $this->attributesRepository->create($name);
         $this->attributesRepository->create($email);
+        $this->attributesRepository->deleteByIdentifier($referenceEntity->getAttributeAsImageReference()->getIdentifier());
     }
 
     private function resetDB(): void

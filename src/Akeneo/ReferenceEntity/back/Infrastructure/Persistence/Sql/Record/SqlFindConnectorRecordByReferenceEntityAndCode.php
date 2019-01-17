@@ -60,13 +60,8 @@ class SqlFindConnectorRecordByReferenceEntityAndCode implements FindConnectorRec
                 identifier, 
                 code, 
                 reference_entity_identifier, 
-                labels, 
-                value_collection,
-                fi.file_key as image_file_key,
-                fi.original_filename as image_original_filename
-            FROM
-                akeneo_reference_entity_record ee
-                LEFT JOIN akeneo_file_storage_file_info fi ON fi.file_key = ee.image
+                value_collection
+            FROM akeneo_reference_entity_record
             WHERE 
                 code = :code AND reference_entity_identifier = :reference_entity_identifier;
 SQL;

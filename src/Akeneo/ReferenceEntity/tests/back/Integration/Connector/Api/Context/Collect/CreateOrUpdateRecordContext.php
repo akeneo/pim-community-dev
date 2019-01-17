@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect;
 
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileExists;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindFileDataByFileKey;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryGetAttributeIdentifier;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
@@ -39,20 +42,20 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
-use Webmozart\Assert\Assert;
 
 class CreateOrUpdateRecordContext implements Context
 {
@@ -91,6 +94,15 @@ class CreateOrUpdateRecordContext implements Context
     /** @var null|Response */
     private $uploadImageResponse;
 
+    /** @var InMemoryFindFileDataByFileKey */
+    private $findFileData;
+
+    /** @var InMemoryFileExists */
+    private $fileExists;
+
+    /** @var InMemoryGetAttributeIdentifier */
+    private $getAttributeIdentifier;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -99,7 +111,10 @@ class CreateOrUpdateRecordContext implements Context
         RecordRepositoryInterface $recordRepository,
         InMemoryChannelExists $channelExists,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
-        InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels
+        InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
+        InMemoryFindFileDataByFileKey $findFileData,
+        InMemoryFileExists $fileExists,
+        InMemoryGetAttributeIdentifier $getAttributeIdentifier
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -109,6 +124,9 @@ class CreateOrUpdateRecordContext implements Context
         $this->channelExists = $channelExists;
         $this->activatedLocales = $activatedLocales;
         $this->activatedLocalesPerChannels = $activatedLocalesPerChannels;
+        $this->findFileData = $findFileData;
+        $this->fileExists = $fileExists;
+        $this->getAttributeIdentifier = $getAttributeIdentifier;
     }
 
     /**
@@ -132,7 +150,7 @@ class CreateOrUpdateRecordContext implements Context
      */
     public function theConnectorCollectsThisRecordFromTheErpToSynchronizeItWithThePim()
     {
-        Assert::notNull($this->requestContract, 'The request contract must be defined first.');
+        Assert::assertNotNull($this->requestContract, 'The request contract must be defined first.');
 
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
@@ -156,26 +174,45 @@ class CreateOrUpdateRecordContext implements Context
             RecordCode::fromString('kartell')
         );
 
-        Assert::same('Kartell english label', $kartellRecord->getLabel('en_US'));
-        Assert::same('Kartell french label', $kartellRecord->getLabel('fr_FR'));
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('label')
+        );
 
-        $englishDescriptionValue = $kartellRecord->getValues()->findValue(ValueKey::create(
-            AttributeIdentifier::create('brand', 'description', 'fingerprint'),
-            ChannelReference::createfromNormalized('ecommerce'),
-            LocaleReference::createFromNormalized('en_US')
-        ));
-        Assert::isInstanceOf($englishDescriptionValue, Value::class);
-        Assert::isInstanceOf($englishDescriptionValue->getData(), TextData::class);
-        Assert::same('Kartell english description.', $englishDescriptionValue->getData()->normalize());
+        $expectedRecord = Record::create(
+            $kartellRecord->getIdentifier(),
+            $referenceEntityIdentifier,
+            RecordCode::fromString('kartell'),
+            ValueCollection::fromValues([
+                Value::create(
+                    $labelIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Kartell english label')
+                ),
+                Value::create(
+                    $labelIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Kartell french label')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('description_brand_fingerprint'),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Kartell french description.')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('description_brand_fingerprint'),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Kartell english description.')
+                ),
+            ])
+        );
 
-        $frenchDescriptionValue = $kartellRecord->getValues()->findValue(ValueKey::create(
-            AttributeIdentifier::create('brand', 'description', 'fingerprint'),
-            ChannelReference::createfromNormalized('ecommerce'),
-            LocaleReference::createFromNormalized('fr_FR')
-        ));
-        Assert::isInstanceOf($frenchDescriptionValue, Value::class);
-        Assert::isInstanceOf($frenchDescriptionValue->getData(), TextData::class);
-        Assert::same('Kartell french description.', $frenchDescriptionValue->getData()->normalize());
+        Assert::assertEquals($expectedRecord, $kartellRecord);
     }
 
     /**
@@ -188,11 +225,20 @@ class CreateOrUpdateRecordContext implements Context
         $this->loadBrandReferenceEntity();
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
+        $this->loadCoverImageAttribute();
         $this->loadBrandKartellRecord();
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->findFileData->save([
+            'filePath'         => '2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg',
+            'originalFilename' => 'kartell_cover.jpg',
+            'size'             => 128,
+            'mimeType'         => 'image/jpeg',
+            'extension'        => 'jpg'
+        ]);
+        $this->fileExists->save('2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg');
     }
 
     /**
@@ -205,39 +251,78 @@ class CreateOrUpdateRecordContext implements Context
             self::REQUEST_CONTRACT_DIR . 'successful_kartell_record_update.json'
         );
 
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
         $kartellRecord = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('brand'),
+            $referenceEntityIdentifier,
             RecordCode::fromString('kartell')
         );
 
-        Assert::same('Kartell updated english label', $kartellRecord->getLabel('en_US'));
-        Assert::same('Kartell updated french label', $kartellRecord->getLabel('fr_FR'));
+        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('label')
+        );
+        $mainImageIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('image')
+        );
 
-        $englishDescriptionValue = $kartellRecord->getValues()->findValue(ValueKey::create(
-            AttributeIdentifier::create('brand', 'description', 'fingerprint'),
-            ChannelReference::createfromNormalized('ecommerce'),
-            LocaleReference::createFromNormalized('en_US')
-        ));
-        Assert::isInstanceOf($englishDescriptionValue, Value::class);
-        Assert::isInstanceOf($englishDescriptionValue->getData(), TextData::class);
-        Assert::same('Kartell english description', $englishDescriptionValue->getData()->normalize());
+        $coverImageInfo = (new FileInfo())
+            ->setKey('2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg')
+            ->setOriginalFilename('kartell_cover.jpg')
+            ->setSize(128)
+            ->setMimeType('image/jpeg')
+            ->setExtension('jpg');
 
-        $englishNameValue = $kartellRecord->getValues()->findValue(ValueKey::create(
-            AttributeIdentifier::create('brand', 'name', 'fingerprint'),
-            ChannelReference::noReference(),
-            LocaleReference::createFromNormalized('en_US')
-        ));
-        Assert::isInstanceOf($englishNameValue, Value::class);
-        Assert::isInstanceOf($englishNameValue->getData(), TextData::class);
-        Assert::same('Updated english name', $englishNameValue->getData()->normalize());
+        $mainImageInfo = new FileInfo();
+        $mainImageInfo
+            ->setOriginalFilename('kartell.jpg')
+            ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
 
-        $frenchNameValue = $kartellRecord->getValues()->findValue(ValueKey::create(
-            AttributeIdentifier::create('brand', 'name', 'fingerprint'),
-            ChannelReference::noReference(),
-            LocaleReference::createFromNormalized('fr_FR')
-        ));
+        $expectedKartellRecord = Record::create(
+            RecordIdentifier::fromString('brand_kartell_fingerprint'),
+            $referenceEntityIdentifier,
+            RecordCode::fromString('kartell'),
+            ValueCollection::fromValues([
+                Value::create(
+                    $labelIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Kartell updated english label')
+                ),
+                Value::create(
+                    $labelIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Kartell updated french label')
+                ),
+                Value::create(
+                    $mainImageIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    FileData::createFromFileinfo($mainImageInfo)
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Updated english name')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('description_brand_fingerprint'),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Kartell english description')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('cover_image_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    FileData::createFromFileinfo($coverImageInfo)
+                ),
+            ])
+        );
 
-        Assert::null($frenchNameValue);
+        Assert::assertEquals($expectedKartellRecord, $kartellRecord);
     }
 
     /**
@@ -245,6 +330,7 @@ class CreateOrUpdateRecordContext implements Context
      */
     public function theConnectorCollectsARecordThatHasAnInvalidFormat()
     {
+        $this->loadNameAttribute();
         $client = $this->clientFactory->logIn('julia');
 
         $this->pimResponse = $this->webClientHelper->requestFromFile(
@@ -338,18 +424,28 @@ class CreateOrUpdateRecordContext implements Context
             self::REQUEST_CONTRACT_DIR . 'successful_brand_records_synchronization.json'
         );
 
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
         $fatboyRecord = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('brand'),
+            $referenceEntityIdentifier,
             RecordCode::fromString('fatboy')
+        );
+
+        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('label')
         );
 
         $expectedFatboyRecord = Record::create(
             $fatboyRecord->getIdentifier(),
-            ReferenceEntityIdentifier::fromString('brand'),
+            $referenceEntityIdentifier,
             RecordCode::fromString('fatboy'),
-            ['en_US' => 'Fatboy label'],
-            Image::createEmpty(),
             ValueCollection::fromValues([
+                Value::create(
+                    $labelIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Fatboy label')
+                ),
                 Value::create(
                     AttributeIdentifier::fromString('name_brand_fingerprint'),
                     ChannelReference::noReference(),
@@ -359,7 +455,7 @@ class CreateOrUpdateRecordContext implements Context
             ])
         );
 
-        \PHPUnit\Framework\Assert::assertEquals($expectedFatboyRecord, $fatboyRecord);
+        Assert::assertEquals($expectedFatboyRecord, $fatboyRecord);
     }
 
     /**
@@ -367,13 +463,44 @@ class CreateOrUpdateRecordContext implements Context
      */
     public function theRecordsExistingBothInTheErpAndThePimAreCorrectlySynchronizedInThePimWithTheInformationFromTheErp()
     {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('label')
+        );
+        $mainImageIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('image')
+        );
+
+        $mainImageInfo = new FileInfo();
+        $mainImageInfo
+            ->setOriginalFilename('kartell.jpg')
+            ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
+
         $expectedKartellRecord = Record::create(
             RecordIdentifier::fromString('brand_kartell_fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            $referenceEntityIdentifier,
             RecordCode::fromString('kartell'),
-            ['en_US' => 'Kartell updated english label', 'fr_FR' => 'Kartell updated french label'],
-            Image::createEmpty(),
             ValueCollection::fromValues([
+                Value::create(
+                    $labelIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Kartell updated english label')
+                ),
+                Value::create(
+                    $labelIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Kartell updated french label')
+                ),
+                Value::create(
+                    $mainImageIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    FileData::createFromFileinfo($mainImageInfo)
+                ),
                 Value::create(
                     AttributeIdentifier::fromString('name_brand_fingerprint'),
                     ChannelReference::noReference(),
@@ -394,15 +521,19 @@ class CreateOrUpdateRecordContext implements Context
             RecordCode::fromString('kartell')
         );
 
-        \PHPUnit\Framework\Assert::assertEquals($expectedKartellRecord, $kartellRecord);
+        Assert::assertEquals($expectedKartellRecord, $kartellRecord);
 
         $expectedLexonRecord = Record::create(
             RecordIdentifier::fromString('brand_lexon_fingerprint'),
             ReferenceEntityIdentifier::fromString('brand'),
             RecordCode::fromString('lexon'),
-            ['en_US' => 'Lexon updated english label'],
-            Image::createEmpty(),
             ValueCollection::fromValues([
+                Value::create(
+                    $labelIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Lexon updated english label')
+                ),
                 Value::create(
                     AttributeIdentifier::fromString('name_brand_fingerprint'),
                     ChannelReference::noReference(),
@@ -417,7 +548,7 @@ class CreateOrUpdateRecordContext implements Context
             RecordCode::fromString('lexon')
         );
 
-        \PHPUnit\Framework\Assert::assertEquals($expectedLexonRecord, $lexonRecord);
+        Assert::assertEquals($expectedLexonRecord, $lexonRecord);
     }
 
     /**
@@ -518,7 +649,7 @@ class CreateOrUpdateRecordContext implements Context
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -537,7 +668,7 @@ class CreateOrUpdateRecordContext implements Context
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
@@ -556,7 +687,7 @@ class CreateOrUpdateRecordContext implements Context
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('cover_image'),
             LabelCollection::fromArray(['en_US' => 'Cover Image']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -574,13 +705,33 @@ class CreateOrUpdateRecordContext implements Context
             ->setOriginalFilename('kartell.jpg')
             ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
 
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('label')
+        );
+        $mainImageIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('image')
+        );
+
         $record = Record::create(
             RecordIdentifier::fromString('brand_kartell_fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            $referenceEntityIdentifier,
             RecordCode::fromString('kartell'),
-            ['en_US' => 'Kartell English label'],
-            Image::fromFileInfo($mainImageInfo),
             ValueCollection::fromValues([
+                Value::create(
+                    $labelIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Kartell English label')
+                ),
+                Value::create(
+                    $mainImageIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    FileData::createFromFileinfo($mainImageInfo)
+                ),
                 Value::create(
                     AttributeIdentifier::fromString('name_brand_fingerprint'),
                     ChannelReference::noReference(),
@@ -601,13 +752,23 @@ class CreateOrUpdateRecordContext implements Context
 
     private function loadBrandLexonRecord(): void
     {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('label')
+        );
+
         $record = Record::create(
             RecordIdentifier::fromString('brand_lexon_fingerprint'),
-            ReferenceEntityIdentifier::fromString('brand'),
+            $referenceEntityIdentifier,
             RecordCode::fromString('lexon'),
-            ['en_US' => 'Lexon'],
-            Image::createEmpty(),
             ValueCollection::fromValues([
+                Value::create(
+                    $labelIdentifier,
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Lexon')
+                ),
                 Value::create(
                     AttributeIdentifier::fromString('name_brand_fingerprint'),
                     ChannelReference::noReference(),

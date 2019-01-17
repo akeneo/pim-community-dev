@@ -14,16 +14,23 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect;
 
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileExists;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindFileDataByFileKey;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryGetAttributeIdentifier;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,13 +63,25 @@ class CreateOrUpdateReferenceEntityContext implements Context
     /** @var InMemoryFindActivatedLocalesPerChannels */
     private $activatedLocalesPerChannels;
 
+    /** @var InMemoryFindFileDataByFileKey */
+    private $findFileData;
+
+    /** @var InMemoryFileExists */
+    private $fileExists;
+
+    /** @var InMemoryGetAttributeIdentifier */
+    private $getAttributeIdentifier;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         InMemoryChannelExists $channelExists,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
-        InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels
+        InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
+        InMemoryFindFileDataByFileKey $findFileData,
+        InMemoryFileExists $fileExists,
+        InMemoryGetAttributeIdentifier $getAttributeIdentifier
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -70,6 +89,9 @@ class CreateOrUpdateReferenceEntityContext implements Context
         $this->channelExists = $channelExists;
         $this->activatedLocales = $activatedLocales;
         $this->activatedLocalesPerChannels = $activatedLocalesPerChannels;
+        $this->findFileData = $findFileData;
+        $this->fileExists = $fileExists;
+        $this->getAttributeIdentifier = $getAttributeIdentifier;
     }
 
     /**
@@ -82,6 +104,10 @@ class CreateOrUpdateReferenceEntityContext implements Context
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
+        $image = $this->getBrandImage();
+        $this->fileExists->save($image->getKey());
+        $this->findFileData->save($image->normalize());
     }
 
     /**
@@ -108,14 +134,26 @@ class CreateOrUpdateReferenceEntityContext implements Context
             self::REQUEST_CONTRACT_DIR . 'successful_brand_reference_entity_creation.json'
         );
 
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('label')
+        );
+        $mainImageIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('image')
+        );
+
         $brand = $this->referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('brand'));
-        $expectedBrand = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $expectedBrand = ReferenceEntity::createWithAttributes(
+            $referenceEntityIdentifier,
             [
                 'en_US' => 'Brand english label',
                 'fr_FR' => 'Brand french label',
             ],
-            Image::createEmpty()
+            $this->getBrandImage(),
+            AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
+            AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier)
         );
 
         Assert::assertEquals($brand, $expectedBrand);
@@ -132,12 +170,16 @@ class CreateOrUpdateReferenceEntityContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
+        $image = $this->getBrandImage();
+        $this->fileExists->save($image->getKey());
+        $this->findFileData->save($image->normalize());
+
         $referenceEntity = ReferenceEntity::create(
             ReferenceEntityIdentifier::fromString('brand'),
             [
                 'en_US' => 'It is an english label'
             ],
-            Image::createEmpty()
+            $image
         );
 
         $this->referenceEntityRepository->create($referenceEntity);
@@ -167,14 +209,26 @@ class CreateOrUpdateReferenceEntityContext implements Context
             self::REQUEST_CONTRACT_DIR . 'successful_brand_reference_entity_update.json'
         );
 
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $labelIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('label')
+        );
+        $mainImageIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('image')
+        );
+
         $brand = $this->referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('brand'));
-        $expectedBrand = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('brand'),
+        $expectedBrand = ReferenceEntity::createWithAttributes(
+            $referenceEntityIdentifier,
             [
                 'en_US' => 'Brand english label',
                 'fr_FR' => 'Brand french label',
             ],
-            Image::createEmpty()
+            $this->getBrandImage(),
+            AttributeAsLabelReference::fromAttributeIdentifier($labelIdentifier),
+            AttributeAsImageReference::fromAttributeIdentifier($mainImageIdentifier)
         );
 
         Assert::assertEquals($brand, $expectedBrand);
@@ -245,5 +299,16 @@ class CreateOrUpdateReferenceEntityContext implements Context
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_reference_entity_for_invalid_data.json'
         );
+    }
+
+    private function getBrandImage(): Image
+    {
+        $imageFileInfo = (new FileInfo())
+            ->setKey('2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_brand.png')
+            ->setOriginalFilename('brand.png');
+
+        $image = Image::fromFileInfo($imageFileInfo);
+
+        return $image;
     }
 }

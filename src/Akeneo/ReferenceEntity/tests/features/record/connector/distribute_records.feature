@@ -48,10 +48,8 @@ Feature: Connection to e-commerce platforms and marketplaces
   @integration-back
   Scenario: Get the records of a reference entity with there information in a provided locale
     Given 3 records for the Brand reference entity with filled attribute values for the English and the French locales
-    And labels translated in the English and French locale
     When the connector requests all records of the Brand reference entity with the information in English
     Then the PIM returns 3 records of the Brand reference entity with the information in English only
-    And the labels in English only
 
   @integration-back
   Scenario: Notify about an error when getting the records of a reference entity with the information of a provided locale that does not exist

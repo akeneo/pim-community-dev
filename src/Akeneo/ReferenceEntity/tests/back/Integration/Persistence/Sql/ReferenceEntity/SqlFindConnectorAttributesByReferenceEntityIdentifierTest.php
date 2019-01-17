@@ -79,7 +79,7 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
             $normalizedFoundAttributes[] = $foundAttribute->normalize();
         }
 
-        $this->assertSame($normalizedAttributes, $normalizedFoundAttributes);
+        $this->assertEquals($normalizedAttributes, $normalizedFoundAttributes);
     }
 
     /**
@@ -114,11 +114,11 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
         );
 
         $imageAttribute = ImageAttribute::create(
-            AttributeIdentifier::create($referenceEntityIdentifier, 'image', 'test'),
+            AttributeIdentifier::create($referenceEntityIdentifier, 'main_image', 'test'),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            AttributeCode::fromString('image'),
+            AttributeCode::fromString('main_image'),
             LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -129,17 +129,40 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
         $this->attributeRepository->create($textAttribute);
         $this->attributeRepository->create($imageAttribute);
 
+        $referenceEntity = $this->referenceEntityRepository
+            ->getByIdentifier(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
+        $attributeAsLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
+        $attributeAsImageIdentifier = $referenceEntity->getAttributeAsImageReference()->getIdentifier();
+
+        $attributeAsLabel = $this->attributeRepository->getByIdentifier($attributeAsLabelIdentifier);
+        $attributeAsImage = $this->attributeRepository->getByIdentifier($attributeAsImageIdentifier);
+
         return [
             new ConnectorAttribute(
-                $imageAttribute->getCode(),
-                LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-                'image',
-                AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
-                AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
-                AttributeIsRequired::fromBoolean(true),
+                $attributeAsLabel->getCode(),
+                LabelCollection::fromArray([]),
+                'text',
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeIsRequired::fromBoolean(false),
                 [
-                    'max_file_size' => '10',
-                    'allowed_extensions' => ['jpg']
+                    'max_length' => 1024,
+                    'is_textarea' => false,
+                    'is_rich_text_editor' => false,
+                    'validation_rule' => AttributeValidationRule::NONE,
+                    'regular_expression' => null
+                ]
+            ),
+            new ConnectorAttribute(
+                $attributeAsImage->getCode(),
+                LabelCollection::fromArray([]),
+                'image',
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeIsRequired::fromBoolean(false),
+                [
+                    'max_file_size' => '8192',
+                    'allowed_extensions' => []
                 ]
             ),
             new ConnectorAttribute(
@@ -156,7 +179,19 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
                     'validation_rule' => AttributeValidationRule::REGULAR_EXPRESSION,
                     'regular_expression' => $textAttribute->getRegularExpression()->normalize()
                 ]
-            )
+            ),
+            new ConnectorAttribute(
+                $imageAttribute->getCode(),
+                LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
+                'image',
+                AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
+                AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
+                AttributeIsRequired::fromBoolean(true),
+                [
+                    'max_file_size' => '10',
+                    'allowed_extensions' => ['jpg']
+                ]
+            ),
         ];
     }
 

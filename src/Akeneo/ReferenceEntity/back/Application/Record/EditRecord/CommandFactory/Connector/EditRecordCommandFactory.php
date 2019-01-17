@@ -43,8 +43,6 @@ class EditRecordCommandFactory
         $command = new EditRecordCommand();
         $command->referenceEntityIdentifier = $referenceEntityIdentifier->normalize();
         $command->code = $normalizedRecord['code'];
-        $command->labels = $normalizedRecord['labels'] ?? [];
-        $command->image = isset($normalizedRecord['main_image']) ? ['filePath' => $normalizedRecord['main_image']] : null;
         $command->editRecordValueCommands = $this->createEditRecordValueCommands($referenceEntityIdentifier, $normalizedRecord);
 
         return $command;

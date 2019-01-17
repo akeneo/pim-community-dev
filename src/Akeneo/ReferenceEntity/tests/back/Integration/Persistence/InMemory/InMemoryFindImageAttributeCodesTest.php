@@ -32,6 +32,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryFindImageAttributeCodesTest extends TestCase
 {
@@ -43,7 +44,7 @@ class InMemoryFindImageAttributeCodesTest extends TestCase
 
     public function setup()
     {
-        $this->attributeRepository = new InMemoryAttributeRepository();
+        $this->attributeRepository = new InMemoryAttributeRepository(new EventDispatcher());
         $this->findImageAttributeCodes = new InMemoryFindImageAttributeCodes($this->attributeRepository);
     }
 

@@ -37,6 +37,30 @@ Feature: Create a reference entity
       | {"en_US": "Color", "fr_FR": "Couleur"} | null  |
     Then there should be a validation error with message 'You cannot create the reference entity "Color" because you have reached the limit of 100 reference entities'
 
+  @acceptance-back
+  Scenario: An attribute as label is created alongside the reference entity
+    When the user creates a reference entity "designer" with:
+      | labels                                     |
+      | {"en_US": "Designer", "fr_FR": "Designer"} |
+    Then there is a text attribute "label" in the reference entity "designer" with:
+      | code  | labels | is_required | order | value_per_channel | value_per_locale | max_length | type | is_textarea | is_rich_text_editor | validation_rule | regular_expression |
+      | label | {}     | false       | 0     | false             | true             | 1024       | text | false       | false               | none            |                    |
+    And the reference entity "designer" should be:
+      | identifier | labels                                     | attribute_as_label |
+      | designer   | {"en_US": "Designer", "fr_FR": "Designer"} | label              |
+
+  @acceptance-back
+  Scenario: An attribute as image is created alongside the reference entity
+    When the user creates a reference entity "designer" with:
+      | labels                                     |
+      | {"en_US": "Designer", "fr_FR": "Designer"} |
+    Then there is an image attribute "image" in the reference entity "designer" with:
+      | code       | labels | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | type  |
+      | image | {}     | false       | 1     | false             | false            | 8192          | []                 | image |
+    And the reference entity "designer" should be:
+      | identifier | labels                                     | attribute_as_image |
+      | designer   | {"en_US": "Designer", "fr_FR": "Designer"} | image         |
+
   @acceptance-front
   Scenario: Creating a reference entity
     Given the user has the following rights:

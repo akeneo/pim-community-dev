@@ -30,11 +30,7 @@
               }
             },
             "code": "brand_0",
-            "labels": {
-              "en_US": "test"
-            },
-            "values": [],
-            "main_image": null
+            "values": []
           },
           {
             "_links": {
@@ -43,11 +39,7 @@
               }
             },
             "code": "brand_1",
-            "labels": {
-              "en_US": "test"
-            },
-            "values": [],
-            "main_image": null
+            "values": []
           },
           {
             "_links": {
@@ -56,11 +48,7 @@
               }
             },
             "code": "brand_2",
-            "labels": {
-              "en_US": "test"
-            },
-            "values": [],
-            "main_image": null
+            "values": []
           }
         ]
       }

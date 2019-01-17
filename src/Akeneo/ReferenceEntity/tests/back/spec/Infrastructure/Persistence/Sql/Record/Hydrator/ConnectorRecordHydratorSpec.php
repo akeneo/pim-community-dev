@@ -14,19 +14,14 @@ declare(strict_types=1);
 namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordConnectorValueTransformer;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\TextConnectorValueTransformer;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
@@ -71,12 +66,6 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
             'identifier'                  => 'designer_starck_fingerprint',
             'code'                        => 'starck',
             'reference_entity_identifier' => 'designer',
-            'image_file_key'              => 'test/image_1.jpg',
-            'image_original_filename'     => 'image_1.jpg',
-            'labels'                      => json_encode([
-                'en_US' => 'Starck',
-                'fr_FR' => 'Starck',
-            ]),
             'value_collection'            => json_encode([
                 'name_designer_fingerprint_ecommerce_en_US' => [
                     'data'      => 'Starck',
@@ -99,18 +88,8 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
             ])
         ];
 
-        $file = new FileInfo();
-        $file->setKey('test/image_1.jpg');
-        $file->setOriginalFilename('image_1.jpg');
-        $image = Image::fromFileInfo($file);
-
         $expectedRecord = $connectorRecord = new ConnectorRecord(
             RecordCode::fromString('starck'),
-            LabelCollection::fromArray([
-                'en_US' => 'Starck',
-                'fr_FR' => 'Starck',
-            ]),
-            $image,
             [
                 'name' => [
                     [
@@ -159,12 +138,6 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
             'identifier'                  => 'designer_starck_fingerprint',
             'code'                        => 'starck',
             'reference_entity_identifier' => 'designer',
-            'image_file_key'              => null,
-            'image_original_filename'     => null,
-            'labels'                      => json_encode([
-                'en_US' => 'Starck',
-                'fr_FR' => 'Starck',
-            ]),
             'value_collection'            => json_encode([
                 'name_designer_fingerprint_ecommerce_en_US' => [
                     'data'      => 'Starck',
@@ -195,11 +168,6 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
 
         $expectedRecord = $connectorRecord = new ConnectorRecord(
             RecordCode::fromString('starck'),
-            LabelCollection::fromArray([
-                'en_US' => 'Starck',
-                'fr_FR' => 'Starck',
-            ]),
-            Image::createEmpty(),
             [
                 'name' => [
                     [

@@ -15,6 +15,7 @@ default:
                 - akeneo_referenceentity.tests.back.acceptance.context.append_attribute_option_context
                 - akeneo_referenceentity.tests.back.acceptance.context.edit_attribute_option_context
                 - akeneo_referenceentity.tests.back.acceptance.context.edit_attribute_context
+                - akeneo_referenceentity.tests.back.acceptance.context.delete_attribute_context
                 - akeneo_referenceentity.tests.back.acceptance.context.exception_context
                 - akeneo_referenceentity.tests.back.acceptance.context.edit_attribute_context
                 - akeneo_referenceentity.tests.back.acceptance.context.edit_record_context

@@ -31,19 +31,21 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
-use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
@@ -95,7 +97,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::RECORD_EDIT_ROUTE,
             [
-                'recordCode' => 'celine_dion',
+                'recordCode'                => 'celine_dion',
                 'referenceEntityIdentifier' => 'singer',
             ],
             'POST'
@@ -107,17 +109,10 @@ class EditActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_errors_if_we_send_a_bad_request()
-    {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_image.json');
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_an_error_if_the_identifier_provided_in_the_route_is_different_from_the_body()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'unsynchronised_record_identifier.json');
+        $this->webClientHelper->assertRequest($this->client,
+            self::RESPONSES_DIR . 'unsynchronised_record_identifier.json');
     }
 
     /**
@@ -125,7 +120,8 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_the_reference_entity_identifier_provided_in_the_route_is_different_from_the_body()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'unsynchronised_reference_entity_identifier.json');
+        $this->webClientHelper->assertRequest($this->client,
+            self::RESPONSES_DIR . 'unsynchronised_reference_entity_identifier.json');
     }
 
     /**
@@ -189,7 +185,8 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_we_send_an_invalid_record_collection_value()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_record_collection_value.json');
+        $this->webClientHelper->assertRequest($this->client,
+            self::RESPONSES_DIR . 'invalid_record_collection_value.json');
     }
 
     /**
@@ -202,12 +199,12 @@ class EditActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::RECORD_EDIT_ROUTE,
             [
-                'recordCode' => 'celine_dion',
+                'recordCode'                => 'celine_dion',
                 'referenceEntityIdentifier' => 'singer',
             ],
             'POST',
             [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ]
         );
         $this->webClientHelper->assert403Forbidden($this->client->getResponse());
@@ -235,17 +232,30 @@ class EditActionTest extends ControllerIntegrationTestCase
         $imageInfo
             ->setOriginalFilename('image_1.jpg')
             ->setKey('test/image_1.jpg');
+        $image = Value::create(
+            AttributeIdentifier::fromString('label_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            FileData::createFromFileinfo($imageInfo)
+        );
 
+        $labelValueEnUS = Value::create(
+            AttributeIdentifier::fromString('label_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('Philippe Starck')
+        );
+        $labelValuefrFR = Value::create(
+            AttributeIdentifier::fromString('label_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('Philippe Starck')
+        );
         $entityItem = Record::create(
             RecordIdentifier::fromString('designer_starck_a1677570-a278-444b-ab46-baa1db199392'),
             $referenceEntityIdentifier,
             $recordCode,
-            [
-                'en_US' => 'Philippe Starck',
-                'fr_FR' => 'Philippe Starck',
-            ],
-            Image::fromFileInfo($imageInfo),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR, $image])
         );
         $repository->create($entityItem);
 
@@ -322,8 +332,6 @@ class EditActionTest extends ControllerIntegrationTestCase
             RecordIdentifier::create('brand', 'ikea', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('brand'),
             RecordCode::fromString('ikea'),
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $repository->create($ikeaRecord);
@@ -347,8 +355,6 @@ class EditActionTest extends ControllerIntegrationTestCase
             RecordIdentifier::create('city', 'paris', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('city'),
             RecordCode::fromString('paris'),
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $repository->create($parisRecord);
@@ -356,8 +362,6 @@ class EditActionTest extends ControllerIntegrationTestCase
             RecordIdentifier::create('city', 'lisbonne', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('city'),
             RecordCode::fromString('lisbonne'),
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $repository->create($lisbonneRecord);
@@ -365,8 +369,6 @@ class EditActionTest extends ControllerIntegrationTestCase
             RecordIdentifier::create('city', 'moscou', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('city'),
             RecordCode::fromString('moscou'),
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $repository->create($moscouRecord);

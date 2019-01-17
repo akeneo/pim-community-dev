@@ -12,7 +12,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForChannel
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\SearchableRecordItem;
+use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer;
 use PhpSpec\ObjectBehavior;
@@ -84,10 +84,10 @@ class RecordNormalizerSpec extends ObjectBehavior
         $normalizedRecord['reference_entity_code']->shouldBeEqualTo('designer');
         $normalizedRecord['record_full_text_search']->shouldBeEqualTo([
                 'ecommerce' => [
-                    'fr_FR' => "stark Philippe Stark Bio",
+                    'fr_FR' => "stark Bio",
                 ],
                 'mobile'    => [
-                    'en_US' => "stark  Bio",
+                    'en_US' => "stark Bio",
                 ],
             ]
         );

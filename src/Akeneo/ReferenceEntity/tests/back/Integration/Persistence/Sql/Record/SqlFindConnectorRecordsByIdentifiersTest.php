@@ -46,7 +46,6 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByI
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 
 class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
@@ -92,14 +91,8 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
 
         $expectedConnectorRecords = [];
         foreach (['dyson', 'newson', 'starck'] as $code) {
-            $imageInfo = (new FileInfo())
-                ->setOriginalFilename(sprintf('image_%s.jpg', $code))
-                ->setKey(sprintf('test/image_%s.jpg', $code));
-
             $expectedConnectorRecords[] = new ConnectorRecord(
                 RecordCode::fromString($code),
-                LabelCollection::fromArray(['en_US' => ucfirst($code), 'fr_FR' => ucfirst($code)]),
-                Image::fromFileInfo($imageInfo),
                 [
                     'name'  => [
                         [
@@ -147,14 +140,8 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
 
         $expectedConnectorRecords = [];
         foreach (['dyson', 'newson', 'starck'] as $code) {
-            $imageInfo = (new FileInfo())
-                ->setOriginalFilename(sprintf('image_%s.jpg', $code))
-                ->setKey(sprintf('test/image_%s.jpg', $code));
-
             $expectedConnectorRecords[] = new ConnectorRecord(
                 RecordCode::fromString($code),
-                LabelCollection::fromArray(['en_US' => ucfirst($code), 'fr_FR' => ucfirst($code)]),
-                Image::fromFileInfo($imageInfo),
                 [
                     'name'  => [
                         [
@@ -197,14 +184,8 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
 
         $expectedConnectorRecords = [];
         foreach (['dyson', 'newson', 'starck'] as $code) {
-            $imageInfo = (new FileInfo())
-                ->setOriginalFilename(sprintf('image_%s.jpg', $code))
-                ->setKey(sprintf('test/image_%s.jpg', $code));
-
             $expectedConnectorRecords[] = new ConnectorRecord(
                 RecordCode::fromString($code),
-                LabelCollection::fromArray(['fr_FR' => ucfirst($code)]),
-                Image::fromFileInfo($imageInfo),
                 [
                     'name'  => [
                         [
@@ -295,14 +276,10 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
     private function loadRecords(array $codes): void
     {
         foreach ($codes as $code) {
-            $imageInfo = $this->createFileInfo(sprintf('image_%s.jpg', $code));
-
             $record = Record::create(
                 RecordIdentifier::fromString(sprintf('designer_%s_fingerprint', $code)),
                 ReferenceEntityIdentifier::fromString('designer'),
                 RecordCode::fromString($code),
-                ['en_US' => ucfirst($code), 'fr_FR' => ucfirst($code)],
-                Image::fromFileInfo($imageInfo),
                 ValueCollection::fromValues([
                     Value::create(
                         AttributeIdentifier::fromString('name_designer_fingerprint'),
@@ -330,20 +307,6 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         }
     }
 
-    private function createFileInfo(string $fileName): FileInfo
-    {
-        $fileInfo = (new FileInfo())
-            ->setOriginalFilename($fileName)
-            ->setKey(sprintf('test/%s', $fileName))
-            ->setSize(1024)
-            ->setMimeType('image/jpeg')
-            ->setExtension('jpg');
-
-        $this->fileInfoSaver->save($fileInfo);
-
-        return $fileInfo;
-    }
-
     private function loadReferenceEntityWithAttributes(): void
     {
         $repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
@@ -359,7 +322,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -369,11 +332,11 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         );
 
         $image = ImageAttribute::create(
-            AttributeIdentifier::create('designer', 'image', 'fingerprint'),
+            AttributeIdentifier::create('designer', 'main_image', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('image'),
+            AttributeCode::fromString('main_image'),
             LabelCollection::fromArray(['en_US' => 'Image']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),

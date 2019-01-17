@@ -26,4 +26,14 @@ class AttributeDeletedEvent extends Event
         $this->referenceEntityIdentifier = $referenceEntityIdentifier;
         $this->attributeIdentifier = $attributeIdentifier;
     }
+
+    public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
+    {
+        return $this->referenceEntityIdentifier;
+    }
+
+    public function getAttributeIdentifier(): AttributeIdentifier
+    {
+        return $this->attributeIdentifier;
+    }
 }

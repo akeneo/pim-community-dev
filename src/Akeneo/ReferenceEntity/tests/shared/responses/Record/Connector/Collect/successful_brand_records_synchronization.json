@@ -8,11 +8,19 @@
         "body": [
             {
                 "code": "kartell",
-                "labels": {
-                    "en_US": "Kartell updated english label",
-                    "fr_FR": "Kartell updated french label"
-                },
                 "values": {
+                    "label": [
+                        {
+                            "locale": "en_US",
+                            "channel": null,
+                            "data": "Kartell updated english label"
+                        },
+                        {
+                            "locale": "fr_FR",
+                            "channel": null,
+                            "data": "Kartell updated french label"
+                        }
+                    ],
                     "name": [
                         {
                             "channel": null,
@@ -36,10 +44,14 @@
             },
             {
                 "code": "lexon",
-                "labels": {
-                    "en_US": "Lexon updated english label"
-                },
                 "values": {
+                    "label": [
+                        {
+                            "locale": "en_US",
+                            "channel": null,
+                            "data": "Lexon updated english label"
+                        }
+                    ],
                     "name": [
                         {
                             "channel": null,
@@ -58,10 +70,14 @@
             },
             {
                 "code": "fatboy",
-                "labels": {
-                    "en_US": "Fatboy label"
-                },
                 "values": {
+                    "label": [
+                        {
+                            "locale": "en_US",
+                            "channel": null,
+                            "data": "Fatboy label"
+                        }
+                    ],
                     "name": [
                         {
                             "channel": null,

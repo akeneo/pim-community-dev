@@ -18,7 +18,9 @@ use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\Cre
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\File\FindFileDataByFileKeyInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\JsonSchema\ReferenceEntityValidator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
@@ -51,13 +53,21 @@ class CreateOrUpdateReferenceEntityAction
     /** @var ReferenceEntityValidator */
     private $jsonSchemaValidator;
 
+    /** @var FindFileDataByFileKeyInterface */
+    private $findFileData;
+
+    /** @var ReferenceEntityRepositoryInterface */
+    private $referenceEntityRepository;
+
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
         ValidatorInterface $validator,
         CreateReferenceEntityHandler $createReferenceEntityHandler,
         EditReferenceEntityHandler $editReferenceEntityHandler,
         Router $router,
-        ReferenceEntityValidator $jsonSchemaValidator
+        ReferenceEntityValidator $jsonSchemaValidator,
+        FindFileDataByFileKeyInterface $findFileData,
+        ReferenceEntityRepositoryInterface $referenceEntityRepository
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->validator = $validator;
@@ -65,6 +75,8 @@ class CreateOrUpdateReferenceEntityAction
         $this->editReferenceEntityHandler = $editReferenceEntityHandler;
         $this->router = $router;
         $this->jsonSchemaValidator = $jsonSchemaValidator;
+        $this->findFileData = $findFileData;
+        $this->referenceEntityRepository = $referenceEntityRepository;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response
@@ -102,8 +114,14 @@ class CreateOrUpdateReferenceEntityAction
         $editReferenceEntityCommand = new EditReferenceEntityCommand();
         $editReferenceEntityCommand->identifier = $normalizedReferenceEntity['code'];
         $editReferenceEntityCommand->labels = $normalizedReferenceEntity['labels'];
-        // TODO: to fix as the command does not accept a code
         $editReferenceEntityCommand->image = null;
+
+        if (array_key_exists('image', $normalizedReferenceEntity)) {
+            $editReferenceEntityCommand->image = null !== $normalizedReferenceEntity['image'] ? $this->getImageData($normalizedReferenceEntity['image']) : null;
+        } elseif (false === $shouldBeCreated) {
+            $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+            $editReferenceEntityCommand->image = $referenceEntity->getImage()->normalize();
+        }
 
         $violations = $this->validator->validate($editReferenceEntityCommand);
         if ($violations->count() > 0) {
@@ -151,5 +169,21 @@ class CreateOrUpdateReferenceEntityAction
         }
 
         return $invalidFormatErrors;
+    }
+
+    private function getImageData(string $imageFileKey): array
+    {
+        $imageData = ($this->findFileData)($imageFileKey);
+
+        if (null === $imageData) {
+            throw new UnprocessableEntityHttpException(sprintf(
+                'The image "%s" was not found', $imageFileKey
+            ));
+        }
+
+        return [
+            'filePath' => $imageData['filePath'],
+            'originalFilename' => $imageData['originalFilename'],
+        ];
     }
 }

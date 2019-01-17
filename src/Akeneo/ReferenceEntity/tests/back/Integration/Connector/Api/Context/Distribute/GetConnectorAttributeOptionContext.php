@@ -231,7 +231,7 @@ class GetConnectorAttributeOptionContext implements Context
             $referenceEntityIdentifier,
             AttributeCode::fromString($code),
             LabelCollection::fromArray([ 'fr_FR' => 'Nationalite', 'en_US' => 'Nationality']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
@@ -285,7 +285,7 @@ class GetConnectorAttributeOptionContext implements Context
             $referenceEntityIdentifier,
             AttributeCode::fromString($code),
             LabelCollection::fromArray([ 'fr_FR' => 'Ventes', 'en_US' => 'Sales area']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)

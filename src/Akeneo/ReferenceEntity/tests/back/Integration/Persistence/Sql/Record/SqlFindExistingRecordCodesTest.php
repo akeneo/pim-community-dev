@@ -13,10 +13,16 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -88,9 +94,14 @@ class SqlFindExistingRecordCodesTest extends SqlIntegrationTestCase
                 $starkIdentifier,
                 $designerIdentifier,
                 $starkCode,
-                ['fr_FR' => 'Philippe Starck'],
-                Image::createEmpty(),
-                ValueCollection::fromValues([])
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_designer_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Philippe Starck')
+                    ),
+                ])
             )
         );
 
@@ -101,9 +112,14 @@ class SqlFindExistingRecordCodesTest extends SqlIntegrationTestCase
                 $jacobsIdentifier,
                 $designerIdentifier,
                 $jacobsCode,
-                ['fr_FR' => 'Marc Jacobs'],
-                Image::createEmpty(),
-                ValueCollection::fromValues([])
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_designer_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Marc Jacobs')
+                    ),
+                ])
             )
         );
     }

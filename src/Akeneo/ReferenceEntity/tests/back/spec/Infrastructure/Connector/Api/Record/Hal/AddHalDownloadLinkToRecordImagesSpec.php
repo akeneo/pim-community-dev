@@ -42,10 +42,14 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
     ) {
         $normalizedRecord = [
             'code'       => 'starck',
-            'labels'     => [
-                'en_US' => 'Philippe Starck',
-            ],
             'values'     => [
+                'label' => [
+                    [
+                        'locale'  => 'en_US',
+                        'channel' => null,
+                        'data'    => 'Philippe Starck',
+                    ]
+                ],
                 'nationality' => [
                     [
                         'locale'  => 'en_US',
@@ -68,15 +72,7 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
                     ],
                 ],
             ],
-            'main_image' => 'philippeStarck.jpg',
         ];
-
-        $router->generate(
-            'akeneo_reference_entities_media_file_rest_connector_download',
-            ['fileCode' => 'philippeStarck.jpg'],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        )
-            ->willReturn('http://localhost/api/rest/v1/reference-entities-media-files/philippeStarck.jpg');
 
         $router->generate(
             'akeneo_reference_entities_media_file_rest_connector_download',
@@ -93,10 +89,14 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
 
         $expectedNormalizedRecord = [
             'code'       => 'starck',
-            'labels'     => [
-                'en_US' => 'Philippe Starck',
-            ],
             'values'     => [
+                'label' => [
+                    [
+                        'locale'  => 'en_US',
+                        'channel' => null,
+                        'data'    => 'Philippe Starck',
+                    ]
+                ],
                 'nationality' => [
                     [
                         'locale'  => 'en_US',
@@ -123,12 +123,6 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
                         ]
                     ],
                 ],
-            ],
-            'main_image' => 'philippeStarck.jpg',
-            '_links'     => [
-                'main_image_download' => [
-                    'href' => 'http://localhost/api/rest/v1/reference-entities-media-files/philippeStarck.jpg'
-                ]
             ]
         ];
 
@@ -141,10 +135,14 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
     ) {
         $normalizedRecord = [
             'code'       => 'starck',
-            'labels'     => [
-                'en_US' => 'Philippe Starck',
-            ],
             'values'     => [
+                'label' => [
+                    [
+                        'locale'  => 'en_US',
+                        'channel' => null,
+                        'data'    => 'Philippe Starck',
+                    ]
+                ],
                 'nationality' => [
                     [
                         'locale'  => 'en_US',
@@ -153,7 +151,6 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
                     ],
                 ],
             ],
-            'main_image' => null,
         ];
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
@@ -163,6 +160,22 @@ class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
         ]);
 
         $router->generate(Argument::any())->shouldNotBeCalled();
+
+        $this->__invoke($referenceEntityIdentifier, [$normalizedRecord])->shouldReturn([$normalizedRecord]);
+    }
+
+    function it_does_not_add_hal_links_if_values_is_an_empty_object($findImageAttributeCodes) {
+        $normalizedRecord = [
+            'code'       => 'starck',
+            'values'     => (object) [],
+        ];
+
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+
+        $findImageAttributeCodes->__invoke($referenceEntityIdentifier)->willReturn([
+            AttributeCode::fromString('coverphoto')
+        ]);
+
 
         $this->__invoke($referenceEntityIdentifier, [$normalizedRecord])->shouldReturn([$normalizedRecord]);
     }

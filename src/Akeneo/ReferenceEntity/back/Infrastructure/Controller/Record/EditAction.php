@@ -126,7 +126,6 @@ class EditAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
         $command = $this->editRecordCommandFactory->create($normalizedCommand);
-        $command->image = $normalizedCommand['image'] ?? null;
 
         return $command;
     }

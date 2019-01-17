@@ -7,70 +7,37 @@
         },
         "body": [
             {
-                "code": "record_1",
-                "labels": {
-                    "en_US": "Record 1"
-                }
+                "code": "record_1"
             },
             {
-                "code": "record_2",
-                "labels": {
-                    "en_US": "Record 2"
-                }
+                "code": "record_2"
             },
             {
-                "code": "record_3",
-                "labels": {
-                    "en_US": "Record 3"
-                }
+                "code": "record_3"
             },
             {
-                "code": "record_4",
-                "labels": {
-                    "en_US": "Record 4"
-                }
+                "code": "record_4"
             },
             {
-                "code": "record_5",
-                "labels": {
-                    "en_US": "Record 5"
-                }
+                "code": "record_5"
             },
             {
-                "code": "record_6",
-                "labels": {
-                    "en_US": "Record 6"
-                }
+                "code": "record_6"
             },
             {
-                "code": "record_7",
-                "labels": {
-                    "en_US": "Record 7"
-                }
+                "code": "record_7"
             },
             {
-                "code": "record_8",
-                "labels": {
-                    "en_US": "Record 8"
-                }
+                "code": "record_8"
             },
             {
-                "code": "record_9",
-                "labels": {
-                    "en_US": "Record 9"
-                }
+                "code": "record_9"
             },
             {
-                "code": "record_10",
-                "labels": {
-                    "en_US": "Record 10"
-                }
+                "code": "record_10"
             },
             {
-                "code": "record_11",
-                "labels": {
-                    "en_US": "Record 11"
-                }
+                "code": "record_11"
             }
         ]
     },

@@ -5,7 +5,6 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\SearchableRecordItem;
 
 /**
  * Query function that finds SearchRecordItem read models.

@@ -42,10 +42,13 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
@@ -59,11 +62,21 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /** @var RecordRepositoryInterface */
     private $repository;
 
+    /** @var ReferenceEntityRepositoryInterface */
+    private $referenceEntityRepository;
+
+    /** @var AttributeAsLabelReference */
+    private $attributeAsLabel;
+
+    /** @var AttributeAsImageReference */
+    private $attributeAsImage;
+
     public function setUp()
     {
         parent::setUp();
 
         $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
         $this->eventDispatcherMock = $this->get('event_dispatcher');
         $this->eventDispatcherMock->reset();
 
@@ -83,8 +96,6 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -100,16 +111,28 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_when_creating_an_existing_record_with_same_entity_identifier_and_same_code()
     {
-        $recordCode = RecordCode::fromString('starck');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $recordCode = RecordCode::fromString('starck');
         $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Starck')
+                ),
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Starck')
+                ),
+            ])
         );
 
         $this->repository->create($record);
@@ -122,9 +145,20 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Starck')
+                ),
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Starck')
+                ),
+            ])
         );
 
         $this->expectException(DBALException::class);
@@ -137,16 +171,28 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_a_record_with_no_values_and_finds_it_by_reference_entity_and_record_code()
     {
-        $recordCode = RecordCode::fromString('starck');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $recordCode = RecordCode::fromString('starck');
         $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Starck')
+                ),
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Starck')
+                ),
+            ])
         );
 
         $this->repository->create($record);
@@ -160,8 +206,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_a_record_with_values_and_returns_it()
     {
-        $recordCode = RecordCode::fromString('starck');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $recordCode = RecordCode::fromString('starck');
         $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
         $fileInfo = new FileInfo();
@@ -181,9 +228,25 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            Image::fromFileInfo($imageInfo),
             ValueCollection::fromValues([
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Starck')
+                ),
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Starck')
+                ),
+                Value::create(
+                    $referenceEntity->getAttributeAsImageReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    FileData::createFromFileinfo($imageInfo)
+                ),
                 Value::create(
                     AttributeIdentifier::fromString('name_designer_fingerprint'),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
@@ -191,21 +254,21 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
                     TextData::fromString('Philippe Stark')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('image_designer_fingerprint'),
+                    AttributeIdentifier::fromString('main_image_designer_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($fileInfo)
-                ),
+                )
             ])
         );
 
         $this->repository->create($record);
 
         $recordFound = $this->repository->getByIdentifier($identifier);
-        $this->assertSame($record->normalize(), $recordFound->normalize());
+        $this->assertEquals($record->normalize(), $recordFound->normalize());
 
         $recordFound = $this->repository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
-        $this->assertSame($record->normalize(), $recordFound->normalize());
+        $this->assertEquals($record->normalize(), $recordFound->normalize());
     }
 
     /**
@@ -214,15 +277,27 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     public function it_throws_when_creating_a_record_with_the_same_identifier()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
         $recordCode = RecordCode::fromString('starck');
         $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Starck')
+                ),
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Starck')
+                ),
+            ])
         );
         $this->repository->create($record);
 
@@ -236,6 +311,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     public function it_updates_a_record_and_returns_it()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
         $recordCode = RecordCode::fromString('starck');
         $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
@@ -248,9 +324,19 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            Image::createEmpty(),
             ValueCollection::fromValues([
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Starck')
+                ),
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Starck')
+                ),
                 Value::create(
                     AttributeIdentifier::fromString('name_designer_fingerprint'),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
@@ -258,7 +344,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
                     TextData::fromString('An old description')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('image_designer_fingerprint'),
+                    AttributeIdentifier::fromString('main_image_designer_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($fileInfo)
@@ -268,7 +354,6 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $this->repository->create($record);
         $this->eventDispatcherMock->reset();
 
-        $record->setLabels(LabelCollection::fromArray(['fr_FR' => 'Coco']));
         $valueToUpdate = Value::create(
             AttributeIdentifier::fromString('name_designer_fingerprint'),
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
@@ -276,18 +361,11 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             TextData::fromString('A completely new and updated description')
         );
         $record->setValue($valueToUpdate);
-
-        $imageInfo = new FileInfo();
-        $imageInfo
-            ->setOriginalFilename('image_2.jpg')
-            ->setKey('test/image_2.jpg');
-        $record->updateImage(Image::fromFileInfo($imageInfo));
-
         $this->repository->update($record);
 
         $this->eventDispatcherMock->assertEventDispatched(RecordUpdatedEvent::class);
         $recordFound = $this->repository->getByIdentifier($identifier);
-        $this->assertSame($record->normalize(), $recordFound->normalize());
+        $this->assertEquals($record->normalize(), $recordFound->normalize());
     }
 
     /**
@@ -296,7 +374,6 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     public function it_counts_the_records()
     {
         $this->assertEquals(0, $this->repository->count());
-
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
         $recordCode = RecordCode::fromString('record_identifier');
@@ -305,8 +382,6 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -320,8 +395,6 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -362,22 +435,20 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $recordCode = RecordCode::fromString('starck');
 
         $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create($identifier,
+        $record = Record::create(
+            $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->repository->create($record);
 
         $recordCode = RecordCode::fromString('dyson');
         $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create($identifier,
+        $record = Record::create(
+            $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->repository->create($record);
@@ -385,11 +456,10 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $referenceEntityIdentifierBrand = ReferenceEntityIdentifier::fromString('brand');
         $recordCode = RecordCode::fromString('bar');
         $identifier = $this->repository->nextIdentifier($referenceEntityIdentifierBrand, $recordCode);
-        $record = Record::create($identifier,
+        $record = Record::create(
+            $identifier,
             $referenceEntityIdentifierBrand,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->repository->create($record);
@@ -409,11 +479,10 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
         $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create($identifier,
+        $record = Record::create(
+            $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->repository->create($record);
@@ -469,7 +538,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -478,11 +547,11 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             AttributeRegularExpression::createEmpty()
         );
         $image = ImageAttribute::create(
-            AttributeIdentifier::create('designer', 'image', 'fingerprint'),
+            AttributeIdentifier::create('designer', 'main_image', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('image'),
+            AttributeCode::fromString('main_image'),
             LabelCollection::fromArray(['en_US' => 'Image']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -492,6 +561,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attributesRepository->create($name);
         $attributesRepository->create($image);
+
+        $this->attributeAsLabel = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $this->attributeAsImage = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
     }
 
     /**
@@ -500,16 +572,21 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     public function it_counts_the_records_by_reference_entity()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-
         $this->assertSame(0, $this->repository->countByReferenceEntity($referenceEntityIdentifier));
 
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
         $starck = Record::create(
             $this->repository->nextIdentifier($referenceEntityIdentifier, RecordCode::fromString('starck')),
             $referenceEntityIdentifier,
             RecordCode::fromString('starck'),
-            ['fr_FR' => 'Philippe Starck'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Philippe Starck')
+                ),
+            ])
         );
         $this->repository->create($starck);
         $this->assertSame(1, $this->repository->countByReferenceEntity($referenceEntityIdentifier));
@@ -518,9 +595,14 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $this->repository->nextIdentifier($referenceEntityIdentifier, RecordCode::fromString('bob')),
             $referenceEntityIdentifier,
             RecordCode::fromString('bob'),
-            ['fr_FR' => 'Bob'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([
+                Value::create(
+                    $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Bob')
+                ),
+            ])
         );
         $this->repository->create($bob);
         $this->assertSame(2, $this->repository->countByReferenceEntity($referenceEntityIdentifier));

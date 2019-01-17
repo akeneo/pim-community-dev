@@ -158,8 +158,6 @@ class DeleteAllActionTest extends ControllerIntegrationTestCase
             $recordIdentifier,
             $entityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
     }

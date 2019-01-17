@@ -9,11 +9,7 @@ export default (router: any) => () => (next: any) => (action: any) => {
   if ('UPDATE_CURRENT_SIDEBAR_TAB' === action.type) {
     const route = router.match(window.location.hash);
     if (undefined !== route.params.tab) {
-      history.replaceState(
-        null,
-        '',
-        '#' + Routing.generate(route.name, {...route.params, tab: action.currentTab})
-      );
+      history.replaceState(null, '', '#' + Routing.generate(route.name, {...route.params, tab: action.currentTab}));
     }
   }
 

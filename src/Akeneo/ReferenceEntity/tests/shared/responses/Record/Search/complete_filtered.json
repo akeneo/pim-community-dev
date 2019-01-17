@@ -1,72 +1,84 @@
 {
-    "request": {
-        "method": "PUT",
-        "route": "akeneo_reference_entities_record_index_rest",
-        "query": {
-            "referenceEntityIdentifier": "designer"
-        },
-        "body": {
-            "locale": "en_US",
-            "channel": "ecommerce",
-            "size": 200,
-            "page": 0,
-            "filters": [
-                {
-                    "field": "full_text",
-                    "operator": "=",
-                    "value": "",
-                    "context": {}
-                },
-                {
-                    "field": "complete",
-                    "operator": "=",
-                    "value": true,
-                    "context": {}
-                },
-                {
-                    "field": "reference_entity",
-                    "operator": "=",
-                    "value": "designer",
-                    "context": {}
-                }
-            ]
-        }
+  "request": {
+    "method": "PUT",
+    "route": "akeneo_reference_entities_record_index_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer"
     },
-    "response": {
-        "status": 200,
-        "body": {
-            "items": [
-                {
-                    "identifier": "brand_coco_0134dc3e-3def-4afr-85ef-e81b2d6e95fd",
-                    "reference_entity_identifier": "designer",
-                    "code": "coco",
-                    "labels": {
-                        "en_US": "Coco Chanel",
-                        "fr_FR": "Coco Chanel"
-                    },
-                    "image": null,
-                    "values": {
-                        "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US": {
-                            "attribute": "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
-                            "channel": "ecommerce",
-                            "locale": "en_US",
-                            "data": "You will love coco."
-                        },
-                        "nickname_designer_29aea250-bc94-49b2-8259-bbc116410eb2": {
-                            "attribute": "nickname_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
-                            "channel": null,
-                            "locale": null,
-                            "data": "Mr coco"
-                        }
-                    },
-                    "completeness": {
-                        "complete": 2,
-                        "required": 2
-                    }
-                }
-            ],
-            "matches_count":1,
-            "total_count": 3
+    "body": {
+      "locale": "en_US",
+      "channel": "ecommerce",
+      "size": 200,
+      "page": 0,
+      "filters": [
+        {
+          "field": "full_text",
+          "operator": "=",
+          "value": "",
+          "context": {}
+        },
+        {
+          "field": "complete",
+          "operator": "=",
+          "value": true,
+          "context": {}
+        },
+        {
+          "field": "reference_entity",
+          "operator": "=",
+          "value": "designer",
+          "context": {}
         }
+      ]
     }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "items": [
+        {
+          "identifier": "brand_coco_0134dc3e-3def-4afr-85ef-e81b2d6e95fd",
+          "reference_entity_identifier": "designer",
+          "code": "coco",
+          "labels": {
+            "en_US": "Coco Chanel",
+            "fr_FR": "Coco Chanel"
+          },
+          "image": null,
+          "values": {
+            "label_designer_d00de54460082b239164135175588647_en_US": {
+              "attribute": "label_designer_d00de54460082b239164135175588647",
+              "channel": null,
+              "locale": "en_US",
+              "data": "Coco Chanel"
+            },
+            "label_designer_d00de54460082b239164135175588647_fr_FR": {
+              "attribute": "label_designer_d00de54460082b239164135175588647",
+              "channel": null,
+              "locale": "fr_FR",
+              "data": "Coco Chanel"
+            },
+            "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US": {
+              "attribute": "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
+              "channel": "ecommerce",
+              "locale": "en_US",
+              "data": "You will love coco."
+            },
+            "nickname_designer_29aea250-bc94-49b2-8259-bbc116410eb2": {
+              "attribute": "nickname_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
+              "channel": null,
+              "locale": null,
+              "data": "Mr coco"
+            }
+          },
+          "completeness": {
+            "complete": 2,
+            "required": 2
+          }
+        }
+      ],
+      "matches_count":1,
+      "total_count": 3
+    }
+  }
 }

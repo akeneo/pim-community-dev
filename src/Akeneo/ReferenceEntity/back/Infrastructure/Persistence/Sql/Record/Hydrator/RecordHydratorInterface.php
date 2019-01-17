@@ -21,5 +21,9 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
  */
 interface RecordHydratorInterface
 {
-    public function hydrate(array $row, ValueKeyCollection $valueKeyCollection, array $attributes): Record;
+    public function hydrate(
+        array $row,
+        ValueKeyCollection $valueKeyCollection,
+        array $attributes
+    ): Record;
 }

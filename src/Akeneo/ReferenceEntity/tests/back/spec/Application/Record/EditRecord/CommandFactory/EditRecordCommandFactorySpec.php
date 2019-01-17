@@ -87,9 +87,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         $command->shouldBeAnInstanceOf(EditRecordCommand::class);
         $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('philippe_starck');
-        $command->labels->shouldBeEqualTo([
-            'en_us' => 'Philippe Starck'
-        ]);
+        $command->labels->shouldBeEqualTo([]);
         $command->editRecordValueCommands->shouldBeEqualTo([$editDescriptionCommand]);
     }
 

@@ -25,6 +25,10 @@ import {getAttributeView} from 'akeneoreferenceentity/application/configuration/
 import Key from 'akeneoreferenceentity/tools/key';
 import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
+import ReferenceEntity, {
+  denormalizeReferenceEntity,
+} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import AttributeReference from 'akeneoreferenceentity/domain/model/attribute/attribute-reference';
 
 interface OwnProps {
   rights: {
@@ -40,6 +44,7 @@ interface StateProps extends OwnProps {
   context: {
     locale: string;
   };
+  referenceEntity: ReferenceEntity;
   isSaving: boolean;
   isActive: boolean;
   attribute: Attribute;
@@ -138,6 +143,16 @@ class Edit extends React.Component<EditProps> {
     const inputTextClassName = `AknTextField AknTextField--light ${
       !this.props.rights.attribute.edit ? 'AknTextField--disabled' : ''
     }`;
+
+    // This will be simplyfied in the near future
+    const displayDeleteButton =
+      this.props.rights.attribute.delete &&
+      !this.props.referenceEntity
+        .getAttributeAsLabel()
+        .equals(AttributeReference.create(this.props.attribute.getIdentifier().stringValue())) &&
+      !this.props.referenceEntity
+        .getAttributeAsImage()
+        .equals(AttributeReference.create(this.props.attribute.getIdentifier().stringValue()));
 
     return (
       <React.Fragment>
@@ -248,7 +263,7 @@ class Edit extends React.Component<EditProps> {
               </ErrorBoundary>
             </div>
             <footer className="AknSubsection-footer AknSubsection-footer--sticky">
-              {this.props.rights.attribute.delete ? (
+              {displayDeleteButton ? (
                 <span
                   className="AknButton AknButton--delete"
                   tabIndex={0}
@@ -311,6 +326,7 @@ export default connect(
       isActive: state.attribute.isActive,
       attribute: denormalizeAttribute(state.attribute.data),
       errors: state.attribute.errors,
+      referenceEntity: denormalizeReferenceEntity(state.form.data),
       isSaving: state.attribute.isSaving,
       context: {
         locale: state.user.catalogLocale,

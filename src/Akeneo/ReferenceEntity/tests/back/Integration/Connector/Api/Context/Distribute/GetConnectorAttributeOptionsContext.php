@@ -242,9 +242,9 @@ class GetConnectorAttributeOptionsContext implements Context
         $textAttribute = TextAttribute::createText(
             $attributeIdentifier,
             $referenceEntityIdentifier,
-            AttributeCode::fromString('label'),
+            AttributeCode::fromString('another_label'),
             LabelCollection::fromArray(['en_US' => 'Label']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),

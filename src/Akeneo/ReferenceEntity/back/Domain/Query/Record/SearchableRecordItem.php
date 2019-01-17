@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Query;
+namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

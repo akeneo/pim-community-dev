@@ -36,7 +36,7 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
     /** @var FindValueKeyCollectionInterface */
     private $findValueKeyCollection;
 
-    private $order = 0;
+    private $order = 2;
 
     public function setUp()
     {
@@ -53,15 +53,21 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
     public function it_returns_all_attributes()
     {
         $designer = ReferenceEntityIdentifier::fromString('designer');
-        $image = $this->loadAttribute('designer', 'image', false, false);
+        $image = $this->loadAttribute('designer', 'main_image', false, false);
         $name = $this->loadAttribute('designer', 'name', false, true);
         $age = $this->loadAttribute('designer', 'age', true, false);
         $weight = $this->loadAttribute('designer', 'weigth', true, true);
         $actualValueKeyCollection = ($this->findValueKeyCollection)($designer);
 
+        /** @var ReferenceEntity $referenceEntity */
+        $referenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')
+            ->getByIdentifier($designer);
+        $attributeAsLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
+        $attributeAsImageIdentifier = $referenceEntity->getAttributeAsImageReference()->getIdentifier();
+
         $this->assertInstanceOf(ValueKeyCollection::class, $actualValueKeyCollection);
         $normalizedActualValueKeyCollection = $actualValueKeyCollection->normalize();
-        $this->assertSame(count($normalizedActualValueKeyCollection), 11);
+        $this->assertSame(count($normalizedActualValueKeyCollection), 15);
         $this->assertContains(sprintf('%s', $image->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_en_US', $name->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_de_DE', $name->getIdentifier()), $normalizedActualValueKeyCollection);
@@ -73,6 +79,10 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
         $this->assertContains(sprintf('%s_mobile_de_DE', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_ecommerce_fr_FR', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_ecommerce_en_US', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_en_US', $attributeAsLabelIdentifier), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_fr_FR', $attributeAsLabelIdentifier), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_de_DE', $attributeAsLabelIdentifier), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s', $attributeAsImageIdentifier), $normalizedActualValueKeyCollection);
     }
 
     private function resetDB(): void

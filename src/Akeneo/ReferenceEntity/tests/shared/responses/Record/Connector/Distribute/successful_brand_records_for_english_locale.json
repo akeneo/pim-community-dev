@@ -30,10 +30,14 @@
                             }
                         },
                         "code": "brand_1",
-                        "labels": {
-                            "en_US": "English label for brand_1"
-                        },
                         "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "English label for brand_1"
+                                }
+                            ],
                             "description": [
                                 {
                                     "locale": "en_US",
@@ -48,8 +52,7 @@
                                     "data": "Italy"
                                 }
                             ]
-                        },
-                        "main_image": null
+                        }
                     },
                     {
                         "_links": {
@@ -58,10 +61,14 @@
                             }
                         },
                         "code": "brand_2",
-                        "labels": {
-                            "en_US": "English label for brand_2"
-                        },
                         "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "English label for brand_2"
+                                }
+                            ],
                             "description": [
                                 {
                                     "locale": "en_US",
@@ -76,8 +83,7 @@
                                     "data": "Italy"
                                 }
                             ]
-                        },
-                        "main_image": null
+                        }
                     },
                     {
                         "_links": {
@@ -86,10 +92,14 @@
                             }
                         },
                         "code": "brand_3",
-                        "labels": {
-                            "en_US": "English label for brand_3"
-                        },
                         "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "English label for brand_3"
+                                }
+                            ],
                             "description": [
                                 {
                                     "locale": "en_US",
@@ -104,8 +114,7 @@
                                     "data": "Italy"
                                 }
                             ]
-                        },
-                        "main_image": null
+                        }
                     }
                 ]
             }

@@ -14,8 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -56,6 +61,12 @@ class SqlReferenceEntityHasRecordsTest extends SqlIntegrationTestCase
 
     private function loadReferenceEntityAndRecords(): void
     {
+        $this->loadDesigners();
+        $this->loadBrands();
+    }
+
+    private function loadDesigners(): void
+    {
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('stark');
@@ -68,7 +79,28 @@ class SqlReferenceEntityHasRecordsTest extends SqlIntegrationTestCase
             Image::createEmpty()
         );
         $referenceEntityRepository->create($referenceEntity);
+        $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $recordRepository->create(
+            Record::create(
+                $recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode),
+                $referenceEntityIdentifier,
+                $recordCode,
+                ValueCollection::fromValues([
+                    Value::create(
+                        $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Philippe Starck')
+                    ),
+                ])
+            )
+        );
+    }
 
+    private function loadBrands(): void
+    {
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
         $referenceEntity = ReferenceEntity::create(
             ReferenceEntityIdentifier::fromString('brand'),
             [
@@ -78,17 +110,5 @@ class SqlReferenceEntityHasRecordsTest extends SqlIntegrationTestCase
             Image::createEmpty()
         );
         $referenceEntityRepository->create($referenceEntity);
-
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $recordRepository->create(
-            Record::create(
-                $recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode),
-                $referenceEntityIdentifier,
-                $recordCode,
-                ['fr_FR' => 'Philippe Starck'],
-                Image::createEmpty(),
-                ValueCollection::fromValues([])
-            )
-        );
     }
 }

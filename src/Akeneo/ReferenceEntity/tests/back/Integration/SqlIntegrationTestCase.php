@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration;
 
 use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
+use Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ResettableContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -57,7 +58,9 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
 
     protected function overrideContainer(): void
     {
-        $this->testKernel->getContainer()->set('event_dispatcher', new EventDispatcherMock());
+        $realEventDispatcher = $this->testKernel->getContainer()->get('event_dispatcher');
+        $this->testKernel->getContainer()->set('event_dispatcher', new EventDispatcherMock($realEventDispatcher));
+        $this->testKernel->getContainer()->set('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer', new RecordIndexerSpy());
     }
 
     /**

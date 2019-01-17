@@ -54,7 +54,6 @@ class RecordIndexerSpy implements RecordIndexerInterface
 
     public function index(RecordIdentifier $recordIdentifier)
     {
-        throw new NotImplementedException('index');
     }
 
     /**
@@ -62,7 +61,6 @@ class RecordIndexerSpy implements RecordIndexerInterface
      */
     public function removeByReferenceEntityIdentifier(string $referenceEntityIdentifier)
     {
-        throw new NotImplementedException('removeByReferenceEntityIdentifier');
     }
 
     /**
@@ -72,6 +70,5 @@ class RecordIndexerSpy implements RecordIndexerInterface
         string $referenceEntityIdentifier,
         string $recordCode
     ) {
-        throw new NotImplementedException('removeRecordByReferenceEntityIdentifierAndCode');
     }
 }

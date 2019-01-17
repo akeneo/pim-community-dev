@@ -25,9 +25,12 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
@@ -167,13 +170,22 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     private function loadFixtures(): void
     {
         $attributeRepository = $this->getAttributeRepository();
+        $referenceEntityRepository = $this->getReferenceEntityRepository();
+
+        $referenceEntityRepository->create(
+            ReferenceEntity::create(
+                ReferenceEntityIdentifier::fromString('designer'),
+                [],
+                Image::createEmpty()
+            )
+        );
 
         $attributeItem = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', md5('fingerprint')),
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -190,6 +202,11 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     private function getAttributeRepository(): AttributeRepositoryInterface
     {
         return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+    }
+
+    private function getReferenceEntityRepository(): ReferenceEntityRepositoryInterface
+    {
+        return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
     }
 
     private function revokeDeletionRights(): void

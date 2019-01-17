@@ -14,17 +14,25 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
 use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchRecord;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Query\Record\SearchRecordResult;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 
@@ -40,6 +48,9 @@ final class ListRecordContext implements Context
     /** @var RecordRepositoryInterface */
     private $recordRepository;
 
+    /** @var ReferenceEntityRepositoryInterface  */
+    private $referenceEntityRepository;
+
     /** @var FindIdentifiersForQueryInterface */
     private $findIdentifiersForQuery;
 
@@ -48,10 +59,12 @@ final class ListRecordContext implements Context
 
     public function __construct(
         RecordRepositoryInterface $recordRepository,
+        ReferenceEntityRepositoryInterface $referenceEntityRepository,
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
         SearchRecord $searchRecord
     ) {
         $this->recordRepository = $recordRepository;
+        $this->referenceEntityRepository = $referenceEntityRepository;
         $this->findIdentifiersForQuery = $findIdentifiersForQuery;
         $this->searchRecord = $searchRecord;
     }
@@ -61,6 +74,8 @@ final class ListRecordContext implements Context
     */
     public function theRecords($recordCodes)
     {
+        $this->loadReferenceEntity();
+
         array_map(function (string $recordCode) {
             $this->loadRecord($recordCode);
         }, explode(',', $recordCodes));
@@ -185,18 +200,39 @@ final class ListRecordContext implements Context
 
     private function loadRecord(string $recordCode): void
     {
-        $recordCode = RecordCode::fromString($recordCode);
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
         $identifier = RecordIdentifier::fromString($recordCode . '_fingerprint');
+
+        $labelValue = Value::create(
+            $attributeAsLabel->getIdentifier(),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString(ucfirst((string) $recordCode))
+        );
+        $recordCode = RecordCode::fromString($recordCode);
         $record = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ['en_US' => ucfirst((string) $recordCode)],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([$labelValue])
         );
         $this->recordRepository->create($record);
         $this->findIdentifiersForQuery->add($record);
+    }
+
+    private function loadReferenceEntity(): void
+    {
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
+            [
+                'fr_FR' => 'Concepteur',
+                'en_US' => 'Designer',
+            ],
+            Image::createEmpty()
+        );
+
+        $this->referenceEntityRepository->create($referenceEntity);
     }
 }

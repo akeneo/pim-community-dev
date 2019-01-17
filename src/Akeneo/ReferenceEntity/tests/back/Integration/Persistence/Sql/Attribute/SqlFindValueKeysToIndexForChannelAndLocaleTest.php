@@ -58,9 +58,19 @@ class SqlFindValueKeysToIndexForChannelAndLocaleTest extends SqlIntegrationTestC
     public function it_generates_a_list_of_value_keys_of_text_attributes_only()
     {
         $this->loadReferenceEntityAndAttributes();
-        $valueKeyCollection = ($this->findValuesToIndexForChannelAndLocale)(ReferenceEntityIdentifier::fromString('designer'),
-            ChannelIdentifier::fromCode('ecommerce'), LocaleIdentifier::fromCode('en_US'));
-        Assert::assertSame([
+        $valueKeyCollection = ($this->findValuesToIndexForChannelAndLocale)(
+            ReferenceEntityIdentifier::fromString('designer'),
+            ChannelIdentifier::fromCode('ecommerce'),
+            LocaleIdentifier::fromCode('en_US')
+        );
+
+        /** @var ReferenceEntity $referenceEntity */
+        $referenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')
+            ->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+        $attributeAsLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
+
+        Assert::assertEquals([
+            sprintf('%s_en_US', $attributeAsLabelIdentifier),
             'name_designer_fingerprint_ecommerce_en_US',
         ], $valueKeyCollection->normalize());
     }
@@ -85,7 +95,7 @@ class SqlFindValueKeysToIndexForChannelAndLocaleTest extends SqlIntegrationTestC
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -96,11 +106,11 @@ class SqlFindValueKeysToIndexForChannelAndLocaleTest extends SqlIntegrationTestC
         $attributeRepository->create($name);
 
         $image = ImageAttribute::create(
-            AttributeIdentifier::fromString('image_designer_fingerprint'),
+            AttributeIdentifier::fromString('main_image_designer_fingerprint'),
             ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('image'),
+            AttributeCode::fromString('main_image'),
             LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),

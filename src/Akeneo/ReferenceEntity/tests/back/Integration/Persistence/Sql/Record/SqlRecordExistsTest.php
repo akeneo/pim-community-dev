@@ -14,9 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -80,8 +85,11 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
 
     public function loadRecordStarck(): void
     {
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+
+        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $recordCode = RecordCode::fromString('starck');
         $this->recordIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
@@ -90,9 +98,14 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
                 $this->recordIdentifier,
                 $referenceEntityIdentifier,
                 $recordCode,
-                ['fr_FR' => 'Philippe Starck'],
-                Image::createEmpty(),
-                ValueCollection::fromValues([])
+                ValueCollection::fromValues([
+                    Value::create(
+                        $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Philippe Starck')
+                    ),
+                ])
             )
         );
     }

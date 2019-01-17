@@ -63,13 +63,8 @@ class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIden
                 identifier, 
                 code, 
                 reference_entity_identifier, 
-                labels, 
-                value_collection,
-                fi.file_key as image_file_key,
-                fi.original_filename as image_original_filename
-            FROM
-                akeneo_reference_entity_record record
-                LEFT JOIN akeneo_file_storage_file_info fi ON fi.file_key = record.image
+                value_collection
+            FROM akeneo_reference_entity_record
             WHERE identifier IN (:identifiers);
 SQL;
 
@@ -123,7 +118,7 @@ SQL;
 
         $localesIdentifiers = $recordQuery->getLocaleIdentifiersValuesFilter();
         if (!$localesIdentifiers->isEmpty()) {
-            $connectorRecord = $connectorRecord->getRecordWithValuesAndLabelsFilteredOnLocales($localesIdentifiers);
+            $connectorRecord = $connectorRecord->getRecordWithValuesFilteredOnLocales($localesIdentifiers);
         }
 
         return $connectorRecord;

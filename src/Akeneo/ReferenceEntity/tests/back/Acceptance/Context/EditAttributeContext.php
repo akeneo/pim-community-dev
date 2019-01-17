@@ -116,19 +116,6 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @When /^the user deletes the attribute "(.+)" linked to the reference entity "(.+)"$/
-     */
-    public function theUserDeletesTheAttribute(string $attributeCode, string $entityIdentifier)
-    {
-        $identifier = $this->attributeRepository->nextIdentifier(
-            ReferenceEntityIdentifier::fromString($entityIdentifier),
-            AttributeCode::fromString($attributeCode)
-        );
-
-        $this->attributeRepository->deleteByIdentifier($identifier);
-    }
-
-    /**
      * @Given /^a reference entity with a text attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
     public function anReferenceEntityWithATextAttributeAndTheLabelEqualTo(

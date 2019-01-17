@@ -21,6 +21,8 @@ services:
 
     akeneo_referenceentity.application.factory.record.edit_stored_file_value_command_factory:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommandFactory
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key'
         tags:
             - { name: akeneo_referenceentity.edit_record_value_command_factory }
 

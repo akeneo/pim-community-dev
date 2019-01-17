@@ -36,3 +36,19 @@ services:
         - ['akeneo_reference_entity_collection']
         tags:
         - { name: 'pim_catalog.updater.adder' }
+
+    akeneo_referenceentity.application.attribute.subscribers.set_default_attributes_on_reference_entity_creation_subscriber:
+        class: Akeneo\ReferenceEntity\Application\Attribute\Subscribers\SetDefaultAttributesOnReferenceEntityCreationSubscriber
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.application.attribute.create_attribute_handler'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_referenceentity.application.reference_entity.subscribers.set_null_on_default_attributes_deletion_subscriber:
+        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\Subscribers\SetNullOnDefaultAttributesDeletionSubscriber
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+        tags:
+            - { name: kernel.event_subscriber }

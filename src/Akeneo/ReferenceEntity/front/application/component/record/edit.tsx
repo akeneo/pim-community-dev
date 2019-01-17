@@ -141,8 +141,7 @@ class RecordEditView extends React.Component<EditProps> {
                   <Image
                     alt={__('pim_reference_entity.record.img', {'{{ label }}': label})}
                     image={record.getImage()}
-                    onImageChange={this.props.events.onImageUpdated}
-                    readOnly={!this.props.rights.record.edit}
+                    readOnly={true}
                   />
                   <div className="AknTitleContainer-mainContainer AknTitleContainer-mainContainer--contained">
                     <div>

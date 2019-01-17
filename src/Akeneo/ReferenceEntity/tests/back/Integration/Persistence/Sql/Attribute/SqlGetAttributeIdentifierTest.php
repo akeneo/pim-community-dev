@@ -88,7 +88,7 @@ class SqlGetAttributeIdentifierTest extends SqlIntegrationTestCase
         $referenceEntityRepository->create($referenceEntity);
     }
 
-    private function loadAttribute(string $referenceEntityIdentifier, string $attributeCode, int $order = 0): AttributeIdentifier
+    private function loadAttribute(string $referenceEntityIdentifier, string $attributeCode, int $order = 2): AttributeIdentifier
     {
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $identifier = $attributeRepository->nextIdentifier(

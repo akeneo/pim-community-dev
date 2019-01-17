@@ -15,9 +15,10 @@ namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\File\FileExistsInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -33,10 +34,17 @@ class EditReferenceEntityHandler
     /** @var FileStorerInterface */
     private $storer;
 
-    public function __construct(ReferenceEntityRepositoryInterface $referenceEntityRepository, FileStorerInterface $storer)
-    {
+    /** @var FileExistsInterface */
+    private $fileExists;
+
+    public function __construct(
+        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        FileStorerInterface $storer,
+        FileExistsInterface $fileExists
+    ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->storer = $storer;
+        $this->fileExists = $fileExists;
     }
 
     public function __invoke(EditReferenceEntityCommand $editReferenceEntityCommand): void
@@ -49,15 +57,12 @@ class EditReferenceEntityHandler
 
         if (null !== $editReferenceEntityCommand->image) {
             $existingImage = $referenceEntity->getImage();
-            // If we want to update the image and it's not already in file storage, we store it
+            // If we want to update the image and it's not already in file storage, we store it if needed
             if (
                 $existingImage->isEmpty() ||
                 $existingImage->getKey() !== $editReferenceEntityCommand->image['filePath']
             ) {
-                $image = $editReferenceEntityCommand->image;
-                $rawFile = new \SplFileInfo($image['filePath']);
-                $storedFile = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
-                $image = Image::fromFileInfo($storedFile);
+                $image = $this->getStoredImage($editReferenceEntityCommand->image);
                 $referenceEntity->updateImage($image);
             }
         } else {
@@ -65,5 +70,23 @@ class EditReferenceEntityHandler
         }
 
         $this->referenceEntityRepository->update($referenceEntity);
+    }
+
+    private function getStoredImage(array $imageData): Image
+    {
+        $fileExists = ($this->fileExists)($imageData['filePath']);
+
+        if (true === $fileExists) {
+            $storedFile = (new FileInfo())
+                ->setKey($imageData['filePath'])
+                ->setOriginalFilename($imageData['originalFilename']);
+        } else {
+            $rawFile = new \SplFileInfo($imageData['filePath']);
+            $storedFile = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
+        }
+
+        $storedImage = Image::fromFileInfo($storedFile);
+
+        return $storedImage;
     }
 }

@@ -6,6 +6,7 @@ namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
@@ -52,18 +53,29 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
      */
     public function it_returns_a_searchable_record_item()
     {
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        /** @var ReferenceEntity $referenceEntity */
+        $referenceEntity = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+
+        $labelIdentifier = $referenceEntity->getAttributeAsLabelReference()->normalize();
         $searchableRecord = $this->findSearchableRecords->byRecordIdentifier(RecordIdentifier::fromString('stark_designer_fingerprint'));
         Assert::assertEquals('stark_designer_fingerprint', $searchableRecord->identifier);
         Assert::assertEquals('stark', $searchableRecord->code);
         Assert::assertEquals('designer', $searchableRecord->referenceEntityIdentifier);
         Assert::assertSame(['fr_FR' => 'Philippe Starck'], $searchableRecord->labels);
         Assert::assertSame([
-            'name' => [
+            'name'                      => [
                 'data' => 'Philippe stark',
                 'locale' => null,
                 'channel' => null,
                 'attribute' => 'name',
-            ]
+            ],
+            $labelIdentifier . '_fr_FR' => [
+                'data'      => 'Philippe Starck',
+                'locale'    => 'fr_FR',
+                'channel'   => null,
+                'attribute' => $labelIdentifier,
+            ],
         ], $searchableRecord->values);
     }
 
@@ -110,16 +122,16 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
     {
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityRepository->create(
-            ReferenceEntity::create(
-                ReferenceEntityIdentifier::fromString('designer'),
-                [
-                    'fr_FR' => 'Concepteur',
-                    'en_US' => 'Designer',
-                ],
-                Image::createEmpty()
-            )
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
+            [
+                'fr_FR' => 'Concepteur',
+                'en_US' => 'Designer',
+            ],
+            Image::createEmpty()
         );
+        $referenceEntityRepository->create($referenceEntity);
+        $referenceEntity = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
 
         $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $recordRepository->create(
@@ -127,9 +139,13 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
                 RecordIdentifier::fromString('stark_designer_fingerprint'),
                 ReferenceEntityIdentifier::fromString('designer'),
                 RecordCode::fromString('stark'),
-                ['fr_FR' => 'Philippe Starck'],
-                Image::createEmpty(),
                 ValueCollection::fromValues([
+                    Value::create(
+                        $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Philippe Starck')
+                    ),
                     Value::create(
                         AttributeIdentifier::fromString('name'),
                         ChannelReference::noReference(),

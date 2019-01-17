@@ -4,6 +4,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityRepository
         arguments:
             - '@database_connection'
+            - '@event_dispatcher'
 
     akeneo_referenceentity.infrastructure.persistence.repository.attribute:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeRepository
@@ -66,6 +67,16 @@ services:
 
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_is_linked_to_at_least_one_reference_entity_attribute:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlFindReferenceEntityAttributeAsLabel
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_image:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlFindReferenceEntityAttributeAsImage
         arguments:
             - '@database_connection'
 
@@ -380,5 +391,16 @@ services:
 
     akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_where_user_group_is_last_to_have_edit_right:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight
+        arguments:
+            - '@database_connection'
+
+    # File query functions
+    akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\File\SqlFindFileDataByFileKey
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.file_exists:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\File\SqlFileExists
         arguments:
             - '@database_connection'

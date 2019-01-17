@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
@@ -26,11 +24,19 @@ class ConnectorRecordSpec extends ObjectBehavior
      function let()
     {
         $recordCode = RecordCode::fromString('starck');
-        $labelCollection = LabelCollection::fromArray([
-            'en_US' => 'Stark',
-            'fr_FR' => 'Stark'
-        ]);
         $valueCollection = [
+            'label' => [
+                [
+                   'channel' => null,
+                   'locale'  => 'en_US',
+                   'value'   => 'Starck'
+                ],
+                [
+                    'channel' => null,
+                    'locale'  => 'fr_FR',
+                    'value'   => 'Starck'
+                ]
+            ],
             'description' => [
                 [
                     'channel'   => 'ecommerce',
@@ -52,12 +58,7 @@ class ConnectorRecordSpec extends ObjectBehavior
             ]
         ];
 
-        $this->beConstructedWith(
-            $recordCode,
-            $labelCollection,
-            Image::createEmpty(),
-            $valueCollection
-        );
+        $this->beConstructedWith($recordCode, $valueCollection);
     }
 
      function it_is_initializable()
@@ -69,11 +70,19 @@ class ConnectorRecordSpec extends ObjectBehavior
      {
          $this->normalize()->shouldReturn([
              'code' => 'starck',
-             'labels'                   => [
-                 'en_US' => 'Stark',
-                 'fr_FR' => 'Stark',
-             ],
              'values' => [
+                 'label' => [
+                     [
+                         'channel' => null,
+                         'locale'  => 'en_US',
+                         'value'   => 'Starck'
+                     ],
+                     [
+                         'channel' => null,
+                         'locale'  => 'fr_FR',
+                         'value'   => 'Starck'
+                     ]
+                 ],
                  'description' => [
                      [
                          'channel'   => 'ecommerce',
@@ -94,18 +103,25 @@ class ConnectorRecordSpec extends ObjectBehavior
                      ],
                  ]
              ],
-             'main_image' => null,
          ]);
      }
 
      function it_returns_a_record_with_values_filtered_on_channel()
      {
          $recordCode = RecordCode::fromString('starck');
-         $labelCollection = LabelCollection::fromArray([
-             'en_US' => 'Stark',
-             'fr_FR' => 'Stark'
-         ]);
          $valueCollection = [
+             'label' => [
+                 [
+                     'channel' => null,
+                     'locale'  => 'en_US',
+                     'value'   => 'Starck'
+                 ],
+                 [
+                     'channel' => null,
+                     'locale'  => 'fr_FR',
+                     'value'   => 'Starck'
+                 ]
+             ],
              'description' => [
                  [
                      'channel'   => 'ecommerce',
@@ -134,18 +150,23 @@ class ConnectorRecordSpec extends ObjectBehavior
              ]
          ];
 
-         $this->beConstructedWith(
-             $recordCode,
-             $labelCollection,
-             Image::createEmpty(),
-             $valueCollection
-         );
+         $this->beConstructedWith($recordCode, $valueCollection);
 
          $expectedRecord = new ConnectorRecord(
              $recordCode,
-             $labelCollection,
-             Image::createEmpty(),
              [
+                 'label' => [
+                     [
+                         'channel' => null,
+                         'locale'  => 'en_US',
+                         'value'   => 'Starck'
+                     ],
+                     [
+                         'channel' => null,
+                         'locale'  => 'fr_FR',
+                         'value'   => 'Starck'
+                     ]
+                 ],
                  'description' => [
                      [
                          'channel' => 'ecommerce',
@@ -169,12 +190,24 @@ class ConnectorRecordSpec extends ObjectBehavior
      function it_filters_values_and_labels_by_locales()
      {
          $recordCode = RecordCode::fromString('starck');
-         $labelCollection = LabelCollection::fromArray([
-             'en_US' => 'English Starck label',
-             'fr_FR' => 'French Starck label',
-             'de_DE' => 'German Starck label',
-         ]);
          $valueCollection = [
+             'label' => [
+                 [
+                     'channel' => null,
+                     'locale'  => 'en_US',
+                     'value'   => 'English Starck label'
+                 ],
+                 [
+                     'channel' => null,
+                     'locale'  => 'de_DE',
+                     'value'   => 'German Starck label'
+                 ],
+                 [
+                     'channel' => null,
+                     'locale'  => 'fr_FR',
+                     'value'   => 'French Starck label'
+                 ]
+             ],
              'description' => [
                  [
                      'channel'   => 'ecommerce',
@@ -208,21 +241,23 @@ class ConnectorRecordSpec extends ObjectBehavior
              ]
          ];
 
-         $this->beConstructedWith(
-             $recordCode,
-             $labelCollection,
-             Image::createEmpty(),
-             $valueCollection
-         );
+         $this->beConstructedWith($recordCode, $valueCollection);
 
          $expectedRecord = new ConnectorRecord(
              $recordCode,
-             LabelCollection::fromArray([
-                 'en_US' => 'English Starck label',
-                 'de_DE' => 'German Starck label',
-             ]),
-             Image::createEmpty(),
              [
+                 'label' => [
+                     [
+                         'channel' => null,
+                         'locale'  => 'en_US',
+                         'value'   => 'English Starck label'
+                     ],
+                     [
+                         'channel' => null,
+                         'locale'  => 'de_DE',
+                         'value'   => 'German Starck label'
+                     ],
+                 ],
                  'description' => [
                      [
                          'channel' => 'ecommerce',
@@ -245,7 +280,7 @@ class ConnectorRecordSpec extends ObjectBehavior
              ]
          );
 
-         $this->getRecordWithValuesAndLabelsFilteredOnLocales(LocaleIdentifierCollection::fromNormalized([
+         $this->getRecordWithValuesFilteredOnLocales(LocaleIdentifierCollection::fromNormalized([
              'en_US',
              'de_DE',
          ]))->shouldBeLike($expectedRecord);

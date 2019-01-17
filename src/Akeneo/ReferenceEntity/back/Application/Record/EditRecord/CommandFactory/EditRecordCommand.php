@@ -27,7 +27,7 @@ class EditRecordCommand
     public $code;
 
     /** @var array */
-    public $labels;
+    public $labels = [];
 
     /** @var string[]|null */
     public $image;

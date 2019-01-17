@@ -2,11 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoreferenceentity/application/reducer/record/edit';
 import {recordLabelUpdated, recordValueUpdated, saveRecord} from 'akeneoreferenceentity/application/action/record/edit';
-import __ from 'akeneoreferenceentity/tools/translator';
 import {EditionFormState} from 'akeneoreferenceentity/application/reducer/record/edit/form';
-import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
-import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
-import Flag from 'akeneoreferenceentity/tools/component/flag';
 import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
 import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
@@ -61,42 +57,10 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
 
   render() {
     const record = denormalizeRecord(this.props.form.data);
-    const inputTextClassName = `AknTextField AknTextField--narrow AknTextField--light ${
-      !this.props.rights.record.edit ? 'AknTextField--disabled' : ''
-    }`;
 
     return (
       <div className="AknSubsection">
         <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
-          <div className="AknFieldContainer AknFieldContainer--narrow" data-code="label">
-            <div className="AknFieldContainer-header AknFieldContainer-header--light AknFieldContainer-header AknFieldContainer-header--light--small">
-              <label
-                title="{__('pim_reference_entity.record.enrich.label')}"
-                className="AknFieldContainer-label"
-                htmlFor="pim_reference_entity.record.enrich.label"
-              >
-                {__('pim_reference_entity.record.create.input.label')}
-              </label>
-            </div>
-            <div className="AknFieldContainer-inputContainer">
-              <input
-                type="text"
-                name="label"
-                id="pim_reference_entity.record.enrich.label"
-                className={inputTextClassName}
-                value={record.getLabel(this.props.context.locale, false)}
-                onChange={this.updateLabel}
-                onKeyDown={this.keyDown}
-                ref={(input: HTMLInputElement) => {
-                  this.labelInput = input;
-                }}
-                disabled={!this.props.rights.record.edit}
-                readOnly={!this.props.rights.record.edit}
-              />
-              <Flag locale={createLocaleFromCode(this.props.context.locale)} displayLanguage={false} />
-            </div>
-            {getErrorsView(this.props.form.errors, 'labels')}
-          </div>
           {renderValues(
             record,
             createChannelReference(this.props.context.channel),

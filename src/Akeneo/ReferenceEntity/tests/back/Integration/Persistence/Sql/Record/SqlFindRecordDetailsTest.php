@@ -25,10 +25,12 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
@@ -39,6 +41,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
@@ -56,12 +59,16 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var ReferenceEntityRepositoryInterface */
+    private $referenceEntityRepository;
+
     public function setUp()
     {
         parent::setUp();
 
         $this->findRecordDetailsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_details');
         $this->recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
         $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $this->resetDB();
         $this->loadReferenceEntityAndRecords();
@@ -83,6 +90,8 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     public function it_returns_the_record_details()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+
         $recordCode = RecordCode::fromString('starck');
         $actualStarck = ($this->findRecordDetailsQuery)($referenceEntityIdentifier, $recordCode);
         $nameAttribute = $this->attributeRepository->getByIdentifier(
@@ -90,6 +99,12 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
         );
         $descriptionAttribute = $this->attributeRepository->getByIdentifier(
             AttributeIdentifier::create('designer', 'description', 'fingerprint')
+        );
+        $labelAttribute = $this->attributeRepository->getByIdentifier(
+            $referenceEntity->getAttributeAsLabelReference()->getIdentifier()
+        );
+        $imageAttribute = $this->attributeRepository->getByIdentifier(
+            $referenceEntity->getAttributeAsImageReference()->getIdentifier()
         );
 
         $expectedValues = [
@@ -116,6 +131,36 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
                 'locale' => null,
                 'channel' => null,
                 'attribute' => $nameAttribute->normalize(),
+            ],
+            [
+                'data' => 'Philippe Starck',
+                'locale' => 'fr_FR',
+                'channel' => null,
+                'attribute' => $labelAttribute->normalize(),
+            ],
+            [
+                'data' => null,
+                'locale' => 'en_US',
+                'channel' => null,
+                'attribute' => $labelAttribute->normalize(),
+            ],
+            [
+                'data' => null,
+                'locale' => 'de_DE',
+                'channel' => null,
+                'attribute' => $labelAttribute->normalize(),
+            ],
+            [
+                'data' => [
+                    'filePath' => 'test/image_2.jpg',
+                    'originalFilename' => 'image_2.jpg',
+                    'size' => 100,
+                    'mimeType' => 'image/jpg',
+                    'extension' => '.jpg'
+                ],
+                'locale' => null,
+                'channel' => null,
+                'attribute' => $imageAttribute->normalize(),
             ],
         ];
 
@@ -155,6 +200,25 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
             Image::createEmpty()
         );
         $referenceEntityRepository->create($referenceEntity);
+        $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $labelValue = Value::create(
+            $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+            TextData::fromString('Philippe Starck')
+        );
+        $imageValue = Value::create(
+            $referenceEntity->getAttributeAsImageReference()->getIdentifier(),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            FileData::createFromNormalize([
+                'filePath' => 'test/image_2.jpg',
+                'originalFilename' => 'image_2.jpg',
+                'size' => 100,
+                'mimeType' => 'image/jpg',
+                'extension' => '.jpg'
+            ])
+        );
 
         $value = Value::create(
             AttributeIdentifier::create('designer', 'name', 'fingerprint'),
@@ -168,7 +232,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -183,7 +247,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'description']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
@@ -206,15 +270,13 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
                 $this->recordIdentifier,
                 $referenceEntityIdentifier,
                 $starckCode,
-                ['fr_FR' => 'Philippe Starck'],
-                Image::fromFileInfo($imageInfo),
-                ValueCollection::fromValues([$value])
+                ValueCollection::fromValues([$labelValue, $imageValue, $value])
             )
         );
     }
 
     private function assertRecordDetails(RecordDetails $expected, RecordDetails $actual)
     {
-        $this->assertSame($expected->normalize(), $actual->normalize());
+        $this->assertEquals($expected->normalize(), $actual->normalize(), '', 0.0, 10, true);
     }
 }

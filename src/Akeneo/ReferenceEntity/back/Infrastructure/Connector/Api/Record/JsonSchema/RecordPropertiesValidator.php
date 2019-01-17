@@ -38,16 +38,7 @@ class RecordPropertiesValidator
             'type' => 'object',
             'properties' => [
                 'code' => [
-                    'type' => ['string', 'null'],
-                ],
-                'labels' => [
-                    'type' => 'object',
-                    'patternProperties' => [
-                        '.+' => ['type' => 'string'],
-                    ],
-                ],
-                'main_image' => [
-                    'type' => [ 'string', 'null'],
+                    'type' => ['string'],
                 ],
                 'values' => [
                     'type' => 'object',

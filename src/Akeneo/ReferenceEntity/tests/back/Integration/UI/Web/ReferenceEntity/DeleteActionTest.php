@@ -7,16 +7,21 @@ namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntity;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
-use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
@@ -220,16 +225,24 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
         $recordCode = RecordCode::fromString('asus');
+        $labelValueEnUS = Value::create(
+            AttributeIdentifier::fromString('label_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('ASUS')
+        );
+        $labelValuefrFR = Value::create(
+            AttributeIdentifier::fromString('label_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+            TextData::fromString('ASUS')
+        );
+
         $recordItem = Record::create(
             $recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode),
             $referenceEntityIdentifier,
             $recordCode,
-            [
-                'en_US' => 'ASUS',
-                'fr_FR' => 'ASUS',
-            ],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR])
         );
         $recordRepository->create($recordItem);
 

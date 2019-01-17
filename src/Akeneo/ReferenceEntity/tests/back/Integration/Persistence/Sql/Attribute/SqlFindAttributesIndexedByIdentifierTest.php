@@ -55,6 +55,12 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
     /** @var AbstractAttribute */
     private $imageAttribute;
 
+    /** @var AbstractAttribute */
+    private $attributeAsLabel;
+
+    /** @var AbstractAttribute */
+    private $attributeAsImage;
+
     public function setUp()
     {
         parent::setUp();
@@ -77,8 +83,10 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             'long_description_designer_test' => $this->longDescription,
             'regex_designer_test'            => $this->customRegex,
             'image_designer_test'            => $this->imageAttribute,
+            $this->attributeAsLabel->getIdentifier()->normalize() => $this->attributeAsLabel,
+            $this->attributeAsImage->getIdentifier()->normalize() => $this->attributeAsImage,
         ];
-        $this->assertCount(5, $actualAttributes);
+        $this->assertCount(7, $actualAttributes);
         foreach ($expectedAttributes as $expectedIdentifier => $expectedAttribute) {
             $this->assertArrayHasKey($expectedIdentifier, $actualAttributes);
             $this->assertSame($expectedAttribute->normalize(), $actualAttributes[$expectedIdentifier]->normalize());
@@ -103,7 +111,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
     private function loadReferenceEntitiesAndAttributes(): void
     {
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityFull = ReferenceEntity::create(
+        $referenceEntityWithAttributes = ReferenceEntity::create(
             ReferenceEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
@@ -111,7 +119,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             ],
             Image::createEmpty()
         );
-        $referenceEntityEmpty = ReferenceEntity::create(
+        $referenceEntityWithoutAttributes = ReferenceEntity::create(
             ReferenceEntityIdentifier::fromString('brand'),
             [
                 'fr_FR' => 'Marque',
@@ -119,8 +127,10 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             ],
             Image::createEmpty()
         );
-        $referenceEntityRepository->create($referenceEntityFull);
-        $referenceEntityRepository->create($referenceEntityEmpty);
+        $referenceEntityRepository->create($referenceEntityWithAttributes);
+        $referenceEntityWithAttributes = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+        $referenceEntityRepository->create($referenceEntityWithoutAttributes);
+        $referenceEntityWithoutAttributes = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('brand'));
 
         $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $this->name = TextAttribute::createText(
@@ -128,7 +138,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -141,7 +151,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('email'),
             LabelCollection::fromArray(['en_US' => 'Email']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -154,7 +164,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('regex'),
             LabelCollection::fromArray(['en_US' => 'Regex']),
-            AttributeOrder::fromInteger(2),
+            AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -167,7 +177,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('long_description'),
             LabelCollection::fromArray(['en_US' => 'Long description']),
-            AttributeOrder::fromInteger(3),
+            AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -177,9 +187,9 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
         $this->imageAttribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'test'),
             ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('image'),
+            AttributeCode::fromString('main_image'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
-            AttributeOrder::fromInteger(4),
+            AttributeOrder::fromInteger(6),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -191,5 +201,11 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
         $attributesRepository->create($this->customRegex);
         $attributesRepository->create($this->longDescription);
         $attributesRepository->create($this->imageAttribute);
+
+        $attributesRepository->deleteByIdentifier($referenceEntityWithoutAttributes->getAttributeAsLabelReference()->getIdentifier());
+        $attributesRepository->deleteByIdentifier($referenceEntityWithoutAttributes->getAttributeAsImageReference()->getIdentifier());
+
+        $this->attributeAsLabel = $attributesRepository->getByIdentifier($referenceEntityWithAttributes->getAttributeAsLabelReference()->getIdentifier());
+        $this->attributeAsImage = $attributesRepository->getByIdentifier($referenceEntityWithAttributes->getAttributeAsImageReference()->getIdentifier());
     }
 }

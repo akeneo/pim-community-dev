@@ -11,10 +11,14 @@
     "status": 200,
     "body": {
       "code": "Kartell",
-      "labels": {
-        "fr_FR": "A label"
-      },
       "values": {
+        "label": [
+          {
+            "channel": null,
+            "locale": "fr_FR",
+            "value": "A label"
+          }
+        ],
         "name": [
           {
             "channel": "ecommerce",
@@ -39,12 +43,6 @@
             }
           }
         ]
-      },
-      "main_image": "0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg",
-      "_links": {
-        "main_image_download": {
-          "href": "http://localhost/api/rest/v1/reference-entities-media-files/0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg"
-        }
       }
     }
   }

@@ -44,8 +44,6 @@ class EditRecordCommandFactory
         $command = new EditRecordCommand();
         $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'] ?? null;
         $command->code = $normalizedCommand['code'] ?? null;
-        $command->labels = $normalizedCommand['labels'] ?? [];
-        $command->image = $normalizedCommand['image'] ?? null;
         $command->editRecordValueCommands = [];
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
@@ -74,7 +72,6 @@ class EditRecordCommandFactory
     {
         return array_key_exists('reference_entity_identifier', $normalizedCommand)
             && array_key_exists('code', $normalizedCommand)
-            && array_key_exists('labels', $normalizedCommand)
             && array_key_exists('values', $normalizedCommand);
     }
 

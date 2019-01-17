@@ -5,6 +5,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.file_exists'
 
     akeneo_referenceentity.application.reference_entity.create_reference_entity_handler:
         class: Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler
@@ -38,6 +39,8 @@ services:
     akeneo_referenceentity.application.attribute.delete_attribute_handler:
         class: Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler
         arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_image'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
     akeneo_referenceentity.application.attribute.edit_attribute_handler:
@@ -70,6 +73,7 @@ services:
         class: Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
 
     akeneo_referenceentity.application.record.edit_record_handler:
             class: Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler

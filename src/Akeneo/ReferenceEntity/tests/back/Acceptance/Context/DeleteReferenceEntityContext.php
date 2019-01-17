@@ -8,9 +8,10 @@ use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\Del
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityHandler;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -18,6 +19,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class DeleteReferenceEntityContext implements Context
 {
+    /** @var ReferenceEntityRepositoryInterface  */
+    private $referenceEntityRepository;
+
     /** @var DeleteReferenceEntityHandler */
     private $deleteReferenceEntityHandler;
 
@@ -26,16 +30,17 @@ final class DeleteReferenceEntityContext implements Context
 
     /** @var ValidatorInterface */
     private $validator;
-
     /** @var ConstraintViolationsContext */
     private $constraintViolationsContext;
 
     public function __construct(
+        ReferenceEntityRepositoryInterface $referenceEntityRepository,
         DeleteReferenceEntityHandler $deleteReferenceEntityHandler,
         ReferenceEntityExistsInterface $referenceEntityExists,
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext
     ) {
+        $this->referenceEntityRepository = $referenceEntityRepository;
         $this->deleteReferenceEntityHandler = $deleteReferenceEntityHandler;
         $this->referenceEntityExists = $referenceEntityExists;
         $this->constraintViolationsContext = $constraintViolationsContext;
@@ -62,7 +67,7 @@ final class DeleteReferenceEntityContext implements Context
      */
     public function thereShouldBeNoReferenceEntity(string $identifier)
     {
-        Assert::assertFalse($this->referenceEntityExists->withIdentifier(
+        Assert::false($this->referenceEntityExists->withIdentifier(
             ReferenceEntityIdentifier::fromString($identifier)
         ));
     }

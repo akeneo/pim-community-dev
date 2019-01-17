@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
@@ -40,6 +43,9 @@ final class EditReferenceEntityContext implements Context
     /** @var EditReferenceEntityHandler */
     private $editReferenceEntityHandler;
 
+    /** @var CreateReferenceEntityHandler */
+    private $createReferenceEntityHandler;
+
     /** @var ValidatorInterface */
     private $validator;
 
@@ -52,21 +58,17 @@ final class EditReferenceEntityContext implements Context
     /** @var InMemoryFindActivatedLocalesByIdentifiers */
     private $activatedLocales;
 
-    /**
-     * @param ReferenceEntityRepositoryInterface $referenceEntityRepository
-     * @param EditReferenceEntityHandler         $editReferenceEntityHandler
-     * @param ValidatorInterface                $validator
-     * @param ConstraintViolationsContext       $constraintViolationsContext
-     */
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         EditReferenceEntityHandler $editReferenceEntityHandler,
+        CreateReferenceEntityHandler $createReferenceEntityHandler,
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->editReferenceEntityHandler = $editReferenceEntityHandler;
+        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
         $this->validator = $validator;
         $this->constraintViolationsContext = $constraintViolationsContext;
         $this->activatedLocales = $activatedLocales;
@@ -81,16 +83,19 @@ final class EditReferenceEntityContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
-        $this->referenceEntityRepository->create(
-            ReferenceEntity::create(
-                ReferenceEntityIdentifier::fromString('designer'),
-                [
-                    'en_US' => 'Designer',
-                    'fr_FR' => 'Concepteur'
-                ],
-                Image::createEmpty()
-            )
-        );
+        $createCommand = new CreateReferenceEntityCommand();
+        $createCommand->code = 'designer';
+        $createCommand->labels = [
+            'en_US' => 'Designer',
+            'fr_FR' => 'Concepteur'
+        ];
+
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+        }
+
+        ($this->createReferenceEntityHandler)($createCommand);
     }
 
     /**
@@ -117,6 +122,34 @@ final class EditReferenceEntityContext implements Context
             json_decode($expectedInformation['labels'], true),
             $actualReferenceEntity
         );
+
+        if (key_exists('attribute_as_label', $expectedInformation)) {
+            $expectedAttributeIdentifier = sprintf('%s_%s_%s',
+                $expectedInformation['attribute_as_label'],
+                $actualReferenceEntity->getIdentifier(),
+                md5(sprintf('%s_%s', $actualReferenceEntity->getIdentifier(), $expectedInformation['attribute_as_label']))
+            );
+
+            Assert::assertTrue(
+                $actualReferenceEntity->getAttributeAsLabelReference()->getIdentifier()->equals(
+                    AttributeIdentifier::fromString($expectedAttributeIdentifier)
+                )
+            );
+        }
+
+        if (key_exists('attribute_as_image', $expectedInformation)) {
+            $expectedAttributeIdentifier = sprintf('%s_%s_%s',
+                $expectedInformation['attribute_as_image'],
+                $actualReferenceEntity->getIdentifier(),
+                md5(sprintf('%s_%s', $actualReferenceEntity->getIdentifier(), $expectedInformation['attribute_as_image']))
+            );
+
+            Assert::assertTrue(
+                $actualReferenceEntity->getAttributeAsImageReference()->getIdentifier()->equals(
+                    AttributeIdentifier::fromString($expectedAttributeIdentifier)
+                )
+            );
+        }
     }
 
     private function assertSameLabels(array $expectedLabels, ReferenceEntity $actualReferenceEntity)
@@ -142,15 +175,20 @@ final class EditReferenceEntityContext implements Context
      */
     public function theReferenceEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
     {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+
         $label = json_decode($label);
 
-        $this->referenceEntityRepository->create(
-            ReferenceEntity::create(
-                ReferenceEntityIdentifier::fromString($identifier),
-                [$localCode => $label],
-                Image::createEmpty()
-            )
-        );
+        $createCommand = new CreateReferenceEntityCommand();
+        $createCommand->code = $identifier;
+        $createCommand->labels = [$localCode => $label];
+
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+        }
+
+        ($this->createReferenceEntityHandler)($createCommand);
     }
 
     /**
@@ -158,6 +196,17 @@ final class EditReferenceEntityContext implements Context
      */
     public function anImageOnAnReferenceEntityWitPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
+        $createCommand = new CreateReferenceEntityCommand();
+        $createCommand->code = $identifier;
+        $createCommand->labels = [];
+
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+        }
+
+        ($this->createReferenceEntityHandler)($createCommand);
+
         $filePath = json_decode($filePath);
         $filename = json_decode($filename);
 
@@ -165,13 +214,12 @@ final class EditReferenceEntityContext implements Context
         $file->setKey($filePath);
         $file->setOriginalFilename($filename);
 
-        $this->referenceEntityRepository->create(
-            ReferenceEntity::create(
-                ReferenceEntityIdentifier::fromString($identifier),
-                [],
-                Image::fromFileInfo($file)
-            )
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier(
+            ReferenceEntityIdentifier::fromString($identifier)
         );
+
+        $referenceEntity->updateImage(Image::fromFileInfo($file));
+        $this->referenceEntityRepository->update($referenceEntity);
     }
 
     /**

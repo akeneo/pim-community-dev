@@ -14,13 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiers;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
@@ -43,8 +40,6 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
     {
         $kartellRecord = new ConnectorRecord(
             RecordCode::fromString('kartell'),
-            LabelCollection::fromArray(['en_US' => 'Kartell']),
-            Image::createEmpty(),
             []
         );
         $kartellRecordIdentifier = RecordIdentifier::fromString('brand_kartell_fingerprint');
@@ -52,8 +47,6 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
 
         $lexonRecord = new ConnectorRecord(
             RecordCode::fromString('lexon'),
-            LabelCollection::fromArray(['en_US' => 'Lexon']),
-            Image::createEmpty(),
             []
         );
         $lexonRecordIdentifier = RecordIdentifier::fromString('brand_lexon_fingerprint');
@@ -61,8 +54,6 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
 
         $alessiRecord = new ConnectorRecord(
             RecordCode::fromString('alessi'),
-            LabelCollection::fromArray(['en_US' => 'Alessi']),
-            Image::createEmpty(),
             []
         );
         $alessiRecordIdentifier = RecordIdentifier::fromString('brand_alessi_fingerprint');
@@ -91,8 +82,6 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
     {
         $connectorRecord = new ConnectorRecord(
             RecordCode::fromString('kartell'),
-            LabelCollection::fromArray(['en_US' => 'Kartell']),
-            Image::createEmpty(),
             []
         );
         $recordIdentifier = RecordIdentifier::fromString('brand_kartell_fingerprint');
@@ -120,12 +109,19 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
     {
         $connectorRecord = new ConnectorRecord(
             RecordCode::fromString('kartell'),
-            LabelCollection::fromArray([
-                'en_US' => 'Kartell english label',
-                'fr_FR' => 'Kartell french label',
-            ]),
-            Image::createEmpty(),
             [
+                'label' => [
+                    [
+                        'locale'  => 'en_US',
+                        'channel' => null,
+                        'value'   => 'Kartell english label'
+                    ],
+                    [
+                        'locale'  => 'fr_FR',
+                        'channel' => null,
+                        'value'   => 'Kartell french label'
+                    ]
+                ],
                 'name'  => [
                     [
                         'locale'  => 'en_US',
@@ -158,12 +154,19 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
 
         $expectedConnectorRecord = new ConnectorRecord(
             RecordCode::fromString('kartell'),
-            LabelCollection::fromArray([
-                'en_US' => 'Kartell english label',
-                'fr_FR' => 'Kartell french label',
-            ]),
-            Image::createEmpty(),
             [
+                'label' => [
+                    [
+                        'locale'  => 'en_US',
+                        'channel' => null,
+                        'value'   => 'Kartell english label'
+                    ],
+                    [
+                        'locale'  => 'fr_FR',
+                        'channel' => null,
+                        'value'   => 'Kartell french label'
+                    ]
+                ],
                 'name'  => [
                     [
                         'locale'  => 'en_US',
@@ -200,12 +203,19 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
     {
         $connectorRecord = new ConnectorRecord(
             RecordCode::fromString('kartell'),
-            LabelCollection::fromArray([
-                'en_US' => 'Kartell english label',
-                'fr_FR' => 'Kartell french label',
-            ]),
-            Image::createEmpty(),
             [
+                'label' => [
+                    [
+                        'locale'  => 'en_US',
+                        'channel' => null,
+                        'value'   => 'Kartell english label'
+                    ],
+                    [
+                        'locale'  => 'fr_FR',
+                        'channel' => null,
+                        'value'   => 'Kartell french label'
+                    ]
+                ],
                 'description' => [
                     [
                         'channel'   => 'ecommerce',
@@ -245,11 +255,14 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
 
         $expectedConnectorRecord = new ConnectorRecord(
             RecordCode::fromString('kartell'),
-            LabelCollection::fromArray([
-                'en_US' => 'Kartell english label',
-            ]),
-            Image::createEmpty(),
             [
+                'label' => [
+                    [
+                        'locale'  => 'en_US',
+                        'channel' => null,
+                        'value'   => 'Kartell english label'
+                    ],
+                ],
                 'description' => [
                     [
                         'channel' => 'ecommerce',

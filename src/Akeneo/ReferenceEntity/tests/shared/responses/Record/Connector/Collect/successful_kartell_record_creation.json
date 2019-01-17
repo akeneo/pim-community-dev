@@ -8,12 +8,19 @@
         },
         "body": {
             "code": "kartell",
-            "labels": {
-                "en_US": "Kartell english label",
-                "fr_FR": "Kartell french label"
-            },
-            "main_image": null,
             "values": {
+                "label": [
+                    {
+                        "locale": "en_US",
+                        "channel": null,
+                        "data": "Kartell english label"
+                    },
+                    {
+                        "locale": "fr_FR",
+                        "channel": null,
+                        "data": "Kartell french label"
+                    }
+                ],
                 "description": [
                     {
                         "locale": "en_US",

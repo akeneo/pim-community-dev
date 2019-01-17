@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
+use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityCreatedEvent;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
@@ -21,6 +25,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -31,12 +36,18 @@ class SqlReferenceEntityRepository implements ReferenceEntityRepositoryInterface
     /** @var Connection */
     private $sqlConnection;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     /**
      * @param Connection $sqlConnection
      */
-    public function __construct(Connection $sqlConnection)
-    {
+    public function __construct(
+        Connection $sqlConnection,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->sqlConnection = $sqlConnection;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -47,13 +58,18 @@ class SqlReferenceEntityRepository implements ReferenceEntityRepositoryInterface
     {
         $serializedLabels = $this->getSerializedLabels($referenceEntity);
         $insert = <<<SQL
-        INSERT INTO akeneo_reference_entity_reference_entity (identifier, labels) VALUES (:identifier, :labels);
+        INSERT INTO akeneo_reference_entity_reference_entity 
+            (identifier, labels, attribute_as_label, attribute_as_image) 
+        VALUES 
+            (:identifier, :labels, :attributeAsLabel, :attributeAsImage);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
                 'identifier' => (string) $referenceEntity->getIdentifier(),
-                'labels' => $serializedLabels
+                'labels' => $serializedLabels,
+                'attributeAsLabel' => $referenceEntity->getAttributeAsLabelReference()->normalize(),
+                'attributeAsImage' => $referenceEntity->getAttributeAsImageReference()->normalize()
             ]
         );
         if ($affectedRows !== 1) {
@@ -61,6 +77,11 @@ SQL;
                 sprintf('Expected to create one reference entity, but %d were affected', $affectedRows)
             );
         }
+
+        $this->eventDispatcher->dispatch(
+            ReferenceEntityCreatedEvent::class,
+            new ReferenceEntityCreatedEvent($referenceEntity->getIdentifier())
+        );
     }
 
     /**
@@ -72,7 +93,11 @@ SQL;
         $serializedLabels = $this->getSerializedLabels($referenceEntity);
         $update = <<<SQL
         UPDATE akeneo_reference_entity_reference_entity
-        SET labels = :labels, image = :image
+        SET 
+            labels = :labels, 
+            image = :image, 
+            attribute_as_label = :attributeAsLabel, 
+            attribute_as_image = :attributeAsImage
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -80,7 +105,9 @@ SQL;
             [
                 'identifier' => (string) $referenceEntity->getIdentifier(),
                 'labels' => $serializedLabels,
-                'image' => $referenceEntity->getImage()->isEmpty() ? null : $referenceEntity->getImage()->getKey()
+                'image' => $referenceEntity->getImage()->isEmpty() ? null : $referenceEntity->getImage()->getKey(),
+                'attributeAsLabel' => $referenceEntity->getAttributeAsLabelReference()->normalize(),
+                'attributeAsImage' => $referenceEntity->getAttributeAsImageReference()->normalize(),
             ]
         );
 
@@ -94,7 +121,7 @@ SQL;
     public function getByIdentifier(ReferenceEntityIdentifier $identifier): ReferenceEntity
     {
         $fetch = <<<SQL
-        SELECT ee.identifier, ee.labels, fi.image
+        SELECT ee.identifier, ee.labels, fi.image, ee.attribute_as_label, ee.attribute_as_image
         FROM akeneo_reference_entity_reference_entity ee
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
@@ -116,14 +143,16 @@ SQL;
         return $this->hydrateReferenceEntity(
             $result['identifier'],
             $result['labels'],
-            null !== $result['image'] ? json_decode($result['image'], true) : null
+            null !== $result['image'] ? json_decode($result['image'], true) : null,
+            $result['attribute_as_label'],
+            $result['attribute_as_image']
         );
     }
 
     public function all(): \Iterator
     {
         $selectAllQuery = <<<SQL
-        SELECT identifier, labels
+        SELECT identifier, labels, attribute_as_label, attribute_as_image
         FROM akeneo_reference_entity_reference_entity;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
@@ -131,7 +160,13 @@ SQL;
         $statement->closeCursor();
 
         foreach ($results as $result) {
-            yield $this->hydrateReferenceEntity($result['identifier'], $result['labels'], null);
+            yield $this->hydrateReferenceEntity(
+                $result['identifier'],
+                $result['labels'],
+                null,
+                $result['attribute_as_label'],
+                $result['attribute_as_image']
+            );
         }
     }
 
@@ -169,7 +204,9 @@ SQL;
     private function hydrateReferenceEntity(
         string $identifier,
         string $normalizedLabels,
-        ?array $image
+        ?array $image,
+        ?string $attributeAsLabel,
+        ?string $attributeAsImage
     ): ReferenceEntity {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
@@ -177,10 +214,12 @@ SQL;
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
         $entityImage = $this->hydrateImage($image);
 
-        $referenceEntity = ReferenceEntity::create(
+        $referenceEntity = ReferenceEntity::createWithAttributes(
             ReferenceEntityIdentifier::fromString($identifier),
             $labels,
-            $entityImage
+            $entityImage,
+            AttributeAsLabelReference::createFromNormalized($attributeAsLabel),
+            AttributeAsImageReference::createFromNormalized($attributeAsImage)
         );
 
         return $referenceEntity;

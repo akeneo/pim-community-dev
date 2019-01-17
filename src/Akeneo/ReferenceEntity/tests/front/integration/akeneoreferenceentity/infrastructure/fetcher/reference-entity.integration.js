@@ -52,6 +52,8 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
             originalFilename: 'sofa.jpg',
           })
           .withAttributes([])
+          .withAttributeAsImage(null)
+          .withAttributeAsLabel(null)
           .build();
 
         interceptedRequest.respond({
@@ -73,6 +75,12 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
       attributes: [],
       recordCount: 123,
       referenceEntity: {
+        attributeAsImage: {
+          identifier: null
+        },
+        attributeAsLabel: {
+          identifier: null
+        },
         identifier: {
           identifier: 'sofa',
         },

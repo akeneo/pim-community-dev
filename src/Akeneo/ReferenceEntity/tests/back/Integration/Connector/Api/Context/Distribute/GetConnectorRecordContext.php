@@ -107,16 +107,16 @@ class GetConnectorRecordContext implements Context
      */
     public function theRecordForTheReferenceEntity(string $referenceCode, string $referenceEntityIdentifier): void
     {
-        $mainImageInfo = new FileInfo();
-        $mainImageInfo
-            ->setOriginalFilename('kartell.jpg')
-            ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
-
         $record = new ConnectorRecord(
             RecordCode::fromString($referenceCode),
-            LabelCollection::fromArray(['fr_FR' => 'A label']),
-            Image::fromFileInfo($mainImageInfo),
             [
+                'label' => [
+                    [
+                        'channel' => null,
+                        'locale'  => 'fr_FR',
+                        'value'   => 'A label'
+                    ]
+                ],
                 'name' => [
                     [
                         'channel' => 'ecommerce',
@@ -187,8 +187,6 @@ class GetConnectorRecordContext implements Context
         for ($i = 0; $i < 10 ; $i++) {
             $record = new ConnectorRecord(
                 RecordCode::fromString('record_code_' . $i),
-                LabelCollection::fromArray([]),
-                Image::createEmpty(),
                 []
             );
             $this->findConnectorRecord->save(
@@ -233,8 +231,6 @@ class GetConnectorRecordContext implements Context
             for ($j = 0; $j < 10 ; $j++) {
                 $record = new ConnectorRecord(
                     RecordCode::fromString(sprintf('record_code_%s_%s', $i, $j)),
-                    LabelCollection::fromArray([]),
-                    Image::createEmpty(),
                     []
                 );
                 $this->findConnectorRecord->save(
@@ -329,7 +325,7 @@ class GetConnectorRecordContext implements Context
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -348,7 +344,7 @@ class GetConnectorRecordContext implements Context
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('cover_image'),
             LabelCollection::fromArray(['en_US' => 'Cover Image']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),

@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -43,17 +41,31 @@ class RecordHydrator implements RecordHydratorInterface
         $this->platform = $connection->getDatabasePlatform();
     }
 
-    public function hydrate(array $row, ValueKeyCollection $valueKeyCollection, array $attributes): Record
-    {
-        $labels = json_decode($row['labels'], true);
-        $valueCollection = json_decode($row['value_collection'], true);
+    public function hydrate(
+        array $row,
+        ValueKeyCollection $valueKeyCollection,
+        array $attributes
+    ): Record {
         $recordIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
         $referenceEntityIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
         $recordCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
+        $valueCollection = json_decode($row['value_collection'], true);
 
+        $record = Record::create(
+            RecordIdentifier::fromString($recordIdentifier),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            RecordCode::fromString($recordCode),
+            ValueCollection::fromValues($this->hydrateValues($valueKeyCollection, $attributes, $valueCollection))
+        );
+
+        return $record;
+    }
+
+    private function hydrateValues(ValueKeyCollection $valueKeyCollection, array $attributes, $valueCollection): array
+    {
         $hydratedValues = [];
         foreach ($valueKeyCollection as $valueKey) {
             $key = (string) $valueKey;
@@ -69,35 +81,6 @@ class RecordHydrator implements RecordHydratorInterface
             );
         }
 
-        $recordImage = Image::createEmpty();
-
-        if (isset($row['image'])) {
-            $recordImage =  $this->hydrateImage(json_decode($row['image'], true));
-        }
-
-        $record = Record::create(
-            RecordIdentifier::fromString($recordIdentifier),
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            RecordCode::fromString($recordCode),
-            $labels,
-            $recordImage,
-            ValueCollection::fromValues($hydratedValues)
-        );
-
-        return $record;
-    }
-
-    private function hydrateImage(array $imageData): Image
-    {
-        $imageKey = Type::getType(Type::STRING)
-            ->convertToPHPValue($imageData['file_key'], $this->platform);
-        $imageFilename = Type::getType(Type::STRING)
-            ->convertToPHPValue($imageData['original_filename'], $this->platform);
-
-        $file = new FileInfo();
-        $file->setKey($imageKey);
-        $file->setOriginalFilename($imageFilename);
-
-        return Image::fromFileInfo($file);
+        return $hydratedValues;
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetReferenceEntityPermissionsHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermissions\SetUserGroupPermissionCommand;
@@ -18,6 +20,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -25,7 +28,7 @@ use PHPUnit\Framework\Assert;
  */
 final class SetReferenceEntityPermissionContext implements Context
 {
-    private const USER_GROUPS = ['IT support' => 154, 'Catalog manager' => 122];
+    private const USER_GROUPS = ['IT support' => 154, 'Catalog Manager' => 122];
     private const REFERENCE_ENTITY_IDENTIFIER = 'designer';
 
     /** @var ReferenceEntityRepositoryInterface */
@@ -40,16 +43,26 @@ final class SetReferenceEntityPermissionContext implements Context
     /** @var ExceptionContext */
     private $exceptionContext;
 
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var CreateReferenceEntityHandler */
+    private $createReferenceEntityHandler;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         ReferenceEntityPermissionRepositoryInterface $referenceEntityPermissionRepository,
         SetReferenceEntityPermissionsHandler $setReferenceEntityPermissionsHandler,
-        ExceptionContext $exceptionContext
+        ExceptionContext $exceptionContext,
+        ValidatorInterface $validator,
+        CreateReferenceEntityHandler $createReferenceEntityHandler
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->referenceEntityPermissionRepository = $referenceEntityPermissionRepository;
         $this->setReferenceEntityPermissionsHandler = $setReferenceEntityPermissionsHandler;
         $this->exceptionContext = $exceptionContext;
+        $this->validator = $validator;
+        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
     }
 
     /**
@@ -57,13 +70,16 @@ final class SetReferenceEntityPermissionContext implements Context
      */
     public function aReferenceEntityWithoutPermissions()
     {
-        $this->referenceEntityRepository->create(
-            ReferenceEntity::create(
-                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-                [],
-                Image::createEmpty()
-            )
-        );
+        $createCommand = new CreateReferenceEntityCommand();
+        $createCommand->code = self::REFERENCE_ENTITY_IDENTIFIER;
+        $createCommand->labels = [];
+
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+        }
+
+        ($this->createReferenceEntityHandler)($createCommand);
     }
 
     /**
@@ -104,5 +120,13 @@ final class SetReferenceEntityPermissionContext implements Context
         );
 
         Assert::assertTrue($hasPermission);
+    }
+
+    /**
+     * @Then /^the user has the following rights:$/
+     */
+    public function theUserHasTheFollowingRights()
+    {
+        //only used in the frontend part
     }
 }

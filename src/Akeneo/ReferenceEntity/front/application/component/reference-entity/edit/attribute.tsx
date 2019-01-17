@@ -82,13 +82,7 @@ const renderSystemAttribute = (type: string, identifier: string) => {
 };
 
 const renderSystemAttributes = () => {
-  return (
-    <React.Fragment>
-      {renderSystemAttribute('text', 'code')}
-      {renderSystemAttribute('text', 'label')}
-      {renderSystemAttribute('image', 'image')}
-    </React.Fragment>
-  );
+  return <React.Fragment>{renderSystemAttribute('text', 'code')}</React.Fragment>;
 };
 
 const renderAttributePlaceholders = () => {

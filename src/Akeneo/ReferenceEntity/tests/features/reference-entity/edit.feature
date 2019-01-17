@@ -14,9 +14,9 @@ Feature: Edit a reference entity
 
   @acceptance-back
   Scenario: Updating when the reference entity doesn't have an image
-    Given the reference entity 'designer' with the label 'en_US' equal to '"Designer"'
-    When the user updates the image of the reference entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
-    Then the image of the reference entity 'designer' should be '"in/memory/files/image.jpg"'
+    Given the reference entity 'brand' with the label 'en_US' equal to '"Brand"'
+    When the user updates the image of the reference entity 'brand' with path '"/path/image.jpg"' and filename '"image.jpg"'
+    Then the image of the reference entity 'brand' should be '"in/memory/files/image.jpg"'
 
   @acceptance-back
   Scenario: Updating when the reference entity has already an image

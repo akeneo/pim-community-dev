@@ -85,8 +85,6 @@ class CountRecordsTest extends SearchIntegrationTestCase
                 RecordIdentifier::fromString('starck_designer'),
                 $this->referenceEntityIdentifiersWithRecords,
                 RecordCode::fromString('stark'),
-                [],
-                Image::createEmpty(),
                 ValueCollection::fromValues([])
             )
         );
@@ -95,8 +93,6 @@ class CountRecordsTest extends SearchIntegrationTestCase
                 RecordIdentifier::fromString('kartell_designer'),
                 $this->referenceEntityIdentifiersWithRecords,
                 RecordCode::fromString('kartell'),
-                [],
-                Image::createEmpty(),
                 ValueCollection::fromValues([])
             )
         );

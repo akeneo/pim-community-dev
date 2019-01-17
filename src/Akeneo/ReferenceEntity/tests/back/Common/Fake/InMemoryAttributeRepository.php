@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
+use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\BeforeAttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -28,6 +31,14 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
 {
     /** @var AbstractAttribute[] */
     private $attributes = [];
+
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     public function create(AbstractAttribute $attribute): void
     {
@@ -104,7 +115,20 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
             throw AttributeNotFoundException::withIdentifier($attributeIdentifier);
         }
 
+        $this->eventDispatcher->dispatch(
+            BeforeAttributeDeletedEvent::class,
+            new BeforeAttributeDeletedEvent(
+                $this->getReferenceEntityIdentifier($attributeIdentifier),
+                $attributeIdentifier
+            )
+        );
+
         unset($this->attributes[(string) $attributeIdentifier]);
+
+        $this->eventDispatcher->dispatch(
+            AttributeDeletedEvent::class,
+            new AttributeDeletedEvent($attribute->getReferenceEntityIdentifier(), $attributeIdentifier)
+        );
     }
 
     public function nextIdentifier(
@@ -140,6 +164,19 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
         }
         throw new \InvalidArgumentException(
             sprintf('Could not find attribute with "%s" for entity "%s"', $attributeCode, $entityCode)
+        );
+    }
+
+    private function getReferenceEntityIdentifier(AttributeIdentifier $attributeIdentifier): ReferenceEntityIdentifier
+    {
+        foreach ($this->attributes as $attribute) {
+            if ($attribute->getIdentifier()->equals($attributeIdentifier)) {
+                return $attribute->getReferenceEntityIdentifier();
+            }
+        }
+
+        throw new \Exception(
+            sprintf('Reference entity identifier not found for attribute %s', (string) $attributeIdentifier)
         );
     }
 }

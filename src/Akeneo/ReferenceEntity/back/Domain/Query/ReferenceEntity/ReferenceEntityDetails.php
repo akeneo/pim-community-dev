@@ -15,6 +15,8 @@ namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 
@@ -32,6 +34,8 @@ class ReferenceEntityDetails
     public const RECORD_COUNT = 'record_count';
     public const ATTRIBUTES = 'attributes';
     public const PERMISSION = 'permission';
+    public const ATTRIBUTE_AS_LABEL = 'attribute_as_label';
+    public const ATTRIBUTE_AS_IMAGE = 'attribute_as_image';
 
     /** @var ReferenceEntityIdentifier */
     public $identifier;
@@ -47,6 +51,12 @@ class ReferenceEntityDetails
 
     /** @var AttributeDetails[] */
     public $attributes;
+
+    /** @var AttributeAsLabelReference */
+    public $attributeAsLabel;
+
+    /** @var AttributeAsImageReference */
+    public $attributeAsImage;
 
     /** @var bool */
     public $isAllowedToEdit = true;
@@ -66,6 +76,8 @@ class ReferenceEntityDetails
             self::PERMISSION => [
                 self::EDIT_PERMISSION => $this->isAllowedToEdit,
             ],
+            self::ATTRIBUTE_AS_LABEL => ($this->attributeAsLabel->isEmpty()) ? null : $this->attributeAsLabel->normalize(),
+            self::ATTRIBUTE_AS_IMAGE => ($this->attributeAsImage->isEmpty()) ? null : $this->attributeAsImage->normalize()
         ];
     }
 }

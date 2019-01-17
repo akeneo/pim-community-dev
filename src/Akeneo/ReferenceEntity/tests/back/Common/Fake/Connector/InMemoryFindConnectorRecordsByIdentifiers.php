@@ -62,7 +62,7 @@ class InMemoryFindConnectorRecordsByIdentifiers implements FindConnectorRecordsB
 
         $localesIdentifiers = $recordQuery->getLocaleIdentifiersValuesFilter();
         if (!$localesIdentifiers->isEmpty()) {
-            $connectorRecord = $connectorRecord->getRecordWithValuesAndLabelsFilteredOnLocales($localesIdentifiers);
+            $connectorRecord = $connectorRecord->getRecordWithValuesFilteredOnLocales($localesIdentifiers);
         }
 
         return $connectorRecord;

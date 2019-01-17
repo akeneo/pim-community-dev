@@ -15,6 +15,8 @@ namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
 use Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords\DeleteAllReferenceEntityRecordsCommand;
 use Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords\DeleteAllReferenceEntityRecordsHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -56,13 +58,17 @@ final class DeleteAllRecordsContext implements Context
     /** @var ConstraintViolationsContext */
     private $violationsContext;
 
+    /** @var CreateReferenceEntityHandler */
+    private $createReferenceEntityHandler;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         RecordRepositoryInterface $recordRepository,
         DeleteAllReferenceEntityRecordsHandler $deleteAllRecordsHandler,
         ValidatorInterface $validator,
         ConstraintViolationsContext $violationsContext,
-        ExceptionContext $exceptionContext
+        ExceptionContext $exceptionContext,
+        CreateReferenceEntityHandler $createReferenceEntityHandler
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->recordRepository = $recordRepository;
@@ -70,6 +76,7 @@ final class DeleteAllRecordsContext implements Context
         $this->exceptionContext = $exceptionContext;
         $this->validator = $validator;
         $this->violationsContext = $violationsContext;
+        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
     }
 
     /**
@@ -146,11 +153,16 @@ final class DeleteAllRecordsContext implements Context
 
     private function createReferenceEntity(string $identifier): void
     {
-        $this->referenceEntityRepository->create(ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString($identifier),
-            [],
-            Image::createEmpty()
-        ));
+        $createCommand = new CreateReferenceEntityCommand();
+        $createCommand->code = $identifier;
+        $createCommand->labels = [];
+
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+        }
+
+        ($this->createReferenceEntityHandler)($createCommand);
     }
 
     private function createRecord(string $referenceEntityIdentifier): void
@@ -162,8 +174,6 @@ final class DeleteAllRecordsContext implements Context
             $recordIdentifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         ));
     }

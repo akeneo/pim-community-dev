@@ -164,7 +164,7 @@ class GetConnectorAttributesContext implements Context
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
@@ -206,7 +206,7 @@ class GetConnectorAttributesContext implements Context
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-            AttributeOrder::fromInteger(2),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -244,7 +244,7 @@ class GetConnectorAttributesContext implements Context
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['fr_FR' => 'Nationalité', 'en_US' => 'Nationality']),
-            AttributeOrder::fromInteger(3),
+            AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
@@ -277,7 +277,7 @@ class GetConnectorAttributesContext implements Context
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['fr_FR' => 'Zones de vente', 'en_US' => 'Sales areas']),
-            AttributeOrder::fromInteger(4),
+            AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
@@ -310,7 +310,7 @@ class GetConnectorAttributesContext implements Context
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['en_US' => 'Country', 'fr_FR' => 'Pays']),
-            AttributeOrder::fromInteger(5),
+            AttributeOrder::fromInteger(6),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
@@ -345,7 +345,7 @@ class GetConnectorAttributesContext implements Context
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['en_US' => 'Designers', 'fr_FR' => 'Designeurs']),
-            AttributeOrder::fromInteger(6),
+            AttributeOrder::fromInteger(7),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)

@@ -22,6 +22,9 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
  */
 class ReferenceEntity
 {
+    public const DEFAULT_ATTRIBUTE_AS_LABEL_CODE = 'label';
+    public const DEFAULT_ATTRIBUTE_AS_IMAGE_CODE = 'image';
+
     /** @var ReferenceEntityIdentifier */
     private $identifier;
 
@@ -31,21 +34,58 @@ class ReferenceEntity
     /** @var Image|null */
     private $image;
 
+    /** @var AttributeAsLabelReference */
+    private $attributeAsLabel;
+
+    /** @var AttributeAsImageReference */
+    private $attributeAsImage;
+
     private function __construct(
         ReferenceEntityIdentifier $identifier,
         LabelCollection $labelCollection,
-        Image $image
+        Image $image,
+        AttributeAsLabelReference $attributeAsLabel,
+        AttributeAsImageReference $attributeAsImage
     ) {
         $this->identifier = $identifier;
         $this->labelCollection = $labelCollection;
         $this->image = $image;
+        $this->attributeAsLabel = $attributeAsLabel;
+        $this->attributeAsImage = $attributeAsImage;
     }
 
-    public static function create(ReferenceEntityIdentifier $identifier, array $rawLabelCollection, Image $image): self
-    {
+    public static function create(
+        ReferenceEntityIdentifier $identifier,
+        array $rawLabelCollection,
+        Image $image
+    ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
-        return new self($identifier, $labelCollection, $image);
+        return new self(
+            $identifier,
+            $labelCollection,
+            $image,
+            AttributeAsLabelReference::noReference(),
+            AttributeAsImageReference::noReference()
+        );
+    }
+
+    public static function createWithAttributes(
+        ReferenceEntityIdentifier $identifier,
+        array $rawLabelCollection,
+        Image $image,
+        AttributeAsLabelReference $attributeAsLabel,
+        AttributeAsImageReference $attributeAsImage
+    ): self {
+        $labelCollection = LabelCollection::fromArray($rawLabelCollection);
+
+        return new self(
+            $identifier,
+            $labelCollection,
+            $image,
+            $attributeAsLabel,
+            $attributeAsImage
+        );
     }
 
     public function getIdentifier(): ReferenceEntityIdentifier
@@ -83,5 +123,25 @@ class ReferenceEntity
     public function updateImage(Image $image): void
     {
         $this->image = $image;
+    }
+
+    public function getAttributeAsLabelReference(): AttributeAsLabelReference
+    {
+        return $this->attributeAsLabel;
+    }
+
+    public function updateAttributeAsLabelReference(AttributeAsLabelReference $attributeAsLabel): void
+    {
+        $this->attributeAsLabel = $attributeAsLabel;
+    }
+
+    public function getAttributeAsImageReference(): AttributeAsImageReference
+    {
+        return $this->attributeAsImage;
+    }
+
+    public function updateAttributeAsImageReference(AttributeAsImageReference $attributeAsImage): void
+    {
+        $this->attributeAsImage = $attributeAsImage;
     }
 }

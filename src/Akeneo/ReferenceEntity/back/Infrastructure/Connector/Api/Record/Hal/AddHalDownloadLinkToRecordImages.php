@@ -52,8 +52,8 @@ class AddHalDownloadLinkToRecordImages
 
     private function addDownloadLinkToNormalizedRecord(array $normalizedRecord, array $imageAttributeCodes): array
     {
-        if (!empty($normalizedRecord['main_image'])) {
-            $normalizedRecord = $this->addDownloadLinkToMainImage($normalizedRecord);
+        if (is_object($normalizedRecord['values'])) {
+            return $normalizedRecord;
         }
 
         foreach ($imageAttributeCodes as $imageAttributeCode) {
@@ -64,15 +64,6 @@ class AddHalDownloadLinkToRecordImages
                 );
             }
         }
-
-        return $normalizedRecord;
-    }
-
-    private function addDownloadLinkToMainImage(array $normalizedRecord): array
-    {
-        $mainImageUrl = $this->generateImageUrl($normalizedRecord['main_image']);
-        $mainImageLink = new Link('main_image_download', $mainImageUrl);
-        $normalizedRecord['_links'] = ($normalizedRecord['_links'] ?? []) + $mainImageLink->toArray();
 
         return $normalizedRecord;
     }

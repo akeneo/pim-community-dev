@@ -6,6 +6,8 @@ namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
 use Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityCommand;
 use Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
 use Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
@@ -36,18 +38,23 @@ class IndexRecordsContext implements Context
     /** @var ValidatorInterface */
     private $validator;
 
+    /** @var CreateReferenceEntityHandler */
+    private $createReferenceEntityHandler;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         IndexRecordsByReferenceEntityHandler $indexRecordsByReferenceEntity,
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext,
-        RecordIndexerSpy $recordIndexerSpy
+        RecordIndexerSpy $recordIndexerSpy,
+        CreateReferenceEntityHandler $createReferenceEntityHandler
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->indexRecordsByReferenceEntity = $indexRecordsByReferenceEntity;
         $this->validator = $validator;
         $this->constraintViolationsContext = $constraintViolationsContext;
         $this->recordIndexerSpy = $recordIndexerSpy;
+        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
     }
 
     /**
@@ -55,11 +62,16 @@ class IndexRecordsContext implements Context
      */
     public function theReferenceEntity(string $referenceEntityIdentifier): void
     {
-        $this->referenceEntityRepository->create(
-            ReferenceEntity::create(
-                ReferenceEntityIdentifier::fromString($referenceEntityIdentifier), [], Image::createEmpty()
-            )
-        );
+        $createCommand = new CreateReferenceEntityCommand();
+        $createCommand->code = $referenceEntityIdentifier;
+        $createCommand->labels = [];
+
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+        }
+
+        ($this->createReferenceEntityHandler)($createCommand);
     }
     /**
      * @Given /^none of the records of "([^"]*)" are indexed$/

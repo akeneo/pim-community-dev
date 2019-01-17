@@ -47,7 +47,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
     ) {
         $normalizedRecord = [
             'code' => 'starck',
-            'main_image' => 'images/starck.jpg',
+            'image' => 'images/starck.jpg',
             'labels' => [
                 'en_us' => 'Philippe Starck'
             ],
@@ -78,10 +78,6 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         $command->shouldBeAnInstanceOf(EditRecordCommand::class);
         $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('starck');
-        $command->image->shouldBe(['filePath' => 'images/starck.jpg']);
-        $command->labels->shouldBeEqualTo([
-            'en_us' => 'Philippe Starck'
-        ]);
         $command->editRecordValueCommands->shouldBeEqualTo([$editDescriptionCommand]);
     }
 
@@ -99,9 +95,6 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         $command->shouldBeAnInstanceOf(EditRecordCommand::class);
         $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBe('starck');
-        $command->labels->shouldBeEqualTo([
-            'en_us' => 'Philippe Starck'
-        ]);
         $command->editRecordValueCommands->shouldBe([]);
     }
 

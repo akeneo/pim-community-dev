@@ -13,10 +13,17 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Application\Record\CreateRecord;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsLabelInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 
 /**
@@ -28,9 +35,15 @@ class CreateRecordHandler
     /** @var RecordRepositoryInterface */
     private $recordRepository;
 
-    public function __construct(RecordRepositoryInterface $recordRepository)
-    {
+    /** @var FindReferenceEntityAttributeAsLabelInterface */
+    private $findAttributeAsLabel;
+
+    public function __construct(
+        RecordRepositoryInterface $recordRepository,
+        FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel
+    ) {
         $this->recordRepository = $recordRepository;
+        $this->findAttributeAsLabel = $findAttributeAsLabel;
     }
 
     public function __invoke(CreateRecordCommand $createRecordCommand): void
@@ -38,16 +51,40 @@ class CreateRecordHandler
         $code = RecordCode::fromString($createRecordCommand->code);
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($createRecordCommand->referenceEntityIdentifier);
         $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $code);
+        $labelValues = $this->getLabelValues($createRecordCommand, $referenceEntityIdentifier);
 
         $record = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $code,
-            $createRecordCommand->labels,
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues($labelValues)
         );
 
         $this->recordRepository->create($record);
+    }
+
+    private function getLabelValues(CreateRecordCommand $createRecordCommand, ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    {
+        if (empty($createRecordCommand->labels)) {
+            return [];
+        }
+
+        /** @var AttributeAsLabelReference $attributeAsLabelReference */
+        $attributeAsLabelReference = ($this->findAttributeAsLabel)($referenceEntityIdentifier);
+        if ($attributeAsLabelReference->isEmpty()) {
+            return [];
+        }
+
+        $labelValues = [];
+        foreach ($createRecordCommand->labels as $locale => $label) {
+            $labelValues[] = Value::create(
+                $attributeAsLabelReference->getIdentifier(),
+                ChannelReference::noReference(),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($locale)),
+                TextData::createFromNormalize($label)
+            );
+        }
+
+        return $labelValues;
     }
 }

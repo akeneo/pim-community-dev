@@ -15,6 +15,8 @@ namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
 use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -58,13 +60,17 @@ final class DeleteRecordContext implements Context
     /** @var ConstraintViolationsContext */
     private $violationsContext;
 
+    /** @var CreateReferenceEntityHandler */
+    private $createReferenceEntityHandler;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         RecordRepositoryInterface $recordRepository,
         DeleteRecordHandler $deleteRecordHandler,
         ValidatorInterface $validator,
         ConstraintViolationsContext $violationsContext,
-        ExceptionContext $exceptionContext
+        ExceptionContext $exceptionContext,
+        CreateReferenceEntityHandler $createReferenceEntityHandler
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->recordRepository = $recordRepository;
@@ -72,6 +78,7 @@ final class DeleteRecordContext implements Context
         $this->exceptionContext = $exceptionContext;
         $this->validator = $validator;
         $this->violationsContext = $violationsContext;
+        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
     }
 
     /**
@@ -129,11 +136,16 @@ final class DeleteRecordContext implements Context
 
     private function createReferenceEntity(): void
     {
-        $this->referenceEntityRepository->create(ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            [],
-            Image::createEmpty()
-        ));
+        $createCommand = new CreateReferenceEntityCommand();
+        $createCommand->code = self::REFERENCE_ENTITY_IDENTIFIER;
+        $createCommand->labels = [];
+
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+        }
+
+        ($this->createReferenceEntityHandler)($createCommand);
     }
 
     private function createRecord(): void
@@ -142,8 +154,6 @@ final class DeleteRecordContext implements Context
             RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
             ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             RecordCode::fromString(self::RECORD_CODE),
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         ));
     }

@@ -159,7 +159,7 @@ module.exports = async function(cucumber) {
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillField('pim_reference_entity.record.enrich.label', 'Michel Starck');
+    await enrich.fillField('pim_reference_entity.record.enrich.name', 'Starck');
     await editPage.save();
   });
 

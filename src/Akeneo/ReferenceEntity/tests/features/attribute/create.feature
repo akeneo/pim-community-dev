@@ -8,55 +8,55 @@ Feature: Create an attribute linked to a reference entity
 
   @acceptance-back
   Scenario: Create an image attribute linked to a reference entity
-    When the user creates an image attribute "image" linked to the reference entity "designer" with:
-      | code  | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
-      | image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 250.0         | ["png", "jpg"]     |
-    Then there is an image attribute "image" in the reference entity "designer" with:
-      | code  | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | type  |
-      | image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 250.0         | ["png", "jpg"]     | image |
+    When the user creates an image attribute "another_image" linked to the reference entity "designer" with:
+      | code          | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
+      | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 250.0         | ["png", "jpg"]     |
+    Then there is an image attribute "another_image" in the reference entity "designer" with:
+      | code          | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions | type  |
+      | another_image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 250.0         | ["png", "jpg"]     | image |
 
   @acceptance-back
   Scenario: Create a text attribute linked to a reference entity
     When the user creates a text attribute "name" linked to the reference entity "designer" with:
       | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 44         |
     Then there is a text attribute "name" in the reference entity "designer" with:
       | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length | type | is_textarea | is_rich_text_editor | validation_rule | regular_expression |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         | text | false       | false               | none            |                    |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 44         | text | false       | false               | none            |                    |
 
   @acceptance-back
   Scenario: Create a record attribute linked to a reference entity
     When the user creates a record attribute "mentor" linked to the reference entity "designer" with:
       | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | record_type |
-      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 0     | false             | false            | designer    |
+      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 2     | false             | false            | designer    |
     Then there is a record attribute "mentor" in the reference entity "designer" with:
       | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | record_type | type   |
-      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 0     | false             | false            | designer    | record |
+      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 2     | false             | false            | designer    | record |
 
   @acceptance-back
   Scenario: Create a record collection attribute linked to a reference entity
     When the user creates a record collection attribute "brands" linked to the reference entity "designer" with:
       | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | record_type |
-      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 0     | false             | false            | brand       |
+      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 2     | false             | false            | brand       |
     Then there is a record attribute "brands" in the reference entity "designer" with:
       | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | record_type | type              |
-      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 0     | false             | false            | brand       | record_collection |
+      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 2     | false             | false            | brand       | record_collection |
 
   @acceptance-back
   Scenario: Cannot create an attribute for a reference entity if it already exists
     Given the user creates a text attribute "name" linked to the reference entity "designer" with:
       | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 44         |
     When the user creates a text attribute "name" linked to the reference entity "designer" with:
       | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 44         |
     Then an exception is thrown
 
   @acceptance-back
   Scenario Outline: Cannot create an attribute with a reserverd word as code
     When the user creates a text attribute "code" linked to the reference entity "designer" with:
       | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
-      | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
+      | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 2     | true              | false            | 44         |
     Then there should be a validation error on the property 'code' with message '<message>'
     And there is no exception thrown
 
@@ -162,19 +162,19 @@ Feature: Create an attribute linked to a reference entity
   Scenario: Create an option attribute
     When the user creates an option attribute "color" with:
       | labels             | is_required | order | value_per_channel | value_per_locale |
-      | {"en_US": "Color"} | false       | 0     | false             | false            |
+      | {"en_US": "Color"} | false       | 2     | false             | false            |
     Then there is an option attribute "color" with:
       | labels             | is_required | order | value_per_channel | value_per_locale | type   |
-      | {"en_US": "Color"} | false       | 0     | false             | false            | option |
+      | {"en_US": "Color"} | false       | 2     | false             | false            | option |
 
   @acceptance-back
   Scenario: Create an option collection attribute
     When the user creates an option collection attribute "favorite_colors" with:
       | labels                       | is_required | order | value_per_channel | value_per_locale |
-      | {"en_US": "Favorite colors"} | true        | 0     | false             | false            |
+      | {"en_US": "Favorite colors"} | true        | 2     | false             | false            |
     Then there is an option collection attribute "favorite_colors" with:
       | labels                       | is_required | order | value_per_channel | value_per_locale | type              |
-      | {"en_US": "Favorite colors"} | true        | 0     | false             | false            | option_collection |
+      | {"en_US": "Favorite colors"} | true        | 2     | false             | false            | option_collection |
 
   @acceptance-back
   Scenario: Cannot create more option attributes than the limit

@@ -35,7 +35,7 @@ class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
     /** @var FindValueKeyCollectionInterface */
     private $generateEmptyValues;
 
-    private $order = 0;
+    private $order = 2;
 
     public function setUp()
     {
@@ -52,13 +52,19 @@ class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
     public function it_returns_all_empty_values_possible_for_a_given_reference_entity()
     {
         $designer = ReferenceEntityIdentifier::fromString('designer');
-        $image = $this->loadAttribute('designer', 'image', false, false);
+        $image = $this->loadAttribute('designer', 'main_image', false, false);
         $name = $this->loadAttribute('designer', 'name', false, true);
         $age = $this->loadAttribute('designer', 'age', true, false);
         $weight = $this->loadAttribute('designer', 'weigth', true, true);
         $emptyValues = ($this->generateEmptyValues)($designer);
 
-        $this->assertCount(11, $emptyValues);
+        /** @var ReferenceEntity $referenceEntity */
+        $referenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')
+            ->getByIdentifier($designer);
+        $attributeAsLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
+        $attributeAsImageIdentifier = $referenceEntity->getAttributeAsImageReference()->getIdentifier();
+
+        $this->assertCount(15, $emptyValues);
         $this->assertArrayHasKey(sprintf('%s', $image->getIdentifier()), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_en_US', $name->getIdentifier()), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_de_DE', $name->getIdentifier()), $emptyValues);
@@ -70,6 +76,10 @@ class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
         $this->assertArrayHasKey(sprintf('%s_mobile_de_DE', $weight->getIdentifier()), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_ecommerce_fr_FR', $weight->getIdentifier()), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_ecommerce_en_US', $weight->getIdentifier()), $emptyValues);
+        $this->assertArrayHasKey(sprintf('%s_en_US', $attributeAsLabelIdentifier), $emptyValues);
+        $this->assertArrayHasKey(sprintf('%s_fr_FR', $attributeAsLabelIdentifier), $emptyValues);
+        $this->assertArrayHasKey(sprintf('%s_de_DE', $attributeAsLabelIdentifier), $emptyValues);
+        $this->assertArrayHasKey(sprintf('%s', $attributeAsImageIdentifier), $emptyValues);
 
         $this->assertSame([
             'data' => null,

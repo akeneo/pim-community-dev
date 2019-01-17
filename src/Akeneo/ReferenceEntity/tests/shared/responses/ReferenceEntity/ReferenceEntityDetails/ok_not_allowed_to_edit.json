@@ -135,7 +135,9 @@
             ],
             "permission": {
                 "edit": false
-            }
+            },
+            "attribute_as_label":null,
+            "attribute_as_image":null
         }
     }
 }

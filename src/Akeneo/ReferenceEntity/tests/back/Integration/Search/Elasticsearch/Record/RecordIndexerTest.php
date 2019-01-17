@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
@@ -161,7 +162,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
                 ReferenceEntityIdentifier::fromString('designer'),
                 AttributeCode::fromString('name'),
                 LabelCollection::fromArray(['fr_FR' => 'Nom']),
-                AttributeOrder::fromInteger(0),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -191,7 +192,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
                 AttributeIdentifier::create('another_reference_entity', 'name', 'fingerprint'), ReferenceEntityIdentifier::fromString('another_reference_entity'),
                 AttributeCode::fromString('name'),
                 LabelCollection::fromArray(['fr_FR' => 'Nom']),
-                AttributeOrder::fromInteger(0),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -210,9 +211,13 @@ class RecordIndexerTest extends SearchIntegrationTestCase
                 RecordIdentifier::fromString('stark_designer_fingerprint'),
                 ReferenceEntityIdentifier::fromString('designer'),
                 RecordCode::fromString('stark'),
-                ['fr_FR' => 'Philippe Starck'],
-                Image::createEmpty(),
                 ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_designer_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Philippe Starck')
+                    ),
                     Value::create(
                         AttributeIdentifier::create('designer', 'name', 'fingerprint'),
                         ChannelReference::noReference(),
@@ -241,9 +246,13 @@ class RecordIndexerTest extends SearchIntegrationTestCase
                 RecordIdentifier::fromString('coco_designer_fingerprint'),
                 ReferenceEntityIdentifier::fromString('designer'),
                 RecordCode::fromString('coco'),
-                ['fr_FR' => 'Coco'],
-                Image::createEmpty(),
                 ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_designer_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Coco')
+                    ),
                     Value::create(
                         AttributeIdentifier::create('designer', 'name', 'fingerprint'),
                         ChannelReference::noReference(),
@@ -272,9 +281,13 @@ class RecordIndexerTest extends SearchIntegrationTestCase
                 RecordIdentifier::fromString('another_record_another_reference_entity'),
                 ReferenceEntityIdentifier::fromString('another_reference_entity'),
                 RecordCode::fromString('another_record'),
-                ['fr_FR' => 'Coco'],
-                Image::createEmpty(),
                 ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_designer_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Coco')
+                    ),
                     Value::create(
                         AttributeIdentifier::create('another_reference_entity', 'name', 'fingerprint'),
                         ChannelReference::noReference(),

@@ -14,6 +14,8 @@ class ReferenceEntityBuilder {
       image: null,
       attributes: [],
       record_count: 123,
+      attribute_as_label: null,
+      attribute_as_image: null,
       permission: {edit: true},
     };
   }
@@ -38,6 +40,18 @@ class ReferenceEntityBuilder {
 
   withAttributes(attributes) {
     this.referenceEntity.attributes = attributes;
+
+    return this;
+  }
+
+  withAttributeAsImage(attribute) {
+    this.referenceEntity.attribute_as_image = attribute;
+
+    return this;
+  }
+
+  withAttributeAsLabel(attribute) {
+    this.referenceEntity.attribute_as_label = attribute;
 
     return this;
   }

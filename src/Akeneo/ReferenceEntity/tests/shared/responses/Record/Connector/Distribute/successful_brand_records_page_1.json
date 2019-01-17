@@ -26,16 +26,17 @@
                         "_links": {
                             "self": {
                                 "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_1"
-                            },
-                            "main_image_download": {
-                                "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_1_image.jpg"
                             }
                         },
                         "code": "brand_1",
-                        "labels": {
-                            "en_US": "Brand number 1"
-                        },
                         "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "Brand number 1"
+                                }
+                            ],
                             "description": [
                                 {
                                     "locale": "en_US",
@@ -49,24 +50,36 @@
                                     "channel": null,
                                     "data": "italy"
                                 }
+                            ],
+                            "image": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "test/brand_1_image.jpg",
+                                    "_links": {
+                                        "download": {
+                                            "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_1_image.jpg"
+                                        }
+                                    }
+                                }
                             ]
-                        },
-                        "main_image": "test/brand_1_image.jpg"
+                        }
                     },
                     {
                         "_links": {
                             "self": {
                                 "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_2"
-                            },
-                            "main_image_download": {
-                                "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_2_image.jpg"
                             }
                         },
                         "code": "brand_2",
-                        "labels": {
-                            "en_US": "Brand number 2"
-                        },
                         "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "Brand number 2"
+                                }
+                            ],
                             "description": [
                                 {
                                     "locale": "en_US",
@@ -80,24 +93,36 @@
                                     "channel": null,
                                     "data": "italy"
                                 }
+                            ],
+                            "image": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "test/brand_2_image.jpg",
+                                    "_links": {
+                                        "download": {
+                                            "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_2_image.jpg"
+                                        }
+                                    }
+                                }
                             ]
-                        },
-                        "main_image": "test/brand_2_image.jpg"
+                        }
                     },
                     {
                         "_links": {
                             "self": {
                                 "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_3"
-                            },
-                            "main_image_download": {
-                                "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_3_image.jpg"
                             }
                         },
                         "code": "brand_3",
-                        "labels": {
-                            "en_US": "Brand number 3"
-                        },
                         "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "Brand number 3"
+                                }
+                            ],
                             "description": [
                                 {
                                     "locale": "en_US",
@@ -111,9 +136,20 @@
                                     "channel": null,
                                     "data": "italy"
                                 }
+                            ],
+                            "image": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "test/brand_3_image.jpg",
+                                    "_links": {
+                                        "download": {
+                                            "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_3_image.jpg"
+                                        }
+                                    }
+                                }
                             ]
-                        },
-                        "main_image": "test/brand_3_image.jpg"
+                        }
                     }
                 ]
             }

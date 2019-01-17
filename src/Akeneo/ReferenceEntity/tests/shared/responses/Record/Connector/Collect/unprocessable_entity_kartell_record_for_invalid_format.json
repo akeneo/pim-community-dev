@@ -8,23 +8,19 @@
         },
         "body": {
             "code": "kartell",
-            "labels": {
-                "en_US": "Kartell english label",
-                "fr_FR": null
-            },
-            "main_image": null,
-            "values":  [
-                {
-                    "locale": "en_US",
-                    "channel": null,
-                    "data": null
-                },
-                {
-                    "locale": "fr_FR",
-                    "channel": null,
-                    "data": "Kartell french description."
-                }
-            ]
+            "values": {
+                "name": [
+                    {
+                        "locale": 42,
+                        "channel": null,
+                        "data": null
+                    },
+                    {
+                        "locale": "en_AU",
+                        "data": "Kartell french description."
+                    }
+                ]
+            }
         }
     },
     "response": {
@@ -34,12 +30,12 @@
             "message": "The record has an invalid format.",
             "errors": [
                 {
-                    "property": "labels.fr_FR",
-                    "message": "NULL value found, but a string is required"
+                    "property": "values.name[0].locale",
+                    "message": "Integer value found, but a string or a null is required"
                 },
                 {
-                    "property": "values",
-                    "message": "Array value found, but an object is required"
+                    "property": "values.name[1].channel",
+                    "message": "The property channel is required"
                 }
             ]
         }

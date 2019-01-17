@@ -6,15 +6,25 @@ import {
 
 describe('akeneo > reference entity > application > hydrator --- reference entity', () => {
   test('I can hydrate a new reference entity', () => {
-    const hydrate = hydrator(({identifier, labels, image}) => {
+    const hydrate = hydrator(({identifier, labels, image, attribute_as_label, attribute_as_image}) => {
       expect(identifier).toEqual('designer');
       expect(image).toEqual(null);
       expect(labels).toEqual({en_US: 'Designer'});
+      expect(attribute_as_label).toEqual(null);
+      expect(attribute_as_image).toEqual(null);
 
-      return denormalizeReferenceEntity({identifier, labels, image});
+      return denormalizeReferenceEntity({identifier, labels, image, attribute_as_label, attribute_as_image});
     });
 
-    expect(hydrate({identifier: 'designer', labels: {en_US: 'Designer'}, image: null}));
+    expect(
+      hydrate({
+        identifier: 'designer',
+        labels: {en_US: 'Designer'},
+        image: null,
+        attribute_as_label: null,
+        attribute_as_image: null,
+      })
+    );
   });
 
   test('It throw an error if I pass a malformed reference entity', () => {

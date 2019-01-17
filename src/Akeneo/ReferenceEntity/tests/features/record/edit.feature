@@ -41,13 +41,13 @@ Feature: Edit an record
   Scenario Outline: Updating a record default image with an invalid file
     Given a referenceEntity and a record with an image
     When the user updates the record default image with path '<wrong_path>' and filename '<wrong_filename>'
-    Then there should be a validation error on the property 'image' with message '<message>'
+    Then there should be a validation error on the property 'values.image' with message '<message>'
 
   Examples:
   | wrong_path        | wrong_filename | message                              |
-  | false             | "image.jpg"    | This value should not be blank.      |
+  | false             | "image.jpg"    | This value should be of type string. |
   | 150               | "image.jpg"    | This value should be of type string. |
-  | "/path/image.jpg" | false          | This value should not be blank.      |
+  | "/path/image.jpg" | false          | This value should be of type string. |
   | "/path/image.jpg" | 150            | This value should be of type string. |
 
   # ValuePerChannel / ValuePerLocale
@@ -263,6 +263,13 @@ Feature: Edit an record
     Then there should be a validation error on the property image attribute with message "This value should be of type string."
 
   @acceptance-back
+  Scenario: Updating the image value of a record with an image that does not exist
+    Given a reference entity with an image attribute
+    And a record belonging to this reference entity with the file "picture.jpeg" for the image attribute
+    When the user updates the image attribute of the record to an image that does not exist
+    Then there should be a validation error on the property image attribute with message "The file "/files/not_found.png" was not found."
+
+  @acceptance-back
   Scenario: Updating the image value of a record with an invalid uploaded original filename
     Given a reference entity with an image attribute
     And a record belonging to this reference entity with the file "picture.jpeg" for the image attribute
@@ -433,17 +440,6 @@ Feature: Edit an record
     When the user updates the option collection attribute of the record to "vodka, water"
     Then there should be a validation error on the property option collection attribute with message "The following option codes don't exist for this attribute : "water""
     And the record should have the option collection value "vodka, whisky" for this attribute
-
-  @acceptance-front
-  Scenario: Display a record labels in the edit form
-    Given a valid record
-    And the user has the locale permission to edit the record
-    And the user has the following rights:
-      | akeneo_referenceentity_record_edit | true |
-    When the user ask for the record
-    Then the record should be:
-      | labels                                    |
-      | {"en_US": "", "fr_FR": "Philippe Starck"} |
 
   @acceptance-front
   Scenario: Updating a record details

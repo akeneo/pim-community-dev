@@ -11,8 +11,7 @@
       "reference_entity_identifier":"designer",
       "code":"starck",
       "labels":{
-        "fr_FR":"Philippe Starck",
-        "en_US":"Michel Starck"
+        "fr_FR":"Philippe Starck"
       },
       "image":null,
       "values":[
@@ -20,7 +19,7 @@
           "attribute":"name_designer_fingerprint",
           "channel":null,
           "locale":null,
-          "data":"Philippe Starck"
+          "data":"Starck"
         },
         {
           "attribute":"description_designer_fingerprint",

@@ -6,6 +6,7 @@ import ReferenceEntity, {
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
+import {createAttributeReference} from 'akeneoreferenceentity/domain/model/attribute/attribute-reference';
 
 interface TableState {
   locale: string;
@@ -39,7 +40,13 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     if (0 === referenceEntities.length && isLoading) {
       const referenceEntityIdentifier = createIdentifier('');
       const labelCollection = createLabelCollection({});
-      const referenceEntity = createReferenceEntity(referenceEntityIdentifier, labelCollection, createEmptyFile());
+      const referenceEntity = createReferenceEntity(
+        referenceEntityIdentifier,
+        labelCollection,
+        createEmptyFile(),
+        createAttributeReference(null),
+        createAttributeReference(null)
+      );
 
       return Array(4)
         .fill('placeholder')

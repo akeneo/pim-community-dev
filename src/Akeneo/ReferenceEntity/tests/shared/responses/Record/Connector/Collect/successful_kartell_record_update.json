@@ -8,11 +8,19 @@
         },
         "body": {
             "code": "kartell",
-            "labels": {
-                "en_US": "Kartell updated english label",
-                "fr_FR": "Kartell updated french label"
-            },
             "values": {
+                "label": [
+                    {
+                        "locale": "en_US",
+                        "channel": null,
+                        "data": "Kartell updated english label"
+                    },
+                    {
+                        "locale": "fr_FR",
+                        "channel": null,
+                        "data": "Kartell updated french label"
+                    }
+                ],
                 "name": [
                     {
                         "channel": null,
@@ -30,6 +38,13 @@
                         "locale": "en_US",
                         "channel": "ecommerce",
                         "data": "Kartell english description"
+                    }
+                ],
+                "cover_image": [
+                    {
+                        "channel": null,
+                        "locale": null,
+                        "data": "2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg"
                     }
                 ]
             }

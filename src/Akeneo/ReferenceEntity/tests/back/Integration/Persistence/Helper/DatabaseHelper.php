@@ -45,6 +45,8 @@ class DatabaseHelper
     private function resetTables(): void
     {
         $resetQuery = <<<SQL
+            SET foreign_key_checks = 0;
+            
             DELETE FROM akeneo_reference_entity_attribute;
             DELETE FROM akeneo_reference_entity_record;
             DELETE FROM akeneo_reference_entity_reference_entity;
@@ -53,11 +55,14 @@ class DatabaseHelper
             DELETE FROM pim_catalog_attribute;
             DELETE FROM oro_user;
             DELETE FROM oro_access_group;
+            DELETE FROM oro_user_access_group;
             DELETE FROM pim_catalog_channel;
             DELETE FROM pim_catalog_category;
             DELETE FROM pimee_product_asset_category;
             DELETE FROM pim_catalog_locale;
             DELETE FROM akeneo_file_storage_file_info;
+            
+            SET foreign_key_checks = 1;
 SQL;
         $this->sqlConnection->executeQuery($resetQuery);
     }

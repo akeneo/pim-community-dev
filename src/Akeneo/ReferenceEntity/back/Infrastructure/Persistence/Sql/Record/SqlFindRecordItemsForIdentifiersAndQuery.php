@@ -48,62 +48,64 @@ class SqlFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsForIden
         $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocale;
     }
 
-    /**
-     * @return string[]
-     */
     public function __invoke(array $identifiers, RecordQuery $query): array
     {
+        $normalizedRecordItems = $this->fetchAll($identifiers);
+        $requiredValueKeys = $this->getRequiredValueKeys($query);
+        $recordItems = $this->hydrateRecordItems($requiredValueKeys, $normalizedRecordItems);
+
+        return $recordItems;
+    }
+
+    private function fetchAll(array $identifiers): array
+    {
         $sqlQuery = <<<SQL
-        SELECT ee.identifier, ee.reference_entity_identifier, ee.code, ee.labels, fi.image, ee.value_collection
-        FROM akeneo_reference_entity_record AS ee
-        LEFT JOIN (
-          SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
-          FROM akeneo_file_storage_file_info
-        ) AS fi ON fi.file_key = ee.image
-        WHERE identifier IN (:identifiers)
-        ORDER BY FIELD(identifier, :identifiers);
+        SELECT
+            record.identifier,
+            record.reference_entity_identifier,
+            record.code,
+            record.value_collection,
+            reference.attribute_as_image,
+            reference.attribute_as_label
+        FROM akeneo_reference_entity_record AS record
+        INNER JOIN akeneo_reference_entity_reference_entity AS reference
+            ON reference.identifier = record.reference_entity_identifier
+        WHERE record.identifier IN (:identifiers)
+        ORDER BY FIELD(record.identifier, :identifiers);
 SQL;
 
         $statement = $this->sqlConnection->executeQuery($sqlQuery, [
-            'identifiers' => $identifiers
+            'identifiers' => $identifiers,
         ], ['identifiers' => Connection::PARAM_STR_ARRAY]);
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
+        return $results;
+    }
+
+    private function getRequiredValueKeys(RecordQuery $query): ValueKeyCollection
+    {
         $referenceEntityFilter = $query->getFilter('reference_entity');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityFilter['value']);
         $channelIdentifier = ChannelIdentifier::fromCode($query->getChannel());
         $localeIdentifiers = LocaleIdentifierCollection::fromNormalized([$query->getLocale()]);
 
-        /** @var ValueKeyCollection $requiredValueKeyCollection */
-        $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocales)(
+        /** @var ValueKeyCollection $result */
+        $result = ($this->findRequiredValueKeyCollectionForChannelAndLocales)(
             $referenceEntityIdentifier,
             $channelIdentifier,
             $localeIdentifiers
         );
-        $requiredValueKeys = $requiredValueKeyCollection->normalize();
 
+        return $result;
+    }
+
+    private function hydrateRecordItems(ValueKeyCollection $requiredValueKeys, array $results): array
+    {
         $recordItems = [];
         foreach ($results as $result) {
-            $image = null !== $result['image'] ? json_decode($result['image'], true) : null;
-            $image = null !== $result['image'] ? ['filePath' => $image['file_key'], 'originalFilename' => $image['original_filename']] : null;
-
-            $valueCollection = $this->cleanValues($result['value_collection']);
-            $completeness = ['complete' => 0, 'required' => 0];
-
-            if (count($requiredValueKeys) > 0) {
-                $existingValueKeys = array_keys($valueCollection);
-                $completeness['complete'] = count(array_intersect($requiredValueKeys, $existingValueKeys));
-                $completeness['required'] = count($requiredValueKeys);
-            }
-
             $recordItems[] = $this->hydrateRecordItem(
-                $result['identifier'],
-                $result['reference_entity_identifier'],
-                $result['code'],
-                $image,
-                $result['labels'],
-                $valueCollection,
-                $completeness
+                $requiredValueKeys,
+                $result
             );
         }
 
@@ -111,21 +113,20 @@ SQL;
     }
 
     private function hydrateRecordItem(
-        string $identifier,
-        string $referenceEntityIdentifier,
-        string $code,
-        ?array $image,
-        string $normalizedLabels,
-        array $values,
-        array $completeness
+        ValueKeyCollection $requiredValueKeyCollection,
+        array $normalizedRecordItem
     ): RecordItem {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
-        $labels = json_decode($normalizedLabels, true);
-        $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
-        $referenceEntityIdentifier = Type::getType(Type::STRING)
-            ->convertToPHPValue($referenceEntityIdentifier, $platform);
-        $code = Type::getType(Type::STRING)->convertToPHPValue($code, $platform);
+        $identifier = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['identifier'], $platform);
+        $referenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['reference_entity_identifier'], $platform);
+        $code = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['code'], $platform);
+        $valueCollection = $this->cleanValues($normalizedRecordItem['value_collection']);
+
+        $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['attribute_as_label'], $platform);
+        $labels = $this->getLabels($valueCollection, $attributeAsLabel);
+        $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['attribute_as_image'], $platform);
+        $image = $this->getImage($valueCollection, $attributeAsImage);
 
         $recordItem = new RecordItem();
         $recordItem->identifier = $identifier;
@@ -133,8 +134,8 @@ SQL;
         $recordItem->code = $code;
         $recordItem->labels = $labels;
         $recordItem->image = $image;
-        $recordItem->values = $values;
-        $recordItem->completeness = $completeness;
+        $recordItem->values = $valueCollection;
+        $recordItem->completeness = $this->getCompleteness($requiredValueKeyCollection, $valueCollection);
 
         return $recordItem;
     }
@@ -144,5 +145,54 @@ SQL;
         $cleanValues = strip_tags(html_entity_decode(str_replace(["\r", "\n"], ' ', $values)));
 
         return json_decode($cleanValues, true);
+    }
+
+    private function getCompleteness(ValueKeyCollection $requiredValueKeys, $valueCollection): array
+    {
+        $normalizedRequiredValueKeys = $requiredValueKeys->normalize();
+
+        $completeness = ['complete' => 0, 'required' => 0];
+        if (count($normalizedRequiredValueKeys) > 0) {
+            $existingValueKeys = array_keys($valueCollection);
+            $completeness['complete'] = count(
+                array_intersect($normalizedRequiredValueKeys, $existingValueKeys)
+            );
+            $completeness['required'] = count($normalizedRequiredValueKeys);
+        }
+
+        return $completeness;
+    }
+
+    private function getLabels(array $valueCollection, string $attributeAsLabel): array
+    {
+        return array_reduce(
+            $valueCollection,
+            function (array $labels, array $value) use ($attributeAsLabel) {
+                if ($value['attribute'] === $attributeAsLabel) {
+                    $labels[$value['locale']] = $value['data'];
+                }
+
+                return $labels;
+            },
+            []
+        );
+    }
+
+    private function getImage(array $valueCollection, string $attributeAsImage): ?array
+    {
+        $emptyImage = null;
+
+        $value = current(array_filter(
+            $valueCollection,
+            function (array $value) use ($attributeAsImage) {
+                return $value['attribute'] === $attributeAsImage;
+            }
+        ));
+
+        if (false === $value) {
+            return $emptyImage;
+        }
+
+        return $value['data'];
     }
 }

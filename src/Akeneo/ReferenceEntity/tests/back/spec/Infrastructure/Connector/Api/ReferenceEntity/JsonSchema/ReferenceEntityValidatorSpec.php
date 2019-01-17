@@ -29,7 +29,8 @@ class ReferenceEntityValidatorSpec extends ObjectBehavior
             'code' => 'starck',
             'labels' => [
                 'en_US' => 'Philippe Starck'
-            ]
+            ],
+            'image' => 'images/starck.png'
         ];
 
         $this->validate($referenceEntity)->shouldReturn([]);
@@ -92,11 +93,11 @@ class ReferenceEntityValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_image_is_provided()
+    function it_returns_an_error_when_image_is_not_a_string_or_null()
     {
         $referenceEntity = [
             'code' => 'starck',
-            'image' => 'code'
+            'image' => 42
         ];
 
         $errors = $this->validate($referenceEntity);

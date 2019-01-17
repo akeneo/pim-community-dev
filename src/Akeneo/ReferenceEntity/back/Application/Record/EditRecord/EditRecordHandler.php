@@ -60,24 +60,7 @@ class EditRecordHandler
     public function __invoke(EditRecordCommand $editRecordCommand): void
     {
         $record = $this->getRecord($editRecordCommand);
-        $this->editLabels($record, $editRecordCommand);
         $this->editValues($record, $editRecordCommand);
-
-        if (null !== $editRecordCommand->image) {
-            $existingImage = $record->getImage();
-            if (
-                $existingImage->isEmpty() ||
-                $existingImage->getKey() !== $editRecordCommand->image['filePath']
-            ) {
-                $image = $editRecordCommand->image;
-                $rawFile = new \SplFileInfo($image['filePath']);
-                $file = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
-                $image = Image::fromFileInfo($file);
-                $record->updateImage($image);
-            }
-        } else {
-            $record->updateImage(Image::createEmpty());
-        }
 
         $this->recordRepository->update($record);
     }
@@ -89,12 +72,6 @@ class EditRecordHandler
         $record = $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $code);
 
         return $record;
-    }
-
-    private function editLabels(Record $record, EditRecordCommand $editRecordCommand): void
-    {
-        $labelCollection = LabelCollection::fromArray($editRecordCommand->labels);
-        $record->setLabels($labelCollection);
     }
 
     private function editValues(Record $record, EditRecordCommand $editRecordCommand): void

@@ -8,11 +8,6 @@
         },
         "body": {
             "code": "kartell",
-            "labels": {
-                "en_US": "Kartell english label",
-                "en_AU": "label for a locale that is not activated"
-            },
-            "main_image": null,
             "values": {
                 "description": [
                     {
@@ -47,10 +42,6 @@
                 {
                     "property": "values.description",
                     "message": "The locale \"de_DE\" is not activated for the channel \"ecommerce\"."
-                },
-                {
-                    "property": "labels",
-                    "message": "The locale \"en_AU\" is not activated."
                 }
             ]
         }

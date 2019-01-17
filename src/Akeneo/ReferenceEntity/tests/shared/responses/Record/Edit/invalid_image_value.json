@@ -34,19 +34,16 @@
     "status": 400,
     "body": [
       {
-        "messageTemplate": "\u0022.gif\u0022 files are not allowed for this attribute. Allowed extensions are: png",
+        "messageTemplate": "The file \"/a/b/c/philou.gif\" was not found.",
         "parameters": {
-          "%file_extension%": ".gif",
-          "%allowed_file_extensions%": "png"
+          "%file_path%": "/a/b/c/philou.gif"
         },
         "plural": null,
-        "message": "\u0022.gif\u0022 files are not allowed for this attribute. Allowed extensions are: png",
+        "message": "The file \"/a/b/c/philou.gif\" was not found.",
         "root": {
           "referenceEntityIdentifier": "designer",
           "code": "starck",
-          "labels": {
-            "fr_FR": "Philippe Starck"
-          },
+          "labels": {},
           "image": null,
           "editRecordValueCommands": [
             {
@@ -69,11 +66,11 @@
                 "valuePerChannel": false,
                 "valuePerLocale": false
               },
-              "filePath": "\/a\/b\/c\/philou.gif",
-              "originalFilename": "philou.gif",
-              "size": 2024,
-              "mimeType": "image\/gif",
-              "extension": "gif",
+              "filePath": "/a/b/c/philou.gif",
+              "originalFilename": null,
+              "size": null,
+              "mimeType": null,
+              "extension": null,
               "channel": null,
               "locale": null
             }
@@ -100,11 +97,11 @@
             "valuePerChannel": false,
             "valuePerLocale": false
           },
-          "filePath": "\/a\/b\/c\/philou.gif",
-          "originalFilename": "philou.gif",
-          "size": 2024,
-          "mimeType": "image\/gif",
-          "extension": "gif",
+          "filePath": "/a/b/c/philou.gif",
+          "originalFilename": null,
+          "size": null,
+          "mimeType": null,
+          "extension": null,
           "channel": null,
           "locale": null
         },

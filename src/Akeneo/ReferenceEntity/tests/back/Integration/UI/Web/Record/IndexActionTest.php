@@ -38,6 +38,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -136,7 +137,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 ReferenceEntityIdentifier::fromString('designer'),
                 AttributeCode::fromString('description'),
                 LabelCollection::fromArray(['fr_FR' => 'Nom']),
-                AttributeOrder::fromInteger(0),
+                AttributeOrder::fromInteger(4),
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
@@ -151,7 +152,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 ReferenceEntityIdentifier::fromString('designer'),
                 AttributeCode::fromString('nickname'),
                 LabelCollection::fromArray(['fr_FR' => 'Surnom']),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(3),
                 AttributeIsRequired::fromBoolean(true),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -162,11 +163,28 @@ class IndexActionTest extends ControllerIntegrationTestCase
         );
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntityRepository->create(
+            ReferenceEntity::create(
+               $referenceEntityIdentifier,
+               [],
+               Image::createEmpty()
+            )
+        );
+        /** @var ReferenceEntity $referenceEntity */
+        $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $attributeAsLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
 
         // STARCK
         $recordCode = RecordCode::fromString('starck');
         $identifier = RecordIdentifier::fromString('designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2');
 
+        $labelValueEnUS = Value::create(
+            $attributeAsLabelIdentifier,
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('Starck')
+        );
         $starckDescriptionValue = Value::create(
             AttributeIdentifier::fromString('description_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
@@ -178,9 +196,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([$starckDescriptionValue])
+            ValueCollection::fromValues([$labelValueEnUS, $starckDescriptionValue])
         );
         $recordRepository->create($recordStarck);
 
@@ -200,14 +216,24 @@ class IndexActionTest extends ControllerIntegrationTestCase
             LocaleReference::noReference(),
             TextData::fromString('Mr coco')
         );
+        $labelValueEnUS = Value::create(
+            $attributeAsLabelIdentifier,
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('Coco Chanel')
+        );
+        $labelValuefrFR = Value::create(
+            $attributeAsLabelIdentifier,
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+            TextData::fromString('Coco Chanel')
+        );
 
         $recordCoco = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Coco Chanel', 'fr_FR' => 'Coco Chanel'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([$cocoDescriptionValue, $cocoNicknameValue])
+            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR, $cocoDescriptionValue, $cocoNicknameValue])
         );
         $recordRepository->create($recordCoco);
 
@@ -215,13 +241,23 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $recordCode = RecordCode::fromString('dyson');
         $identifier = RecordIdentifier::fromString('designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
 
+        $labelValueEnUS = Value::create(
+            $attributeAsLabelIdentifier,
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('Dyson')
+        );
+        $labelValuefrFR = Value::create(
+            $attributeAsLabelIdentifier,
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+            TextData::fromString('Dyson')
+        );
         $recordDyson = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Dyson', 'fr_FR' => 'Dyson'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR])
         );
         $recordRepository->create($recordDyson);
 

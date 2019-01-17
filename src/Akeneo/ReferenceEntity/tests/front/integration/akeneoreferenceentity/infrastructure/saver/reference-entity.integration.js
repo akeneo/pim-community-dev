@@ -26,12 +26,16 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
         .createIdentifier;
       const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
         .createLabelCollection;
+      const createAttributeReference = require('akeneoreferenceentity/domain/model/attribute/attribute-reference')
+        .createAttributeReference;
       const Image = require('akeneoreferenceentity/domain/model/file').default;
 
       const savedSofa = createReferenceEntity(
         createIdentifier('sofa'),
         createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
-        Image.createEmpty()
+        Image.createEmpty(),
+        createAttributeReference(null),
+        createAttributeReference(null)
       );
       const saver = require('akeneoreferenceentity/infrastructure/saver/reference-entity').default;
 
@@ -61,13 +65,17 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
         .createIdentifier;
       const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
         .createLabelCollection;
+      const createAttributeReference = require('akeneoreferenceentity/domain/model/attribute/attribute-reference')
+        .createAttributeReference;
       const Image = require('akeneoreferenceentity/domain/model/file').default;
       const saver = require('akeneoreferenceentity/infrastructure/saver/reference-entity').default;
 
       const sofaCreated = createReferenceEntity(
         createIdentifier('sofa'),
         createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
-        Image.createEmpty()
+        Image.createEmpty(),
+        createAttributeReference(null),
+        createAttributeReference(null)
       );
 
       return await saver.create(sofaCreated);
@@ -125,13 +133,17 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
         .createIdentifier;
       const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
         .createLabelCollection;
+      const createAttributeReference = require('akeneoreferenceentity/domain/model/attribute/attribute-reference')
+        .createAttributeReference;
       const Image = require('akeneoreferenceentity/domain/model/file').default;
       const saver = require('akeneoreferenceentity/infrastructure/saver/reference-entity').default;
 
       const sofaCreated = createReferenceEntity(
         createIdentifier('invalid/identifier'),
         createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
-        Image.createEmpty()
+        Image.createEmpty(),
+        createAttributeReference(null),
+        createAttributeReference(null)
       );
 
       return await saver.create(sofaCreated);

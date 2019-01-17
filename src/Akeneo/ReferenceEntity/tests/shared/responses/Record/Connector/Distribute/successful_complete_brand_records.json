@@ -27,10 +27,14 @@
                             }
                         },
                         "code": "complete_brand_record_1",
-                        "labels": {
-                            "en_US": "Complete Brand record number 1"
-                        },
                         "values": {
+                            "label": [
+                                {
+                                    "channel": null,
+                                    "locale": "en_US",
+                                    "value": "Complete Brand record number 1"
+                                }
+                            ],
                             "required_attribute": [
                                 {
                                     "locale": "fr_FR",
@@ -55,8 +59,7 @@
                                     "data": "Not required attribute ecommerce fr_FR"
                                 }
                             ]
-                        },
-                        "main_image": null
+                        }
                     },
                     {
                         "_links": {
@@ -65,10 +68,14 @@
                             }
                         },
                         "code": "complete_brand_record_2",
-                        "labels": {
-                            "en_US": "Complete Brand record number 2"
-                        },
                         "values": {
+                            "label": [
+                                {
+                                    "channel": null,
+                                    "locale": "en_US",
+                                    "value": "Complete Brand record number 2"
+                                }
+                            ],
                             "required_attribute": [
                                 {
                                     "locale": "fr_FR",
@@ -93,8 +100,7 @@
                                     "data": "Not required attribute ecommerce fr_FR"
                                 }
                             ]
-                        },
-                        "main_image": null
+                        }
                     }
                 ]
             }

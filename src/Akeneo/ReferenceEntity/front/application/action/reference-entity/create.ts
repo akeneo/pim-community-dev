@@ -14,13 +14,16 @@ import ValidationError, {createValidationError} from 'akeneoreferenceentity/doma
 import {IndexState} from 'akeneoreferenceentity/application/reducer/reference-entity/index';
 import {redirectToReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/router';
 import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
+import {createAttributeReference} from 'akeneoreferenceentity/domain/model/attribute/attribute-reference';
 
 export const createReferenceEntity = () => async (dispatch: any, getState: () => IndexState): Promise<void> => {
   const {code, labels} = getState().create.data;
   const referenceEntity = referenceEntityFactory(
     createIdentifier(code),
     createLabelCollection(labels),
-    createEmptyFile()
+    createEmptyFile(),
+    createAttributeReference(null),
+    createAttributeReference(null)
   );
   try {
     let errors = await referenceEntitySaver.create(referenceEntity);

@@ -14,11 +14,18 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
@@ -54,9 +61,14 @@ class InMemoryRecordRepositoryTest extends TestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::fromFileInfo($imageInfo),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('image_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    FileData::createFromFileinfo($imageInfo)
+                ),
+            ])
         );
 
         $this->recordRepository->create($record);
@@ -77,8 +89,6 @@ class InMemoryRecordRepositoryTest extends TestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->recordRepository->create($record);
@@ -99,8 +109,6 @@ class InMemoryRecordRepositoryTest extends TestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->recordRepository->create($record);
@@ -110,8 +118,6 @@ class InMemoryRecordRepositoryTest extends TestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -131,12 +137,9 @@ class InMemoryRecordRepositoryTest extends TestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->recordRepository->create($record);
-        $record->setLabels(LabelCollection::fromArray(['fr_FR' => 'stylist']));
 
         $this->recordRepository->update($record);
         $recordFound = $this->recordRepository->getByIdentifier($identifier);
@@ -156,8 +159,6 @@ class InMemoryRecordRepositoryTest extends TestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -179,8 +180,6 @@ class InMemoryRecordRepositoryTest extends TestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -194,8 +193,6 @@ class InMemoryRecordRepositoryTest extends TestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordIdentifier,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -213,8 +210,6 @@ class InMemoryRecordRepositoryTest extends TestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -260,8 +255,6 @@ class InMemoryRecordRepositoryTest extends TestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->recordRepository->create($record);
@@ -284,8 +277,6 @@ class InMemoryRecordRepositoryTest extends TestCase
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->recordRepository->create($record);
@@ -309,9 +300,14 @@ class InMemoryRecordRepositoryTest extends TestCase
             RecordIdentifier::fromString('starck_designer'),
             $referenceEntityIdentifier,
             RecordCode::fromString('starck'),
-            ['fr_FR' => 'Philippe Starck'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('label_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Philippe Starck')
+                ),
+            ])
         );
         $this->recordRepository->create($starck);
         $this->assertSame(1, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));
@@ -320,9 +316,14 @@ class InMemoryRecordRepositoryTest extends TestCase
             RecordIdentifier::fromString('bob_designer'),
             $referenceEntityIdentifier,
             RecordCode::fromString('bob'),
-            ['fr_FR' => 'Bob'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('label_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                    TextData::fromString('Bob')
+                ),
+            ])
         );
         $this->recordRepository->create($bob);
         $this->assertSame(2, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));

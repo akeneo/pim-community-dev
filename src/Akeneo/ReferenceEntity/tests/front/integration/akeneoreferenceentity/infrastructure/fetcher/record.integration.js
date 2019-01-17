@@ -179,7 +179,20 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
           labels: {en_US: 'Dyson', fr_FR: 'Dyson'},
           reference_entity_identifier: 'designer',
           image: null,
-          values: {},
+          values: {
+            label_designer_d00de54460082b239164135175588647_en_US: {
+              attribute: 'label_designer_d00de54460082b239164135175588647',
+              channel: null,
+              data: 'Dyson',
+              locale: 'en_US',
+            },
+            label_designer_d00de54460082b239164135175588647_fr_FR: {
+              attribute: 'label_designer_d00de54460082b239164135175588647',
+              channel: null,
+              data: 'Dyson',
+              locale: 'fr_FR',
+            },
+          },
           completeness: {
             complete: 0,
             required: 2,
@@ -196,6 +209,12 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               attribute: 'description_designer_29aea250-bc94-49b2-8259-bbc116410eb2',
               channel: 'ecommerce',
               data: 'an awesome designer!',
+              locale: 'en_US',
+            },
+            label_designer_d00de54460082b239164135175588647_en_US: {
+              attribute: 'label_designer_d00de54460082b239164135175588647',
+              channel: null,
+              data: 'Starck',
               locale: 'en_US',
             },
           },

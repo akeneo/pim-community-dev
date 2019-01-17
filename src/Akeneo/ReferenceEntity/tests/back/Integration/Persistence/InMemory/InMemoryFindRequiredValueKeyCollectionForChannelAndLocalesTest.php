@@ -22,6 +22,7 @@ use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends TestCase
 {
@@ -33,7 +34,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends Tes
 
     public function setup()
     {
-        $this->attributeRepository = new InMemoryAttributeRepository();
+        $this->attributeRepository = new InMemoryAttributeRepository(new EventDispatcher());
         $this->query = new InMemoryFindRequiredValueKeyCollectionForChannelAndLocales($this->attributeRepository);
     }
 
@@ -72,6 +73,22 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends Tes
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeMaxLength::fromInteger(155),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
+
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                AttributeIdentifier::create('designer', 'description', 'fingerprint'),
+                ReferenceEntityIdentifier::fromString('designer'),
+                AttributeCode::fromString('description'),
+                LabelCollection::fromArray(['en_US' => 'Description']),
+                AttributeOrder::fromInteger(2),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeMaxLength::fromInteger(255),
                 AttributeValidationRule::none(),
                 AttributeRegularExpression::createEmpty()
             )

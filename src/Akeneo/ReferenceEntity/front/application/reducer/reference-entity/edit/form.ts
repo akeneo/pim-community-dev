@@ -17,7 +17,14 @@ const stateReducer = formState(
 );
 
 const dataReducer = (
-  state: NormalizedReferenceEntity = {identifier: '', code: '', labels: {}, image: null},
+  state: NormalizedReferenceEntity = {
+    identifier: '',
+    code: '',
+    labels: {},
+    image: null,
+    attribute_as_image: null,
+    attribute_as_label: null,
+  },
   {
     type,
     referenceEntity,

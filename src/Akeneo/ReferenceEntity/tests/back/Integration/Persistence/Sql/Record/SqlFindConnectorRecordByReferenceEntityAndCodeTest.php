@@ -84,8 +84,6 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
 
         $expectedRecord = new ConnectorRecord(
             $record->getCode(),
-            LabelCollection::fromArray(['en_US' => 'Starck', 'fr_FR' => 'Starck']),
-            $record->getImage(),
             [
                 'name'  => [
                     [
@@ -99,7 +97,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
                         'data'    => 'Philippe Stark',
                     ]
                 ],
-                'image' => [
+                'main_image' => [
                     [
                         'locale'  => null,
                         'channel' => null,
@@ -174,17 +172,10 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
             ->setMimeType('image/jpeg')
             ->setExtension('jpg');
 
-        $imageInfo = new FileInfo();
-        $imageInfo
-            ->setOriginalFilename('image_2.jpg')
-            ->setKey('test/image_2.jpg');
-
         $record = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            Image::fromFileInfo($imageInfo),
             ValueCollection::fromValues([
                 Value::create(
                     AttributeIdentifier::fromString('name_designer_fingerprint'),
@@ -199,7 +190,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
                     TextData::fromString('Philippe Stark')
                 ),
                 Value::create(
-                    AttributeIdentifier::fromString('image_designer_fingerprint'),
+                    AttributeIdentifier::fromString('main_image_designer_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($fileInfo)
@@ -254,7 +245,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -264,11 +255,11 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
         );
 
         $image = ImageAttribute::create(
-            AttributeIdentifier::create('designer', 'image', 'fingerprint'),
+            AttributeIdentifier::create('designer', 'main_image', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('image'),
+            AttributeCode::fromString('main_image'),
             LabelCollection::fromArray(['en_US' => 'Image']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -281,7 +272,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('country'),
             LabelCollection::fromArray(['en_US' => 'Country']),
-            AttributeOrder::fromInteger(2),
+            AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -293,7 +284,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('brands'),
             LabelCollection::fromArray(['en_US' => 'Brands']),
-            AttributeOrder::fromInteger(3),
+            AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -305,7 +296,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('favorite_color'),
             LabelCollection::fromArray(['en_US' => 'Favorite color']),
-            AttributeOrder::fromInteger(4),
+            AttributeOrder::fromInteger(6),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
@@ -321,7 +312,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('materials'),
             LabelCollection::fromArray(['en_US' => 'Materials']),
-            AttributeOrder::fromInteger(5),
+            AttributeOrder::fromInteger(7),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
@@ -345,9 +336,14 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
             RecordIdentifier::fromString('country_france_fingerprint'),
             ReferenceEntityIdentifier::fromString('country'),
             RecordCode::fromString('france'),
-            ['en_US' => 'France'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('label_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('France')
+                ),
+            ])
         );
         $this->recordRepository->create($countryRecord);
 
@@ -356,9 +352,14 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
                 RecordIdentifier::fromString(sprintf('brand_%s_fingerprint', $code)),
                 ReferenceEntityIdentifier::fromString('brand'),
                 RecordCode::fromString($code),
-                ['en_US' => ucfirst($code)],
-                Image::createEmpty(),
-                ValueCollection::fromValues([])
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_designer_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                        TextData::fromString(ucfirst($code))
+                    ),
+                ])
             );
             $this->recordRepository->create($brandRecord);
         }

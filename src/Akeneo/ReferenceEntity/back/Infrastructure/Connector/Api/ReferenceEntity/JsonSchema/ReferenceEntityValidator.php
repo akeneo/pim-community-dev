@@ -39,7 +39,10 @@ class ReferenceEntityValidator
                     'patternProperties' => [
                         '.+' => ['type' => 'string'],
                     ],
-                ]
+                ],
+                'image' => [
+                    'type' => ['string', 'null']
+                ],
             ],
             'required' => ['code'],
             'additionalProperties' => false,

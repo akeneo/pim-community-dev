@@ -14,7 +14,7 @@ Feature: Delete a reference entity
   Scenario: User can't delete a Reference Entity if it is used in any Record Attribute on a Reference Entity
     Given the following record attributes:
       | entity_identifier | code   | labels                                 | required | order | value_per_channel | value_per_locale | record_type |
-      | designer          | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false    | 1     | false             | false            | designer    |
+      | designer          | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false    | 2     | false             | false            | designer    |
     When the user deletes the reference entity "designer"
     Then there should be a validation error on the property '' with message 'You can not delete this entity because reference entity attributes are related to this entity'
     And there is a reference entity "designer" with:

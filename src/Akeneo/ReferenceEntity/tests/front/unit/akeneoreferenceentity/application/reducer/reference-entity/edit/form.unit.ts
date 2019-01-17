@@ -1,12 +1,9 @@
-import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import ReferenceEntity, {
-  createReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import reducer from 'akeneoreferenceentity/application/reducer/reference-entity/edit/form';
 
 const initialState = {
   data: {
+    attribute_as_label: null,
+    attribute_as_image: null,
     identifier: '',
     code: '',
     labels: {},

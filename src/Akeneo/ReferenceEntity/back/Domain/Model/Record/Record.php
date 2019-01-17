@@ -36,12 +36,6 @@ class Record
     /** @var ReferenceEntity */
     private $referenceEntityIdentifier;
 
-    /** @var LabelCollection */
-    private $labelCollection;
-
-    /** @var Image */
-    private $image;
-
     /** @var ValueCollection */
     private $valueCollection;
 
@@ -49,15 +43,11 @@ class Record
         RecordIdentifier $identifier,
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code,
-        LabelCollection $labelCollection,
-        Image $image,
         ValueCollection $valueCollection
     ) {
         $this->identifier = $identifier;
         $this->referenceEntityIdentifier = $referenceEntityIdentifier;
         $this->code = $code;
-        $this->labelCollection = $labelCollection;
-        $this->image = $image;
         $this->valueCollection = $valueCollection;
     }
 
@@ -65,13 +55,9 @@ class Record
         RecordIdentifier $identifier,
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code,
-        array $rawLabelCollection, // TODO: receive LabelCollection instead
-        Image $image,
         ValueCollection $valueCollection
     ): self {
-        $labelCollection = LabelCollection::fromArray($rawLabelCollection);
-
-        return new self($identifier, $referenceEntityIdentifier, $code, $labelCollection, $image, $valueCollection);
+        return new self($identifier, $referenceEntityIdentifier, $code, $valueCollection);
     }
 
     public function getIdentifier(): RecordIdentifier
@@ -92,31 +78,6 @@ class Record
     public function equals(Record $record): bool
     {
         return $this->identifier->equals($record->identifier);
-    }
-
-    public function getLabel(string $localeCode): ?string
-    {
-        return $this->labelCollection->getLabel($localeCode);
-    }
-
-    public function getLabelCodes(): array
-    {
-        return $this->labelCollection->getLocaleCodes();
-    }
-
-    public function setLabels(LabelCollection $labelCollection): void
-    {
-        $this->labelCollection = $labelCollection;
-    }
-
-    public function getImage(): Image
-    {
-        return $this->image;
-    }
-
-    public function updateImage(Image $image): void
-    {
-        $this->image = $image;
     }
 
     public function getValues(): ValueCollection
@@ -140,9 +101,7 @@ class Record
             'identifier' => $this->identifier->normalize(),
             'code' => $this->code->normalize(),
             'referenceEntityIdentifier' => $this->referenceEntityIdentifier->normalize(),
-            'labels' => $this->labelCollection->normalize(),
             'values' => $this->valueCollection->normalize(),
-            'image' => $this->image->normalize(),
         ];
     }
 

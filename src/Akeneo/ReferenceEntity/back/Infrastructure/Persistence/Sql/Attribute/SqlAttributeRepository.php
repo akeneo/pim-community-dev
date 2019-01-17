@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\BeforeAttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -193,6 +194,7 @@ SQL;
         $fetch = <<<SQL
         SELECT
             identifier,
+            code,
             reference_entity_identifier,
             labels,
             attribute_type,
@@ -263,6 +265,11 @@ SQL;
     public function deleteByIdentifier(AttributeIdentifier $attributeIdentifier): void
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($attributeIdentifier);
+
+        $this->eventDispatcher->dispatch(
+            BeforeAttributeDeletedEvent::class,
+            new BeforeAttributeDeletedEvent($referenceEntityIdentifier, $attributeIdentifier)
+        );
 
         $sql = <<<SQL
         DELETE FROM akeneo_reference_entity_attribute

@@ -69,7 +69,7 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
      */
     public function it_says_if_the_attribute_exists_for_the_given_reference_entity_identifier_and_order()
     {
-        $this->loadAttribute('designer', 'name', 1);
+        $this->loadAttribute('designer', 'name', 3);
 
         $isExistingAtOrder1 = $this->attributeExists->withReferenceEntityIdentifierAndOrder(ReferenceEntityIdentifier::fromString('designer'), AttributeOrder::fromInteger(1));
         $isExistingAtOrder2 = $this->attributeExists->withReferenceEntityIdentifierAndOrder(ReferenceEntityIdentifier::fromString('designer'), AttributeOrder::fromInteger(2));
@@ -97,7 +97,7 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
         $referenceEntityRepository->create($referenceEntity);
     }
 
-    private function loadAttribute(string $referenceEntityIdentifier, string $attributeCode, int $order = 0): AttributeIdentifier
+    private function loadAttribute(string $referenceEntityIdentifier, string $attributeCode, int $order = 3): AttributeIdentifier
     {
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $identifier = $attributeRepository->nextIdentifier(

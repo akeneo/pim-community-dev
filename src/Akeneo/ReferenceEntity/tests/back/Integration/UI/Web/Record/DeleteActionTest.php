@@ -127,8 +127,6 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             RecordIdentifier::create('designer', 'starck', md5('fingerprint')),
             ReferenceEntityIdentifier::fromString('designer'),
             RecordCode::fromString('starck'),
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $recordRepository->create($recordItem);

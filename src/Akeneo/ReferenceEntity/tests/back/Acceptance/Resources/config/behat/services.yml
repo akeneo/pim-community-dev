@@ -14,15 +14,18 @@ services:
         arguments:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@__symfony__.akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler'
+            - '@__symfony__.akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'
             - '@__symfony__.validator'
             - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
         tags:
             - { name: fob.context_service }
 
     akeneo_referenceentity.tests.back.acceptance.context.delete_reference_entity_context:
         class: Akeneo\ReferenceEntity\Acceptance\Context\DeleteReferenceEntityContext
         arguments:
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@__symfony__.akeneo_referenceentity.application.reference_entity.delete_reference_entity_handler'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@__symfony__.validator'
@@ -46,6 +49,7 @@ services:
         class: Akeneo\ReferenceEntity\Acceptance\Context\CreateRecordContext
         arguments:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@__symfony__.akeneo_referenceentity.application.record.create_record_handler'
             - '@__symfony__.validator'
             - '@akeneo_referenceentity.tests.back.acceptance.context.exception_context'
@@ -57,6 +61,7 @@ services:
         class: Akeneo\ReferenceEntity\Acceptance\Context\ListRecordContext
         arguments:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
             - '@__symfony__.akeneo_referenceentity.application.record.search_record'
         tags:
@@ -69,6 +74,8 @@ services:
         - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission'
         - '@__symfony__.akeneo_referenceentity.application.reference_entity_permission.set_reference_entity_permissions_handler'
         - '@akeneo_referenceentity.tests.back.acceptance.context.exception_context'
+        - '@__symfony__.validator'
+        - '@__symfony__.akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'
         tags:
         - { name: fob.context_service }
 
@@ -94,6 +101,15 @@ services:
             - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_referenceentity.tests.back.acceptance.context.exception_context'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+        tags:
+            - { name: fob.context_service }
+
+    akeneo_referenceentity.tests.back.acceptance.context.delete_attribute_context:
+        class: Akeneo\ReferenceEntity\Acceptance\Context\DeleteAttributeContext
+        arguments:
+            - '@__symfony__.akeneo_referenceentity.application.attribute.edit_attribute_handler'
+            - '@__symfony__.akeneo_referenceentity.application.attribute.delete_attribute_handler'
+            - '@__symfony__.akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
         tags:
             - { name: fob.context_service }
 
@@ -131,6 +147,9 @@ services:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
+            - '@__symfony__.akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.file_exists'
         tags:
             - { name: fob.context_service }
 
@@ -143,6 +162,7 @@ services:
             - '@__symfony__.validator'
             - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_referenceentity.tests.back.acceptance.context.exception_context'
+            - '@__symfony__.akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'
         tags:
         - { name: fob.context_service }
 
@@ -155,6 +175,7 @@ services:
             - '@__symfony__.validator'
             - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_referenceentity.tests.back.acceptance.context.exception_context'
+            - '@__symfony__.akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'
         tags:
         - { name: fob.context_service }
 
@@ -166,6 +187,7 @@ services:
             - '@__symfony__.validator'
             - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
             - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
+            - '@__symfony__.akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'
         tags:
           - { name: fob.context_service }
 

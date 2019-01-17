@@ -337,7 +337,7 @@ class CreateAttributeContext implements Context
      */
     public function randomAttributesForReferenceEntity(int $number)
     {
-        for ($i = 0; $i < $number; $i++) {
+        for ($i = 2; $i < $number; $i++) {
             $attributeCode = uniqid();
             $attributeData['type'] = 'text';
             $attributeData['identifier']['identifier'] = $attributeCode;

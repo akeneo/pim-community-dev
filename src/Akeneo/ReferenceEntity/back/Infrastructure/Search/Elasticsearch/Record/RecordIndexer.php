@@ -65,7 +65,6 @@ class RecordIndexer implements RecordIndexerInterface
         }
     }
 
-
     /**
      * {@inheritdoc}
      */

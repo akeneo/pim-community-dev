@@ -41,6 +41,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
@@ -166,18 +167,34 @@ class GetConnectorRecordsContext implements Context
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
                 $recordCode,
-                $labelCollection,
-                $mainImage,
-                ValueCollection::fromValues([])
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_brand_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                        TextData::fromString(sprintf('%s number %d', ucfirst($referenceEntityIdentifier), $i))
+                    ),
+                    Value::create(
+                        AttributeIdentifier::fromString('main_image_brand_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::noReference(),
+                        FileData::createFromFileinfo($mainImageInfo)
+                    ),
+                ])
             );
 
             $this->findRecordIdentifiersForQuery->add($record);
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
-                LabelCollection::fromArray($labelCollection),
-                $mainImage,
                 [
+                    'label' => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => null,
+                            'value'   => $labelCollection['en_US']
+                        ]
+                    ],
                     'description' => [
                         [
                             'locale' => 'en_US',
@@ -190,6 +207,13 @@ class GetConnectorRecordsContext implements Context
                             'locale' => null,
                             'channel' => null,
                             'data' => 'italy'
+                        ]
+                    ],
+                    'image' => [
+                        [
+                            'locale' => null,
+                            'channel' => null,
+                            'data' => $mainImage->getKey()
                         ]
                     ]
                 ]
@@ -273,18 +297,34 @@ class GetConnectorRecordsContext implements Context
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
                 $recordCode,
-                $labelCollection,
-                $mainImage,
-                ValueCollection::fromValues([])
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_brand_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                        TextData::fromString(sprintf('%s number %d', ucfirst($referenceEntityIdentifier), $i))
+                    ),
+                    Value::create(
+                        AttributeIdentifier::fromString('main_image_brand_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::noReference(),
+                        FileData::createFromFileinfo($mainImageInfo)
+                    ),
+                ])
             );
 
             $this->findRecordIdentifiersForQuery->add($record);
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
-                LabelCollection::fromArray($labelCollection),
-                $mainImage,
                 [
+                    'label' => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => null,
+                            'value'   => $labelCollection['en_US']
+                        ]
+                    ],
                     'description' => [
                         [
                             'locale' => 'en_US',
@@ -308,6 +348,13 @@ class GetConnectorRecordsContext implements Context
                             'locale' => null,
                             'channel' => null,
                             'data' => 'italy'
+                        ]
+                    ],
+                    'image' => [
+                        [
+                            'locale' => null,
+                            'channel' => null,
+                            'data' => $mainImage->getKey()
                         ]
                     ]
                 ]
@@ -388,15 +435,11 @@ class GetConnectorRecordsContext implements Context
             $rawRecordCode = sprintf('brand_%d', $i);
             $recordCode = RecordCode::fromString($rawRecordCode);
             $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
-            $labelCollection = [];
-            $mainImage = Image::createEmpty();
 
             $record = Record::create(
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString('brand'),
                 $recordCode,
-                $labelCollection,
-                $mainImage,
                 ValueCollection::fromValues([])
             );
 
@@ -404,9 +447,19 @@ class GetConnectorRecordsContext implements Context
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
-                LabelCollection::fromArray($labelCollection),
-                $mainImage,
                 [
+                    'label' => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => null,
+                            'value'   => sprintf('English label for %s', $rawRecordCode)
+                        ],
+                        [
+                            'locale'  => 'fr_FR',
+                            'channel' => null,
+                            'value'   => sprintf('French label for %s', $rawRecordCode)
+                        ]
+                    ],
                     'description' => [
                         [
                             'locale' => 'en_US',
@@ -447,28 +500,6 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * To use only for records with empty images.
-     *
-     * @Given labels translated in the English and French locale
-     */
-    public function theRecordsLabelsAreTranslatedInEnglishAndFrench()
-    {
-        foreach ($this->connectorRecordsByRecordIdentifier as $recordIdentifier => $connectorRecord) {
-            $normalizedConnectorRecord = $connectorRecord->normalize();
-            $connectorRecord = new ConnectorRecord(
-                RecordCode::fromString($normalizedConnectorRecord['code']),
-                LabelCollection::fromArray([
-                    'en_US' => sprintf('English label for %s', $normalizedConnectorRecord['code']),
-                    'fr_FR' => sprintf('French label for %s', $normalizedConnectorRecord['code']),
-                ]),
-                Image::createEmpty(),
-                $normalizedConnectorRecord['values']
-            );
-            $this->findConnectorRecords->save(RecordIdentifier::fromString($recordIdentifier), $connectorRecord);
-        }
-    }
-
-    /**
      * @When the connector requests all records of the Brand reference entity with the information in English
      */
     public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityWithTheInformationInEnglish()
@@ -491,21 +522,6 @@ class GetConnectorRecordsContext implements Context
             $this->recordPages[1],
             self::REQUEST_CONTRACT_DIR . 'successful_brand_records_for_english_locale.json'
         );
-    }
-
-    /**
-     * @Then the labels in English only
-     */
-    public function theLabelsInEnglishOnly()
-    {
-        Assert::keyExists($this->recordPages, 1, 'The page 1 has not been loaded');
-
-        $responseContent = json_decode($this->recordPages[1]->getContent(), true);
-
-        foreach ($responseContent['_embedded']['items'] as $record) {
-            Assert::keyExists($record['labels'], 'en_US', 'All records must have a label in english.');
-            Assert::keyNotExists($record['labels'], 'fr_FR', 'All records must not have a label in french.');
-        }
     }
 
     /**
@@ -559,9 +575,13 @@ class GetConnectorRecordsContext implements Context
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString('brand'),
                 $recordCode,
-                $labelCollection,
-                Image::createEmpty(),
                 ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_brand_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                        TextData::fromString(sprintf('Incomplete french Brand record number %d', $i))
+                    ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
                         ChannelReference::createfromNormalized('ecommerce'),
@@ -587,9 +607,14 @@ class GetConnectorRecordsContext implements Context
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
-                LabelCollection::fromArray($labelCollection),
-                Image::createEmpty(),
                 [
+                    'label' => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => null,
+                            'value'   => $labelCollection['en_US']
+                        ],
+                    ],
                     'required_attribute' => [
                         [
                             'locale'  => 'en_US',
@@ -633,9 +658,13 @@ class GetConnectorRecordsContext implements Context
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString('brand'),
                 $recordCode,
-                $labelCollection,
-                Image::createEmpty(),
                 ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_brand_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                        TextData::fromString(sprintf('Incomplete english Brand record number %d', $i))
+                    ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
                         ChannelReference::createfromNormalized('ecommerce'),
@@ -661,9 +690,14 @@ class GetConnectorRecordsContext implements Context
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
-                LabelCollection::fromArray($labelCollection),
-                Image::createEmpty(),
                 [
+                    'label' => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => null,
+                            'value'   => $labelCollection['en_US']
+                        ],
+                    ],
                     'required_attribute' => [
                         [
                             'locale'  => 'fr_FR',
@@ -710,9 +744,13 @@ class GetConnectorRecordsContext implements Context
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString('brand'),
                 $recordCode,
-                $labelCollection,
-                Image::createEmpty(),
                 ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_brand_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                        TextData::fromString(sprintf('Complete Brand record number %d', $i))
+                    ),
                     Value::create(
                         AttributeIdentifier::create('brand', 'required_attribute', 'fingerprint'),
                         ChannelReference::createfromNormalized('ecommerce'),
@@ -744,9 +782,14 @@ class GetConnectorRecordsContext implements Context
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
-                LabelCollection::fromArray($labelCollection),
-                Image::createEmpty(),
                 [
+                    'label' => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => null,
+                            'value'   => $labelCollection['en_US']
+                        ],
+                    ],
                     'required_attribute' => [
                         [
                             'locale'  => 'fr_FR',
@@ -849,7 +892,7 @@ class GetConnectorRecordsContext implements Context
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('required_attribute'),
             LabelCollection::fromArray(['en_US' => 'Required attribute']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -868,7 +911,7 @@ class GetConnectorRecordsContext implements Context
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('not_required_attribute'),
             LabelCollection::fromArray(['en_US' => 'Not required attribute']),
-            AttributeOrder::fromInteger(2),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -891,26 +934,25 @@ class GetConnectorRecordsContext implements Context
             $rawRecordCode = sprintf('brand_%d', $i);
             $recordCode = RecordCode::fromString($rawRecordCode);
             $recordIdentifier = RecordIdentifier::fromString($rawRecordCode);
-            $labelCollection = [
-                'en_US' => 'test'
-            ];
-            $mainImage = Image::createEmpty();
 
             $record = Record::create(
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString('brand_test'),
                 $recordCode,
-                $labelCollection,
-                $mainImage,
-                ValueCollection::fromValues([])
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_brand_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                        TextData::fromString('test')
+                    ),
+                ])
             );
 
             $this->findRecordIdentifiersForQuery->add($record);
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
-                LabelCollection::fromArray($labelCollection),
-                $mainImage,
                 []
             );
 
@@ -938,26 +980,25 @@ class GetConnectorRecordsContext implements Context
             $rawRecordCode = sprintf('brand_%d', $i);
             $recordCode = RecordCode::fromString($rawRecordCode);
             $recordIdentifier = RecordIdentifier::fromString($rawRecordCode);
-            $labelCollection = [
-                'en_US' => 'test'
-            ];
-            $mainImage = Image::createEmpty();
 
             $record = Record::create(
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString('brand_test'),
                 $recordCode,
-                $labelCollection,
-                $mainImage,
-                ValueCollection::fromValues([])
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_brand_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                        TextData::fromString('test')
+                    ),
+                ])
             );
 
             $this->findRecordIdentifiersForQuery->add($record);
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
-                LabelCollection::fromArray($labelCollection),
-                $mainImage,
                 []
             );
 

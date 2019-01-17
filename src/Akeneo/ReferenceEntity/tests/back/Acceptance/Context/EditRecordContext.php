@@ -18,11 +18,15 @@ use Akeneo\ReferenceEntity\Acceptance\Context\ExceptionContext;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileExists;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileStorer;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
@@ -44,7 +48,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -60,7 +63,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
@@ -68,8 +70,8 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -90,8 +92,6 @@ final class EditRecordContext implements Context
     private const DUMMY_IMAGE_SIZE = 10;
     private const DUMMY_IMAGE_MIMETYPE = 'image/png';
     private const DUMMY_IMAGE_EXTENSION = 'png';
-    private const UPDATED_IMAGE_FILEPATH = InMemoryFileStorer::FILES_PATH . 'updated_filename.png';
-    private const UPDATED_IMAGE_FILENAME = 'updated_filename.png';
 
     private const TEXT_ATTRIBUTE_CODE = 'name';
     private const TEXT_ATTRIBUTE_IDENTIFIER = 'name_designer_fingerprint';
@@ -115,6 +115,7 @@ final class EditRecordContext implements Context
     private const INVALID_IMAGE_MIMETYPE = 144;
     private const INVALID_IMAGE_SIZE = '1000 Ko';
     private const INVALID_IMAGE_EXTENSION = ['gif'];
+    private const INVALID_IMAGE_EXISTS = '/files/not_found.png';
 
     private const FILE_TOO_BIG = 'too_big.jpeg';
     private const FILE_TOO_BIG_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
@@ -162,6 +163,15 @@ final class EditRecordContext implements Context
     /** @var InMemoryFindActivatedLocalesPerChannels */
     private $activatedLocalesPerChannels;
 
+    /** @var CreateReferenceEntityHandler */
+    private $createReferenceEntityHandler;
+
+    /** @var InMemoryFindFileDataByFileKey */
+    private $findFileData;
+
+    /** @var InMemoryFileExists */
+    private $fileExists;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository,
@@ -173,7 +183,10 @@ final class EditRecordContext implements Context
         ConstraintViolationsContext $violationsContext,
         InMemoryChannelExists $channelExists,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
-        InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels
+        InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels,
+        CreateReferenceEntityHandler $createReferenceEntityHandler,
+        InMemoryFindFileDataByFileKey $findFileData,
+        InMemoryFileExists $fileExists
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
@@ -186,6 +199,9 @@ final class EditRecordContext implements Context
         $this->channelExists = $channelExists;
         $this->activatedLocales = $activatedLocales;
         $this->activatedLocalesPerChannels = $activatedLocalesPerChannels;
+        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
+        $this->findFileData = $findFileData;
+        $this->fileExists = $fileExists;
     }
 
     /**
@@ -205,7 +221,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -276,8 +292,8 @@ final class EditRecordContext implements Context
             )
         );
 
-        Assert::assertNotNull($value);
-        Assert::assertEquals($expectedValue, $value->getData()->normalize());
+        Assert::notNull($value);
+        Assert::same($expectedValue, $value->getData()->normalize());
     }
 
     /**
@@ -296,7 +312,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -314,6 +330,8 @@ final class EditRecordContext implements Context
         $file = new FileInfo();
         $file->setOriginalFilename($originalFilename);
         $file->setKey(self::DUMMY_FILEPATH_PREFIX . $originalFilename);
+
+        $this->fileExists->save($file->getKey());
 
         $fileValue = Value::create(
             AttributeIdentifier::create(
@@ -333,15 +351,25 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheRecordDefaultImage()
     {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $attributeAsImage = $referenceEntity->getAttributeAsImageReference();
+
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code' => self::RECORD_CODE,
             'labels' => [],
-            'image' => [
-                'originalFilename' => self::UPDATED_IMAGE_FILENAME,
-                'filePath' => self::UPDATED_IMAGE_FILEPATH,
-            ],
-            'values' => []
+            'values' => [
+                [
+                    'attribute' => $attributeAsImage->normalize(),
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::GOOD_EXTENSION_FILENAME,
+                        'filePath' => self::GOOD_EXTENSION_FILE_FILEPATH,
+                    ],
+                ],
+            ]
         ]);
 
         $this->executeCommand($editCommand);
@@ -355,8 +383,6 @@ final class EditRecordContext implements Context
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code' => self::RECORD_CODE,
-            'labels' => [],
-            'image' => null,
             'values' => []
         ]);
 
@@ -368,18 +394,27 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheRecordDefaultImageWithPathAndFilename(string $filePath, string $filename)
     {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $attributeAsImage = $referenceEntity->getAttributeAsImageReference();
+
         $filePath = json_decode($filePath);
         $filename = json_decode($filename);
 
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code' => self::RECORD_CODE,
-            'labels' => [],
-            'image' => [
-                'originalFilename' => $filename,
-                'filePath' => $filePath,
-            ],
-            'values' => []
+            'values' => [
+                [
+                    'attribute' => $attributeAsImage->normalize(),
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => $filename,
+                        'filePath' => $filePath,
+                    ],
+                ],
+            ]
         ]);
 
         $this->executeCommand($editCommand);
@@ -430,12 +465,12 @@ final class EditRecordContext implements Context
                 LocaleReference::noReference()
             )
         );
-        Assert::assertNotNull($value);
+        Assert::notNull($value);
         $normalizeData = $value->getData()->normalize();
-        Assert::assertArrayHasKey('originalFilename', $normalizeData);
-        Assert::assertArrayHasKey('filePath', $normalizeData);
-        Assert::assertEquals(self::UPDATED_DUMMY_FILENAME, $normalizeData['originalFilename']);
-        Assert::assertEquals(self::UPDATED_DUMMY_FILE_FILEPATH, $normalizeData['filePath']);
+        Assert::keyExists($normalizeData, 'originalFilename');
+        Assert::keyExists($normalizeData, 'filePath');
+        Assert::same(self::UPDATED_DUMMY_FILENAME, $normalizeData['originalFilename']);
+        Assert::same(self::UPDATED_DUMMY_FILE_FILEPATH, $normalizeData['filePath']);
     }
 
     /**
@@ -466,7 +501,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -493,7 +528,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -521,7 +556,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -573,7 +608,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -627,7 +662,7 @@ final class EditRecordContext implements Context
             )
         );
 
-        Assert::assertNull($value);
+        Assert::null($value);
     }
 
     /**
@@ -647,7 +682,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(true),
@@ -736,7 +771,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -820,19 +855,24 @@ final class EditRecordContext implements Context
         $this->violationsContext->assertThereIsNoViolations();
         $this->exceptionContext->thereIsNoExceptionThrown();
 
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $attributeAsImage = $referenceEntity->getAttributeAsImageReference();
         $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            $referenceEntityIdentifier,
             RecordCode::fromString(self::RECORD_CODE)
         );
 
-        $recordImage = $record->getImage();
-        Assert::assertFalse($recordImage->isEmpty());
+        $recordImage = $this->getImage(
+            $record->getValues()->normalize(),
+            $attributeAsImage->getIdentifier()->normalize()
+        );
+        Assert::false($recordImage === null);
 
-        $normalizeData = $recordImage->normalize();
-        Assert::assertArrayHasKey('originalFilename', $normalizeData);
-        Assert::assertArrayHasKey('filePath', $normalizeData);
-        Assert::assertEquals(self::UPDATED_IMAGE_FILENAME, $normalizeData['originalFilename']);
-        Assert::assertEquals(self::UPDATED_IMAGE_FILEPATH, $normalizeData['filePath']);
+        Assert::keyExists($recordImage, 'originalFilename');
+        Assert::keyExists($recordImage, 'filePath');
+        Assert::same(self::UPDATED_DUMMY_FILENAME, $recordImage['originalFilename']);
+        Assert::same(self::UPDATED_DUMMY_FILE_FILEPATH, $recordImage['filePath']);
     }
 
     /**
@@ -843,13 +883,19 @@ final class EditRecordContext implements Context
         $this->violationsContext->assertThereIsNoViolations();
         $this->exceptionContext->thereIsNoExceptionThrown();
 
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $attributeAsImage = $referenceEntity->getAttributeAsImageReference();
         $record = $this->recordRepository->getByReferenceEntityAndCode(
             ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             RecordCode::fromString(self::RECORD_CODE)
         );
 
-        $recordImage = $record->getImage();
-        Assert::assertTrue($recordImage->isEmpty());
+        $recordImage = $this->getImage(
+            $record->getValues()->normalize(),
+            $attributeAsImage->getIdentifier()->normalize()
+        );
+        Assert::true($recordImage === null);
     }
 
     /**
@@ -870,8 +916,8 @@ final class EditRecordContext implements Context
             )
         );
 
-        Assert::assertNotNull($value);
-        Assert::assertEquals(self::DUMMY_UPDATED_VALUE, $value->getData()->normalize());
+        Assert::notNull($value);
+        Assert::same(self::DUMMY_UPDATED_VALUE, $value->getData()->normalize());
     }
 
     /**
@@ -891,7 +937,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -959,7 +1005,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -1008,8 +1054,8 @@ final class EditRecordContext implements Context
                 LocaleReference::noReference()
             )
         );
-        Assert::assertNotNull($value);
-        Assert::assertEquals(self::DUMMY_UPDATED_VALUE, $value->getData()->normalize());
+        Assert::notNull($value);
+        Assert::same(self::DUMMY_UPDATED_VALUE, $value->getData()->normalize());
     }
 
     /**
@@ -1028,7 +1074,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
@@ -1101,8 +1147,8 @@ final class EditRecordContext implements Context
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE))
             )
         );
-        Assert::assertNotNull($value);
-        Assert::assertEquals(self::DUMMY_UPDATED_VALUE, $value->getData()->normalize());
+        Assert::notNull($value);
+        Assert::same(self::DUMMY_UPDATED_VALUE, $value->getData()->normalize());
     }
 
     /**
@@ -1245,6 +1291,17 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredSize()
     {
+        $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
+
+        $fileData = [
+            'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+            'filePath' => self::DUMMY_IMAGE_FILEPATH,
+            'size' => self::INVALID_IMAGE_SIZE,
+            'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
+            'extension' => self::DUMMY_IMAGE_EXTENSION,
+        ];
+        $this->findFileData->save($fileData);
+
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
@@ -1254,13 +1311,7 @@ final class EditRecordContext implements Context
                     'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
-                    'data'      => [
-                        'originalFilename' => self::DUMMY_IMAGE_FILENAME,
-                        'filePath' => self::DUMMY_IMAGE_FILEPATH,
-                        'size' => self::INVALID_IMAGE_SIZE,
-                        'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
-                        'extension' => self::DUMMY_IMAGE_EXTENSION,
-                    ],
+                    'data'      => $fileData,
                 ],
             ],
         ]);
@@ -1272,6 +1323,17 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredExtension()
     {
+        $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
+
+        $fileData = [
+            'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+            'filePath' => self::DUMMY_IMAGE_FILEPATH,
+            'size' => self::DUMMY_IMAGE_SIZE,
+            'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
+            'extension' => self::INVALID_IMAGE_EXTENSION,
+        ];
+        $this->findFileData->save($fileData);
+
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
@@ -1281,13 +1343,7 @@ final class EditRecordContext implements Context
                     'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
-                    'data'      => [
-                        'originalFilename' => self::DUMMY_IMAGE_FILENAME,
-                        'filePath' => self::DUMMY_IMAGE_FILEPATH,
-                        'size' => self::DUMMY_IMAGE_SIZE,
-                        'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
-                        'extension' => self::INVALID_IMAGE_EXTENSION,
-                    ],
+                    'data'      => $fileData,
                 ],
             ],
         ]);
@@ -1299,6 +1355,17 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredMimeType()
     {
+        $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
+
+        $fileData = [
+            'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+            'filePath' => self::DUMMY_IMAGE_FILEPATH,
+            'size' => self::DUMMY_IMAGE_SIZE,
+            'mimeType' => self::INVALID_IMAGE_MIMETYPE,
+            'extension' => self::DUMMY_IMAGE_EXTENSION,
+        ];
+        $this->findFileData->save($fileData);
+
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
@@ -1308,13 +1375,7 @@ final class EditRecordContext implements Context
                     'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
-                    'data'      => [
-                        'originalFilename' => self::DUMMY_IMAGE_FILENAME,
-                        'filePath' => self::DUMMY_IMAGE_FILEPATH,
-                        'size' => self::DUMMY_IMAGE_SIZE,
-                        'mimeType' => self::INVALID_IMAGE_MIMETYPE,
-                        'extension' => self::DUMMY_IMAGE_EXTENSION,
-                    ],
+                    'data'      => $fileData,
                 ],
             ],
         ]);
@@ -1330,7 +1391,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Then /^there should be a validation error on the property image attribute with message "([^"]*)"$/
+     * @Then /^there should be a validation error on the property image attribute with message "(.*)"$/
      */
     public function thereShouldBeAValidationErrorOnThePropertyImageAttributeWithMessage(string $expectedMessage): void
     {
@@ -1366,9 +1427,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record to an invalid stored file name$/
+     * @When /^the user updates the image attribute of the record to an image that does not exist$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredFileName()
+    public function theUserUpdatesTheImageAttributeOfTheRecordToAnImageThatDoesNotExist()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
@@ -1380,12 +1441,44 @@ final class EditRecordContext implements Context
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => [
-                        'originalFilename' => self::INVALID_FILENAME,
-                        'filePath' => self::DUMMY_IMAGE_FILEPATH,
+                        'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+                        'filePath' => self::INVALID_IMAGE_EXISTS,
                         'size' => self::DUMMY_IMAGE_SIZE,
                         'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
                         'extension' => self::DUMMY_IMAGE_EXTENSION,
                     ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the image attribute of the record to an invalid stored file name$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredFileName()
+    {
+        $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
+
+        $fileData = [
+            'originalFilename' => self::INVALID_FILENAME,
+            'filePath' => self::DUMMY_IMAGE_FILEPATH,
+            'size' => self::DUMMY_IMAGE_SIZE,
+            'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
+            'extension' => self::DUMMY_IMAGE_EXTENSION,
+        ];
+        $this->findFileData->save($fileData);
+
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => $fileData,
                 ],
             ],
         ]);
@@ -1421,6 +1514,17 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordWithABiggerStoredFileThanTheLimit()
     {
+        $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
+
+        $fileData = [
+            'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+            'filePath' => self::DUMMY_IMAGE_FILEPATH,
+            'size' => self::WRONG_IMAGE_SIZE,
+            'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
+            'extension' => self::DUMMY_IMAGE_EXTENSION,
+        ];
+        $this->findFileData->save($fileData);
+
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
@@ -1430,13 +1534,7 @@ final class EditRecordContext implements Context
                     'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
-                    'data'      => [
-                        'originalFilename' => self::DUMMY_IMAGE_FILENAME,
-                        'filePath' => self::DUMMY_IMAGE_FILEPATH,
-                        'size' => self::WRONG_IMAGE_SIZE,
-                        'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
-                        'extension' => self::DUMMY_IMAGE_EXTENSION,
-                    ],
+                    'data'      => $fileData,
                 ],
             ],
         ]);
@@ -1482,7 +1580,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -1521,6 +1619,17 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordWithAnStoredFileHavingADeniedExtension()
     {
+        $this->fileExists->save(self::DUMMY_IMAGE_FILEPATH);
+
+        $fileData = [
+            'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+            'filePath' => self::DUMMY_IMAGE_FILEPATH,
+            'size' => self::DUMMY_IMAGE_SIZE,
+            'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
+            'extension' => self::WRONG_EXTENSION,
+        ];
+        $this->findFileData->save($fileData);
+
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
@@ -1530,13 +1639,7 @@ final class EditRecordContext implements Context
                     'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => null,
-                    'data'      => [
-                        'originalFilename' => self::DUMMY_IMAGE_FILENAME,
-                        'filePath' => self::DUMMY_IMAGE_FILEPATH,
-                        'size' => self::DUMMY_IMAGE_SIZE,
-                        'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
-                        'extension' => self::WRONG_EXTENSION,
-                    ],
+                    'data'      => $fileData,
                 ],
             ],
         ]);
@@ -1583,7 +1686,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -1634,7 +1737,7 @@ final class EditRecordContext implements Context
                 LocaleReference::noReference()
             )
         );
-        Assert::assertNull($value);
+        Assert::null($value);
     }
 
     /**
@@ -1644,14 +1747,22 @@ final class EditRecordContext implements Context
     {
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
         $this->createReferenceEntity();
+        $labelValue = Value::create(
+            AttributeIdentifier::create(
+                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::RECORD_CODE,
+                self::FINGERPRINT
+            ),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+            TextData::fromString($label)
+        );
         $this->recordRepository->create(
             Record::create(
                 RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 RecordCode::fromString(self::RECORD_CODE),
-                ['fr_FR' => $label],
-                Image::createEmpty(),
-                ValueCollection::fromValues([])
+                ValueCollection::fromValues([$labelValue])
             )
         );
     }
@@ -1667,15 +1778,23 @@ final class EditRecordContext implements Context
         $imageInfo
             ->setOriginalFilename(self::DUMMY_IMAGE_FILENAME)
             ->setKey(self::DUMMY_IMAGE_FILEPATH);
+        $labelValue = Value::create(
+            AttributeIdentifier::create(
+                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::RECORD_CODE,
+                self::FINGERPRINT
+            ),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+            TextData::fromString('fr_label')
+        );
 
         $this->recordRepository->create(
             Record::create(
                 RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 RecordCode::fromString(self::RECORD_CODE),
-                ['fr_FR' => 'fr_label'],
-                Image::fromFileInfo($imageInfo),
-                ValueCollection::fromValues([])
+                ValueCollection::fromValues([$labelValue])
             )
         );
     }
@@ -1685,13 +1804,21 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheLabelTo(string $updatedLabel)
     {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
+
         $editLabelCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
-            'labels'                     => [
-                'fr_FR' => $updatedLabel
+            'code'                        => self::RECORD_CODE,
+            'values'                      => [
+                [
+                    'attribute' => $attributeAsLabel->normalize(),
+                    'channel'   => null,
+                    'locale'    => 'fr_FR',
+                    'data'      => $updatedLabel,
+                ],
             ],
-            'values'                     => [],
         ]);
         $this->executeCommand($editLabelCommand);
     }
@@ -1717,11 +1844,18 @@ final class EditRecordContext implements Context
      */
     public function theRecordShouldHaveTheLabel(string $expectedLabel)
     {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
         $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            $referenceEntityIdentifier,
             RecordCode::fromString(self::RECORD_CODE)
         );
-        Assert::assertEquals($expectedLabel, $record->getLabel('fr_FR'), 'Labels are not equal');
+        $actualLabels = $this->getLabelsFromValues(
+            $record->getValues()->normalize(),
+            $attributeAsLabel->getIdentifier()->normalize()
+        );
+        Assert::same($expectedLabel, $actualLabels['fr_FR'], 'Labels are not equal');
     }
 
     /**
@@ -1729,11 +1863,18 @@ final class EditRecordContext implements Context
      */
     public function theRecordShouldNotHaveLabel()
     {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
         $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            $referenceEntityIdentifier,
             RecordCode::fromString(self::RECORD_CODE)
         );
-        Assert::assertNull($record->getLabel('fr_FR'), 'French label is not null');
+        $actualLabels = $this->getLabelsFromValues(
+            $record->getValues()->normalize(),
+            $attributeAsLabel->getIdentifier()->normalize()
+        );
+        Assert::IsEmpty($actualLabels, 'French label is not null');
     }
 
     /**
@@ -1741,13 +1882,21 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheGermanLabelTo(string $updatedLabel)
     {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER);
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference();
+
         $editLabelCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                        => self::RECORD_CODE,
-            'labels'                      => [
-                'de_DE' => $updatedLabel
+            'values'                      => [
+                [
+                    'attribute' => $attributeAsLabel->normalize(),
+                    'channel'   => null,
+                    'locale'    => 'de_DE',
+                    'data'      => $updatedLabel,
+                ],
             ],
-            'values'                      => [],
         ]);
         $this->executeCommand($editLabelCommand);
     }
@@ -1758,7 +1907,7 @@ final class EditRecordContext implements Context
     public function thereShouldBeAValidationErrorOnThePropertyLabelsWithMessage($expectedMessage)
     {
         $this->violationsContext->assertThereShouldBeViolations(1);
-        $this->violationsContext->assertViolationOnPropertyWithMesssage('labels', $expectedMessage);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage('values.label', $expectedMessage);
     }
 
     /**
@@ -1769,16 +1918,21 @@ final class EditRecordContext implements Context
         $this->violationsContext->assertThereIsNoViolations();
         $this->violationsContext->assertThereIsNoViolations();
         $recordsCount = $this->recordRepository->count();
-        Assert::assertEquals($expectedCount, $recordsCount);
+        Assert::same($expectedCount, $recordsCount);
     }
 
     private function createReferenceEntity(): void
     {
-        $this->referenceEntityRepository->create(ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
-            [],
-            Image::createEmpty()
-        ));
+        $createCommand = new CreateReferenceEntityCommand();
+        $createCommand->code = self::REFERENCE_ENTITY_IDENTIFIER;
+        $createCommand->labels = [];
+
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+        }
+
+        ($this->createReferenceEntityHandler)($createCommand);
     }
 
     private function createRecord(Value $value): void
@@ -1788,8 +1942,6 @@ final class EditRecordContext implements Context
                 RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 RecordCode::fromString(self::RECORD_CODE),
-                [],
-                Image::createEmpty(),
                 ValueCollection::fromValues([$value])
             )
         );
@@ -1827,7 +1979,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::RECORD_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -1921,8 +2073,8 @@ final class EditRecordContext implements Context
             )
         );
 
-        Assert::assertNotNull($value);
-        Assert::assertEquals($expectedValue, $value->getData()->normalize());
+        Assert::notNull($value);
+        Assert::same($expectedValue, $value->getData()->normalize());
     }
 
     /**
@@ -2059,8 +2211,8 @@ final class EditRecordContext implements Context
             )
         );
 
-        Assert::assertNotNull($value);
-        Assert::assertSame($expectedValue, $value->getData()->normalize());
+        Assert::notNull($value);
+        Assert::same($expectedValue, $value->getData()->normalize());
     }
 
     private function createRecordLinked($recordCode)
@@ -2070,8 +2222,6 @@ final class EditRecordContext implements Context
                 RecordIdentifier::create(self::RECORD_TYPE, $recordCode, self::FINGERPRINT),
                 ReferenceEntityIdentifier::fromString(self::RECORD_TYPE),
                 RecordCode::fromString($recordCode),
-                [],
-                Image::createEmpty(),
                 ValueCollection::fromValues([])
             )
         );
@@ -2118,7 +2268,7 @@ final class EditRecordContext implements Context
                 ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::RECORD_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
-                AttributeOrder::fromInteger(1),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
@@ -2143,7 +2293,7 @@ final class EditRecordContext implements Context
             ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             AttributeCode::fromString(self::OPTION_ATTRIBUTE_CODE),
             LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
@@ -2219,8 +2369,8 @@ final class EditRecordContext implements Context
             )
         );
 
-        Assert::assertNotNull($value);
-        Assert::assertEquals($expectedValue, $value->getData()->normalize());
+        Assert::notNull($value);
+        Assert::same($expectedValue, $value->getData()->normalize());
     }
 
     /**
@@ -2251,7 +2401,7 @@ final class EditRecordContext implements Context
             ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             AttributeCode::fromString(self::OPTION_COLLECTION_ATTRIBUTE_CODE),
             LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
@@ -2337,8 +2487,8 @@ final class EditRecordContext implements Context
             )
         );
 
-        Assert::assertNotNull($value);
-        Assert::assertEquals($expectedValueArray, $value->getData()->normalize());
+        Assert::notNull($value);
+        Assert::same($expectedValueArray, $value->getData()->normalize());
     }
 
     /**
@@ -2351,5 +2501,40 @@ final class EditRecordContext implements Context
             'values.' . self::OPTION_COLLECTION_ATTRIBUTE_CODE,
             $expectedMessage
         );
+    }
+
+    private function getLabelsFromValues(array $valueCollection, string $attributeAsLabel): array
+    {
+        return array_reduce(
+            $valueCollection,
+            function (array $labels, array $value) use ($attributeAsLabel) {
+                if ($value['attribute'] === $attributeAsLabel) {
+                    $localeCode = $value['locale'];
+                    $label = (string) $value['data'];
+                    $labels[$localeCode] = $label;
+                }
+
+                return $labels;
+            },
+            []
+        );
+    }
+
+    private function getImage(array $valueCollection, string $attributeAsImage)
+    {
+        $emptyImage = null;
+
+        $value = current(array_filter(
+            $valueCollection,
+            function (array $value) use ($attributeAsImage) {
+                return $value['attribute'] === $attributeAsImage;
+            }
+        ));
+
+        if (false === $value) {
+            return $emptyImage;
+        }
+
+        return $value['data'];
     }
 }

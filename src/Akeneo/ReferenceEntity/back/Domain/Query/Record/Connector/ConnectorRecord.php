@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 
@@ -28,34 +26,20 @@ class ConnectorRecord
     /** @var RecordCode */
     private $code;
 
-    /** @var LabelCollection */
-    private $labelCollection;
-
-    /** @var Image */
-    private $image;
-
     /** @var array */
     private $normalizedValues;
 
-    public function __construct(
-        RecordCode $code,
-        LabelCollection $labelCollection,
-        Image $image,
-        array $normalizedValues
-    ) {
+    public function __construct(RecordCode $code, array $normalizedValues)
+    {
         $this->code = $code;
-        $this->labelCollection = $labelCollection;
-        $this->image = $image;
         $this->normalizedValues = $normalizedValues;
     }
 
     public function normalize(): array
     {
         return [
-            'code' => $this->code->normalize(),
-            'labels' => $this->labelCollection->normalize(),
+            'code'   => $this->code->normalize(),
             'values' => empty($this->normalizedValues) ? (object) []: $this->normalizedValues,
-            'main_image' => $this->image->isEmpty() ? null : $this->image->getKey()
         ];
     }
 
@@ -73,15 +57,10 @@ class ConnectorRecord
             }
         }
 
-        return new self(
-            $this->code,
-            $this->labelCollection,
-            $this->image,
-            $filteredValues
-        );
+        return new self($this->code, $filteredValues);
     }
 
-    public function getRecordWithValuesAndLabelsFilteredOnLocales(LocaleIdentifierCollection $localeIdentifiers): ConnectorRecord
+    public function getRecordWithValuesFilteredOnLocales(LocaleIdentifierCollection $localeIdentifiers): ConnectorRecord
     {
         $localeCodes = $localeIdentifiers->normalize();
 
@@ -96,11 +75,6 @@ class ConnectorRecord
             return !empty($filteredValue);
         });
 
-        return new self(
-            $this->code,
-            $this->labelCollection->filterByLocaleIdentifiers($localeIdentifiers),
-            $this->image,
-            $filteredValues
-        );
+        return new self($this->code, $filteredValues);
     }
 }

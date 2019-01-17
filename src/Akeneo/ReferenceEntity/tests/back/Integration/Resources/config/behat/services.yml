@@ -68,6 +68,9 @@ services:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.file_exists'
+            - '@__symfony__.akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
         tags:
             - { name: fob.context_service }
 
@@ -113,6 +116,9 @@ services:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.file_exists'
+            - '@__symfony__.akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
         tags:
             - { name: fob.context_service }
 

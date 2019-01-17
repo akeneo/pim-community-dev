@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
+use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityCreatedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -27,12 +29,25 @@ class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInte
     /** @var ReferenceEntity[] */
     private $referenceEntities = [];
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     public function create(ReferenceEntity $referenceEntity): void
     {
         if (isset($this->referenceEntities[(string) $referenceEntity->getIdentifier()])) {
             throw new \RuntimeException('Reference entity already exists');
         }
         $this->referenceEntities[(string) $referenceEntity->getIdentifier()] = $referenceEntity;
+
+        $this->eventDispatcher->dispatch(
+            ReferenceEntityCreatedEvent::class,
+            new ReferenceEntityCreatedEvent($referenceEntity->getIdentifier())
+        );
     }
 
     public function update(ReferenceEntity $referenceEntity): void

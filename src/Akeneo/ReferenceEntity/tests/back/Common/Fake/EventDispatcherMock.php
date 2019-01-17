@@ -6,9 +6,9 @@ namespace Akeneo\ReferenceEntity\Common\Fake;
 
 use PHPUnit\Framework\Assert;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Intl\Exception\NotImplementedException;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -19,12 +19,21 @@ class EventDispatcherMock implements EventDispatcherInterface
     /** @var array */
     private $dispatchedEvents = [];
 
+    /** @var EventDispatcher */
+    private $eventDispatcher;
+
+    public function __construct(EventDispatcher $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function dispatch($eventName, Event $event = null)
     {
         $this->dispatchedEvents[$eventName] = $event;
+        $this->eventDispatcher->dispatch($eventName, $event);
     }
 
     public function assertEventDispatched(string $expectedEventClass): void
@@ -55,7 +64,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function addListener($eventName, $listener, $priority = 0)
     {
-        throw new NotImplementedException('Method not implemented');
+        $this->eventDispatcher->addListener($eventName, $listener, $priority);
     }
 
     /**
@@ -63,7 +72,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function addSubscriber(EventSubscriberInterface $subscriber)
     {
-        throw new NotImplementedException('Method not implemented');
+        $this->eventDispatcher->addSubscriber($subscriber);
     }
 
     /**
@@ -71,7 +80,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function removeListener($eventName, $listener)
     {
-        throw new NotImplementedException('Method not implemented');
+        $this->eventDispatcher->removeListener($eventName, $listener);
     }
 
     /**
@@ -79,7 +88,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function removeSubscriber(EventSubscriberInterface $subscriber)
     {
-        throw new NotImplementedException('Method not implemented');
+        $this->eventDispatcher->removeSubscriber($subscriber);
     }
 
     /**
@@ -87,7 +96,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function getListeners($eventName = null)
     {
-        throw new NotImplementedException('Method not implemented');
+        $this->eventDispatcher->getListeners($eventName);
     }
 
     /**
@@ -95,7 +104,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function getListenerPriority($eventName, $listener)
     {
-        throw new NotImplementedException('Method not implemented');
+        $this->eventDispatcher->getListenerPriority($eventName, $listener);
     }
 
     /**
@@ -103,6 +112,6 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function hasListeners($eventName = null)
     {
-        throw new NotImplementedException('Method not implemented');
+        $this->eventDispatcher->hasListeners($eventName);
     }
 }

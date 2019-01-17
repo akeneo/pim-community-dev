@@ -10,7 +10,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForChannelAndLocaleInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\SearchableRecordItem;
+use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
 
@@ -123,8 +123,7 @@ class RecordNormalizer implements RecordNormalizerInterface
             foreach ($valueKeysPerLocales as $localeCode => $valueKeys) {
                 $indexedValues = $this->concatenateDataToIndex($searchableRecordItem, $valueKeys);
                 $searchRecordListMatrix[$channelCode][$localeCode] = sprintf(
-                    '%s %s %s', $searchableRecordItem->code,
-                    $searchableRecordItem->labels[$localeCode] ?? '',
+                    '%s %s', $searchableRecordItem->code,
                     $indexedValues
                 );
             }

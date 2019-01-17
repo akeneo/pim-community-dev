@@ -204,6 +204,8 @@ services:
             - '@akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler'
             - '@router'
             - '@akeneo_referenceentity.infrastructure.connector.api.reference_entity_validator'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
 
     akeneo_referenceentity.infrastructure.connector.action.record.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\CreateOrUpdateRecordAction

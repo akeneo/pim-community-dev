@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Query\File\FindFileDataByFileKeyInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -22,34 +23,40 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
  */
 class EditStoredFileValueCommandFactory implements EditValueCommandFactoryInterface
 {
+    /** @var FindFileDataByFileKeyInterface */
+    private $findFileData;
+
+    public function __construct(FindFileDataByFileKeyInterface $findFileData)
+    {
+        $this->findFileData = $findFileData;
+    }
+
     public function supports(AbstractAttribute $attribute, array $normalizedValue): bool
     {
-        if (!key_exists('data', $normalizedValue) || !is_array($normalizedValue['data'])) {
+        if (!key_exists('data', $normalizedValue)) {
             return false;
         }
 
-        $hasExpectedFields = (5 === count($normalizedValue['data'])) &&
-            key_exists('filePath', $normalizedValue['data']) &&
-            key_exists('originalFilename', $normalizedValue['data']) &&
-            key_exists('size', $normalizedValue['data']) &&
-            key_exists('mimeType', $normalizedValue['data']) &&
-            key_exists('extension', $normalizedValue['data']);
+        $filePath = is_array($normalizedValue['data']) ? ($normalizedValue['data']['filePath'] ?? null) :
+                    (is_string($normalizedValue['data']) ? $normalizedValue['data'] : null);
 
-        return $attribute instanceof ImageAttribute && $hasExpectedFields;
+        return $attribute instanceof ImageAttribute && null !== $filePath && '' !== $filePath;
     }
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
+        $fileKey = $normalizedValue['data']['filePath'] ?? $normalizedValue['data'];
+        $storedFile = is_string($fileKey) ? ($this->findFileData)($fileKey) : [];
+
         $command = new EditStoredFileValueCommand();
         $command->attribute = $attribute;
         $command->channel = $normalizedValue['channel'];
         $command->locale = $normalizedValue['locale'];
-
-        $command->filePath = $normalizedValue['data']['filePath'];
-        $command->originalFilename = $normalizedValue['data']['originalFilename'];
-        $command->size = $normalizedValue['data']['size'];
-        $command->mimeType = $normalizedValue['data']['mimeType'];
-        $command->extension = $normalizedValue['data']['extension'];
+        $command->filePath = $fileKey;
+        $command->originalFilename = $storedFile['originalFilename'] ?? null;
+        $command->mimeType = $storedFile['mimeType'] ?? null;
+        $command->extension = $storedFile['extension'] ?? null;
+        $command->size = $storedFile['size'] ?? null;
 
         return $command;
     }

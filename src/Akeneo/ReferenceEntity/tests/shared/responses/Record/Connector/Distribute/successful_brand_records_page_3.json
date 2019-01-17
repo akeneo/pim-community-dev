@@ -24,16 +24,17 @@
                         "_links": {
                             "self": {
                                 "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_7"
-                            },
-                            "main_image_download": {
-                                "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_7_image.jpg"
                             }
                         },
                         "code": "brand_7",
-                        "labels": {
-                            "en_US": "Brand number 7"
-                        },
                         "values": {
+                            "label": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "value": "Brand number 7"
+                                }
+                            ],
                             "description": [
                                 {
                                     "locale": "en_US",
@@ -47,9 +48,20 @@
                                     "channel": null,
                                     "data": "italy"
                                 }
+                            ],
+                            "image": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "test/brand_7_image.jpg",
+                                    "_links": {
+                                        "download": {
+                                            "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_7_image.jpg"
+                                        }
+                                    }
+                                }
                             ]
-                        },
-                        "main_image": "test/brand_7_image.jpg"
+                        }
                     }
                 ]
             }

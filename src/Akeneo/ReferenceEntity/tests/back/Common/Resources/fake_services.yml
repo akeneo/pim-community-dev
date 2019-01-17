@@ -7,12 +7,16 @@ services:
     # Repositories
     akeneo_referenceentity.infrastructure.persistence.repository.reference_entity:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository
+        arguments:
+            - '@event_dispatcher'
 
     akeneo_referenceentity.infrastructure.persistence.repository.record:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository
 
     akeneo_referenceentity.infrastructure.persistence.repository.attribute:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository
+        arguments:
+            - '@event_dispatcher'
 
     akeneo_referenceentity.infrastructure.persistence.repository.date:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryDateRepository
@@ -118,11 +122,13 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForIdentifiersAndQuery
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery
         arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.date'
 
@@ -161,6 +167,22 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryGetAttributeIdentifier
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindFileDataByFileKey
+
+    akeneo_referenceentity.infrastructure.persistence.query.file_exists:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFileExists
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityAttributeAsLabel
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_image:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityAttributeAsImage
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
 
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:

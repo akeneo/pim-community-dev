@@ -26,28 +26,20 @@ class RecordPropertiesValidatorSpec extends ObjectBehavior
     function it_returns_all_the_errors_of_invalid_record_properties()
     {
         $record = [
-            'labels' => [
-                'en_US' => null,
-                'fr_FR' => 42
-            ],
-            'main_image' => ['image1', 'image2'],
             'values' => null,
             'foo' => 'bar',
         ];
 
         $errors = $this->validate($record);
         $errors->shouldBeArray();
-        $errors->shouldHaveCount(6);
+        $errors->shouldHaveCount(3);
     }
+
 
     function it_returns_an_empty_array_if_all_the_record_properties_are_valid()
     {
         $record = [
             'code' => 'starck',
-            'labels' => [
-                'en_US' => 'Philippe Starck',
-            ],
-            'main_image' => null,
             'values' => [
                 'favorite_color' => [
                     [

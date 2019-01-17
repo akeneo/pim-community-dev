@@ -31,6 +31,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryAttributeRepositoryTest extends TestCase
 {
@@ -39,7 +40,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
 
     public function setup()
     {
-        $this->attributeRepository = new InMemoryAttributeRepository();
+        $this->attributeRepository = new InMemoryAttributeRepository(new EventDispatcher());
     }
 
     /**

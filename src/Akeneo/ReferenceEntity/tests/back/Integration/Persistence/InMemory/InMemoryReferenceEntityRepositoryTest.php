@@ -19,9 +19,9 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryReferenceEntityRepositoryTest extends TestCase
 {
@@ -30,7 +30,9 @@ class InMemoryReferenceEntityRepositoryTest extends TestCase
 
     public function setup()
     {
-        $this->referenceEntityRepository = new InMemoryReferenceEntityRepository();
+        $this->referenceEntityRepository = new InMemoryReferenceEntityRepository(
+            new EventDispatcher()
+        );
     }
 
     /**

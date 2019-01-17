@@ -8,6 +8,8 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use PhpSpec\ObjectBehavior;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
 
 class ReferenceEntityDetailsSpec extends ObjectBehavior
 {
@@ -34,6 +36,8 @@ class ReferenceEntityDetailsSpec extends ObjectBehavior
             $name
         ];
         $this->isAllowedToEdit = false;
+        $this->attributeAsLabel = AttributeAsLabelReference::noReference();
+        $this->attributeAsImage = AttributeAsImageReference::noReference();
 
         $name->normalize()->willReturn(['code' => 'name']);
 
@@ -56,7 +60,9 @@ class ReferenceEntityDetailsSpec extends ObjectBehavior
                 ],
                 'permission' => [
                     'edit' => false
-                ]
+                ],
+                'attribute_as_label' => null,
+                'attribute_as_image' => null,
             ]
         );
     }

@@ -80,7 +80,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             $referenceEntityIdentifier,
             $attributeCode,
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -109,7 +109,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             $referenceEntityIdentifier,
             AttributeCode::fromString('picture'),
             LabelCollection::fromArray(['en_US' => 'Picture', 'fr_FR' => 'Image']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -138,7 +138,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             $referenceEntityIdentifier,
             AttributeCode::fromString('mentor'),
             LabelCollection::fromArray(['en_US' => 'Mentor', 'fr_FR' => 'Mentor']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -166,7 +166,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             $referenceEntityIdentifier,
             AttributeCode::fromString('brands'),
             LabelCollection::fromArray(['en_US' => 'Brands', 'fr_FR' => 'Marques']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -194,7 +194,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             $referenceEntityIdentifier,
             $attributeCode,
             LabelCollection::fromArray(['en_US' => 'Favorite Color', 'fr_FR' => 'Couleur favorite']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
@@ -225,7 +225,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             $referenceEntityIdentifier,
             AttributeCode::fromString('colors'),
             LabelCollection::fromArray(['en_US' => 'Colors', 'fr_FR' => 'Couleurs']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
@@ -311,7 +311,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             $referenceEntityIdentifier,
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -341,7 +341,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             $referenceEntityIdentifier,
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -368,7 +368,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
-        $this->assertEquals(0, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
+        $this->assertEquals(2, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
 
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
@@ -377,7 +377,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             $referenceEntityIdentifier,
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -387,7 +387,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         );
         $this->attributeRepository->create($expectedAttribute);
 
-        $this->assertEquals(1, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
+        $this->assertEquals(3, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
 
         $identifier = AttributeIdentifier::create('designer', 'name2', 'test');
         $expectedAttribute = TextAttribute::createText(
@@ -395,7 +395,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             $referenceEntityIdentifier,
             AttributeCode::fromString('name2'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -405,7 +405,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         );
         $this->attributeRepository->create($expectedAttribute);
 
-        $this->assertEquals(2, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
+        $this->assertEquals(4, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
     }
 
     private function assertAttribute(
@@ -480,7 +480,7 @@ SQL;
                 'reference_entity_identifier' => (string) $referenceEntityIdentifier,
                 'labels'                     => '{}',
                 'attribute_type'             => 'UNSUPPORTED_ATTRIBUTE_TYPE',
-                'attribute_order'            => 1,
+                'attribute_order'            => 2,
                 'is_required'                   => 0,
                 'value_per_channel'          => 0,
                 'value_per_locale'           => 0,
@@ -500,7 +500,7 @@ SQL;
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),

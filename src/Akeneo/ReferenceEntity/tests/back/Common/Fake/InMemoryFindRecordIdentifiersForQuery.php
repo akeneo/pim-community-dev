@@ -29,6 +29,9 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     /** @var Record[] */
     private $records = [];
 
+    /** @var InMemoryReferenceEntityRepository  */
+    private $referenceEntityRepository;
+
     /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
     private $findRequiredValueKeyCollectionForChannelAndLocale;
 
@@ -39,9 +42,11 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     private $dateRepository;
 
     public function __construct(
+        InMemoryReferenceEntityRepository $referenceEntityRepository,
         InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocale,
         InMemoryDateRepository $dateRepository
     ) {
+        $this->referenceEntityRepository = $referenceEntityRepository;
         $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
         $this->dateRepository = $dateRepository;
     }
@@ -69,11 +74,16 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
                 || (string) $record->getReferenceEntityIdentifier() === $referenceEntityFilter['value'];
         }));
 
-        $records = array_values(array_filter($records, function (Record $record) use ($fullTextFilter, $query) {
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($records[0]->getReferenceEntityIdentifier());
+        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference()->normalize();
+
+        $records = array_values(array_filter($records, function (Record $record) use ($fullTextFilter, $query, $attributeAsLabel) {
+            $labels = $this->getLabelsFromValues($record->getValues()->normalize(), $attributeAsLabel);
+
             return null === $fullTextFilter
                 || '' === $fullTextFilter['value']
                 || false !== strpos((string) $record->getCode(), $fullTextFilter['value'])
-                || false !== strpos($record->getLabel($query->getLocale()), $fullTextFilter['value']);
+                || (array_key_exists($query->getLocale(), $labels) && false !== strpos($labels[$query->getLocale()], $fullTextFilter['value']));
         }));
 
         $records = array_values(array_filter($records, function (Record $record) use ($codeFilter): bool {
@@ -131,12 +141,13 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             return $completeFilter['value'] ? $isComplete : !$isComplete;
         }));
 
-        $records = array_values(array_filter($records, function (Record $record) use ($codeLabelFilter, $query) {
+        $records = array_values(array_filter($records, function (Record $record) use ($codeLabelFilter, $attributeAsLabel) {
             if (null === $codeLabelFilter) {
                 return true;
             }
 
-            $field = sprintf('%s %s', $record->getCode(), $record->getLabel($query->getLocale()));
+            $labelsFromValues = $this->getLabelsFromValues($record->getValues()->normalize(), $attributeAsLabel);
+            $field = sprintf('%s %s', $record->getCode()->normalize(), implode(' ', $labelsFromValues));
 
             return false !== strpos($field, $codeLabelFilter['value']);
         }));
@@ -172,6 +183,23 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
         $result = new IdentifiersForQueryResult($identifiers, count($records));
 
         return $result;
+    }
+
+    private function getLabelsFromValues(array $valueCollection, string $attributeAsLabel): array
+    {
+        return array_reduce(
+            $valueCollection,
+            function (array $labels, array $value) use ($attributeAsLabel) {
+                if ($value['attribute'] === $attributeAsLabel) {
+                    $localeCode = $value['locale'];
+                    $label = (string) $value['data'];
+                    $labels[$localeCode] = $label;
+                }
+
+                return $labels;
+            },
+            []
+        );
     }
 
     /**

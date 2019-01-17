@@ -13,6 +13,7 @@ import {generateKey} from 'akeneoreferenceentity/domain/model/record/value-colle
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {getAttributeTypes, AttributeType} from 'akeneoreferenceentity/application/configuration/attribute';
 import {hasDataCellView} from 'akeneoreferenceentity/application/configuration/value';
+import AttributeReference from 'akeneoreferenceentity/domain/model/attribute/attribute-reference';
 
 export class InvalidArgument extends Error {}
 
@@ -34,7 +35,10 @@ export const attributeListGotUpdated = (attributes: Attribute[]) => (
 ): void => {
   dispatch(attributeListUpdated(attributes));
 
-  dispatch(updateColumns(getColumns(attributes, getState().structure.channels)));
+  const referenceEntity = denormalizeReferenceEntity(getState().form.data);
+  const columnsToExclude = [referenceEntity.getAttributeAsImage(), referenceEntity.getAttributeAsLabel()];
+
+  dispatch(updateColumns(getColumns(attributes, getState().structure.channels, columnsToExclude)));
 };
 
 const getColumn = (attribute: Attribute, channel: ChannelReference, locale: LocaleReference): Column => {
@@ -60,12 +64,15 @@ const getColumn = (attribute: Attribute, channel: ChannelReference, locale: Loca
   };
 };
 
-export const getColumns = (attributes: Attribute[], channels: Channel[]) => {
+export const getColumns = (attributes: Attribute[], channels: Channel[], columnsToExclude: AttributeReference[]) => {
   const attributeTypes = getAttributeTypes()
     .filter((attributeType: AttributeType) => hasDataCellView(attributeType.identifier))
     .map((attributeType: AttributeType) => attributeType.identifier);
   return attributes
     .filter((attribute: Attribute) => attributeTypes.includes(attribute.getType()))
+    .filter((attribute: Attribute) => {
+      return !columnsToExclude.map(column => column.stringValue()).includes(attribute.getIdentifier().stringValue());
+    })
     .sort((first: Attribute, second: Attribute) => first.order - second.order)
     .reduce((columns: Column[], attribute: Attribute) => {
       channels.forEach((channel: Channel) => {

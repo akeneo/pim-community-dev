@@ -41,6 +41,10 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocales implements Find
 
         /** @var AbstractAttribute $attribute */
         foreach ($attributes as $attribute) {
+            if (false === $attribute->normalize()['is_required']) {
+                continue;
+            }
+
             if ($attribute->hasValuePerChannel() && $attribute->hasValuePerLocale()) {
                 foreach ($this->activatedChannelCodes as $activatedChannelCode) {
                     foreach ($localeCodes as $localeCode) {

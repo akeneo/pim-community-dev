@@ -52,7 +52,7 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
 
         $nextOrder = $this->findAttributeNextOrder->withReferenceEntityIdentifier($referenceEntityIdentifier);
 
-        $this->assertEquals(AttributeOrder::fromInteger(1), $nextOrder);
+        $this->assertEquals(AttributeOrder::fromInteger(3), $nextOrder);
     }
 
     /**
@@ -64,7 +64,7 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
 
         $nextOrder = $this->findAttributeNextOrder->withReferenceEntityIdentifier($referenceEntityIdentifier);
 
-        $this->assertEquals(AttributeOrder::fromInteger(0), $nextOrder);
+        $this->assertEquals(AttributeOrder::fromInteger(2), $nextOrder);
     }
 
     private function resetDB(): void
@@ -97,7 +97,7 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),

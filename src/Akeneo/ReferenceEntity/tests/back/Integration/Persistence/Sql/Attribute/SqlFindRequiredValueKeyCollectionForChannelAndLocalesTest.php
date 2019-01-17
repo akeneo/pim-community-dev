@@ -55,7 +55,7 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocalesTest extends SqlInteg
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    private $order = 0;
+    private $order = 2;
 
     public function setUp()
     {
@@ -77,7 +77,7 @@ class SqlFindRequiredValueKeyCollectionForChannelAndLocalesTest extends SqlInteg
         $locales = LocaleIdentifierCollection::fromNormalized(['fr_FR', 'en_US', 'en_AU']);
 
         $country = $this->loadRequiredAttributeWithoutValuePerChannelOrLocale('country');
-        $image = $this->loadRequiredAttributeWithValuePerChannel('image');
+        $image = $this->loadRequiredAttributeWithValuePerChannel('main_image');
         $name = $this->loadRequiredAttributeWithValuePerChannelAndLocale('name');
         $materials = $this->loadRequiredAttributeWithValuePerLocale('materials');
         $age = $this->loadNotRequiredAttribute('age');

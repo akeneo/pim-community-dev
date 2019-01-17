@@ -33,6 +33,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterfac
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryGetAttributeIdentifierTest extends TestCase
 {
@@ -44,7 +45,7 @@ class InMemoryGetAttributeIdentifierTest extends TestCase
 
     public function setup()
     {
-        $this->attributeRepository = new InMemoryAttributeRepository();
+        $this->attributeRepository = new InMemoryAttributeRepository(new EventDispatcher());
         $this->getAttributeIdentifier = new InMemoryGetAttributeIdentifier($this->attributeRepository);
     }
 

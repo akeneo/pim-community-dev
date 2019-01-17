@@ -68,7 +68,7 @@ class EditAttributeOptionContext implements Context
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('color'),
             LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
@@ -132,7 +132,7 @@ class EditAttributeOptionContext implements Context
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('color'),
             LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
@@ -157,7 +157,7 @@ class EditAttributeOptionContext implements Context
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('color'),
             LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)

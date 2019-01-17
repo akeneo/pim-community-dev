@@ -40,7 +40,8 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
 
     public function hydrate(array $row, array $emptyValues): RecordDetails
     {
-        $labels = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['labels'], $this->platform);
+        $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
+        $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
         $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
         $recordIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
@@ -49,23 +50,9 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         $recordCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
 
-        $allValues = [];
-        foreach ($emptyValues as $key => $value) {
-            if (array_key_exists($key, $valueCollection)) {
-                $value['data'] = $valueCollection[$key]['data'];
-            }
-
-            $allValues[] = $value;
-        }
-
-        $recordImage = Image::createEmpty();
-        if (isset($row['image']) && null !== $row['image']) {
-            $image = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['image'], $this->platform);
-            $file = new FileInfo();
-            $file->setKey($image['file_key']);
-            $file->setOriginalFilename($image['original_filename']);
-            $recordImage = Image::fromFileInfo($file);
-        }
+        $allValues = $this->createEmptyValues($emptyValues, $valueCollection);
+        $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
+        $recordImage = $this->getImage($valueCollection, $attributeAsImage);
 
         $recordDetails = new RecordDetails(
             RecordIdentifier::fromString($recordIdentifier),
@@ -73,10 +60,62 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
             RecordCode::fromString($recordCode),
             LabelCollection::fromArray($labels),
             $recordImage,
-            $allValues,
+            array_values($allValues),
             true
         );
 
         return $recordDetails;
+    }
+
+    private function createEmptyValues(array $emptyValues, array $valueCollection): array
+    {
+        $result = [];
+        foreach ($emptyValues as $key => $value) {
+            if (array_key_exists($key, $valueCollection)) {
+                $value['data'] = $valueCollection[$key]['data'];
+            }
+
+            $result[] = $value;
+        }
+
+        return $result;
+    }
+
+    private function getLabelsFromValues($valueCollection, $attributeAsLabel): array
+    {
+        return array_reduce(
+            $valueCollection,
+            function (array $labels, array $value) use ($attributeAsLabel) {
+                if ($value['attribute'] === $attributeAsLabel) {
+                    $localeCode = $value['locale'];
+                    $label = (string) $value['data'];
+                    $labels[$localeCode] = $label;
+                }
+
+                return $labels;
+            },
+            []
+        );
+    }
+
+    private function getImage($valueCollection, $attributeAsImage): Image
+    {
+        $imageValue = array_filter(
+            $valueCollection,
+            function (array $value) use ($attributeAsImage) {
+                return $value['attribute'] === $attributeAsImage;
+            }
+        );
+
+        $result = Image::createEmpty();
+        if (!empty($imageValue)) {
+            $imageValue = current($imageValue);
+            $file = new FileInfo();
+            $file->setKey($imageValue['data']['filePath']);
+            $file->setOriginalFilename($imageValue['data']['originalFilename']);
+            $result = Image::fromFileInfo($file);
+        }
+
+        return $result;
     }
 }

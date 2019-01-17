@@ -13,6 +13,11 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsImageInterface;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityAttributeAsLabelInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 
 /**
@@ -21,18 +26,62 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
  */
 class DeleteAttributeHandler
 {
+    /** @var FindReferenceEntityAttributeAsLabelInterface */
+    private $findReferenceEntityAttributeAsLabel;
+
+    /** @var FindReferenceEntityAttributeAsImageInterface */
+    private $findReferenceEntityAttributeAsImage;
+
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
-    {
+    public function __construct(
+        FindReferenceEntityAttributeAsLabelInterface $findReferenceEntityAttributeAsLabel,
+        FindReferenceEntityAttributeAsImageInterface $findReferenceEntityAttributeAsImage,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
+        $this->findReferenceEntityAttributeAsLabel = $findReferenceEntityAttributeAsLabel;
+        $this->findReferenceEntityAttributeAsImage = $findReferenceEntityAttributeAsImage;
         $this->attributeRepository = $attributeRepository;
     }
 
     public function __invoke(DeleteAttributeCommand $deleteAttributeCommand): void
     {
-        $identifier = AttributeIdentifier::fromString($deleteAttributeCommand->attributeIdentifier);
+        $attributeIdentifier = AttributeIdentifier::fromString($deleteAttributeCommand->attributeIdentifier);
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
 
-        $this->attributeRepository->deleteByIdentifier($identifier);
+        $labelReference = $this->findAttributeAsLabel($attribute->getReferenceEntityIdentifier());
+        if (!$labelReference->isEmpty() && $labelReference->getIdentifier()->equals($attributeIdentifier)) {
+            throw new \LogicException(
+                sprintf(
+                    'Attribute "%s" cannot be deleted for the reference entity "%s"  as it is used as attribute as label.',
+                    $attributeIdentifier,
+                    $attribute->getReferenceEntityIdentifier()
+                )
+            );
+        }
+
+        $imageReference = $this->findAttributeAsImage($attribute->getReferenceEntityIdentifier());
+        if (!$imageReference->isEmpty() && $imageReference->getIdentifier()->equals($attributeIdentifier)) {
+            throw new \LogicException(
+                sprintf(
+                    'Attribute "%s" cannot be deleted for the reference entity "%s"  as it is used as attribute as image.',
+                    $attributeIdentifier,
+                    $attribute->getReferenceEntityIdentifier()
+                )
+            );
+        }
+
+        $this->attributeRepository->deleteByIdentifier($attributeIdentifier);
+    }
+
+    private function findAttributeAsLabel(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsLabelReference
+    {
+        return ($this->findReferenceEntityAttributeAsLabel)($referenceEntityIdentifier);
+    }
+
+    private function findAttributeAsImage(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsImageReference
+    {
+        return ($this->findReferenceEntityAttributeAsImage)($referenceEntityIdentifier);
     }
 }

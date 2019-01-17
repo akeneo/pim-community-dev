@@ -56,22 +56,12 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     {
         $attributeDetails = ($this->findAttributesDetails)(ReferenceEntityIdentifier::fromString('designer'));
 
-        $this->assertCount(5, $attributeDetails);
+        $this->assertCount(7, $attributeDetails);
         $this->assertNameAttribute($attributeDetails);
         $this->assertEmailAttribute($attributeDetails);
         $this->assertCustomRegex($attributeDetails);
         $this->assertLongDescriptionAttribute($attributeDetails);
         $this->assertImageAttribute($attributeDetails);
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_an_empty_array_if_the_reference_entity_does_not_have_any_attributes()
-    {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
-        $attributeDetails = ($this->findAttributesDetails)($referenceEntityIdentifier);
-        $this->assertCount(0, $attributeDetails);
     }
 
     private function resetDB(): void
@@ -99,7 +89,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
-            AttributeOrder::fromInteger(0),
+            AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -112,7 +102,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('email'),
             LabelCollection::fromArray(['en_US' => 'Email']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -125,7 +115,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('regex'),
             LabelCollection::fromArray(['en_US' => 'Regex']),
-            AttributeOrder::fromInteger(2),
+            AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -138,7 +128,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('long_description'),
             LabelCollection::fromArray(['en_US' => 'Long description']),
-            AttributeOrder::fromInteger(3),
+            AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -148,9 +138,9 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $imageAttribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'test'),
             ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('image'),
+            AttributeCode::fromString('main_image'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
-            AttributeOrder::fromInteger(4),
+            AttributeOrder::fromInteger(6),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -188,7 +178,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedName->referenceEntityIdentifier = 'designer';
         $expectedName->code = 'name';
         $expectedName->labels = ['en_US' => 'Name'];
-        $expectedName->order = 0;
+        $expectedName->order = 2;
         $expectedName->isRequired = true;
         $expectedName->valuePerChannel = true;
         $expectedName->valuePerLocale = true;
@@ -213,7 +203,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedEmail->referenceEntityIdentifier = 'designer';
         $expectedEmail->code = 'email';
         $expectedEmail->labels = ['en_US' => 'Email'];
-        $expectedEmail->order = 1;
+        $expectedEmail->order = 3;
         $expectedEmail->isRequired = true;
         $expectedEmail->valuePerChannel = true;
         $expectedEmail->valuePerLocale = true;
@@ -238,7 +228,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedRegex->referenceEntityIdentifier = 'designer';
         $expectedRegex->code = 'regex';
         $expectedRegex->labels = ['en_US' => 'Regex'];
-        $expectedRegex->order = 2;
+        $expectedRegex->order = 4;
         $expectedRegex->isRequired = true;
         $expectedRegex->valuePerChannel = true;
         $expectedRegex->valuePerLocale = true;
@@ -263,7 +253,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedLongDescription->referenceEntityIdentifier = 'designer';
         $expectedLongDescription->code = 'long_description';
         $expectedLongDescription->labels = ['en_US' => 'Long description'];
-        $expectedLongDescription->order = 3;
+        $expectedLongDescription->order = 5;
         $expectedLongDescription->isRequired = true;
         $expectedLongDescription->valuePerChannel = true;
         $expectedLongDescription->valuePerLocale = true;
@@ -284,15 +274,15 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
      */
     private function assertImageAttribute($attributeDetails): void
     {
-        $actualImage = $this->getAttributeWithCode($attributeDetails, 'image');
+        $actualImage = $this->getAttributeWithCode($attributeDetails, 'main_image');
 
         $expectedImage = new AttributeDetails();
         $expectedImage->type = 'image';
         $expectedImage->identifier = 'image_designer_test';
         $expectedImage->referenceEntityIdentifier = 'designer';
-        $expectedImage->code = 'image';
+        $expectedImage->code = 'main_image';
         $expectedImage->labels = ['en_US' => 'Portrait'];
-        $expectedImage->order = 4;
+        $expectedImage->order = 6;
         $expectedImage->isRequired = true;
         $expectedImage->valuePerChannel = true;
         $expectedImage->valuePerLocale = true;

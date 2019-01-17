@@ -15,7 +15,6 @@ namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
@@ -36,11 +35,19 @@ class RecordSpec extends ObjectBehavior
         $identifier = RecordIdentifier::fromString('designer_starck_fingerprint');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
-        $labelCollection = [
-            'en_US' => 'Stark',
-            'fr_FR' => 'Stark'
-        ];
         $valueCollection = ValueCollection::fromValues([
+            Value::create(
+                AttributeIdentifier::create('designer', 'label', 'fingerprint'),
+                ChannelReference::noReference(),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                TextData::fromString('Stark')
+            ),
+            Value::create(
+                AttributeIdentifier::create('designer', 'label', 'fingerprint'),
+                ChannelReference::noReference(),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                TextData::fromString('Stark')
+            ),
             Value::create(
                 AttributeIdentifier::create('designer', 'description', 'fingerprint'),
                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
@@ -53,8 +60,6 @@ class RecordSpec extends ObjectBehavior
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            $labelCollection,
-            Image::createEmpty(),
             $valueCollection
         ]);
     }
@@ -85,8 +90,6 @@ class RecordSpec extends ObjectBehavior
             $sameIdentifier,
             ReferenceEntityIdentifier::fromString('designer'),
             RecordCode::fromString('starck'),
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->equals($sameRecord)->shouldReturn(true);
@@ -96,8 +99,6 @@ class RecordSpec extends ObjectBehavior
             $anotherIdentifier,
             ReferenceEntityIdentifier::fromString('designer'),
             RecordCode::fromString('jony_ive'),
-            [],
-            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->equals($anotherRecord)->shouldReturn(false);
@@ -129,11 +130,19 @@ class RecordSpec extends ObjectBehavior
              'identifier' => 'designer_starck_fingerprint',
              'code' => 'starck',
              'referenceEntityIdentifier' => 'designer',
-             'labels'                   => [
-                 'en_US' => 'Stark',
-                 'fr_FR' => 'Stark',
-             ],
              'values' => [
+                 'label_designer_fingerprint_fr_FR' => [
+                     'attribute' => 'label_designer_fingerprint',
+                     'channel'   => null,
+                     'locale'    => 'fr_FR',
+                     'data'      => 'Stark',
+                 ],
+                 'label_designer_fingerprint_en_US' => [
+                     'attribute' => 'label_designer_fingerprint',
+                     'channel'   => null,
+                     'locale'    => 'en_US',
+                     'data'      => 'Stark',
+                 ],
                  'description_designer_fingerprint_ecommerce_fr_FR' => [
                      'attribute' => 'description_designer_fingerprint',
                      'channel'   => 'ecommerce',
@@ -141,7 +150,6 @@ class RecordSpec extends ObjectBehavior
                      'data'      => '.one value per channel ecommerce / one value per locale fr_FR.',
                  ],
              ],
-             'image' => null,
          ]);
      }
 

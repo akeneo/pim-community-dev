@@ -66,13 +66,17 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
     private function fetchResult(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): array
     {
         $query = <<<SQL
-        SELECT ee.identifier, ee.code, ee.reference_entity_identifier, ee.labels, ee.value_collection, fi.image
-        FROM akeneo_reference_entity_record AS ee
-        LEFT JOIN (
-          SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
-          FROM akeneo_file_storage_file_info
-        ) AS fi ON fi.file_key = ee.image
-        WHERE code = :code && reference_entity_identifier = :reference_entity_identifier;
+        SELECT
+            record.identifier,
+            record.code,
+            record.reference_entity_identifier,
+            record.value_collection,
+            reference.attribute_as_image,
+            reference.attribute_as_label
+        FROM akeneo_reference_entity_record AS record
+        INNER JOIN akeneo_reference_entity_reference_entity AS reference
+            ON reference.identifier = record.reference_entity_identifier
+        WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'code' => (string) $recordCode,

@@ -20,6 +20,7 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -36,7 +37,7 @@ class InMemoryFindAttributesIndexedByIdentifierTest extends TestCase
 
     public function setup()
     {
-        $this->attributeRepository = new InMemoryAttributeRepository();
+        $this->attributeRepository = new InMemoryAttributeRepository(new EventDispatcher());
         $this->query = new InMemoryFindAttributesIndexedByIdentifier($this->attributeRepository);
     }
 

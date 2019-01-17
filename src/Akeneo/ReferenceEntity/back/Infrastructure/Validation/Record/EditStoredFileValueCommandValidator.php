@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Query\File\FileExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditStoredFileValueCommand as EditStoredFileValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
@@ -32,6 +33,14 @@ use Symfony\Component\Validator\Validation;
  */
 class EditStoredFileValueCommandValidator extends ConstraintValidator
 {
+    /** @var FileExistsInterface */
+    private $fileExists;
+
+    public function __construct(FileExistsInterface $fileExists)
+    {
+        $this->fileExists = $fileExists;
+    }
+
     public function validate($command, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
@@ -76,6 +85,14 @@ class EditStoredFileValueCommandValidator extends ConstraintValidator
                     get_class($command)
                 )
             );
+        }
+
+        if (is_string($command->filePath) && '' !== $command->filePath && !($this->fileExists)($command->filePath)) {
+            $this->context->buildViolation(EditStoredFileValueCommandConstraint::FILE_SHOULD_EXIST)
+                ->atPath((string) $attribute->getCode())
+                ->setParameter('%file_path%', $command->filePath)
+                ->addViolation();
+            return;
         }
 
         $violations = $this->checkPropertyTypes($command);

@@ -1,53 +1,66 @@
 {
-    "request": {
-        "method": "PUT",
-        "route": "akeneo_reference_entities_record_index_rest",
-        "query": {
-            "referenceEntityIdentifier": "designer"
-        },
-        "body": {
-            "locale": "en_US",
-            "channel": "ecommerce",
-            "size": 200,
-            "page": 0,
-            "filters": [
-                {
-                    "field": "code",
-                    "operator": "IN",
-                    "value": "dyson",
-                    "context": {}
-                },
-                {
-                    "field": "reference_entity",
-                    "operator": "=",
-                    "value": "designer",
-                    "context": {}
-                }
-            ]
-        }
+  "request": {
+    "method": "PUT",
+    "route": "akeneo_reference_entities_record_index_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer"
     },
-    "response": {
-        "status": 200,
-        "body": {
-            "items": [
-                {
-                    "identifier": "designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
-                    "reference_entity_identifier": "designer",
-                    "code": "dyson",
-                    "labels": {
-                        "en_US": "Dyson",
-                        "fr_FR": "Dyson"
-                    },
-                    "image": null,
-                    "values": {},
-                    "completeness": {
-                        "complete": 0,
-                        "required": 2
-                    }
-                }
-            ],
-            "matches_count":1,
-            "total_count":3
+    "body": {
+      "locale": "en_US",
+      "channel": "ecommerce",
+      "size": 200,
+      "page": 0,
+      "filters": [
+        {
+          "field": "code",
+          "operator": "IN",
+          "value": "dyson",
+          "context": {}
+        },
+        {
+          "field": "reference_entity",
+          "operator": "=",
+          "value": "designer",
+          "context": {}
         }
+      ]
     }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "items": [
+        {
+          "identifier": "designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
+          "reference_entity_identifier": "designer",
+          "code": "dyson",
+          "labels": {
+            "en_US": "Dyson",
+            "fr_FR": "Dyson"
+          },
+          "image": null,
+          "values": {
+            "label_designer_d00de54460082b239164135175588647_en_US": {
+              "attribute": "label_designer_d00de54460082b239164135175588647",
+              "channel": null,
+              "locale": "en_US",
+              "data": "Dyson"
+            },
+            "label_designer_d00de54460082b239164135175588647_fr_FR": {
+              "attribute": "label_designer_d00de54460082b239164135175588647",
+              "channel": null,
+              "locale": "fr_FR",
+              "data": "Dyson"
+            }
+          },
+          "completeness": {
+            "complete": 0,
+            "required": 2
+          }
+        }
+      ],
+      "matches_count":1,
+      "total_count":3
+    }
+  }
 }

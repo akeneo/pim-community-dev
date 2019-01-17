@@ -15,6 +15,8 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReference;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
@@ -62,7 +64,9 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
             $result['record_count'],
             $result['file_key'],
             $result['original_filename'],
-            $attributesDetails
+            $attributesDetails,
+            $result['attribute_as_label'],
+            $result['attribute_as_image']
         );
     }
 
@@ -72,6 +76,8 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
         SELECT
             re.identifier,
             re.labels,
+            re.attribute_as_label,
+            re.attribute_as_image,
             fi.file_key,
             fi.original_filename, (
                 SELECT count(*) FROM akeneo_reference_entity_record WHERE reference_entity_identifier = :identifier
@@ -101,7 +107,9 @@ SQL;
         string $recordCount,
         ?string $fileKey,
         ?string $originalFilename,
-        array $attributesDetails
+        array $attributesDetails,
+        ?string $attributeAsLabel,
+        ?string $attributeAsImage
     ): ReferenceEntityDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
@@ -123,6 +131,8 @@ SQL;
         $referenceEntityItem->image = $entityImage;
         $referenceEntityItem->recordCount = $recordCount;
         $referenceEntityItem->attributes = $attributesDetails;
+        $referenceEntityItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized($attributeAsLabel);
+        $referenceEntityItem->attributeAsImage = AttributeAsImageReference::createFromNormalized($attributeAsImage);
 
         return $referenceEntityItem;
     }
