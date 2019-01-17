@@ -135,28 +135,6 @@ class AttributesMappingController
         $command = new SaveAttributesMappingByFamilyCommand($identifier, $data['mapping']);
         $this->saveAttributesMappingByFamilyHandler->handle($command);
 
-        /*
-        $familyMapping = $this->getOrCreateFamilyMapping($data['code'])
-        $this->updater->update($familyMapping, $data);
-
-        $violations = $this->validator->validate($familyMapping);
-        if (0 < $violations->count()) {
-            $normalizedViolations = [];
-            foreach ($violations as $violation) {
-                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                    $violation,
-                    'internal_api'
-                );
-            }
-
-            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
-        }
-        $this->saver->save($familyMapping);
-
-        return new JsonResponse($this->normalizer->normalize($familyMapping, 'internal_api'));
-        */
-
-        // TODO Temporary return, always valid.
         return new JsonResponse($data);
     }
 }
