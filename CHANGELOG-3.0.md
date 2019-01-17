@@ -3,7 +3,8 @@
 ## Franklin Insights
 
 - APAI-445: Identify and handle subscriptions affected by identifiers mapping change
-- APAI-577: Ignore a subscription when an error occurs 
+- APAI-577: Ignore a subscription when an error occurs
+- APAI-573: Be able to find families without translation in attributes mapping
 
 # 3.0
 
