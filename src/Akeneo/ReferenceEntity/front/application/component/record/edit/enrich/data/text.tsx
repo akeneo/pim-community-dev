@@ -15,6 +15,9 @@ const View = ({
   onChange: (value: Value) => void;
   onSubmit: () => void;
   rights: {
+    locale: {
+      edit: boolean;
+    };
     record: {
       edit: boolean;
       delete: boolean;
@@ -23,6 +26,11 @@ const View = ({
 }) => {
   if (!(value.data instanceof TextData && value.attribute instanceof ConcreteTextAttribute)) {
     return null;
+  }
+
+  let canEditData = true;
+  if (value.attribute.valuePerLocale) {
+    canEditData = rights.record.edit && rights.locale.edit;
   }
 
   const onValueChange = (text: string) => {
@@ -46,12 +54,12 @@ const View = ({
             id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
             className={`AknTextareaField AknTextareaField--light
             ${value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''}
-            ${!rights.record.edit ? 'AknTextField--disabled' : ''}`}
+            ${!canEditData ? 'AknTextField--disabled' : ''}`}
             value={value.data.stringValue()}
             onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
               onValueChange(event.currentTarget.value);
             }}
-            readOnly={!rights.record.edit}
+            readOnly={!canEditData}
           />
         )
       ) : (
@@ -59,7 +67,7 @@ const View = ({
           id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
           className={`AknTextField AknTextField--narrow AknTextField--light
           ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}
-          ${!rights.record.edit ? 'AknTextField--disabled' : ''}`}
+          ${!canEditData ? 'AknTextField--disabled' : ''}`}
           value={value.data.stringValue()}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             onValueChange(event.currentTarget.value);
@@ -67,8 +75,8 @@ const View = ({
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
             if (Key.Enter === event.key) onSubmit();
           }}
-          disabled={!rights.record.edit}
-          readOnly={!rights.record.edit}
+          disabled={!canEditData}
+          readOnly={!canEditData}
         />
       )}
     </React.Fragment>

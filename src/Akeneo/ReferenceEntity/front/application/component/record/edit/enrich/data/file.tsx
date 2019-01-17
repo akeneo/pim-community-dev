@@ -13,6 +13,9 @@ const View = ({
   value: Value;
   onChange: (value: Value) => void;
   rights: {
+    locale: {
+      edit: boolean;
+    };
     record: {
       edit: boolean;
       delete: boolean;
@@ -23,6 +26,11 @@ const View = ({
     return null;
   }
 
+  let canEditData = true;
+  if (value.attribute.valuePerLocale) {
+    canEditData = rights.record.edit && rights.locale.edit;
+  }
+
   return (
     <Image
       id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
@@ -31,7 +39,7 @@ const View = ({
       })}
       image={value.data.getFile()}
       wide={true}
-      readOnly={!rights.record.edit}
+      readOnly={!canEditData}
       onImageChange={(image: File) => {
         const newData = create(image);
         const newValue = value.setData(newData);

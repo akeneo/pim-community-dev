@@ -19,6 +19,9 @@ const View = ({
   locale: LocaleReference;
   onChange: (value: Value) => void;
   rights: {
+    locale: {
+      edit: boolean;
+    };
     record: {
       edit: boolean;
       delete: boolean;
@@ -40,6 +43,11 @@ const View = ({
     return formatedOptions;
   }, {});
 
+  let canEditData = true;
+  if (value.attribute.valuePerLocale) {
+    canEditData = rights.record.edit && rights.locale.edit;
+  }
+
   return (
     <div className="option-collection-selector-container AknSelectField">
       <Select2
@@ -48,7 +56,7 @@ const View = ({
         data={formatedOptions}
         value={data.isEmpty() ? [] : data.normalize()}
         multiple={true}
-        readOnly={!rights.record.edit}
+        readOnly={!canEditData}
         configuration={{
           allowClear: true,
           placeholder: __('pim_reference_entity.attribute.options.no_value'),

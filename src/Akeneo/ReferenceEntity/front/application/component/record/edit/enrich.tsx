@@ -20,6 +20,9 @@ interface StateProps {
     channel: string;
   };
   rights: {
+    locale: {
+      edit: boolean;
+    };
     record: {
       edit: boolean;
       delete: boolean;
@@ -87,16 +90,17 @@ export default connect(
         channel: state.user.catalogChannel,
       },
       rights: {
+        locale: {
+          edit: canEditLocale(state.right.locale, locale),
+        },
         record: {
           edit:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier) &&
-            canEditLocale(state.right.locale, locale),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier),
           delete:
             securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             securityContext.isGranted('akeneo_referenceentity_record_delete') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier) &&
-            canEditLocale(state.right.locale, locale),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.reference_entity_identifier),
         },
       },
     };

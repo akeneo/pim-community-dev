@@ -96,9 +96,7 @@ export default class EditForm extends React.Component<FormProps> {
               type="text"
               name="label"
               id="pim_reference_entity.reference_entity.properties.label"
-              className={`AknTextField AknTextField--light ${
-                true === canEditLabel ? '' : 'AknTextField--disabled'
-              }`}
+              className={`AknTextField AknTextField--light ${true === canEditLabel ? '' : 'AknTextField--disabled'}`}
               value={referenceEntity.getLabel(this.props.locale, false)}
               onChange={this.updateLabel}
               onKeyDown={this.keyDown}

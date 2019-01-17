@@ -20,6 +20,9 @@ const View = ({
   locale: LocaleReference;
   onChange: (value: Value) => void;
   rights: {
+    locale: {
+      edit: boolean;
+    };
     record: {
       edit: boolean;
       delete: boolean;
@@ -31,6 +34,11 @@ const View = ({
   }
 
   const attribute = value.attribute as RecordAttribute;
+
+  let canEditData = true;
+  if (value.attribute.valuePerLocale) {
+    canEditData = rights.record.edit && rights.locale.edit;
+  }
 
   return (
     //The first children of a FieldContainer will stretch to the full width if not contained in a div.
@@ -44,7 +52,7 @@ const View = ({
         channel={channel}
         placeholder={__('pim_reference_entity.record.selector.no_value')}
         referenceEntityIdentifier={attribute.recordType.getReferenceEntityIdentifier()}
-        readOnly={!rights.record.edit}
+        readOnly={!canEditData}
         onChange={(recordCodes: RecordCode[]) => {
           if (rights.record.edit) {
             const newData = RecordCollectionData.create(recordCodes);

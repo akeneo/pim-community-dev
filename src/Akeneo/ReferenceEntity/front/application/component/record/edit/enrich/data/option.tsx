@@ -17,6 +17,9 @@ const View = ({
   locale: LocaleReference;
   onChange: (value: Value) => void;
   rights: {
+    locale: {
+      edit: boolean;
+    };
     record: {
       edit: boolean;
       delete: boolean;
@@ -39,6 +42,11 @@ const View = ({
     {}
   );
 
+  let canEditData = true;
+  if (value.attribute.valuePerLocale) {
+    canEditData = rights.record.edit && rights.locale.edit;
+  }
+
   return (
     <div className="option-selector-container">
       <Select2
@@ -47,7 +55,7 @@ const View = ({
         data={availableOptions}
         value={data.stringValue()}
         multiple={false}
-        readOnly={!rights.record.edit}
+        readOnly={!canEditData}
         configuration={{
           allowClear: true,
           placeholder: __('pim_reference_entity.attribute.options.no_value'),
