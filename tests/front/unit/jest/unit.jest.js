@@ -16,7 +16,7 @@ const unitConfig = {
   globals: {
     __moduleConfig: {},
     'ts-jest': {
-      tsConfigFile: `${__dirname}/../../../../tsconfig.json`,
+      tsConfig: `${__dirname}/../../../../tsconfig.json`,
     },
   },
   setupFiles: [`${__dirname}/enzyme.js`],
