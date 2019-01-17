@@ -6,9 +6,9 @@ namespace Akeneo\ReferenceEntity\Integration\Symfony\Command\Installer;
 
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer\FixturesInstaller;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use Elasticsearch\Client;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -36,7 +36,7 @@ class FixturesInstallerTest extends SqlIntegrationTestCase
         $this->fixturesInstaller = $this->get('akeneo_referenceentity.command.installer.fixtures_installer');
         $this->sqlConnection = $this->get('database_connection');
         $this->recordClient =  $this->get('akeneo_referenceentity.client.record');
-        $this->removeTables();
+        $this->resetPersistence();
     }
 
     /**
@@ -69,7 +69,7 @@ class FixturesInstallerTest extends SqlIntegrationTestCase
         $this->assertFixturesNotLoaded();
     }
 
-    private function removeTables(): void
+    private function resetPersistence(): void
     {
         $dropSchema = <<<SQL
 SET FOREIGN_KEY_CHECKS = 0;
@@ -80,6 +80,7 @@ DROP TABLE akeneo_reference_entity_reference_entity_permissions;
 SET FOREIGN_KEY_CHECKS = 1;
 SQL;
         $this->sqlConnection->executeUpdate($dropSchema);
+        $this->recordClient->resetIndex();
     }
 
     private function assertSchemaCreated(): void
@@ -118,6 +119,7 @@ SQL;
 
     private function numbersOfRecordsIndexed(): int
     {
+        $this->recordClient->refreshIndex();
         $matches = $this->recordClient->search(self::RECORD_INDEX, ['_source' => '_id' ]);
 
         return $matches['hits']['total'];

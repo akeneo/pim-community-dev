@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\Installer;
 
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexRecordsCommand;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
@@ -27,16 +28,21 @@ class FixturesInstaller
     /** @var FileStorerInterface */
     private $storer;
 
+    /** @var Client */
+    private $recordClient;
+
     /** @var CommandLauncher */
     private $commandLauncher;
 
     public function __construct(
         Connection $sqlConnection,
         FileStorerInterface $storer,
+        Client $recordClient,
         CommandLauncher $commandLauncher
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->storer = $storer;
+        $this->recordClient = $recordClient;
         $this->commandLauncher = $commandLauncher;
     }
 
@@ -115,8 +121,8 @@ ALTER TABLE `akeneo_reference_entity_attribute`
     
 SET foreign_key_checks = 1;
 SQL;
-
         $this->sqlConnection->exec($sql);
+        $this->recordClient->resetIndex();
     }
 
     /**
@@ -531,5 +537,6 @@ SQL;
         $this->commandLauncher->executeForeground(
             sprintf('%s %s', IndexRecordsCommand::INDEX_RECORDS_COMMAND_NAME, '--all')
         );
+        $this->recordClient->refreshIndex();
     }
 }
