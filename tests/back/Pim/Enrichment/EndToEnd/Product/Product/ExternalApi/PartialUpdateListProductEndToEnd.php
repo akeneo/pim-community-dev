@@ -22,6 +22,9 @@ class PartialUpdateListProductEndToEnd extends AbstractProductTestCase
         ]);
     }
 
+    /**
+     * @validate-migration
+     */
     public function testCreateAndUpdateAListOfProducts()
     {
         $data =
