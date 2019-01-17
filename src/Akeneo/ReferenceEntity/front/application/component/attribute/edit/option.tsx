@@ -83,6 +83,9 @@ type StateProps = {
 
 type OwnProps = {
   rights: {
+    locale: {
+      edit: boolean;
+    };
     attribute: {
       create: boolean;
       edit: boolean;
@@ -124,7 +127,11 @@ const optionRow = ({
   locale: string;
   errors: ValidationError[];
   rights: {
+    locale: {
+      edit: boolean;
+    };
     attribute: {
+      create: boolean;
       edit: boolean;
       delete: boolean;
     };
@@ -139,8 +146,9 @@ const optionRow = ({
   onFocusPreviousField: (index: number, field: Field) => void;
 }) => {
   const displayDeleteRowButton: boolean = !isLastRow && rights.attribute.delete;
-  const inputTextClassName = `AknTextField AknTextField--light ${
-    !rights.attribute.edit ? 'AknTextField--disabled' : ''
+  const canEditLabel = rights.attribute.edit && rights.locale.edit;
+  const labelClassName = `AknTextField AknTextField--light ${
+    !canEditLabel ? 'AknTextField--disabled' : ''
   }`;
 
   return (
@@ -153,12 +161,12 @@ const optionRow = ({
                 <input
                   ref={labelInputReference}
                   placeholder={
-                    isLastRow
+                    isLastRow && canEditLabel
                       ? __('pim_reference_entity.attribute.edit.input.manage_options.option.label.placeholder')
                       : ''
                   }
                   type="text"
-                  className={inputTextClassName}
+                  className={labelClassName}
                   id={`pim_reference_entity.attribute.edit.input.${code}_${index}.label`}
                   name="label"
                   value={undefined === label ? '' : label}
@@ -177,7 +185,7 @@ const optionRow = ({
                       }
                     }
                   }}
-                  readOnly={!rights.attribute.edit}
+                  readOnly={!canEditLabel}
                 />
               </div>
               {!isLastRow ? getErrorsView(errors, `options.${index}`) : null}
@@ -477,6 +485,9 @@ export default connect(
       referenceEntity: state.form.data,
       catalogLocale: state.user.defaultCatalogLocale,
       rights: {
+        locale: {
+          edit: ownProps.rights.locale.edit
+        },
         attribute: {
           edit: ownProps.rights.attribute.edit && securityContext.isGranted('akeneo_referenceentity_option_edit'),
           delete:
