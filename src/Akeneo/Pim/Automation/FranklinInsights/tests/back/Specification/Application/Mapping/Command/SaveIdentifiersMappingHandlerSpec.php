@@ -100,27 +100,31 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('ean')->willReturn($ean);
         $attributeRepository->findOneByIdentifier('id')->willReturn($id);
 
+        $manufacturer->getCode()->willReturn('manufacturer');
         $manufacturer->getType()->willReturn('pim_catalog_text');
         $manufacturer->isLocalizable()->willReturn(false);
         $manufacturer->isScopable()->willReturn(false);
         $manufacturer->isLocaleSpecific()->willReturn(false);
 
+        $model->getCode()->willReturn('model');
         $model->getType()->willReturn('pim_catalog_text');
         $model->isLocalizable()->willReturn(false);
         $model->isScopable()->willReturn(false);
         $model->isLocaleSpecific()->willReturn(false);
 
+        $ean->getCode()->willReturn('ean');
         $ean->getType()->willReturn('pim_catalog_text');
         $ean->isLocalizable()->willReturn(false);
         $ean->isScopable()->willReturn(false);
         $ean->isLocaleSpecific()->willReturn(false);
 
+        $id->getCode()->willReturn('sku');
         $id->getType()->willReturn('pim_catalog_text');
         $id->isLocalizable()->willReturn(false);
         $id->isScopable()->willReturn(false);
         $id->isLocaleSpecific()->willReturn(false);
 
-        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping = new IdentifiersMapping([]);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $identifiersMapping
             ->map('brand', $manufacturer->getWrappedObject())

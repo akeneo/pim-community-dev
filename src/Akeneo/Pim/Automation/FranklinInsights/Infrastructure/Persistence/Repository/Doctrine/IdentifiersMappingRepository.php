@@ -65,14 +65,13 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
      */
     public function find(): IdentifiersMapping
     {
-        $identifiers = $this->em->getRepository(IdentifierMapping::class)->findAll();
+        $identifierMappings = $this->em->getRepository(IdentifierMapping::class)->findAll();
+        $mappedAttributes = [];
 
-        $identifiersMapping = new IdentifiersMapping();
-
-        foreach ($identifiers as $identifier) {
-            $identifiersMapping->map($identifier->getFranklinCode(), $identifier->getAttribute());
+        foreach ($identifierMappings as $identifierMapping) {
+            $mappedAttributes[$identifierMapping->getFranklinCode()] = $identifierMapping->getAttribute();
         }
 
-        return $identifiersMapping;
+        return new identifiersMapping($mappedAttributes);
     }
 }

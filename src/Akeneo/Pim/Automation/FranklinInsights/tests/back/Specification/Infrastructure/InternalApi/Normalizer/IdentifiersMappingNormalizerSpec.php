@@ -33,7 +33,7 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
         $ean->getCode()->willReturn('ean');
         $sku->getCode()->willReturn('sku');
 
-        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping = new IdentifiersMapping([]);
         $identifiersMapping
             ->map('brand', $manufacturer->getWrappedObject())
             ->map('mpn', $model->getWrappedObject())
@@ -50,7 +50,7 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_empty_identifiers_mapping(): void
     {
-        $this->normalize(new IdentifiersMapping())->shouldReturn([
+        $this->normalize(new IdentifiersMapping([]))->shouldReturn([
             'brand' => null,
             'mpn' => null,
             'upc' => null,
@@ -67,7 +67,7 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
         $manufacturer->getCode()->willReturn('brand');
         $ean->getCode()->willReturn('ean');
 
-        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping = new IdentifiersMapping([]);
         $identifiersMapping
             ->map('brand', $manufacturer->getWrappedObject())
             ->map('mpn', $model->getWrappedObject())

@@ -33,18 +33,22 @@ class IdentifiersMapping implements \IteratorAggregate
     /** @var IdentifierMapping[] */
     private $mapping;
 
-    /** @var IdentifierMapping[] */
-    private $formerMapping;
+    /** @var array */
+    private $diff;
 
-    public function __construct()
+    /**
+     * @param array $mappedAttributes
+     */
+    public function __construct(array $mappedAttributes)
     {
-        $this->mapping = array_fill_keys(self::FRANKLIN_IDENTIFIERS, null);
-
-        $this->formerMapping = $this->mapping;
-
-        foreach (array_keys($this->mapping) as $identifier) {
-            $this->mapping[$identifier] = new IdentifierMapping($identifier, null);
+        foreach (self::FRANKLIN_IDENTIFIERS as $franklinIdentifier) {
+            $this->mapping[$franklinIdentifier] = new IdentifierMapping(
+                $franklinIdentifier,
+                $mappedAttributes[$franklinIdentifier] ?? null
+            );
         }
+
+        $this->diff = [];
     }
 
     /**
@@ -82,7 +86,19 @@ class IdentifiersMapping implements \IteratorAggregate
         if (!in_array($franklinIdentifierCode, self::FRANKLIN_IDENTIFIERS)) {
             throw new \InvalidArgumentException(sprintf('Invalid identifier %s', $franklinIdentifierCode));
         }
-        $this->mapping[$franklinIdentifierCode] = new IdentifierMapping($franklinIdentifierCode, $attribute);
+
+        $formerAttributeCode = (null !== $this->getMappedAttribute(
+                $franklinIdentifierCode
+            )) ? $this->getMappedAttribute($franklinIdentifierCode)->getCode() : null;
+        $newAttributeCode = null !== $attribute ? $attribute->getCode() : null;
+
+        if ($formerAttributeCode !== $newAttributeCode) {
+            $this->mapping[$franklinIdentifierCode] = new IdentifierMapping($franklinIdentifierCode, $attribute);
+            $this->diff[$franklinIdentifierCode] = [
+                'former' => $formerAttributeCode,
+                'new' => $newAttributeCode,
+            ];
+        }
 
         return $this;
     }
@@ -100,9 +116,14 @@ class IdentifiersMapping implements \IteratorAggregate
      */
     public function isEmpty(): bool
     {
-        return empty($this->mapping) || empty(array_filter($this->mapping, function (IdentifierMapping $identifierMapping) {
-            return null !== $identifierMapping->getAttribute();
-        }));
+        return empty($this->mapping) || empty(
+            array_filter(
+                $this->mapping,
+                function (IdentifierMapping $identifierMapping) {
+                    return null !== $identifierMapping->getAttribute();
+                }
+            )
+            );
     }
 
     /**
@@ -115,5 +136,13 @@ class IdentifiersMapping implements \IteratorAggregate
         $validASIN = null !== $this->getMappedAttribute('asin');
 
         return $validASIN || $validUPC || $validMPNAndBrand;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUpdated(): bool
+    {
+        return !empty($this->diff);
     }
 }

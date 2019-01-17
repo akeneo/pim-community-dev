@@ -26,7 +26,7 @@ class InMemoryIdentifiersMappingRepository implements IdentifiersMappingReposito
 
     public function __construct()
     {
-        $this->identifiersMapping = new IdentifiersMapping();
+        $this->identifiersMapping = new IdentifiersMapping([]);
     }
 
     /**
@@ -42,7 +42,7 @@ class InMemoryIdentifiersMappingRepository implements IdentifiersMappingReposito
      */
     public function find(): IdentifiersMapping
     {
-        $newIdentifiersMapping = new IdentifiersMapping();
+        $newIdentifiersMapping = new IdentifiersMapping([]);
         foreach ($this->identifiersMapping as $identifier) {
             $newIdentifiersMapping->map($identifier->getFranklinCode(), $identifier->getAttribute());
         }
