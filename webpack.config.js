@@ -24,21 +24,6 @@ const {aliases, config} = getModulePaths(rootDir, __dirname, sourcePath);
 
 createModuleRegistry(Object.keys(aliases), rootDir);
 
-// const babelPresets = [
-//   [
-//     'babel-preset-env',
-//     {
-//       targets: {
-//         browsers: ['firefox >= 45'],
-//       },
-//     },
-//   ],
-// ];
-
-// if (isProd) {
-//   babelPresets.push('babel-preset-minify');
-// }
-
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
 const webpackConfig = {
@@ -48,6 +33,18 @@ const webpackConfig = {
     modules: false,
     timings: true,
     version: true,
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+      sourceMap: true,
+      uglifyOptions: {
+        ecma: 8,
+        compress: {
+          warnings: false,
+        },
+      },
+    })],
   },
   mode: 'development',
   target: 'web',
@@ -216,34 +213,10 @@ const webpackConfig = {
     // Inject live reload to auto refresh the page (hmr not compatible with our app)
     new LiveReloadPlugin({appendScriptTag: true, ignore: /node_modules/}),
 
-    // Split the app into chunks for performance
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'lib',
-    //   minChunks: module => module.context && module.context.indexOf('lib') !== -1,
-    // }),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'vendor',
-    //   minChunks: module => module.context && module.context.indexOf('node_modules') !== -1,
-    // }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
     }),
-    // new webpack.optimize.CommonsChunkPlugin({name: 'manifest'}),
   ],
 };
-
-if (isProd) {
-  webpackConfig.plugins.push(
-    new UglifyJsPlugin({
-      sourceMap: true,
-      uglifyOptions: {
-        ecma: 8,
-        compress: {
-          warnings: false,
-        },
-      },
-    })
-  );
-}
 
 module.exports = webpackConfig;
