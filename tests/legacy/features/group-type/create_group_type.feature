@@ -20,14 +20,6 @@ Feature: Group type creation
     Then I should be on the "special" group type page
     And I should see the text "special"
 
-  Scenario: Fail to create a group type with an empty or invalid code
-    Given I press the "Save" button
-    Then I should see validation error "This value should not be blank."
-    And I fill in the following information in the popin:
-      | Code | =( |
-    And I press the "Save" button
-    Then I should see validation error "Group type code may contain only letters, numbers and underscores."
-
   Scenario: Fail to create a group type with an already used code
     Given the following group type:
       | code    |

@@ -64,6 +64,13 @@ services:
             - '@__symfony__.pim_catalog.updater.association_type'
             - '@__symfony__.validator'
 
+    test.group_type.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@__symfony__.pim_catalog.factory.group_type'
+            - '@__symfony__.pim_catalog.updater.group_type'
+            - '@__symfony__.validator'
+
     ### Behat context, don't forget to tag them (fob.context_service)
     test.locale.context:
         class: 'Akeneo\Test\Acceptance\Locale\LocaleContext'
@@ -130,6 +137,15 @@ services:
             - '@__symfony__.pim_catalog.repository.family'
             - '@test.family.builder'
             - '@__symfony__.pim_catalog.repository.attribute'
+            - '@__symfony__.validator'
+        tags:
+            - { name: fob.context_service }
+
+    test.group_type_validation.context:
+        class: 'Akeneo\Test\Acceptance\Catalog\Context\GroupTypeValidation'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.group_type'
+            - '@test.group_type.builder'
             - '@__symfony__.validator'
         tags:
             - { name: fob.context_service }

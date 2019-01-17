@@ -152,6 +152,7 @@ acceptance:
                 - test.association_type_validation.context
                 - test.attribute_validation.context
                 - test.family_validation.context
+                - test.group_type_validation.context
             filters:
                 tags: '@acceptance-back'
         volume-monitoring:
