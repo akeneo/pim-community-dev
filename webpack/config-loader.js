@@ -30,18 +30,8 @@ module.exports = function(content) {
   this.cacheable();
   if (!hasModule(content)) return content;
 
-  const aliases = chain(this.options.resolve.alias)
-    .invert()
-    .mapValues(alias => alias.replace(/\$$/, ''))
-    .value();
+  const moduleAlias = this._module.rawRequest;
+  const moduleConfig = options.configMap[moduleAlias];
 
-  let modulePath = this._module.userRequest;
-  const moduleExt = path.extname(modulePath);
-
-  modulePath = modulePath.replace(moduleExt, '');
-
-  const moduleName = aliases[modulePath];
-  const moduleConfig = JSON.stringify(options.configMap[formatModuleName(moduleName)] || {});
-
-  return `var __moduleConfig = ${replaceRequire(moduleConfig)} ; ${content}`;
+  return `var __moduleConfig = ${JSON.stringify(moduleConfig)} ; ${content}`;
 };

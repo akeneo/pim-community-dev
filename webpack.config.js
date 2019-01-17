@@ -49,6 +49,7 @@ const webpackConfig = {
     timings: true,
     version: true,
   },
+  mode: 'development',
   target: 'web',
   entry: ['babel-polyfill', path.resolve(rootDir, './web/bundles/pimui/js/index.js')],
   output: {
@@ -216,18 +217,18 @@ const webpackConfig = {
     new LiveReloadPlugin({appendScriptTag: true, ignore: /node_modules/}),
 
     // Split the app into chunks for performance
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'lib',
-      minChunks: module => module.context && module.context.indexOf('lib') !== -1,
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: module => module.context && module.context.indexOf('node_modules') !== -1,
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'lib',
+    //   minChunks: module => module.context && module.context.indexOf('lib') !== -1,
+    // }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor',
+    //   minChunks: module => module.context && module.context.indexOf('node_modules') !== -1,
+    // }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
     }),
-    new webpack.optimize.CommonsChunkPlugin({name: 'manifest'}),
+    // new webpack.optimize.CommonsChunkPlugin({name: 'manifest'}),
   ],
 };
 
