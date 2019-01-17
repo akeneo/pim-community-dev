@@ -24,12 +24,7 @@ class Version_3_0_20181205151719_add_configuration_table extends AbstractMigrati
 
     public function down(Schema $schema)
     {
-        $this->abortIf(
-            'mysql' !== $this->connection->getDatabasePlatform()->getName(),
-            'Migration can only be executed safely on \'mysql\'.'
-        );
-
-        $this->addSql('DROP TABLE pim_configuration;');
+        $this->throwIrreversibleMigrationException();
     }
 
     private function tableAlreadyExists(): bool
