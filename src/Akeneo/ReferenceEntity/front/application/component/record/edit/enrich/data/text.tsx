@@ -1,8 +1,6 @@
 import * as React from 'react';
 import Value from 'akeneoreferenceentity/domain/model/record/value';
 import TextData, {create} from 'akeneoreferenceentity/domain/model/record/data/text';
-import Flag from 'akeneoreferenceentity/tools/component/flag';
-import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 import {ConcreteTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
 import RichTextEditor from 'akeneoreferenceentity/application/component/app/rich-text-editor';
 import Key from 'akeneoreferenceentity/tools/key';
@@ -73,9 +71,6 @@ const View = ({
           readOnly={!rights.record.edit}
         />
       )}
-      {value.attribute.valuePerLocale ? (
-        <Flag locale={createLocaleFromCode(value.locale.stringValue())} displayLanguage={false} />
-      ) : null}
     </React.Fragment>
   );
 };

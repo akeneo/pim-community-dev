@@ -8,6 +8,8 @@ import {getDataFieldView} from 'akeneoreferenceentity/application/configuration/
 import {getErrorsView} from 'akeneoreferenceentity/application/component/record/edit/validaton-error';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
+import Flag from 'akeneoreferenceentity/tools/component/flag';
+import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 
 export default (
   record: Record,
@@ -50,6 +52,21 @@ export default (
             />
             {value.attribute.getLabel(locale.stringValue())}
           </label>
+          <span className="AknFieldContainer-fieldInfo">
+            <span>
+              <span>
+                {value.attribute.valuePerChannel ? (
+                  value.channel.stringValue()
+                ) : null}
+              </span>
+              &nbsp;
+              <span>
+                {value.attribute.valuePerLocale ? (
+                  <Flag locale={createLocaleFromCode(value.locale.stringValue())} displayLanguage={true} />
+                ) : null}
+              </span>
+            </span>
+          </span>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <ErrorBoundary
