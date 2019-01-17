@@ -4,6 +4,7 @@ Feature: Export products
   As a product manager
   I need to be able to export the products to several channels
 
+  @validate-migration
   Scenario: Successfully export products to multiple channels
     Given an "apparel" catalog configuration
     And the following job "ecommerce_product_export" configuration:
