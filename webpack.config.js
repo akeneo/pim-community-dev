@@ -186,11 +186,6 @@ const webpackConfig = {
     ignored: /node_modules|var\/cache|vendor/,
   },
 
-  // Support old loader declarations
-  resolveLoader: {
-    moduleExtensions: ['-loader'],
-  },
-
   plugins: [
     // Map modules to variables for global use
     new webpack.ProvidePlugin({_: 'underscore', Backbone: 'backbone', $: 'jquery', jQuery: 'jquery'}),
