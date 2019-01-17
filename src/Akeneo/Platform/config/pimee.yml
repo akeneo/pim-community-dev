@@ -54,4 +54,5 @@ hslavich_onelogin_saml:
         privateKey: 'SSO_SP_CLIENT_PRIVATE_KEY_VALUE'
     # Optional settings
     security:
-        authnRequestsSigned:   true
+        authnRequestsSigned: true
+        wantNameId: false
