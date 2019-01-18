@@ -61,7 +61,7 @@ Feature: Quick export products according to the product grid context
     And I press "CSV (Grid context)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
     When I go on the last executed job resume of "csv_product_grid_context_quick_export"
-    Then I should see "COMPLETED"
+    Then I should see the text "COMPLETED"
     And the names of the exported files of "csv_product_grid_context_quick_export" should be "1_products_export_grid_context_fr_FR_tablet.csv,2_product_models_export_grid_context_fr_FR_tablet.csv"
     And first exported file of "csv_product_grid_context_quick_export" should contain:
       """
