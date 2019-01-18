@@ -63,11 +63,10 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
      */
     public function it_finds_connector_attributes_for_a_reference_entity()
     {
-        $referenceEntityIdentifier = 'reference_entity';
-        $this->createReferenceEntity($referenceEntityIdentifier);
-        $connectorAttributes = $this->createConnectorAttributes($referenceEntityIdentifier);
+        $this->createReferenceEntity('reference_entity');
+        $connectorAttributes = $this->createConnectorAttributes('reference_entity');
 
-        $foundAttributes = ($this->findConnectorReferenceEntityAttributes)(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
+        $foundAttributes = ($this->findConnectorReferenceEntityAttributes)(ReferenceEntityIdentifier::fromString('reference_entity'));
 
         $normalizedAttributes = [];
         foreach ($connectorAttributes as $attribute) {
@@ -146,7 +145,7 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeIsRequired::fromBoolean(false),
                 [
-                    'max_length' => 1024,
+                    'max_length' => null,
                     'is_textarea' => false,
                     'is_rich_text_editor' => false,
                     'validation_rule' => AttributeValidationRule::NONE,
@@ -161,7 +160,7 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeIsRequired::fromBoolean(false),
                 [
-                    'max_file_size' => '8192',
+                    'max_file_size' => null,
                     'allowed_extensions' => []
                 ]
             ),
@@ -195,7 +194,7 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
         ];
     }
 
-    private function createReferenceEntity(string $rawIdentifier): ReferenceEntity
+    private function createReferenceEntity(string $rawIdentifier): void
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($rawIdentifier);
 
@@ -211,7 +210,5 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
         );
 
         $this->referenceEntityRepository->create($referenceEntity);
-
-        return $referenceEntity;
     }
 }

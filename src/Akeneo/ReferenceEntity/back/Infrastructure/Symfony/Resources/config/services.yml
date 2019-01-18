@@ -4,6 +4,7 @@ services:
         arguments:
             - '@doctrine.dbal.default_connection'
             - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_referenceentity.client.record'
             - '@pim_catalog.command_launcher'
 
     akeneo_referenceentity.command.installer.assets_installer:

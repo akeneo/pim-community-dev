@@ -79,7 +79,7 @@ class SetDefaultAttributesOnReferenceEntityCreationSubscriber implements EventSu
         $createLabelAttributeCommand->valuePerChannel = false;
         $createLabelAttributeCommand->valuePerLocale = true;
 
-        $createLabelAttributeCommand->maxLength = 1024;
+        $createLabelAttributeCommand->maxLength = null;
         $createLabelAttributeCommand->isTextarea = false;
         $createLabelAttributeCommand->isRichTextEditor = false;
         $createLabelAttributeCommand->validationRule = 'none';
@@ -99,7 +99,7 @@ class SetDefaultAttributesOnReferenceEntityCreationSubscriber implements EventSu
         $createImageAttributeCommand->valuePerChannel = false;
         $createImageAttributeCommand->valuePerLocale = false;
 
-        $createImageAttributeCommand->maxFileSize = '8192';
+        $createImageAttributeCommand->maxFileSize = null;
         $createImageAttributeCommand->allowedExtensions = [];
 
         ($this->createAttributeHandler)($createImageAttributeCommand);
