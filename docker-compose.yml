@@ -12,7 +12,7 @@ services:
       - 'behat'
 
   node:
-    image: 'juliensnz/node'
+    image: 'akeneo/node:10'
     user: 'node'
     volumes:
       - './:/srv/pim'
