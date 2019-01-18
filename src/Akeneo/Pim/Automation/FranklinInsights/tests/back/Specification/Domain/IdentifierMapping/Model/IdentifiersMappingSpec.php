@@ -136,4 +136,21 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->map('upc', $ean->getWrappedObject());
         $this->isUpdated()->shouldReturn(false);
     }
+
+    public function it_provides_the_identifier_codes_with_an_updated_or_removed_mapping(
+        AttributeInterface $asin
+    ): void {
+        $asin->getCode()->willReturn('asin');
+        $this->map('asin', $asin->getWrappedObject());
+        $this->map('upc', null);
+        $this->updatedIdentifierCodes()->shouldReturn(['asin', 'upc']);
+    }
+
+    public function it_does_not_provide_the_identifier_codes_with_an_added_mapping($sku, $ean): void
+    {
+        $this->beConstructedWith(['asin' => $sku]);
+        $this->map('upc', $ean->getWrappedObject());
+        $this->isUpdated()->shouldReturn(true);
+        $this->updatedIdentifierCodes()->shouldReturn([]);
+    }
 }

@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mappi
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\IdentifiersMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\IdentifyProductsToResubscribeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -35,13 +36,15 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingProviderInterface $identifiersMappingProvider,
-        ProductSubscriptionRepositoryInterface $subscriptionRepository
+        ProductSubscriptionRepositoryInterface $subscriptionRepository,
+        IdentifyProductsToResubscribeInterface $identifyProductsToResubscribe
     ): void {
         $this->beConstructedWith(
             $attributeRepository,
             $identifiersMappingRepository,
             $identifiersMappingProvider,
-            $subscriptionRepository
+            $subscriptionRepository,
+            $identifyProductsToResubscribe
         );
     }
 
@@ -75,30 +78,21 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$command]);
     }
 
-    public function it_saves_the_identifiers_mapping(
+    public function it_saves_a_new_identifiers_mapping(
         $identifiersMappingProvider,
         $subscriptionRepository,
         $identifiersMappingRepository,
+        $identifyProductsToResubscribe,
         AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $manufacturer,
         AttributeInterface $model,
         AttributeInterface $ean,
         AttributeInterface $id
     ): void {
-        $command = new SaveIdentifiersMappingCommand(
-            [
-                'brand' => 'manufacturer',
-                'mpn' => 'model',
-                'upc' => 'ean',
-                'asin' => 'id',
-            ]
-        );
-
-        $attributeRepository->findOneByIdentifier(Argument::any())->shouldBeCalledTimes(4);
         $attributeRepository->findOneByIdentifier('manufacturer')->willReturn($manufacturer);
         $attributeRepository->findOneByIdentifier('model')->willReturn($model);
         $attributeRepository->findOneByIdentifier('ean')->willReturn($ean);
-        $attributeRepository->findOneByIdentifier('id')->willReturn($id);
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($id);
 
         $manufacturer->getCode()->willReturn('manufacturer');
         $manufacturer->getType()->willReturn('pim_catalog_text');
@@ -126,18 +120,72 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
 
         $identifiersMapping = new IdentifiersMapping([]);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping
-            ->map('brand', $manufacturer->getWrappedObject())
-            ->map('mpn', $model->getWrappedObject())
-            ->map('upc', $ean->getWrappedObject())
-            ->map('asin', $id->getWrappedObject())
-        ;
 
         $identifiersMappingProvider->saveIdentifiersMapping($identifiersMapping)->shouldBeCalled();
         $identifiersMappingRepository->save($identifiersMapping)->shouldBeCalled();
         $subscriptionRepository->emptySuggestedData()->shouldBeCalled();
 
-        $this->handle($command);
+        $identifyProductsToResubscribe->process(Argument::any())->shouldNotBeCalled();
+
+        $this->handle(
+            new SaveIdentifiersMappingCommand(
+                [
+                    'brand' => 'manufacturer',
+                    'mpn' => 'model',
+                    'upc' => 'ean',
+                    'asin' => 'sku',
+                ]
+            )
+        );
+    }
+
+    public function it_updates_an_existing_identifiers_mapping(
+        $identifiersMappingProvider,
+        $subscriptionRepository,
+        $identifiersMappingRepository,
+        $identifyProductsToResubscribe,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $sku,
+        AttributeInterface $asin
+    ): void {
+        $sku->getCode()->willReturn('sku');
+        $sku->getType()->willReturn('pim_catalog_identifier');
+        $sku->isLocalizable()->willReturn(false);
+        $sku->isScopable()->willReturn(false);
+        $sku->isLocaleSpecific()->willReturn(false);
+
+        $asin->getCode()->willReturn('asin');
+        $asin->getType()->willReturn('pim_catalog_text');
+        $asin->isLocalizable()->willReturn(false);
+        $asin->isScopable()->willReturn(false);
+        $asin->isLocaleSpecific()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('asin')->willReturn($asin);
+
+        $identifiersMapping = new IdentifiersMapping(
+            [
+                'asin' => $asin->getWrappedObject(),
+                'upc' => $sku->getWrappedObject(),
+            ]
+        );
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+
+        $identifiersMappingProvider->saveIdentifiersMapping($identifiersMapping)->shouldBeCalled();
+        $identifiersMappingRepository->save($identifiersMapping)->shouldBeCalled();
+        $subscriptionRepository->emptySuggestedData()->shouldBeCalled();
+
+        $identifyProductsToResubscribe->process(['upc'])->shouldBeCalled();
+
+        $this->handle(
+            new SaveIdentifiersMappingCommand(
+                [
+                    'asin' => 'asin',
+                    'upc' => null,
+                    'brand' => null,
+                    'mpn' => null,
+                ]
+            )
+        );
     }
 
     public function it_throws_an_exception_with_invalid_attribute_type(

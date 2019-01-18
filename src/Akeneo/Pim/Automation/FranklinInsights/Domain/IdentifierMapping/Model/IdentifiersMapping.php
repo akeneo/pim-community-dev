@@ -116,14 +116,12 @@ class IdentifiersMapping implements \IteratorAggregate
      */
     public function isEmpty(): bool
     {
-        return empty($this->mapping) || empty(
-            array_filter(
-                $this->mapping,
-                function (IdentifierMapping $identifierMapping) {
-                    return null !== $identifierMapping->getAttribute();
-                }
-            )
-            );
+        return empty(array_filter(
+            $this->mapping,
+            function (IdentifierMapping $identifierMapping) {
+                return null !== $identifierMapping->getAttribute();
+            }
+        ));
     }
 
     /**
@@ -144,5 +142,22 @@ class IdentifiersMapping implements \IteratorAggregate
     public function isUpdated(): bool
     {
         return !empty($this->diff);
+    }
+
+    /**
+     * Returns the Franklin identifier codes for which a mapping was updated or deleted (but not added).
+     *
+     * @return string[]
+     */
+    public function updatedIdentifierCodes(): array
+    {
+        return array_keys(
+            array_filter(
+                $this->diff,
+                function (array $value) {
+                    return null !== $value['former'];
+                }
+            )
+        );
     }
 }

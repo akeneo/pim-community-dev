@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobParameters;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobInstanceNames;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
-use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
@@ -38,9 +39,11 @@ final class UpdatedFranklinIdentifiers implements ConstraintCollectionProviderIn
                     'updated_identifiers' => [
                         new Type('array'),
                         new NotBlank(),
-                        new All(
-                            new Type('string')
-                        ),
+                        new Choice([
+                            'choices' => IdentifiersMapping::FRANKLIN_IDENTIFIERS,
+                            'strict' => true,
+                            'multiple' => true,
+                        ]),
                     ],
                 ],
             ]

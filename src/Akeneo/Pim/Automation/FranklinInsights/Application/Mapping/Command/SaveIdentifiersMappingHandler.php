@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\IdentifiersMappingProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\IdentifyProductsToResubscribeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -48,22 +49,28 @@ class SaveIdentifiersMappingHandler
     /** @var ProductSubscriptionRepositoryInterface */
     private $subscriptionRepository;
 
+    /** @var IdentifyProductsToResubscribeInterface */
+    private $identifyProductsToResubscribe;
+
     /**
      * @param AttributeRepositoryInterface $attributeRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param IdentifiersMappingProviderInterface $identifiersMappingProvider
      * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
+     * @param IdentifyProductsToResubscribeInterface $identifyProductsToResubscribe
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingProviderInterface $identifiersMappingProvider,
-        ProductSubscriptionRepositoryInterface $subscriptionRepository
+        ProductSubscriptionRepositoryInterface $subscriptionRepository,
+        IdentifyProductsToResubscribeInterface $identifyProductsToResubscribe
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->identifiersMappingProvider = $identifiersMappingProvider;
         $this->subscriptionRepository = $subscriptionRepository;
+        $this->identifyProductsToResubscribe = $identifyProductsToResubscribe;
     }
 
     /**
@@ -86,9 +93,15 @@ class SaveIdentifiersMappingHandler
             $identifiersMapping->map($franklinIdentifier, $pimAttribute);
         }
 
-        $this->identifiersMappingProvider->saveIdentifiersMapping($identifiersMapping);
-        $this->subscriptionRepository->emptySuggestedData();
-        $this->identifiersMappingRepository->save($identifiersMapping);
+        if ($identifiersMapping->isUpdated()) {
+            $this->identifiersMappingProvider->saveIdentifiersMapping($identifiersMapping);
+            $this->subscriptionRepository->emptySuggestedData();
+            $this->identifiersMappingRepository->save($identifiersMapping);
+
+            if (!empty($identifiersMapping->updatedIdentifierCodes())) {
+                $this->identifyProductsToResubscribe->process($identifiersMapping->updatedIdentifierCodes());
+            }
+        }
     }
 
     /**

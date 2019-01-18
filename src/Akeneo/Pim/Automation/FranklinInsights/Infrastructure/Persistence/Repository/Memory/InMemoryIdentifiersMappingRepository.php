@@ -42,11 +42,11 @@ class InMemoryIdentifiersMappingRepository implements IdentifiersMappingReposito
      */
     public function find(): IdentifiersMapping
     {
-        $newIdentifiersMapping = new IdentifiersMapping([]);
-        foreach ($this->identifiersMapping as $identifier) {
-            $newIdentifiersMapping->map($identifier->getFranklinCode(), $identifier->getAttribute());
+        $mappedAttributes = [];
+        foreach ($this->identifiersMapping as $franklinCode => $identifierMapping) {
+            $mappedAttributes[$franklinCode] = $identifierMapping->getAttribute();
         }
 
-        return $newIdentifiersMapping;
+        return $newIdentifiersMapping = new IdentifiersMapping($mappedAttributes);
     }
 }

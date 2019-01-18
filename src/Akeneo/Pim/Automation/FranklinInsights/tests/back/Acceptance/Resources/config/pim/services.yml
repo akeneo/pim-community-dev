@@ -4,3 +4,6 @@ services:
         arguments:
             - '@pim_catalog.repository.product_without_permission'
             - '@pimee_workflow.updater.product_without_permission'
+
+    akeneo.pim.automation.franklin_insights.application.mapping.service.identify_products_to_resubscribe:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\InMemoryIdentifyProductsToResubscribe'
