@@ -8,27 +8,14 @@ import File from 'akeneoreferenceentity/domain/model/file';
 const View = ({
   value,
   onChange,
-  rights,
+  canEditData,
 }: {
   value: Value;
   onChange: (value: Value) => void;
-  rights: {
-    locale: {
-      edit: boolean;
-    };
-    record: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
+  canEditData: boolean;
 }) => {
   if (!(value.data instanceof FileData)) {
     return null;
-  }
-
-  let canEditData = rights.record.edit;
-  if (value.attribute.valuePerLocale) {
-    canEditData = rights.record.edit && rights.locale.edit;
   }
 
   return (

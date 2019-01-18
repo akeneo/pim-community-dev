@@ -9,28 +9,15 @@ const View = ({
   value,
   onChange,
   onSubmit,
-  rights,
+  canEditData,
 }: {
   value: Value;
   onChange: (value: Value) => void;
   onSubmit: () => void;
-  rights: {
-    locale: {
-      edit: boolean;
-    };
-    record: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
+  canEditData: boolean;
 }) => {
   if (!(value.data instanceof TextData && value.attribute instanceof ConcreteTextAttribute)) {
     return null;
-  }
-
-  let canEditData = rights.record.edit;
-  if (value.attribute.valuePerLocale) {
-    canEditData = rights.record.edit && rights.locale.edit;
   }
 
   const onValueChange = (text: string) => {
@@ -48,7 +35,7 @@ const View = ({
     <React.Fragment>
       {value.attribute.isTextarea.booleanValue() ? (
         value.attribute.isRichTextEditor.booleanValue() ? (
-          <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} readOnly={!rights.record.edit} />
+          <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} readOnly={!canEditData} />
         ) : (
           <textarea
             id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}

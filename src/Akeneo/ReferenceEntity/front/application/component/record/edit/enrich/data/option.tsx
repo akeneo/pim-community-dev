@@ -11,20 +11,12 @@ const View = ({
   value,
   onChange,
   locale,
-  rights,
+  canEditData,
 }: {
   value: Value;
   locale: LocaleReference;
   onChange: (value: Value) => void;
-  rights: {
-    locale: {
-      edit: boolean;
-    };
-    record: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
+  canEditData: boolean;
 }) => {
   if (!(value.data instanceof OptionData)) {
     return null;
@@ -41,11 +33,6 @@ const View = ({
     },
     {}
   );
-
-  let canEditData = rights.record.edit;
-  if (value.attribute.valuePerLocale) {
-    canEditData = rights.record.edit && rights.locale.edit;
-  }
 
   return (
     <div className="option-selector-container">

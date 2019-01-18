@@ -13,32 +13,19 @@ const View = ({
   onChange,
   channel,
   locale,
-  rights,
+  canEditData,
 }: {
   value: Value;
   channel: ChannelReference;
   locale: LocaleReference;
   onChange: (value: Value) => void;
-  rights: {
-    locale: {
-      edit: boolean;
-    };
-    record: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
+  canEditData: boolean;
 }) => {
   if (!(value.data instanceof RecordCollectionData)) {
     return null;
   }
 
   const attribute = value.attribute as RecordAttribute;
-
-  let canEditData = rights.record.edit;
-  if (value.attribute.valuePerLocale) {
-    canEditData = rights.record.edit && rights.locale.edit;
-  }
 
   return (
     //The first children of a FieldContainer will stretch to the full width if not contained in a div.
@@ -54,7 +41,7 @@ const View = ({
         referenceEntityIdentifier={attribute.recordType.getReferenceEntityIdentifier()}
         readOnly={!canEditData}
         onChange={(recordCodes: RecordCode[]) => {
-          if (rights.record.edit) {
+          if (canEditData) {
             const newData = RecordCollectionData.create(recordCodes);
             const newValue = value.setData(newData);
 

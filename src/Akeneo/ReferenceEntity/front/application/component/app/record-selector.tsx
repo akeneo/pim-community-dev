@@ -170,26 +170,24 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
         },
       });
 
-      if (!this.props.readOnly) {
-        this.el.on('change', (event: any) => {
-          const newValue = this.props.multiple
-            ? event.val.map((recordCode: string) => RecordCode.create(recordCode))
-            : '' === event.val
-              ? null
-              : RecordCode.create(event.val);
-          this.props.onChange(newValue);
-        });
+      this.el.on('change', (event: any) => {
+        const newValue = this.props.multiple
+          ? event.val.map((recordCode: string) => RecordCode.create(recordCode))
+          : '' === event.val
+            ? null
+            : RecordCode.create(event.val);
+        this.props.onChange(newValue);
+      });
 
-        const select2 = this.el.data('select2');
-        select2.onSelect = (function(fn) {
-          return function(_data: any, options: any) {
-            if (null === options || 'A' !== options.target.nodeName) {
-              //@ts-ignore Dirty but commiong from select2...
-              fn.apply(this, arguments);
-            }
-          };
-        })(select2.onSelect);
-      }
+      const select2 = this.el.data('select2');
+      select2.onSelect = (function(fn) {
+        return function(_data: any, options: any) {
+          if (null === options || 'A' !== options.target.nodeName) {
+            //@ts-ignore Dirty but commiong from select2...
+            fn.apply(this, arguments);
+          }
+        };
+      })(select2.onSelect);
     } else {
       this.el.prop('type', 'text');
     }

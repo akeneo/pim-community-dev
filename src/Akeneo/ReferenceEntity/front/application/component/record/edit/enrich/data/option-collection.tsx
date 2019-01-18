@@ -13,20 +13,12 @@ const View = ({
   value,
   onChange,
   locale,
-  rights,
+  canEditData,
 }: {
   value: Value;
   locale: LocaleReference;
   onChange: (value: Value) => void;
-  rights: {
-    locale: {
-      edit: boolean;
-    };
-    record: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
+  canEditData: boolean;
 }) => {
   if (!(value.data instanceof OptionCollectionData)) {
     return null;
@@ -42,11 +34,6 @@ const View = ({
 
     return formatedOptions;
   }, {});
-
-  let canEditData = rights.record.edit;
-  if (value.attribute.valuePerLocale) {
-    canEditData = rights.record.edit && rights.locale.edit;
-  }
 
   return (
     <div className="option-collection-selector-container AknSelectField">

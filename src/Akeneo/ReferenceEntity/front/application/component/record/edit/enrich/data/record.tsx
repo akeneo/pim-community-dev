@@ -13,32 +13,19 @@ const View = ({
   onChange,
   channel,
   locale,
-  rights,
+  canEditData,
 }: {
   value: Value;
   channel: ChannelReference;
   locale: LocaleReference;
   onChange: (value: Value) => void;
-  rights: {
-    locale: {
-      edit: boolean;
-    };
-    record: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
+  canEditData: boolean;
 }) => {
   if (!(value.data instanceof RecordData)) {
     return null;
   }
 
   const attribute = value.attribute as RecordAttribute;
-
-  let canEditData = rights.record.edit;
-  if (value.attribute.valuePerLocale) {
-    canEditData = rights.record.edit && rights.locale.edit;
-  }
 
   return (
     <div className="record-selector-container">
@@ -51,7 +38,7 @@ const View = ({
         referenceEntityIdentifier={attribute.recordType.getReferenceEntityIdentifier()}
         readOnly={!canEditData}
         onChange={(recordCode: RecordCode) => {
-          if (rights.record.edit) {
+          if (canEditData) {
             const newData = create(recordCode);
             const newValue = value.setData(newData);
 
