@@ -1,5 +1,5 @@
 # Akeneo PIM Development Repository
-Welcome to Akeneo PIM Product.
+Welcome teeeo Akeneo PIM Product.
 
 This repository is used to develop the Akeneo PIM product.
 
