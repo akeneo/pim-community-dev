@@ -2,7 +2,8 @@
 
 ## Franklin Insights
 
-- APAI-445: Identify and handle subscriptions affected by identifiers mapping change 
+- APAI-445: Identify and handle subscriptions affected by identifiers mapping change
+- APAI-577: Ignore a subscription when an error occurs 
 
 # 3.0
 
