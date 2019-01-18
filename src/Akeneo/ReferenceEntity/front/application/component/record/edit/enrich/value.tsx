@@ -54,11 +54,7 @@ export default (
           </label>
           <span className="AknFieldContainer-fieldInfo">
             <span>
-              <span>
-                {value.attribute.valuePerChannel ? (
-                  value.channel.stringValue()
-                ) : null}
-              </span>
+              <span>{value.attribute.valuePerChannel ? value.channel.stringValue() : null}</span>
               &nbsp;
               <span>
                 {value.attribute.valuePerLocale ? (

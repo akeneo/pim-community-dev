@@ -272,16 +272,6 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  Then('the user cannot update the label of a valid record', async function() {
-    await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
-
-    const editPage = await await getElement(this.page, 'Edit');
-    const enrich = await editPage.getEnrich();
-    const isDisabledTextField = await enrich.isDisabledTextField('pim_reference_entity.record.enrich.label');
-
-    assert.strictEqual(isDisabledTextField, true);
-  });
-
   Then('the user should see a success message on the edit page', async function() {
     const edit = await await getElement(this.page, 'Edit');
     const hasSuccessNotification = await edit.hasSuccessNotification();
