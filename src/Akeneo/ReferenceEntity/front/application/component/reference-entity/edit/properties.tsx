@@ -157,8 +157,7 @@ export default connect(
           delete:
             securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') &&
             securityContext.isGranted('akeneo_referenceentity_reference_entity_delete') &&
-            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier) &&
-            canEditLocale(state.right.locale, locale),
+            canEditReferenceEntity(state.right.referenceEntity, state.form.data.identifier),
         },
       },
       confirmDelete: state.confirmDelete,

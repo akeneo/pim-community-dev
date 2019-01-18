@@ -140,6 +140,7 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: Fill in the label of an option to the list of available options of an option attribute
     Given a valid reference entity
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_attribute_edit | true |
       | akeneo_referenceentity_option_edit    | true |

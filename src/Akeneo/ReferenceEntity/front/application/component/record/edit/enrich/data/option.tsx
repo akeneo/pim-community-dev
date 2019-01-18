@@ -42,7 +42,7 @@ const View = ({
     {}
   );
 
-  let canEditData = true;
+  let canEditData = rights.record.edit;
   if (value.attribute.valuePerLocale) {
     canEditData = rights.record.edit && rights.locale.edit;
   }
