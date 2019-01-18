@@ -1,4 +1,5 @@
 #!groovy
+@Library("k8s-utils@1.x_cpu")
 
 import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
 
