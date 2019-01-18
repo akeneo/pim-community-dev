@@ -5862,6 +5862,7 @@
                 }
             ],
             "description": "Allows to declare and use contexts services in scenario scoped container.",
+            "abandoned": "friends-of-behat/symfony-extension",
             "time": "2018-02-13T18:49:22+00:00"
         },
         {
@@ -5910,6 +5911,7 @@
                 }
             ],
             "description": "Makes possible to inject services and parameters from other containers.",
+            "abandoned": "friends-of-behat/symfony-extension",
             "time": "2018-02-13T17:55:39+00:00"
         },
         {
