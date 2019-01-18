@@ -61,7 +61,11 @@ class SubscriptionCollection implements \IteratorAggregate
     {
         $collection = [];
         foreach ($rawApiResponse['_embedded']['subscription'] as $rawSubscription) {
-            $collection[] = new Subscription($rawSubscription);
+            try {
+                $collection[] = new Subscription($rawSubscription);
+            } catch (\InvalidArgumentException $exception) {
+                continue;
+            }
         }
 
         return $collection;
