@@ -18,6 +18,7 @@ backup:
       monthlyBackups: 12
       yearlyBackups: 10
     export:
+      enabled: true
       snapshotAge: 24h
 
 common:

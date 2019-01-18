@@ -20,8 +20,10 @@ spec:
     pvcNames:
       - data-{{ .Release.Name }}-nfs-0
       - pvc-data-{{ .Release.Name }}-mysql-server-0
+{{ if .Values.backup.snapshot.export.enabled }}
     export:
       snapshotAge: {{ .Values.backup.snapshot.export.snapshotAge }}
+{{end}}
     retentionPolicy:
 {{toYaml .Values.backup.snapshot.retentionPolicy | indent 6}}
 
