@@ -451,6 +451,13 @@ Feature: Edit an record
     Then the user should see a success message on the edit page
 
   @acceptance-front
+  Scenario: User cannot update the label of a record without the locale permission
+    Given a valid record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
+    Then the user cannot update the label of a valid record
+
+  @acceptance-front
   Scenario: User can't update a record details without the edit rights
     Given a valid record
     And the user has the locale permission to edit the record

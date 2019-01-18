@@ -39,6 +39,16 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
     await newLabelInput.type(label);
   };
 
+  const newOptionLabelFieldIsDisabled = async label => {
+    try {
+      await page.waitForSelector('tr[data-code=""] input[name="label"].AknTextField--disabled', {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  }
+
   const getOptionCodeValue = async code => {
     const codeInput = await nodeElement.$(`tr[data-code="${code}"] input[name="code"]`);
     const codeInputProperty = await codeInput.getProperty('value');
@@ -178,6 +188,7 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
     hasNewOption,
     newOptionCode,
     newOptionLabel,
+    newOptionLabelFieldIsDisabled,
     getOptionCodeValue,
     removeOption,
     hasOption,

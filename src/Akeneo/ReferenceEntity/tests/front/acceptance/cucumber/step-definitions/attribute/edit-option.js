@@ -49,6 +49,13 @@ module.exports = async function(cucumber) {
     await manageOption.isLockedOptionLabel(code);
   });
 
+  Then('the user cannot add the new option label {string}', async function(label) {
+    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const isDisabledTextField = await manageOption.newOptionLabelFieldIsDisabled(label);
+
+    assert.strictEqual(isDisabledTextField, true);
+  });
+
   When('the user adds the new option label {string}', async function(label) {
     const manageOption = await await getElement(this.page, 'ManageOptionModal');
     await manageOption.newOptionLabel(label);
