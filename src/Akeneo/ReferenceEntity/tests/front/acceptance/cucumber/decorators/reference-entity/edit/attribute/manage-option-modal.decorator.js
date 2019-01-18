@@ -39,7 +39,7 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
     await newLabelInput.type(label);
   };
 
-  const newOptionLabelFieldIsDisabled = async label => {
+  const newOptionLabelFieldIsDisabled = async () => {
     try {
       await page.waitForSelector('tr[data-code=""] input[name="label"].AknTextField--disabled', {timeout: 2000});
     } catch (error) {

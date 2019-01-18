@@ -147,9 +147,7 @@ const optionRow = ({
 }) => {
   const displayDeleteRowButton: boolean = !isLastRow && rights.attribute.delete;
   const canEditLabel = rights.attribute.edit && rights.locale.edit;
-  const labelClassName = `AknTextField AknTextField--light ${
-    !canEditLabel ? 'AknTextField--disabled' : ''
-  }`;
+  const labelClassName = `AknTextField AknTextField--light ${!canEditLabel ? 'AknTextField--disabled' : ''}`;
 
   return (
     <React.Fragment key={index}>
@@ -486,7 +484,7 @@ export default connect(
       catalogLocale: state.user.defaultCatalogLocale,
       rights: {
         locale: {
-          edit: ownProps.rights.locale.edit
+          edit: ownProps.rights.locale.edit,
         },
         attribute: {
           edit: ownProps.rights.attribute.edit && securityContext.isGranted('akeneo_referenceentity_option_edit'),
