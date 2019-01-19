@@ -31,7 +31,13 @@ pim_enrich_family_edit:
 
 pim_enrich_associationtype_edit:
     path: '/configuration/association-type/{code}/edit'
-    defaults: { _controller: pim_enrich.controller.association_type:editAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
 
+pim_enrich_grouptype_index:
+    path: '/configuration/group-type'
+
+pim_enrich_grouptype_edit:
+    path: '/configuration/group-type/{code}/edit'
+    requirements:
+        code: '[a-zA-Z0-9_]+'

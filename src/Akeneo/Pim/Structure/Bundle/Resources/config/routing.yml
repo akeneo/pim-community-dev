@@ -55,7 +55,3 @@ internal_api_grouptype:
 ### Front routes
 front_routes:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/front.yml'
-
-grouptype_ui:
-    resource: '@AkeneoPimStructureBundle/Resources/config/routing/ui/grouptype.yml'
-    prefix: /configuration/group-type

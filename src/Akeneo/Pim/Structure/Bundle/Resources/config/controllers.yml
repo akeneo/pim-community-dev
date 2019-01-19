@@ -210,6 +210,3 @@ services:
         arguments:
             - '@pim_reference_data.registry'
             - '@pim_internal_api_serializer'
-    ### UI
-    pim_enrich.controller.association_type:
-        class: 'Akeneo\Pim\Structure\Bundle\Controller\Ui\AssociationTypeController'
