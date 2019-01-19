@@ -1,7 +1,0 @@
-pim_enrich_grouptype_index:
-    path: ''
-
-pim_enrich_grouptype_edit:
-    path: /{code}/edit
-    requirements:
-        code: '[a-zA-Z0-9_]+'
