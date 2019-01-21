@@ -28,32 +28,6 @@ class ExportBuilderContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * Check if the element is visible
-     *
-     * Example:
-     * Then I should not see the "updated since n days" element in the filter "Updated time condition"
-     *
-     * @param string $field
-     * @param string $filterElement
-     *
-     * @throws \Exception
-     *
-     * @Then /^I should not see the "([^"]*)" element in the filter "([^"]*)"$/
-     */
-    public function iShouldNotSeeTheElement($field, $filterElement)
-    {
-        /** @var UpdatedTimeConditionDecorator $filterElement */
-        $filterElement = $this->getElementOnCurrentPage($filterElement);
-
-        if ($filterElement->checkValueElementVisibility($field)) {
-            throw new ExpectationException(
-                sprintf('The element "%s" should not be visible', $field),
-                $this->getSession()->getDriver()
-            );
-        }
-    }
-
-    /**
      * @param string $attributes
      * @param string $gridLabel
      *
