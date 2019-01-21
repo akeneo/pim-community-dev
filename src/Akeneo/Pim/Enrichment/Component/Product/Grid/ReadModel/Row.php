@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -38,7 +37,7 @@ final class Row
     /** @var string */
     private $label;
 
-    /** @var null|MediaValue */
+    /** @var null|object  */
     private $image;
 
     /** @var null|int */
@@ -76,7 +75,7 @@ final class Row
      * @param \DateTimeInterface       $created
      * @param \DateTimeInterface       $updated
      * @param string                   $label
-     * @param null|MediaValue          $image
+     * @param null|object              $image
      * @param null|int                 $completeness
      * @param string                   $documentType
      * @param int                      $technicalId
@@ -95,7 +94,7 @@ final class Row
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
         ?string $label,
-        ?MediaValue $image,
+        ?object $image,
         ?int $completeness,
         string $documentType,
         int $technicalId,
@@ -133,7 +132,7 @@ final class Row
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
         string $label,
-        ?MediaValue $image,
+        ?object $image,
         ?int $completeness,
         int $technicalId,
         ?string $parentCode,
@@ -166,7 +165,7 @@ final class Row
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
         string $label,
-        ?MediaValue $image,
+        ?object $image,
         int $technicalId,
         array $childrenCompleteness,
         ?string $parent,
@@ -275,9 +274,12 @@ final class Row
     }
 
     /**
-     * @return null|MediaValue
+     * This method return a type object because in EE it can return
+     * a MediaValue|ReferenceDataCollectionValue
+     *
+     * @return null|object
      */
-    public function image(): ?MediaValue
+    public function image(): ?object
     {
         return $this->image;
     }
