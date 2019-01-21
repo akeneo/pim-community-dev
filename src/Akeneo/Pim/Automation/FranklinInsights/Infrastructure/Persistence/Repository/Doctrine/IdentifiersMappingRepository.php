@@ -72,6 +72,6 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
             $mappedAttributes[$identifierMapping->getFranklinCode()] = $identifierMapping->getAttribute();
         }
 
-        return new identifiersMapping($mappedAttributes);
+        return new IdentifiersMapping($mappedAttributes);
     }
 }

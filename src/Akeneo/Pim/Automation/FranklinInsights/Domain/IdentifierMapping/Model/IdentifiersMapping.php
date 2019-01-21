@@ -37,11 +37,12 @@ class IdentifiersMapping implements \IteratorAggregate
     private $diff;
 
     /**
-     * @param array $mappedAttributes
+     * @param array $mappedAttributes array of AttributeInterface|null, indexed by Franklin identifier codes,
+     *                                e.g: ['asin' => $asinAttribute, 'upc' => null, 'brand' => 'null, 'mpn' => null]
      */
     public function __construct(array $mappedAttributes)
     {
-        foreach (self::FRANKLIN_IDENTIFIERS as $franklinIdentifier) {
+        foreach (static::FRANKLIN_IDENTIFIERS as $franklinIdentifier) {
             $this->mapping[$franklinIdentifier] = new IdentifierMapping(
                 $franklinIdentifier,
                 $mappedAttributes[$franklinIdentifier] ?? null
@@ -74,7 +75,8 @@ class IdentifiersMapping implements \IteratorAggregate
     }
 
     /**
-     * Map a franklin identifier to a catalog attribute.
+     * Maps a catalog attribute to a Franklin identifier, and calculates the diff from the previous state.
+     * This method is used to mutate the entity.
      *
      * @param string $franklinIdentifierCode
      * @param AttributeInterface|null $attribute
@@ -83,13 +85,13 @@ class IdentifiersMapping implements \IteratorAggregate
      */
     public function map(string $franklinIdentifierCode, ?AttributeInterface $attribute): self
     {
-        if (!in_array($franklinIdentifierCode, self::FRANKLIN_IDENTIFIERS)) {
+        if (!in_array($franklinIdentifierCode, static::FRANKLIN_IDENTIFIERS)) {
             throw new \InvalidArgumentException(sprintf('Invalid identifier %s', $franklinIdentifierCode));
         }
 
-        $formerAttributeCode = (null !== $this->getMappedAttribute(
-                $franklinIdentifierCode
-            )) ? $this->getMappedAttribute($franklinIdentifierCode)->getCode() : null;
+        $formerAttributeCode =
+            (null !== $this->getMappedAttribute($franklinIdentifierCode))
+            ? $this->getMappedAttribute($franklinIdentifierCode)->getCode() : null;
         $newAttributeCode = null !== $attribute ? $attribute->getCode() : null;
 
         if ($formerAttributeCode !== $newAttributeCode) {

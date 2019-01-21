@@ -61,7 +61,9 @@ class IdentifyProductsToResubscribe implements IdentifyProductsToResubscribeInte
             ->jobInstanceRepository
             ->findOneByIdentifier(JobInstanceNames::IDENTIFY_PRODUCTS_TO_RESUBSCRIBE);
         if (null === $jobInstance) {
-            return;
+            throw new \RuntimeException(
+                sprintf('Job instance "%s" not found', JobInstanceNames::IDENTIFY_PRODUCTS_TO_RESUBSCRIBE)
+            );
         }
 
         $user = $this->tokenStorage->getToken()->getUser();
