@@ -1,34 +1,36 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration;
 
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\CertificateExpirationDate;
 use phpseclib\File\X509;
 
-class CertificateMetadata
+final class CertificateMetadata
 {
-    /** @var array */
-    private $certificate;
+    /** @var CertificateExpirationDate */
+    private $expirationDate;
 
     public function __construct(string $certificate)
     {
+        $x509 = (new X509())->loadX509($certificate);
 
-        $x509 = (new X509())->loadX509((string) $certificate);
-
-        if(false === $x509)
-        {
-            throw new \InvalidArgumentException('The certificate is not valid');
+        if(false === $x509)  {
+            throw new \InvalidArgumentException('The certificate is not valid.');
         }
 
-        $this->certificate = $x509;
+        try {
+            $this->expirationDate = new CertificateExpirationDate(
+                $x509['tbsCertificate']['validity']['notAfter']['utcTime']
+            );
+        } catch (\InvalidArgumentException $e) {
+            $this->expirationDate = null;
+        }
     }
 
-    public function getEndDate(): ?string
+    public function getExpirationDate(): ?CertificateExpirationDate
     {
-        if(!empty($this->certificate['tbsCertificate']['validity']['notAfter']['utcTime']))
-        {
-            $endDate = $this->certificate['tbsCertificate']['validity']['notAfter']['utcTime'];
-            return (new \DateTimeImmutable($endDate))->format('d/m/Y');
-        }
+        return $this->expirationDate;
     }
 }
