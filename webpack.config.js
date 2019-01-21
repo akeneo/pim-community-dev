@@ -25,13 +25,15 @@ console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mo
 const webpackConfig = {
   stats: {
     hash: false,
-    maxModules: 5,
-    modules: false,
+    // maxModules: 99999,
+    // modules: true,
     timings: true,
     version: true,
+    // reasons: true,
+    modulesSort: "size",
   },
   optimization: {
-    moduleIds: 'hashed',
+    moduleIds: 'named',
     nodeEnv: (isProd ? 'production' : 'development'),
     minimizer: [
       new UglifyJsPlugin({
