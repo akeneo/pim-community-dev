@@ -84,7 +84,7 @@ class SaveAttributesMappingByFamilyHandler
         }
 
         if (empty($attributes)) {
-            throw AttributeMappingException::onlyUnknownMappedAttributes();
+            throw AttributeMappingException::emptyAttributesMapping();
         }
 
         $attributesMapping = new AttributesMapping($familyCode);

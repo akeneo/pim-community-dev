@@ -20,7 +20,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
@@ -199,30 +198,12 @@ final class AttributesMappingContext implements Context
         foreach ($attributesMapping as $attributeMapping) {
             if ($franklinAttribute === $attributeMapping['from']['id']) {
                 Assert::null($attributeMapping['to']);
-                Assert::eq('inactive', $attributeMapping['status']);
+                Assert::eq($attributeMapping['status'], 'pending');
 
                 return;
             }
         }
         Assert::true(false, 'Expectation not found for Franklin\'s attribute: ' . $franklinAttribute);
-    }
-
-    /**
-     * @Then Franklin's attribute :franklinAttribute should not be saved
-     *
-     * @param string $franklinAttribute
-     */
-    public function franklinsAttributeShouldNotBeSaved($franklinAttribute): void
-    {
-        $attributesMapping = $this->fakeClient->getAttributesMapping();
-        $attributeFound = false;
-        foreach ($attributesMapping as $attributeMapping) {
-            if ($franklinAttribute === $attributeMapping['from']['id']) {
-                $attributeFound = true;
-                break;
-            }
-        }
-        Assert::false($attributeFound, 'Franklin\'s attribute: ' . $franklinAttribute . ' should not have been saved');
     }
 
     /**
@@ -289,8 +270,8 @@ final class AttributesMappingContext implements Context
     public function anEmptyAttributesMappingMessageShouldBeSent(): void
     {
         $thrownException = ExceptionContext::getThrownException();
-        Assert::isInstanceOf($thrownException, InvalidMappingException::class);
-        Assert::eq($thrownException->getMessage(), InvalidMappingException::emptyMapping()->getMessage());
+        Assert::isInstanceOf($thrownException, AttributeMappingException::class);
+        Assert::eq($thrownException->getMessage(), AttributeMappingException::emptyAttributesMapping()->getMessage());
     }
 
     /**
@@ -357,32 +338,6 @@ final class AttributesMappingContext implements Context
         Assert::eq(
             $thrownException->getMessage(),
             AttributeMappingException::duplicatedPimAttribute()->getMessage()
-        );
-    }
-
-    /**
-     * @Then an unknown attributes message should be sent
-     */
-    public function anUnknownAttributesMessageShouldBeSent(): void
-    {
-        $thrownException = ExceptionContext::getThrownException();
-        Assert::isInstanceOf($thrownException, AttributeMappingException::class);
-        Assert::eq(
-            $thrownException->getMessage(),
-            AttributeMappingException::onlyUnknownMappedAttributes()->getMessage()
-        );
-    }
-
-    /**
-     * @Then an attribute not in family not allowed message should be sent
-     */
-    public function anAttributeNotInFamilyNotAllowedMessageShouldBeSent(): void
-    {
-        $thrownException = ExceptionContext::getThrownException();
-        Assert::isInstanceOf($thrownException, AttributeMappingException::class);
-        Assert::eq(
-            $thrownException->getMessage(),
-            AttributeMappingException::attributeNotInFamilyNotAllowed()->getMessage()
         );
     }
 

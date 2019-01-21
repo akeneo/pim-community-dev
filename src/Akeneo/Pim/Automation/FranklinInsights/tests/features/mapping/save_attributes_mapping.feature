@@ -53,7 +53,7 @@ Feature: Map the PIM attributes with Franklin attributes
       | color                 | unknown_attribute  |
       | product_weight        | weight             |
     Then Franklin's attribute product_weight should be mapped to weight
-    And Franklin's attribute color should not be saved
+    And Franklin's attribute color should not be mapped
 
   Scenario: Fails to save the attributes mapping if all the attributes do not exist
     Given the family "router"
@@ -61,8 +61,8 @@ Feature: Map the PIM attributes with Franklin attributes
     When the attributes are mapped for the family "router" as follows:
       | target_attribute_code | pim_attribute_code |
       | color                 | unknown_attribute  |
-    Then Franklin's attribute color should not be saved
-    And an unknown attributes message should be sent
+    Then the attributes mapping should not be saved
+    And an empty attributes mapping message should be sent
 
   Scenario Outline: Fails to save the attributes mapping if an attribute type is invalid
     Given the following attribute:
@@ -168,8 +168,8 @@ Feature: Map the PIM attributes with Franklin attributes
       | target_attribute_code | pim_attribute_code |
       | product_weight        | connectivity       |
       | color                 | color              |
-    Then the attributes mapping should not be saved
-    And an attribute not in family not allowed message should be sent
+    Then Franklin's attribute color should be mapped to color
+    And Franklin's attribute product_weight should not be mapped
 
   Scenario: Fails to map the same attribute twice with a franklin attribute
     Given the family "router"

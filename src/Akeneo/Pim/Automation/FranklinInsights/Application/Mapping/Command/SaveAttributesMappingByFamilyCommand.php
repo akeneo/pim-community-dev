@@ -80,7 +80,7 @@ class SaveAttributesMappingByFamilyCommand
     private function validate(array $mapping): void
     {
         if (empty($mapping)) {
-            throw InvalidMappingException::emptyMapping();
+            throw AttributeMappingException::emptyAttributesMapping();
         }
 
         foreach ($mapping as $targetKey => $mappingRow) {

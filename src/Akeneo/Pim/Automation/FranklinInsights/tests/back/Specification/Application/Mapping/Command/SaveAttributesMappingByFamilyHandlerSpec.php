@@ -84,7 +84,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $family->getAttributeCodes()->willReturn(['tshirt_style']);
         $attributeRepository->findBy(['code' => ['tshirt_style']])->willReturn([]);
 
-        $this->shouldThrow(AttributeMappingException::onlyUnknownMappedAttributes())->during('handle', [$command]);
+        $this->shouldThrow(AttributeMappingException::emptyAttributesMapping())->during('handle', [$command]);
     }
 
     public function it_maps_to_null_when_attribute_does_not_exist(
