@@ -47,9 +47,6 @@ class AttributeMapping
     /** @var string */
     private $targetAttributeType;
 
-    /** @var string|null */
-//    private $pimAttributeCode;
-
     /** @var AttributeInterface */
     private $attribute;
 
@@ -84,15 +81,7 @@ class AttributeMapping
             $this->validateAttribute($attribute);
         }
         $this->attribute = $attribute;
-        $this->status = null === $this->attribute ? self::ATTRIBUTE_UNMAPPED : self::ATTRIBUTE_MAPPED;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPimAttributeCode(): ?string
-    {
-        return $this->attribute->getCode();
+        $this->status = null === $this->attribute ? self::ATTRIBUTE_PENDING : self::ATTRIBUTE_MAPPED;
     }
 
     /**
@@ -101,26 +90,6 @@ class AttributeMapping
     public function getTargetAttributeCode(): string
     {
         return $this->targetAttributeCode;
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @return AttributeMapping
-     */
-    public function setAttribute(AttributeInterface $attribute): self
-    {
-        $this->attribute = $attribute;
-
-        return $this;
-    }
-
-    /**
-     * @return AttributeInterface
-     */
-    public function getAttribute(): ?AttributeInterface
-    {
-        return $this->attribute;
     }
 
     /**
@@ -162,8 +131,7 @@ class AttributeMapping
             throw AttributeMappingException::localeSpecificAttributeNotAllowed();
         }
 
-        $authorizedPimAttributeTypes = array_keys(AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS);
-        if (!in_array($attribute->getType(), $authorizedPimAttributeTypes)) {
+        if (!in_array($attribute->getType(), array_keys(AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS))) {
             throw AttributeMappingException::incompatibleAttributeTypeMapping($attribute->getType());
         }
     }
