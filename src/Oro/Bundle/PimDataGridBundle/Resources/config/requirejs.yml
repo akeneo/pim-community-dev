@@ -132,7 +132,6 @@ config:
         oro/datafilter/filters-list:                pimdatagrid/js/datafilter/filters-list
         oro/datafilter/filters-button:              pimdatagrid/js/datafilter/filters-button
         oro/datafilter/abstract-filter:             pimdatagrid/js/datafilter/filter/abstract-filter
-        oro/datafilter/none-filter:                 pimdatagrid/js/datafilter/filter/none-filter
         oro/datafilter/choice-filter:               pimdatagrid/js/datafilter/filter/choice-filter
         oro/datafilter/date-filter:                 pimdatagrid/js/datafilter/filter/date-filter
         oro/datafilter/datetime-filter:             pimdatagrid/js/datafilter/filter/datetime-filter

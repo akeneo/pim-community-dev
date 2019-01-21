@@ -9,7 +9,6 @@ function($, _, Backbone, app) {
      * Inheritance schema:
      *
      * - abstract-filter (abstract)
-     *   - none-filter (unused?)
      *   - search-filter (Displays a search box)
      *   - select-filter (Displays a list of choices with a search box. "Status", only boolean)
      *     - multiselect-filter (Displays a multiselect with checkboxes (no ajax). "Job type"...
