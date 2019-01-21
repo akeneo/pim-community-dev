@@ -1,3 +1,9 @@
+# 3.0.x
+
+## Franklin Insights
+
+- APAI-445: Identify and handle subscriptions affected by identifiers mapping change 
+
 # 3.0
 
 ## Manage reference entities
