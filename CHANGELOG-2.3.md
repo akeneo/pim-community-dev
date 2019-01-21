@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7967: Fix ACL for asset categories
+- PIM-7969: fix special chars in PDF export
 
 # 2.3.25 (2019-01-17)
 
