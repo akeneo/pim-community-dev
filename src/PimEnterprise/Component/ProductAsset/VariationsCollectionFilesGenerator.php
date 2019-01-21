@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PimEnterprise\Component\ProductAsset\Exception\LockedVariationGenerationException;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
@@ -25,12 +26,19 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
     /** @var VariationFileGeneratorInterface */
     protected $variationFileGenerator;
 
+    /** @var SaverInterface */
+    protected $variationSaver;
+
     /**
      * @param VariationFileGeneratorInterface $variationFileGenerator
      */
-    public function __construct(VariationFileGeneratorInterface $variationFileGenerator)
+    public function __construct(
+        VariationFileGeneratorInterface $variationFileGenerator,
+        SaverInterface $variationSaver
+    )
     {
         $this->variationFileGenerator = $variationFileGenerator;
+        $this->variationSaver = $variationSaver;
     }
 
     /**
@@ -64,6 +72,7 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
                 );
             }
         }
+        $this->variationSaver->saveAll($variations);
 
         return $processedVariations;
     }

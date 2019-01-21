@@ -63,8 +63,10 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
             } else {
                 $assetsCodes = $this->getAllAssetsCodes();
                 $chunks = array_chunk($assetsCodes, static::BATCH_SIZE);
+                $i = 0;
                 foreach ($chunks as $assetCodes) {
-                    $assets = $this->buildAssets($assetCodes);
+                    $i++;
+                    $assets = $this->buildAssets($assetCodes, $output);
 
                     $this->getAssetSaver()->saveAll($assets);
                     $this->detachAll($assets);
@@ -169,10 +171,13 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      *
      * @return array|ArrayCollection
      */
-    protected function buildAssets($assetCodes)
+    protected function buildAssets($assetCodes, $output)
     {
         $assets = $this->fetchAssetsByCode($assetCodes);
         foreach ($assets as $asset) {
+
+            //$msg = sprintf("<info>Asset %s ...</info>", $asset->getCode());
+            //$output->writeln($msg);
             $this->buildAsset($asset);
         }
 

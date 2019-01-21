@@ -22,6 +22,7 @@ services:
         class: '%pimee_product_asset.variations_collection_files_generator.class%'
         arguments:
             - '@pimee_product_asset.variation_file_generator'
+            - '@pimee_product_asset.saver.variation'
 
     pimee_product_asset.command_launcher:
         class: '%pimee_product_asset.command_launcher.class%'

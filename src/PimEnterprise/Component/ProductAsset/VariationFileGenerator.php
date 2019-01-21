@@ -129,10 +129,10 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $variationFile = $this->fileStorer->store($variationFileInfo, $this->filesystemAlias, true);
 
         $variationMetadata->setFileInfo($variationFile);
-        $this->metadataSaver->save($variationMetadata);
+        //$this->metadataSaver->save($variationMetadata);
 
         $variation->setFileInfo($variationFile);
-        $this->variationSaver->save($variation);
+        //$this->variationSaver->save($variation);
 
         $this->deleteFile($sourceFileInfo);
     }
