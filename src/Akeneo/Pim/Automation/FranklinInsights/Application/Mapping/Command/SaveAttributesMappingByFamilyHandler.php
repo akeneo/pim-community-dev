@@ -96,7 +96,7 @@ class SaveAttributesMappingByFamilyHandler
             );
         }
 
-        $this->attributesMappingProvider->saveAttributesMapping($familyCode, $attributesMapping->mapping());
+        $this->attributesMappingProvider->saveAttributesMapping($familyCode, $attributesMapping);
         $this->subscriptionRepository->emptySuggestedDataAndMissingMappingByFamily($familyCode);
     }
 }

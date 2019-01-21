@@ -24,7 +24,7 @@ class AttributesMapping
     private $familyCode;
 
     /** @var AttributeMapping[] */
-    private $mapping;
+    private $mapping = [];
 
     /**
      * @param string $familyCode

@@ -131,7 +131,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $expectedAttributesMapping->map('weight', 'metric', null);
 
         $attributesMappingProvider
-            ->saveAttributesMapping('router', $expectedAttributesMapping->mapping())
+            ->saveAttributesMapping('router', $expectedAttributesMapping)
             ->shouldBeCalled();
 
         $subscriptionRepository
@@ -185,7 +185,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $expectedAttributesMapping->map('weight', 'metric', null);
 
         $attributesMappingProvider
-            ->saveAttributesMapping('router', $expectedAttributesMapping->mapping())
+            ->saveAttributesMapping('router', $expectedAttributesMapping)
             ->shouldBeCalled();
 
         $subscriptionRepository
@@ -278,7 +278,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributesMapping->map('weight', 'metric', $weightAttribute->getWrappedObject());
 
         $attributesMappingProvider
-            ->saveAttributesMapping('router', $attributesMapping->mapping())
+            ->saveAttributesMapping('router', $attributesMapping)
             ->shouldBeCalled();
 
         $subscriptionRepository

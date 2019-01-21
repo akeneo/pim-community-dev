@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping as DomainAttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
@@ -43,7 +44,7 @@ class AttributesMappingProviderSpec extends ObjectBehavior
 
     public function it_gets_attributes_mapping($api): void
     {
-        $api->setToken(Argument::type('string'))->shouldBeCalled();
+        $api->setToken('valid-token')->shouldBeCalled();
         $response = new AttributesMapping([
             [
                 'from' => [
@@ -75,11 +76,11 @@ class AttributesMappingProviderSpec extends ObjectBehavior
 
     public function it_updates_attributes_mapping($api): void
     {
-        $api->setToken(Argument::type('string'))->shouldBeCalled();
         $familyCode = 'foobar';
-        $attributesMapping = [];
+        $attributesMapping = new DomainAttributesMapping($familyCode);
 
-        $api->save($familyCode, Argument::any())->shouldBeCalled();
+        $api->setToken('valid-token')->shouldBeCalled();
+        $api->save($familyCode, Argument::type('array'))->shouldBeCalled();
 
         $this->saveAttributesMapping($familyCode, $attributesMapping);
     }

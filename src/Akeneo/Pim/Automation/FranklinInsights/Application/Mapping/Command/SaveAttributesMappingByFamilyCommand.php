@@ -107,6 +107,10 @@ class SaveAttributesMappingByFamilyCommand
      */
     private function validatePimAttributesAreNotUsedTwiceInTheSameMapping(array $mapping): void
     {
+        $mapping = array_filter($mapping, function ($value) {
+            return null !== $value['attribute'];
+        });
+
         if (count($mapping) !== count(array_unique($mapping, SORT_REGULAR))) {
             throw AttributeMappingException::duplicatedPimAttribute();
         }

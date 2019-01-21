@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping as DomainAttributeMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface;
-use Doctrine\Common\Collections\ArrayCollection;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -32,113 +31,104 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(AttributesMappingNormalizer::class);
     }
 
-    public function it_normalizes_attributes_mapping_that_does_not_contain_attribute(
-        DomainAttributeMapping $attributeMapping
-    ): void {
-        $attributeMapping->getTargetAttributeCode()->willReturn('target_attr');
-        $attributeMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_UNMAPPED);
-        $attributeMapping->getAttribute()->willReturn(null);
+    public function it_normalizes_attributes_mapping_that_does_not_contain_attribute(): void
+    {
+        $attributesMapping = new AttributesMapping('router');
+        $attributesMapping->map('label', 'text', null);
 
         $expectedData = [
-            'from' => ['id' => 'target_attr'],
+            'from' => ['id' => 'label'],
             'to' => null,
-            'status' => AttributeMapping::STATUS_INACTIVE,
+            'status' => AttributeMapping::STATUS_PENDING,
         ];
 
-        $this->normalize([$attributeMapping])->shouldReturn([$expectedData]);
+        $this->normalize($attributesMapping)->shouldReturn([$expectedData]);
     }
 
-    public function it_normalizes_attributes_mapping_that_contains_attribute(
-        DomainAttributeMapping $colorMapping,
-        DomainAttributeMapping $sizeMapping,
-        DomainAttributeMapping $heightMapping,
-        AttributeTranslationInterface $enTranslation,
-        AttributeTranslationInterface $frTranslation,
-        ArrayCollection $colorTranslations,
-        ArrayCollection $sizeTranslations,
-        ArrayCollection $heightTranslations,
-        AttributeInterface $attributeColor,
-        AttributeInterface $attributeSize,
-        AttributeInterface $attributeHeight,
-        \ArrayIterator $translationsIterator
-    ): void {
-        $colorMapping->getTargetAttributeCode()->willReturn('color_target');
-        $colorMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_PENDING);
-        $colorMapping->getAttribute()->willReturn($attributeColor);
+    public function it_normalizes_attribute_mapping_mapped_to_attribute(): void
+    {
+        $attrColor = new Attribute();
+        $attrColor->setCode('pim_color');
+        $attrColor->setLocalizable(false);
+        $attrColor->setScopable(false);
+        $attrColor->setType(AttributeTypes::OPTION_SIMPLE_SELECT);
 
-        $sizeMapping->getTargetAttributeCode()->willReturn('size_target');
-        $sizeMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_MAPPED);
-        $sizeMapping->getAttribute()->willReturn($attributeSize);
-
-        $heightMapping->getTargetAttributeCode()->willReturn('height_target');
-        $heightMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_UNMAPPED);
-        $heightMapping->getAttribute()->willReturn($attributeHeight);
-
-        $attributeColor->getCode()->willReturn('color');
-        $attributeColor->getTranslations()->willReturn($colorTranslations);
-        $attributeColor->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
-
-        $attributeSize->getCode()->willReturn('size');
-        $attributeSize->getTranslations()->willReturn($sizeTranslations);
-        $attributeSize->getType()->willReturn(AttributeTypes::METRIC);
-        $attributeSize->getDefaultMetricUnit()->willReturn('CENTIMETER');
-
-        $attributeHeight->getCode()->willReturn('height');
-        $attributeHeight->getTranslations()->willReturn($heightTranslations);
-        $attributeHeight->getType()->willReturn(AttributeTypes::METRIC);
-        $attributeHeight->getDefaultMetricUnit()->willReturn('CENTIMETER');
-
-        $sizeTranslations->isEmpty()->willReturn(true);
-        $colorTranslations->isEmpty()->willReturn(false);
-        $heightTranslations->isEmpty()->willReturn(true);
-
-        $colorTranslations->getIterator()->willReturn($translationsIterator);
-        $translationsIterator->valid()->willReturn(true, true, false);
-        $translationsIterator->current()->willReturn($frTranslation, $enTranslation);
-        $translationsIterator->next()->shouldBeCalled();
-        $translationsIterator->rewind()->shouldBeCalled();
-
-        $frTranslation->getLocale()->willReturn('fr_FR');
-        $frTranslation->getLabel()->willReturn('Couleur');
-
-        $enTranslation->getLocale()->willReturn('en_US');
-        $enTranslation->getLabel()->willReturn('Color');
+        $attributesMapping = new AttributesMapping('router');
+        $attributesMapping->map('color', 'select', $attrColor);
 
         $expectedData = [
-            [
-                'from' => ['id' => 'color_target'],
-                'to' => [
-                    'id' => 'color',
-                    'label' => [
-                        'fr_FR' => 'Couleur',
-                        'en_US' => 'Color',
-                    ],
-                    'type' => 'multiselect',
-                ],
-                'status' => AttributeMapping::STATUS_INACTIVE,
+            'from' => ['id' => 'color'],
+            'to' => [
+                'id' => 'pim_color',
+                'label' => [],
+                'type' => 'select',
             ],
-            [
-                'from' => ['id' => 'size_target'],
-                'to' => [
-                    'id' => 'size',
-                    'label' => [],
-                    'type' => 'metric',
-                    'unit' => 'CENTIMETER',
-                ],
-                'status' => AttributeMapping::STATUS_ACTIVE,
-            ],
-            [
-                'from' => ['id' => 'height_target'],
-                'to' => [
-                    'id' => 'height',
-                    'label' => [],
-                    'type' => 'metric',
-                    'unit' => 'CENTIMETER',
-                ],
-                'status' => AttributeMapping::STATUS_INACTIVE,
-            ],
+            'status' => AttributeMapping::STATUS_ACTIVE,
         ];
 
-        $this->normalize([$colorMapping, $sizeMapping, $heightMapping])->shouldReturn($expectedData);
+        $this->normalize($attributesMapping)->shouldReturn([$expectedData]);
+    }
+
+    public function it_normalizes_metric_attributes_with_its_unit(): void
+    {
+        $attrWeight = new Attribute();
+        $attrWeight->setCode('pim_weight');
+        $attrWeight->setLocalizable(false);
+        $attrWeight->setScopable(false);
+        $attrWeight->setType(AttributeTypes::METRIC);
+        $attrWeight->setDefaultMetricUnit('KILOGRAM');
+
+        $attributesMapping = new AttributesMapping('router');
+        $attributesMapping->map('weight', 'metric', $attrWeight);
+
+        $expectedData = [
+            'from' => ['id' => 'weight'],
+            'to' => [
+                'id' => 'pim_weight',
+                'label' => [],
+                'type' => 'metric',
+                'unit' => 'KILOGRAM',
+            ],
+            'status' => AttributeMapping::STATUS_ACTIVE,
+        ];
+
+        $this->normalize($attributesMapping)->shouldReturn([$expectedData]);
+    }
+
+    public function it_normalizes_attribute_translations(): void
+    {
+        $attrName = new Attribute();
+        $attrName->setCode('pim_name');
+        $attrName->setLocalizable(false);
+        $attrName->setScopable(false);
+        $attrName->setType(AttributeTypes::TEXT);
+
+        $attrNameEn = new AttributeTranslation();
+        $attrNameEn->setLocale('en_US');
+        $attrNameEn->setLabel('Name');
+        $attrName->addTranslation($attrNameEn);
+
+        $attrNameFr = new AttributeTranslation();
+        $attrNameFr->setLocale('fr_FR');
+        $attrNameFr->setLabel('Nom');
+        $attrName->addTranslation($attrNameFr);
+
+        $attributesMapping = new AttributesMapping('router');
+        $attributesMapping->map('name', 'text', $attrName);
+
+        $expectedData = [
+            'from' => ['id' => 'name'],
+            'to' => [
+                'id' => 'pim_name',
+                'label' => [
+                    'en_US' => 'Name',
+                    'fr_FR' => 'Nom',
+                ],
+                'type' => 'text',
+            ],
+            'status' => AttributeMapping::STATUS_ACTIVE,
+        ];
+
+        $this->normalize($attributesMapping)->shouldReturn([$expectedData]);
     }
 }

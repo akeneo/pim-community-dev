@@ -109,6 +109,14 @@ class AttributeMapping
     }
 
     /**
+     * @return AttributeInterface|null
+     */
+    public function getAttribute(): ?AttributeInterface
+    {
+        return $this->attribute;
+    }
+
+    /**
      * Mapped attribute should:
      * - not be localizable, scopable nor locale specific
      * - be one of the authorized attribute types.
