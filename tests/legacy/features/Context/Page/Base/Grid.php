@@ -676,7 +676,7 @@ class Grid extends Index
             // isVisible is not totally reliable, which mean that
             // we think we clicked on the filter button but we didn't (DOM not loaded)
             // sleep is a working dirty hack
-             sleep(1);
+            sleep(1);
 
             if (null === $filterItem || !$filterItem->isVisible()) {
                 $this->clickOnFilterToManage($filterName);
