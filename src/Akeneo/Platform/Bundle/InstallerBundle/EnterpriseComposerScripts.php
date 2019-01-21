@@ -20,7 +20,7 @@ use Symfony\Component\Finder\Finder;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class ComposerScripts extends BaseComposerScripts
+class EnterpriseComposerScripts extends BaseComposerScripts
 {
     /**
      * Copy the upgrades/ folder from PIM dependency to the standard edition
