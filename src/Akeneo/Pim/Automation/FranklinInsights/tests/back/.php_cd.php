@@ -89,6 +89,9 @@ $rules = [
 
             // TODO remove all links by reference
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+
+            //Used to get all option translations to send to Franklin
+            'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider'),
 

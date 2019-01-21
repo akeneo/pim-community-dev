@@ -17,3 +17,8 @@ services:
 
     akeneo.pim.automation.franklin_insights.normalizer.product_subscription_status:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\ProductSubscriptionStatusNormalizer'
+
+    akeneo.pim.automation.franklin_insights.normalizer.attribute_options:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer'
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
