@@ -231,7 +231,6 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      */
     public function selectIsEmptyOrNotEmptyOnAnAttribute(): void
     {
-        sleep(5);
         $result = $this->executeFilter([
             ['brand', Operators::IS_EMPTY, '']
         ]);
@@ -317,6 +316,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
                 'description' => [['data' => 'quantum mechanics', 'locale' => null, 'scope' => null]],
             ],
         ]);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     /**
@@ -394,8 +394,6 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
                 ],
             ],
         ]);
-
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
     }
 
     /**

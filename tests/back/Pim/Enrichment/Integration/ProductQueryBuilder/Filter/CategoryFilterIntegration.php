@@ -215,6 +215,8 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
             'values'     => ['color' => [['data' => 'blue', 'locale' => null, 'scope' => null]]],
         ]);
         $this->createProduct('unclassified-product', []);
+
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     /**
@@ -285,8 +287,6 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
                 ],
             ],
         ]);
-
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
     }
 
     /**
