@@ -106,9 +106,10 @@ class SetAction
 
     private function isUserAllowedToEdit(string $referenceEntityIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery();
-        $query->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $query = new CanEditReferenceEntityQuery(
+            $referenceEntityIdentifier,
+            $this->tokenStorage->getToken()->getUser()->getUsername()
+        );
         $isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($query);
 
         return $this->securityFacade->isGranted('akeneo_referenceentity_reference_entity_manage_permission') && $isAllowedToEdit;

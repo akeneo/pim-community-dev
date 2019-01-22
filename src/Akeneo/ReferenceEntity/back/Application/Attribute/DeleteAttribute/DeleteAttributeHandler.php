@@ -47,7 +47,7 @@ class DeleteAttributeHandler
 
     public function __invoke(DeleteAttributeCommand $deleteAttributeCommand): void
     {
-        $attributeIdentifier = AttributeIdentifier::fromString($deleteAttributeCommand->attributeIdentifier);
+        $attributeIdentifier = AttributeIdentifier::fromString($deleteAttributeCommand->getAttributeIdentifier());
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
 
         $labelReference = $this->findAttributeAsLabel($attribute->getReferenceEntityIdentifier());

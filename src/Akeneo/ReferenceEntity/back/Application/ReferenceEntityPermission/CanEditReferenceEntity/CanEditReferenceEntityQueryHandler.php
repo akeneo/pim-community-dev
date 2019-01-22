@@ -37,10 +37,10 @@ class CanEditReferenceEntityQueryHandler
     public function __invoke(CanEditReferenceEntityQuery $query): bool
     {
         $referenceEntityPermission = $this->referenceEntityPermissionRepository->getByReferenceEntityIdentifier(
-            ReferenceEntityIdentifier::fromString($query->referenceEntityIdentifier)
+            ReferenceEntityIdentifier::fromString($query->getReferenceEntityIdentifier())
         );
         $userGroupIdentifiers = ($this->findUserGroupsForSecurityIdentifier)(
-            SecurityIdentifier::fromString($query->securityIdentifier)
+            SecurityIdentifier::fromString($query->getSecurityIdentifier())
         );
 
         return $referenceEntityPermission->isAllowedToEdit($userGroupIdentifiers);

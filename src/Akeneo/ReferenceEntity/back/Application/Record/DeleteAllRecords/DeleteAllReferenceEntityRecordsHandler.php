@@ -33,7 +33,7 @@ class DeleteAllReferenceEntityRecordsHandler
 
     public function __invoke(DeleteAllReferenceEntityRecordsCommand $deleteAllRecordsCommand): void
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($deleteAllRecordsCommand->referenceEntityIdentifier);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($deleteAllRecordsCommand->getReferenceEntityIdentifier());
 
         $this->recordRepository->deleteByReferenceEntity($referenceEntityIdentifier);
     }

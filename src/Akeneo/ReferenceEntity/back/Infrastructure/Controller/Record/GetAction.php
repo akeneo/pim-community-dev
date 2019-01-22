@@ -101,9 +101,10 @@ class GetAction
 
     private function hydratePermissions(RecordDetails $recordDetails): RecordDetails
     {
-        $canEditQuery = new CanEditReferenceEntityQuery();
-        $canEditQuery->referenceEntityIdentifier = (string) $recordDetails->referenceEntityIdentifier;
-        $canEditQuery->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $canEditQuery = new CanEditReferenceEntityQuery(
+            (string) $recordDetails->referenceEntityIdentifier,
+            $this->tokenStorage->getToken()->getUser()->getUsername()
+        );
         $recordDetails->isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($canEditQuery);
 
         return $recordDetails;

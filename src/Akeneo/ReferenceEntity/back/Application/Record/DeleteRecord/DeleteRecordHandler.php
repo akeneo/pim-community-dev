@@ -32,8 +32,8 @@ class DeleteRecordHandler
 
     public function __invoke(DeleteRecordCommand $deleteRecordCommand): void
     {
-        $recordCode = RecordCode::fromString($deleteRecordCommand->recordCode);
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($deleteRecordCommand->referenceEntityIdentifier);
+        $recordCode = RecordCode::fromString($deleteRecordCommand->getRecordCode());
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($deleteRecordCommand->getReferenceEntityIdentifier());
 
         $this->recordRepository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
     }
