@@ -160,7 +160,7 @@ Feature: Lists all attributes related to a reference entity
     Then the code of the option "Blue" should be "blue"
 
   @acceptance-front
-  Scenario: Cannot update the label of an option to the list of available options of an option attribute without the locale permission
+  Scenario: Cannot update the label of an option without the locale permission
     Given a valid reference entity
     And the user has the following rights:
       | akeneo_referenceentity_attribute_edit | true |
@@ -171,7 +171,7 @@ Feature: Lists all attributes related to a reference entity
     Then the label of the "red" option should be locked
 
   @acceptance-front
-  Scenario: Cannot add the label of a new option to the list of available options of an option attribute without the locale permission
+  Scenario: Cannot add the label of a new option without the locale permission
     Given a valid reference entity
     And the user has the following rights:
       | akeneo_referenceentity_attribute_edit | true |
