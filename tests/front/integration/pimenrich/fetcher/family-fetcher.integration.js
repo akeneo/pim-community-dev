@@ -44,6 +44,6 @@ describe('Pimenrich > fetcher > family', () => {
         .fetchAvailableAxes('camcorder');
     });
 
-    expect(axis).toEqual([attribute]);
+    expect(axis).toEqual([]);
   });
 });
