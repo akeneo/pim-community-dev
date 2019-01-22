@@ -86,6 +86,7 @@ final class EnrichmentFollowUpContext implements Context
      */
     public function theProductManagerAskForTheCompletenessOfTheCatalog(): void
     {
+        throw new \Exception('foo');
         $this->completenessResults = (new CompletenessWidget($this->channelCompletenesses))->toArray();
     }
 
