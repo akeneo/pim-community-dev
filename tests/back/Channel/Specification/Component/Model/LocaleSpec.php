@@ -18,6 +18,7 @@ class LocaleSpec extends ObjectBehavior
         $this->addChannel($ecommerce)->shouldReturn($this);
         $this->addChannel($mobile)->shouldReturn($this);
         $this->hasChannel($ecommerce)->shouldReturn(true);
+        $this->hasChannel($ecommerce)->shouldReturn(false);
         $this->hasChannel($mobile)->shouldReturn(true);
     }
 
