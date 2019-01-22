@@ -12,7 +12,7 @@ services:
       - 'behat'
 
   node:
-    image: 'juliensnz/node'
+    image: 'akeneo/node:10'
     user: 'node'
     volumes:
       - './:/srv/pim'
@@ -93,7 +93,10 @@ services:
       SIMPLESAMLPHP_SP_ENTITY_ID: '${AKENEO_PIM_URL}/saml/metadata'
       SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE: '${AKENEO_PIM_URL}/saml/acs'
       SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE: '${AKENEO_PIM_URL}/saml/logout'
+    networks:
+      - 'sso'
 
 networks:
   akeneo:
   behat:
+  sso:

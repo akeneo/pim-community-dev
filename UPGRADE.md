@@ -314,7 +314,32 @@ TODO: change the link!!
 
     * The key `pim_enrich.max_products_category_removal` has been removed. Please use the container parameter `max_products_category_removal` instead if needed.
 
-4. Update your **app/config/routing.yml**
+4. Update your **app/config/config_prod.yml**
+
+    An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
+
+    ```bash
+    cp app/config/config_prod.yml $PIM_DIR/app/config
+    # then add your own changes
+    ```
+
+    Or you can update the file with the following changes:
+    
+    * We added a `authentication logger` with log rotate behavior. Thoses logs are useful for SSO purpose.
+
+        ```
+        monolog:
+            handlers:
+                #...
+                authentication:
+                    type: rotating_file
+                    path: '%kernel.logs_dir%/authentication.log'
+                    channels: ['security', 'request']
+                    level: error
+                    max_files: 10
+        ```
+        
+5. Update your **app/config/routing.yml**
 
     An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
 
@@ -482,7 +507,7 @@ TODO: change the link!!
 
         ```
 
-5. Update your **app/config/security.yml**:
+6. Update your **app/config/security.yml**:
 
     An easy way to update it is to copy/paste from the latest standard edition and add your own custom security configuration.
 
@@ -541,7 +566,7 @@ TODO: change the link!!
     
     ```
     
-5. Update your **app/AppKernel.php**:
+7. Update your **app/AppKernel.php**:
 
     An easy way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
 
@@ -618,7 +643,7 @@ TODO: change the link!!
         - `Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle`
         - `Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle`
 
-6. Add the DotEnv component in all entrypoints of the application
+8. Add the DotEnv component in all entrypoints of the application
 
     We introduced the DotEnv component as there are more and more deployments that use environment variables for configuration values.
     The DotEnv Symfony component provides a way to set those environment variables in a file that could be overridden by real environment variables.
@@ -660,7 +685,7 @@ TODO: change the link!!
  
     ```
 
-7. Update your dependencies:
+9. Update your dependencies:
 
     The easiest way to update your `composer.json` is to copy/paste from the latest standard edition and add your custom dependencies.
     
@@ -693,14 +718,14 @@ TODO: change the link!!
     yarn install
     ```
 
-8. Migrate your database: 
+10. Migrate your database: 
 
     ```bash
     rm -rf var/cache
     bin/console doctrine:migration:migrate --env=prod
     ```
 
-9. Then re-generate the PIM assets:
+11. Then re-generate the PIM assets:
 
     ```bash
     bin/console pim:installer:assets --clean --env=prod
