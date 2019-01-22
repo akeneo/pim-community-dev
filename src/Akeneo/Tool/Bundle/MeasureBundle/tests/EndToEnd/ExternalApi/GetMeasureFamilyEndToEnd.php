@@ -9,6 +9,7 @@ class GetMeasureFamilyEndToEnd extends ApiTestCase
 {
     public function testGetAMeasureFamily()
     {
+        $this->assertTrue(false);
         $standardMeasureFamily = <<<JSON
 {
   "code": "Area",
