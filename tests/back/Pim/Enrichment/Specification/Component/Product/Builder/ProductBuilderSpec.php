@@ -67,7 +67,7 @@ class ProductBuilderSpec extends ObjectBehavior
             'mysku'
         );
 
-        $familyRepository->findOneByIdentifier("tshirt")->willReturn($tshirtFamily);
+        $familyRepository->findOneByIdentifier('tshirt')->willReturn($tshirtFamily);
         $tshirtFamily->getId()->shouldBeCalled();
         $tshirtFamily->getAttributes()->willReturn([]);
 

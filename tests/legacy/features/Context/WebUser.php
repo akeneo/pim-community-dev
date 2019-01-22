@@ -2121,6 +2121,11 @@ class WebUser extends PimContext
 
         $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
 
+        $esClients = $this->getMainContext()->getContainer()->get('akeneo_elasticsearch.registry.clients')->getClients();
+        foreach ($esClients as $esClient) {
+            $esClient->refreshIndex();
+        }
+
         return [
             new Step\Then(sprintf('I go on the last executed job resume of "%s"', $code))
         ];

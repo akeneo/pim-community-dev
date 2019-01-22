@@ -96,7 +96,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCatalogTestCase
+abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
 {
     /**
      * {@inheritdoc}

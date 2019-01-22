@@ -146,6 +146,7 @@ class BatchCommandIntegration extends TestCase
      */
     protected function launchJob(array $arrayInput = [])
     {
+        $this->resetShellVerbosity();
         $application = new Application(static::$kernel);
         $application->setAutoExit(false);
 
@@ -208,5 +209,21 @@ class BatchCommandIntegration extends TestCase
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    /**
+     * When running an application command, an environment variable is set with the verbosity level.
+     * This environment variable is not reset when running another application command.
+     *
+     * With process isolation of phpunit deactivated, a test running an application command
+     * impacts the next test, which will be executed in verbose mode also due to this stateful environment variable.
+     *
+     * This function resets the state.
+     */
+    private function resetShellVerbosity()
+    {
+        putenv('SHELL_VERBOSITY=0');
+        $_ENV['SHELL_VERBOSITY'] = 0;
+        $_SERVER['SHELL_VERBOSITY'] = 0;
     }
 }

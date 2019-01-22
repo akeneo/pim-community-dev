@@ -34,9 +34,6 @@ abstract class TestCase extends KernelTestCase
     protected function setUp()
     {
         static::bootKernel(['debug' => false]);
-        $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
-        $authenticator->createSystemUser();
-
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
 
@@ -45,8 +42,13 @@ abstract class TestCase extends KernelTestCase
             $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
             $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
             $fixturesLoader->load();
-            $this->get('doctrine.orm.default_entity_manager')->clear();
         }
+
+        // authentication should be done after loading the database as the user is created with first activated locale as default locale
+        $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
+        $authenticator->createSystemUser();
+        $this->get('doctrine.orm.default_entity_manager')->clear();
+
     }
 
     /**
