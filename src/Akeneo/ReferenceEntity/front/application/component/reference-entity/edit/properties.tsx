@@ -19,7 +19,7 @@ import File from 'akeneoreferenceentity/domain/model/file';
 const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
+import {canEditLocale, canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
 
 interface StateProps {
   form: EditionFormState;
@@ -27,6 +27,9 @@ interface StateProps {
     locale: string;
   };
   rights: {
+    locale: {
+      edit: boolean;
+    };
     referenceEntity: {
       edit: boolean;
       delete: boolean;
@@ -136,12 +139,17 @@ class Properties extends React.Component<StateProps & DispatchProps> {
 
 export default connect(
   (state: EditState): StateProps => {
+    const locale = state.user.catalogLocale;
+
     return {
       form: state.form,
       context: {
-        locale: state.user.catalogLocale,
+        locale: locale,
       },
       rights: {
+        locale: {
+          edit: canEditLocale(state.right.locale, locale),
+        },
         referenceEntity: {
           edit:
             securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') &&

@@ -20,7 +20,7 @@ import {getAttributeIcon} from 'akeneoreferenceentity/application/configuration/
 import Key from 'akeneoreferenceentity/tools/key';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 import {EditOptionState} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
-import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
+import {canEditLocale, canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
 
 const securityContext = require('pim/security-context');
 
@@ -29,6 +29,9 @@ interface StateProps {
     locale: string;
   };
   rights: {
+    locale: {
+      edit: boolean;
+    };
     attribute: {
       create: boolean;
       edit: boolean;
@@ -119,6 +122,9 @@ interface AttributeViewProps {
   onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
   locale: string;
   rights: {
+    locale: {
+      edit: boolean;
+    };
     attribute: {
       create: boolean;
       edit: boolean;
@@ -277,11 +283,16 @@ class AttributesView extends React.Component<CreateProps> {
 
 export default connect(
   (state: EditState): StateProps => {
+    const locale = state.user.catalogLocale;
+
     return {
       context: {
-        locale: state.user.catalogLocale,
+        locale: locale,
       },
       rights: {
+        locale: {
+          edit: canEditLocale(state.right.locale, locale),
+        },
         attribute: {
           create:
             securityContext.isGranted('akeneo_referenceentity_attribute_create') &&

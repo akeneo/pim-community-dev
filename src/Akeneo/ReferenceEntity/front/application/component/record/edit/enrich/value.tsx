@@ -19,6 +19,9 @@ export default (
   onValueChange: (value: Value) => void,
   onFieldSubmit: () => void,
   rights: {
+    locale: {
+      edit: boolean;
+    };
     record: {
       edit: boolean;
       delete: boolean;
@@ -33,6 +36,7 @@ export default (
   return visibleValues.map((value: Value) => {
     const DataView = getDataFieldView(value);
 
+    const canEditData = value.attribute.valuePerLocale ? rights.record.edit && rights.locale.edit : rights.record.edit;
     return (
       <div
         key={value.attribute.getIdentifier().stringValue()}
@@ -54,11 +58,7 @@ export default (
           </label>
           <span className="AknFieldContainer-fieldInfo">
             <span>
-              <span>
-                {value.attribute.valuePerChannel ? (
-                  value.channel.stringValue()
-                ) : null}
-              </span>
+              <span>{value.attribute.valuePerChannel ? value.channel.stringValue() : null}</span>
               &nbsp;
               <span>
                 {value.attribute.valuePerLocale ? (
@@ -80,7 +80,7 @@ export default (
               onSubmit={onFieldSubmit}
               channel={channel}
               locale={locale}
-              rights={rights}
+              canEditData={canEditData}
             />
           </ErrorBoundary>
         </div>

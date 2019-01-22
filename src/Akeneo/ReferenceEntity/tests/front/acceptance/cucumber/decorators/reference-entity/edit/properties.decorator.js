@@ -31,6 +31,7 @@ const Properties = async (nodeElement, createElementDecorator, page) => {
   };
 
   const setLabel = async value => {
+    await page.waitForSelector('.AknTextField[name="label"]:not(.AknTextField--disabled)');
     const label = await nodeElement.$('.AknTextField[name="label"]');
     await page.evaluate(properties => {
       return (properties.querySelector('.AknTextField[name="label"]').value = '');

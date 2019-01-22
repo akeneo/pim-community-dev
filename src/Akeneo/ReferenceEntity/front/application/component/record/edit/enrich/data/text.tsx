@@ -9,17 +9,12 @@ const View = ({
   value,
   onChange,
   onSubmit,
-  rights,
+  canEditData,
 }: {
   value: Value;
   onChange: (value: Value) => void;
   onSubmit: () => void;
-  rights: {
-    record: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
+  canEditData: boolean;
 }) => {
   if (!(value.data instanceof TextData && value.attribute instanceof ConcreteTextAttribute)) {
     return null;
@@ -40,18 +35,18 @@ const View = ({
     <React.Fragment>
       {value.attribute.isTextarea.booleanValue() ? (
         value.attribute.isRichTextEditor.booleanValue() ? (
-          <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} readOnly={!rights.record.edit} />
+          <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} readOnly={!canEditData} />
         ) : (
           <textarea
             id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
             className={`AknTextareaField AknTextareaField--light
             ${value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''}
-            ${!rights.record.edit ? 'AknTextField--disabled' : ''}`}
+            ${!canEditData ? 'AknTextField--disabled' : ''}`}
             value={value.data.stringValue()}
             onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
               onValueChange(event.currentTarget.value);
             }}
-            readOnly={!rights.record.edit}
+            readOnly={!canEditData}
           />
         )
       ) : (
@@ -59,7 +54,7 @@ const View = ({
           id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
           className={`AknTextField AknTextField--narrow AknTextField--light
           ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}
-          ${!rights.record.edit ? 'AknTextField--disabled' : ''}`}
+          ${!canEditData ? 'AknTextField--disabled' : ''}`}
           value={value.data.stringValue()}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             onValueChange(event.currentTarget.value);
@@ -67,8 +62,8 @@ const View = ({
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
             if (Key.Enter === event.key) onSubmit();
           }}
-          disabled={!rights.record.edit}
-          readOnly={!rights.record.edit}
+          disabled={!canEditData}
+          readOnly={!canEditData}
         />
       )}
     </React.Fragment>
