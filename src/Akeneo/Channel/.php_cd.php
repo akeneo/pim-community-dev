@@ -13,7 +13,6 @@ $rules = [
         'Doctrine',
         'Symfony\Component',
         'Akeneo\Tool',
-        'Akeneo\Channel',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Twig_Environment',
 
