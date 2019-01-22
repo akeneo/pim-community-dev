@@ -24,6 +24,8 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+
+        $this->assertTrue(false);
     }
 
     public function testAccessGrantedForListingCategories()
