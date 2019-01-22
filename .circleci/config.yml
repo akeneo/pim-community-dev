@@ -238,11 +238,11 @@ workflows:
   nightly:
       triggers:
           - schedule:
-                cron: "0 5 * * *"
+                cron: "0 2 * * *"
                 filters:
                     branches:
                         only:
-                            - test-circle-pit
+                            - master
       jobs:
           - setup
           - back_static_and_acceptance:
