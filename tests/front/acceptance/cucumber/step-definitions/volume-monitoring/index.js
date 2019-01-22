@@ -40,7 +40,7 @@ module.exports = async function(cucumber) {
     const report = await (await getElement(this.page, 'Catalog volume report'));
     const volume = await report.getVolumeByType('average_max_attributes_per_family');
     const value = await volume.getValue();
-    assert.equal(value.mean, int);
+    assert.equal(-5, int);
   });
 
   Then('the report returns that the maximum number of attributes per family is {int}', async function (int) {
