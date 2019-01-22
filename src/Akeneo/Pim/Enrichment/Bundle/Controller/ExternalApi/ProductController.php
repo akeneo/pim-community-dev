@@ -207,6 +207,7 @@ class ProductController
      */
     public function listAction(Request $request): JsonResponse
     {
+        $this->newVariable = 'toto';
         try {
             $this->parameterValidator->validate($request->query->all(), ['support_search_after' => true]);
         } catch (PaginationParametersException $e) {
