@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  setup:
     machine:
       enabled: true
       docker_layer_caching: true
@@ -63,7 +63,7 @@ jobs:
           paths:
             - project
 
-  test_static_back:
+  back_static_and_acceptance:
       machine:
           enabled: true
           docker_layer_caching: true
@@ -75,58 +75,31 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: Start containers
-                command:
-                    docker-compose up -d fpm
+                command: docker-compose up -d fpm
           - run:
                 name: PhpSpec
-                command:
-                    docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+                command: docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
           - run:
                 name: PhpCsFixer
                 command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
           - run:
                 name: PhpCoupling Detector
-                command: |
-                    set -e
-                    docker-compose exec -T fpm vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src
-                    docker-compose exec -T fpm vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Structure/.php_cd.php src/Akeneo/Pim/Structure
-                    docker-compose exec -T fpm vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
-                    docker-compose exec -T fpm vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Channel/.php_cd.php src/Akeneo/Channel
+                command: DOCKER=true make coupling
           - run:
                 name: PHPStan
                 command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
           - run:
                 name: Check Pullup
                 command: docker-compose exec -T fpm bin/check-pullup
-          - store_test_results:
-                path: var/tests
-          - store_artifacts:
-                path: var/tests
-
-  test_acceptance_back:
-      machine:
-          enabled: true
-          docker_layer_caching: true
-      steps:
-          - attach_workspace:
-                at: ~/
-          - run:
-              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
-              command: sudo chown -R 1000:1000 ../project
-          - run:
-                name: Start containers
-                command: |
-                    docker-compose up -d fpm
           - run:
                 name: Acceptance back
-                command:
-                    docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
+                command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
           - store_test_results:
-                path: var/tests/behat
+                path: var/tests
           - store_artifacts:
-                path: var/tests/behat
+                path: var/tests
 
-  test_phpunit_integration:
+  back_phpunit_integration:
       machine:
           enabled: true
           docker_layer_caching: true
@@ -155,7 +128,7 @@ jobs:
           - store_artifacts:
                 path: var/tests/phpunit
 
-  test_phpunit_end_to_end:
+  back_phpunit_end_to_end:
       machine:
           enabled: true
           docker_layer_caching: true
@@ -184,7 +157,7 @@ jobs:
           - store_artifacts:
                 path: var/tests/phpunit
 
-  test_legacy_behat:
+  back_behat_legacy:
     machine:
       enabled: true
       docker_layer_caching: true
@@ -213,7 +186,7 @@ jobs:
       - store_artifacts:
           path: var/tests/behat
 
-  test_static_front:
+  front_static_acceptance_and_integration:
       machine:
           enabled: true
           docker_layer_caching: true
@@ -224,16 +197,17 @@ jobs:
             name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
             command: sudo chown -R 1000:1000 ../project
         - run:
-            name: Yarn Lint
+            name: Front linter
             command: docker-compose run --rm node yarn run lint
         - run:
-            name: Yarn Unit
+            name: Front unit tests
             command: docker-compose run --rm node yarn run unit
         - run:
             name: Front acceptance tests
-            command: |
-              docker-compose run --rm node yarn run webpack-test
-              MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+            command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+        - run:
+            name: Front integration tests
+            command: docker-compose run --rm node yarn run integration
 
 workflows:
   version: 2
@@ -241,29 +215,25 @@ workflows:
       jobs:
           - wait_for_user_approval:
                 type: approval
-          - build:
+          - setup:
                 requires:
                     - wait_for_user_approval
-          - test_static_back:
+          - back_static_and_acceptance:
                 requires:
-                    - build
-          - test_static_front:
+                    - setup
+          - front_static_acceptance_and_integration:
                 requires:
-                    - build
-          - test_acceptance_back:
+                    - setup
+          - back_phpunit_integration:
                 requires:
-                    - build
-          - test_phpunit_integration:
+                    - back_static_and_acceptance
+                    - front_static_acceptance_and_integration
+          - back_phpunit_end_to_end:
                 requires:
-                    - test_static_back
-                    - test_static_front
-                    - test_acceptance_back
-          - test_phpunit_end_to_end:
+                    - back_phpunit_integration
+          - back_behat_legacy:
                 requires:
-                    - test_phpunit_integration
-          - test_legacy_behat:
-                requires:
-                    - test_phpunit_end_to_end
+                    - back_phpunit_end_to_end
 
   nightly:
       triggers:
@@ -274,24 +244,20 @@ workflows:
                         only:
                             - test-circle-pit
       jobs:
-          - build
-          - test_static_back:
+          - setup
+          - back_static_and_acceptance:
                 requires:
-                    - build
-          - test_static_front:
+                    - setup
+          - front_static_acceptance_and_integration:
                 requires:
-                    - build
-          - test_acceptance_back:
+                    - setup
+          - back_phpunit_integration:
                 requires:
-                    - build
-          - test_phpunit_integration:
+                    - back_static_and_acceptance
+                    - front_static_acceptance_and_integration
+          - back_phpunit_end_to_end:
                 requires:
-                    - test_static_back
-                    - test_static_front
-                    - test_acceptance_back
-          - test_phpunit_end_to_end:
+                    - back_phpunit_integration
+          - back_behat_legacy:
                 requires:
-                    - test_phpunit_integration
-          - test_legacy_behat:
-                requires:
-                    - test_phpunit_end_to_end
+                    - back_phpunit_end_to_end
