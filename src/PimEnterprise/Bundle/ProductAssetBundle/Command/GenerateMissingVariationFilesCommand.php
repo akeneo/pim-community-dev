@@ -53,24 +53,23 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $asset = null;
         try {
-            $asset = null;
-            if (null !== $assetCode = $input->getOption('asset')) {
-                $asset = $this->retrieveAsset($assetCode);
-
-                $this->buildAsset($asset);
-                $this->getAssetSaver()->save($asset);
-            } else {
+            $isGenerateForAllAssets = $this->isGenerateForAllAssets($input);
+            if ($isGenerateForAllAssets) {
                 $assetsCodes = $this->getAllAssetsCodes();
                 $chunks = array_chunk($assetsCodes, static::BATCH_SIZE);
-                $i = 0;
                 foreach ($chunks as $assetCodes) {
-                    $i++;
-                    $assets = $this->buildAssets($assetCodes, $output);
+                    $assets = $this->buildAssets($assetCodes);
 
                     $this->getAssetSaver()->saveAll($assets);
                     $this->detachAll($assets);
                 }
+            } else {
+                $assetCode = $input->getArgument('asset');
+                $asset = $this->retrieveAsset($assetCode);
+                $this->buildAsset($asset);
+                $this->getAssetSaver()->save($asset);
             }
 
             $missingVariations = $this->getAssetFinder()->retrieveVariationsNotGenerated($asset);
@@ -140,6 +139,16 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     }
 
     /**
+     * @param InputInterface $input
+     *
+     * @return bool
+     */
+    private function isGenerateForAllAssets(InputInterface $input): bool
+    {
+        return null === $input->getOption('asset');
+    }
+
+    /**
      * @return VariationsCollectionFilesGeneratorInterface
      */
     protected function getVariationsCollectionFileGenerator()
@@ -171,13 +180,10 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      *
      * @return array|ArrayCollection
      */
-    protected function buildAssets($assetCodes, $output)
+    protected function buildAssets($assetCodes)
     {
         $assets = $this->fetchAssetsByCode($assetCodes);
         foreach ($assets as $asset) {
-
-            //$msg = sprintf("<info>Asset %s ...</info>", $asset->getCode());
-            //$output->writeln($msg);
             $this->buildAsset($asset);
         }
 
