@@ -4,6 +4,7 @@
 
 - PIM-7967: Fix ACL for asset categories
 - PIM-7969: fix special chars in PDF export
+- Force the use of ip-regex at 2.1.0 version. Upper version needs nodejs >= 8 but we have to support nodejs >= 6.
 
 # 2.3.25 (2019-01-17)
 
