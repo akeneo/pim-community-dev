@@ -289,6 +289,7 @@ define(
             setSortable: function() {
                 this.$el.sortable({
                     items: 'tbody tr',
+                    handle: '.handle',
                     axis: 'y',
                     connectWith: this.$el,
                     containment: this.$el,
