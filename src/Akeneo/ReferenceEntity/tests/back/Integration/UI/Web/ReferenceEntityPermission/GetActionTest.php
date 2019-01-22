@@ -12,8 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    private const RESPONSES_DIR = 'ReferenceEntityPermission/';
-
     /** @var Client */
     private $client;
 
@@ -35,7 +33,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     public function it_shows_the_list_of_permissions_for_an_enriched_entity()
     {
         $this->loadFixtures();
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'show.json');
+        $this->webClientHelper->assertRequest($this->client, 'ReferenceEntityPermission/show.json');
     }
 
     /**
@@ -43,7 +41,7 @@ class GetActionTest extends ControllerIntegrationTestCase
      */
     public function it_shows_an_empty_list_of_permissions()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'show_empty.json');
+        $this->webClientHelper->assertRequest($this->client, 'ReferenceEntityPermission/show_empty.json');
     }
 
     private function loadFixtures(): void

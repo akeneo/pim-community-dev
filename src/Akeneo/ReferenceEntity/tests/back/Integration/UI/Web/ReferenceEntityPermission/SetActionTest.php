@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SetActionTest extends ControllerIntegrationTestCase
 {
-    private const RESPONSES_DIR = 'ReferenceEntityPermission/';
     private const SET_REFERENCE_ENTITY_PERMISSION_ROUTE = 'akeneo_reference_entities_reference_entity_permission_set_rest';
 
     /** @var Client */
@@ -39,7 +38,7 @@ class SetActionTest extends ControllerIntegrationTestCase
      */
     public function it_sets_user_group_permission_on_a_reference_entity()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'edit.json');
+        $this->webClientHelper->assertRequest($this->client, 'ReferenceEntityPermission/edit.json');
     }
 
     /**
@@ -47,7 +46,7 @@ class SetActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_none_of_the_user_groups_have_edit_permission_on_the_reference_entity()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'no_edit_permission.json');
+        $this->webClientHelper->assertRequest($this->client, 'ReferenceEntityPermission/no_edit_permission.json');
     }
 
     /**

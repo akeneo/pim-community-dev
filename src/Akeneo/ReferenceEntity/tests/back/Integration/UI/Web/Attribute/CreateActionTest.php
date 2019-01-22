@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
 class CreateActionTest extends ControllerIntegrationTestCase
 {
     private const CREATE_ATTRIBUTE_ROUTE = 'akeneo_reference_entities_attribute_create_rest';
-    private const RESPONSES_DIR = 'Attribute/Create/';
 
     /** @var Client */
     private $client;
@@ -48,7 +47,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
      */
     public function it_creates_a_text_attribute(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'attribute_text_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/Create/attribute_text_ok.json');
     }
 
     /**
@@ -56,7 +55,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
      */
     public function it_creates_an_image_attribute(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'attribute_image_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/Create/attribute_image_ok.json');
     }
 
     /**
@@ -64,7 +63,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
      */
     public function it_creates_a_record_attribute(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'attribute_record_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/Create/attribute_record_ok.json');
     }
 
     /**
@@ -72,7 +71,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
      */
     public function it_creates_a_record_collection_attribute(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'attribute_record_collection_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/Create/attribute_record_collection_ok.json');
     }
 
     /**
@@ -80,7 +79,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
      */
     public function it_creates_an_option_attribute(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'attribute_option_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/Create/attribute_option_ok.json');
     }
 
     /**
@@ -88,7 +87,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
      */
     public function it_creates_an_option_collection_attribute(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'attribute_option_collection_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/Create/attribute_option_collection_ok.json');
     }
 
 
@@ -97,7 +96,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_the_code_is_invalid()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_code.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/Create/invalid_code.json');
     }
 
     /**

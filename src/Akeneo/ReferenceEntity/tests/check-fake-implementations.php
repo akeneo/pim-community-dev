@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-function writeln($text, $type = 'normal'): void {
+function writeln($text, $type = 'normal'): void
+{
     $RESET = "\e[0m";
     $BOLD_WHITE = "\033[1;38m";
     $GREEN = "\033[0;32m";
@@ -27,8 +28,9 @@ function writeln($text, $type = 'normal'): void {
     echo PHP_EOL;
 }
 
-function openFileFromRoot($fileName): string {
-    $ROOT = __DIR__.'/../../';
+function openFileFromRoot($fileName): string
+{
+    $ROOT = __DIR__.'/../../../../';
 
     return file_get_contents($ROOT . $fileName);
 }
@@ -69,7 +71,7 @@ echo "\n";
 
 foreach ($missings as $serviceName => $fileNames) {
     writeln(sprintf('%s', $serviceName), 'comment');
-    foreach($fileNames as $fileName) {
+    foreach ($fileNames as $fileName) {
         writeln(sprintf("- %s", $fileName));
     }
 

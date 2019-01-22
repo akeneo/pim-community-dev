@@ -44,8 +44,6 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    private const RESPONSES_DIR = 'Record/RecordDetails/';
-
     /** @var Client */
     private $client;
 
@@ -72,7 +70,7 @@ class GetActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_a_records_detail()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/RecordDetails/ok.json');
     }
 
     /**
@@ -80,7 +78,7 @@ class GetActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_404_not_found_when_the_record_identifier_does_not_exist()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'not_found.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/RecordDetails/not_found.json');
     }
 
     private function loadFixtures(): void

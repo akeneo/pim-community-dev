@@ -24,8 +24,6 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
-    private const RESPONSES_DIR = 'Attribute/ListDetails/';
-
     /** @var Client */
     private $client;
 
@@ -53,7 +51,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createFavoriteColorAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createColorsAttribute());
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok/designer.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/ListDetails/ok/designer.json');
     }
 
     /**
@@ -64,7 +62,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details');
         $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok/name_portrait.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/ListDetails/ok/name_portrait.json');
     }
 
     /**
@@ -72,7 +70,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_empty_list_if_the_reference_entity_does_not_have_any_attributes(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'empty_list.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/ListDetails/empty_list.json');
     }
 
     /**
@@ -80,7 +78,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_a_not_found_response_when_the_reference_entity_identifier_does_not_exists(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'not_found.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/ListDetails/not_found.json');
     }
 
     private function loadFixtures(): void
