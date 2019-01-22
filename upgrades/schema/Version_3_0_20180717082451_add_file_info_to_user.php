@@ -9,7 +9,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Add file_info_id column to oro_user tables
  */
-class Version_3_0_20190114122716_add_file_info_to_user extends AbstractMigration
+class Version_3_0_20180717082451_add_file_info_to_user extends AbstractMigration
 {
     /**
      * @param Schema $schema
