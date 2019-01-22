@@ -40,12 +40,7 @@ define(
             saveFamilyVariant() {
                 this.trigger('pim_enrich:form:entity:pre_save');
 
-                return $.post(
-                    Routing.generate('pim_enrich_family_variant_rest_create'),
-                    JSON.stringify(this.getFormData())
-                ).fail((xhr) => {
-                    this.trigger('pim_enrich:form:entity:validation_error', xhr.responseJSON);
-                });
+                return $.post( Routing.generate('pim_enrich_family_variant_rest_create'), JSON.stringify(this.getFormData()) ).fail((xhr) => { this.trigger('pim_enrich:form:entity:validation_error', xhr.responseJSON); });
             }
         });
     }
