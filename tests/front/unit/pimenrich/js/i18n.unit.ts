@@ -13,7 +13,7 @@ describe('>>>TOOLS --- i18n', () => {
     expect(i18n.getFlag('en_US')).toBe(`
 <span class=\"flag-language\">
   <i class=\"flag flag-us\"></i>
-  <span class=\"language\">en</span>
+  <span class=\"language\">fr</span>
 </span>`);
   });
 
