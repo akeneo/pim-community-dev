@@ -13,6 +13,7 @@ class CreateAttributeEndToEnd extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAnAttributeIsCreated()
     {
+        $this->assertTrue(false);
         $client = $this->createAuthenticatedClient();
 
         $data =
