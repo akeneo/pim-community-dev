@@ -172,8 +172,7 @@ class ProductController
         ProductBuilderInterface $variantProductBuilder,
         AttributeFilterInterface $productAttributeFilter,
         AddParent $addParent,
-        array $apiConfiguration
-    ) {
+        array $apiConfiguration) {
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
