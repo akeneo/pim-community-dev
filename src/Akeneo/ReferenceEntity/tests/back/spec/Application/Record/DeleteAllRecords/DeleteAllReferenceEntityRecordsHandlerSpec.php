@@ -22,8 +22,9 @@ class DeleteAllReferenceEntityRecordsHandlerSpec extends ObjectBehavior
 
     function it_deletes_all_entity_records_by_their_entity_identifier(RecordRepositoryInterface $repository)
     {
-        $command = new DeleteAllReferenceEntityRecordsCommand();
-        $command->referenceEntityIdentifier = 'entity_identifier';
+        $command = new DeleteAllReferenceEntityRecordsCommand(
+            'entity_identifier'
+        );
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('entity_identifier');
 

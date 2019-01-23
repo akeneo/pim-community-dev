@@ -96,9 +96,10 @@ final class DeleteRecordContext implements Context
      */
     public function theUserDeletesTheRecord(): void
     {
-        $command = new DeleteRecordCommand();
-        $command->recordCode = self::RECORD_CODE;
-        $command->referenceEntityIdentifier = self::REFERENCE_ENTITY_IDENTIFIER;
+        $command = new DeleteRecordCommand(
+            self::RECORD_CODE,
+            self::REFERENCE_ENTITY_IDENTIFIER
+        );
 
         $this->executeDeleteCommand($command);
     }
@@ -108,11 +109,10 @@ final class DeleteRecordContext implements Context
      */
     public function theUserDeletesAWrongRecord(): void
     {
-        $recordCode = 'unknown_code';
-
-        $command = new DeleteRecordCommand();
-        $command->recordCode = $recordCode;
-        $command->referenceEntityIdentifier = self::REFERENCE_ENTITY_IDENTIFIER;
+        $command = new DeleteRecordCommand(
+            'unknown_code',
+            self::REFERENCE_ENTITY_IDENTIFIER
+        );
 
         $this->executeDeleteCommand($command);
     }

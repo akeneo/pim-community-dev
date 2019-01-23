@@ -99,8 +99,9 @@ final class DeleteAllRecordsContext implements Context
      */
     public function theUserDeletesAllTheRecordFromOneEntity(): void
     {
-        $command = new DeleteAllReferenceEntityRecordsCommand();
-        $command->referenceEntityIdentifier = self::REFERENCE_ENTITY_IDENTIFIER_FIRST;
+        $command = new DeleteAllReferenceEntityRecordsCommand(
+            self::REFERENCE_ENTITY_IDENTIFIER_FIRST
+        );
 
         $this->executeCommand($command);
     }
@@ -110,8 +111,9 @@ final class DeleteAllRecordsContext implements Context
      */
     public function theUserDeletesAllTheRecordFromUnknownEntity(): void
     {
-        $command = new DeleteAllReferenceEntityRecordsCommand();
-        $command->referenceEntityIdentifier = 'unknown';
+        $command = new DeleteAllReferenceEntityRecordsCommand(
+            'unknown'
+        );
 
         $this->executeCommand($command);
     }
