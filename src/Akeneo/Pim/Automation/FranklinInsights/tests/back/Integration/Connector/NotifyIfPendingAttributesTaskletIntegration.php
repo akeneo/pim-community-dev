@@ -11,20 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Query\Doctrine;
+namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Connector;
 
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserAndFamilyIdsWithMissingMappingQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
 use Akeneo\Test\Common\EntityWithValue\Builder;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\Assert;
 
 /**
+ * Ideally, this should be an acceptance test. But here, we require a lot of
+ * element from a lot of other bounded contexts, so an integration test is the
+ * only way for now.
+ *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
+class NotifyIfPendingAttributesTaskletIntegration extends TestCase
 {
     /** @var int[] */
     private $productIds;
@@ -39,71 +44,16 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
         $this->createSubscribableProducts();
     }
 
-    public function test_that_it_selects_users_owning_products_with_missing_mapping(): void
+    public function test_that_users_are_notified_about_missing_attribute_mappings(): void
     {
-        $this->insertSubscription(
-            $this->productIds['product_for_everybody'],
-            true
-        );
-        $this->insertSubscription(
-            $this->productIds['product_only_for_managers'],
-            true
-        );
+        $this->subscribeAllProducts();
 
-        $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
+        $this->notifyUsersAboutMissingMappings();
 
-        Assert::assertSame(
-            [
-                $this->getUserId('admin') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
-                $this->getUserId('julia') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
-                $this->getUserId('mary') => [$this->getFamilyId('familyA')],
-                $this->getUserId('kevin') => [$this->getFamilyId('familyA')],
-            ],
-            $queryResult
-        );
-    }
-
-    public function test_that_it_selects_users_for_non_classified_products_with_missing_mapping(): void
-    {
-        $this->insertSubscription(
-            $this->productIds['product_not_classified'],
-            true
-        );
-        $this->insertSubscription(
-            $this->productIds['product_only_for_managers'],
-            true
-        );
-
-        $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
-
-        Assert::assertSame(
-            [
-                $this->getUserId('admin') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
-                $this->getUserId('julia') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
-                $this->getUserId('mary') => [$this->getFamilyId('familyA')],
-                $this->getUserId('kevin') => [$this->getFamilyId('familyA')],
-            ],
-            $queryResult
-        );
-    }
-
-    public function test_that_it_selects_no_user_if_there_are_no_missing_mapping(): void
-    {
-        $this->insertSubscription(
-            $this->productIds['product_for_everybody'],
-            false
-        );
-
-        $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
-
-        Assert::assertSame([], $queryResult);
-    }
-
-    public function test_that_it_selects_no_user_if_there_are_no_subscriptions(): void
-    {
-        $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
-
-        Assert::assertSame([], $queryResult);
+        $this->assertUserIsNotifiedforFamilies('admin', ['familyA', 'familyA1']);
+        $this->assertUserIsNotifiedforFamilies('julia', ['familyA', 'familyA1']);
+        $this->assertUserIsNotifiedforFamilies('mary', ['familyA']);
+        $this->assertUserIsNotifiedforFamilies('kevin', ['familyA']);
     }
 
     /**
@@ -165,6 +115,22 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
         }
     }
 
+    private function subscribeAllProducts(): void
+    {
+        $this->insertSubscription(
+            $this->productIds['product_for_everybody'],
+            true
+        );
+        $this->insertSubscription(
+            $this->productIds['product_not_classified'],
+            true
+        );
+        $this->insertSubscription(
+            $this->productIds['product_only_for_managers'],
+            true
+        );
+    }
+
     /**
      * @param int $productId
      * @param bool $isMappingMissing
@@ -198,31 +164,43 @@ SQL;
         return $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder');
     }
 
-    /**
-     * @return SelectUserAndFamilyIdsWithMissingMappingQuery
-     */
-    private function getUserAndFamilyIdsQuery(): SelectUserAndFamilyIdsWithMissingMappingQuery
+    private function notifyUsersAboutMissingMappings(): void
     {
-        return $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_user_and_family_ids_with_missing_mapping');
+        $this
+            ->get('akeneo.pim.automation.franklin_insights.connector.step.notify_if_pending_attributes')
+            ->getTasklet()
+            ->execute();
     }
 
     /**
      * @param string $username
-     *
-     * @return int
+     * @param array $familyCodes
      */
-    private function getUserId(string $username): int
+    private function assertUserIsNotifiedforFamilies(string $username, array $familyCodes): void
     {
-        return $this->get('pim_user.provider.user')->loadUserByUsername($username)->getId();
+        $user = $this->getUserRepository()->findOneByIdentifier($username);
+
+        $notifications = $this->getUserNotificationRepository()->findBy(['user' => $user]);
+
+        Assert::assertSame(
+            count($notifications),
+            count($familyCodes)
+        );
     }
 
     /**
-     * @param string $familyCode
-     *
-     * @return int
+     * @return UserRepositoryInterface
      */
-    private function getFamilyId(string $familyCode): int
+    private function getUserRepository(): UserRepositoryInterface
     {
-        return $this->get('pim_catalog.repository.family')->findOneByIdentifier($familyCode)->getId();
+        return $this->get('pim_user.repository.user');
+    }
+
+    /**
+     * @return UserNotificationRepositoryInterface
+     */
+    private function getUserNotificationRepository(): UserNotificationRepositoryInterface
+    {
+        return $this->get('pim_notification.repository.user_notification');
     }
 }

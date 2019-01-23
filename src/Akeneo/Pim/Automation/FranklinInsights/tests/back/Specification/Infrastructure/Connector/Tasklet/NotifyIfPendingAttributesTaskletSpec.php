@@ -220,7 +220,7 @@ class NotifyIfPendingAttributesTaskletSpec extends ObjectBehavior
         $notificationFactory,
         $notifier
     ): void {
-        $selectUserAndFamilyIdsQuery->execute()->willReturn([1 => [42],]);
+        $selectUserAndFamilyIdsQuery->execute()->willReturn([1 => [42]]);
 
         $julia = new User();
         $julia->setUsername('julia');

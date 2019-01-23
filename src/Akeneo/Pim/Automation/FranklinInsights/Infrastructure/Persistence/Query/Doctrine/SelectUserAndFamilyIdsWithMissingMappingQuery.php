@@ -25,7 +25,7 @@ use Doctrine\DBAL\Connection;
  * [
  *     1 => [42, 43],
  *     2 => [42, 44, 45],
- * ]
+ * ].
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
@@ -46,6 +46,7 @@ class SelectUserAndFamilyIdsWithMissingMappingQuery
      * Merges the results of the 2 queries and ensure uniqueness of the results.
      *
      * @throws \Doctrine\DBAL\DBALException
+     *
      * @return array
      */
     public function execute(): array
@@ -61,6 +62,7 @@ class SelectUserAndFamilyIdsWithMissingMappingQuery
      * permission on at least one product of each family it is associated with.
      *
      * @throws \Doctrine\DBAL\DBALException
+     *
      * @return array
      */
     private function getUserAndFamilyIdsForClassifiedProducts(): array
@@ -90,6 +92,7 @@ SQL;
      * products.
      *
      * @throws \Doctrine\DBAL\DBALException
+     *
      * @return array
      */
     private function getUserAndFamilyIdsForUnclassifiedProducts(): array
@@ -108,7 +111,6 @@ WHERE s.misses_mapping IS TRUE
     )
 GROUP BY u.id;
 SQL;
-
 
         $results = $this->connection->executeQuery($sql)->fetchAll();
 
