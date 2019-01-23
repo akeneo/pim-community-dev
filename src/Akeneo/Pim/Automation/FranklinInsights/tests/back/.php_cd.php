@@ -61,10 +61,13 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Application',
 
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchProductsExecutionDatetimeQuery',
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserAndFamilyIdsWithMissingMappingQuery',
 
             // Akeneo external bounded contexts
+            'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
             'Akeneo\Tool\Component\Batch',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
+            'Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface',
             'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
             // TODO: should be removed see with JJ and AL
             'Akeneo\Tool\Bundle\BatchBundle',
@@ -75,6 +78,8 @@ $rules = [
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
+            'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector'),
 
