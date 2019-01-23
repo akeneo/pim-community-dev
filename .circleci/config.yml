@@ -215,6 +215,12 @@ workflows:
       jobs:
           - wait_for_user_approval:
                 type: approval
+                filters:
+                    branches:
+                        only:
+                            - /^ci.*/ # remove this rule once circle ci is official
+                        ignore:
+                            - master
           - setup:
                 requires:
                     - wait_for_user_approval
