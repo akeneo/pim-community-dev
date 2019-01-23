@@ -54,22 +54,10 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
 
         Assert::assertSame(
             [
-                [
-                    'user_id' => $this->getUserId('admin'),
-                    'family_ids' => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA2')],
-                ],
-                [
-                    'user_id' => $this->getUserId('julia'),
-                    'family_ids' => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA2')],
-                ],
-                [
-                    'user_id' => $this->getUserId('mary'),
-                    'family_ids' => [$this->getFamilyId('familyA')],
-                ],
-                [
-                    'user_id' => $this->getUserId('kevin'),
-                    'family_ids' => [$this->getFamilyId('familyA')],
-                ],
+                $this->getUserId('admin') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
+                $this->getUserId('julia') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
+                $this->getUserId('mary') => [$this->getFamilyId('familyA')],
+                $this->getUserId('kevin') => [$this->getFamilyId('familyA')],
             ],
             $queryResult
         );
@@ -81,11 +69,20 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
             $this->productIds['product_not_classified'],
             true
         );
+        $this->insertSubscription(
+            $this->productIds['product_only_for_managers'],
+            true
+        );
 
         $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
 
         Assert::assertSame(
-            [],
+            [
+                $this->getUserId('admin') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
+                $this->getUserId('julia') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
+                $this->getUserId('mary') => [$this->getFamilyId('familyA')],
+                $this->getUserId('kevin') => [$this->getFamilyId('familyA')],
+            ],
             $queryResult
         );
     }
@@ -128,13 +125,13 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
 
         $productNotClassified = $this->productBuilder()
             ->withIdentifier('product_not_classified')
-            ->withFamily('familyA1')
+            ->withFamily('familyA')
             ->build();
         $this->validate($productNotClassified);
 
         $productOnlyForManagers = $this->productBuilder()
             ->withIdentifier('product_only_for_managers')
-            ->withFamily('familyA2')
+            ->withFamily('familyA1')
             ->withCategories('categoryA')
             ->build();
         $this->validate($productOnlyForManagers);

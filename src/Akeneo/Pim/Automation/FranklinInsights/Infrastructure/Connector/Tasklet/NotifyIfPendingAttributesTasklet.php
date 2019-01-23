@@ -80,13 +80,13 @@ class NotifyIfPendingAttributesTasklet implements TaskletInterface
     {
         $userIdsAndFamilyIds = $this->userAndFamilyIdsQuery->execute();
 
-        foreach ($userIdsAndFamilyIds as $userIdAndFamilyId) {
-            $user = $this->userRepository->find($userIdAndFamilyId['user_id']);
+        foreach ($userIdsAndFamilyIds as $userId => $familyIds) {
+            $user = $this->userRepository->find($userId);
             if (null === $user) {
                 continue;
             }
 
-            foreach ($userIdAndFamilyId['family_ids'] as $familyId) {
+            foreach ($familyIds as $familyId) {
                 $family = $this->familyRepository->find($familyId);
                 if (null === $family) {
                     continue;

@@ -65,8 +65,8 @@ class NotifyIfPendingAttributesTaskletSpec extends ObjectBehavior
         NotificationInterface $notificationForJulienAboutFamilyC
     ): void {
         $selectUserAndFamilyIdsQuery->execute()->willReturn([
-            ['user_id' => 1, 'family_ids' => [42, 43]],
-            ['user_id' => 2, 'family_ids' => [43, 44]],
+            1 => [42, 43],
+            2 => [43, 44],
         ]);
 
         $julia = new User();
@@ -175,8 +175,8 @@ class NotifyIfPendingAttributesTaskletSpec extends ObjectBehavior
         NotificationInterface $notificationForJuliaAboutFamilyA
     ): void {
         $selectUserAndFamilyIdsQuery->execute()->willReturn([
-            ['user_id' => 1, 'family_ids' => [42]],
-            ['user_id' => 2, 'family_ids' => [43]],
+            1 => [42],
+            2 => [43],
         ]);
 
         $julia = new User();
@@ -220,9 +220,7 @@ class NotifyIfPendingAttributesTaskletSpec extends ObjectBehavior
         $notificationFactory,
         $notifier
     ): void {
-        $selectUserAndFamilyIdsQuery->execute()->willReturn([
-            ['user_id' => 1, 'family_ids' => [42]],
-        ]);
+        $selectUserAndFamilyIdsQuery->execute()->willReturn([1 => [42],]);
 
         $julia = new User();
         $julia->setUsername('julia');

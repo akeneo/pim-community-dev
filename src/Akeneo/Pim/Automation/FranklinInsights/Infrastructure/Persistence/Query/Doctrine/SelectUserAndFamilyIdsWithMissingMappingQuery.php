@@ -21,17 +21,10 @@ use Doctrine\DBAL\Connection;
  * Those family IDs are grouped by user IDs, those of the users owning products
  * of those families, and so being able to complete the corresponding attribute
  * mappings.
- *
- * The data returned are formatted as follow:
+ * The data returned are formatted as "user_id" => ["family_id"]:
  * [
- *     [
- *         'user_id' => 1,
- *         'family_ids' => [42, 43],
- *     ],
- *     [
- *         'user_id' => 2,
- *         'family_ids' => [42, 44, 45],
- *     ],
+ *     1 => [42, 43],
+ *     2 => [42, 44, 45],
  * ]
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -53,7 +46,6 @@ class SelectUserAndFamilyIdsWithMissingMappingQuery
      * Merges the results of the 2 queries and ensure uniqueness of the results.
      *
      * @throws \Doctrine\DBAL\DBALException
-     *
      * @return array
      */
     public function execute(): array
@@ -61,7 +53,7 @@ class SelectUserAndFamilyIdsWithMissingMappingQuery
         $idsForClassifiedProducts = $this->getUserAndFamilyIdsForClassifiedProducts();
         $idsForUnclassifiedProducts = $this->getUserAndFamilyIdsForUnclassifiedProducts();
 
-        return array_merge($idsForClassifiedProducts, $idsForUnclassifiedProducts);
+        return $this->mergeQueryResults($idsForClassifiedProducts, $idsForUnclassifiedProducts);
     }
 
     /**
@@ -69,7 +61,6 @@ class SelectUserAndFamilyIdsWithMissingMappingQuery
      * permission on at least one product of each family it is associated with.
      *
      * @throws \Doctrine\DBAL\DBALException
-     *
      * @return array
      */
     private function getUserAndFamilyIdsForClassifiedProducts(): array
@@ -99,17 +90,29 @@ SQL;
      * products.
      *
      * @throws \Doctrine\DBAL\DBALException
-     *
      * @return array
      */
     private function getUserAndFamilyIdsForUnclassifiedProducts(): array
     {
-//        $sql = <<<SQL
-        //SQL;
-//
-//        $results = $this->connection->executeQuery($sql)->fetchAll();
+        $sql = <<<SQL
+SELECT u.id                AS user_id,
+       JSON_ARRAYAGG(f.id) AS family_ids
+FROM pimee_franklin_insights_subscription s
+         INNER JOIN pim_catalog_product p ON p.id = s.product_id
+         INNER JOIN pim_catalog_family f ON f.id = p.family_id
+         INNER JOIN oro_user u
+WHERE s.misses_mapping IS TRUE
+  AND NOT EXISTS
+    (
+    SELECT NULL FROM pim_catalog_category_product cp WHERE p.id = cp.product_id
+    )
+GROUP BY u.id;
+SQL;
 
-        return $this->formatUserAndFamilyIds([]);
+
+        $results = $this->connection->executeQuery($sql)->fetchAll();
+
+        return $this->formatUserAndFamilyIds($results);
     }
 
     /**
@@ -121,13 +124,38 @@ SQL;
      */
     private function formatUserAndFamilyIds(array $userAndFamilyIds): array
     {
-        $formattedIds = array_map(function (array $result) {
-            return [
-                'user_id' => (int) $result['user_id'],
-                'family_ids' => json_decode($result['family_ids'], true),
-            ];
-        }, $userAndFamilyIds);
+        $formattedIds = [];
+        foreach ($userAndFamilyIds as $familyIdsPerUser) {
+            $formattedIds[$familyIdsPerUser['user_id']] = json_decode($familyIdsPerUser['family_ids'], true);
+        }
 
         return $formattedIds;
+    }
+
+    /**
+     * Merges the results of the 2 queries, ensuring the preservation of the
+     * indexes (as the user IDs are integers, PHP can mess them up) and the
+     * uniqueness and order of the family IDs for each user ID.
+     *
+     * @param array $idsForClassifiedProducts
+     * @param array $idsForUnclassifiedProducts
+     *
+     * @return array
+     */
+    private function mergeQueryResults(array $idsForClassifiedProducts, array $idsForUnclassifiedProducts): array
+    {
+        $mergedIds = $idsForClassifiedProducts;
+
+        foreach ($idsForUnclassifiedProducts as $userId => $familyIds) {
+            $mergedFamilyIds = array_key_exists($userId, $mergedIds)
+                ? array_merge($familyIds, $mergedIds[$userId])
+                : $familyIds;
+
+            sort($mergedFamilyIds);
+
+            $mergedIds[$userId] = array_unique($mergedFamilyIds);
+        }
+
+        return $mergedIds;
     }
 }
