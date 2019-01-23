@@ -4,9 +4,13 @@ mappings:
             # "completeness" property is handled by the "completeness" dynamic template
             categories:
                 type: 'keyword'
+            categories_of_ancestors:
+                type: 'keyword'
             family.code:
                 type: 'keyword'
             # family labels are handled by the "family" dynamic template
+            family_variant:
+                type: 'keyword'
             id:
                 type: 'keyword'
             enabled:
@@ -20,9 +24,19 @@ mappings:
             identifier:
                 type: 'keyword'
                 normalizer: 'identifier_normalizer'
+            document_type:
+                type: 'keyword'
+            attributes_of_ancestors:
+                type: 'keyword'
+            attributes_for_this_level:
+                type: 'keyword'
             parent:
                 type: 'keyword'
                 normalizer: 'identifier_normalizer'
+            ancestors.codes:
+                type: 'keyword'
+            ancestors.ids:
+                type: 'keyword'
         dynamic_templates:
             -
                 label_scopable_localizable_structure:
@@ -174,7 +188,7 @@ mappings:
                 metric_data:
                     path_match: 'values.*-metric.*.data'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 metric_base_data:
                     path_match: 'values.*-metric.*.base_data'
@@ -184,32 +198,32 @@ mappings:
                 metric_unit:
                     path_match: 'values.*-metric.*.unit'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 metric_base_unit:
                     path_match: 'values.*-metric.*.base_unit'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 media_extension:
                     path_match: 'values.*-media.*.extension'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 media_key:
                     path_match: 'values.*-media.*.key'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 media_hash:
                     path_match: 'values.*-media.*.hash'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 media_mime_type:
                     path_match: 'values.*-media.*.mime_type'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 media_original_filename:
                     path_match: 'values.*-media.*.original_filename'
@@ -219,12 +233,12 @@ mappings:
                 media_size:
                     path_match: 'values.*-media.*.size'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 media_storage:
                     path_match: 'values.*-media.*.storage'
                     mapping:
-                        index: 'no'
+                        index: false
             -
                 in_group_structure:
                     path_match: 'in_group.*'
@@ -236,216 +250,3 @@ mappings:
                     path_match: 'in_group.*'
                     mapping:
                         type: 'boolean'
-
-    pimee_workflow_product_proposal:
-        properties:
-            id:
-                type: 'keyword'
-            author:
-                type: 'keyword'
-                normalizer: 'text_normalizer'
-            categories:
-                type: 'keyword'
-            family.code:
-                type: 'keyword'
-            created:
-                type: 'date'
-            identifier:
-                type: 'keyword'
-                normalizer: 'identifier_normalizer'
-            document_type:
-                type: 'keyword'
-            entity_with_values_identifier:
-                type: 'keyword'
-                normalizer: 'identifier_normalizer'
-        dynamic_templates:
-            -
-                family:
-                    path_match: 'family.labels.*'
-                    mapping:
-                        type: 'keyword'
-                        normalizer: 'family_normalizer'
-            -
-                label_scopable_localizable_structure:
-                    path_match: 'label.*'
-                    match_mapping_type: 'object'
-                    mapping:
-                        type: 'object'
-            -
-                label:
-                    path_match: 'label.*'
-                    mapping:
-                        type: 'keyword'
-                        normalizer: 'text_normalizer'
-            -
-                textarea_scopable_localizable_structure:
-                    path_match: 'values.*-textarea.*'
-                    match_mapping_type: 'object'
-                    mapping:
-                        type: 'object'
-            -
-                textarea:
-                    path_match: 'values.*-textarea.*'
-                    mapping:
-                        fields:
-                            preprocessed:
-                                type: 'text'
-                                analyzer: 'textarea_preprocessed_analyzer'
-                                fielddata: true
-                        type: 'text'
-                        analyzer: 'textarea_analyzer'
-            -
-                text_scopable_localizable_structure:
-                    path_match: 'values.*-text.*'
-                    match_mapping_type: 'object'
-                    mapping:
-                        type: 'object'
-            -
-                text:
-                    path_match: 'values.*-text.*'
-                    mapping:
-                        type: 'keyword'
-                        normalizer: 'text_normalizer'
-            -
-                decimal_scopable_localizable_structure:
-                    path_match: 'values.*-decimal.*'
-                    match_mapping_type: 'object'
-                    mapping:
-                        type: 'object'
-            -
-                decimal:
-                    path_match: 'values.*-decimal.*'
-                    mapping:
-                        type: 'double'
-            -
-                boolean_scopable_localizable_structure:
-                    path_match: 'values.*-boolean.*'
-                    match_mapping_type: 'object'
-                    mapping:
-                        type: 'object'
-            -
-                boolean:
-                    path_match: 'values.*-boolean.*'
-                    mapping:
-                        type: 'boolean'
-            -
-                date_scopable_localizable_structure:
-                    path_match: 'values.*-date.*'
-                    match_mapping_type: 'object'
-                    mapping:
-                        type: 'object'
-            -
-                date:
-                    path_match: 'values.*-date.*'
-                    mapping:
-                        type: 'date'
-            -
-                option_scopable_localizable_structure:
-                    path_match: 'values.*-option.*'
-                    match_mapping_type: 'object'
-                    mapping:
-                        type: 'object'
-            -
-                option:
-                    path_match: 'values.*-option.*'
-                    mapping:
-                        type: 'keyword'
-            -
-                options_scopable_localizable_structure:
-                    path_match: 'values.*-options.*'
-                    match_mapping_type: 'object'
-                    mapping:
-                        type: 'object'
-            -
-                options:
-                    path_match: 'values.*-options.*'
-                    mapping:
-                        type: 'keyword'
-            -
-                reference_data_option_scopable_localizable_structure:
-                    path_match: 'values.*-reference_data_option.*'
-                    match_mapping_type: 'object'
-                    mapping:
-                        type: 'object'
-            -
-                reference_data_option:
-                    path_match: 'values.*-reference_data_option.*'
-                    mapping:
-                        type: 'keyword'
-            -
-                reference_data_options_scopable_localizable_structure:
-                    path_match: 'values.*-reference_data_options.*'
-                    match_mapping_type: 'object'
-                    mapping:
-                        type: 'object'
-            -
-                reference_data_options:
-                    path_match: 'values.*-reference_data_options.*'
-                    mapping:
-                        type: 'keyword'
-            -
-                prices_data_options_scopable_localizable_structure:
-                    path_match: 'values.*-prices.*'
-                    match_mapping_type: 'object'
-                    mapping:
-                        type: 'object'
-            -
-                prices:
-                    path_match: 'values.*-prices.*'
-                    mapping:
-                        type: 'double'
-            -
-                metric_data:
-                    path_match: 'values.*-metric.*.data'
-                    mapping:
-                        index: 'no'
-            -
-                metric_base_data:
-                    path_match: 'values.*-metric.*.base_data'
-                    mapping:
-                        type: 'double'
-            -
-                metric_unit:
-                    path_match: 'values.*-metric.*.unit'
-                    mapping:
-                        index: 'no'
-            -
-                metric_base_unit:
-                    path_match: 'values.*-metric.*.base_unit'
-                    mapping:
-                        index: 'no'
-            -
-                media_extension:
-                    path_match: 'values.*-media.*.extension'
-                    mapping:
-                        index: 'no'
-            -
-                media_key:
-                    path_match: 'values.*-media.*.key'
-                    mapping:
-                        index: 'no'
-            -
-                media_hash:
-                    path_match: 'values.*-media.*.hash'
-                    mapping:
-                        index: 'no'
-            -
-                media_mime_type:
-                    path_match: 'values.*-media.*.mime_type'
-                    mapping:
-                        index: 'no'
-            -
-                media_original_filename:
-                    path_match: 'values.*-media.*.original_filename'
-                    mapping:
-                        type: 'keyword'
-            -
-                media_size:
-                    path_match: 'values.*-media.*.size'
-                    mapping:
-                        index: 'no'
-            -
-                media_storage:
-                    path_match: 'values.*-media.*.storage'
-                    mapping:
-                        index: 'no'
