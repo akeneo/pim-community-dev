@@ -25,47 +25,89 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
 
     function it_only_supports_create_option_attribute_commands()
     {
-        $this->supports(new CreateOptionCollectionAttributeCommand())->shouldReturn(true);
-        $this->supports(new CreateImageAttributeCommand())->shouldReturn(false);
+        $this->supports(
+            new CreateOptionCollectionAttributeCommand(
+                'designer',
+                'favorite_color',
+                ['fr_FR' => 'Couleur favorite'],
+                false,
+                false,
+                false
+            )
+        )->shouldReturn(true)
+        ;
+        $this->supports(
+            new CreateImageAttributeCommand(
+                'designer',
+                'name',
+                [
+                    'fr_FR' => 'Nom',
+                ],
+                true,
+                false,
+                false,
+                null,
+                []
+            )
+        )->shouldReturn(false)
+        ;
     }
 
     function it_creates_a_record_attribute_with_a_command()
     {
-        $command = new CreateOptionCollectionAttributeCommand();
-        $command->referenceEntityIdentifier = 'designer';
-        $command->code = 'favorites_color';
-        $command->labels = ['fr_FR' => 'Couleur favorites'];
-        $command->isRequired = false;
-        $command->valuePerChannel = false;
-        $command->valuePerLocale = false;
+        $command = new CreateOptionCollectionAttributeCommand(
+            'designer',
+            'favorites_color',
+            ['fr_FR' => 'Couleur favorites'],
+            false,
+            false,
+            false
+        );
 
         $this->create(
             $command,
             AttributeIdentifier::fromString('favorites_color_designer_fingerprint'),
             AttributeOrder::fromInteger(0)
-        )->normalize()->shouldReturn([
-            'identifier' => 'favorites_color_designer_fingerprint',
-            'reference_entity_identifier' => 'designer',
-            'code' => 'favorites_color',
-            'labels' => ['fr_FR' => 'Couleur favorites'],
-            'order' => 0,
-            'is_required' => false,
-            'value_per_channel' => false,
-            'value_per_locale' => false,
-            'type' => 'option_collection',
-            'options' => []
-        ]);
+        )->normalize()->shouldReturn(
+            [
+                'identifier'                  => 'favorites_color_designer_fingerprint',
+                'reference_entity_identifier' => 'designer',
+                'code'                        => 'favorites_color',
+                'labels'                      => ['fr_FR' => 'Couleur favorites'],
+                'order'                       => 0,
+                'is_required'                 => false,
+                'value_per_channel'           => false,
+                'value_per_locale'            => false,
+                'type'                        => 'option_collection',
+                'options'                     => [],
+            ]
+        )
+        ;
     }
 
     public function it_throws_if_it_cannot_create_the_attribute_from_an_unsupported_command()
     {
         $this->shouldThrow(\RuntimeException::class)
-            ->during(
-                'create', [
-                    new CreateTextAttributeCommand(),
-                    AttributeIdentifier::fromString('unsupported_attribute'),
-                    AttributeOrder::fromInteger(0)
-                ]
-            );
+             ->during(
+                 'create',
+                 [
+                     new CreateTextAttributeCommand(
+                         'designer',
+                         'color',
+                         [],
+                         false,
+                         false,
+                         false,
+                         null,
+                         false,
+                         false,
+                         null,
+                         null
+                     ),
+                     AttributeIdentifier::fromString('unsupported_attribute'),
+                     AttributeOrder::fromInteger(0),
+                 ]
+             )
+        ;
     }
 }

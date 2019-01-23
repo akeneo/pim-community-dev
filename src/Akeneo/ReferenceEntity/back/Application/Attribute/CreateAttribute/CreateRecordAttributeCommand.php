@@ -21,4 +21,25 @@ class CreateRecordAttributeCommand extends AbstractCreateAttributeCommand
 {
     /** @var string */
     public $recordType;
+
+    public function __construct(
+        string $referenceEntityIdentifier,
+        string $code,
+        array $labels,
+        bool $isRequired,
+        bool $valuePerChannel,
+        bool $valuePerLocale,
+        string $recordType
+    ) {
+        parent::__construct(
+            $referenceEntityIdentifier,
+            $code,
+            $labels,
+            $isRequired,
+            $valuePerChannel,
+            $valuePerLocale
+        );
+
+        $this->recordType = $recordType;
+    }
 }

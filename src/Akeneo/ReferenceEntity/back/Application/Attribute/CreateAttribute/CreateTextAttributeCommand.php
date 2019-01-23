@@ -33,4 +33,33 @@ class CreateTextAttributeCommand extends AbstractCreateAttributeCommand
 
     /** @var ?string */
     public $regularExpression;
+
+    public function __construct(
+        string $referenceEntityIdentifier,
+        string $code,
+        array $labels,
+        bool $isRequired,
+        bool $valuePerChannel,
+        bool $valuePerLocale,
+        ?int $maxLength,
+        bool $isTextarea,
+        bool $isRichTextEditor,
+        ?string $validationRule,
+        ?string $regularExpression
+    ) {
+        parent::__construct(
+            $referenceEntityIdentifier,
+            $code,
+            $labels,
+            $isRequired,
+            $valuePerChannel,
+            $valuePerLocale
+        );
+
+        $this->maxLength = $maxLength;
+        $this->isTextarea = $isTextarea;
+        $this->isRichTextEditor = $isRichTextEditor;
+        $this->validationRule = $validationRule;
+        $this->regularExpression = $regularExpression;
+    }
 }

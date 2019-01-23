@@ -30,7 +30,11 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
         AttributeFactoryRegistryInterface $registry,
         FindAttributeNextOrderInterface $attributeNextOrder
     ) {
-        $this->beConstructedWith($registry, $repository, $attributeNextOrder);
+        $this->beConstructedWith(
+            $registry,
+            $repository,
+            $attributeNextOrder
+        );
     }
 
     function it_is_initializable()
@@ -48,19 +52,36 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
         $repository->nextIdentifier(
             Argument::type(ReferenceEntityIdentifier::class),
             Argument::type(AttributeCode::class)
-        )->willReturn($identifier);
+        )->willReturn($identifier)
+        ;
 
         $attributeNextOrder
             ->withReferenceEntityIdentifier(ReferenceEntityIdentifier::fromString('designer'))
-            ->willReturn(AttributeOrder::fromInteger(0));
+            ->willReturn(AttributeOrder::fromInteger(0))
+        ;
 
         $textAttribute = $this->getAttribute();
-        $textCommand = new CreateTextAttributeCommand();
-        $textCommand->referenceEntityIdentifier = 'designer';
-        $textCommand->code = 'name';
+        $textCommand = new CreateTextAttributeCommand(
+            'designer',
+            'name',
+            ['fr_FR' => 'Nom'],
+            true,
+            false,
+            false,
+            155,
+            false,
+            false,
+            AttributeValidationRule::NONE,
+            AttributeRegularExpression::EMPTY
+        );
 
         $registry->getFactory($textCommand)->willReturn($factory);
-        $factory->create($textCommand, $identifier, AttributeOrder::fromInteger(0))->willReturn($textAttribute);
+        $factory->create(
+            $textCommand,
+            $identifier,
+            AttributeOrder::fromInteger(0)
+        )->willReturn($textAttribute)
+        ;
         $repository->create($textAttribute)->shouldBeCalled();
 
         $this->__invoke($textCommand);
@@ -69,7 +90,11 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
     private function getAttribute(): TextAttribute
     {
         return TextAttribute::createText(
-            AttributeIdentifier::create('designer', 'name', 'test'),
+            AttributeIdentifier::create(
+                'designer',
+                'name',
+                'test'
+            ),
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),

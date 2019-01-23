@@ -21,160 +21,218 @@ class TextAttributeFactorySpec extends ObjectBehavior
 
     function it_only_supports_create_text_commands()
     {
-        $this->supports(new CreateTextAttributeCommand())->shouldReturn(true);
-        $this->supports(new CreateImageAttributeCommand())->shouldReturn(false);
+        $this->supports(
+            new CreateTextAttributeCommand(
+                'designer',
+                'name',
+                ['fr_FR' => 'Nom'],
+                true,
+                false,
+                false,
+                155,
+                false,
+                false,
+                AttributeValidationRule::NONE,
+                AttributeRegularExpression::EMPTY
+            )
+        )->shouldReturn(true)
+        ;
+        $this->supports(
+            new CreateImageAttributeCommand(
+                'designer',
+                'image',
+                [
+                    'fr_FR' => 'Image',
+                ],
+                true,
+                false,
+                false,
+                null,
+                []
+            )
+        )->shouldReturn(false)
+        ;
     }
 
     function it_creates_a_simple_text_attribute_with_a_command()
     {
-        $command = new CreateTextAttributeCommand();
-        $command->referenceEntityIdentifier = 'designer';
-        $command->code = 'name';
-        $command->labels = ['fr_FR' => 'Nom'];
-        $command->isRequired = true;
-        $command->valuePerChannel = false;
-        $command->valuePerLocale = false;
-        $command->maxLength = 155;
-        $command->isTextarea = false;
-        $command->validationRule = AttributeValidationRule::NONE;
-        $command->regularExpression = AttributeRegularExpression::EMPTY;
+        $command = new CreateTextAttributeCommand(
+            'designer',
+            'name',
+            ['fr_FR' => 'Nom'],
+            true,
+            false,
+            false,
+            155,
+            false,
+            false,
+            AttributeValidationRule::NONE,
+            AttributeRegularExpression::EMPTY
+        );
 
         $this->create(
             $command,
             AttributeIdentifier::fromString('name_designer_test'),
             AttributeOrder::fromInteger(0)
-        )->normalize()->shouldReturn([
-            'identifier'                 => 'name_designer_test',
-            'reference_entity_identifier' => 'designer',
-            'code'                       => 'name',
-            'labels'                     => ['fr_FR' => 'Nom'],
-            'order'                      => 0,
-            'is_required'                => true,
-            'value_per_channel'          => false,
-            'value_per_locale'           => false,
-            'type'                       => 'text',
-            'max_length'                 => 155,
-            'is_textarea'               => false,
-            'is_rich_text_editor'        => false,
-            'validation_rule'            => 'none',
-            'regular_expression'         => null,
-        ]);
+        )->normalize()->shouldReturn(
+            [
+                'identifier'                  => 'name_designer_test',
+                'reference_entity_identifier' => 'designer',
+                'code'                        => 'name',
+                'labels'                      => ['fr_FR' => 'Nom'],
+                'order'                       => 0,
+                'is_required'                 => true,
+                'value_per_channel'           => false,
+                'value_per_locale'            => false,
+                'type'                        => 'text',
+                'max_length'                  => 155,
+                'is_textarea'                 => false,
+                'is_rich_text_editor'         => false,
+                'validation_rule'             => 'none',
+                'regular_expression'          => null,
+            ]
+        )
+        ;
     }
 
     function it_creates_a_simple_text_attribute_having_no_validation_with_a_command()
     {
-        $command = new CreateTextAttributeCommand();
-        $command->referenceEntityIdentifier = 'designer';
-        $command->code = 'name';
-        $command->labels = ['fr_FR' => 'Nom'];
-        $command->isRequired = true;
-        $command->valuePerChannel = false;
-        $command->valuePerLocale = false;
-        $command->maxLength = 155;
-        $command->isTextarea = false;
-        $command->validationRule = AttributeValidationRule::NONE;
-        $command->regularExpression = AttributeRegularExpression::EMPTY;
+        $command = new CreateTextAttributeCommand(
+            'designer',
+            'name',
+            ['fr_FR' => 'Nom'],
+            true,
+            false,
+            false,
+            155,
+            false,
+            false,
+            AttributeValidationRule::NONE,
+            AttributeRegularExpression::EMPTY
+        );
 
         $this->create(
             $command,
             AttributeIdentifier::fromString('name_designer_test'),
             AttributeOrder::fromInteger(0)
-        )->normalize()->shouldReturn([
-            'identifier'                 => 'name_designer_test',
-            'reference_entity_identifier' => 'designer',
-            'code'                       => 'name',
-            'labels'                     => ['fr_FR' => 'Nom'],
-            'order'                      => 0,
-            'is_required'                => true,
-            'value_per_channel'          => false,
-            'value_per_locale'           => false,
-            'type'                       => 'text',
-            'max_length'                 => 155,
-            'is_textarea'               => false,
-            'is_rich_text_editor'        => false,
-            'validation_rule'            => 'none',
-            'regular_expression'         => null,
-        ]);
+        )->normalize()->shouldReturn(
+            [
+                'identifier'                  => 'name_designer_test',
+                'reference_entity_identifier' => 'designer',
+                'code'                        => 'name',
+                'labels'                      => ['fr_FR' => 'Nom'],
+                'order'                       => 0,
+                'is_required'                 => true,
+                'value_per_channel'           => false,
+                'value_per_locale'            => false,
+                'type'                        => 'text',
+                'max_length'                  => 155,
+                'is_textarea'                 => false,
+                'is_rich_text_editor'         => false,
+                'validation_rule'             => 'none',
+                'regular_expression'          => null,
+            ]
+        )
+        ;
     }
 
     function it_creates_a_simple_text_attribute_with_no_max_length_limit()
     {
-        $command = new CreateTextAttributeCommand();
-        $command->referenceEntityIdentifier = 'designer';
-        $command->code = 'name';
-        $command->labels = [
-            'fr_FR' => 'Nom'
-        ];
-        $command->isRequired = true;
-        $command->valuePerChannel = false;
-        $command->valuePerLocale = false;
-        $command->maxLength = AttributeMaxLength::NO_LIMIT;
-        $command->validationRule = AttributeValidationRule::NONE;
-        $command->regularExpression = AttributeRegularExpression::EMPTY;
+        $command = new CreateTextAttributeCommand(
+            'designer',
+            'name',
+            ['fr_FR' => 'Nom'],
+            true,
+            false,
+            false,
+            AttributeMaxLength::NO_LIMIT,
+            false,
+            false,
+            AttributeValidationRule::NONE,
+            AttributeRegularExpression::EMPTY
+        );
 
         $this->create(
             $command,
             AttributeIdentifier::fromString('name_designer_test'),
             AttributeOrder::fromInteger(0)
-        )->normalize()->shouldReturn([
-            'identifier'                 => 'name_designer_test',
-            'reference_entity_identifier' => 'designer',
-            'code'                       => 'name',
-            'labels'                     => ['fr_FR' => 'Nom'],
-            'order'                      => 0,
-            'is_required'                => true,
-            'value_per_channel'          => false,
-            'value_per_locale'           => false,
-            'type'                       => 'text',
-            'max_length'                 => null,
-            'is_textarea'               => false,
-            'is_rich_text_editor'        => false,
-            'validation_rule'            => 'none',
-            'regular_expression'         => null,
-        ]);
+        )->normalize()->shouldReturn(
+            [
+                'identifier'                  => 'name_designer_test',
+                'reference_entity_identifier' => 'designer',
+                'code'                        => 'name',
+                'labels'                      => ['fr_FR' => 'Nom'],
+                'order'                       => 0,
+                'is_required'                 => true,
+                'value_per_channel'           => false,
+                'value_per_locale'            => false,
+                'type'                        => 'text',
+                'max_length'                  => null,
+                'is_textarea'                 => false,
+                'is_rich_text_editor'         => false,
+                'validation_rule'             => 'none',
+                'regular_expression'          => null,
+            ]
+        )
+        ;
     }
 
     function it_creates_a_simple_text_attribute_with_a_regular_expression_validation()
     {
-        $command = new CreateTextAttributeCommand();
-        $command->referenceEntityIdentifier = 'designer';
-        $command->code = 'name';
-        $command->labels = [
-            'fr_FR' => 'Nom'
-        ];
-        $command->isRequired = true;
-        $command->valuePerChannel = false;
-        $command->valuePerLocale = false;
-        $command->maxLength = AttributeMaxLength::NO_LIMIT;
-        $command->isTextarea = false;
-        $command->validationRule = AttributeValidationRule::REGULAR_EXPRESSION;
-        $command->regularExpression = '/\w+/';
+        $command = new CreateTextAttributeCommand(
+            'designer',
+            'name',
+            ['fr_FR' => 'Nom'],
+            true,
+            false,
+            false,
+            AttributeMaxLength::NO_LIMIT,
+            false,
+            false,
+            AttributeValidationRule::REGULAR_EXPRESSION,
+            '/\w+/'
+        );
 
         $this->create(
             $command,
             AttributeIdentifier::fromString('name_designer_test'),
             AttributeOrder::fromInteger(0)
-        )->normalize()->shouldReturn([
-            'identifier'                 => 'name_designer_test',
-            'reference_entity_identifier' => 'designer',
-            'code'                       => 'name',
-            'labels'                     => ['fr_FR' => 'Nom'],
-            'order'                      => 0,
-            'is_required'                => true,
-            'value_per_channel'          => false,
-            'value_per_locale'           => false,
-            'type'                       => 'text',
-            'max_length'                 => null,
-            'is_textarea'               => false,
-            'is_rich_text_editor'        => false,
-            'validation_rule'            => 'regular_expression',
-            'regular_expression'         => '/\w+/',
-        ]);
+        )->normalize()->shouldReturn(
+            [
+                'identifier'                  => 'name_designer_test',
+                'reference_entity_identifier' => 'designer',
+                'code'                        => 'name',
+                'labels'                      => ['fr_FR' => 'Nom'],
+                'order'                       => 0,
+                'is_required'                 => true,
+                'value_per_channel'           => false,
+                'value_per_locale'            => false,
+                'type'                        => 'text',
+                'max_length'                  => null,
+                'is_textarea'                 => false,
+                'is_rich_text_editor'         => false,
+                'validation_rule'             => 'regular_expression',
+                'regular_expression'          => '/\w+/',
+            ]
+        )
+        ;
     }
 
     function it_creates_a_textarea_with_rich_editor()
     {
-        $command = new CreateTextAttributeCommand();
+        $command = new CreateTextAttributeCommand(
+            'designer',
+            'name',
+            ['fr_FR' => 'Nom'],
+            true,
+            false,
+            false,
+            155,
+            true,
+            true,
+            AttributeValidationRule::NONE,
+            AttributeRegularExpression::EMPTY
+        );
         $command->referenceEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = ['fr_FR' => 'Nom'];
@@ -189,21 +247,24 @@ class TextAttributeFactorySpec extends ObjectBehavior
             $command,
             AttributeIdentifier::fromString('name_designer_test'),
             AttributeOrder::fromInteger(0)
-        )->normalize()->shouldReturn([
-            'identifier'                 => 'name_designer_test',
-            'reference_entity_identifier' => 'designer',
-            'code'                       => 'name',
-            'labels'                     => ['fr_FR' => 'Nom'],
-            'order'                      => 0,
-            'is_required'                => true,
-            'value_per_channel'          => false,
-            'value_per_locale'           => false,
-            'type'                       => 'text',
-            'max_length'                 => 155,
-            'is_textarea'               => true,
-            'is_rich_text_editor'        => true,
-            'validation_rule'            => 'none',
-            'regular_expression'         => null,
-        ]);
+        )->normalize()->shouldReturn(
+            [
+                'identifier'                  => 'name_designer_test',
+                'reference_entity_identifier' => 'designer',
+                'code'                        => 'name',
+                'labels'                      => ['fr_FR' => 'Nom'],
+                'order'                       => 0,
+                'is_required'                 => true,
+                'value_per_channel'           => false,
+                'value_per_locale'            => false,
+                'type'                        => 'text',
+                'max_length'                  => 155,
+                'is_textarea'                 => true,
+                'is_rich_text_editor'         => true,
+                'validation_rule'             => 'none',
+                'regular_expression'          => null,
+            ]
+        )
+        ;
     }
 }

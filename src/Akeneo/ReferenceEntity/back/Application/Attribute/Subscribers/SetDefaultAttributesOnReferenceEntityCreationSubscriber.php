@@ -70,37 +70,35 @@ class SetDefaultAttributesOnReferenceEntityCreationSubscriber implements EventSu
 
     private function createAttributeAsLabel(ReferenceEntityIdentifier $referenceEntityIdentifier): void
     {
-        $createLabelAttributeCommand = new CreateTextAttributeCommand();
-        $createLabelAttributeCommand->referenceEntityIdentifier = $referenceEntityIdentifier->normalize();
-        $createLabelAttributeCommand->code = ReferenceEntity::DEFAULT_ATTRIBUTE_AS_LABEL_CODE;
-        $createLabelAttributeCommand->labels = [];
-        $createLabelAttributeCommand->order = 0;
-        $createLabelAttributeCommand->isRequired = false;
-        $createLabelAttributeCommand->valuePerChannel = false;
-        $createLabelAttributeCommand->valuePerLocale = true;
-
-        $createLabelAttributeCommand->maxLength = null;
-        $createLabelAttributeCommand->isTextarea = false;
-        $createLabelAttributeCommand->isRichTextEditor = false;
-        $createLabelAttributeCommand->validationRule = 'none';
-        $createLabelAttributeCommand->regularExpression = null;
+        $createLabelAttributeCommand = new CreateTextAttributeCommand(
+            $referenceEntityIdentifier->normalize(),
+            ReferenceEntity::DEFAULT_ATTRIBUTE_AS_LABEL_CODE,
+            [],
+            false,
+            false,
+            true,
+            null,
+            false,
+            false,
+            'none',
+            null
+        );
 
         ($this->createAttributeHandler)($createLabelAttributeCommand);
     }
 
     private function createAttributeAsImage(ReferenceEntityIdentifier $referenceEntityIdentifier): void
     {
-        $createImageAttributeCommand = new CreateImageAttributeCommand();
-        $createImageAttributeCommand->referenceEntityIdentifier = $referenceEntityIdentifier->normalize();
-        $createImageAttributeCommand->code = ReferenceEntity::DEFAULT_ATTRIBUTE_AS_IMAGE_CODE;
-        $createImageAttributeCommand->labels = [];
-        $createImageAttributeCommand->order = 1;
-        $createImageAttributeCommand->isRequired = false;
-        $createImageAttributeCommand->valuePerChannel = false;
-        $createImageAttributeCommand->valuePerLocale = false;
-
-        $createImageAttributeCommand->maxFileSize = null;
-        $createImageAttributeCommand->allowedExtensions = [];
+        $createImageAttributeCommand = new CreateImageAttributeCommand(
+            $referenceEntityIdentifier->normalize(),
+            ReferenceEntity::DEFAULT_ATTRIBUTE_AS_IMAGE_CODE,
+            [],
+            false,
+            false,
+            false,
+            null,
+            []
+        );
 
         ($this->createAttributeHandler)($createImageAttributeCommand);
     }
