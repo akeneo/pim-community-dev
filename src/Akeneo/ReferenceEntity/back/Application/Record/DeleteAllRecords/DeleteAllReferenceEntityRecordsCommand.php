@@ -21,15 +21,10 @@ namespace Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords;
 class DeleteAllReferenceEntityRecordsCommand
 {
     /** @var string */
-    private $referenceEntityIdentifier;
+    public $referenceEntityIdentifier;
 
     public function __construct(string $referenceEntityIdentifier)
     {
         $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-    }
-
-    public function getReferenceEntityIdentifier(): string
-    {
-        return $this->referenceEntityIdentifier;
     }
 }

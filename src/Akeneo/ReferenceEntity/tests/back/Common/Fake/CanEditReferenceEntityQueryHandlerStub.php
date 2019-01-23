@@ -18,8 +18,8 @@ class CanEditReferenceEntityQueryHandlerStub extends CanEditReferenceEntityQuery
 
     public function __invoke(CanEditReferenceEntityQuery $query): bool
     {
-        Assert::stringNotEmpty($query->getReferenceEntityIdentifier());
-        Assert::stringNotEmpty($query->getSecurityIdentifier());
+        Assert::stringNotEmpty($query->referenceEntityIdentifier);
+        Assert::stringNotEmpty($query->securityIdentifier);
 
         return $this->isAllowed;
     }
