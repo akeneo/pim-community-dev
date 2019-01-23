@@ -151,11 +151,6 @@ class SearchQueryBuilder
 
         $searchQuery = [
             '_source' => $source,
-            'query'   => [
-                'constant_score' => [
-                    'filter' => [],
-                ],
-            ],
         ];
 
         if (!empty($this->filterClauses)) {
@@ -173,10 +168,6 @@ class SearchQueryBuilder
 
         if (!empty($this->sortClauses)) {
             $searchQuery['sort'] = $this->sortClauses;
-        }
-
-        if (empty($searchQuery['query']['constant_score']['filter'])) {
-            $searchQuery['query']['constant_score']['filter'] = new \stdClass();
         }
 
         return $searchQuery;

@@ -386,21 +386,13 @@ class SearchQueryBuilderSpec extends ObjectBehavior
                 return
                     is_array($subject) &&
                     isset($subject['_source']) &&
-                    ['identifier'] === $subject['_source'] &&
-                    isset($subject['query']) &&
-                    isset($subject['query']['constant_score']) &&
-                    isset($subject['query']['constant_score']['filter']) &&
-                    $subject['query']['constant_score']['filter'] instanceof \stdClass;
+                    ['identifier'] === $subject['_source'];
             },
             'beASimpleSortQuery' => function ($subject, $attribute, $order, $missing) {
                 return
                     is_array($subject) &&
                     isset($subject['_source']) &&
                     ['identifier'] === $subject['_source'] &&
-                    isset($subject['query']) &&
-                    isset($subject['query']['constant_score']) &&
-                    isset($subject['query']['constant_score']['filter']) &&
-                    $subject['query']['constant_score']['filter'] instanceof \stdClass &&
                     isset($subject['sort']) &&
                     isset($subject['sort'][$attribute]) &&
                     isset($subject['sort'][$attribute]['order']) &&
