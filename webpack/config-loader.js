@@ -31,7 +31,7 @@ module.exports = function(content) {
   if (!hasModule(content)) return content;
 
   const moduleAlias = this._module.rawRequest;
-  const moduleConfig = options.configMap[moduleAlias];
+  const moduleConfig = JSON.stringify(options.configMap[moduleAlias] || {});
 
-  return `var __moduleConfig = ${JSON.stringify(moduleConfig)} ; ${content}`;
+  return `var __moduleConfig = ${replaceRequire(moduleConfig)} ; ${content}`;
 };
