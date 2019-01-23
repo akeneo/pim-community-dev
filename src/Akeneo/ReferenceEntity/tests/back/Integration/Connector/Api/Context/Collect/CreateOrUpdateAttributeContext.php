@@ -201,14 +201,14 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIdentifier::fromString('main_color_identifier'),
             ReferenceEntityIdentifier::fromString('color'),
             AttributeCode::fromString('main_color'),
-            LabelCollection::fromArray(['en_US' => 'Main color', 'fr_FR' => 'Couleur principale']),
+            LabelCollection::fromArray(['en_US' => 'Main color']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::noLimit(),
-            AttributeValidationRule::none(),
-            AttributeRegularExpression::createEmpty()
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegularExpression::fromString('/\w+/')
         );
         $this->attributeRepository->create($attribute);
 
@@ -239,9 +239,9 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155),
-            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
-            AttributeRegularExpression::fromString('/\w+/')
+            AttributeMaxLength::noLimit(),
+            AttributeValidationRule::fromString(AttributeValidationRule::NONE),
+            AttributeRegularExpression::createEmpty()
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
@@ -256,9 +256,9 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIdentifier::create('designer', 'image', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
-            LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
+            LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(2),
-            AttributeIsRequired::fromBoolean(false),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200.10'),

@@ -134,22 +134,17 @@ class CreateOrUpdateAttributeAction
     ) {
         $normalizedAttribute['reference_entity_identifier'] = (string) $referenceEntityIdentifier;
 
-        if (isset($normalizedAttribute['validation_regexp'])) {
+        if (array_key_exists('validation_regexp', $normalizedAttribute)) {
             $normalizedAttribute['regular_expression'] = $normalizedAttribute['validation_regexp'];
             unset($normalizedAttribute['validation_regexp']);
         }
 
-        if (isset($normalizedAttribute['is_required_for_completeness'])) {
+        if (array_key_exists('is_required_for_completeness', $normalizedAttribute)) {
             $normalizedAttribute['is_required'] = $normalizedAttribute['is_required_for_completeness'];
             unset($normalizedAttribute['is_required_for_completeness']);
         }
 
-        if (isset($normalizedAttribute['is_required_for_completeness'])) {
-            $normalizedAttribute['is_required'] = $normalizedAttribute['is_required_for_completeness'];
-            unset($normalizedAttribute['is_required_for_completeness']);
-        }
-
-        if (isset($normalizedAttribute['max_characters'])) {
+        if (array_key_exists('max_characters', $normalizedAttribute)) {
             $normalizedAttribute['max_length'] = $normalizedAttribute['max_characters'];
             unset($normalizedAttribute['max_characters']);
         }
