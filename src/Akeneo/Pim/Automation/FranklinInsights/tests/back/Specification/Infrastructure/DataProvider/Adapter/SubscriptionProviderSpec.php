@@ -65,7 +65,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
         ProductInterface $product,
         $identifiersMappingRepository
     ): void {
-        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping());
+        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping([]));
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
 
         $this->shouldThrow(ProductSubscriptionException::class)->during('subscribe', [$productSubscriptionRequest]);
@@ -73,13 +73,11 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_product_has_no_mapped_value_on_subscription(
         $identifiersMappingRepository,
-        $subscriptionApi,
         ProductInterface $product,
         AttributeInterface $ean,
         ValueInterface $eanValue
     ): void {
-        $identifiersMapping = new IdentifiersMapping();
-        $identifiersMapping->map('upc', $ean->getWrappedObject());
+        $identifiersMapping = new IdentifiersMapping(['upc' => $ean->getWrappedObject()]);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $ean->getCode()->willReturn('ean');
@@ -104,9 +102,12 @@ class SubscriptionProviderSpec extends ObjectBehavior
         ValueInterface $skuValue,
         FamilyInterface $family
     ): void {
-        $identifiersMapping = new IdentifiersMapping();
-        $identifiersMapping->map('upc', $ean->getWrappedObject());
-        $identifiersMapping->map('asin', $sku->getWrappedObject());
+        $identifiersMapping = new IdentifiersMapping(
+            [
+                'upc' => $ean->getWrappedObject(),
+                'asin' => $sku->getWrappedObject(),
+            ]
+        );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $ean->getCode()->willReturn('ean');
@@ -161,9 +162,12 @@ class SubscriptionProviderSpec extends ObjectBehavior
         ValueInterface $skuValue,
         FamilyInterface $family
     ): void {
-        $identifiersMapping = new IdentifiersMapping();
-        $identifiersMapping->map('upc', $ean->getWrappedObject());
-        $identifiersMapping->map('asin', $sku->getWrappedObject());
+        $identifiersMapping = new IdentifiersMapping(
+            [
+                'upc' => $ean->getWrappedObject(),
+                'asin' => $sku->getWrappedObject(),
+            ]
+        );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $ean->getCode()->willReturn('ean');
@@ -350,6 +354,8 @@ class SubscriptionProviderSpec extends ObjectBehavior
     }
 
     /**
+     * @param bool $withErrors
+     *
      * @return array
      */
     private function fakeApiResponse(bool $withErrors = false): array

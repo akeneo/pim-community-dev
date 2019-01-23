@@ -23,3 +23,8 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchProductsExecutionDatetimeQuery'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_non_null_requested_identifiers:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectNonNullRequestedIdentifiersQuery'
+        arguments:
+            - '@database_connection'

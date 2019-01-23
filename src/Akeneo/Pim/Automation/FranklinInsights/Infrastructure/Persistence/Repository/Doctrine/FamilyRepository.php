@@ -43,15 +43,15 @@ final class FamilyRepository implements FamilyRepositoryInterface
     {
         $query = <<<SQL
 SELECT
-    f.code, 
-    JSON_OBJECTAGG(ft.locale, ft.label) as labels, 
-    SUM(s.misses_mapping) as misses_mapping 
-FROM pim_catalog_family f
-INNER JOIN pim_catalog_product p ON p.family_id = f.id
-INNER JOIN pimee_franklin_insights_subscription s ON s.product_id = p.id
-INNER JOIN pim_catalog_family_translation ft ON f.id = ft.foreign_key
-WHERE f.code like :search OR ft.label like :search
-GROUP BY f.code ORDER BY f.id LIMIT :limit OFFSET :offset;
+    family.code,
+    ANY_VALUE(JSON_OBJECTAGG(IFNULL(fam_label.locale, 0), fam_label.label)) as labels,
+    SUM(subscription.misses_mapping) as misses_mapping
+FROM pim_catalog_family family
+INNER JOIN pim_catalog_product product ON product.family_id = family.id
+INNER JOIN pimee_franklin_insights_subscription subscription ON subscription.product_id = product.id
+LEFT JOIN pim_catalog_family_translation fam_label ON family.id = fam_label.foreign_key
+WHERE family.code like :search OR fam_label.label like :search
+GROUP BY family.code ORDER BY family.id LIMIT :limit OFFSET :offset;
 SQL;
 
         $queryParameters = [

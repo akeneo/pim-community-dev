@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
 use PhpSpec\ObjectBehavior;
 
@@ -29,5 +30,18 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
     public function it_is_iterable(): void
     {
         $this->shouldImplement(\IteratorAggregate::class);
+    }
+
+    public function it_gets_option_codes(): void
+    {
+        $this->addAttributeOption(new AttributeOption('color1', 'red', 'pim_color_1'));
+        $this->addAttributeOption(new AttributeOption('color2', 'blue', 'pim_color_2'));
+
+        $this->getOptionCodes()->shouldReturn(['pim_color_1', 'pim_color_2']);
+    }
+
+    public function it_returns_an_empty_array_when_no_options(): void
+    {
+        $this->getOptionCodes()->shouldReturn([]);
     }
 }

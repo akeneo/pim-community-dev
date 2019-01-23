@@ -13,92 +13,58 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Processor;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class SubscriptionProcessor implements ItemProcessorInterface, InitializableInterface
+class SubscriptionProcessor implements ItemProcessorInterface
 {
-    /** @var ProductSubscriptionRepositoryInterface */
-    private $productSubscriptionRepository;
-
-    /** @var IdentifiersMappingRepositoryInterface */
-    private $identifiersMappingRepository;
+    /** @var GetProductSubscriptionStatusHandler */
+    private $getProductSubscriptionStatusHandler;
 
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
-    /** @var IdentifiersMapping */
-    private $identifiersMapping;
-
     /**
-     * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
-     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+     * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
      * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
-        ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
         ProductRepositoryInterface $productRepository
     ) {
-        $this->productSubscriptionRepository = $productSubscriptionRepository;
-        $this->identifiersMappingRepository = $identifiersMappingRepository;
+        $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
         $this->productRepository = $productRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function initialize(): void
+    public function process($product): ProductSubscriptionRequest
     {
-        $this->identifiersMapping = $this->identifiersMappingRepository->find();
-    }
+        $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle(
+            new GetProductSubscriptionStatusQuery($product->getId())
+        );
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process($product)
-    {
-        if ($product->isVariant()) {
+        try {
+            $productSubscriptionStatus->validate();
+        } catch (ProductSubscriptionException $exception) {
             throw new InvalidItemException(
-                'Cannot subscribe a variant product',
-                new DataInvalidItem(['identifier' => $product->getIdentifier()])
-            );
-        }
-
-        if (null === $product->getFamily()) {
-            throw new InvalidItemException(
-                'Cannot subscribe a product without family',
-                new DataInvalidItem(['identifier' => $product->getIdentifier()])
-            );
-        }
-
-        if (null !== $this->productSubscriptionRepository->findOneByProductId($product->getId())) {
-            throw new InvalidItemException(
-                'Product is already subscribed',
+                $exception->getMessage(),
                 new DataInvalidItem(['identifier' => $product->getIdentifier()])
             );
         }
 
         $fullProduct = $this->productRepository->find($product->getId());
-        $request = new ProductSubscriptionRequest($fullProduct);
 
-        if (empty($request->getMappedValues($this->identifiersMapping))) {
-            throw new InvalidItemException(
-                'Product does not have enough identifier values',
-                new DataInvalidItem(['identifier' => $product->getIdentifier()])
-            );
-        }
-
-        return $request;
+        return new ProductSubscriptionRequest($fullProduct);
     }
 }

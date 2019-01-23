@@ -33,6 +33,8 @@ final class FamilyRepositoryIntegration extends TestCase
     private const CONTROL_FAMILY_CODE = 'control_family';
     private const CONTROL_FAMILY_LABELS = ['en_US' => 'A control family'];
 
+    private const ONLY_CODE_FAMILY_CODE = 'only_code_family';
+
     private const UNEXPECTED_FAMILY_CODE = 'unexpected_family';
 
     /**
@@ -56,6 +58,13 @@ final class FamilyRepositoryIntegration extends TestCase
         ]);
         $this->getFromTestContainer('validator')->validate($controlFamily);
 
+        $onlyCodeFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
+            'code' => self::ONLY_CODE_FAMILY_CODE,
+            'labels' => [],
+            'attributes' => ['sku'],
+        ]);
+        $this->getFromTestContainer('validator')->validate($onlyCodeFamily);
+
         $unexpectedFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
             'code' => self::UNEXPECTED_FAMILY_CODE,
             'attributes' => ['sku'],
@@ -64,7 +73,7 @@ final class FamilyRepositoryIntegration extends TestCase
 
         $this
             ->getFromTestContainer('pim_catalog.saver.family')
-            ->saveAll([$testFamily, $controlFamily, $unexpectedFamily]);
+            ->saveAll([$testFamily, $controlFamily, $unexpectedFamily, $onlyCodeFamily]);
 
         $controlProduct = $this->createProduct('control_product', self::CONTROL_FAMILY_CODE);
         $this->insertSubscription($controlProduct->getId(), false);
@@ -99,6 +108,22 @@ final class FamilyRepositoryIntegration extends TestCase
         $this->assertFamilyCollection(
             $familyCollection,
             [new Family(self::CONTROL_FAMILY_CODE, self::CONTROL_FAMILY_LABELS, Family::MAPPING_FULL)]
+        );
+    }
+
+    public function test_that_families_without_translation_are_found(): void
+    {
+        $product1 = $this->createProduct('product_1', self::ONLY_CODE_FAMILY_CODE);
+        $this->insertSubscription($product1->getId(), true);
+
+        $familyCollection = $this->getRepository()->findBySearch(1, 20, null);
+
+        $this->assertFamilyCollection(
+            $familyCollection,
+            [
+                new Family(self::CONTROL_FAMILY_CODE, self::CONTROL_FAMILY_LABELS, Family::MAPPING_FULL),
+                new Family(self::ONLY_CODE_FAMILY_CODE, [0 => null], Family::MAPPING_PENDING),
+            ]
         );
     }
 

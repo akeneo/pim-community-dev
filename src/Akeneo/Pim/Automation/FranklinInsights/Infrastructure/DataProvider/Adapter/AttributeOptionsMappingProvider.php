@@ -35,17 +35,23 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
     /** @var OptionsMappingWebService */
     private $api;
 
+    /** @var AttributeOptionsMappingNormalizer */
+    private $attributeOptionsMappingNormalizer;
+
     /**
      * @param OptionsMappingWebService $api
      * @param ConfigurationRepositoryInterface $configurationRepository
+     * @param AttributeOptionsMappingNormalizer $attributeOptionsMappingNormalizer
      */
     public function __construct(
         OptionsMappingWebService $api,
-        ConfigurationRepositoryInterface $configurationRepository
+        ConfigurationRepositoryInterface $configurationRepository,
+        AttributeOptionsMappingNormalizer $attributeOptionsMappingNormalizer
     ) {
         parent::__construct($configurationRepository);
 
         $this->api = $api;
+        $this->attributeOptionsMappingNormalizer = $attributeOptionsMappingNormalizer;
     }
 
     /**
@@ -87,8 +93,7 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
         WriteAttributeOptionsMapping $attributeOptionsMapping
     ): void {
         $this->api->setToken($this->getToken());
-        $normalizer = new AttributeOptionsMappingNormalizer();
-        $normalizedMapping = $normalizer->normalize($attributeOptionsMapping);
+        $normalizedMapping = $this->attributeOptionsMappingNormalizer->normalize($attributeOptionsMapping);
 
         try {
             $this->api->update((string) $familyCode, (string) $franklinAttributeId, $normalizedMapping);

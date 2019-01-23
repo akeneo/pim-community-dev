@@ -23,6 +23,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | mpn           | mpn            |
       | upc           | ean            |
       | asin          | asin           |
+    And the products which need resubscribing should not be identified
 
   Scenario: Successfully update an already existing identifiers mapping
     Given the predefined attributes pim_brand, mpn, ean, asin, sku and identifier
@@ -44,6 +45,29 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | mpn           | mpn            |
       | upc           | sku            |
       | asin          | identifier     |
+    And the products which need resubscribing should be identified for asin and upc
+
+  Scenario: Successfully unmap an identifier
+    Given the predefined attributes ean and identifier
+    And a predefined identifiers mapping as follows:
+      | franklin_code | attribute_code |
+      | brand         |                |
+      | mpn           |                |
+      | upc           | ean            |
+      | asin          | identifier     |
+    When the identifiers are mapped as follows:
+      | franklin_code | attribute_code |
+      | brand         |                |
+      | mpn           |                |
+      | upc           |                |
+      | asin          | identifier     |
+    Then the identifiers mapping should be saved as follows:
+      | franklin_code | attribute_code |
+      | brand         |                |
+      | mpn           |                |
+      | upc           |                |
+      | asin          | identifier     |
+    And the products which need resubscribing should be identified for upc
 
   Scenario Outline: Successfully map Franklin identifiers with valid PIM attribute types
     Given an empty identifiers mapping

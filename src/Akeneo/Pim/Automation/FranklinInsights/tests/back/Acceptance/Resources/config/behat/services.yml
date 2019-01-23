@@ -23,6 +23,7 @@ services:
             - '@__symfony__.akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
             - '@__symfony__.pim_catalog.repository.attribute'
             - '@__symfony__.akeneo.pim.automation.franklin_insights.franklin_client.http_client'
+            - '@__symfony__.akeneo.pim.automation.franklin_insights.application.mapping.service.identify_products_to_resubscribe'
         tags:
             - { name: 'fob.context_service' }
 

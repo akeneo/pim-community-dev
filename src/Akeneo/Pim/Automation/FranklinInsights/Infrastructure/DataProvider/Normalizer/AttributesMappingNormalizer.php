@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping as DomainAttributeMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
@@ -25,21 +26,18 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 class AttributesMappingNormalizer
 {
     /**
-     * @param DomainAttributeMapping[] $attributesMapping
+     * @param AttributesMapping $attributesMapping
      *
      * @return array
      */
-    public function normalize(array $attributesMapping): array
+    public function normalize(AttributesMapping $attributesMapping): array
     {
         $result = [];
-        foreach ($attributesMapping as $attributeMapping) {
-            $status = DomainAttributeMapping::ATTRIBUTE_MAPPED === $attributeMapping->getStatus()
-                ? AttributeMapping::STATUS_ACTIVE : AttributeMapping::STATUS_INACTIVE;
-
+        foreach ($attributesMapping->mapping() as $attributeMapping) {
             $result[] = [
                 'from' => ['id' => $attributeMapping->getTargetAttributeCode()],
                 'to' => $this->computeNormalizedAttribute($attributeMapping),
-                'status' => $status,
+                'status' => $this->computeAttributeStatus($attributeMapping),
             ];
         }
 
@@ -58,11 +56,8 @@ class AttributesMappingNormalizer
         $normalizedPimAttribute = null;
         if (null !== $attribute) {
             $labels = [];
-            $translations = $attribute->getTranslations();
-            if (!$translations->isEmpty()) {
-                foreach ($translations as $translation) {
-                    $labels[$translation->getLocale()] = $translation->getLabel();
-                }
+            foreach ($attribute->getTranslations() as $translation) {
+                $labels[$translation->getLocale()] = $translation->getLabel();
             }
 
             $normalizedPimAttribute = [
@@ -77,5 +72,22 @@ class AttributesMappingNormalizer
         }
 
         return $normalizedPimAttribute;
+    }
+
+    /**
+     * @param DomainAttributeMapping $attributeMapping
+     *
+     * @return string
+     */
+    private function computeAttributeStatus(DomainAttributeMapping $attributeMapping): string
+    {
+        switch ($attributeMapping->getStatus()) {
+            case DomainAttributeMapping::ATTRIBUTE_MAPPED:
+                return AttributeMapping::STATUS_ACTIVE;
+            case DomainAttributeMapping::ATTRIBUTE_PENDING:
+                return AttributeMapping::STATUS_PENDING;
+            case DomainAttributeMapping::ATTRIBUTE_UNMAPPED:
+                return AttributeMapping::STATUS_INACTIVE;
+        }
     }
 }

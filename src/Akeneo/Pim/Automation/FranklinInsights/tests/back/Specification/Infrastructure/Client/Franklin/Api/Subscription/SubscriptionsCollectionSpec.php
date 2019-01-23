@@ -48,16 +48,33 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->hasNextPage()->shouldReturn(false);
     }
 
-    public function it_returns_the_current_value_if_it_has_one(SubscriptionWebService $webservice): void
+    public function it_returns_the_current_value(SubscriptionWebService $webservice): void
+    {
+        $this->beConstructedWith($webservice, $this->getRawFirstPage());
+
+        $subscription = $this->current();
+        $subscription->shouldReturnAnInstanceOf(Subscription::class);
+        $subscription->shouldHaveSubscriptionId('1111-aaaa');
+        $subscription->shouldHaveTrackerId(42);
+        $subscription->shouldHaveSameAttributesAs(1);
+    }
+
+    public function it_skips_the_current_value_if_subscription_has_error(SubscriptionWebService $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawLastPage());
 
         $subscription = $this->current();
         $subscription->shouldReturnAnInstanceOf(Subscription::class);
-        $subscription->shouldHaveSubscriptionId('3333-cccc');
+        $subscription->shouldHaveSubscriptionId('4444-dddd');
         $subscription->shouldHaveTrackerId(52);
-        $subscription->shouldHaveSameAttributesAs(3);
+        $subscription->shouldHaveSameAttributesAs(4);
+    }
 
+    public function it_returns_null_if_it_does_not_have_current_value(SubscriptionWebService $webservice): void
+    {
+        $this->beConstructedWith($webservice, $this->getRawLastPage());
+
+        $this->next();
         $this->next();
         $this->current()->shouldReturn(null);
     }
@@ -86,6 +103,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->beConstructedWith($webservice, $this->getRawLastPage());
 
         $this->valid()->shouldReturn(true);
+        $this->next();
         $this->next();
         $this->valid()->shouldReturn(false);
     }
@@ -218,7 +236,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                     'General' => 'Color Pink',
                 ],
                 'extra' => [
-                    'tracker_id' => '52',
+                    // No tracker id
                     'family' => [
                         'code' => 'memory_card',
                         'label' => [
@@ -257,6 +275,61 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                 ],
                 'misses_mapping' => false,
             ],
+            [
+                'id' => '4444-dddd',
+                'identifiers' => [
+                    'upc' => '4444-dddd',
+                    'asin' => '4444-dddd',
+                    'mpn_brand' => [
+                        'mpn' => '4444-dddd',
+                        'brand' => 'Netgear',
+                    ],
+                ],
+                'attributes' => [
+                    'Memory' => '512 MB',
+                    'Series' => 'R7000',
+                    'General' => 'Color Pink',
+                ],
+                'extra' => [
+                    'tracker_id' => '52',
+                    'family' => [
+                        'code' => 'memory_card',
+                        'label' => [
+                            'en_US' => 'Memory Card',
+                        ],
+                    ],
+                ],
+                'created_at' => '2018-08-03',
+                'refreshed_at' => '2018-07-31T15',
+                'valid_until' => '2019-08-03T09',
+                'message' => '',
+                '_links' => [
+                    'self' => [
+                        'href' => '/api/subscriptions/4444-dddd',
+                    ],
+                    'cancel' => [
+                        'href' => '/api/subscriptions/4444-dddd',
+                        'type' => 'application/prs.hal-forms+json',
+                    ],
+                ],
+                'mapped_identifiers' => [
+                    [
+                        'name' => 'pim_upc',
+                        'value' => '4444-dddd',
+                    ],
+                ],
+                'mapped_attributes' => [
+                    [
+                        'name' => 'memory',
+                        'value' => '512 MEGABYTE',
+                    ],
+                    [
+                        'name' => 'series',
+                        'value' => 'R7000',
+                    ],
+                ],
+                'misses_mapping' => false,
+            ],
         ];
 
         return $productSubscriptions[$numberOfTheSubscription - 1];
@@ -280,7 +353,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                     $this->getProductSubscription(2),
                 ],
             ],
-            'total' => 3,
+            'total' => 4,
             'limit' => 2,
         ];
     }
@@ -297,9 +370,10 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
             '_embedded' => [
                 'subscription' => [
                     $this->getProductSubscription(3),
+                    $this->getProductSubscription(4),
                 ],
             ],
-            'total' => 3,
+            'total' => 4,
             'limit' => 2,
         ];
     }

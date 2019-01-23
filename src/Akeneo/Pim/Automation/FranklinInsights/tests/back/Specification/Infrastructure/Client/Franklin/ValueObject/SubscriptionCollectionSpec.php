@@ -10,23 +10,21 @@ use PhpSpec\ObjectBehavior;
 
 class SubscriptionCollectionSpec extends ObjectBehavior
 {
-    public function let(): void
-    {
-        $this->beConstructedWith($this->buildApiResponse());
-    }
-
     public function it_is_subscription_collection(): void
     {
+        $this->beConstructedWith($this->buildApiResponse());
         $this->shouldHaveType(SubscriptionCollection::class);
     }
 
     public function it_is_iterable(): void
     {
+        $this->beConstructedWith($this->buildApiResponse());
         $this->shouldImplement(\IteratorAggregate::class);
     }
 
     public function it_returns_a_collection_of_subscription(): void
     {
+        $this->beConstructedWith($this->buildApiResponse());
         $subscriptions = $this->getIterator()->getArrayCopy();
         $subscriptions->shouldBeArray();
         $subscriptions->shouldHaveCount(2);
@@ -34,13 +32,24 @@ class SubscriptionCollectionSpec extends ObjectBehavior
         $subscriptions[1]->shouldBeAnInstanceOf(Subscription::class);
     }
 
+    public function it_skips_a_subscription_if_it_is_invalid_and_returns_the_collection(): void
+    {
+        $this->beConstructedWith($this->buildInvalidApiResponse());
+        $subscriptions = $this->getIterator()->getArrayCopy();
+        $subscriptions->shouldBeArray();
+        $subscriptions->shouldHaveCount(1);
+        $subscriptions[0]->shouldBeAnInstanceOf(Subscription::class);
+    }
+
     public function it_returns_the_first_subscription(): void
     {
+        $this->beConstructedWith($this->buildApiResponse());
         $this->first()->shouldReturnAnInstanceOf(Subscription::class);
     }
 
     public function it_throws_an_exception_if_the_validation_fails(): void
     {
+        $this->beConstructedWith($this->buildApiResponse());
         $subscriptions = [
             '_embedded' => [
                 'subscription' => 'invalid value',
@@ -65,6 +74,26 @@ class SubscriptionCollectionSpec extends ObjectBehavior
                 'subscription' => [
                     0 => $this->buildFirstSubscription(),
                     1 => $this->buildSecondSubscription(),
+                ],
+            ],
+        ];
+    }
+
+    private function buildInvalidApiResponse()
+    {
+        return [
+            '_links' => [
+                0 => [
+                    'href' => '/api/subscriptions/a3fd0f30-c689-4a9e-84b4-7eac1f662000',
+                ],
+                1 => [
+                    'href' => '/api/subscriptions/86b7a527-9531-4a46-bc5c-02d89dcbc7eb',
+                ],
+            ],
+            '_embedded' => [
+                'subscription' => [
+                    0 => $this->buildInvalidSubscription(),
+                    1 => $this->buildFirstSubscription(),
                 ],
             ],
         ];
@@ -126,6 +155,33 @@ class SubscriptionCollectionSpec extends ObjectBehavior
                 [
                     'name' => 'processor_frequency',
                     'value' => '1 GIGAHERTZ',
+                ],
+            ],
+            'misses_mapping' => false,
+        ];
+    }
+
+    private function buildInvalidSubscription()
+    {
+        return [
+            'id' => 'a3fd0f30-c689-4a9e-84b4-7eac1f662000',
+            'identifiers' => [
+                'upc' => '123456782000',
+            ],
+            'attributes' => [
+                'Processor' => '2 GHz',
+            ],
+            'extra' => [],
+            'mapped_identifiers' => [
+                [
+                    'name' => 'ean',
+                    'value' => '123456782000',
+                ],
+            ],
+            'mapped_attributes' => [
+                [
+                    'name' => 'processor_frequency',
+                    'value' => '2 GIGAHERTZ',
                 ],
             ],
             'misses_mapping' => false,

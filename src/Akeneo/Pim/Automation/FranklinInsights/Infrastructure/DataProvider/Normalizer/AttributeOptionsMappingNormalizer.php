@@ -16,12 +16,24 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Nor
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class AttributeOptionsMappingNormalizer
 {
+    /** @var AttributeOptionRepositoryInterface */
+    private $attributeOptionRepository;
+
+    /**
+     * @param AttributeOptionRepositoryInterface $attributeOptionRepository
+     */
+    public function __construct(AttributeOptionRepositoryInterface $attributeOptionRepository)
+    {
+        $this->attributeOptionRepository = $attributeOptionRepository;
+    }
+
     /**
      * @param AttributeOptionsMapping $attributeOptionsMapping
      *
@@ -30,6 +42,8 @@ class AttributeOptionsMappingNormalizer
     public function normalize(AttributeOptionsMapping $attributeOptionsMapping): array
     {
         $result = [];
+
+        $optionTranslations = $this->getAllOptionTranslations($attributeOptionsMapping->getOptionCodes());
 
         foreach ($attributeOptionsMapping as $optionMapping) {
             /* @var AttributeOption $optionMapping */
@@ -40,7 +54,7 @@ class AttributeOptionsMappingNormalizer
                         'en_US' => $optionMapping->getFranklinOptionLabel(),
                     ],
                 ],
-                'to' => $this->computeTargetOptionMapping($optionMapping),
+                'to' => $this->computeTargetOptionMapping($optionMapping, $optionTranslations),
                 'status' => $optionMapping->isMapped() ? OptionMapping::STATUS_ACTIVE : OptionMapping::STATUS_INACTIVE,
             ];
         }
@@ -48,21 +62,41 @@ class AttributeOptionsMappingNormalizer
         return $result;
     }
 
-    private function computeTargetOptionMapping(AttributeOption $optionMapping)
+    /**
+     * @param AttributeOption $optionMapping
+     * @param array $translations
+     *
+     * @return array|null
+     */
+    private function computeTargetOptionMapping(AttributeOption $optionMapping, array $translations)
     {
         $to = null;
         if ($optionMapping->isMapped()) {
-            $pimLabel = null;
-            if (!empty($optionMapping->getPimOptionLabel())) {
-                $pimLabel = ['en_US' => $optionMapping->getPimOptionLabel()];
-            }
-
             $to = [
                 'id' => $optionMapping->getPimOptionId(),
-                'label' => $pimLabel,
+                'label' => $translations[$optionMapping->getPimOptionId()] ?? [],
             ];
         }
 
         return $to;
+    }
+
+    /**
+     * @param array $optionsCodes
+     *
+     * @return array
+     */
+    private function getAllOptionTranslations(array $optionsCodes)
+    {
+        $options = $this->attributeOptionRepository->findBy(['code' => array_values($optionsCodes)]);
+
+        $translationsByOptionCode = [];
+        foreach ($options as $option) {
+            foreach ($option->getOptionValues() as $translation) {
+                $translationsByOptionCode[$option->getCode()][$translation->getLocale()] = $translation->getValue();
+            }
+        }
+
+        return $translationsByOptionCode;
     }
 }

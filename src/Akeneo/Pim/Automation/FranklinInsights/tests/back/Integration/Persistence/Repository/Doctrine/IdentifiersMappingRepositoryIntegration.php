@@ -15,7 +15,7 @@ namespace Akeneo\Test\Pim\Automation\FranklinInsights\Integration\Persistence\Re
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Test\Integration\Configuration as TestConfiguration;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 /**
@@ -23,79 +23,90 @@ use Akeneo\Test\Integration\TestCase;
  */
 class IdentifiersMappingRepositoryIntegration extends TestCase
 {
-    public function test_it_creates_an_identifiers_mapping(): void
+    public function test_that_it_creates_an_identifiers_mapping(): void
     {
-        $identifiersMapping = $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')->find();
-
         $this->createAttribute('test');
-        $identifiersMapping->map('asin', $this->getAttribute('sku'));
-        $identifiersMapping->map('upc', $this->getAttribute('test'));
-        $this->saveIdentifiersMapping($identifiersMapping);
+        $identifiersMapping = new IdentifiersMapping(
+            [
+                'asin' => $this->getAttribute('sku'),
+                'upc' => $this->getAttribute('test'),
+            ]
+        );
 
-        $this->assertMappingEquals([
+        $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
+             ->save($identifiersMapping);
+
+        $this->assertMappingEquals(
             [
-                'franklin_code' => 'brand',
-                'attribute_id' => null,
-            ],
-            [
-                'franklin_code' => 'mpn',
-                'attribute_id' => null,
-            ],
-            [
-                'franklin_code' => 'upc',
-                'attribute_id' => $this->getAttribute('test')->getId(),
-            ],
-            [
-                'franklin_code' => 'asin',
-                'attribute_id' => $this->getAttribute('sku')->getId(),
-            ],
-        ]);
+                [
+                    'franklin_code' => 'brand',
+                    'attribute_id' => null,
+                ],
+                [
+                    'franklin_code' => 'mpn',
+                    'attribute_id' => null,
+                ],
+                [
+                    'franklin_code' => 'upc',
+                    'attribute_id' => $this->getAttribute('test')->getId(),
+                ],
+                [
+                    'franklin_code' => 'asin',
+                    'attribute_id' => $this->getAttribute('sku')->getId(),
+                ],
+            ]
+        );
     }
 
-    public function test_it_updates_an_identifiers_mapping(): void
+    public function test_that_it_can_update_an_existing_identifiers_mapping(): void
     {
-        $identifiersMapping = new IdentifiersMapping();
-        $identifiersMapping->map('asin', $this->getAttribute('sku'));
-        $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')->save($identifiersMapping);
+        $this->insertIdentifiersMapping(['asin' => 'sku']);
 
-        $this->createAttribute('ean');
-        $identifiersMapping = $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')->find();
-        $identifiersMapping->map('upc', $this->getAttribute('ean'));
-        $this->saveIdentifiersMapping($identifiersMapping);
+        $this->createAttribute('asin');
+        $identifiersMapping = $this
+            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
+            ->find();
 
-        $this->assertMappingEquals([
+        $identifiersMapping
+            ->map('asin', $this->getAttribute('asin'))
+            ->map('upc', $this->getAttribute('sku'));
+
+        $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
+             ->save($identifiersMapping);
+
+        $this->assertMappingEquals(
             [
-                'franklin_code' => 'brand',
-                'attribute_id' => null,
-            ],
-            [
-                'franklin_code' => 'mpn',
-                'attribute_id' => null,
-            ],
-            [
-                'franklin_code' => 'upc',
-                'attribute_id' => $this->getAttribute('ean')->getId(),
-            ],
-            [
-                'franklin_code' => 'asin',
-                'attribute_id' => $this->getAttribute('sku')->getId(),
-            ],
-        ]);
+                [
+                    'franklin_code' => 'brand',
+                    'attribute_id' => null,
+                ],
+                [
+                    'franklin_code' => 'mpn',
+                    'attribute_id' => null,
+                ],
+                [
+                    'franklin_code' => 'upc',
+                    'attribute_id' => $this->getAttribute('sku')->getId(),
+                ],
+                [
+                    'franklin_code' => 'asin',
+                    'attribute_id' => $this->getAttribute('asin')->getId(),
+                ],
+            ]
+        );
     }
 
-    public function test_it_finds_identifiers_mapping(): void
+    public function test_that_it_finds_an_identifiers_mapping(): void
     {
-        $identifiersMappingRepository = $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping');
+        $this->insertIdentifiersMapping(['asin' => 'sku']);
+        $this->getFromTestContainer('doctrine.orm.entity_manager')->clear();
 
-        $identifiersMapping = new IdentifiersMapping();
-        $identifiersMapping->map('asin', $this->getAttribute('sku'));
-        $identifiersMappingRepository->save($identifiersMapping);
-
-        $this->get('doctrine.orm.entity_manager')->clear();
-        $savedMapping = $identifiersMappingRepository->find();
+        $savedMapping = $this
+            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
+            ->find();
 
         $this->assertEquals(
-            (new IdentifiersMapping())->map('asin', $this->getAttribute('sku')),
+            new IdentifiersMapping(['asin' => $this->getAttribute('sku')]),
             $savedMapping
         );
     }
@@ -103,20 +114,32 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration(): TestConfiguration
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }
 
     /**
-     * @param IdentifiersMapping $identifiersMapping
+     * @param array $mappedAttributes
      */
-    private function saveIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
+    private function insertIdentifiersMapping(array $mappedAttributes): void
     {
-        $this->get('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')->save($identifiersMapping);
+        $insertQuery = <<<SQL
+INSERT INTO pimee_franklin_insights_identifier_mapping(franklin_code, attribute_id)
+VALUES (:franklinCode, :attributeId);
+SQL;
 
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $entityManager->clear();
+        $connection = $this->getFromTestContainer('database_connection');
+        foreach (IdentifiersMapping::FRANKLIN_IDENTIFIERS as $identifierCode) {
+            $attribute = $this->getAttribute($mappedAttributes[$identifierCode] ?? null);
+            $connection->executeQuery(
+                $insertQuery,
+                [
+                    'franklinCode' => $identifierCode,
+                    'attributeId' => $attribute ? $attribute->getId() : null,
+                ]
+            );
+        }
     }
 
     private function assertMappingEquals(array $expectedMapping): void
@@ -126,14 +149,14 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         $this->assertEquals($expectedMapping, $databaseContent);
     }
 
-    private function getIdentifiersMapping()
+    /**
+     * @return array
+     */
+    private function getIdentifiersMapping(): array
     {
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $statement = $entityManager->getConnection()->query(
-            'SELECT franklin_code, attribute_id from pimee_franklin_insights_identifier_mapping;'
-        );
-
-        return $statement->fetchAll();
+        return $this->getFromTestContainer('database_connection')
+                    ->query('SELECT franklin_code, attribute_id from pimee_franklin_insights_identifier_mapping;')
+                    ->fetchAll();
     }
 
     /**
@@ -141,22 +164,26 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
      */
     private function createAttribute(string $code): void
     {
-        $attribute = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')->build([
-            'code' => $code,
-            'type' => 'pim_catalog_text',
-            'group' => 'other',
-        ]);
+        $attribute = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')->build(
+            [
+                'code' => $code,
+                'type' => 'pim_catalog_text',
+                'group' => 'other',
+            ]
+        );
 
         $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      *
-     * @return AttributeInterface
+     * @return AttributeInterface|null
      */
-    private function getAttribute(string $name): AttributeInterface
+    private function getAttribute(?string $name): ?AttributeInterface
     {
-        return $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($name);
+        return null !== $name ?
+            $this->getFromTestContainer('pim_catalog.repository.attribute')->findOneByIdentifier($name) :
+            null;
     }
 }

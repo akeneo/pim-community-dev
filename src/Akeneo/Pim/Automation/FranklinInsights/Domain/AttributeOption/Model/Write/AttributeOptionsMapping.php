@@ -39,6 +39,18 @@ class AttributeOptionsMapping implements \IteratorAggregate
     }
 
     /**
+     * @return array
+     */
+    public function getOptionCodes(): array
+    {
+        return array_filter(
+            array_map(function (AttributeOption $option) {
+                return $option->getPimOptionId();
+            }, $this->attributeOptions)
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getIterator(): \Iterator

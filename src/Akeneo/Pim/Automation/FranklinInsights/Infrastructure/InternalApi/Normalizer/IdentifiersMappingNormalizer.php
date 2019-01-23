@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\Identi
 class IdentifiersMappingNormalizer
 {
     /**
-     * @param array $identifiers
+     * @param IdentifiersMapping $identifiersMapping
      *
      * @return array
      */

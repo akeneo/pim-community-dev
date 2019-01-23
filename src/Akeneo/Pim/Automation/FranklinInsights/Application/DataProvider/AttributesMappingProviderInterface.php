@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 
 /**
@@ -32,9 +33,9 @@ interface AttributesMappingProviderInterface
 
     /**
      * @param string $familyCode
-     * @param array $attributesMapping
+     * @param AttributesMapping $attributesMapping
      *
      * @throws DataProviderException
      */
-    public function saveAttributesMapping(string $familyCode, array $attributesMapping): void;
+    public function saveAttributesMapping(string $familyCode, AttributesMapping $attributesMapping): void;
 }

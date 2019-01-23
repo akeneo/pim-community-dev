@@ -36,24 +36,6 @@ class IdentifierMappingSpec extends ObjectBehavior
         $this->getAttribute()->shouldReturn($akeneoAttribute);
     }
 
-    public function it_sets_an_akeneo_attribute($akeneoAttribute, AttributeInterface $anotherAkeneoAttribute): void
-    {
-        $this->getAttribute()->shouldReturn($akeneoAttribute);
-
-        $this->setAttribute($anotherAkeneoAttribute);
-
-        $this->getAttribute()->shouldReturn($anotherAkeneoAttribute);
-    }
-
-    public function it_sets_an_akeneo_attribute_to_null($akeneoAttribute): void
-    {
-        $this->getAttribute()->shouldReturn($akeneoAttribute);
-
-        $this->setAttribute(null);
-
-        $this->getAttribute()->shouldReturn(null);
-    }
-
     public function it_build_an_identifier_mapping_object_without_akeneo_attribute(): void
     {
         $this->beConstructedWith('franklin_code', null);

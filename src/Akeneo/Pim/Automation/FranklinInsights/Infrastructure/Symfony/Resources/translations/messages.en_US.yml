@@ -14,7 +14,13 @@ akeneo_franklin_insights:
     entity:
         product_subscription:
             constraint:
-                invalid_mapped_values: 'Sorry, failed to subscribe product to Franklin Insights. Please subscribe the product with a valid combination of identifiers.'
+                family_required: 'A product family is required in order to subscribe the product to Franklin Insights.'
+                no_identifiers_mapping: 'Please map your catalog product identifiers at Settings > Franklin Insights before subscribing products.'
+                insufficient_credits: "Failed to subscribe product to Franklin Insights. You don't have enough credit."
+                invalid_mapped_values: 'Failed to subscribe product to Franklin Insights. Please subscribe the product with a valid combination of identifiers.'
+                already_subscribed_product: 'The product is already subscribed.'
+                variant_product: 'Variant products cannot be subscribed to Franklin Insights.'
+                inactive_connection: 'Failed to subscribe product to Franklin Insights. Please configure your connection to Franklin Insights.'
 
 job_execution.summary:
     configuration_validation: Franklin Insights configuration

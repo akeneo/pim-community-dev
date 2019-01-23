@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 
 /**
  * @author    Romain Monceau <romain@akeneo.com>
@@ -25,19 +24,20 @@ class SaveAttributesMappingByFamilyCommand
     /** @var string */
     private $familyCode;
 
-    /** @var AttributeMapping[] */
-    private $attributesMapping = [];
+    /** @var array */
+    private $mapping = [];
 
     /**
      * @param string $familyCode
      * @param array $mapping
      *
+     * @throws AttributeMappingException
      * @throws InvalidMappingException
      */
     public function __construct(string $familyCode, array $mapping)
     {
-        $this->attributesMapping = [];
         $this->validate($mapping);
+        $this->mapping = $mapping;
 
         $this->familyCode = $familyCode;
     }
@@ -51,11 +51,11 @@ class SaveAttributesMappingByFamilyCommand
     }
 
     /**
-     * @return AttributeMapping[]
+     * @return array
      */
-    public function getAttributesMapping(): array
+    public function getMapping(): array
     {
-        return $this->attributesMapping;
+        return $this->mapping;
     }
 
     /**
@@ -63,23 +63,24 @@ class SaveAttributesMappingByFamilyCommand
      *
      * Format is:
      * [
-     *      "color" => [
+     *      "<franklin_attr_code>" => [
      *          "franklinAttribute" => [
-     *              "label" => "Color",
-     *              "type" => "multiselect"
+     *              "label" => "<franklin_label>",
+     *              "type" => "<franklin_type>"
      *          ],
-     *          "attribute" => "tshirt_style",
+     *          "attribute" => "<pim_attr_code>",
      *      ]
      * ]
      *
      * @param array $mapping
      *
      * @throws InvalidMappingException
+     * @throws AttributeMappingException
      */
     private function validate(array $mapping): void
     {
         if (empty($mapping)) {
-            throw InvalidMappingException::emptyMapping();
+            throw AttributeMappingException::emptyAttributesMapping();
         }
 
         foreach ($mapping as $targetKey => $mappingRow) {
@@ -91,11 +92,9 @@ class SaveAttributesMappingByFamilyCommand
                 throw InvalidMappingException::expectedKey($targetKey, 'attribute');
             }
 
-            $this->attributesMapping[] = new AttributeMapping(
-                $targetKey,
-                $mappingRow['franklinAttribute']['type'],
-                $mappingRow['attribute']
-            );
+            if (empty($mappingRow['attribute'])) {
+                $mapping[$targetKey]['attribute'] = null;
+            }
         }
 
         $this->validatePimAttributesAreNotUsedTwiceInTheSameMapping($mapping);

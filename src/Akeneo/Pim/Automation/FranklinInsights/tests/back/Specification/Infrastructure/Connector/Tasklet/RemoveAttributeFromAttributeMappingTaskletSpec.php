@@ -19,7 +19,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping as WriteAttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet\RemoveAttributeFromAttributeMappingTasklet;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -68,7 +67,6 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
             'franklin_size' => [
                 'franklinAttribute' => ['type' => 'text'],
                 'attribute' => null,
-                'status' => WriteAttributeMapping::ATTRIBUTE_PENDING,
             ],
             'franklin_color' => [
                 'franklinAttribute' => ['type' => 'text'],

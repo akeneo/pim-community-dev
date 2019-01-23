@@ -23,7 +23,7 @@ class AttributeOptionSpec extends ObjectBehavior
 {
     public function it_is_initializable(): void
     {
-        $this->beConstructedWith('color1', 'red', 'color_1', 'rouge');
+        $this->beConstructedWith('color1', 'red', 'color_1');
         $this->shouldBeAnInstanceOf(AttributeOption::class);
     }
 }
