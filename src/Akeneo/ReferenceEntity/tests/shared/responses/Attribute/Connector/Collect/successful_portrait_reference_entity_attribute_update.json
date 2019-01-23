@@ -16,7 +16,7 @@
             "value_per_locale": false,
             "value_per_channel": false,
             "is_required_for_completeness": false,
-            "max_file_size": "1024",
+            "max_file_size": null,
             "allowed_extensions": ["gif", "png"]
         }
     },

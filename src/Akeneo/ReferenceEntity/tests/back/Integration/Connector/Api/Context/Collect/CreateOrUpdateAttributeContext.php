@@ -291,7 +291,7 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxFileSize::fromString('1024'),
+            AttributeMaxFileSize::noLimit(),
             AttributeAllowedExtensions::fromList(['gif', 'png'])
         );
 
