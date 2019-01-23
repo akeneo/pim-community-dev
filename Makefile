@@ -35,3 +35,8 @@ enrichment-coupling:
 
 .PHONY: coupling ## Run the coupling-detector on Everything
 coupling: structure-coupling user-management-coupling channel-coupling enrichment-coupling
+
+### Acceptance tests
+.PHONY: coupling ## Run all acceptance tests
+acceptance:
+	vendor/bin/behat --strict -p acceptance -vv

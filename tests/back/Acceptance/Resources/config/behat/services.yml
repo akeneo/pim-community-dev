@@ -57,7 +57,6 @@ services:
             - '@pim_catalog.updater.product'
             - '@validator'
 
-    ### Behat context, don't forget to tag them (fob.context_service)
     test.locale.context:
         class: 'Akeneo\Test\Acceptance\Locale\LocaleContext'
         arguments:
