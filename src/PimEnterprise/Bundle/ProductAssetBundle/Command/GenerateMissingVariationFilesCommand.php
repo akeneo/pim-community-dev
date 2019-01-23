@@ -12,13 +12,12 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\Connection;
 use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
+use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -54,87 +53,23 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $asset = null;
-
+        $assetCodes = $this->isGenerateForAllAssets($input) ? $this->getAllAssetsCodes() : [$input->getOption('asset')];
         try {
-            if ($this->isGenerateForAllAssets($input)) {
-                $assetsCodes = $this->getAllAssetsCodes();
-                $chunks = array_chunk($assetsCodes, static::BATCH_SIZE);
-                foreach ($chunks as $assetCodes) {
-                    $assets = $this->buildAssets($assetCodes);
-
-                    $this->getAssetSaver()->saveAll($assets);
-                    $this->detachAll($assets);
-                }
-            } else {
-                $assetCode = $input->getOption('asset');
-                $asset = $this->retrieveAsset($assetCode);
-                $this->buildAsset($asset);
-                $this->getAssetSaver()->save($asset);
-            }
-
-            $missingVariations = $this->getAssetFinder()->retrieveVariationsNotGenerated($asset);
+            $this->buildAssets($assetCodes);
         } catch (\LogicException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
             return 1;
         }
 
-        if (0 === count($missingVariations)) {
+        $missingVariations = $this->findMissingVariations($input);
+        if (empty($missingVariations)) {
             $output->writeln('<info>No missing variation</info>');
 
             return 0;
         }
 
-        $generator = $this->getVariationsCollectionFileGenerator();
-        $processedList = $generator->generate($missingVariations, true);
-
-        $processedAssets = [];
-        foreach ($processedList as $item) {
-            $variation = $item->getItem();
-
-            if (!$variation instanceof VariationInterface) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a "PimEnterprise\Component\ProductAsset\Model\VariationInterface", "%s" provided.',
-                        get_class($variation)
-                    )
-                );
-            }
-
-            $msg = $this->getGenerationMessage(
-                $variation->getAsset(),
-                $variation->getChannel(),
-                $variation->getLocale()
-            );
-
-            switch ($item->getState()) {
-                case ProcessedItem::STATE_ERROR:
-                    $msg = sprintf("<error>%s\n%s</error>", $msg, $item->getReason());
-                    break;
-                case ProcessedItem::STATE_SKIPPED:
-                    $msg = sprintf('%s <comment>Skipped (%s)</comment>', $msg, $item->getReason());
-                    break;
-                default:
-                    $asset = $variation->getAsset();
-                    if (!array_key_exists($asset->getCode(), $processedAssets)) {
-                        $processedAssets[$asset->getCode()] = $asset;
-                    }
-                    $msg = sprintf('%s <info>Done!</info>', $msg);
-                    break;
-            }
-
-            $output->writeln($msg);
-        }
-
-        $output->writeln('<info>Schedule completeness calculation</info>');
-
-        foreach ($processedAssets as $asset) {
-            $output->writeln(sprintf('<info>Schedule completeness for asset %s</info>', $asset->getCode()));
-            $this->getCompletenessRemover()->removeForAsset($asset);
-        }
-
-        $output->writeln('<info>Done!</info>');
+        $this->generateMissingVariations($output, $missingVariations);
 
         return 0;
     }
@@ -177,21 +112,6 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     }
 
     /**
-     * @param array $assetCodes asset codes
-     *
-     * @return array|ArrayCollection
-     */
-    protected function buildAssets($assetCodes)
-    {
-        $assets = $this->fetchAssetsByCode($assetCodes);
-        foreach ($assets as $asset) {
-            $this->buildAsset($asset);
-        }
-
-        return $assets;
-    }
-
-    /**
      * @param array $assetCodes
      *
      * @return array|ArrayCollection
@@ -224,5 +144,121 @@ SQL;
     protected function detachAll($objects)
     {
         $this->getContainer()->get('akeneo_storage_utils.doctrine.object_detacher')->detachAll($objects);
+    }
+
+    /**
+     * @param InputInterface $input
+     *
+     * @return array
+     */
+    protected function findMissingVariations(InputInterface $input): array
+    {
+        $asset = null;
+        if (!$this->isGenerateForAllAssets($input)) {
+            $asset = $this->retrieveAsset($input->getOption('asset'));
+        }
+        $missingVariations = $this->getAssetFinder()->retrieveVariationsNotGenerated($asset);
+
+        return $missingVariations;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param Asset           $missingVariations
+     */
+    protected function generateMissingVariations(OutputInterface $output, array $missingVariations): void
+    {
+        $processedAssets = $this->generateVariation($output, $missingVariations);
+        $this->scheduleCompleteness($output, $processedAssets);
+        $output->writeln('<info>Done!</info>');
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param                 $missingVariations
+     *
+     * @return array
+     */
+    protected function generateVariation(OutputInterface $output, $missingVariations): array
+    {
+        $generator = $this->getVariationsCollectionFileGenerator();
+        $processedList = $generator->generate($missingVariations, true);
+
+        $processedAssets = [];
+        foreach ($processedList as $item) {
+            $variation = $item->getItem();
+
+            if (!$variation instanceof VariationInterface) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a "PimEnterprise\Component\ProductAsset\Model\VariationInterface", "%s" provided.',
+                        get_class($variation)
+                    )
+                );
+            }
+
+            $msg = $this->getGenerationMessage(
+                $variation->getAsset(),
+                $variation->getChannel(),
+                $variation->getLocale()
+            );
+
+            switch ($item->getState()) {
+                case ProcessedItem::STATE_ERROR:
+                    $msg = sprintf("<error>%s\n%s</error>", $msg, $item->getReason());
+                    break;
+                case ProcessedItem::STATE_SKIPPED:
+                    $msg = sprintf('%s <comment>Skipped (%s)</comment>', $msg, $item->getReason());
+                    break;
+                default:
+                    $asset = $variation->getAsset();
+                    if (!array_key_exists($asset->getCode(), $processedAssets)) {
+                        $processedAssets[$asset->getCode()] = $asset;
+                    }
+                    $msg = sprintf('%s <info>Done!</info>', $msg);
+                    break;
+            }
+
+            $output->writeln($msg);
+        }
+
+        return $processedAssets;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param                 $processedAssets
+     *
+     */
+    protected function scheduleCompleteness(OutputInterface $output, $processedAssets): void
+    {
+        $output->writeln('<info>Schedule completeness calculation</info>');
+
+        foreach ($processedAssets as $asset) {
+            $output->writeln(sprintf('<info>Schedule completeness for asset %s</info>', $asset->getCode()));
+            $this->getCompletenessRemover()->removeForAsset($asset);
+        }
+    }
+
+    /**
+     * @param $assetCodes
+     *
+     */
+    protected function buildAssets($assetCodes): void
+    {
+        $chunks = array_chunk($assetCodes, static::BATCH_SIZE);
+        foreach ($chunks as $assetCodesToBuild) {
+            $assets = $this->fetchAssetsByCode($assetCodesToBuild);
+            $builtAssets = array_map(
+                function (Asset $asset) {
+                    $this->buildAsset($asset);
+
+                    return $asset;
+                },
+                $assets
+            );
+            $this->getAssetSaver()->saveAll($builtAssets);
+            $this->detachAll($assets);
+        }
     }
 }
