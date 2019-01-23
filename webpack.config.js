@@ -5,7 +5,7 @@ const rootDir = process.cwd();
 const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const sourcePath = path.join(rootDir, 'web/js/require-paths.js');
 
@@ -26,25 +26,16 @@ const webpackConfig = {
   stats: {
     hash: false,
     // maxModules: 99999,
-    // modules: true,
+    modules: false,
     timings: true,
     version: true,
-    // reasons: true,
+    reasons: true,
     modulesSort: "size",
   },
   optimization: {
-    moduleIds: 'named',
+    moduleIds: 'hashed',
     nodeEnv: (isProd ? 'production' : 'development'),
-    minimizer: [
-      new UglifyJsPlugin({
-      sourceMap: true,
-      uglifyOptions: {
-        ecma: 8,
-        compress: {
-          warnings: false,
-        },
-      },
-    })],
+    minimizer: [new TerserPlugin()]
   },
   mode: 'development',
   target: 'web',
@@ -63,6 +54,7 @@ const webpackConfig = {
     extensions: ['.js', '.json', '.ts', '.tsx'],
   },
   module: {
+
     rules: [
       // Inject the module config (to replace module.config() from requirejs)
       {
