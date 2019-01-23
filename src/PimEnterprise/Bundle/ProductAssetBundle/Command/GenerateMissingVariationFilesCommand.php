@@ -18,6 +18,7 @@ use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterfa
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -54,9 +55,9 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $asset = null;
+
         try {
-            $isGenerateForAllAssets = $this->isGenerateForAllAssets($input);
-            if ($isGenerateForAllAssets) {
+            if ($this->isGenerateForAllAssets($input)) {
                 $assetsCodes = $this->getAllAssetsCodes();
                 $chunks = array_chunk($assetsCodes, static::BATCH_SIZE);
                 foreach ($chunks as $assetCodes) {
@@ -66,7 +67,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
                     $this->detachAll($assets);
                 }
             } else {
-                $assetCode = $input->getArgument('asset');
+                $assetCode = $input->getOption('asset');
                 $asset = $this->retrieveAsset($assetCode);
                 $this->buildAsset($asset);
                 $this->getAssetSaver()->save($asset);
