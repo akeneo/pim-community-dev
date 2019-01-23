@@ -73,12 +73,14 @@ class AppendAttributeOptionContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions([
-            AttributeOption::create(
-                OptionCode::fromString('blue'),
-                LabelCollection::fromArray([])
-            )
-        ]);
+        $optionAttribute->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('blue'),
+                    LabelCollection::fromArray([])
+                ),
+            ]
+        );
 
         $this->attributeRepository->create($optionAttribute);
     }
@@ -88,11 +90,12 @@ class AppendAttributeOptionContext implements Context
      */
     public function theUserAppendsANewOptionForThisAttribute()
     {
-        $command = new AppendAttributeOptionCommand();
-        $command->referenceEntityIdentifier = 'designer';
-        $command->attributeCode = 'color';
-        $command->optionCode = 'red';
-        $command->labels = ['en_US' => 'Red', 'fr_FR' => 'Rouge'];
+        $command = new AppendAttributeOptionCommand(
+            'designer',
+            'color',
+            'red',
+            ['en_US' => 'Red', 'fr_FR' => 'Rouge']
+        );
 
         $violations = $this->validator->validate($command);
         $this->constraintViolationsContext->addViolations($violations);
@@ -118,7 +121,10 @@ class AppendAttributeOptionContext implements Context
         );
 
         $this->constraintViolationsContext->assertThereIsNoViolations();
-        Assert::assertEquals($expectedOption, $option);
+        Assert::assertEquals(
+            $expectedOption,
+            $option
+        );
     }
 
     /**
@@ -136,12 +142,14 @@ class AppendAttributeOptionContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions([
-            AttributeOption::create(
-                OptionCode::fromString('blue'),
-                LabelCollection::fromArray([])
-            )
-        ]);
+        $optionAttribute->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('blue'),
+                    LabelCollection::fromArray([])
+                ),
+            ]
+        );
 
         $this->attributeRepository->create($optionAttribute);
     }
@@ -151,11 +159,12 @@ class AppendAttributeOptionContext implements Context
      */
     public function theUserAppendsANewOptionForThisOptionCollectionAttribute()
     {
-        $command = new AppendAttributeOptionCommand();
-        $command->referenceEntityIdentifier = 'designer';
-        $command->attributeCode = 'color';
-        $command->optionCode = 'red';
-        $command->labels = ['en_US' => 'Red', 'fr_FR' => 'Rouge'];
+        $command = new AppendAttributeOptionCommand(
+            'designer',
+            'color',
+            'red',
+            ['en_US' => 'Red', 'fr_FR' => 'Rouge']
+        );
 
         $violations = $this->validator->validate($command);
         $this->constraintViolationsContext->addViolations($violations);
@@ -184,7 +193,12 @@ class AppendAttributeOptionContext implements Context
         $options = [];
         for ($i = 0; $i < 100; $i++) {
             $options[] = AttributeOption::create(
-                OptionCode::fromString(sprintf('code_%s', $i)),
+                OptionCode::fromString(
+                    sprintf(
+                        'code_%s',
+                        $i
+                    )
+                ),
                 LabelCollection::fromArray([])
             );
         }
@@ -212,7 +226,12 @@ class AppendAttributeOptionContext implements Context
         $options = [];
         for ($i = 0; $i < 100; $i++) {
             $options[] = AttributeOption::create(
-                OptionCode::fromString(sprintf('code_%s', $i)),
+                OptionCode::fromString(
+                    sprintf(
+                        'code_%s',
+                        $i
+                    )
+                ),
                 LabelCollection::fromArray([])
             );
         }
@@ -236,12 +255,14 @@ class AppendAttributeOptionContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions([
-            AttributeOption::create(
-                OptionCode::fromString('red'),
-                LabelCollection::fromArray([])
-            )
-        ]);
+        $optionAttribute->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray([])
+                ),
+            ]
+        );
 
         $this->attributeRepository->create($optionAttribute);
     }
@@ -261,12 +282,14 @@ class AppendAttributeOptionContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions([
-            AttributeOption::create(
-                OptionCode::fromString('red'),
-                LabelCollection::fromArray([])
-            )
-        ]);
+        $optionAttribute->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray([])
+                ),
+            ]
+        );
 
         $this->attributeRepository->create($optionAttribute);
     }
@@ -276,11 +299,12 @@ class AppendAttributeOptionContext implements Context
      */
     public function theUserAppendsARedOptionIntoTheOptionCollectionAttribute()
     {
-        $command = new AppendAttributeOptionCommand();
-        $command->referenceEntityIdentifier = 'designer';
-        $command->attributeCode = 'color';
-        $command->optionCode = 'red';
-        $command->labels = ['en_US' => 'Red', 'fr_FR' => 'Rouge'];
+        $command = new AppendAttributeOptionCommand(
+            'designer',
+            'color',
+            'red',
+            ['en_US' => 'Red', 'fr_FR' => 'Rouge']
+        );
 
         $violations = $this->validator->validate($command);
         $this->constraintViolationsContext->addViolations($violations);
