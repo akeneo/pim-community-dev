@@ -81,8 +81,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     public function __construct(
         ChannelConfigurationRepositoryInterface $configurationRepository,
         FilesystemProvider $filesystemProvider,
-        SaverInterface $metadataSaver,
-        SaverInterface $variationSaver,
+        SaverInterface $metadataSaver, // TODO: @pull-up - To remove in master
+        SaverInterface $variationSaver, // TODO: @pull-up - To remove in master
         FileTransformerInterface $fileTransformer,
         FileStorerInterface $fileStorer,
         FileFetcherInterface $fileFetcher,
