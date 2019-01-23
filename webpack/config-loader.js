@@ -1,8 +1,6 @@
 /* eslint-env es6 */
 const utils = require('loader-utils');
-const path = require('path');
 const hasModule = content => content.indexOf('__moduleConfig') >= 0;
-const {chain} = require('lodash');
 
 function formatModuleName(name) {
   if (!name) return;
