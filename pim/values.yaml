@@ -170,24 +170,48 @@ mysql:
       enabled: false
 
 elasticsearch:
+  appVersion: "5.6.14"
   image:
     es:
-      repository: quay.io/pires/docker-elasticsearch-kubernetes
-      tag: 5.6.4
-  common:
-    service:
-      name: elasticsearch
-    env:
-      CLUSTER_NAME: "pim-es"
-      ES_PLUGINS_INSTALL: "repository-gcs,https://distfiles.compuscene.net/elasticsearch/elasticsearch-prometheus-exporter-5.6.4.0.zip"
-    stateful:
-      enabled: true
-  data:
-    env:
-      HTTP_ENABLE: true
+      repository: docker.elastic.co/elasticsearch/elasticsearch
+      tag: 5.6.14
+  fullnameOverride: elasticsearch
+  cluster:
+    name: "pim-es"
+  client:
+    replicas: 1
+    heapSize: "128m"
+    resources:
+      limits:
+        cpu: "1"
+      requests:
+        cpu: "25m"
+        memory: "160Mi"
   master:
-    env:
-      HTTP_ENABLE: true
+    replicas: 2
+    persistence:
+      size: 1Gi
+      storageClass: ssd-retain
+    heapSize: "320m"
+    resources:
+      limits:
+        cpu: "1"
+      requests:
+        cpu: "25m"
+        memory: "320Mi"
+  data:
+    replicas: 2
+    persistence:
+      size: 10Gi
+      storageClass: ssd-retain
+    heapSize: "512m"
+    resources:
+      limits:
+        cpu: "1"
+        memory:
+      requests:
+        cpu: "25m"
+        memory: "512Mi"
 
 catalog:
   EE:

@@ -15,7 +15,7 @@ metadata:
     role: {{ $jobName }}
 spec:
   schedule: {{ $jobOptions.schedule | quote }}
-  concurrencyPolicy: Forbid    
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
@@ -37,7 +37,7 @@ spec:
             - name: TRUSTED_PROXY_IPS
               value: 10.0.0.0/8
             - name: PIM_ELASTICSEARCH_HOST
-              value: elasticsearch
+              value: {{ $tplCtx.Values.elasticsearch.fullnameOverride }}-client
             - name: PIM_ELASTICSEARCH_PORT
               value: "9200"
             - name: PIM_SHARED_STORAGE

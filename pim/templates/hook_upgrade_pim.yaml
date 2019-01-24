@@ -50,7 +50,7 @@ spec:
               value: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
             - { name: SYMFONY_ENV, value: prod }
             - { name: TRUSTED_PROXY_IPS, value: 10.0.0.0/8 }
-            - { name: PIM_ELASTICSEARCH_HOST, value: elasticsearch }
+            - { name: PIM_ELASTICSEARCH_HOST, value: {{ .Values.elasticsearch.fullnameOverride }}-client }
             - { name: PIM_ELASTICSEARCH_PORT, value: "9200" }
             - { name: PIM_SHARED_STORAGE, value: /data }
             - { name: PIM_DATABASE_HOST, value: {{ .Values.mysql.mysql.serviceName | quote }} }
