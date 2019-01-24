@@ -142,14 +142,13 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * @throws \Exception
+     * @param string $attributes
+     *
+     * @Given /the predefined attributes? (.*)/
      */
-    private function loadDefaultCatalog(): void
+    public function thePredefinedAttributes(string $attributes): void
     {
-        $this
-            ->getMainContext()
-            ->getSubcontext('catalogConfiguration')
-            ->aCatalogConfiguration('default');
+        $this->loadAttributes(array_map('strtolower', $this->toArray($attributes)));
     }
 
     /**
@@ -259,5 +258,19 @@ class FixturesContext extends PimContext
         $identifiersMapping = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
 
         return array_merge($identifiersMapping, $extractedData);
+    }
+
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
+    private function toArray(string $list): array
+    {
+        if (empty($list)) {
+            return [];
+        }
+
+        return explode(', ', str_replace(' and ', ', ', $list));
     }
 }

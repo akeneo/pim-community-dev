@@ -180,6 +180,7 @@ legacy:
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FranklinConfigurationContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@akeneo.pim.automation.franklin_insights.repository.configuration'
+                    - '@pim_catalog.command_launcher'
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\ProductSubscriptionContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@pim_catalog.repository.product'
@@ -188,6 +189,11 @@ legacy:
                     - '@pim_catalog.repository.product'
                     - '@pimee_workflow.repository.product_draft'
                     - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\IdentifiersMappingContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                    - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
+                    - '@pim_catalog.repository.attribute'
+                    - '@akeneo_batch.job.job_instance_repository'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
