@@ -184,7 +184,7 @@ elasticsearch:
     resources:
       limits:
         cpu: "1"
-        memory: "256Mi"
+        memory: "320Mi"
       requests:
         cpu: "25m"
         memory: "160Mi"
@@ -197,7 +197,7 @@ elasticsearch:
     resources:
       limits:
         cpu: "1"
-        memory: "400Mi"
+        memory: "512Mi"
       requests:
         cpu: "25m"
         memory: "320Mi"
@@ -210,7 +210,7 @@ elasticsearch:
     resources:
       limits:
         cpu: "1"
-        memory: "768Mi"
+        memory: "1024Mi"
       requests:
         cpu: "25m"
         memory: "512Mi"
