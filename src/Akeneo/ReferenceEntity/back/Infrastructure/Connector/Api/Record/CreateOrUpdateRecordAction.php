@@ -130,10 +130,11 @@ class CreateOrUpdateRecordAction
             return null;
         }
 
-        $command = new CreateRecordCommand();
-        $command->code = $recordCode->normalize();
-        $command->referenceEntityIdentifier = $referenceEntityIdentifier->normalize();
-        $command->labels = [];
+        $command = new CreateRecordCommand(
+            $referenceEntityIdentifier->normalize(),
+            $recordCode->normalize(),
+            []
+        );
 
         $violations = $this->recordDataValidator->validate($command);
         if ($violations->count() > 0) {

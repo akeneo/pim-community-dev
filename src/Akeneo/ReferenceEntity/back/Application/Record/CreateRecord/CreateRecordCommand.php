@@ -20,12 +20,19 @@ namespace Akeneo\ReferenceEntity\Application\Record\CreateRecord;
  */
 class CreateRecordCommand
 {
-    /** @var string */
+    /** @var ?string */
     public $referenceEntityIdentifier;
 
-    /** @var string */
+    /** @var ?string */
     public $code;
 
     /** @var array */
     public $labels;
+
+    public function __construct(?string $referenceEntityIdentifier, ?string $code, array $labels)
+    {
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->code = $code;
+        $this->labels = $labels;
+    }
 }
