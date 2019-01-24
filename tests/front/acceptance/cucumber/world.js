@@ -16,8 +16,7 @@ module.exports = function(cucumber) {
       ignoreHTTPSErrors: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       headless: !this.parameters.debug,
-      slowMo: 0,
-      pipe: true,
+      slowMo: 0
     });
 
     this.page = await this.browser.newPage();
