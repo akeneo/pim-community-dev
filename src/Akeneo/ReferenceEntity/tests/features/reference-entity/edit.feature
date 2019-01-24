@@ -46,6 +46,7 @@ Feature: Edit a reference entity
   @acceptance-front
   Scenario: Updating a reference entity labels
     Given a valid reference entity
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_reference_entity_edit | true |
     When the user updates the reference entity "designer" with:
@@ -55,8 +56,16 @@ Feature: Edit a reference entity
       | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
 
   @acceptance-front
+  Scenario: Cannot update a reference entity labels without the locale permission
+    Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_reference_entity_edit | true |
+    Then the label of the reference entity "designer" should be read only
+
+  @acceptance-front
   Scenario: Updating a reference entity with unexpected backend answer
     Given a valid reference entity
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_reference_entity_edit | true |
     When the user changes the reference entity "designer" with:
@@ -74,6 +83,7 @@ Feature: Edit a reference entity
   @acceptance-front
   Scenario: Updating a reference entity when the backend answer an error
     Given a valid reference entity
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_reference_entity_edit | true |
     When the user changes the reference entity "designer" with:
@@ -85,6 +95,7 @@ Feature: Edit a reference entity
   @acceptance-front
   Scenario: Display updated edit form message
     Given a valid reference entity
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_reference_entity_edit | true |
     When the user changes the reference entity "designer" with:

@@ -117,7 +117,7 @@ class CreateAttributeContext implements Context
         $expected['is_required'] = json_decode($expected['is_required']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
-        $expected['max_length'] = (int) $expected['max_length'];
+        $expected['max_length'] = $expected['max_length'] !== 'null' ? (int) $expected['max_length'] : null;
         $expected['is_textarea'] = '' === $expected['is_textarea'] ? null : json_decode($expected['is_textarea']);
         $expected['is_rich_text_editor'] = '' === $expected['is_rich_text_editor'] ? null : json_decode($expected['is_rich_text_editor']);
         $expected['validation_rule'] = '' === $expected['validation_rule'] ? null : $expected['validation_rule'];
@@ -323,6 +323,7 @@ class CreateAttributeContext implements Context
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['allowed_extensions'] = json_decode($expected['allowed_extensions']);
+        $expected['max_file_size'] = $expected['max_file_size'] !== 'null' ? $expected['max_file_size'] : null;
         ksort($expected);
 
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);

@@ -13,17 +13,12 @@ const View = ({
   value,
   onChange,
   locale,
-  rights,
+  canEditData,
 }: {
   value: Value;
   locale: LocaleReference;
   onChange: (value: Value) => void;
-  rights: {
-    record: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
+  canEditData: boolean;
 }) => {
   if (!(value.data instanceof OptionCollectionData)) {
     return null;
@@ -48,7 +43,7 @@ const View = ({
         data={formatedOptions}
         value={data.isEmpty() ? [] : data.normalize()}
         multiple={true}
-        readOnly={!rights.record.edit}
+        readOnly={!canEditData}
         configuration={{
           allowClear: true,
           placeholder: __('pim_reference_entity.attribute.options.no_value'),

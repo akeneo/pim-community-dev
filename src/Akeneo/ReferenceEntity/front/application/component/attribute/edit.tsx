@@ -32,6 +32,9 @@ import AttributeReference from 'akeneoreferenceentity/domain/model/attribute/att
 
 interface OwnProps {
   rights: {
+    locale: {
+      edit: boolean;
+    };
     attribute: {
       create: boolean;
       edit: boolean;
@@ -76,6 +79,9 @@ const getAdditionalProperty = (
   errors: ValidationError[],
   locale: string,
   rights: {
+    locale: {
+      edit: boolean;
+    };
     attribute: {
       create: boolean;
       edit: boolean;
@@ -140,9 +146,8 @@ class Edit extends React.Component<EditProps> {
 
   render(): JSX.Element | JSX.Element[] | null {
     const label = this.props.attribute.getLabel(this.props.context.locale);
-    const inputTextClassName = `AknTextField AknTextField--light ${
-      !this.props.rights.attribute.edit ? 'AknTextField--disabled' : ''
-    }`;
+    const canEditLabel = this.props.rights.attribute.edit && this.props.rights.locale.edit;
+    const labelClassName = `AknTextField AknTextField--light ${!canEditLabel ? 'AknTextField--disabled' : ''}`;
 
     // This will be simplyfied in the near future
     const displayDeleteButton =
@@ -178,13 +183,13 @@ class Edit extends React.Component<EditProps> {
                     ref={(input: HTMLInputElement) => {
                       this.labelInput = input;
                     }}
-                    className={inputTextClassName}
+                    className={labelClassName}
                     id="pim_reference_entity.attribute.edit.input.label"
                     name="label"
                     value={this.props.attribute.getLabel(this.props.context.locale, false)}
                     onChange={this.onLabelUpdate}
                     onKeyPress={this.onKeyPress}
-                    readOnly={!this.props.rights.attribute.edit}
+                    readOnly={!canEditLabel}
                   />
                   <Flag
                     locale={createLocaleFromCode(this.props.context.locale)}

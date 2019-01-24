@@ -12,12 +12,7 @@ export type ViewGenerator = React.SFC<{
   locale: LocaleReference;
   onChange: (value: Value) => void;
   onSubmit: () => void;
-  rights: {
-    record: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
+  canEditData: boolean;
 }>;
 export type CellView = React.SFC<{value: NormalizedValue}>;
 

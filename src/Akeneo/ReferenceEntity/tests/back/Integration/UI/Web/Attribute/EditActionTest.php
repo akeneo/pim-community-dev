@@ -60,7 +60,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_a_text_attribute_properties()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/Edit/ok.json');
     }
 
     /**
@@ -68,7 +68,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_does_not_edit_if_the_attribute_does_not_exist()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'attribute_does_not_exist.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/Edit/attribute_does_not_exist.json');
     }
 
     /**
@@ -77,7 +77,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_normalizes_validation_errors(string $requestFile)
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . $requestFile);
+        $this->webClientHelper->assertRequest($this->client, $requestFile);
     }
 
     /**
@@ -87,7 +87,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function it_returns_an_error_if_the_identifier_provided_in_the_route_is_different_from_the_one_in_the_body(
         string $requestFile
     ) {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . $requestFile);
+        $this->webClientHelper->assertRequest($this->client, $requestFile);
     }
 
     /**
@@ -143,7 +143,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function it_returns_an_error_when_the_user_does_not_have_the_rights()
     {
         $this->revokeEditRights();
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'forbidden.json');
+        $this->webClientHelper->assertRequest($this->client, 'Attribute/Edit/forbidden.json');
     }
 
     private function loadFixtures(): void
@@ -217,11 +217,11 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function getValidationErrorsRequests(): array
     {
         return [
-            'Invalid allowed extension'                 => ['allowed_extensions_is_invalid.json'],
-            'Max file size is invalid'                  => ['max_file_size_is_invalid.json'],
-            'Invalid option codes regular expression'   => ['Option' . DIRECTORY_SEPARATOR . 'invalid_option_code_regular_expression.json'],
-            'Option code is blank'                      => ['Option' . DIRECTORY_SEPARATOR . 'invalid_option_code_blank.json'],
-            'Some options are duplicated'               => ['Option' . DIRECTORY_SEPARATOR . 'invalid_options_duplicated.json'],
+            'Invalid allowed extension'                 => ['Attribute/Edit/allowed_extensions_is_invalid.json'],
+            'Max file size is invalid'                  => ['Attribute/Edit/max_file_size_is_invalid.json'],
+            'Invalid option codes regular expression'   => ['Attribute/Edit/Option' . DIRECTORY_SEPARATOR . 'invalid_option_code_regular_expression.json'],
+            'Option code is blank'                      => ['Attribute/Edit/Option' . DIRECTORY_SEPARATOR . 'invalid_option_code_blank.json'],
+            'Some options are duplicated'               => ['Attribute/Edit/Option' . DIRECTORY_SEPARATOR . 'invalid_options_duplicated.json'],
             // Todo: Override parameter 'reference_entity_option_limit_per_list_attribute' in kernel
             // 'Limit of options per attribute is reached' => ['Option' . DIRECTORY_SEPARATOR . 'limit_of_options_reached.json'],
         ];
@@ -230,8 +230,8 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function getUnsynchronisedIdentifiersRequests()
     {
         return [
-            'Unsynchronised attribute identifier'        => ['unsynchronised_attribute_identifier.json'],
-            'Unsynchronised reference entity identifier' => ['unsynchronised_reference_entity_identifier.json'],
+            'Unsynchronised attribute identifier'        => ['Attribute/Edit/unsynchronised_attribute_identifier.json'],
+            'Unsynchronised reference entity identifier' => ['Attribute/Edit/unsynchronised_reference_entity_identifier.json'],
         ];
     }
 }

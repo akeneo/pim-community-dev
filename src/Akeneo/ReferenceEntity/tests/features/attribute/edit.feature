@@ -44,6 +44,15 @@ Feature: Lists all attributes related to a reference entity
     And the user can't edit the attribute property "ValidationRule"
 
   @acceptance-front
+  Scenario: User can't edit the label property of an attribute without the locale permission
+    Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit | true |
+    When the user asks for the reference entity "designer"
+    And the user edit the attribute "name"
+    Then the user can't edit the attribute property "Label"
+
+  @acceptance-front
   Scenario: Edit the image attribute
     Given a valid reference entity
     And the user has the following rights:
@@ -140,6 +149,7 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: Fill in the label of an option to the list of available options of an option attribute
     Given a valid reference entity
+    And the user has the locale permission to edit the record
     And the user has the following rights:
       | akeneo_referenceentity_attribute_edit | true |
       | akeneo_referenceentity_option_edit    | true |
@@ -148,6 +158,28 @@ Feature: Lists all attributes related to a reference entity
     When the user manages the options of the attribute
     And the user adds the new option label "Blue"
     Then the code of the option "Blue" should be "blue"
+
+  @acceptance-front
+  Scenario: Cannot update the label of an option without the locale permission
+    Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit | true |
+      | akeneo_referenceentity_option_edit    | true |
+    And the user asks for the reference entity "designer"
+    And the user edit the attribute "favorite_color"
+    When the user manages the options of the attribute
+    Then the label of the "red" option should be locked
+
+  @acceptance-front
+  Scenario: Cannot add the label of a new option without the locale permission
+    Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit | true |
+      | akeneo_referenceentity_option_edit    | true |
+    And the user asks for the reference entity "designer"
+    And the user edit the attribute "favorite_color"
+    When the user manages the options of the attribute
+    Then the user cannot add the new option label "Blue"
 
   @acceptance-front
   Scenario: Remove an option from the list

@@ -16,8 +16,8 @@
           "fr_FR": "Description"
         },
         "type": "text",
-        "localizable": true,
-        "scopable": false,
+        "value_per_locale": true,
+        "value_per_channel": false,
         "is_required_for_completeness": true,
         "max_characters": 155,
         "is_textarea": false,

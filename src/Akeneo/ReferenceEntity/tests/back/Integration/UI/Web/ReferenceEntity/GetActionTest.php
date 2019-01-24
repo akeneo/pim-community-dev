@@ -29,8 +29,6 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    private const RESPONSES_DIR = 'ReferenceEntity/ReferenceEntityDetails/';
-
     /** @var Client */
     private $client;
 
@@ -52,7 +50,7 @@ class GetActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_a_reference_entity_details(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'ReferenceEntity/ReferenceEntityDetails/ok.json');
     }
 
     /**
@@ -61,7 +59,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     public function it_returns_a_reference_entity_details_for_which_edition_is_not_allowed(): void
     {
         $this->forbidEdition();
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok_not_allowed_to_edit.json');
+        $this->webClientHelper->assertRequest($this->client, 'ReferenceEntity/ReferenceEntityDetails/ok_not_allowed_to_edit.json');
     }
 
     /**
@@ -69,7 +67,7 @@ class GetActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_404_not_found_when_the_identifier_does_not_exist(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'not_found.json');
+        $this->webClientHelper->assertRequest($this->client, 'ReferenceEntity/ReferenceEntityDetails/not_found.json');
     }
 
     private function loadFixtures(): void

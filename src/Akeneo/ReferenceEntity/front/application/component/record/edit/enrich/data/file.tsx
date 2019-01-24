@@ -8,16 +8,11 @@ import File from 'akeneoreferenceentity/domain/model/file';
 const View = ({
   value,
   onChange,
-  rights,
+  canEditData,
 }: {
   value: Value;
   onChange: (value: Value) => void;
-  rights: {
-    record: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
+  canEditData: boolean;
 }) => {
   if (!(value.data instanceof FileData)) {
     return null;
@@ -31,7 +26,7 @@ const View = ({
       })}
       image={value.data.getFile()}
       wide={true}
-      readOnly={!rights.record.edit}
+      readOnly={!canEditData}
       onImageChange={(image: File) => {
         const newData = create(image);
         const newValue = value.setData(newData);

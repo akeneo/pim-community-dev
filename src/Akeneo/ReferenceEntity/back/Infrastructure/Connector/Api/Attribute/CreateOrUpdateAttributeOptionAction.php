@@ -165,7 +165,7 @@ class CreateOrUpdateAttributeOptionAction
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
-        return Response::create('', Response::HTTP_CREATED, $headers);
+        return Response::create('', Response::HTTP_NO_CONTENT, $headers);
     }
 
     public function createOption(

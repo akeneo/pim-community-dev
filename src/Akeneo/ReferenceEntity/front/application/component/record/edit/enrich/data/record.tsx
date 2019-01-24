@@ -13,18 +13,13 @@ const View = ({
   onChange,
   channel,
   locale,
-  rights,
+  canEditData,
 }: {
   value: Value;
   channel: ChannelReference;
   locale: LocaleReference;
   onChange: (value: Value) => void;
-  rights: {
-    record: {
-      edit: boolean;
-      delete: boolean;
-    };
-  };
+  canEditData: boolean;
 }) => {
   if (!(value.data instanceof RecordData)) {
     return null;
@@ -41,9 +36,9 @@ const View = ({
         channel={channel}
         placeholder={__('pim_reference_entity.record.selector.no_value')}
         referenceEntityIdentifier={attribute.recordType.getReferenceEntityIdentifier()}
-        readOnly={!rights.record.edit}
+        readOnly={!canEditData}
         onChange={(recordCode: RecordCode) => {
-          if (rights.record.edit) {
+          if (canEditData) {
             const newData = create(recordCode);
             const newValue = value.setData(newData);
 

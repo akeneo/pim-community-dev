@@ -45,8 +45,6 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
-    private const RESPONSES_DIR = 'Record/Search/';
-
     /** @var Client */
     private $client;
 
@@ -68,7 +66,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_a_list_of_records_with_full_text_search()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Search/ok.json');
     }
 
     /**
@@ -76,7 +74,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_a_list_of_records_filtered_by_code_or_label()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'code_label_and_code_filtered.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Search/code_label_and_code_filtered.json');
     }
 
     /**
@@ -84,7 +82,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_a_list_of_records_filtered_by_code_inclusive()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'code_filtered.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Search/code_filtered.json');
     }
 
     /**
@@ -92,7 +90,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_empty_list()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'no_result.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Search/no_result.json');
     }
 
     /**
@@ -100,7 +98,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_a_list_of_records_filtered_by_complete()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'complete_filtered.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Search/complete_filtered.json');
     }
 
     /**
@@ -108,7 +106,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_a_list_of_records_filtered_by_uncomplete()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'uncomplete_filtered.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Search/uncomplete_filtered.json');
     }
 
     /**
@@ -116,7 +114,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_fails_if_invalid_reference_entity_identifier()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_reference_entity_identifier.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Search/invalid_reference_entity_identifier.json');
     }
 
     /**
@@ -124,7 +122,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_fails_if_desynchronized_reference_entity_identifier()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'desynchronized_reference_entity_identifier.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Search/desynchronized_reference_entity_identifier.json');
     }
 
     private function loadFixtures(): void

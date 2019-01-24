@@ -34,7 +34,6 @@ use Symfony\Component\HttpFoundation\Response;
 class DeleteAllActionTest extends ControllerIntegrationTestCase
 {
     private const DELETE_ALL_RECORDS_ROUTE = 'akeneo_reference_entities_record_delete_all_rest';
-    private const RESPONSES_DIR = 'Record/DeleteAll/';
 
     /* @var Client */
     private $client;
@@ -57,20 +56,20 @@ class DeleteAllActionTest extends ControllerIntegrationTestCase
      */
     public function it_deletes_all_records(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/DeleteAll/ok.json');
     }
 
     /** @test */
     public function it_returns_an_error_when_the_user_does_not_have_the_rights()
     {
         $this->revokeDeletionRights();
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'forbidden.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/DeleteAll/forbidden.json');
     }
 
     /** @test */
     public function it_does_not_return_an_error_when_the_reference_entity_does_not_exist()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'delete_not_found.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/DeleteAll/delete_not_found.json');
     }
 
     /**

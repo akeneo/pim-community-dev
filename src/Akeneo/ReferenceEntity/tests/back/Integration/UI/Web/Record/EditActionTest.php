@@ -53,7 +53,6 @@ use Symfony\Component\HttpFoundation\Response;
 class EditActionTest extends ControllerIntegrationTestCase
 {
     private const RECORD_EDIT_ROUTE = 'akeneo_reference_entities_record_edit_rest';
-    private const RESPONSES_DIR = 'Record/Edit/';
 
     /** @var Client */
     private $client;
@@ -76,7 +75,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_a_record_details(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'details_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/details_ok.json');
     }
 
     /**
@@ -84,7 +83,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_a_record_details_by_removing_the_default_image(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'remove_image_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/remove_image_ok.json');
     }
 
     /**
@@ -112,7 +111,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function it_returns_an_error_if_the_identifier_provided_in_the_route_is_different_from_the_body()
     {
         $this->webClientHelper->assertRequest($this->client,
-            self::RESPONSES_DIR . 'unsynchronised_record_identifier.json');
+            'Record/Edit/unsynchronised_record_identifier.json');
     }
 
     /**
@@ -121,7 +120,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function it_returns_an_error_if_the_reference_entity_identifier_provided_in_the_route_is_different_from_the_body()
     {
         $this->webClientHelper->assertRequest($this->client,
-            self::RESPONSES_DIR . 'unsynchronised_reference_entity_identifier.json');
+            'Record/Edit/unsynchronised_reference_entity_identifier.json');
     }
 
     /**
@@ -129,7 +128,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_a_text_value()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'text_value_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/text_value_ok.json');
     }
 
     /**
@@ -137,7 +136,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_we_send_an_invalid_text_value()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_text_value.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/invalid_text_value.json');
     }
 
     /**
@@ -145,7 +144,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_a_file_value()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'image_value_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/image_value_ok.json');
     }
 
     /**
@@ -153,7 +152,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_we_send_an_invalid_file_value()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_image_value.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/invalid_image_value.json');
     }
 
     /**
@@ -161,7 +160,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_a_record_value()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'record_value_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/record_value_ok.json');
     }
 
     /**
@@ -169,7 +168,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_we_send_an_invalid_record_value()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_record_value.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/invalid_record_value.json');
     }
 
     /**
@@ -177,7 +176,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_a_record_collection_value()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'record_collection_value_ok.json');
+        $this->webClientHelper->assertRequest($this->client, 'Record/Edit/record_collection_value_ok.json');
     }
 
     /**
@@ -186,7 +185,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function it_returns_an_error_if_we_send_an_invalid_record_collection_value()
     {
         $this->webClientHelper->assertRequest($this->client,
-            self::RESPONSES_DIR . 'invalid_record_collection_value.json');
+            'Record/Edit/invalid_record_collection_value.json');
     }
 
     /**
