@@ -15,9 +15,13 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Su
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Attribute\AttributeRemoveSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -35,12 +39,20 @@ class AttributeRemoveSubscriberSpec extends ObjectBehavior
     public function let(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
         RemoveAttributesFromMappingInterface $removeAttributesFromMapping,
-        GetConnectionStatusHandler $connectionStatusHandler
+        GetConnectionStatusHandler $connectionStatusHandler,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
     ): void {
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
         $connectionStatusHandler->handle(new GetConnectionStatusQuery(false))->willReturn($connectionStatus);
 
-        $this->beConstructedWith($familyCodesByAttributeQuery, $removeAttributesFromMapping, $connectionStatusHandler);
+        $this->beConstructedWith(
+            $familyCodesByAttributeQuery,
+            $removeAttributesFromMapping,
+            $connectionStatusHandler,
+            $identifiersMappingRepository,
+            $saveIdentifiersMappingHandler
+        );
     }
 
     public function it_is_a_product_family_removal_subscriber(): void
@@ -86,15 +98,33 @@ class AttributeRemoveSubscriberSpec extends ObjectBehavior
         $this->onPreRemove($event);
     }
 
-    public function it_gets_family_codes_on_pre_remove(
+    public function it_gets_family_codes_and_update_identifiers_mapping_on_pre_remove(
         GenericEvent $event,
-        AttributeInterface $attribute,
-        $familyCodesByAttributeQuery
+        AttributeInterface $asin,
+        AttributeInterface $upc,
+        $familyCodesByAttributeQuery,
+        $identifiersMappingRepository,
+        $saveIdentifiersMappingHandler
     ): void {
-        $event->getSubject()->willReturn($attribute);
-        $attribute->getCode()->willReturn('attribute_code');
+        $event->getSubject()->willReturn($upc);
+        $upc->getCode()->willReturn('attribute_code');
+        $asin->getCode()->willReturn('asin');
 
         $familyCodesByAttributeQuery->execute('attribute_code')->shouldBeCalled();
+
+        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping([
+            'asin' => $asin->getWrappedObject(),
+            'upc' => $upc->getWrappedObject(),
+            'brand' => null,
+            'mpn' => null,
+        ]));
+
+        $saveIdentifiersMappingHandler->handle(new SaveIdentifiersMappingCommand([
+            'asin' => 'asin',
+            'upc' => null,
+            'brand' => null,
+            'mpn' => null,
+        ]))->shouldBeCalled();
 
         $this->onPreRemove($event);
     }
@@ -104,12 +134,15 @@ class AttributeRemoveSubscriberSpec extends ObjectBehavior
         GenericEvent $postRemoveEvent,
         AttributeInterface $attribute,
         $familyCodesByAttributeQuery,
-        $removeAttributesFromMapping
+        $removeAttributesFromMapping,
+        $identifiersMappingRepository
     ): void {
         $preRemoveEvent->getSubject()->willReturn($attribute);
         $attribute->getCode()->willReturn('attribute_code');
 
         $familyCodesByAttributeQuery->execute('attribute_code')->willReturn(['family_1', 'family_2']);
+
+        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping([]));
 
         $this->onPreRemove($preRemoveEvent);
 
@@ -121,5 +154,23 @@ class AttributeRemoveSubscriberSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->onPostRemove($postRemoveEvent);
+    }
+
+    public function it_does_not_update_identifiers_mapping_if_removed_attribute_is_not_an_identifier(
+        GenericEvent $event,
+        AttributeInterface $upc,
+        $familyCodesByAttributeQuery,
+        $identifiersMappingRepository,
+        $saveIdentifiersMappingHandler
+    ): void {
+        $event->getSubject()->willReturn($upc);
+        $upc->getCode()->willReturn('attribute_code');
+
+        $familyCodesByAttributeQuery->execute('attribute_code')->shouldBeCalled();
+
+        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping([]));
+        $saveIdentifiersMappingHandler->handle(Argument::any())->shouldNotBeCalled();
+
+        $this->onPreRemove($event);
     }
 }

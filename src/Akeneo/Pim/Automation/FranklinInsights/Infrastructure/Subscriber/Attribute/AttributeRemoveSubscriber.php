@@ -15,8 +15,13 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Attri
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -39,19 +44,31 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;
 
+    /** @var IdentifiersMappingRepositoryInterface */
+    private $identifiersMappingRepository;
+
+    /** @var SaveIdentifiersMappingHandler */
+    private $saveIdentifiersMappingHandler;
+
     /**
      * @param SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery
      * @param RemoveAttributesFromMappingInterface $removeAttributesFromMapping
      * @param GetConnectionStatusHandler $connectionStatusHandler
+     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+     * @param SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
      */
     public function __construct(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
         RemoveAttributesFromMappingInterface $removeAttributesFromMapping,
-        GetConnectionStatusHandler $connectionStatusHandler
+        GetConnectionStatusHandler $connectionStatusHandler,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
     ) {
         $this->familyCodesByAttributeQuery = $familyCodesByAttributeQuery;
         $this->removeAttributesFromMapping = $removeAttributesFromMapping;
         $this->connectionStatusHandler = $connectionStatusHandler;
+        $this->identifiersMappingRepository = $identifiersMappingRepository;
+        $this->saveIdentifiersMappingHandler = $saveIdentifiersMappingHandler;
     }
 
     /**
@@ -80,6 +97,11 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
         }
 
         $this->familyCodes = $this->familyCodesByAttributeQuery->execute($attribute->getCode());
+
+        $identifiersMapping = $this->identifiersMappingRepository->find();
+        if ($identifiersMapping->isMappedTo($attribute)) {
+            $this->updateIdentifiersMapping($identifiersMapping, $attribute);
+        }
     }
 
     /**
@@ -103,5 +125,44 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
         $connectionStatus = $this->connectionStatusHandler->handle(new GetConnectionStatusQuery(false));
 
         return $connectionStatus->isActive();
+    }
+
+    /**
+     * @param IdentifiersMapping $identifiersMapping
+     * @param AttributeInterface $removedAttribute
+     */
+    private function updateIdentifiersMapping(
+        IdentifiersMapping $identifiersMapping,
+        AttributeInterface $removedAttribute
+    ): void {
+        foreach ($identifiersMapping as $identifier => $identifierMapping) {
+            $attribute = $identifierMapping->getAttribute();
+            if (null !== $attribute && $removedAttribute->getCode() === $attribute->getCode()) {
+                $mapping = $this->computeNewMapping($identifiersMapping, $identifier);
+
+                $command = new SaveIdentifiersMappingCommand($mapping);
+                $this->saveIdentifiersMappingHandler->handle($command);
+                return;
+            }
+        }
+    }
+
+    /**
+     * @param IdentifiersMapping $identifiersMapping
+     * @param string $removedIdentifier
+     *
+     * @return array
+     */
+    private function computeNewMapping(IdentifiersMapping $identifiersMapping, string $removedIdentifier): array
+    {
+        $mapping = array_map(function (IdentifierMapping $identifierMapping) {
+            $attribute = $identifierMapping->getAttribute();
+
+            return null !== $attribute ? $attribute->getCode() : null;
+        }, $identifiersMapping->getMapping());
+
+        $mapping[$removedIdentifier] = null;
+
+        return $mapping;
     }
 }
