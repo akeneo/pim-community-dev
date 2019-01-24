@@ -103,6 +103,7 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                     <div className="AknFieldContainer-inputContainer">
                       <input
                         ref={this.labelInput}
+                        autoComplete="off"
                         type="text"
                         className="AknTextField AknTextField--light"
                         id="pim_reference_entity.record.create.input.label"
@@ -135,6 +136,7 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                     <div className="AknFieldContainer-inputContainer">
                       <input
                         type="text"
+                        autoComplete="off"
                         className="AknTextField AknTextField--light"
                         id="pim_reference_entity.record.create.input.code"
                         name="code"

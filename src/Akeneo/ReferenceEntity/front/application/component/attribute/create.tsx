@@ -193,6 +193,7 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-inputContainer">
                       <input
                         type="text"
+                        autoComplete="off"
                         ref={(input: HTMLInputElement) => {
                           this.labelInput = input;
                         }}
@@ -223,6 +224,7 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-inputContainer">
                       <input
                         type="text"
+                        autoComplete="off"
                         className="AknTextField AknTextField--light"
                         id="pim_reference_entity.attribute.create.input.code"
                         name="code"

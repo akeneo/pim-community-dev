@@ -37,7 +37,7 @@ describe('akeneo > reference entity > domain > model > reference entity --- perm
 
     expect(() => {
       denormalizePermissionCollection(['cool']);
-    }).toThrow('Permission expect a number as userGroupIdentifier argument');
+    }).toThrow('Permission expects a number as userGroupIdentifier argument');
 
     expect(() => {
       denormalizePermissionCollection([
@@ -45,7 +45,7 @@ describe('akeneo > reference entity > domain > model > reference entity --- perm
           user_group_identifier: 12,
         },
       ]);
-    }).toThrow('Permission expect a string as userGroupName argument');
+    }).toThrow('Permission expects a string as userGroupName argument');
 
     expect(() => {
       denormalizePermissionCollection([
@@ -54,7 +54,7 @@ describe('akeneo > reference entity > domain > model > reference entity --- perm
           user_group_name: 'Manager',
         },
       ]);
-    }).toThrow('Permission expect a string as rightLevel argument');
+    }).toThrow('Permission expects a string as rightLevel argument');
   });
 
   test('I can test if a collection is empty', () => {

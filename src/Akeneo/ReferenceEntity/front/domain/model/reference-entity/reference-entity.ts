@@ -4,27 +4,27 @@ import LabelCollection, {
   createLabelCollection,
 } from 'akeneoreferenceentity/domain/model/label-collection';
 import File, {NormalizedFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
-import AttributeReference, {
-  NormalizedAttributeReference,
-  createAttributeReference,
-} from 'akeneoreferenceentity/domain/model/attribute/attribute-reference';
+import AttributeIdentifier, {
+  createIdentifier as createAttributeIdentifier,
+  NormalizedAttributeIdentifier,
+} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 
 export interface NormalizedReferenceEntity {
   identifier: string;
   code: string;
   labels: NormalizedLabelCollection;
   image: NormalizedFile;
-  attribute_as_label: NormalizedAttributeReference;
-  attribute_as_image: NormalizedAttributeReference;
+  attribute_as_label: NormalizedAttributeIdentifier;
+  attribute_as_image: NormalizedAttributeIdentifier;
 }
 
 export default interface ReferenceEntity {
   getIdentifier: () => Identifier;
-  getLabel: (locale: string, defaultValue?: boolean) => string;
+  getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   getImage: () => File;
-  getAttributeAsLabel: () => AttributeReference;
-  getAttributeAsImage: () => AttributeReference;
+  getAttributeAsLabel: () => AttributeIdentifier;
+  getAttributeAsImage: () => AttributeIdentifier;
   equals: (referenceEntity: ReferenceEntity) => boolean;
   normalize: () => NormalizedReferenceEntity;
 }
@@ -35,23 +35,23 @@ class ReferenceEntityImplementation implements ReferenceEntity {
     private identifier: Identifier,
     private labelCollection: LabelCollection,
     private image: File,
-    private attributeAsLabel: AttributeReference,
-    private attributeAsImage: AttributeReference
+    private attributeAsLabel: AttributeIdentifier,
+    private attributeAsImage: AttributeIdentifier
   ) {
     if (!(identifier instanceof Identifier)) {
-      throw new InvalidArgumentError('ReferenceEntity expect an ReferenceEntityIdentifier as identifier argument');
+      throw new InvalidArgumentError('ReferenceEntity expects an ReferenceEntityIdentifier as identifier argument');
     }
     if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('ReferenceEntity expect a LabelCollection as labelCollection argument');
+      throw new InvalidArgumentError('ReferenceEntity expects a LabelCollection as labelCollection argument');
     }
     if (!(image instanceof File)) {
-      throw new InvalidArgumentError('ReferenceEntity expect a File as image argument');
+      throw new InvalidArgumentError('ReferenceEntity expects a File as image argument');
     }
-    if (!(attributeAsLabel instanceof AttributeReference)) {
-      throw new InvalidArgumentError('ReferenceEntity expect a AttributeReference as attributeAsLabel argument');
+    if (!(attributeAsLabel instanceof AttributeIdentifier)) {
+      throw new InvalidArgumentError('ReferenceEntity expects a AttributeIdentifier as attributeAsLabel argument');
     }
-    if (!(attributeAsImage instanceof AttributeReference)) {
-      throw new InvalidArgumentError('ReferenceEntity expect a AttributeReference as attributeAsImage argument');
+    if (!(attributeAsImage instanceof AttributeIdentifier)) {
+      throw new InvalidArgumentError('ReferenceEntity expects a AttributeIdentifier as attributeAsImage argument');
     }
 
     Object.freeze(this);
@@ -61,8 +61,8 @@ class ReferenceEntityImplementation implements ReferenceEntity {
     identifier: Identifier,
     labelCollection: LabelCollection,
     image: File,
-    attributeAsLabel: AttributeReference,
-    attributeAsImage: AttributeReference
+    attributeAsLabel: AttributeIdentifier,
+    attributeAsImage: AttributeIdentifier
   ): ReferenceEntity {
     return new ReferenceEntityImplementation(identifier, labelCollection, image, attributeAsLabel, attributeAsImage);
   }
@@ -71,8 +71,8 @@ class ReferenceEntityImplementation implements ReferenceEntity {
     const identifier = createIdentifier(normalizedReferenceEntity.identifier);
     const labelCollection = createLabelCollection(normalizedReferenceEntity.labels);
     const image = denormalizeFile(normalizedReferenceEntity.image);
-    const attributeAsLabel = createAttributeReference(normalizedReferenceEntity.attribute_as_label);
-    const attributeAsImage = createAttributeReference(normalizedReferenceEntity.attribute_as_image);
+    const attributeAsLabel = createAttributeIdentifier(normalizedReferenceEntity.attribute_as_label);
+    const attributeAsImage = createAttributeIdentifier(normalizedReferenceEntity.attribute_as_image);
 
     return ReferenceEntityImplementation.create(identifier, labelCollection, image, attributeAsLabel, attributeAsImage);
   }
@@ -81,9 +81,9 @@ class ReferenceEntityImplementation implements ReferenceEntity {
     return this.identifier;
   }
 
-  public getLabel(locale: string, defaultValue: boolean = true) {
+  public getLabel(locale: string, fallbackOnCode: boolean = true) {
     if (!this.labelCollection.hasLabel(locale)) {
-      return defaultValue ? `[${this.getIdentifier().stringValue()}]` : '';
+      return fallbackOnCode ? `[${this.getIdentifier().stringValue()}]` : '';
     }
 
     return this.labelCollection.getLabel(locale);
@@ -97,11 +97,11 @@ class ReferenceEntityImplementation implements ReferenceEntity {
     return this.image;
   }
 
-  public getAttributeAsLabel(): AttributeReference {
+  public getAttributeAsLabel(): AttributeIdentifier {
     return this.attributeAsLabel;
   }
 
-  public getAttributeAsImage(): AttributeReference {
+  public getAttributeAsImage(): AttributeIdentifier {
     return this.attributeAsImage;
   }
 

@@ -14,8 +14,8 @@ class ReferenceEntityBuilder {
       image: null,
       attributes: [],
       record_count: 123,
-      attribute_as_label: null,
-      attribute_as_image: null,
+      attribute_as_label: '',
+      attribute_as_image: '',
       permission: {edit: true},
     };
   }

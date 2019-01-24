@@ -136,8 +136,8 @@
             "permission": {
                 "edit": false
             },
-            "attribute_as_label":null,
-            "attribute_as_image":null
+            "attribute_as_label":"designer_name_123456",
+            "attribute_as_image":"designer_portrait_123456"
         }
     }
 }

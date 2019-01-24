@@ -1,9 +1,11 @@
 class InvalidTypeError extends Error {}
 
+export type NormalizedCode = string;
+
 export default class Code {
   private constructor(private code: string) {
     if ('string' !== typeof code) {
-      throw new InvalidTypeError('Code expect a string as parameter to be created');
+      throw new InvalidTypeError('Code expects a string as parameter to be created');
     }
 
     Object.freeze(this);

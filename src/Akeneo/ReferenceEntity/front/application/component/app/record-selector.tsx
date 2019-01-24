@@ -174,8 +174,8 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
         const newValue = this.props.multiple
           ? event.val.map((recordCode: string) => RecordCode.create(recordCode))
           : '' === event.val
-            ? null
-            : RecordCode.create(event.val);
+          ? null
+          : RecordCode.create(event.val);
         this.props.onChange(newValue);
       });
 
@@ -230,8 +230,8 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
             const newValue = this.props.multiple
               ? event.target.value.split(',').map((recordCode: string) => RecordCode.create(recordCode))
               : '' === event.target.value
-                ? null
-                : RecordCode.create(event.target.value);
+              ? null
+              : RecordCode.create(event.target.value);
             this.props.onChange(newValue);
           }}
         />

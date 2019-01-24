@@ -183,35 +183,33 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
             <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.record.no_data.subtitle')}</div>
           </div>
         )}
-        {confirmDelete.isActive &&
-          undefined === confirmDelete.identifier && (
-            <DeleteModal
-              message={__('pim_reference_entity.record.delete_all.confirm', {
-                entityIdentifier: referenceEntity.getIdentifier().stringValue(),
-              })}
-              title={__('pim_reference_entity.record.delete.title')}
-              onConfirm={() => {
-                events.onDeleteAllRecords(referenceEntity);
-              }}
-              onCancel={events.onCancelDeleteModal}
-            />
-          )}
-        {confirmDelete.isActive &&
-          undefined !== confirmDelete.identifier && (
-            <DeleteModal
-              message={__('pim_reference_entity.record.delete.message', {
-                recordLabel: confirmDelete.label,
-              })}
-              title={__('pim_reference_entity.record.delete.title')}
-              onConfirm={() => {
-                events.onDeleteRecord(
-                  referenceEntity.getIdentifier(),
-                  createRecordCode(confirmDelete.identifier as string)
-                );
-              }}
-              onCancel={events.onCancelDeleteModal}
-            />
-          )}
+        {confirmDelete.isActive && undefined === confirmDelete.identifier && (
+          <DeleteModal
+            message={__('pim_reference_entity.record.delete_all.confirm', {
+              entityIdentifier: referenceEntity.getIdentifier().stringValue(),
+            })}
+            title={__('pim_reference_entity.record.delete.title')}
+            onConfirm={() => {
+              events.onDeleteAllRecords(referenceEntity);
+            }}
+            onCancel={events.onCancelDeleteModal}
+          />
+        )}
+        {confirmDelete.isActive && undefined !== confirmDelete.identifier && (
+          <DeleteModal
+            message={__('pim_reference_entity.record.delete.message', {
+              recordLabel: confirmDelete.label,
+            })}
+            title={__('pim_reference_entity.record.delete.title')}
+            onConfirm={() => {
+              events.onDeleteRecord(
+                referenceEntity.getIdentifier(),
+                createRecordCode(confirmDelete.identifier as string)
+              );
+            }}
+            onCancel={events.onCancelDeleteModal}
+          />
+        )}
       </React.Fragment>
     );
   }

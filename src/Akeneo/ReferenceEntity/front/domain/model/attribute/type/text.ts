@@ -82,15 +82,15 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
     );
 
     if (!(maxLength instanceof MaxLength)) {
-      throw new InvalidArgumentError('Attribute expect a MaxLength as maxLength');
+      throw new InvalidArgumentError('Attribute expects a MaxLength as maxLength');
     }
 
     if (!(isTextarea instanceof IsTextarea)) {
-      throw new InvalidArgumentError('Attribute expect a Textarea as isTextarea');
+      throw new InvalidArgumentError('Attribute expects a Textarea as isTextarea');
     }
 
     if (!(isRichTextEditor instanceof IsRichTextEditor)) {
-      throw new InvalidArgumentError('Attribute expect a IsRichTextEditor as isRichTextEditor');
+      throw new InvalidArgumentError('Attribute expects a IsRichTextEditor as isRichTextEditor');
     }
 
     if (false === isTextarea.booleanValue() && true === isRichTextEditor.booleanValue()) {
@@ -98,7 +98,7 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
     }
 
     if (!(validationRule instanceof ValidationRule)) {
-      throw new InvalidArgumentError('Attribute expect a ValidationRule as validationRule');
+      throw new InvalidArgumentError('Attribute expects a ValidationRule as validationRule');
     }
 
     if (true === isTextarea.booleanValue() && ValidationRuleOption.None !== validationRule.stringValue()) {
@@ -106,7 +106,7 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
     }
 
     if (!(regularExpression instanceof RegularExpression)) {
-      throw new InvalidArgumentError('Attribute expect a RegularExpression as regularExpression');
+      throw new InvalidArgumentError('Attribute expects a RegularExpression as regularExpression');
     }
 
     if (!regularExpression.isNull() && ValidationRuleOption.RegularExpression !== validationRule.stringValue()) {
