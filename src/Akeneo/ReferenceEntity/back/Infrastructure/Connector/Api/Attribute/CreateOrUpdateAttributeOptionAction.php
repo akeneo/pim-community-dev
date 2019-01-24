@@ -186,11 +186,12 @@ class CreateOrUpdateAttributeOptionAction
         OptionCode $optionCode,
         array $option
     ): Response {
-        $command = new EditAttributeOptionCommand();
-        $command->referenceEntityIdentifier = (string)$referenceEntityIdentifier;
-        $command->attributeCode = (string)$attributeCode;
-        $command->optionCode = (string)$optionCode;
-        $command->labels = $option['labels'];
+        $command = new EditAttributeOptionCommand(
+            (string)$referenceEntityIdentifier,
+            (string)$attributeCode,
+            (string)$optionCode,
+            $option['labels']
+        );
 
         $violations = $this->businessRulesValidator->validate($command);
         if ($violations->count() > 0) {

@@ -21,4 +21,11 @@ class EditIsRequiredCommand extends AbstractEditAttributeCommand
 {
     /** @var bool */
     public $isRequired;
+
+    public function __construct(string $identifier, ?bool $isRequired)
+    {
+        parent::__construct($identifier);
+
+        $this->isRequired = $isRequired;
+    }
 }

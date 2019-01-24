@@ -26,4 +26,16 @@ class EditAttributeOptionCommand
 
     /** @var ?array */
     public $labels;
+
+    public function __construct(
+        string $referenceEntityIdentifier,
+        string $attributeCode,
+        string $optionCode,
+        ?array $labels
+    ) {
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->attributeCode = $attributeCode;
+        $this->optionCode = $optionCode;
+        $this->labels = $labels;
+    }
 }

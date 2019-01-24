@@ -21,4 +21,11 @@ class EditMaxFileSizeCommand extends AbstractEditAttributeCommand
 {
     /** @var string */
     public $maxFileSize;
+
+    public function __construct(string $identifier, ?string $maxFileSize)
+    {
+        parent::__construct($identifier);
+
+        $this->maxFileSize = $maxFileSize;
+    }
 }

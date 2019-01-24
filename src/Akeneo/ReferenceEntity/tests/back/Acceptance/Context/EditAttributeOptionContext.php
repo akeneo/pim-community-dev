@@ -37,7 +37,7 @@ class EditAttributeOptionContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var EditAttributeOptionHandler*/
+    /** @var EditAttributeOptionHandler */
     private $editAttributeOptionHandler;
 
     /** @var ValidatorInterface */
@@ -73,12 +73,14 @@ class EditAttributeOptionContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions([
-            AttributeOption::create(
-                OptionCode::fromString('blue'),
-                LabelCollection::fromArray(['de_DE' => 'blauw'])
-            )
-        ]);
+        $optionAttribute->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('blue'),
+                    LabelCollection::fromArray(['de_DE' => 'blauw'])
+                ),
+            ]
+        );
 
         $this->attributeRepository->create($optionAttribute);
     }
@@ -88,11 +90,12 @@ class EditAttributeOptionContext implements Context
      */
     public function theUserEditsTheOptionOfThisOptionAttribute()
     {
-        $command = new EditAttributeOptionCommand();
-        $command->referenceEntityIdentifier = 'designer';
-        $command->attributeCode = 'color';
-        $command->optionCode = 'blue';
-        $command->labels = ['en_US' => 'Blue', 'fr_FR' => 'Bleu'];
+        $command = new EditAttributeOptionCommand(
+            'designer',
+            'color',
+            'blue',
+            ['en_US' => 'Blue', 'fr_FR' => 'Bleu']
+        );
 
         $violations = $this->validator->validate($command);
         $this->constraintViolationsContext->addViolations($violations);
@@ -118,7 +121,10 @@ class EditAttributeOptionContext implements Context
         );
 
         $this->constraintViolationsContext->assertThereIsNoViolations();
-        Assert::assertEquals($expectedOption, $option);
+        Assert::assertEquals(
+            $expectedOption,
+            $option
+        );
     }
 
 
@@ -137,12 +143,14 @@ class EditAttributeOptionContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions([
-            AttributeOption::create(
-                OptionCode::fromString('blue'),
-                LabelCollection::fromArray(['de_DE' => 'blauw'])
-            )
-        ]);
+        $optionAttribute->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('blue'),
+                    LabelCollection::fromArray(['de_DE' => 'blauw'])
+                ),
+            ]
+        );
 
         $this->attributeRepository->create($optionAttribute);
     }

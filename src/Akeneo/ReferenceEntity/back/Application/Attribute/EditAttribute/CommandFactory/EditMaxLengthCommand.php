@@ -21,4 +21,11 @@ class EditMaxLengthCommand extends AbstractEditAttributeCommand
 {
     /** @var int */
     public $maxLength;
+
+    public function __construct(string $identifier, ?int $maxLength)
+    {
+        parent::__construct($identifier);
+
+        $this->maxLength = $maxLength;
+    }
 }

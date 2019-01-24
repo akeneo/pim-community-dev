@@ -29,12 +29,14 @@ class EditAttributeCommandFactory implements EditAttributeCommandFactoryInterfac
             throw new \RuntimeException('Impossible to create a command of attribute edition.');
         }
 
-        $command = new EditAttributeCommand();
-        $command->identifier = $normalizedCommand['identifier'];
-        $command->editCommands = [];
+        $editCommands = [];
         foreach ($this->editAttributeCommandFactoryRegistry->getFactories($normalizedCommand) as $editCommandFactory) {
-            $command->editCommands[] = $editCommandFactory->create($normalizedCommand);
+            $editCommands[] = $editCommandFactory->create($normalizedCommand);
         }
+        $command = new EditAttributeCommand(
+            $normalizedCommand['identifier'],
+            $editCommands
+        );
 
         return $command;
     }

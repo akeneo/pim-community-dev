@@ -12,4 +12,9 @@ class AbstractEditAttributeCommand
 {
     /** @var string */
     public $identifier;
+
+    public function __construct(string $identifier)
+    {
+        $this->identifier = $identifier;
+    }
 }

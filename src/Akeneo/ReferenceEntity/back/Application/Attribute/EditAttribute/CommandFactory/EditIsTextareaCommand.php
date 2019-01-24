@@ -12,4 +12,11 @@ class EditIsTextareaCommand extends AbstractEditAttributeCommand
 {
     /** @var bool */
     public $isTextarea;
+
+    public function __construct(string $identifier, ?bool $isTextarea)
+    {
+        parent::__construct($identifier);
+
+        $this->isTextarea = $isTextarea;
+    }
 }

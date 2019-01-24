@@ -12,4 +12,11 @@ class EditIsRichTextEditorCommand extends AbstractEditAttributeCommand
 {
     /** @var bool */
     public $isRichTextEditor;
+
+    public function __construct(string $identifier, ?bool $isRichTextEditor)
+    {
+        parent::__construct($identifier);
+
+        $this->isRichTextEditor = $isRichTextEditor;
+    }
 }
