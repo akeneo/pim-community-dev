@@ -28,6 +28,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -236,6 +237,40 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
+     * @Given /^the option attribute Birth Date that is only part of the structure of the Designer reference entity in the ERP but not in the PIM$/
+     */
+    public function theOptionAttributeBirthDateThatIsOnlyPartOfTheStructureOfTheDesignerReferenceEntityInTheERPButNotInThePIM()
+    {
+        $this->requestContract = 'successful_birthdate_reference_entity_attribute_creation.json';
+    }
+
+    /**
+     * @Then /^the Birth Date attribute is added to the structure of the Designer reference entity in the PIM with the properties coming from the ERP$/
+     */
+    public function theBirthDateAttributeIsAddedToTheStructureOfTheDesignerReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'successful_birthdate_reference_entity_attribute_creation.json'
+        );
+
+        $attributeIdentifier = AttributeIdentifier::create('designer', 'birthdate', md5('designer_birthdate'));
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
+        $expectedAttribute = OptionAttribute::create(
+            $attributeIdentifier,
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('birthdate'),
+            LabelCollection::fromArray(['en_US' => 'Birth date']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+
+        Assert::assertEquals($expectedAttribute, $attribute);
+    }
+
+    /**
      * @Given the Main Color attribute that is both part of the structure of the Color reference entity in the ERP and in the PIM but with some unsynchronized properties
      */
     public function theMainColorAttributeThatIsBothPartOfTheStructureOfTheColorReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
@@ -384,6 +419,53 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             ReferenceEntityIdentifier::fromString('country')
+        );
+
+        Assert::assertEquals($expectedAttribute, $attribute);
+    }
+
+    /**
+     * @Given /^the option attribute Birth Date that is both part of the structure of the Designer reference entity in the ERP and in the PIM but with some unsynchronized properties$/
+     */
+    public function theOptionAttributeBirthDateThatIsBothPartOfTheStructureOfTheDesignerReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
+    {
+        $attribute = OptionAttribute::create(
+            AttributeIdentifier::create('designer', 'birthdate', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('birthdate'),
+            LabelCollection::fromArray(['en_US' => 'Birth date']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+
+        $this->attributeRepository->create($attribute);
+
+        $this->requestContract = 'successful_birthdate_reference_entity_attribute_update.json';
+    }
+
+    /**
+     * @Then /^the properties of the Birth Date attribute are updated in the PIM with the properties coming from the ERP$/
+     */
+    public function thePropertiesOfTheBirthDateAttributeAreUpdatedInThePIMWithThePropertiesComingFromTheERP()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'successful_birthdate_reference_entity_attribute_update.json'
+        );
+
+        $attributeIdentifier = AttributeIdentifier::create('designer', 'birthdate', 'fingerprint');
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
+        $expectedAttribute = OptionAttribute::create(
+            $attributeIdentifier,
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('birthdate'),
+            LabelCollection::fromArray(['en_US' => 'Birth date', 'fr_FR' => 'Date de naissance']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
