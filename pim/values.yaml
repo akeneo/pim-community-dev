@@ -184,6 +184,7 @@ elasticsearch:
     resources:
       limits:
         cpu: "1"
+        memory: "256Mi"
       requests:
         cpu: "25m"
         memory: "160Mi"
@@ -192,10 +193,11 @@ elasticsearch:
     persistence:
       size: 1Gi
       storageClass: ssd-retain
-    heapSize: "320m"
+    heapSize: "256m"
     resources:
       limits:
         cpu: "1"
+        memory: "400Mi"
       requests:
         cpu: "25m"
         memory: "320Mi"
@@ -204,11 +206,11 @@ elasticsearch:
     persistence:
       size: 10Gi
       storageClass: ssd-retain
-    heapSize: "512m"
+    heapSize: "256m"
     resources:
       limits:
         cpu: "1"
-        memory:
+        memory: "768Mi"
       requests:
         cpu: "25m"
         memory: "512Mi"
