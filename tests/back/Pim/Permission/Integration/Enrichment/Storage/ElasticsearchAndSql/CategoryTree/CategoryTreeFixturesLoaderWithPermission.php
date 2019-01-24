@@ -22,6 +22,20 @@ class CategoryTreeFixturesLoaderWithPermission
     }
 
     /**
+     * In order to test correctly the join access tables for permission, we put the admin user in several user groups.
+     */
+    public function adminUserAsRedactorAndITSupport(): void
+    {
+        $adminUser = $this->container->get('pim_user.repository.user')->findOneByIdentifier('admin');
+        $redactorGroup = $this->container->get('pim_user.repository.group')->findOneByIdentifier('redactor');
+        $adminUser->addGroup($redactorGroup);
+        $errors = $this->container->get('validator')->validate(($adminUser));
+        Assert::assertEquals(0, $errors->count());
+
+        $this->container->get('pim_user.saver.user')->save($adminUser);
+    }
+
+    /**
      * @param array       $categories
      * @param null|string $parentCode
      */
@@ -81,10 +95,13 @@ class CategoryTreeFixturesLoaderWithPermission
 
         foreach ($categoryCodes as $categoryCode) {
             $category = $categoryRepository->findOneByIdentifier($categoryCode);
-            $userGroup = $groupRepository->findOneByIdentifier('IT support');
+            $itSupportUserGroup = $groupRepository->findOneByIdentifier('IT support');
+            $redactorUserGroup = $groupRepository->findOneByIdentifier('redactor');
+
             $accessManager->revokeAccess($category);
             $entityManager->flush($category);
-            $accessManager->grantAccess($category, $userGroup, Attributes::VIEW_ITEMS);
+            $accessManager->grantAccess($category, $itSupportUserGroup, Attributes::VIEW_ITEMS);
+            $accessManager->grantAccess($category, $redactorUserGroup, Attributes::VIEW_ITEMS);
         }
     }
 }
