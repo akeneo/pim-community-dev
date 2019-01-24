@@ -149,6 +149,11 @@ class CreateOrUpdateAttributeAction
             unset($normalizedAttribute['max_characters']);
         }
 
+        if (array_key_exists('reference_entity_code', $normalizedAttribute)) {
+            $normalizedAttribute['record_type'] = $normalizedAttribute['reference_entity_code'];
+            unset($normalizedAttribute['reference_entity_code']);
+        }
+
         if (isset($normalizedAttribute['type'])) {
             switch ($normalizedAttribute['type']) {
                 case 'single_option':

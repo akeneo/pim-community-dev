@@ -28,6 +28,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -193,6 +194,48 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
+     * @Given /^the record attribute Country that is only part of the structure of the Designer reference entity in the ERP but not in the PIM$/
+     */
+    public function theRecordAttributeCountryThatIsOnlyPartOfTheStructureOfTheDesignerReferenceEntityInTheERPButNotInThePIM()
+    {
+        $this->requestContract = 'successful_country_reference_entity_attribute_creation.json';
+
+        $country = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('country'),
+            [],
+            Image::createEmpty()
+        );
+        $this->referenceEntityRepository->create($country);
+    }
+
+    /**
+     * @Then /^the Country attribute is added to the structure of the Designer reference entity in the PIM with the properties coming from the ERP$/
+     */
+    public function theCountryAttributeIsAddedToTheStructureOfTheDesignerReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'successful_country_reference_entity_attribute_creation.json'
+        );
+
+        $attributeIdentifier = AttributeIdentifier::create('designer', 'country', md5('designer_country'));
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
+        $expectedAttribute = RecordAttribute::create(
+            $attributeIdentifier,
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('country'),
+            LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            ReferenceEntityIdentifier::fromString('country')
+        );
+
+        Assert::assertEquals($expectedAttribute, $attribute);
+    }
+
+    /**
      * @Given the Main Color attribute that is both part of the structure of the Color reference entity in the ERP and in the PIM but with some unsynchronized properties
      */
     public function theMainColorAttributeThatIsBothPartOfTheStructureOfTheColorReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
@@ -293,6 +336,54 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::noLimit(),
             AttributeAllowedExtensions::fromList(['gif', 'png'])
+        );
+
+        Assert::assertEquals($expectedAttribute, $attribute);
+    }
+
+    /**
+     * @Given /^the Country attribute that is both part of the structure of the Designer reference entity in the ERP and in the PIM but with some unsynchronized properties$/
+     */
+    public function theCountryAttributeThatIsBothPartOfTheStructureOfTheDesignerReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
+    {
+        $attribute = RecordAttribute::create(
+            AttributeIdentifier::create('designer', 'country', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('country'),
+            LabelCollection::fromArray(['en_US' => 'Country']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            ReferenceEntityIdentifier::fromString('country')
+        );
+        $this->attributeRepository->create($attribute);
+
+        $this->requestContract = 'successful_country_reference_entity_attribute_update.json';
+    }
+
+    /**
+     * @Then /^the properties of the Country attribute are updated in the PIM with the properties coming from the ERP$/
+     */
+    public function thePropertiesOfTheCountryAttributeAreUpdatedInThePIMWithThePropertiesComingFromTheERP()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'successful_country_reference_entity_attribute_update.json'
+        );
+
+        $attributeIdentifier = AttributeIdentifier::create('designer', 'country', 'fingerprint');
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
+        $expectedAttribute = RecordAttribute::create(
+            $attributeIdentifier,
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('country'),
+            LabelCollection::fromArray(['fr_FR' => 'Pays', 'en_US' => 'Country']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            ReferenceEntityIdentifier::fromString('country')
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);

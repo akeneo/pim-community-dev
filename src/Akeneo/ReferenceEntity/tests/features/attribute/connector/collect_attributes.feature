@@ -18,6 +18,13 @@ Feature: Connection to MDM or ERP systems
     Then the Portrait attribute is added to the structure of the Designer reference entity in the PIM with the properties coming from the ERP
 
   @integration-back
+  Scenario: Collect a new record attribute for a reference entity from the ERP
+    Given the Designer reference entity existing both in the ERP and in the PIM
+    And the record attribute Country that is only part of the structure of the Designer reference entity in the ERP but not in the PIM
+    When the connector collects this attribute from the ERP to synchronize it with the PIM
+    Then the Country attribute is added to the structure of the Designer reference entity in the PIM with the properties coming from the ERP
+
+  @integration-back
   Scenario: Collect an existing text type attribute for a reference entity from the ERP
     Given the Color reference entity existing both in the ERP and in the PIM
     And the Main Color attribute that is both part of the structure of the Color reference entity in the ERP and in the PIM but with some unsynchronized properties
@@ -30,6 +37,13 @@ Feature: Connection to MDM or ERP systems
     And the Portrait attribute that is both part of the structure of the Designer reference entity in the ERP and in the PIM but with some unsynchronized properties
     When the connector collects this attribute from the ERP to synchronize it with the PIM
     Then the properties of the Portrait attribute are updated in the PIM with the properties coming from the ERP
+
+  @integration-back
+  Scenario: Collect an existing record type attribute for a reference entity from the ERP
+    Given the Designer reference entity existing both in the ERP and in the PIM
+    And the Country attribute that is both part of the structure of the Designer reference entity in the ERP and in the PIM but with some unsynchronized properties
+    When the connector collects this attribute from the ERP to synchronize it with the PIM
+    Then the properties of the Country attribute are updated in the PIM with the properties coming from the ERP
 
   @integration-back
   Scenario: Notify an error when collecting an attribute of a non-existent reference entity
