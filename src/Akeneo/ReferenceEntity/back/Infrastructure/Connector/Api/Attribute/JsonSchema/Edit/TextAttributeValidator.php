@@ -74,7 +74,10 @@ class TextAttributeValidator implements AttributeValidatorInterface
                 ],
                 'validation_regexp' => [
                     'type' => [ 'string', 'null'],
-                ]
+                ],
+                '_links' => [
+                    'type' => 'object'
+                ],
             ],
             'additionalProperties' => false,
         ];
