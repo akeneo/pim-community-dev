@@ -17,6 +17,7 @@ use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterfa
 use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
+use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -151,7 +152,7 @@ SQL;
      *
      * @return array
      */
-    protected function findMissingVariations(InputInterface $input): array
+    protected function findMissingVariations(InputInterface $input)
     {
         $asset = null;
         if (!$this->isGenerateForAllAssets($input)) {
@@ -166,10 +167,9 @@ SQL;
      * @param OutputInterface $output
      * @param Asset           $missingVariations
      */
-    protected function generateMissingVariations(OutputInterface $output, array $missingVariations): void
+    protected function generateMissingVariations(OutputInterface $output, $missingVariations): void
     {
-        $processedAssets = $this->generateVariation($output, $missingVariations);
-        $this->scheduleCompleteness($output, $processedAssets);
+        $this->generateVariationsInBulk($output, $missingVariations);
         $output->writeln('<info>Done!</info>');
     }
 
@@ -179,11 +179,70 @@ SQL;
      *
      * @return array
      */
-    protected function generateVariation(OutputInterface $output, $missingVariations): array
+    protected function generateVariationsInBulk(OutputInterface $output, $missingVariations): array
     {
-        $generator = $this->getVariationsCollectionFileGenerator();
-        $processedList = $generator->generate($missingVariations, true);
+        $variationsToGenerate = [];
+        foreach ($missingVariations as $missingVariation) {
+            $variationsToGenerate[] = $missingVariation;
+            if (0 !== \count($variationsToGenerate) % self::BATCH_SIZE) {
+                continue;
+            }
 
+            $processedAssets = $this->generateAndScheduleCompleteness($output, $variationsToGenerate);
+            $variationsToGenerate = [];
+        }
+
+        $processedAssets = $this->generateAndScheduleCompleteness($output, $variationsToGenerate);
+
+        return $processedAssets;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param array           $processedAssets
+     */
+    protected function scheduleCompleteness(OutputInterface $output, array $processedAssets): void
+    {
+        $output->writeln('<info>Schedule completeness calculation</info>');
+
+        foreach ($processedAssets as $asset) {
+            $output->writeln(sprintf('<info>Schedule completeness for asset %s</info>', $asset->getCode()));
+            $this->getCompletenessRemover()->removeForAsset($asset);
+        }
+    }
+
+    /**
+     * @param $assetCodes
+     *
+     */
+    protected function buildAssets($assetCodes): void
+    {
+        $chunks = array_chunk($assetCodes, static::BATCH_SIZE);
+        foreach ($chunks as $assetCodesToBuild) {
+            $assets = $this->fetchAssetsByCode($assetCodesToBuild);
+            $builtAssets = array_map(
+                function (Asset $asset) {
+                    $this->buildAsset($asset);
+
+                    return $asset;
+                },
+                $assets
+            );
+            $this->getAssetSaver()->saveAll($builtAssets);
+            $this->detachAll($assets);
+        }
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param                 $processedList
+     * @param                 $processedAssets
+     *
+     * @return mixed
+     *
+     */
+    protected function showMessages(OutputInterface $output, ProcessedItemList $processedList)
+    {
         $processedAssets = [];
         foreach ($processedList as $item) {
             $variation = $item->getItem();
@@ -223,42 +282,23 @@ SQL;
         }
 
         return $processedAssets;
-    }
+}
 
     /**
      * @param OutputInterface $output
-     * @param                 $processedAssets
+     * @param                 $generator
+     * @param                 $variationsToGenerate
+     *
+     * @return mixed
      *
      */
-    protected function scheduleCompleteness(OutputInterface $output, $processedAssets): void
+    protected function generateAndScheduleCompleteness(OutputInterface $output, $variationsToGenerate)
     {
-        $output->writeln('<info>Schedule completeness calculation</info>');
+        $generator = $this->getVariationsCollectionFileGenerator();
+        $processedList = $generator->generate($variationsToGenerate);
+        $processedAssets = $this->showMessages($output, $processedList);
+        $this->scheduleCompleteness($output, $processedAssets);
 
-        foreach ($processedAssets as $asset) {
-            $output->writeln(sprintf('<info>Schedule completeness for asset %s</info>', $asset->getCode()));
-            $this->getCompletenessRemover()->removeForAsset($asset);
-        }
-    }
-
-    /**
-     * @param $assetCodes
-     *
-     */
-    protected function buildAssets($assetCodes): void
-    {
-        $chunks = array_chunk($assetCodes, static::BATCH_SIZE);
-        foreach ($chunks as $assetCodesToBuild) {
-            $assets = $this->fetchAssetsByCode($assetCodesToBuild);
-            $builtAssets = array_map(
-                function (Asset $asset) {
-                    $this->buildAsset($asset);
-
-                    return $asset;
-                },
-                $assets
-            );
-            $this->getAssetSaver()->saveAll($builtAssets);
-            $this->detachAll($assets);
-        }
+        return $processedAssets;
     }
 }
