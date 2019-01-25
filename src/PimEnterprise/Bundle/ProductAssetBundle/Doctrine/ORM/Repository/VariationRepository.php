@@ -30,9 +30,6 @@ class VariationRepository extends EntityRepository implements VariationRepositor
         $qb = $this->createQueryBuilder('v')
             ->where('v.fileInfo IS NULL and v.sourceFileInfo IS NOT NULL');
 
-        $variationsNotGenerated = $qb->getQuery()->iterate();
-        foreach ($variationsNotGenerated as $variationNotGenerated) {
-            yield current($variationNotGenerated);
-        }
+        return $qb->getQuery()->getResult();
     }
 }
