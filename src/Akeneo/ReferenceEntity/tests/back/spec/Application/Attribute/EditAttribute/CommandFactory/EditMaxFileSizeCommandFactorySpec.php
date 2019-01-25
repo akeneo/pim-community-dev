@@ -16,15 +16,15 @@ class EditMaxFileSizeCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_property_max_file_size_edits()
     {
         $this->supports([
-            'identifier'    => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
+            'identifier'    => 'portrait',
             'max_file_size' => '172.50',
         ])->shouldReturn(true);
         $this->supports([
-            'identifier'    => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
+            'identifier'    => 'portrait',
             'max_file_size' => null
         ])->shouldReturn(true);
         $this->supports([
-            'identifier' => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
+            'identifier' => 'portrait',
             'labels'     => 'wrong_property',
         ])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);
@@ -33,17 +33,11 @@ class EditMaxFileSizeCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_to_edit_the_max_file_size_property_of_an_attribute()
     {
         $command = $this->create([
-            'identifier'    => [
-                'identifier'                 => 'portrait',
-                'reference_entity_identifier' => 'designer',
-            ],
+            'identifier'    => 'portrait',
             'max_file_size' => '172.50',
         ]);
         $command->shouldBeAnInstanceOf(EditMaxFileSizeCommand::class);
-        $command->identifier->shouldBeEqualTo([
-            'identifier'                 => 'portrait',
-            'reference_entity_identifier' => 'designer',
-        ]);
+        $command->identifier->shouldBeEqualTo('portrait');
         $command->maxFileSize->shouldBeEqualTo('172.50');
     }
 
@@ -52,10 +46,7 @@ class EditMaxFileSizeCommandFactorySpec extends ObjectBehavior
         $this->shouldThrow(\RuntimeException::class)
             ->during('create', [
                 [
-                    'identifier'     => [
-                        'identifier'                 => 'portrait',
-                        'reference_entity_identifier' => 'designer',
-                    ],
+                    'identifier'     => 'portrait',
                     'wrong_property' => 10,
                 ],
             ]);

@@ -10,6 +10,11 @@ use PhpSpec\ObjectBehavior;
 
 class EditAttributeCommandSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('name_designer_fingerprint', []);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(EditAttributeCommand::class);
@@ -17,8 +22,8 @@ class EditAttributeCommandSpec extends ObjectBehavior
 
     function it_finds_a_command_by_classname()
     {
-        $editIsRichTextEditorCommand = new EditIsRichTextEditorCommand();
-        $editLabelsCommand = new EditLabelsCommand();
+        $editIsRichTextEditorCommand = new EditIsRichTextEditorCommand('name', false);
+        $editLabelsCommand = new EditLabelsCommand('name', []);
         $this->editCommands = [$editIsRichTextEditorCommand, $editLabelsCommand];
 
         $this->findCommand(EditIsRichTextEditorCommand::class)->shouldReturn($editIsRichTextEditorCommand);
