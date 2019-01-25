@@ -20,10 +20,10 @@ namespace Akeneo\ReferenceEntity\Application\Record\CreateRecord;
  */
 class CreateRecordCommand
 {
-    /** @var ?string */
+    /** @var string|null */
     public $referenceEntityIdentifier;
 
-    /** @var ?string */
+    /** @var string|null */
     public $code;
 
     /** @var array */
