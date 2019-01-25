@@ -41,10 +41,13 @@ class EditRecordCommandFactory
             throw new \RuntimeException('Impossible to create a command of record edition.');
         }
 
-        $command = new EditRecordCommand();
-        $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'] ?? null;
-        $command->code = $normalizedCommand['code'] ?? null;
-        $command->editRecordValueCommands = [];
+        $command = new EditRecordCommand(
+            $normalizedCommand['reference_entity_identifier'],
+            $normalizedCommand['code'],
+            [],
+            null,
+            []
+        );
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
         $attributesIndexedByIdentifier = ($this->sqlFindAttributesIndexedByIdentifier)($referenceEntityIdentifier);
