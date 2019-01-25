@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect;
 
+use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributeByIdentifierAndCode;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
@@ -36,6 +37,7 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -67,18 +69,23 @@ class CreateOrUpdateAttributeContext implements Context
     /** @var null|Response */
     private $pimResponse;
 
+    /** @var InMemoryFindConnectorAttributeByIdentifierAndCode */
+    private $findConnectorAttribute;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         AttributeRepositoryInterface $attributeRepository,
-        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
+        InMemoryFindConnectorAttributeByIdentifierAndCode $findConnectorAttribute
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->attributeRepository = $attributeRepository;
         $this->activatedLocales = $activatedLocales;
+        $this->findConnectorAttribute = $findConnectorAttribute;
     }
 
     /**
@@ -290,6 +297,23 @@ class CreateOrUpdateAttributeContext implements Context
         );
         $this->attributeRepository->create($attribute);
 
+        $connectorAttribute = new ConnectorAttribute(
+            AttributeCode::fromString('main_color'),
+            LabelCollection::fromArray(['en_US' => 'Main color']),
+            'text',
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeIsRequired::fromBoolean(false),
+            [
+                'max_length' => 155,
+                'is_textarea' => false,
+                'is_rich_text_editor' => false,
+                'validation_rule' => AttributeValidationRule::REGULAR_EXPRESSION,
+                'regular_expression' => '/\w+/',
+            ]
+        );
+        $this->findConnectorAttribute->save($attribute->getReferenceEntityIdentifier(), $attribute->getCode(), $connectorAttribute);
+
         $this->requestContract = 'successful_main_color_reference_entity_attribute_update.json';
     }
 
@@ -344,6 +368,20 @@ class CreateOrUpdateAttributeContext implements Context
         );
         $this->attributeRepository->create($attribute);
 
+        $connectorAttribute = new ConnectorAttribute(
+            $attribute->getCode(),
+            LabelCollection::fromArray(['en_US' => 'Portrait']),
+            'image',
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeIsRequired::fromBoolean(true),
+            [
+                'max_file_size' => 200.10,
+                'allowed_extensions' => ['gif'],
+            ]
+        );
+        $this->findConnectorAttribute->save($attribute->getReferenceEntityIdentifier(), $attribute->getCode(), $connectorAttribute);
+
         $this->requestContract = 'successful_portrait_reference_entity_attribute_update.json';
     }
 
@@ -394,6 +432,17 @@ class CreateOrUpdateAttributeContext implements Context
         );
         $this->attributeRepository->create($attribute);
 
+        $connectorAttribute = new ConnectorAttribute(
+            $attribute->getCode(),
+            LabelCollection::fromArray(['en_US' => 'Country']),
+            'record',
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeIsRequired::fromBoolean(true),
+            ['record_type' => 'country']
+        );
+        $this->findConnectorAttribute->save($attribute->getReferenceEntityIdentifier(), $attribute->getCode(), $connectorAttribute);
+
         $this->requestContract = 'successful_country_reference_entity_attribute_update.json';
     }
 
@@ -439,8 +488,19 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
-
         $this->attributeRepository->create($attribute);
+
+        $connectorAttribute = new ConnectorAttribute(
+            $attribute->getCode(),
+            LabelCollection::fromArray(['en_US' => 'Birth date']),
+            'option',
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeIsRequired::fromBoolean(true),
+            []
+        );
+        $this->findConnectorAttribute->save($attribute->getReferenceEntityIdentifier(), $attribute->getCode(), $connectorAttribute);
+
 
         $this->requestContract = 'successful_birthdate_reference_entity_attribute_update.json';
     }
