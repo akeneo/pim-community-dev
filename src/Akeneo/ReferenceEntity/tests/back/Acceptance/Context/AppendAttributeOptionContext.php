@@ -73,14 +73,12 @@ class AppendAttributeOptionContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions(
-            [
-                AttributeOption::create(
-                    OptionCode::fromString('blue'),
-                    LabelCollection::fromArray([])
-                ),
-            ]
-        );
+        $optionAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('blue'),
+                LabelCollection::fromArray([])
+            ),
+        ]);
 
         $this->attributeRepository->create($optionAttribute);
     }
@@ -121,10 +119,7 @@ class AppendAttributeOptionContext implements Context
         );
 
         $this->constraintViolationsContext->assertThereIsNoViolations();
-        Assert::assertEquals(
-            $expectedOption,
-            $option
-        );
+        Assert::assertEquals($expectedOption, $option);
     }
 
     /**
@@ -142,14 +137,12 @@ class AppendAttributeOptionContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions(
-            [
-                AttributeOption::create(
-                    OptionCode::fromString('blue'),
-                    LabelCollection::fromArray([])
-                ),
-            ]
-        );
+        $optionAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('blue'),
+                LabelCollection::fromArray([])
+            ),
+        ]);
 
         $this->attributeRepository->create($optionAttribute);
     }
@@ -193,12 +186,7 @@ class AppendAttributeOptionContext implements Context
         $options = [];
         for ($i = 0; $i < 100; $i++) {
             $options[] = AttributeOption::create(
-                OptionCode::fromString(
-                    sprintf(
-                        'code_%s',
-                        $i
-                    )
-                ),
+                OptionCode::fromString(sprintf('code_%s', $i)),
                 LabelCollection::fromArray([])
             );
         }
@@ -226,12 +214,7 @@ class AppendAttributeOptionContext implements Context
         $options = [];
         for ($i = 0; $i < 100; $i++) {
             $options[] = AttributeOption::create(
-                OptionCode::fromString(
-                    sprintf(
-                        'code_%s',
-                        $i
-                    )
-                ),
+                OptionCode::fromString(sprintf('code_%s', $i)),
                 LabelCollection::fromArray([])
             );
         }
@@ -255,14 +238,12 @@ class AppendAttributeOptionContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions(
-            [
-                AttributeOption::create(
-                    OptionCode::fromString('red'),
-                    LabelCollection::fromArray([])
-                ),
-            ]
-        );
+        $optionAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('red'),
+                LabelCollection::fromArray([])
+            ),
+        ]);
 
         $this->attributeRepository->create($optionAttribute);
     }
@@ -282,14 +263,12 @@ class AppendAttributeOptionContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions(
-            [
-                AttributeOption::create(
-                    OptionCode::fromString('red'),
-                    LabelCollection::fromArray([])
-                ),
-            ]
-        );
+        $optionAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('red'),
+                LabelCollection::fromArray([])
+            ),
+        ]);
 
         $this->attributeRepository->create($optionAttribute);
     }

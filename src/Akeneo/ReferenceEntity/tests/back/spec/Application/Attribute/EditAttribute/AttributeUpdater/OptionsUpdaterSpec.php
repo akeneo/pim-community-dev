@@ -32,26 +32,10 @@ class OptionsUpdaterSpec extends ObjectBehavior
             []
         );
 
-        $this->supports(
-            $optionCollectionAttribute,
-            $optionsEditCommand
-        )->shouldReturn(true)
-        ;
-        $this->supports(
-            $optionAttribute,
-            $optionsEditCommand
-        )->shouldReturn(true)
-        ;
-        $this->supports(
-            $imageAttribute,
-            $optionsEditCommand
-        )->shouldReturn(false)
-        ;
-        $this->supports(
-            $optionCollectionAttribute,
-            $labelEditCommand
-        )->shouldReturn(false)
-        ;
+        $this->supports($optionCollectionAttribute, $optionsEditCommand)->shouldReturn(true);
+        $this->supports($optionAttribute, $optionsEditCommand)->shouldReturn(true);
+        $this->supports($imageAttribute, $optionsEditCommand)->shouldReturn(false);
+        $this->supports($optionCollectionAttribute, $labelEditCommand)->shouldReturn(false);
     }
 
     function it_edits_the_options_of_option_attribute(OptionAttribute $optionAttribute)
@@ -70,25 +54,16 @@ class OptionsUpdaterSpec extends ObjectBehavior
             ]
         );
 
-        $optionAttribute->setOptions(
-            Argument::that(
-                function ($collaborator) {
-                    $expectedGreen = json_encode(['code' => 'green', 'labels' => ['en_US' => 'Green']]);
-                    $expectedRed = json_encode(['code' => 'red', 'labels' => ['en_US' => 'Red']]);
-                    $actualGreen = json_encode($collaborator[0]->normalize());
-                    $actualRed = json_encode($collaborator[1]->normalize());
+        $optionAttribute->setOptions(Argument::that(function ($collaborator) {
+            $expectedGreen = json_encode(['code' => 'green', 'labels' => ['en_US' => 'Green']]);
+            $expectedRed = json_encode(['code' => 'red', 'labels' => ['en_US' => 'Red']]);
+            $actualGreen = json_encode($collaborator[0]->normalize());
+            $actualRed = json_encode($collaborator[1]->normalize());
 
-                    return $expectedGreen === $actualGreen && $expectedRed === $actualRed;
-                }
-            )
-        )->shouldBeCalled()
-        ;
+            return $expectedGreen === $actualGreen && $expectedRed === $actualRed;
+        }))->shouldBeCalled();
 
-        $this->__invoke(
-            $optionAttribute,
-            $optionsEditCommand
-        )->shouldReturn($optionAttribute)
-        ;
+        $this->__invoke($optionAttribute, $optionsEditCommand)->shouldReturn($optionAttribute);
     }
 
     function it_empties_the_options(OptionAttribute $optionAttribute)
@@ -98,8 +73,7 @@ class OptionsUpdaterSpec extends ObjectBehavior
         $this->__invoke(
             $optionAttribute,
             $editMaxLength
-        )->shouldReturn($optionAttribute)
-        ;
+        )->shouldReturn($optionAttribute);
     }
 
     function it_throws_if_it_cannot_update_the_attribute(
@@ -112,25 +86,9 @@ class OptionsUpdaterSpec extends ObjectBehavior
             'name',
             []
         );
-        $this->shouldThrow(\RuntimeException::class)->during(
-            '__invoke',
-            [$rightAttribute1, $wrongCommand]
-        )
-        ;
-        $this->shouldThrow(\RuntimeException::class)->during(
-            '__invoke',
-            [$rightAttribute2, $wrongCommand]
-        )
-        ;
-        $this->shouldThrow(\RuntimeException::class)->during(
-            '__invoke',
-            [$wrongAttribute, $rightCommand]
-        )
-        ;
-        $this->shouldThrow(\RuntimeException::class)->during(
-            '__invoke',
-            [$wrongAttribute, $wrongCommand]
-        )
-        ;
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$rightAttribute1, $wrongCommand]);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$rightAttribute2, $wrongCommand]);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$wrongAttribute, $rightCommand]);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$wrongAttribute, $wrongCommand]);
     }
 }

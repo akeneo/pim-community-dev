@@ -19,7 +19,7 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
  */
 class CreateImageAttributeCommand extends AbstractCreateAttributeCommand
 {
-    /** @var string */
+    /** @var string|null */
     public $maxFileSize;
 
     /** @var array */

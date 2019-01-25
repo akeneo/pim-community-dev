@@ -42,7 +42,7 @@ class CreateTextAttributeCommandFactory extends AbstractCreateAttributeCommandFa
             $normalizedCommand['value_per_locale'],
             $normalizedCommand['max_length'] ?? AttributeMaxLength::NO_LIMIT,
             $normalizedCommand['is_textarea'] ?? false,
-            $normalizedCommand['is_textarea'] ?? false,
+            $normalizedCommand['is_rich_text_editor'] ?? false,
             $normalizedCommand['validation_rule'] ?? AttributeValidationRule::NONE,
             $normalizedCommand['regular_expression'] ?? null
         );

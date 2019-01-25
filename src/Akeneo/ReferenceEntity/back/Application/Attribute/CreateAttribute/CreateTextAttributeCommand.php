@@ -22,16 +22,16 @@ class CreateTextAttributeCommand extends AbstractCreateAttributeCommand
     /** @var int */
     public $maxLength;
 
-    /** bool */
+    /** @var bool */
     public $isTextarea;
 
     /** @var bool */
     public $isRichTextEditor;
 
-    /** @var ?string */
+    /** @var string|null */
     public $validationRule;
 
-    /** @var ?string */
+    /** @var string|null */
     public $regularExpression;
 
     public function __construct(

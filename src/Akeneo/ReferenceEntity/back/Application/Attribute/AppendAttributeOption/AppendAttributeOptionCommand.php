@@ -24,7 +24,7 @@ class AppendAttributeOptionCommand
     /**@var string */
     public $optionCode;
 
-    /** @var ?array */
+    /** @var array|null */
     public $labels;
 
     public function __construct(

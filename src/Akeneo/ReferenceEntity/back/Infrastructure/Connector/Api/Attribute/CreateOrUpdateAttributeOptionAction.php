@@ -32,10 +32,10 @@ class CreateOrUpdateAttributeOptionAction
     /** @var Router */
     private $router;
 
-    /** @var AttributeOptionValidator * */
+    /** @var AttributeOptionValidator */
     private $jsonSchemaValidator;
 
-    /** @var ValidatorInterface * */
+    /** @var ValidatorInterface */
     private $businessRulesValidator;
 
     /** @var ReferenceEntityExistsInterface */
@@ -83,12 +83,8 @@ class CreateOrUpdateAttributeOptionAction
         $this->appendAttributeOptionHandler = $appendAttributeOptionHandler;
     }
 
-    public function __invoke(
-        Request $request,
-        string $referenceEntityIdentifier,
-        string $attributeCode,
-        string $optionCode
-    ): Response {
+    public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode, string $optionCode): Response
+    {
         try {
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
             $attributeCode = AttributeCode::fromString($attributeCode);
@@ -97,10 +93,7 @@ class CreateOrUpdateAttributeOptionAction
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
-        $option = json_decode(
-            $request->getContent(),
-            true
-        );
+        $option = json_decode($request->getContent(), true);
 
         if (null === $option) {
             throw new BadRequestHttpException('Invalid json message received');
@@ -109,25 +102,17 @@ class CreateOrUpdateAttributeOptionAction
         $invalidFormatErrors = $this->jsonSchemaValidator->validate($option);
 
         if (!empty($invalidFormatErrors)) {
-            return new JsonResponse(
-                [
-                    'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                    'message' => 'The attribute option has an invalid format.',
-                    'errors' => JsonSchemaErrorsFormatter::format($invalidFormatErrors),
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+            return new JsonResponse([
+                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message' => 'The attribute option has an invalid format.',
+                'errors' => JsonSchemaErrorsFormatter::format($invalidFormatErrors),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
 
         if (false === $referenceEntityExists) {
-            throw new NotFoundHttpException(
-                sprintf(
-                    'Reference entity "%s" does not exist.',
-                    $referenceEntityIdentifier
-                )
-            );
+            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
         $attributeExists = $this->attributeExists->withReferenceEntityAndCode(
@@ -136,48 +121,20 @@ class CreateOrUpdateAttributeOptionAction
         );
 
         if (false === $attributeExists) {
-            throw new NotFoundHttpException(
-                sprintf(
-                    'Attribute "%s" does not exist for reference entity "%s".',
-                    (string)$attributeCode,
-                    (string)$referenceEntityIdentifier
-                )
-            );
+            throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist for reference entity "%s".', (string) $attributeCode, (string) $referenceEntityIdentifier));
         }
 
-        $attributeSupportsOptions = ($this->attributeSupportsOptions)(
-            $referenceEntityIdentifier,
-            $attributeCode
-        );
+        $attributeSupportsOptions = ($this->attributeSupportsOptions)($referenceEntityIdentifier, $attributeCode);
 
         if (false === $attributeSupportsOptions) {
-            throw new NotFoundHttpException(
-                sprintf(
-                    'Attribute "%s" does not support options.',
-                    $attributeCode
-                )
-            );
+            throw new NotFoundHttpException(sprintf('Attribute "%s" does not support options.', $attributeCode));
         }
 
-        $optionExists = $this->isOptionExisting(
-            $referenceEntityIdentifier,
-            $attributeCode,
-            $optionCode
-        );
+        $optionExists = $this->isOptionExisting($referenceEntityIdentifier, $attributeCode, $optionCode);
 
         return $optionExists ?
-            $this->editOption(
-                $referenceEntityIdentifier,
-                $attributeCode,
-                $optionCode,
-                $option
-            ) :
-            $this->createOption(
-                $referenceEntityIdentifier,
-                $attributeCode,
-                $optionCode,
-                $option
-            );
+            $this->editOption($referenceEntityIdentifier, $attributeCode, $optionCode, $option) :
+            $this->createOption($referenceEntityIdentifier, $attributeCode, $optionCode, $option);
     }
 
     public function editOption(
@@ -187,39 +144,28 @@ class CreateOrUpdateAttributeOptionAction
         array $option
     ): Response {
         $command = new EditAttributeOptionCommand(
-            (string)$referenceEntityIdentifier,
-            (string)$attributeCode,
-            (string)$optionCode,
+            (string) $referenceEntityIdentifier,
+            (string) $attributeCode,
+            (string) $optionCode,
             $option['labels']
         );
 
         $violations = $this->businessRulesValidator->validate($command);
         if ($violations->count() > 0) {
-            throw new ViolationHttpException(
-                $violations,
-                'The attribute option has data that does not comply with the business rules.'
-            );
+            throw new ViolationHttpException($violations, 'The attribute option has data that does not comply with the business rules.');
         }
 
         ($this->editAttributeOptionHandler)($command);
 
         $headers = [
-            'Location' => $this->router->generate(
-                'akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get',
-                [
-                    'referenceEntityIdentifier' => (string)$referenceEntityIdentifier,
-                    'attributeCode'             => (string)$attributeCode,
-                    'optionCode'                => (string)$optionCode,
-                ],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
+            'Location' => $this->router->generate('akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get', [
+                    'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+                    'attributeCode'             => (string) $attributeCode,
+                    'optionCode'                => (string) $optionCode,
+                ], UrlGeneratorInterface::ABSOLUTE_URL),
         ];
 
-        return Response::create(
-            '',
-            Response::HTTP_CREATED,
-            $headers
-        );
+        return Response::create('', Response::HTTP_CREATED, $headers);
     }
 
     public function createOption(
@@ -237,31 +183,20 @@ class CreateOrUpdateAttributeOptionAction
 
         $violations = $this->businessRulesValidator->validate($command);
         if ($violations->count() > 0) {
-            throw new ViolationHttpException(
-                $violations,
-                'The attribute option has data that does not comply with the business rules.'
-            );
+            throw new ViolationHttpException($violations, 'The attribute option has data that does not comply with the business rules.');
         }
 
         ($this->appendAttributeOptionHandler)($command);
 
         $headers = [
-            'Location' => $this->router->generate(
-                'akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get',
-                [
+            'Location' => $this->router->generate('akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get', [
                     'referenceEntityIdentifier' => (string)$referenceEntityIdentifier,
                     'attributeCode'             => (string)$attributeCode,
                     'optionCode'                => (string)$optionCode,
-                ],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
+                ], UrlGeneratorInterface::ABSOLUTE_URL),
         ];
 
-        return Response::create(
-            '',
-            Response::HTTP_CREATED,
-            $headers
-        );
+        return Response::create('', Response::HTTP_CREATED, $headers);
     }
 
     public function isOptionExisting(
@@ -269,10 +204,7 @@ class CreateOrUpdateAttributeOptionAction
         AttributeCode $attributeCode,
         OptionCode $optionCode
     ): bool {
-        $attributeIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
-            $attributeCode
-        );
+        $attributeIdentifier = $this->getAttributeIdentifier->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
 
         $optionExists = $attribute->hasAttributeOption($optionCode);
