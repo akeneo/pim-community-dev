@@ -48,6 +48,7 @@ class GenerateMissingVariationFilesCommandIntegration extends TestCase
         $this->executeGenerateMissingVariationForAsset('shoe');
 
         $this->assertVariationsFor('shoe', 1);
+        $this->assertVariationsForChannel('shoe', 'ecommerce');
     }
 
     /**
@@ -65,7 +66,9 @@ class GenerateMissingVariationFilesCommandIntegration extends TestCase
         $this->executeGenerateMissingVariationForAssetAllAssets();
 
         $this->assertVariationsFor('shoe', 1);
+        $this->assertVariationsForChannel('shoe', 'ecommerce');
         $this->assertVariationsFor('mugs', 1);
+        $this->assertVariationsForChannel('mugs', 'ecommerce');
     }
 
     /**
@@ -81,6 +84,9 @@ class GenerateMissingVariationFilesCommandIntegration extends TestCase
         $this->executeGenerateMissingVariationForAsset('shoe');
 
         $this->assertVariationsFor('shoe', 2);
+        $this->assertVariationsForChannelAndLocale('shoe', 'ecommerce', 'en_US');
+        $this->assertVariationsForChannelAndLocale('shoe', 'ecommerce', 'fr_FR');
+
     }
 
     /**
@@ -92,11 +98,14 @@ class GenerateMissingVariationFilesCommandIntegration extends TestCase
         $this->createStructure(['ecommerce' => ['en_US']]);
         $this->createAssetWithOneVariation('shoe', 'ecommerce');
         $this->assertVariationsFor('shoe', 1);
+        $this->assertVariationsForChannel('shoe', 'ecommerce');
 
         $this->createChannel('mobile');
         $this->executeGenerateMissingVariationForAsset('shoe');
 
         $this->assertVariationsFor('shoe', 2);
+        $this->assertVariationsForChannel('shoe', 'ecommerce');
+        $this->assertVariationsForChannel('shoe', 'mobile');
     }
 
     /**
@@ -223,12 +232,26 @@ class GenerateMissingVariationFilesCommandIntegration extends TestCase
     private function assertVariationsFor(string $assetCode, int $variationsCount): void
     {
         /** @var Asset $asset */
-        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier($assetCode);
-        if (null === $asset) {
-            throw new \Exception(sprintf('Asset "%s" does not exist', $assetCode));
-        }
+        $asset = $this->getAsset($assetCode);
 
         $this->assertCount($variationsCount, $asset->getVariations());
+    }
+
+    private function assertVariationsForChannel(string $assetCode, string $channelCode)
+    {
+        $asset = $this->getAsset($assetCode);
+
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($channelCode);
+        $this->assertTrue($asset->hasVariation($channel), sprintf('No variation found for asset "%s" and channel "%s"', $assetCode, $channelCode));
+    }
+
+    private function assertVariationsForChannelAndLocale(string $assetCode, string $channelCode, string $localeCode)
+    {
+        $asset = $this->getAsset($assetCode);
+
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($channelCode);
+        $locale = $this->get('pim_catalog.repository.locale')->findOneByIdentifier($localeCode);
+        $this->assertTrue($asset->hasVariation($channel, $locale), sprintf('No variation found for asset "%s" and channel "%s"', $assetCode, $channelCode));
     }
 
     private function executeGenerateMissingVariationForAsset(string $assetCode): void
@@ -284,5 +307,22 @@ class GenerateMissingVariationFilesCommandIntegration extends TestCase
         if ($exitCode !== 0) {
             throw new \Exception(sprintf('The command "%s", was not executed successfully', $commandName));
         }
+    }
+
+    /**
+     * @param string $assetCode
+     *
+     * @return Asset
+     *
+     * @throws \Exception
+     */
+    private function getAsset(string $assetCode): Asset
+    {
+        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier($assetCode);
+        if (null === $asset) {
+            throw new \Exception(sprintf('Asset "%s" does not exist', $assetCode));
+        }
+
+        return $asset;
     }
 }
