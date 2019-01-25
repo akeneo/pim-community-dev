@@ -10,7 +10,7 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class EditValidationRuleCommand extends AbstractEditAttributeCommand
 {
-    /** @var string */
+    /** @var string|null */
     public $validationRule;
 
     public function __construct(string $identifier, ?string $validationRule)
