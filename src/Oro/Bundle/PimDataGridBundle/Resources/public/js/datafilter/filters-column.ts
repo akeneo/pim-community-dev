@@ -200,9 +200,9 @@ class FiltersColumn extends BaseView {
     }
 
     return this.fetchFilters(searchValue, 1).then((loadedFilters: GridFilter[]) => {
-      const filters: GridFilter[] = this.defaultFilters.concat(loadedFilters);
-      this.loadedFilters = this.mergeAddedFilters(this.loadedFilters, filters);
-      const searchedFilters = this.filterBySearchTerm(filters, searchValue);
+      const defaultFilters: GridFilter[] = this.mergeAddedFilters(this.defaultFilters, loadedFilters)
+      this.loadedFilters = this.mergeAddedFilters(this.loadedFilters, defaultFilters);
+      const searchedFilters = this.filterBySearchTerm(defaultFilters, searchValue);
 
       return this.renderFilters(searchedFilters);
     });
