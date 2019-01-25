@@ -43,8 +43,6 @@ class SelectUserAndFamilyIdsWithMissingMappingQuery
     }
 
     /**
-     * Merges the results of the 2 queries and ensure uniqueness of the results.
-     *
      * @throws \Doctrine\DBAL\DBALException
      *
      * @return array
@@ -68,15 +66,14 @@ class SelectUserAndFamilyIdsWithMissingMappingQuery
     private function getUserAndFamilyIdsForClassifiedProducts(): array
     {
         $sql = <<<SQL
-SELECT uag.user_id         AS user_id,
-       JSON_ARRAYAGG(f.id) AS family_ids
+SELECT uag.user_id AS user_id,
+    JSON_ARRAYAGG(p.family_id) AS family_ids
 FROM pimee_franklin_insights_subscription s
-     INNER JOIN pim_catalog_product p ON p.id = s.product_id
-     INNER JOIN pim_catalog_family f ON f.id = p.family_id
-     INNER JOIN pim_catalog_category_product cp ON p.id = cp.product_id
-     INNER JOIN pimee_security_product_category_access pca
-                ON pca.category_id = cp.category_id AND pca.own_items IS TRUE
-     INNER JOIN oro_user_access_group uag ON uag.group_id = pca.user_group_id
+    INNER JOIN pim_catalog_product p ON p.id = s.product_id AND p.family_id IS NOT NULL
+    INNER JOIN pim_catalog_category_product cp ON p.id = cp.product_id
+    INNER JOIN pimee_security_product_category_access pca
+        ON pca.category_id = cp.category_id AND pca.own_items IS TRUE
+    INNER JOIN oro_user_access_group uag ON uag.group_id = pca.user_group_id
 WHERE s.misses_mapping IS TRUE
 GROUP BY uag.user_id;
 SQL;
@@ -98,17 +95,14 @@ SQL;
     private function getUserAndFamilyIdsForUnclassifiedProducts(): array
     {
         $sql = <<<SQL
-SELECT u.id                AS user_id,
-       JSON_ARRAYAGG(f.id) AS family_ids
+SELECT u.id AS user_id,
+    JSON_ARRAYAGG(p.family_id) AS family_ids
 FROM pimee_franklin_insights_subscription s
-         INNER JOIN pim_catalog_product p ON p.id = s.product_id
-         INNER JOIN pim_catalog_family f ON f.id = p.family_id
-         INNER JOIN oro_user u
+    INNER JOIN pim_catalog_product p ON p.id = s.product_id AND p.family_id IS NOT NULL
+    INNER JOIN oro_user u
+    LEFT OUTER JOIN pim_catalog_category_product cp ON cp.product_id = p.id
 WHERE s.misses_mapping IS TRUE
-  AND NOT EXISTS
-    (
-    SELECT NULL FROM pim_catalog_category_product cp WHERE p.id = cp.product_id
-    )
+    AND cp.category_id IS NULL
 GROUP BY u.id;
 SQL;
 
@@ -152,8 +146,6 @@ SQL;
             $mergedFamilyIds = array_key_exists($userId, $mergedIds)
                 ? array_merge($familyIds, $mergedIds[$userId])
                 : $familyIds;
-
-            sort($mergedFamilyIds);
 
             $mergedIds[$userId] = array_unique($mergedFamilyIds);
         }

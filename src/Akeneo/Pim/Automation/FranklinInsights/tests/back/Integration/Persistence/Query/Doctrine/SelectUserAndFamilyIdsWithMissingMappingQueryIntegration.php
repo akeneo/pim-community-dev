@@ -36,7 +36,7 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->createSubscribableProducts();
+        $this->createProducts();
     }
 
     public function test_that_it_selects_users_owning_products_with_missing_mapping(): void
@@ -52,14 +52,18 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
 
         $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
 
-        Assert::assertSame(
+        Assert::assertEquals(
             [
                 $this->getUserId('admin') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
                 $this->getUserId('julia') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
                 $this->getUserId('mary') => [$this->getFamilyId('familyA')],
                 $this->getUserId('kevin') => [$this->getFamilyId('familyA')],
             ],
-            $queryResult
+            $queryResult,
+            '',
+            0.0,
+            10,
+            true
         );
     }
 
@@ -76,14 +80,18 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
 
         $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
 
-        Assert::assertSame(
+        Assert::assertEquals(
             [
                 $this->getUserId('admin') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
                 $this->getUserId('julia') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
                 $this->getUserId('mary') => [$this->getFamilyId('familyA')],
                 $this->getUserId('kevin') => [$this->getFamilyId('familyA')],
             ],
-            $queryResult
+            $queryResult,
+            '',
+            0.0,
+            10,
+            true
         );
     }
 
@@ -114,7 +122,7 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function createSubscribableProducts(): void
+    private function createProducts(): void
     {
         $productForEverybody = $this->productBuilder()
             ->withIdentifier('product_for_everybody')
