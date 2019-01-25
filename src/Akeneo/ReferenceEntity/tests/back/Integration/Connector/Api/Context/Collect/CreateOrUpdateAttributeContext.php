@@ -16,15 +16,18 @@ namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -34,7 +37,6 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -78,12 +80,12 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @Given the Color reference entity existing both in the ERP and in the PIM
+     * @Given /^the ([a-zA-Z]+) reference entity existing both in the ERP and in the PIM$/
      */
-    public function theColorReferenceEntityExistingBothInTheErpAndInThePim()
+    public function theColorReferenceEntityExistingBothInTheErpAndInThePim(string $referenceEntityIdentifier)
     {
         $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('color'),
+            ReferenceEntityIdentifier::fromString(strtolower($referenceEntityIdentifier)),
             [],
             Image::createEmpty()
         );
@@ -103,7 +105,16 @@ class CreateOrUpdateAttributeContext implements Context
     }
 
     /**
-     * @When the connector collects the Main Color attribute of the Color reference entity from the ERP to synchronize it with the PIM
+     * @Given /^the image attribute Portrait that is only part of the structure of the Designer reference entity in the ERP but not in the PIM$/
+     */
+    public function thePortraitAttributeThatIsOnlyPartOfTheStructureOfTheDesignerReferenceEntityInTheERPButNotInThePIM()
+    {
+        $this->requestContract = 'successful_portrait_reference_entity_attribute_creation.json';
+    }
+
+
+    /**
+     * @When /^the connector collects this attribute from the ERP to synchronize it with the PIM$/
      */
     public function theConnectorCollectsTheMainColorAttributeOfTheColorReferenceEntityFromTheERPToSynchronizeItWithThePIM()
     {
@@ -147,6 +158,35 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
             AttributeRegularExpression::fromString('/\w+/')
+        );
+
+        Assert::assertEquals($expectedAttribute, $attribute);
+    }
+
+    /**
+     * @Then /^the Portrait attribute is added to the structure of the Designer reference entity in the PIM with the properties coming from the ERP$/
+     */
+    public function thePortraitAttributeIsAddedToTheStructureOfTheDesignerReferenceEntityInThePIMWithThePropertiesComingFromTheERP()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'successful_portrait_reference_entity_attribute_creation.json'
+        );
+
+        $attributeIdentifier = AttributeIdentifier::create('designer', 'portrait', md5('designer_portrait'));
+
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
+        $expectedAttribute = ImageAttribute::create(
+            $attributeIdentifier,
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('portrait'),
+            LabelCollection::fromArray(['en_US' => 'Portrait']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('200.10'),
+            AttributeAllowedExtensions::fromList(['png'])
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);
@@ -202,6 +242,57 @@ class CreateOrUpdateAttributeContext implements Context
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
             AttributeRegularExpression::fromString('/\w+/')
+        );
+
+        Assert::assertEquals($expectedAttribute, $attribute);
+    }
+
+    /**
+     * @Given the Portrait attribute that is both part of the structure of the Designer reference entity in the ERP and in the PIM but with some unsynchronized properties
+     */
+    public function thePortraitAttributeThatIsBothPartOfTheStructureOfTheDesignerReferenceEntityInTheERPAndInThePIMButWithSomeUnsynchronizedProperties()
+    {
+        $attribute = ImageAttribute::create(
+            AttributeIdentifier::create('designer', 'image', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('portrait'),
+            LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('200.10'),
+            AttributeAllowedExtensions::fromList(['gif'])
+        );
+        $this->attributeRepository->create($attribute);
+
+        $this->requestContract = 'successful_portrait_reference_entity_attribute_update.json';
+    }
+
+    /**
+     * @Then the properties of the Portrait attribute are updated in the PIM with the properties coming from the ERP
+     */
+    public function thePropertiesOfThePortraitAttributeAreUpdatedInThePIMWithThePropertiesComingFromTheERP()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'successful_portrait_reference_entity_attribute_update.json'
+        );
+
+        $referenceEntityIdentifier = 'designer';
+        $attributeIdentifier = AttributeIdentifier::create('designer', 'image', 'fingerprint');
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
+        $expectedAttribute = ImageAttribute::create(
+            $attributeIdentifier,
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString('portrait'),
+            LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('1024'),
+            AttributeAllowedExtensions::fromList(['gif', 'png'])
         );
 
         Assert::assertEquals($expectedAttribute, $attribute);

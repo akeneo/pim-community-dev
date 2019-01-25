@@ -69,7 +69,7 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
             ],
             'is_required_for_completeness' => false,
             'allowed_extensions' => ['jpg'],
-            'max_file_size' => 10,
+            'max_file_size' => '10',
         ];
 
         $this->validate($attribute)->shouldReturn([]);
@@ -215,14 +215,14 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
         $errors->shouldHaveCount(1);
     }
 
-    function it_returns_an_error_when_max_file_size_is_not_an_integer()
+    function it_returns_an_error_when_max_file_size_is_not_a_string_or_null()
     {
         $attribute = [
             'code' => 'starck',
             'type' => 'text',
             'value_per_channel' => true,
             'value_per_locale' => true,
-            'max_file_size' => 'foo',
+            'max_file_size' => 42,
         ];
 
         $errors = $this->validate($attribute);
