@@ -34,16 +34,19 @@
                 <% _.each(channels, function (channel) { %>
                 <td class="AknGrid-bodyCell AknGrid-bodyCell--center">
                     <div class="attribute-requirement">
-                        <% required = _.contains(attributeRequirements[channel.code], attribute.code) %>
+                        <% isRequired = isAttributeRequirementRequired(attribute, channel) %>
                         <i
-                                class="AknAcl-icon <%- required ? 'AknAcl-icon--granted icon-ok required' : 'icon-circle non-required' %>"
-                                data-toggle="tooltip"
-                                data-attribute="<%- attribute.code %>"
-                                data-channel="<%- channel.code %>"
-                                data-type="<%- attribute.type %>"
-                                data-required="<%- required %>"
-                                data-original-title="<%- required ? requiredLabel : notRequiredLabel %>"
-                                data-placement="right"></i>
+                            class="AknAcl-icon
+                                <%- isRequired ? 'AknAcl-icon--granted icon-ok required' : 'icon-circle non-required' %>
+                                <%- isAttributeEditable(attribute.code, attribute.type, channel.code) ? '' : 'AknAcl-disabled' %>"
+                            data-attribute-code="<%- attribute.code %>"
+                            data-attribute-type="<%- attribute.type %>"
+                            data-channel-code="<%- channel.code %>"
+                            data-required="<%- isRequired %>"
+                            data-toggle="tooltip"
+                            data-original-title="<%- getAttributeRequirementTooltip(attribute, channel) %>"
+                            data-placement="right"
+                        ></i>
                     </div>
                 </td>
                 <% }) %><!-- end each channel -->

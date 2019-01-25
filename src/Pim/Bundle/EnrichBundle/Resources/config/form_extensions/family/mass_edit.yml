@@ -47,7 +47,7 @@ extensions:
                 enable: 'mass-edit:form:unlock'
 
     pim-mass-family-edit-form-attributes:
-        module: pim/mass-family-edit-form/attributes
+        module: pim/family-edit-form/attributes/attributes
         parent: pim-mass-family-edit-form
         targetZone: content
         position: 190
