@@ -66,6 +66,9 @@ class CreateOrUpdateAttributeAction
     /** @var AttributeEditionValidator */
     private $jsonSchemaEditValidator;
 
+    /** @var ValidateAttributePropertiesImmutability */
+    private $validateAttributePropertiesImmutability;
+
     public function __construct(
         CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry,
         FindAttributeNextOrderInterface $attributeNextOrder,
@@ -78,7 +81,8 @@ class CreateOrUpdateAttributeAction
         ReferenceEntityExistsInterface $referenceEntityExists,
         ValidatorInterface $validator,
         AttributeCreationValidator $jsonSchemaCreateValidator,
-        AttributeEditionValidator $jsonSchemaEditValidator
+        AttributeEditionValidator $jsonSchemaEditValidator,
+        ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability
     ) {
         $this->createAttributeCommandFactoryRegistry = $createAttributeCommandFactoryRegistry;
         $this->attributeNextOrder = $attributeNextOrder;
@@ -92,6 +96,7 @@ class CreateOrUpdateAttributeAction
         $this->validator = $validator;
         $this->jsonSchemaCreateValidator = $jsonSchemaCreateValidator;
         $this->jsonSchemaEditValidator = $jsonSchemaEditValidator;
+        $this->validateAttributePropertiesImmutability = $validateAttributePropertiesImmutability;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode): Response
@@ -228,6 +233,20 @@ class CreateOrUpdateAttributeAction
                 'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => 'The attribute has an invalid format.',
                 'errors' => JsonSchemaErrorsFormatter::format($invalidFormatErrors),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $invalidImmutablePropertiesErrors = ($this->validateAttributePropertiesImmutability)(
+            $referenceEntityIdentifier,
+            $attributeCode,
+            $normalizedAttribute
+        );
+
+        if (!empty($invalidImmutablePropertiesErrors)) {
+            return new JsonResponse([
+                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message' => 'The attribute has data that does not comply with the business rules.',
+                'errors' => $invalidImmutablePropertiesErrors,
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
