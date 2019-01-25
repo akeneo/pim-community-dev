@@ -19,6 +19,16 @@ use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterInterface;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistryInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -49,19 +59,24 @@ class EditRecordHandlerSpec extends ObjectBehavior
         ValueUpdaterRegistryInterface $valueUpdaterRegistry,
         RecordRepositoryInterface $recordRepository,
         Record $record,
-        ValueUpdaterInterface $textUpdater,
-        AbstractAttribute $textAttribute
+        ValueUpdaterInterface $textUpdater
     ) {
-        $editDescriptionCommand = new EditTextValueCommand();
-        $editDescriptionCommand->attribute = $textAttribute;
-        $editDescriptionCommand->channel = null;
-        $editDescriptionCommand->locale = 'fr_FR';
-        $editDescriptionCommand->text = 'Sony is a famous electronic company';
+        $textAttribute = $this->getAttribute();
 
-        $editRecordCommand = new EditRecordCommand();
-        $editRecordCommand->code = 'sony';
-        $editRecordCommand->referenceEntityIdentifier = 'brand';
-        $editRecordCommand->editRecordValueCommands = [$editDescriptionCommand];
+        $editDescriptionCommand = new EditTextValueCommand(
+            $textAttribute,
+            null,
+            'fr_FR',
+            'Sony is a famous electronic company'
+        );
+
+        $editRecordCommand = new EditRecordCommand(
+            'brand',
+            'sony',
+            [],
+            null,
+            [$editDescriptionCommand]
+        );
 
         $recordRepository->getByReferenceEntityAndCode(
             ReferenceEntityIdentifier::fromString('brand'),
@@ -73,5 +88,24 @@ class EditRecordHandlerSpec extends ObjectBehavior
         $recordRepository->update($record)->shouldBeCalled();
 
         $this->__invoke($editRecordCommand);
+    }
+
+    private function getAttribute(): TextAttribute
+    {
+        $textAttribute = TextAttribute::createText(
+            AttributeIdentifier::create('designer', 'name', 'test'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+
+        return $textAttribute;
     }
 }
