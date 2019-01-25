@@ -7,4 +7,11 @@ mappings:
     an_index_type1:
         properties:
             just_another_property: ~
+        dynamic_templates:
+            -
+                my_dynamic_template_3:
+                    path_match: '*foo3*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
         just_another_mapping: ~

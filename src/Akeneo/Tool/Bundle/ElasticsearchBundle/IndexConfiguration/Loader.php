@@ -65,9 +65,10 @@ class Loader
     }
 
     /**
-     * Mappings must be merged considering two cases:
+     * Mappings must be merged considering three cases:
      * - 'properties' is an associative array and new definitions must replace old ones if they have the same key
      * - 'dynamic_templates' is an indexed array and new definitions must always be added
+     * - other keys, merged with array_replace policy
      */
     private function mergeMappings(array $originalMappings, array $additionalMappings): array
     {
@@ -90,6 +91,14 @@ class Loader
                     $definitions['dynamic_templates']
                 );
             }
+            // hacky stuff to merge all other mappings
+            $otherMappings = $definitions;
+            unset($otherMappings['properties']);
+            unset($otherMappings['dynamic_templates']);
+            $originalMappings[$indexName] = array_replace_recursive(
+                $originalMappings[$indexName] ?? [],
+                $otherMappings
+            );
         }
 
         return $originalMappings;
