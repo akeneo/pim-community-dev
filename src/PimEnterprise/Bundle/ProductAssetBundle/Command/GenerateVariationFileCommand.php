@@ -59,11 +59,11 @@ class GenerateVariationFileCommand extends AbstractGenerationVariationFileComman
             return 1;
         }
 
-        $generator = $this->getVariationFileGenerator();
+        $generator = $this->getContainer()->get('pimee_product_asset.variations_collection_files_generator');
         $output->writeln($this->getGenerationMessage($asset, $channel, $locale));
 
         try {
-            $generator->generate($variation);
+            $generator->generate([$variation]);
         } catch (\Exception $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
