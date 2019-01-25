@@ -66,4 +66,14 @@ class AttributesMappingResponseSpec extends ObjectBehavior
         }
         Assert::eq($franklinAttrCodes, [$attrColor, $attrHeight, $attrLabel, $attrSize, $attrWeight]);
     }
+
+    public function it_can_check_if_mapping_is_empty(): void
+    {
+        $this->isEmpty()->shouldReturn(true);
+
+        $attrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMapping::ATTRIBUTE_PENDING);
+        $this->addAttribute($attrWeight);
+
+        $this->isEmpty()->shouldReturn(false);
+    }
 }

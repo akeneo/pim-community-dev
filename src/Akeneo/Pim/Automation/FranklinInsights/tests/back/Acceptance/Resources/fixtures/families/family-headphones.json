@@ -1,0 +1,23 @@
+{
+    "code": "headphones",
+    "attributes": [
+        "sku",
+        "asin",
+        "pim_upc",
+        "mpn",
+        "pim_brand",
+        "name",
+        "picture",
+        "description",
+        "release_date",
+        "weight",
+        "specifications",
+        "connectivity"
+    ],
+    "attribute_as_label": "name",
+    "attribute_as_image": "picture",
+    "labels": {
+        "en_US": "Headphones",
+        "fr_FR": "Casques audio"
+    }
+}

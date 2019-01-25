@@ -60,6 +60,14 @@ class AttributesMappingResponse implements \IteratorAggregate
     }
 
     /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return 0 === count($this->attributes);
+    }
+
+    /**
      * @return \Iterator
      */
     public function getIterator(): \Iterator

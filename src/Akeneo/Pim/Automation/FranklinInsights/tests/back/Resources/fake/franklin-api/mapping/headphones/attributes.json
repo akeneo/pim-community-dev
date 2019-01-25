@@ -1,7 +1,7 @@
 {
   "_links": {
     "map-attributes": {
-      "href": "/api/mapping/router/attributes",
+      "href": "/api/mapping/headphones/attributes",
       "type": "application/prs.hal-forms+json"
     }
   },
@@ -9,7 +9,7 @@
     "map-attributes": {
       "_links": {
         "self": {
-          "href": "/api/mapping/router/attributes"
+          "href": "/api/mapping/headphones/attributes"
         }
       },
       "_templates": {
@@ -47,7 +47,7 @@
         "type": "multiselect"
       },
       "to": {
-        "id": "color"
+        "id": "product color"
       },
       "summary": [
         "blue",
