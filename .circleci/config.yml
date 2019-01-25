@@ -231,9 +231,9 @@ workflows:
           - back_phpunit_end_to_end:
                 requires:
                     - back_phpunit_integration
-#          - back_behat_legacy:
-#                requires:
-#                    - back_phpunit_end_to_end
+          - back_behat_legacy:
+                requires:
+                    - back_phpunit_end_to_end
 
   nightly:
       triggers:
