@@ -72,8 +72,6 @@ akeneo_franklin_insights:
                 duplicated_pim_attribute: 'A pim attribute cannot be used twice or more in the attributes mapping'
                 attribute_not_in_family_not_allowed: 'PIM attribute must be in the selected family.'
                 only_unknown_mapped_attributes: 'No attribute in the attributes mapping can be found'
-            notification:
-                new_attributes_to_map: 'You have new attributes to map for family "{{ familyLabel }}"'
         product_subscription:
             flash:
                 create:

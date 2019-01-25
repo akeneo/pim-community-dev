@@ -19,8 +19,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
- * Notify a user there is new pending attributes in the attribute mapping of a
- * given family.
+ * Notifies a user there is new pending attributes in the attribute mapping of a given family.
  * The notification message will be displayed in the UI locale of the user.
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -55,10 +54,10 @@ class NotifyUserAboutMissingMapping
         $notification
             ->setType('success')
             ->setMessage('akeneo_franklin_insights.entity.attributes_mapping.notification.new_attributes_to_map')
-            ->setMessageParams(['familyLabel' => $family->getLabel()])
+            ->setMessageParams(['%familyLabel%' => $family->getLabel()])
             ->setRoute('akeneo_franklin_insights_attributes_mapping_edit')
             ->setRouteParams(['familyCode' => $family->getCode()])
-            ->setContext(['actionType' => 'franklin_insights']);
+            ->setContext(['actionType' => 'robot']);
 
         $this->notifier->notify($notification, [$user->getUsername()]);
     }

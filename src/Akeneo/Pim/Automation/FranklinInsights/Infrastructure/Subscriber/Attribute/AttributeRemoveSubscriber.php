@@ -142,6 +142,7 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
 
                 $command = new SaveIdentifiersMappingCommand($mapping);
                 $this->saveIdentifiersMappingHandler->handle($command);
+
                 return;
             }
         }

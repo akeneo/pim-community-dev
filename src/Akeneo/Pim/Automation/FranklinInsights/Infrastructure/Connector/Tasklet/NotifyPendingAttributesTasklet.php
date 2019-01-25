@@ -42,9 +42,9 @@ class NotifyPendingAttributesTasklet implements TaskletInterface
 
     /**
      * @param SelectUserAndFamilyIdsWithMissingMappingQuery $userAndFamilyIdsQuery
-     * @param UserRepositoryInterface                       $userRepository
-     * @param FamilyRepositoryInterface                     $familyRepository
-     * @param NotifyUserAboutMissingMapping                 $notifyUserAboutMissingMapping
+     * @param UserRepositoryInterface $userRepository
+     * @param FamilyRepositoryInterface $familyRepository
+     * @param NotifyUserAboutMissingMapping $notifyUserAboutMissingMapping
      */
     public function __construct(
         SelectUserAndFamilyIdsWithMissingMappingQuery $userAndFamilyIdsQuery,
