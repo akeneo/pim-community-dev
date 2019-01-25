@@ -30,8 +30,7 @@ class RecordAttributeFactorySpec extends ObjectBehavior
                 false,
                 'designer'
             )
-        )->shouldReturn(true)
-        ;
+        )->shouldReturn(true);
         $this->supports(
             new CreateImageAttributeCommand(
                 'designer',
@@ -45,8 +44,7 @@ class RecordAttributeFactorySpec extends ObjectBehavior
                 null,
                 []
             )
-        )->shouldReturn(false)
-        ;
+        )->shouldReturn(false);
     }
 
     function it_creates_a_record_attribute_with_a_command()
@@ -65,20 +63,17 @@ class RecordAttributeFactorySpec extends ObjectBehavior
             $command,
             AttributeIdentifier::fromString('mentor_designer_fingerprint'),
             AttributeOrder::fromInteger(0)
-        )->normalize()->shouldReturn(
-            [
-                'identifier'                  => 'mentor_designer_fingerprint',
-                'reference_entity_identifier' => 'designer',
-                'code'                        => 'mentor',
-                'labels'                      => ['fr_FR' => 'Mentor'],
-                'order'                       => 0,
-                'is_required'                 => false,
-                'value_per_channel'           => false,
-                'value_per_locale'            => false,
-                'type'                        => 'record',
-                'record_type'                 => 'designer',
-            ]
-        )
-        ;
+        )->normalize()->shouldReturn([
+            'identifier'                  => 'mentor_designer_fingerprint',
+            'reference_entity_identifier' => 'designer',
+            'code'                        => 'mentor',
+            'labels'                      => ['fr_FR' => 'Mentor'],
+            'order'                       => 0,
+            'is_required'                 => false,
+            'value_per_channel'           => false,
+            'value_per_locale'            => false,
+            'type'                        => 'record',
+            'record_type'                 => 'designer',
+        ]);
     }
 }

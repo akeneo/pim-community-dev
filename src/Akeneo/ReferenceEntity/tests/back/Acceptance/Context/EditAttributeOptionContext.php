@@ -73,14 +73,12 @@ class EditAttributeOptionContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions(
-            [
-                AttributeOption::create(
-                    OptionCode::fromString('blue'),
-                    LabelCollection::fromArray(['de_DE' => 'blauw'])
-                ),
-            ]
-        );
+        $optionAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('blue'),
+                LabelCollection::fromArray(['de_DE' => 'blauw'])
+            ),
+        ]);
 
         $this->attributeRepository->create($optionAttribute);
     }
@@ -121,10 +119,7 @@ class EditAttributeOptionContext implements Context
         );
 
         $this->constraintViolationsContext->assertThereIsNoViolations();
-        Assert::assertEquals(
-            $expectedOption,
-            $option
-        );
+        Assert::assertEquals($expectedOption, $option);
     }
 
 
@@ -143,14 +138,12 @@ class EditAttributeOptionContext implements Context
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true)
         );
-        $optionAttribute->setOptions(
-            [
-                AttributeOption::create(
-                    OptionCode::fromString('blue'),
-                    LabelCollection::fromArray(['de_DE' => 'blauw'])
-                ),
-            ]
-        );
+        $optionAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('blue'),
+                LabelCollection::fromArray(['de_DE' => 'blauw'])
+            ),
+        ]);
 
         $this->attributeRepository->create($optionAttribute);
     }

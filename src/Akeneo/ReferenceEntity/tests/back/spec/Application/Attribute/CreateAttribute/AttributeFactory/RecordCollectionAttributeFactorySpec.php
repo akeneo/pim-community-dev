@@ -30,8 +30,7 @@ class RecordCollectionAttributeFactorySpec extends ObjectBehavior
                 false,
                 'brand'
             )
-        )->shouldReturn(true)
-        ;
+        )->shouldReturn(true);
         $this->supports(
             new CreateImageAttributeCommand(
                 'designer',
@@ -45,8 +44,7 @@ class RecordCollectionAttributeFactorySpec extends ObjectBehavior
                 null,
                 []
             )
-        )->shouldReturn(false)
-        ;
+        )->shouldReturn(false);
     }
 
     function it_creates_a_record_collection_attribute_with_a_command()
@@ -65,20 +63,17 @@ class RecordCollectionAttributeFactorySpec extends ObjectBehavior
             $command,
             AttributeIdentifier::fromString('brands_designer_fingerprint'),
             AttributeOrder::fromInteger(0)
-        )->normalize()->shouldReturn(
-            [
-                'identifier'                  => 'brands_designer_fingerprint',
-                'reference_entity_identifier' => 'designer',
-                'code'                        => 'brands',
-                'labels'                      => ['fr_FR' => 'Marques'],
-                'order'                       => 0,
-                'is_required'                 => true,
-                'value_per_channel'           => false,
-                'value_per_locale'            => false,
-                'type'                        => 'record_collection',
-                'record_type'                 => 'brand',
-            ]
-        )
-        ;
+        )->normalize()->shouldReturn([
+            'identifier'                  => 'brands_designer_fingerprint',
+            'reference_entity_identifier' => 'designer',
+            'code'                        => 'brands',
+            'labels'                      => ['fr_FR' => 'Marques'],
+            'order'                       => 0,
+            'is_required'                 => true,
+            'value_per_channel'           => false,
+            'value_per_locale'            => false,
+            'type'                        => 'record_collection',
+            'record_type'                 => 'brand',
+        ]);
     }
 }

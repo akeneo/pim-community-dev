@@ -52,13 +52,11 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
         $repository->nextIdentifier(
             Argument::type(ReferenceEntityIdentifier::class),
             Argument::type(AttributeCode::class)
-        )->willReturn($identifier)
-        ;
+        )->willReturn($identifier);
 
         $attributeNextOrder
             ->withReferenceEntityIdentifier(ReferenceEntityIdentifier::fromString('designer'))
-            ->willReturn(AttributeOrder::fromInteger(0))
-        ;
+            ->willReturn(AttributeOrder::fromInteger(0));
 
         $textAttribute = $this->getAttribute();
         $textCommand = new CreateTextAttributeCommand(
@@ -80,8 +78,7 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
             $textCommand,
             $identifier,
             AttributeOrder::fromInteger(0)
-        )->willReturn($textAttribute)
-        ;
+        )->willReturn($textAttribute);
         $repository->create($textAttribute)->shouldBeCalled();
 
         $this->__invoke($textCommand);

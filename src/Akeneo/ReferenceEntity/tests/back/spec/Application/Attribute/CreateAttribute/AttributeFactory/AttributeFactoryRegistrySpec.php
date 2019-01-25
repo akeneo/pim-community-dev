@@ -38,26 +38,20 @@ class AttributeFactoryRegistrySpec extends ObjectBehavior
 
     public function it_throws_if_the_corresponding_factory_is_not_found()
     {
-        $this->shouldThrow(
-            new \RuntimeException(
-                'There was no attribute factory found for command "Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand"'
+        $this->shouldThrow(new \RuntimeException(
+            'There was no attribute factory found for command "Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand"')
+        )->during('getFactory', [
+            new CreateImageAttributeCommand(
+                'designer',
+                'color',
+                [],
+                false,
+                false,
+                false,
+                null,
+                []
             )
-        )->during(
-            'getFactory',
-            [
-                new CreateImageAttributeCommand(
-                    'designer',
-                    'color',
-                    [],
-                    false,
-                    false,
-                    false,
-                    null,
-                    []
-                ),
-            ]
-        )
-        ;
+        ]);
     }
 }
 

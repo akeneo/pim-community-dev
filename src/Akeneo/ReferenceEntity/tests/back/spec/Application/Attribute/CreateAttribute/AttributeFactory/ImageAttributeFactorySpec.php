@@ -30,8 +30,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
                 null,
                 []
             )
-        )->shouldReturn(true)
-        ;
+        )->shouldReturn(true);
         $this->supports(
             new CreateTextAttributeCommand(
                 'designer',
@@ -46,8 +45,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
                 null,
                 null
             )
-        )->shouldReturn(false)
-        ;
+        )->shouldReturn(false);
     }
 
     function it_creates_an_image_attribute_with_command()
@@ -69,22 +67,19 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             $command,
             AttributeIdentifier::fromString('name_designer_test'),
             AttributeOrder::fromInteger(0)
-        )->normalize()->shouldReturn(
-            [
-                'identifier'                  => 'name_designer_test',
-                'reference_entity_identifier' => 'designer',
-                'code'                        => 'name',
-                'labels'                      => ['fr_FR' => 'Nom'],
-                'order'                       => 0,
-                'is_required'                 => true,
-                'value_per_channel'           => false,
-                'value_per_locale'            => false,
-                'type'                        => 'image',
-                'max_file_size'               => '30.0',
-                'allowed_extensions'          => ['pdf', 'png'],
-            ]
-        )
-        ;
+        )->normalize()->shouldReturn([
+            'identifier'                  => 'name_designer_test',
+            'reference_entity_identifier' => 'designer',
+            'code'                        => 'name',
+            'labels'                      => ['fr_FR' => 'Nom'],
+            'order'                       => 0,
+            'is_required'                 => true,
+            'value_per_channel'           => false,
+            'value_per_locale'            => false,
+            'type'                        => 'image',
+            'max_file_size'               => '30.0',
+            'allowed_extensions'          => ['pdf', 'png'],
+        ]);
     }
 
     function it_creates_an_image_attribute_with_no_max_file_size_limit()
@@ -106,22 +101,19 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             $command,
             AttributeIdentifier::fromString('name_designer_test'),
             AttributeOrder::fromInteger(0)
-        )->normalize()->shouldReturn(
-            [
-                'identifier'                  => 'name_designer_test',
-                'reference_entity_identifier' => 'designer',
-                'code'                        => 'name',
-                'labels'                      => ['fr_FR' => 'Nom'],
-                'order'                       => 0,
-                'is_required'                 => true,
-                'value_per_channel'           => false,
-                'value_per_locale'            => false,
-                'type'                        => 'image',
-                'max_file_size'               => null,
-                'allowed_extensions'          => ['pdf', 'png'],
-            ]
-        )
-        ;
+        )->normalize()->shouldReturn([
+            'identifier'                  => 'name_designer_test',
+            'reference_entity_identifier' => 'designer',
+            'code'                        => 'name',
+            'labels'                      => ['fr_FR' => 'Nom'],
+            'order'                       => 0,
+            'is_required'                 => true,
+            'value_per_channel'           => false,
+            'value_per_locale'            => false,
+            'type'                        => 'image',
+            'max_file_size'               => null,
+            'allowed_extensions'          => ['pdf', 'png'],
+        ]);
     }
 
     function it_creates_an_image_attribute_with_extensions_all_allowed()
@@ -143,21 +135,18 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             $command,
             AttributeIdentifier::fromString('name_designer_test'),
             AttributeOrder::fromInteger(0)
-        )->normalize()->shouldReturn(
-            [
-                'identifier'                  => 'name_designer_test',
-                'reference_entity_identifier' => 'designer',
-                'code'                        => 'name',
-                'labels'                      => ['fr_FR' => 'Nom'],
-                'order'                       => 0,
-                'is_required'                 => true,
-                'value_per_channel'           => false,
-                'value_per_locale'            => false,
-                'type'                        => 'image',
-                'max_file_size'               => null,
-                'allowed_extensions'          => [],
-            ]
-        )
-        ;
+        )->normalize()->shouldReturn([
+            'identifier'                  => 'name_designer_test',
+            'reference_entity_identifier' => 'designer',
+            'code'                        => 'name',
+            'labels'                      => ['fr_FR' => 'Nom'],
+            'order'                       => 0,
+            'is_required'                 => true,
+            'value_per_channel'           => false,
+            'value_per_locale'            => false,
+            'type'                        => 'image',
+            'max_file_size'               => null,
+            'allowed_extensions'          => [],
+        ]);
     }
 }

@@ -54,7 +54,7 @@ class AppendAttributeOptionHandlerSpec extends ObjectBehavior
             AttributeIdentifier::fromString('color'),
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('red'),
-            LabelCollection::fromArray(['fr_FR' => 'Nationalite', 'en_US' => 'Nationality']),
+            LabelCollection::fromArray([ 'fr_FR' => 'Nationalite', 'en_US' => 'Nationality']),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
@@ -71,7 +71,7 @@ class AppendAttributeOptionHandlerSpec extends ObjectBehavior
             AttributeIdentifier::fromString('color'),
             ReferenceEntityIdentifier::fromString('brand'),
             AttributeCode::fromString('red'),
-            LabelCollection::fromArray(['fr_FR' => 'Nationalite', 'en_US' => 'Nationality']),
+            LabelCollection::fromArray([ 'fr_FR' => 'Nationalite', 'en_US' => 'Nationality']),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
@@ -85,7 +85,7 @@ class AppendAttributeOptionHandlerSpec extends ObjectBehavior
             AttributeOption::create(
                 OptionCode::fromString('red'),
                 LabelCollection::fromArray(['en_US' => 'Red', 'fr_FR' => 'Rouge'])
-            ),
+            )
         ]);
 
         $attributeRepository->getByIdentifier(AttributeIdentifier::fromString('brand'))->willReturn($optionAttribute);

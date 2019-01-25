@@ -115,13 +115,14 @@ class CreateOrUpdateAttributeOptionAction
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
-        $attributeExists = $this->attributeExists->withReferenceEntityAndCode(
-            $referenceEntityIdentifier,
-            $attributeCode
-        );
+        $attributeExists = $this->attributeExists->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
 
         if (false === $attributeExists) {
-            throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist for reference entity "%s".', (string) $attributeCode, (string) $referenceEntityIdentifier));
+            throw new NotFoundHttpException(sprintf(
+                'Attribute "%s" does not exist for reference entity "%s".',
+                (string) $attributeCode,
+                (string) $referenceEntityIdentifier
+            ));
         }
 
         $attributeSupportsOptions = ($this->attributeSupportsOptions)($referenceEntityIdentifier, $attributeCode);
@@ -159,10 +160,10 @@ class CreateOrUpdateAttributeOptionAction
 
         $headers = [
             'Location' => $this->router->generate('akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get', [
-                    'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
-                    'attributeCode'             => (string) $attributeCode,
-                    'optionCode'                => (string) $optionCode,
-                ], UrlGeneratorInterface::ABSOLUTE_URL),
+                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+                'attributeCode' => (string) $attributeCode,
+                'optionCode' => (string) $optionCode
+            ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
         return Response::create('', Response::HTTP_CREATED, $headers);
@@ -190,10 +191,10 @@ class CreateOrUpdateAttributeOptionAction
 
         $headers = [
             'Location' => $this->router->generate('akeneo_reference_entities_reference_entity_attribute_option_rest_connector_get', [
-                    'referenceEntityIdentifier' => (string)$referenceEntityIdentifier,
-                    'attributeCode'             => (string)$attributeCode,
-                    'optionCode'                => (string)$optionCode,
-                ], UrlGeneratorInterface::ABSOLUTE_URL),
+                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+                'attributeCode' => (string) $attributeCode,
+                'optionCode' => (string) $optionCode
+            ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
         return Response::create('', Response::HTTP_CREATED, $headers);

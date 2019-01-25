@@ -34,8 +34,7 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
                 false,
                 false
             )
-        )->shouldReturn(true)
-        ;
+        )->shouldReturn(true);
         $this->supports(
             new CreateImageAttributeCommand(
                 'designer',
@@ -49,8 +48,7 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
                 null,
                 []
             )
-        )->shouldReturn(false)
-        ;
+        )->shouldReturn(false);
     }
 
     function it_creates_a_record_attribute_with_a_command()
@@ -68,29 +66,25 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
             $command,
             AttributeIdentifier::fromString('favorites_color_designer_fingerprint'),
             AttributeOrder::fromInteger(0)
-        )->normalize()->shouldReturn(
-            [
-                'identifier'                  => 'favorites_color_designer_fingerprint',
-                'reference_entity_identifier' => 'designer',
-                'code'                        => 'favorites_color',
-                'labels'                      => ['fr_FR' => 'Couleur favorites'],
-                'order'                       => 0,
-                'is_required'                 => false,
-                'value_per_channel'           => false,
-                'value_per_locale'            => false,
-                'type'                        => 'option_collection',
-                'options'                     => [],
-            ]
-        )
-        ;
+        )->normalize()->shouldReturn([
+            'identifier'                  => 'favorites_color_designer_fingerprint',
+            'reference_entity_identifier' => 'designer',
+            'code'                        => 'favorites_color',
+            'labels'                      => ['fr_FR' => 'Couleur favorites'],
+            'order'                       => 0,
+            'is_required'                 => false,
+            'value_per_channel'           => false,
+            'value_per_locale'            => false,
+            'type'                        => 'option_collection',
+            'options'                     => [],
+        ]);
     }
 
     public function it_throws_if_it_cannot_create_the_attribute_from_an_unsupported_command()
     {
         $this->shouldThrow(\RuntimeException::class)
              ->during(
-                 'create',
-                 [
+                 'create', [
                      new CreateTextAttributeCommand(
                          'designer',
                          'color',
@@ -107,7 +101,6 @@ class OptionCollectionAttributeFactorySpec extends ObjectBehavior
                      AttributeIdentifier::fromString('unsupported_attribute'),
                      AttributeOrder::fromInteger(0),
                  ]
-             )
-        ;
+             );
     }
 }

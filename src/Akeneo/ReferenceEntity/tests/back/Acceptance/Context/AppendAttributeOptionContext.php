@@ -77,7 +77,7 @@ class AppendAttributeOptionContext implements Context
             AttributeOption::create(
                 OptionCode::fromString('blue'),
                 LabelCollection::fromArray([])
-            ),
+            )
         ]);
 
         $this->attributeRepository->create($optionAttribute);
@@ -242,7 +242,7 @@ class AppendAttributeOptionContext implements Context
             AttributeOption::create(
                 OptionCode::fromString('red'),
                 LabelCollection::fromArray([])
-            ),
+            )
         ]);
 
         $this->attributeRepository->create($optionAttribute);
@@ -267,7 +267,7 @@ class AppendAttributeOptionContext implements Context
             AttributeOption::create(
                 OptionCode::fromString('red'),
                 LabelCollection::fromArray([])
-            ),
+            )
         ]);
 
         $this->attributeRepository->create($optionAttribute);
