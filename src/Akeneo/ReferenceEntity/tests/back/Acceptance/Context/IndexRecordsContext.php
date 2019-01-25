@@ -62,9 +62,7 @@ class IndexRecordsContext implements Context
      */
     public function theReferenceEntity(string $referenceEntityIdentifier): void
     {
-        $createCommand = new CreateReferenceEntityCommand();
-        $createCommand->code = $referenceEntityIdentifier;
-        $createCommand->labels = [];
+        $createCommand = new CreateReferenceEntityCommand($referenceEntityIdentifier, []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {

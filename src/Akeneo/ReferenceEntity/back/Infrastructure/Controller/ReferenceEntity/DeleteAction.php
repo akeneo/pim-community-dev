@@ -111,8 +111,7 @@ class DeleteAction
 
     private function getDeleteCommand(string $identifier): DeleteReferenceEntityCommand
     {
-        $command = new DeleteReferenceEntityCommand();
-        $command->identifier = $identifier;
+        $command = new DeleteReferenceEntityCommand($identifier);
 
         return $command;
     }

@@ -80,16 +80,18 @@ class SetAction
         $permissions = json_decode($request->getContent(), true);
         $userGroupPermissionCommands = [];
         foreach ($permissions as $permission) {
-            $command = new SetUserGroupPermissionCommand();
-            $command->userGroupIdentifier = $permission['user_group_identifier'];
-            $command->rightLevel = $permission['right_level'];
+            $command = new SetUserGroupPermissionCommand(
+                $permission['user_group_identifier'],
+                $permission['right_level']
+            );
 
             $userGroupPermissionCommands[] = $command;
         }
 
-        $setPermissionsCommand = new SetReferenceEntityPermissionsCommand();
-        $setPermissionsCommand->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $setPermissionsCommand->permissionsByUserGroup = $userGroupPermissionCommands;
+        $setPermissionsCommand = new SetReferenceEntityPermissionsCommand(
+            $referenceEntityIdentifier,
+            $userGroupPermissionCommands
+        );
 
         $violations = $this->validator->validate($setPermissionsCommand);
         if ($violations->count() > 0) {

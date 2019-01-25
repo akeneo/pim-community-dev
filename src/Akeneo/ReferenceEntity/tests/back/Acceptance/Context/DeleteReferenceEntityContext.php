@@ -52,8 +52,7 @@ final class DeleteReferenceEntityContext implements Context
      */
     public function theUserDeletesReferenceEntity(string $identifier)
     {
-        $command = new DeleteReferenceEntityCommand();
-        $command->identifier = $identifier;
+        $command = new DeleteReferenceEntityCommand($identifier);
 
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));
 

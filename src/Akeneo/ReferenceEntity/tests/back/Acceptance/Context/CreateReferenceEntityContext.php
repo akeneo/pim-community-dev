@@ -72,9 +72,10 @@ final class CreateReferenceEntityContext implements Context
     public function theUserCreatesAnReferenceEntityWith($code, TableNode $updateTable)
     {
         $updates = current($updateTable->getHash());
-        $command = new CreateReferenceEntityCommand();
-        $command->code = $code;
-        $command->labels = json_decode($updates['labels'], true);
+        $command = new CreateReferenceEntityCommand(
+            $code,
+            json_decode($updates['labels'], true)
+        );
 
         $this->violationsContext->addViolations($this->validator->validate($command));
 
@@ -139,9 +140,10 @@ final class CreateReferenceEntityContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
         for ($i = 0; $i < $number; $i++) {
-            $command = new CreateReferenceEntityCommand();
-            $command->code = uniqid();
-            $command->labels = ['en_US' => uniqid('label_')];
+            $command = new CreateReferenceEntityCommand(
+                uniqid(),
+                ['en_US' => uniqid('label_')]
+            );
 
             $violations = $this->validator->validate($command);
             if ($violations->count() > 0) {
