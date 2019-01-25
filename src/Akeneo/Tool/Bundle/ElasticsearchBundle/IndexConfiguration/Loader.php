@@ -54,7 +54,7 @@ class Loader
                 $settings = array_replace_recursive($settings, $configuration['settings']);
             }
             if (isset($configuration['mappings'])) {
-                $mappings = array_replace_recursive($mappings, $configuration['mappings']);
+                $mappings = $this->mergeMappings($mappings, $configuration['mappings']);
             }
             if (isset($configuration['aliases'])) {
                 $aliases = array_replace_recursive($aliases, $configuration['aliases']);
@@ -62,5 +62,36 @@ class Loader
         }
 
         return new IndexConfiguration($settings, $mappings, $aliases);
+    }
+
+    /**
+     * Mappings must be merged considering two cases:
+     * - 'properties' is an associative array and new definitions must replace old ones if they have the same key
+     * - 'dynamic_templates' is an indexed array and new definitions must always be added
+     */
+    private function mergeMappings(array $originalMappings, array $additionalMappings): array
+    {
+        foreach ($additionalMappings as $indexName => $definitions) {
+            if (isset($definitions['properties'])) {
+                $originalProperties = isset($originalMappings[$indexName]['properties']) ?
+                    $originalMappings[$indexName]['properties'] : [];
+
+                $originalMappings[$indexName]['properties'] = array_replace_recursive(
+                    $originalProperties,
+                    $definitions['properties']
+                );
+            }
+            if (isset($definitions['dynamic_templates'])) {
+                $originalTemplates = isset($originalMappings[$indexName]['dynamic_templates']) ?
+                    $originalMappings[$indexName]['dynamic_templates'] : [];
+
+                $originalMappings[$indexName]['dynamic_templates'] = array_merge_recursive(
+                    $originalTemplates,
+                    $definitions['dynamic_templates']
+                );
+            }
+        }
+
+        return $originalMappings;
     }
 }
