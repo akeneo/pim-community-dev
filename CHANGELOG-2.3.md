@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-8006: Improve the generation of missing asset variation performances
 - PIM-7962: Fix the deletion of a user that is a contributor to a TWA project
 
 # 2.3.25 (2019-01-17)

@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset;
 
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Exception\LockedVariationGenerationException;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
@@ -11,9 +12,9 @@ use Prophecy\Argument;
 
 class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
 {
-    public function let(VariationFileGeneratorInterface $variationFileGenerator)
+    public function let(VariationFileGeneratorInterface $variationFileGenerator, BulkSaverInterface $bulkSaver)
     {
-        $this->beConstructedWith($variationFileGenerator);
+        $this->beConstructedWith($variationFileGenerator, $bulkSaver);
     }
 
     function it_is_initializable()
@@ -24,6 +25,7 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
 
     function it_generates_the_variation_files_from_a_reference(
         $variationFileGenerator,
+        $bulkSaver,
         VariationInterface $variation1,
         VariationInterface $variation2,
         VariationInterface $variation3
@@ -38,6 +40,8 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
         $variationFileGenerator->generate($variation2)->shouldBeCalled();
         $variationFileGenerator->generate($variation3)->shouldNotBeCalled();
 
+        $bulkSaver->saveAll([$variation1, $variation2, $variation3])->shouldBeCalled();
+
         $res = $this->generate([$variation1, $variation2, $variation3]);
         $res->shouldReturnAnInstanceOf('PimEnterprise\Component\ProductAsset\ProcessedItemList');
         $res->shouldBeListOfProcessedVariations();
@@ -45,6 +49,7 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
 
     function it_generates_locked_variation_files_from_a_reference(
         $variationFileGenerator,
+        $bulkSaver,
         VariationInterface $variation1,
         VariationInterface $variation2
     ) {
@@ -53,6 +58,8 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
 
         $variationFileGenerator->generate($variation1)->shouldBeCalled();
         $variationFileGenerator->generate($variation2)->shouldBeCalled();
+
+        $bulkSaver->saveAll([$variation1, $variation2])->shouldBeCalled();
 
         $res = $this->generate([$variation1, $variation2], true);
         $res->shouldReturnAnInstanceOf('PimEnterprise\Component\ProductAsset\ProcessedItemList');
