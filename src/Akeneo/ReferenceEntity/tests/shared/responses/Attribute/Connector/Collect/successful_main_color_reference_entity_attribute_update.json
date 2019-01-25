@@ -16,10 +16,10 @@
       "value_per_locale": true,
       "value_per_channel": false,
       "is_required_for_completeness": true,
-      "max_characters": 155,
+      "max_characters": null,
       "is_textarea": false,
-      "validation_rule":  "regular_expression",
-      "validation_regexp":  "/\\w+/"
+      "validation_rule":  "none",
+      "validation_regexp":  null
     }
   },
   "response": {

@@ -67,13 +67,13 @@ class TextAttributeValidator implements AttributeValidatorInterface
                     'type' => [ 'boolean'],
                 ],
                 'max_characters' => [
-                    'type' => [ 'integer'],
+                    'type' => [ 'integer', 'null'],
                 ],
                 'validation_rule' => [
                     'type' => [ 'string'],
                 ],
                 'validation_regexp' => [
-                    'type' => [ 'string'],
+                    'type' => [ 'string', 'null'],
                 ]
             ],
             'additionalProperties' => false,
