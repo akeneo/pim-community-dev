@@ -74,14 +74,19 @@ class OptionAttributeValidatorSpec extends ObjectBehavior
     function it_does_not_return_any_error_when_the_attribute_is_valid()
     {
         $attribute = [
-            'code' => 'starck',
-            'type' => 'text',
+            'code' => 'birthday',
+            'type' => 'single_option',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'labels' => [
-                'en_US' => 'Philippe Starck'
+                'en_US' => 'Birth day'
             ],
             'is_required_for_completeness' => false,
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost/api/rest/v1/reference-entities/designer/attributes/birthday'
+                ]
+            ],
         ];
 
         $this->validate($attribute)->shouldReturn([]);

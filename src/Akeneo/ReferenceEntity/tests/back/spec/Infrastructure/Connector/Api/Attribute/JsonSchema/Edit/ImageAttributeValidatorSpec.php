@@ -60,16 +60,21 @@ class ImageAttributeValidatorSpec extends ObjectBehavior
     function it_does_not_return_any_error_when_the_attribute_is_valid()
     {
         $attribute = [
-            'code' => 'starck',
-            'type' => 'text',
+            'code' => 'photo',
+            'type' => 'image',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'labels' => [
-                'en_US' => 'Philippe Starck'
+                'en_US' => 'Photo'
             ],
             'is_required_for_completeness' => false,
             'allowed_extensions' => ['jpg'],
             'max_file_size' => '10',
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost/api/rest/v1/reference-entities/designer/attributes/photo'
+                ]
+            ],
         ];
 
         $this->validate($attribute)->shouldReturn([]);
