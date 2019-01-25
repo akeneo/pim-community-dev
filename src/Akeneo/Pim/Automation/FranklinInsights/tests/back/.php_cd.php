@@ -63,11 +63,11 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchProductsExecutionDatetimeQuery',
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserAndFamilyIdsWithMissingMappingQuery',
 
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification\NotifyUserAboutMissingMapping',
+
             // Akeneo external bounded contexts
-            'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
             'Akeneo\Tool\Component\Batch',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
-            'Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface',
             'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
             // TODO: should be removed see with JJ and AL
             'Akeneo\Tool\Bundle\BatchBundle',

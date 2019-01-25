@@ -14,17 +14,16 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserAndFamilyIdsWithMissingMappingQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification\NotifyUserAboutMissingMapping;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
-use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class NotifyIfPendingAttributesTasklet implements TaskletInterface
+class NotifyPendingAttributesTasklet implements TaskletInterface
 {
     /** @var SelectUserAndFamilyIdsWithMissingMappingQuery */
     private $userAndFamilyIdsQuery;
@@ -35,34 +34,28 @@ class NotifyIfPendingAttributesTasklet implements TaskletInterface
     /** @var FamilyRepositoryInterface */
     private $familyRepository;
 
-    /** @var SimpleFactoryInterface */
-    private $notificationFactory;
-
-    /** @var NotifierInterface */
-    private $notifier;
+    /** @var NotifyUserAboutMissingMapping */
+    private $notifyUserAboutMissingMapping;
 
     /** @var StepExecution */
     private $stepExecution;
 
     /**
      * @param SelectUserAndFamilyIdsWithMissingMappingQuery $userAndFamilyIdsQuery
-     * @param UserRepositoryInterface $userRepository
-     * @param FamilyRepositoryInterface $familyRepository
-     * @param SimpleFactoryInterface $notificationFactory
-     * @param NotifierInterface $notifier
+     * @param UserRepositoryInterface                       $userRepository
+     * @param FamilyRepositoryInterface                     $familyRepository
+     * @param NotifyUserAboutMissingMapping                 $notifyUserAboutMissingMapping
      */
     public function __construct(
         SelectUserAndFamilyIdsWithMissingMappingQuery $userAndFamilyIdsQuery,
         UserRepositoryInterface $userRepository,
         FamilyRepositoryInterface $familyRepository,
-        SimpleFactoryInterface $notificationFactory,
-        NotifierInterface $notifier
+        NotifyUserAboutMissingMapping $notifyUserAboutMissingMapping
     ) {
         $this->userAndFamilyIdsQuery = $userAndFamilyIdsQuery;
         $this->userRepository = $userRepository;
         $this->familyRepository = $familyRepository;
-        $this->notificationFactory = $notificationFactory;
-        $this->notifier = $notifier;
+        $this->notifyUserAboutMissingMapping = $notifyUserAboutMissingMapping;
     }
 
     /**
@@ -92,19 +85,7 @@ class NotifyIfPendingAttributesTasklet implements TaskletInterface
                     continue;
                 }
 
-                $family->setLocale($user->getUiLocale());
-
-                $notification = $this->notificationFactory->create();
-                $notification
-                    ->setType('success')
-                    ->setMessage(
-                        'akeneo_franklin_insights.entity.attributes_mapping.notification.new_attributes_to_map'
-                    )
-                    ->setMessageParams(['familyLabel' => $family->getLabel()])
-                    ->setRoute('akeneo_franklin_insights_attributes_mapping_edit')
-                    ->setRouteParams(['familyCode' => $family->getCode()]);
-
-                $this->notifier->notify($notification, [$user->getUsername()]);
+                $this->notifyUserAboutMissingMapping->forFamily($user, $family);
             }
         }
     }

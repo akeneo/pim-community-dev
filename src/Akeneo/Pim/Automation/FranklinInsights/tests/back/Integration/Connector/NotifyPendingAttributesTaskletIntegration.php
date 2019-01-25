@@ -29,7 +29,7 @@ use PHPUnit\Framework\Assert;
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class NotifyIfPendingAttributesTaskletIntegration extends TestCase
+class NotifyPendingAttributesTaskletIntegration extends TestCase
 {
     /** @var int[] */
     private $productIds;
