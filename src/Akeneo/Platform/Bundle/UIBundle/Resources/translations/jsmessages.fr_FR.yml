@@ -125,10 +125,11 @@ pim_common:
   code: Code
   confirm: Confirmer
   confirm_deletion: Supprimer l'élément
+  confirm_revocation: Confirmer la révocation
   create: Créer
   created: Créé
   delete: Supprimer
-  done: Fait
+  done: Fermer
   edit: Modifier
   entity_updated: Des modifications n'ont pas encore été sauvegardées.
   from: De
@@ -211,6 +212,9 @@ pim_enrich.entity.api_connection:
       fail: Impossible de révoquer cette connexion API
   page_title:
     index: "] -Inf, 1]{{ count }} connexion API|]1, Inf[{{ count }} connexions API"
+  module:
+    revoke:
+      confirm: Voulez-vous vraiment révoquer cette connexion API ?
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} opération|]1, Inf[{{ count }} opérations"
