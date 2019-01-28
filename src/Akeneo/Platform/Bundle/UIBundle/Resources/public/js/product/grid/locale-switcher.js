@@ -83,6 +83,7 @@ define(
              */
             fetchLocales() {
                 const localeFetcher = FetcherRegistry.getFetcher('locale');
+                localeFetcher.clear();
 
                 return localeFetcher.fetchActivated();
             },

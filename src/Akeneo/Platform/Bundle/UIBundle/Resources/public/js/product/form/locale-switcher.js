@@ -95,7 +95,10 @@ define(
              * @returns {Promise}
              */
             getDisplayedLocales: function () {
-                return FetcherRegistry.getFetcher('locale').fetchActivated();
+              const localeFetcher = FetcherRegistry.getFetcher('locale');
+              localeFetcher.clear();
+
+              return localeFetcher.fetchActivated();
             },
 
             /**
