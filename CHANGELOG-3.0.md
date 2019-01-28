@@ -14,9 +14,11 @@
 - PIM-8032: Fix the image deletion with the keyboard 
 - PIM-8043: Fix to keep the Save and Cancel button always on the right during the edition of a reference entity attribute
 
+
 ## Improvements
 
 - PIM-8040: The code should be check when upserting an attribute option (API)
+- AOB-351: Add a user provider used when sso is activated
 
 # 3.0.1 (2019-02-06)
 
