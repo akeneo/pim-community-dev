@@ -35,7 +35,9 @@ const webpackConfig = {
   optimization: {
     moduleIds: 'hashed',
     nodeEnv: (isProd ? 'production' : 'development'),
-    minimizer: [new TerserPlugin()]
+    minimizer: [new TerserPlugin({
+      cache: true
+    })]
   },
   mode: 'development',
   target: 'web',
