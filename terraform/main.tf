@@ -5,7 +5,7 @@ terraform {
 }
 
 data "template_file" "mailgun_login" {
-  template = "${format ("srnt-%s-%s", var.pfid, var.google_project_name)}"
+  template = "${format ("%s-%s", var.pfid, var.google_project_name)}"
 }
 
 resource "random_string" "mailgun_password" {

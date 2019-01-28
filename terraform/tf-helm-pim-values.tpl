@@ -7,10 +7,8 @@ common:
   pimMasterDomain: ${pimmaster_dns_name}
 
 nfs:
-  persistence:
-    storageClass: standard
   storageClass:
-    name: nfs-srnt-${pfid}
+    name: nfs-${pfid}
 
 mailer:
   login: ${mailgun_login_email}

@@ -4,9 +4,9 @@ dependencies:
   version: 1.1.0
 - name: elasticsearch
   repository: https://kubernetes-charts.storage.googleapis.com
-  version: 1.17.0
+  version: 1.17.2
 - name: nfs-server-provisioner
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 0.2.1
-digest: sha256:151077ac08d7e3c66ec05fae80ef9bbad58de660dcea72a263e8dccdae00365b
-generated: 2019-01-24T15:33:40.180615293+01:00
+digest: sha256:19e73635ff3b5c12077923b4d1a8ed61d50e58d5394b811cb2cabda70b72e51f
+generated: 2019-01-28T09:48:25.855530035+01:00

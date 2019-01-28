@@ -138,8 +138,8 @@ nfs:
   nameOverride: ""
   persistence:
     enabled: true
-    storageClass: standard-retain
-    size: 13Gi
+    storageClass: ssd-retain
+    size: 11Gi
   storageClass:
     name: nfs
 
@@ -159,6 +159,8 @@ pimUsers:
     defaultAssetTree: asset_main_catalog
 
 mysql:
+  common:
+    class: ssd-retain
   mysql:
     serviceName: pim-mysql
     defaultUser: akeneo_pim
@@ -170,20 +172,31 @@ mysql:
       enabled: false
 
 elasticsearch:
-  appVersion: "5.6.14"
+  appVersion: 5.6.14
   image:
     repository: docker.elastic.co/elasticsearch/elasticsearch
     tag: 5.6.14
   fullnameOverride: elasticsearch
   cluster:
     name: "pim-es"
+    env:
+      # See chart config map: https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/configmap.yaml
+      # And elasticsearch documentation: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-gateway.html
+      MINIMUM_MASTER_NODES: "2" # Might be equal to "lower((master.replicas/2)+1)
+      EXPECTED_MASTER_NODES: "2" # Equals to MINIMUM_MASTER_NODES
+      RECOVER_AFTER_MASTER_NODES: "2" # Equals to MINIMUM_MASTER_NODES
+      EXPECTED_DATA_NODES: "2" # Equals to data.replica
+      RECOVER_AFTER_DATA_NODES: "2" # Equals to data.replica
   client:
     replicas: 1
     heapSize: "128m"
+    # # https://github.com/helm/charts/pull/9910/files
+    # serviceAnnotations:
+    #   service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
     resources:
       limits:
         cpu: "1"
-        memory: "320Mi"
+        memory: "512Mi" # [ES 5.x] Minimum limits to 512Mi / [ES 6.x] Will work with limits to 320Mi
       requests:
         cpu: "25m"
         memory: "160Mi"

@@ -1,14 +1,17 @@
 image:
   pim:
     repository: eu.gcr.io/akeneo-ci/pim-enterprise-cloud
+
 backup:
   enabled: false
   
 nfs:
   persistence:
     storageClass: standard
+
 pim:
   defaultCatalog: icecat
+
 mysql:
   common:
     class: standard
@@ -17,10 +20,26 @@ mysql:
       requests:
         memory: 1048Mi
         cpu: 200m
-
     innodBufferPoolSize: 1G
-  # innodbPoolInstances must egal to innodBufferPoolSize/1G
+    # innodbPoolInstances must egal to innodBufferPoolSize/1G
     innodbPoolInstances: 1
+
+elasticsearch:
+  cluster:
+    env:
+      MINIMUM_MASTER_NODES: "1" # Might be equal to "lower((master.replicas/2)+1)
+      EXPECTED_MASTER_NODES: "1" # Equals to MINIMUM_MASTER_NODES
+      RECOVER_AFTER_MASTER_NODES: "1" # Equals to MINIMUM_MASTER_NODES
+      EXPECTED_DATA_NODES: "1" # Equals to data.replica
+      RECOVER_AFTER_DATA_NODES: "1" # Equals to data.replica
+  master:
+    replicas: 1
+    persistence:
+      storageClass: standard
+  data:
+    replicas: 1
+    persistence:
+      storageClass: standard
 
 certmanager:
   issuer: letsencrypt-staging
