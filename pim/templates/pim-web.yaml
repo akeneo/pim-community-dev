@@ -80,6 +80,16 @@ spec:
 {{- if .Values.common.phpConfFPM }}
 {{ toYaml .Values.common.phpConfFPM  | indent 12 }}
 {{- end }}
+          readinessProbe:
+            tcpSocket:
+              port: fpm
+            initialDelaySeconds: 5
+            periodSeconds: 1
+            successThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: fpm
+            initialDelaySeconds: 10
         - name: httpd
           image: "{{ .Values.image.httpd.repository }}:{{ .Values.image.httpd.tag }}"
           imagePullPolicy: {{ .Values.image.httpd.pullPolicy | quote }}
@@ -93,6 +103,18 @@ spec:
             - mountPath: /usr/local/apache2/conf/
               name: conf-httpd
               readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /user/login
+              port: httpd
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            successThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /user/login
+              port: httpd
+            initialDelaySeconds: 10
       volumes:
         - name: web-src
           emptyDir: {}
