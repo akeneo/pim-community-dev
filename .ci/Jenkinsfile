@@ -114,7 +114,7 @@ stage("Test") {
                 container: tag,
                 containers: pimContainers(image: tag, selenium: false),
                 fetcher: {return pimPhpunitFetcher(paths:["/var/www/pim/src", "/var/www/pim/tests"])},
-                parallelism: 50
+                parallelism: 1
             )},
             "integration-ee": {queue(
                 condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
