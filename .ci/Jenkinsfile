@@ -61,23 +61,27 @@ stage("Test") {
             "php-coupling-detector": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
             )},
             "phpspec": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 script: "cd /var/www/pim && su -s /bin/sh www-data -c './vendor/bin/phpspec run --no-interaction --format=junit' > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
             "php-cs-fixer": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
             "grunt": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 script: "cd /var/www/pim && yarn run lint"
             )},
             "integration": {queue(
