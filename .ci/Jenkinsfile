@@ -80,28 +80,33 @@ stage("Test") {
             "back-php-coupling-detector": {testif(
                 condition: launchBackUnitTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
             )},
             "back-phpspec": {testif(
                 condition: launchBackUnitTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 script: "cd /var/www/pim && su -s /bin/sh www-data -c './vendor/bin/phpspec run --no-interaction --format=junit' > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
             "back-php-cs-fixer": {testif(
                 condition: launchBackUnitTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
             "front-lint": {testif(
                 condition: launchFrontUnitTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 script: "cd /var/www/pim && yarn run lint"
             )},
             "front-unit": {testif(
                 condition: launchFrontUnitTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 script: "cd /var/www/pim && yarn run unit"
             )},
 
@@ -109,11 +114,13 @@ stage("Test") {
             "front-acceptance": {testif(
                 condition: launchFrontAcceptanceTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance /var/www/pim/vendor/akeneo/pim-community-dev/tests/features /var/www/pim/tests/features"
             )},
             "back-acceptance": {testif(
                 condition: launchBackAcceptanceTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
             )},
 
@@ -121,6 +128,7 @@ stage("Test") {
             "front-integration": {testif(
                 condition: launchFrontIntegrationTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
             )},
             "back-integration": {queue(
