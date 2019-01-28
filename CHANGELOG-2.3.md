@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.26 (2019-01-28)
+
 ## Bug fixes
 
 - PIM-7967: Fix ACL for asset categories
