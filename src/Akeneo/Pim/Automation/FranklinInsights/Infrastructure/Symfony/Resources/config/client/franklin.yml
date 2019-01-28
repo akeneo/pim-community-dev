@@ -1,6 +1,6 @@
 parameters:
     akeneo.pim.automation.franklin_insights.franklin_client.request_timeout: 10
-    akeneo.pim.automation.franklin_insights.franklin_client.url: 'https://pim-ai.prod.cloud.akeneo.com'
+    akeneo.pim.automation.franklin_insights.franklin_client.url: 'https://ask-franklin.cloud.akeneo.com'
 
 services:
     akeneo.pim.automation.franklin_insights.franklin_client.guzzle.message_formatter:
