@@ -1927,8 +1927,6 @@ final class EditRecordContext implements Context
             self::REFERENCE_ENTITY_IDENTIFIER,
             []
         );
-        $createCommand->code = self::REFERENCE_ENTITY_IDENTIFIER;
-        $createCommand->labels = [];
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
