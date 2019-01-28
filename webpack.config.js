@@ -34,12 +34,20 @@ const webpackConfig = {
   },
   optimization: {
     moduleIds: 'hashed',
-    nodeEnv: (isProd ? 'production' : 'development'),
     minimizer: [new TerserPlugin({
-      cache: true
+      cache: true,
+      parallel: true,
+      sourceMap: false,
+      terserOptions: {
+        ecma: 6,
+        mangle: true,
+        output: {
+          comments: false,
+        },
+      },
     })]
   },
-  mode: 'development',
+  mode: (isProd ? 'production' : 'development'),
   target: 'web',
   entry: ['babel-polyfill', path.resolve(rootDir, './web/bundles/pimui/js/index.js')],
   output: {
