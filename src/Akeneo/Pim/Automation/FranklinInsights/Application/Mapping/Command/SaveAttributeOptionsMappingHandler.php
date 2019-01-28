@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributeOptionsMappingProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\AttributeOptionsMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -64,13 +65,23 @@ class SaveAttributeOptionsMappingHandler
     {
         $this->validate($command);
 
-        $attributeOptionsMapping = new AttributeOptionsMapping();
+        $optionCodes = $this->attributeOptionRepository->findCodesByIdentifiers(
+            (string) $command->attributeCode(),
+            $command->attributeOptions()->getCatalogOptionCodes()
+        );
+        if (empty($optionCodes)) {
+            throw AttributeOptionsMappingException::emptyAttributeOptionsMapping();
+        }
 
+        $attributeOptionsMapping = new AttributeOptionsMapping();
         foreach ($command->attributeOptions() as $franklinOptionId => $attributeOption) {
+            $optionCode = in_array($attributeOption->getPimAttributeOptionCode(), $optionCodes)
+                ? $attributeOption->getPimAttributeOptionCode() : null;
+
             $attributeOptionsMapping->addAttributeOption(new AttributeOption(
                 $franklinOptionId,
                 $attributeOption->getFranklinAttributeOptionLabel(),
-                $attributeOption->getPimAttributeOptionCode()
+                $optionCode
             ));
         }
 
@@ -88,10 +99,6 @@ class SaveAttributeOptionsMappingHandler
     {
         $this->ensureFamilyExists((string) $command->familyCode());
         $this->ensureAttributeExists((string) $command->attributeCode());
-        $this->ensureOptionsExistAndBelongToTheAttribute(
-            (string) $command->attributeCode(),
-            $command->attributeOptions()->getCatalogOptionCodes()
-        );
     }
 
     /**
@@ -114,22 +121,6 @@ class SaveAttributeOptionsMappingHandler
         if (!$this->attributeRepository->findOneByIdentifier($attributeCode) instanceof AttributeInterface) {
             throw new \InvalidArgumentException(
                 sprintf('Attribute "%s" does not exist', $attributeCode)
-            );
-        }
-    }
-
-    /**
-     * @param string $attributeCode
-     * @param array $optionCodes
-     */
-    private function ensureOptionsExistAndBelongToTheAttribute(string $attributeCode, array $optionCodes): void
-    {
-        $optionCodes = array_filter($optionCodes);
-        $options = $this->attributeOptionRepository->findCodesByIdentifiers($attributeCode, $optionCodes);
-
-        if (count($options) !== count($optionCodes)) {
-            throw new \InvalidArgumentException(
-                sprintf('Some options do not exist or do not belong to the attribute with code "%s"', $attributeCode)
             );
         }
     }

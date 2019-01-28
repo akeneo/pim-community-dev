@@ -96,6 +96,8 @@ akeneo_franklin_insights:
                     no_identifier_filled: 'Product identifiers required.'
                     invalid_mapping: "Identifiers mapping required."
         attribute_options_mapping:
+            constraint:
+                no_attribute_options_mapped: 'Franklin attribute options cannot be mapped with an empty mapping'
             fields:
                 franklin_attribute_option: Franklin attribute option
                 catalog_attribute_option: Catalog attribute option
