@@ -33,6 +33,9 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Akeneo PIM requirements check:</info>');
+        $output->writeln('<info>DEBUG TEST</info>');
+
+        return 0;
 
         $this->renderRequirements($input, $output, $this->getRequirements());
     }
