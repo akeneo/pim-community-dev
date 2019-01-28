@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.26 (2019-01-28)
+
 ## Bug fixes
 
 - PIM-8006: Improve the generation of missing asset variation performances
