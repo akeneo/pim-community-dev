@@ -53,6 +53,7 @@ Feature: Enforce no permissions for an asset category
   Scenario: Go to edit form of the asset if he has permission to edit it
     Given I am logged in as "Mary"
     And I am on the assets grid
+    And I search "grantedOne"
     And I click on the "Edit properties of the asset" action of the row which contains "grantedOne"
     And I should see the "Save" button
 

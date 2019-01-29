@@ -48,13 +48,14 @@ FROM pim_catalog_product p
 INNER JOIN pim_catalog_category_product cp ON p.id = cp.product_id
 INNER JOIN pim_catalog_category c ON c.id = cp.category_id
 WHERE identifier = "product_editable_by_redactor"
+ORDER BY c.code
 SQL;
 
         $this->assert('product_editable_by_redactor', $data, $sql, [
-            ['code' => 'master'],
             ['code' => 'categoryA1'],
             ['code' => 'categoryA2'],
             ['code' => 'categoryB'],
+            ['code' => 'master'],
         ]);
     }
 
@@ -78,12 +79,13 @@ INNER JOIN pim_catalog_association_type t ON t.id = a.association_type_id
 INNER JOIN pim_catalog_association_product ap ON a.id = ap.association_id
 INNER JOIN pim_catalog_product associated_product ON associated_product.id = ap.product_id 
 WHERE p.identifier = "product_without_category"
+ORDER BY t.code, associated_product.identifier
 SQL;
 
         $this->assert('product_without_category', $data, $sql, [
+            ['code' => 'X_SELL', 'identifier' => 'product_not_viewable_by_redactor'],
             ['code' => 'X_SELL', 'identifier' => 'product_viewable_by_everybody_1'],
             ['code' => 'X_SELL', 'identifier' => 'product_viewable_by_everybody_2'],
-            ['code' => 'X_SELL', 'identifier' => 'product_not_viewable_by_redactor'],
         ]);
     }
 

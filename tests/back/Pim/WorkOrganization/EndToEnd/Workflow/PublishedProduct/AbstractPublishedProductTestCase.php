@@ -23,7 +23,11 @@ abstract class AbstractPublishedProductTestCase extends AbstractProductTestCase
     {
         $published = $this->get('pimee_workflow.manager.published_product')->publish($product);
 
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $clientRegistry = $this->get('akeneo_elasticsearch.registry.clients');
+        $clients = $clientRegistry->getClients();
+        foreach ($clients as $client) {
+            $client->refreshIndex();
+        }
 
         return $published;
     }
