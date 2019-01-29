@@ -5,6 +5,7 @@ import {EditState} from 'akeneoreferenceentity/application/reducer/reference-ent
 import {toggleSidebar, updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
 import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
 import Key from 'akeneoreferenceentity/tools/key';
+import DropdownMenu from 'akeneoreferenceentity/application/component/app/dropdown-menu';
 
 interface SidebarOwnProps {
   backButton?: () => JSX.Element;
@@ -51,6 +52,14 @@ class Sidebar extends React.Component<SidebarProps> {
     return (
       <div className={`AknColumn ${colapsedClass}`}>
         <div className="AknColumn-inner column-inner">
+          <div className="AknColumn-navigation">
+            <DropdownMenu
+              label={__('pim_reference_entity.reference_entity.breadcrumb')}
+              elements={this.props.tabs}
+              selectedElement={this.props.currentTab}
+              onSelectionChange={this.updateCurrentTab}
+            />
+          </div>
           <div className="AknColumn-innerTop">
             <div className="AknColumn-block">
               {undefined !== BackButton ? <BackButton /> : null}
