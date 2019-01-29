@@ -121,7 +121,7 @@ define(['jquery'], function ($) {
             found = true;
           } else {
             // look for 'value' attibute if innerHTML doesn't match
-            var val = rows.eq(i).find('input').attr('value');
+            var val = rows.eq(i).find('input').val();
             if(val.search(regex) !== -1) {
               found = true;
             }

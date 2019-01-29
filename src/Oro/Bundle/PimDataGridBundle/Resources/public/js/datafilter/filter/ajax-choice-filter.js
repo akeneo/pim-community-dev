@@ -42,7 +42,7 @@ define(
 
                 if (this.value.value) {
                     _.each(this.value.value, function(item) {
-                        this.$(this.inputSelector).find('option[value="' + item + '"]').attr('selected', 'selected');
+                        this.$(this.inputSelector).find('option[value="' + item + '"]').prop('selected', true);
                     }, this);
                 }
 
