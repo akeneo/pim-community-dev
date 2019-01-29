@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
-use PimEnterprise\Component\ProductAsset\Model\Asset;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
+use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -62,14 +62,14 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
             return 1;
         }
 
-        $missingVariations = $this->findMissingVariations($input);
-        if (empty($missingVariations)) {
+        $missingVariationIds = $this->findMissingVariationIds($input);
+        if (empty($missingVariationIds)) {
             $output->writeln('<info>No missing variation</info>');
 
             return 0;
         }
 
-        $this->generateMissingVariations($output, $missingVariations);
+        $this->generateMissingVariations($output, $missingVariationIds);
 
         return 0;
     }
@@ -112,9 +112,17 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     }
 
     /**
+     * @return VariationRepositoryInterface
+     */
+    protected function getVariationRepository(): VariationRepositoryInterface
+    {
+        return $this->getContainer()->get('pimee_product_asset.repository.variation');
+    }
+
+    /**
      * @param array $assetCodes
      *
-     * @return array|ArrayCollection
+     * @return AssetInterface[]
      */
     protected function fetchAssetsByCode($assetCodes)
     {
@@ -124,7 +132,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     protected function getAllAssetsCodes()
     {
@@ -138,48 +146,78 @@ SQL;
         return array_column($statement->fetchAll(), 'code');
     }
 
-    /**
-     * @param array $objects
-     */
-    protected function detachAll($objects)
+    protected function clearCache()
     {
-        $this->getContainer()->get('akeneo_storage_utils.doctrine.object_detacher')->detachAll($objects);
+        $this->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     /**
      * @param InputInterface $input
      *
-     * @return array
+     * @return int[]
      */
-    protected function findMissingVariations(InputInterface $input): array
+    protected function findMissingVariationIds(InputInterface $input): array
     {
         $asset = null;
         if (!$this->isGenerateForAllAssets($input)) {
             $asset = $this->retrieveAsset($input->getOption('asset'));
-        }
-        $missingVariations = $this->getAssetFinder()->retrieveVariationsNotGenerated($asset);
+            $missingVariations = $this->getAssetFinder()->retrieveVariationsNotGenerated($asset);
 
-        return $missingVariations;
+            $missingVariationIds = array_map(function (VariationInterface $variation) {
+                return $variation->getId();
+            }, $missingVariations);
+        } else {
+            $missingVariationIds = $this->retrieveIdsOfNotGeneratedVariations();
+        }
+
+        return $missingVariationIds;
+    }
+
+    /**
+     * @return int[]
+     */
+    protected function retrieveIdsOfNotGeneratedVariations(): array
+    {
+        $connection = $this->getContainer()->get('database_connection');
+        $sql = <<<SQL
+SELECT ppav.id as id
+FROM pimee_product_asset_variation ppav
+WHERE ppav.file_info_id IS NULL
+  AND ppav.source_file_info_id IS NOT NULL
+SQL;
+
+        $statement = $connection->query($sql);
+
+        return array_column($statement->fetchAll(), 'id');
     }
 
     /**
      * @param OutputInterface $output
-     * @param Asset           $missingVariations
+     * @param int[]           $missingVariationIds
      */
-    protected function generateMissingVariations(OutputInterface $output, array $missingVariations): void
+    protected function generateMissingVariations(OutputInterface $output, array $missingVariationIds): void
     {
-        $processedAssets = $this->generateVariation($output, $missingVariations);
-        $this->scheduleCompleteness($output, $processedAssets);
+        $chunks = array_chunk($missingVariationIds, static::BATCH_SIZE);
+
+        foreach ($chunks as $missingVariationIdsToProcess) {
+            $missingVariations = $this->getVariationRepository()->findBy(['id' => $missingVariationIdsToProcess]);
+
+            $processedAssets = $this->generateVariation($output, $missingVariations);
+            $this->scheduleCompleteness($output, $processedAssets);
+
+            $this->clearCache();
+        }
+
         $output->writeln('<info>Done!</info>');
     }
 
     /**
-     * @param OutputInterface $output
-     * @param                 $missingVariations
+     * @param OutputInterface      $output
+     * @param VariationInterface[] $missingVariations
      *
      * @return array
      */
-    protected function generateVariation(OutputInterface $output, $missingVariations): array
+    protected function generateVariation(OutputInterface $output, array $missingVariations): array
     {
         $generator = $this->getVariationsCollectionFileGenerator();
         $processedList = $generator->generate($missingVariations, true);
@@ -226,11 +264,10 @@ SQL;
     }
 
     /**
-     * @param OutputInterface $output
-     * @param                 $processedAssets
-     *
+     * @param OutputInterface  $output
+     * @param AssetInterface[] $processedAssets
      */
-    protected function scheduleCompleteness(OutputInterface $output, $processedAssets): void
+    protected function scheduleCompleteness(OutputInterface $output, array $processedAssets): void
     {
         $output->writeln('<info>Schedule completeness calculation</info>');
 
@@ -241,16 +278,15 @@ SQL;
     }
 
     /**
-     * @param $assetCodes
-     *
+     * @param string[] $assetCodes
      */
-    protected function buildAssets($assetCodes): void
+    protected function buildAssets(array $assetCodes): void
     {
         $chunks = array_chunk($assetCodes, static::BATCH_SIZE);
         foreach ($chunks as $assetCodesToBuild) {
             $assets = $this->fetchAssetsByCode($assetCodesToBuild);
             $builtAssets = array_map(
-                function (Asset $asset) {
+                function (AssetInterface $asset) {
                     $this->buildAsset($asset);
 
                     return $asset;
@@ -258,7 +294,8 @@ SQL;
                 $assets
             );
             $this->getAssetSaver()->saveAll($builtAssets);
-            $this->detachAll($assets);
+
+            $this->clearCache();
         }
     }
 }
