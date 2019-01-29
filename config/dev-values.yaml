@@ -26,8 +26,8 @@ mysql:
       requests:
         memory: 1048Mi
         cpu: 200m
-    innodBufferPoolSize: 1G
-    # innodbPoolInstances must egal to innodBufferPoolSize/1G
+    innodbBufferPoolSize: 1G
+    # innodbPoolInstances must egal to innodbBufferPoolSize/1G
     innodbPoolInstances: 1
 
 elasticsearch:
