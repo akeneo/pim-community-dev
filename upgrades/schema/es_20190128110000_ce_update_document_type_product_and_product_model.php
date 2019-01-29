@@ -21,6 +21,8 @@ $hosts = [$container->getParameter('index_hosts')];
 
 $client = $builder->setHosts($hosts)->build();
 
+echo "Updating document_type for index {$container->getParameter('product_and_product_model_index_name')}...\n";
+
 $client->updateByQuery(
     [
         'index' => $container->getParameter('product_and_product_model_index_name'),
@@ -38,6 +40,8 @@ $client->updateByQuery(
     ]
 );
 
+echo "Updating document_type for index {$container->getParameter('product_and_product_model_index_name')}...\n";
+
 $client->updateByQuery(
     [
         'index' => $container->getParameter('product_and_product_model_index_name'),
@@ -55,6 +59,8 @@ $client->updateByQuery(
     ]
 );
 
+echo "Updating document_type for index {$container->getParameter('product_model_index_name')}...\n";
+
 $client->updateByQuery(
     [
         'index' => $container->getParameter('product_model_index_name'),
@@ -71,3 +77,5 @@ $client->updateByQuery(
         ]
     ]
 );
+
+echo "Done.\n";
