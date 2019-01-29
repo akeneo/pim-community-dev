@@ -31,6 +31,7 @@ define([
         elements: {},
         fieldName: null,
         errors: [],
+        warnings: [],
         readOnly: false,
 
         /**
@@ -46,6 +47,7 @@ define([
             this.fieldName = this.config.fieldName;
             this.readOnly = this.config.readOnly || false;
             this.errors = [];
+            this.warnings = [];
 
             BaseForm.prototype.initialize.apply(this, arguments);
         },
@@ -152,6 +154,7 @@ define([
                         fieldName: this.fieldName,
                         fieldId: this.getFieldId(),
                         errors: this.errors,
+                        warnings: this.warnings,
                         readOnly: this.isReadOnly(),
                         required: this.config.required || false,
                         __: __
