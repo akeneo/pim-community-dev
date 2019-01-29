@@ -21,7 +21,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderE
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\IdentifiersMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -49,10 +51,14 @@ class IdentifiersMappingController
     /**
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function saveIdentifiersMappingAction(Request $request): JsonResponse
+    public function saveIdentifiersMappingAction(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $identifiersMapping = json_decode($request->getContent(), true);
 
         try {

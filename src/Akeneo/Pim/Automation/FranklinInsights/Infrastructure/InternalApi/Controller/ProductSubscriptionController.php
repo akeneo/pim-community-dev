@@ -24,6 +24,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\Product
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer as InternalApi;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -62,14 +64,19 @@ class ProductSubscriptionController
     }
 
     /**
-     * @param int $productId
-     *
      * @AclAncestor("akeneo_franklin_insights_product_subscription")
+     *
+     * @param Request $request
+     * @param int $productId
      *
      * @return Response
      */
-    public function subscribeAction(int $productId): Response
+    public function subscribeAction(Request $request, int $productId): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         try {
             $command = new SubscribeProductCommand($productId);
             $this->subscribeProductHandler->handle($command);
@@ -94,14 +101,19 @@ class ProductSubscriptionController
     }
 
     /**
-     * @param int $productId
-     *
      * @AclAncestor("akeneo_franklin_insights_product_subscription")
+     *
+     * @param Request $request
+     * @param int $productId
      *
      * @return Response
      */
-    public function unsubscribeAction(int $productId): Response
+    public function unsubscribeAction(Request $request, int $productId): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         try {
             $command = new UnsubscribeProductCommand($productId);
             $this->unsubscribeProductHandler->handle($command);

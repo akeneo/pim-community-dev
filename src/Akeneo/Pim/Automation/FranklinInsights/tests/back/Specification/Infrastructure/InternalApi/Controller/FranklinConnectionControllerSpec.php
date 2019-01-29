@@ -29,6 +29,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
@@ -131,6 +132,8 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
         $activateConnectionHandler,
         Request $request
     ): void {
+        $request->isXmlHttpRequest()->willReturn(true);
+
         $jsonContent = $this->loadFakeData('post');
         $request->getContent()->willReturn($jsonContent);
 
@@ -150,6 +153,8 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
         $activateConnectionHandler,
         Request $request
     ): void {
+        $request->isXmlHttpRequest()->willReturn(true);
+
         $jsonContent = $this->loadFakeData('post');
         $request->getContent()->willReturn($jsonContent);
 
@@ -171,6 +176,8 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
         $activateConnectionHandler,
         Request $request
     ): void {
+        $request->isXmlHttpRequest()->willReturn(true);
+
         $request->getContent()->willReturn('');
 
         $activateConnectionHandler->handle(Argument::type(ActivateConnectionCommand::class))->shouldNotBeCalled();
@@ -189,6 +196,8 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
         $activateConnectionHandler,
         Request $request
     ): void {
+        $request->isXmlHttpRequest()->willReturn(true);
+
         $jsonContent = $this->loadFakeData('post');
         $jsonContent = str_replace('my-token', '', $jsonContent);
         $request->getContent()->willReturn($jsonContent);
@@ -203,6 +212,15 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
             ['message' => 'akeneo_franklin_insights.connection.flash.error'],
             json_decode($response->getContent()->getWrappedObject(), true)
         );
+    }
+
+    public function it_redirects_to_home_if_request_is_not_xml_http(Request $request): void
+    {
+        $request->isXmlHttpRequest()->willReturn(false);
+        $response = $this->postAction($request);
+
+        $response->shouldBeAnInstanceOf(RedirectResponse::class);
+        $response->getTargetUrl()->shouldReturn('/');
     }
 
     /**

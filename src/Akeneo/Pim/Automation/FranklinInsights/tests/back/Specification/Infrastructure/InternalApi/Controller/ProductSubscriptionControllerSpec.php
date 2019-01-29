@@ -25,6 +25,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -50,14 +52,34 @@ class ProductSubscriptionControllerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ProductSubscriptionController::class);
     }
 
-    public function it_calls_unsubscribe_handler($unsubscribeProductHandler): void
+    public function it_calls_unsubscribe_handler($unsubscribeProductHandler, Request $request): void
     {
+        $request->isXmlHttpRequest()->willReturn(true);
+
         $productId = 42;
 
         $command = new UnsubscribeProductCommand($productId);
         $unsubscribeProductHandler->handle($command)->shouldBeCalled();
 
-        $this->unsubscribeAction(42)->shouldReturnAnInstanceOf(JsonResponse::class);
+        $this->unsubscribeAction($request, 42)->shouldReturnAnInstanceOf(JsonResponse::class);
+    }
+
+    public function it_redirects_to_home_during_subscription_if_request_is_not_xml_http(Request $request): void
+    {
+        $request->isXmlHttpRequest()->willReturn(false);
+        $response = $this->subscribeAction($request, 42);
+
+        $response->shouldBeAnInstanceOf(RedirectResponse::class);
+        $response->getTargetUrl()->shouldReturn('/');
+    }
+
+    public function it_redirects_to_home_during_unsubscription_if_request_is_not_xml_http(Request $request): void
+    {
+        $request->isXmlHttpRequest()->willReturn(false);
+        $response = $this->unsubscribeAction($request, 42);
+
+        $response->shouldBeAnInstanceOf(RedirectResponse::class);
+        $response->getTargetUrl()->shouldReturn('/');
     }
 
     public function it_gets_a_product_subscription_status(

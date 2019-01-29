@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Exception\Connec
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\ConnectionStatusNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -78,6 +79,8 @@ class FranklinConnectionController
     }
 
     /**
+     * @param Request $request
+     *
      * @return Response
      */
     public function getStatusAction(Request $request): Response
@@ -97,8 +100,11 @@ class FranklinConnectionController
      */
     public function postAction(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         // TODO: We should $request->get('token', '') instead decoding json and getting back value
-        // TODO: Should not we assert it is an XML HTTP Request
         // TODO: Why do we put message here instead of handling response code?
         // TODO: success = 200, invalid argument = 401, conf exception = 422
         $configurationFields = json_decode($request->getContent(), true);

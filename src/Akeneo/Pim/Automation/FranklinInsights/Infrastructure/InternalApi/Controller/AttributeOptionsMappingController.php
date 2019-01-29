@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\OptionsMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -99,10 +100,14 @@ class AttributeOptionsMappingController
      *     }
      * }
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function updateAction(Request $request): JsonResponse
+    public function updateAction(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $requestContent = json_decode($request->getContent(), true);
 
         $this->validateAttributeOptionsMapping($requestContent);
