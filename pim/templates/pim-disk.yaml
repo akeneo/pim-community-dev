@@ -16,4 +16,4 @@ spec:
   storageClassName: {{ .Values.nfs.storageClass.name }}
   resources:
     requests:
-      storage: "{{ .Values.pim.persistence.diskSize }}"  
+      storage: "{{ .Values.pim.persistence.diskSize }}"

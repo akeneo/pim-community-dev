@@ -11,7 +11,7 @@ backup:
   projectId: nil
   zone: nil
   snapshot:
-    schedule: "0 0 */1 * * *"
+    schedule: "0 0 */1 * * *" # Once every hour: https://godoc.org/github.com/robfig/cron
     retentionPolicy:
       dailyBackups: 10
       weeklyBackups: 4
@@ -58,16 +58,11 @@ common:
     value: "Etc/UTC"
 
 mailer:
-  login: generateme
-  password: generateme
-  host: localhost
-  port: 25
+  login: nil
+  password: nil
+  host: nil
+  port: nil
   from_address: no-reply@akeneo.com
-
-google:
-  project_id: default
-  location: europe-west3-b
-  cluster_name: default
 
 certmanager:
   issuer: letsencrypt-prod
@@ -79,7 +74,7 @@ certmanager:
 image:
   pim:
     repository: eu.gcr.io/akeneo-cloud/pim-enterprise-cloud
-# image.pim.tag is added by the Jenkinsfile when running the CI, manually use "--set image.pim.tag x.y.z-AB"
+    # image.pim.tag is added by the Jenkinsfile when running the CI, manually use "--set image.pim.tag x.y.z-AB"
     pullPolicy: IfNotPresent
   httpd:
     repository: httpd
@@ -91,11 +86,11 @@ pim:
   numDaemon: 1
   extravarsPim: {}
   extraLabels: {}
+  persistence:
+    diskSize: 150Gi
   resources:
     requests:
       cpu: 200m
-  persistence:
-    diskSize: 10Gi
   defaultCatalog: minimal
   jobs:
     batch-purge:
@@ -118,15 +113,27 @@ pim:
       enabled: true
       pimCommand: "pim:volume:aggregate"
       schedule: "0 4 * * *"
+    send-expiration-notification:
+      enabled: true
+      pimCommand: "pim:asset:send-expiration-notification"
+      schedule: "0 1 * * *"
+    project-recalculate:
+      enabled: true
+      pimCommand: "pimee:project:recalculate"
+      schedule: "20 0 * * *"
+    project-notify-before-due-date:
+      enabled: true
+      pimCommand: "pimee:project:notify-before-due-date"
+      schedule: "0 2 * * *"
 
 # Onboarder
 onboarder:
   enabled: false
   pubsub:
-    topicPub: default-middleware
-    topicCon: default-pimmaster
-    queueName: default-middleware
-  serviceAccount: Y2hhbmdlbWU=
+    topicPub: nil
+    topicCon: nil
+    queueName: nil
+  serviceAccount: nil
   sso:
     idp:
       publicKey: nil
@@ -139,16 +146,16 @@ nfs:
   persistence:
     enabled: true
     storageClass: ssd-retain
-    size: 11Gi
+    size: 151Gi # Must be equal to (pim.persistence.diskSize + 1)
   storageClass:
     name: nfs
 
 pimUsers:
   cloudadmin:
-    firstName: cloud
-    lastName: Admin
-    email: tech-cloud@akeneo.com
-    password: generateme
+    firstName: nil # can be defined by the provider, use "--set pimUsers.cloudadmin.firstName cloud"
+    lastName: nil # can be defined by the provider, use "--set pimUsers.cloudadmin.lastName cloud"
+    email: nil # can be defined by the provider, use "--set pimUsers.cloudadmin.email cloud"
+    password: nil # can be defined by the provider, use "--set pimUsers.cloudadmin.password cloud"
     catalogDefaultLocale: en_US
     userDefaultLocale: en_US
     catalogDefaultScope: ecommerce
@@ -164,12 +171,14 @@ mysql:
   mysql:
     serviceName: pim-mysql
     defaultUser: akeneo_pim
-    userPassword: generateme
-    rootPassword: generateme
+    userPassword: nil # can be defined by the provider, use "--set mysql.mysql.userPassword generateme"
+    rootPassword: nil # can be defined by the provider, use "--set mysql.mysql.userPassword generateme"
     defaultDatabase: akeneo_pim
-    dataDiskSize: 10Gi
+    dataDiskSize: 100Gi
     stateful:
       enabled: false
+  common:
+    class: ssd-retain
 
 elasticsearch:
   appVersion: 5.6.14

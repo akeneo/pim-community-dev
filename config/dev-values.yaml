@@ -4,18 +4,24 @@ image:
 
 backup:
   enabled: false
-  
+
 nfs:
   persistence:
     storageClass: standard
+    size: 11Gi # Must be equal to (pim.persistence.diskSize + 1)
 
 pim:
   defaultCatalog: icecat
+  persistence:
+    diskSize: 10Gi
 
 mysql:
   common:
     class: standard
   mysql:
+    userPassword: generateme
+    rootPassword: generateme
+    dataDiskSize: 10Gi
     resources:
       requests:
         memory: 1048Mi
@@ -35,11 +41,28 @@ elasticsearch:
   master:
     replicas: 1
     persistence:
+      size: 1Gi
       storageClass: standard
   data:
     replicas: 1
     persistence:
+      size: 10Gi
       storageClass: standard
 
 certmanager:
   issuer: letsencrypt-staging
+
+pimUsers:
+  cloudadmin:
+    firstName: cloud
+    lastName: Admin
+    email: tech-cloud@akeneo.com
+    password: generateme
+    catalogDefaultLocale: en_US
+    userDefaultLocale: en_US
+    catalogDefaultScope: ecommerce
+    defaultCategoryTree: master
+    roles: ROLE_ADMINISTRATOR
+    groups: IT support
+    enabled: 1
+    defaultAssetTree: asset_main_catalog

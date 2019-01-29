@@ -27,9 +27,3 @@ spec:
       curl --connect-timeout 5 -XPOST --insecure --cookie $COOKIE_JAR --cookie-jar $COOKIE_JAR --data @$LOGIN_DATA $TARGET/user/login-check;
       curl --insecure -w "%{http_code}" --insecure --cookie $COOKIE_JAR $TARGET/ | grep 200;
   restartPolicy: Never
-
-
-
-
-
-

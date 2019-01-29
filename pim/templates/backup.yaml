@@ -9,7 +9,7 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
     component: {{ template "pim.fullName" . }}
-    {{ include "pim.extravarsPim" . | indent 4}}
+    {{ include "pim.extravarsPim" . | indent 4 }}
     role: pim-backup
 spec:
   jobLabel: {{ template "pim.fullName" . }}
@@ -23,35 +23,7 @@ spec:
 {{ if .Values.backup.snapshot.export.enabled }}
     export:
       snapshotAge: {{ .Values.backup.snapshot.export.snapshotAge }}
-{{end}}
+{{end }}
     retentionPolicy:
-{{toYaml .Values.backup.snapshot.retentionPolicy | indent 6}}
-
-
-# apiVersion: backup.akeneo.com/v1
-# kind: Backup
-# metadata:
-#   name: {{ template "pim.fullName" . }}
-#   labels:
-#     app: {{ template "pim.fullName" . }}
-#     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-#     release: "{{ .Release.Name }}"
-#     heritage: "{{ .Release.Service }}"
-#     component: {{ template "pim.fullName" . }}
-#     {{ include "pim.extravarsPim" . | indent 4}}
-#     role: pim-backup
-# spec:
-#   jobLabel: {{ template "pim.fullName" . }}
-#   projectId: {{ .Values.backup.projectId }}
-#   zone: {{ .Values.backup.zone }}
-
-#   snapshot:
-#     schedule: {{ .Values.backup.snapshot.schedule }}
-#     pvcNames:
-#       - data-{{ .Release.Name }}-nfs-0
-#       - pvc-data-{{ .Release.Name }}-mysql-server-0
-#   export:
-#     snapshotAge: {{ .Values.backup.snapshot.export.snapshotAge }}
-#     bucketUrl: gs://{{ .Values.google.project_id }}-exported-backup-store
-
-{{ end}}
+{{toYaml .Values.backup.snapshot.retentionPolicy | indent 6 }}
+{{ end }}

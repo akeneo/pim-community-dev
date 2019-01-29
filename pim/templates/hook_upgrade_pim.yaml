@@ -57,9 +57,9 @@ spec:
             - { name: PIM_DATABASE_NAME, value: {{ .Values.mysql.mysql.defaultDatabase | quote }} }
             - { name: PIM_DATABASE_USER, value: {{ .Values.mysql.mysql.defaultUser | quote }} }
             - { name: GOOGLE_CONTAINER_NAME, value: fpm }
-            - { name: GOOGLE_LOCATION, value: {{ .Values.google.location | quote }} }
-            - { name: GOOGLE_CLOUD_PROJECT, value: {{ .Values.google.project_id | quote }} }
-            - { name: K8S_CLUSTER_NAME, value: {{ .Values.google.cluster_name | quote }} }
+            - { name: GOOGLE_LOCATION, value: {{ .Values.common.googleZone | quote }} }
+            - { name: GOOGLE_CLOUD_PROJECT, value: {{ .Values.common.gcpProjectID | quote }} }
+            - { name: K8S_CLUSTER_NAME, value: {{ .Values.common.googleZone | quote }} }
             - { name: MAILER_HOST, value: {{ .Values.mailer.host | quote }} }
             - { name: MAILER_PORT, value: {{ .Values.mailer.port | quote }} }
             - { name: MAILER_FROM_ADDRESS, value: {{ .Values.mailer.from_address | quote }} }

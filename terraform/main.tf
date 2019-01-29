@@ -4,6 +4,21 @@ terraform {
   }
 }
 
+resource "random_string" "mysql_root_password" {
+  length  = 12
+  special = false
+}
+
+resource "random_string" "mysql_akeneo_pim_password" {
+  length  = 12
+  special = false
+}
+
+resource "random_string" "pim_cloud_admin_password" {
+  length  = 12
+  special = false
+}
+
 data "template_file" "mailgun_login" {
   template = "${format ("%s-%s", var.pfid, var.google_project_name)}"
 }
@@ -12,7 +27,6 @@ resource "random_string" "mailgun_password" {
   length  = 12
   special = false
 }
-
 
 resource "null_resource" "mailgun-credential" {
   provisioner "local-exec" {

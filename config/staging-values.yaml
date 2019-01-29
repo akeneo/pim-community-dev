@@ -1,0 +1,22 @@
+backup:
+  snapshot:
+    schedule: "0 0 0 */1 * *" # Once per day
+    retentionPolicy:
+      dailyBackups: 10
+      weeklyBackups: 0
+      monthlyBackups: 0
+      yearlyBackups: 0
+    export:
+      enabled: false
+
+nfs:
+  persistence:
+    size: 81Gi # Must be equal to (pim.persistence.diskSize + 1)
+
+pim:
+  persistence:
+    diskSize: 80Gi
+
+mysql:
+  mysql:
+    dataDiskSize: 30Gi

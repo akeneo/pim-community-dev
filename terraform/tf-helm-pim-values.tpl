@@ -6,6 +6,15 @@ common:
   googleZone: ${googleZone}
   pimMasterDomain: ${pimmaster_dns_name}
 
+pimUsers:
+  cloudadmin:
+    password: ${pim_cloud_admin_password}
+
+mysql:
+  mysql:
+    userPassword: ${mysql_root_password}
+    rootPassword: ${mysql_akeneo_pim_password}
+
 nfs:
   storageClass:
     name: nfs-${pfid}
@@ -15,4 +24,3 @@ mailer:
   password: ${mailgun_password}
   host: ${mailgun_host}
   port: ${mailgun_port}
-  from_address: no-reply@akeneo.com

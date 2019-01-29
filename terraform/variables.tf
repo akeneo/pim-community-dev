@@ -2,6 +2,15 @@ variable "google_project_name" {
   type = "string"
 }
 
+variable "google_project_zone" {
+  type        = "string"
+  description = "Google zone where the project is deployed (Used for backup)."
+}
+
+variable "pfid" {
+  type = "string"
+}
+
 variable "dns_external" {
   type = "string"
 }
@@ -11,7 +20,7 @@ variable "dns_internal" {
 }
 
 variable "dns_zone" {
-  type    = "string"
+  type = "string"
 }
 
 variable "dns_project" {
@@ -27,15 +36,6 @@ variable "mailgun_api_key" {
 variable "mailgun_domain" {
   type    = "string"
   default = "mg.cloud.akeneo.com"
-}
-
-variable "pfid" {
-  type = "string"
-}
-
-variable "google_project_zone" {
-  type = "string"
-  description = "Google zone where the project is deployed (Used for backup)."
 }
 
 variable "mailgun_host" {
