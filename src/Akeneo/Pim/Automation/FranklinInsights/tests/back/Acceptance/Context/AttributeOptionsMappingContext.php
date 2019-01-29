@@ -190,8 +190,8 @@ class AttributeOptionsMappingContext implements Context
 
         foreach ($this->retrievedAttributeOptionsMapping->mapping() as $index => $attributeOptionMapping) {
             $expectedRow = $expectedMappingTable->getHash()[$index];
-            Assert::eq($attributeOptionMapping->franklinAttributeId(), $expectedRow['franklin_attribute_id']);
-            Assert::eq($attributeOptionMapping->catalogAttributeCode(), $expectedRow['catalog_attribute_code']);
+            Assert::eq($attributeOptionMapping->franklinAttributeOptionId(), $expectedRow['franklin_attribute_option_id']);
+            Assert::eq($attributeOptionMapping->catalogAttributeOptionCode(), $expectedRow['catalog_attribute_option_code']);
             $this->assertStatus($expectedRow['status'], $attributeOptionMapping->status());
         }
     }

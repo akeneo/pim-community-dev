@@ -167,7 +167,7 @@ class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
 
         foreach ($attributeOptionsMapping->mapping() as $currentOptionMapping) {
             $newOptionMapping = $this->buildNewOptionMapping($deletedAttributeOptionCode, $currentOptionMapping);
-            $newAttributeOptionsMapping[$currentOptionMapping->franklinAttributeId()] = $newOptionMapping;
+            $newAttributeOptionsMapping[$currentOptionMapping->franklinAttributeOptionId()] = $newOptionMapping;
         }
 
         return $newAttributeOptionsMapping;
@@ -185,12 +185,12 @@ class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
         string $deletedAttributeOptionCode,
         AttributeOptionMapping $currentOptionMapping
     ): array {
-        $newMappedOptionCode = $currentOptionMapping->catalogAttributeCode() === $deletedAttributeOptionCode ?
-            null : $currentOptionMapping->catalogAttributeCode();
+        $newMappedOptionCode = $currentOptionMapping->catalogAttributeOptionCode() === $deletedAttributeOptionCode ?
+            null : $currentOptionMapping->catalogAttributeOptionCode();
 
         $newOptionMapping = [
             'franklinAttributeOptionCode' => [
-                'label' => $currentOptionMapping->franklinAttributeLabel(),
+                'label' => $currentOptionMapping->franklinAttributeOptionLabel(),
             ],
             'catalogAttributeOptionCode' => $newMappedOptionCode,
             'status' => $currentOptionMapping->status(),
