@@ -54,3 +54,20 @@ $client->updateByQuery(
         ]
     ]
 );
+
+$client->updateByQuery(
+    [
+        'index' => $container->getParameter('product_model_index_name'),
+        'type'  => 'pim_catalog_product',
+        'body'  => [
+            'script' => [
+                'inline' => "ctx._source.document_type = 'Akeneo\\\\Pim\\\\Enrichment\\\\Component\\\\Product\\\\Model\\\\ProductModelInterface'",
+            ],
+            'query'  => [
+                'term' => [
+                    'document_type' => "Pim\\Component\\Catalog\\Model\\ProductModelInterface"
+                ]
+            ]
+        ]
+    ]
+);
