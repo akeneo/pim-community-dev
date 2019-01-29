@@ -31,30 +31,15 @@ spec:
               - name: fpm-data
                 mountPath: /data
                 readOnly: false
+            envFrom: [ configMapRef: { name: {{ template "pim.fullName" $tplCtx }}-env } ]
             env:
-            - name: SYMFONY_ENV
-              value: prod
-            - name: TRUSTED_PROXY_IPS
-              value: 10.0.0.0/8
-            - name: PIM_ELASTICSEARCH_HOST
-              value: {{ $tplCtx.Values.elasticsearch.fullnameOverride }}-client
-            - name: PIM_ELASTICSEARCH_PORT
-              value: "9200"
-            - name: PIM_SHARED_STORAGE
-              value: /data
-            - name: PIM_DATABASE_HOST
-              value: {{ $tplCtx.Values.mysql.mysql.serviceName | quote }}
-            - name: PIM_DATABASE_NAME
-              value: {{ $tplCtx.Values.mysql.mysql.defaultDatabase | quote }}
-            - name: PIM_DATABASE_USER
-              value: {{ $tplCtx.Values.mysql.mysql.defaultUser | quote }}
-            - name: PIM_DATABASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: pim-secrets
-                  key: mysqlPimUserPassword
+              - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
+              - { name: MAILER_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerPassword } } }
+              - { name: PIM_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
+              - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
+              - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
 {{- if $tplCtx.Values.common.phpConfCLI }}
-{{ toYaml $tplCtx.Values.common.phpConfCLI  | indent 12 }}
+{{ toYaml $tplCtx.Values.common.phpConfCLI  | indent 14 }}
 {{- end }}
           restartPolicy: OnFailure
           volumes:

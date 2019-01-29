@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "pim.fullName" . }}-env
+  labels:
+    app: {{ template "pim.fullName" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  SYMFONY_ENV: prod
+  TRUSTED_PROXY_IPS: 10.0.0.0/8
+  PIM_ELASTICSEARCH_HOST: {{ .Values.elasticsearch.fullnameOverride }}-client
+  PIM_ELASTICSEARCH_PORT: "9200"
+  PIM_SHARED_STORAGE: /data
+  PIM_DATABASE_HOST: {{ .Values.mysql.mysql.serviceName | quote }}
+  PIM_DATABASE_NAME: {{ .Values.mysql.mysql.defaultDatabase | quote }}
+  PIM_DATABASE_USER: {{ .Values.mysql.mysql.defaultUser | quote }}
+  CONTAINER_NAME: pim
+  GOOGLE_LOCATION: {{ .Values.common.googleZone | quote }}
+  GOOGLE_CLOUD_PROJECT: {{ .Values.common.gcpProjectID | quote }}
+  K8S_CLUSTER_NAME: {{ .Values.common.googleZone | quote }}
+  MAILER_HOST: {{ .Values.mailer.host | quote }}
+  MAILER_PORT: {{ .Values.mailer.port | quote }}
+  MAILER_FROM_ADDRESS: {{ .Values.mailer.from_address | quote }}
+  {{- if .Values.onboarder.enabled }}
+  ONBOARDER_ENABLED: "1"
+  GCP_PROJECT_ID: {{ .Values.common.gcpProjectID | quote }}
+  GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/key.json
+  ONBOARDER_RETAILER_URL: https://{{ .Values.common.retailerDomain }}
+  ONBOARDER_PIMMASTER_URL: https://{{ .Values.common.pimMasterDomain }}
+  SIMPLESAMLPHP_CONFIG_DIR: /var/www/html/vendor/akeneo/pim-onboarder/src/Infrastructure/Authentication/SimpleSamlPhp/Configuration
+  ONBOARDER_SSO_IDP_PUBLIC_KEY: {{ .Values.onboarder.sso.idp.publicKey | quote }}
+  ONBOARDER_SSO_CERTS_PATH: "/var/secrets/pimmaster/"
+  ONBOARDER_TOPIC_NAME_FOR_PUBLICATION: {{ .Values.onboarder.pubsub.topicPub | quote }}
+  ONBOARDER_TOPIC_NAME_FOR_CONSUMPTION: {{ .Values.onboarder.pubsub.topicCon | quote }}
+  ONBOARDER_QUEUE_NAME: {{ .Values.onboarder.pubsub.queueName | quote }}
+  ONBOARDER_CLOUD_STORAGE_BUCKET_NAME: {{ .Values.common.aobGcsBucketName | quote }}
+  {{- else }}
+  ONBOARDER_ENABLED: "0"
+  {{- end }}

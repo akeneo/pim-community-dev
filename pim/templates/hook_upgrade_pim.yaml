@@ -45,47 +45,13 @@ spec:
           image:  {{ printf "%s:%s" .Values.image.pim.repository  .Values.image.pim.tag }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['sh', '-c', 'export HOME=/var/www && su -m -l www-data -s /bin/bash -c "rm -rf var/cache && bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction"']
+          envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
-            - name: PIM_INSTALLER_DATA
-              value: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
-            - { name: SYMFONY_ENV, value: prod }
-            - { name: TRUSTED_PROXY_IPS, value: 10.0.0.0/8 }
-            - { name: PIM_ELASTICSEARCH_HOST, value: {{ .Values.elasticsearch.fullnameOverride }}-client }
-            - { name: PIM_ELASTICSEARCH_PORT, value: "9200" }
-            - { name: PIM_SHARED_STORAGE, value: /data }
-            - { name: PIM_DATABASE_HOST, value: {{ .Values.mysql.mysql.serviceName | quote }} }
-            - { name: PIM_DATABASE_NAME, value: {{ .Values.mysql.mysql.defaultDatabase | quote }} }
-            - { name: PIM_DATABASE_USER, value: {{ .Values.mysql.mysql.defaultUser | quote }} }
-            - { name: GOOGLE_CONTAINER_NAME, value: fpm }
-            - { name: GOOGLE_LOCATION, value: {{ .Values.common.googleZone | quote }} }
-            - { name: GOOGLE_CLOUD_PROJECT, value: {{ .Values.common.gcpProjectID | quote }} }
-            - { name: K8S_CLUSTER_NAME, value: {{ .Values.common.googleZone | quote }} }
-            - { name: MAILER_HOST, value: {{ .Values.mailer.host | quote }} }
-            - { name: MAILER_PORT, value: {{ .Values.mailer.port | quote }} }
-            - { name: MAILER_FROM_ADDRESS, value: {{ .Values.mailer.from_address | quote }} }
-            - name: MAILER_USER
-              valueFrom:
-                secretKeyRef:
-                  name: pim-secrets
-                  key: mailerLogin
-            - name: MAILER_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: pim-secrets
-                  key: mailerPassword
-            - name: PIM_DATABASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: pim-secrets
-                  key: mysqlPimUserPassword
-            - name: GOOGLE_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: GOOGLE_POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
+            - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
+            - { name: MAILER_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerPassword } } }
+            - { name: PIM_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
+            - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
+            - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
 {{- if .Values.common.phpConfCLI }}
 {{ toYaml .Values.common.phpConfCLI  | indent 12 }}
 {{- end }}
