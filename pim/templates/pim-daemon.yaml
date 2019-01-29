@@ -19,10 +19,7 @@ spec:
       component: {{ template "pim.fullName" . }}
       role: pim-daemon
   strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
+    type: Recreate
   template:
     metadata:
       labels:
