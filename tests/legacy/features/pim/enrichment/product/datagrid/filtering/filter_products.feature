@@ -26,7 +26,7 @@ Feature: Filter products
       | chair  | furniture | yes     | Chair/Slash | Chaise/Slash | My ecommerce chair .    | Ma info chaise ecommerce | Ma info chaise mobile |                  |                  |
     And I am logged in as "Mary"
 
-  @validate-migration
+  @skip @validate-migration
   Scenario: Successfully filter products
     Given I am on the products grid
     Then the grid should contain 6 elements
