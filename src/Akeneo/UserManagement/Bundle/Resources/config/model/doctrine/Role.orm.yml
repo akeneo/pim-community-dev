@@ -5,7 +5,7 @@ Akeneo\UserManagement\Component\Model\Role:
     repositoryClass: Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository
     fields:
         id:
-            type: integer
+            type: smallint
             id: true
             generator:
                 strategy: AUTO

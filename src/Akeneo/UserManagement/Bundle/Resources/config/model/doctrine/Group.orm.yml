@@ -5,7 +5,7 @@ Akeneo\UserManagement\Component\Model\Group:
     repositoryClass: Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository
     fields:
         id:
-            type: integer
+            type: smallint
             id: true
             generator:
                 strategy: AUTO
