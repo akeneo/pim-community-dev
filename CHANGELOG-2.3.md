@@ -6,6 +6,7 @@
 
 - PIM-8006: Improve the generation of missing asset variation performances
 - PIM-7962: Fix the deletion of a user that is a contributor to a TWA project
+- Force the use of ip-regex at 2.1.0 version. Upper version needs nodejs >= 8 but we have to support nodejs >= 6.
 
 # 2.3.25 (2019-01-17)
 
