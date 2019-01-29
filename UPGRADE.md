@@ -201,7 +201,7 @@ TODO: link to the second blog post
 
 /!\ Before starting the migration process, we advise you to stop the job queue consumer daemon and start it again only when the migration process is finished.
 
-If you use `supervisor`, then your daemon as following:
+If you use `supervisor`, then stop your daemon as following:
 
     ```bash
     supervisorctl status
@@ -249,7 +249,7 @@ To give you a quick overview of the changes made to a standard project, you can 
     cp .gitignore $PIM_DIR/
     cp docker-compose.override.yml.dist $PIM_DIR/
     cp docker-compose.yml $PIM_DIR/
-    cp docker/sso_authsources.php $PIM_DIR/
+    cp docker/sso_authsources.php $PIM_DIR/docker/
 
     cp app/PimRequirements.php $PIM_DIR/app/
     cp app/config/pim_parameters.yml $PIM_DIR/app/config/
@@ -425,8 +425,6 @@ To give you a quick overview of the changes made to a standard project, you can 
             - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/WorkOrganization/Workflow/Bundle/Resources/elasticsearch/published_product_mapping.yml'
         ```
     
-    TODO: Update install after Benoit's PR
-
     * The configuration file `app/config/security_test.yml` had some changes:
 
     - The firewall provider `oro_user` has been replaced by `pim_user`
@@ -528,6 +526,7 @@ To give you a quick overview of the changes made to a standard project, you can 
         ```
 
     * The configuration key `pim_enrich.max_products_category_removal` has been removed. Please use the container parameter `max_products_category_removal` instead if needed in your bundles.
+    
 4. Update your **app/config/config_prod.yml**
 
     An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
@@ -879,11 +878,23 @@ New parameters have been added to `app/config/parameters.yml`
     yarn install
     ```
 
-10. Migrate your database: 
+9. Migrate your MySQL database: 
+
+    Please, make sure the folder `upgrades/schema/` does not contain former migration files (from PIM 2.2 to 2.3 for instance), 
+    otherwise the migration command will surely not work properly.
 
     ```bash
     rm -rf var/cache
     bin/console doctrine:migration:migrate --env=prod
+    ```
+
+10. Migrate your Elasticsearch indices:
+
+    ```bash
+    php upgrades/schema/es_20190128100000_ee_clean_indices.php
+    php upgrades/schema/es_20190128100500_ee_create_reference_entity_index.php
+    php upgrades/schema/es_20190128110000_ce_update_document_type_product_and_product_model.php
+    php upgrades/schema/es_20190128120000_ee_update_document_type_proposal_and_published.php
     ```
 
 11. Then re-generate the PIM assets:
@@ -1099,3 +1110,22 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogB
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\UserBundle\\Entity\\User/Akeneo\\UserManagement\\Component\\Model\\User/g'
 find ./app/config/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Model\\Asset/Akeneo\\Asset\\Component\\Model\\Asset/g'
 ```
+
+## Relaunch the queue consumer
+
+
+Now you are ready to restart the queue consumer daemon.
+
+If you use `supervisor`, then restart your daemon as following:
+
+    ```bash
+    supervisorctl status
+    # the command returns the following daemons
+    # pim-queue-daemon:pim-queue-daemon_00 STOPPED    Jan 24 11:41 AM
+
+    supervisorctl start pim-queue-daemon:pim-queue-daemon_00
+
+    supervisorctl status
+    # pim-queue-daemon:pim-queue-daemon_00 RUNNING    pid 3500, uptime 0:00:04
+    # the daemon has been restarted
+    ```
