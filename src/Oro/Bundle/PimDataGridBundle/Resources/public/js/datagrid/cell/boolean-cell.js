@@ -21,7 +21,7 @@ function($, _, Backgrid) {
             Backgrid.BooleanCell.prototype.render.apply(this, arguments);
             this.$input = this.$el.find('input');
             if (!this.column.get('editable')) {
-                this.$input.attr('disabled', 'disabled');
+                this.$input.prop('disabled', true);
             }
             this.updateStyle(this.$el.find('input[type=checkbox]').prop('checked'));
 
