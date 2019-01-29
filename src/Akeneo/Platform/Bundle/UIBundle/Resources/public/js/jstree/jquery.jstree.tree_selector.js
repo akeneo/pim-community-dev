@@ -85,7 +85,7 @@
                 // Create new root node, place it into the tree and
                 // open it if setup to auto_open_root
                 var selected_tree = this.get_tree_select().find(':selected');
-                var root_node_id = $(selected_tree).attr('value');
+                var root_node_id = $(selected_tree).prop('value');
                 var root_node_code = $(selected_tree).attr('data-code');
 
                 if (!root_node_id || (root_node_id === -1)) {

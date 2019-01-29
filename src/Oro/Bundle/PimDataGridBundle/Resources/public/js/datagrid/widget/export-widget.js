@@ -19,7 +19,7 @@ define(
                             _.__('pim_datagrid.mass_action.quick_export.success')
                         );
                     })
-                    .error(function (jqXHR) {
+                    .fail(function (jqXHR) {
                         if (jqXHR.status === 401) {
                             Error.dispatch(null, jqXHR);
                         } else {
