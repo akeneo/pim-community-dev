@@ -92,7 +92,7 @@ CREATE TABLE `akeneo_reference_entity_attribute` (
 
 CREATE TABLE `akeneo_reference_entity_reference_entity_permissions` (
     `reference_entity_identifier` VARCHAR(255) NOT NULL,
-    `user_group_identifier` INT NOT NULL,
+    `user_group_identifier` SMALLINT(6) NOT NULL,
     `right_level` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`reference_entity_identifier`, `user_group_identifier`),
     CONSTRAINT permissions_reference_entity_identifier_foreign_key FOREIGN KEY (`reference_entity_identifier`) REFERENCES `akeneo_reference_entity_reference_entity` (identifier)
