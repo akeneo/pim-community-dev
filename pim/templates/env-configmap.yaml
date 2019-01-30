@@ -11,7 +11,7 @@ data:
   SYMFONY_ENV: prod
   TRUSTED_PROXY_IPS: 10.0.0.0/8
   PIM_INSTALLER_DATA: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
-  PIM_SECRET: {{ default "aabbccdd-eeff-0011-2233-445566778899" .Values.pim.secret }}
+  PIM_SECRET: {{ .Values.pim.secret }}
   PIM_ELASTICSEARCH_HOST: {{ .Values.elasticsearch.fullnameOverride }}-client
   PIM_ELASTICSEARCH_PORT: "9200"
   PIM_SHARED_STORAGE: /data

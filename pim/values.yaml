@@ -86,6 +86,7 @@ pim:
   numDaemon: 1
   extravarsPim: {}
   extraLabels: {}
+  secret: nil
   persistence:
     diskSize: 150Gi
   resources:
