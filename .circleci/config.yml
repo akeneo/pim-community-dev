@@ -1,0 +1,172 @@
+version: 2
+jobs:
+  setup:
+    machine:
+      enabled: true
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - run:
+          name: Copy docker-compose.yml.dist as docker-composer.yml
+          command: cp docker-compose.yml.dist docker-compose.yml
+      - run:
+          name: Copy docker-compose.override.yml.dist
+          command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+      - run:
+          name: Setup tests results folder and log folder
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs
+      - run:
+          name: Setup the parameters.yml files
+          command: ./bin/docker/pim-setup.sh
+      - run:
+          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Prepare yarn cache and change owner dir (default user = circleci (1001) and docker needs uid 1000)
+          command: mkdir -p ~/.cache/yarn && sudo chown -R 1000:1000 ~/.cache/yarn
+      - run:
+          name: Start containers
+          command: docker-compose up -d
+      - run:
+          name: Install dependencies
+          command: ./bin/docker/pim-dependencies.sh
+      - run:
+          name: Pim database installation
+          command: docker-compose exec fpm bin/console --env=behat pim:install --force --clean
+      - run:
+          name: Pim yarn dev installation
+          command: docker-compose run --rm node yarn run webpack-dev
+      - run:
+          name: Change owner on project dir after installing when there is no cache
+          command: sudo chmod -R 777 ../project
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
+
+  static_and_specs:
+      machine:
+          enabled: true
+          docker_layer_caching: true
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Change owner on cache dir (default user = circleci (1001) and docker needs uid 1000)
+                command: mkdir -p ~/.cache/yarn && sudo chown -R 1000:1000 ~/.cache/yarn
+          - run:
+                name: PhpCsFixer
+                command: docker-compose run -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+          - run:
+                name: PhpCouplingDetector
+                command: docker-compose run -T fpm vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src
+          - run:
+                name: Front linter
+                command: docker-compose run --rm node yarn run lint
+          - run:
+                name: PhpSpec
+                command: docker-compose run -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+          - store_test_results:
+                path: var/tests
+          - store_artifacts:
+                path: var/tests
+
+  back_phpunit_integration:
+      machine:
+          enabled: true
+          docker_layer_caching: true
+      parallelism: 10
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: docker-compose up -d
+          - run:
+                name: Install database
+                command: |
+                    sleep 25 # wait mysql to be up
+                    docker-compose exec fpm bin/console --env=behat pim:install:db
+          - run:
+                name: PHPunit Integration
+                command: |
+                    TESTFILES=$(circleci tests glob "tests/**/*Integration.php" "src/**/*Integration.php" | circleci tests split)
+                    .circleci/run_phpunit.sh $TESTFILES
+          - store_test_results:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/tests/phpunit
+
+  back_behat:
+    machine:
+      enabled: true
+      docker_layer_caching: true
+    parallelism: 20
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+            name: Change owner on project dir in order to archive the project into the workspace
+            command: sudo chown -R 1000:1000 ../project
+      - run:
+            name: Start containers
+            command: docker-compose up -d
+      - run:
+            name: Install database
+            command: |
+                sleep 25 # wait mysql to be up
+                docker-compose exec fpm bin/console --env=behat pim:install:db
+      - run:
+          name: Behat
+          command: |
+            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p default | circleci tests split)
+            .circleci/run_behat.sh $TESTFILES
+      - store_test_results:
+          path: var/tests/behat
+      - store_artifacts:
+          path: var/tests/behat
+
+workflows:
+  version: 2
+  pull_request:
+      jobs:
+          - wait_for_user_approval:
+                type: approval
+          - setup:
+                requires:
+                    - wait_for_user_approval
+          - static_and_specs:
+                requires:
+                    - setup
+          - back_phpunit_integration:
+                requires:
+                    - static_and_specs
+          - back_behat:
+                requires:
+                    - back_phpunit_integration
+
+  nightly:
+      triggers:
+          - schedule:
+                cron: "0 4 * * *"
+                filters:
+                    branches:
+                        only:
+                            - "2.0"
+      jobs:
+          - setup
+          - static_and_specs:
+                requires:
+                    - setup
+          - back_phpunit_integration:
+                requires:
+                    - static_and_specs
+          - back_behat:
+                requires:
+                    - back_phpunit_integration
