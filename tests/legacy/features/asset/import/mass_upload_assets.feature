@@ -62,7 +62,7 @@ Feature: Mass uploads assets
       | name       |
       | akeneo.jpg |
     And I remove assets mass upload
-    Then I should not see "akeneo.jpg"
+    Then I should not see the text "akeneo.jpg"
     And The button "Import" should be disabled
     When I select the assets to upload:
       | name       |
@@ -71,7 +71,7 @@ Feature: Mass uploads assets
     Then I should see "success" status for asset "akeneo.jpg"
     And I should see the text "Import"
     When I delete asset upload
-    Then I should not see "akeneo.jpg"
+    Then I should not see the text "akeneo.jpg"
     And The button "Import" should be disabled
     When I select the assets to upload:
       | name        |
@@ -82,8 +82,8 @@ Feature: Mass uploads assets
     And I should see "success" status for asset "akeneo2.jpg"
     And I should see the text "Import"
     When I remove assets mass upload
-    Then I should not see "akeneo.jpg"
-    And I should not see "akeneo2.jpg"
+    Then I should not see the text "akeneo.jpg"
+    And I should not see the text "akeneo2.jpg"
     And The button "Import" should be disabled
 
   Scenario: Complete mass upload

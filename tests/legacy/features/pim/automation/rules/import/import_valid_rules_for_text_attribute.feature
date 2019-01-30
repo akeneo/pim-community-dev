@@ -29,8 +29,8 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"sony_beautiful_name\" as it does not appear to be valid."
+    Then I should not see the text "skipped"
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"sony_beautiful_name\" as it does not appear to be valid."
     When I am on the "name" attribute page
     And I visit the "Rules" tab
     Then I should see the text "My new Super Name"
@@ -58,8 +58,8 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    Then I should not see the text "skipped"
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     And I should see the text "created 1"
     When I am on the "description" attribute page
     And I visit the "Rules" tab
@@ -85,9 +85,9 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
+    Then I should not see the text "skipped"
     And I should see the text "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see the text "description"
@@ -114,9 +114,9 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
+    Then I should not see the text "skipped"
     And I should see the text "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "name" attribute page
     And I visit the "Rules" tab
     Then I should see the text "description"
