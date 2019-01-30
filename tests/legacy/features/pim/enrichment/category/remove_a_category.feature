@@ -27,7 +27,7 @@ Feature: Remove a category
     And I confirm the deletion
     Then I should be on the category "2014_collection" edit page
     And I should see the flash message "Category successfully removed"
-    And I should not see "Winter collection"
+    And I should not see the text "Winter collection"
 
   @unstable
   Scenario: Remove a category with products linked
@@ -37,7 +37,7 @@ Feature: Remove a category
     Then I should be on the category "winter_collection" edit page
     And I should see the flash message "Category successfully removed"
     When I expand the "winter_collection" category
-    Then I should not see "Winter boots"
+    Then I should not see the text "Winter boots"
     When I edit the "caterpillar_2" product
     Then the category of the product "caterpillar_2" should be "2014_collection"
     When I visit the "History" column tab
@@ -52,8 +52,8 @@ Feature: Remove a category
     And I confirm the deletion
     Then I should be on the category "2014_collection" edit page
     And I should see the flash message "Category successfully removed"
-    Then I should not see "Winter collection"
-    And I should not see "Winter boots"
+    Then I should not see the text "Winter collection"
+    And I should not see the text "Winter boots"
 
   Scenario: Remove a category tree
     Given the following category:

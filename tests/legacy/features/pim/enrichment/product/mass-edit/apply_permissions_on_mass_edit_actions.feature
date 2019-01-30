@@ -25,8 +25,8 @@ Feature: Apply ACL permissions on mass edit actions
     And I press the "Bulk actions" button
     Then I should see the text "Edit attributes"
     And I should see the text "Add to groups"
-    And I should not see "Change family"
-    And I should not see "Change status"
+    And I should not see the text "Change family"
+    And I should not see the text "Change status"
 
   Scenario: View all mass edit operations
     Given I am on the products grid
