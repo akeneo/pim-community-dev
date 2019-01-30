@@ -27,21 +27,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class AttributeOptionsMappingController
 {
+    use CheckAccessTrait;
+
     /** @var GetAttributeOptionsMappingHandler */
     private $getAttributeOptionsMappingHandler;
 
     /** @var SaveAttributeOptionsMappingHandler */
     private $saveAttributeOptionsMappingHandler;
-
-    /** @var SecurityFacade */
-    private $securityFacade;
 
     /**
      * @param GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
@@ -66,7 +64,7 @@ class AttributeOptionsMappingController
      */
     public function getAction(string $identifier, string $franklinAttributeCode): JsonResponse
     {
-        $this->checkAccess();
+        $this->checkAccess('akeneo_franklin_insights_settings_mapping');
 
         $query = new GetAttributeOptionsMappingQuery(
             new FamilyCode($identifier),
@@ -117,8 +115,7 @@ class AttributeOptionsMappingController
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-
-        $this->checkAccess();
+        $this->checkAccess('akeneo_franklin_insights_settings_mapping');
 
         $requestContent = json_decode($request->getContent(), true);
 
@@ -159,16 +156,6 @@ class AttributeOptionsMappingController
                     $key
                 ));
             }
-        }
-    }
-
-    /**
-     * @throws AccessDeniedException
-     */
-    private function checkAccess(): void
-    {
-        if (true !== $this->securityFacade->isGranted('akeneo_franklin_insights_settings_mapping')) {
-            throw new AccessDeniedException();
         }
     }
 }

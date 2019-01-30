@@ -25,21 +25,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class IdentifiersMappingController
 {
+    use CheckAccessTrait;
+
     /** @var GetIdentifiersMappingHandler */
     private $getIdentifiersMappingHandler;
 
     /** @var SaveIdentifiersMappingHandler */
     private $saveIdentifiersMappingHandler;
-
-    /** @var SecurityFacade */
-    private $securityFacade;
 
     /**
      * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
@@ -66,7 +64,7 @@ class IdentifiersMappingController
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        $this->checkAccess();
+        $this->checkAccess('akeneo_franklin_insights_settings_mapping');
 
         $identifiersMapping = json_decode($request->getContent(), true);
 
@@ -97,7 +95,7 @@ class IdentifiersMappingController
      */
     public function getIdentifiersMappingAction(): JsonResponse
     {
-        $this->checkAccess();
+        $this->checkAccess('akeneo_franklin_insights_settings_mapping');
 
         $identifiersMappingNormalizer = new IdentifiersMappingNormalizer();
         $identifiersMapping = $this->getIdentifiersMappingHandler->handle(new GetIdentifiersMappingQuery());
@@ -105,15 +103,5 @@ class IdentifiersMappingController
         return new JsonResponse(
             $identifiersMappingNormalizer->normalize($identifiersMapping)
         );
-    }
-
-    /**
-     * @throws AccessDeniedException
-     */
-    private function checkAccess(): void
-    {
-        if (true !== $this->securityFacade->isGranted('akeneo_franklin_insights_settings_mapping')) {
-            throw new AccessDeniedException();
-        }
     }
 }

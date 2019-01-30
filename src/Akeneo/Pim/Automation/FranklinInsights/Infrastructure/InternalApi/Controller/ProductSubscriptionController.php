@@ -27,13 +27,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductSubscriptionController
 {
+    use CheckAccessTrait;
+
     /** @var SubscribeProductHandler */
     private $subscribeProductHandler;
 
@@ -45,9 +46,6 @@ class ProductSubscriptionController
 
     /** @var InternalApi\ProductSubscriptionStatusNormalizer */
     private $productSubscriptionStatusNormalizer;
-
-    /** @var SecurityFacade */
-    private $securityFacade;
 
     /**
      * @param SubscribeProductHandler $subscribeProductHandler
@@ -81,7 +79,7 @@ class ProductSubscriptionController
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        $this->checkAccess();
+        $this->checkAccess('akeneo_franklin_insights_product_subscription');
 
         try {
             $command = new SubscribeProductCommand($productId);
@@ -117,7 +115,7 @@ class ProductSubscriptionController
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        $this->checkAccess();
+        $this->checkAccess('akeneo_franklin_insights_product_subscription');
 
         try {
             $command = new UnsubscribeProductCommand($productId);
@@ -126,16 +124,6 @@ class ProductSubscriptionController
             return new JsonResponse();
         } catch (ProductNotSubscribedException $e) {
             return new JsonResponse(['errors' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
-        }
-    }
-
-    /**
-     * @throws AccessDeniedException
-     */
-    private function checkAccess(): void
-    {
-        if (true !== $this->securityFacade->isGranted('akeneo_franklin_insights_product_subscription')) {
-            throw new AccessDeniedException();
         }
     }
 }

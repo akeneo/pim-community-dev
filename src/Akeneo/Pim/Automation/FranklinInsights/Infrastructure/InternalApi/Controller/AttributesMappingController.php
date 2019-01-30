@@ -27,13 +27,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Willy MESNAGE <willy.mesnage@akeneo.com>
  */
 class AttributesMappingController
 {
+    use CheckAccessTrait;
+
     /** @var GetAttributesMappingByFamilyHandler */
     private $getAttributesMappingByFamilyHandler;
 
@@ -48,9 +49,6 @@ class AttributesMappingController
 
     /** @var AttributesMappingNormalizer */
     private $attributesMappingNormalizer;
-
-    /** @var SecurityFacade */
-    private $securityFacade;
 
     /**
      * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
@@ -83,7 +81,7 @@ class AttributesMappingController
      */
     public function listAction(Request $request): JsonResponse
     {
-        $this->checkAccess();
+        $this->checkAccess('akeneo_franklin_insights_settings_mapping');
         $options = $request->get('options', []);
 
         $limit = 20;
@@ -111,7 +109,7 @@ class AttributesMappingController
      */
     public function getAction(string $identifier): JsonResponse
     {
-        $this->checkAccess();
+        $this->checkAccess('akeneo_franklin_insights_settings_mapping');
         $familyAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle(
             new GetAttributesMappingByFamilyQuery($identifier)
         );
@@ -135,7 +133,7 @@ class AttributesMappingController
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        $this->checkAccess();
+        $this->checkAccess('akeneo_franklin_insights_settings_mapping');
 
         $data = json_decode($request->getContent(), true);
 
@@ -147,15 +145,5 @@ class AttributesMappingController
         $this->saveAttributesMappingByFamilyHandler->handle($command);
 
         return new JsonResponse($data);
-    }
-
-    /**
-     * @throws AccessDeniedException
-     */
-    private function checkAccess(): void
-    {
-        if (true !== $this->securityFacade->isGranted('akeneo_franklin_insights_settings_mapping')) {
-            throw new AccessDeniedException();
-        }
     }
 }

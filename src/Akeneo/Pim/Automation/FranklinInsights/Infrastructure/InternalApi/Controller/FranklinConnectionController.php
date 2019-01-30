@@ -27,13 +27,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class FranklinConnectionController
 {
+    use CheckAccessTrait;
+
     /** @var ActivateConnectionHandler */
     private $activateConnectionHandler;
 
@@ -45,9 +46,6 @@ class FranklinConnectionController
 
     /** @var ConnectionStatusNormalizer */
     private $connectionStatusNormalizer;
-
-    /** @var SecurityFacade */
-    private $securityFacade;
 
     /**
      * @param ActivateConnectionHandler $activateConnectionHandler
@@ -75,7 +73,7 @@ class FranklinConnectionController
      */
     public function getAction(): Response
     {
-        $this->checkAccess();
+        $this->checkAccess('akeneo_franklin_insights_connection');
 
         $configuration = $this->getConfigurationHandler->handle(new GetConfigurationQuery());
         $token = $configuration->getToken();
@@ -113,7 +111,7 @@ class FranklinConnectionController
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        $this->checkAccess();
+        $this->checkAccess('akeneo_franklin_insights_connection');
 
         // TODO: We should $request->get('token', '') instead decoding json and getting back value
         // TODO: Why do we put message here instead of handling response code?
@@ -137,15 +135,5 @@ class FranklinConnectionController
         return new JsonResponse([
             'message' => 'akeneo_franklin_insights.connection.flash.success',
         ]);
-    }
-
-    /**
-     * @throws AccessDeniedException
-     */
-    private function checkAccess(): void
-    {
-        if (true !== $this->securityFacade->isGranted('akeneo_franklin_insights_connection')) {
-            throw new AccessDeniedException();
-        }
     }
 }
