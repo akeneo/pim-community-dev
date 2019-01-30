@@ -57,7 +57,7 @@ Feature: Edit a product
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "sandal" product page
-    Then I should not see "Attributes"
+    Then I should not see the text "Attributes"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3615
   Scenario: Successfully have attributes set to the default scope (For Sandra => mobile and Julia => ecommerce).

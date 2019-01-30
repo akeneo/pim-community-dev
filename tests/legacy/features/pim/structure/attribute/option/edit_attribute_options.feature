@@ -29,7 +29,7 @@ Feature: Edit attribute options
       | content | Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option ? |
     And I confirm the cancellation
     Then I should see the text "green"
-    But I should not see "yellow"
+    But I should not see the text "yellow"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6002
   Scenario: Successfully edit an attribute option value containing a quote
