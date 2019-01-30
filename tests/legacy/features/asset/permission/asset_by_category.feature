@@ -20,7 +20,7 @@ Feature: Count asset by category in a tree
     And I should see the text "Other picture (5)"
     And I should see the text "In situ pictures (5)"
     And I should see the text "Technical documents (1)"
-    And I should not see "Archives"
+    And I should not see the text "Archives"
 
   Scenario: Show assets associated to categories as a manager
     Given I am logged in as "Julia"
@@ -31,7 +31,7 @@ Feature: Count asset by category in a tree
     And I should see the text "Images (12)"
     And I should see the text "Other picture (5)"
     And I should see the text "In situ pictures (5)"
-    And I should not see "Technical documents"
+    And I should not see the text "Technical documents"
 
   Scenario: Show assets associated to categories as a redactor
     Given I am logged in as "Sandra"
@@ -41,4 +41,4 @@ Feature: Count asset by category in a tree
     And I should see the text "Asset main catalog (8)"
     And I should see the text "Images (8)"
     And I should see the text "Other picture (5)"
-    And I should not see "In situ pictures"
+    And I should not see the text "In situ pictures"

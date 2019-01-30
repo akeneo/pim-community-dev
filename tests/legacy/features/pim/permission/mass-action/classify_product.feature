@@ -55,8 +55,8 @@ Feature: Classify many products at once for the tree I have access
     Given I select rows rangers and loafer
     And I press the "Bulk actions" button
     And I choose the "Move between categories" operation
-    Then I should not see "Boots"
-    And I should not see "Master catalog"
+    Then I should not see the text "Boots"
+    And I should not see the text "Master catalog"
     When I select the "Shoes" tree
     And I expand the "shoes" category
     And I click on the "sandals" category
@@ -75,8 +75,8 @@ Feature: Classify many products at once for the tree I have access
     Given I select rows rangers and loafer
     And I press the "Bulk actions" button
     And I choose the "Move between categories" operation
-    Then I should not see "Boots"
-    And I should not see "Master catalog"
+    Then I should not see the text "Boots"
+    And I should not see the text "Master catalog"
     When I select the "Shoes" tree
     And I expand the "shoes" category
     And I click on the "vintage" category

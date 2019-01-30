@@ -28,7 +28,7 @@ Feature: Send a product draft for approval
     And its status should be "Waiting for approval"
 
   Scenario: Fail to send a non existing product draft for approval
-    Then I should not see "Send for approval"
+    Then I should not see the text "Send for approval"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully restore the product draft status when I modify it after sending it for approval

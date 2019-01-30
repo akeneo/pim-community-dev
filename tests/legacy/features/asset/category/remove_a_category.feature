@@ -26,7 +26,7 @@ Feature: Remove an asset category
     And I confirm the deletion
     Then I should be on the asset category "asset_main_catalog" edit page
     And I should see the flash message "Category successfully removed"
-    And I should not see "Videos"
+    And I should not see the text "Videos"
 
   Scenario: Remove an asset category with products linked
     Given I am on the "store_documents" asset category page
@@ -34,7 +34,7 @@ Feature: Remove an asset category
     And I confirm the deletion
     Then I should be on the asset category "asset_main_catalog" edit page
     And I should see the flash message "Category successfully removed"
-    Then I should not see "Store documents"
+    Then I should not see the text "Store documents"
     When I edit the "cgv" asset
     Then asset category of "cgv" should be "sales_documents"
 
@@ -44,10 +44,10 @@ Feature: Remove an asset category
     And I confirm the deletion
     Then I should be on the asset category "asset_main_catalog" edit page
     And I should see the flash message "Category successfully removed"
-    Then I should not see "Images"
-    And I should not see "Other picture"
-    And I should not see "In situ pictures"
-    And I should not see "Prioritised images"
+    Then I should not see the text "Images"
+    And I should not see the text "Other picture"
+    And I should not see the text "In situ pictures"
+    And I should not see the text "Prioritised images"
     When I edit the "logo_1" asset
     Then asset category of "logo_1" should be "print"
 
