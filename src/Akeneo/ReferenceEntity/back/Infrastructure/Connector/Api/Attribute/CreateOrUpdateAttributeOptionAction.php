@@ -148,7 +148,7 @@ class CreateOrUpdateAttributeOptionAction
         $command->referenceEntityIdentifier = (string) $referenceEntityIdentifier;
         $command->attributeCode = (string) $attributeCode;
         $command->optionCode = (string) $optionCode;
-        $command->labels = $option['labels'];
+        $command->labels = $option['labels'] ?? [];
 
         $violations = $this->businessRulesValidator->validate($command);
         if ($violations->count() > 0) {
@@ -178,7 +178,7 @@ class CreateOrUpdateAttributeOptionAction
         $command->referenceEntityIdentifier = (string) $referenceEntityIdentifier;
         $command->attributeCode = (string) $attributeCode;
         $command->optionCode = (string) $optionCode;
-        $command->labels = $option['labels'];
+        $command->labels = $option['labels'] ?? [];
 
         $violations = $this->businessRulesValidator->validate($command);
         if ($violations->count() > 0) {
