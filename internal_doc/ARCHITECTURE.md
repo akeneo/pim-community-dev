@@ -18,6 +18,7 @@ To go towards this direction, we began to split the code into big set of feature
     - *PIM/Enrichment*: Enable to create/update products to improve and follow their quality.
     - *PIM/Structure*: Define the product catalog foundations.
     - *PIM/Automation* (Enterprise Edition only): Automatically create/update product information.
+    - *PIM/Automation/FranklinInsights* (Enterprise Edition only): Franklin Insights is an intelligence layer whose mission is to guide Julia across the PIM to focus on compelling PX
     - *PIM/Permissions* (Enterprise Edition only): Allow for the separation of privileges by user group on the product information.
     - *PIM/Work Organization* (Enterprise Edition only): Enable self-organization and collaboration with coworkers.
 - *Tool*: Technical libraries that could be used outside Akeneo.
