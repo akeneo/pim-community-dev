@@ -534,6 +534,7 @@ SQL;
 
     private function indexRecords(): void
     {
+        $this->recordClient->resetIndex();
         $this->commandLauncher->executeForeground(
             sprintf('%s %s', IndexRecordsCommand::INDEX_RECORDS_COMMAND_NAME, '--all')
         );
