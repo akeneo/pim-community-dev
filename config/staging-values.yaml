@@ -11,7 +11,7 @@ backup:
 
 nfs:
   persistence:
-    size: 81Gi # Must be equal to (pim.persistence.diskSize + 1)
+    size: 83Gi # Add +3% based on pim.persistence.diskSize
 
 pim:
   persistence:

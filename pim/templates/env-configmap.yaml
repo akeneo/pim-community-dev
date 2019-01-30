@@ -10,10 +10,13 @@ metadata:
 data:
   SYMFONY_ENV: prod
   TRUSTED_PROXY_IPS: 10.0.0.0/8
+  PIM_INSTALLER_DATA: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
+  PIM_SECRET: {{ default "aabbccdd-eeff-0011-2233-445566778899" .Values.pim.secret }}
   PIM_ELASTICSEARCH_HOST: {{ .Values.elasticsearch.fullnameOverride }}-client
   PIM_ELASTICSEARCH_PORT: "9200"
   PIM_SHARED_STORAGE: /data
   PIM_DATABASE_HOST: {{ .Values.mysql.mysql.serviceName | quote }}
+  PIM_DATABASE_PORT: "3306"
   PIM_DATABASE_NAME: {{ .Values.mysql.mysql.defaultDatabase | quote }}
   PIM_DATABASE_USER: {{ .Values.mysql.mysql.defaultUser | quote }}
   CONTAINER_NAME: pim

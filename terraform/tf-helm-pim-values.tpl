@@ -6,6 +6,9 @@ common:
   googleZone: ${googleZone}
   pimMasterDomain: ${pimmaster_dns_name}
 
+pim:
+  secret: ${pim_secret}
+
 pimUsers:
   cloudadmin:
     password: ${pim_cloud_admin_password}

@@ -19,6 +19,8 @@ resource "random_string" "pim_cloud_admin_password" {
   special = false
 }
 
+resource "random_uuid" "pim_secret" { }
+
 data "template_file" "mailgun_login" {
   template = "${format ("%s-%s", var.pfid, var.google_project_name)}"
 }

@@ -146,7 +146,7 @@ nfs:
   persistence:
     enabled: true
     storageClass: ssd-retain
-    size: 151Gi # Must be equal to (pim.persistence.diskSize + 1)
+    size: 155Gi # Add +3% based on pim.persistence.diskSize
   storageClass:
     name: nfs
 

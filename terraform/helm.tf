@@ -9,6 +9,7 @@ data "template_file" "helm_pim_config" {
     mysql_root_password       = "${random_string.mysql_root_password.result}"
     mysql_akeneo_pim_password = "${random_string.mysql_akeneo_pim_password.result}"
     pim_cloud_admin_password  = "${random_string.pim_cloud_admin_password.result}"
+    pim_secret                = "${random_uuid.pim_secret.result}"
     mailgun_login_email       = "${data.template_file.mailgun_login.rendered}@${var.mailgun_domain}"
     mailgun_password          = "${random_string.mailgun_password.result}"
     mailgun_host              = "${var.mailgun_host}"
