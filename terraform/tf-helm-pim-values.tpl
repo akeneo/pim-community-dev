@@ -7,6 +7,10 @@ common:
   googleZone: ${googleZone}
   pimMasterDomain: ${pimmaster_dns_name}
 
+backup:
+  projectId: ${projectId}
+  zone: ${googleZone}
+
 nfs:
   storageClass:
     name: nfs-${pfid}
