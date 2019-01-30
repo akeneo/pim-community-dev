@@ -23,6 +23,7 @@ interface Config {
   tokenFieldPlaceholder: string;
   tokenSavePreActivationTitle: string;
   tokenSavePostActivationTitle: string;
+  saveConnectionFailMessage: string;
 }
 
 /**
@@ -39,6 +40,7 @@ class EditView extends BaseView {
     tokenFieldPlaceholder: '',
     tokenSavePreActivationTitle: '',
     tokenSavePostActivationTitle: '',
+    saveConnectionFailMessage: ''
   };
 
   private storedToken: string = '';
@@ -106,7 +108,14 @@ class EditView extends BaseView {
     ConnectionSaver
       .save(null, data)
       .fail((xhr: any) => {
-        Messenger.notify('error', __(xhr.responseJSON.message));
+          const response = xhr.responseJSON;
+          let errorMessage = this.config.saveConnectionFailMessage;
+
+          if (undefined !== response && undefined !== response.message) {
+              errorMessage = response.message;
+          }
+
+          Messenger.notify('error', __(errorMessage));
         this.renderUnactivatedConnection(data.token);
       })
       .done((response: any) => {
