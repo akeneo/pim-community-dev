@@ -12,9 +12,9 @@ spec:
       - name: TARGET
         value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
       - name: LOGIN
-        value: {{ .Values.pimUsers.cloudadmin.email}}
+        value: {{ .Values.pim.users.admin.email}}
       - name: PASSWORD
-        value: {{ .Values.pimUsers.cloudadmin.password}}
+        value: {{ .Values.pim.users.admin.password}}
     command: ["/bin/bash", "-c"]
     args: 
     - export LOGIN_DATA=$(mktemp); 

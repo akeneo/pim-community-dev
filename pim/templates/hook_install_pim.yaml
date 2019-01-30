@@ -63,6 +63,10 @@ spec:
               mountPath: /var/www/html/{{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .path }}{{ end }}/users.csv
               subPath: users.csv
               readOnly: true
+            - name: user-csv
+              mountPath: /var/www/html/{{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .path }}{{ end }}/channels.csv
+              subPath: channels.csv
+              readOnly: true
             {{- if .Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
@@ -74,8 +78,10 @@ spec:
           configMap:
             name: pim-config
             items:
-              - key: minimal-users.csv
+              - key: admin_users.csv
                 path: users.csv
+              - key: admin_channels.csv
+                path: channels.csv
         - name: fpm-data
           persistentVolumeClaim:
             claimName: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}

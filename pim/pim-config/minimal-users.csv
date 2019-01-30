@@ -1,4 +1,0 @@
-username;first_name;last_name;email;password;catalog_default_locale;user_default_locale;catalog_default_scope;default_category_tree;roles;groups;enabled;default_asset_tree
-{{ range $user, $userOptions := .Values.pimUsers -}}
-{{ $user }};{{ with $userOptions }}{{ .firstName }};{{ .lastName }};{{ .email }};{{ .password }};{{ .catalogDefaultLocale }};{{ .userDefaultLocale }};{{ .catalogDefaultScope }};{{ .defaultCategoryTree }};{{ .roles }};{{ .groups }};{{ .enabled }};{{ .defaultAssetTree -}}
-{{- end }}{{ end }}

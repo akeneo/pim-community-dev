@@ -14,6 +14,12 @@ pim:
   defaultCatalog: icecat
   persistence:
     diskSize: 10Gi
+  users:
+    admin:
+      firstName: cloud
+      lastName: Admin
+      email: tech-cloud@akeneo.com
+      password: generateme
 
 mysql:
   common:
@@ -50,10 +56,3 @@ elasticsearch:
 
 certmanager:
   issuer: letsencrypt-staging
-
-pimUsers:
-  cloudadmin:
-    firstName: cloud
-    lastName: Admin
-    email: tech-cloud@akeneo.com
-    password: generateme

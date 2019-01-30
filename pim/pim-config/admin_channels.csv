@@ -1,4 +1,4 @@
-{{ range $user, $userOptions := .Values.pimUsers -}}
-{{ $user }};{{ with $userOptions }}ecommerce;Default;Standard;Défaut;{{ .catalogDefaultLocale }}
-{{- end }}{{ end }}
-
+code;label-en_US;label-de_DE;label-fr_FR;locales;currencies;tree
+{{- with .Values.pim.users.admin }}
+{{ .catalogDefaultScope }};Default;Standard;Défaut;{{ .catalogDefaultLocale }};USD;{{ .defaultCategoryTree }}
+{{- end }}

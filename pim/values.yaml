@@ -8,8 +8,8 @@ global:
 
 backup:
   enabled: true
-  projectId: nil # Fill me
-  zone: nil # Fill me
+  projectId: nil # Generated with terraform template
+  zone: nil # Generated with terraform template
   snapshot:
     schedule: "0 0 */1 * * *" # Once every hour: https://godoc.org/github.com/robfig/cron
     retentionPolicy:
@@ -93,6 +93,20 @@ pim:
     requests:
       cpu: 200m
   defaultCatalog: minimal
+  users:
+    admin:
+      firstName: nil # Fill me
+      lastName: nil # Fill me
+      email: nil # Fill me
+      password: nil # Generate me with `pwgen -sB 22`
+      catalogDefaultLocale: en_US # Change me if needed
+      userDefaultLocale: en_US # Change me if needed
+      catalogDefaultScope: ecommerce
+      defaultCategoryTree: master
+      roles: ROLE_ADMINISTRATOR
+      groups: IT support
+      enabled: 1
+      defaultAssetTree: asset_main_catalog
   jobs:
     batch-purge:
       enabled: true
@@ -150,21 +164,6 @@ nfs:
     size: 155Gi # Add +3% based on pim.persistence.diskSize
   storageClass:
     name: nfs
-
-pimUsers:
-  cloudadmin:
-    firstName: nil # Fill me
-    lastName: nil # Fill me
-    email: nil # Fill me
-    password: nil # Generate me with `pwgen -sB 22`
-    catalogDefaultLocale: en_US # Change me if needed
-    userDefaultLocale: en_US # Change me if needed
-    catalogDefaultScope: ecommerce
-    defaultCategoryTree: master
-    roles: ROLE_ADMINISTRATOR
-    groups: IT support
-    enabled: 1
-    defaultAssetTree: asset_main_catalog
 
 mysql:
   common:
