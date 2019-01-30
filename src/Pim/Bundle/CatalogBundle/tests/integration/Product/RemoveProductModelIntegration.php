@@ -31,7 +31,7 @@ class RemoveProductModelIntegration extends TestCase
 
         $rootProductModel = $productModelRepository->findOneByIdentifier('root_product_model_two_level');
         $productModelRemover->remove($rootProductModel);
-        
+
         $this->assertNull($productModelRepository->findOneByIdentifier('root_product_model_two_level'));
         $this->assertNull($productModelRepository->findOneByIdentifier('sub_product_model'));
         $this->assertNull($productRepository->findOneByIdentifier('variant_product_1'));
