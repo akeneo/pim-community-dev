@@ -20,10 +20,12 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetIdentifi
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\IdentifiersMappingNormalizer;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -36,16 +38,22 @@ class IdentifiersMappingController
     /** @var SaveIdentifiersMappingHandler */
     private $saveIdentifiersMappingHandler;
 
+    /** @var SecurityFacade */
+    private $securityFacade;
+
     /**
      * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
      * @param SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
+     * @param SecurityFacade $securityFacade
      */
     public function __construct(
         GetIdentifiersMappingHandler $getIdentifiersMappingHandler,
-        SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
+        SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler,
+        SecurityFacade $securityFacade
     ) {
         $this->getIdentifiersMappingHandler = $getIdentifiersMappingHandler;
         $this->saveIdentifiersMappingHandler = $saveIdentifiersMappingHandler;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -58,6 +66,7 @@ class IdentifiersMappingController
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
+        $this->checkAccess();
 
         $identifiersMapping = json_decode($request->getContent(), true);
 
@@ -88,11 +97,23 @@ class IdentifiersMappingController
      */
     public function getIdentifiersMappingAction(): JsonResponse
     {
+        $this->checkAccess();
+
         $identifiersMappingNormalizer = new IdentifiersMappingNormalizer();
         $identifiersMapping = $this->getIdentifiersMappingHandler->handle(new GetIdentifiersMappingQuery());
 
         return new JsonResponse(
             $identifiersMappingNormalizer->normalize($identifiersMapping)
         );
+    }
+
+    /**
+     * @throws AccessDeniedException
+     */
+    private function checkAccess(): void
+    {
+        if (true !== $this->securityFacade->isGranted('akeneo_franklin_insights_settings_mapping')) {
+            throw new AccessDeniedException();
+        }
     }
 }

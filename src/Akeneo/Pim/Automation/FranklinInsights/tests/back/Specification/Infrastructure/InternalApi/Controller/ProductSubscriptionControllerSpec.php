@@ -22,6 +22,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\Conne
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\ProductSubscriptionController;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer as InternalApi;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,13 +38,16 @@ class ProductSubscriptionControllerSpec extends ObjectBehavior
         SubscribeProductHandler $subscribeProduct,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
         UnsubscribeProductHandler $unsubscribeProductHandler,
-        InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
+        InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer,
+        SecurityFacade $securityFacade
     ): void {
+        $securityFacade->isGranted('akeneo_franklin_insights_product_subscription')->willReturn(true);
         $this->beConstructedWith(
             $subscribeProduct,
             $getProductSubscriptionStatusHandler,
             $unsubscribeProductHandler,
-            $productSubscriptionStatusNormalizer
+            $productSubscriptionStatusNormalizer,
+            $securityFacade
         );
     }
 

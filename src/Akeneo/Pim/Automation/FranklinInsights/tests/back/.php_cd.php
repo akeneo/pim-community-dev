@@ -119,10 +119,11 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Application',
 
             // External dependencies
+            'Symfony\Component\Security\Core\Exception\AccessDeniedException',
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\HttpKernel\Exception',
             'Symfony\Component\Translation',
-            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
+            'Oro\Bundle\SecurityBundle\SecurityFacade',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi'),
 

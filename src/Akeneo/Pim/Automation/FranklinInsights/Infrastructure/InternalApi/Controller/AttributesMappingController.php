@@ -21,11 +21,13 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamil
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesNormalizer;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Willy MESNAGE <willy.mesnage@akeneo.com>
@@ -35,17 +37,20 @@ class AttributesMappingController
     /** @var GetAttributesMappingByFamilyHandler */
     private $getAttributesMappingByFamilyHandler;
 
+    /** @var SaveAttributesMappingByFamilyHandler */
+    private $saveAttributesMappingByFamilyHandler;
+
     /** @var SearchFamiliesHandler */
     private $searchFamiliesHandler;
 
-    /** @var $familiesNormalizer */
+    /** @var FamiliesNormalizer */
     private $familiesNormalizer;
 
     /** @var AttributesMappingNormalizer */
     private $attributesMappingNormalizer;
 
-    /** @var SaveAttributesMappingByFamilyHandler */
-    private $saveAttributesMappingByFamilyHandler;
+    /** @var SecurityFacade */
+    private $securityFacade;
 
     /**
      * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
@@ -53,19 +58,22 @@ class AttributesMappingController
      * @param SearchFamiliesHandler $searchFamiliesHandler
      * @param FamiliesNormalizer $familiesNormalizer
      * @param AttributesMappingNormalizer $attributesMappingNormalizer
+     * @param SecurityFacade $securityFacade
      */
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
         SearchFamiliesHandler $searchFamiliesHandler,
         FamiliesNormalizer $familiesNormalizer,
-        AttributesMappingNormalizer $attributesMappingNormalizer
+        AttributesMappingNormalizer $attributesMappingNormalizer,
+        SecurityFacade $securityFacade
     ) {
         $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
         $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
         $this->searchFamiliesHandler = $searchFamiliesHandler;
         $this->familiesNormalizer = $familiesNormalizer;
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -75,6 +83,7 @@ class AttributesMappingController
      */
     public function listAction(Request $request): JsonResponse
     {
+        $this->checkAccess();
         $options = $request->get('options', []);
 
         $limit = 20;
@@ -102,6 +111,7 @@ class AttributesMappingController
      */
     public function getAction(string $identifier): JsonResponse
     {
+        $this->checkAccess();
         $familyAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle(
             new GetAttributesMappingByFamilyQuery($identifier)
         );
@@ -125,6 +135,7 @@ class AttributesMappingController
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
+        $this->checkAccess();
 
         $data = json_decode($request->getContent(), true);
 
@@ -136,5 +147,15 @@ class AttributesMappingController
         $this->saveAttributesMappingByFamilyHandler->handle($command);
 
         return new JsonResponse($data);
+    }
+
+    /**
+     * @throws AccessDeniedException
+     */
+    private function checkAccess(): void
+    {
+        if (true !== $this->securityFacade->isGranted('akeneo_franklin_insights_settings_mapping')) {
+            throw new AccessDeniedException();
+        }
     }
 }

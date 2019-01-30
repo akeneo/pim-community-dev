@@ -25,13 +25,14 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\Conne
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\FranklinConnectionController;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\ConnectionStatusNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -43,16 +44,17 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
         ActivateConnectionHandler $activateConnectionHandler,
         GetConfigurationHandler $getConfigurationHandler,
         GetConnectionStatusHandler $getConnectionStatusHandler,
-        ProductRepositoryInterface $productRepository
+        SecurityFacade $securityFacade
     ): void {
         $connectionStatusNormalizer = new ConnectionStatusNormalizer();
+        $securityFacade->isGranted('akeneo_franklin_insights_connection')->willReturn(true);
 
         $this->beConstructedWith(
             $activateConnectionHandler,
             $getConfigurationHandler,
             $getConnectionStatusHandler,
             $connectionStatusNormalizer,
-            $productRepository
+            $securityFacade
         );
     }
 
@@ -104,9 +106,8 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
         );
     }
 
-    public function it_returns_the_connection_status($productRepository, $getConnectionStatusHandler): void
+    public function it_returns_the_connection_status($getConnectionStatusHandler): void
     {
-        $productRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $connectionStatus = new ConnectionStatus(true, true, true, 42);
         $getConnectionStatusHandler
             ->handle(Argument::type(GetConnectionStatusQuery::class))
@@ -221,6 +222,22 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
 
         $response->shouldBeAnInstanceOf(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('/');
+    }
+
+    public function it_throws_an_exception_during_get_if_the_user_is_not_granted_the_connection_permission(
+        $securityFacade
+    ): void {
+        $securityFacade->isGranted('akeneo_franklin_insights_connection')->willReturn(false);
+        $this->shouldThrow(new AccessDeniedException())->during('getAction', []);
+    }
+
+    public function it_throws_an_exception_during_post_if_the_user_is_not_granted_the_connection_permission(
+        $securityFacade,
+        Request $request
+    ): void {
+        $request->isXmlHttpRequest()->willReturn(true);
+        $securityFacade->isGranted('akeneo_franklin_insights_connection')->willReturn(false);
+        $this->shouldThrow(new AccessDeniedException())->during('postAction', [$request]);
     }
 
     /**
