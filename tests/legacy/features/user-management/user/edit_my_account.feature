@@ -15,16 +15,14 @@ Feature: Change my profile
     Then I should see the flash message "User saved"
     And I should not see the default avatar
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6258
-  Scenario: Successfully edit my own profile even if permissions on profile edition are revoked
+  @jira https://akeneo.atlassian.net/browse/PIM-8025
+  Scenario: I can't edit my own profile if I don't have the permission to edit users
     Given I am on the "Administrator" role page
-    When I visit the "Permissions" tab
+    And I visit the "Permissions" tab
     And I revoke rights to resources Edit users
     And I save the role
-    And I edit the "Peter" user
-    When I attach file "akeneo.jpg" to "Avatar"
-    And I save the user
-    Then I should see the flash message "User saved"
+    When I edit the "Peter" user
+    Then I should not see the text "Save"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6894
   Scenario: Successfully update my password with any characters
