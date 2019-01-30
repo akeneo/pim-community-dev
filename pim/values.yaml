@@ -2,14 +2,14 @@ nameOverride: ""
 global:
   extraLabels:
     type: srnt
-    pfid: nil
+    pfid: nil # Generated with terraform template
   monitoring:
     enabled: true
 
 backup:
   enabled: true
-  projectId: nil
-  zone: nil
+  projectId: nil # Fill me
+  zone: nil # Fill me
   snapshot:
     schedule: "0 0 */1 * * *" # Once every hour: https://godoc.org/github.com/robfig/cron
     retentionPolicy:
@@ -23,7 +23,7 @@ backup:
 
 common:
   extraLabels: {}
-  pimMasterDomain: nil
+  pimMasterDomain: nil # Generated with terraform template
   retailerDomain: nil
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
@@ -58,10 +58,10 @@ common:
     value: "Etc/UTC"
 
 mailer:
-  login: nil
-  password: nil
-  host: nil
-  port: nil
+  login: nil # Generated with terraform template
+  password: nil # Generated with terraform template
+  host: nil # Generated with terraform template
+  port: nil # Generated with terraform template
   from_address: no-reply@akeneo.com
 
 certmanager:
@@ -86,7 +86,7 @@ pim:
   numDaemon: 1
   extravarsPim: {}
   extraLabels: {}
-  secret: nil
+  secret: nil # Generate me with `uuidgen`
   persistence:
     diskSize: 150Gi
   resources:
@@ -153,12 +153,12 @@ nfs:
 
 pimUsers:
   cloudadmin:
-    firstName: nil # can be defined by the provider, use "--set pimUsers.cloudadmin.firstName cloud"
-    lastName: nil # can be defined by the provider, use "--set pimUsers.cloudadmin.lastName cloud"
-    email: nil # can be defined by the provider, use "--set pimUsers.cloudadmin.email cloud"
-    password: nil # can be defined by the provider, use "--set pimUsers.cloudadmin.password cloud"
-    catalogDefaultLocale: en_US
-    userDefaultLocale: en_US
+    firstName: nil # Fill me
+    lastName: nil # Fill me
+    email: nil # Fill me
+    password: nil # Generate me with `pwgen -sB 22`
+    catalogDefaultLocale: en_US # Change me if needed
+    userDefaultLocale: en_US # Change me if needed
     catalogDefaultScope: ecommerce
     defaultCategoryTree: master
     roles: ROLE_ADMINISTRATOR
@@ -172,8 +172,8 @@ mysql:
   mysql:
     serviceName: pim-mysql
     defaultUser: akeneo_pim
-    userPassword: nil # can be defined by the provider, use "--set mysql.mysql.userPassword generateme"
-    rootPassword: nil # can be defined by the provider, use "--set mysql.mysql.userPassword generateme"
+    userPassword: nil # Generate me with `pwgen -sB 22`
+    rootPassword: nil # Generate me with `pwgen -sB 22`
     defaultDatabase: akeneo_pim
     dataDiskSize: 100Gi
     stateful:
@@ -200,13 +200,10 @@ elasticsearch:
   client:
     replicas: 1
     heapSize: "128m"
-    # # https://github.com/helm/charts/pull/9910/files
-    # serviceAnnotations:
-    #   service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
     resources:
       limits:
         cpu: "1"
-        memory: "512Mi" # [ES 5.x] Minimum limits to 512Mi / [ES 6.x] Will work with limits to 320Mi
+        memory: "512Mi"
       requests:
         cpu: "25m"
         memory: "160Mi"

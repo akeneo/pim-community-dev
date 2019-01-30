@@ -7,11 +7,11 @@ backup:
       monthlyBackups: 0
       yearlyBackups: 0
     export:
-      enabled: false
+      enabled: false # No export
 
 nfs:
   persistence:
-    size: 83Gi # Add +3% based on pim.persistence.diskSize
+    size: 83Gi
 
 pim:
   persistence:

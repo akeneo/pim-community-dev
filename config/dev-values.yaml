@@ -8,7 +8,7 @@ backup:
 nfs:
   persistence:
     storageClass: standard
-    size: 11Gi # Add +3% based on pim.persistence.diskSize
+    size: 11Gi
 
 pim:
   defaultCatalog: icecat
@@ -27,17 +27,16 @@ mysql:
         memory: 1048Mi
         cpu: 200m
     innodbBufferPoolSize: 1G
-    # innodbPoolInstances must egal to innodbBufferPoolSize/1G
     innodbPoolInstances: 1
 
 elasticsearch:
   cluster:
     env:
-      MINIMUM_MASTER_NODES: "1" # Might be equal to "lower((master.replicas/2)+1)
-      EXPECTED_MASTER_NODES: "1" # Equals to MINIMUM_MASTER_NODES
-      RECOVER_AFTER_MASTER_NODES: "1" # Equals to MINIMUM_MASTER_NODES
-      EXPECTED_DATA_NODES: "1" # Equals to data.replica
-      RECOVER_AFTER_DATA_NODES: "1" # Equals to data.replica
+      MINIMUM_MASTER_NODES: "1"
+      EXPECTED_MASTER_NODES: "1"
+      RECOVER_AFTER_MASTER_NODES: "1"
+      EXPECTED_DATA_NODES: "1"
+      RECOVER_AFTER_DATA_NODES: "1"
   master:
     replicas: 1
     persistence:
@@ -58,11 +57,3 @@ pimUsers:
     lastName: Admin
     email: tech-cloud@akeneo.com
     password: generateme
-    catalogDefaultLocale: en_US
-    userDefaultLocale: en_US
-    catalogDefaultScope: ecommerce
-    defaultCategoryTree: master
-    roles: ROLE_ADMINISTRATOR
-    groups: IT support
-    enabled: 1
-    defaultAssetTree: asset_main_catalog
