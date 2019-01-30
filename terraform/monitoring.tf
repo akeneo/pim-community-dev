@@ -13,7 +13,6 @@ resource "google_monitoring_uptime_check_config" "http" {
 
     labels = {
       project_id = "${var.google_project_name}"
-      pfid       = "${var.pfid}"
       host       = "${var.dns_external}"
     }
   }
