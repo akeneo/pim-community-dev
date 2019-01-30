@@ -181,7 +181,7 @@ class BaseView extends Backbone.View<any> implements View {
   doShutdown() {
     this.stopListening();
     this.undelegateEvents();
-    this.$el.removeData().unbind();
+    this.$el.removeData().off();
     this.remove();
 
     Backbone.View.prototype.remove.call(this);

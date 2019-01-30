@@ -65,7 +65,7 @@ define(['jquery', 'bootstrap', 'jquery-ui'], function ($) {
                 html: true,
                 trigger: 'manual'
             })
-            .mouseover(function () {
+            .on('mouseover', function () {
                 var popoverEl = $(this);
                 clearTimeout(popoverEl.data('popover-timer'));
                 if (!popoverEl.data('popover-active')) {
@@ -73,7 +73,7 @@ define(['jquery', 'bootstrap', 'jquery-ui'], function ($) {
                     $(this).popover('show');
                 }
             })
-            .mouseout(function (e) {
+            .on('mouseout', function (e) {
                 var popover = $(this);
                 setTimeout(function () {
                     handlePopoverMouseout(e, popover);

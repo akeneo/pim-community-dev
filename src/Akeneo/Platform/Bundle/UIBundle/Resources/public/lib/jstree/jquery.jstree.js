@@ -2908,8 +2908,8 @@
                 if (sti) {
                     clearInterval(sti);
                 }
-                $(document).unbind('mousemove', $.vakata.dnd.drag);
-                $(document).unbind('mouseup', $.vakata.dnd.drag_stop);
+                $(document).off('mousemove', $.vakata.dnd.drag);
+                $(document).off('mouseup', $.vakata.dnd.drag_stop);
                 $(document).triggerHandler('drag_stop.vakata', { 'event' : e, 'data' : $.vakata.dnd.user_data });
                 $.vakata.dnd.helper.remove();
                 $.vakata.dnd.init_x = 0;

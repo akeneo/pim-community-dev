@@ -3,7 +3,7 @@
  * Copyright (c) 2006-2011 Sam Collett (http://www.texotela.co.uk)
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
- * 
+ *
  * Version 1.3.1
  * Demo: http://www.texotela.co.uk/code/jquery/numeric/
  *
@@ -147,7 +147,7 @@ $.fn.numeric.keyup = function(e)
 		// get decimal character and determine if negatives are allowed
 		var decimal = $.data(this, "numeric.decimal");
 		var negative = $.data(this, "numeric.negative");
-		
+
 		// prepend a 0 if necessary
 		if(decimal !== "" && decimal !== null)
 		{
@@ -165,7 +165,7 @@ $.fn.numeric.keyup = function(e)
 			}
 			val = this.value;
 		}
-		
+
 		// if pasted in, only allow the following characters
 		var validChars = [0,1,2,3,4,5,6,7,8,9,'-',decimal];
 		// get length of the value (to loop through)
@@ -238,7 +238,7 @@ $.fn.numeric.blur = function()
 
 $.fn.removeNumeric = function()
 {
-	return this.data("numeric.decimal", null).data("numeric.negative", null).data("numeric.callback", null).unbind("keypress", $.fn.numeric.keypress).unbind("blur", $.fn.numeric.blur);
+	return this.data("numeric.decimal", null).data("numeric.negative", null).data("numeric.callback", null).off("keypress", $.fn.numeric.keypress).off("blur", $.fn.numeric.blur);
 };
 
 // Based on code from http://javascript.nwbox.com/cursor_position/ (Diego Perini <dperini@nwbox.com>)

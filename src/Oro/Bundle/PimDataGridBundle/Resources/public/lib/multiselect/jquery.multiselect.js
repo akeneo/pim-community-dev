@@ -251,7 +251,7 @@ define(['jquery'], function ($) {
       // webkit doesn't like it when you click on the span :(
       button
         .find('span')
-        .bind('click.multiselect', clickHandler);
+        .on('click.multiselect', clickHandler);
 
       // button events
       button.bind({
@@ -398,7 +398,7 @@ define(['jquery'], function ($) {
       });
 
       // close each widget when clicking on any other element/anywhere else on the page
-      $doc.bind('mousedown.' + this._namespaceID, function(event) {
+      $doc.on('mousedown.' + this._namespaceID, function(event) {
         var target = event.target;
 
         if(self._isOpen
@@ -415,7 +415,7 @@ define(['jquery'], function ($) {
       // restored to their defaultValue prop on form reset, and the reset
       // handler fires before the form is actually reset.  delaying it a bit
       // gives the form inputs time to clear.
-      $(this.element[0].form).bind('reset.multiselect', function() {
+      $(this.element[0].form).on('reset.multiselect', function() {
         setTimeout($.proxy(self.refresh, self), 10);
       });
     },
@@ -641,7 +641,7 @@ define(['jquery'], function ($) {
       $.Widget.prototype.destroy.call(this);
 
       // unbind events
-      $doc.unbind(this._namespaceID);
+      $doc.off(this._namespaceID);
 
       this.button.remove();
       this.menu.remove();
