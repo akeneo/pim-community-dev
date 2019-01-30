@@ -33,16 +33,8 @@ class Sidebar extends React.Component<SidebarProps> {
     this.props.events.toggleSidebar(!this.props.isCollapsed);
   };
 
-  updateCurrentTab = (event: React.MouseEvent<HTMLSpanElement> | React.KeyboardEvent<HTMLSpanElement>) => {
-    event.preventDefault();
-    const target = event.target as HTMLSpanElement;
-    if (undefined === target || undefined === target.dataset || undefined === target.dataset.tab) {
-      return false;
-    }
-
-    this.props.events.updateCurrentTab(target.dataset.tab);
-
-    return false;
+  updateCurrentTab = (tab: Tab) => {
+    this.props.events.updateCurrentTab(tab.code);
   };
 
   render(): JSX.Element | JSX.Element[] {
@@ -74,9 +66,9 @@ class Sidebar extends React.Component<SidebarProps> {
                     tabIndex={0}
                     className={`AknColumn-navigationLink ${activeClass}`}
                     data-tab={tab.code}
-                    onClick={this.updateCurrentTab}
+                    onClick={() => this.updateCurrentTab(tab)}
                     onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                      if (Key.Space === event.key) this.updateCurrentTab(event);
+                      if (Key.Space === event.key) this.updateCurrentTab(tab);
                     }}
                   >
                     {__(tab.label)}

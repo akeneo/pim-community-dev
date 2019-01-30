@@ -7,44 +7,101 @@ export interface DropdownMenuElement {
   label: string;
 }
 
+const DefaultButtonView = ({
+   onClick
+ }: {
+  onClick: () => void;
+}) => {
+  return (
+    <React.Fragment>
+      <div
+        className="AknSecondaryActions-button AknSecondaryActions-button--rotated"
+        onClick={() => onClick()}
+        onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
+          if (Key.Space === event.key) onClick();
+        }}
+        tabIndex={0}
+      ></div>
+    </React.Fragment>
+  );
+};
+
 const DefaultItemView = ({
   element,
   onClick,
 }: {
   element: DropdownMenuElement;
-  onClick: (event: React.MouseEvent<HTMLSpanElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
+  onClick: (element: DropdownMenuElement) => void;
 }) => {
   return (
-    <div
-      key={element.code}
-      className="AknDropdown-menuLink navigation-link"
-      data-tab={element.code}
-      onClick={onClick}
-      onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (Key.Space === event.key) onClick(event);
-      }}
-      tabIndex={0}
-    >
-      <span>{__(element.label)}</span>
-    </div>
+    <React.Fragment>
+      <div
+        key={element.code}
+        className="AknDropdown-menuLink navigation-link"
+        data-tab={element.code}
+        onClick={() => onClick(element)}
+        onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
+          if (Key.Space === event.key) onClick(element);
+        }}
+        tabIndex={0}
+      >
+        <span>{__(element.label)}</span>
+      </div>
+    </React.Fragment>
   );
 };
 
 interface Props {
   elements: DropdownMenuElement[];
   selectedElement: string;
+  ButtonView?: (
+    {
+      onClick,
+    }: {onClick: (element: DropdownMenuElement) => void}
+  ) => JSX.Element;
   ItemView?: (
     {
       element,
       onClick,
-    }: {element: DropdownMenuElement; onClick: (event: React.MouseEvent<HTMLSpanElement> | React.KeyboardEvent<HTMLSpanElement>) => void}
+    }: {element: DropdownMenuElement; onClick: (element: DropdownMenuElement) => void}
   ) => JSX.Element;
   label: string;
   className?: string;
-  onSelectionChange: (event: React.MouseEvent<HTMLSpanElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
+  onSelectionChange: (element: DropdownMenuElement) => void;
 }
 
-class DropdownMenu extends React.Component<Props> {
+interface State {
+  isOpen: boolean;
+}
+
+class DropdownMenu extends React.Component<Props, State> {
+  state = {
+    isOpen: false,
+  };
+
+  open() {
+    this.setState({isOpen: true});
+  }
+
+  elementSelected(element: DropdownMenuElement) {
+    this.close();
+    this.props.onSelectionChange(element);
+  }
+
+  close() {
+    this.setState({isOpen: false});
+  }
+
+  getDropdownButton() {
+    const Button = undefined !== this.props.ButtonView ? this.props.ButtonView : DefaultButtonView;
+
+    return (
+      <Button
+        onClick={this.open.bind(this)}
+      />
+    );
+  }
+
   getElementViews() {
     return this.props.elements.map((element: DropdownMenuElement) => {
       const View = undefined !== this.props.ItemView ? this.props.ItemView : DefaultItemView;
@@ -53,22 +110,22 @@ class DropdownMenu extends React.Component<Props> {
         <View
           key={element.code}
           element={element}
-          onClick={this.props.onSelectionChange}
+          onClick={(element: DropdownMenuElement) => this.elementSelected(element)}
         />
       );
     })
   }
+
   render() {
+    const openClass = this.state.isOpen ? 'AknDropdown-menu--open' : '';
     const ElementViews = this.getElementViews();
+    const DropdownButton = this.getDropdownButton();
 
     return (
       <div className={`AknSecondaryActions AknDropdown ${undefined !== this.props.className ? this.props.className : ''}`}>
-        <div
-          className="AknSecondaryActions-button AknSecondaryActions-button--rotated dropdown-button"
-          data-toggle="dropdown"
-          tabIndex={0}
-        ></div>
-        <div className="AknDropdown-menu">
+        {this.state.isOpen ? <div className="AknDropdown-mask" onClick={this.close.bind(this)} /> : null}
+        {DropdownButton}
+        <div className={`AknDropdown-menu ${openClass}`}>
           <div className="AknDropdown-menuTitle">{this.props.label}</div>
           {ElementViews}
         </div>
