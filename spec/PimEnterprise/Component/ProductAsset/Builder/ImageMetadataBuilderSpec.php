@@ -46,7 +46,7 @@ class ImageMetadataBuilderSpec extends ObjectBehavior
         $metadata->get('exif.IFD0.Orientation')->willReturn(1);
         $metadata->get('exif.IFD0.Copyright')->willReturn('Creative Commons');
         $metadata->get('exif.IFD0.Keywords')->willReturn('fisherman');
-        $metadata->get('exif.IFD0.Title')->willReturn('Fishing boat');
+        $metadata->get('exif.IFD0.Title')->willReturn(str_repeat('a', 300));
         $metadata->get('exif.IFD0.Subject')->willReturn('A beatiful boat taken in Iceland');
         $metadata->get('exif.EXIF.ColorSpace')->willReturn(2);
         $metadata->get('iptc.Keywords', [])->willReturn(['boat', 'fish']);
@@ -71,7 +71,7 @@ class ImageMetadataBuilderSpec extends ObjectBehavior
         $imageMetadata->getExifOrientation()->shouldReturn(1);
         $imageMetadata->getExifCopyright()->shouldReturn('Creative Commons');
         $imageMetadata->getExifKeywords()->shouldReturn('fisherman');
-        $imageMetadata->getExifTitle()->shouldReturn('Fishing boat');
+        $imageMetadata->getExifTitle()->shouldReturn(str_repeat('a', 255));
         $imageMetadata->getExifDescription()->shouldReturn('A beatiful boat taken in Iceland');
         $imageMetadata->getExifColorSpace()->shouldReturn(2);
         $imageMetadata->getIptcKeywords()->shouldReturn('boat,fish');
