@@ -2321,6 +2321,11 @@ domutils@^1.5.1:
     dom-serializer "0"
     domelementtype "1"
 
+dropzone@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-4.0.1.tgz#9e6e3430a85bd5ee8f430f058abd0c877b25fbec"
+  integrity sha1-nm40MKhb1e6PQw8Fir0Mh3sl++w=
+
 duplexer@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.1.tgz#ace6ff808c1ce66b57d1ebf97977acb02334cfc1"
