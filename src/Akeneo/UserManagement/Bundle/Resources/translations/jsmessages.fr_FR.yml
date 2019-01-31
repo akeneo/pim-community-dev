@@ -55,6 +55,7 @@ pim_user_management:
         new_password: Nouveau mot de passe
         new_password_repeat: Nouveau mot de passe (répéter)
         password: Mot de passe
+        password_repeat: Mot de passe (confirmation)
         ui_locale: Langue de l'interface
         timezone: Fuseau horaire
         default_product_grid_view: Vue par défaut de la grille des produits
