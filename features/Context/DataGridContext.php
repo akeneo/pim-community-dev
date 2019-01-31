@@ -719,7 +719,11 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iFilterBy($filterName, $operator, $value)
     {
-        $this->getDatagrid()->filterBy($filterName, $operator, $value);
+        $this->spin(function () use ($filterName, $operator, $value) {
+            $this->getDatagrid()->filterBy($filterName, $operator, $value);
+
+            return true;
+        }, sprintf('Can\'t filter by %s with operator %s and value %s', $filterName, $operator, $value));
 
         $gridContainer = $this->getElementFromDatagrid('Grid container');
 
