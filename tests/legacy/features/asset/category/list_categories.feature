@@ -28,6 +28,6 @@ Feature: List assets categories
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the assets categories page
-    Then I should not see "Please select a category on the left or Create a new category"
+    Then I should not see the text "Please select a category on the left or Create a new category"
     When I click on the "asset_main_catalog" category
-    Then I should not see "Server error"
+    Then I should not see the text "Server error"

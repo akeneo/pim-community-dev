@@ -1,8 +1,8 @@
 @javascript
-Feature: View products via widget completeness links
-  In order to display detailed products from the widget completeness
-  As a contributor or project owner
-  I need to be able to click on them and display a filtered grid
+Feature: List products in a project according to their status, from the teamwork assistant widget
+  In order to know which products to enrich in a project
+  As a contributor or a project owner
+  I can list the products of the project according to their status from the teamwork assistant widget
 
   Background:
     Given the "teamwork_assistant" catalog configuration
@@ -80,74 +80,48 @@ Feature: View products via widget completeness links
       | usb-key-big          | usb_keys | high_tech          | USB Key Big 64Go          |            | 1            | OUNCE             | 2016-08-13         | 2016-10-13         |                |          |               |
       | usb-key-small        | usb_keys | high_tech          |                           |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
-    And I am logged in as "Mary"
-    And I am on the products grid
-    And I open the category tree
-    And I filter by "category" with operator "" and value "clothing"
-    And I close the category tree
-    And I show the filter "weight"
-    And I filter by "weight" with operator "<" and value "6 Ounce"
-    And I click on the create project button
-    When I fill in the following information in the popin:
-      | project-label       | 2016 summer collection |
-      | project-description | 2016 summer collection |
-      | project-due-date    | 12/13/2118             |
-    And I press the "Save" button
-    Then I should be on the products page
-    And I go on the last executed job resume of "project_calculation"
-    And I wait for the "project_calculation" job to finish
-    And I logout
 
-  Scenario: A contributor can display his products todo, in progress and done
-    Given I am logged in as "Julia"
-    And I am on the dashboard page
-    When I click on the "todo" section of the teamwork assistant widget
-    Then I should be on the products page
-    And the criteria of "project_completeness" filter should be "Todo"
-    When I am on the dashboard page
-    And I click on the "in-progress" section of the teamwork assistant widget
-    Then I should be on the products page
-    And the criteria of "project_completeness" filter should be "In progress"
-    When I am on the dashboard page
-    And I click on the "done" section of the teamwork assistant widget
-    Then I should be on the products page
-    And the criteria of "project_completeness" filter should be "Done"
+  Scenario: A contributor can display his products to do in a project
+    Given a project not owned by Julia with products to do
+    When Julia wants to display her products to do from the teamwork assistant widget
+    Then the list of products to do by Julia is displayed
 
-  Scenario: A project owner can display project products todo, in progress and done
-    Given I am logged in as "Mary"
-    And I am on the dashboard page
-    When I click on the "todo" section of the teamwork assistant widget
-    Then I should be on the products page
-    And the criteria of "project_completeness" filter should be "Todo (project overview)"
-    When I am on the dashboard page
-    And I click on the "in-progress" section of the teamwork assistant widget
-    Then I should be on the products page
-    And the criteria of "project_completeness" filter should be "In progress (project overview)"
-    When I am on the dashboard page
-    And I click on the "done" section of the teamwork assistant widget
-    Then I should be on the products page
-    And the criteria of "project_completeness" filter should be "Done (project overview)"
+  Scenario: A contributor can display his products in progress in a project
+    Given a project not owned by Julia with products in progress
+    When Julia wants to display her products in progress from the teamwork assistant widget
+    Then the list of products in progress by Julia is displayed
 
-  Scenario: A project owner can display his products todo, in progress and done
-    Given I am logged in as "Mary"
-    And I am on the dashboard page
-    And I select "Mary" contributor
-    Then I should see the text "2016 summer collection E-Commerce | English (United States)"
-    And I should see the text "Mary Smith"
-    When I click on the "todo" section of the teamwork assistant widget
-    Then I should be on the products page
-    And the criteria of "project_completeness" filter should be "Todo"
-    When I am on the dashboard page
-    And I select "Mary" contributor
-    Then I should see the text "2016 summer collection E-Commerce | English (United States)"
-    And I should see the text "Mary Smith"
-    And I click on the "in-progress" section of the teamwork assistant widget
-    Then I should be on the products page
-    And the criteria of "project_completeness" filter should be "In progress"
-    When I am on the dashboard page
-    And I select "Mary" contributor
-    Then I should see the text "2016 summer collection E-Commerce | English (United States)"
-    And I should see the text "Mary Smith"
-    And I click on the "done" section of the teamwork assistant widget
-    Then I should be on the products page
-    And the criteria of "project_completeness" filter should be "Done"
+  Scenario: A contributor can display his products done in a project
+    Given a project not owned by Julia with products done
+    When Julia wants to display her products done from the teamwork assistant widget
+    Then the list of products done by Julia is displayed
+
+  Scenario: A project owner can display products to do in a project for all contributors
+    Given a project owned by Julia with products to do by all contributors of the project
+    When Julia wants to display the products to do by all contributors of the project from the teamwork assistant widget
+    Then the list of products to do by all contributors of the project is displayed
+
+  Scenario: A project owner can display products in progress in a project for all contributors
+    Given a project owned by Julia with products in progress for all contributors
+    When Julia wants to display the products in progress for all contributors of the project from the teamwork assistant widget
+    Then the list of products in progress for all contributors of the project is displayed
+
+  Scenario: A project owner can display products done in a project for all contributors
+    Given a project owned by Julia with products done by all contributors
+    When Julia wants to display the products in progress from the teamwork assistant widget for all contributors
+    Then the list of products in progress in the project for all contributors is displayed
+
+  Scenario: A project owner can display his products to do in the project
+    Given a project owned by Julia with products to do by her
+    When Julia wants to display her products to do from the teamwork assistant widget
+    Then the list of products to do by Julia is displayed
+
+  Scenario: A project owner can display his products in progress in the project
+    Given a project owned by Julia with products in progress for her
+    When Julia wants to display her products in progress from the teamwork assistant widget
+    Then the list of products in progress by Julia is displayed
+
+  Scenario: A project owner can display his products done in the project
+    Given a project owned by Julia with products done by her
+    When Julia wants to display her products done from the teamwork assistant widget
+    Then the list of products done by Julia is displayed

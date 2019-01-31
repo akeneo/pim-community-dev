@@ -51,7 +51,8 @@ SQL;
         $sqlQuery = <<<SQL
         SELECT rec.identifier, rec.reference_entity_identifier, rec.code, rec.value_collection, ref.attribute_as_label
         FROM akeneo_reference_entity_record rec
-        INNER JOIN akeneo_reference_entity_reference_entity ref ON ref.identifier = :reference_entity_identifier;
+        INNER JOIN akeneo_reference_entity_reference_entity ref ON ref.identifier = rec.reference_entity_identifier
+        WHERE ref.identifier = :reference_entity_identifier;
 SQL;
 
         $statement = $this->connection->executeQuery($sqlQuery, ['reference_entity_identifier' => (string) $referenceEntityIdentifier]);
@@ -61,7 +62,7 @@ SQL;
                 $result['reference_entity_identifier'],
                 $result['code'],
                 $this->cleanValues($result['value_collection']),
-                ''
+                $result['attribute_as_label']
             );
         }
     }

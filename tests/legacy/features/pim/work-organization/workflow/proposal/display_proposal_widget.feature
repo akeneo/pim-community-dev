@@ -76,4 +76,4 @@ Feature: Display proposal widget
     Given the "default" catalog configuration
     And I am logged in as "Sandra"
     When I am on the dashboard page
-    Then I should not see "Proposals to review"
+    Then I should not see the text "Proposals to review"

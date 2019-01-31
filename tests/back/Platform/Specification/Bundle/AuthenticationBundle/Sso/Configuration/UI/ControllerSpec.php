@@ -71,7 +71,13 @@ class ControllerSpec extends ObjectBehavior
 
         $createOrUpdateConfigHandler->handle(Argument::type(CreateOrUpdateConfiguration::class))->shouldBeCalled();
 
-        $this->saveAction($request)->shouldBeLike(new JsonResponse());
+        $response = $this->saveAction($request);
+        $expectedResponse = new JsonResponse();
+
+        $response->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
+        $expectedResponse->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
+
+        $response->shouldBeLike($expectedResponse);
     }
 
     function it_returns_normalized_errors_if_configuration_is_invalid(
@@ -135,7 +141,14 @@ class ControllerSpec extends ObjectBehavior
 
         $createOrUpdateConfigHandler->handle(Argument::cetera())->shouldNotBeCalled();
 
-        $this->saveAction($request)->shouldBeLike(new JsonResponse($normalizedErrors, 400));
+        $response = $this->saveAction($request);
+        $expectedResponse = new JsonResponse($normalizedErrors, 400);
+
+        $response->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
+        $expectedResponse->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
+
+
+        $response->shouldBeLike($expectedResponse);
     }
 
     function it_gives_an_existing_configuration($repository)
@@ -174,7 +187,13 @@ class ControllerSpec extends ObjectBehavior
             'service_provider_acs_url' => 'http://my.akeneopim.com/saml/acs'
         ];
 
-        $this->getAction()->shouldBeLike(new JsonResponse($normalizedConfig + $staticConfiguration));
+        $response = $this->getAction();
+        $expectedResponse = new JsonResponse($normalizedConfig + $staticConfiguration);
+
+        $response->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
+        $expectedResponse->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
+
+        $response->shouldBeLike($expectedResponse);
     }
 
     function it_gives_a_default_configuration($repository, $serviceProviderDefaultConfiguration)
@@ -205,6 +224,13 @@ class ControllerSpec extends ObjectBehavior
             'service_provider_acs_url' => 'http://my.akeneopim.com/saml/acs'
         ];
 
-        $this->getAction()->shouldBeLike(new JsonResponse($defaultConfig + $staticConfiguration));
+        $response = $this->getAction();
+        $expectedResponse = new JsonResponse($defaultConfig + $staticConfiguration);
+
+        $response->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
+        $expectedResponse->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
+
+
+        $response->shouldBeLike($expectedResponse);
     }
 }

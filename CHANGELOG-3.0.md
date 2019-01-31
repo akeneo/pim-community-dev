@@ -17,6 +17,7 @@
 - TIP-1041: Adds support for Elasticsearch 6, puts Published products in their own index
 
 ## BC breaks
+- Change constructor of `Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer`. Add argument `Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface`  
 - Two new parameters must be defined for published products: `published_product_index_name` and `published_product_and_product_model_index_name`
 - All product flat writers (CSV, XLSX for products and published products) now have two new arguments of type `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface` and `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface`. There two new services now managed the generation of headers for flat product file at export time.
 - Remove the service `pimee_workflow.twig.extension.group_product_values`

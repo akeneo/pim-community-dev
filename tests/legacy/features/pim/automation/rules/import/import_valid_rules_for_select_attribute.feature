@@ -29,8 +29,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "created 1"
-    Then I should not see "skipped"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_manufacturer\" as it does not appear to be valid."
+    Then I should not see the text "skipped"
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_manufacturer\" as it does not appear to be valid."
     When I am on the "manufacturer" attribute page
     And I visit the "Rules" tab
     Then I should see the text "Desigual"
@@ -57,12 +57,12 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "created 1"
-    And I should not see "skipped"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_weather\" as it does not appear to be valid."
+    And I should not see the text "skipped"
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_weather\" as it does not appear to be valid."
     When I am on the "weather_conditions" attribute page
     And I visit the "Rules" tab
     Then I should see the text "dry"
-    And I should not see "wet"
+    And I should not see the text "wet"
 
   Scenario: Import a copy value rule with valid values for attribute of type multi select in actions
     Given the following yaml file to import:
@@ -80,9 +80,9 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
+    Then I should not see the text "skipped"
     And I should see the text "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "weather_conditions" attribute page
     And I visit the "Rules" tab
     Then I should see the text "weather_conditions"
@@ -104,9 +104,9 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
+    Then I should not see the text "skipped"
     And I should see the text "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "manufacturer" attribute page
     And I visit the "Rules" tab
     Then I should see the text "manufacturer"

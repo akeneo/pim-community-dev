@@ -86,7 +86,7 @@ Feature: Approve or refuse several product drafts at once
     When I select all entities
     And I press the "Approve all selected" button
     And I confirm the action
-    Then I should not see "Sorry, page was not loaded correctly"
+    Then I should not see the text "Sorry, page was not loaded correctly"
     And I wait for the "approve_product_draft" job to finish
     And I go on the last executed job resume of "approve_product_draft"
     Then I should see the text "approved 2"
@@ -105,7 +105,7 @@ Feature: Approve or refuse several product drafts at once
     And I select rows Leather jacket
     And I press the "Approve all selected" button
     And I confirm the action
-    Then I should not see "Sorry, page was not loaded correctly"
+    Then I should not see the text "Sorry, page was not loaded correctly"
     And I wait for the "approve_product_draft" job to finish
     And I go on the last executed job resume of "approve_product_draft"
     Then I should see the text "approved 1"
@@ -123,7 +123,7 @@ Feature: Approve or refuse several product drafts at once
     When I select rows Leather jacket
     And I press the "Approve all selected" button
     And I confirm the action
-    Then I should not see "Sorry, page was not loaded correctly"
+    Then I should not see the text "Sorry, page was not loaded correctly"
     And I wait for the "approve_product_draft" job to finish
     And I go on the last executed job resume of "approve_product_draft"
     Then I should see the text "approved 1"
@@ -141,7 +141,7 @@ Feature: Approve or refuse several product drafts at once
     When I unselect rows Wool jacket
     And I press the "Approve all selected" button
     And I confirm the action
-    Then I should not see "Sorry, page was not loaded correctly"
+    Then I should not see the text "Sorry, page was not loaded correctly"
     And I wait for the "approve_product_draft" job to finish
     And I go on the last executed job resume of "approve_product_draft"
     Then I should see the text "approved 1"

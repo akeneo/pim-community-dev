@@ -30,7 +30,11 @@ class ExportPublishedVariantProductsEndToEnd extends TestCase
         $product = $this->get('pimee_security.repository.product')->findOneByIdentifier('1111111113');
         $publishedProductManager->publish($product, ['flush' => true]);
 
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $clientRegistry = $this->get('akeneo_elasticsearch.registry.clients');
+        $clients = $clientRegistry->getClients();
+        foreach ($clients as $client) {
+            $client->refreshIndex();
+        }
         $this->get('doctrine')->getManager()->clear();
     }
 
