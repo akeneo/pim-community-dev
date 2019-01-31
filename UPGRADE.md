@@ -199,7 +199,13 @@ TODO: link to the second blog post
 
 ## Migrate your standard project
 
-/!\ Before starting the migration process, we advise you to stop the job queue consumer daemon and start it again only when the migration process is finished.
+1. Deactivate your custom code
+
+Before starting the migration process, please deactivate all your custom bundles and configuration. This will considerably ease the standard migration process.
+
+2. Stop the job queue consumer daemon consumer
+
+Before starting the migration process, stop the job queue consumer daemon and start it again only when the migration process is finished.
 
 If you use `supervisor`, then stop your daemon as following:
 
@@ -223,7 +229,7 @@ Otherwise, kill your daemon:
 
 To give you a quick overview of the changes made to a standard project, you can check on [Github](https://github.com/akeneo/pim-enterprise-standard/compare/2.3...3.0).
 
-1. Download the latest standard edition from the [Partner Portal](https://partners.akeneo.com/login) and extract it:
+3. Download the latest standard edition from the [Partner Portal](https://partners.akeneo.com/login) and extract it:
 
     ```bash
     tar -zxf pim-enterprise-standard.tar.gz
@@ -231,7 +237,7 @@ To give you a quick overview of the changes made to a standard project, you can 
 
     ```
 
-2. Update the configuration files:
+4. Update the configuration files:
 
     An easy way to update them is to copy/paste configuration files from the latest standard edition. Normally you shouldn't have made a single change to them in your project. If it's the case, don't forget to update them with your changes.
 
@@ -458,7 +464,7 @@ To give you a quick overview of the changes made to a standard project, you can 
 
         ```
 
-3. Update your **app/config/config.yml**
+5. Update your **app/config/config.yml**
 
     An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
 
@@ -527,7 +533,7 @@ To give you a quick overview of the changes made to a standard project, you can 
 
     * The configuration key `pim_enrich.max_products_category_removal` has been removed. Please use the container parameter `max_products_category_removal` instead if needed in your bundles.
     
-4. Update your **app/config/config_prod.yml**
+6. Update your **app/config/config_prod.yml**
 
     An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
 
@@ -552,7 +558,7 @@ To give you a quick overview of the changes made to a standard project, you can 
                     max_files: 10
         ```
         
-5. Update your **app/config/routing.yml**
+7. Update your **app/config/routing.yml**
 
     An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
 
@@ -723,7 +729,7 @@ To give you a quick overview of the changes made to a standard project, you can 
             resource: "@AkeneoPimPermissionBundle/Resources/config/routing.yml"
         ```
     
-6. Update your **app/AppKernel.php**:
+8. Update your **app/AppKernel.php**:
 
     An easy way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
 
@@ -800,7 +806,7 @@ To give you a quick overview of the changes made to a standard project, you can 
         - `Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle`
         - `Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle`
 
-7. Add the DotEnv component in all entrypoints of the application
+9. Add the DotEnv component in all entrypoints of the application
 
     We introduced the DotEnv component as there are more and more deployments that use environment variables for configuration values.
     The DotEnv Symfony component provides a way to set those environment variables in a file that could be overridden by real environment variables (you should have copied the `.env.dist` to `.env` in the step 2).
@@ -833,7 +839,7 @@ To give you a quick overview of the changes made to a standard project, you can 
     }
     ```
 
-8. Add new parameters to `parameters.yml`
+10. Add new parameters to `parameters.yml`
 
 New parameters have been added to `app/config/parameters.yml`
 
@@ -845,7 +851,7 @@ New parameters have been added to `app/config/parameters.yml`
         published_product_and_product_model_index_name: YOUR_ELASTICSEARCH_INDEX_FOR_PUBLISHED_PRODUCT_AND_PRODUCT_MODEL
     ```
 
-9. Update your dependencies:
+11. Update your dependencies:
 
     The easiest way to update your `composer.json` is to copy/paste from the latest standard edition and add your custom dependencies.
     
@@ -878,7 +884,7 @@ New parameters have been added to `app/config/parameters.yml`
     yarn install
     ```
 
-9. Migrate your MySQL database: 
+12. Migrate your MySQL database: 
 
     Please, make sure the folder `upgrades/schema/` does not contain former migration files (from PIM 2.2 to 2.3 for instance), 
     otherwise the migration command will surely not work properly.
@@ -888,7 +894,7 @@ New parameters have been added to `app/config/parameters.yml`
     bin/console doctrine:migration:migrate --env=prod
     ```
 
-10. Migrate your Elasticsearch indices:
+13. Migrate your Elasticsearch indices:
 
     ```bash
     php upgrades/schema/es_20190128100000_ee_clean_indices.php
@@ -897,7 +903,7 @@ New parameters have been added to `app/config/parameters.yml`
     php upgrades/schema/es_20190128120000_ee_update_document_type_proposal_and_published.php
     ```
 
-11. Then re-generate the PIM assets:
+14. Then re-generate the PIM assets:
 
     ```bash
     bin/console pim:installer:assets --clean --env=prod
