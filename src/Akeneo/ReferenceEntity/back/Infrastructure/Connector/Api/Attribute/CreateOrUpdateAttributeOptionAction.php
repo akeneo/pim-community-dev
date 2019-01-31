@@ -109,6 +109,10 @@ class CreateOrUpdateAttributeOptionAction
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        if ((string) $optionCode !== $option['code']) {
+            throw new UnprocessableEntityHttpException('The code of the attribute option provided in the URI must be the same as the one provided in the request body.');
+        }
+
         $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
 
         if (false === $referenceEntityExists) {
