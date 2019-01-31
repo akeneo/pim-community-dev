@@ -860,6 +860,15 @@ New parameters have been added to `app/config/parameters.yml`
     # then add your own dependencies
     ```
     
+    If you don't, make sure you have updated Akeneo PIM dependencies and also that you have the following `post-update-cmd` task:
+    
+    ```yaml
+        "post-update-cmd": [
+            "@symfony-scripts",
+            "Akeneo\\Platform\\Bundle\\InstallerBundle\\EnterpriseComposerScripts::copyUpgradesFiles"
+        ]
+    ```
+    
     The easiest way to update your `package.json` is to copy/paste from the latest standard edition and add your custom dependencies.
     
     ```bash
