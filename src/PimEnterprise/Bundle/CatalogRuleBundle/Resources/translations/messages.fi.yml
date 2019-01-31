@@ -11,7 +11,7 @@ pimee_catalog_rule:
         actions: Toimi
         impacted_product_count:
           label: Päivitetyt tuotteet
-          count: 'Koskee {0,1}%count% tuotetta|]1,Inf[Koskee %count% tuotetta'
+          count: '{0,1}%count% tuotteen vaikutus|]1,Inf[%count% tuotteen vaikutus'
           no_yet_calculated: Ei vielä laskettu
       mass_edit_action:
         impacted_product_count: Laske tuotteet, joita sääntö koskee

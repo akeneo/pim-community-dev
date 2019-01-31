@@ -121,7 +121,7 @@ pimee_enrich:
         sent_for_approval: Lähetetty hyväksyttäväksi
       modal:
         accept_proposal: Hyväksy ehdotus
-        accept_selected_proposal: Hyävksy valittu ehdotus / ehdotukset
+        accept_selected_proposal: Hyväksy valittu ehdotus / ehdotukset
         reject_proposal: Hylkää ehdotus
         reject_selected_proposal: Hylkää valittu ehdotus / ehdotukset
         remove_proposal: Poista ehdotus
