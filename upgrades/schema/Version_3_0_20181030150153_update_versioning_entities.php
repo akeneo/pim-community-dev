@@ -29,11 +29,22 @@ class Version_3_0_20181030150153_update_versioning_entities extends AbstractMigr
             'Akeneo\\Component\\Batch\\Model\\JobInstance' => 'Akeneo\\Tool\\Component\\Batch\\Model\\JobInstance',
         ];
 
-        $updateSql = 'UPDATE pim_versioning_version SET resource_name = :after WHERE resource_name = :before';
+        $updateSql = 'UPDATE pim_versioning_version SET resource_name = :after WHERE id BETWEEN :low_range AND :high_range AND resource_name = :before';
         $preparedStatement = $this->connection->prepare($updateSql);
+        $maxId = $this->connection->fetchColumn("SELECT MAX(id) FROM pim_versioning_version");
 
+        $rangeSize = 100000;
         foreach ($versionEntitiesNameFromTo as $before => $after) {
-            $preparedStatement->execute(['before' => $before, 'after' => $after]);
+            echo "Starting migration of {$before} to {$after}\n";
+            $offset = 0;
+            $limit = $rangeSize;
+            while ($offset < $maxId) {
+                echo "The MAX(id) is {$maxId}, current range from {$offset} to {$limit}\n";
+                $preparedStatement->execute(['before' => $before, 'after' => $after, 'low_range' => $offset, 'high_range' => $limit]);
+                echo "Done\n";
+                $offset = $limit;
+                $limit += $rangeSize;
+            }
         }
 
         /**
