@@ -27,6 +27,7 @@ vendor
 !/bin/docker/pim-dependencies.sh
 !/bin/docker/pim-front.sh
 !/bin/docker/pim-initialize.sh
+!/bin/docker/pim-setup.sh
 !/bin/console
 behat.yml
 .phpspec/*.tpl
