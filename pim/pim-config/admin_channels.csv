@@ -1,4 +1,12 @@
 code;label-en_US;label-de_DE;label-fr_FR;locales;currencies;tree
+{{- if eq .Values.pim.defaultCatalog "icecat" }}
+{{- with .Values.pim.users.admin }}
+mobile;Mobile;Mobil;Mobile;fr_FR,de_DE,en_US,{{ .catalogDefaultLocale }};USD,EUR;master
+print;Print;Drucken;Impression;fr_FR,de_DE,en_US,{{ .catalogDefaultLocale }};USD,EUR;master
+ecommerce;Ecommerce;Ecommerce;Ecommerce;fr_FR,de_DE,en_US,{{ .catalogDefaultLocale }};USD,EUR;master
+{{- end }}
+{{- else }}
 {{- with .Values.pim.users.admin }}
 {{ .catalogDefaultScope }};Default;Standard;Défaut;{{ .catalogDefaultLocale }};USD;{{ .defaultCategoryTree }}
+{{- end }}
 {{- end }}
