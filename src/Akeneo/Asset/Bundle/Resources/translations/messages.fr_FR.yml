@@ -187,6 +187,8 @@ pim_analytics:
   info_type:
     nb_assets: Nombre de ressources produit
 pim_assets_collection: Collection de ressources
+akeneo_reference_entity: Lien simple vers une entité référentielle
+akeneo_reference_entity_collection: Lien multiple vers une entité référentielle
 pim_api:
   acl:
     asset_category:

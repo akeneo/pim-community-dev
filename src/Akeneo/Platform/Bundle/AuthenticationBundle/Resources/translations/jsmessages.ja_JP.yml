@@ -1,0 +1,7 @@
+authentication:
+  sso:
+    configuration:
+      section:
+        activation:
+          info:
+            title: 警告

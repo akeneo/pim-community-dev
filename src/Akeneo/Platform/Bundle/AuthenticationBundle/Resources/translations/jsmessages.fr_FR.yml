@@ -1,0 +1,44 @@
+pim_menu.item.sso: Single Sign-On basée sur SAML
+pim_title:
+  authentication_sso_configuration_edit: Configuration du Single Sign-On basée sur SAML
+authentication:
+  sso:
+    configuration:
+      download_logs_button: Télécharger les journaux
+      info:
+        update_successful: La configuration a été sauvée
+        update_failed: La configuration n'a pas pu être sauvée
+        fields_not_ready: "La configuration ne peut actuellement pas être sauvée. Les champs suivants ne sont pas prêts : {{ fields }}"
+      section:
+        activation:
+          title: Activation SSO
+          info:
+            title: Attention
+            description: Lorsque vous allez activer l'authentification SSO, votre session courante va être terminée. Vous allez être déconnecté, puis redirigé vers votre Identity Provider après la sauvegarde de la configuration.
+        identity_provider:
+          title: Identity Provider (IdP)
+          info:
+            description: Définissez ici tous les paramètres pour communiquer avec votre IdP. Ces informations doivent être fournies par votre IdP. Veuillez contacter votre administrateur SSO pour les obtenir.
+        service_provider:
+          title: Service Provider (SP)
+          info:
+            description: Définissez ci-dessous les informations sur votre Service Provider. Ce sont des valeur générées automatiquement. Vous pouvez les éditer si besoin. Ces information doivent être fournies par votre administrateur SSO afin de configurer l'IdP.
+      field:
+        activation:
+          label: SSO activé
+        entity_id:
+          label: Entity ID
+        sign_on_url:
+          label: URL Sign-on
+        logout_url:
+          label: URL de déconnection
+        certificate:
+          label: Certificat
+        private_key:
+          label: Clé privée
+        metadata_url:
+          label: URL de metadata
+          tooltip_label: Copier l'URL
+        acs_url:
+          label: URL ACS
+          tooltip_label: Copier l'URL

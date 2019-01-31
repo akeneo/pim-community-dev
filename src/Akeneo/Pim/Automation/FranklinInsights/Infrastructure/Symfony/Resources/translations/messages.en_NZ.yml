@@ -14,7 +14,7 @@ akeneo_franklin_insights:
   entity:
     product_subscription:
       constraint:
-        invalid_mapped_values: 'Sorry, failed to subscribe product to Franklin Insights. Please subscribe the product with a valid combination of identifiers.'
+        no_identifiers_mapping: 'Please map your catalog product identifiers at Settings > Franklin Insights before subscribing products.'
 job_execution.summary:
   configuration_validation: Franklin Insights configuration
   subscribed: subscribed
