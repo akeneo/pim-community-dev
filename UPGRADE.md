@@ -195,8 +195,6 @@ This change lead us to move all the classes of the PIM (`sed` commands are provi
 
 If you want to know more about this topic, you can read the [blog post](https://medium.com/akeneo-labs/akeneo-pim-3-0-lets-tidy-up-a91d986bf5bb) we have written. You can also refer to [the definitions of each of those new folders](https://github.com/akeneo/pim-community-dev/blob/master/internal_doc/ARCHITECTURE.md#you-said-bounded-contexts).
 
-TODO: link to the second blog post
-
 ## Migrate your standard project
 
 1. Stop the job queue consumer daemon consumer
