@@ -119,14 +119,10 @@ JSON;
     }
 
     /**
-     * We want to test the API is capable of returning a list twice the page of the cursor
-     *
      * @return int
      */
     private function getListSize(): int
     {
-        $cursorPageSize = (int)$this->getParameter('pim_job_product_batch_size');
-
-        return $cursorPageSize * 2;
+        return (int)$this->getParameter('api_input_max_resources_number');
     }
 }
