@@ -101,9 +101,10 @@ class CreateOrUpdateReferenceEntityAction
         $createReferenceEntityCommand = null;
         $shouldBeCreated = !$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
         if (true === $shouldBeCreated) {
-            $createReferenceEntityCommand = new CreateReferenceEntityCommand();
-            $createReferenceEntityCommand->code = $normalizedReferenceEntity['code'];
-            $createReferenceEntityCommand->labels = $normalizedReferenceEntity['labels'];
+            $createReferenceEntityCommand = new CreateReferenceEntityCommand(
+                $normalizedReferenceEntity['code'],
+                $normalizedReferenceEntity['labels']
+            );
 
             $violations = $this->validator->validate($createReferenceEntityCommand);
             if ($violations->count() > 0) {
@@ -111,10 +112,11 @@ class CreateOrUpdateReferenceEntityAction
             }
         }
 
-        $editReferenceEntityCommand = new EditReferenceEntityCommand();
-        $editReferenceEntityCommand->identifier = $normalizedReferenceEntity['code'];
-        $editReferenceEntityCommand->labels = $normalizedReferenceEntity['labels'];
-        $editReferenceEntityCommand->image = null;
+        $editReferenceEntityCommand = new EditReferenceEntityCommand(
+            $normalizedReferenceEntity['code'],
+            $normalizedReferenceEntity['labels'],
+            null
+        );
 
         if (array_key_exists('image', $normalizedReferenceEntity)) {
             $editReferenceEntityCommand->image = null !== $normalizedReferenceEntity['image'] ? $this->getImageData($normalizedReferenceEntity['image']) : null;

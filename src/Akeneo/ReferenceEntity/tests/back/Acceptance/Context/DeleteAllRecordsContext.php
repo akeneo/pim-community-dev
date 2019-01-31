@@ -155,9 +155,10 @@ final class DeleteAllRecordsContext implements Context
 
     private function createReferenceEntity(string $identifier): void
     {
-        $createCommand = new CreateReferenceEntityCommand();
-        $createCommand->code = $identifier;
-        $createCommand->labels = [];
+        $createCommand = new CreateReferenceEntityCommand(
+            $identifier,
+            []
+        );
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
