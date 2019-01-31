@@ -38,7 +38,7 @@ Akeneo PIM v3.O now expects Node 10.15.0
 
 ## Database charset migration
 
-MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
+MySQL charset for Akeneo is now utf8mb4, instead of the [flawed utf8](https://www.eversql.com/mysql-utf8-vs-utf8mb4-whats-the-difference-between-utf8-and-utf8mb4/). If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
 
 ## The main changes of the 3.0 version
 
@@ -902,6 +902,10 @@ Before updating the dependencies and migrating your data, please deactivate all 
     ```
 
 13. Migrate your Elasticsearch indices:
+
+    In case you updated the settings of Elasticsearch (like normalizers, filters and analyzers), please make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-enterprise-standard/blob/3.0/app/config/pim_parameters.yml#L58-L68).
+
+    Same in case you have a big catalog and increased the [index.mapping.total_fields.limit](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/mapping.html#mapping-limit-settings). Make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-enterprise-standard/blob/3.0/app/config/pim_parameters.yml#L58-L68).
 
     ```bash
     php upgrades/schema/es_20190128100000_ee_clean_indices.php
