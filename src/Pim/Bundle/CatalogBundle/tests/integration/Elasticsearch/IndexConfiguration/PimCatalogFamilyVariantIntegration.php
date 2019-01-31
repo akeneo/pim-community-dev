@@ -7,7 +7,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfigur
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimCatalogFamilyVariantIntegration extends AbstractPimCatalogProductModelIntegration
+class PimCatalogFamilyVariantIntegration extends AbstractPimCatalogProductModelTestCase
 {
     public function test_pqb_is_able_to_search_products_and_product_models_in_terms_of_a_list_of_family_variants()
     {

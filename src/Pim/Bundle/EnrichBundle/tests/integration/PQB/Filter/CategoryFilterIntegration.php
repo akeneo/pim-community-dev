@@ -71,6 +71,8 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->createCategoryTree();
         $this->createStructure();
         $this->createDataset();
+
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     /**

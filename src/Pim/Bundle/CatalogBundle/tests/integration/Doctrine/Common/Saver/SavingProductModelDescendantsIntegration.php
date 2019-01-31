@@ -39,6 +39,8 @@ class SavingProductModelDescendantsIntegration extends TestCase
         $this->createProductsAndProductModelsTree('seed');
 
         $this->get('doctrine.orm.entity_manager')->clear();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        sleep(5);
 
         $rootProductModel = $this->get('pim_catalog.repository.product_model')
             ->findOneByIdentifier('seed_root_product_model');
@@ -57,9 +59,7 @@ class SavingProductModelDescendantsIntegration extends TestCase
             $this->launcher->launchConsumerOnce();
         }
 
-        // Since we set the "wait refresh" of ES to false, we have to wait for ES to actually refresh its shards
-        // Cf. https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-refresh.html
-        sleep(3);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $this->assertDocumentIdsForSearch(
             [
@@ -93,6 +93,8 @@ class SavingProductModelDescendantsIntegration extends TestCase
         $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 5);
 
         $this->get('doctrine.orm.entity_manager')->clear();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        sleep(5);
 
         $rootProductModel = $this->get('pim_catalog.repository.product_model')
             ->findOneByIdentifier('seed_root_product_model');
@@ -110,6 +112,8 @@ class SavingProductModelDescendantsIntegration extends TestCase
         while ($this->launcher->hasJobInQueue()) {
             $this->launcher->launchConsumerOnce();
         }
+
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 10);
     }
