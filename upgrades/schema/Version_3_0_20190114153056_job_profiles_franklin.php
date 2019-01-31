@@ -30,9 +30,11 @@ class Version_3_0_20190114153056_job_profiles_franklin extends AbstractMigration
         $output = new BufferedOutput();
 
         $application->setAutoExit(false);
-        $application->run($input, $output);
+        $status = $application->run($input, $output);
 
-        $this->write($output->fetch());
+        if (0 !== $status) {
+            throw new \Exception($output->fetch());
+        }
     }
 
     /**
