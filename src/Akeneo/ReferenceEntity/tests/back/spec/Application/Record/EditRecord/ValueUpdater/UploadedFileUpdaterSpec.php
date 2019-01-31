@@ -7,13 +7,22 @@ namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUploadedFileValueCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\UploadedFileUpdater;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
@@ -31,26 +40,28 @@ class UploadedFileUpdaterSpec extends ObjectBehavior
         $this->shouldHaveType(UploadedFileUpdater::class);
     }
 
-    function it_only_supports_edit_upload_file_value_command()
-    {
-        $this->supports(new EditTextValueCommand())->shouldReturn(false);
-        $this->supports(new EditUploadedFileValueCommand())->shouldReturn(true);
+    function it_only_supports_edit_upload_file_value_command(
+        EditTextValueCommand $editTextValueCommand,
+        EditUploadedFileValueCommand $editUploadedFileValueCommand
+    ) {
+        $this->supports($editTextValueCommand)->shouldReturn(false);
+        $this->supports($editUploadedFileValueCommand)->shouldReturn(true);
     }
 
     function it_edits_the_file_value_of_a_record(
         FileStorerInterface $storer,
-        ImageAttribute $imageAttribute,
-        EditUploadedFileValueCommand $command,
         FileInfo $fileInfo,
         Record $record
     ) {
-        $imageAttribute->getIdentifier()->willReturn(AttributeIdentifier::fromString('picture'));
+        $imageAttribute = $this->getAttribute();
 
-        $command->attribute = $imageAttribute;
-        $command->channel = 'ecommerce';
-        $command->locale = 'de_DE';
-        $command->filePath = '/tmp/jambon.png';
-        $command->originalFilename = 'jambon.png';
+        $command = new EditUploadedFileValueCommand(
+            $imageAttribute,
+            'ecommerce',
+            'de_DE',
+            '/tmp/jambon.png',
+            'jambon.png'
+        );
 
         $fileInfo->getKey()->willReturn('a/b/c/jambon.png');
         $fileInfo->getOriginalFilename()->willReturn('jambon.png');
@@ -79,10 +90,27 @@ class UploadedFileUpdaterSpec extends ObjectBehavior
         $this->__invoke($record, $command);
     }
 
-    function it_throws_an_exception_if_it_does_not_support_the_command(Record $record)
+    function it_throws_an_exception_if_it_does_not_support_the_command(Record $record, EditTextValueCommand $editTextValueCommand)
     {
-        $wrongCommand = new EditTextValueCommand();
-        $this->supports($wrongCommand)->shouldReturn(false);
-        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $wrongCommand]);
+        $this->supports($editTextValueCommand)->shouldReturn(false);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $editTextValueCommand]);
+    }
+
+    private function getAttribute(): ImageAttribute
+    {
+        $imageAttribute = ImageAttribute::create(
+            AttributeIdentifier::create('designer', 'image', 'test'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('image'),
+            LabelCollection::fromArray(['fr_FR' => 'Image', 'en_US' => 'Image']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxFileSize::fromString('120'),
+            AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::VALID_EXTENSIONS)
+        );
+
+        return $imageAttribute;
     }
 }

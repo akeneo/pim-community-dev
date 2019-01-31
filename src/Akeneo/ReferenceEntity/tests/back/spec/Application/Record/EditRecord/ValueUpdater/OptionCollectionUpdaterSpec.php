@@ -48,11 +48,12 @@ class OptionCollectionUpdaterSpec extends ObjectBehavior
     {
         $attribute = $this->getAttribute();
 
-        $command = new EditOptionCollectionValueCommand();
-        $command->attribute = $attribute;
-        $command->channel = 'mobile';
-        $command->locale = 'en_US';
-        $command->optionCodes = ['18-25', '26-40'];
+        $command = new EditOptionCollectionValueCommand(
+            $attribute,
+            'mobile',
+            'en_US',
+            ['18-25', '26-40']
+        );
 
         $value = Value::create(
             $attribute->getIdentifier(),

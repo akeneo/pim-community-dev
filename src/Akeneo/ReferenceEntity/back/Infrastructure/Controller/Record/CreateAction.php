@@ -130,10 +130,11 @@ class CreateAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        $command = new CreateRecordCommand();
-        $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'] ?? null;
-        $command->code = $normalizedCommand['code'] ?? null;
-        $command->labels = $normalizedCommand['labels'] ?? [];
+        $command = new CreateRecordCommand(
+            $normalizedCommand['reference_entity_identifier'] ?? null,
+            $normalizedCommand['code'] ?? null,
+            $normalizedCommand['labels'] ?? []
+        );
 
         return $command;
     }

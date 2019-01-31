@@ -40,10 +40,13 @@ class EditRecordCommandFactory
 
     public function create(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): EditRecordCommand
     {
-        $command = new EditRecordCommand();
-        $command->referenceEntityIdentifier = $referenceEntityIdentifier->normalize();
-        $command->code = $normalizedRecord['code'];
-        $command->editRecordValueCommands = $this->createEditRecordValueCommands($referenceEntityIdentifier, $normalizedRecord);
+        $command = new EditRecordCommand(
+            $referenceEntityIdentifier->normalize(),
+            $normalizedRecord['code'],
+            [],
+            null,
+            $this->createEditRecordValueCommands($referenceEntityIdentifier, $normalizedRecord)
+        );
 
         return $command;
     }
