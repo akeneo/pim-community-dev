@@ -21,7 +21,7 @@ $hosts = [$container->getParameter('index_hosts')];
 
 $client = $builder->setHosts($hosts)->build();
 
-echo "Updating document_type for index {$container->getParameter('product_proposal_index_name')}...\n";
+echo "Updating ProductDraft document_type for index {$container->getParameter('product_proposal_index_name')}...\n";
 
 $client->updateByQuery(
     [
@@ -40,7 +40,26 @@ $client->updateByQuery(
     ]
 );
 
-echo "Updating document_type for index {$container->getParameter('published_product_and_product_model_index_name')}...\n";
+echo "Updating ProductModelDraft document_type for index {$container->getParameter('product_proposal_index_name')}...\n";
+
+$client->updateByQuery(
+    [
+        'index' => $container->getParameter('product_proposal_index_name'),
+        'type'  => 'pimee_workflow_product_proposal',
+        'body'  => [
+            'script' => [
+                'inline' => "ctx._source.document_type = 'Akeneo\\\\Pim\\\\WorkOrganization\\\\Workflow\\\\Component\\\\Model\\\\ProductModelDraft'",
+            ],
+            'query'  => [
+                'term' => [
+                    'document_type' => "PimEnterprise\\Component\\Workflow\\Model\\ProductModelDraft"
+                ]
+            ]
+        ]
+    ]
+);
+
+echo "Updating ProductInterface document_type for index {$container->getParameter('published_product_and_product_model_index_name')}...\n";
 
 $client->updateByQuery(
     [
