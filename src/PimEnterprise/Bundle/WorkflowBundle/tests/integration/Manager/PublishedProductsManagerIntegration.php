@@ -1,9 +1,8 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\tests\integration\Manager;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Manager;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -43,6 +42,33 @@ class PublishedProductsManagerIntegration extends TestCase
     {
         parent::setUp();
 
+        $productBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder');
+
+        $foo = $productBuilder
+            ->withIdentifier('foo')
+            ->withValue(
+                'a_scopable_price',
+                [
+                    ['amount' => '10.50', 'currency' => 'EUR'],
+                    ['amount' => '11.50', 'currency' => 'USD'],
+                ],
+                '',
+                'ecommerce'
+            )->build();
+
+        $bar = $productBuilder
+            ->withIdentifier('bar')
+            ->withValue(
+                'a_scopable_price',
+                [
+                    ['amount' => '10.50', 'currency' => 'EUR'],
+                    ['amount' => '11.50', 'currency' => 'USD'],
+                ],
+                '',
+                'ecommerce'
+            )->build();
+        $this->getFromTestContainer('pim_catalog.saver.product')->saveAll([$foo, $bar]);
+
         $this->publishedProductRepository = $this->get('pimee_workflow.repository.published_product');
         $this->publishedProductManager = $this->get('pimee_workflow.manager.published_product');
         $this->productRepository = $this->get('pim_catalog.repository.product');
@@ -54,7 +80,7 @@ class PublishedProductsManagerIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalSqlCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 
     public function testPublishProduct()
@@ -79,12 +105,12 @@ class PublishedProductsManagerIntegration extends TestCase
         $this->publishedProductManager->publish($product);
 
         $product = $this->productRepository->findOneByIdentifier('foo');
-        $productValue = $product->getValue('an_image');
+        $productValue = $product->getValue('a_scopable_price', null, 'ecommerce');
         $product->removeValue($productValue);
         $this->productSaver->save($product);
 
         $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
-        $this->assertNotNull($publishedProduct->getValue('an_image'));
+        $this->assertNotNull($publishedProduct->getValue('a_scopable_price', null, 'ecommerce'));
     }
 
     public function testPublishAnAlreadyPublishedProduct()
@@ -93,13 +119,13 @@ class PublishedProductsManagerIntegration extends TestCase
         $this->publishedProductManager->publish($product);
 
         $product = $this->productRepository->findOneByIdentifier('foo');
-        $productValue = $product->getValue('an_image');
+        $productValue = $product->getValue('a_scopable_price', null, 'ecommerce');
         $product->removeValue($productValue);
         $this->productSaver->save($product);
         $this->publishedProductManager->publish($product);
 
         $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
-        $this->assertNull($publishedProduct->getValue('an_image'));
+        $this->assertNull($publishedProduct->getValue('a_scopable_price', null, 'ecommerce'));
         $this->assertPublishedProductPropertiesEqual($product, $publishedProduct);
         $this->assertProductAssociationsEqual($product, $publishedProduct);
     }
@@ -208,3 +234,4 @@ class PublishedProductsManagerIntegration extends TestCase
         }
     }
 }
+
