@@ -6,7 +6,7 @@
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
-    processIsolation="true"
+    processIsolation="false"
     stopOnFailure="false"
     syntaxCheck="false"
     bootstrap="./autoload.php">
@@ -18,6 +18,12 @@
         <ini name="memory_limit" value="-1"/>
         <ini name="zend.enable_gc" value="1"/>
     </php>
+
+    <groups>
+        <exclude>
+            <group>skip</group>
+        </exclude>
+    </groups>
 
     <testsuites>
 
