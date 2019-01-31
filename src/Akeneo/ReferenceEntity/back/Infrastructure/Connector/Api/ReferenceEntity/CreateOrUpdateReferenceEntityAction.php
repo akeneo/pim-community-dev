@@ -103,7 +103,7 @@ class CreateOrUpdateReferenceEntityAction
         if (true === $shouldBeCreated) {
             $createReferenceEntityCommand = new CreateReferenceEntityCommand();
             $createReferenceEntityCommand->code = $normalizedReferenceEntity['code'];
-            $createReferenceEntityCommand->labels = $normalizedReferenceEntity['labels'];
+            $createReferenceEntityCommand->labels = $normalizedReferenceEntity['labels'] ?? [];
 
             $violations = $this->validator->validate($createReferenceEntityCommand);
             if ($violations->count() > 0) {
@@ -113,7 +113,7 @@ class CreateOrUpdateReferenceEntityAction
 
         $editReferenceEntityCommand = new EditReferenceEntityCommand();
         $editReferenceEntityCommand->identifier = $normalizedReferenceEntity['code'];
-        $editReferenceEntityCommand->labels = $normalizedReferenceEntity['labels'];
+        $editReferenceEntityCommand->labels = $normalizedReferenceEntity['labels'] ?? [];
         $editReferenceEntityCommand->image = null;
 
         if (array_key_exists('image', $normalizedReferenceEntity)) {
