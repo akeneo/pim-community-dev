@@ -53,9 +53,12 @@ pimee_catalog_rule:
       tab:
         rules:
           title: Regles
-confirmation:
-  remove:
-    rule: Esteu segur que voleu suprimir aquesta norma? No us en podreu fer enrera
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Esteu segur que voleu suprimir aquesta norma? No us en podreu fer enrera
 pim_datagrid:
   entity:
     rule:

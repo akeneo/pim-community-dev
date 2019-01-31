@@ -14,11 +14,12 @@ akeneo_franklin_insights:
   entity:
     product_subscription:
       constraint:
-        invalid_mapped_values: 'Ho sentim, ha fallat la subscripció del producte a les estadístiques de Franklin. Si us plau subscriu el producte amb una combinació d''identificadors vàlid.'
+        no_identifiers_mapping: 'Si us plau, mapa els teus identificadors de producte de catàleg a Configuració > Abans de subscriure''s productes a Franklin Insights.'
 job_execution.summary:
   configuration_validation: Configuració de les estadístiques de Franklin
   subscribed: subscrit
   unsubscribed: subscripció cancel·lada
+  unsubscription_skipped_not_subscribed: omès (no subscrit)
 pim_datagrid:
   cells:
     type:

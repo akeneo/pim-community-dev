@@ -78,7 +78,6 @@ akeneo_franklin_insights:
       title:
         sub_title: 'Conosci Franklin, il tuo <span class="AknDescriptionHeader-title--highlight">assistente AI Informazioni Prodotto</span>!'
         description:
-          first_step: 'Per aiutarti ad arricchire il tuo catalogo, Franklin ha bisogno di conoscere le opzioni attributo del tuo catalogo che corrispondono al suo.'
           second_step: 'Durante la mappatura dei tuoi identificatori, ricorda che Brand e MPN vanno insieme. <a href="#" class="AknDescriptionHeader-link">Maggiori informazioni</a>'
       inactive_connection:
         title: 'Niente da visualizzare ancora'

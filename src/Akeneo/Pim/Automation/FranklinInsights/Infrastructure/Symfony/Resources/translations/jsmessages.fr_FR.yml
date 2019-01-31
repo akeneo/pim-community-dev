@@ -68,6 +68,8 @@ akeneo_franklin_insights:
         scopable_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM décliné par canal'
         locale_specific_not_allowed: 'Les attributs Franklin ne peuvent pas être mappés à un attribut PIM spécifique à une locale'
         duplicated_pim_attribute: 'Un attribut PIM ne peut pas être utilisé plusieurs fois dans le mapping des attributs'
+        attribute_not_in_family_not_allowed: 'L''attribut PIM doit être dans la famille sélectionnée.'
+        only_unknown_mapped_attributes: 'Aucun attribut dans le mapping n''a pu être trouvé'
     product_subscription:
       flash:
         create:
@@ -83,6 +85,9 @@ akeneo_franklin_insights:
         invalid_mapped_values: 'Désolé, impossible d''abonner ce produit à Franklin Insights. Veuillez vérifier que la combinaison des identifiants est valide.'
         data_provider_error: 'Franklin a renvoyé une erreur lors de la tentative d''abonner le produit'
         not_subscribed: 'Le produit n’est pas abonné'
+        already_subscribed_product: 'Le produit est déjà abonné.'
+        variant_product: 'Désolé, les produits variants ne peuvent pas être abonnés à Franklin Insights.'
+        inactive_connection: 'Désolé, impossible d''abonner un produit à Franklin Insights. Veuillez configurer votre connexion à Franklin Insights.'
       module:
         product_edit_form:
           family_required: 'Famille de produit requise.'
@@ -126,7 +131,6 @@ akeneo_franklin_insights:
       title:
         sub_title: 'Rencontrez Franklin, votre <span class="AknDescriptionHeader-title--highlight">assistant IA des informations produit</span> !'
         description:
-          first_step: 'Afin de vous aider à enrichir votre catalogue, Franklin a besoin de connaître les identifiants de votre catalogue à matcher.'
           second_step: 'Pendant que vous mappez vos identifiants, gardez à l''esprit que les attributs Brand et MPN vont de pair. <a href="#" class="AknDescriptionHeader-link">Voir plus</a>'
       inactive_connection:
         title: 'Désolé, rien à afficher pour le moment'

@@ -52,9 +52,12 @@ pimee_catalog_rule:
       tab:
         rules:
           title: Regeln
-confirmation:
-  remove:
-    rule: Sind Sie sicher, dass Sie diese Regel löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Sind Sie sicher, dass Sie diese Regel löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden
 pim_datagrid:
   entity:
     rule:

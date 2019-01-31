@@ -52,9 +52,12 @@ pimee_catalog_rule:
       tab:
         rules:
           title: ルール
-confirmation:
-  remove:
-    rule: このルールを削除してよろしいですか？このアクションは元に戻せません。
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: このルールを削除してよろしいですか？このアクションは元に戻せません。
 pim_datagrid:
   entity:
     rule:

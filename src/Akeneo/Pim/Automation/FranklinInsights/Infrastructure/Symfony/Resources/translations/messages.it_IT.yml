@@ -7,7 +7,7 @@ akeneo_franklin_insights:
   entity:
     product_subscription:
       constraint:
-        invalid_mapped_values: 'L''iscrizione dei prodotti a Franklin Insights non è andata a buon fine. Iscrivi il prodotto con una combinazione valida di identificatori.'
+        no_identifiers_mapping: 'Mappa gli identificatori del tuo catalogo prodotti in Impostazioni > Franklin Insights prima di iscrivere i prodotti.'
 job_execution.summary:
   configuration_validation: Configurazione Franklin Insights
   subscribed: iscritto

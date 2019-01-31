@@ -53,9 +53,6 @@ pimee_catalog_rule:
       tab:
         rules:
           title: Rules
-confirmation:
-  remove:
-    rule: Are you sure you want to delete this rule? It is not possible to undo this action
 pim_datagrid:
   entity:
     rule:

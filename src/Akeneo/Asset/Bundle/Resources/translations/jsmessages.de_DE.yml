@@ -60,6 +60,7 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
+        confirm_content: Sind Sie sicher, dass Sie die ausgewählten Assets löschen möchten?
         success: Ausgewählte Assets erfolgreich gelöscht.
         error: Es ist ein Fehler beim Löschen der ausgewählten Assets aufgetreten, bitte versuchen Sie es erneut.
         empty_selection: Keine Assets ausgewählt
@@ -180,6 +181,7 @@ pimee_enrich.entity.channel:
           width: '%value%px Breite'
           height: '%value%px Höhe'
 pimee_enrich.mass_edit.asset:
+  title: Massenbearbeitung Assets
   step:
     select:
       label: Asset auswählen
@@ -194,8 +196,10 @@ pimee_enrich.mass_edit.asset:
       label: Stichworte zu Assets hinzufügen
       description: Tags werden den Assets hinzugefügt.
       field: Stichworte
+      empty_selection: Bitte Tags auswählen
     add_to_category:
       label: Zuordnung von Assets in Kategorien
+      description: Die Assets werden in folgende Kategorien eingeteilt, die bestehende Zuordnung geht verloren.
 pim_catalog_volume:
   section:
     assets:
