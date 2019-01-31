@@ -847,7 +847,7 @@ New parameters have been added to `app/config/parameters.yml`
 
 10. Deactivate your custom code
 
-Before updating the dependencies and migrating your data, please deactivate all your custom bundles and configuration. This will considerably ease the migration of your data.
+Before updating the dependencies and migrating your data, please deactivate all your custom bundles and configuration. This will considerably ease the migration of your data. You can disable your custom code by commenting out your custom bundles in your `AppKernel.php` file.
 
 11. Update your dependencies:
 
