@@ -150,6 +150,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface',
 
         // TIP-957: Move Events to component
         'Akeneo\Asset\Bundle\Event\AssetEvent',

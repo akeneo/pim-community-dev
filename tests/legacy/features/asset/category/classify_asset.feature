@@ -24,7 +24,7 @@ Feature: Classify an asset in the trees I have access
     And I edit the "mugs" asset
     When I visit the "Categories" tab
     And I expand the "asset_main_catalog" category
-    Then I should not see "Technical documents"
+    Then I should not see the text "Technical documents"
     But I should see the text "Client documents"
 
   Scenario: See only granted trees
@@ -40,13 +40,13 @@ Feature: Classify an asset in the trees I have access
     When I edit the "mugs" asset
     And I visit the "Categories" tab
     Then I should see the text "Asset main catalog"
-    But I should not see "2016 Collection"
+    But I should not see the text "2016 Collection"
     Then I logout
     And I am logged in as "Peter"
     And I edit the "mugs" asset
     And I visit the "Categories" tab
     Then I should see the text "Asset main catalog"
-    And I should not see "2016 Collection"
+    And I should not see the text "2016 Collection"
 
   Scenario: Remove permissions on categories tab on asset form
     Given I am logged in as "Peter"

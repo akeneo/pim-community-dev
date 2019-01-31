@@ -16,7 +16,7 @@
     }
   },
   "response": {
-    "status": 201,
+    "status": 204,
     "body": "",
     "headers": {
       "location": "http://localhost/api/rest/v1/reference-entities/brand_4/attributes/sales_area/options/australia"

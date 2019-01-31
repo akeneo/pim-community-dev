@@ -29,7 +29,15 @@ akeneo_elasticsearch:
         -
             service_name: "akeneo_elasticsearch.client.product_proposal"
             index_name: "%product_proposal_index_name%"
-            configuration_files: "%elasticsearch_index_configuration_files%"
+            configuration_files: "%elasticsearch_index_configuration_files_product_proposal%"
+        -
+            service_name: "akeneo_elasticsearch.client.published_product"
+            index_name: "%published_product_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files_published_product%"
+        -
+            service_name: "akeneo_elasticsearch.client.published_product_and_product_model"
+            index_name: "%published_product_and_product_model_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files_published_product%"
 
 hslavich_onelogin_saml:
     # Basic settings
@@ -54,4 +62,5 @@ hslavich_onelogin_saml:
         privateKey: 'SSO_SP_CLIENT_PRIVATE_KEY_VALUE'
     # Optional settings
     security:
-        authnRequestsSigned:   true
+        authnRequestsSigned: true
+        wantNameId: false

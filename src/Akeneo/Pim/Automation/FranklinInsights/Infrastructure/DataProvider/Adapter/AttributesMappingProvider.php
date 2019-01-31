@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Ada
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingWebService;
@@ -82,7 +83,7 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
     /**
      * {@inheritdoc}
      */
-    public function saveAttributesMapping(string $familyCode, array $attributesMapping): void
+    public function saveAttributesMapping(string $familyCode, AttributesMapping $attributesMapping): void
     {
         $this->api->setToken($this->getToken());
         $normalizer = new AttributesMappingNormalizer();

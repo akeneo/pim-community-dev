@@ -83,6 +83,9 @@ services:
             - 'franklin_insights_identify_products_to_resubscribe'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.franklin_insights.connector.step.validate_connection'
+                - '@akeneo.pim.automation.franklin_insights.connector.step.compute_products_to_resubscribe'
         tags:
             - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'franklin_insights' }
 
@@ -123,10 +126,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     akeneo.pim.automation.franklin_insights.connector.job_parameters.constraint_collection_provider.identify_products_to_resubscribe:
-        class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintCollectionProvider'
-        arguments:
-            -
-                - 'franklin_insights_identify_products_to_resubscribe'
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobParameters\UpdatedFranklinIdentifiers'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -166,10 +166,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     akeneo.pim.automation.franklin_insights.connector.job_parameters.default_values_provider.identify_products_to_resubscribe:
-        class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
-        arguments:
-            -
-                - 'franklin_insights_identify_products_to_resubscribe'
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobParameters\UpdatedFranklinIdentifiers'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 

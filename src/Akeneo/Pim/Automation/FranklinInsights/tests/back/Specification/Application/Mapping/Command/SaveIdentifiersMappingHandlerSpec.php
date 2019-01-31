@@ -16,11 +16,11 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mappi
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\IdentifiersMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\IdentifyProductsToResubscribeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingWebService;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -35,13 +35,15 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingProviderInterface $identifiersMappingProvider,
-        ProductSubscriptionRepositoryInterface $subscriptionRepository
+        ProductSubscriptionRepositoryInterface $subscriptionRepository,
+        IdentifyProductsToResubscribeInterface $identifyProductsToResubscribe
     ): void {
         $this->beConstructedWith(
             $attributeRepository,
             $identifiersMappingRepository,
             $identifiersMappingProvider,
-            $subscriptionRepository
+            $subscriptionRepository,
+            $identifyProductsToResubscribe
         );
     }
 
@@ -51,9 +53,9 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_an_attribute_does_not_exist(
+        $attributeRepository,
+        $identifiersMappingRepository,
         $identifiersMappingProvider,
-        AttributeRepositoryInterface $attributeRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         AttributeInterface $model
     ): void {
         $command = new SaveIdentifiersMappingCommand(
@@ -75,70 +77,119 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$command]);
     }
 
-    public function it_saves_the_identifiers_mapping(
+    public function it_saves_a_new_identifiers_mapping(
+        $attributeRepository,
+        $identifiersMappingRepository,
         $identifiersMappingProvider,
         $subscriptionRepository,
-        $identifiersMappingRepository,
-        AttributeRepositoryInterface $attributeRepository,
+        $identifyProductsToResubscribe,
         AttributeInterface $manufacturer,
         AttributeInterface $model,
         AttributeInterface $ean,
         AttributeInterface $id
     ): void {
-        $command = new SaveIdentifiersMappingCommand(
-            [
-                'brand' => 'manufacturer',
-                'mpn' => 'model',
-                'upc' => 'ean',
-                'asin' => 'id',
-            ]
-        );
-
-        $attributeRepository->findOneByIdentifier(Argument::any())->shouldBeCalledTimes(4);
         $attributeRepository->findOneByIdentifier('manufacturer')->willReturn($manufacturer);
         $attributeRepository->findOneByIdentifier('model')->willReturn($model);
         $attributeRepository->findOneByIdentifier('ean')->willReturn($ean);
-        $attributeRepository->findOneByIdentifier('id')->willReturn($id);
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($id);
 
+        $manufacturer->getCode()->willReturn('manufacturer');
         $manufacturer->getType()->willReturn('pim_catalog_text');
         $manufacturer->isLocalizable()->willReturn(false);
         $manufacturer->isScopable()->willReturn(false);
         $manufacturer->isLocaleSpecific()->willReturn(false);
 
+        $model->getCode()->willReturn('model');
         $model->getType()->willReturn('pim_catalog_text');
         $model->isLocalizable()->willReturn(false);
         $model->isScopable()->willReturn(false);
         $model->isLocaleSpecific()->willReturn(false);
 
+        $ean->getCode()->willReturn('ean');
         $ean->getType()->willReturn('pim_catalog_text');
         $ean->isLocalizable()->willReturn(false);
         $ean->isScopable()->willReturn(false);
         $ean->isLocaleSpecific()->willReturn(false);
 
+        $id->getCode()->willReturn('sku');
         $id->getType()->willReturn('pim_catalog_text');
         $id->isLocalizable()->willReturn(false);
         $id->isScopable()->willReturn(false);
         $id->isLocaleSpecific()->willReturn(false);
 
-        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping = new IdentifiersMapping([]);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping
-            ->map('brand', $manufacturer->getWrappedObject())
-            ->map('mpn', $model->getWrappedObject())
-            ->map('upc', $ean->getWrappedObject())
-            ->map('asin', $id->getWrappedObject())
-        ;
 
         $identifiersMappingProvider->saveIdentifiersMapping($identifiersMapping)->shouldBeCalled();
         $identifiersMappingRepository->save($identifiersMapping)->shouldBeCalled();
         $subscriptionRepository->emptySuggestedData()->shouldBeCalled();
 
-        $this->handle($command);
+        $identifyProductsToResubscribe->process(Argument::any())->shouldNotBeCalled();
+
+        $this->handle(
+            new SaveIdentifiersMappingCommand(
+                [
+                    'brand' => 'manufacturer',
+                    'mpn' => 'model',
+                    'upc' => 'ean',
+                    'asin' => 'sku',
+                ]
+            )
+        );
+    }
+
+    public function it_updates_an_existing_identifiers_mapping(
+        $attributeRepository,
+        $identifiersMappingRepository,
+        $identifiersMappingProvider,
+        $subscriptionRepository,
+        $identifyProductsToResubscribe,
+        AttributeInterface $sku,
+        AttributeInterface $asin
+    ): void {
+        $sku->getCode()->willReturn('sku');
+        $sku->getType()->willReturn('pim_catalog_identifier');
+        $sku->isLocalizable()->willReturn(false);
+        $sku->isScopable()->willReturn(false);
+        $sku->isLocaleSpecific()->willReturn(false);
+
+        $asin->getCode()->willReturn('asin');
+        $asin->getType()->willReturn('pim_catalog_text');
+        $asin->isLocalizable()->willReturn(false);
+        $asin->isScopable()->willReturn(false);
+        $asin->isLocaleSpecific()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('asin')->willReturn($asin);
+
+        $identifiersMapping = new IdentifiersMapping(
+            [
+                'asin' => $asin->getWrappedObject(),
+                'upc' => $sku->getWrappedObject(),
+            ]
+        );
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+
+        $identifiersMappingProvider->saveIdentifiersMapping($identifiersMapping)->shouldBeCalled();
+        $identifiersMappingRepository->save($identifiersMapping)->shouldBeCalled();
+        $subscriptionRepository->emptySuggestedData()->shouldBeCalled();
+
+        $identifyProductsToResubscribe->process(['upc'])->shouldBeCalled();
+
+        $this->handle(
+            new SaveIdentifiersMappingCommand(
+                [
+                    'asin' => 'asin',
+                    'upc' => null,
+                    'brand' => null,
+                    'mpn' => null,
+                ]
+            )
+        );
     }
 
     public function it_throws_an_exception_with_invalid_attribute_type(
+        $attributeRepository,
         $identifiersMappingProvider,
-        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $model
     ): void {
         $command = new SaveIdentifiersMappingCommand(
@@ -158,9 +209,9 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_when_brand_is_saved_without_mpn(
+        $attributeRepository,
+        $identifiersMappingRepository,
         $identifiersMappingProvider,
-        AttributeRepositoryInterface $attributeRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         AttributeInterface $manufacturer,
         AttributeInterface $ean
     ): void {
@@ -192,9 +243,9 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_when_mpn_is_saved_without_brand(
+        $attributeRepository,
         $identifiersMappingRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        IdentifiersMappingWebService $identifiersMappingWebService,
+        $identifiersMappingProvider,
         AttributeInterface $model,
         AttributeInterface $ean
     ): void {
@@ -220,15 +271,15 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $ean->isLocaleSpecific()->willReturn(false);
 
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
-        $identifiersMappingWebService->save(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingProvider->saveIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
         $this->shouldThrow(InvalidMappingException::class)->during('handle', [$command]);
     }
 
     public function it_throws_an_exception_when_mapped_attribute_is_localizable(
+        $attributeRepository,
         $identifiersMappingRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        IdentifiersMappingWebService $identifiersMappingWebService,
+        $identifiersMappingProvider,
         AttributeInterface $attrEan
     ): void {
         $command = new SaveIdentifiersMappingCommand(
@@ -248,7 +299,7 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attrEan->isLocaleSpecific()->willReturn(false);
 
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
-        $identifiersMappingWebService->save(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingProvider->saveIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
         $this
             ->shouldThrow(InvalidMappingException::localizableAttributeNotAllowed('ean'))
@@ -256,9 +307,9 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_when_mapped_attribute_is_scopable(
+        $attributeRepository,
         $identifiersMappingRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        IdentifiersMappingWebService $identifiersMappingWebService,
+        $identifiersMappingProvider,
         AttributeInterface $attrAsin
     ): void {
         $command = new SaveIdentifiersMappingCommand(
@@ -278,7 +329,7 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attrAsin->isLocaleSpecific()->willReturn(false);
 
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
-        $identifiersMappingWebService->save(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingProvider->saveIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
         $this
             ->shouldThrow(InvalidMappingException::scopableAttributeNotAllowed('pim_asin'))
@@ -286,9 +337,9 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_when_mapped_attribute_is_locale_specific(
+        $attributeRepository,
         $identifiersMappingRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        IdentifiersMappingWebService $identifiersMappingWebService,
+        $identifiersMappingProvider,
         AttributeInterface $attrAsin
     ): void {
         $command = new SaveIdentifiersMappingCommand(
@@ -308,7 +359,7 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attrAsin->isLocaleSpecific()->willReturn(true);
 
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
-        $identifiersMappingWebService->save(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingProvider->saveIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
         $this
             ->shouldThrow(InvalidMappingException::localeSpecificAttributeNotAllowed('pim_asin'))

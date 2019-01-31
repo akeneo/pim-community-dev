@@ -14,3 +14,11 @@ services:
             - '@akeneo.pim.automation.franklin_insights.handler.get_attributes_mapping_by_family'
             - '@akeneo.pim.automation.franklin_insights.handler.get_attribute_options_mapping_by_family_and_attribute'
             - '@akeneo.pim.automation.franklin_insights.handler.save_attribute_options_mapping'
+
+    akeneo.pim.automation.franklin_insights.connector.tasklet.identify_products_to_resubscribe:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet\IdentifyProductToResubscribeTasklet'
+        public: false
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_identifier_values_query'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_non_null_requested_identifiers'
+            - '@akeneo.pim.automation.franklin_insights.application.subscription.service.resubscribe_products'

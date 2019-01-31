@@ -5,7 +5,7 @@ export type NormalizedAttributeIdentifier = string;
 export default class AttributeIdentifier {
   private constructor(readonly identifier: string) {
     if ('string' !== typeof identifier) {
-      throw new InvalidTypeError('AttributeIdentifier expect a string as parameter to be created');
+      throw new InvalidTypeError('AttributeIdentifier expects a string as parameter to be created');
     }
 
     Object.freeze(this);

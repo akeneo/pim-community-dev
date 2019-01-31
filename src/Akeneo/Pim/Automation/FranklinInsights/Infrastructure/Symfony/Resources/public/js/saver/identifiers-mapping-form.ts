@@ -64,7 +64,7 @@ class MappingSave extends BaseSave {
             connectionStatus.productSubscriptionCount,
           ),
           __('akeneo_franklin_insights.settings.module.save.title'),
-          this.executeSave,
+          this.executeSave.bind(this),
           null,
           null,
           null,

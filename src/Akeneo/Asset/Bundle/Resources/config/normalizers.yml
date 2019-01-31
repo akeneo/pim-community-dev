@@ -85,3 +85,4 @@ services:
             - '@pim_enrich.normalizer.file'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.cached_attribute'
+            - '@pim_reference_data.repository_resolver'

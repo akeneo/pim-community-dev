@@ -28,7 +28,7 @@ interface Config {
  */
 class FrontSearchFilter extends BaseForm {
   private readonly template = _.template(template);
-  private timer: number | null = null;
+  private timer: any = null;
   private config: Config;
   private value: string = '';
 

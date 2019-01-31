@@ -12,7 +12,7 @@ describe('akeneo > reference entity > domain > model --- locale reference', () =
   test('I cannot create a new locale reference with a value other than a string or null', () => {
     expect(() => {
       createLocaleReference(12);
-    }).toThrow('LocaleReference expect a string or null as parameter to be created');
+    }).toThrow('LocaleReference expects a string or null as parameter to be created');
   });
 
   test('I can compare two locale references', () => {

@@ -15,7 +15,8 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
@@ -59,119 +60,43 @@ class SaveAttributesMappingByFamilyHandler
      * @param SaveAttributesMappingByFamilyCommand $command
      *
      * @throws AttributeMappingException
+     * @throws DataProviderException
      */
     public function handle(SaveAttributesMappingByFamilyCommand $command): void
     {
         $familyCode = $command->getFamilyCode();
-        $attributesMapping = $command->getAttributesMapping();
-
-        $attributesMapping = $this->filterUnknownAttributes($attributesMapping);
-        if (empty($attributesMapping)) {
-            throw AttributeMappingException::onlyUnknownMappedAttributes();
-        }
-
-        $this->validate($familyCode, $attributesMapping);
-
-        $this->attributesMappingProvider->saveAttributesMapping(
-            $familyCode,
-            $attributesMapping
-        );
-        $this->subscriptionRepository->emptySuggestedDataAndMissingMappingByFamily($familyCode);
-    }
-
-    /**
-     * @param array $attributesMapping
-     *
-     * @return array
-     */
-    private function filterUnknownAttributes(array $attributesMapping): array
-    {
-        $attributeCodes = [];
-        foreach ($attributesMapping as $attributeMapping) {
-            $attributeCodes[] = $attributeMapping->getPimAttributeCode();
-        }
-
-        $attributes = $this->attributeRepository->findBy(['code' => $attributeCodes]);
-
-        return array_filter($attributesMapping, function ($attributeMapping) use ($attributes) {
-            $attributeCode = $attributeMapping->getPimAttributeCode();
-            if (null === $attributeCode) {
-                return true;
-            }
-
-            foreach ($attributes as $attribute) {
-                if ($attributeCode === $attribute->getCode()) {
-                    return true;
-                }
-            }
-
-            return false;
-        });
-    }
-
-    /**
-     * Validates that the family exists.
-     * Validates that the attribute exists.
-     *
-     * @param string $familyCode
-     * @param array $attributesMapping
-     */
-    private function validate(string $familyCode, array $attributesMapping): void
-    {
         $family = $this->familyRepository->findOneByIdentifier($familyCode);
         if (null === $family) {
             throw new \InvalidArgumentException(sprintf('Family "%s" not found', $familyCode));
         }
 
-        $validAttributeCodes = $family->getAttributeCodes();
-        foreach ($attributesMapping as $attributeMapping) {
-            if (null !== $attributeMapping->getPimAttributeCode()) {
-                $this->validateAndFillAttribute($attributeMapping, $validAttributeCodes);
+        $mappedAttrCodes = [];
+        foreach ($command->getMapping() as $attributeMapping) {
+            if (!empty($attributeMapping['attribute'])) {
+                $mappedAttrCodes[] = $attributeMapping['attribute'];
             }
         }
-    }
+        $mappedAttrCodes = array_intersect($mappedAttrCodes, $family->getAttributeCodes());
 
-    /**
-     * @param AttributeMapping $attributeMapping
-     * @param string[] $validAttributeCodes
-     *
-     * @throws AttributeMappingException
-     */
-    private function validateAndFillAttribute(AttributeMapping $attributeMapping, array $validAttributeCodes): void
-    {
-        $attribute = $this->attributeRepository->findOneByIdentifier($attributeMapping->getPimAttributeCode());
-
-        if (!in_array($attribute->getCode(), $validAttributeCodes)) {
-            throw AttributeMappingException::attributeNotInFamilyNotAllowed();
+        $attributes = [];
+        foreach ($this->attributeRepository->findBy(['code' => $mappedAttrCodes]) as $attribute) {
+            $attributes[$attribute->getCode()] = $attribute;
         }
 
-        $this->validateAttributeType($attribute->getType());
-
-        if ($attribute->isLocalizable()) {
-            throw AttributeMappingException::localizableAttributeNotAllowed();
+        if (empty($attributes)) {
+            throw AttributeMappingException::emptyAttributesMapping();
         }
 
-        if ($attribute->isScopable()) {
-            throw AttributeMappingException::scopableAttributeNotAllowed();
+        $attributesMapping = new AttributesMapping($familyCode);
+        foreach ($command->getMapping() as $franklinAttrId => $attributeMapping) {
+            $attributesMapping->map(
+                $franklinAttrId,
+                $attributeMapping['franklinAttribute']['type'],
+                $attributes[$attributeMapping['attribute']] ?? null
+            );
         }
 
-        if ($attribute->isLocaleSpecific()) {
-            throw AttributeMappingException::localeSpecificAttributeNotAllowed();
-        }
-
-        $attributeMapping->setAttribute($attribute);
-    }
-
-    /**
-     * @param string $attributeType
-     *
-     * @throws AttributeMappingException
-     */
-    private function validateAttributeType(string $attributeType): void
-    {
-        $authorizedPimAttributeTypes = array_keys(AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS);
-        if (!in_array($attributeType, $authorizedPimAttributeTypes)) {
-            throw AttributeMappingException::incompatibleAttributeTypeMapping($attributeType);
-        }
+        $this->attributesMappingProvider->saveAttributesMapping($familyCode, $attributesMapping);
+        $this->subscriptionRepository->emptySuggestedDataAndMissingMappingByFamily($familyCode);
     }
 }

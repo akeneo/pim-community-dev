@@ -27,7 +27,7 @@ export default interface MinimalAttribute {
   getCode: () => AttributeCode;
   getReferenceEntityIdentifier: () => ReferenceEntityIdentifier;
   getType(): string;
-  getLabel: (locale: string, defaultValue?: boolean) => string;
+  getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   normalize(): MinimalNormalizedAttribute;
 }
@@ -48,22 +48,22 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     readonly valuePerChannel: boolean
   ) {
     if (!(referenceEntityIdentifier instanceof ReferenceEntityIdentifier)) {
-      throw new InvalidArgumentError('Attribute expect an ReferenceEntityIdentifier argument');
+      throw new InvalidArgumentError('Attribute expects an ReferenceEntityIdentifier argument');
     }
     if (!(code instanceof AttributeCode)) {
-      throw new InvalidArgumentError('Attribute expect a AttributeCode argument');
+      throw new InvalidArgumentError('Attribute expects a AttributeCode argument');
     }
     if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('Attribute expect a LabelCollection argument');
+      throw new InvalidArgumentError('Attribute expects a LabelCollection argument');
     }
     if (typeof type !== 'string') {
-      throw new InvalidArgumentError('Attribute expect a string as attribute type');
+      throw new InvalidArgumentError('Attribute expects a string as attribute type');
     }
     if (typeof valuePerLocale !== 'boolean') {
-      throw new InvalidArgumentError('Attribute expect a boolean as valuePerLocale');
+      throw new InvalidArgumentError('Attribute expects a boolean as valuePerLocale');
     }
     if (typeof valuePerChannel !== 'boolean') {
-      throw new InvalidArgumentError('Attribute expect a boolean as valuePerChannel');
+      throw new InvalidArgumentError('Attribute expects a boolean as valuePerChannel');
     }
   }
 
@@ -90,9 +90,9 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     return this.type;
   }
 
-  public getLabel(locale: string, defaultValue: boolean = true) {
+  public getLabel(locale: string, fallbackOnCode: boolean = true) {
     if (!this.labelCollection.hasLabel(locale)) {
-      return defaultValue ? `[${this.getCode().stringValue()}]` : '';
+      return fallbackOnCode ? `[${this.getCode().stringValue()}]` : '';
     }
 
     return this.labelCollection.getLabel(locale);
@@ -135,7 +135,7 @@ export class MinimalRecordConcreteAttribute extends MinimalConcreteAttribute {
     }
 
     if (!(recordType instanceof RecordType)) {
-      throw new InvalidArgumentError('Attribute expect a RecordType argument');
+      throw new InvalidArgumentError('Attribute expects a RecordType argument');
     }
   }
 

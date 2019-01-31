@@ -169,6 +169,11 @@ services:
         arguments:
             - '@router'
 
+    akeneo_referenceentity.infrastructure.connector.validate_attribute_properties_immutability:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\ValidateAttributePropertiesImmutability
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
+
     akeneo_referenceentity.infrastructure.connector.action.records.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\GetConnectorRecordsAction
         arguments:
@@ -262,6 +267,7 @@ services:
             - '@validator'
             - '@akeneo_referenceentity.infrastructure.connector.api.create.attribute_creation_validator'
             - '@akeneo_referenceentity.infrastructure.connector.api.edit.attribute_edition_validator'
+            - '@akeneo_referenceentity.infrastructure.connector.validate_attribute_properties_immutability'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_option.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\CreateOrUpdateAttributeOptionAction

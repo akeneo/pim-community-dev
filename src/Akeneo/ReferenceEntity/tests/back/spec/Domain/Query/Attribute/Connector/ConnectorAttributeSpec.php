@@ -59,8 +59,8 @@ class ConnectorAttributeSpec extends ObjectBehavior
                 'fr_FR' => 'Description',
             ],
             'type' => 'text',
-            'localizable' => true,
-            'scopable' => true,
+            'value_per_locale' => true,
+            'value_per_channel' => true,
             'is_required_for_completeness' => false,
             'max_characters' => 123,
             'is_textarea' => false,
@@ -94,8 +94,8 @@ class ConnectorAttributeSpec extends ObjectBehavior
                 'fr_FR' => 'Pays'
             ],
             'type' => 'reference_entity_single_link',
-            'localizable' => true,
-            'scopable' => true,
+            'value_per_locale' => true,
+            'value_per_channel' => true,
             'is_required_for_completeness' => false,
             'reference_entity_code' => 'country'
         ]);

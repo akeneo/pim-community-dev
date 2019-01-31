@@ -28,3 +28,4 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.franklin_client.attribute_options_mapping'
             - '@akeneo.pim.automation.franklin_insights.repository.configuration'
+            - '@akeneo.pim.automation.franklin_insights.normalizer.attribute_options'

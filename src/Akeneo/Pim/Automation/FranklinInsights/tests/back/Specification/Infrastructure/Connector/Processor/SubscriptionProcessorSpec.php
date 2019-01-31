@@ -13,20 +13,19 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Processor;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Processor\SubscriptionProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -34,16 +33,10 @@ use PhpSpec\ObjectBehavior;
 class SubscriptionProcessorSpec extends ObjectBehavior
 {
     public function let(
-        ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        ProductRepositoryInterface $productRepository,
-        AttributeInterface $asin
+        GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
+        ProductRepositoryInterface $productRepository
     ): void {
-        $identifiersMapping = new IdentifiersMapping();
-        $identifiersMapping->map('asin', $asin->getWrappedObject());
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $this->beConstructedWith($productSubscriptionRepository, $identifiersMappingRepository, $productRepository);
-        $this->initialize();
+        $this->beConstructedWith($getProductSubscriptionStatusHandler, $productRepository);
     }
 
     public function it_is_an_item_processor(): void
@@ -57,84 +50,171 @@ class SubscriptionProcessorSpec extends ObjectBehavior
     }
 
     public function it_does_not_process_a_variant_product(
+        $getProductSubscriptionStatusHandler,
+        $productRepository,
         ProductInterface $product
     ): void {
-        $product->isVariant()->willReturn(true);
-        $product->getIdentifier()->willReturn('foo');
+        $product->getId()->willReturn(42);
+        $product->getIdentifier()->willReturn('foobar');
 
-        $this->shouldThrow(InvalidItemException::class)->during('process', [$product]);
+        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(42))->willReturn(
+            new ProductSubscriptionStatus(
+                new ConnectionStatus(true, false, true, 0),
+                false,
+                true,
+                true,
+                true
+            )
+        );
+
+        $productRepository->find(Argument::any())->shouldNotBeCalled();
+
+        try {
+            $this->process($product);
+        } catch (\Exception $exception) {
+            $this->shouldHaveThrownWithMessageAndProductIdentifier(
+                $exception,
+                ProductSubscriptionException::variantProduct()->getMessage(),
+                'foobar'
+            );
+        }
     }
 
     public function it_does_not_process_a_product_without_family(
+        $getProductSubscriptionStatusHandler,
+        $productRepository,
         ProductInterface $product
     ): void {
-        $product->isVariant()->willReturn(false);
-        $product->getFamily()->willReturn(null);
-        $product->getIdentifier()->willReturn('foo');
+        $product->getId()->willReturn(42);
+        $product->getIdentifier()->willReturn('foobar');
 
-        $this->shouldThrow(InvalidItemException::class)->during('process', [$product]);
+        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(42))->willReturn(
+            new ProductSubscriptionStatus(
+                new ConnectionStatus(true, false, true, 0),
+                false,
+                false,
+                true,
+                false
+            )
+        );
+
+        $productRepository->find(Argument::any())->shouldNotBeCalled();
+
+        try {
+            $this->process($product);
+        } catch (\Exception $exception) {
+            $this->shouldHaveThrownWithMessageAndProductIdentifier(
+                $exception,
+                ProductSubscriptionException::familyRequired()->getMessage(),
+                'foobar'
+            );
+        }
     }
 
     public function it_does_not_process_a_product_already_subscribed(
-        $productSubscriptionRepository,
-        ProductInterface $product,
-        FamilyInterface $family
+        $getProductSubscriptionStatusHandler,
+        $productRepository,
+        ProductInterface $product
     ): void {
-        $product->isVariant()->willReturn(false);
-        $product->getFamily()->willReturn($family);
         $product->getId()->willReturn(42);
+        $product->getIdentifier()->willReturn('foobar');
 
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn(
-            new ProductSubscription(42, 'fake-subscription-id', ['sku' => '72527273070'])
+        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(42))->willReturn(
+            new ProductSubscriptionStatus(
+                new ConnectionStatus(true, false, true, 0),
+                true,
+                true,
+                true,
+                false
+            )
         );
-        $product->getIdentifier()->willReturn('foo');
 
-        $this->shouldThrow(InvalidItemException::class)->during('process', [$product]);
+        $productRepository->find(Argument::any())->shouldNotBeCalled();
+
+        try {
+            $this->process($product);
+        } catch (\Exception $exception) {
+            $this->shouldHaveThrownWithMessageAndProductIdentifier(
+                $exception,
+                ProductSubscriptionException::alreadySubscribedProduct()->getMessage(),
+                'foobar'
+            );
+        }
     }
 
     public function it_does_not_process_a_product_without_identifier_values(
-        $productSubscriptionRepository,
+        $getProductSubscriptionStatusHandler,
         $productRepository,
-        $asin,
-        ProductInterface $product,
-        FamilyInterface $family
+        ProductInterface $product
     ): void {
-        $product->isVariant()->willReturn(false);
-        $product->getFamily()->willReturn($family);
         $product->getId()->willReturn(42);
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
-        $productRepository->find(42)->willReturn($product);
+        $product->getIdentifier()->willReturn('foobar');
 
-        $asin->getCode()->willReturn('asin');
-        $product->getValue('asin')->willReturn(null);
+        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(42))->willReturn(
+            new ProductSubscriptionStatus(
+                new ConnectionStatus(true, false, true, 0),
+                false,
+                true,
+                false,
+                false
+            )
+        );
 
-        $product->getIdentifier()->willReturn('foo');
+        $productRepository->find(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow(InvalidItemException::class)->during('process', [$product]);
+        try {
+            $this->process($product);
+        } catch (\Exception $exception) {
+            $this->shouldHaveThrownWithMessageAndProductIdentifier(
+                $exception,
+                ProductSubscriptionException::invalidMappedValues()->getMessage(),
+                'foobar'
+            );
+        }
     }
 
     public function it_successfully_processes_a_product(
-        $productSubscriptionRepository,
+        $getProductSubscriptionStatusHandler,
         $productRepository,
-        $asin,
-        ProductInterface $product,
-        FamilyInterface $family,
-        ValueInterface $asinValue
+        ProductInterface $product
     ): void {
-        $product->isVariant()->willReturn(false);
-        $product->getFamily()->willReturn($family);
         $product->getId()->willReturn(42);
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
 
-        $asin->getCode()->willReturn('asin');
-        $product->getValue('asin')->willReturn($asinValue);
-
-        $asinValue->hasData()->willReturn(true);
-        $asinValue->__toString()->willReturn('ABC123');
+        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(42))->willReturn(
+            new ProductSubscriptionStatus(
+                new ConnectionStatus(true, false, true, 0),
+                false,
+                true,
+                true,
+                false
+            )
+        );
 
         $productRepository->find(42)->willReturn($product);
 
-        $request = $this->process($product);
-        $request->shouldHaveType(ProductSubscriptionRequest::class);
+        $this->process($product)->shouldReturnAnInstanceOf(ProductSubscriptionRequest::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMatchers(): array
+    {
+        return [
+            'haveThrownWithMessageAndProductIdentifier' => function (
+                SubscriptionProcessor $subject,
+                InvalidItemException $exception,
+                string $message,
+                string $identifier
+            ) {
+                if ($message === $exception->getMessage() &&
+                    ['identifier' => $identifier] === $exception->getItem()->getInvalidData()
+                ) {
+                    return true;
+                }
+
+                return false;
+            },
+        ];
     }
 }

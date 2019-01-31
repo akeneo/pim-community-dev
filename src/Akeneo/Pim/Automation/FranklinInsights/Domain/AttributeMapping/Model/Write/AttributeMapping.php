@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
@@ -46,9 +47,6 @@ class AttributeMapping
     /** @var string */
     private $targetAttributeType;
 
-    /** @var string|null */
-    private $pimAttributeCode;
-
     /** @var AttributeInterface */
     private $attribute;
 
@@ -58,12 +56,14 @@ class AttributeMapping
     /**
      * @param string $targetAttributeCode
      * @param string $targetAttributeType
-     * @param null|string $pimAttributeCode
+     * @param AttributeInterface|null $attribute
+     *
+     * @throws AttributeMappingException
      */
     public function __construct(
         string $targetAttributeCode,
         string $targetAttributeType,
-        ?string $pimAttributeCode
+        ?AttributeInterface $attribute = null
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
 
@@ -77,16 +77,11 @@ class AttributeMapping
             );
         }
         $this->targetAttributeType = $targetAttributeType;
-        $this->pimAttributeCode = empty($pimAttributeCode) ? null : $pimAttributeCode;
-        $this->status = empty($this->pimAttributeCode) ? self::ATTRIBUTE_UNMAPPED : self::ATTRIBUTE_MAPPED;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPimAttributeCode(): ?string
-    {
-        return $this->pimAttributeCode;
+        if (null !== $attribute) {
+            $this->validateAttribute($attribute);
+        }
+        $this->attribute = $attribute;
+        $this->status = null === $this->attribute ? self::ATTRIBUTE_PENDING : self::ATTRIBUTE_MAPPED;
     }
 
     /**
@@ -95,26 +90,6 @@ class AttributeMapping
     public function getTargetAttributeCode(): string
     {
         return $this->targetAttributeCode;
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @return AttributeMapping
-     */
-    public function setAttribute(AttributeInterface $attribute): self
-    {
-        $this->attribute = $attribute;
-
-        return $this;
-    }
-
-    /**
-     * @return AttributeInterface
-     */
-    public function getAttribute(): ?AttributeInterface
-    {
-        return $this->attribute;
     }
 
     /**
@@ -131,5 +106,41 @@ class AttributeMapping
     public function getTargetAttributeType(): string
     {
         return $this->targetAttributeType;
+    }
+
+    /**
+     * @return AttributeInterface|null
+     */
+    public function getAttribute(): ?AttributeInterface
+    {
+        return $this->attribute;
+    }
+
+    /**
+     * Mapped attribute should:
+     * - not be localizable, scopable nor locale specific
+     * - be one of the authorized attribute types.
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @throws AttributeMappingException
+     */
+    private function validateAttribute(AttributeInterface $attribute): void
+    {
+        if ($attribute->isLocalizable()) {
+            throw AttributeMappingException::localizableAttributeNotAllowed();
+        }
+
+        if ($attribute->isScopable()) {
+            throw AttributeMappingException::scopableAttributeNotAllowed();
+        }
+
+        if ($attribute->isLocaleSpecific()) {
+            throw AttributeMappingException::localeSpecificAttributeNotAllowed();
+        }
+
+        if (!in_array($attribute->getType(), array_keys(AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS))) {
+            throw AttributeMappingException::incompatibleAttributeTypeMapping($attribute->getType());
+        }
     }
 }

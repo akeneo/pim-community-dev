@@ -65,6 +65,14 @@ Feature: Create an attribute linked to a reference entity
       | label                  | The code cannot be any of those values: "{{ code, label, image }}" |
       | code                   | The code cannot be any of those values: "{{ code, label, image }}" |
 
+  @acceptance-back
+  Scenario: Cannot create a record attribute with a record type that refers to a reference entity that does not exist
+    When the user creates a record attribute "mentor" linked to the reference entity "designer" with:
+      | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | record_type |
+      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 2     | false             | false            | foo         |
+    Then there should be a validation error on the property 'reference_entity_code' with message 'The reference entity "foo" was not found.'
+    And there is no exception thrown
+
   @acceptance-front
   Scenario: Create a simple valid text attribute
     Given the user has the following rights:

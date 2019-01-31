@@ -35,6 +35,7 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
         parent::setUp();
 
         $this->findSearchableRecords = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_searchable_records');
+        $this->resetDB();
         $this->loadReferenceEntityAndAttributes();
     }
 
@@ -53,12 +54,9 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
      */
     public function it_returns_a_searchable_record_item()
     {
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        /** @var ReferenceEntity $referenceEntity */
-        $referenceEntity = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
-
-        $labelIdentifier = $referenceEntity->getAttributeAsLabelReference()->normalize();
         $searchableRecord = $this->findSearchableRecords->byRecordIdentifier(RecordIdentifier::fromString('stark_designer_fingerprint'));
+
+        $labelIdentifier = $this->getAttributeAsLabelIdentifier('designer');
         Assert::assertEquals('stark_designer_fingerprint', $searchableRecord->identifier);
         Assert::assertEquals('stark', $searchableRecord->code);
         Assert::assertEquals('designer', $searchableRecord->referenceEntityIdentifier);
@@ -100,39 +98,88 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
     public function it_returns_searchable_record_items_by_reference_entity()
     {
         $searchableRecords = $this->findSearchableRecords->byReferenceEntityIdentifier(
-            ReferenceEntityIdentifier::fromString('wrong_reference_entity')
+            ReferenceEntityIdentifier::fromString('designer')
         );
-        foreach ($searchableRecords as $searchableRecord) {
-            Assert::assertEquals('stark_designer_fingerprint', $searchableRecord->identifier);
-            Assert::assertEquals('stark', $searchableRecord->code);
-            Assert::assertEquals('designer', $searchableRecord->referenceEntityIdentifier);
-            Assert::assertSame(['fr_FR' => 'Philippe Starck'], $searchableRecord->labels);
-            Assert::assertSame([
-                'name' => [
-                    'data' => 'Philippe stark',
-                    'locale' => null,
-                    'channel' => null,
+
+        $labelIdentifier = $this->getAttributeAsLabelIdentifier('designer');
+        $searchableRecords = iterator_to_array($searchableRecords);
+        Assert::assertCount(1, $searchableRecords);
+        $searchableRecord = current($searchableRecords);
+        Assert::assertEquals('stark_designer_fingerprint', $searchableRecord->identifier);
+        Assert::assertEquals('stark', $searchableRecord->code);
+        Assert::assertEquals('designer', $searchableRecord->referenceEntityIdentifier);
+        Assert::assertSame(['fr_FR' => 'Philippe Starck'], $searchableRecord->labels);
+        Assert::assertSame(
+            [
+                'name'                      => [
+                    'data'      => 'Philippe stark',
+                    'locale'    => null,
+                    'channel'   => null,
                     'attribute' => 'name',
-                ]
-            ], $searchableRecord->values);
-        }
+                ],
+                $labelIdentifier . '_fr_FR' => [
+                    'data'      => 'Philippe Starck',
+                    'locale'    => 'fr_FR',
+                    'channel'   => null,
+                    'attribute' => $labelIdentifier,
+                ],
+            ],
+            $searchableRecord->values
+        );
     }
 
     private function loadReferenceEntityAndAttributes(): void
     {
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
-            [
-                'fr_FR' => 'Concepteur',
-                'en_US' => 'Designer',
-            ],
-            Image::createEmpty()
-        );
-        $referenceEntityRepository->create($referenceEntity);
-        $referenceEntity = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+        $designer = $this->createDesigner();
+        $this->createStark($designer);
 
+        $brand = $this->createBrand();
+        $this->createFatboy($brand);
+    }
+
+    /**
+     * @return ReferenceEntity
+     *
+     */
+    private function createDesigner(): ReferenceEntity
+    {
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntityRepository->create(
+            ReferenceEntity::create(
+                ReferenceEntityIdentifier::fromString('designer'),
+                [
+                    'fr_FR' => 'Concepteur',
+                    'en_US' => 'Designer',
+                ],
+                Image::createEmpty()
+            )
+        );
+        $result = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+
+        return $result;
+    }
+
+    private function createBrand(): ReferenceEntity
+    {
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntityRepository->create(
+            ReferenceEntity::create(
+                ReferenceEntityIdentifier::fromString('brand'),
+                [
+                    'fr_FR' => 'Marque',
+                    'en_US' => 'Brand',
+                ],
+                Image::createEmpty()
+            )
+        );
+        $result = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+
+        return $result;
+    }
+
+    private function createStark(ReferenceEntity $designer): void
+    {
         $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $recordRepository->create(
             Record::create(
@@ -141,7 +188,7 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
                 RecordCode::fromString('stark'),
                 ValueCollection::fromValues([
                     Value::create(
-                        $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+                        $designer->getAttributeAsLabelReference()->getIdentifier(),
                         ChannelReference::noReference(),
                         LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                         TextData::fromString('Philippe Starck')
@@ -155,5 +202,45 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
                 ])
             )
         );
+    }
+
+    private function createFatboy(ReferenceEntity $brand): void
+    {
+        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $recordRepository->create(
+            Record::create(
+                RecordIdentifier::fromString('fatboy_brand_fingerprint'),
+                ReferenceEntityIdentifier::fromString('brand'),
+                RecordCode::fromString('fatboy'),
+                ValueCollection::fromValues([
+                    Value::create(
+                        $brand->getAttributeAsLabelReference()->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Fatboy is a new branding company')
+                    ),
+                    Value::create(
+                        AttributeIdentifier::fromString('name'),
+                        ChannelReference::noReference(),
+                        LocaleReference::noReference(),
+                        TextData::fromString('Fatboy inc.')
+                    )
+                ])
+            )
+        );
+    }
+
+    private function resetDB(): void
+    {
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+    }
+
+    private function getAttributeAsLabelIdentifier($identifier): string
+    {
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntity = $referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString($identifier));
+        $result = $referenceEntity->getAttributeAsLabelReference()->normalize();
+
+        return $result;
     }
 }

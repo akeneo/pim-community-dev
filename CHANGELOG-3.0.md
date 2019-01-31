@@ -14,8 +14,11 @@
 - TIP-879: Uses utf8mb4 as encoding for MySQL instead of the less complete utf8
 - TIP-883: In order to have a clean and independant product aggregate, ProductValue only provides attribute code and no more direct attribute access.
 - TIP-889: Improve product export performance by computing headers at the end
+- TIP-1041: Adds support for Elasticsearch 6, puts Published products in their own index
 
 ## BC breaks
+- Change constructor of `Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer`. Add argument `Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface`  
+- Two new parameters must be defined for published products: `published_product_index_name` and `published_product_and_product_model_index_name`
 - All product flat writers (CSV, XLSX for products and published products) now have two new arguments of type `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface` and `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface`. There two new services now managed the generation of headers for flat product file at export time.
 - Remove the service `pimee_workflow.twig.extension.group_product_values`
 - Remove the service `pimee_workflow.helper.sort_product_values`

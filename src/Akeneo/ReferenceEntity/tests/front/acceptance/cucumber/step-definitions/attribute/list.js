@@ -154,13 +154,11 @@ module.exports = async function(cucumber) {
     attributeIdentifier,
     referenceEntityIdentifier
   ) {
-    debugger;
     await showAttributesTab(this.page);
     const attributes = await await getElement(this.page, 'Attributes');
 
     await editAttribute(this.page, attributeIdentifier, true);
     this.page.on('request', request => {
-      debugger;
       const baseUrl = 'http://pim.com/rest/reference_entity';
       const identifier = `${referenceEntityIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
       const deleteUrl = `${baseUrl}/${referenceEntityIdentifier}/attribute/${identifier}`;
@@ -170,6 +168,10 @@ module.exports = async function(cucumber) {
 
       return request;
     });
+
+    const requestContract = getRequestContract('Attribute/ListDetails/ok/name_portrait.json');
+
+    await listenRequest(this.page, requestContract);
 
     await attributes.remove(attributeIdentifier);
   });
@@ -202,7 +204,7 @@ module.exports = async function(cucumber) {
       return request;
     });
 
-    const requestContract = getRequestContract('Attribute/ListDetails/ok/name_portrait.json');
+    const requestContract = getRequestContract('Attribute/ListDetails/ok/name_bio_portrait.json');
 
     await listenRequest(this.page, requestContract);
 

@@ -16,7 +16,6 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mappi
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -39,24 +38,15 @@ class SaveAttributesMappingByFamilyCommandSpec extends ObjectBehavior
 
     public function it_returns_the_family_code(): void
     {
-        $familyCode = 'family_code';
-
-        $this->beConstructedWith($familyCode, self::VALID_MAPPING);
-        $this->getFamilyCode()->shouldReturn($familyCode);
+        $this->beConstructedWith('family_code', self::VALID_MAPPING);
+        $this->getFamilyCode()->shouldReturn('family_code');
     }
 
     public function it_returns_an_attribute_mapping(): void
     {
         $this->beConstructedWith('family_code', self::VALID_MAPPING);
 
-        $attributesMapping = $this->getAttributesMapping();
-        $attributesMapping->shouldHaveCount(1);
-
-        $attributeMapping = $attributesMapping[0];
-        $attributeMapping->shouldBeAnInstanceOf(AttributeMapping::class);
-        $attributeMapping->getPimAttributeCode()->shouldReturn('tshirt_style');
-        $attributeMapping->getTargetAttributeCode()->shouldReturn('color');
-        $attributeMapping->getStatus()->shouldReturn(1);
+        $attributesMapping = $this->getMapping()->shouldReturn(self::VALID_MAPPING);
     }
 
     public function it_throws_an_exception_if_target_key_is_missing(): void
@@ -106,7 +96,7 @@ class SaveAttributesMappingByFamilyCommandSpec extends ObjectBehavior
             ],
             'test2' => [
                 'franklinAttribute' => ['type' => 'text'],
-                'attribute' => null,
+                'attribute' => '',
             ],
         ];
 

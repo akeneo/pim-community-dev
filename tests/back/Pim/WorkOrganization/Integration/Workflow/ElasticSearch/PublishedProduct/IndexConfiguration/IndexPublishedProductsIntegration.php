@@ -42,7 +42,7 @@ class IndexPublishedProductsIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->esPublishedProductClient = $this->get('akeneo_elasticsearch.client.product');
+        $this->esPublishedProductClient = $this->get('akeneo_elasticsearch.client.published_product');
     }
 
     public function testDateBeforeText(): void

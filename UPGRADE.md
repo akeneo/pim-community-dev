@@ -10,19 +10,31 @@
 
 > Please perform a backup of your database before proceeding to the migration. You can use tools like [mysqldump](https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html).
 
+> Please perform a backup of your indices before proceeding to the migration. You can use Elastisearch API [_snapshot](hhttps://www.elastic.co/guide/en/elasticsearch/reference/5.6/modules-snapshots.html).
+
 > Please perform a backup of your codebase if you don't use a VCS (Version Control System).
 
 ## Requirements
 
 Please, see the complete [list of requirements](https://docs.akeneo.com/3.0/install_pim/manual/system_requirements/system_requirements.html) for PIM v3.0.
 
+Please provide a server with the following requirements before proceeding to the PIM 3.0 migration. To install those requirements, you can follow the official documentations or our installation documentation on [Debian 9](https://docs.akeneo.com/3.0/install_pim/manual/system_requirements/manual_system_installation_debian9.html) or [Ubuntu 16.04](https://docs.akeneo.com/3.0/install_pim/manual/system_requirements/system_install_ubuntu_1604.html).
+
 ### PHP Version
 
-Akeneo PIM v3.0 now expects PHP 7.2.
+Akeneo PIM v3.0 now expects PHP 7.2
 
 ### MySQL version
 
-Akeneo PIM v3.0 now expects MySQL 5.7.22.
+Akeneo PIM v3.0 now expects MySQL 5.7.22
+
+### Elasticsearch version
+
+Akeneo PIM v3.0 now expects Elasticsearch 6.5.4
+
+### Node version
+
+Akeneo PIM v3.O now expects Node 10.15.0
 
 ## Database charset migration
 
@@ -181,19 +193,35 @@ src/
 
 This change lead us to move all the classes of the PIM (`sed` commands are provided in the section _Migrate your custom code_ of this upgrade guide). It has also a small impact on the configuration files as described in the section *Migrate your standard project*.
 
-If you want to know more about this topic, you can read the [blog posts](#) we have written. You can also refer to [the definitions of each of those new folders](https://github.com/akeneo/pim-community-dev/blob/master/internal_doc/ARCHITECTURE.md#you-said-bounded-contexts).
+If you want to know more about this topic, you can read the [blog post](https://medium.com/akeneo-labs/akeneo-pim-3-0-lets-tidy-up-a91d986bf5bb) we have written. You can also refer to [the definitions of each of those new folders](https://github.com/akeneo/pim-community-dev/blob/master/internal_doc/ARCHITECTURE.md#you-said-bounded-contexts).
 
-TODO: link to blog post
+TODO: link to the second blog post
 
 ## Migrate your standard project
 
 /!\ Before starting the migration process, we advise you to stop the job queue consumer daemon and start it again only when the migration process is finished.
 
-TODO: add command to stop the daemon...
+If you use `supervisor`, then stop your daemon as following:
 
-To give you a quick overview of the changes made to a standard project, you can check on [Github](https://github.com/akeneo/pim-enterprise-standard/compare/2.3...standard-for-3dot0).
+    ```bash
+    supervisorctl status
+    # the command returns the following daemons
+    # pim-queue-daemon:pim-queue-daemon_00 RUNNING    pid 4162, uptime 0:05:44
 
-TODO: change the link!!
+    supervisorctl stop pim-queue-daemon:pim-queue-daemon_00
+
+    supervisorctl status
+    # the daemon has been stopped
+    # pim-queue-daemon:pim-queue-daemon_00 STOPPED    Jan 24 11:41 AM
+    ```
+
+Otherwise, kill your daemon:
+
+    ```bash
+    pkill -f job-queue-consumer-daemon
+    ```
+
+To give you a quick overview of the changes made to a standard project, you can check on [Github](https://github.com/akeneo/pim-enterprise-standard/compare/2.3...3.0).
 
 1. Download the latest standard edition from the [Partner Portal](https://partners.akeneo.com/login) and extract it:
 
@@ -205,45 +233,230 @@ TODO: change the link!!
 
 2. Update the configuration files:
 
+    An easy way to update them is to copy/paste configuration files from the latest standard edition. Normally you shouldn't have made a single change to them in your project. If it's the case, don't forget to update them with your changes.
+
     First, we'll consider you have a `$PIM_DIR` variable:
 
     ```bash
     export PIM_DIR=/path/to/your/current/pim/installation
     ```
     
-    Then copy the following files, normally you shouldn't have made a single change to them in your project. If it's the case, don't forget to update them with your changes:
+    Then apply the changes:
 
     ```bash
     cp .env.dist $PIM_DIR/
+    cp .env.dist $PIM_DIR/.env
     cp .gitignore $PIM_DIR/
     cp docker-compose.override.yml.dist $PIM_DIR/
     cp docker-compose.yml $PIM_DIR/
+    cp docker/sso_authsources.php $PIM_DIR/docker/
 
     cp app/PimRequirements.php $PIM_DIR/app/
-    cp app/config/config_behat.yml $PIM_DIR/app/config/
-    cp app/config/config_test.yml $PIM_DIR/app/config/
     cp app/config/pim_parameters.yml $PIM_DIR/app/config/
     cp app/config/security.yml $PIM_DIR/app/config/
     cp app/config/security_test.yml $PIM_DIR/app/config/
     ```
+
+    Or you can follow the detailed list of changes:
+
+    * The `.env.dist`, `docker-compose.override.yml.dist`, `docker/sso_authsources.php`, `docker-compose.yml`, `.gitignore`, `app/PimRequirements.php` have completely changed ot didn't exist before, it's better to copy them.
+
+
+    * The configuration file `app/config/security.yml` had somes changes:
+
+        - The user provider `oro_user` has been replaced by `pim_user`
+        - The user provider ID `oro_user.security.provider` has been replaced by `pim_user.provider.user`
+
+        v2.3.x:
+        ```yaml
+        providers:
+            chain_provider:
+                chain:
+                    providers:                  [oro_user]
+            oro_user:
+                id:                             oro_user.security.provider
+        ```
+
+        v3.0:
+        ```yaml
+        providers:
+            chain_provider:
+                chain:
+                    providers:                  [pim_user] # This line has changed
+            pim_user:
+                id:                             pim_user.provider.user # This line has changed
+        ```
+
+        - A new firewall has been added to make the SSO available:
+
+        v3.0:
+        ```yaml
+        sso:
+            pattern:   ^/
+            anonymous: true
+            provider:  chain_provider
+            saml:
+                username_attribute: akeneo_uid
+                check_path: saml_acs
+                login_path: saml_login
+                user_factory: akeneo_authentication.sso.user.factory 
+            form_login:
+                csrf_token_generator: security.csrf.token_manager
+                login_path: saml_login
+                check_path: pim_user_security_check
+                use_forward: true
+            logout:
+                path: saml_logout
+        ```
+
+        - The route `oro_user_security_check` has been replaced by `pim_user_security_check`
+        - The route `oro_user_security_login` has been replaced by `pim_user_security_login`
+        - The route `oro_user_security_logout` has been replaced by `pim_user_security_logout`
+
+        v2.3.x:
+        ```yaml
+        main:
+            pattern:                        ^/
+            provider:                       chain_provider
+            form_login:
+                csrf_token_generator:       security.csrf.token_manager
+                check_path:                 oro_user_security_check
+                login_path:                 oro_user_security_login
+            logout:
+                path:                       oro_user_security_logout
+            remember_me:
+                secret:                     '%secret%'
+                name:                       BAPRM
+                lifetime:                   1209600   # stay logged for two weeks
+            anonymous:                      false
+        ```
+
+        v3.0:
+        ```yaml
+        main:
+            pattern:                        ^/
+            provider:                       chain_provider
+            form_login:
+                csrf_token_generator:       security.csrf.token_manager
+                check_path:                 pim_user_security_check # This line has changed
+                login_path:                 pim_user_security_login # This line has changed
+            logout:
+                path:                       pim_user_security_logout # This line has changed
+            remember_me:
+                secret:                     '%secret%'
+                name:                       BAPRM
+                lifetime:                   1209600   # stay logged for two weeks
+            anonymous:                      false
+        ```
+
+        - The User `Pim\Bundle\UserBundle\Entity\User` has moved to `Akeneo\UserManagement\Component\Model\User`
+
+        v2.3.x:
+        ```yaml
+        encoders:
+            Pim\Bundle\UserBundle\Entity\User: sha512
+            Symfony\Component\Security\Core\User\User: plaintext
+
+        ```
+
+        v3.0:
+        ```yaml
+        encoders:
+            Akeneo\UserManagement\Component\Model\User: sha512 # This line has changed
+            Symfony\Component\Security\Core\User\User: plaintext
+        ```
+
+        - Some access controls have been added to make the SSO available:
+
+        v2.3.x:
+        ```yaml
+        access_control:
+            - { path: ^/admin/, role: ROLE_ADMIN }
+            - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/api/, role: pim_api_overall_access }
+        ```
+
+        v3.0:
+        ```yaml
+        access_control:
+            - { path: ^/admin/, role: ROLE_ADMIN }
+            - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/api/, role: pim_api_overall_access }
+            #Additionnal access control for SSO, the following lines have been added
+            - { path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/user/reset-request, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/user/send-email, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/saml-idp/resume, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
+        ```
     
-    At this step, most of the configuration files have been updated. But we still miss a few that are detailed in the next steps.
+    * The configuration file `app/config/pim_parameters.yml` had some changes:
+
+        - A new parameter have been added:
+        v3.0:
+        ```yaml
+        parameters:
+            env(AKENEO_PIM_URL): 'http://localhost'
+        ```
+
+        v2.3.x:
+        ```yaml
+        elasticsearch_index_configuration_files:
+            - '%pim_ce_dev_src_folder_location%/src/Pim/Bundle/CatalogBundle/Resources/elasticsearch/index_configuration.yml'
+            - '%pim_ee_dev_src_folder_location%/src/PimEnterprise/Bundle/WorkflowBundle/Resources/elasticsearch/index_configuration.yml'
+        ```
+
+
+        v3.0:
+        ```yaml
+        elasticsearch_index_configuration_files:
+            - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml' # This line has changed
+            - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/product_mapping.yml' # This line has changed
+
+        #The following lines have been added
+        elasticsearch_index_configuration_files_product_proposal:
+            - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
+            - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/WorkOrganization/Workflow/Bundle/Resources/elasticsearch/product_proposal_mapping.yml'
+
+        elasticsearch_index_configuration_files_published_product:
+            - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
+            - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/WorkOrganization/Workflow/Bundle/Resources/elasticsearch/published_product_mapping.yml'
+        ```
     
-    In those files, the following changes occurred:
-    
-    * the user provider `oro_user` has been replaced by `pim_user`.
-    * the user provider ID `oro_user.security.provider` has been replaced by `pim_user.provider.user`
-    * the route `oro_user_security_check` has been replaced by `pim_user_security_check`
-    * the route `oro_user_security_login` has been replaced by `pim_user_security_login`
-    * the route `oro_user_security_logout` has been replaced by `pim_user_security_logout`
-    * the Elasticsearch configuration files are now: 
-    
-    ```yaml
-    elasticsearch_index_configuration_files:
-        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/index_configuration.yml'
-        - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/WorkOrganization/Workflow/Bundle/Resources/elasticsearch/index_configuration.yml'
-    ```
-    
+    * The configuration file `app/config/security_test.yml` had some changes:
+
+    - The firewall provider `oro_user` has been replaced by `pim_user`
+
+        v2.3.x:
+        ```yaml
+        security:
+            firewalls:
+                main:
+                    http_basic:
+                        realm: "Secured REST Area"
+                    provider: oro_user
+                    form_login: false
+                    logout: false
+                    remember_me: false
+                    anonymous: true
+        ```
+
+        v3.0:
+        ```yaml
+        security:
+            firewalls:
+                main:
+                    http_basic:
+                        realm: "Secured REST Area"
+                    provider: pim_user # This line has changed
+                    form_login: false
+                    logout: false
+                    remember_me: false
+                    anonymous: true
+
+        ```
 
 3. Update your **app/config/config.yml**
 
@@ -257,63 +470,63 @@ TODO: change the link!!
     Or you can follow the detailed list of changes:
     
         
-    * The configuration file `pim.yml` is not located in the *PimEnrichBundle* anymore:
+    * The configuration files `pim.yml` and `pimee.yml` are not located in the *PimEnrichBundle* anymore:
 
-        v2.x
-        ```
+        v2.3.x:
+        ```yaml
         imports:
             - { resource: '@PimEnterpriseEnrichBundle/Resources/config/pimee.yml' }
+            - { resource: pim_parameters.yml }
+            - { resource: parameters.yml }
+            - { resource: security.yml }
         ```
 
-        v3.0
-        ```
+        v3.0:
+        ```yaml
         imports:
-            - { resource: '../../vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/config/pimee.yml' }
+            - { resource: '../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/config/pim.yml' } # This line has changed
+            - { resource: '../../vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/config/pimee.yml' } # This line has been added
+            - { resource: pim_parameters.yml }
+            - { resource: parameters.yml }
+            - { resource: security.yml }
         ```    
     
     * The translator now expects the language `en_US`:
 
-        v2.x
-        ```
+        v2.3.x:
+        ```yaml
         framework:
             translator:      { fallback: en }
         ```
 
-        v3.0
-        ```
+        v3.0:
+        ```yaml
         framework:
-            translator:      { fallback: en_US }
+            translator:      { fallback: en_US } # This line has changed
         ```
              
     * The reference data configuration has been moved in the Pim Structure. Therefore, you must update your reference data configuration. 
     The key `pim_reference_data` is replaced by `akeneo_pim_structure.reference_data`:
 
-        v2.x
-        ```
+        v2.3.x:
+        ```yaml
         pim_reference_data:
-            fabrics:
-                class: Acme\Bundle\AppBundle\Entity\Fabric
+            assets:
+                class: PimEnterprise\Component\ProductAsset\Model\Asset
                 type: multi
-            color:
-                class: Acme\Bundle\AppBundle\Entity\Color
-                type: simple
-
         ```
 
-        v3.0
-        ```
-        akeneo_pim_structure:
-            reference_data:
-                fabrics:
-                    class: Acme\Bundle\AppBundle\Entity\Fabric
+        v3.0:
+        ```yaml
+        akeneo_pim_structure: # This line has changed
+            reference_data: # This line has changed
+                assets:
+                    class: Akeneo\Asset\Component\Model\Asset # This line has changed
                     type: multi
-                color:
-                    class: Acme\Bundle\AppBundle\Entity\Color
-                    type: simple
         ```
 
-    * The key `pim_enrich.max_products_category_removal` has been removed. Please use the container parameter `max_products_category_removal` instead if needed.
-
+    * The configuration key `pim_enrich.max_products_category_removal` has been removed. Please use the container parameter `max_products_category_removal` instead if needed in your bundles.
+    
 4. Update your **app/config/config_prod.yml**
 
     An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
@@ -327,7 +540,7 @@ TODO: change the link!!
     
     * We added a `authentication logger` with log rotate behavior. Thoses logs are useful for SSO purpose.
 
-        ```
+        ```yaml
         monolog:
             handlers:
                 #...
@@ -352,28 +565,29 @@ TODO: change the link!!
 
     * The following route configurations have been removed:
         - `pim_enrich`
-        - `pim_comment`
-        - `pim_pdf_generator`
         - `pim_localization`
-        - `pim_reference_data`
-        - `oro_user`
         - `pimee_ui`
         - `pimee_datagrid`
+        - `pim_reference_data`
         - `pimee_api`
+        - `pim_comment`
+        - `pim_pdf_generator`
+        - `oro_user`
         
     * The following route configurations have been added:
         
+        v3.0:
         ```yaml
         akeneo_channel:
             resource: "@AkeneoChannelBundle/Resources/config/routing.yml"
             prefix:   /
-         
+
         akeneo_pim_structure:
             resource: "@AkeneoPimStructureBundle/Resources/config/routing.yml"
-         
+
         akeneo_pim_enrichment:
             resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
-      
+
         pim_franklin_insights:
             resource: "@AkeneoFranklinInsightsBundle/Resources/config/routing.yml"
         
@@ -393,6 +607,7 @@ TODO: change the link!!
         
         - oro_default
         
+        v2.3.x:
         ```yaml
         oro_default:
             path:  /
@@ -403,6 +618,7 @@ TODO: change the link!!
         
         to
         
+        v3.0:
         ```yaml
         oro_default:
             path:  /
@@ -413,160 +629,101 @@ TODO: change the link!!
 
         - pimee_teamwork_assistant
         
+        v2.3.x:
         ```yaml
         pimee_teamwork_assistant:
             resource: "@PimEnterpriseTeamworkAssistantBundle/Resources/config/routing/routing.yml"
-
         ```
         
         to
         
+        v3.0:
         ```yaml
         pimee_teamwork_assistant:
             resource: "@AkeneoPimTeamworkAssistantBundle/Resources/config/routing/routing.yml"
-
         ```
 
         - pimee_workflow
         
+        v2.3.x:
         ```yaml
         pimee_workflow:
             resource: "@PimEnterpriseWorkflowBundle/Resources/config/routing.yml"
-
         ```
         
         to
         
+        v3.0:
         ```yaml
         pimee_workflow:
             resource: "@AkeneoPimWorkflowBundle/Resources/config/routing.yml"
-
         ```
         
         - pim_versioning
         
+        v2.3.x:
         ```yaml
         pim_versioning:
             resource: "@PimEnterpriseVersioningBundle/Resources/config/routing.yml"
-
         ```
         
         to
         
+        v3.0:
         ```yaml
         pim_versioning:
             resource: "@AkeneoPimProductRevertBundle/Resources/config/routing.yml"
-
         ```
 
         - pim_catalog_rule
         
+        v2.3.x:
         ```yaml
         pim_catalog_rule:
             resource: "@PimEnterpriseCatalogRuleBundle/Resources/config/routing.yml"
-
         ```
         
         to
         
+        v3.0:
         ```yaml
         pim_catalog_rule:
             resource: "@AkeneoPimRuleEngineBundle/Resources/config/routing.yml"
-
         ```
 
         - pimee_product_asset
         
+        v2.3.x:
         ```yaml
         pimee_product_asset:
             resource: "@PimEnterpriseProductAssetBundle/Resources/config/routing.yml"
-
         ```
         
         to
         
+        v3.0:
         ```yaml
         pimee_product_asset:
             resource: "@AkeneoAssetBundle/Resources/config/routing.yml"
-
         ```
 
         - pim_security
         
+        v2.3.x:
         ```yaml
         pim_security:
             resource: "@PimEnterpriseSecurityBundle/Resources/config/routing.yml"
-
         ```
         
         to
         
+        v3.0:
         ```yaml
         pim_security:
             resource: "@AkeneoPimPermissionBundle/Resources/config/routing.yml"
-
         ```
-
-6. Update your **app/config/security.yml**:
-
-    An easy way to update it is to copy/paste from the latest standard edition and add your own custom security configuration.
-
-    * The following have been updated:
     
-    The parameter `security.encoders` has moved from
-     
-    ```yaml
-    encoders:
-        Pim\Bundle\UserBundle\Entity\User: sha512
-    ```
-    
-    to
-    
-    ```yaml
-    encoders:
-        Akeneo\UserManagement\Component\Model\User: sha512
-    ```
-        
-    A new firewall has been added `sso`, its position in the file is important, it has to be declared before the `main` one.
-    ```yaml
-    sso:
-        pattern:   ^/
-        anonymous: true
-        provider:  chain_provider
-        saml:
-            username_attribute: akeneo_uid
-            check_path: saml_acs
-            login_path: saml_login
-            user_factory: akeneo_authentication.sso.user.factory
-        form_login:
-            csrf_token_generator: security.csrf.token_manager
-            login_path: saml_login
-            check_path: pim_user_security_check
-            use_forward: true
-        logout:
-            path: saml_logout
-
-    main:
-       #... 
-    
-    ```
-    
-    New access control definition has been added in order to handle sso routes
-    ```yaml
-    access_control:
-        #...
-        #Additionnal access control for SSO
-        - { path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/reset-request, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/send-email, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/saml-idp/resume, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
-    
-    ```
-    
-7. Update your **app/AppKernel.php**:
+6. Update your **app/AppKernel.php**:
 
     An easy way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
 
@@ -643,24 +800,23 @@ TODO: change the link!!
         - `Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle`
         - `Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle`
 
-8. Add the DotEnv component in all entrypoints of the application
+7. Add the DotEnv component in all entrypoints of the application
 
     We introduced the DotEnv component as there are more and more deployments that use environment variables for configuration values.
-    The DotEnv Symfony component provides a way to set those environment variables in a file that could be overridden by real environment variables.
+    The DotEnv Symfony component provides a way to set those environment variables in a file that could be overridden by real environment variables (you should have copied the `.env.dist` to `.env` in the step 2).
+
+    For now, the following environment variable has to be set in the `.env` file:
     
-    Copy the `.env.dist` to `.env` 
     ```bash
-    cp .env.dist $PIM_DIR/.env
-    # then update the values in the .env file  
-    ``` 
+    AKENEO_PIM_URL=http://your.akeneo-pim.url
+    ```
     
-    The easiest way to update the entrypoints is to copy/paste their content from the latest standard edition and add your custom code if any.
+    To use it, the easiest way to update the entrypoints is to copy/paste their content from the latest standard edition and add your custom code if any.
     
     ```bash
     cp web/app.php $PIM_DIR/web/app.php
     cp web/app_dev.php $PIM_DIR/web/app_dev.php
     cp bin/console $PIM_DIR/bin/console
- 
     ```
     
     Or you can add the following code in those entrypoints just after the `require __DIR__.'/../vendor/autoload.php'``:
@@ -675,14 +831,18 @@ TODO: change the link!!
     if (file_exists($envFile)) {
         (new Symfony\Component\Dotenv\Dotenv())->load($envFile);
     }
- 
     ```
-    
-    For now, the following environment variable has to be set in the `.env` file:
-    
-    ```bash
-    AKENEO_PIM_URL=http://your.akeneo-pim.url
- 
+
+8. Add new parameters to `parameters.yml`
+
+New parameters have been added to `app/config/parameters.yml`
+
+    v3.0:
+    ```yaml
+    parameters:
+        record_index_name: YOUR_ELASTICSEARCH_INDEX_FOR_REFERENCE_ENTITIES
+        published_product_index_name: YOUR_ELASTICSEARCH_INDEX_FOR_PUBLISHED_PRODUCT
+        published_product_and_product_model_index_name: YOUR_ELASTICSEARCH_INDEX_FOR_PUBLISHED_PRODUCT_AND_PRODUCT_MODEL
     ```
 
 9. Update your dependencies:
@@ -718,11 +878,23 @@ TODO: change the link!!
     yarn install
     ```
 
-10. Migrate your database: 
+9. Migrate your MySQL database: 
+
+    Please, make sure the folder `upgrades/schema/` does not contain former migration files (from PIM 2.2 to 2.3 for instance), 
+    otherwise the migration command will surely not work properly.
 
     ```bash
     rm -rf var/cache
     bin/console doctrine:migration:migrate --env=prod
+    ```
+
+10. Migrate your Elasticsearch indices:
+
+    ```bash
+    php upgrades/schema/es_20190128100000_ee_clean_indices.php
+    php upgrades/schema/es_20190128100500_ee_create_reference_entity_index.php
+    php upgrades/schema/es_20190128110000_ce_update_document_type_product_and_product_model.php
+    php upgrades/schema/es_20190128120000_ee_update_document_type_proposal_and_published.php
     ```
 
 11. Then re-generate the PIM assets:
@@ -938,3 +1110,22 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogB
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\UserBundle\\Entity\\User/Akeneo\\UserManagement\\Component\\Model\\User/g'
 find ./app/config/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Model\\Asset/Akeneo\\Asset\\Component\\Model\\Asset/g'
 ```
+
+## Relaunch the queue consumer
+
+
+Now you are ready to restart the queue consumer daemon.
+
+If you use `supervisor`, then restart your daemon as following:
+
+    ```bash
+    supervisorctl status
+    # the command returns the following daemons
+    # pim-queue-daemon:pim-queue-daemon_00 STOPPED    Jan 24 11:41 AM
+
+    supervisorctl start pim-queue-daemon:pim-queue-daemon_00
+
+    supervisorctl status
+    # pim-queue-daemon:pim-queue-daemon_00 RUNNING    pid 3500, uptime 0:00:04
+    # the daemon has been restarted
+    ```

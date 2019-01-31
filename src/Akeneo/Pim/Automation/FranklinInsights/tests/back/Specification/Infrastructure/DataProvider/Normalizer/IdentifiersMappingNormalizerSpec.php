@@ -39,11 +39,6 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
         \ArrayIterator $brandTransIterator,
         ArrayCollection $skuTranslations
     ): void {
-        $mapping = new IdentifiersMapping();
-        $mapping
-            ->map('mpn', $attributeSku->getWrappedObject())
-            ->map('brand', $attributeBrand->getWrappedObject());
-
         $attributeSku->getCode()->willReturn('sku');
         $attributeSku->getTranslations()->willReturn($skuTranslations);
 
@@ -56,14 +51,20 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
         $brandTranslations->getIterator()->willReturn($brandTransIterator);
         $brandTransIterator->valid()->willReturn(true, true, false);
         $brandTransIterator->current()->willReturn($brandFR, $brandEN);
-        $brandTransIterator->next()->shouldBeCalled();
-        $brandTransIterator->rewind()->shouldBeCalled();
 
         $brandFR->getLocale()->willReturn('fr_FR');
         $brandFR->getLabel()->willReturn('Marque');
 
         $brandEN->getLocale()->willReturn('en_US');
         $brandEN->getLabel()->willReturn('Brand');
+
+        $mapping = new IdentifiersMapping([]);
+        $mapping
+            ->map('mpn', $attributeSku->getWrappedObject())
+            ->map('brand', $attributeBrand->getWrappedObject());
+
+        $brandTransIterator->next()->shouldBeCalled();
+        $brandTransIterator->rewind()->shouldBeCalled();
 
         $this->normalize($mapping)->shouldReturn(
             [

@@ -57,11 +57,13 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         $product->getValue('ean')->willReturn($eanValue);
         $product->getId()->willReturn(42);
 
-        $identifiersMapping = new IdentifiersMapping();
-        $identifiersMapping
-            ->map('upc', $ean->getWrappedObject())
-            ->map('brand', $manufacturer->getWrappedObject())
-            ->map('mpn', $model->getWrappedObject());
+        $identifiersMapping = new IdentifiersMapping(
+            [
+                'upc' => $ean->getWrappedObject(),
+                'brand' => $manufacturer->getWrappedObject(),
+                'mpn' => $model->getWrappedObject(),
+            ]
+        );
 
         $this->getMappedValues($identifiersMapping)->shouldReturn([
             'upc' => '123456789123',
@@ -114,11 +116,14 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         $product->getValue('brand')->willReturn($brandValue);
         $product->getValue('mpn')->willReturn($mpnValue);
 
-        $mapping = new IdentifiersMapping();
-        $mapping->map('upc', null);
-        $mapping->map('asin', null);
-        $mapping->map('brand', $brand->getWrappedObject());
-        $mapping->map('mpn', $mpn->getWrappedObject());
+        $mapping = new IdentifiersMapping(
+            [
+                'upc' => null,
+                'asin' => null,
+                'brand' => $brand->getWrappedObject(),
+                'mpn' => $mpn->getWrappedObject(),
+            ]
+        );
 
         $this->getMappedValues($mapping)->shouldReturn([
             'brand' => 'qwertee',

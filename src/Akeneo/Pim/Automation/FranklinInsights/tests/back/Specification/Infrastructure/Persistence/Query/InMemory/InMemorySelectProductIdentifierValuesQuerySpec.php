@@ -38,7 +38,7 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
     public function it_returns_an_empty_identifier_values_collection_if_there_is_no_identifiers_mapping(
         $identifiersMappingRepository
     ): void {
-        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping());
+        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping([]));
 
         $values = $this->execute([42]);
         $values->count()->shouldReturn(0);
@@ -49,8 +49,7 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
         $identifiersMappingRepository,
         AttributeInterface $asin
     ): void {
-        $identifiersMapping = new IdentifiersMapping();
-        $identifiersMapping->map('asin', $asin->getWrappedObject());
+        $identifiersMapping = new IdentifiersMapping(['asin' => $asin->getWrappedObject()]);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $productRepository->find(42)->willReturn(null);
@@ -77,12 +76,14 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
         $mpn->getCode()->willReturn('mpn');
         $brand->getCode()->willReturn('brand');
 
-        $identifiersMapping = new IdentifiersMapping();
-        $identifiersMapping
-            ->map('asin', $asin->getWrappedObject())
-            ->map('upc', $ean->getWrappedObject())
-            ->map('mpn', $mpn->getWrappedObject())
-            ->map('brand', $brand->getWrappedObject());
+        $identifiersMapping = new IdentifiersMapping(
+            [
+                'asin' => $asin->getWrappedObject(),
+                'upc' => $ean->getWrappedObject(),
+                'mpn' => $mpn->getWrappedObject(),
+                'brand' => $brand->getWrappedObject(),
+            ]
+        );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $asinValue->hasData()->willReturn(true);

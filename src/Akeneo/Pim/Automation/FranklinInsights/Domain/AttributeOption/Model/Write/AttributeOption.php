@@ -27,9 +27,6 @@ class AttributeOption
     /** @var null|string */
     private $pimOptionId;
 
-    /** @var null|string */
-    private $pimOptionLabel;
-
     /**
      * @param string $franklinOptionId
      * @param string $franklinOptionLabel
@@ -39,13 +36,11 @@ class AttributeOption
     public function __construct(
         string $franklinOptionId,
         string $franklinOptionLabel,
-        ?string $pimOptionId = null,
-        ?string $pimOptionLabel = null
+        ?string $pimOptionId = null
     ) {
         $this->franklinOptionId = $franklinOptionId;
         $this->franklinOptionLabel = $franklinOptionLabel;
         $this->pimOptionId = $pimOptionId;
-        $this->pimOptionLabel = $pimOptionLabel;
     }
 
     /**
@@ -70,14 +65,6 @@ class AttributeOption
     public function getPimOptionId(): ?string
     {
         return $this->pimOptionId;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getPimOptionLabel(): ?string
-    {
-        return $this->pimOptionLabel;
     }
 
     /**

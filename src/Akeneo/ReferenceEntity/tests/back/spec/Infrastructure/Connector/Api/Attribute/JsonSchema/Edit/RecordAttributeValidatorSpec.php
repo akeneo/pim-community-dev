@@ -76,15 +76,20 @@ class RecordAttributeValidatorSpec extends ObjectBehavior
     function it_does_not_return_any_error_when_the_attribute_is_valid()
     {
         $attribute = [
-            'code' => 'starck',
-            'type' => 'text',
+            'code' => 'country',
+            'type' => 'record',
             'value_per_channel' => true,
             'value_per_locale' => true,
             'labels' => [
-                'en_US' => 'Philippe Starck'
+                'en_US' => 'Country'
             ],
             'is_required_for_completeness' => false,
-            'reference_entity_code' => 'brand',
+            'reference_entity_code' => 'country',
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost/api/rest/v1/reference-entities/designer/attributes/country'
+                ]
+            ],
         ];
 
         $this->validate($attribute)->shouldReturn([]);

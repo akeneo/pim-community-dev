@@ -49,10 +49,10 @@ class ConnectorAttribute
     private $type;
 
     /** @var bool */
-    private $localizable;
+    private $valuePerLocale;
 
     /** @var bool */
-    private $scopable;
+    private $valuePerChannel;
 
     /** @var bool */
     private $isRequired;
@@ -64,16 +64,16 @@ class ConnectorAttribute
         AttributeCode $identifier,
         LabelCollection $labelCollection,
         string $type,
-        AttributeValuePerLocale $localizable,
-        AttributeValuePerChannel $scopable,
+        AttributeValuePerLocale $valuePerLocale,
+        AttributeValuePerChannel $valuePerChannel,
         AttributeIsRequired $isRequired,
         array $additionalProperties
     ) {
         $this->code = $identifier;
         $this->labelCollection = $labelCollection;
         $this->type = $type;
-        $this->localizable = $localizable;
-        $this->scopable = $scopable;
+        $this->valuePerLocale = $valuePerLocale;
+        $this->valuePerChannel = $valuePerChannel;
         $this->isRequired = $isRequired;
         $this->additionalProperties = $additionalProperties;
     }
@@ -96,8 +96,8 @@ class ConnectorAttribute
             'code' => $this->code->__toString(),
             'labels' => empty($normalizedLabels) ? (object) [] : $normalizedLabels,
             'type' => $this->mapAttributeType($this->type),
-            'localizable' => $this->localizable->normalize(),
-            'scopable' => $this->scopable->normalize(),
+            'value_per_locale' => $this->valuePerLocale->normalize(),
+            'value_per_channel' => $this->valuePerChannel->normalize(),
             'is_required_for_completeness' => $this->isRequired->normalize()
         ];
 

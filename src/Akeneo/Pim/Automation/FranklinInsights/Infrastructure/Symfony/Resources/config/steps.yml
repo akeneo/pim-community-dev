@@ -72,3 +72,11 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@akeneo.pim.automation.franklin_insights.connector.tasklet.remove_option_from_attribute_options_mapping'
+
+    akeneo.pim.automation.franklin_insights.connector.step.compute_products_to_resubscribe:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'compute_products_to_resubscribe'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.franklin_insights.connector.tasklet.identify_products_to_resubscribe'

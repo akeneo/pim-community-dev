@@ -41,14 +41,14 @@ export abstract class ConcreteAttribute extends MinimalConcreteAttribute impleme
     super(referenceEntityIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
 
     if (!(identifier instanceof Identifier)) {
-      throw new InvalidArgumentError('Attribute expect an AttributeIdentifier argument');
+      throw new InvalidArgumentError('Attribute expects an AttributeIdentifier argument');
     }
 
     if (typeof order !== 'number') {
-      throw new InvalidArgumentError('Attribute expect a number as order');
+      throw new InvalidArgumentError('Attribute expects a number as order');
     }
     if (typeof isRequired !== 'boolean') {
-      throw new InvalidArgumentError('Attribute expect a boolean as isRequired value');
+      throw new InvalidArgumentError('Attribute expects a boolean as isRequired value');
     }
   }
 

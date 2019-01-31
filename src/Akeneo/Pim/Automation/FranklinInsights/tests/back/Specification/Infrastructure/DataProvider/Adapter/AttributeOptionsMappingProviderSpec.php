@@ -24,18 +24,22 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Op
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\AttributeOptionsMappingProvider;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class AttributeOptionsMappingProviderSpec extends ObjectBehavior
 {
-    public function let(OptionsMappingWebService $api, ConfigurationRepositoryInterface $configurationRepo): void
-    {
+    public function let(
+        OptionsMappingWebService $api,
+        ConfigurationRepositoryInterface $configurationRepo,
+        AttributeOptionsMappingNormalizer $attributeOptionsMappingNormalizer
+    ): void {
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
         $configurationRepo->find()->willReturn($configuration);
 
-        $this->beConstructedWith($api, $configurationRepo);
+        $this->beConstructedWith($api, $configurationRepo, $attributeOptionsMappingNormalizer);
     }
 
     public function it_is_an_attribute_options_mapping_provider(): void

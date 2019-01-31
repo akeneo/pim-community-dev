@@ -30,7 +30,12 @@ class ReferenceEntityValidatorSpec extends ObjectBehavior
             'labels' => [
                 'en_US' => 'Philippe Starck'
             ],
-            'image' => 'images/starck.png'
+            'image' => 'images/starck.png',
+            '_links'  => [
+                'image_download' => [
+                    'href' => 'http://localhost/api/rest/v1/reference-entities-media-files/images/starck.png'
+                ]
+            ]
         ];
 
         $this->validate($referenceEntity)->shouldReturn([]);

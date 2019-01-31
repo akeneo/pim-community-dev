@@ -53,6 +53,17 @@ class EditAttributeMappingController extends BaseController {
             form.trigger('pim_enrich:form:entity:post_fetch', familyMapping);
             form.setElement(this.$el).render();
 
+            form.on('pim_enrich:form:entity:post_save', () => {
+              FetcherRegistry
+                .getFetcher('attributes-mapping-by-family')
+                .fetch(route.params.familyCode, {cached: false})
+                .then((savedFamilyMapping: FamilyMapping) => {
+                  form.setData(savedFamilyMapping);
+                  form.trigger('pim_enrich:form:entity:post_fetch', savedFamilyMapping);
+                  form.setElement(this.$el).render();
+                });
+            });
+
             return form;
           });
       });

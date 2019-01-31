@@ -59,6 +59,9 @@ class OptionAttributeValidator implements AttributeValidatorInterface
                 'is_required_for_completeness' => [
                     'type' => [ 'boolean'],
                 ],
+                '_links' => [
+                    'type' => 'object'
+                ],
             ],
             'additionalProperties' => false,
         ];

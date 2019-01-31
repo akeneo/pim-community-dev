@@ -43,7 +43,7 @@ Feature: Unpublish a product
       | my-tee | tees   | tees       | Tee1       |
     And I am logged in as "Julia"
     When I am on the "my-tee" published product show page
-    Then I should not see "Unpublish"
+    Then I should not see the text "Unpublish"
 
   Scenario: Being able to unpublish a product from the grid and view when I am the owner
     Given a "clothing" catalog configuration
@@ -67,4 +67,4 @@ Feature: Unpublish a product
     Then the grid should contain 1 element
     And I should not be able to view the "Unpublish the product" action of the row which contains "my-jacket"
     When I am on the "my-jacket" published product show page
-    Then I should not see "Unpublish"
+    Then I should not see the text "Unpublish"

@@ -1,5 +1,5 @@
 #!groovy
-@Library("k8s-utils@2.x")
+@Library("k8s-utils@3.x")
 
 String[] legacyFeatures = ["tests/legacy/features", "src/Akeneo/Pim/Automation/FranklinInsights/tests/features", "vendor/akeneo/pim-community-dev/tests/legacy/features"]
 String ceBranch = "master"
@@ -117,6 +117,7 @@ stage("Test") {
             "front-acceptance": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
+                cpuRequest: "500m",
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
             )},
             "back-acceptance": {testif(
@@ -129,11 +130,13 @@ stage("Test") {
             "front-integration": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
+                cpuRequest: "500m",
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
             )},
             "back-legacy-integration-phpunit": {queue(
                 condition: launchIntegrationTests.equals("yes"),
                 container: tag,
+                cpuRequest: "200m",
                 containers: pimContainers(image: tag, selenium: false),
                 verbose: (verboseOutputs == "yes"),
                 fetcher: {
@@ -154,13 +157,15 @@ stage("Test") {
                 container: tag,
                 containers: pimContainers(image: tag, selenium: false),
                 verbose: (verboseOutputs == "yes"),
+                cpuRequest: "500m",
                 fetcher: {
                     return pimPhpunitEndToEndFetcher(
                         paths:[
                             "/var/www/pim/tests"
                         ]
                     )
-                }
+                },
+                parallelism: 10
             )},
             "legacy-end-to-end-behat": {queue(
                 condition: launchEndToEndTests.equals("yes"),

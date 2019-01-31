@@ -62,7 +62,7 @@ class TextAttributeValidatorSpec extends ObjectBehavior
     function it_does_not_return_any_error_when_the_attribute_is_valid()
     {
         $attribute = [
-            'code' => 'starck',
+            'code' => 'name',
             'type' => 'text',
             'value_per_channel' => true,
             'value_per_locale' => true,
@@ -74,7 +74,12 @@ class TextAttributeValidatorSpec extends ObjectBehavior
             'max_characters' => 12,
             'validation_rule' => 'regular_expression',
             'validation_regexp' => 'foo',
-            'is_rich_text_editor' => true
+            'is_rich_text_editor' => true,
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost/api/rest/v1/reference-entities/designer/attributes/name'
+                ]
+            ],
         ];
 
         $this->validate($attribute)->shouldReturn([]);

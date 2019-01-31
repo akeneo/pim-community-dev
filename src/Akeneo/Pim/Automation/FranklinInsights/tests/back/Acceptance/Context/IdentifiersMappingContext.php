@@ -24,6 +24,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\I
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\InMemoryIdentifyProductsToResubscribe;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -46,6 +47,9 @@ class IdentifiersMappingContext implements Context
     /** @var SaveIdentifiersMappingHandler */
     private $saveIdentifiersMappingHandler;
 
+    /** @var InMemoryIdentifyProductsToResubscribe */
+    private $identifyProductsToResubscribe;
+
     /** @var FakeClient */
     private $fakeClient;
 
@@ -61,19 +65,22 @@ class IdentifiersMappingContext implements Context
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param FakeClient $fakeClient
+     * @param InMemoryIdentifyProductsToResubscribe $identifyProductsToResubscribe
      */
     public function __construct(
         GetIdentifiersMappingHandler $getIdentifiersMappingHandler,
         SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         AttributeRepositoryInterface $attributeRepository,
-        FakeClient $fakeClient
+        FakeClient $fakeClient,
+        InMemoryIdentifyProductsToResubscribe $identifyProductsToResubscribe
     ) {
         $this->getIdentifiersMappingHandler = $getIdentifiersMappingHandler;
         $this->saveIdentifiersMappingHandler = $saveIdentifiersMappingHandler;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->attributeRepository = $attributeRepository;
         $this->fakeClient = $fakeClient;
+        $this->identifyProductsToResubscribe = $identifyProductsToResubscribe;
     }
 
     /**
@@ -183,6 +190,8 @@ class IdentifiersMappingContext implements Context
 
     /**
      * @Then the retrieved identifiers mapping should be:
+     *
+     * @param TableNode $table
      */
     public function theRetrievedIdentifiersMappingShouldBe(TableNode $table): void
     {
@@ -314,6 +323,31 @@ class IdentifiersMappingContext implements Context
         Assert::assertEquals(
             InvalidMappingException::mandatoryAttributeMapping('foo', 'brand')->getMessage(),
             $thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then /the products which need resubscribing should be identified for (.*)/
+     *
+     * @param string $franklinIdentifierCodes
+     */
+    public function theProductsWhichNeedResubscribingShouldBeIdentified(
+        string $franklinIdentifierCodes
+    ): void {
+        $expectedCodes = explode(', ', str_replace(' and ', ', ', $franklinIdentifierCodes));
+        Assert::assertNotEmpty($expectedCodes);
+        foreach ($expectedCodes as $expectedCode) {
+            Assert::assertContains($expectedCode, $this->identifyProductsToResubscribe->updatedIdentifierCodes());
+        }
+    }
+
+    /**
+     * @Then the products which need resubscribing should not be identified
+     */
+    public function theProductsWhichNeedResubscribingShouldNotBeIdentified(): void
+    {
+        Assert::assertEmpty(
+            $this->identifyProductsToResubscribe->updatedIdentifierCodes()
         );
     }
 

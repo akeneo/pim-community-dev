@@ -38,10 +38,10 @@ describe('akeneo > reference entity > domain > model > record > data --- option 
   test('I cannot create a new OptionData with a value other than a OptionCode collection', () => {
     expect(() => {
       create(12);
-    }).toThrow('OptionCollectionData expect an array of OptionCode as parameter to be created');
+    }).toThrow('OptionCollectionData expects an array of OptionCode as parameter to be created');
     expect(() => {
       create([12]);
-    }).toThrow('OptionCollectionData expect an array of OptionCode as parameter to be created');
+    }).toThrow('OptionCollectionData expects an array of OptionCode as parameter to be created');
   });
 
   test('I can normalize an OptionData', () => {

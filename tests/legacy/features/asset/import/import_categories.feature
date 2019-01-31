@@ -83,12 +83,12 @@ Feature: Import categories
     And I visit the "Permissions" tab
     Then I should see the permission Allowed to view assets with user groups IT support, Manager and Redactor
     And I should see the permission Allowed to edit assets with user groups IT support, Manager and Redactor
-    And I should not see "Allowed to own assets"
+    And I should not see the text "Allowed to own assets"
     When I edit the "tshirts" asset category
     And I visit the "Permissions" tab
     Then I should see the permission Allowed to view assets with user groups IT support, Manager and Redactor
     And I should see the permission Allowed to edit assets with user groups IT support, Manager and Redactor
-    And I should not see "Allowed to own assets"
+    And I should not see the text "Allowed to own assets"
 
   Scenario: Set default permissions to categories that belongs to a new tree
     Given the "clothing" catalog configuration
@@ -114,17 +114,17 @@ Feature: Import categories
     And I visit the "Permissions" tab
     Then I should see the permission Allowed to view assets with user groups All
     And I should see the permission Allowed to edit assets with user groups All
-    And I should not see "Allowed to own assets"
+    And I should not see the text "Allowed to own assets"
     When I edit the "2015_jeans" asset category
     And I visit the "Permissions" tab
     Then I should see the permission Allowed to view assets with user groups All
     And I should see the permission Allowed to edit assets with user groups All
-    And I should not see "Allowed to own assets"
+    And I should not see the text "Allowed to own assets"
     When I edit the "2015_tees" asset category
     And I visit the "Permissions" tab
     Then I should see the permission Allowed to view assets with user groups All
     And I should see the permission Allowed to edit assets with user groups All
-    And I should not see "Allowed to own assets"
+    And I should not see the text "Allowed to own assets"
 
   Scenario: Successfully import new assets categories in XLSX
     Given the "clothing" catalog configuration

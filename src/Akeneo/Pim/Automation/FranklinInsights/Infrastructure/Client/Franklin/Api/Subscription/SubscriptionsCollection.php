@@ -59,7 +59,13 @@ class SubscriptionsCollection implements \Iterator
             return null;
         }
 
-        return new Subscription($this->subscriptions[$this->index]);
+        try {
+            return new Subscription($this->subscriptions[$this->index]);
+        } catch (\InvalidArgumentException $exception) {
+            $this->next();
+
+            return $this->current();
+        }
     }
 
     /**
