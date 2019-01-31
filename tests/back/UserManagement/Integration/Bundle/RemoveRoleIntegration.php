@@ -18,9 +18,9 @@ class RemoveRoleIntegration extends TestCase
 
     public function testSuccessfullyToRemoveARole()
     {
-        $adminRole = $this->get('pim_user.repository.role')->findOneByIdentifier('IS_AUTHENTICATED_ANONYMOUSLY');
+        $adminRole = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_CATALOG_MANAGER');
         $this->get('pim_user.remover.role')->remove($adminRole);
-        $this->assertNull($this->get('pim_user.repository.role')->findOneByIdentifier('IS_AUTHENTICATED_ANONYMOUSLY'));
+        $this->assertNull($this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_CATALOG_MANAGER'));
     }
 
     /**
