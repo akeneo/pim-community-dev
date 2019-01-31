@@ -919,6 +919,8 @@ Before updating the dependencies and migrating your data, please deactivate all 
 
 ## Migrate your custom code
 
+1. Apply the sed commands
+
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
 ```bash
@@ -2202,8 +2204,11 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\UserBund
 find ./app/config/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Model\\Asset/Akeneo\\Asset\\Component\\Model\\Asset/g'
 ```
 
-## Relaunch the queue consumer
+2. Reactivate your custom code
 
+You are now ready to re enable your custom bundles in the `AppKernel.php` file.
+
+3. Restart the queue consumer
 
 Now you are ready to restart the queue consumer daemon.
 
