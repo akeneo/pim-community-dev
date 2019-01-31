@@ -187,7 +187,7 @@ To give you a quick overview of the changes made to a standard project, you can 
 
     Or you can follow the detailed list of changes:
 
-    * The `.env.dist`, `docker-compose.override.yml.dist`, `docker/sso_authsources.php`, `docker-compose.yml`, `.gitignore`, `app/PimRequirements.php` have completely changed ot didn't exist before, it's better to copy them.
+    * The `.env.dist`, `docker-compose.override.yml.dist`, `docker/sso_authsources.php`, `docker-compose.yml`, `.gitignore`, `app/PimRequirements.php` have completely changed or didn't exist before, it's better to copy them.
 
 
     * The configuration file `app/config/security.yml` had somes changes:
@@ -389,7 +389,7 @@ To give you a quick overview of the changes made to a standard project, you can 
     * The configuration key `pim_enrich.max_products_category_removal` has been removed. Please use the container parameter `max_products_category_removal` instead if needed in your bundles.
     
         
-6. Update your **app/config/routing.yml**
+5. Update your **app/config/routing.yml**
 
     An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
 
@@ -447,7 +447,7 @@ To give you a quick overview of the changes made to a standard project, you can 
                 _controller: FrameworkBundle:Template:template
         ```
     
-7. Update your **app/AppKernel.php**:
+6. Update your **app/AppKernel.php**:
 
     An easy way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
 
@@ -495,7 +495,7 @@ To give you a quick overview of the changes made to a standard project, you can 
         - `Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle`
         - `Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle`
 
-8. Add the DotEnv component in all entrypoints of the application
+7. Add the DotEnv component in all entrypoints of the application
 
     We introduced the DotEnv component as there are more and more deployments that use environment variables for configuration values.
     The DotEnv Symfony component provides a way to set those environment variables in a file that could be overridden by real environment variables (you should have copied the `.env.dist` to `.env` in the step 2).
@@ -528,11 +528,11 @@ To give you a quick overview of the changes made to a standard project, you can 
     }
     ```
 
-10. Deactivate your custom code
+8. Deactivate your custom code
 
 Before updating the dependencies and migrating your data, please deactivate all your custom bundles and configuration. This will considerably ease the migration of your data. You can disable your custom code by commenting out your custom bundles in your `AppKernel.php` file.
 
-11. Update your dependencies:
+9. Update your dependencies:
 
     The easiest way to update your `composer.json` is to copy/paste from the latest standard edition and add your custom dependencies.
     
@@ -574,7 +574,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
     yarn install
     ```
 
-12. Migrate your MySQL database: 
+10. Migrate your MySQL database: 
 
     Please, make sure the folder `upgrades/schema/` does not contain former migration files (from PIM 2.2 to 2.3 for instance), 
     otherwise the migration command will surely not work properly.
@@ -584,7 +584,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
     bin/console doctrine:migration:migrate --env=prod
     ```
 
-13. Migrate your Elasticsearch indices:
+11. Migrate your Elasticsearch indices:
 
     In case you updated the settings of Elasticsearch (like normalizers, filters and analyzers), please make sure you properly loaded your custom settings in the [Elasticsearch configuration](https://github.com/akeneo/pim-enterprise-standard/blob/3.0/app/config/pim_parameters.yml#L58-L68).
 
@@ -594,7 +594,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
     php upgrades/schema/es_20190128110000_ce_update_document_type_product_and_product_model.php
     ```
 
-14. Then re-generate the PIM assets:
+12. Then re-generate the PIM assets:
 
     ```bash
     bin/console pim:installer:assets --clean --env=prod
