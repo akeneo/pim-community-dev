@@ -18,7 +18,7 @@ use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
-class AbstractProposalIntegration extends ApiTestCase
+class AbstractProposalTestCase extends ApiTestCase
 {
     /**
      * {@inheritdoc}

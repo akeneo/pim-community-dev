@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
  * | Manager  | View,Edit,Own | View,Edit,Own | View,Edit,Own |
  * +----------+-----------------------------------------------+
  */
-class CreateVariantProductProposalIntegration extends AbstractProposalIntegration
+class CreateVariantProductProposalIntegration extends AbstractProposalTestCase
 {
     public function testCreateProductProposalSuccessful()
     {
