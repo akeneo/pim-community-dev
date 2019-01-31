@@ -4,6 +4,7 @@
 
 - PIM-8007: Content of sortable attribute options is now copyable.
 - PIM-8008: Fix attributes sort order in PEF.
+- PIM-8022: Fix the job status when using the batch command.
 
 # 2.3.28 (2019-02-01)
 
