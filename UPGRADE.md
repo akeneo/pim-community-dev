@@ -1500,3 +1500,4 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\ElasticsearchBu
 
 find ./src/ -type f -print0 | xargs -0 sed -i 's/\(UserContext.[gs]et(['\''\"'']\)firstName/\1first_name/gi'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/\(UserContext.[gs]et(['\''\"'']\)lastName/\1last_name/gi'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/%pim_enrich.provider.form.job_instance.class%/Akeneo\\Platform\\Bundle\\ImportExportBundle\\Provider\\Form\\JobInstanceFormProvider/g'
