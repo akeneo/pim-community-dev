@@ -28,10 +28,6 @@ jobs:
           name: Start containers
           command: docker-compose up -d
       - restore_cache:
-          name: Restore cache - node_modules
-          keys:
-            - node-modules-v1-{{ checksum "yarn.lock" }}
-      - restore_cache:
           name: Restore cache - vendor
           keys:
             - vendor-v1-{{ checksum "composer.lock" }}
@@ -53,10 +49,6 @@ jobs:
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project
-      - save_cache:
-          paths:
-            - ./node_modules
-          key: node-modules-v7-{{ checksum "yarn.lock" }}
       - save_cache:
           paths:
             - ./vendor
@@ -85,6 +77,9 @@ jobs:
           - run:
                 name: PhpCsFixer
                 command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+          - run:
+                name: PhpCouplingDetector
+                command: docker-compose run -T fpm vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src
           - run:
                 name: Acceptance back
                 command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
@@ -116,35 +111,6 @@ jobs:
                 name: PHPunit Integration
                 command: |
                     TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" "src/**/*Integration.php" | circleci tests split)
-                    .circleci/run_phpunit.sh $TESTFILES
-          - store_test_results:
-                path: var/tests/phpunit
-          - store_artifacts:
-                path: var/tests/phpunit
-
-  back_phpunit_end_to_end:
-      machine:
-          enabled: true
-          docker_layer_caching: true
-      parallelism: 10
-      steps:
-          - attach_workspace:
-                at: ~/
-          - run:
-                name: Change owner on project dir in order to archive the project into the workspace
-                command: sudo chown -R 1000:1000 ../project
-          - run:
-                name: Start containers
-                command: docker-compose up -d
-          - run:
-                name: Install database
-                command: |
-                    sleep 25 # wait mysql to be up
-                    docker-compose exec fpm bin/console --env=behat pim:install:db
-          - run:
-                name: PHPunit End to end
-                command: |
-                    TESTFILES=$(circleci tests glob "src/**/*EndToEnd.php" | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
@@ -211,7 +177,7 @@ workflows:
                   filters:
                       branches:
                           ignore:
-                              - master
+                              - "2.3"
             - setup:
                   requires:
                       - wait_for_user_approval
@@ -225,17 +191,14 @@ workflows:
                   requires:
                       - back_static_and_acceptance
                       - front_static_acceptance_and_integration
-            - back_phpunit_end_to_end:
-                  requires:
-                      - back_phpunit_integration
             - back_behat_legacy:
                   requires:
-                      - back_phpunit_end_to_end
+                      - back_phpunit_integration
 
     nightly:
         triggers:
             - schedule:
-                  cron: "0 2 * * *"
+                  cron: "0 3 * * *"
                   filters:
                       branches:
                           only:
@@ -252,9 +215,6 @@ workflows:
                   requires:
                       - back_static_and_acceptance
                       - front_static_acceptance_and_integration
-            - back_phpunit_end_to_end:
-                  requires:
-                      - back_phpunit_integration
             - back_behat_legacy:
                   requires:
-                      - back_phpunit_end_to_end
+                      - back_phpunit_integration
