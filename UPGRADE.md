@@ -2206,6 +2206,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogB
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Security\\Doctrine\\Common\\Saver\\FilteredEntitySaver/Akeneo\\Pim\\Permission\\Bundle\\Persistence\\ORM\\FilteredEntitySaver/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\UserBundle\\Entity\\User/Akeneo\\UserManagement\\Component\\Model\\User/g'
 find ./app/config/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Model\\Asset/Akeneo\\Asset\\Component\\Model\\Asset/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/%pim_enrich.provider.form.job_instance.class%/Akeneo\\Platform\\Bundle\\ImportExportBundle\\Provider\\Form\\JobInstanceFormProvider/g'
 ```
 
 2. Reactivate your custom code
