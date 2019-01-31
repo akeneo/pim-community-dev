@@ -23,11 +23,15 @@ class RemoveRoleSubscriber implements EventSubscriberInterface
         $this->isThereUserWithoutRole = $isThereUserWithoutRole;
     }
 
-    public function checkIfThereIsUserWithoutRole(RemoveEvent $event)
+    public function checkRoleIsRemovable(RemoveEvent $event)
     {
         $role = $event->getSubject();
         if (!$role instanceof RoleInterface) {
             return;
+        }
+
+        if ($role->getRole() === 'ROLE_USER') {
+            throw new ForbiddenToRemoveRoleException('You can not delete this role, this role is the one by default in Akeneo PIM');
         }
 
         $isThereUserWithoutRole = $this->isThereUserWithoutRole;
@@ -43,7 +47,7 @@ class RemoveRoleSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::PRE_REMOVE => [['checkIfThereIsUserWithoutRole']],
+            StorageEvents::PRE_REMOVE => [['checkRoleIsRemovable']],
         ];
     }
 }
