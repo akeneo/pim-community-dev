@@ -128,7 +128,7 @@ pimee_enrich.entity.product_draft:
       label: Tallenna luonnos
     proposal:
       accept: Hyväksy ehdotus
-      accept_selected: Hyävksy valittu ehdotus / ehdotukset
+      accept_selected: Hyväksy valittu ehdotus / ehdotukset
       reject: Hylkää ehdotus
       reject_selected: Hylkää valittu ehdotus / ehdotukset
       remove: Poista ehdotus

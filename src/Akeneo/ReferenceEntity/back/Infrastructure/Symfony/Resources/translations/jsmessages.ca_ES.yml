@@ -24,6 +24,7 @@ pim_reference_entity:
       save_permission: Desar
       create: Crear
     title: Entitats
+    breadcrumb: Entitats de referència
     img: La imatge principal de l'entitat de referència designada "{{ label }}"
     tab:
       records: Registres
@@ -45,9 +46,13 @@ pim_reference_entity:
       delete:
         button: Eliminar entitat
         confirm: Segur que voleu suprimir aquesta entitat?
+    index:
+      grid:
+        count: '{0} Sense entitats de referència|{1} {{ count }} Entitats de referència|]1,Inf] {{ count }} Entitats de referència'
     create:
       header:
         title: Crear
+      subtitle: Entitats de referència
       title: Crear una nova entitat
       input:
         label: Etiqueta
@@ -96,12 +101,15 @@ pim_reference_entity:
     create:
       header:
         title: Crear
+      subtitle: Entitats de referència
       title: Afegir nou {{ entityLabel }}
       input:
         label: Etiqueta
         code: Codi (requerit)
+        create_another: Crear un altre registre
       confirm: Desar
     delete:
+      message: Esteu segur que voleu suprimir el registre "{{ recordLabel }}"? Si està vinculat a productes o registres se suprimiran els enllaços.
       title: Registre
     delete_all:
       confirm: Esteu segur que voleu suprimir tots els registres "{{ entityIdentifier }}"? Si està vinculat a productes, es suprimiran els enllaços dels productes.
@@ -110,6 +118,7 @@ pim_reference_entity:
       filter:
         completeness:
           label: Complet
+          all: TOT
           yes: true
           no: false
       column:
@@ -121,6 +130,9 @@ pim_reference_entity:
       more_result:
         title: Això no és!
         description: Només heu desplaçat els primers 500 resultats de registres {{ total }}. Per veure més, proveu amb criteris de cerca més específics.
+      completeness:
+        title_no_required: Cap atribut requerit
+        title_complete: Tots els atributs complets {{ required }}
     tab:
       enrich: Enriquir
     notification:
@@ -149,6 +161,8 @@ pim_reference_entity:
     type:
       text: Texte
       image: Imatge
+      option: Única opció
+      option_collection: Múltiples opcions
     is_required: necessaris per a la integritat
     no_data:
       title: No hi ha atributs personalitzats per {{ entityLabel }}
@@ -158,6 +172,8 @@ pim_reference_entity:
     create:
       header:
         title: Crear
+      subtitle: Entitats de referència
+      title: Afegir nou atribut de registre
       input:
         code: Codi (requerit)
         label: Etiqueta
@@ -184,6 +200,14 @@ pim_reference_entity:
         allowed_extensions: Extensions permeses
         validation_rule: Regla de validació
         regular_expression: Expressió regular
+        manage_options:
+          confirmation:
+            discard_changes: Perdreu els canvis realitzats en la llista d'opcions si sortiu de la pàgina
+          quick_edit:
+            label: Administrar opcions
+          option:
+            label:
+              placeholder: Escriu una nova etiqueta d'opció aquí
         options:
           validation_rule:
             none: Cap
@@ -208,6 +232,8 @@ pim_reference_entity:
         success: Atribut eliminat correctament.
         fail: S'ha produït un error durant l'eliminació de l'atribut
     options:
+      no_value: Feu clic aquí per seleccionar una opció.
+      sub_title: Entitats de referència
       helper:
         title: Traduccions d'etiquetes
   modal:

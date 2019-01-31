@@ -25,6 +25,7 @@ teamwork_assistant:
     title: Editar projecte
   create_project_modal:
     saved: El projecte s'ha guardat, se li notificarà quan hagi finalitzat el càlcul.
+    title: Projecte
   widget:
     no_project: No té cap projecte
     no_project_create: crear un nou projecte

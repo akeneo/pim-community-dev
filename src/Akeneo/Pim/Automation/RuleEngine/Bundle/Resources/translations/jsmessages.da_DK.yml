@@ -52,9 +52,12 @@ pimee_catalog_rule:
       tab:
         rules:
           title: Regler
-confirmation:
-  remove:
-    rule: Er du sikker på at du ønsker at slette denne regel? Det er ikke muligt at fortryde handlingen
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Er du sikker på at du ønsker at slette denne regel? Det er ikke muligt at fortryde handlingen
 pim_datagrid:
   entity:
     rule:

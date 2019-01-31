@@ -14,7 +14,8 @@ akeneo_franklin_insights:
   entity:
     product_subscription:
       constraint:
-        invalid_mapped_values: 'Désolé, impossible d''abonner ce produit à Franklin Insights. Veuillez vérifier que la combinaison des identifiants est valide.'
+        no_identifiers_mapping: 'Veuillez d''abord mapper les identifiants de votre catalog sur la page Paramètres > Franklin Insights avant d''abonner des produits.'
+        already_subscribed_product: 'Le produit est déjà abonné.'
 job_execution.summary:
   configuration_validation: Configuration de Franklin Insights
   subscribed: abonné

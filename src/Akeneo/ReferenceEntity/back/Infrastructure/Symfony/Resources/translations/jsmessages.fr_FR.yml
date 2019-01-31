@@ -23,6 +23,8 @@ pim_reference_entity:
       save: Enregistrer
       save_permission: Enregistrer
       create: Créer
+    permission:
+      title: Permissions d'entité
     title: Entités
     breadcrumb: Entités référentielles
     img: L’image principale de l’entité référentielle "{{ label }}"
@@ -49,6 +51,9 @@ pim_reference_entity:
     index:
       grid:
         count: '{0}Aucune entité référentielle|{1}{{ count }} entité référentielle|]1,Inf[{{ count }} entités référentielles'
+        help:
+          title: 'Bienvenue dans les entités référentielles !'
+          description_part_three: Cliquez sur le bouton "Créer" pour créer votre 1ère entité référentielle, définir ses attributs et ses enregistrements.
     create:
       header:
         title: Créer
@@ -71,6 +76,15 @@ pim_reference_entity:
       delete:
         success: Entité référentielle supprimée avec succès.
         fail: Une erreur s'est produite pendant la suppression de l'entité référentielle
+  permission:
+    notification:
+      save:
+        success: Permissions de l'entité référentielle mises à jour avec succès.
+        fail: Au moins un groupe utilisateurs doit avoir les droits d'édition sur cette entité
+    no_data:
+      title: Vous n’avez aucun groupe utilisateurs
+      subtitle: Pour gérer des permissions sur l’entité référentielle, vous devez appartenir à au moins un groupe utilisateurs.
+      link: Cliquez ici pour ajouter pour votre 1er groupe utilisateurs
   record:
     validation:
       limit_reached: 'Vous ne pouvez pas créer l''enregistrement « {{ %record_label% }} » parce que vous avez atteint la limite de {{ %limit% }} enregistrements pour cette entité référentielle'
@@ -163,6 +177,8 @@ pim_reference_entity:
     type:
       text: Texte
       image: Image
+      record: Lien simple vers une entité référentielle
+      record_collection: Lien multiple vers une entité référentielle
       option: Option simple
       option_collection: Options multiples
     is_required: requis pour la complétude
@@ -176,6 +192,7 @@ pim_reference_entity:
         title: Créer
       subtitle: Entités référentielles
       title: Ajouter un nouvel attribut d’enregistrement
+      description: Les paramètres suivants, sauf le libellé, ne peuvent pas être mis à jour après la création de l’attribut
       input:
         code: Code (requis)
         label: Libellé
@@ -254,6 +271,9 @@ pim_enrich:
   entity:
     attribute:
       property:
+        type:
+          akeneo_reference_entity_collection: Lien multiple vers une entité référentielle
+          akeneo_reference_entity: Lien simple vers une entité référentielle
         section:
           type_specific: Paramètres spécifiques
         reference_entity:

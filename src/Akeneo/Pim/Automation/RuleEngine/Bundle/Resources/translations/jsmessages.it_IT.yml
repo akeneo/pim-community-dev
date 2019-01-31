@@ -53,9 +53,12 @@ pimee_catalog_rule:
       tab:
         rules:
           title: Regole
-confirmation:
-  remove:
-    rule: Sei sicuro di voler eliminare questa regola? Non è possibile annullare questa azione
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Sei sicuro di voler eliminare questa regola? Non è possibile annullare questa azione
 pim_datagrid:
   entity:
     rule:
