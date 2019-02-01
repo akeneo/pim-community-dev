@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Locale;
 
 use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
 /**
@@ -59,5 +60,4 @@ SQL;
             return $localesCode;
         }, $results ?? []);
     }
-
 }

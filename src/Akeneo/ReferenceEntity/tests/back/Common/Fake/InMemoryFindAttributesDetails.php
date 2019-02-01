@@ -25,6 +25,14 @@ class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
 {
     private $results = [];
 
+    /** @var InMemoryFindActivatedLocales */
+    private $activatedLocalesQuery;
+
+    public function __construct(InMemoryFindActivatedLocales $activatedLocalesQuery)
+    {
+        $this->activatedLocalesQuery = $activatedLocalesQuery;
+    }
+
     public function save(AttributeDetails $referenceEntityDetails): void
     {
         $this->results[(string) $referenceEntityDetails->referenceEntityIdentifier][] = $referenceEntityDetails;
@@ -35,6 +43,29 @@ class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        return $this->results[(string) $referenceEntityIdentifier] ?? [];
+        $activatedLocales = ($this->activatedLocalesQuery)();
+        $key = (string) $referenceEntityIdentifier;
+
+        if (isset($this->results[$key])) {
+            foreach ($this->results[$key] as $attributeDetails) {
+                if (null !== $attributeDetails->labels) {
+                    $attributeDetails->labels = $this->getLabelsByActivatedLocale($attributeDetails->labels, $activatedLocales);
+                }
+            }
+        }
+
+        return $this->results[$key] ?? [];
+    }
+
+    private function getLabelsByActivatedLocale(array $labels, array $activatedLocales): array
+    {
+        $filteredLabels = [];
+        foreach ($labels as $localeCode => $label) {
+            if (in_array($localeCode, $activatedLocales)) {
+                $filteredLabels[$localeCode] = $label;
+            }
+        }
+
+        return $filteredLabels;
     }
 }

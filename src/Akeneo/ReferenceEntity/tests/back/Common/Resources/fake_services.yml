@@ -36,6 +36,8 @@ services:
 
     akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityDetails
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_record_details:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordDetails
@@ -91,6 +93,8 @@ services:
 
     akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesDetails
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales'
 
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_has_records:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityHasRecords

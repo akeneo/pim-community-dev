@@ -160,6 +160,4 @@ SQL;
 
         return $filteredLabels;
     }
-
-
 }

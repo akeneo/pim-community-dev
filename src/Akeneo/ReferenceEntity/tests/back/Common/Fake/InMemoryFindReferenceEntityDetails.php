@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
@@ -25,6 +26,14 @@ class InMemoryFindReferenceEntityDetails implements FindReferenceEntityDetailsIn
 {
     /** @var ReferenceEntityDetails[] */
     private $results = [];
+
+    /** @var InMemoryFindActivatedLocales */
+    private $activatedLocalesQuery;
+
+    public function __construct(InMemoryFindActivatedLocales $activatedLocalesQuery)
+    {
+        $this->activatedLocalesQuery = $activatedLocalesQuery;
+    }
 
     public function save(ReferenceEntityDetails $referenceEntityDetails)
     {
@@ -40,6 +49,11 @@ class InMemoryFindReferenceEntityDetails implements FindReferenceEntityDetailsIn
     ): ?ReferenceEntityDetails {
         $key = $this->getKey($referenceEntityIdentifier);
 
+        $activatedLocales = ($this->activatedLocalesQuery)();
+        if (isset($this->results[$key])) {
+            $this->results[$key]->labels = $this->getLabelsByActivatedLocale($this->results[$key]->labels, $activatedLocales);
+        }
+
         return $this->results[$key] ?? null;
     }
 
@@ -47,5 +61,17 @@ class InMemoryFindReferenceEntityDetails implements FindReferenceEntityDetailsIn
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ): string {
         return (string)$referenceEntityIdentifier;
+    }
+
+    private function getLabelsByActivatedLocale(LabelCollection $labels, array $activatedLocales): LabelCollection
+    {
+        $filteredLabels = [];
+        foreach ($labels->normalize() as $localeCode => $label) {
+            if (in_array($localeCode, $activatedLocales)) {
+                $filteredLabels[$localeCode] = $label;
+            }
+        }
+
+        return LabelCollection::fromArray($filteredLabels);
     }
 }
