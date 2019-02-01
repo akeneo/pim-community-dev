@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.28 (2019-02-01)
+
 ## Bug fixes
 
 - PIM-7970: fix exception thrown when generating variations of assets with special chars in metadata
