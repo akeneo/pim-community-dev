@@ -179,8 +179,3 @@ services:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
         tags:
             - { name: kernel.event_subscriber }
-
-    pim_catalog.event_subscriber.attribute_creation:
-        class: 'Pim\Bundle\CatalogBundle\EventSubscriber\AttributeCreationSubscriber'
-        tags:
-            - { name: kernel.event_subscriber }
