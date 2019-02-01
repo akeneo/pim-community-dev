@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -27,12 +28,16 @@ class SqlFindAttributesDetails implements FindAttributesDetailsInterface
     /** @var Connection */
     private $sqlConnection;
 
+    /** @var FindActivatedLocalesInterface  */
+    private $findActivatedLocales;
+
     /**
      * @param Connection $sqlConnection
      */
-    public function __construct(Connection $sqlConnection)
+    public function __construct(Connection $sqlConnection, FindActivatedLocalesInterface $findActivatedLocales)
     {
         $this->sqlConnection = $sqlConnection;
+        $this->findActivatedLocales = $findActivatedLocales;
     }
 
     /**
@@ -76,7 +81,9 @@ SQL;
      */
     private function hydrateAttributesDetails(array $results): array
     {
+        $activatedLocales = ($this->findActivatedLocales)();
         $allAttributeDetails = [];
+        $labels = [];
         foreach ($results as $result) {
             $attributeDetails = new AttributeDetails();
             $attributeDetails->type = $result['attribute_type'];
@@ -84,7 +91,7 @@ SQL;
             $attributeDetails->referenceEntityIdentifier = $result['reference_entity_identifier'];
             $attributeDetails->code = $result['code'];
             $attributeDetails->order = (int) $result['attribute_order'];
-            $attributeDetails->labels = json_decode($result['labels'], true);
+            $attributeDetails->labels = $this->getLabelsByActivatedLocale($result, $activatedLocales, $labels);
             $attributeDetails->isRequired = (bool) $result['is_required'];
             $attributeDetails->valuePerChannel = (bool) $result['value_per_channel'];
             $attributeDetails->valuePerLocale = (bool) $result['value_per_locale'];
@@ -94,5 +101,21 @@ SQL;
         }
 
         return $allAttributeDetails;
+    }
+
+    /**
+     * @param $result
+     * @param $activatedLocales
+     * @param $labels
+     * @return mixed
+     */
+    private function getLabelsByActivatedLocale($result, $activatedLocales, $labels)
+    {
+        foreach (json_decode($result['labels'], true) as $localeCode => $label) {
+            if (in_array($localeCode, $activatedLocales)) {
+                $labels[$localeCode] = $label;
+            }
+        }
+        return $labels;
     }
 }
