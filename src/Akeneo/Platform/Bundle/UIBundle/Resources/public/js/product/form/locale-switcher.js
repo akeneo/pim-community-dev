@@ -73,6 +73,8 @@ define(
                             currentLocale = _.first(locales);
                         }
 
+                        this.$el.removeClass('open');
+
                         this.$el.html(
                             this.template({
                                 locales: locales,
