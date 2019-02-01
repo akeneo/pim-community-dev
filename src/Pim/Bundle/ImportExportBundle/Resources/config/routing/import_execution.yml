@@ -9,7 +9,6 @@ pim_importexport_import_execution_download_log:
 
 pim_importexport_import_execution_show:
     path: /{id}
-    defaults: { _controller: pim_import_export.controller.import_execution:showAction }
     requirements:
         id: \d+
 
