@@ -87,4 +87,4 @@ Feature: Export products according to simple select values
     And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     When I hide the filter "manufacturer.code"
-    Then I should not see the filter "manufacturer.code"
+    Then I should not see the filter manufacturer.code

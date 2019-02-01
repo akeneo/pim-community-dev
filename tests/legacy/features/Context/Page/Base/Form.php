@@ -980,9 +980,16 @@ class Form extends Base
             return null;
         }, sprintf('Can not find the "%s" selector', $type));
 
-        if (!$groupSelector->hasClass('open')) {
+        $this->spin(function () use ($groupSelector) {
+            if ($groupSelector->hasClass('open')) {
+                return true;
+            }
+
             $groupSelector->find('css', '[data-toggle="dropdown"]')->click();
-        }
+
+            return false;
+        }, sprintf('Can not open the "%s" selector', $type));
+
 
         return $groupSelector;
     }

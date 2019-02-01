@@ -62,6 +62,7 @@ Feature: Edit a user groups and roles
     And I visit the "Users" tab
     When I check the rows "Peter"
     And I save the role
+    And I should not see the text "There are unsaved changes."
     Then the row "Peter" should be checked
 
   @jira https://akeneo.atlassian.net/browse/PIM-5201
@@ -75,6 +76,7 @@ Feature: Edit a user groups and roles
     When I logout
     And I am logged in as "Mary"
     And I am on the Role index page
+    And I should see the text "Roles"
     Then I should not be able to access the edit "User" Role page
     When I logout
     And I am logged in as "Peter"

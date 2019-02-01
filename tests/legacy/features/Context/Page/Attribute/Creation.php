@@ -217,7 +217,9 @@ class Creation extends Form
         $this->spin(function () use ($expectedOrder) {
             $rows = $this->getOptionsElement();
             $actualOrder = array_map(function ($row) {
-                return $row->find('css', '.option-code')->getText();
+                $option = $row->find('css', '.option-code');
+
+                return null !== $option ? $option->getText() : '';
             }, $rows);
 
             return $actualOrder === $expectedOrder;

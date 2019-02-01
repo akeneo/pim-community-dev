@@ -350,17 +350,14 @@ class DataGridContext extends PimContext implements PageObjectAware
     public function iShouldNotSeeTheFilters($filters)
     {
         $filters = $this->getMainContext()->listToArray($filters);
-        foreach ($filters as $filter) {
-            try {
-                $filterNode = $this->getDatagrid()->getFilter($filter);
-                if ($filterNode->isVisible()) {
-                    throw $this->createExpectationException(
-                        sprintf('Filter "%s" should not be visible', $filter)
-                    );
-                }
-            } catch (TimeoutException $e) {
-                // Filter not rendered, all is good
-            }
+        foreach ($filters as $filterName) {
+            $this->spin(function () use ($filterName) {
+                $filterNode = $this
+                    ->getDatagrid()
+                    ->getElement('Body')
+                    ->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
+                return null === $filterNode || !$filterNode->isVisible();
+            }, sprintf('Filter "%s" should not be visible', $filterName));
         }
     }
 
