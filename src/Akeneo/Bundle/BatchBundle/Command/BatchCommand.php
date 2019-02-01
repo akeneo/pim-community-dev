@@ -45,7 +45,9 @@ class BatchCommand extends ContainerAwareCommand
     {
         $this
             ->setName('akeneo:batch:job')
-            ->setDescription('Launch a registered job instance')
+            ->setDescription(
+                '[DEPRECATED] Please use "akeneo:batch:publish-job-to-queue" to launch a registered job instance'
+            )
             ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
             ->addArgument('execution', InputArgument::OPTIONAL, 'Job execution id')
             ->addOption(
