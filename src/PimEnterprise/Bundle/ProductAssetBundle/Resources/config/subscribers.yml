@@ -11,6 +11,7 @@ services:
             - '@pimee_product_asset.repository.channel_configuration'
             - '@pimee_product_asset.remover.variation'
             - '@pimee_product_asset.remover.channel_configuration'
+            - '@pimee_product_asset.persistence.delete_variation_for_channel_id'
         tags:
             - { name: kernel.event_subscriber }
 

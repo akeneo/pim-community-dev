@@ -1,13 +1,16 @@
 # 2.3.x
 
-- PIM-8021: Fix translations
+## Bug fixes
+
+- PIM-8021: Fix translations.
+- PIM-8034: Fix a bug that prevents from deleting a channel when there is too many assets.
 
 # 2.3.28 (2019-02-01)
 
 ## Bug fixes
 
-- PIM-7970: Fix exception thrown when generating variations of assets with special chars in metadata
-- PIM-8035: Fix a memory leak on during the generation of missing asset variations
+- PIM-7970: Fix exception thrown when generating variations of assets with special chars in metadata.
+- PIM-8035: Fix a memory leak on during the generation of missing asset variations.
 
 # 2.3.27 (2019-01-29)
 
@@ -15,8 +18,8 @@
 
 ## Bug fixes
 
-- PIM-8006: Improve the generation of missing asset variation performances
-- PIM-7962: Fix the deletion of a user that is a contributor to a TWA project
+- PIM-8006: Improve the generation of missing asset variation performances.
+- PIM-7962: Fix the deletion of a user that is a contributor to a TWA project.
 - Force the use of ip-regex at 2.1.0 version. Upper version needs nodejs >= 8 but we have to support nodejs >= 6.
 
 # 2.3.25 (2019-01-17)
