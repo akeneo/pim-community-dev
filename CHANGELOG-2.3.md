@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- GITHUB-9408: Fix jobs in minimal fixture - cheerz @userz58 !
 - PIM-7943: Fix duplicate popin mask in family variant edit form.
 - PIM-8007: Content of sortable attribute options is now copyable.
 - PIM-8008: Fix attributes sort order in PEF.
