@@ -139,7 +139,7 @@ akeneo_franklin_insights:
                 sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
                 description:
                     first_step: 'In order to help you enrich your catalog, Franklin will need to know your catalog identifiers.'
-                    second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="#" class="AknDescriptionHeader-link">Read more</a>'
+                    second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html" class="AknDescriptionHeader-link" target="_blank">Read more</a>'
             inactive_connection:
                 title: 'Sorry, nothing to show here yet'
                 sub_title: 'Please activate your account on System > Franklin connection and come back.'
