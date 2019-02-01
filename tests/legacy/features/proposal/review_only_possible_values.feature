@@ -42,6 +42,7 @@ Feature: Review only possible values giving permissions on draft changes
       | column | value             |
       | Status | Can't be reviewed |
 
+  @skip
   Scenario: I can refuse the whole proposal and it refuses only values I can edit
     Given Mary proposed the following change to "sp-1":
       | field              | value                     | locale | scope  | tab                 |

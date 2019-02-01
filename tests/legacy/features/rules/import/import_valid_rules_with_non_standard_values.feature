@@ -49,7 +49,7 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
+    Then I should not see the text "skipped"
     And I should see the text "created 1"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
