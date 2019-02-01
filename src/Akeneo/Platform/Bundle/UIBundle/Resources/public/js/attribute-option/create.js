@@ -49,7 +49,7 @@ define(
                                 { attributeId: this.attribute.meta.id }
                             ),
                             data: JSON.stringify(form.getFormData())
-                        }).success((option) => {
+                        }).done((option) => {
                             modal.close();
                             messenger.notify(
                                 'success',
