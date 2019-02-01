@@ -1,10 +1,12 @@
 # 2.3.x
 
+- PIM-8021: Fix translations
+
 # 2.3.28 (2019-02-01)
 
 ## Bug fixes
 
-- PIM-7970: fix exception thrown when generating variations of assets with special chars in metadata
+- PIM-7970: Fix exception thrown when generating variations of assets with special chars in metadata
 - PIM-8035: Fix a memory leak on during the generation of missing asset variations
 
 # 2.3.27 (2019-01-29)

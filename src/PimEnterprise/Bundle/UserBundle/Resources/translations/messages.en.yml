@@ -1,6 +1,6 @@
 user:
     email:
-        notifications: Email notifications
+        notifications: Be notified when assets expire
     proposals:
         notifications:
             to_review: When new proposal to review
