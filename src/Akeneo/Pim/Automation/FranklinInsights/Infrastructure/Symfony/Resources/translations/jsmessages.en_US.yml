@@ -59,7 +59,7 @@ akeneo_franklin_insights:
                     error: "You need to create a family in your catalog to access this page."
                     family_status:
                         pending: 'New Franklin attributes to review'
-                        full: 'All Franklin attributes reviewed'
+                        full: 'All Franklin attributes mapped'
                     types_mismatch_warning: 'Warning: attributes types mismatch.'
             constraint:
                 missing_target_key: 'Missing target key for mapping'
