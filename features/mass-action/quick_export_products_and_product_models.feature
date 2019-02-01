@@ -10,7 +10,8 @@ Feature: Export products and product models
     And I am on the products page
 
   Scenario: Successfully export products to multiple channels
-    When I show the filter "color"
+    When I type "color" in the manage filter input
+    And I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
     And I select rows model-tshirt-divided-crimson-red, running-shoes-m-crimson-red and tshirt-unique-size-crimson-red
     And I press "CSV (Grid context)" on the "Quick Export" dropdown button

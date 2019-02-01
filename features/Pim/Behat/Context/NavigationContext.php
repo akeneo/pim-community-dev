@@ -5,9 +5,12 @@ namespace Pim\Behat\Context;
 use Behat\ChainedStepsExtension\Step;
 use Behat\ChainedStepsExtension\Step\Then;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 class NavigationContext extends PimContext implements PageObjectAware
 {
@@ -241,8 +244,7 @@ class NavigationContext extends PimContext implements PageObjectAware
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
 
-        $this->currentPage = sprintf('%s %s', $page, $action);
-        $this->getCurrentPage()->open(['id' => $entity->getId()]);
+        $this->openPage(sprintf('%s %s', $page, $action), ['id' => $entity->getId()]);
 
         return new Step\Then('I should see "Forbidden"');
     }
@@ -256,21 +258,19 @@ class NavigationContext extends PimContext implements PageObjectAware
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
-        $this->spin(function () use ($identifier, $page) {
-            $page   = ucfirst($page);
-            $getter = sprintf('get%s', $page);
-            $entity = $this->getFixturesContext()->$getter($identifier);
-            $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $page   = ucfirst($page);
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
 
-            $expectedFullUrl = $this->getPage(sprintf('%s edit', $page))->getUrl(['id' => $entity->getId()]);
+        $expectedFullUrl = $this->getPage(sprintf('%s edit', $page))->getUrl(['id' => $entity->getId()]);
 
-            $actualFullUrl = $this->getSession()->getCurrentUrl();
-            $actualUrl     = $this->sanitizeUrl($actualFullUrl);
-            $expectedUrl   = $this->sanitizeUrl($expectedFullUrl);
-            $result        = $expectedUrl === $actualUrl;
+        $actualFullUrl = $this->getSession()->getCurrentUrl();
+        $actualUrl     = $this->sanitizeUrl($actualFullUrl);
+        $expectedUrl   = $this->sanitizeUrl($expectedFullUrl);
+        $result        = $expectedUrl === $actualUrl;
 
-            return true === $result;
-        }, sprintf('Cannot got to the %s edit page', $page));
+        return true === $result;
     }
 
     /**
@@ -323,7 +323,7 @@ class NavigationContext extends PimContext implements PageObjectAware
     /**
      * @param string $name
      *
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     * @return Page
      */
     public function getPage($name)
     {
@@ -402,22 +402,31 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string  $pageName
      * @param array   $options
      *
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     * @return Page
+     *
+     * @throws TimeoutException
      */
     public function openPage($pageName, array $options = [])
     {
-        $this->currentPage = $pageName;
+        $this->spin(function () use ($pageName, $options) {
+            try {
+                $this->currentPage = $pageName;
+                $this->getCurrentPage()->open($options);
+            } catch (UnexpectedPageException $e) {
+                return false;
+            }
 
-        $page = $this->getCurrentPage()->open($options);
+            return true;
+        }, sprintf('Impossible to open page "%s"', $pageName));
 
-        return $page;
+        return $this->getCurrentPage();
     }
 
     /**
      * @param string $pageName
      * @param array  $options
      *
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     * @return Page
      */
     public function setCurrentPage($pageName, array $options = [])
     {
@@ -427,7 +436,7 @@ class NavigationContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     * @return Page
      */
     public function getCurrentPage()
     {

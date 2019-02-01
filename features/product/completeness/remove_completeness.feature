@@ -27,6 +27,7 @@ Feature: Display the completeness of a product
     When I change the "Locales" to "French (France)"
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
+    And I am on the dashboard page
     And I should have 2 new notifications
     And I should see notification:
       | type    | message                                                                                                |
