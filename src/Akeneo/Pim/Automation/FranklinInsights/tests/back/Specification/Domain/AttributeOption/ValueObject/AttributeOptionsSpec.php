@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\AttributeOptionsMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject\AttributeOptions;
 use PhpSpec\ObjectBehavior;
 
@@ -61,7 +62,7 @@ class AttributeOptionsSpec extends ObjectBehavior
     public function it_throws_an_exception_if_mapping_is_empty(): void
     {
         $this->beConstructedWith([]);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow()->duringInstantiation(AttributeOptionsMappingException::class);
     }
 
     public function it_throws_an_exception_if_franklin_code_is_empty(): void
