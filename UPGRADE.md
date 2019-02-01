@@ -1,6 +1,6 @@
 # UPGRADE FROM 2.3 TO 3.0
 
-## Disclaimer
+## Disclaimer foo
 
 > Please check that you're using Akeneo PIM v2.3.
 
