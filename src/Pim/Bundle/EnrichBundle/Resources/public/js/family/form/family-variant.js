@@ -54,8 +54,10 @@ define(
                         formModalCreator.createModal(
                             familyVariant.code,
                             'family-variant',
-                            'modal modal--fullPage modal--alignTop'
-                        );
+                            'modal modal--fullPage modal--alignTop modal--large'
+                        ).then((modal) => {
+                            modal.$el.find('.modal-footer').remove();
+                        });
                     }
                 );
 
