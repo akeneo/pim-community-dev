@@ -48,13 +48,14 @@ FROM pim_catalog_product p
 INNER JOIN pim_catalog_category_product cp ON p.id = cp.product_id
 INNER JOIN pim_catalog_category c ON c.id = cp.category_id
 WHERE identifier = "product_editable_by_redactor"
+ORDER BY c.code
 SQL;
 
         $this->assert('product_editable_by_redactor', $data, $sql, [
-            ['code' => 'master'],
             ['code' => 'categoryA1'],
             ['code' => 'categoryA2'],
             ['code' => 'categoryB'],
+            ['code' => 'master'],
         ]);
     }
 
