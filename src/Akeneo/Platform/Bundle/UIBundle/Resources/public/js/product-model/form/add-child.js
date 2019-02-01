@@ -60,6 +60,7 @@ define(
              */
             saveProductModelChild(route) {
                 this.trigger('pim_enrich:form:entity:pre_save');
+
                 return $.post(
                     Routing.generate(route),
                     JSON.stringify(this.getFormData())
