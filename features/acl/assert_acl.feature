@@ -65,7 +65,7 @@ Feature: Define user rights
     And I save the role
     And I should not see the text "There are unsaved changes."
     And I am on the <page> page
-    Then I should not see the secondary action "<button>"
+    Then I should not see the text "<button>"
 
     Examples:
       | permission                  | page                                         | button |
