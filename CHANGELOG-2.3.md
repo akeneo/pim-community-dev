@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8008: Fix attributes sort order in PEF.
+
 # 2.3.28 (2019-02-01)
 
 # 2.3.27 (2019-01-29)
