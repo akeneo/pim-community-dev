@@ -24,7 +24,7 @@ Feature: Leave a comment on a product
     And I visit the "Comments" column tab
     Then I should see the text "No comment for now"
     When I add a new comment "My comment"
-    Then I should not see "No comment for now"
+    Then I should not see the text "No comment for now"
     And I should see the following product comments:
       | product | # | author | message    | parent |
       | rangers | 1 | Julia  | My comment |        |
@@ -63,7 +63,7 @@ Feature: Leave a comment on a product
     When I delete the "My comment" comment
     Then I should see the text "Confirm deletion"
     And I confirm the removal
-    Then I should not see "My comment"
+    Then I should not see the text "My comment"
 
   Scenario: Not being able to remove a comment that is not mine
     Given I am logged in as "Julia"
