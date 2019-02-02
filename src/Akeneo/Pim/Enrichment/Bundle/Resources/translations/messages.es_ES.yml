@@ -72,4 +72,7 @@ pim_enrich:
       quick_export:
         launched_flash: El trabajo de exportación de productos está ejecutándose
 category:
+  edit: Editar categoría
   overview: Categorías
+tree:
+  edit: Editar árbol

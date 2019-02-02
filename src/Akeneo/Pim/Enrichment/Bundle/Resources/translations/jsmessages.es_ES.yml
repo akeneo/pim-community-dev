@@ -43,6 +43,8 @@ pim_enrich.entity.product:
     create:
       success: Producto creado éxitosamente
       fail: Ningún atributo se ha configurado como identificador de producto o usted no posee derechos de edición.
+  page_title:
+    index: "]-Inf, 1]{{ count }} resultado|]1, Inf[{{ count }} resultados"
   module:
     create:
       subtitle: Crear un producto
@@ -257,11 +259,13 @@ pim_enrich.export.product:
     title: Configuración global
 pim_enrich.mass_edit.product:
   title: Productos de acción masiva
+  confirm: "{1}Está a punto de actualizar un producto con la siguiente información, por favor confirme.|]1, Inf[Está a punto de actualizar {{ itemsCount }} productos con la información siguiente, por favor confirme."
   step:
     select:
       label: Elegir productos
     choose:
       title: Acciones masivas sobre los productos
+      label_count: "]0, Inf[Seleccione su acción"
     configure:
       label: Configurar
     confirm:
@@ -275,39 +279,50 @@ pim_enrich.mass_edit.product:
       select_attributes: Seleccionar atributos
     change_status:
       label: Cambiar el estado
+      label_count: "{1}Cambiar el estado de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Cambiar el estado de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: Los productos seleccionados serán habilitados o inhabilitados.
       field: Para habilitar
     edit_common:
       label: Editar los valores de atributos
+      label_count: "{1}Editar valores de atributos de<span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Editar valores de atributos de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: Se editarán sólo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
     add_attribute_value:
       label: Añadir valores de atributos
+      label_count: "{1}Añadir valores de atributos para <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Añadir valores de atributos para <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: Sólo los atributos de valor múltiple pertenecientes a las familias de los productos serán editados con la siguiente data para la local {{ locale }} y el canal {{ scope }}. Los valores de atributos son mantenidos, lo valores previos no.
     change_family:
       label: Cambiar familia
+      label_count: "{1}Cambiar la familia de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Cambiar la familia de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: La familia de los productos seleccionados se cambiará a la familia elegida
     add_to_group:
       label: Agregar a grupos
+      label_count: "{1}Añadir <span class=\"AknFullPage-title--highlight\">1 producto</span> a grupos|]1, Inf[Añadir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a grupos"
       description: Seleccione los grupos en los cuales agregará los productos seleccionados
       field: Grupos
     add_to_category:
       label: Agregar a categorias
+      label_count: "{1}Añadir <span class=\"AknFullPage-title--highlight\">1 producto</span> a categorías|]1, Inf[Añadir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a categorías"
       description: Los productos serán clasificados en las siguientes categorías, la clasificación actual se mantendrá.
     move_to_category:
       label: Mover entre categorias
+      label_count: "{1}Mover <span class=\"AknFullPage-title--highlight\">1 producto</span> entre categorías|]1, Inf[Mover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> entre categorías"
       description: Los productos serán clasificados en las siguientes categorías, la clasificación actual no se mantendrá.
     remove_from_category:
       label: Eliminar de las categorías
+      label_count: "{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producto</span> de categorías|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> de categorías"
       description: Se eliminarán los productos de las siguientes categorías.
     add_to_existing_product_model:
       label: Agregar a un modelo de producto existente
+      label_count: "{1}Añadir <span class=\"AknFullPage-title--highlight\">1 producto</span> a un modelo de producto existente|]1, Inf[Añadir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a un modelo de producto existente"
       description: El modelo de producto seleccionado reunirá los productos y permitirá el enrequecimiento de sus propiedades comunes.
     associate_to_product_and_product_model:
       label: Asociar
+      label_count: "{1}Asociar <span class=\"AknFullPage-title--highlight\">1 producto</span> a productos o modelos de productos|]1, Inf[Asociar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a productos o modelos de producto"
       description: Los productos seleccionados en las cuadrícula serán asociados con los productos seleccionados y modelos del producto para el tipo de asociación escogido
       validate: Por favor agregue una asociación antes de continuar con el siguiente espacio
     change_parent_product_model:
       label: Cambiar el modelo de producto de padre
+      label_count: "{1}Cambiar el modelo de producto padre de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Cambiar el modelo de producto padre de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: El padre de los productos variantes o modelos de sub-productos seleccionados en la cuadrícula serán modificados al modelo de producto seleccionado.
 pim_datagrid:
   mass_action_group:
@@ -397,3 +412,11 @@ batch_jobs:
   set_attribute_requirements:
     label: Establecer los requisitos de atributos
     perform.label: Establecer los requisitos de atributos
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Exportación rápida del contexto de grilla en XLSX
+    quick_export_product_model.label: Exportación rápida del modelo de contexto de la cuadrícula del producto XSLX
+    perform.label: Exportación rápida del contexto de grilla en XLSX
+  xlsx_product_quick_export:
+    quick_export.label: Exportación rápida de producto en XSLX
+    quick_export_product_model.label: Exportación rápida de modelo de producto en XSLX
+    perform.label: Exportación rápida de producto en XSLX
