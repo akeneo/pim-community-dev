@@ -60,7 +60,7 @@ Feature: Edit family variant
       | French (France)         | French label  |
     And I press the "Save" button in the popin
     Then I should see the flash message "Family variant successfully updated. The products with variants will be updated with your changes."
-    And I should see "English label"
+    And I should see the text "English label"
     And there should be the following family variants:
       | code                | family   | label-en_US   | label-de_DE  | label-fr_FR  |
       | clothing_color_size | clothing | English label | German label | French label |

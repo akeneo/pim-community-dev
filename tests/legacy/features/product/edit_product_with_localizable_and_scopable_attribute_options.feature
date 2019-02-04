@@ -46,24 +46,3 @@ Feature: Edit a product with localizable and scopable attribute options
     And I switch the scope to "print"
     When I switch the scope to "ecommerce"
     Then I should see the text "US2"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6017
-  Scenario: I edit a localizable and scopable multiselect attribute
-    Given I edit the "rick_morty" product
-    And I visit the "Other" group
-    And I switch the scope to "ecommerce"
-    And I switch the locale to "en_US"
-    And I change the "Multi" to "US1, US3"
-    And I switch the scope to "print"
-    And I change the Multi to "US2"
-    And I switch the locale to "de_DE"
-    And I change the Multi to "DE3, DE2"
-    When I save the product
-    Then I should see the flash message "Product successfully updated"
-    When I switch the scope to "ecommerce"
-    And I switch the locale to "en_US"
-    Then I should see the text "US1 US3"
-    When I switch the scope to "print"
-    Then I should see the text "US2"
-    When I switch the locale to "de_DE"
-    Then I should see the text "DE2 DE3"

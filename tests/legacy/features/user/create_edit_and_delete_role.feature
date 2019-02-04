@@ -25,7 +25,7 @@ Feature: Create and delete a user role
       | title   | Delete Confirmation                        |
       | content | Are you sure you want to delete this role? |
     When I confirm the deletion
-    Then I should not see "VeryDummyRole"
+    Then I should not see the text "VeryDummyRole"
     When I click on the "Delete" action of the row which contains "Administrator"
     And I cancel the deletion
     And I should see the text "Administrator"

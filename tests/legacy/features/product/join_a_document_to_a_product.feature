@@ -28,7 +28,7 @@ Feature: Join a document to a product
     And I save the product
     And I remove the "Description" file
     And I save the product
-    Then I should not see "akeneo.txt"
+    Then I should not see the text "akeneo.txt"
 
   Scenario: Successfully replace a document
     When I attach file "akeneo.txt" to "Description"
@@ -37,7 +37,7 @@ Feature: Join a document to a product
     And I remove the "Description" file
     When I attach file "akeneo2.txt" to "Description"
     And I save the product
-    Then I should not see "akeneo.txt"
+    Then I should not see the text "akeneo.txt"
     But I should see the text "akeneo2.txt"
 
   Scenario: Successfully replace and remove a document
@@ -46,5 +46,5 @@ Feature: Join a document to a product
     And I remove the "Description" file
     And I attach file "akeneo2.txt" to "Description"
     And I save the product
-    Then I should not see "akeneo.txt"
+    Then I should not see the text "akeneo.txt"
     But I should see the text "akeneo2.txt"

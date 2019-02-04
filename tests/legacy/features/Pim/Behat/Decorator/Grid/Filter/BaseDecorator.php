@@ -16,12 +16,16 @@ class BaseDecorator extends ElementDecorator
     {
         $filter = $this->spin(function () {
             return $this->find('css', '.filter-criteria-selector');
-        }, 'Cannot open the filter');
+        }, 'Cannot find the criteria selector to open filter');
 
         $this->spin(function () use ($filter) {
+            if ($this->hasClass('open-filter')) {
+                return true;
+            }
+
             $filter->click();
 
-            return $this->hasClass('open-filter');
+            return false;
         }, 'Cannot open the filter');
     }
 
