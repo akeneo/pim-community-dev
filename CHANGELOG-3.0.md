@@ -1,3 +1,9 @@
+# 3.0.x
+
+## Bug fixes
+
+- PIM-8020: Fix wrong count on missing required attributes in the completeness
+
 # 3.0
 
 ## Technical improvement

@@ -136,7 +136,32 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $currentCompleteness->setRatio($newCompleteness->getRatio());
                     $currentCompleteness->setMissingCount($newCompleteness->getMissingCount());
                     $currentCompleteness->setRequiredCount($newCompleteness->getRequiredCount());
+                    $this->updateMissingAttributes(
+                        $currentCompleteness->getMissingAttributes(),
+                        $newCompleteness->getMissingAttributes()
+                    );
                 }
+            }
+        }
+    }
+
+    /**
+     * @param Collection $currentMissingAttributes
+     * @param Collection $newMissingAttributes
+     */
+    private function updateMissingAttributes(
+        Collection $currentMissingAttributes,
+        Collection $newMissingAttributes
+    ): void {
+        foreach ($currentMissingAttributes as $currentMissingAttribute) {
+            if (!$newMissingAttributes->contains($currentMissingAttribute)) {
+                $currentMissingAttributes->removeElement($currentMissingAttribute);
+            }
+        }
+
+        foreach ($newMissingAttributes as $newMissingAttribute) {
+            if (!$currentMissingAttributes->contains($newMissingAttribute)) {
+                $currentMissingAttributes->add($newMissingAttribute);
             }
         }
     }
