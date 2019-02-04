@@ -389,24 +389,21 @@ class DataGridContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @Then /^I should see available filters in the following order "([^"]*)"$/
+     * @Then /^I should see available filters "([^"]*)"$/
      */
-    public function iShouldSeeAvailableFiltersInTheFollowingOrder($filters)
+    public function iShouldSeeAvailableFilters($filters)
     {
-        $filters = explode(',', $filters);
-        $existingFiltersArr = [];
-        foreach ($this->getCurrentPage()->getFiltersList() as $filter) {
-            $existingFiltersArr[] = strtolower(trim($filter->getHtml()));
-        }
+        $arrayFilters = explode(',', $filters);
+        $existingFiltersArray = array_map(function ($filter) {
+            return strtolower(trim($filter->getHtml()));
+        }, $this->getCurrentPage()->getFiltersList());
 
-        $ordered = $filters === array_slice(
-            $existingFiltersArr,
-            array_search($filters[0], $existingFiltersArr),
-            count($filters)
-        );
-
-        if (!$ordered) {
-            throw $this->createExpectationException('Filters are not ordered as expected');
+        foreach ($arrayFilters as $filter) {
+            if (array_search($filter, $existingFiltersArray) === false) {
+                throw $this->createExpectationException(
+                    sprintf('Expected to see filter %s as available', $filter)
+                );
+            }
         }
     }
 
@@ -723,7 +720,11 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iFilterBy($filterName, $operator, $value)
     {
-        $this->getDatagrid()->filterBy($filterName, $operator, $value);
+        $this->spin(function () use ($filterName, $operator, $value) {
+            $this->getDatagrid()->filterBy($filterName, $operator, $value);
+
+            return true;
+        }, sprintf('Can\'t filter by %s with operator %s and value %s', $filterName, $operator, $value));
 
         $gridContainer = $this->getElementFromDatagrid('Grid container');
 

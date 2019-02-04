@@ -3,6 +3,7 @@
 namespace Pim\Behat\Context\Domain;
 
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Pim\Behat\Context\PimContext;
 
 class SecondaryActionsContext extends PimContext
@@ -33,8 +34,16 @@ class SecondaryActionsContext extends PimContext
      */
     public function iShouldSeeTheSecondaryAction($not, $actionName)
     {
-        $module = $this->getElementOnCurrentPage('Secondary actions');
-        $module->open();
+        try {
+            $module = $this->getElementOnCurrentPage('Secondary actions');
+            $module->open();
+        } catch (TimeoutException $e) {
+            if ('' !== $not) {
+                return;
+            }
+
+            throw $e;
+        }
 
         $this->spin(function () use ($module, $not, $actionName) {
             if ('' === $not) {
