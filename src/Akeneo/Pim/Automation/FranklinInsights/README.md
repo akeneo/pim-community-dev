@@ -20,7 +20,7 @@ Define the status of the connection between Akeneo PIM and Franklin Insights
 - isIdentifiersMappingValid
 - productsCount
 
-***Subscription Status***
+***Product Subscription Status***
 
 The subscription status allows to know if a product can be subscribed or not to Franklin Insights
 
@@ -29,8 +29,7 @@ This object contains the connection status and different properties:
 - isSubscribed
 - hasFamily
 - isMappingFilled
-- isVariant (@camille: Should we replace this by isSimpleProduct?)
-
+- isVariant (It would be better to use isSimpleProduct)
 
 ###Identifiers & Mapping
 
@@ -38,59 +37,61 @@ This object contains the connection status and different properties:
 In order to ease the mapping, we considered Brand and MPN as two different attributes.
 
 ***Identifiers Mapping***
-This is the collection of all the identifiers from Franklin mapped (or not) to catalog attributes.
+This is the collection of all the identifiers from Franklin mapped (or not) to PIM attributes.
 
 ***Identifier Mapping*** 
-
-***Franklin identifier***
-    Franklin identifier code
-    Franklin identifier label
-    
-***Catalog identifier*** (@camille: Do you prefer PIM identifier? More commonly, should we talk about catalog or PIM?)
+    - *Franklin identifier*
+        - Franklin identifier code
+        - Franklin identifier label
+    - *PIM identifier*
 
 ###Attributes Mapping 
+This is a collection of all the attributes from Franklin mapped (or not) to PIM attributes based on a PIM family code.
 
-***Attributes Mapping***
-
-***Attribute Mapping***
-
-***Franklin attribute***
-    Franklin attribute id
-    Franklin attribute label
-
-***Catalog attribute***
+- ***Family code*** (PIM Family code)
+- ***Attribute Mapping***
+    - *Franklin attribute*
+        - Franklin attribute id
+        - Franklin attribute label
+    - *PIM attribute*
 
 ###Attribute Options Mapping
+This is a collection of options from Franklin mapped (or not) to PIM attribute options based on Franklin attribute id and PIM family code.
 
-***Attribute Options Mapping***
-
-***Attribute Option Mapping***
-
-***Franklin option***
-    Franklin option id
-    Franklin option label
-
-***Catalog option*** (@camille: Should we use options or attribute options?)
+- ***Attribute Option Mapping***
+    - *Franklin attribute id*
+    - *Franklin option*
+        - Franklin option id
+        - Franklin option label
+    - *PIM attribute option*
 
 ###Subscription
 
-***Subscription Id***
+***Product Subscription Id***
+When we subscribe a product to Franklin, a subscription id is returned.
+It's a string that is calculated from the identifier values sent for subscription.
+On Franklin side, it's called subscription id. 
 
 ***Tracker Id***
-
-***Requested identifiers***
+The tracker id is an extra field that we can send to Franklin.
+It eases the recovering of the product on which a product subscription is based on.
+We use the product id as tracker id in the current implementation.
 
 ***Mapped values***
+There are the product values mapped following the identifiers mapping.
+
+***Requested identifiers***
+The requested identifiers are the mapped values that we used to subscribe our product.
 
 ***Suggested Data***
+The suggested data is the mapped data that comes from AskFranklin. It is used to create proposals.
 
-***Subscription Request***
+***Product Subscription Request***
 
-***Subscription Response***
-
+***Product Subscription Response***
 
 ###Fetch suggested data
-
+Get back updated suggested data from AskFranklin.
 
 ### User intentions
 
@@ -104,15 +105,6 @@ This is the collection of all the identifiers from Franklin mapped (or not) to c
 
 - Fetch subscribed products
 
-
-
-### Misc
-
-
-
-## Functional scope
-
-
 ## Technical implementation
 
 4 layers:
@@ -125,12 +117,13 @@ Bounded context not extensible, BC Breaks allowed
 
 ### Specificities
 - Install
-- 
+- Decoupling (Application/Domain/Infra)
+- Pattern Command/Handler
+- Test stack (unit/acceptance/integration/e2e) and mock e2e
 
 ### Technical Debt
-- aggregates
-- read models
-- value objects
+- aggregates (training arrived a bit late so it's not correctly done)
+- value objects (VO appears during the project, we should create more)
 
 ### Plug to external components & bounded contexts
 
@@ -140,4 +133,3 @@ Bounded context not extensible, BC Breaks allowed
 - Install
 - Structure subscribers
 - Product subscribers
-
