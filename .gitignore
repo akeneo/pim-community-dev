@@ -28,6 +28,7 @@ vendor
 !/bin/docker/pim-dependencies.sh
 !/bin/docker/pim-front.sh
 !/bin/docker/pim-initialize.sh
+!/bin/docker/pim-setup.sh
 !/bin/console
 !/bin/pim-front.sh
 behat.yml
@@ -48,6 +49,5 @@ yarn-error.log
 coverage/*
 composer.lock
 docker-compose.override.yml
-.php_cs.cache
 /web/test_dist/*
 
