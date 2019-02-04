@@ -109,6 +109,9 @@ legacy:
                     - 'Context\FeatureContext'
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.repository.product_model'
+            remote_coverage_enabled: false
+            mink_session: selenium2
+
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
@@ -135,6 +138,9 @@ legacy:
                     base_url: 'http://127.0.0.1/'
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
+        BehatRemoteCodeCoverage\RemoteCodeCoverageExtension:
+            target_directory: '%paths.base%/var/coverage'
+            split_by: feature
 
     formatters:
         pretty: true
@@ -198,4 +204,6 @@ acceptance:
                 environment: test_fake
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
-
+        BehatLocalCodeCoverage\LocalCodeCoverageExtension:
+            target_directory: '%paths.base%/var/coverage'
+            phpunit_xml_path: '%paths.base%/app/phpunit.xml.dist'

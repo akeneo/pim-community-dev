@@ -11,6 +11,12 @@
     beStrictAboutTestsThatDoNotTestAnything="false"
     bootstrap="./autoload.php">
 
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../src/Akeneo</directory>
+        </whitelist>
+    </filter>
+
     <php>
         <ini name="date.timezone" value="Europe/Paris"/>
         <ini name="intl.default_locale" value="en"/>

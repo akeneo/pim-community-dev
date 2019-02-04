@@ -75,7 +75,9 @@
         "twig/extensions": "1.3.0",
         "twig/twig": "1.36.0",
         "box/spout": "2.7.2",
-        "webmozart/assert": "1.3"
+        "webmozart/assert": "1.3",
+        "matthiasnoback/behat-remote-code-coverage-extension": "^0.2.0",
+        "matthiasnoback/behat-local-code-coverage-extension": "^0.2.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
@@ -94,7 +96,8 @@
         "squizlabs/php_codesniffer": "2.*",
         "friends-of-behat/symfony-extension": "^2.0",
         "liuggio/fastest": "1.6.*",
-        "phpstan/phpstan": "^0.10.5"
+        "phpstan/phpstan": "^0.10.5",
+        "phpunit/phpcov": "^5.0"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"

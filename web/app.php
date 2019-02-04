@@ -1,7 +1,17 @@
 <?php
+
+use LiveCodeCoverage\RemoteCodeCoverage;
 use Symfony\Component\HttpFoundation\Request;
 
 require __DIR__.'/../vendor/autoload.php';
+
+$shutDownCodeCoverage = RemoteCodeCoverage::bootstrap(
+//(bool)getenv('CODE_COVERAGE_ENABLED'),
+    true,
+    sys_get_temp_dir(),
+    __DIR__ . '/../app/phpunit.xml.dist'
+);
+
 $kernel = new AppKernel('prod', false);
 //$kernel = new AppCache($kernel);
 
@@ -30,3 +40,5 @@ if (!empty($loadBalancerTrustedIPs)) {
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
+
+$shutDownCodeCoverage();

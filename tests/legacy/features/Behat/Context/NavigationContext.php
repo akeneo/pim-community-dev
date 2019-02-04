@@ -107,6 +107,10 @@ class NavigationContext extends PimContext implements PageObjectAware
      */
     public function iAmLoggedInAs($username, ?string $password = null)
     {
+        $collectCodeCoverageCookie = $this->getFixturesContext()->getMink()->getSession()->getCookie('collect_code_coverage');
+        $coverageGroupCookie = $this->getFixturesContext()->getMink()->getSession()->getCookie('coverage_group');
+        $coverageIdCookie = $this->getFixturesContext()->getMink()->getSession()->getCookie('coverage_id');
+
         $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
 
         $this->getSession()->visit($this->locatePath('/user/logout'));
@@ -114,6 +118,12 @@ class NavigationContext extends PimContext implements PageObjectAware
         $this->spin(function () {
             return $this->getSession()->getPage()->find('css', '.AknLogin-title');
         }, 'Cannot open the login page');
+
+        $this->getFixturesContext()->getMink()->getSession()->setCookie('collect_code_coverage', $collectCodeCoverageCookie);
+        $this->getFixturesContext()->getMink()->getSession()->setCookie('coverage_group', $coverageGroupCookie);
+        $this->getFixturesContext()->getMink()->getSession()->setCookie('coverage_id', $coverageIdCookie);
+
+        $test = $this->getFixturesContext()->getMink()->getSession()->getCookie('collect_code_coverage');
 
         $password = null !== $password ? $password : $username;
 
@@ -125,6 +135,8 @@ class NavigationContext extends PimContext implements PageObjectAware
 
             return $signInButton;
         }, sprintf('Cannot log in as %s', $username));
+
+        $test = $this->getFixturesContext()->getMink()->getSession()->getCookie('collect_code_coverage');
 
         $this->spin(function () {
             return $this->getSession()->getPage()->find('css', '.AknWidget');
