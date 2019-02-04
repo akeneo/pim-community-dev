@@ -26,7 +26,6 @@ Feature: Define user rights
     And I visit the "Permissions" tab
     When I revoke rights to resource <permission>
     And I save the role
-    And I am on the <page> page
     Then I should not be able to access the <forbiddenPage> page
 
     Examples:
