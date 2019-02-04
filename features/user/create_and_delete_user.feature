@@ -54,7 +54,7 @@ Feature: Create a user
       | title   | Delete Confirmation                        |
       | content | Are you sure you want to delete this user? |
     When I confirm the deletion
-    Then I should not see "Julia"
+    Then I should not see the text "Julia"
 
   Scenario: Successfully delete a user from user page
     Given I am on the users page
@@ -65,4 +65,4 @@ Feature: Create a user
       | title   | Delete Confirmation                        |
       | content | Are you sure you want to delete this user? |
     When I confirm the deletion
-    Then I should not see "Julien"
+    Then I should not see the text "Julien"

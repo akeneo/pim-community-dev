@@ -649,6 +649,11 @@ class Grid extends Index
             return $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
         }, sprintf('Could not find filter item %s', $filterName));
 
+        // isVisible is not totally reliable, which mean that
+        // we think we clicked on the filter button but we didn't (DOM not loaded)
+        // sleep is a working dirty hack
+        sleep(1);
+
         if (null === $filter || !$filter->isVisible()) {
             $this->clickOnFilterToManage($filterName);
         }
@@ -716,10 +721,25 @@ class Grid extends Index
      */
     protected function clickOnFilterToManage($filterName)
     {
+        $this->spin(function () {
+            return !$this->isLoadingMaskVisible();
+        }, 'Loading mask is still visible');
+
         $manageFilters = $this->getElement('Manage filters');
         if (!$manageFilters->isVisible()) {
             $this->clickFiltersList();
         }
+
+        $this->spin(function () use ($manageFilters, $filterName) {
+            $searchField = $manageFilters->find('css', 'input[type="search"]');
+            if (null !== $searchField) {
+                $searchField->setValue($filterName);
+
+                return true;
+            }
+
+            return false;
+        }, 'Impossible to search in filters.');
 
         $this->spin(function () use ($manageFilters, $filterName) {
             if ($this->isLoadingMaskVisible()) {
@@ -727,18 +747,6 @@ class Grid extends Index
             }
 
             $filterElement = $manageFilters->find('css', sprintf('input[value="%s"]', $filterName));
-
-            if (null !== $filterElement && $filterElement->isVisible()) {
-                $filterElement->click();
-                $manageFilters->find('css', '.close')->click();
-
-                return true;
-            }
-
-            if (null !== $searchField = $manageFilters->find('css', 'input[type="search"]')) {
-                $searchField->setValue($filterName);
-            }
-
             if (null !== $filterElement && $filterElement->isVisible()) {
                 $filterElement->click();
                 $manageFilters->find('css', '.close')->click();

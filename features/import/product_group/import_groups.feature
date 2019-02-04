@@ -29,7 +29,7 @@ Feature: Import groups
     Then I should see the text "read lines 4"
     And I should see the text "Created 2"
     And I should see the text "Processed 2"
-    And I should not see "Skip"
+    And I should not see the text "Skip"
     Then there should be the following groups:
       | code          | label-en_US    | label-fr_FR | type    | axis       |
       | ORO_XSELL     | Oro X          |             | XSELL   |            |
