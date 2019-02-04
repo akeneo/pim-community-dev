@@ -98,7 +98,10 @@
         "symfony/web-profiler-bundle": "^4.3",
         "symfony/web-server-bundle": "^4.3",
         "symfony/lock": "^4.3",
-        "symfony/yaml": "^4.3"
+        "symfony/yaml": "^4.3",
+        "matthiasnoback/behat-remote-code-coverage-extension": "^0.3.0",
+        "matthiasnoback/behat-local-code-coverage-extension": "^0.3.0",
+        "phpunit/phpcov": "^6.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
