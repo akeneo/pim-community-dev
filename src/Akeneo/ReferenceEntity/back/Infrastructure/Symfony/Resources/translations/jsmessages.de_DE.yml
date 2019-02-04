@@ -46,8 +46,8 @@ pim_reference_entity:
       filter:
         completeness:
           label: Vollständig
-          yes: true
-          no: false
+          'yes': 'JA'
+          'no': 'NEIN'
       column:
         code: Code
         image: Abbildung

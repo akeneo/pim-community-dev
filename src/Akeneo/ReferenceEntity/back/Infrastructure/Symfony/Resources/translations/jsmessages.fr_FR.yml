@@ -133,8 +133,8 @@ pim_reference_entity:
         completeness:
           label: Complet
           all: TOUT
-          yes: true
-          no: false
+          'yes': 'OUI'
+          'no': 'NON'
       column:
         code: Code
         image: Image

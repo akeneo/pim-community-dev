@@ -43,8 +43,8 @@ pim_reference_entity:
       filter:
         completeness:
           label: Завершено
-          yes: true
-          no: false
+          'yes': 'YES'
+          'no': 'NO'
       column:
         code: Код
         image: Изображение

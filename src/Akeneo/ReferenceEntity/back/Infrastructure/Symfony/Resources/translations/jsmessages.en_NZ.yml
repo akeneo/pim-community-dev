@@ -107,8 +107,8 @@ pim_reference_entity:
       search: Search on label, code and text attributes
       filter:
         completeness:
-          yes: true
-          no: false
+          'yes': 'YES'
+          'no': 'NO'
       column:
         code: Code
         image: Image

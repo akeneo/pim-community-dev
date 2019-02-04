@@ -47,8 +47,8 @@ pim_reference_entity:
       filter:
         completeness:
           label: Valmis
-          yes: true
-          no: false
+          'yes': 'YES'
+          'no': 'NO'
       column:
         code: Koodi
         image: Kuva

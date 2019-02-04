@@ -42,8 +42,8 @@ pim_reference_entity:
       filter:
         completeness:
           label: Klart
-          yes: true
-          no: false
+          'yes': 'YES'
+          'no': 'NO'
       column:
         code: Kod
         image: Bild
