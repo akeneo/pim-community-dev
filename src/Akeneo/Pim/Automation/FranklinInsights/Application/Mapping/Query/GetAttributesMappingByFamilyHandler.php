@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
@@ -136,7 +137,7 @@ class GetAttributesMappingByFamilyHandler
             $status = $attributeMapping->getStatus();
             $pimAttributeCode = $attributeMapping->getPimAttributeCode();
             if (in_array($attributeMapping->getPimAttributeCode(), $unknownAttributeCodes)) {
-                $status = AttributeMapping::ATTRIBUTE_PENDING;
+                $status = AttributeMappingStatus::ATTRIBUTE_PENDING;
                 $pimAttributeCode = null;
             }
 

@@ -71,8 +71,7 @@ class AttributeMapping extends BaseView {
   public static readonly FAMILY_MAPPING_FULL: number = 1;
   public static readonly FAMILY_MAPPING_EMPTY: number = 2;
 
-  /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping */
-  /** Duplicated in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping */
+  /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus*/
   private static readonly ATTRIBUTE_PENDING: number = 0;
   private static readonly ATTRIBUTE_MAPPED: number = 1;
   private static readonly ATTRIBUTE_UNMAPPED: number = 2;

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -50,14 +51,14 @@ class AttributeMappingSpec extends ObjectBehavior
 
         $this->beConstructedWith('target', 'multiselect', $attribute);
 
-        $this->getStatus()->shouldReturn(AttributeMapping::ATTRIBUTE_MAPPED);
+        $this->getStatus()->shouldReturn(AttributeMappingStatus::ATTRIBUTE_MAPPED);
     }
 
     public function it_returns_a_pending_status_when_attribute_is_not_mapped(): void
     {
         $this->beConstructedWith('target', 'multiselect', null);
 
-        $this->getStatus()->shouldReturn(AttributeMapping::ATTRIBUTE_PENDING);
+        $this->getStatus()->shouldReturn(AttributeMappingStatus::ATTRIBUTE_PENDING);
     }
 
     public function it_returns_the_target_attribute_code(): void

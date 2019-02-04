@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
@@ -22,15 +23,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class AttributeMapping
 {
-    /** The attribute is pending */
-    public const ATTRIBUTE_PENDING = 0;
-
-    /** The attribute is mapped */
-    public const ATTRIBUTE_MAPPED = 1;
-
-    /** The attribute was registered to not be mapped */
-    public const ATTRIBUTE_UNMAPPED = 2;
-
     public const AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS = [
         AttributeTypes::METRIC => 'metric',
         AttributeTypes::OPTION_SIMPLE_SELECT => 'select',
@@ -81,7 +73,7 @@ class AttributeMapping
             $this->validateAttribute($attribute);
         }
         $this->attribute = $attribute;
-        $this->status = null === $this->attribute ? self::ATTRIBUTE_PENDING : self::ATTRIBUTE_MAPPED;
+        $this->status = null === $this->attribute ? AttributeMappingStatus::ATTRIBUTE_PENDING : AttributeMappingStatus::ATTRIBUTE_MAPPED;
     }
 
     /**

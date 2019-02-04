@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mappi
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -80,7 +81,7 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             null,
             'text',
             'pim_series',
-            AttributeMapping::ATTRIBUTE_MAPPED
+            AttributeMappingStatus::ATTRIBUTE_MAPPED
         ));
 
         $familyRepository->findOneByIdentifier('camcorders')->willReturn($family);
@@ -96,7 +97,7 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             null,
             'text',
             null,
-            AttributeMapping::ATTRIBUTE_PENDING
+            AttributeMappingStatus::ATTRIBUTE_PENDING
         ));
         $this->handle($query)->shouldBeLike($expectedMapping);
     }
