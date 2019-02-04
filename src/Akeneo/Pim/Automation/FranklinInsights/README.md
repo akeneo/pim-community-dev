@@ -37,7 +37,7 @@ This object contains the connection status and different properties:
 In order to ease the mapping, we considered Brand and MPN as two different attributes.
 
 ***Identifiers Mapping***
-This is the collection of all the identifiers from Franklin mapped (or not) to PIM attributes.
+This is the collection of all the identifiers from Franklin that can be mapped to PIM attributes.
 
 ***Identifier Mapping*** 
     - *Franklin identifier*
@@ -46,7 +46,7 @@ This is the collection of all the identifiers from Franklin mapped (or not) to P
     - *PIM identifier*
 
 ### Attributes Mapping 
-This is a collection of all the attributes from Franklin mapped (or not) to PIM attributes based on a PIM family code.
+This is a collection of all the attributes from Franklin that can be mapped to PIM attributes based on a PIM family code.
 
 - ***Family code*** (PIM Family code)
 - ***Attribute Mapping***
@@ -73,7 +73,7 @@ It's a string that is calculated from the identifier values sent for subscriptio
 On Franklin side, it's called subscription id. 
 
 ***Tracker Id***
-The tracker id is an extra field that we can send to Franklin.
+The tracker id is an extra field that we send to Franklin.
 It eases the recovering of the product on which a product subscription is based on.
 We use the product id as tracker id in the current implementation.
 
@@ -122,8 +122,8 @@ Bounded context not extensible, BC Breaks allowed
 - Test stack (unit/acceptance/integration/e2e) and mock e2e
 
 ### Technical Debt
-- aggregates (training arrived a bit late so it's not correctly done)
-- value objects (VO appears during the project, we should create more)
+- aggregates (training happened a bit late so it's not correctly done)
+- value objects (VO appeared during the project, we should create more)
 
 ### Plug to external components & bounded contexts
 
