@@ -29,7 +29,7 @@ class AttributeMappingSpec extends ObjectBehavior
             'Series',
             'text',
             'pim_series',
-            AttributeMappingStatus::ATTRIBUTE_MAPPED,
+            AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             ['Hair care']
         );
     }
@@ -45,7 +45,7 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->getTargetAttributeLabel()->shouldReturn('Series');
         $this->getTargetAttributeType()->shouldReturn('text');
         $this->getPimAttributeCode()->shouldReturn('pim_series');
-        $this->getStatus()->shouldReturn(AttributeMappingStatus::ATTRIBUTE_MAPPED);
+        $this->getStatus()->shouldReturn(AttributeMappingStatus::ATTRIBUTE_ACTIVE);
         $this->getSummary()->shouldReturn(['Hair care']);
     }
 
@@ -56,7 +56,7 @@ class AttributeMappingSpec extends ObjectBehavior
             null,
             'text',
             'pim_series',
-            AttributeMappingStatus::ATTRIBUTE_MAPPED,
+            AttributeMappingStatus::ATTRIBUTE_ACTIVE,
             null
         );
         $this->getTargetAttributeLabel()->shouldReturn(null);

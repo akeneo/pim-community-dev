@@ -73,7 +73,7 @@ class AttributeMapping
             $this->validateAttribute($attribute);
         }
         $this->attribute = $attribute;
-        $this->status = null === $this->attribute ? AttributeMappingStatus::ATTRIBUTE_PENDING : AttributeMappingStatus::ATTRIBUTE_MAPPED;
+        $this->status = null === $this->attribute ? AttributeMappingStatus::ATTRIBUTE_PENDING : AttributeMappingStatus::ATTRIBUTE_ACTIVE;
     }
 
     /**

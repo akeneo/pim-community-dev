@@ -81,7 +81,7 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             null,
             'text',
             'pim_series',
-            AttributeMappingStatus::ATTRIBUTE_MAPPED
+            AttributeMappingStatus::ATTRIBUTE_ACTIVE
         ));
 
         $familyRepository->findOneByIdentifier('camcorders')->willReturn($family);

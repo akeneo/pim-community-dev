@@ -353,9 +353,9 @@ final class AttributesMappingContext implements Context
             case 'pending':
                 return AttributeMappingStatus::ATTRIBUTE_PENDING;
             case 'active':
-                return AttributeMappingStatus::ATTRIBUTE_MAPPED;
+                return AttributeMappingStatus::ATTRIBUTE_ACTIVE;
             case 'inactive':
-                return AttributeMappingStatus::ATTRIBUTE_UNMAPPED;
+                return AttributeMappingStatus::ATTRIBUTE_INACTIVE;
         }
     }
 

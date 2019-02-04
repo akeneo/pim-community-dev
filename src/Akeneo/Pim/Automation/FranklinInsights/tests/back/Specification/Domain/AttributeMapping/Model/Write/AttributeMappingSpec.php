@@ -51,7 +51,7 @@ class AttributeMappingSpec extends ObjectBehavior
 
         $this->beConstructedWith('target', 'multiselect', $attribute);
 
-        $this->getStatus()->shouldReturn(AttributeMappingStatus::ATTRIBUTE_MAPPED);
+        $this->getStatus()->shouldReturn(AttributeMappingStatus::ATTRIBUTE_ACTIVE);
     }
 
     public function it_returns_a_pending_status_when_attribute_is_not_mapped(): void

@@ -49,10 +49,10 @@ class AttributesMappingResponseSpec extends ObjectBehavior
     public function it_sorts_attributes_mapping(): void
     {
         $attrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
-        $attrSize = new AttributeMapping('size', 'Size', 'select', 'pim_size', AttributeMappingStatus::ATTRIBUTE_MAPPED);
+        $attrSize = new AttributeMapping('size', 'Size', 'select', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE);
         $attrColor = new AttributeMapping('color', 'Color', 'select', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
-        $attrLabel = new AttributeMapping('label', 'Label', 'text', null, AttributeMappingStatus::ATTRIBUTE_UNMAPPED);
-        $attrHeight = new AttributeMapping('height', 'Height', 'metric', null, AttributeMappingStatus::ATTRIBUTE_UNMAPPED);
+        $attrLabel = new AttributeMapping('label', 'Label', 'text', null, AttributeMappingStatus::ATTRIBUTE_INACTIVE);
+        $attrHeight = new AttributeMapping('height', 'Height', 'metric', null, AttributeMappingStatus::ATTRIBUTE_INACTIVE);
 
         $this
             ->addAttribute($attrWeight)

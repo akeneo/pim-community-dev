@@ -112,8 +112,8 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
     {
         $mapping = [
             AttributeMapping::STATUS_PENDING => AttributeMappingStatus::ATTRIBUTE_PENDING,
-            AttributeMapping::STATUS_INACTIVE => AttributeMappingStatus::ATTRIBUTE_UNMAPPED,
-            AttributeMapping::STATUS_ACTIVE => AttributeMappingStatus::ATTRIBUTE_MAPPED,
+            AttributeMapping::STATUS_INACTIVE => AttributeMappingStatus::ATTRIBUTE_INACTIVE,
+            AttributeMapping::STATUS_ACTIVE => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
         ];
 
         if (!array_key_exists($status, $mapping)) {

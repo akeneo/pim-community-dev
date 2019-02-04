@@ -83,11 +83,11 @@ class AttributesMappingNormalizer
     private function computeAttributeStatus(DomainAttributeMapping $attributeMapping): string
     {
         switch ($attributeMapping->getStatus()) {
-            case AttributeMappingStatus::ATTRIBUTE_MAPPED:
+            case AttributeMappingStatus::ATTRIBUTE_ACTIVE:
                 return AttributeMapping::STATUS_ACTIVE;
             case AttributeMappingStatus::ATTRIBUTE_PENDING:
                 return AttributeMapping::STATUS_PENDING;
-            case AttributeMappingStatus::ATTRIBUTE_UNMAPPED:
+            case AttributeMappingStatus::ATTRIBUTE_INACTIVE:
                 return AttributeMapping::STATUS_INACTIVE;
         }
     }

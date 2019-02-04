@@ -22,8 +22,8 @@ interface AttributeMappingStatus
     public const ATTRIBUTE_PENDING = 0;
 
     /** The attribute is mapped */
-    public const ATTRIBUTE_MAPPED = 1;
+    public const ATTRIBUTE_ACTIVE = 1;
 
     /** The attribute was registered to not be mapped */
-    public const ATTRIBUTE_UNMAPPED = 2;
+    public const ATTRIBUTE_INACTIVE = 2;
 }
