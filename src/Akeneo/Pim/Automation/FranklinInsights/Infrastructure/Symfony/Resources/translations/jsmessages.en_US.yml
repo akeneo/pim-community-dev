@@ -48,8 +48,8 @@ akeneo_franklin_insights:
                 franklin_insights:
                     label: Franklin attribute status
                     pending: Pending
-                    mapped: Active
-                    unmapped: Inactive
+                    active: Active
+                    inactive: Inactive
                 values_summary: "Values summary: {{ label }}"
             module:
                 subscribe:
