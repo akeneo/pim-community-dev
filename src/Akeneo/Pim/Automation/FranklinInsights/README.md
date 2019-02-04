@@ -1,9 +1,9 @@
-#Franklin Insights
+# Franklin Insights
 Franklin Insights is an intelligence layer whose mission is to guide Julia across the PIM to focus on compelling PX
 
-##Ubiquitous language
+## Ubiquitous language
 
-###Configuration
+### Configuration
 
 Configuration and connection status between Akeneo PIM and Franklin Insights
 
@@ -31,7 +31,7 @@ This object contains the connection status and different properties:
 - isMappingFilled
 - isVariant (It would be better to use isSimpleProduct)
 
-###Identifiers & Mapping
+### Identifiers & Mapping
 
 ***Identifiers*** Franklin works with a set of identifiers (ASIN, UPC and the combination of Brand/MPN).
 In order to ease the mapping, we considered Brand and MPN as two different attributes.
@@ -45,7 +45,7 @@ This is the collection of all the identifiers from Franklin mapped (or not) to P
         - Franklin identifier label
     - *PIM identifier*
 
-###Attributes Mapping 
+### Attributes Mapping 
 This is a collection of all the attributes from Franklin mapped (or not) to PIM attributes based on a PIM family code.
 
 - ***Family code*** (PIM Family code)
@@ -55,7 +55,7 @@ This is a collection of all the attributes from Franklin mapped (or not) to PIM 
         - Franklin attribute label
     - *PIM attribute*
 
-###Attribute Options Mapping
+### Attribute Options Mapping
 This is a collection of options from Franklin mapped (or not) to PIM attribute options based on Franklin attribute id and PIM family code.
 
 - ***Attribute Option Mapping***
@@ -65,7 +65,7 @@ This is a collection of options from Franklin mapped (or not) to PIM attribute o
         - Franklin option label
     - *PIM attribute option*
 
-###Subscription
+### Subscription
 
 ***Product Subscription Id***
 When we subscribe a product to Franklin, a subscription id is returned.
@@ -90,7 +90,7 @@ The suggested data is the mapped data that comes from AskFranklin. It is used to
 
 ***Product Subscription Response***
 
-###Fetch suggested data
+### Fetch suggested data
 Get back updated suggested data from AskFranklin.
 
 ### User intentions
