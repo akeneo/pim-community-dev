@@ -32,12 +32,12 @@ Feature: Export products according to text attribute filter
     And I add available attributes Title
     And I add available attributes Title 2
     And I add available attributes Title 3
+    And I switch the locale from "name" filter to "en_US"
     And I filter by "comment" with operator "Is equal to" and value "Awesome"
     And I filter by "name" with operator "Contains" and value "Ranger"
     And I filter by "title" with operator "Does not contain" and value "product"
     And I filter by "title_2" with operator "Starts with" and value "Awesome"
     And I filter by "title_3" with operator "Is empty" and value ""
-    And I switch the locale from "name" filter to "en_US"
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page
