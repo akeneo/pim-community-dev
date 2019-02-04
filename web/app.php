@@ -1,9 +1,17 @@
 <?php
 
+use LiveCodeCoverage\RemoteCodeCoverage;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 require dirname(__DIR__).'/app/bootstrap.php';
+
+$shutDownCodeCoverage = RemoteCodeCoverage::bootstrap(
+//(bool)getenv('CODE_COVERAGE_ENABLED'),
+    true,
+    sys_get_temp_dir(),
+    __DIR__ . '/../app/phpunit.xml.dist'
+);
 
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
@@ -20,3 +28,5 @@ $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
+
+$shutDownCodeCoverage();

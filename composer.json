@@ -85,7 +85,10 @@
         "twig/extensions": "1.3.0",
         "twig/twig": "1.42.2",
         "box/spout": "2.7.2",
-        "webmozart/assert": "1.3"
+        "webmozart/assert": "1.3",
+        "matthiasnoback/behat-remote-code-coverage-extension": "^0.3.0",
+        "matthiasnoback/behat-local-code-coverage-extension": "^0.3.0",
+        "phpunit/phpcov": "^6.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",

@@ -11,6 +11,22 @@
     beStrictAboutTestsThatDoNotTestAnything="false"
     bootstrap="./bootstrap.php">
 
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="false">
+            <directory suffix=".php">../src/Akeneo</directory>
+            <directory suffix=".php">../src/Oro</directory>
+            <exclude>
+                <directory suffix="Spec.php">../src/</directory>
+                <directory suffix="Integration.php">../src/</directory>
+                <directory suffix="EndToEnd.php">../src/</directory>
+                <directory suffix="Extension.php">../src/</directory>
+                <directory suffix="Configuration.php">../src/</directory>
+                <directory suffix="Bundle.php">../src/</directory>
+                <directory suffix="Pass.php">../src/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
     <php>
         <ini name="date.timezone" value="Europe/Paris"/>
         <ini name="intl.default_locale" value="en"/>
