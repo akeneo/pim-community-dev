@@ -121,7 +121,7 @@
             }
         },
         "branch-alias": {
-            "dev-master": "3.0.x-dev",
+            "dev-master": "3.1.x-dev",
             "dev-2.3": "2.3.x-dev",
             "dev-2.2": "2.2.x-dev",
             "dev-2.1": "2.1.x-dev",
