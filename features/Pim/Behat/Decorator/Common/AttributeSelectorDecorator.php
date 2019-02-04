@@ -24,6 +24,11 @@ class AttributeSelectorDecorator extends ElementDecorator
                 return $this->find('css', 'header input');
             }, 'Cannot find header input');
 
+            // isVisible is not totally reliable, which mean that
+            // we think we see the header but we don't (DOM not loaded)
+            // sleep is a working dirty hack
+            sleep(1);
+
             if (!$headerInput->isVisible() && $headerInput->isValid()) {
                 throw new \Exception('Attribute selector header input is not visible or valid');
             }
