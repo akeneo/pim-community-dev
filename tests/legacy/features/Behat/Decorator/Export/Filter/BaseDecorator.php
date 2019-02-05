@@ -36,14 +36,28 @@ class BaseDecorator extends ElementDecorator
      */
     public function setLocale($locale)
     {
-        $localeSwitcher = $this->spin(function () {
-            return $this->find('css', '.locale-switcher');
+        $option = $this->spin(function () use ($locale) {
+            $dropdown = $this->find('css', '.locale-switcher');
+
+            if (null === $dropdown) {
+                return false;
+            }
+
+            $toggle = $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]');
+            if (null === $toggle) {
+                return false;
+            }
+            $toggle->click();
+
+            $option = $dropdown->find(
+                'css',
+                sprintf('*[data-locale="%s"], a[href*="%s"]', $locale, $locale)
+            );
+
+            return $option;
         }, 'Cannot find the locale switcher. Are you sure that this attribute is localizable?');
 
-        sleep(1);
-
-        $localeSwitcher->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]')->click();
-        $localeSwitcher->find('css', sprintf('[data-locale="%s"]', $locale))->click();
+        $option->click();
     }
 
     /**
