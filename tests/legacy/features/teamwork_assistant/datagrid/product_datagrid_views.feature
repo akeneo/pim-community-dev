@@ -59,7 +59,7 @@ Feature: Products datagrid views
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully removed"
     And I should see the text "Default view"
-    But I should not see "Boots only"
+    But I should not see the text "Boots only"
     And I should see products black-boots, purple-sneakers and black-sneakers
 
   Scenario: A contributor can choose his default products datagrid view from his profile
