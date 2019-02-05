@@ -32,7 +32,7 @@ Feature: Publish a product
       | sku    | family | categories | name-en_US |
       | my-tee | tees   | tshirts    | Tee1       |
     And I am on the "my-tee" published product show page
-    Then I should not see "Edit working copy"
+    Then I should not see the text "Edit working copy"
 
   @skip @jira https://akeneo.atlassian.net/browse/PIM-4762
   Scenario: Successfully publish a product containing attributes
@@ -103,8 +103,8 @@ Feature: Publish a product
     And I am on the "my-jacket" published product show page
     And I should see the text "March 25, 2014"
     And I should see the text "akeneo2.jpg"
-    And I should not see "February 02, 2013"
-    And I should not see "akeneo.jpg"
+    And I should not see the text "February 02, 2013"
+    And I should not see the text "akeneo.jpg"
 
   @jira https://akeneo.atlassian.net/browse/PIM-5996
   Scenario: Successfully publish a product containing boolean attributes

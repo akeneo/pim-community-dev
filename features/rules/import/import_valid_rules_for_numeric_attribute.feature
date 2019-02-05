@@ -32,7 +32,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"sony_beautiful_price\" as it does not appear to be valid."
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"sony_beautiful_price\" as it does not appear to be valid."
     When I am on the "price" attribute page
     And I visit the "Rules" tab
     Then I should see the text "€3"
@@ -60,8 +60,8 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_length\" as it does not appear to be valid."
+    Then I should not see the text "skipped"
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_length\" as it does not appear to be valid."
     When I am on the "length" attribute page
     And I visit the "Rules" tab
     Then I should see the text "4"
@@ -88,9 +88,9 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
+    Then I should not see the text "skipped"
     Then I should see the text "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_number\" as it does not appear to be valid."
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_number\" as it does not appear to be valid."
     When I am on the "number_in_stock" attribute page
     And I visit the "Rules" tab
     Then I should see the text "5"
@@ -116,9 +116,9 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
+    Then I should not see the text "skipped"
     And I should see the text "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_date\" as it does not appear to be valid."
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_date\" as it does not appear to be valid."
     When I am on the "release_date" attribute page
     And I visit the "Rules" tab
     Then I should see the text "01/01/1970"
@@ -141,9 +141,9 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
+    Then I should not see the text "skipped"
     And I should see the text "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "release_date" attribute page
     And I visit the "Rules" tab
     Then I should see the text "release_date"
@@ -167,9 +167,9 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
+    Then I should not see the text "skipped"
     And I should see the text "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "length" attribute page
     And I visit the "Rules" tab
     Then I should see the text "length"
@@ -191,9 +191,9 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
+    Then I should not see the text "skipped"
     And I should see the text "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "price" attribute page
     And I visit the "Rules" tab
     Then I should see the text "price"
@@ -217,9 +217,9 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
+    Then I should not see the text "skipped"
     And I should see the text "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see the text "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "number_in_stock" attribute page
     And I visit the "Rules" tab
     Then I should see the text "number_in_stock"
