@@ -28,7 +28,7 @@ spec:
         - name: es-upgrade
           image:  {{ printf "%s:%s" .Values.image.pim.repository  .Values.image.pim.tag }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www && su -m -l www-data -s /bin/bash -c "cp -r vendor/akeneo/pim-enterprise-dev/upgrades ./ && php upgrades/schema/es_20190128100000_ee_clean_indices.php && php upgrades/schema/es_20190128100500_ee_create_reference_entity_index.php && php upgrades/schema/es_20190128110000_ce_update_document_type_product_and_product_model.php && php upgrades/schema/es_20190128120000_ee_update_document_type_proposal_and_published.php"']
+          command: ['sh', '-c', 'export HOME=/var/www && su -m -l www-data -s /bin/bash -c "php upgrades/schema/es_20190128100000_ee_clean_indices.php && php upgrades/schema/es_20190128100500_ee_create_reference_entity_index.php && php upgrades/schema/es_20190128110000_ce_update_document_type_product_and_product_model.php && php upgrades/schema/es_20190128120000_ee_update_document_type_proposal_and_published.php"']
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
