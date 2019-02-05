@@ -63,8 +63,7 @@ class DeleteAllAction
             throw new AccessDeniedException();
         }
 
-        $command = new DeleteAllReferenceEntityRecordsCommand();
-        $command->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $command = new DeleteAllReferenceEntityRecordsCommand($referenceEntityIdentifier);
 
         ($this->deleteAllRecordsHandler)($command);
 
@@ -73,9 +72,10 @@ class DeleteAllAction
 
     private function isUserAllowedToDeleteAllRecords(string $referenceEntityIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery();
-        $query->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $query = new CanEditReferenceEntityQuery(
+            $referenceEntityIdentifier,
+            $this->tokenStorage->getToken()->getUser()->getUsername()
+        );
 
         return $this->securityFacade->isGranted('akeneo_referenceentity_records_delete_all')
             && ($this->canEditReferenceEntityQueryHandler)($query);

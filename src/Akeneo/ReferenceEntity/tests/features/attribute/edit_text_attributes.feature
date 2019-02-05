@@ -39,7 +39,6 @@ Feature: Edit a text attribute of a reference entity
     Examples:
       | invalid_required | message                               |
       | null             | This value should not be null.        |
-      | "not_a_boolean"  | This value should be of type boolean. |
 
   # max length
   @acceptance-back
@@ -65,8 +64,6 @@ Feature: Edit a text attribute of a reference entity
       | -1                 | This value should be greater than 0.              |
       | 9999999999         | This value should be less than or equal to 65535. |
       | 0                  | This value should be greater than 0.              |
-      | "not_an_integer"   | This value should be an integer.                  |
-      | 254.2              | This value should be an integer.                  |
 
   # is text area
   @acceptance-back
@@ -90,7 +87,6 @@ Feature: Edit a text attribute of a reference entity
     Examples:
       | invalid_is_textarea_flag | message                               |
       | null                      | This value should not be null.        |
-      | "not_a_boolean"           | This value should be of type boolean. |
 
   # TODO: imports
   # Scenario: Updating the is text area flag of an attribute that is not a text fails
@@ -123,8 +119,6 @@ Feature: Edit a text attribute of a reference entity
 
     Examples:
       | invalid_validation_rule | message                                       |
-      | 9999999999              | This value should be of type string.          |
-      | ["url", "email"]        | This value should be of type string.          |
       | "wrong_validation_rule" | The value you selected is not a valid choice. |
 
   @acceptance-back
@@ -160,7 +154,6 @@ Feature: Edit a text attribute of a reference entity
 
     Examples:
       | invalid_regular_expression | message                                                                                                  |
-      | 154                        | This value should be of type string.                                                                     |
       | "a*"                       | This regular expression is not valid. Here is an example of a valid regular expression: "/[a-z]+[0-9]*/" |
       | ""                         | This regular expression is not valid. Here is an example of a valid regular expression: "/[a-z]+[0-9]*/" |
 
@@ -197,7 +190,6 @@ Feature: Edit a text attribute of a reference entity
 
     Examples:
       | invalid_is_rich_text_editor | message                               |
-      | 9999999999                  | This value should be of type boolean. |
       | null                        | This value should not be null.        |
 
   @acceptance-back

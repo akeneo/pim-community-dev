@@ -96,8 +96,9 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
 
     function it_deletes_an_attribute_by_its_identifier(AttributeRepositoryInterface $repository)
     {
-        $command = new DeleteAttributeCommand();
-        $command->attributeIdentifier = 'name_designer_test';
+        $command = new DeleteAttributeCommand(
+            'name_designer_test'
+        );
 
         $identifier = AttributeIdentifier::fromString('name_designer_test');
 
@@ -109,8 +110,9 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
     function it_cannot_delete_an_attribute_when_used_as_attribute_as_label_of_the_reference_entity(
         AttributeRepositoryInterface $repository
     ) {
-        $command = new DeleteAttributeCommand();
-        $command->attributeIdentifier = 'label';
+        $command = new DeleteAttributeCommand(
+            'label'
+        );
 
         $identifier = AttributeIdentifier::fromString('label');
         $repository->deleteByIdentifier($identifier)->shouldNotBeCalled();
@@ -122,8 +124,9 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
     function it_cannot_delete_an_attribute_when_used_as_attribute_as_image_of_the_reference_entity(
         AttributeRepositoryInterface $repository
     ) {
-        $command = new DeleteAttributeCommand();
-        $command->attributeIdentifier = 'image';
+        $command = new DeleteAttributeCommand(
+            'image'
+        );
 
         $identifier = AttributeIdentifier::fromString('image');
         $repository->deleteByIdentifier($identifier)->shouldNotBeCalled();

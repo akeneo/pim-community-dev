@@ -33,17 +33,11 @@ class EditAllowedExtensionsCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_to_edit_the_allowed_extensions_of_a_attribute()
     {
         $command = $this->create([
-            'identifier'         => [
-                'identifier'                 => 'portrait',
-                'reference_entity_identifier' => 'designer',
-            ],
+            'identifier'         => 'portrait',
             'allowed_extensions' => ['pdf', 'png'],
         ]);
         $command->shouldBeAnInstanceOf(EditAllowedExtensionsCommand::class);
-        $command->identifier->shouldBeEqualTo([
-            'identifier'                 => 'portrait',
-            'reference_entity_identifier' => 'designer',
-        ]);
+        $command->identifier->shouldBeEqualTo('portrait');
         $command->allowedExtensions->shouldBeEqualTo(['pdf', 'png']);
     }
 
@@ -52,10 +46,7 @@ class EditAllowedExtensionsCommandFactorySpec extends ObjectBehavior
         $this->shouldThrow(\RuntimeException::class)
             ->during('create', [
                 [
-                    'identifier'     => [
-                        'identifier'                 => 'portrait',
-                        'reference_entity_identifier' => 'designer',
-                    ],
+                    'identifier'     => 'portrait',
                     'wrong_property' => 10,
                 ],
             ]);

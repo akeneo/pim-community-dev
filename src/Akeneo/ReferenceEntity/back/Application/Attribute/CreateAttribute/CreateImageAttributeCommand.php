@@ -19,9 +19,32 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
  */
 class CreateImageAttributeCommand extends AbstractCreateAttributeCommand
 {
-    /** @var string */
+    /** @var string|null */
     public $maxFileSize;
 
     /** @var array */
     public $allowedExtensions;
+
+    public function __construct(
+        string $referenceEntityIdentifier,
+        string $code,
+        array $labels,
+        bool $isRequired,
+        bool $valuePerChannel,
+        bool $valuePerLocale,
+        ?string $maxFileSize,
+        array $allowedExtensions
+    ) {
+        parent::__construct(
+            $referenceEntityIdentifier,
+            $code,
+            $labels,
+            $isRequired,
+            $valuePerChannel,
+            $valuePerLocale
+        );
+
+        $this->maxFileSize = $maxFileSize;
+        $this->allowedExtensions = $allowedExtensions;
+    }
 }

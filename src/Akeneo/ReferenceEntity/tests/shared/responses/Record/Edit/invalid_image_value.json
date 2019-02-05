@@ -43,10 +43,15 @@
         "root": {
           "referenceEntityIdentifier": "designer",
           "code": "starck",
-          "labels": {},
+          "labels": [],
           "image": null,
           "editRecordValueCommands": [
             {
+              "filePath": "/a/b/c/philou.gif",
+              "originalFilename": null,
+              "size": null,
+              "mimeType": null,
+              "extension": null,
               "attribute": {
                 "maxFileSizeLimit": false,
                 "maxFileSize": {
@@ -66,11 +71,6 @@
                 "valuePerChannel": false,
                 "valuePerLocale": false
               },
-              "filePath": "/a/b/c/philou.gif",
-              "originalFilename": null,
-              "size": null,
-              "mimeType": null,
-              "extension": null,
               "channel": null,
               "locale": null
             }
@@ -78,6 +78,11 @@
         },
         "propertyPath": "values.portrait",
         "invalidValue": {
+          "filePath": "/a/b/c/philou.gif",
+          "originalFilename": null,
+          "size": null,
+          "mimeType": null,
+          "extension": null,
           "attribute": {
             "maxFileSizeLimit": false,
             "maxFileSize": {
@@ -97,11 +102,6 @@
             "valuePerChannel": false,
             "valuePerLocale": false
           },
-          "filePath": "/a/b/c/philou.gif",
-          "originalFilename": null,
-          "size": null,
-          "mimeType": null,
-          "extension": null,
           "channel": null,
           "locale": null
         },

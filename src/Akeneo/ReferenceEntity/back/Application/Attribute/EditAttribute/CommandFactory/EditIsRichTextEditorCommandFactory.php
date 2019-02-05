@@ -22,9 +22,10 @@ class EditIsRichTextEditorCommandFactory implements EditAttributeCommandFactoryI
             throw new \RuntimeException('Impossible to create an edit is rich text editor command.');
         }
 
-        $command = new EditIsRichTextEditorCommand();
-        $command->identifier = $normalizedCommand['identifier'];
-        $command->isRichTextEditor = $normalizedCommand['is_rich_text_editor'];
+        $command = new EditIsRichTextEditorCommand(
+            $normalizedCommand['identifier'],
+            $normalizedCommand['is_rich_text_editor']
+        );
 
         return $command;
     }

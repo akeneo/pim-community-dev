@@ -37,20 +37,23 @@ class RecordCollectionUpdaterSpec extends ObjectBehavior
         $this->shouldHaveType(RecordCollectionUpdater::class);
     }
 
-    function it_only_supports_edit_record_collection_value_command()
-    {
-        $this->supports(new EditRecordValueCommand())->shouldReturn(false);
-        $this->supports(new EditRecordCollectionValueCommand())->shouldReturn(true);
+    function it_only_supports_edit_record_collection_value_command(
+        EditRecordValueCommand $editRecordValueCommand,
+        EditRecordCollectionValueCommand $editRecordCollectionValueCommand
+    ) {
+        $this->supports($editRecordValueCommand)->shouldReturn(false);
+        $this->supports($editRecordCollectionValueCommand)->shouldReturn(true);
     }
 
     function it_edits_the_record_collection_value_of_a_record(Record $record) {
         $recordAttribute = $this->getAttribute();
 
-        $editRecordCollectionValueCommand = new EditRecordCollectionValueCommand();
-        $editRecordCollectionValueCommand->attribute = $recordAttribute;
-        $editRecordCollectionValueCommand->channel = 'ecommerce';
-        $editRecordCollectionValueCommand->locale = 'fr_FR';
-        $editRecordCollectionValueCommand->recordCodes = ['cogip', 'sbep'];
+        $editRecordCollectionValueCommand = new EditRecordCollectionValueCommand(
+            $recordAttribute,
+            'ecommerce',
+            'fr_FR',
+            ['cogip', 'sbep']
+        );
         $value = Value::create(
             $editRecordCollectionValueCommand->attribute->getIdentifier(),
             ChannelReference::createfromNormalized($editRecordCollectionValueCommand->channel),
@@ -62,11 +65,10 @@ class RecordCollectionUpdaterSpec extends ObjectBehavior
         $record->setValue($value)->shouldBeCalled();
     }
 
-    function it_throws_if_it_does_not_support_the_command(Record $record)
+    function it_throws_if_it_does_not_support_the_command(Record $record, EditRecordValueCommand $editRecordValueCommand)
     {
-        $wrongCommand = new EditRecordValueCommand();
-        $this->supports($wrongCommand)->shouldReturn(false);
-        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $wrongCommand]);
+        $this->supports($editRecordValueCommand)->shouldReturn(false);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $editRecordValueCommand]);
     }
 
     private function getAttribute(): RecordCollectionAttribute

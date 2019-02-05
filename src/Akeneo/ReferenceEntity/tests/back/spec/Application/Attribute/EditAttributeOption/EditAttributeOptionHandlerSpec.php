@@ -35,14 +35,15 @@ class EditAttributeOptionHandlerSpec extends ObjectBehavior
 
     function it_appends_an_attribute_option($getAttributeIdentifier, $attributeRepository)
     {
-        $command = new EditAttributeOptionCommand();
-        $command->attributeCode = 'color';
-        $command->referenceEntityIdentifier = 'brand';
-        $command->optionCode = 'blue';
-        $command->labels = [
-            'en_US' => 'Blue',
-            'de_DE' => 'Blauw',
-        ];
+        $command = new EditAttributeOptionCommand(
+            'brand',
+            'color',
+            'blue',
+            [
+                'en_US' => 'Blue',
+                'de_DE' => 'Blauw',
+            ]
+        );
 
         $getAttributeIdentifier->withReferenceEntityAndCode(
             ReferenceEntityIdentifier::fromString('brand'),

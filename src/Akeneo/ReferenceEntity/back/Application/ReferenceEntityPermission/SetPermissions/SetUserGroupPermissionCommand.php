@@ -17,4 +17,10 @@ class SetUserGroupPermissionCommand
 
     /** @var string */
     public $rightLevel;
+
+    public function __construct(int $userGroupIdentifier, string $rightLevel)
+    {
+        $this->userGroupIdentifier = $userGroupIdentifier;
+        $this->rightLevel = $rightLevel;
+    }
 }

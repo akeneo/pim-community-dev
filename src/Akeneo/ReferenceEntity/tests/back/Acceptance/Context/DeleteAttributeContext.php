@@ -52,8 +52,9 @@ class DeleteAttributeContext implements Context
             AttributeCode::fromString($attributeCode)
         );
 
-        $command = new DeleteAttributeCommand();
-        $command->attributeIdentifier = (string) $identifier;
+        $command = new DeleteAttributeCommand(
+            (string) $identifier
+        );
         ($this->deleteAttributeHandler)($command);
     }
 
@@ -67,8 +68,9 @@ class DeleteAttributeContext implements Context
             AttributeCode::fromString('label')
         );
 
-        $command = new DeleteAttributeCommand();
-        $command->attributeIdentifier = (string) $identifier;
+        $command = new DeleteAttributeCommand(
+            (string) $identifier
+        );
         try {
             ($this->deleteAttributeHandler)($command);
 
@@ -87,8 +89,9 @@ class DeleteAttributeContext implements Context
             AttributeCode::fromString('image')
         );
 
-        $command = new DeleteAttributeCommand();
-        $command->attributeIdentifier = (string) $identifier;
+        $command = new DeleteAttributeCommand(
+            (string) $identifier
+        );
         try {
             ($this->deleteAttributeHandler)($command);
 

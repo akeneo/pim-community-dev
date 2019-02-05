@@ -33,9 +33,10 @@ class CanEditReferenceEntityQueryHandlerSpec extends ObjectBehavior
         UserGroupIdentifier $userGroupIdentifier1,
         UserGroupIdentifier $userGroupIdentifier2
     ) {
-        $query = new CanEditReferenceEntityQuery();
-        $query->referenceEntityIdentifier = 'brand';
-        $query->securityIdentifier = 'julia';
+        $query = new CanEditReferenceEntityQuery(
+            'brand',
+            'julia'
+        );
 
         $referenceEntityPermissionRepository->getByReferenceEntityIdentifier(
             Argument::that(

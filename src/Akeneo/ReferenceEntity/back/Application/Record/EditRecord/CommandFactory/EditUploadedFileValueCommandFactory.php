@@ -37,13 +37,13 @@ class EditUploadedFileValueCommandFactory implements EditValueCommandFactoryInte
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
-        $command = new EditUploadedFileValueCommand();
-        $command->attribute = $attribute;
-        $command->channel = $normalizedValue['channel'];
-        $command->locale = $normalizedValue['locale'];
-
-        $command->filePath = $normalizedValue['data']['filePath'];
-        $command->originalFilename = $normalizedValue['data']['originalFilename'];
+        $command = new EditUploadedFileValueCommand(
+            $attribute,
+            $normalizedValue['channel'],
+            $normalizedValue['locale'],
+            $normalizedValue['data']['filePath'],
+            $normalizedValue['data']['originalFilename']
+        );
 
         return $command;
     }

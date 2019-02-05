@@ -22,4 +22,9 @@ class DeleteAllReferenceEntityRecordsCommand
 {
     /** @var string */
     public $referenceEntityIdentifier;
+
+    public function __construct(string $referenceEntityIdentifier)
+    {
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+    }
 }

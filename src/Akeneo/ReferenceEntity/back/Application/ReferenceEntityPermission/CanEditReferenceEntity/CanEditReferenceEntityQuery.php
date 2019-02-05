@@ -15,4 +15,10 @@ class CanEditReferenceEntityQuery
 
     /** @var string */
     public $securityIdentifier;
+
+    public function __construct(string $referenceEntityIdentifier, string $securityIdentifier)
+    {
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->securityIdentifier = $securityIdentifier;
+    }
 }
