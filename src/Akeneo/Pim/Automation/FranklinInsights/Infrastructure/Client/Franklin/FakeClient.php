@@ -264,24 +264,10 @@ class FakeClient implements ClientInterface
             case 'GET':
                 return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $this->loadFakeData($uri));
             case 'POST':
-                // TODO: Assert sent parameters
-                if (isset($options['form_params'][0]['asin'])) {
-                    $key = 'asin';
-                } elseif (isset($options['form_params'][0]['upc'])) {
-                    $key = 'upc';
-                } elseif (isset($options['form_params'][0]['mpn_brand'])) {
-                    $key = 'mpn_brand';
+                if (count($options['form_params']) <= 1) {
+                    $jsonContent = $this->getSingleSubscriptionResponse($uri, $options);
                 } else {
-                    throw new \LogicException('Parameters sent for subscription are incorrect');
-                }
-                if ('mpn_brand' === $key) {
-                    $jsonContent = $this->loadFakeData(
-                        sprintf('%s/%s-%s', $uri, $key, $options['form_params'][0][$key]['mpn'])
-                    );
-                } else {
-                    $jsonContent = $this->loadFakeData(
-                        sprintf('%s/%s-%s', $uri, $key, $options['form_params'][0][$key])
-                    );
+                    $jsonContent = $this->getBulkSubscriptionResponse($options);
                 }
 
                 return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $jsonContent);
@@ -291,6 +277,57 @@ class FakeClient implements ClientInterface
             default:
                 throw new \LogicException('Wrong method send for subscription');
         }
+    }
+
+    /**
+     * @param string $uri
+     * @param array $options
+     *
+     * @return string
+     */
+    private function getSingleSubscriptionResponse(string $uri, array $options): string
+    {
+        // TODO: Assert sent parameters
+        if (isset($options['form_params'][0]['asin'])) {
+            $key = 'asin';
+        } elseif (isset($options['form_params'][0]['upc'])) {
+            $key = 'upc';
+        } elseif (isset($options['form_params'][0]['mpn_brand'])) {
+            $key = 'mpn_brand';
+        } else {
+            throw new \LogicException('Parameters sent for subscription are incorrect');
+        }
+        if ('mpn_brand' === $key) {
+            $jsonContent = $this->loadFakeData(
+                sprintf('%s/%s-%s', $uri, $key, $options['form_params'][0][$key]['mpn'])
+            );
+        } else {
+            $jsonContent = $this->loadFakeData(
+                sprintf('%s/%s-%s', $uri, $key, $options['form_params'][0][$key])
+            );
+        }
+
+        return $jsonContent;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return string
+     */
+    private function getBulkSubscriptionResponse(array $options): string
+    {
+        $trackerIds = array_map(function ($subscription) {
+            return $subscription['tracker_id'];
+        }, $options['form_params']);
+
+        $jsonContent = $this->loadFakeData('subscriptions/bulk-subscribe');
+        $fakeResponse = json_decode($jsonContent, true);
+        array_walk($fakeResponse['_embedded']['subscription'], function (&$value, $key) use ($trackerIds): void {
+            $value['extra']['tracker_id'] = $trackerIds[$key];
+        });
+
+        return json_encode($fakeResponse);
     }
 
     /**

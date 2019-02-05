@@ -31,6 +31,7 @@ class EnterpriseWebUser extends BaseWebUser
             ->addStep('Unpublish', 'Batch Unpublish')
             ->addStep('Add tags to assets', 'Batch AddTags')
             ->addStep('Classify assets in categories', 'Batch Classify')
+            ->addStep('Franklin Insights Subscriptions', 'Batch FranklinInsights Subscription')
             ->chooseOperation($operation)
             ->choose();
 

@@ -157,6 +157,10 @@ legacy:
                         window_height: 1024
                 - Context\EnterpriseFixturesContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                - Context\EnterpriseDataGridContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                - Context\EnterpriseWebUser:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                 - Context\EnterpriseCatalogConfigurationContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                 - Context\EnterpriseAssertionContext:

@@ -107,7 +107,25 @@ class FixturesContext extends PimContext
      */
     public function theProductOfTheFamily(string $identifier, string $familyCode): void
     {
+        $this->loadFamily($familyCode);
+
         $this->loadProduct($identifier, $familyCode);
+    }
+
+    /**
+     * @Given /the products (.*) of the family (.*)/
+     *
+     * @param string $identifiers
+     * @param string $familyCode
+     */
+    public function theProductsOfTheFamily(string $identifiers, string $familyCode): void
+    {
+        $this->loadFamily($familyCode);
+
+        $identifiers = explode(', ', str_replace(' and ', ', ', $identifiers));
+        foreach ($identifiers as $identifier) {
+            $this->loadProduct($identifier, $familyCode);
+        }
     }
 
     /**
@@ -176,8 +194,6 @@ class FixturesContext extends PimContext
      */
     private function loadProduct(string $identifier, string $familyCode): void
     {
-        $this->loadFamily($familyCode);
-
         $data = $this->loadJsonFileAsArray(sprintf('products/product-%s-%s.json', $familyCode, $identifier));
 
         $this->productBuilder->withIdentifier($identifier)->withFamily($familyCode);
