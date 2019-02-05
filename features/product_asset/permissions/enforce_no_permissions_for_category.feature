@@ -53,7 +53,8 @@ Feature: Enforce no permissions for an asset category
   Scenario: Go to edit form of the asset if he has permission to edit it
     Given I am logged in as "Mary"
     And I am on the assets grid
-    And I click on the "grantedOne" row
+    And I filter by "code" with operator "Contains" and value "grantedOne"
+    And I click on the "Edit properties of the asset" action of the row which contains "grantedOne"
     And I should see the "Save" button
 
   @jira https://akeneo.atlassian.net/browse/PIM-5402
