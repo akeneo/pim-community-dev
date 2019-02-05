@@ -1,5 +1,5 @@
 resource "google_monitoring_uptime_check_config" "http" {
-  display_name  = "http-uptime-check"
+  display_name  = "${var.dns_external}"
   timeout       = "60s"
   project       = "${var.google_project_name}"
 
