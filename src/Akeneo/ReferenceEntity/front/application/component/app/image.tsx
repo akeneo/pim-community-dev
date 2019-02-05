@@ -53,7 +53,7 @@ class Image extends React.Component<
 
   private remove = (event: React.MouseEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) => {
     const removeEvent = event as React.KeyboardEvent<HTMLInputElement>;
-    if ((undefined === removeEvent.key || Key.Space === removeEvent.key) && !this.props.image.isEmpty()) {
+    if ((undefined === removeEvent.key || Key.Backspace === removeEvent.key) && !this.props.image.isEmpty()) {
       this.stopEvent(event);
       this.setState({dropping: false});
       if (undefined !== this.props.onImageChange) {
