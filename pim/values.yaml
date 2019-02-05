@@ -82,6 +82,14 @@ image:
     pullPolicy: IfNotPresent
 
 pim:
+  hook:
+    upgradePim:
+      enabled: true
+      hook: "pre-upgrade"
+    upgradeES:
+      enabled: true
+      hook: "pre-upgrade"
+
   replicas: 1
   numDaemon: 1
   extraLabels: {}

@@ -1,3 +1,4 @@
+{{- if .Values.pim.hook.upgradeES.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -12,7 +13,7 @@ metadata:
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
-    "helm.sh/hook": "pre-upgrade"
+    "helm.sh/hook": {{ .Values.pim.hook.upgradeES.hook | quote }}
     "helm.sh/hook-weight": "100"
     "helm.sh/hook-delete-policy": "before-hook-creation"
 spec:
@@ -47,3 +48,4 @@ spec:
         - name: fpm-data
           persistentVolumeClaim:
             claimName: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}
+{{- end }}
