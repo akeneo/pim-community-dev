@@ -11,12 +11,12 @@ Feature: Update user preferences
   Scenario: Successfully disable/enable email notifications
     Given I edit the "Julia" user
     And I visit the "Groups and Roles" tab
-    And I check "Email notifications"
+    And I check "Be notified when assets expire"
     And I save the user
     Then the user "Julia" should have email notifications enabled
     Then I edit the "Julia" user
     And I visit the "Groups and Roles" tab
-    And I uncheck "Email notifications"
+    And I uncheck "Be notified when assets expire"
     And I save the user
     Then the user "Julia" should have email notifications disabled
 
