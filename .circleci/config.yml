@@ -218,7 +218,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "3.0"
           - setup:
                 requires:
                     - wait_for_user_approval
@@ -246,7 +246,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - master
+                            - "3.0" 
       jobs:
           - setup
           - back_static_and_acceptance:
