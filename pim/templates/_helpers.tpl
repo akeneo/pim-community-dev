@@ -16,7 +16,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 
-{{- define "pim.extravarsPim" }}
+{{- define "pim.extraLabels" }}
 {{- range $key, $value := .Values.global.extraLabels }}
 {{ $key }}: {{ $value | quote }}
 {{- end }}

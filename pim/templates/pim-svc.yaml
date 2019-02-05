@@ -4,7 +4,7 @@ apiVersion: v1
 metadata:
   name: pim-http
   labels:
-    {{ include "pim.extravarsPim" . | indent 4}}
+    {{ include "pim.extraLabels" . | indent 4 }}
 spec:
   type: ClusterIP
   selector:

@@ -9,7 +9,7 @@ metadata:
     heritage: "{{ .Release.Service }}"
     component: {{ template "pim.fullName" . }}
     role: pim-web
-    {{ include "pim.extravarsPim" . | indent 4}}
+    {{ include "pim.extraLabels" . | indent 4 }}
 spec:
   accessModes:
     - ReadWriteMany

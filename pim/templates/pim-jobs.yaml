@@ -11,7 +11,7 @@ metadata:
     release: "{{ $tplCtx.Release.Name }}"
     heritage: "{{ $tplCtx.Release.Service }}"
     component: {{ template "pim.fullName" $tplCtx }}
-    {{ include "pim.extravarsPim" $tplCtx | indent 4}}
+    {{ include "pim.extraLabels" $tplCtx | indent 4 }}
     role: {{ $jobName }}
 spec:
   schedule: {{ $jobOptions.schedule | quote }}

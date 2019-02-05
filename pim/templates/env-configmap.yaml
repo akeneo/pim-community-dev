@@ -19,6 +19,7 @@ data:
   PIM_DATABASE_PORT: "3306"
   PIM_DATABASE_NAME: {{ .Values.mysql.mysql.defaultDatabase | quote }}
   PIM_DATABASE_USER: {{ .Values.mysql.mysql.defaultUser | quote }}
+  AKENEO_PIM_URL: {{ printf "https://%s" .Values.common.pimMasterDomain  | quote }}
   CONTAINER_NAME: pim
   GOOGLE_LOCATION: {{ .Values.common.googleZone | quote }}
   GOOGLE_CLOUD_PROJECT: {{ .Values.common.gcpProjectID | quote }}

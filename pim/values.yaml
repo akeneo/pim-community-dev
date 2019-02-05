@@ -4,7 +4,7 @@ global:
     type: srnt
     pfid: nil # Generated with terraform template
   monitoring:
-    enabled: true
+    enabled: false
 
 backup:
   enabled: true
@@ -84,7 +84,6 @@ image:
 pim:
   replicas: 1
   numDaemon: 1
-  extravarsPim: {}
   extraLabels: {}
   secret: nil # Generate me with `uuidgen`
   persistence:
@@ -140,6 +139,10 @@ pim:
       enabled: true
       pimCommand: "pimee:project:notify-before-due-date"
       schedule: "0 2 * * *"
+    franklin-insights-fetch-products:
+      enabled: true
+      pimCommand: "akeneo:batch:publish-job-to-queue franklin_insights_fetch_products"
+      schedule: "30 */1 * * *"
 
 # Onboarder
 onboarder:
@@ -181,10 +184,10 @@ mysql:
     class: ssd-retain
 
 elasticsearch:
-  appVersion: 5.6.14
+  appVersion: 6.5.4
   image:
-    repository: docker.elastic.co/elasticsearch/elasticsearch
-    tag: 5.6.14
+    repository: docker.elastic.co/elasticsearch/elasticsearch-oss
+    tag: 6.5.4
   fullnameOverride: elasticsearch
   cluster:
     name: "pim-es"
@@ -219,6 +222,8 @@ elasticsearch:
       requests:
         cpu: "25m"
         memory: "320Mi"
+    updateStrategy:
+      type: RollingUpdate
   data:
     replicas: 2
     persistence:
@@ -232,14 +237,16 @@ elasticsearch:
       requests:
         cpu: "25m"
         memory: "512Mi"
+    updateStrategy:
+      type: RollingUpdate
 
 catalog:
   EE:
     minimal:
-      path: vendor/akeneo/pim-enterprise-dev/src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/minimal
+      path: vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
       class: PimEnterpriseInstallerBundle:minimal
     icecat:
-      path: vendor/akeneo/pim-enterprise-dev/src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+      path: vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
       class: PimEnterpriseInstallerBundle:icecat_demo_dev
     onboarder:
       path: vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder

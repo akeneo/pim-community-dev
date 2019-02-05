@@ -4,19 +4,11 @@ metadata:
   name: pim-installer
   labels:
     app: {{ template "pim.fullName" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: {{ template "pim.fullName" . }}
-    {{- range $key, $value := .Values.global.extraLabels }}
-    {{ $key }}: {{ $value | quote }}
-    {{- end }}
-    {{- range $key, $value := .Values.common.extraLabels }}
-    {{ $key }}: {{ $value | quote }}
-    {{- end }}
-    {{- range $key, $value := .Values.pim.extraLabels }}
-    {{ $key }}: {{ $value | quote }}
-    {{- end }}
+    {{ include "pim.extraLabels" . | indent 4 }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
@@ -29,15 +21,7 @@ spec:
       labels:
         component: {{ template "pim.fullName" . }}
         role: pim-install
-        {{- range $key, $value := .Values.global.extraLabels }}
-        {{ $key }}: {{ $value | quote }}
-        {{- end }}
-        {{- range $key, $value := .Values.common.extraLabels }}
-        {{ $key }}: {{ $value | quote }}
-        {{- end }}
-        {{- range $key, $value := .Values.pim.extraLabels }}
-        {{ $key }}: {{ $value | quote }}
-        {{- end }}
+        {{ include "pim.extraLabels" . | indent 8 }}
     spec:
       restartPolicy: Never
       containers:
