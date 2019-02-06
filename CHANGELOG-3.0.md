@@ -1,4 +1,6 @@
-# 3.0
+# 3.0.x
+
+# 3.0.0 (2019-02-06)
 
 ## Technical improvement
 
