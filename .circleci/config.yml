@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   setup:
     machine:
@@ -24,6 +24,9 @@ jobs:
       - run:
           name: Prepare yarn cache and change owner dir (default user = circleci (1001) and docker needs uid 1000)
           command: mkdir -p ~/.cache/yarn && sudo chown -R 1000:1000 ~/.cache/yarn
+      - run:
+          name: Update docker-compose
+          command: sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
       - run:
           name: Start containers
           command: docker-compose up -d
@@ -86,6 +89,9 @@ jobs:
                 name: Change owner on project dir in order to archive the project into the workspace
                 command: sudo chown -R 1000:1000 ../project
           - run:
+                name: Update docker-compose
+                command: sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          - run:
                 name: Start containers
                 command: docker-compose up -d
           - run:
@@ -114,6 +120,9 @@ jobs:
       - run:
             name: Change owner on project dir in order to archive the project into the workspace
             command: sudo chown -R 1000:1000 ../project
+      - run:
+            name: Update docker-compose
+            command: sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
       - run:
             name: Start containers
             command: docker-compose up -d
