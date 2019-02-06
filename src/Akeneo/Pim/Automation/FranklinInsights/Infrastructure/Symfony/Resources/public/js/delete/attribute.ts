@@ -1,5 +1,5 @@
-import {getConnectionStatus} from "../fetcher/franklin-connection";
-import ConnectionStatus from "../model/connection-status";
+import {getConnectionStatus} from '../fetcher/franklin-connection';
+import ConnectionStatus from '../model/connection-status';
 
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.

@@ -40,7 +40,7 @@ class EditView extends BaseView {
     tokenFieldPlaceholder: '',
     tokenSavePreActivationTitle: '',
     tokenSavePostActivationTitle: '',
-    saveConnectionFailMessage: ''
+    saveConnectionFailMessage: '',
   };
 
   private storedToken: string = '';
@@ -116,7 +116,7 @@ class EditView extends BaseView {
           }
 
           Messenger.notify('error', __(errorMessage));
-        this.renderUnactivatedConnection(data.token);
+          this.renderUnactivatedConnection(data.token);
       })
       .done((response: any) => {
         Messenger.notify('success', __(response.message));

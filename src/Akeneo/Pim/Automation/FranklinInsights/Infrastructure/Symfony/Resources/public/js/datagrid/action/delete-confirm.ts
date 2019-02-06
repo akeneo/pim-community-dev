@@ -1,5 +1,5 @@
-import {getConnectionStatus} from "../../fetcher/franklin-connection";
-import ConnectionStatus from "../../model/connection-status";
+import {getConnectionStatus} from '../../fetcher/franklin-connection';
+import ConnectionStatus from '../../model/connection-status';
 
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -31,7 +31,7 @@ class DeleteConfirm {
   public static getConfirmDialog(
     entityCode: string,
     callback: any,
-    entityHint: string
+    entityHint: string,
   ) {
     if (entityCode !== 'attribute') {
       return this.getDefaultConfirmDialog(entityCode, callback, entityHint);
@@ -47,7 +47,7 @@ class DeleteConfirm {
           ),
           __('pim_enrich.entity.attribute.module.save.title'),
           callback,
-          entityHint
+          entityHint,
         );
       }
 
@@ -66,13 +66,13 @@ class DeleteConfirm {
   private static getDefaultConfirmDialog(
     entityCode: string,
     callback: any,
-    entityHint: string
+    entityHint: string,
   ) {
     return Dialog.confirmDelete(
       __(`pim_enrich.entity.${entityCode}.module.delete.confirm`),
       __('pim_common.confirm_deletion'),
       callback,
-      entityHint
+      entityHint,
     );
   }
 }
