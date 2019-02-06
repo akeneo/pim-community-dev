@@ -1,5 +1,7 @@
 # 3.0.x
 
+- Name Enterprise version "Rose"
+
 # 3.0.0 (2019-02-06)
 
 ## Manage reference entities
