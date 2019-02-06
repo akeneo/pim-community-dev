@@ -27,6 +27,16 @@ class CertificateExpirationDateSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
+    function it_can_be_represented_as_a_datetime_object()
+    {
+        $this->beConstructedWith(self::VALID_DATE);
+
+        $dateTimeImmutable = new \DateTimeImmutable(self::VALID_DATE);
+        $dateTime = new \DateTime(self::VALID_DATE, $dateTimeImmutable->getTimezone());
+
+        $this->toDateTime()->shouldBeLike($dateTime);
+    }
+
     function it_can_tell_if_the_date_expires_soon()
     {
         $this->beConstructedWith(self::VALID_DATE);

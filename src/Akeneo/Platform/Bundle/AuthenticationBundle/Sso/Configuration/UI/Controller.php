@@ -8,9 +8,12 @@ use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\CertificateMet
 use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfiguration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfigurationHandler;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\CertificateExpirationDate;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProviderDefaultConfiguration;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,6 +31,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class Controller
 {
     private const CONFIGURATION_CODE = 'authentication_sso';
+    private const SP_CERTIFICATE_EXPIRATION_WARNING_IN_DAYS = 30;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -47,6 +51,12 @@ final class Controller
     /** @var CreateArchive */
     private $createArchive;
 
+    /** @var PresenterInterface */
+    private $datePresenter;
+
+    /** @var UserContext */
+    private $userContext;
+
     /** @var string */
     private $akeneoPimUrl;
 
@@ -57,6 +67,8 @@ final class Controller
         Repository $repository,
         ServiceProviderDefaultConfiguration $serviceProviderDefaultConfiguration,
         CreateArchive $createArchive,
+        PresenterInterface $datePresenter,
+        UserContext $userContext,
         string $akeneoPimUrl
     ) {
         $this->validator = $validator;
@@ -65,6 +77,8 @@ final class Controller
         $this->repository = $repository;
         $this->serviceProviderDefaultConfiguration = $serviceProviderDefaultConfiguration;
         $this->createArchive = $createArchive;
+        $this->datePresenter = $datePresenter;
+        $this->userContext = $userContext;
         $this->akeneoPimUrl = $akeneoPimUrl;
     }
 
@@ -81,14 +95,14 @@ final class Controller
 
         $createOrUpdateConfig = new CreateOrUpdateConfiguration(
             self::CONFIGURATION_CODE,
-            $data['is_enabled'] ?? false,
-            $data['identity_provider_entity_id'] ?? '',
-            $data['identity_provider_sign_on_url'] ?? '',
-            $data['identity_provider_logout_url'] ?? '',
-            $data['identity_provider_certificate'] ?? '',
-            $data['service_provider_entity_id'] ?? '',
-            $data['service_provider_certificate'] ?? '',
-            $data['service_provider_private_key'] ?? ''
+            $data['configuration']['is_enabled'] ?? false,
+            $data['configuration']['identity_provider_entity_id'] ?? '',
+            $data['configuration']['identity_provider_sign_on_url'] ?? '',
+            $data['configuration']['identity_provider_logout_url'] ?? '',
+            $data['configuration']['identity_provider_certificate'] ?? '',
+            $data['configuration']['service_provider_entity_id'] ?? '',
+            $data['configuration']['service_provider_certificate'] ?? '',
+            $data['configuration']['service_provider_private_key'] ?? ''
         );
 
         $errors = $this->validator->validate($createOrUpdateConfig);
@@ -114,38 +128,58 @@ final class Controller
     {
         $staticConfiguration = [
             'service_provider_metadata_url' => sprintf('%s/saml/metadata', $this->akeneoPimUrl),
-            'service_provider_acs_url' => sprintf('%s/saml/acs', $this->akeneoPimUrl),
+            'service_provider_acs_url'      => sprintf('%s/saml/acs', $this->akeneoPimUrl),
         ];
 
         try {
             $config = $this->repository->find(self::CONFIGURATION_CODE);
             $configArray = $config->toArray();
+            $expirationDate = (new CertificateMetadata($configArray['serviceProvider']['certificate']))->getExpirationDate();
 
             return new JsonResponse([
-                'is_enabled'                    => $configArray['isEnabled'],
-                'identity_provider_entity_id'   => $configArray['identityProvider']['entityId'],
-                'identity_provider_sign_on_url' => $configArray['identityProvider']['signOnUrl'],
-                'identity_provider_logout_url'  => $configArray['identityProvider']['logoutUrl'],
-                'identity_provider_certificate' => $configArray['identityProvider']['certificate'],
-                'service_provider_entity_id'    => $configArray['serviceProvider']['entityId'],
-                'service_provider_certificate'  => $configArray['serviceProvider']['certificate'],
-                'service_provider_private_key'  => $configArray['serviceProvider']['privateKey'],
-                'service_provider_certificate_end_date' => (new CertificateMetadata($configArray['certificate']))->getEndDate(),
-            ] + $staticConfiguration);
+                'configuration' => [
+                    'is_enabled'                    => $configArray['isEnabled'],
+                    'identity_provider_entity_id'   => $configArray['identityProvider']['entityId'],
+                    'identity_provider_sign_on_url' => $configArray['identityProvider']['signOnUrl'],
+                    'identity_provider_logout_url'  => $configArray['identityProvider']['logoutUrl'],
+                    'identity_provider_certificate' => $configArray['identityProvider']['certificate'],
+                    'service_provider_entity_id'    => $configArray['serviceProvider']['entityId'],
+                    'service_provider_certificate'  => $configArray['serviceProvider']['certificate'],
+                    'service_provider_private_key'  => $configArray['serviceProvider']['privateKey'],
+                ],
+                'meta' => [
+                    'service_provider_certificate_expiration_date' => $expirationDate ? $this->formatDate($expirationDate) : null,
+                    'service_provider_certificate_expires_soon'    => $expirationDate ?
+                        $expirationDate->doesExpireInLessThanDays(
+                            new \DateTimeImmutable('now'),
+                            self::SP_CERTIFICATE_EXPIRATION_WARNING_IN_DAYS
+                        ) : null,
+                ] + $staticConfiguration
+            ]);
         } catch (ConfigurationNotFound $e) {
             $serviceProvider = $this->serviceProviderDefaultConfiguration->getServiceProvider()->toArray();
+            $expirationDate = (new CertificateMetadata($serviceProvider['certificate']))->getExpirationDate();
 
             return new JsonResponse([
-                'is_enabled'                    => false,
-                'identity_provider_entity_id'   => '',
-                'identity_provider_sign_on_url' => '',
-                'identity_provider_logout_url'  => '',
-                'identity_provider_certificate' => '',
-                'service_provider_entity_id'    => $serviceProvider['entityId'],
-                'service_provider_certificate'  => $serviceProvider['certificate'],
-                'service_provider_private_key'  => $serviceProvider['privateKey'],
-                'service_provider_certificate_end_date' => (new CertificateMetadata($serviceProvider['certificate']))->getEndDate(),
-            ] + $staticConfiguration);
+                'configuration' => [
+                    'is_enabled'                    => false,
+                    'identity_provider_entity_id'   => '',
+                    'identity_provider_sign_on_url' => '',
+                    'identity_provider_logout_url'  => '',
+                    'identity_provider_certificate' => '',
+                    'service_provider_entity_id'    => $serviceProvider['entityId'],
+                    'service_provider_certificate'  => $serviceProvider['certificate'],
+                    'service_provider_private_key'  => $serviceProvider['privateKey'],
+                ],
+                'meta' => [
+                    'service_provider_certificate_expiration_date' => $expirationDate ? $this->formatDate($expirationDate) : null,
+                    'service_provider_certificate_expires_soon'    => $expirationDate ?
+                        $expirationDate->doesExpireInLessThanDays(
+                            new \DateTimeImmutable('now'),
+                            self::SP_CERTIFICATE_EXPIRATION_WARNING_IN_DAYS
+                        ) : null,
+                ] + $staticConfiguration
+            ]);
         }
     }
 
@@ -159,12 +193,23 @@ final class Controller
                 $this->createArchive->create(),
                 Response::HTTP_OK,
                 [
-                    'Content-Disposition' => sprintf('attachment; filename="%s"', 'authenticationLogs' . date('YmdHis') . '.zip'),
-                    'Content-type' => 'application/zip',
+                    'Content-Disposition' => sprintf('attachment; filename="authenticationLogs%s.zip"', date('YmdHis')),
+                    'Content-Type'        => 'application/zip',
                 ]
             );
         } catch (\Exception $e) {
             throw new NotFoundHttpException("Unable to find archive file");
         }
+    }
+
+    private function formatDate(CertificateExpirationDate $date)
+    {
+        return $this->datePresenter->present(
+            $date->toDateTime(),
+            [
+                'locale'   => $this->userContext->getUiLocaleCode(),
+                'timezone' => $this->userContext->getUserTimezone(),
+            ]
+        );
     }
 }
