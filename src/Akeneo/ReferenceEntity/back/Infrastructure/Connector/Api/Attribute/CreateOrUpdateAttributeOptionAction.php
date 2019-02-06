@@ -152,7 +152,7 @@ class CreateOrUpdateAttributeOptionAction
             (string) $referenceEntityIdentifier,
             (string) $attributeCode,
             (string) $optionCode,
-            $option['labels']
+            $option['labels'] ?? []
         );
 
         $violations = $this->businessRulesValidator->validate($command);
@@ -183,7 +183,7 @@ class CreateOrUpdateAttributeOptionAction
             (string)$referenceEntityIdentifier,
             (string)$attributeCode,
             (string)$optionCode,
-            $option['labels']
+            $option['labels'] ?? []
         );
 
         $violations = $this->businessRulesValidator->validate($command);
