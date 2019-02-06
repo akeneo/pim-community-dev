@@ -44,7 +44,9 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         $findAttributesIndexedByIdentifier,
         EditValueCommandFactoryInterface $textValueCommandFactory,
         TextAttribute $descriptionAttribute,
-        EditTextValueCommand $editDescriptionCommand
+        TextAttribute $numericCodeAttribute,
+        EditTextValueCommand $editDescriptionCommand,
+        EditTextValueCommand $editNumericCodeAttributeCommand
     ) {
         $normalizedRecord = [
             'code' => 'starck',
@@ -55,30 +57,47 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
             'values' => [
                 'description' => [
                     [
-                        'channel'   => 'ecommerce',
-                        'locale'    => 'en_US',
-                        'data'      => 'an awesome designer'
+                        'channel' => 'ecommerce',
+                        'locale'  => 'en_US',
+                        'data'    => 'an awesome designer'
                     ],
                 ],
+                '42' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => 'Attribute with a numeric code'
+                    ]
+                ]
             ],
         ];
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
         $findAttributesIndexedByIdentifier->__invoke(Argument::type(ReferenceEntityIdentifier::class))->willReturn([
-            'desginer_description_fingerprint' => $descriptionAttribute
+            'desginer_description_fingerprint' => $descriptionAttribute,
+            'designer_42_fingerprint' => $numericCodeAttribute
         ]);
         $descriptionAttribute->getCode()->willReturn(AttributeCode::fromString('description'));
+        $numericCodeAttribute->getCode()->willReturn(AttributeCode::fromString('42'));
 
-        $editRecordValueCommandFactoryRegistry->getFactory($descriptionAttribute, $normalizedRecord['values']['description'][0])
+        $editRecordValueCommandFactoryRegistry
+            ->getFactory($descriptionAttribute, $normalizedRecord['values']['description'][0])
             ->willReturn($textValueCommandFactory);
-        $textValueCommandFactory->create($descriptionAttribute, $normalizedRecord['values']['description'][0])
+        $editRecordValueCommandFactoryRegistry
+            ->getFactory($numericCodeAttribute, $normalizedRecord['values']['42'][0])
+            ->willReturn($textValueCommandFactory);
+        $textValueCommandFactory
+            ->create($descriptionAttribute, $normalizedRecord['values']['description'][0])
             ->willReturn($editDescriptionCommand);
+        $textValueCommandFactory
+            ->create($numericCodeAttribute, $normalizedRecord['values']['42'][0])
+            ->willReturn($editNumericCodeAttributeCommand);
 
         $command = $this->create($referenceEntityIdentifier, $normalizedRecord);
         $command->shouldBeAnInstanceOf(EditRecordCommand::class);
         $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('starck');
-        $command->editRecordValueCommands[0]->shouldBeAnInstanceOf(EditTextValueCommand::class);
+        $command->editRecordValueCommands->shouldBeLike([$editDescriptionCommand, $editNumericCodeAttributeCommand]);
     }
 
     function it_creates_an_edit_record_command_without_values()
