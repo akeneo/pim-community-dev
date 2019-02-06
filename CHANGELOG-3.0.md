@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.1 (2019-02-06)
+
 - Name Enterprise version "Rose"
 
 # 3.0.0 (2019-02-06)
