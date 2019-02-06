@@ -15,7 +15,7 @@ class CommunityVersion
     const VERSION = '3.0.0';
 
     /** @staticvar string */
-    const VERSION_CODENAME = '';
+    const VERSION_CODENAME = 'Super-Rabbit';
 
     /** @staticvar string */
     const EDITION = 'CE';
