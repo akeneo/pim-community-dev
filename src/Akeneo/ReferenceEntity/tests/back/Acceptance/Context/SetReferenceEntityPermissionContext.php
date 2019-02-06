@@ -70,9 +70,7 @@ final class SetReferenceEntityPermissionContext implements Context
      */
     public function aReferenceEntityWithoutPermissions()
     {
-        $createCommand = new CreateReferenceEntityCommand();
-        $createCommand->code = self::REFERENCE_ENTITY_IDENTIFIER;
-        $createCommand->labels = [];
+        $createCommand = new CreateReferenceEntityCommand(self::REFERENCE_ENTITY_IDENTIFIER, []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -87,15 +85,20 @@ final class SetReferenceEntityPermissionContext implements Context
      */
     public function theUserSetsTheFollowingPermissionsForTheReferenceEntity(TableNode $userGroupPermissions)
     {
-        $setPermissionsCommand = new SetReferenceEntityPermissionsCommand();
-        $setPermissionsCommand->referenceEntityIdentifier = self::REFERENCE_ENTITY_IDENTIFIER;
+        $permissionsByUserGroupCommands = [];
         foreach ($userGroupPermissions->getColumnsHash() as $userGroupPermission) {
-            $command = new SetUserGroupPermissionCommand();
-            $command->userGroupIdentifier = self::USER_GROUPS[$userGroupPermission['user_group_identifier']];
-            $command->rightLevel = $userGroupPermission['right_level'];
-            $setPermissionsCommand->permissionsByUserGroup[] = $command;
+            $command = new SetUserGroupPermissionCommand(
+                self::USER_GROUPS[$userGroupPermission['user_group_identifier']],
+                $userGroupPermission['right_level']
+            );
+            $permissionsByUserGroupCommands[] = $command;
         }
 
+        $setPermissionsCommand = new SetReferenceEntityPermissionsCommand(
+            self::REFERENCE_ENTITY_IDENTIFIER,
+            $permissionsByUserGroupCommands
+        );
+        
         try {
             ($this->setReferenceEntityPermissionsHandler)($setPermissionsCommand);
         } catch (\Exception $e) {

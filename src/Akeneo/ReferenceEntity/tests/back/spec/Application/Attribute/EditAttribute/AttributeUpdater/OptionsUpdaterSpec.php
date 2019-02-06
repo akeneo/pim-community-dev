@@ -23,8 +23,14 @@ class OptionsUpdaterSpec extends ObjectBehavior
         OptionAttribute $optionAttribute,
         ImageAttribute $imageAttribute
     ) {
-        $optionsEditCommand = new EditOptionsCommand();
-        $labelEditCommand = new EditLabelsCommand();
+        $optionsEditCommand = new EditOptionsCommand(
+            'color',
+            []
+        );
+        $labelEditCommand = new EditLabelsCommand(
+            'name',
+            []
+        );
 
         $this->supports($optionCollectionAttribute, $optionsEditCommand)->shouldReturn(true);
         $this->supports($optionAttribute, $optionsEditCommand)->shouldReturn(true);
@@ -34,17 +40,20 @@ class OptionsUpdaterSpec extends ObjectBehavior
 
     function it_edits_the_options_of_option_attribute(OptionAttribute $optionAttribute)
     {
-        $optionsEditCommand = new EditOptionsCommand();
-        $optionsEditCommand->options = [
+        $optionsEditCommand = new EditOptionsCommand(
+            'color',
             [
-                'code' => 'green',
-                'labels' => ['en_US' => 'Green']
-            ],
-            [
-                'code' => 'red',
-                'labels' => ['en_US' => 'Red']
-            ],
-        ];
+                [
+                    'code'   => 'green',
+                    'labels' => ['en_US' => 'Green'],
+                ],
+                [
+                    'code'   => 'red',
+                    'labels' => ['en_US' => 'Red'],
+                ]
+            ]
+        );
+
         $optionAttribute->setOptions(Argument::that(function ($collaborator) {
             $expectedGreen = json_encode(['code' => 'green', 'labels' => ['en_US' => 'Green']]);
             $expectedRed = json_encode(['code' => 'red', 'labels' => ['en_US' => 'Red']]);
@@ -59,10 +68,12 @@ class OptionsUpdaterSpec extends ObjectBehavior
 
     function it_empties_the_options(OptionAttribute $optionAttribute)
     {
-        $editMaxLength = new EditOptionsCommand();
-        $editMaxLength->options = [];
+        $editMaxLength = new EditOptionsCommand('color', []);
         $optionAttribute->setOptions([])->shouldBeCalled();
-        $this->__invoke($optionAttribute, $editMaxLength)->shouldReturn($optionAttribute);
+        $this->__invoke(
+            $optionAttribute,
+            $editMaxLength
+        )->shouldReturn($optionAttribute);
     }
 
     function it_throws_if_it_cannot_update_the_attribute(
@@ -70,8 +81,11 @@ class OptionsUpdaterSpec extends ObjectBehavior
         OptionCollectionAttribute $rightAttribute2,
         ImageAttribute $wrongAttribute
     ) {
-        $rightCommand = new EditOptionsCommand();
-        $wrongCommand = new EditLabelsCommand();
+        $rightCommand = new EditOptionsCommand('color', []);
+        $wrongCommand = new EditLabelsCommand(
+            'name',
+            []
+        );
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$rightAttribute1, $wrongCommand]);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$rightAttribute2, $wrongCommand]);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$wrongAttribute, $rightCommand]);

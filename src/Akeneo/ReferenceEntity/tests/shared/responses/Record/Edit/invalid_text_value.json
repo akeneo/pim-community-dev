@@ -61,10 +61,11 @@
         "root": {
           "referenceEntityIdentifier": "designer",
           "code": "starck",
-          "labels": {},
+          "labels": [],
           "image": null,
           "editRecordValueCommands": [
             {
+              "text": "Philippe Starck",
               "attribute": {
                 "regularExpression": {
                   "empty": true
@@ -85,7 +86,6 @@
                 "valuePerChannel": false,
                 "valuePerLocale": false
               },
-              "text": "Philippe Starck",
               "channel": null,
               "locale": null
             },
@@ -138,6 +138,7 @@
               "locale": "fr_FR"
             },
             {
+              "text": "hello world",
               "attribute": {
                 "regularExpression": {
                   "empty": true
@@ -158,7 +159,6 @@
                 "valuePerChannel": false,
                 "valuePerLocale": false
               },
-              "text": "hello world",
               "channel": null,
               "locale": null
             },
@@ -189,6 +189,7 @@
         },
         "propertyPath": "values.website",
         "invalidValue": {
+          "text": "hello world",
           "attribute": {
             "regularExpression": {
               "empty": true
@@ -209,7 +210,6 @@
             "valuePerChannel": false,
             "valuePerLocale": false
           },
-          "text": "hello world",
           "channel": null,
           "locale": null
         },

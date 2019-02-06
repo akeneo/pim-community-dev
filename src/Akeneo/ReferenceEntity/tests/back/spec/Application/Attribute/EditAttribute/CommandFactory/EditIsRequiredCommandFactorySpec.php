@@ -33,17 +33,11 @@ class EditIsRequiredCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_to_edit_the_required_property_of_an_attribute()
     {
         $command = $this->create([
-            'identifier' => [
-                'identifier'                 => 'name',
-                'reference_entity_identifier' => 'designer',
-            ],
+            'identifier' => 'name',
             'is_required'   => true,
         ]);
         $command->shouldBeAnInstanceOf(EditIsRequiredCommand::class);
-        $command->identifier->shouldBeEqualTo([
-            'identifier'                 => 'name',
-            'reference_entity_identifier' => 'designer',
-        ]);
+        $command->identifier->shouldBeEqualTo('name');
         $command->isRequired->shouldBeEqualTo(true);
     }
 

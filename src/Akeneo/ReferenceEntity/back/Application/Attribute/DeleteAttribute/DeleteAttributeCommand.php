@@ -20,4 +20,9 @@ class DeleteAttributeCommand
 {
     /** @var string */
     public $attributeIdentifier;
+
+    public function __construct(string $attributeIdentifier)
+    {
+        $this->attributeIdentifier = $attributeIdentifier;
+    }
 }

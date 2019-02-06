@@ -25,10 +25,10 @@ describe('akeneo > reference entity > domain > model --- file', () => {
   test('I cannot create a new file in an invalid state', () => {
     expect(() => {
       createFile(12);
-    }).toThrow('File expect a non empty string as filePath to be created');
+    }).toThrow('File expects a non empty string as filePath to be created');
     expect(() => {
       createFile('my/path.png');
-    }).toThrow('File expect a non empty string as originalFilename to be created');
+    }).toThrow('File expects a non empty string as originalFilename to be created');
   });
 
   test('I can get the filepath or original filename for an uploaded file', () => {

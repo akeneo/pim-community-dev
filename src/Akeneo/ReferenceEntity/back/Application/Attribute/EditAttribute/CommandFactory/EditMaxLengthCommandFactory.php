@@ -30,9 +30,10 @@ class EditMaxLengthCommandFactory implements EditAttributeCommandFactoryInterfac
         if (!$this->supports($normalizedCommand)) {
             throw new \RuntimeException('Impossible to create an edit max length property command.');
         }
-        $command = new EditMaxLengthCommand();
-        $command->identifier = $normalizedCommand['identifier'];
-        $command->maxLength = $normalizedCommand['max_length'];
+        $command = new EditMaxLengthCommand(
+            $normalizedCommand['identifier'],
+            $normalizedCommand['max_length']
+        );
 
         return $command;
     }

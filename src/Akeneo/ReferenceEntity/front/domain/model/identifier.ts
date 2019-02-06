@@ -3,7 +3,7 @@ class InvalidTypeError extends Error {}
 export default class Identifier {
   private constructor(private identifier: string) {
     if ('string' !== typeof identifier) {
-      throw new InvalidTypeError('Identifier expect a string as parameter to be created');
+      throw new InvalidTypeError('Identifier expects a string as parameter to be created');
     }
 
     Object.freeze(this);

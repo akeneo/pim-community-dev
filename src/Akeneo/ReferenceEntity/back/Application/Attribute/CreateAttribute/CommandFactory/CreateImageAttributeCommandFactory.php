@@ -32,12 +32,22 @@ class CreateImageAttributeCommandFactory extends AbstractCreateAttributeCommandF
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
     {
-        $command = new CreateImageAttributeCommand();
-        $this->fillCommonProperties($command, $normalizedCommand);
-        $command->maxFileSize = isset($normalizedCommand['max_file_size']) ?
-            (string) $normalizedCommand['max_file_size'] : self::NO_LIMIT;
-        $command->allowedExtensions = isset($normalizedCommand['allowed_extensions']) ?
+        $this->checkCommonProperties($normalizedCommand);
+
+        $maxFileSize = isset($normalizedCommand['max_file_size']) ?
+            (string)$normalizedCommand['max_file_size'] : self::NO_LIMIT;
+        $allowedExtensions = isset($normalizedCommand['allowed_extensions']) ?
             $normalizedCommand['allowed_extensions'] : AttributeAllowedExtensions::ALL_ALLOWED;
+        $command = new CreateImageAttributeCommand(
+            $normalizedCommand['reference_entity_identifier'],
+            $normalizedCommand['code'],
+            $normalizedCommand['labels'] ?? [],
+            $normalizedCommand['is_required'] ?? false,
+            $normalizedCommand['value_per_channel'],
+            $normalizedCommand['value_per_locale'],
+            $maxFileSize,
+            $allowedExtensions
+        );
 
         return $command;
     }

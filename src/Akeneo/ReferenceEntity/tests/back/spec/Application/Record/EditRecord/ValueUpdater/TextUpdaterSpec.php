@@ -36,20 +36,23 @@ class TextUpdaterSpec extends ObjectBehavior
         $this->shouldHaveType(TextUpdater::class);
     }
 
-    function it_only_supports_edit_text_value_command()
-    {
-        $this->supports(new EditUploadedFileValueCommand())->shouldReturn(false);
-        $this->supports(new EditTextValueCommand())->shouldReturn(true);
+    function it_only_supports_edit_text_value_command(
+        EditUploadedFileValueCommand $editUploadedFileValueCommand,
+        EditTextValueCommand $editTextValueCommand
+    ) {
+        $this->supports($editUploadedFileValueCommand)->shouldReturn(false);
+        $this->supports($editTextValueCommand)->shouldReturn(true);
     }
 
     function it_edits_the_text_value_of_a_record(Record $record) {
         $textAttribute = $this->getAttribute();
 
-        $editTextValueCommand = new EditTextValueCommand();
-        $editTextValueCommand->attribute = $textAttribute;
-        $editTextValueCommand->channel = 'ecommerce';
-        $editTextValueCommand->locale = 'fr_FR';
-        $editTextValueCommand->text = 'A name';
+        $editTextValueCommand = new EditTextValueCommand(
+            $textAttribute,
+            'ecommerce',
+            'fr_FR',
+            'A name'
+        );
         $value = Value::create(
             $editTextValueCommand->attribute->getIdentifier(),
             ChannelReference::createfromNormalized($editTextValueCommand->channel),
@@ -61,11 +64,12 @@ class TextUpdaterSpec extends ObjectBehavior
         $record->setValue($value)->shouldBeCalled();
     }
 
-    function it_throws_if_it_does_not_support_the_command(Record $record)
-    {
-        $wrongCommand = new EditUploadedFileValueCommand();
-        $this->supports($wrongCommand)->shouldReturn(false);
-        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $wrongCommand]);
+    function it_throws_if_it_does_not_support_the_command(
+        Record $record,
+        EditUploadedFileValueCommand $editUploadedFileValueCommand
+    ) {
+        $this->supports($editUploadedFileValueCommand)->shouldReturn(false);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $editUploadedFileValueCommand]);
     }
 
     private function getAttribute(): TextAttribute

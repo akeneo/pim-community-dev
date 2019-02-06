@@ -89,12 +89,13 @@ class EditUploadedFileValueCommandFactorySpec extends ObjectBehavior
             ]
         ];
 
-        $expectedCommand = new EditUploadedFileValueCommand();
-        $expectedCommand->attribute = $imageAttribute->getWrappedObject();
-        $expectedCommand->channel = 'ecommerce';
-        $expectedCommand->locale = 'de_DE';
-        $expectedCommand->filePath = '/tmp/jambon.png';
-        $expectedCommand->originalFilename = 'jambon.png';
+        $expectedCommand = new EditUploadedFileValueCommand(
+            $imageAttribute->getWrappedObject(),
+            'ecommerce',
+            'de_DE',
+            '/tmp/jambon.png',
+            'jambon.png'
+        );
 
         $this->create($imageAttribute, $normalizedValue)->shouldBeLike($expectedCommand);
     }

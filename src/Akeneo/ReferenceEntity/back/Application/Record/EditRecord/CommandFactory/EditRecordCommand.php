@@ -34,4 +34,18 @@ class EditRecordCommand
 
     /** @var array */
     public $editRecordValueCommands = [];
+
+    public function __construct(
+        string $referenceEntityIdentifier,
+        string $code,
+        array $labels,
+        ?array $image,
+        array $editRecordValueCommands
+    ) {
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->code = $code;
+        $this->labels = $labels;
+        $this->image = $image;
+        $this->editRecordValueCommands = $editRecordValueCommands;
+    }
 }

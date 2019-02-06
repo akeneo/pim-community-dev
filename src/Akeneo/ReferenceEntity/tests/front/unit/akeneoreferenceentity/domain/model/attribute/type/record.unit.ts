@@ -42,6 +42,6 @@ describe('akeneo > attribute > domain > model > attribute > type --- RecordAttri
         0,
         true
       );
-    }).toThrow('Attribute expect a RecordType as recordType');
+    }).toThrow('Attribute expects a RecordType as recordType');
   });
 });

@@ -72,3 +72,4 @@ pim_reference_entity:
             limit_reached: 'You cannot create the attribute "%attribute_label%" because you have reached the limit of %limit% attributes for this reference entity'
             record_type:
                 is_required: 'You need to specify the reference entity type to create a Reference Entity link attribute'
+                reference_entity_should_exist: 'The reference entity "%reference_entity_code%" was not found.'

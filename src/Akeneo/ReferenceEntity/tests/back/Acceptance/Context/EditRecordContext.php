@@ -1923,9 +1923,10 @@ final class EditRecordContext implements Context
 
     private function createReferenceEntity(): void
     {
-        $createCommand = new CreateReferenceEntityCommand();
-        $createCommand->code = self::REFERENCE_ENTITY_IDENTIFIER;
-        $createCommand->labels = [];
+        $createCommand = new CreateReferenceEntityCommand(
+            self::REFERENCE_ENTITY_IDENTIFIER,
+            []
+        );
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {

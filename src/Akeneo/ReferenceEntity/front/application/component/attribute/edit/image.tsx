@@ -45,6 +45,7 @@ const ImageView = ({
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
+            autoComplete="off"
             className={inputTextClassName}
             id="pim_reference_entity.attribute.edit.input.max_file_size"
             name="max_file_size"

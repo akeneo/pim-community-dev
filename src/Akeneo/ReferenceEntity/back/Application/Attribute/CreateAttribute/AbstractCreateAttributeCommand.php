@@ -36,4 +36,20 @@ abstract class AbstractCreateAttributeCommand
 
     /** @var bool */
     public $valuePerLocale;
+
+    public function __construct(
+        string $referenceEntityIdentifier,
+        string $code,
+        array $labels,
+        bool $isRequired,
+        bool $valuePerChannel,
+        bool $valuePerLocale
+    ) {
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->code = $code;
+        $this->labels = $labels;
+        $this->isRequired = $isRequired;
+        $this->valuePerChannel = $valuePerChannel;
+        $this->valuePerLocale = $valuePerLocale;
+    }
 }

@@ -21,14 +21,14 @@ interface NormalizedChannel {
 export class ConcreteChannel {
   public constructor(readonly code: string, readonly labelCollection: LabelCollection, readonly locales: Locale[]) {
     if ('string' !== typeof code) {
-      throw new InvalidTypeError('Channel expect a string as code to be created');
+      throw new InvalidTypeError('Channel expects a string as code to be created');
     }
     if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidTypeError('Channel expect a LabelCollection as second argument');
+      throw new InvalidTypeError('Channel expects a LabelCollection as second argument');
     }
     Object.keys(locales).forEach((localeKey: string) => {
       if (!(locales[localeKey as any] instanceof ConcreteLocale)) {
-        throw new InvalidTypeError('Channel expect a Locale collection as third argument');
+        throw new InvalidTypeError('Channel expects a Locale collection as third argument');
       }
     });
     Object.freeze(this);

@@ -11,12 +11,12 @@ class RecordCollectionData extends ValueData {
     Object.freeze(this);
 
     if (!Array.isArray(recordCollectionData)) {
-      throw new InvalidTypeError('RecordCollectionData expect an array of RecordCode as parameter to be created');
+      throw new InvalidTypeError('RecordCollectionData expects an array of RecordCode as parameter to be created');
     }
 
     recordCollectionData.forEach((recordCode: RecordCode) => {
       if (!(recordCode instanceof RecordCode)) {
-        throw new InvalidTypeError('RecordCollectionData expect an array of RecordCode as parameter to be created');
+        throw new InvalidTypeError('RecordCollectionData expects an array of RecordCode as parameter to be created');
       }
     });
   }

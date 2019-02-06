@@ -19,11 +19,11 @@ class AttributeUpdaterRegistrySpec extends ObjectBehavior
     {
         $updater = new MaxLengthUpdater();
         $this->register($updater);
-        $this->getUpdater($name, new EditMaxLengthCommand())->shouldReturn($updater);
+        $this->getUpdater($name, new EditMaxLengthCommand('name', 125))->shouldReturn($updater);
     }
 
     function it_throws_if_it_does_not_finds_an_updater_that_supports(TextAttribute $name)
     {
-        $this->shouldThrow(\RuntimeException::class)->during('getUpdater', [$name, new EditMaxLengthCommand()]);
+        $this->shouldThrow(\RuntimeException::class)->during('getUpdater', [$name, new EditMaxLengthCommand('name', 125)]);
     }
 }

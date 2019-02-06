@@ -65,8 +65,7 @@ class DeleteAction
             throw new AccessDeniedException();
         }
 
-        $command = new DeleteAttributeCommand();
-        $command->attributeIdentifier = $attributeIdentifier;
+        $command = new DeleteAttributeCommand($attributeIdentifier);
 
         try {
             ($this->deleteAttributeHandler)($command);
@@ -79,9 +78,10 @@ class DeleteAction
 
     private function isUserAllowedToDelete(string $referenceEntityIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery();
-        $query->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $query = new CanEditReferenceEntityQuery(
+            $referenceEntityIdentifier,
+            $this->tokenStorage->getToken()->getUser()->getUsername()
+        );
 
         return $this->securityFacade->isGranted('akeneo_referenceentity_attribute_delete')
             && ($this->canEditReferenceEntityQueryHandler)($query);

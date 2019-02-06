@@ -21,8 +21,8 @@ class MaxLengthUpdaterSpec extends ObjectBehavior
         TextAttribute $textAttribute,
         ImageAttribute $imageAttribute
     ) {
-        $maxLengthEditCommand = new EditMaxLengthCommand();
-        $labelEditCommand = new EditLabelsCommand();
+        $maxLengthEditCommand = new EditMaxLengthCommand('name', 200);
+        $labelEditCommand = new EditLabelsCommand('name', []);
 
         $this->supports($textAttribute, $maxLengthEditCommand)->shouldReturn(true);
         $this->supports($imageAttribute, $maxLengthEditCommand)->shouldReturn(false);
@@ -31,24 +31,22 @@ class MaxLengthUpdaterSpec extends ObjectBehavior
 
     function it_edits_the_max_length_property_of_a_text_attribute(TextAttribute $textAttribute)
     {
-        $editMaxLength = new EditMaxLengthCommand();
-        $editMaxLength->maxLength = 200;
+        $editMaxLength = new EditMaxLengthCommand('name',200);
         $textAttribute->setMaxLength(AttributeMaxLength::fromInteger(200))->shouldBeCalled();
         $this->__invoke($textAttribute, $editMaxLength)->shouldReturn($textAttribute);
     }
 
     function it_edits_sets_no_limit_to_the_max_length(TextAttribute $textAttribute)
     {
-        $editMaxLength = new EditMaxLengthCommand();
-        $editMaxLength->maxLength = null;
+        $editMaxLength = new EditMaxLengthCommand('name', null);
         $textAttribute->setMaxLength(AttributeMaxLength::noLimit())->shouldBeCalled();
         $this->__invoke($textAttribute, $editMaxLength)->shouldReturn($textAttribute);
     }
 
     function it_throws_if_it_cannot_update_the_attribute(TextAttribute $rightAttribute, ImageAttribute $wrongAttribute)
     {
-        $wrongCommand = new EditLabelsCommand();
-        $rightCommand = new EditMaxLengthCommand();
+        $wrongCommand = new EditLabelsCommand('name', []);
+        $rightCommand = new EditMaxLengthCommand('name', null);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$rightAttribute, $wrongCommand]);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$wrongAttribute, $rightCommand]);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$wrongAttribute, $wrongCommand]);

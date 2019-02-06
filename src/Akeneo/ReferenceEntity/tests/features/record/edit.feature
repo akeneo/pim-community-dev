@@ -37,19 +37,6 @@ Feature: Edit an record
     When the user updates the record default image with an empty image
     And the record should have an empty image
 
-  @acceptance-back
-  Scenario Outline: Updating a record default image with an invalid file
-    Given a referenceEntity and a record with an image
-    When the user updates the record default image with path '<wrong_path>' and filename '<wrong_filename>'
-    Then there should be a validation error on the property 'values.image' with message '<message>'
-
-  Examples:
-  | wrong_path        | wrong_filename | message                              |
-  | false             | "image.jpg"    | This value should be of type string. |
-  | 150               | "image.jpg"    | This value should be of type string. |
-  | "/path/image.jpg" | false          | This value should be of type string. |
-  | "/path/image.jpg" | 150            | This value should be of type string. |
-
   # ValuePerChannel / ValuePerLocale
   @acceptance-back
   Scenario: Updating a localizable value of a record
@@ -86,13 +73,6 @@ Feature: Edit an record
     Then there is no exception thrown
     And there is no violations errors
     And the record should have the updated value for this attribute and the ecommerce channel
-
-  @acceptance-back
-  Scenario: Updating a scopable value of a record with an invalid channel
-    Given a reference entity with a scopable attribute
-    And a record belonging to this reference entity with a value for the ecommerce channel
-    When the user updates the attribute of the record with an invalid channel
-    Then there should be a validation error on the property text attribute with message "This value should be of type string."
 
   @acceptance-back
   Scenario: Record is not valid when enriching a scopable attribute value without specifying the channel in the value
@@ -249,60 +229,11 @@ Feature: Edit an record
     And the record should not have any image for this attribute
 
   @acceptance-back
-  Scenario: Updating the image value of a record with an invalid uploaded file path
-    Given a reference entity with an image attribute
-    And a record belonging to this reference entity with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the record to an invalid uploaded file path
-    Then there should be a validation error on the property image attribute with message "This value should be of type string."
-
-  @acceptance-back
-  Scenario: Updating the image value of a record with an invalid stored file path
-    Given a reference entity with an image attribute
-    And a record belonging to this reference entity with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the record to an invalid stored file path
-    Then there should be a validation error on the property image attribute with message "This value should be of type string."
-
-  @acceptance-back
   Scenario: Updating the image value of a record with an image that does not exist
     Given a reference entity with an image attribute
     And a record belonging to this reference entity with the file "picture.jpeg" for the image attribute
     When the user updates the image attribute of the record to an image that does not exist
     Then there should be a validation error on the property image attribute with message "The file "/files/not_found.png" was not found."
-
-  @acceptance-back
-  Scenario: Updating the image value of a record with an invalid uploaded original filename
-    Given a reference entity with an image attribute
-    And a record belonging to this reference entity with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the record to an invalid uploaded file name
-    Then there should be a validation error on the property image attribute with message "This value should be of type string."
-
-  @acceptance-back
-  Scenario: Updating the image value of a record with an invalid stored original filename
-    Given a reference entity with an image attribute
-    And a record belonging to this reference entity with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the record to an invalid stored file name
-    Then there should be a validation error on the property image attribute with message "This value should be of type string."
-
-  @acceptance-back
-  Scenario: Updating the image value of a record with an invalid stored size
-    Given a reference entity with an image attribute
-    And a record belonging to this reference entity with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the record to an invalid stored file size
-    Then there should be a validation error on the property image attribute with message "This value should be of type int."
-
-  @acceptance-back
-  Scenario: Updating the image value of a record with an invalid stored mime type
-    Given a reference entity with an image attribute
-    And a record belonging to this reference entity with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the record to an invalid stored file mime type
-    Then there should be a validation error on the property image attribute with message "This value should be of type string."
-
-  @acceptance-back
-  Scenario: Updating the image value of a record with an invalid stored extension
-    Given a reference entity with an image attribute
-    And a record belonging to this reference entity with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the record to an invalid stored file extension
-    Then there should be a validation error on the property image attribute with message "This value should be of type string."
 
   @acceptance-back
   Scenario: Updating the image value of a record with an uploaded file having an extension not allowed

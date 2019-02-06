@@ -21,8 +21,14 @@ class IsRequiredUpdaterSpec extends ObjectBehavior
         TextAttribute $textAttribute,
         ImageAttribute $imageAttribute
     ) {
-        $labelEditCommand = new EditLabelsCommand();
-        $isRequiredEditCommand = new EditIsRequiredCommand();
+        $labelEditCommand = new EditLabelsCommand(
+            'name',
+            []
+        );
+        $isRequiredEditCommand = new EditIsRequiredCommand(
+            'name',
+            false
+        );
 
         $this->supports($textAttribute, $isRequiredEditCommand)->shouldReturn(true);
         $this->supports($imageAttribute, $isRequiredEditCommand)->shouldReturn(true);
@@ -31,15 +37,21 @@ class IsRequiredUpdaterSpec extends ObjectBehavior
 
     function it_edits_the_required_property_of_an_attribute(TextAttribute $textAttribute)
     {
-        $editRequired = new EditIsRequiredCommand();
-        $editRequired->isRequired = false;
+        $editRequired = new EditIsRequiredCommand(
+            'name',
+            false
+        );
         $textAttribute->setIsRequired(AttributeIsRequired::fromBoolean(false))->shouldBeCalled();
         $this->__invoke($textAttribute, $editRequired)->shouldReturn($textAttribute);
     }
 
     function it_throws_if_it_cannot_update_the_attribute(TextAttribute $textAttribute)
     {
-        $wrongCommand = new EditLabelsCommand();
-        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$textAttribute, $wrongCommand]);
+        $wrongCommand = new EditLabelsCommand(
+            'name',
+            []
+        );
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$textAttribute, $wrongCommand]
+        );
     }
 }

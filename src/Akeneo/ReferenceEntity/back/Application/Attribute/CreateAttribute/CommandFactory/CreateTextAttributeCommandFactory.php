@@ -31,13 +31,21 @@ class CreateTextAttributeCommandFactory extends AbstractCreateAttributeCommandFa
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
     {
-        $command = new CreateTextAttributeCommand();
-        $this->fillCommonProperties($command, $normalizedCommand);
-        $command->maxLength = $normalizedCommand['max_length'] ?? AttributeMaxLength::NO_LIMIT;
-        $command->isTextarea = $normalizedCommand['is_textarea'] ?? false;
-        $command->isRichTextEditor = $normalizedCommand['is_textarea'] ?? false;
-        $command->validationRule = $normalizedCommand['validation_rule'] ?? AttributeValidationRule::NONE;
-        $command->regularExpression = $normalizedCommand['regular_expression'] ?? null;
+        $this->checkCommonProperties($normalizedCommand);
+
+        $command = new CreateTextAttributeCommand(
+            $normalizedCommand['reference_entity_identifier'],
+            $normalizedCommand['code'],
+            $normalizedCommand['labels'] ?? [],
+            $normalizedCommand['is_required'] ?? false,
+            $normalizedCommand['value_per_channel'],
+            $normalizedCommand['value_per_locale'],
+            $normalizedCommand['max_length'] ?? AttributeMaxLength::NO_LIMIT,
+            $normalizedCommand['is_textarea'] ?? false,
+            $normalizedCommand['is_rich_text_editor'] ?? false,
+            $normalizedCommand['validation_rule'] ?? AttributeValidationRule::NONE,
+            $normalizedCommand['regular_expression'] ?? null
+        );
 
         return $command;
     }

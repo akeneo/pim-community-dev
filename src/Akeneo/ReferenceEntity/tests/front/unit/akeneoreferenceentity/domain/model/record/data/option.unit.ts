@@ -37,7 +37,7 @@ describe('akeneo > reference entity > domain > model > option > data --- option'
   test('I cannot create a new OptionData with a value other than a OptionCode', () => {
     expect(() => {
       create(12);
-    }).toThrow('OptionData expect an OptionCode as parameter to be created');
+    }).toThrow('OptionData expects an OptionCode as parameter to be created');
   });
 
   test('I can normalize a OptionData', () => {

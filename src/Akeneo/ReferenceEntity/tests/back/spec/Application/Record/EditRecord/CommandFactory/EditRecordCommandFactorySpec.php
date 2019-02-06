@@ -45,7 +45,8 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
     function it_creates_an_edit_record_command_by_recursively_calling_other_edit_record_value_factories(
         SqlFindAttributesIndexedByIdentifier $sqlFindAttributesIndexedByIdentifier,
         EditValueCommandFactoryRegistryInterface $editRecordValueCommandFactoryRegistry,
-        EditValueCommandFactoryInterface $textValueCommandFactory
+        EditValueCommandFactoryInterface $textValueCommandFactory,
+        EditTextValueCommand $editDescriptionCommand
     ) {
         $normalizedCommand = [
             'reference_entity_identifier' => 'designer',
@@ -62,7 +63,6 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
                 ]
             ]
         ];
-        $editDescriptionCommand = new EditTextValueCommand();
         $descriptionAttribute = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'description', 'test'),
             ReferenceEntityIdentifier::fromString('designer'),
@@ -88,7 +88,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('philippe_starck');
         $command->labels->shouldBeEqualTo([]);
-        $command->editRecordValueCommands->shouldBeEqualTo([$editDescriptionCommand]);
+        $command->editRecordValueCommands[0]->shouldBeAnInstanceOf(EditTextValueCommand::class);
     }
 
     function it_throws_if_it_cannot_create_the_command()

@@ -32,19 +32,19 @@ class CreateOrUpdateAttributeOptionAction
     /** @var Router */
     private $router;
 
-    /** @var AttributeOptionValidator **/
+    /** @var AttributeOptionValidator */
     private $jsonSchemaValidator;
 
-    /** @var ValidatorInterface **/
+    /** @var ValidatorInterface */
     private $businessRulesValidator;
 
-    /** @var ReferenceEntityExistsInterface  */
+    /** @var ReferenceEntityExistsInterface */
     private $referenceEntityExists;
 
-    /** @var AttributeExistsInterface  */
+    /** @var AttributeExistsInterface */
     private $attributeExists;
 
-    /** @var AttributeSupportsOptions  */
+    /** @var AttributeSupportsOptions */
     private $attributeSupportsOptions;
 
     /** @var GetAttributeIdentifierInterface */
@@ -109,6 +109,10 @@ class CreateOrUpdateAttributeOptionAction
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        if ((string) $optionCode !== $option['code']) {
+            throw new UnprocessableEntityHttpException('The code of the attribute option provided in the URI must be the same as the one provided in the request body.');
+        }
+
         $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
 
         if (false === $referenceEntityExists) {
@@ -144,11 +148,12 @@ class CreateOrUpdateAttributeOptionAction
         OptionCode $optionCode,
         array $option
     ): Response {
-        $command = new EditAttributeOptionCommand();
-        $command->referenceEntityIdentifier = (string) $referenceEntityIdentifier;
-        $command->attributeCode = (string) $attributeCode;
-        $command->optionCode = (string) $optionCode;
-        $command->labels = $option['labels'];
+        $command = new EditAttributeOptionCommand(
+            (string) $referenceEntityIdentifier,
+            (string) $attributeCode,
+            (string) $optionCode,
+            $option['labels']
+        );
 
         $violations = $this->businessRulesValidator->validate($command);
         if ($violations->count() > 0) {
@@ -174,11 +179,12 @@ class CreateOrUpdateAttributeOptionAction
         OptionCode $optionCode,
         array $option
     ): Response {
-        $command = new AppendAttributeOptionCommand();
-        $command->referenceEntityIdentifier = (string) $referenceEntityIdentifier;
-        $command->attributeCode = (string) $attributeCode;
-        $command->optionCode = (string) $optionCode;
-        $command->labels = $option['labels'];
+        $command = new AppendAttributeOptionCommand(
+            (string)$referenceEntityIdentifier,
+            (string)$attributeCode,
+            (string)$optionCode,
+            $option['labels']
+        );
 
         $violations = $this->businessRulesValidator->validate($command);
         if ($violations->count() > 0) {
