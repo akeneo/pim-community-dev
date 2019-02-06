@@ -52,13 +52,6 @@
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo",
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/akeneo/pim-community-dev.git",
-            "branch": "master"
-        }
-    ],
     "scripts": {
         "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
@@ -95,15 +88,6 @@
                 "database_user": "PIM_DATABASE_USER",
                 "database_password": "PIM_DATABASE_PASSWORD"
             }
-        },
-        "branch-alias": {
-            "dev-master": "1.8.x-dev",
-            "dev-1.7": "1.7.x-dev",
-            "dev-1.6": "1.6.x-dev",
-            "dev-1.5": "1.5.x-dev",
-            "dev-1.4": "1.4.x-dev",
-            "dev-1.3": "1.3.x-dev",
-            "dev-1.0": "1.0.x-dev"
         }
     }
 }
