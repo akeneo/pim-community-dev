@@ -22,7 +22,7 @@ class EnterpriseVersion
     const VERSION = '3.0.0';
 
     /** @staticvar string */
-    const VERSION_CODENAME = '';
+    const VERSION_CODENAME = 'Rose';
 
     /** @staticvar string */
     const EDITION = 'EE';
