@@ -673,6 +673,11 @@ class Grid extends Index
             return $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
         }, sprintf('Could not find filter item %s', $filterName));
 
+        // isVisible is not totally reliable, which mean that
+        // we think we clicked on the filter button but we didn't (DOM not loaded)
+        // sleep is a working dirty hack
+        sleep(1);
+
         if (null === $filter || !$filter->isVisible()) {
             $this->clickOnFilterToManage($filterName);
         }

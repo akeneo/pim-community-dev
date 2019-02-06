@@ -297,4 +297,16 @@ class Client
             'body' => $body,
         ]);
     }
+
+    /**
+     * @param array $body an array containing a query compatible with https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docs-update-by-query.html
+     */
+    public function updateByQuery(array $body): void
+    {
+        $this->client->updateByQuery([
+            'index'     => $this->indexName,
+            'conflicts' => 'proceed',
+            'body'      => $body,
+        ]);
+    }
 }

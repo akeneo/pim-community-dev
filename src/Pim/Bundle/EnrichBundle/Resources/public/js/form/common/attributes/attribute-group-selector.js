@@ -116,6 +116,7 @@ define(
                     }));
 
                     this.$el.empty();
+                    this.ensureDefault();
                     if (this.shouldBeDisplayed(this.getElements())) {
                         this.$el.html(this.template({
                             current: this.getCurrent(),

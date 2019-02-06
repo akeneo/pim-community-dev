@@ -5,10 +5,12 @@ namespace Pim\Behat\Context;
 use Behat\ChainedStepsExtension\Step;
 use Behat\ChainedStepsExtension\Step\Then;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 class NavigationContext extends PimContext implements PageObjectAware
 {
@@ -321,7 +323,7 @@ class NavigationContext extends PimContext implements PageObjectAware
     /**
      * @param string $name
      *
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     * @return Page
      */
     public function getPage($name)
     {
@@ -400,7 +402,9 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string  $pageName
      * @param array   $options
      *
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     * @return Page
+     *
+     * @throws TimeoutException
      */
     public function openPage($pageName, array $options = [])
     {
@@ -422,7 +426,7 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $pageName
      * @param array  $options
      *
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     * @return Page
      */
     public function setCurrentPage($pageName, array $options = [])
     {
@@ -432,7 +436,7 @@ class NavigationContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     * @return Page
      */
     public function getCurrentPage()
     {

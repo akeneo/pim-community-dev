@@ -35,6 +35,7 @@ composer.phar
 !/bin/docker/pim-front.sh
 !/bin/docker/pim-initialize.sh
 !/bin/docker/pim-setup.sh
+!/bin/merge-coverage
 !/bin/console
 !/bin/pim-front.sh
 behat.yml

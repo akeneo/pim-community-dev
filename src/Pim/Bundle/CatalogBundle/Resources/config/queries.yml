@@ -52,6 +52,11 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.association.class%'
 
+    pim_catalog.query.get_descendent_category_codes:
+        class: Pim\Component\Catalog\Category\GetDescendentCategoryCodes
+        arguments:
+            - '@database_connection'
+
     pim_catalog.query.find_activated_currencies:
         class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FindActivatedCurrencies
         arguments:
