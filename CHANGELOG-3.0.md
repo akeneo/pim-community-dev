@@ -12,6 +12,7 @@
 - PIM-8027: Fix create reference entity without labels (API)
 - Fixed the "dot" menu on Reference Entity screen that was not visible if left panel was folded
 - PIM-8032: Fix the image deletion with the keyboard 
+- PIM-8043: Fix to keep the Save and Cancel button always on the right during the edition of a reference entity attribute
 
 ## Improvements
 
