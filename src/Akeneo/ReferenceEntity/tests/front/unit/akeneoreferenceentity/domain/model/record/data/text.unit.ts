@@ -8,7 +8,7 @@ describe('akeneo > reference entity > domain > model > record > data --- text', 
   test('I cannot create a new TextData with a value other than a string', () => {
     expect(() => {
       create(12);
-    }).toThrow('TextData expect a string as parameter to be created');
+    }).toThrow('TextData expects a string as parameter to be created');
   });
 
   test('I can normalize a TextData', () => {

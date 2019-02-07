@@ -192,8 +192,8 @@ export default connect(
   (dispatch: any): DispatchProps => {
     return {
       events: {
-        onRedirectToReferenceEntity: (referenceEntity: ReferenceEntity) => {
-          dispatch(redirectToReferenceEntity(referenceEntity, 'record'));
+        onRedirectToReferenceEntity: (referenceEntityCreation: ReferenceEntity) => {
+          dispatch(redirectToReferenceEntity(referenceEntityCreation.getIdentifier(), 'record'));
         },
         onCreationStart: () => {
           dispatch(referenceEntityCreationStart());

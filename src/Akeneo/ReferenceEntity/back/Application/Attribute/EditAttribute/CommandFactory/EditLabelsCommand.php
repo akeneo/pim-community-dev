@@ -21,4 +21,11 @@ class EditLabelsCommand extends AbstractEditAttributeCommand
 {
     /** @var array */
     public $labels;
+
+    public function __construct(string $identifier, array $labels)
+    {
+        parent::__construct($identifier);
+
+        $this->labels = $labels;
+    }
 }

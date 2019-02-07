@@ -2,8 +2,8 @@ import reducer from 'akeneoreferenceentity/application/reducer/reference-entity/
 
 const initialState = {
   data: {
-    attribute_as_label: null,
-    attribute_as_image: null,
+    attribute_as_label: '',
+    attribute_as_image: '',
     identifier: '',
     code: '',
     labels: {},

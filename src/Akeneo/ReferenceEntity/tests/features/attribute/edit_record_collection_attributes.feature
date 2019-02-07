@@ -37,4 +37,3 @@ Feature: Edit an attribute of a reference entity
     Examples:
       | invalid_required | message                               |
       | null             | This value should not be null.        |
-      | "not_a_boolean"  | This value should be of type boolean. |

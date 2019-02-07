@@ -46,6 +46,10 @@ class LabelCollectionValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
+        if (empty($labels)) {
+            return;
+        }
+
         $validator = Validation::createValidator();
 
         foreach ($labels as $localeCode => $label) {

@@ -21,8 +21,8 @@ class AllowedExtensionsUpdaterSpec extends ObjectBehavior
         TextAttribute $textAttribute,
         ImageAttribute $imageAttribute
     ) {
-        $allowedExtensionsEditCommand = new EditAllowedExtensionsCommand();
-        $labelEditCommand = new EditLabelsCommand();
+        $allowedExtensionsEditCommand = new EditAllowedExtensionsCommand('image', []);
+        $labelEditCommand = new EditLabelsCommand('name', []);
 
         $this->supports($imageAttribute, $allowedExtensionsEditCommand)->shouldReturn(true);
         $this->supports($imageAttribute, $labelEditCommand)->shouldReturn(false);
@@ -31,16 +31,15 @@ class AllowedExtensionsUpdaterSpec extends ObjectBehavior
 
     function it_edits_the_allowed_extensions_property_of_an_image_attribute(ImageAttribute $imageAttribute)
     {
-        $editAllowedExtensions = new EditAllowedExtensionsCommand();
-        $editAllowedExtensions->allowedExtensions = ['png'];
+        $editAllowedExtensions = new EditAllowedExtensionsCommand('image', ['png']);
         $imageAttribute->setAllowedExtensions(AttributeAllowedExtensions::fromList(['png']))->shouldBeCalled();
         $this->__invoke($imageAttribute, $editAllowedExtensions)->shouldReturn($imageAttribute);
     }
 
     function it_throws_if_it_cannot_update_the_attribute(ImageAttribute $rightAttribute, TextAttribute $wrongAttribute)
     {
-        $wrongCommand = new EditLabelsCommand();
-        $rightCommand = new EditAllowedExtensionsCommand();
+        $wrongCommand = new EditLabelsCommand('name', []);
+        $rightCommand = new EditAllowedExtensionsCommand('image', ['png']);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$rightAttribute, $wrongCommand]);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$wrongAttribute, $rightCommand]);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$wrongAttribute, $wrongCommand]);

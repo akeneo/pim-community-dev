@@ -29,12 +29,18 @@ class CreateRecordAttributeCommandFactory extends AbstractCreateAttributeCommand
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
     {
-        $command = new CreateRecordAttributeCommand();
-        $this->fillCommonProperties($command, $normalizedCommand);
-
+        $this->checkCommonProperties($normalizedCommand);
         $this->checkAdditionalProperties($normalizedCommand);
 
-        $command->recordType = $normalizedCommand['record_type'];
+        $command = new CreateRecordAttributeCommand(
+            $normalizedCommand['reference_entity_identifier'],
+            $normalizedCommand['code'],
+            $normalizedCommand['labels'] ?? [],
+            $normalizedCommand['is_required'] ?? false,
+            $normalizedCommand['value_per_channel'],
+            $normalizedCommand['value_per_locale'],
+            $normalizedCommand['record_type']
+        );
 
         return $command;
     }

@@ -22,8 +22,8 @@ const dataReducer = (
     code: '',
     labels: {},
     image: null,
-    attribute_as_image: null,
-    attribute_as_label: null,
+    attribute_as_image: '',
+    attribute_as_label: '',
   },
   {
     type,

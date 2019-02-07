@@ -18,12 +18,12 @@ class OptionCollectionData extends ValueData {
     super();
 
     if (!Array.isArray(optionData)) {
-      throw new InvalidTypeError('OptionCollectionData expect an array of OptionCode as parameter to be created');
+      throw new InvalidTypeError('OptionCollectionData expects an array of OptionCode as parameter to be created');
     }
 
     optionData.forEach((option: OptionCode) => {
       if (!(option instanceof OptionCode)) {
-        throw new InvalidTypeError('OptionCollectionData expect an array of OptionCode as parameter to be created');
+        throw new InvalidTypeError('OptionCollectionData expects an array of OptionCode as parameter to be created');
       }
     });
 

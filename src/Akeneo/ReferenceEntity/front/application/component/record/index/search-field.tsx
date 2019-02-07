@@ -32,6 +32,7 @@ export default class SearchField extends React.Component<Props> {
       <div className="AknFilterBox-searchContainer">
         <input
           type="text"
+          autoComplete="off"
           className="AknFilterBox-search"
           placeholder={__('pim_reference_entity.record.grid.search')}
           defaultValue={this.props.value}

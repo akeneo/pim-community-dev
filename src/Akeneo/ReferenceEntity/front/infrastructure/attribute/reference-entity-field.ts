@@ -1,7 +1,7 @@
 const BaseField = require('pim/form/common/fields/field');
 import * as $ from 'jquery';
 import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
-import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import ReferenceEntityListItem from 'akeneoreferenceentity/domain/model/reference-entity/list';
 const __ = require('oro/translator');
 const _ = require('underscore');
 const UserContext = require('pim/user-context');
@@ -32,7 +32,7 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
   configure() {
     const promise = $.Deferred();
 
-    referenceEntityFetcher.fetchAll().then((referenceEntities: ReferenceEntity[]) => {
+    referenceEntityFetcher.fetchAll().then((referenceEntities: ReferenceEntityListItem[]) => {
       this.referenceEntities = referenceEntities;
       promise.resolve();
     });
@@ -57,13 +57,16 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
   }
 
   getChoices() {
-    return this.referenceEntities.reduce((result: {[key: string]: string}, referenceEntity: ReferenceEntity) => {
-      result[referenceEntity.getIdentifier().stringValue()] = referenceEntity.getLabel(
-        UserContext.get('catalogLocale')
-      );
+    return this.referenceEntities.reduce(
+      (result: {[key: string]: string}, referenceEntity: ReferenceEntityListItem) => {
+        result[referenceEntity.getIdentifier().stringValue()] = referenceEntity.getLabel(
+          UserContext.get('catalogLocale')
+        );
 
-      return result;
-    }, {});
+        return result;
+      },
+      {}
+    );
   }
 
   /**

@@ -77,9 +77,10 @@ class GetAction
 
     private function hydratePermissions(ReferenceEntityDetails $referenceEntityDetails): ReferenceEntityDetails
     {
-        $canEditQuery = new CanEditReferenceEntityQuery();
-        $canEditQuery->referenceEntityIdentifier = (string) $referenceEntityDetails->identifier;
-        $canEditQuery->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $canEditQuery = new CanEditReferenceEntityQuery(
+            (string) $referenceEntityDetails->identifier,
+            $this->tokenStorage->getToken()->getUser()->getUsername()
+        );
         $referenceEntityDetails->isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($canEditQuery);
 
         return $referenceEntityDetails;

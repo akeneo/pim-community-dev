@@ -37,7 +37,6 @@ Feature: Edit an attribute of a reference entity
     Examples:
       | invalid_required | message                               |
       | null             | This value should not be null.        |
-      | "not_a_boolean"  | This value should be of type boolean. |
 
   # Max file size
   @acceptance-back
@@ -63,7 +62,6 @@ Feature: Edit an attribute of a reference entity
       | "not_a_boolean"       | This value should be a number.                      |
       | ""                    | This value should be a number.                      |
       | "-3.4"                | This value should be greater than 0.                |
-      | 99999999999           | This value should be less than or equal to 9999.99. |
 
   # TODO: imports
   # Scenario: Updating the max file size of an attribute that is not image fails
@@ -89,7 +87,6 @@ Feature: Edit an attribute of a reference entity
 
     Examples:
       | invalid_allowed_extensions | message                                     |
-      | "not_an_array"             | This value should be of type array.         |
       | ["not_a_valid_extension"]  | One or more of the given values is invalid. |
 
   # TODO: imports

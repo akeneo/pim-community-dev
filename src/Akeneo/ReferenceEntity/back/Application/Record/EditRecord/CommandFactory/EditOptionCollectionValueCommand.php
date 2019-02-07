@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 
 /**
  * Command to edit the options of an "option collection" attribute.
@@ -23,9 +23,13 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
  */
 class EditOptionCollectionValueCommand extends AbstractEditValueCommand
 {
-    /** @var OptionAttribute */
-    public $attribute;
-
     /** @var string[] */
     public $optionCodes;
+
+    public function __construct(OptionCollectionAttribute $attribute, ?string $channel, ?string $locale, array $optionCodes)
+    {
+        parent::__construct($attribute, $channel, $locale);
+
+        $this->optionCodes = $optionCodes;
+    }
 }

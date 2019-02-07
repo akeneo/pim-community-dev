@@ -20,9 +20,13 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
  */
 class EditRecordCollectionValueCommand extends AbstractEditValueCommand
 {
-    /** @var RecordCollectionAttribute */
-    public $attribute;
-
     /** @var string[] */
     public $recordCodes;
+
+    public function __construct(RecordCollectionAttribute $attribute, ?string $channel, ?string $locale, array $recordCodes)
+    {
+        parent::__construct($attribute, $channel, $locale);
+
+        $this->recordCodes = $recordCodes;
+    }
 }

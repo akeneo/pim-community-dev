@@ -38,10 +38,12 @@ class EmptyUpdaterSpec extends ObjectBehavior
         $this->shouldHaveType(EmptyUpdater::class);
     }
 
-    function it_only_supports_empty_value_command()
-    {
-        $this->supports(new EmptyValueCommand())->shouldReturn(true);
-        $this->supports(new EditTextValueCommand())->shouldReturn(false);
+    function it_only_supports_empty_value_command(
+        EmptyValueCommand $emptyValueCommand,
+        EditTextValueCommand $editTextValueCommand
+    ) {
+        $this->supports($emptyValueCommand)->shouldReturn(true);
+        $this->supports($editTextValueCommand)->shouldReturn(false);
     }
 
     function it_empty_value_of_a_record(
@@ -49,10 +51,7 @@ class EmptyUpdaterSpec extends ObjectBehavior
     ) {
         $textAttribute = $this->getAttribute();
 
-        $editEmptyValueCommand = new EmptyValueCommand();
-        $editEmptyValueCommand->attribute = $textAttribute;
-        $editEmptyValueCommand->channel = 'ecommerce';
-        $editEmptyValueCommand->locale = 'fr_FR';
+        $editEmptyValueCommand = new EmptyValueCommand($textAttribute, 'ecommerce', 'fr_FR');
 
         $value = Value::create(
             $editEmptyValueCommand->attribute->getIdentifier(),
@@ -64,11 +63,10 @@ class EmptyUpdaterSpec extends ObjectBehavior
         $record->setValue($value)->shouldBeCalled();
     }
 
-    function it_throws_if_it_does_not_support_the_command(Record $record)
+    function it_throws_if_it_does_not_support_the_command(Record $record, EditTextValueCommand $editTextValueCommand)
     {
-        $wrongCommand = new EditTextValueCommand();
-        $this->supports($wrongCommand)->shouldReturn(false);
-        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $wrongCommand]);
+        $this->supports($editTextValueCommand)->shouldReturn(false);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $editTextValueCommand]);
     }
 
     private function getAttribute(): TextAttribute

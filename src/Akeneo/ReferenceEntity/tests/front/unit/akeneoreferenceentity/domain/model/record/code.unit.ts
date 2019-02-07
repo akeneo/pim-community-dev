@@ -8,7 +8,7 @@ describe('akeneo > reference entity > domain > model --- code', () => {
   test('I cannot create a new code with a value other than a string', () => {
     expect(() => {
       createCode(12);
-    }).toThrow('Code expect a string as parameter to be created');
+    }).toThrow('Code expects a string as parameter to be created');
   });
 
   test('I can compare two codes', () => {

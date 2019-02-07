@@ -75,7 +75,7 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
         'text',
         true
       );
-    }).toThrow('Attribute expect a boolean as valuePerChannel');
+    }).toThrow('Attribute expects a boolean as valuePerChannel');
 
     expect(() => {
       new MinimalRecordConcreteAttribute(
@@ -86,7 +86,7 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
         true,
         false
       );
-    }).toThrow('Attribute expect a RecordType argument');
+    }).toThrow('Attribute expects a RecordType argument');
 
     expect(() => {
       new MinimalRecordConcreteAttribute(
@@ -106,22 +106,22 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
         createLabelCollection({en_US: 'Front View'}),
         'text'
       );
-    }).toThrow('Attribute expect a boolean as valuePerLocale');
+    }).toThrow('Attribute expects a boolean as valuePerLocale');
     expect(() => {
       new MinimalConcreteAttribute(
         createReferenceEntityIdentifier('designer'),
         createCode('front_view'),
         createLabelCollection({en_US: 'Front View'})
       );
-    }).toThrow('Attribute expect a string as attribute type');
+    }).toThrow('Attribute expects a string as attribute type');
     expect(() => {
       new MinimalConcreteAttribute(createReferenceEntityIdentifier('designer'), createCode('description'));
-    }).toThrow('Attribute expect a LabelCollection argument');
+    }).toThrow('Attribute expects a LabelCollection argument');
     expect(() => {
       new MinimalConcreteAttribute(createReferenceEntityIdentifier('designer'));
-    }).toThrow('Attribute expect a AttributeCode argument');
+    }).toThrow('Attribute expects a AttributeCode argument');
     expect(() => {
       new MinimalConcreteAttribute();
-    }).toThrow('Attribute expect an ReferenceEntityIdentifier argument');
+    }).toThrow('Attribute expects an ReferenceEntityIdentifier argument');
   });
 });

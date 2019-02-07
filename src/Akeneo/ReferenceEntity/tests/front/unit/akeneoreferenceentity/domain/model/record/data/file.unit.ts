@@ -14,7 +14,7 @@ describe('akeneo > reference entity > domain > model > record > data --- file', 
   test('I cannot create a new FileData with a value other than a File', () => {
     expect(() => {
       create(12);
-    }).toThrow('FileData expect a File as parameter to be created');
+    }).toThrow('FileData expects a File as parameter to be created');
   });
 
   test('I can normalize a FileData', () => {

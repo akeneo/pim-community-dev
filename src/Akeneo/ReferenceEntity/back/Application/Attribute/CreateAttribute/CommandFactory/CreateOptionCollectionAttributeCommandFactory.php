@@ -20,8 +20,16 @@ class CreateOptionCollectionAttributeCommandFactory extends AbstractCreateAttrib
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
     {
-        $command = new CreateOptionCollectionAttributeCommand();
-        $this->fillCommonProperties($command, $normalizedCommand);
+        $this->checkCommonProperties($normalizedCommand);
+
+        $command = new CreateOptionCollectionAttributeCommand(
+            $normalizedCommand['reference_entity_identifier'],
+            $normalizedCommand['code'],
+            $normalizedCommand['labels'] ?? [],
+            $normalizedCommand['is_required'] ?? false,
+            $normalizedCommand['value_per_channel'],
+            $normalizedCommand['value_per_locale']
+        );
 
         return $command;
     }

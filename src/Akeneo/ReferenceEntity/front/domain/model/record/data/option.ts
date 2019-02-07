@@ -22,7 +22,7 @@ class OptionData extends ValueData {
     }
 
     if (!(optionData instanceof OptionCode)) {
-      throw new InvalidTypeError('OptionData expect an OptionCode as parameter to be created');
+      throw new InvalidTypeError('OptionData expects an OptionCode as parameter to be created');
     }
   }
 

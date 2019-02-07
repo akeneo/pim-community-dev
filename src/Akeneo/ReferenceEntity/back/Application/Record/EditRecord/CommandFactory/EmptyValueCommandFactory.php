@@ -29,10 +29,11 @@ class EmptyValueCommandFactory implements EditValueCommandFactoryInterface
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
-        $command = new EmptyValueCommand();
-        $command->attribute = $attribute;
-        $command->channel = $normalizedValue['channel'];
-        $command->locale = $normalizedValue['locale'];
+        $command = new EmptyValueCommand(
+            $attribute,
+            $normalizedValue['channel'],
+            $normalizedValue['locale']
+        );
 
         return $command;
     }

@@ -55,11 +55,11 @@ $rules = [
         // TIP-937: PIM/Enrichment should not be linked to Family
         'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
 
-        // TODO: relationship between bounded context (query data though repository)
+        // TIP-1030: Public API for Structure
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
-        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
 
-        // TODO: usage of public constant
+        // TODO: Permission
+        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
         'Akeneo\Pim\Permission\Component\Attributes',
 
         // TIP-976: TWA should not be linked to Workflow
@@ -99,16 +99,14 @@ $rules = [
         // TIP-937: PIM/Enrichment should not be linked to Family
         'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
 
-        // TODO: relationship between bounded context (query data through repository)
-        'Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository',
-        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
-
         // TIP-970: TWA should not be linked to Datagrid View
         'Oro\Bundle\PimDataGridBundle\Entity\DatagridView',
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\DatagridViewTypes',
 
-        // TODO: usage of public constant
+        // TODO: permission
         'Akeneo\Pim\Permission\Component\Attributes',
+        'Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository',
+        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
 
         // TIP-974: Move CursorableRepositoryInterface to component
         'Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface',

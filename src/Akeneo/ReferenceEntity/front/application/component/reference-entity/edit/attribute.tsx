@@ -73,6 +73,7 @@ const renderSystemAttribute = (type: string, identifier: string) => {
       <div className="AknFieldContainer-inputContainer">
         <input
           type="text"
+          autoComplete="off"
           tabIndex={-1}
           id={`pim_reference_entity.reference_entity.properties.system_record_${identifier}`}
           className="AknTextField AknTextField--light AknTextField--disabled"
@@ -107,6 +108,7 @@ const renderAttributePlaceholders = () => {
         <div className="AknFieldContainer-inputContainer AknLoadingPlaceHolder">
           <input
             type="text"
+            autoComplete="off"
             id={`pim_reference_entity.reference_entity.properties.${attributeIdentifier}_${key}`}
             className="AknTextField AknTextField--transparent"
           />
@@ -168,6 +170,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
+            autoComplete="off"
             id={`pim_reference_entity.reference_entity.properties.${attribute.getCode().stringValue()}`}
             className="AknTextField AknTextField--light AknTextField--disabled"
             value={attribute.getLabel(locale)}

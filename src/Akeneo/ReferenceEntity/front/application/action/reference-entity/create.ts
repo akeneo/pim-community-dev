@@ -1,6 +1,3 @@
-import {createReferenceEntity as referenceEntityFactory} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import referenceEntitySaver from 'akeneoreferenceentity/infrastructure/saver/reference-entity';
 import {
   referenceEntityCreationSucceeded,
@@ -13,18 +10,12 @@ import {
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import {IndexState} from 'akeneoreferenceentity/application/reducer/reference-entity/index';
 import {redirectToReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/router';
-import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
-import {createAttributeReference} from 'akeneoreferenceentity/domain/model/attribute/attribute-reference';
+import {denormalizeReferenceEntityCreation} from 'akeneoreferenceentity/domain/model/reference-entity/creation';
+import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 
 export const createReferenceEntity = () => async (dispatch: any, getState: () => IndexState): Promise<void> => {
-  const {code, labels} = getState().create.data;
-  const referenceEntity = referenceEntityFactory(
-    createIdentifier(code),
-    createLabelCollection(labels),
-    createEmptyFile(),
-    createAttributeReference(null),
-    createAttributeReference(null)
-  );
+  const referenceEntity = denormalizeReferenceEntityCreation(getState().create.data);
+
   try {
     let errors = await referenceEntitySaver.create(referenceEntity);
 
@@ -42,7 +33,7 @@ export const createReferenceEntity = () => async (dispatch: any, getState: () =>
 
   dispatch(referenceEntityCreationSucceeded());
   dispatch(notifyReferenceEntityWellCreated());
-  dispatch(redirectToReferenceEntity(referenceEntity, 'attribute'));
+  dispatch(redirectToReferenceEntity(createIdentifier(referenceEntity.getCode().stringValue()), 'attribute'));
 
   return;
 };

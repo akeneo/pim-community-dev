@@ -8,7 +8,7 @@ describe('akeneo > reference entity > domain > model --- identifier', () => {
   test('I cannot create a new identifier with a value other than a string', () => {
     expect(() => {
       createIdentifier(12);
-    }).toThrow('Identifier expect a string as parameter to be created');
+    }).toThrow('Identifier expects a string as parameter to be created');
   });
 
   test('I can compare two identifiers', () => {

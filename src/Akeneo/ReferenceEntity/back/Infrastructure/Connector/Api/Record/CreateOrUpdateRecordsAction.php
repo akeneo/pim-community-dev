@@ -183,10 +183,11 @@ class CreateOrUpdateRecordsAction
         $createRecordCommand = null;
 
         if (true === $shouldBeCreated) {
-            $createRecordCommand = new CreateRecordCommand();
-            $createRecordCommand->code = $normalizedRecord['code'];
-            $createRecordCommand->referenceEntityIdentifier = $referenceEntityIdentifier->normalize();
-            $createRecordCommand->labels = [];
+            $createRecordCommand = new CreateRecordCommand(
+                $referenceEntityIdentifier->normalize(),
+                $normalizedRecord['code'],
+                []
+            );
 
             $violations = $this->recordDataValidator->validate($createRecordCommand);
             if ($violations->count() > 0) {

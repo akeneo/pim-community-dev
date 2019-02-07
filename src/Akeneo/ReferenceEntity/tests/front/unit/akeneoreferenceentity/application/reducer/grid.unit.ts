@@ -56,6 +56,29 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     });
   });
 
+  test('I can receive updated total count', () => {
+    const state = createState({
+      query: {},
+      items: [],
+      matchesCount: 0,
+      totalCount: 0,
+      isFetching: false,
+    });
+
+    const newState = reducer(state, {
+      type: 'GRID_TOTAL_COUNT_UPDATED',
+      totalCount: 12,
+    });
+
+    expect(newState).toEqual({
+      query: {},
+      items: [],
+      matchesCount: 0,
+      totalCount: 12,
+      isFetching: false,
+    });
+  });
+
   test('I can receive appended data', () => {
     const state = createState({
       query: {},

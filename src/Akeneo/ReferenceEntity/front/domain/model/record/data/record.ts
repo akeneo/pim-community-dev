@@ -15,7 +15,7 @@ class RecordData extends ValueData {
     }
 
     if (!(recordData instanceof RecordCode)) {
-      throw new InvalidTypeError('RecordData expect a RecordCode as parameter to be created');
+      throw new InvalidTypeError('RecordData expects a RecordCode as parameter to be created');
     }
   }
 

@@ -48,7 +48,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
         0,
         true
       );
-    }).toThrow('Attribute expect a MaxLength as maxLength');
+    }).toThrow('Attribute expects a MaxLength as maxLength');
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
@@ -61,7 +61,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
         true,
         MaxLength.createFromNormalized(12)
       );
-    }).toThrow('Attribute expect a Textarea as isTextarea');
+    }).toThrow('Attribute expects a Textarea as isTextarea');
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
@@ -75,7 +75,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
         MaxLength.createFromNormalized(12),
         IsTextarea.createFromNormalized(false)
       );
-    }).toThrow('Attribute expect a IsRichTextEditor as isRichTextEditor');
+    }).toThrow('Attribute expects a IsRichTextEditor as isRichTextEditor');
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
@@ -105,7 +105,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
         IsTextarea.createFromNormalized(false),
         IsRichTextEditor.createFromNormalized(false)
       );
-    }).toThrow('Attribute expect a ValidationRule as validationRule');
+    }).toThrow('Attribute expects a ValidationRule as validationRule');
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
@@ -121,7 +121,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
         IsRichTextEditor.createFromNormalized(false),
         ValidationRule.createFromNormalized('regular_expression')
       );
-    }).toThrow('Attribute expect a RegularExpression as regularExpression');
+    }).toThrow('Attribute expects a RegularExpression as regularExpression');
     expect(() => {
       new ConcreteTextAttribute(
         createIdentifier('designer', 'description'),
