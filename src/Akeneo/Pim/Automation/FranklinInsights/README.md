@@ -70,15 +70,18 @@ This is a collection of options from Franklin mapped (or not) to PIM attribute o
 ***Product Subscription Id***
 When we subscribe a product to Franklin, a subscription id is returned.
 It's a string that is calculated from the identifier values sent for subscription.
-On Franklin side, it's called subscription id. 
+On Franklin side, it's called product subscription id. 
 
 ***Tracker Id***
 The tracker id is an extra field that we send to Franklin.
 It eases the recovering of the product on which a product subscription is based on.
 We use the product id as tracker id in the current implementation.
 
+***Mapped identifiers***
+They are the product values mapped following the identifiers mapping.
+
 ***Mapped values***
-There are the product values mapped following the identifiers mapping.
+They are the product values mapped following the attributes mapping.
 
 ***Requested identifiers***
 The requested identifiers are the mapped values that we used to subscribe our product.
