@@ -1569,8 +1569,7 @@ class WebUser extends PimContext
         }
 
         $this->getSession()->executeScript('$(\'.edit .field-input input[type="file"]\').trigger(\'change\');');
-
-        sleep(1);
+        $this->wait();
     }
 
     /**
