@@ -3,7 +3,6 @@
 ## Bug fixes
 
 - PIM-8020: Fix wrong count on missing required attributes in the completeness
-- PIM-8044: Fix link to helpdesk
 - PIM-8028: Fix translations on boolean values
 
 # 3.0.1 (2019-02-06)
