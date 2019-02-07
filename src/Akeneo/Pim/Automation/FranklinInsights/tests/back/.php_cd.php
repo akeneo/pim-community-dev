@@ -139,7 +139,6 @@ $rules = [
             // External dependencies
             'Doctrine',
 
-            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
             // TODO: link by ID instead of reference
             'Akeneo\Pim\Structure\Component\Model\Family',
             'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
@@ -213,7 +212,6 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-            'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
             'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
             // TIP-1017: Do not use public constants of AttributeTypes
