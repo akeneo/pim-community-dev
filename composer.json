@@ -119,9 +119,6 @@
                 "database_password": "PIM_DATABASE_PASSWORD",
                 "index_hosts": "PIM_INDEX_HOSTS"
             }
-        },
-        "branch-alias": {
-            "dev-master": "3.1.x-dev"
         }
     }
 }
