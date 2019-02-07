@@ -20,6 +20,12 @@
         <ini name="zend.enable_gc" value="1"/>
     </php>
 
+    <groups>
+        <exclude>
+            <group>skip</group>
+        </exclude>
+    </groups>
+
     <testsuites>
 
         <!-- Legacy PIM phpunit unit tests -->

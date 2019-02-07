@@ -37,7 +37,6 @@ class SavingProductModelDescendantsIntegration extends TestCase
     public function testIndexingProductModelDescendantsOnUnitarySave()
     {
         $this->createProductsAndProductModelsTree('seed');
-
         $this->get('doctrine.orm.entity_manager')->clear();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         sleep(5);
@@ -89,9 +88,11 @@ class SavingProductModelDescendantsIntegration extends TestCase
     public function testProductModelDescendantsCompletenessIsCalculatedOnUnitarySave()
     {
         $this->createProductsAndProductModelsTree('seed');
+        $this->get('doctrine.orm.entity_manager')->clear();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        sleep(5);
 
         $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 5);
-
         $this->get('doctrine.orm.entity_manager')->clear();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         sleep(5);
