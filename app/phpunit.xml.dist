@@ -23,6 +23,7 @@
     <groups>
         <exclude>
             <group>ce</group>
+            <group>skip</group>
         </exclude>
     </groups>
 
