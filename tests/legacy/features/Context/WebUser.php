@@ -401,7 +401,7 @@ class WebUser extends PimContext
         $mainSelector = $this->getElementOnCurrentPage('Main context selector');
 
         $mainSelector->switchLocale($locale);
-        $this->wait();
+        sleep(1);
     }
 
     /**
