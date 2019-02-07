@@ -88,7 +88,7 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface',
 
-        // TODO: Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetricValidator should be split into two validator
+        // TIP-929: Extract the Attribute part of the ValidMetricValidator
         'Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface',
