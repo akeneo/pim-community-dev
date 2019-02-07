@@ -142,7 +142,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         return $date;
     }
 
-
     /**
      * @param ProductInterface $product
      *
@@ -152,14 +151,18 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     {
         $ancestorsIds = [];
         $ancestorsCodes = [];
+        $ancestorsLabels = [];
+
         if ($product->isVariant()) {
             $ancestorsIds = $this->getAncestorsIds($product);
             $ancestorsCodes = $this->getAncestorsCodes($product);
+            $ancestorsLabels = $this->getAncestorsLabels($product);
         }
 
         $ancestors = [
-            'ids'   => $ancestorsIds,
+            'ids' => $ancestorsIds,
             'codes' => $ancestorsCodes,
+            'labels' => $ancestorsLabels,
         ];
 
         return $ancestors;
@@ -195,5 +198,35 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         }
 
         return $ancestorsCodes;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
+     *
+     * @return array
+     */
+    private function getAncestorsLabels(EntityWithFamilyVariantInterface $entityWithFamilyVariant): array
+    {
+        $ancestorsLabels = [];
+        while (null !== $parent = $entityWithFamilyVariant->getParent()) {
+            $attributeAsLabel = $parent->getFamily()->getAttributeAsLabel();
+            if (null === $attributeAsLabel) {
+                return [];
+            }
+
+            $values = $parent->getValuesForVariation();
+
+            // $ancestorsLabels[] = get all the labels for all locales... from the values;
+
+            // We will need to inject the locale repository to have the activated locales.
+            // Same new indexed values to do in the 3 other properties normalizers:
+            // - src/Pim/Component/Catalog/Normalizer/Indexing/ProductAndProductModel/ProductModelPropertiesNormalizer.php
+            // - src/Pim/Component/Catalog/Normalizer/Indexing/ProductAndProductModel/ProductPropertiesNormalizer.php
+            // - src/Pim/Component/Catalog/Normalizer/Indexing/ProductModel/ProductModelPropertiesNormalizer.php
+
+            $entityWithFamilyVariant = $parent;
+        }
+
+        return $ancestorsLabels;
     }
 }

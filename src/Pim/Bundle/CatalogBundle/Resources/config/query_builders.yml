@@ -406,6 +406,14 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
+    pim_catalog.query.elasticsearch.filter.self_and_ancestor_label_or_identifier:
+        class: 'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\SelfAndAncestorFilterLabelOrIdentifier'
+        arguments:
+            - ['self_and_ancestor.label_or_identifier']
+            - ['CONTAINS']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
     # Attributes filters
     pim_catalog.query.elasticsearch.filter.identifier_attribute:
         class: '%pim_catalog.query.elasticsearch.filter.identifier_attribute.class%'

@@ -164,6 +164,10 @@ class ProductAndProductModelReader implements
                     $filter['field'] = 'self_and_ancestor.id';
                 }
 
+                if ('label_or_identifier' === $filter['field']) {
+                    $filter['field'] = 'self_and_ancestor.label_or_identifier';
+                }
+
                 return $filter;
             }, $filters);
         }
