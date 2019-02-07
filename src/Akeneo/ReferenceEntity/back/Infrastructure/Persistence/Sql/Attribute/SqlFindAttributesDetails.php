@@ -83,7 +83,6 @@ SQL;
     {
         $activatedLocales = ($this->findActivatedLocales)();
         $allAttributeDetails = [];
-        $labels = [];
         foreach ($results as $result) {
             $attributeDetails = new AttributeDetails();
             $attributeDetails->type = $result['attribute_type'];
@@ -91,7 +90,7 @@ SQL;
             $attributeDetails->referenceEntityIdentifier = $result['reference_entity_identifier'];
             $attributeDetails->code = $result['code'];
             $attributeDetails->order = (int) $result['attribute_order'];
-            $attributeDetails->labels = $this->getLabelsByActivatedLocale($result, $activatedLocales, $labels);
+            $attributeDetails->labels = $this->getLabelsByActivatedLocale($result, $activatedLocales);
             $attributeDetails->isRequired = (bool) $result['is_required'];
             $attributeDetails->valuePerChannel = (bool) $result['value_per_channel'];
             $attributeDetails->valuePerLocale = (bool) $result['value_per_locale'];
@@ -103,19 +102,15 @@ SQL;
         return $allAttributeDetails;
     }
 
-    /**
-     * @param $result
-     * @param $activatedLocales
-     * @param $labels
-     * @return mixed
-     */
-    private function getLabelsByActivatedLocale($result, $activatedLocales, $labels)
+    private function getLabelsByActivatedLocale(array $result, array $activatedLocales)
     {
+        $labels = [];
         foreach (json_decode($result['labels'], true) as $localeCode => $label) {
             if (in_array($localeCode, $activatedLocales)) {
                 $labels[$localeCode] = $label;
             }
         }
+
         return $labels;
     }
 }
