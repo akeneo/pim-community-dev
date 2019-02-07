@@ -161,7 +161,7 @@
             }
         },
         "branch-alias": {
-            "dev-3.0": "3.0.x-dev"
+            "dev-master": "3.1.x-dev"
         }
     }
 }
