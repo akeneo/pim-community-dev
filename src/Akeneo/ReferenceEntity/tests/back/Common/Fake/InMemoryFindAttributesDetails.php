@@ -46,15 +46,17 @@ class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
         $activatedLocales = ($this->activatedLocalesQuery)();
         $key = (string) $referenceEntityIdentifier;
 
-        if (isset($this->results[$key])) {
-            foreach ($this->results[$key] as $attributeDetails) {
-                if (null !== $attributeDetails->labels) {
-                    $attributeDetails->labels = $this->getLabelsByActivatedLocale($attributeDetails->labels, $activatedLocales);
-                }
+        if (!isset($this->results[$key])) {
+            return [];
+        }
+
+        foreach ($this->results[$key] as $attributeDetails) {
+            if (null !== $attributeDetails->labels) {
+                $attributeDetails->labels = $this->getLabelsByActivatedLocale($attributeDetails->labels, $activatedLocales);
             }
         }
 
-        return $this->results[$key] ?? [];
+        return $this->results[$key];
     }
 
     private function getLabelsByActivatedLocale(array $labels, array $activatedLocales): array
