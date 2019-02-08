@@ -60,6 +60,12 @@ class FixturesContext extends PimContext
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
+    /** @var EntityBuilder */
+    private $optionBuilder;
+
+    /** @var BulkSaverInterface */
+    private $optionSaver;
+
     /**
      * @param string $mainContextClass
      * @param SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
@@ -82,7 +88,9 @@ class FixturesContext extends PimContext
         SaverInterface $familySaver,
         Builder\Product $productBuilder,
         SaverInterface $productSaver,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        EntityBuilder $optionBuilder,
+        BulkSaverInterface $optionSaver
     ) {
         parent::__construct($mainContextClass);
 
@@ -95,6 +103,8 @@ class FixturesContext extends PimContext
         $this->productBuilder = $productBuilder;
         $this->productSaver = $productSaver;
         $this->productRepository = $productRepository;
+        $this->optionBuilder = $optionBuilder;
+        $this->optionSaver = $optionSaver;
     }
 
     /**
@@ -126,6 +136,16 @@ class FixturesContext extends PimContext
         foreach ($identifiers as $identifier) {
             $this->loadProduct($identifier, $familyCode);
         }
+    }
+
+    /**
+     * @Given the family :familyCode
+     *
+     * @param string $familyCode
+     */
+    public function theFamily(string $familyCode): void
+    {
+        $this->loadFamily($familyCode);
     }
 
     /**
@@ -170,6 +190,38 @@ class FixturesContext extends PimContext
     }
 
     /**
+     * @Given the predefined options :attributeOptions for the attribute :attributeCode
+     *
+     * @param string $attributeOptions
+     * @param string $attributeCode
+     */
+    public function thePredefinedAttributeOptions(string $attributeOptions, string $attributeCode): void
+    {
+        $this->loadAttributeOptions(array_map('strtolower', $this->toArray($attributeOptions)));
+    }
+
+    /**
+     * Loads a product with its family and attributes
+     * Fixture content is in a file in Resources/config/fixtures/products/.
+     *
+     * @param string $identifier
+     * @param string $familyCode
+     */
+    public function loadProduct(string $identifier, string $familyCode): void
+    {
+        $data = $this->loadJsonFileAsArray(sprintf('products/product-%s-%s.json', $familyCode, $identifier));
+
+        $this->productBuilder->withIdentifier($identifier)->withFamily($familyCode);
+
+        foreach ($data['values'] as $attrCode => $value) {
+            $this->productBuilder->withValue($attrCode, $value[0]['data']);
+        }
+        $product = $this->productBuilder->build();
+
+        $this->productSaver->save($product);
+    }
+
+    /**
      * @param array $mappedIdentifiers
      *
      * @throws InvalidMappingException
@@ -183,27 +235,6 @@ class FixturesContext extends PimContext
 
         $updateIdentifierCommand = new SaveIdentifiersMappingCommand($identifiersMapping);
         $this->saveIdentifiersMappingHandler->handle($updateIdentifierCommand);
-    }
-
-    /**
-     * Loads a product with its family and attributes
-     * Fixture content is in a file in Resources/config/fixtures/products/.
-     *
-     * @param string $identifier
-     * @param string $familyCode
-     */
-    private function loadProduct(string $identifier, string $familyCode): void
-    {
-        $data = $this->loadJsonFileAsArray(sprintf('products/product-%s-%s.json', $familyCode, $identifier));
-
-        $this->productBuilder->withIdentifier($identifier)->withFamily($familyCode);
-
-        foreach ($data['values'] as $attrCode => $value) {
-            $this->productBuilder->withValue($attrCode, $value[0]['data']);
-        }
-        $product = $this->productBuilder->build();
-
-        $this->productSaver->save($product);
     }
 
     /**
@@ -243,6 +274,18 @@ class FixturesContext extends PimContext
             $attributes[] = $this->attributeBuilder->build($normalizedAttributes[$attributeCode]);
         }
         $this->attributeSaver->saveAll($attributes);
+    }
+
+    private function loadAttributeOptions(array $attributeOptionCodes): void
+    {
+        $normalizedOptions = $this->loadJsonFileAsArray('options/options.json');
+
+        $options = [];
+        foreach ($attributeOptionCodes as $optionCode) {
+            $options[] = $this->optionBuilder->build($normalizedOptions[$optionCode]);
+        }
+
+        $this->optionSaver->saveAll($options);
     }
 
     /**

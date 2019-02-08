@@ -183,6 +183,8 @@ legacy:
                     - '@akeneo_e2e.context.franklin_insights.builder.product'
                     - '@pim_catalog.saver.product'
                     - '@pim_catalog.repository.product'
+                    - '@akeneo_e2e.context.franklin_insights.builder.attribute_option'
+                    - '@pim_catalog.saver.attribute_option'
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FranklinConfigurationContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@akeneo.pim.automation.franklin_insights.repository.configuration'
@@ -204,6 +206,10 @@ legacy:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@pim_catalog.repository.family'
                     - '@pim_catalog.repository.attribute'
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\AttributeOptionsMappingContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                    - '@pim_catalog.repository.family'
+                    - '@pim_catalog.repository.attribute_option'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

@@ -30,3 +30,11 @@ services:
             - '@pim_catalog.builder.product'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
+
+    akeneo_e2e.context.franklin_insights.builder.attribute_option:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        shared: false
+        arguments:
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.updater.attribute_option'
+            - '@validator'
