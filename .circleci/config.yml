@@ -247,7 +247,6 @@ workflows:
                     branches:
                         only:
                             - master
-                            - ci-PIM-8026-2
       jobs:
           - setup
           - back_static_and_acceptance:
