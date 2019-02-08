@@ -110,6 +110,7 @@ Feature: List attribute groups
     And I am logged in as "Julia"
     And I am on the "tablet" channel page
     And I add the "german" locale to the "tablet" channel
+    And I save the channel
     And I edit the "Julia" user
     And I visit the "Additional" tab
     And I fill in the following information:

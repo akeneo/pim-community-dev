@@ -103,7 +103,7 @@ define(
                     draggable: false,
 
                     open: function () {
-                        $(this).parent().keypress(function (e) {
+                        $(this).parent().on('keypress', function (e) {
                             if (e.keyCode === $.ui.keyCode.ENTER) {
                                 e.preventDefault();
                                 e.stopPropagation();

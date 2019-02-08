@@ -1,63 +1,4 @@
 config:
-  shim:
-    jquery.wizard:
-      deps:
-      - jquery
-    jstree/jquery.jstree.tree_selector:
-      deps:
-      - jquery.jstree
-    jstree/nested_switch:
-      deps:
-      - jquery.jstree
-    oro/translator:
-      exports: Translator
-    jquery-ui:
-      deps:
-      - jquery
-    jquery.numeric:
-      deps:
-      - jquery
-    jquery.select2:
-      deps:
-      - jquery
-    jquery.jstree:
-      deps:
-      - jquery
-    jstree/jquery.hotkeys:
-      deps:
-      - jquery.jstree
-    bootstrap:
-      deps:
-      - jquery
-    underscore:
-      exports: _
-    backbone:
-      deps:
-      - jquery
-      - underscore
-      exports: Backbone
-    bootstrap-modal:
-      deps:
-      - jquery
-      - underscore
-      - backbone
-    jquery.slimbox:
-      deps:
-      - jquery
-    bootstrap.bootstrapswitch:
-      deps:
-      - jquery
-    bootstrap.datetimepicker:
-      deps:
-      - jquery
-    jquery.sidebarize:
-      deps:
-      - jquery
-    jquery.form:
-      deps:
-      - jquery
-    url:
-      exports: Url
   config:
     pim/router:
       indexRoute: pim_dashboard_index
@@ -514,8 +455,7 @@ config:
           edit:   pim-attribute-form-boolean
 
   paths:
-    jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min
-    jquery.numeric:                pimui/lib/jquery-numeric/jquery.numeric
+    jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.12.1.custom.min
     jquery.select2:                pimui/lib/select2/select2
     jquery.jstree:                 pimui/lib/jstree/jquery.jstree
     jstree/jquery.hotkeys:         pimui/lib/jstree/jquery.hotkeys
@@ -546,7 +486,6 @@ config:
     pim/saveformstate:         pimui/js/pim-saveformstate
     pim/fileinput:             pimui/js/pim-fileinput
     pim/dialogform:            pimui/js/pim-dialogform
-    pim/dropzonejs:            pimui/lib/dropzonejs/dist/dropzone-amd-module.js
 
     pim/form/system/config/tab/loading-message: pimui/js/form/system/tab/loading-message
 

@@ -371,7 +371,7 @@ class Edit extends ProductEditForm
     {
         $preview = $this->getElement('Image preview');
 
-        if (!$preview || false === strpos($preview->getAttribute('style'), 'display: block')) {
+        if (!$preview || $preview->isVisible()) {
             return null;
         }
 

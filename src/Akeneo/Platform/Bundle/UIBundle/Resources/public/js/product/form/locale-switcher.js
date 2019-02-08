@@ -62,6 +62,8 @@ define(
             render: function () {
                 this.getDisplayedLocales()
                     .done(function (locales) {
+                        this.$el.removeClass('open');
+
                         const params = {
                             localeCode: _.first(locales).code,
                             context: this.config.context

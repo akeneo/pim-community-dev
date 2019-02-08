@@ -17,7 +17,7 @@ var E = w(window), u, f, F = -1, n, x, D, v, y, L, r, m = !window.XMLHttpRequest
         return [Q.href, Q.title]
     };O = O || function () {
         return true
-    };var N = this;return N.unbind("click").click(function () {
+    };var N = this;return N.off("click").click(function () {
         var S = this, U = 0, T, Q = 0, R;T = w.grep(N, function (W, V) {
             return O.call(S, W, V)
         });for (R = T.length; Q < R; ++Q) {
