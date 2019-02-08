@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\tests\integration\Category;
+namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\tests\integration\Category\CategoryTreeFixturesLoader;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>

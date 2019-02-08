@@ -43,7 +43,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             $completenessCalculator,
             $variantProductRatioQuery,
             $imageAsLabel,
-            $catalogContext
+            $catalogContext,
             $attributeOptionRepository
         );
     }

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\EventSubscriber\Category;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Component\Classification\Model\CategoryInterface;
-use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Category\GetDescendentCategoryCodes;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetDescendentCategoryCodes;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class UpdateIndexesOnCategoryDeletion implements EventSubscriberInterface
 {
-    /** @var GetDescendentCategoryCodes */
+    /** @var \Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetDescendentCategoryCodes */
     private $getDescendentCategoryCodes;
 
     /** @var Client */

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
@@ -19,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesF
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -89,7 +89,6 @@ class ProductModelNormalizer implements NormalizerInterface
     private $catalogContext;
 
     /**
-     * TODO @merge on master, remove null on catalog context
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
      * @param VersionManager                            $versionManager

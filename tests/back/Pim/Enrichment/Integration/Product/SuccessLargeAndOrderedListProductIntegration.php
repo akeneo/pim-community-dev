@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
+namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Test\Integration\Configuration;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
