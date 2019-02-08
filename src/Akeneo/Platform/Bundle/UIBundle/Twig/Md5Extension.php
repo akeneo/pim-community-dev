@@ -2,7 +2,6 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
-use JMS\Serializer\Exception\RuntimeException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class Md5Extension extends \Twig_Extension
@@ -52,7 +51,7 @@ class Md5Extension extends \Twig_Extension
         if (is_object($object)) {
             try {
                 $hash = md5($this->serializer->serialize($object, 'json'));
-            } catch (RuntimeException $e) {
+            } catch (\Exception $e) {
                 $hash = '';
             }
         } elseif (is_string($object)) {
