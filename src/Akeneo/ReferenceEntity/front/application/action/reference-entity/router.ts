@@ -1,13 +1,13 @@
-import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {redirectToRoute} from 'akeneoreferenceentity/application/event/router';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 
-export const redirectToReferenceEntity = (referenceEntity: ReferenceEntity, tab: string) => {
+export const redirectToReferenceEntity = (referenceEntityIdentifier: ReferenceEntityIdentifier, tab: string) => {
   return redirectToRoute('akeneo_reference_entities_reference_entity_edit', {
-    identifier: referenceEntity.getIdentifier().stringValue(),
+    identifier: referenceEntityIdentifier.stringValue(),
     tab,
   });
 };
 
-export const redirectToReferenceEntityList = () => {
+export const redirectToReferenceEntityListItem = () => {
   return redirectToRoute('akeneo_reference_entities_reference_entity_index');
 };

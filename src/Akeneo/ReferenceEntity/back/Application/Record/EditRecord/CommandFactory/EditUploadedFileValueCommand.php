@@ -29,4 +29,21 @@ class EditUploadedFileValueCommand extends AbstractEditValueCommand
 
     /** @var string */
     public $originalFilename;
+
+    public function __construct(
+        ImageAttribute $attribute,
+        ?string $channel,
+        ?string $locale,
+        string $filePath,
+        string $originalFilename
+    ) {
+        parent::__construct(
+            $attribute,
+            $channel,
+            $locale
+        );
+
+        $this->filePath = $filePath;
+        $this->originalFilename = $originalFilename;
+    }
 }

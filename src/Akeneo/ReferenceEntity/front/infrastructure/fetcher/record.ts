@@ -38,7 +38,7 @@ export class RecordFetcherImplementation implements RecordFetcher {
   async search(query: Query): Promise<SearchResult<NormalizedRecord>> {
     const referenceEntityCode = query.filters.find((filter: Filter) => 'reference_entity' === filter.field);
     if (undefined === referenceEntityCode) {
-      throw new InvalidArgument('The search repository expect a reference_entity filter');
+      throw new InvalidArgument('The search repository expects a reference_entity filter');
     }
 
     const backendRecords = await putJSON(

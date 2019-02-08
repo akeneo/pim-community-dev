@@ -10,7 +10,7 @@ class FileData extends ValueData {
     super();
 
     if (!(fileData instanceof File)) {
-      throw new InvalidTypeError('FileData expect a File as parameter to be created');
+      throw new InvalidTypeError('FileData expects a File as parameter to be created');
     }
 
     Object.freeze(this);

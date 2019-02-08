@@ -88,6 +88,7 @@ const TextView = ({
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
+            autoComplete="off"
             className={inputTextClassName}
             id="pim_reference_entity.attribute.edit.input.max_length"
             name="max_length"
@@ -211,6 +212,7 @@ const TextView = ({
             <div className="AknFieldContainer-inputContainer">
               <input
                 type="text"
+                autoComplete="off"
                 className={inputTextClassName}
                 id="pim_reference_entity.attribute.edit.input.regular_expression"
                 name="regular_expression"

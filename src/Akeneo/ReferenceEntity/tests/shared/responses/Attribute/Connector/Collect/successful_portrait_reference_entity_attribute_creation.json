@@ -1,0 +1,29 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_create_or_update",
+        "query": {
+            "referenceEntityIdentifier": "designer",
+            "attributeCode": "portrait"
+        },
+        "body": {
+            "code":  "portrait",
+            "labels":  {
+                "en_US":  "Portrait"
+            },
+            "type": "image",
+            "value_per_locale": false,
+            "value_per_channel": false,
+            "is_required_for_completeness": false,
+            "max_file_size": "200.10",
+            "allowed_extensions": ["png"]
+        }
+    },
+    "response": {
+        "status": 201,
+        "body": "",
+        "headers": {
+            "location": "http://localhost/api/rest/v1/reference-entities/designer/attributes/portrait"
+        }
+    }
+}

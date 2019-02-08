@@ -31,12 +31,13 @@ class CreateReferenceEntityHandlerSpec extends ObjectBehavior
     }
 
     function it_creates_a_new_record(ReferenceEntityRepositoryInterface $referenceEntityRepository) {
-        $createReferenceEntityCommand = new CreateReferenceEntityCommand();
-        $createReferenceEntityCommand->code = 'brand';
-        $createReferenceEntityCommand->labels = [
-            'en_US' => 'Intel',
-            'fr_FR' => 'Intel',
-        ];
+        $createReferenceEntityCommand = new CreateReferenceEntityCommand(
+            'brand',
+            [
+                'en_US' => 'Intel',
+                'fr_FR' => 'Intel',
+            ]
+        );
 
         $referenceEntityRepository->create(Argument::that(function ($referenceEntity) {
             return $referenceEntity instanceof ReferenceEntity

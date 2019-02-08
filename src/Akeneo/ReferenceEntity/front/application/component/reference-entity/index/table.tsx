@@ -4,9 +4,9 @@ import ReferenceEntity, {
   createReferenceEntity,
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {createIdentifier as createAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
-import {createAttributeReference} from 'akeneoreferenceentity/domain/model/attribute/attribute-reference';
 
 interface TableState {
   locale: string;
@@ -44,8 +44,8 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
         referenceEntityIdentifier,
         labelCollection,
         createEmptyFile(),
-        createAttributeReference(null),
-        createAttributeReference(null)
+        createAttributeIdentifier(''),
+        createAttributeIdentifier('')
       );
 
       return Array(4)

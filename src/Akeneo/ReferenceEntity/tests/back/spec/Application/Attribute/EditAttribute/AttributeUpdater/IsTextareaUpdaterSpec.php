@@ -21,8 +21,8 @@ class IsTextareaUpdaterSpec extends ObjectBehavior
         TextAttribute $textAttribute,
         ImageAttribute $imageAttribute
     ) {
-        $labelEditCommand = new EditLabelsCommand();
-        $isRequiredEditCommand = new EditIsTextareaCommand();
+        $labelEditCommand = new EditLabelsCommand('name', []);
+        $isRequiredEditCommand = new EditIsTextareaCommand('name', true);
 
         $this->supports($textAttribute, $isRequiredEditCommand)->shouldReturn(true);
         $this->supports($imageAttribute, $isRequiredEditCommand)->shouldReturn(false);
@@ -31,15 +31,14 @@ class IsTextareaUpdaterSpec extends ObjectBehavior
 
     function it_edits_the_is_textarea_flag_of_a_text_attribute(TextAttribute $textAttribute)
     {
-        $editRequired = new EditIsTextareaCommand();
-        $editRequired->isTextarea = false;
+        $editRequired = new EditIsTextareaCommand('name', false);
         $textAttribute->setIsTextarea(AttributeIsTextarea::fromBoolean(false))->shouldBeCalled();
         $this->__invoke($textAttribute, $editRequired)->shouldReturn($textAttribute);
     }
 
     function it_throws_if_it_cannot_update_the_attribute(TextAttribute $textAttribute)
     {
-        $wrongCommand = new EditLabelsCommand();
+        $wrongCommand = new EditLabelsCommand('name', []);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$textAttribute, $wrongCommand]);
     }
 }

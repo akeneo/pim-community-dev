@@ -46,6 +46,18 @@ class RecordValidatorSpec extends ObjectBehavior
                         'locale'  => 'en_US',
                         'data'    => 'French'
                     ],
+                ],
+                'image' => [
+                    [
+                        'channel' => null,
+                        'locale'  => null,
+                        'data'    => '2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_starck.jpg',
+                        '_links'  => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/reference-entities-media-files/2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg'
+                            ]
+                        ]
+                    ]
                 ]
             ]
         ];

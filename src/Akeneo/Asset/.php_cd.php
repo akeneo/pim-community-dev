@@ -55,13 +55,13 @@ $rules = [
         // TIP-1014: Do not use custom Flash Messages
         'Akeneo\Platform\Bundle\UIBundle\Flash\Message',
 
-        // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
+        // TIP-1016: Rework/Move CatalogVolumeMonitoring
         'Akeneo\Platform\Component\CatalogVolumeMonitoring',
 
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
 
-        // TODO Remove it
+        // TIP-1028: Asset should not depend on Gedmo
         'Gedmo\Exception\UnexpectedValueException',
 
         // TIP-950: Asset should not be linked to Locale
@@ -155,14 +155,17 @@ $rules = [
         // TIP-957: Move Events to component
         'Akeneo\Asset\Bundle\Event\AssetEvent',
 
-        // TODO: some repository return QueryBuidler object.
+        // TODO: some repository return QueryBuidler object (datagrid)
         'Doctrine\ORM\QueryBuilder',
-        // TODO: we must not depend on PIM BC
+
+        // TIP-1029: Assets should not be Enrichment
         'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',
-        // TODO: security
+        'Oro\Bundle\SecurityBundle\SecurityFacade', // Used in ConverterInterface
+
+
+        // TIP-999: Move managers to component
         'Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager',
-        // TODO: we should rework permission to avoid this kind coupling (permissions are a sub part of PIM BC)
-        'Oro\Bundle\SecurityBundle\SecurityFacade',
+
     ])->in('Akeneo\Asset\Component'),
 ];
 

@@ -16,15 +16,15 @@ class EditMaxLengthCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_property_max_length_edits()
     {
         $this->supports([
-            'identifier' => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
+            'identifier' => 'name',
             'max_length' => '154',
         ])->shouldReturn(true);
         $this->supports([
-            'identifier' => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
+            'identifier' => 'name',
             'max_length' => null
         ])->shouldReturn(true);
         $this->supports([
-            'identifier' => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
+            'identifier' => 'name',
             'labels'     => 'wrong_property',
         ])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);
@@ -33,17 +33,11 @@ class EditMaxLengthCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_to_edit_the_max_length_of_an_attribute()
     {
         $command = $this->create([
-            'identifier' => [
-                'identifier'                 => 'name',
-                'reference_entity_identifier' => 'designer',
-            ],
+            'identifier' => 'name',
             'max_length' => 100,
         ]);
         $command->shouldBeAnInstanceOf(EditMaxLengthCommand::class);
-        $command->identifier->shouldBeEqualTo([
-            'identifier'                 => 'name',
-            'reference_entity_identifier' => 'designer',
-        ]);
+        $command->identifier->shouldBeEqualTo('name');
         $command->maxLength->shouldBeEqualTo(100);
     }
 

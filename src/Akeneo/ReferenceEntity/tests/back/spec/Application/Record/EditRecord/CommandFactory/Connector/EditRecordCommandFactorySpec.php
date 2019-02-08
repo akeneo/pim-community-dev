@@ -43,7 +43,8 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         $editRecordValueCommandFactoryRegistry,
         $findAttributesIndexedByIdentifier,
         EditValueCommandFactoryInterface $textValueCommandFactory,
-        TextAttribute $descriptionAttribute
+        TextAttribute $descriptionAttribute,
+        EditTextValueCommand $editDescriptionCommand
     ) {
         $normalizedRecord = [
             'code' => 'starck',
@@ -62,7 +63,6 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
             ],
         ];
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $editDescriptionCommand = new EditTextValueCommand();
 
         $findAttributesIndexedByIdentifier->__invoke(Argument::type(ReferenceEntityIdentifier::class))->willReturn([
             'desginer_description_fingerprint' => $descriptionAttribute
@@ -78,7 +78,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         $command->shouldBeAnInstanceOf(EditRecordCommand::class);
         $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('starck');
-        $command->editRecordValueCommands->shouldBeEqualTo([$editDescriptionCommand]);
+        $command->editRecordValueCommands[0]->shouldBeAnInstanceOf(EditTextValueCommand::class);
     }
 
     function it_creates_an_edit_record_command_without_values()

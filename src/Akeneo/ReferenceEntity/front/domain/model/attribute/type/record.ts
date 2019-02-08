@@ -53,7 +53,7 @@ export class ConcreteRecordAttribute extends ConcreteAttribute implements Record
     );
 
     if (!(recordType instanceof RecordType)) {
-      throw new InvalidArgumentError('Attribute expect a RecordType as recordType');
+      throw new InvalidArgumentError('Attribute expects a RecordType as recordType');
     }
 
     Object.freeze(this);

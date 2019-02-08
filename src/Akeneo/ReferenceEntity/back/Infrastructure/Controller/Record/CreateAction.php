@@ -107,9 +107,10 @@ class CreateAction
 
     private function isUserAllowedToCreate(string $referenceEntityIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery();
-        $query->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $query = new CanEditReferenceEntityQuery(
+            $referenceEntityIdentifier,
+            $this->tokenStorage->getToken()->getUser()->getUsername()
+        );
 
         return $this->securityFacade->isGranted('akeneo_referenceentity_record_create')
             && ($this->canEditReferenceEntityQueryHandler)($query);
@@ -129,10 +130,11 @@ class CreateAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        $command = new CreateRecordCommand();
-        $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'] ?? null;
-        $command->code = $normalizedCommand['code'] ?? null;
-        $command->labels = $normalizedCommand['labels'] ?? [];
+        $command = new CreateRecordCommand(
+            $normalizedCommand['reference_entity_identifier'] ?? null,
+            $normalizedCommand['code'] ?? null,
+            $normalizedCommand['labels'] ?? []
+        );
 
         return $command;
     }

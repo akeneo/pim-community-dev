@@ -99,8 +99,9 @@ final class DeleteAllRecordsContext implements Context
      */
     public function theUserDeletesAllTheRecordFromOneEntity(): void
     {
-        $command = new DeleteAllReferenceEntityRecordsCommand();
-        $command->referenceEntityIdentifier = self::REFERENCE_ENTITY_IDENTIFIER_FIRST;
+        $command = new DeleteAllReferenceEntityRecordsCommand(
+            self::REFERENCE_ENTITY_IDENTIFIER_FIRST
+        );
 
         $this->executeCommand($command);
     }
@@ -110,8 +111,9 @@ final class DeleteAllRecordsContext implements Context
      */
     public function theUserDeletesAllTheRecordFromUnknownEntity(): void
     {
-        $command = new DeleteAllReferenceEntityRecordsCommand();
-        $command->referenceEntityIdentifier = 'unknown';
+        $command = new DeleteAllReferenceEntityRecordsCommand(
+            'unknown'
+        );
 
         $this->executeCommand($command);
     }
@@ -153,9 +155,10 @@ final class DeleteAllRecordsContext implements Context
 
     private function createReferenceEntity(string $identifier): void
     {
-        $createCommand = new CreateReferenceEntityCommand();
-        $createCommand->code = $identifier;
-        $createCommand->labels = [];
+        $createCommand = new CreateReferenceEntityCommand(
+            $identifier,
+            []
+        );
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {

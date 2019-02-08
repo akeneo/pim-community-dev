@@ -92,28 +92,28 @@ describe('akeneo > record > domain > model --- record', () => {
   test('I cannot create a malformed record', () => {
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode);
-    }).toThrow('Record expect a LabelCollection as labelCollection argument');
+    }).toThrow('Record expects a LabelCollection as labelCollection argument');
     expect(() => {
       createRecord(michelIdentifier);
-    }).toThrow('Record expect an ReferenceEntityIdentifier as referenceEntityIdentifier argument');
+    }).toThrow('Record expects an ReferenceEntityIdentifier as referenceEntityIdentifier argument');
     expect(() => {
       createRecord();
-    }).toThrow('Record expect a RecordIdentifier as identifier argument');
+    }).toThrow('Record expects a RecordIdentifier as identifier argument');
     expect(() => {
       createRecord(12);
-    }).toThrow('Record expect a RecordIdentifier as identifier argument');
+    }).toThrow('Record expects a RecordIdentifier as identifier argument');
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode, 52);
-    }).toThrow('Record expect a LabelCollection as labelCollection argument');
+    }).toThrow('Record expects a LabelCollection as labelCollection argument');
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode, didierLabels);
-    }).toThrow('Record expect a File as image argument');
+    }).toThrow('Record expects a File as image argument');
     expect(() => {
       createRecord(michelIdentifier, sofaIdentifier, '12', michelLabels, emptyFile);
-    }).toThrow('Record expect a RecordCode as code argument');
+    }).toThrow('Record expects a RecordCode as code argument');
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode, didierLabels, emptyFile, '');
-    }).toThrow('Record expect a ValueCollection as valueCollection argument');
+    }).toThrow('Record expects a ValueCollection as valueCollection argument');
   });
 
   test('I can compare two record', () => {

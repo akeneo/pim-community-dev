@@ -9,7 +9,7 @@ describe('akeneo > reference entity > domain > model > record > data --- record'
   test('I cannot create a new RecordData with a value other than a RecordCode', () => {
     expect(() => {
       create(12);
-    }).toThrow('RecordData expect a RecordCode as parameter to be created');
+    }).toThrow('RecordData expects a RecordCode as parameter to be created');
   });
 
   test('I can normalize a RecordData', () => {

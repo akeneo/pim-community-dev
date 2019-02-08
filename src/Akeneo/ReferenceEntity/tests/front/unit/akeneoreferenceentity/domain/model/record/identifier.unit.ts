@@ -12,7 +12,7 @@ describe('akeneo > reference entity > domain > model --- identifier', () => {
   test('I cannot create a new identifier with a value for reference entity identifier other than a string', () => {
     expect(() => {
       createIdentifier(12);
-    }).toThrow('RecordIdentifier expect a string as parameter to be created');
+    }).toThrow('RecordIdentifier expects a string as parameter to be created');
   });
 
   test('I can compare two identifiers', () => {

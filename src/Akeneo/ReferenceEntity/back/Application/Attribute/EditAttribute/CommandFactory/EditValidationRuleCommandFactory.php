@@ -22,9 +22,10 @@ class EditValidationRuleCommandFactory implements EditAttributeCommandFactoryInt
             throw new \RuntimeException('Impossible to create an edit regular expression property command.');
         }
 
-        $command = new EditValidationRuleCommand();
-        $command->identifier = $normalizedCommand['identifier'];
-        $command->validationRule = $normalizedCommand['validation_rule'] ?? null;
+        $command = new EditValidationRuleCommand(
+            $normalizedCommand['identifier'],
+            $normalizedCommand['validation_rule']
+        );
 
         return $command;
     }

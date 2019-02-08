@@ -8,13 +8,16 @@ import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handl
 import {Attribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import hydrateAttribute from 'akeneoreferenceentity/application/hydrator/attribute';
 import {ReferenceEntityPermission} from 'akeneoreferenceentity/domain/model/permission/reference-entity';
+import ReferenceEntityListItem, {
+  denormalizeReferenceEntityListItem,
+} from 'akeneoreferenceentity/domain/model/reference-entity/list';
 
 const routing = require('routing');
 
 export interface ReferenceEntityFetcher {
   fetch: (identifier: ReferenceEntityIdentifier) => Promise<ReferenceEntityResult>;
-  fetchAll: () => Promise<ReferenceEntity[]>;
-  search: (query: Query) => Promise<SearchResult<ReferenceEntity>>;
+  fetchAll: () => Promise<ReferenceEntityListItem[]>;
+  search: (query: Query) => Promise<SearchResult<ReferenceEntityListItem>>;
 }
 
 export type ReferenceEntityResult = {
@@ -43,20 +46,22 @@ export class ReferenceEntityFetcherImplementation implements ReferenceEntityFetc
     };
   }
 
-  async fetchAll(): Promise<ReferenceEntity[]> {
+  async fetchAll(): Promise<ReferenceEntityListItem[]> {
     const backendReferenceEntities = await getJSON(
       routing.generate('akeneo_reference_entities_reference_entity_index_rest')
     ).catch(errorHandler);
 
-    return hydrateAll<ReferenceEntity>(hydrator)(backendReferenceEntities.items);
+    return hydrateAll<ReferenceEntityListItem>(denormalizeReferenceEntityListItem)(backendReferenceEntities.items);
   }
 
-  async search(): Promise<SearchResult<ReferenceEntity>> {
+  async search(): Promise<SearchResult<ReferenceEntityListItem>> {
     const backendReferenceEntities = await getJSON(
       routing.generate('akeneo_reference_entities_reference_entity_index_rest')
     ).catch(errorHandler);
 
-    const items = hydrateAll<ReferenceEntity>(hydrator)(backendReferenceEntities.items);
+    const items = hydrateAll<ReferenceEntityListItem>(denormalizeReferenceEntityListItem)(
+      backendReferenceEntities.items
+    );
 
     return {
       items,

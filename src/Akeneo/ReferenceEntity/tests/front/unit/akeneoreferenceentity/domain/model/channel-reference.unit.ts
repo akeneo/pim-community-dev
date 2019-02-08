@@ -12,7 +12,7 @@ describe('akeneo > reference entity > domain > model --- channel reference', () 
   test('I cannot create a new channel reference with a value other than a string or null', () => {
     expect(() => {
       createChannelReference(12);
-    }).toThrow('ChannelReference expect a string or null as parameter to be created');
+    }).toThrow('ChannelReference expects a string or null as parameter to be created');
   });
 
   test('I can compare two channel references', () => {

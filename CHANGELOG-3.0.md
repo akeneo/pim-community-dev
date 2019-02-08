@@ -1,5 +1,23 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-7985: Fix locale permissions on Reference Entities
+- PIM-8012: Fix json-schema validation for the image attribute property `"max_file_size"` (API)
+- PIM-8011: Some attribute properties are nullable (API)
+- PIM-7999: Fix upsert record type attribute (API)
+- PIM-8000: Accept `_links` property in patch endpoints (API)
+- PIM-7998: Add validation on the immutable attribute properties (API)
+- PIM-8015: Add validation for record attribute creation (API)
+- PIM-8027: Fix create reference entity without labels (API)
+- Fixed the "dot" menu on Reference Entity screen that was not visible if left panel was folded
+- PIM-8032: Fix the image deletion with the keyboard 
+- PIM-8043: Fix to keep the Save and Cancel button always on the right during the edition of a reference entity attribute
+
+## Improvements
+
+- PIM-8040: The code should be check when upserting an attribute option (API)
+
 # 3.0.1 (2019-02-06)
 
 - Name Enterprise version "Rose"

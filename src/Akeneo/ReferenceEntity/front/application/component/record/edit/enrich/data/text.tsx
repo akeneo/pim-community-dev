@@ -52,6 +52,7 @@ const View = ({
       ) : (
         <input
           id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
+          autoComplete="off"
           className={`AknTextField AknTextField--narrow AknTextField--light
           ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}
           ${!canEditData ? 'AknTextField--disabled' : ''}`}

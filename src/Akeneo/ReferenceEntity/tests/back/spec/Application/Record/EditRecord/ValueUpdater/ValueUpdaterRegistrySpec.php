@@ -31,11 +31,11 @@ class ValueUpdaterRegistrySpec extends ObjectBehavior
         $this->shouldHaveType(ValueUpdaterRegistry::class);
     }
 
-    function it_register_a_value_updater_and_returns_it_if_it_supports()
+    function it_register_a_value_updater_and_returns_it_if_it_supports(EditTextValueCommand $editTextValueCommand)
     {
         $updater = new TextUpdater();
         $this->register($updater);
-        $this->getUpdater(new EditTextValueCommand())->shouldReturn($updater);
+        $this->getUpdater($editTextValueCommand)->shouldReturn($updater);
     }
 
     function it_throws_if_it_does_not_finds_an_updater_that_supports(
@@ -43,8 +43,7 @@ class ValueUpdaterRegistrySpec extends ObjectBehavior
     ) {
         $name = $this->getAttribute();
 
-        $command = new EditTextValueCommand();
-        $command->attribute = $name;
+        $command = new EditTextValueCommand($name, null, null, '');
         $nameIdentifier->normalize()->willReturn('designer_name_fingerprint');
 
         $this->shouldThrow(\RuntimeException::class)->during('getUpdater', [$command]);

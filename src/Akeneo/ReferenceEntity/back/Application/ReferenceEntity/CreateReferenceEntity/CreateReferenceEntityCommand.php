@@ -23,4 +23,10 @@ class CreateReferenceEntityCommand
 
     /** @var array */
     public $labels;
+
+    public function __construct(string $code, array $labels)
+    {
+        $this->code = $code;
+        $this->labels = $labels;
+    }
 }
