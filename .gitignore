@@ -52,5 +52,4 @@ package-lock.json
 yarn-error.log
 coverage/*
 docker-compose.override.yml
-.php_cs.cache
 /web/test_dist/*

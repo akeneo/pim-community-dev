@@ -11,6 +11,7 @@
 
 namespace Akeneo\Asset\Component;
 
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Asset\Component\Exception\LockedVariationGenerationException;
 use Akeneo\Asset\Component\Model\VariationInterface;
 
@@ -25,12 +26,18 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
     /** @var VariationFileGeneratorInterface */
     protected $variationFileGenerator;
 
+    /** @var BulkSaverInterface */
+    protected $bulkVariationSaver;
+
     /**
      * @param VariationFileGeneratorInterface $variationFileGenerator
      */
-    public function __construct(VariationFileGeneratorInterface $variationFileGenerator)
-    {
+    public function __construct(
+        VariationFileGeneratorInterface $variationFileGenerator,
+        BulkSaverInterface $bulkVariationSaver = null
+    ) {
         $this->variationFileGenerator = $variationFileGenerator;
+        $this->bulkVariationSaver = $bulkVariationSaver;
     }
 
     /**
@@ -64,6 +71,7 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
                 );
             }
         }
+        $this->bulkVariationSaver->saveAll($variations);
 
         return $processedVariations;
     }

@@ -11,6 +11,7 @@ use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
 use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use PimEnterprise\Component\ProductAsset\Persistence\DeleteVariationsForChannelId;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class RemoveChannelSubscriberSpec extends ObjectBehavior
@@ -19,9 +20,16 @@ class RemoveChannelSubscriberSpec extends ObjectBehavior
         VariationRepositoryInterface $variationRepo,
         ChannelConfigurationRepositoryInterface $channelConfigRepo,
         RemoverInterface $variationRemover,
-        RemoverInterface $channelConfigRemover
+        RemoverInterface $channelConfigRemover,
+        DeleteVariationsForChannelId $deleteVariationsForChannelId
     ) {
-        $this->beConstructedWith($variationRepo, $channelConfigRepo, $variationRemover, $channelConfigRemover);
+        $this->beConstructedWith(
+            $variationRepo,
+            $channelConfigRepo,
+            $variationRemover,
+            $channelConfigRemover,
+            $deleteVariationsForChannelId
+        );
     }
 
     function it_is_an_event_subsriber()
@@ -37,23 +45,18 @@ class RemoveChannelSubscriberSpec extends ObjectBehavior
     }
 
     function it_removes_related_entities_before_a_channel_deletion(
-        $variationRepo,
         $channelConfigRepo,
-        $variationRemover,
         $channelConfigRemover,
+        $deleteVariationsForChannelId,
         GenericEvent $event,
         ChannelInterface $channel,
-        VariationInterface $webVariation,
-        VariationInterface $mobileVariation,
         ChannelVariationsConfigurationInterface $webChannelConfig,
         ChannelVariationsConfigurationInterface $mobChannelConfig
     ) {
         $channel->getId()->willReturn(66);
         $event->getSubject()->willReturn($channel);
 
-        $variationRepo->findBy(['channel' => 66])->willReturn([$webVariation, $mobileVariation]);
-        $variationRemover->remove($webVariation)->shouldBeCalled();
-        $variationRemover->remove($mobileVariation)->shouldBeCalled();
+        $deleteVariationsForChannelId->execute(66)->shouldBeCalled();
 
         $channelConfigRepo->findBy(['channel' => 66])->willReturn([$webChannelConfig, $mobChannelConfig]);
         $channelConfigRemover->remove($webChannelConfig)->shouldBeCalled();
