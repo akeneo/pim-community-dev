@@ -22,6 +22,7 @@ class BaseDecorator extends ElementDecorator
             if ($this->hasClass('open-filter')) {
                 return true;
             }
+
             $filter->click();
 
             return false;

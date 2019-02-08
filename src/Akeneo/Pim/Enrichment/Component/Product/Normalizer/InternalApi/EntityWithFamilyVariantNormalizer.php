@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -14,7 +15,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -58,6 +58,9 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeOptionRepository;
 
+    /** @var CatalogContext */
+    private $catalogContext;
+
     public function __construct(
         ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
@@ -66,6 +69,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         CompletenessCalculatorInterface $completenessCalculator,
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
+        CatalogContext $catalogContext,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository
     ) {
         $this->imageNormalizer                  = $imageNormalizer;
@@ -75,6 +79,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         $this->completenessCalculator           = $completenessCalculator;
         $this->variantProductRatioQuery         = $variantProductRatioQuery;
         $this->imageAsLabel                     = $imageAsLabel;
+        $this->catalogContext                   = $catalogContext;
         $this->attributeOptionRepository        = $attributeOptionRepository;
     }
 
@@ -107,13 +112,14 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
             $image = $entity->getImage();
         }
 
+        // TODO @merge on master, remove condition on catalogContext
         return [
             'id'                 => $entity->getId(),
             'identifier'         => $identifier,
             'axes_values_labels' => $this->getAxesValuesLabelsForLocales($entity, $localeCodes),
             'labels'             => $labels,
             'order'              => $this->getOrder($entity),
-            'image'              => $this->normalizeImage($image, $context),
+            'image'              => $this->normalizeImage($image, $this->catalogContext ? $this->catalogContext->getLocaleCode() : null),
             'model_type'         => $entity instanceof ProductModelInterface ? 'product_model' : 'product',
             'completeness'       => $this->getCompletenessDependingOnEntity($entity)
         ];
@@ -129,13 +135,13 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
 
     /**
      * @param ValueInterface $data
-     * @param array          $context
+     * @param string         $localeCode
      *
      * @return array|null
      */
-    private function normalizeImage(?ValueInterface $data, array $context = []): ?array
+    private function normalizeImage(?ValueInterface $data, ?string $localeCode = null): ?array
     {
-        return $this->imageNormalizer->normalize($data, $context['locale']);
+        return $this->imageNormalizer->normalize($data, $localeCode);
     }
 
     /**

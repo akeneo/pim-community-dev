@@ -23,6 +23,11 @@ class AttributeSelectorDecorator extends ElementDecorator
             $this->spin(function () use ($attribute) {
                 $headerInput = $this->find('css', 'header input');
 
+                // isVisible is not totally reliable, which mean that
+                // we think we see the header but we don't (DOM not loaded)
+                // sleep is a working dirty hack
+                sleep(1);
+
                 if (!$headerInput->isVisible() && $headerInput->isValid()) {
                     return false;
                 }

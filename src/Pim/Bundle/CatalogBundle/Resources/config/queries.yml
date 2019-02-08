@@ -1,0 +1,63 @@
+parameters:
+    pim_catalog.doctrine.query.find_variant_product_completeness.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\VariantProductRatio'
+    pim_catalog.doctrine.query.complete_filter.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CompleteFilter'
+    pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis'
+    pim_catalog.doctrine.query.count_entity_with_family_variant.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountEntityWithFamilyVariant'
+    pim_catalog.doctrine.query.find_attributes_for_family.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FindAttributesForFamily'
+
+services:
+    pim_catalog.doctrine.query.find_variant_product_completeness:
+        class: '%pim_catalog.doctrine.query.find_variant_product_completeness.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.complete_filter:
+        class: '%pim_catalog.doctrine.query.complete_filter.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.attribute_is_an_family_variant_axis:
+        class: '%pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.count_entity_with_family_variant:
+        class: '%pim_catalog.doctrine.query.count_entity_with_family_variant.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.find_attributes_for_family:
+        class: '%pim_catalog.doctrine.query.find_attributes_for_family.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.count_products_with_family:
+        class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountProductsWithFamily'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.find_family_variants_identifiers_by_attribute_axes:
+        class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.find_attribute_group_orders_equal_or_superior_to:
+        class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FindAttributeGroupOrdersEqualOrSuperiorTo'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.query.get_associated_product_codes_by_product:
+        class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\GetAssociatedProductCodesByProductFromDB
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.association.class%'
+
+    pim_catalog.query.get_descendent_category_codes:
+        class: Pim\Component\Catalog\Category\GetDescendentCategoryCodes
+        arguments:
+            - '@database_connection'
+
+    pim_catalog.query.find_activated_currencies:
+        class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FindActivatedCurrencies
+        arguments:
+            - '@doctrine.orm.entity_manager'

@@ -246,7 +246,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - "3.0" 
+                            - "3.0"
       jobs:
           - setup
           - back_static_and_acceptance:

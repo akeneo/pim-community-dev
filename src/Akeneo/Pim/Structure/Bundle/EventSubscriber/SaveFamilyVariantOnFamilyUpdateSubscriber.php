@@ -40,6 +40,8 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
      * @param SaverInterface              $familyVariantSaver
      * @param BulkSaverInterface          $bulkFamilyVariantSaver
      * @param BulkObjectDetacherInterface $objectDetacher
+     *
+     * @todo merge master: remove $objectDetacher
      */
     public function __construct(
         ValidatorInterface $validator,
@@ -96,8 +98,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
             $this->familyVariantSaver->save($familyVariant);
         }
 
-        $this->objectDetacher->detachAll($validFamilyVariants);
-
         if (!empty($allViolations)) {
             $errorMessage = $this->getErrorMessage($allViolations);
             throw new \LogicException($errorMessage);
@@ -131,7 +131,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         $allViolations = $validationResponse['violations'];
 
         $this->bulkfamilyVariantSaver->saveAll($validFamilyVariants);
-        $this->objectDetacher->detachAll($validFamilyVariants);
 
         if (!empty($allViolations)) {
             $errorMessage = $this->getErrorMessage($allViolations);

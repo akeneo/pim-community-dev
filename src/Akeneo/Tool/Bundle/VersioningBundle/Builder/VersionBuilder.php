@@ -172,7 +172,7 @@ class VersionBuilder
         return array_filter(
             $changeset,
             function ($item) {
-                return $item['old'] != $item['new'];
+                return $item['old'] !== $item['new'];
             }
         );
     }

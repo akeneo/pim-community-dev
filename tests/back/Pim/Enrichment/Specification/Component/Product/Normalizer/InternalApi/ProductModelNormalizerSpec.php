@@ -50,7 +50,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         NormalizerInterface $incompleteValuesNormalizer,
         UserContext $userContext,
         MissingAssociationAdder $missingAssociationAdder,
-        NormalizerInterface $parentAssociationsNormalizer
+        NormalizerInterface $parentAssociationsNormalizer,
+        CatalogContext $catalogContext
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -70,7 +71,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $incompleteValuesNormalizer,
             $userContext,
             $missingAssociationAdder,
-            $parentAssociationsNormalizer
+            $parentAssociationsNormalizer,
+            $catalogContext
         );
     }
 

@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Inter
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -31,6 +32,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         CompletenessCalculatorInterface $completenessCalculator,
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
+        CatalogContext $catalogContext,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository
     ) {
         $this->beConstructedWith(
@@ -41,6 +43,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             $completenessCalculator,
             $variantProductRatioQuery,
             $imageAsLabel,
+            $catalogContext
             $attributeOptionRepository
         );
     }
