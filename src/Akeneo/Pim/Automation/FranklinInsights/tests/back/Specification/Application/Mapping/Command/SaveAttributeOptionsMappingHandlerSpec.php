@@ -71,7 +71,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
         $attributeOptionRepository
             ->findCodesByIdentifiers((string) $attributeCode, ['color1', 'color2'])
-            ->willReturn(['color1', 'color2']);
+            ->willReturn([['code' => 'color1'], ['code' => 'color2']]);
 
         $writeOptionsMapping = new AttributeOptionsMapping();
         $writeOptionsMapping->addAttributeOption(new AttributeOption('color_1', 'Color 1', 'color1'));
@@ -106,7 +106,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
         $attributeOptionRepository
             ->findCodesByIdentifiers((string) $attributeCode, ['color1', 'color2'])
-            ->willReturn(['color1']);
+            ->willReturn([['code' => 'color1']]);
 
         $writeOptionsMapping = new AttributeOptionsMapping();
         $writeOptionsMapping->addAttributeOption(new AttributeOption('color_1', 'Color 1', 'color1'));

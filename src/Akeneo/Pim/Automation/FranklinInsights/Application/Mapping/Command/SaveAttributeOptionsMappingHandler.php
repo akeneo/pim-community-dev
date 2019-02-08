@@ -65,10 +65,7 @@ class SaveAttributeOptionsMappingHandler
     {
         $this->validate($command);
 
-        $optionCodes = $this->attributeOptionRepository->findCodesByIdentifiers(
-            (string) $command->attributeCode(),
-            $command->attributeOptions()->getCatalogOptionCodes()
-        );
+        $optionCodes = $this->getOptionCodes($command);
         if (empty($optionCodes)) {
             throw AttributeOptionsMappingException::emptyAttributeOptionsMapping();
         }
@@ -123,5 +120,23 @@ class SaveAttributeOptionsMappingHandler
                 sprintf('Attribute "%s" does not exist', $attributeCode)
             );
         }
+    }
+
+    /**
+     * @param SaveAttributeOptionsMappingCommand $command
+     *
+     * @return array
+     */
+    private function getOptionCodes(SaveAttributeOptionsMappingCommand $command): array
+    {
+        $optionCodes = $this->attributeOptionRepository->findCodesByIdentifiers(
+            (string) $command->attributeCode(),
+            $command->attributeOptions()->getCatalogOptionCodes()
+        );
+        $optionCodes = array_map(function ($option) {
+            return $option['code'];
+        }, $optionCodes);
+
+        return $optionCodes;
     }
 }
