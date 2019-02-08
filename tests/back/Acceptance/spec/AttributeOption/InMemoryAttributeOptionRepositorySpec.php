@@ -100,7 +100,7 @@ class InMemoryAttributeOptionRepositorySpec extends ObjectBehavior
 
         $this
             ->findCodesByIdentifiers($attribute->getCode(), ['attribute_option_1', 'attribute_option_2'])
-            ->shouldReturn([$attributeOption1->getCode(), $attributeOption2->getCode()]);
+            ->shouldReturn([['code' => $attributeOption1->getCode()], ['code' => $attributeOption2->getCode()]]);
 
         $this
             ->findCodesByIdentifiers($attribute2->getCode(), ['attribute_option_1'])
@@ -108,7 +108,7 @@ class InMemoryAttributeOptionRepositorySpec extends ObjectBehavior
 
         $this
             ->findCodesByIdentifiers($attribute2->getCode(), ['attribute_option_4'])
-            ->shouldReturn([$attributeOption4->getCode()]);
+            ->shouldReturn([['code' => $attributeOption4->getCode()]]);
     }
 
     private function createAttributeOption(string $code, AttributeInterface $attribute): AttributeOptionInterface
