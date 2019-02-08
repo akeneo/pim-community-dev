@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Component\Workflow\Query\DeleteProjectStatusIfUserIsNotLinkedToProject;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\DeleteProjectStatusIfUserIsNotLinkedToProjectSubscriber;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\Workflow\Query\DeleteProjectStatusIfUserIsNotLinkedToProject;

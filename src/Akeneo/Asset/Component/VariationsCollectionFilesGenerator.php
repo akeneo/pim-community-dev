@@ -11,9 +11,9 @@
 
 namespace Akeneo\Asset\Component;
 
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Asset\Component\Exception\LockedVariationGenerationException;
 use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 
 /**
  * Generate the variation files for a collection of variations

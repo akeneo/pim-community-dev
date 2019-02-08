@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Asset\Component;
 use Akeneo\Asset\Component\ProcessedItemList;
 use Akeneo\Asset\Component\VariationsCollectionFilesGenerator;
 use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Asset\Component\Exception\LockedVariationGenerationException;
 use Akeneo\Asset\Component\Model\VariationInterface;
