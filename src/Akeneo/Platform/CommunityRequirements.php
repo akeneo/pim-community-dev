@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Platform;
 
 use \PDO;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Yaml\Yaml;
 
@@ -205,11 +208,12 @@ class CommunityRequirements
      */
     protected function getConnection() : PDO
     {
-        $file = file_get_contents($this->baseDir.'/app/config/parameters.yml');
+        $path = 'app/config/parameters.yml';
+        $file = file_get_contents($this->baseDir.'/'.$path);
 
         if (false === $file) {
             throw new RuntimeException(
-                'The file "app/config/parameters.yml" does not exist, please create it'
+                sprintf('The file "%s" does not exist, please create it', $path)
             );
         }
 
@@ -218,25 +222,31 @@ class CommunityRequirements
         try {
             if (null === $parameters) {
                 throw new RuntimeException(
-                    'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
+                    sprintf('Your PIM is not configured. Please fill the file "%s"', $path)
                 );
             }
         } catch (RuntimeException $e) {
-            $parameters = Yaml::parse(file_get_contents($this->baseDir.'/app/config/parameters_test.yml'));
+            $path = 'app/config/parameters_test.yml';
+            $parameters = Yaml::parse(file_get_contents($this->baseDir.'/'.$path));
 
             if (null === $parameters) {
                 throw $e;
             }
         }
 
+        $container = new ContainerBuilder();
+        $loader = new YamlFileLoader($container, new FileLocator($this->baseDir));
+        $loader->load($path);
+        $container->compile(true);
+
         return new PDO(
             sprintf(
                 'mysql:port=%s;host=%s',
-                $parameters['parameters']['database_port'],
-                $parameters['parameters']['database_host']
+                $container->getParameter('database_port'),
+                $container->getParameter('database_host')
             ),
-            $parameters['parameters']['database_user'],
-            $parameters['parameters']['database_password']
+            $container->getParameter('database_user'),
+            $container->getParameter('database_password')
         );
     }
 
