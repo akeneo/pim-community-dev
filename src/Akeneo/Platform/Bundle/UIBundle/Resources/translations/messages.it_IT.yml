@@ -109,6 +109,7 @@ pim_enrich:
       create: Creare una famiglia
       edit_properties: Modificare le proprietà di una famiglia
       edit_attributes: Modificare gli attributi di una famiglia
+      edit_variants: Modifica una variante di famiglia
       remove: Rimuovere una famiglia
       history: Visualizza lo storico della famiglia
     family_variant:
@@ -165,6 +166,11 @@ pim_enrich:
     locale: Impostazioni locali
     product: Articoli
     product_model: Modelli di prodotto
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Le locale è stata rimossa dal canale. Attualmente stiamo pulendo le completezze collegate a loro.
+        done: Rimozione di una locale su un canale finito.
   create:
     attribute: Crea attributo
     attribute group: crea gruppo attributi
@@ -281,6 +287,7 @@ Useable as grid column: Utilizzabile come colonna della griglia
 Useable as grid filter: Utilizzabile nella griglia
 Family: Famiglia
 Image: Immagine
+Variant products: Prodotti varianti
 Available locales: Impostazioni locali disponibili
 Locale specific: Impostazioni locali specifiche
 default: Predefinito
