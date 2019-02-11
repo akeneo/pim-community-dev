@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.29 (2019-02-11)
+
 ## Bug fixes
 
 - PIM-8021: Fix translations.
