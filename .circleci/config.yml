@@ -36,6 +36,9 @@ jobs:
           name: Change owner on project dir after restoring cache
           command: sudo chown -R 1000:1000 ../project
       - run:
+          name: Github token
+          command: composer config -g github-oauth.github.com GITHUB_TOKEN
+      - run:
           name: Install dependencies
           command: ./bin/docker/pim-dependencies.sh
       - run:
