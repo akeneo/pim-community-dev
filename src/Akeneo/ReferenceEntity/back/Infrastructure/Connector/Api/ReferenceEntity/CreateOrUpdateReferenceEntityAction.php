@@ -103,7 +103,7 @@ class CreateOrUpdateReferenceEntityAction
         if (true === $shouldBeCreated) {
             $createReferenceEntityCommand = new CreateReferenceEntityCommand(
                 $normalizedReferenceEntity['code'],
-                $normalizedReferenceEntity['labels']
+                $normalizedReferenceEntity['labels'] ?? []
             );
 
             $violations = $this->validator->validate($createReferenceEntityCommand);
@@ -114,7 +114,7 @@ class CreateOrUpdateReferenceEntityAction
 
         $editReferenceEntityCommand = new EditReferenceEntityCommand(
             $normalizedReferenceEntity['code'],
-            $normalizedReferenceEntity['labels'],
+            $normalizedReferenceEntity['labels'] ?? [],
             null
         );
 
