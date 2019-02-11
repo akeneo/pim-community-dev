@@ -147,6 +147,12 @@ class CountImpactedProducts
         $filters = $this->adaptGridCompletenessFilter($filters);
         $filters = $this->removeIdFilter($filters);
 
+        foreach ($filters as $index => $filter) {
+            if ('label_or_identifier' === $filter['field']) {
+                $filters[$index]['field'] = 'self_and_ancestor.label_or_identifier';
+            }
+        }
+
         $filters[] = ['field' => 'entity_type', 'operator' => '=', 'value' => ProductInterface::class];
 
         $pqb = $this->productAndProductModelQueryBuilderFactory->create(['filters' => $filters]);

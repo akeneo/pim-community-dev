@@ -9,7 +9,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
-use Prophecy\Argument;
 
 class CountImpactedProductsSpec extends ObjectBehavior
 {
@@ -34,6 +33,28 @@ class CountImpactedProductsSpec extends ObjectBehavior
         $pqbFilters = [];
 
         $productAndProductModelQueryBuilderFactory->create(['filters' => [
+            ['field' => 'entity_type', 'operator' => "=", 'value' => ProductInterface::class]
+        ]])->willReturn($pqb);
+        $pqb->execute()->willReturn($countable);
+        $countable->count()->willReturn(2500);
+
+        $productQueryBuilderFactory->create()->shouldNotBeCalled();
+
+        $this->count($pqbFilters)->shouldReturn(2500);
+    }
+
+    function it_returns_the_catalog_products_count_when_a_user_selects_all_products_in_the_grid_with_a_label_search(
+        $productAndProductModelQueryBuilderFactory,
+        $productQueryBuilderFactory,
+        ProductQueryBuilderInterface $pqb,
+        \Countable $countable
+    ) {
+        $pqbFilters = [
+            ['field' => 'label_or_identifier', 'operator' => 'CONTAINS', 'value' => 'something']
+        ];
+
+        $productAndProductModelQueryBuilderFactory->create(['filters' => [
+            ['field' => 'self_and_ancestor.label_or_identifier', 'operator' => 'CONTAINS', 'value' => 'something'],
             ['field' => 'entity_type', 'operator' => "=", 'value' => ProductInterface::class]
         ]])->willReturn($pqb);
         $pqb->execute()->willReturn($countable);

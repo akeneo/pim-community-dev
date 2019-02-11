@@ -6,7 +6,6 @@ namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
-use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * An ancestor is a product model that is either a parent or a grand parent.
@@ -33,14 +32,8 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
 {
-    /**
-     * @param array $supportedFields
-     * @param array $supportedOperators
-     */
-    public function __construct(
-        array $supportedFields,
-        array $supportedOperators
-    ) {
+    public function __construct(array $supportedFields, array $supportedOperators)
+    {
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -55,21 +48,34 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
         }
 
         if (!$this->supportsOperator($operator)) {
-            throw InvalidOperatorException::notSupported($operator, SelfAndAncestorFilter::class);
+            throw InvalidOperatorException::notSupported($operator, SelfAndAncestorFilterLabelOrIdentifier::class);
         }
 
         $this->checkValue($value);
 
         $clauses[] = [
             'wildcard' => [
-                'ancestors.code' => sprintf('*%s*', $this->escapeValue($value)),
+                'ancestors.codes' => sprintf('*%s*', $this->escapeValue($value)),
+            ]
+        ];
+        $clauses[] = [
+            'wildcard' => [
+                'identifier' => sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
 
         if (null !== $channel && null !== $locale) {
             $clauses[] = [
                 'wildcard' => [
-                    sprintf('ancestors.label.%s.%s', $channel, $locale) => sprintf(
+                    sprintf('ancestors.labels.%s.%s', $channel, $locale) => sprintf(
+                        '*%s*',
+                        $this->escapeValue($value)
+                    ),
+                ]
+            ];
+            $clauses[] = [
+                'wildcard' => [
+                    sprintf('label.%s.%s', $channel, $locale) => sprintf(
                         '*%s*',
                         $this->escapeValue($value)
                     ),
@@ -80,7 +86,15 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
         if (null !== $channel) {
             $clauses[] = [
                 'wildcard' => [
-                    sprintf('ancestors.label.%s.<all_locales>', $channel) => sprintf(
+                    sprintf('ancestors.labels.%s.<all_locales>', $channel) => sprintf(
+                        '*%s*',
+                        $this->escapeValue($value)
+                    ),
+                ]
+            ];
+            $clauses[] = [
+                'wildcard' => [
+                    sprintf('label.%s.<all_locales>', $channel) => sprintf(
                         '*%s*',
                         $this->escapeValue($value)
                     ),
@@ -91,7 +105,15 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
         if (null !== $locale) {
             $clauses[] = [
                 'wildcard' => [
-                    sprintf('ancestors.label.<all_channels>.%s', $locale) => sprintf(
+                    sprintf('ancestors.labels.<all_channels>.%s', $locale) => sprintf(
+                        '*%s*',
+                        $this->escapeValue($value)
+                    ),
+                ]
+            ];
+            $clauses[] = [
+                'wildcard' => [
+                    sprintf('label.<all_channels>.%s', $locale) => sprintf(
                         '*%s*',
                         $this->escapeValue($value)
                     ),
@@ -101,7 +123,12 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
 
         $clauses[] = [
             'wildcard' => [
-                'ancestors.label.<all_channels>.<all_locales>' => sprintf('*%s*', $this->escapeValue($value)),
+                'ancestors.labels.<all_channels>.<all_locales>' => sprintf('*%s*', $this->escapeValue($value)),
+            ]
+        ];
+        $clauses[] = [
+            'wildcard' => [
+                'label.<all_channels>.<all_locales>' => sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
 

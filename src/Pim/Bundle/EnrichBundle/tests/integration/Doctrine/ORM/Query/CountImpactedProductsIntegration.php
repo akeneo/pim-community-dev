@@ -72,6 +72,14 @@ class CountImpactedProductsIntegration extends TestCase
         $this->assertProductsCountInSelection($pqbFilters, 242);
     }
 
+    public function testUserSelectedAllEntitiesAndFilteredByLabel()
+    {
+        $pqbFilters = [
+            ['field' => 'label_or_identifier', 'operator' => 'CONTAINS', 'value' => 'di', 'type' => 'field']
+        ];
+        $this->assertProductsCountInSelection($pqbFilters, 29);
+    }
+
     public function testUserSelectedAllEntitiesAndUnselectsProducts()
     {
         $pqbFilters = [
