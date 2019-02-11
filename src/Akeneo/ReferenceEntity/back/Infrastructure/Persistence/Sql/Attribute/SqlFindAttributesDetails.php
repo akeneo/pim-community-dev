@@ -102,7 +102,7 @@ SQL;
         return $allAttributeDetails;
     }
 
-    private function getLabelsByActivatedLocale(array $result, array $activatedLocales)
+    private function getLabelsByActivatedLocale(array $result, array $activatedLocales): array
     {
         $labels = [];
         foreach (json_decode($result['labels'], true) as $localeCode => $label) {
