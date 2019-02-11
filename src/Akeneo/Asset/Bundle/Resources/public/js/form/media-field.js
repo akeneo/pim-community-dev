@@ -46,17 +46,17 @@ define(
                     }
                 });
 
-                fileInput.change((event) => {
+                fileInput.on('change', (event) => {
                     const fileInput = event.currentTarget;
                     codeInput.val(this.sanitizeFileName(fileInput.value));
                 });
-                saveBtn.click((event) => {
+                saveBtn.on('click', (event) => {
                     this.checkNextCode(event, dialog, codeInput);
                 });
-                codeInput.focusout((event) => {
+                codeInput.on('focusout', (event) => {
                     this.checkNextCode(event, dialog, codeInput);
                 });
-                dialog.keypress((event) => {
+                dialog.on('keypress', (event) => {
                     if (event.keyCode === $.ui.keyCode.ENTER) {
                         this.checkNextCode(event, dialog, codeInput);
                     }

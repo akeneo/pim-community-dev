@@ -187,10 +187,7 @@ define(
                         router.generate('pimee_product_asset_rest_verify_upload', {
                             filename: encodeURIComponent(file.name)
                         })
-                    ).done(function () {
-                        $startButton.removeClass('AknButton--disabled');
-                        $cancelButton.removeClass('AknButton--hidden');
-                    }).fail(function (response) {
+                    ).fail((response) => {
                         file.status = Dropzone.ERROR;
                         let message = 'pimee_product_asset.mass_upload.error.filename';
                         if (response.responseJSON) {
@@ -198,10 +195,15 @@ define(
                         }
                         file.previewElement.querySelector('.AknFieldContainer-validationError')
                             .textContent = __(message);
-                    }).complete(function () {
+                        this.setStatus(file)
+                    })
+                    .always(() => {
+                        $startButton.removeClass('AknButton--disabled');
+                        $cancelButton.removeClass('AknButton--hidden');
+
                         file.previewElement.querySelector('.dz-type').textContent = file.type;
                         this.setStatus(file);
-                    }.bind(this));
+                    });
 
                     if ((0 !== file.type.indexOf('image')) || (file.size > myDropzone.options.maxThumbnailFilesize)) {
                         // This is not an image, or image is too big to generate a thumbnail
@@ -250,8 +252,8 @@ define(
                                 }
                             ),
                             type: 'DELETE'
-                        })
-                            .success(function () {
+                            })
+                            .done(function () {
                                 Dropzone.prototype.removeFile.call(this, file);
                             }.bind(this))
                             .fail(function () {

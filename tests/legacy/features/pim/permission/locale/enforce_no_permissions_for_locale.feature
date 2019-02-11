@@ -82,4 +82,6 @@ Feature: Enforce no permissions for a locale
       | locale | user group | access |
       | en_GB  | Manager    | none   |
     And I refresh current page
-    Then the "Name" field should contain "My custom name"
+    Then the locale "en_US" should be selected
+    And the product "bar" should have the following values:
+      | name-en_US               | My custom name             |

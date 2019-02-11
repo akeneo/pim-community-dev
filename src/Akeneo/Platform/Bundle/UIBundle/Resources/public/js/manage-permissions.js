@@ -81,7 +81,7 @@ define(
 
                 }
 
-                if ($changeList.children().size() > 0) {
+                if ($changeList.children().length > 0) {
                     $changeBlock.show();
                 } else {
                     $changeBlock.hide();

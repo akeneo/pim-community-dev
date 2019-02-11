@@ -213,7 +213,7 @@ workflows:
                     - wait_for_user_approval
           - back_static_and_acceptance:
                 requires:
-                    - setup 
+                    - setup
           - front_static_acceptance_and_integration:
                 requires:
                     - setup

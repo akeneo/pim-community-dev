@@ -7,6 +7,7 @@ Feature: Display the missing required attributes
   Background:
     Given the "catalog_modeling" catalog configuration
 
+  @skip @info unstable
   Scenario: Display missing required attributes on product models
     Given I am logged in as "Julia"
     When I am on the "apollon" product model page
