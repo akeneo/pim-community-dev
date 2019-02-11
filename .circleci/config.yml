@@ -37,7 +37,7 @@ jobs:
           command: sudo chown -R 1000:1000 ../project
       - run:
           name: Github token
-          command: composer config -g github-oauth.github.com GITHUB_TOKEN
+          command: docker-compose exec fpm php /usr/local/bin/composer config -g github-oauth.github.com $GITHUB_TOKEN -vvv
       - run:
           name: Install dependencies
           command: ./bin/docker/pim-dependencies.sh
