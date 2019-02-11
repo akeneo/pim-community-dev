@@ -265,6 +265,7 @@ To give you a quick overview of the changes made to a standard project, you can 
     * The configuration file `app/config/security.yml` had somes changes:
 
         - The user provider `oro_user` has been replaced by `pim_user`
+        - Another user provider `saml_pim_user` has been added in the chained provider list, before the `pim_user` one
         - The user provider ID `oro_user.security.provider` has been replaced by `pim_user.provider.user`
 
         v2.3.x:
@@ -282,9 +283,11 @@ To give you a quick overview of the changes made to a standard project, you can 
         providers:
             chain_provider:
                 chain:
-                    providers:                  [pim_user]             # This line has changed
-            pim_user:                                                  # This line has changed
-                id:                             pim_user.provider.user # This line has changed
+                    providers:                  [saml_pim_user, pim_user]               # This line has changed
+            pim_user:                                                                   # This line has changed
+                id:                             pim_user.provider.user                  # This line has changed
+            saml_pim_user:                                                              # This line was added
+                id:                             akeneo_authentication.sso.user.provider # This line was added
         ```
 
         - A new firewall has been added to make the SSO available:
