@@ -1,4 +1,4 @@
-<a class="AknActionButton <% if (displayInline) { %> AknActionButton--big AknActionButton--noLeftBorder<% } else { %>AknActionButton--withoutBorder<% } %>" data-toggle="dropdown" href="#">
+<a class="AknActionButton <% if (displayInline) { %> AknActionButton--big AknActionButton--noLeftBorder<% } else { %>AknActionButton--withoutBorder<% } %>" data-toggle="dropdown">
     <% if (!displayInline && displayLabel) { %><%- label %>: <% } %>
     <span class="AknActionButton-highlight"><%= i18n.getFlag(currentLocale.code, false) %> <%- currentLocale.language %></span>
     <span class="AknActionButton-caret"></span>

@@ -224,7 +224,7 @@ define(
 
             var options = this.$(this.filterSelector).find(optionsSelectors.join(','));
             if (options.length) {
-                options.attr('selected', true);
+                options.prop('selected', true);
             }
 
             if (this.displayManageFilters() && optionsSelectors.length) {

@@ -90,14 +90,14 @@ define(['jquery'], function ($) {
       };
 
       // rebuild cache when multiselect is updated
-      var doc = $(document).bind('multiselectrefresh', $.proxy(function() {
+      var doc = $(document).on('multiselectrefresh', $.proxy(function() {
         this.updateCache();
         this._handler();
       }, this));
 
       // automatically reset the widget on close?
       if(this.options.autoReset) {
-        doc.bind('multiselectclose', $.proxy(this._reset, this));
+        doc.on('multiselectclose', $.proxy(this._reset, this));
       }
     },
 
@@ -121,7 +121,7 @@ define(['jquery'], function ($) {
             found = true;
           } else {
             // look for 'value' attibute if innerHTML doesn't match
-            var val = rows.eq(i).find('input').attr('value');
+            var val = rows.eq(i).find('input').val();
             if(val.search(regex) !== -1) {
               found = true;
             }

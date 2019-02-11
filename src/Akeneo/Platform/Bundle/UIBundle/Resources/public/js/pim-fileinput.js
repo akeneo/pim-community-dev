@@ -36,7 +36,7 @@ define(
                     $preview.addClass('empty').removeAttr('title');
                     $removeBtn.addClass('hide');
                     $input.removeAttr('disabled').removeClass('hide');
-                    $removeCheckbox.attr('checked', 'checked');
+                    $removeCheckbox.prop('checked', true);
                 }
             });
 

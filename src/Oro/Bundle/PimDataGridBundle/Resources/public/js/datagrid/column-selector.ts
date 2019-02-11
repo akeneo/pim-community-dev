@@ -294,8 +294,7 @@ class ColumnSelector extends BaseView {
     this.modal.$el
       .find('[data-columns]')
       .removeClass('more')
-      .off('scroll')
-      .unbind();
+      .off();
   }
 
   /**

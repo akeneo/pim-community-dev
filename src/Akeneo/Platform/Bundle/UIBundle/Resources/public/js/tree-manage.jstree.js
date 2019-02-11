@@ -118,7 +118,7 @@ define(
                 this.config.plugins.push('contextmenu');
             }
             this.init = function () {
-                $el.jstree(this.config).bind('move_node.jstree', function (e, data) {
+                $el.jstree(this.config).on('move_node.jstree', function (e, data) {
                     var this_jstree = $.jstree._focused();
                     data.rslt.o.each(function (i) {
                         $.ajax({
@@ -146,7 +146,7 @@ define(
                             }
                         });
                     });
-                }).bind('select_node.jstree', function (e, data) {
+                }).on('select_node.jstree', function (e, data) {
                     if (!$el.attr('data-editable')) {
                         return;
                     }
@@ -175,11 +175,11 @@ define(
                             loadingMask.hide();
                         }
                     });
-                }).bind('loaded.jstree', function (event, data) {
+                }).on('loaded.jstree', function (event, data) {
                     if (event.namespace === 'jstree') {
                         data.inst.get_tree_select().select2({ width: '100%' });
                     }
-                }).bind('create.jstree', function (e, data) {
+                }).on('create.jstree', function (e, data) {
                     $.jstree._focused().lock();
                     var id       = data.rslt.parent.attr('id').replace('node_', '');
                     var url      = Routing.generate(prefixRoute + '_categorytree_create', { parent: id });

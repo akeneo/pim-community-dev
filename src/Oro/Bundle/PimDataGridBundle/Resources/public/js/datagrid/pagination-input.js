@@ -13,8 +13,7 @@ define(
         'oro/mediator',
         'underscore',
         'oro/datagrid/pagination',
-        'pim/template/datagrid/pagination',
-        'jquery.numeric'
+        'pim/template/datagrid/pagination'
     ], function(
         $,
         mediator,

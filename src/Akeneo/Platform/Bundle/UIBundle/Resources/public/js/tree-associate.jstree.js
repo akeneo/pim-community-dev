@@ -125,7 +125,7 @@ define(
                 $('#tree-link-' + treeId).trigger('shown');
 
                 // If empty, load the associated jstree
-                if ($tree.children('ul').size() === 0) {
+                if ($tree.children('ul').length === 0) {
                     self.initTree(treeId);
                 }
             };
@@ -134,11 +134,11 @@ define(
                 var $tree = $('#tree-' + treeId);
                 $tree.jstree(self.config);
 
-                $tree.bind('loaded.jstree', function () {
+                $tree.on('loaded.jstree', function () {
                     mediator.trigger('jstree:loaded');
                 });
 
-                $tree.bind('check_node.jstree', function (e, d) {
+                $tree.on('check_node.jstree', function (e, d) {
                     if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') === false) {
                         var selected = this.parseHiddenCategories();
                         var id = d.rslt.obj[0].id.replace('node_', '');
@@ -154,7 +154,7 @@ define(
                     }
                 }.bind(this));
 
-                $tree.bind('uncheck_node.jstree', function (e, d) {
+                $tree.on('uncheck_node.jstree', function (e, d) {
                     if (d.inst.get_checked()) {
                         var selected = this.parseHiddenCategories();
                         var id = d.rslt.obj[0].id.replace('node_', '');

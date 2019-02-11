@@ -360,8 +360,8 @@ function($, _, Backbone, app) {
                 case 'radio':
                     $input.each(function() {
                         var $input = $(this);
-                        if ($input.attr('value') == value) {
-                            $input.attr('checked', true);
+                        if ($input.val() == value) {
+                            $input.prop('checked', true);
                             $input.click();
                         } else {
                             $(this).removeAttr('checked');
