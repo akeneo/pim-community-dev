@@ -24,7 +24,7 @@ class DatabaseJobExecutionQueueIntegration extends TestCase
         $row = $stmt->fetch();
 
         $this->assertEquals(1, $row['job_execution_id']);
-        $this->assertEquals('{"email":"ziggy@akeneo.com"}', $row['options']);
+        $this->assertEquals('{"email": "ziggy@akeneo.com"}', $row['options']);
         $this->assertNotNull($row['create_time']);
         $this->assertNull($row['updated_time']);
         $this->assertNull($row['consumer']);
@@ -55,7 +55,7 @@ SQL;
         $row = $stmt->fetch();
 
         $this->assertEquals(1, $row['job_execution_id']);
-        $this->assertEquals('{"email":"ziggy_1@akeneo.com"}', $row['options']);
+        $this->assertEquals('{"email": "ziggy_1@akeneo.com"}', $row['options']);
         $this->assertEquals('2017-08-30 10:15:30', $row['create_time']);
         $this->assertEquals($jobExecutionMessage->getConsumer(), $row['consumer']);
         $this->assertNotNull($row['updated_time']);
@@ -87,7 +87,7 @@ SQL;
         $row = $stmt->fetch();
 
         $this->assertEquals(2, $row['job_execution_id']);
-        $this->assertEquals('{"email":"ziggy_2@akeneo.com"}', $row['options']);
+        $this->assertEquals('{"email": "ziggy_2@akeneo.com"}', $row['options']);
         $this->assertEquals('2017-08-30 10:10:30', $row['create_time']);
         $this->assertEquals($jobExecutionMessage->getConsumer(), $row['consumer']);
         $this->assertNotNull($row['updated_time']);

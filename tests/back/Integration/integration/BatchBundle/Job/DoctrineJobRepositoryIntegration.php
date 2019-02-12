@@ -32,7 +32,7 @@ class DoctrineJobRepositoryIntegration extends TestCase
         $expectedResult = [
             'status' => 2,
             'exit_code' => 'UNKNOWN',
-            'raw_parameters' => '{"foo":"bar"}',
+            'raw_parameters' => '{"foo": "bar"}',
         ];
 
         $this->assertEquals($expectedResult, $result);
