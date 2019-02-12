@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Extension\Formatter\Property\ProductValue;
 
+use Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Extension\Formatter\Property\ProductValue\ReferenceEntityCollectionProperty;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\GetRecordInformationQueryInterface;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyConfiguration;
@@ -30,12 +32,18 @@ class ReferenceEntityCollectionPropertySpec extends ObjectBehavior
     function let(
         \Twig_Environment $environment,
         RequestParametersExtractorInterface $paramsExtractor,
-        UserContext $userContext
+        UserContext $userContext,
+        GetRecordInformationQueryInterface $getRecordInformationQuery
     ) {
-        $this->beConstructedWith($environment, $paramsExtractor, $userContext);
+        $this->beConstructedWith($environment, $paramsExtractor, $userContext, $getRecordInformationQuery);
 
         $params = new PropertyConfigurationFake(['name' => 'foo']);
         $this->init($params);
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(ReferenceEntityCollectionProperty::class);
     }
 
     function it_is_a_property()
