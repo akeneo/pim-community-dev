@@ -14,7 +14,7 @@ class PartialUpdateListVariantProductEndToEnd extends AbstractProductTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

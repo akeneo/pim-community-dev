@@ -14,7 +14,7 @@ class ListRootCategoriesWithCountIncludingSubCategoriesIntegration extends TestC
     /**
      * @inheritDoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

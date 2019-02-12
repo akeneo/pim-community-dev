@@ -14,7 +14,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $acl;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->acl = $this->createMock('Symfony\Component\Security\Acl\Model\MutableAclInterface');
         $this->manipulator = new AceManipulationHelper();

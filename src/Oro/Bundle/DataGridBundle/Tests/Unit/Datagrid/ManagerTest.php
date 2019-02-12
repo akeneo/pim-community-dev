@@ -34,7 +34,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         ]
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->builder = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()->getMock();

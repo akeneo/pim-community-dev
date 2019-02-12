@@ -19,7 +19,7 @@ class NumberFilterTypeTest extends AbstractTypeTestCase
      */
     protected $defaultLocale = 'en';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $translator = $this->createMockTranslator();
         $this->formExtensions[] = new CustomFormExtension([new FilterType($translator)]);

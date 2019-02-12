@@ -20,7 +20,7 @@ use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCas
  */
 class GridCompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

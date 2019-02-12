@@ -15,7 +15,7 @@ class MutableAclProviderTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $connection;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $platform = $this->getMockForAbstractClass('Doctrine\DBAL\Platforms\AbstractPlatform');
         $platform->expects($this->any())

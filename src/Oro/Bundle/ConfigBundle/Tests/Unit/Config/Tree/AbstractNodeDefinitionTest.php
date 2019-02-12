@@ -12,7 +12,7 @@ class AbstractNodeDefinitionTest extends \PHPUnit_Framework_TestCase
     /** @var AbstractNodeDefinition */
     protected $node;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->node = $this->getMockForAbstractClass(
             AbstractNodeDefinition::class,

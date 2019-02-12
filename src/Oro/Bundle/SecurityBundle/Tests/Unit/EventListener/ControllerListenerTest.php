@@ -36,7 +36,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     /** @var FilterControllerEvent */
     protected $event;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $logger = $this->createMock('Psr\Log\LoggerInterface');
         $this->tokenStorage = $this->createMock('Symfony\Component\Security\Core\TokenStorageInterface');

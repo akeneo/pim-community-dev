@@ -18,7 +18,7 @@ class ActionMetadataProviderTest extends \PHPUnit_Framework_TestCase
     /** @var ActionMetadataProvider */
     protected $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->cache = $this->getMockForAbstractClass(
             'Doctrine\Common\Cache\CacheProvider',

@@ -32,7 +32,7 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
      *      - "Ecommerce China" are complete because this channel requires only the "sku"
      *      - completeness is not calculated on "no_family" has it has obviously no family
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

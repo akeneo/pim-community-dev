@@ -31,7 +31,7 @@ abstract class TestCase extends KernelTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         static::bootKernel(['debug' => false]);
         $this->testKernel = new \AppKernelTest('test', false);
@@ -94,7 +94,7 @@ abstract class TestCase extends KernelTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
