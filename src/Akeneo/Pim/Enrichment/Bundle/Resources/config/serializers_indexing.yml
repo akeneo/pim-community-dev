@@ -175,6 +175,7 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
+            - !tagged pim_catalog.normalizer.indexing_product_and_product_model.product.additional_properties
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 40 }
 

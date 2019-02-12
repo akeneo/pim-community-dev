@@ -10,6 +10,8 @@ use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 
 /**
  * Integration tests to verify data from database are well formatted in the "indexing_product_and_product_model" format
+ * 
+ * @group ce
  */
 class ProductAndProductModelIndexingIntegration extends TestCase
 {
