@@ -14,7 +14,7 @@ class RootBasedAclWrapperTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $rootAcl;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->acl = $this->getMockBuilder('Symfony\Component\Security\Acl\Domain\Acl')
             ->disableOriginalConstructor()

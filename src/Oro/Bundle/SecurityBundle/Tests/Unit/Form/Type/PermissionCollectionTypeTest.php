@@ -9,7 +9,7 @@ class PermissionCollectionTypeTest extends \PHPUnit_Framework_TestCase
     /** @var PermissionCollectionType */
     protected $formType;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->formType = new PermissionCollectionType();
     }

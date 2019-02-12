@@ -24,7 +24,7 @@ class SavingProductModelDescendantsIntegration extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->esProductAndProductModelClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');

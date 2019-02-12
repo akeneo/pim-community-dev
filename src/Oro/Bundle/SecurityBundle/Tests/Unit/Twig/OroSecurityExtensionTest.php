@@ -17,7 +17,7 @@ class OroSecurityExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected $securityFacade;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->securityFacade = $this->getMockBuilder(SecurityFacade::class)
             ->disableOriginalConstructor()

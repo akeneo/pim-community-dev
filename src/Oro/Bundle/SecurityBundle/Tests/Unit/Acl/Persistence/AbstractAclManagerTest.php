@@ -14,7 +14,7 @@ class AbstractAclManagerTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $aclProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->manager = new AbstractAclManager();
     }

@@ -18,7 +18,7 @@ class AclAnnotationProviderTest extends \PHPUnit_Framework_TestCase
     /** @var AclAnnotationProvider */
     protected $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->cache = $this->getMockForAbstractClass(
             'Doctrine\Common\Cache\CacheProvider',

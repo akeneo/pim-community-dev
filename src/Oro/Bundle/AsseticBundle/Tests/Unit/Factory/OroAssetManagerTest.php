@@ -22,7 +22,7 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
      */
     private $twig;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->am = $this->getMockBuilder('Assetic\Factory\LazyAssetManager')
             ->disableOriginalConstructor()

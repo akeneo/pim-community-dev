@@ -48,7 +48,7 @@ class JobExecutionRepositoryIntegration extends TestCase
         return $this->get('pim_enrich.repository.job_execution');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -15,7 +15,7 @@ class OroAsseticNodeTest extends \PHPUnit_Framework_TestCase
     private $compressAsset;
     private $unCompressAsset;
 
-    public function setUp()
+    public function setUp(): void
     {
         $asset = new FileAsset('first.less.css');
 

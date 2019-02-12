@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\tests\fixture\EntityBuilder;
  */
 class CompletenessGridFilterIntegration extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

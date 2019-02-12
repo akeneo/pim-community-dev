@@ -33,7 +33,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $securityFacade;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->eventDispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcher');
         $this->securityFacade = $this->getMockBuilder(SecurityFacade::class)

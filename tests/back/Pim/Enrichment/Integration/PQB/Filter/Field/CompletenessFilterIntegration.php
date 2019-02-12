@@ -17,7 +17,7 @@ use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCas
  */
 class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

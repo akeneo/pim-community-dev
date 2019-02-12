@@ -11,7 +11,7 @@ use Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\TestBundle;
 
 class AclAnnotationLoadersTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         if (!interface_exists('Doctrine\Common\Annotations\Reader')) {
             $this->markTestSkipped('Doctrine Common has to be installed for this test to run.');

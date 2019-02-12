@@ -19,7 +19,7 @@ class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase
 
     private $tagName;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->assetsFactory = $this->getMockBuilder('Symfony\Bundle\AsseticBundle\Factory\AssetFactory')
             ->disableOriginalConstructor()

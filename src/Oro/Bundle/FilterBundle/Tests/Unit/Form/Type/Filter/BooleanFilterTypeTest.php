@@ -23,7 +23,7 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
         'oro.filter.form.label_type_no' => BooleanFilterType::TYPE_NO,
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $translator = $this->createMockTranslator();
 

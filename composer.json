@@ -99,7 +99,7 @@
         "pdepend/pdepend": "2.1.*",
         "phpmd/phpmd": "1.*",
         "phpspec/phpspec": "~3.4.2",
-        "phpunit/phpunit": "6.5.3",
+        "phpunit/phpunit": "^7.5.4",
         "sebastian/exporter": "~3.1.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",
         "squizlabs/php_codesniffer": "2.*",

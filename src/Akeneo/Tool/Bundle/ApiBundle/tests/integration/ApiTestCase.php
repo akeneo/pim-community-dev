@@ -39,7 +39,7 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         static::bootKernel(['debug' => false]);
         $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());

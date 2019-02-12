@@ -39,7 +39,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $aceProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->extension = $this->createMock(AclExtensionInterface::class);
         $this->extension->expects($this->any())

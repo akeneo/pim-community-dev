@@ -37,7 +37,7 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
         ]
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->om = $this->createMock('Doctrine\Common\Persistence\ObjectManager');
         $this->object = new UserConfigManager($this->om, $this->settings);
