@@ -37,30 +37,6 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_deactivates_a_locale_before_flush(
-        OnFlushEventArgs $args,
-        EntityManagerInterface $em,
-        UnitOfWork $uow,
-        LocaleInterface $localeFR,
-        LocaleInterface $localeEN
-    ) {
-        $args->getEntityManager()->willReturn($em);
-        $em->getUnitOfWork()->willReturn($uow);
-        $uow->getScheduledEntityUpdates()->willReturn([$localeFR, $localeEN]);
-        $uow->getScheduledEntityDeletions()->willReturn([]);
-
-        $localeFR->isActivated()->willReturn(true);
-        $localeFR->getCode()->shouldNotBeCalled();
-        $uow->getEntityChangeSet($localeFR)->shouldNotBeCalled();
-
-        $localeEN->isActivated()->willReturn(false);
-        $localeEN->getCode()->willReturn('en_US');
-        $uow->getEntityChangeSet($localeEN)->willReturn(['activated' => true]);
-
-
-        $this->onFlush($args)->shouldReturn(null);
-    }
-
     function it_deletes_a_tree_before_flush(
         OnFlushEventArgs $args,
         EntityManagerInterface $em,
