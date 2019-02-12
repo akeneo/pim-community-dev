@@ -27,7 +27,12 @@ class ResetController extends Controller
         $user = $this->get('pim_user.manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
-            return [];
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'An email has been sent to the user. It contains a link to reset the password.'
+            );
+
+            return $this->redirect($this->generateUrl('pim_user_reset_request'));
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('pim_user.reset.ttl'))) {
@@ -61,7 +66,12 @@ class ResetController extends Controller
         $this->get('mailer')->send($message);
         $this->get('pim_user.manager')->updateUser($user);
 
-        return [];
+        $this->get('session')->getFlashBag()->add(
+            'success',
+            'An email has been sent to the user. It contains a link to reset the password.'
+        );
+
+        return $this->redirect($this->generateUrl('pim_user_reset_request'));
     }
 
     /**
