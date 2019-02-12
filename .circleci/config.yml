@@ -14,7 +14,7 @@ jobs:
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots var/coverage
       - run:
           name: Setup the parameters.yml files
           command: ./bin/docker/pim-setup.sh
@@ -23,7 +23,7 @@ jobs:
           command: sudo chown -R 1000:1000 ../project
       - run:
           name: Start containers
-          command: docker-compose up -d
+          command: docker-compose up -d && docker-compose exec fpm sudo phpdismod xdebug
       - restore_cache:
           name: Restore cache - node_modules
           keys:
@@ -193,7 +193,7 @@ jobs:
       - run:
           name: Behat
           command: |
-            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy | circleci tests split)
+            TESTFILES=$(sh -c "docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy" | head -n 40 | circleci tests split)
             .circleci/run_behat.sh $TESTFILES
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
@@ -211,6 +211,8 @@ jobs:
           path: var/tests/screenshots
       - store_artifacts:
           path: var/logs
+      -   store_artifacts:
+              path: var/coverage
 
   front_static_acceptance_and_integration:
       machine:
@@ -251,22 +253,22 @@ workflows:
           - setup:
                 requires:
                     - wait_for_user_approval
-          - back_static_and_acceptance:
-                requires:
-                    - setup
-          - front_static_acceptance_and_integration:
-                requires:
-                    - setup
-          - back_phpunit_integration:
-                requires:
-                    - back_static_and_acceptance
-                    - front_static_acceptance_and_integration
-          - back_phpunit_end_to_end:
-                requires:
-                    - back_phpunit_integration
+#          - back_static_and_acceptance:
+#                requires:
+#                    - setup
+#          - front_static_acceptance_and_integration:
+#                requires:
+#                    - setup
+#          - back_phpunit_integration:
+#                requires:
+#                    - back_static_and_acceptance
+#                    - front_static_acceptance_and_integration
+#          - back_phpunit_end_to_end:
+#                requires:
+#                    - back_phpunit_integration
           - back_behat_legacy:
                 requires:
-                    - back_phpunit_end_to_end
+                    - setup
 
   nightly:
       triggers:

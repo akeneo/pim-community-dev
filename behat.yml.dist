@@ -109,7 +109,7 @@ legacy:
                     - 'Context\FeatureContext'
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.repository.product_model'
-            remote_coverage_enabled: false
+            remote_coverage_enabled: true
             mink_session: selenium2
 
     extensions:

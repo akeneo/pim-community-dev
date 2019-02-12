@@ -5,3 +5,7 @@ services:
     tmpfs:
       - '/tmp'
       - '/var/lib/mysql'
+
+  fpm:
+    environment:
+      PHP_XDEBUG_ENABLED: 1
