@@ -193,7 +193,7 @@ jobs:
       - run:
           name: Behat
           command: |
-            TESTFILES=$(sh -c "docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy" | head -n 40 | circleci tests split)
+            TESTFILES=$(docker-compose exec -T fpm sh -c 'vendor/bin/behat --list-scenarios -p legacy | head -n 40' | circleci tests split)
             .circleci/run_behat.sh $TESTFILES
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests

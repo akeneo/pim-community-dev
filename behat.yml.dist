@@ -9,7 +9,7 @@ legacy:
                 - Context\FeatureContext:
                     -
                         base_url: 'http://127.0.0.1/'
-                        timeout: 50000
+                        timeout: 150000
                         window_width: 1280
                         window_height: 1024
                 - Context\FixturesContext:
