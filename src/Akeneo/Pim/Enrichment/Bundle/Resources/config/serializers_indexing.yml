@@ -170,6 +170,8 @@ services:
 
     pim_catalog.normalizer.indexing_product_and_product_model.product.properties:
         class: '%pim_catalog.normalizer.indexing_product_and_product_model.product.properties.class%'
+        arguments:
+            - !tagged pim_catalog.normalizer.indexing_product_and_product_model.product.additional_properties
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 40 }
 

@@ -17,12 +17,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductPropertiesNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer)
-    {
-        $serializer->implement(NormalizerInterface::class);
-        $this->setSerializer($serializer);
-    }
-
     function it_is_initializable()
     {
         $this->shouldHaveType(ProductPropertiesNormalizer::class);
@@ -46,11 +40,14 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_product_properties_with_minimum_filled_fields_and_values(
-        $serializer,
+        SerializerInterface $serializer,
         ProductInterface $product,
         ValueCollectionInterface $valueCollection,
         Collection $completenesses
     ) {
+        $serializer->implement(NormalizerInterface::class);
+        $this->setSerializer($serializer);
+
         $product->getId()->willReturn(67);
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $family = null;
@@ -111,13 +108,16 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_product_properties_with_fields_and_values(
-        $serializer,
+        SerializerInterface $serializer,
         ProductInterface $product,
         ValueCollectionInterface $valueCollection,
         FamilyInterface $family,
         AttributeInterface $sku,
         Collection $completenesses
     ) {
+        $serializer->implement(NormalizerInterface::class);
+        $this->setSerializer($serializer);
+
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->isVariant()->willReturn(false);
@@ -234,7 +234,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_variant_product_properties_with_fields_and_values(
-        $serializer,
+        SerializerInterface $serializer,
         ProductInterface $variantProduct,
         ValueCollectionInterface $valueCollection,
         FamilyInterface $family,
@@ -243,6 +243,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         ProductModelInterface $subProductModel,
         ProductModelInterface $rootProductModel
     ) {
+        $serializer->implement(NormalizerInterface::class);
+        $this->setSerializer($serializer);
+
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $variantProduct->isVariant()->willReturn(true);
@@ -369,7 +372,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_variant_product_properties_with_minimum_filled_fields_and_values(
-        $serializer,
+        SerializerInterface $serializer,
         ProductInterface $variantProduct,
         ValueCollectionInterface $valueCollection,
         Collection $completenesses,
@@ -379,6 +382,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         ProductModelInterface $subProductModel,
         ProductModelInterface $rootProductModel
     ) {
+        $serializer->implement(NormalizerInterface::class);
+        $this->setSerializer($serializer);
+
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $variantProduct->isVariant()->willReturn(true);
@@ -465,7 +471,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_variant_product_properties_with_fields_and_values_and_its_parents_values(
-        $serializer,
+        SerializerInterface $serializer,
         ProductInterface $variantProduct,
         ValueCollectionInterface $valueCollection,
         Collection $completenesses,
@@ -474,6 +480,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         ProductModelInterface $rootProductModel
     ) {
+        $serializer->implement(NormalizerInterface::class);
+        $this->setSerializer($serializer);
+
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $variantProduct->isVariant()->willReturn(true);
@@ -617,6 +626,87 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                     'codes' => ['model-tshirt'],
                 ],
                 'label'                   => [],
+            ]
+        );
+    }
+
+    function it_adds_extra_data_with_optionnal_normalizers(
+        NormalizerInterface $normalizer1,
+        NormalizerInterface $normalizer2,
+        ProductInterface $product,
+        ValueCollectionInterface $valueCollection,
+        Collection $completenesses,
+        SerializerInterface $serializer
+    ) {
+        $serializer->implement(NormalizerInterface::class);
+        $this->beConstructedWith([$normalizer1, $normalizer2]);
+        $this->setSerializer($serializer);
+
+        $product->getId()->willReturn(67);
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $family = null;
+
+        $product->isVariant()->willReturn(false);
+        $product->getIdentifier()->willReturn('sku-001');
+        $product->getFamily()->willReturn($family);
+        $serializer->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->willReturn(null);
+
+        $product->getCreated()->willReturn($now);
+        $serializer->normalize(
+            $product->getWrappedObject()->getCreated(),
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        )->willReturn($now->format('c'));
+
+        $product->getUpdated()->willReturn($now);
+        $serializer->normalize(
+            $product->getWrappedObject()->getUpdated(),
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        )->willReturn($now->format('c'));
+
+        $product->isEnabled()->willReturn(false);
+        $product->getValues()->willReturn($valueCollection);
+        $product->getFamily()->willReturn(null);
+        $product->getGroupCodes()->willReturn([]);
+        $product->getCategoryCodes()->willReturn([]);
+        $valueCollection->isEmpty()->willReturn(true);
+
+        $product->getCompletenesses()->willReturn($completenesses);
+        $completenesses->isEmpty()->willReturn(false);
+
+        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            [])->willReturn(['the completenesses']);
+
+        $normalizer1
+            ->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+            ->willReturn(['extraData1' => ['extraData1' => true]]);
+
+        $normalizer2
+            ->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+            ->willReturn(['extraData2' => ['extraData2' => false]]);
+
+        $this->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+            [
+                'id'                      => 'product_67',
+                'identifier'              => 'sku-001',
+                'created'                 => $now->format('c'),
+                'updated'                 => $now->format('c'),
+                'family'                  => null,
+                'enabled'                 => false,
+                'categories'              => [],
+                'categories_of_ancestors' => [],
+                'groups'                  => [],
+                'completeness'            => ['the completenesses'],
+                'family_variant'          => null,
+                'parent'                  => null,
+                'values'                  => [],
+                'ancestors'               => [
+                    'ids'   => [],
+                    'codes' => [],
+                ],
+                'label'                   => [],
+                'extraData1'              => ['extraData1' => true],
+                'extraData2'              => ['extraData2' => false],
             ]
         );
     }

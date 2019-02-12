@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Technical improvement
+
+- DAPI-19: Update `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer` to accept optional normalizers
+
 # 3.0.4 (2019-02-20)
 
 ## Bug fixes

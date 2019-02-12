@@ -32,6 +32,14 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     private const FIELD_ANCESTORS = 'ancestors';
     private const FIELD_CATEGORIES_OF_ANCESTORS = 'categories_of_ancestors';
 
+    /** @var NormalizerInterface[] */
+    private $additionalDataNormalizers;
+
+    public function __construct(iterable $additionalDataNormalizers = [])
+    {
+        $this->additionalDataNormalizers = $additionalDataNormalizers;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -106,6 +114,10 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
             $data[StandardPropertiesNormalizer::FIELD_VALUES],
             $product
         );
+
+        foreach ($this->additionalDataNormalizers as $normalizer) {
+            $data = array_merge($data, $normalizer->normalize($product, $format, $context));
+        }
 
         return $data;
     }
