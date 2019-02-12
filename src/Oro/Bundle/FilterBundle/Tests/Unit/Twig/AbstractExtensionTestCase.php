@@ -33,7 +33,7 @@ class AbstractExtensionTestCase extends \PHPUnit_Framework_TestCase
      */
     protected $expectedFilters = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $className = static::TESTING_CLASS;
         $this->extension = new $className(self::TEST_TEMPLATE_NAME);

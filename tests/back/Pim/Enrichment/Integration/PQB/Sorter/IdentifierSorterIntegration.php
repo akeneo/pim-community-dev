@@ -15,7 +15,7 @@ class IdentifierSorterIntegration extends AbstractProductQueryBuilderTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

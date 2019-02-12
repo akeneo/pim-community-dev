@@ -112,7 +112,7 @@ class ClassifyProductModelIntegration extends TestCase
         $this->assertEquals($category->getCode(), 'supplier_zaro');
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

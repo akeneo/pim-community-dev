@@ -16,7 +16,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
     /** @var ExtensionVisitorInterface */
     protected $extension;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->extension = new SomeExtension();
     }

@@ -26,7 +26,7 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

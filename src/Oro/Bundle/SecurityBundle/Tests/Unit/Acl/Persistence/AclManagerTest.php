@@ -36,7 +36,7 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $extensionSelector;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectIdentityFactory =
             $this->getMockBuilder(ObjectIdentityFactory::class)

@@ -18,7 +18,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $acceptor;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->acceptor = $this->getMockBuilder(Acceptor::class)
             ->disableOriginalConstructor()->getMock();

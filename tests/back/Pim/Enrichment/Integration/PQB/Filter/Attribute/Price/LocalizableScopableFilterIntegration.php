@@ -16,7 +16,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

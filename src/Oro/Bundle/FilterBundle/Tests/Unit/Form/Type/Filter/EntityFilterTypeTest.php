@@ -16,7 +16,7 @@ class EntityFilterTypeTest extends AbstractTypeTestCase
      */
     private $type;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $translator = $this->createMockTranslator();
 

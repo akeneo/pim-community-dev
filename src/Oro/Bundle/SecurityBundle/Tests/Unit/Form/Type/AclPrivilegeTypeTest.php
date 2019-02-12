@@ -12,7 +12,7 @@ class AclPrivilegeTypeTest extends \PHPUnit_Framework_TestCase
     /** @var AclPrivilegeType */
     protected $formType;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->formType = new AclPrivilegeType();
     }

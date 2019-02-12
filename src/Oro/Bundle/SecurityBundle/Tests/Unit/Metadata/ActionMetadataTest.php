@@ -9,7 +9,7 @@ class ActionMetadataTest extends \PHPUnit_Framework_TestCase
     /** @var ActionMetadata */
     protected $metadata;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->metadata = new ActionMetadata('SomeName', 'SomeGroup', 'SomeLabel');
     }

@@ -27,7 +27,7 @@ class YamlWriterIntegration extends KernelTestCase
     /** @var string */
     protected $header;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         static::bootKernel();

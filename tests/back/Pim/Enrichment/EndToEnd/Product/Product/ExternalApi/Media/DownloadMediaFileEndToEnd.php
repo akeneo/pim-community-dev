@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DownloadMediaFileEndToEnd extends AbstractMediaFileTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

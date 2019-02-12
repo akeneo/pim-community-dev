@@ -38,7 +38,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
      */
     protected $formExtensions = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         if ($this->defaultLocale) {

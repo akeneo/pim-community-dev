@@ -96,7 +96,7 @@ class OptionsAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

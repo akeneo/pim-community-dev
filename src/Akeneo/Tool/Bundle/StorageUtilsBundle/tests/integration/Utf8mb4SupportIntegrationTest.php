@@ -24,7 +24,7 @@ class Utf8mb4SupportIntegrationTest extends TestCase
     /** @var Connection */
     protected $connection;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setup();
         $this->connection = $this->get('doctrine.orm.entity_manager')->getConnection();

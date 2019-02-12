@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ListMediaFileEndToEnd extends AbstractMediaFileTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

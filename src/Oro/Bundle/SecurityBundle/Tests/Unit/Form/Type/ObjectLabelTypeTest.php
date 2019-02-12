@@ -9,7 +9,7 @@ class ObjectLabelTypeTest extends \PHPUnit_Framework_TestCase
     /** @var ObjectLabelType */
     protected $formType;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->formType = new ObjectLabelType();
     }
