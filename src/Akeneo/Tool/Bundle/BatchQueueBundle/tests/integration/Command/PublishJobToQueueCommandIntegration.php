@@ -52,7 +52,7 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $jobExecutionMessage  =$this->getJobExecutionMessage();
 
         $this->assertNotNull($jobExecutionMessage['job_execution_id']);
-        $this->assertEquals('{"env":"test"}', $jobExecutionMessage['options']);
+        $this->assertEquals('{"env": "test"}', $jobExecutionMessage['options']);
         $this->assertNotNull($jobExecutionMessage['create_time']);
         $this->assertNull($jobExecutionMessage['updated_time']);
         $this->assertNull($jobExecutionMessage['consumer']);
@@ -100,7 +100,7 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $this->pushJob(['--no-log' => true]);
         $jobExecutionMessage = $this->getJobExecutionMessage();
 
-        $this->assertEquals('{"env":"test","no-log":true}', $jobExecutionMessage['options']);
+        $this->assertEquals('{"env": "test", "no-log": true}', $jobExecutionMessage['options']);
     }
 
     public function testLaunchJobWithValidEmail()
@@ -108,7 +108,7 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $this->pushJob(['--email' => 'ziggy@akeneo.com']);
         $jobExecutionMessage = $this->getJobExecutionMessage();
 
-        $this->assertEquals('{"env":"test","email":"ziggy@akeneo.com"}', $jobExecutionMessage['options']);
+        $this->assertEquals('{"env": "test", "email": "ziggy@akeneo.com"}', $jobExecutionMessage['options']);
     }
 
     public function testLaunchJobWithInvalidJobInstance()
