@@ -2,7 +2,7 @@ version: '2'
 
 services:
   fpm:
-    image: 'ahocquard/fpm'
+    image: 'akeneo/fpm:php-7.2'
     user: 'docker'
     volumes:
       - './:/srv/pim'
