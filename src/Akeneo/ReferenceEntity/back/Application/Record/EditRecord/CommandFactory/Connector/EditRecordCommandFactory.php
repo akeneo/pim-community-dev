@@ -61,7 +61,7 @@ class EditRecordCommandFactory
         $editRecordValueCommands = [];
 
         foreach ($normalizedRecord['values'] as $attributeCode => $normalizedValues) {
-            $this->assertAttributeExists($attributeCode, $attributesIndexedByCodes);
+            $this->assertAttributeExists((string) $attributeCode, $attributesIndexedByCodes);
             $attribute = $attributesIndexedByCodes[$attributeCode];
 
             foreach ($normalizedValues as $normalizedValue) {
