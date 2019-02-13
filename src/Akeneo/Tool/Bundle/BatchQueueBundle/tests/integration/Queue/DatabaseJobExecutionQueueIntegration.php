@@ -24,7 +24,7 @@ class DatabaseJobExecutionQueueIntegration extends TestCase
         $row = $stmt->fetch();
 
         $this->assertEquals(1, $row['job_execution_id']);
-        $this->assertEquals('{"email":"ziggy@akeneo.com"}', $row['options']);
+        $this->assertEquals('{"email": "ziggy@akeneo.com"}', $row['options']);
         $this->assertNotNull($row['create_time']);
         $this->assertNull($row['updated_time']);
         $this->assertNull($row['consumer']);
@@ -36,8 +36,8 @@ class DatabaseJobExecutionQueueIntegration extends TestCase
 INSERT INTO akeneo_batch_job_execution_queue 
     (job_execution_id, options, create_time, updated_time, consumer)
 VALUES 
-    (1, "{\"email\":\"ziggy_1@akeneo.com\"}", "2017-08-30 10:15:30", null, null),
-    (2, "{\"email\":\"ziggy_2@akeneo.com\"}", "2017-08-30 10:00:00", null, "consumer_name")
+    (1, "{\"email\": \"ziggy_1@akeneo.com\"}", "2017-08-30 10:15:30", null, null),
+    (2, "{\"email\": \"ziggy_2@akeneo.com\"}", "2017-08-30 10:00:00", null, "consumer_name")
 SQL;
 
         $connection = $this->getConnection();
@@ -55,7 +55,7 @@ SQL;
         $row = $stmt->fetch();
 
         $this->assertEquals(1, $row['job_execution_id']);
-        $this->assertEquals('{"email":"ziggy_1@akeneo.com"}', $row['options']);
+        $this->assertEquals('{"email": "ziggy_1@akeneo.com"}', $row['options']);
         $this->assertEquals('2017-08-30 10:15:30', $row['create_time']);
         $this->assertEquals($jobExecutionMessage->getConsumer(), $row['consumer']);
         $this->assertNotNull($row['updated_time']);
@@ -87,7 +87,7 @@ SQL;
         $row = $stmt->fetch();
 
         $this->assertEquals(2, $row['job_execution_id']);
-        $this->assertEquals('{"email":"ziggy_2@akeneo.com"}', $row['options']);
+        $this->assertEquals('{"email": "ziggy_2@akeneo.com"}', $row['options']);
         $this->assertEquals('2017-08-30 10:10:30', $row['create_time']);
         $this->assertEquals($jobExecutionMessage->getConsumer(), $row['consumer']);
         $this->assertNotNull($row['updated_time']);

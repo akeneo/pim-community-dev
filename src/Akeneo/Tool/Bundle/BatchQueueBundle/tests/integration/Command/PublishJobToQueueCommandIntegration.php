@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Command;;
+namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Command;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Command\PublishJobToQueueCommand;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
-use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Connection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -49,10 +48,10 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $this->assertNotNull(json_decode($jobExecution['raw_parameters'], true));
         $this->assertNull($jobExecution['user']);
 
-        $jobExecutionMessage  =$this->getJobExecutionMessage();
+        $jobExecutionMessage = $this->getJobExecutionMessage();
 
         $this->assertNotNull($jobExecutionMessage['job_execution_id']);
-        $this->assertEquals('{"env":"test"}', $jobExecutionMessage['options']);
+        $this->assertEquals('{"env": "test"}', $jobExecutionMessage['options']);
         $this->assertNotNull($jobExecutionMessage['create_time']);
         $this->assertNull($jobExecutionMessage['updated_time']);
         $this->assertNull($jobExecutionMessage['consumer']);
@@ -71,14 +70,14 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $jobExecution = $this->getJobExecution();
 
         $this->assertEquals('mary', $jobExecution['user']);
-        $jobExecutionMessage  =$this->getJobExecutionMessage();
+        $jobExecutionMessage = $this->getJobExecutionMessage();
 
         $this->assertNotNull($jobExecutionMessage['id']);
     }
 
     public function testPushJobExecutionWithConfigOverridden()
     {
-        $filePath= sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'new_export.csv';
+        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'new_export.csv';
         if (file_exists($filePath)) {
             unlink($filePath);
         }
@@ -100,7 +99,7 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $this->pushJob(['--no-log' => true]);
         $jobExecutionMessage = $this->getJobExecutionMessage();
 
-        $this->assertEquals('{"env":"test","no-log":true}', $jobExecutionMessage['options']);
+        $this->assertEquals('{"env": "test", "no-log": true}', $jobExecutionMessage['options']);
     }
 
     public function testLaunchJobWithValidEmail()
@@ -108,7 +107,7 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $this->pushJob(['--email' => 'ziggy@akeneo.com']);
         $jobExecutionMessage = $this->getJobExecutionMessage();
 
-        $this->assertEquals('{"env":"test","email":"ziggy@akeneo.com"}', $jobExecutionMessage['options']);
+        $this->assertEquals('{"env": "test", "email": "ziggy@akeneo.com"}', $jobExecutionMessage['options']);
     }
 
     public function testLaunchJobWithInvalidJobInstance()
@@ -164,8 +163,8 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $application->setAutoExit(false);
 
         $defaultArrayInput = [
-            'command'  => PublishJobToQueueCommand::COMMAND_NAME,
-            'code'     => 'csv_product_export',
+            'command' => PublishJobToQueueCommand::COMMAND_NAME,
+            'code' => 'csv_product_export',
         ];
 
         $arrayInput = array_merge($defaultArrayInput, $arrayInput);
