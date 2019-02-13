@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.2 (2019-02-13)
+
 ## Bug fixes
 
 - PIM-7985: Fix locale permissions on Reference Entities
