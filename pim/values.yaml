@@ -126,7 +126,7 @@ pim:
     rule-run:
       enabled: true
       pimCommand: "akeneo:rule:run"
-      schedule: "0 */1 * * *"
+      schedule: "0 5 * * *"
     versionning-refresh:
       enabled: true
       pimCommand: "pim:versioning:refresh"
