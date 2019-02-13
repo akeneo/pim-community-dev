@@ -1,5 +1,7 @@
 # 2.0.x
 
+# 2.0.47 (2019-02-13)
+
 ## Bug fixes
 
 - PIM-7889: Fix product & product model classification in Elasticsearch after a category deletion
