@@ -4,6 +4,7 @@
 
 - PIM-8020: Fix wrong count on missing required attributes in the completeness
 - PIM-8028: Fix translations on boolean values
+- PIM-8057: Fix error during "forgot password" process
 
 # 3.0.1 (2019-02-06)
 
@@ -101,7 +102,7 @@
 - Change constructor of `Akeneo\UserManagement\Component\Normalizer\UserNormalizer` to add `Oro\Bundle\SecurityBundle\SecurityFacade`
 - Change constructor of `Akeneo\UserManagement\Component\Normalizer\UserNormalizer` to add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Change constructor of `Akeneo\UserManagement\Component\Normalizer\UserNormalizer` to add `Symfony\Component\Serializer\Normalizer\DateTimeNormalizer`
-- Add methods `setAvatar`, `getAvatar`, `setGroups` to `Akeneo\UserManagement\Component\Model\UserInterface` 
+- Add methods `setAvatar`, `getAvatar`, `setGroups` to `Akeneo\UserManagement\Component\Model\UserInterface`
 - Remove `Akeneo\UserManagement\Bundle\Controller\UserController`
 - Remove `Akeneo\UserManagement\Bundle\Form\Handler\AbstractUserHandler`
 - Remove `Akeneo\UserManagement\Bundle\Form\Handler\UserHandler`
@@ -1072,8 +1073,8 @@
 - Rename `Pim\Bundle\FilterBundle\Filter\CompletenessFilter` to `Oro\Bundle\PimFilterBundle\Filter\ProductCompletenessFilter`
 - Move `Pim\Bundle\PimDataGridBundle` to `Oro\Bundle\PimDataGridBundle`
 - Move `Pim\Bundle\PimFilterBundle` to `Oro\Bundle\PimFilterBundle`
-- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer`, add `IdentifiableObjectRepositoryInterface` argument 
-- Change constructor of `Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\AttributeDataCollector`, add `AverageMaxQuery` argument 3 times 
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer`, add `IdentifiableObjectRepositoryInterface` argument
+- Change constructor of `Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\AttributeDataCollector`, add `AverageMaxQuery` argument 3 times
 - Change constructor of `Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\DBDataCollector`, add `AverageMaxQuery` argument
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter`, add `TokenStorageInterface`, `JobLauncherInterface`, `IdentifiableObjectRepositoryInterface` and `string` arguments
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`, add `AttributeFilterInterface` argument
@@ -1263,7 +1264,7 @@
 - Change constructor of `Oro\Bundle\PimFilterBundle\Filter\ProductValue\ChoiceFilter`, add argument `Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface` and remove fourth argument `string`
 - Change constructor of `Oro\Bundle\PimFilterBundle\Filter\ProductValue\ReferenceDataFilter`, add argument `Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface`
 - Change constructor of `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface\FamilySaver`, remove second argument `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
-- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileValidator` to add an array of string (extension to mime type mapping) 
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileValidator` to add an array of string (extension to mime type mapping)
 - Add `pim_configuration` table. Don't forget to run the `doctrine:migrations:migrate` command.
 - Remove methods `getBirthday` and `setBirthday` of `Akeneo\UserManagement\Component\Model\UserInterface` and `Akeneo\UserManagement\Component\Model\User`
 - Change constructor of `Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\StorageDataCollector`, replace all arguments with `\Doctrine\DBAL\Connection`

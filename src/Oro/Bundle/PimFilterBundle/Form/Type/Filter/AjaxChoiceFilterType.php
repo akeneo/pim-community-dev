@@ -4,8 +4,8 @@ namespace Oro\Bundle\PimFilterBundle\Form\Type\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
+use Oro\Bundle\PimFilterBundle\Form\Type\UnstructuredType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -46,7 +46,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     {
         parent::buildForm($builder, $options);
         $builder->add('type', $options['operator_type'], ['choices' => $this->getOperatorChoices($options)]);
-        $builder->add('value', TextType::class);
+        $builder->add('value', UnstructuredType::class);
         $builder->add('valueChoices', ChoiceType::class, $options['field_options'] + ['mapped' => false]);
     }
 
