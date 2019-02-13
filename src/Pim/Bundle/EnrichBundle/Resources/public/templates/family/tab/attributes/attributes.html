@@ -38,7 +38,7 @@
                         <i
                             class="AknAcl-icon
                                 <%- isRequired ? 'AknAcl-icon--granted icon-ok required' : 'icon-circle non-required' %>
-                                <%- isAttributeEditable(attribute.code, attribute.type, channel.code) ? '' : 'AknAcl-disabled' %>"
+                                <%- isAttributeEditable(channel.code, attribute.code, attribute.type) ? '' : 'AknAcl-disabled' %>"
                             data-attribute-code="<%- attribute.code %>"
                             data-attribute-type="<%- attribute.type %>"
                             data-channel-code="<%- channel.code %>"

@@ -221,7 +221,7 @@ define([
                     return;
                 }
 
-                if (!this.isAttributeEditable(attributeCode, attributeType, channelCode)) {
+                if (!this.isAttributeEditable(channelCode, attributeCode, attributeType)) {
                     return;
                 }
 
@@ -237,13 +237,13 @@ define([
             /**
              * Checks if attribute is editable
              *
+             * @param {string} channelCode
              * @param {string} attributeCode
              * @param {string} attributeType
-             * @param {string} channelCode
              *
              * @returns {boolean}
              */
-            isAttributeEditable(attributeCode, attributeType, channelCode) {
+            isAttributeEditable(channelCode, attributeCode, attributeType) {
                 return !this.readOnly && this.identifierAttributeType !== attributeType;
             },
 
