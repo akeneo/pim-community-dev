@@ -91,7 +91,7 @@ pim:
       hook: "pre-upgrade"
 
   replicas: 1
-  numDaemon: 1
+  numDaemon: 2
   extraLabels: {}
   secret: nil # Generate me with `uuidgen`
   persistence:
@@ -197,6 +197,8 @@ elasticsearch:
     repository: docker.elastic.co/elasticsearch/elasticsearch-oss
     tag: 6.5.4
   fullnameOverride: elasticsearch
+  sysctlInitContainer:
+    enabled: false
   cluster:
     name: "pim-es"
     env:

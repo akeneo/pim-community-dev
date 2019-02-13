@@ -47,14 +47,15 @@ spec:
               mountPath: /var/www/html/{{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .path }}{{ end }}/users.csv
               subPath: users.csv
               readOnly: true
-            - name: user-csv
-              mountPath: /var/www/html/{{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .path }}{{ end }}/channels.csv
-              subPath: channels.csv
-              readOnly: true
             {{- if .Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
               subPath: key.json
+              readOnly: true
+            {{- else }}
+            - name: user-csv
+              mountPath: /var/www/html/{{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .path }}{{ end }}/channels.csv
+              subPath: channels.csv
               readOnly: true
             {{- end }}
       volumes:

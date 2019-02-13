@@ -24,13 +24,9 @@ spec:
           - name: php
             image: "{{ $tplCtx.Values.image.pim.repository }}:{{ $tplCtx.Values.image.pim.tag }}"
             imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
-            command: ['sh', '-c', 'export HOME=/var/www/ ; chown -R www-data:www-data /data ; su -m -l www-data -s /bin/bash -c "php bin/console {{ $jobOptions.pimCommand }}"']
+            command: ['sh', '-c', 'export HOME=/var/www/ && su -m -l www-data -s /bin/bash -c "php bin/console {{ $jobOptions.pimCommand }}"']
             resources:
   {{ toYaml $tplCtx.Values.pim.resources | indent 12 }}
-            volumeMounts:
-              - name: fpm-data
-                mountPath: /data
-                readOnly: false
             envFrom: [ configMapRef: { name: {{ template "pim.fullName" $tplCtx }}-env } ]
             env:
               - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
@@ -42,10 +38,6 @@ spec:
 {{ toYaml $tplCtx.Values.common.phpConfCLI  | indent 14 }}
 {{- end }}
           restartPolicy: OnFailure
-          volumes:
-            - name: fpm-data
-              persistentVolumeClaim:
-                claimName: pvc-data-pim-{{ $tplCtx.Values.global.extraLabels.pfid }}
 ---
 {{- end }}
 {{- end }}

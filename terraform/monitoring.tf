@@ -1,11 +1,12 @@
-resource "google_monitoring_uptime_check_config" "http" {
-  display_name  = "${var.dns_external}"
-  timeout       = "60s"
-  project       = "${var.google_project_name}"
+resource "google_monitoring_uptime_check_config" "https" {
+  display_name = "${replace(var.dns_external, "/\\.$/", "")}"
+  timeout      = "60s"
+  project      = "${var.google_project_name}"
 
   http_check = {
-    path = "/user/login"
-    port = "443"
+    path    = "/user/login"
+    port    = "443"
+    use_ssl = true
   }
 
   monitored_resource {
@@ -13,7 +14,7 @@ resource "google_monitoring_uptime_check_config" "http" {
 
     labels = {
       project_id = "${var.google_project_name}"
-      host       = "${var.dns_external}"
+      host       = "${replace(var.dns_external, "/\\.$/", "")}"
     }
   }
 }

@@ -32,7 +32,7 @@ spec:
         - name: fpm
           image: "{{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}"
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www/ && chown -R www-data:www-data /data && su -m -l www-data -s /bin/bash -c "php bin/console akeneo:synchronization:message:consumer --ttl=-1"']
+          command: ['sh', '-c', 'export HOME=/var/www/ && su -m -l www-data -s /bin/bash -c "php bin/console akeneo:synchronization:message:consumer --ttl=-1"']
           resources:
 {{ toYaml .Values.pim.resources | indent 12 }}
           volumeMounts:
