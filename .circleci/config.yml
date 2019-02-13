@@ -110,7 +110,7 @@ jobs:
           - run:
                 name: PHPunit Integration
                 command: |
-                    TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" "src/**/*Integration.php" | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh PIM_Integration_Test | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
