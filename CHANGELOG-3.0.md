@@ -5,6 +5,7 @@
 - PIM-8020: Fix wrong count on missing required attributes in the completeness
 - PIM-8028: Fix translations on boolean values
 - PIM-8057: Fix error during "forgot password" process
+- PIM-8019: Fix broken bulk product association modal
 
 # 3.0.1 (2019-02-06)
 
