@@ -22,19 +22,76 @@ function collectBundleStyles(bundlePaths) {
             })
 
             imports.push(contents)
-            console.log('Added', absolutePath)
         } catch(e) {}
     }
 
     return imports;
 }
 
+function getProcessor(less) {
+
+    function Processor(options) {
+        this.options = options || {replace: []};
+        this._visitor = new less.visitors.Visitor(this);
+    }
+
+    Processor.prototype = {
+        isReplacing: true,
+        isPreEvalVisitor: true,
+        run: function (root) {
+            return this._visitor.visit(root);
+        },
+        visitUrl: function (URLNode, visitArgs) {
+            var path = URLNode.value.value;
+
+            if (!path) return;
+
+            if (typeof URLNode.value._fileInfo !== "undefined") {
+                var absPattern = new RegExp("^([a-zA-Z]+\:\/\/|\/|data\:).+");
+                if (!absPattern.test(URLNode.value.value)) {
+                    path = URLNode.value._fileInfo.currentDirectory + path;
+                }
+            }
+
+            this.options.replace.forEach(function(repl) {
+                var pattern = new RegExp(repl.search, "g");
+                path = path.replace(pattern, repl.replace)
+            });
+
+            URLNode.value.value = path;
+            return URLNode;
+        }
+    };
+    return Processor;
+};
+
+
+const AbsoluteURLs = function() {
+    return {
+        options: {},
+        install(less, pluginManager) {
+            var Processor = getProcessor(less);
+            pluginManager.addVisitor(new Processor(this.options));
+        },
+        setOptions: function(options) {
+            this.options = options
+        }
+    }
+}
+
+const plugin = new AbsoluteURLs()
+plugin.setOptions({
+    replace: [{
+        search: './web/bundles',
+        replace: '/bundles' }
+    ]
+})
+
 const appStyles = collectBundleStyles(bundlePaths).join('')
 const compiledStyles = lessc.render(appStyles, {
-
+    plugins: [plugin],
 })
     .then(function(output) {
-
         try {
             fs.writeFileSync(path.resolve(rootDir, './web/css/pim.css'), output.css, 'utf-8')
         } catch(e) {
