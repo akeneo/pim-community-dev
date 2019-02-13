@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Test\Integration\TestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoader;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\tests\integration\Category\CategoryTreeFixturesLoader;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
