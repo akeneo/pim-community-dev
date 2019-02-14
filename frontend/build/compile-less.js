@@ -1,3 +1,5 @@
+require('colors')
+
 const rootDir = process.cwd();
 const path = require('path');
 const fs = require('fs')
@@ -13,7 +15,7 @@ function getFileContents(filePath) {
             encoding: 'utf-8'
         })
 
-        console.log('✓', filePath)
+        console.log(`‣ ${filePath}`.blue)
         return fileContents
     } catch(e) {}
 }
@@ -27,7 +29,7 @@ function collectBundleImports(bundlePaths) {
 
     const bundleImports = []
 
-    console.log('Compiling less\n')
+    console.log('\nStarting LESS compilation\n'.green)
     for (filePath of indexFiles) {
         bundleImports.push(getFileContents(filePath))
     }
@@ -37,8 +39,8 @@ function collectBundleImports(bundlePaths) {
 }
 
 function formatParseError(error) {
-    console.log(`Error compiling less: ${error.message}\n\n`, `${error.filename}:${error.line}:${error.column}`)
-    console.log(error.extract.map(line => `>${line}\n`).join(''))
+    console.log(`Error compiling less: ${error.message}\n\n`.red, `${error.filename}:${error.line}:${error.column}`.yellow)
+    console.log(error.extract.map(line => `>${line}\n`.red).join(''))
 }
 
 const bundleImports = collectBundleImports(bundlePaths)
@@ -54,16 +56,19 @@ lessc.render(
                 ]
             })
         ],
-        sourceMap: {sourceMapFileInline: true}
+        // @TODO replace with file output
+        sourceMap: {
+            sourceMapFileInline: true
+        }
     }
 ).then(function(output) {
         try {
             fs.writeFileSync(path.resolve(rootDir, OUTPUT_CSS_PATH), output.css, 'utf-8')
-            console.log(`Successfully compiled to ${OUTPUT_CSS_PATH}`)
+            console.log(`✓ Successfully compiled to ${OUTPUT_CSS_PATH}\n`.green)
         } catch(e) {
-            console.log('Error writing file', e)
+            console.log(`❌ Error writing compiled file ${e}`.red)
         }
-        // output.map = string of sourcemap
+        // @TODO - output source map as a file
 }, function(error) {
     formatParseError(error)
     process.exit(1)
