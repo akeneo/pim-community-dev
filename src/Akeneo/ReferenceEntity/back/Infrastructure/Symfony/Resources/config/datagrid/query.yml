@@ -1,0 +1,5 @@
+services:
+    pimee.reference_entity.datagrid.query.get_record_information:
+      class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Query\GetRecordInformationQuery
+      arguments:
+          - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'

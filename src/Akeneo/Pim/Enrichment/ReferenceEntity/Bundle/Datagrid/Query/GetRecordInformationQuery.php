@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\RecordInformation;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 
 /**
  * This query acts as an anti corruption layer.
