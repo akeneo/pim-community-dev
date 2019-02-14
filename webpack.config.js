@@ -19,7 +19,7 @@ if (!fs.existsSync(sourcePath)) {
     running webpack \n`);
 }
 
-const {getModulePaths, createModuleRegistry} = require('./webpack/requirejs-utils');
+const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname, sourcePath);
 
 createModuleRegistry(Object.keys(aliases), rootDir);
@@ -72,7 +72,7 @@ const webpackConfig = {
         exclude: /\/node_modules\/|\/spec\//,
         use: [
           {
-            loader: path.resolve(__dirname, 'webpack/config-loader'),
+            loader: path.resolve(__dirname, 'frontend/webpack/config-loader'),
             options: {
               configMap: config,
             },
@@ -141,7 +141,7 @@ const webpackConfig = {
 
       // Expose the require-polyfill to window
       {
-        test: path.resolve(__dirname, './webpack/require-polyfill.js'),
+        test: path.resolve(__dirname, './frontend/webpack/require-polyfill.js'),
         use: [
           {
             loader: 'expose-loader',
@@ -176,7 +176,7 @@ const webpackConfig = {
             },
           },
           {
-            loader: path.resolve(__dirname, 'webpack/config-loader'),
+            loader: path.resolve(__dirname, 'frontend/webpack/config-loader'),
             options: {
               configMap: config,
             },

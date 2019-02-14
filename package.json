@@ -14,9 +14,9 @@
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
     "unit": "jest --no-cache --config tests/front/unit/jest/unit.jest.js",
     "integration": "jest --no-cache --config ./tests/front/integration/jest/integration.jest.js",
-    "acceptance": "cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
-    "acceptance-html-report": "yarn run acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node webpack/test/acceptance/generate-html-report.js",
-    "styles": "node ./webpack/compile-less.js"
+    "acceptance": "cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
+    "acceptance-html-report": "yarn run acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
+    "styles": "node ./frontend/build/compile-less.js"
   },
   "repository": {
     "type": "git",
