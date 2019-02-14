@@ -1,5 +1,4 @@
 services:
     test.enrichment.enrichment_follow_up_context:
         class: 'AkeneoTest\Pim\Enrichment\Acceptance\Context\EnrichmentFollowUpContext'
-        tags:
-            - { name: fob.context_service }
+
