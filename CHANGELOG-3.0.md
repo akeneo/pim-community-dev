@@ -1,5 +1,20 @@
 # 3.0.x
 
+## Bug fixes
+
+- APAI-550: Add ACL checks on the backend part
+- APAI-561: Silently filter unknown/unexisting attribute options on attribute options (Franklin Insights)
+
+## Improvements
+
+- APAI-471: Add warning on attribute deletion (Franklin Insights)
+- APAI-494: Notify Julia when she has new attributes "pending" for mapping (Franklin Insights)
+- APAI-581: Update the identifiers mapping when an attribute that belongs to the identifiers mapping is deleted (Franklin Insights)
+- APAI-517: Add end-to-end scenario on identifiers mapping (Franklin Insights)
+- APAI-518: Add end-to-end scenario on attributes mapping (Franklin Insights)
+- APAI-464: add end to end scenario on bulk subscription (Franklin Insights)
+- APAI-519: add end to end scenario on attribute options mapping (Franklin Insights)
+
 # 3.0.2 (2019-02-13)
 
 ## Bug fixes
@@ -17,20 +32,11 @@
 - PIM-8043: Fix to keep the Save and Cancel button always on the right during the edition of a reference entity attribute
 - PIM-8046: Fix issue for reference entity attributes with a numeric code
 - PIM-8037: allow to click on record row even if it has not attribute
-- APAI-550: Add ACL checks on the backend part
 
 ## Improvements
 
 - PIM-8040: The code should be check when upserting an attribute option (API)
 - AOB-351: Add a user provider used when sso is activated
-- APAI-471: Add warning on attribute deletion
-- APAI-494: Notify Julia when she has new attributes "pending" for mapping
-- APAI-581: Update the identifiers mapping when an attribute that belongs to the identifiers mapping is deleted
-- APAI-517: Add end-to-end scenario on identifiers mapping
-- APAI-518: Add end-to-end scenario on attributes mapping
-- APAI-464: add end to end scenario on bulk subscription
-- APAI-519: add end to end scenario on attribute options mapping
-- APAI-561: Silently filter unknown/unexisting attribute options on attribute options
 
 # 3.0.1 (2019-02-06)
 
