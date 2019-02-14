@@ -47,8 +47,8 @@ interface NormalizedAttributesMappingForFamily {
 interface Config {
   labels: {
     pending: string,
-    mapped: string,
-    unmapped: string,
+    active: string,
+    inactive: string,
     franklinAttribute: string,
     catalogAttribute: string,
     attributeMappingStatus: string,
@@ -71,11 +71,10 @@ class AttributeMapping extends BaseView {
   public static readonly FAMILY_MAPPING_FULL: number = 1;
   public static readonly FAMILY_MAPPING_EMPTY: number = 2;
 
-  /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping */
-  /** Duplicated in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping */
+  /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus */
   private static readonly ATTRIBUTE_PENDING: number = 0;
-  private static readonly ATTRIBUTE_MAPPED: number = 1;
-  private static readonly ATTRIBUTE_UNMAPPED: number = 2;
+  private static readonly ATTRIBUTE_ACTIVE: number = 1;
+  private static readonly ATTRIBUTE_INACTIVE: number = 2;
 
   /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping */
   private static readonly PERFECT_MAPPINGS: { [attributeType: string]: string[] } = {
@@ -108,8 +107,8 @@ class AttributeMapping extends BaseView {
   private readonly config: Config = {
     labels: {
       pending: '',
-      mapped: '',
-      unmapped: '',
+      active: '',
+      inactive: '',
       franklinAttribute: '',
       catalogAttribute: '',
       attributeMappingStatus: '',
@@ -255,8 +254,8 @@ class AttributeMapping extends BaseView {
   private getMappingStatuses(): { [ status: number ]: string } {
     const statuses: { [status: number]: string } = {};
     statuses[AttributeMapping.ATTRIBUTE_PENDING] = __(this.config.labels.pending);
-    statuses[AttributeMapping.ATTRIBUTE_MAPPED] = __(this.config.labels.mapped);
-    statuses[AttributeMapping.ATTRIBUTE_UNMAPPED] = __(this.config.labels.unmapped);
+    statuses[AttributeMapping.ATTRIBUTE_ACTIVE] = __(this.config.labels.active);
+    statuses[AttributeMapping.ATTRIBUTE_INACTIVE] = __(this.config.labels.inactive);
 
     return statuses;
   }

@@ -162,4 +162,21 @@ class IdentifiersMapping implements \IteratorAggregate
             )
         );
     }
+
+    /**
+     * @param AttributeInterface $referenceAttribute
+     *
+     * @return bool
+     */
+    public function isMappedTo(AttributeInterface $referenceAttribute): bool
+    {
+        foreach ($this->mapping as $identifierMapping) {
+            $attribute = $identifierMapping->getAttribute();
+            if (null !== $attribute && $referenceAttribute->getCode() === $attribute->getCode()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

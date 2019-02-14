@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
@@ -350,11 +351,11 @@ final class AttributesMappingContext implements Context
     {
         switch ($franklinStatus) {
             case 'pending':
-                return AttributeMapping::ATTRIBUTE_PENDING;
+                return AttributeMappingStatus::ATTRIBUTE_PENDING;
             case 'active':
-                return AttributeMapping::ATTRIBUTE_MAPPED;
+                return AttributeMappingStatus::ATTRIBUTE_ACTIVE;
             case 'inactive':
-                return AttributeMapping::ATTRIBUTE_UNMAPPED;
+                return AttributeMappingStatus::ATTRIBUTE_INACTIVE;
         }
     }
 

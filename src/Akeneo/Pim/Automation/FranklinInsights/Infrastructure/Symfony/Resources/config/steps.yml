@@ -80,3 +80,11 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@akeneo.pim.automation.franklin_insights.connector.tasklet.identify_products_to_resubscribe'
+
+    akeneo.pim.automation.franklin_insights.connector.step.notify_if_pending_attributes:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'notify_if_pending_attributes'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.franklin_insights.connector.tasklet.notify_if_pending_attributes'

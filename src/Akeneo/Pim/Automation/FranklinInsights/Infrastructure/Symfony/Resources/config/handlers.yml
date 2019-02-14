@@ -80,6 +80,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.data_provider.attributes_mapping'
             - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.attribute'
 
     akeneo.pim.automation.franklin_insights.handler.get_attribute_options_mapping_by_family_and_attribute:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributeOptionsMappingHandler'

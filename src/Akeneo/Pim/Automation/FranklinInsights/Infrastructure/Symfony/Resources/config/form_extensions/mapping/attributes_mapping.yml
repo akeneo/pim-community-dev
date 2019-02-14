@@ -83,8 +83,8 @@ extensions:
         config:
             labels:
                 pending: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.pending
-                mapped: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.mapped
-                unmapped: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.unmapped
+                active: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.active
+                inactive: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.inactive
                 franklinAttribute: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_attribute
                 catalogAttribute: akeneo_franklin_insights.entity.identifier_mapping.fields.catalog_attribute
                 attributeMappingStatus: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.label

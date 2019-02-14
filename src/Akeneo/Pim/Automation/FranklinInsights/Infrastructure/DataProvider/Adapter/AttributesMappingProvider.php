@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
@@ -110,9 +111,9 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
     private function mapAttributeMappingStatus(string $status): int
     {
         $mapping = [
-            AttributeMapping::STATUS_PENDING => DomainAttributeMapping::ATTRIBUTE_PENDING,
-            AttributeMapping::STATUS_INACTIVE => DomainAttributeMapping::ATTRIBUTE_UNMAPPED,
-            AttributeMapping::STATUS_ACTIVE => DomainAttributeMapping::ATTRIBUTE_MAPPED,
+            AttributeMapping::STATUS_PENDING => AttributeMappingStatus::ATTRIBUTE_PENDING,
+            AttributeMapping::STATUS_INACTIVE => AttributeMappingStatus::ATTRIBUTE_INACTIVE,
+            AttributeMapping::STATUS_ACTIVE => AttributeMappingStatus::ATTRIBUTE_ACTIVE,
         ];
 
         if (!array_key_exists($status, $mapping)) {

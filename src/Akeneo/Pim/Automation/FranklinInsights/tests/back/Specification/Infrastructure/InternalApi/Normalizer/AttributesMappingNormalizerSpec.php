@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
@@ -36,7 +37,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
             'Product Weight',
             'metric',
             null,
-            AttributeMapping::ATTRIBUTE_PENDING,
+            AttributeMappingStatus::ATTRIBUTE_PENDING,
             ['23kg', '12kg']
         ));
 
@@ -48,7 +49,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                     'summary' => ['23kg', '12kg'],
                 ],
                 'attribute' => null,
-                'status' => AttributeMapping::ATTRIBUTE_PENDING,
+                'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
             ],
         ];
 
@@ -64,7 +65,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                 'Product Weight',
                 'metric',
                 null,
-                AttributeMapping::ATTRIBUTE_PENDING,
+                AttributeMappingStatus::ATTRIBUTE_PENDING,
                 null
             )
         );
@@ -77,7 +78,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                     'summary' => [],
                 ],
                 'attribute' => null,
-                'status' => AttributeMapping::ATTRIBUTE_PENDING,
+                'status' => AttributeMappingStatus::ATTRIBUTE_PENDING,
             ],
         ];
 

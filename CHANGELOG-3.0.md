@@ -1,5 +1,21 @@
 # 3.0.x
 
+## Bug fixes
+
+- APAI-550: Add ACL checks on the backend part
+- APAI-561: Silently filter unknown/unexisting attribute options on attribute options (Franklin Insights)
+- PIM-8130: Fixed the product grid filter for attribute with type "Reference Entity" (multi & simple link)
+
+## Improvements
+
+- APAI-471: Add warning on attribute deletion (Franklin Insights)
+- APAI-494: Notify Julia when she has new attributes "pending" for mapping (Franklin Insights)
+- APAI-581: Update the identifiers mapping when an attribute that belongs to the identifiers mapping is deleted (Franklin Insights)
+- APAI-517: Add end-to-end scenario on identifiers mapping (Franklin Insights)
+- APAI-518: Add end-to-end scenario on attributes mapping (Franklin Insights)
+- APAI-464: add end to end scenario on bulk subscription (Franklin Insights)
+- APAI-519: add end to end scenario on attribute options mapping (Franklin Insights)
+
 # 3.0.2 (2019-02-13)
 
 ## Bug fixes

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Context\Page\PimAi\Configuration;
+namespace Context\Page\FranklinInsights\Configuration;
 
 use Context\Page\Product\Index as BaseIndex;
 

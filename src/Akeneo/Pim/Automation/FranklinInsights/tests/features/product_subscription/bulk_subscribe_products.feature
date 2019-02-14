@@ -1,8 +1,18 @@
-@acceptance-back
 Feature: Bulk subscribes products to Franklin
   In order to automatically enrich my products
   As Julia
   I want to bulk subscribe products to Franklin
+
+  @end-to-end @javascript
+  Scenario: Successfully subscribe a product to Franklin
+    Given Franklin is configured with a valid token
+    And the products B00EYZY6AC and 606449099812 of the family router
+    And a predefined identifiers mapping as follows:
+      | franklin_code | attribute_code |
+      | asin          | asin           |
+      | upc           | pim_upc        |
+    When I bulk subscribe the products B00EYZY6AC and 606449099812 to Franklin
+    Then the products B00EYZY6AC and 606449099812 should be subscribed
 
   #Scenario: Successfully mass subscribe 3 valid products
   #Then 10 products should be subscribed

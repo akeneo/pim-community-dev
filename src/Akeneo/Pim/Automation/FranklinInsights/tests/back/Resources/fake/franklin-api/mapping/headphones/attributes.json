@@ -1,0 +1,59 @@
+{
+  "_links": {
+    "map-attributes": {
+      "href": "/api/mapping/headphones/attributes",
+      "type": "application/prs.hal-forms+json"
+    }
+  },
+  "_embedded": {
+    "map-attributes": {
+      "_links": {
+        "self": {
+          "href": "/api/mapping/headphones/attributes"
+        }
+      },
+      "_templates": {
+        "default": {
+          "templated": true,
+          "title": "Map attributes",
+          "method": "PUT",
+          "contentType": "application/json",
+          "properties": []
+        }
+      }
+    }
+  },
+  "mapping": [
+    {
+      "from": {
+        "id": "product_weight",
+        "label": {
+          "en_us": "Product Weight"
+        },
+        "type": "metric"
+      },
+      "to": null,
+      "summary": [
+        "23kg",
+        "12kg"
+      ],
+      "status": "pending"
+    }, {
+      "from": {
+        "id": "color",
+        "label": {
+          "en_us": "Color"
+        },
+        "type": "multiselect"
+      },
+      "to": {
+        "id": "product color"
+      },
+      "summary": [
+        "blue",
+        "red"
+      ],
+      "status": "active"
+    }
+  ]
+}

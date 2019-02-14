@@ -22,7 +22,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetCo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\ConnectionStatusNormalizer;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,6 +33,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class FranklinConnectionController
 {
+    use CheckAccessTrait;
+
     /** @var ActivateConnectionHandler */
     private $activateConnectionHandler;
 
@@ -46,19 +50,22 @@ class FranklinConnectionController
     /**
      * @param ActivateConnectionHandler $activateConnectionHandler
      * @param GetConfigurationHandler $getConfigurationHandler
-     * @param GetConnectionStatusHandler $getConnectionStatus
+     * @param GetConnectionStatusHandler $getConnectionStatusHandler
      * @param ConnectionStatusNormalizer $connectionStatusNormalizer
+     * @param SecurityFacade $securityFacade
      */
     public function __construct(
         ActivateConnectionHandler $activateConnectionHandler,
         GetConfigurationHandler $getConfigurationHandler,
-        GetConnectionStatusHandler $getConnectionStatus,
-        ConnectionStatusNormalizer $connectionStatusNormalizer
+        GetConnectionStatusHandler $getConnectionStatusHandler,
+        ConnectionStatusNormalizer $connectionStatusNormalizer,
+        SecurityFacade $securityFacade
     ) {
         $this->activateConnectionHandler = $activateConnectionHandler;
         $this->getConfigurationHandler = $getConfigurationHandler;
-        $this->getConnectionStatusHandler = $getConnectionStatus;
+        $this->getConnectionStatusHandler = $getConnectionStatusHandler;
         $this->connectionStatusNormalizer = $connectionStatusNormalizer;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -66,6 +73,8 @@ class FranklinConnectionController
      */
     public function getAction(): Response
     {
+        $this->checkAccess('akeneo_franklin_insights_connection');
+
         $configuration = $this->getConfigurationHandler->handle(new GetConfigurationQuery());
         $token = $configuration->getToken();
 
@@ -78,6 +87,8 @@ class FranklinConnectionController
     }
 
     /**
+     * @param Request $request
+     *
      * @return Response
      */
     public function getStatusAction(Request $request): Response
@@ -97,8 +108,12 @@ class FranklinConnectionController
      */
     public function postAction(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+        $this->checkAccess('akeneo_franklin_insights_connection');
+
         // TODO: We should $request->get('token', '') instead decoding json and getting back value
-        // TODO: Should not we assert it is an XML HTTP Request
         // TODO: Why do we put message here instead of handling response code?
         // TODO: success = 200, invalid argument = 401, conf exception = 422
         $configurationFields = json_decode($request->getContent(), true);

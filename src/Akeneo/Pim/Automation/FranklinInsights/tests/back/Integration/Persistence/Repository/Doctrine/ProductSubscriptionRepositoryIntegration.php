@@ -265,12 +265,27 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             [['pimAttributeCode' => 'bar', 'value' => 'baz']]
         );
 
-        $product3 = $this->createProduct('product_3');
+        $product3 = $this->createProduct('product_3', 'test_family');
         $this->insertSubscription(
             $product3->getId(),
             'another-subscription',
             [['pimAttributeCode' => 'bar', 'value' => 'baz']]
         );
+
+        $this->getRepository()->emptySuggestedDataAndMissingMappingByFamily('test_family');
+
+        $persistedProduct1 = $this->getRepository()->findOneByProductId($product1->getId());
+        $persistedProduct2 = $this->getRepository()->findOneByProductId($product2->getId());
+        $persistedProduct3 = $this->getRepository()->findOneByProductId($product3->getId());
+
+        Assert::assertTrue($persistedProduct1->getSuggestedData()->isEmpty());
+        Assert::assertFalse($persistedProduct1->isMappingMissing());
+
+        Assert::assertFalse($persistedProduct2->getSuggestedData()->isEmpty());
+        Assert::assertTrue($persistedProduct2->isMappingMissing());
+
+        Assert::assertTrue($persistedProduct3->getSuggestedData()->isEmpty());
+        Assert::assertFalse($persistedProduct3->isMappingMissing());
     }
 
     /**
@@ -324,7 +339,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     {
         $query = <<<SQL
 INSERT INTO pimee_franklin_insights_subscription (product_id, subscription_id, raw_suggested_data, misses_mapping)
-VALUES (:productId, :subscriptionId, :suggestedData, false)
+VALUES (:productId, :subscriptionId, :suggestedData, true)
 SQL;
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->prepare($query);

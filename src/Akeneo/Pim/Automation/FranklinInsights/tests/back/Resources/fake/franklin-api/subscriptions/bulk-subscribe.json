@@ -1,0 +1,286 @@
+{
+  "_links": {
+    "subscription": [
+      {
+        "href": "/api/subscriptions/8ea48c14-2983-4f29-931a-73654272289b"
+      }
+    ]
+  },
+  "_embedded": {
+    "subscription": [
+      {
+        "id": "8ea48c14-2983-4f29-931a-73654272289b",
+        "identifiers": {
+          "upc": "730870200933",
+          "asin": "B00EYZY6AC",
+          "mpn_brand": {
+            "mpn": "FE20093",
+            "brand": "Frederic Fekkai"
+          }
+        },
+        "attributes": [
+          {
+            "name": "Product Dimensions",
+            "value": "12.2 oz"
+          }
+        ],
+        "extra": {
+          "family": {
+            "code": "hairstyling",
+            "label": {
+              "en_US": "Hair styling"
+            }
+          },
+          "tracker_id": "33"
+        },
+        "created_at": "2018-11-27T13:16:21+00:00",
+        "refreshed_at": "2018-11-27T13:18:58+00:00",
+        "valid_until": "2019-11-27T13:16:21+00:00",
+        "is_cancelled": false,
+        "message": "We only found a few product values for your product, so you we'll give you back your credits at the end of the subscription period if we don't find more than 5 product values in the meantime.  You can cancel this subscription at any time to get your credit back sooner.",
+        "_links": {
+          "self": {
+            "href": "/api/subscriptions/8ea48c14-2983-4f29-931a-73654272289b"
+          },
+          "cancel": {
+            "href": "/api/subscriptions/8ea48c14-2983-4f29-931a-73654272289b",
+            "type": "application/prs.hal-forms+json"
+          },
+          "attributes-mapping": {
+            "href": "/api/mapping/comestic/attributes",
+            "title": "Get attributes mapping"
+          }
+        },
+        "_embedded": {
+          "cancel": {
+            "_links": {
+              "self": {
+                "href": "/api/subscriptions/8ea48c14-2983-4f29-931a-73654272289b"
+              }
+            },
+            "_templates": {
+              "default": {
+                "title": "cancel",
+                "description": "cancel a subscription",
+                "method": "DELETE",
+                "contentType": "application/x-www-form-urlencoded",
+                "properties": []
+              }
+            }
+          }
+        },
+        "mapped_identifiers": [
+          {
+            "name": "sku",
+            "value": "B00EYZY6AC"
+          },
+          {
+            "name": "upc",
+            "value": "730870200933"
+          },
+          {
+            "name": "pim_brand",
+            "value": "Frederic Fekkai"
+          },
+          {
+            "name": "camera_model_name",
+            "value": "FE20093"
+          }
+        ],
+        "mapped_attributes": [
+          {
+            "name": "dimensions",
+            "value": "12.2 OUNCE"
+          }
+        ],
+        "misses_mapping": false
+      },
+      {
+        "id": "86b7a527-9531-4a46-bc5c-02d89dcbc7eb",
+        "identifiers": {
+          "upc": null,
+          "asin": "B00F0DD0I6",
+          "mpn_brand": null
+        },
+        "attributes": [
+          {
+            "name": "Memory",
+            "value": "RAM (Installed): 256 MB"
+          },
+          {
+            "name": "Series",
+            "value": "R7000"
+          },
+          {
+            "name": "General",
+            "value": "Color: Black"
+          },
+          {
+            "name": "Features",
+            "value": "Quality of Service (QoS)"
+          },
+          {
+            "name": "Processor",
+            "value": "1 GHz"
+          },
+          {
+            "name": "Connectivity",
+            "value": "Wireless, Wired"
+          },
+          {
+            "name": "Flash Memory",
+            "value": "128 MB"
+          },
+          {
+            "name": "Power Device",
+            "value": "External Power Adapter"
+          },
+          {
+            "name": "Product Type",
+            "value": "Wireless Router-4-Port Switch (Integrated)"
+          },
+          {
+            "name": "Product Color",
+            "value": "Black"
+          },
+          {
+            "name": "Product Depth",
+            "value": "7.3 Inch"
+          },
+          {
+            "name": "Product Width",
+            "value": "11.2 Inch"
+          },
+          {
+            "name": "Wireless Type",
+            "value": "802.11 a/b/g/n/ac"
+          },
+          {
+            "name": "Enclosure Type",
+            "value": "Desktop"
+          },
+          {
+            "name": "Frequency Band",
+            "value": "2.4 GHz/5 GHz"
+          },
+          {
+            "name": "Product Height",
+            "value": "2 Inch"
+          },
+          {
+            "name": "Product Weight",
+            "value": "1.65 lbs"
+          },
+          {
+            "name": "Battery Type(s)",
+            "value": "1 Lithium Ion Batteries Required"
+          },
+          {
+            "name": "Cable(s) Included",
+            "value": "1 x Network Cable"
+          },
+          {
+            "name": "Hardware Platform",
+            "value": "Pc;Mac;Unix"
+          },
+          {
+            "name": "Performance / STS",
+            "value": "Data Transfer Rate: 1900 MB/s"
+          },
+          {
+            "name": "Software Included",
+            "value": "Netgear Genie"
+          },
+          {
+            "name": "Network Technology",
+            "value": "10/100/1000BASE-T"
+          },
+          {
+            "name": "Ethernet Technology",
+            "value": "Gigabit Ethernet"
+          },
+          {
+            "name": "Number of LAN Ports",
+            "value": "4"
+          },
+          {
+            "name": "Encryption Algorithm",
+            "value": "WPA-PSK, WPA2-PSK"
+          },
+          {
+            "name": "Network Connectivity",
+            "value": "Wireless-Wi-Fi 802.11a"
+          },
+          {
+            "name": "ISM Maximum Frequency",
+            "value": "2.4 GHz"
+          },
+          {
+            "name": "Number Of Usb 2 Ports",
+            "value": "1"
+          },
+          {
+            "name": "Number Of Usb 3 Ports",
+            "value": "1"
+          },
+          {
+            "name": "Wireless LAN Standard",
+            "value": "IEEE 802.11ac"
+          },
+          {
+            "name": "UNII Maximum Frequency",
+            "value": "5 GHz"
+          },
+          {
+            "name": "Wireless Transmission Speed",
+            "value": "1300 Mbit/s"
+          }
+        ],
+        "extra": {
+          "tracker_id": "34",
+          "family": {
+            "code": "router",
+            "label": {
+              "en_US": "Router"
+            }
+          }
+        },
+        "created_at": "2018-08-03T09:57:36+00:00",
+        "refreshed_at": "2018-07-31T15:26:56+00:00",
+        "valid_until": "2019-08-03T09:57:36+00:00",
+        "message": "",
+        "_links": {
+          "self": {
+            "href": "/api/subscriptions/86b7a527-9531-4a46-bc5c-02d89dcbc7eb"
+          },
+          "cancel": {
+            "href": "/api/subscriptions/86b7a527-9531-4a46-bc5c-02d89dcbc7eb",
+            "type": "application/prs.hal-forms+json"
+          }
+        },
+        "_embedded": {
+          "cancel": {
+            "_links": {
+              "self": {
+                "href": "/api/subscriptions/86b7a527-9531-4a46-bc5c-02d89dcbc7eb"
+              }
+            },
+            "_templates": {
+              "default": {
+                "title": "cancel",
+                "description": "cancel a subscription",
+                "method": "DELETE",
+                "contentType": "application/x-www-form-urlencoded",
+                "properties": []
+              }
+            }
+          }
+        },
+        "mapped_identifiers": [],
+        "mapped_attributes": [],
+        "misses_mapping": false
+      }
+    ],
+    "warnings": []
+  }
+}

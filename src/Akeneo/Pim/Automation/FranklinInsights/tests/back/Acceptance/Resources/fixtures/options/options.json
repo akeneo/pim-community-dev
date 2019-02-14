@@ -1,0 +1,26 @@
+{
+  "color1": {
+    "code": "color1",
+    "attribute": "color",
+    "sort_order": 1,
+    "labels": {
+      "en_US": "Color 1"
+    }
+  },
+  "color2": {
+    "code": "color2",
+    "attribute": "color",
+    "sort_order": 2,
+    "labels": {
+      "en_US": "Color 2"
+    }
+  },
+  "color3": {
+    "code": "color3",
+    "attribute": "color",
+    "sort_order": 3,
+    "labels": {
+      "en_US": "Color 3"
+    }
+  }
+}

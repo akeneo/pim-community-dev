@@ -23,49 +23,49 @@ final class AttributeOptionMapping
     public const STATUS_INACTIVE = 2;
 
     /** @var string */
-    private $franklinAttributeId;
+    private $franklinAttributeOptionId;
 
     /** @var string */
-    private $franklinAttributeLabel;
+    private $franklinAttributeOptionLabel;
 
     /** @var string */
-    private $catalogAttributeCode;
+    private $catalogAttributeOptionCode;
 
     /** @var int */
     private $status;
 
     /**
-     * @param string $franklinAttributeId
-     * @param string $franklinAttributeLabel
+     * @param string $franklinAttributeOptionId
+     * @param string $franklinAttributeOptionLabel
      * @param int $status
-     * @param string $catalogAttributeCode
+     * @param null|string $catalogAttributeOptionCode
      */
     public function __construct(
-        string $franklinAttributeId,
-        string $franklinAttributeLabel,
+        string $franklinAttributeOptionId,
+        string $franklinAttributeOptionLabel,
         int $status,
-        ?string $catalogAttributeCode
+        ?string $catalogAttributeOptionCode
     ) {
-        $this->franklinAttributeId = $franklinAttributeId;
-        $this->franklinAttributeLabel = $franklinAttributeLabel;
+        $this->franklinAttributeOptionId = $franklinAttributeOptionId;
+        $this->franklinAttributeOptionLabel = $franklinAttributeOptionLabel;
         $this->status = $status;
-        $this->catalogAttributeCode = $catalogAttributeCode;
+        $this->catalogAttributeOptionCode = $catalogAttributeOptionCode;
     }
 
     /**
      * @return string
      */
-    public function franklinAttributeId(): string
+    public function franklinAttributeOptionId(): string
     {
-        return $this->franklinAttributeId;
+        return $this->franklinAttributeOptionId;
     }
 
     /**
      * @return string
      */
-    public function franklinAttributeLabel(): string
+    public function franklinAttributeOptionLabel(): string
     {
-        return $this->franklinAttributeLabel;
+        return $this->franklinAttributeOptionLabel;
     }
 
     /**
@@ -79,8 +79,8 @@ final class AttributeOptionMapping
     /**
      * @return string
      */
-    public function catalogAttributeCode(): ?string
+    public function catalogAttributeOptionCode(): ?string
     {
-        return $this->catalogAttributeCode;
+        return $this->catalogAttributeOptionCode;
     }
 }

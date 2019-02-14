@@ -43,11 +43,11 @@ class OptionsMappingNormalizer
     {
         $normalizedMapping = [];
         foreach ($attributeOptionsMapping as $attributeOptionMapping) {
-            $normalizedMapping[$attributeOptionMapping->franklinAttributeId()] = [
+            $normalizedMapping[$attributeOptionMapping->franklinAttributeOptionId()] = [
                 'franklinAttributeOptionCode' => [
-                    'label' => $attributeOptionMapping->franklinAttributeLabel(),
+                    'label' => $attributeOptionMapping->franklinAttributeOptionLabel(),
                 ],
-                'catalogAttributeOptionCode' => $attributeOptionMapping->catalogAttributeCode(),
+                'catalogAttributeOptionCode' => $attributeOptionMapping->catalogAttributeOptionCode(),
                 'status' => $attributeOptionMapping->status(),
             ];
         }

@@ -2,14 +2,14 @@ akeneo_franklin_insights_attribute_options_mapping_get:
     path: /{identifier}/options/{franklinAttributeCode}
     defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.attribute_options_mapping:getAction }
     requirements:
-        identifier: '[\w._-]+'
-        franklinAttributeCode: '[\w._-]+'
+        identifier: '.+'
+        franklinAttributeCode: '.+'
     methods: [GET]
 
 akeneo_franklin_insights_attribute_options_mapping_update:
     path: /{identifier}/options/{attributeCode}
     defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.attribute_options_mapping:updateAction }
     requirements:
-        identifier: '[\w._-]+'
-        attributeCode: '[\w._-]+'
+        identifier: '.+'
+        attributeCode: '.+'
     methods: [POST]
