@@ -43,21 +43,32 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior
             [RecordCode::fromString('tony_stark'), RecordCode::fromString('banner')]
         );
 
-        $simpleLinkAttribute = new Attribute();
-        $simpleLinkAttribute->setType(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION)
-            ->setBackendType(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS)
-            ->setReferenceDataName('designer');
-        $attributeRepository->findOneByIdentifier('designers_link')->willReturn($simpleLinkAttribute);
-
-        $stark = new RecordInformation('designer', 'tony_stark', []);
-        $getRecordInformationQuery->execute('designer', 'tony_stark')
-            ->willReturn($stark);
-
-        $banner = new RecordInformation('designer', 'banner', []);
-        $getRecordInformationQuery->execute('designer', 'banner')
-            ->willReturn($banner);
+        $this->attributeRepositoryWillReturnReferenceEntityCollectionAttribute($attributeRepository);
+        $this->recordInformationWillBe($getRecordInformationQuery, 'tony_stark', []);
+        $this->recordInformationWillBe($getRecordInformationQuery, 'banner', []);
 
         $this->normalize($value, 'datagrid', ['data_locale' => 'en_US'])
+            ->shouldReturn([
+                'locale' => null,
+                'scope'  => null,
+                'data'   => '[tony_stark], [banner]',
+            ]);
+    }
+
+    function it_normalizes_the_code_if_there_is_no_value_for_the_data_locale(
+        GetRecordInformationQueryInterface $getRecordInformationQuery,
+        IdentifiableObjectRepositoryInterface $attributeRepository
+    ) {
+        $value = ReferenceEntityCollectionValue::value(
+            'designers_link',
+            [RecordCode::fromString('tony_stark'), RecordCode::fromString('banner')]
+        );
+
+        $this->attributeRepositoryWillReturnReferenceEntityCollectionAttribute($attributeRepository);
+        $this->recordInformationWillBe($getRecordInformationQuery, 'tony_stark', ['en_US' => 'Tony Stark']);
+        $this->recordInformationWillBe($getRecordInformationQuery, 'banner', ['en_US' => 'Banner the crazy']);
+
+        $this->normalize($value, 'datagrid', ['data_locale' => 'fr_FR'])
             ->shouldReturn([
                 'locale' => null,
                 'scope'  => null,
@@ -74,19 +85,9 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior
             [RecordCode::fromString('tony_stark'), RecordCode::fromString('banner')]
         );
 
-        $simpleLinkAttribute = new Attribute();
-        $simpleLinkAttribute->setType(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION)
-            ->setBackendType(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS)
-            ->setReferenceDataName('designer');
-        $attributeRepository->findOneByIdentifier('designers_link')->willReturn($simpleLinkAttribute);
-
-        $stark = new RecordInformation('designer', 'tony_stark', ['en_US' => 'Tony Stark']);
-        $getRecordInformationQuery->execute('designer', 'tony_stark')
-            ->willReturn($stark);
-
-        $banner = new RecordInformation('designer', 'banner', ['en_US' => 'Banner the crazy']);
-        $getRecordInformationQuery->execute('designer', 'banner')
-            ->willReturn($banner);
+        $this->attributeRepositoryWillReturnReferenceEntityCollectionAttribute($attributeRepository);
+        $this->recordInformationWillBe($getRecordInformationQuery, 'tony_stark', ['en_US' => 'Tony Stark']);
+        $this->recordInformationWillBe($getRecordInformationQuery, 'banner', ['en_US' => 'Banner the crazy']);
 
         $this->normalize($value, 'datagrid', ['data_locale' => 'en_US'])
             ->shouldReturn([
@@ -96,10 +97,7 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior
             ]);
     }
 
-    function it_returns_null_if_the_value_is_empty(
-        GetRecordInformationQueryInterface $getRecordInformationQuery,
-        IdentifiableObjectRepositoryInterface $attributeRepository
-    ) {
+    function it_returns_null_if_the_value_is_empty() {
         $value = ReferenceEntityCollectionValue::value('designers_link', []);
         $this->normalize($value, 'datagrid', ['data_locale' => 'en_US'])->shouldReturn(null);
     }
@@ -111,5 +109,25 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($referenceEntityValue, 'datagrid')->shouldReturn(true);
         $this->supportsNormalization($referenceEntityValue, 'standard')->shouldReturn(false);
         $this->supportsNormalization(new \StdClass(), 'standard')->shouldReturn(false);
+    }
+
+    private function attributeRepositoryWillReturnReferenceEntityCollectionAttribute(
+        IdentifiableObjectRepositoryInterface $attributeRepository
+    ): void {
+        $simpleLinkAttribute = new Attribute();
+        $simpleLinkAttribute->setType(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION)
+            ->setBackendType(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS)
+            ->setReferenceDataName('designer');
+        $attributeRepository->findOneByIdentifier('designers_link')->willReturn($simpleLinkAttribute);
+    }
+
+    private function recordInformationWillBe(
+        GetRecordInformationQueryInterface $getRecordInformationQuery,
+        $code,
+        $labels
+    ): void {
+        $stark = new RecordInformation('designer', $code, $labels);
+        $getRecordInformationQuery->execute('designer', $code)
+            ->willReturn($stark);
     }
 }

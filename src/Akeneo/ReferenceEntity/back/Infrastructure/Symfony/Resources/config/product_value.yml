@@ -125,8 +125,16 @@ services:
         - { name: pim_storage_serializer.normalizer, priority: 90 }
         - { name: pim_versioning.serializer.normalizer, priority: 100 }
 
-    pim_datagrid.normalizer.product.reference_entity_value:
+    pimee_datagrid.normalizer.product.reference_entity_value:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Normalizer\ReferenceEntityValueNormalizer
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pimee.reference_entity.datagrid.query.get_record_information'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pimee_datagrid.normalizer.product.reference_entity_collection_value:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Normalizer\ReferenceEntityCollectionValueNormalizer
         arguments:
             - '@pim_catalog.repository.cached_attribute'
             - '@pimee.reference_entity.datagrid.query.get_record_information'
