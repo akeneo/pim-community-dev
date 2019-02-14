@@ -7,6 +7,11 @@ variable "google_project_zone" {
   description = "Google zone where the project is deployed (Used for backup)."
 }
 
+variable "pager_duty_service_key" {
+  type        = "string"
+  description = "PagerDuty Service key, get it on the pagerduty page of the service"
+}
+
 variable "pfid" {
   type = "string"
 }

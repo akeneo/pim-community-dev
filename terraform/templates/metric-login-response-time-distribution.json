@@ -1,0 +1,27 @@
+{
+  "name": "${pfid}-login-response-time-distribution",
+  "description": "Distribution of response time on the /user/login url.",
+  "filter": "resource.type=k8s_container AND jsonPayload.http.path=\"/user/login\" AND resource.labels.namespace_name=${pfid}",
+  "valueExtractor": "EXTRACT(jsonPayload.http.duration_micros)",
+  "labelExtractors": {
+    "response_code": "EXTRACT(jsonPayload.http.response_code)"
+  },
+  "bucketOptions": {
+    "exponentialBuckets": {
+      "numFiniteBuckets": 20,
+      "growthFactor": 2,
+      "scale": 5
+    }
+  },
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "valueType": "DISTRIBUTION",
+    "unit": "us",
+    "labels": [
+      {
+        "key": "response_code",
+        "valueType": "INT64"
+      }
+    ]
+  }
+}
