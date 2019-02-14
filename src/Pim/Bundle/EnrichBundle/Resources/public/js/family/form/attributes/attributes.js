@@ -213,9 +213,9 @@ define([
              * @param {Object} event
              */
             toggleAttribute(event) {
-                const attributeCode = event.currentTarget.dataset.attributeCode;
-                const attributeType = event.currentTarget.dataset.attributeType;
-                const channelCode = event.currentTarget.dataset.channelCode;
+                const attributeCode = event.currentTarget.dataset.attribute;
+                const attributeType = event.currentTarget.dataset.type;
+                const channelCode = event.currentTarget.dataset.channel;
 
                 if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
                     return;
