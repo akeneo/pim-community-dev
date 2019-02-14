@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class DeleteProjectStatusIfUserIsNotLinkedToProjectSubscriber implements EventSubscriberInterface
 {
-    /** @var \Akeneo\Pim\WorkOrganization\Workflow\Component\Query\\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\DeleteProjectStatusIfUserIsNotLinkedToProject */
+    /** @var DeleteProjectStatusIfUserIsNotLinkedToProject */
     private $deleteProjectStatusIfUserIsNotLinkedToProject;
 
     public function __construct(DeleteProjectStatusIfUserIsNotLinkedToProject $deleteProjectStatusIfUserIsNotLinkedToProject)
