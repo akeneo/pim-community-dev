@@ -3,11 +3,11 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\DeleteProjectStatusIfUserIsNotLinkedToProjectSubscriber;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\DeleteProjectStatusIfUserIsNotLinkedToProject;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use spec\PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\DeleteProjectStatusIfUserIsNotLinkedToProjectSpec;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -56,4 +56,9 @@ class DeleteProjectStatusIfUserIsNotLinkedToProjectSubscriberSpec extends Object
 
         $this->removeUserFromProject($event)->shouldReturn(null);
     }
+}
+
+interface DeleteProjectStatusIfUserIsNotLinkedToProjectSpec extends DeleteProjectStatusIfUserIsNotLinkedToProject
+{
+    public function __invoke(int $userId): void;
 }
