@@ -59,6 +59,6 @@ class AverageMaxVolumes
 
     public function hasWarning(): bool
     {
-        return $this->limit >= 0 && $this->maxVolume > $this->limit;
+        return $this->limit >= 0 && $this->maxVolume > $this->limit && true;
     }
 }
