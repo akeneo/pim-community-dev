@@ -5,6 +5,6 @@ rm -rf ./web/js
 rm -rf ./web/css
 bin/console --env=prod pim:installer:assets --symlink --clean
 
-yarn run styles
+yarn run less
 yarn run webpack-dev
 yarn run webpack-test
