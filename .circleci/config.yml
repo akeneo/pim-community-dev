@@ -122,7 +122,7 @@ jobs:
             - run:
                   name: PHPunit Integration
                   command: |
-                      TESTFILES=$(circleci tests glob "src/**/*Integration.php" "vendor/akeneo/pim-community-dev/tests/back/**/*Integration.php" "vendor/akeneo/pim-community-dev/src/**/*Integration.php" | circleci tests split)
+                      TESTFILES=$(docker-compose exec -T fpm vendor/akeneo/pim-community-dev/.circleci/find_phpunit.sh PIM_Integration_Test | circleci tests split)
                       vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh $TESTFILES
             - store_test_results:
                   path: var/tests/phpunit
