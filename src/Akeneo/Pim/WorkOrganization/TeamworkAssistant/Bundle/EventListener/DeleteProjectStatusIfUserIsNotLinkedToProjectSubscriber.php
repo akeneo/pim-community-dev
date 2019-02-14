@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
+namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\DeleteProjectStatusIfUserIsNotLinkedToProject;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PimEnterprise\Component\Workflow\Query\DeleteProjectStatusIfUserIsNotLinkedToProject;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class DeleteProjectStatusIfUserIsNotLinkedToProjectSubscriber implements EventSubscriberInterface
 {
-    /** @var DeleteProjectStatusIfUserIsNotLinkedToProject */
+    /** @var \Akeneo\Pim\WorkOrganization\Workflow\Component\Query\\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\DeleteProjectStatusIfUserIsNotLinkedToProject */
     private $deleteProjectStatusIfUserIsNotLinkedToProject;
 
     public function __construct(DeleteProjectStatusIfUserIsNotLinkedToProject $deleteProjectStatusIfUserIsNotLinkedToProject)

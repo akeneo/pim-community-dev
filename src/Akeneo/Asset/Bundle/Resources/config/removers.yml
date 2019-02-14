@@ -38,6 +38,6 @@ services:
             - '@pim_catalog.repository.attribute'
 
     pimee_product_asset.persistence.delete_variation_for_channel_id:
-        class: 'PimEnterprise\Bundle\ProductAssetBundle\Persistence\DeleteVariationsForChannelIdFromDB'
+        class: 'Akeneo\Asset\Bundle\Persistence\Query\DeleteVariationsForChannelIdFromDB'
         arguments:
             - '@database_connection'

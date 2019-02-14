@@ -2,16 +2,15 @@
 
 namespace Specification\Akeneo\Asset\Bundle\EventSubscriber\ORM;
 
+use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
+use Akeneo\Asset\Component\Query\DeleteVariationsForChannelId;
+use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
+use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
-use Akeneo\Asset\Component\Model\VariationInterface;
-use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
-use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PimEnterprise\Component\ProductAsset\Persistence\DeleteVariationsForChannelId;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class RemoveChannelSubscriberSpec extends ObjectBehavior

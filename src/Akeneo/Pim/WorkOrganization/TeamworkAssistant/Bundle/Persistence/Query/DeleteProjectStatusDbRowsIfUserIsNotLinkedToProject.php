@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\Query\Sql;
+namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Persistence\Query;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\DeleteProjectStatusIfUserIsNotLinkedToProject;
 use Doctrine\DBAL\Connection;
-use PimEnterprise\Component\Workflow\Query\DeleteProjectStatusIfUserIsNotLinkedToProject;
 
 /**
  * Delete project status db rows if a user is not linked to any project.

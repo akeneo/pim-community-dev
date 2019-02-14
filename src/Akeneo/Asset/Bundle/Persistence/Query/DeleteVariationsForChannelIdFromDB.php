@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Persistence;
+namespace Akeneo\Asset\Bundle\Persistence\Query;
 
+use Akeneo\Asset\Component\Query\DeleteVariationsForChannelId;
 use Doctrine\DBAL\Connection;
-use PimEnterprise\Component\ProductAsset\Persistence\DeleteVariationsForChannelId;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

@@ -1,15 +1,13 @@
 <?php
 
-declare(strict_types=1);
+namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
-namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
-
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\DeleteProjectStatusIfUserIsNotLinkedToProjectSubscriber;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\DeleteProjectStatusIfUserIsNotLinkedToProjectSubscriber;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Workflow\Query\DeleteProjectStatusIfUserIsNotLinkedToProject;
 use Prophecy\Argument;
+use spec\PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\DeleteProjectStatusIfUserIsNotLinkedToProjectSpec;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -35,8 +33,10 @@ class DeleteProjectStatusIfUserIsNotLinkedToProjectSubscriberSpec extends Object
         $this->getSubscribedEvents()->shouldReturn([StorageEvents::PRE_REMOVE => 'removeUserFromProject']);
     }
 
-    function it_does_nothing_if_subject_is_not_a_user($deleteProjectStatusIfUserIsNotLinkedToProject, GenericEvent $event)
-    {
+    function it_does_nothing_if_subject_is_not_a_user(
+        $deleteProjectStatusIfUserIsNotLinkedToProject,
+        GenericEvent $event
+    ) {
         $event->getSubject()->willReturn(new \stdClass());
 
         $deleteProjectStatusIfUserIsNotLinkedToProject->__invoke(Argument::any())->shouldNotBeCalled();
@@ -56,9 +56,4 @@ class DeleteProjectStatusIfUserIsNotLinkedToProjectSubscriberSpec extends Object
 
         $this->removeUserFromProject($event)->shouldReturn(null);
     }
-}
-
-interface DeleteProjectStatusIfUserIsNotLinkedToProjectSpec extends DeleteProjectStatusIfUserIsNotLinkedToProject
-{
-    public function __invoke(int $userId): void;
 }

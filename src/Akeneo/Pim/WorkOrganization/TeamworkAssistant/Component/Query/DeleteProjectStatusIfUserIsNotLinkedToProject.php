@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Workflow\Query;
+namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query;
 
 interface DeleteProjectStatusIfUserIsNotLinkedToProject
 {

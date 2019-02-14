@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\Command;
+namespace AkeneoTestEnterprise\Asset\EndToEnd\Command;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Asset\Component\Model\Asset;
+use Akeneo\Asset\Component\Model\Reference;
+use Akeneo\Asset\Component\Model\Variation;
+use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use PimEnterprise\Component\ProductAsset\Model\Asset;
-use PimEnterprise\Component\ProductAsset\Model\Reference;
-use PimEnterprise\Component\ProductAsset\Model\Variation;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -300,7 +300,7 @@ class GenerateMissingVariationFilesCommandIntegration extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute($arrayInput);
 
-        $output = $commandTester->getOutput();
+        $commandTester->getOutput();
         $exitCode = $commandTester->getStatusCode();
         if ($exitCode !== 0) {
             throw new \Exception(sprintf('The command "%s", was not executed successfully', $commandName));
