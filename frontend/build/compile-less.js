@@ -93,10 +93,12 @@ plugin.setOptions({
 const appStyles = collectBundleStyles(bundlePaths).join('')
 const compiledStyles = lessc.render(appStyles, {
     plugins: [plugin],
+    sourceMap: {sourceMapFileInline: true}
 })
     .then(function(output) {
         try {
             fs.writeFileSync(path.resolve(rootDir, './web/css/pim.css'), output.css, 'utf-8')
+            console.log('Compiled')
         } catch(e) {
             console.log("Error writing file", e)
         }
