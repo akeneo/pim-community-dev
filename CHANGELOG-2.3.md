@@ -1,5 +1,10 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7939: Fix PQB search when an attribute as label is on an ancestor.
+  -> Not mandatory, you can re-index your products and product models to enjoy this fix with commands: `bin/console pim:product:index --all` and `bin/console pim:product-model:index --all`.
+
 # 2.3.29 (2019-02-11)
 
 ## Bug fixes

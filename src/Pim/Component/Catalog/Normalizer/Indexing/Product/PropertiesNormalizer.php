@@ -142,7 +142,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         return $date;
     }
 
-
     /**
      * @param ProductInterface $product
      *
@@ -158,7 +157,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         }
 
         $ancestors = [
-            'ids'   => $ancestorsIds,
+            'ids' => $ancestorsIds,
             'codes' => $ancestorsCodes,
         ];
 

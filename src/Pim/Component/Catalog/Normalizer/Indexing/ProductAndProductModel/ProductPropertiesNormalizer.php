@@ -8,6 +8,8 @@ use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -31,6 +33,23 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     private const FIELD_PARENT = 'parent';
     private const FIELD_ANCESTORS = 'ancestors';
     private const FIELD_CATEGORIES_OF_ANCESTORS = 'categories_of_ancestors';
+
+    /** @var ChannelRepositoryInterface */
+    private $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
+    /**
+     * @todo merge master: remove "= null"
+     */
+    public function __construct(
+        ChannelRepositoryInterface $channelRepository = null,
+        LocaleRepositoryInterface $localeRepository = null
+    ) {
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
+    }
 
     /**
      * {@inheritdoc}
@@ -78,7 +97,6 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 $context
             ) : [];
-
 
         $familyVariantCode = null;
         if ($product->isVariant()) {
@@ -177,14 +195,17 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     {
         $ancestorsIds = [];
         $ancestorsCodes = [];
+        $ancestorsLabels = [];
         if ($product->isVariant()) {
             $ancestorsIds = $this->getAncestorsIds($product);
             $ancestorsCodes = $this->getAncestorsCodes($product);
+            $ancestorsLabels = $this->getAncestorsLabels($product);
         }
 
         $ancestors = [
-            'ids'   => $ancestorsIds,
+            'ids' => $ancestorsIds,
             'codes' => $ancestorsCodes,
+            'labels' => $ancestorsLabels,
         ];
 
         return $ancestors;
@@ -220,5 +241,120 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
         }
 
         return $ancestorsCodes;
+    }
+
+    /**
+     * @todo merge master: remove "$hasRepositories".
+     *
+     * Retrieves ancestors labels for each locales and channels.
+     *
+     * @param EntityWithFamilyVariantInterface $entity
+     *
+     * @return array
+     */
+    private function getAncestorsLabels(EntityWithFamilyVariantInterface $entity): array
+    {
+        $family = $entity->getFamily();
+        if (null === $family) {
+            return [];
+        }
+
+        $attributeAsLabel = $family->getAttributeAsLabel();
+        if (null === $attributeAsLabel) {
+            return [];
+        }
+
+        $hasRepositories = false;
+        if (null !== $this->channelRepository && null !== $this->localeRepository) {
+            $hasRepositories = true;
+        }
+
+        $ancestorsLabels = [];
+        $attributeCodeAsLabel = $attributeAsLabel->getCode();
+        switch (true) {
+            case $attributeAsLabel->isScopable() && $attributeAsLabel->isLocalizable() && $hasRepositories:
+                $ancestorsLabels = $this->getLocalizableAndScopableLabels($entity, $attributeCodeAsLabel);
+                break;
+
+            case $attributeAsLabel->isScopable() && $hasRepositories:
+                $ancestorsLabels = $this->getScopableLabels($entity, $attributeCodeAsLabel);
+                break;
+
+            case $attributeAsLabel->isLocalizable() && $hasRepositories:
+                $ancestorsLabels = $this->getLocalizableLabels($entity, $attributeCodeAsLabel);
+                break;
+
+            default:
+                $value = $entity->getValue($attributeCodeAsLabel);
+                if (null !== $value) {
+                    $ancestorsLabels['<all_channels>']['<all_locales>'] = $value->getData();
+                }
+                break;
+        }
+
+        return $ancestorsLabels;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param string $attributeCodeAsLabel
+     *
+     * @return array
+     */
+    private function getLocalizableAndScopableLabels(
+        EntityWithFamilyVariantInterface $entity,
+        string $attributeCodeAsLabel
+    ): array {
+        $ancestorsLabels = [];
+        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        foreach ($this->channelRepository->getChannelCodes() as $channelCode) {
+            foreach ($localeCodes as $localeCode) {
+                $value = $entity->getValue($attributeCodeAsLabel, $localeCode, $channelCode);
+                if (null !== $value) {
+                    $ancestorsLabels[$channelCode][$localeCode] = $value->getData();
+                }
+            }
+        }
+
+        return $ancestorsLabels;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param string $attributeCodeAsLabel
+     *
+     * @return array
+     */
+    private function getScopableLabels(EntityWithFamilyVariantInterface $entity, string $attributeCodeAsLabel): array
+    {
+        $ancestorsLabels = [];
+        foreach ($this->channelRepository->getChannelCodes() as $channelCode) {
+            $value = $entity->getValue($attributeCodeAsLabel, null, $channelCode);
+            if (null !== $value) {
+                $ancestorsLabels[$channelCode]['<all_locales>'] = $value->getData();
+            }
+        }
+
+        return $ancestorsLabels;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param string $attributeCodeAsLabel
+     *
+     * @return array
+     */
+    private function getLocalizableLabels(EntityWithFamilyVariantInterface $entity, string $attributeCodeAsLabel): array
+    {
+        $ancestorsLabels = [];
+        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        foreach ($localeCodes as $localeCode) {
+            $value = $entity->getValue($attributeCodeAsLabel, $localeCode);
+            if (null !== $value) {
+                $ancestorsLabels['<all_channels>'][$localeCode] = $value->getData();
+            }
+        }
+
+        return $ancestorsLabels;
     }
 }
