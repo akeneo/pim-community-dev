@@ -2,116 +2,69 @@ const rootDir = process.cwd();
 const path = require('path');
 const fs = require('fs')
 const lessc = require('less')
+const RewriteImageURLs = require('./less-rewrite-urls');
 const bundlePaths = require(path.resolve(rootDir, './web/js/require-paths'));
 const BUNDLE_LESS_INDEX_PATH = 'public/less/index.less'
+const OUTPUT_CSS_PATH = 'web/css/pim.css'
 
-function normalizeBundlePath(bundlePath) {
-    return bundlePath
-        .replace(/(^.+)[^vendor](?=\/src|\/vendor)\//gm, '')
+function getFileContents(filePath) {
+    try {
+        const fileContents = fs.readFileSync(filePath, {
+            encoding: 'utf-8'
+        })
+
+        console.log('✓', filePath)
+        return fileContents
+    } catch(e) {}
 }
 
-function collectBundleStyles(bundlePaths) {
-    const styles = bundlePaths.map(bundle => {
-        return path.dirname(bundle).replace('config', BUNDLE_LESS_INDEX_PATH);
+function collectBundleImports(bundlePaths) {
+    const indexFiles = bundlePaths.map(bundlePath => {
+        return path.dirname(bundlePath)
+            .replace('config', BUNDLE_LESS_INDEX_PATH)
+            .replace(/(^.+)[^vendor](?=\/src|\/vendor)\//gm, '')
     })
 
-    const imports = []
+    const bundleImports = []
 
     console.log('Compiling less\n')
-    for (style of styles) {
-        const absolutePath = normalizeBundlePath(style)
-        try {
-            const contents = fs.readFileSync(absolutePath, {
-                encoding: 'utf-8'
-            })
-
-            console.log('-', absolutePath)
-            imports.push(contents)
-        } catch(e) {}
+    for (filePath of indexFiles) {
+        bundleImports.push(getFileContents(filePath))
     }
 
     console.log('\n')
-    return imports;
+    return bundleImports.join('');
 }
 
-function getProcessor(less) {
-
-    function Processor(options) {
-        this.options = options || {replace: []};
-        this._visitor = new less.visitors.Visitor(this);
-    }
-
-    Processor.prototype = {
-        isReplacing: true,
-        isPreEvalVisitor: true,
-        run: function (root) {
-            return this._visitor.visit(root);
-        },
-        visitUrl: function (URLNode, visitArgs) {
-            var path = URLNode.value.value;
-
-            if (!path) return;
-
-            if (typeof URLNode.value._fileInfo !== "undefined") {
-                var absPattern = new RegExp("^([a-zA-Z]+\:\/\/|\/|data\:).+");
-                if (!absPattern.test(URLNode.value.value)) {
-                    path = URLNode.value._fileInfo.currentDirectory + path;
-                }
-            }
-
-            this.options.replace.forEach(function(repl) {
-                var pattern = new RegExp(repl.search, "g");
-                path = path.replace(pattern, repl.replace)
-            });
-
-            URLNode.value.value = path;
-            return URLNode;
-        }
-    };
-    return Processor;
-};
-
-
-const AbsoluteURLs = function() {
-    return {
-        options: {},
-        install(less, pluginManager) {
-            var Processor = getProcessor(less);
-            pluginManager.addVisitor(new Processor(this.options));
-        },
-        setOptions: function(options) {
-            this.options = options
-        }
-    }
+function formatParseError(error) {
+    console.log(`Error compiling less: ${error.message}\n\n`, `${error.filename}:${error.line}:${error.column}`)
+    console.log(error.extract.map(line => `>${line}\n`).join(''))
 }
 
-const plugin = new AbsoluteURLs()
-plugin.setOptions({
-    replace: [{
-        search: './web/bundles',
-        replace: '/bundles' }
-    ]
-})
+const bundleImports = collectBundleImports(bundlePaths)
 
-const appStyles = collectBundleStyles(bundlePaths).join('')
-const compiledStyles = lessc.render(appStyles, {
-    plugins: [plugin],
-    sourceMap: {sourceMapFileInline: true}
-})
-    .then(function(output) {
+lessc.render(
+    bundleImports,
+    {
+        plugins: [
+            new RewriteImageURLs({
+                replace: [{
+                    search: './web/bundles',
+                    replace: '/bundles' }
+                ]
+            })
+        ],
+        sourceMap: {sourceMapFileInline: true}
+    }
+).then(function(output) {
         try {
-            fs.writeFileSync(path.resolve(rootDir, './web/css/pim.css'), output.css, 'utf-8')
-            console.log('Compiled')
+            fs.writeFileSync(path.resolve(rootDir, OUTPUT_CSS_PATH), output.css, 'utf-8')
+            console.log(`Successfully compiled to ${OUTPUT_CSS_PATH}`)
         } catch(e) {
-            console.log("Error writing file", e)
+            console.log('Error writing file', e)
         }
-        // output.css = string of css
         // output.map = string of sourcemap
-        // output.imports = array of string filenames of the imports referenced
-    },
-    function(error) {
-        console.log("Error rendering", error)
-        process.exit(1)
-    }).catch(error => console.log('Other error', error));
-
-
+}, function(error) {
+    formatParseError(error)
+    process.exit(1)
+}).catch(error => console.log('Other error', error));
