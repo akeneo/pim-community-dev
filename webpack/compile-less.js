@@ -13,6 +13,7 @@ function collectBundleStyles(bundlePaths) {
 
     const imports = []
 
+    console.log('Compiling less\n')
     for (style of styles) {
         const absolutePath = path.resolve(rootDir, style.replace('/srv/pim', '.'))
 
@@ -21,10 +22,12 @@ function collectBundleStyles(bundlePaths) {
                 encoding: 'utf-8'
             })
 
+            console.log('-', absolutePath)
             imports.push(contents)
         } catch(e) {}
     }
 
+    console.log('\n')
     return imports;
 }
 
@@ -103,6 +106,7 @@ const compiledStyles = lessc.render(appStyles, {
     },
     function(error) {
         console.log("Error rendering", error)
+        process.exit(1)
     }).catch(error => console.log('Other error', error));
 
 
