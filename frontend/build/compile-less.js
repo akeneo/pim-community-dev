@@ -1,14 +1,14 @@
 const rootDir = process.cwd();
 const path = require('path');
 const bundlePaths = require(path.resolve(rootDir, './web/js/require-paths'));
-const BUNDLE_LESS_PATH = 'public/less/index.less'
+const BUNDLE_LESS_INDEX_PATH = 'public/less/index.less'
 const fs = require('fs')
 const lessc = require('less')
 
 function collectBundleStyles(bundlePaths) {
     const styles = bundlePaths.map(bundle => {
         return  path.dirname(bundle)
-                .replace('config', BUNDLE_LESS_PATH);
+                .replace('config', BUNDLE_LESS_INDEX_PATH);
     })
 
     const imports = []
