@@ -1,7 +1,6 @@
 imports:
     - { resource: 'bundles/akeneo_batch.yml' }
     - { resource: 'bundles/akeneo_api.yml' }
-    - { resource: 'bundles/assetic.yml' }
     - { resource: 'bundles/doctrine.yml' }
     - { resource: 'bundles/fos_auth_server.yml' }
     - { resource: 'bundles/fos_js_routing.yml' }
