@@ -8,9 +8,11 @@ security:
     providers:
         chain_provider:
             chain:
-                providers: [pim_user]
+                providers: [saml_pim_user, pim_user]
         pim_user:
             id: pim_user.provider.user
+        saml_pim_user:
+            id: akeneo_authentication.sso.user.provider
 
     encoders:
         Akeneo\UserManagement\Component\Model\User: sha512

@@ -61,3 +61,9 @@ services:
             - '@templating'
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
+    akeneo_authentication.sso.user.provider:
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User\Provider'
+        arguments:
+            - '@pim_user.repository.user'
+            - '@akeneo_authentication.sso.configuration.repository'

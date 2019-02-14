@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.2 (2019-02-13)
+
 ## Bug fixes
 
 - PIM-7985: Fix locale permissions on Reference Entities
@@ -13,10 +15,13 @@
 - Fixed the "dot" menu on Reference Entity screen that was not visible if left panel was folded
 - PIM-8032: Fix the image deletion with the keyboard 
 - PIM-8043: Fix to keep the Save and Cancel button always on the right during the edition of a reference entity attribute
+- PIM-8046: Fix issue for reference entity attributes with a numeric code
+- PIM-8037: allow to click on record row even if it has not attribute
 
 ## Improvements
 
 - PIM-8040: The code should be check when upserting an attribute option (API)
+- AOB-351: Add a user provider used when sso is activated
 
 # 3.0.1 (2019-02-06)
 

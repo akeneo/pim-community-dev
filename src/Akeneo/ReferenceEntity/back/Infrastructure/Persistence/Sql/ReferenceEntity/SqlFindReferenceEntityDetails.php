@@ -19,6 +19,8 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsImageReferenc
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -37,10 +39,17 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
     /** @var FindAttributesDetailsInterface */
     private $findAttributesDetails;
 
-    public function __construct(Connection $sqlConnection, FindAttributesDetailsInterface $findAttributesDetails)
-    {
+    /** @var FindActivatedLocalesInterface  */
+    private $findActivatedLocales;
+
+    public function __construct(
+        Connection $sqlConnection,
+        FindAttributesDetailsInterface $findAttributesDetails,
+        FindActivatedLocalesInterface $findActivatedLocales
+    ) {
         $this->sqlConnection = $sqlConnection;
         $this->findAttributesDetails = $findAttributesDetails;
+        $this->findActivatedLocales = $findActivatedLocales;
     }
 
     /**
@@ -112,6 +121,7 @@ SQL;
         ?string $attributeAsImage
     ): ReferenceEntityDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
+        $activatedLocales = ($this->findActivatedLocales)();
 
         $labels = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($normalizedLabels, $platform);
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
@@ -125,9 +135,11 @@ SQL;
             $entityImage=Image::fromFileInfo($file);
         }
 
+        $labelsByActivatedLocales = $this->getLabelsByActivatedLocales($labels, $activatedLocales);
+
         $referenceEntityItem = new ReferenceEntityDetails();
         $referenceEntityItem->identifier = ReferenceEntityIdentifier::fromString($identifier);
-        $referenceEntityItem->labels = LabelCollection::fromArray($labels);
+        $referenceEntityItem->labels = LabelCollection::fromArray($labelsByActivatedLocales);
         $referenceEntityItem->image = $entityImage;
         $referenceEntityItem->recordCount = $recordCount;
         $referenceEntityItem->attributes = $attributesDetails;
@@ -135,5 +147,17 @@ SQL;
         $referenceEntityItem->attributeAsImage = AttributeAsImageReference::createFromNormalized($attributeAsImage);
 
         return $referenceEntityItem;
+    }
+
+    private function getLabelsByActivatedLocales(array $labels, array $activatedLocales): array
+    {
+        $filteredLabels = [];
+        foreach ($labels as $localeCode => $label) {
+            if (in_array($localeCode, $activatedLocales)) {
+                $filteredLabels[$localeCode] = $label;
+            }
+        }
+
+        return $filteredLabels;
     }
 }
