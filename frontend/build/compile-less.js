@@ -1,22 +1,25 @@
 const rootDir = process.cwd();
 const path = require('path');
-const bundlePaths = require(path.resolve(rootDir, './web/js/require-paths'));
-const BUNDLE_LESS_INDEX_PATH = 'public/less/index.less'
 const fs = require('fs')
 const lessc = require('less')
+const bundlePaths = require(path.resolve(rootDir, './web/js/require-paths'));
+const BUNDLE_LESS_INDEX_PATH = 'public/less/index.less'
+
+function normalizeBundlePath(bundlePath) {
+    return bundlePath
+        .replace(/(^.+)[^vendor](?=\/src|\/vendor)\//gm, '')
+}
 
 function collectBundleStyles(bundlePaths) {
     const styles = bundlePaths.map(bundle => {
-        return  path.dirname(bundle)
-                .replace('config', BUNDLE_LESS_INDEX_PATH);
+        return path.dirname(bundle).replace('config', BUNDLE_LESS_INDEX_PATH);
     })
 
     const imports = []
 
     console.log('Compiling less\n')
     for (style of styles) {
-        const absolutePath = path.resolve(rootDir, style.replace('/srv/pim', '.'))
-
+        const absolutePath = normalizeBundlePath(style)
         try {
             const contents = fs.readFileSync(absolutePath, {
                 encoding: 'utf-8'
