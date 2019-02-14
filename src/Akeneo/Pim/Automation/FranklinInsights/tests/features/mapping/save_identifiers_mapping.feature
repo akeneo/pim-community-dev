@@ -7,7 +7,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
   Background:
     Given Franklin is configured with a valid token
 
-  @critical
+  @critical @end-to-end @javascript
   Scenario: Successfully map Franklin identifiers to PIM attributes for the first time
     Given the predefined attributes pim_brand, mpn, ean and asin
     And an empty identifiers mapping

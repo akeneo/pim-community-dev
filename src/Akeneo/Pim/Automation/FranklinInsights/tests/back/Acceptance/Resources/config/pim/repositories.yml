@@ -9,7 +9,7 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository'
         arguments:
             - '@pim_catalog.repository.family'
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_without_permission'
 
     akeneo.pim.automation.franklin_insights.repository.search_family:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryFamilyRepository'

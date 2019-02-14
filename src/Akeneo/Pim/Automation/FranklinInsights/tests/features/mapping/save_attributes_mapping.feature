@@ -4,16 +4,17 @@ Feature: Map the PIM attributes with Franklin attributes
   As a system administrator
   I want to map Franklin attributes to Akeneo PIM attributes
 
-  @critical
+  @critical @end-to-end @javascript
   Scenario: Successfully save the attributes mapping for the first time
-    Given the family "router"
-    And Franklin is configured with a valid token
+    Given Franklin is configured with a valid token
+    And the product "B00EYZY6AC" of the family "router"
+    And the product "B00EYZY6AC" is subscribed to Franklin
     When the attributes are mapped for the family "router" as follows:
       | target_attribute_code | pim_attribute_code |
-      | product_weight        |                    |
-      | color                 | color              |
-    Then Franklin's attribute product_weight should not be mapped
-    And Franklin's attribute color should be mapped to color
+      | product_weight        | weight             |
+      | color                 |                    |
+    Then Franklin's attribute product_weight should be mapped to weight
+    But Franklin's attribute color should not be mapped
 
   Scenario: Successfully udpdate the attributes mapping
     Given the family "router"

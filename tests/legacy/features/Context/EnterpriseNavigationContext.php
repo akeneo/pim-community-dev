@@ -23,7 +23,9 @@ class EnterpriseNavigationContext extends BaseNavigationContext
         'asset edit'         => 'Asset edit',
         'asset mass upload'  => 'Asset massUpload',
         'assets categories'  => 'Asset Category tree index',
-        'Franklin configuration' => 'PimAi configuration index',
+        'Franklin configuration' => 'FranklinInsights configuration index',
+        'Franklin identifiers mapping' => 'FranklinInsights mapping identifiers index',
+        'Franklin attributes mapping' => 'FranklinInsights mapping attributes index',
     ];
 
     /**

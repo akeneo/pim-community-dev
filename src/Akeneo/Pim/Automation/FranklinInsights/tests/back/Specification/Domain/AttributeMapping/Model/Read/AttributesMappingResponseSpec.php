@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
@@ -47,11 +48,11 @@ class AttributesMappingResponseSpec extends ObjectBehavior
 
     public function it_sorts_attributes_mapping(): void
     {
-        $attrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMapping::ATTRIBUTE_PENDING);
-        $attrSize = new AttributeMapping('size', 'Size', 'select', 'pim_size', AttributeMapping::ATTRIBUTE_MAPPED);
-        $attrColor = new AttributeMapping('color', 'Color', 'select', null, AttributeMapping::ATTRIBUTE_PENDING);
-        $attrLabel = new AttributeMapping('label', 'Label', 'text', null, AttributeMapping::ATTRIBUTE_UNMAPPED);
-        $attrHeight = new AttributeMapping('height', 'Height', 'metric', null, AttributeMapping::ATTRIBUTE_UNMAPPED);
+        $attrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
+        $attrSize = new AttributeMapping('size', 'Size', 'select', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE);
+        $attrColor = new AttributeMapping('color', 'Color', 'select', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
+        $attrLabel = new AttributeMapping('label', 'Label', 'text', null, AttributeMappingStatus::ATTRIBUTE_INACTIVE);
+        $attrHeight = new AttributeMapping('height', 'Height', 'metric', null, AttributeMappingStatus::ATTRIBUTE_INACTIVE);
 
         $this
             ->addAttribute($attrWeight)
@@ -65,5 +66,15 @@ class AttributesMappingResponseSpec extends ObjectBehavior
             $franklinAttrCodes[] = $attrMapping;
         }
         Assert::eq($franklinAttrCodes, [$attrColor, $attrHeight, $attrLabel, $attrSize, $attrWeight]);
+    }
+
+    public function it_can_check_if_mapping_is_empty(): void
+    {
+        $this->isEmpty()->shouldReturn(true);
+
+        $attrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
+        $this->addAttribute($attrWeight);
+
+        $this->isEmpty()->shouldReturn(false);
     }
 }

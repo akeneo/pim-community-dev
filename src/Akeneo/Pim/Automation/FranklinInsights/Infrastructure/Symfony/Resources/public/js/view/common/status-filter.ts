@@ -36,8 +36,8 @@ class StatusFilter extends BaseForm {
     return [
       {value: '', label: __('pim_common.all')},
       {value: 0, label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.pending')},
-      {value: 1, label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.mapped')},
-      {value: 2, label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.unmapped')},
+      {value: 1, label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.active')},
+      {value: 2, label: __('akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.inactive')},
     ];
   }
 

@@ -61,6 +61,9 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Application',
 
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchProductsExecutionDatetimeQuery',
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserAndFamilyIdsWithMissingMappingQuery',
+
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification\NotifyUserAboutMissingMapping',
 
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\Batch',
@@ -75,6 +78,8 @@ $rules = [
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
+            'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector'),
 
@@ -114,10 +119,11 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Application',
 
             // External dependencies
+            'Symfony\Component\Security\Core\Exception\AccessDeniedException',
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\HttpKernel\Exception',
             'Symfony\Component\Translation',
-            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
+            'Oro\Bundle\SecurityBundle\SecurityFacade',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi'),
 
@@ -133,7 +139,6 @@ $rules = [
             // External dependencies
             'Doctrine',
 
-            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
             // TODO: link by ID instead of reference
             'Akeneo\Pim\Structure\Component\Model\Family',
             'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
@@ -207,7 +212,6 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-            'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
             'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
             // TIP-1017: Do not use public constants of AttributeTypes

@@ -16,6 +16,7 @@ namespace Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
+use Akeneo\Tool\Component\Console\CommandLauncher;
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
@@ -31,15 +32,22 @@ final class FranklinConfigurationContext extends PimContext
     /** @var ConfigurationRepositoryInterface */
     private $configurationRepository;
 
+    /** @var CommandLauncher */
+    private $commandLauncher;
+
     /**
      * @param string $mainContextClass
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
-    public function __construct(string $mainContextClass, ConfigurationRepositoryInterface $configurationRepository)
-    {
+    public function __construct(
+        string $mainContextClass,
+        ConfigurationRepositoryInterface $configurationRepository,
+        CommandLauncher $commandLauncher
+    ) {
         parent::__construct($mainContextClass);
 
         $this->configurationRepository = $configurationRepository;
+        $this->commandLauncher = $commandLauncher;
     }
 
     /**
@@ -100,6 +108,9 @@ final class FranklinConfigurationContext extends PimContext
             ->getMainContext()
             ->getSubcontext('catalogConfiguration')
             ->aCatalogConfiguration('default');
+
+        $this->commandLauncher->executeForeground('pimee:franklin-insights:init-franklin-user');
+        $this->commandLauncher->executeForeground('pimee:franklin-insights:init-job-instances');
     }
 
     private function loginAsAdmin(): void

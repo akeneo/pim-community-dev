@@ -157,7 +157,13 @@ legacy:
                         window_height: 1024
                 - Context\EnterpriseFixturesContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                - Context\EnterpriseDataGridContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                - Context\EnterpriseWebUser:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                 - Context\EnterpriseCatalogConfigurationContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                - Context\EnterpriseAssertionContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                 - PimEnterprise\Behat\Context\HookContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
@@ -177,9 +183,12 @@ legacy:
                     - '@akeneo_e2e.context.franklin_insights.builder.product'
                     - '@pim_catalog.saver.product'
                     - '@pim_catalog.repository.product'
+                    - '@akeneo_e2e.context.franklin_insights.builder.attribute_option'
+                    - '@pim_catalog.saver.attribute_option'
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FranklinConfigurationContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@akeneo.pim.automation.franklin_insights.repository.configuration'
+                    - '@pim_catalog.command_launcher'
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\ProductSubscriptionContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@pim_catalog.repository.product'
@@ -188,6 +197,19 @@ legacy:
                     - '@pim_catalog.repository.product'
                     - '@pimee_workflow.repository.product_draft'
                     - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\IdentifiersMappingContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                    - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
+                    - '@pim_catalog.repository.attribute'
+                    - '@akeneo_batch.job.job_instance_repository'
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\AttributesMappingContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                    - '@pim_catalog.repository.family'
+                    - '@pim_catalog.repository.attribute'
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\AttributeOptionsMappingContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                    - '@pim_catalog.repository.family'
+                    - '@pim_catalog.repository.attribute_option'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

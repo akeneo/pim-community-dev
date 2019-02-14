@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context;
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Context\EnterpriseAssertionContext;
 use Context\EnterpriseCatalogConfigurationContext;
 use Context\EnterpriseFeatureContext;
 use Context\EnterpriseFixturesContext;
+use Context\EnterpriseWebUser;
 use PimEnterprise\Behat\Context\HookContext;
 use PimEnterprise\Behat\Context\NavigationContext;
 
@@ -38,5 +40,7 @@ class FeatureContext extends EnterpriseFeatureContext
         $this->contexts['catalogConfiguration'] = $env->getContext(EnterpriseCatalogConfigurationContext::class);
         $this->contexts['navigation'] = $env->getContext(NavigationContext::class);
         $this->contexts['hook'] = $env->getContext(HookContext::class);
+        $this->contexts['assertions'] = $env->getContext(EnterpriseAssertionContext::class);
+        $this->contexts['webUser'] = $env->getContext(EnterpriseWebUser::class);
     }
 }
