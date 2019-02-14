@@ -49,7 +49,7 @@ const Modal = async (nodeElement, createElementDecorator, page) => {
 
   const toggleCreateAnother = async () => {
     const checkbox = await page.$('.AknFieldContainer[data-code="create_another"] .AknCheckbox');
-    checkbox.click();
+    await checkbox.click();
   };
 
   const select = async (selector, value) => {

@@ -4,6 +4,7 @@
 
 - APAI-550: Add ACL checks on the backend part
 - APAI-561: Silently filter unknown/unexisting attribute options on attribute options (Franklin Insights)
+- PIM-8130: Fixed the product grid filter for attribute with type "Reference Entity" (multi & simple link)
 
 ## Improvements
 

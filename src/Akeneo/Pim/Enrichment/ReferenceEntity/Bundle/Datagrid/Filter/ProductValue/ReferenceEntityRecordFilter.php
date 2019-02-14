@@ -20,6 +20,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindExistingRecordCodes;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
 use Oro\Bundle\PimFilterBundle\Filter\ProductValue\ChoiceFilter;
@@ -60,6 +61,28 @@ class ReferenceEntityRecordFilter extends ChoiceFilter
 
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->existingRecordCodesQuery = $existingRecordCodesQuery;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        $data = $this->parseData($data);
+        if (!$data) {
+            return false;
+        }
+
+        $operator = $this->getOperator($data['type']);
+
+        $this->util->applyFilter(
+            $ds,
+            $this->get(ProductFilterUtility::DATA_NAME_KEY),
+            $operator,
+            $data['value']
+        );
+
+        return true;
     }
 
     /**
