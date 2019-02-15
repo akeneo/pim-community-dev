@@ -57,6 +57,18 @@ akeneo_pim_structure:
         color:
             class: Acme\Bundle\AppBundle\Entity\Color
             type: simple
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: warning
+            handler:      nested
+        nested:
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
+            level: info
+        console:
+            type:  console
 
 parameters:
     pim_ce_dev_src_folder_location: '%kernel.project_dir%'

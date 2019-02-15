@@ -1,5 +1,6 @@
 imports:
-    - { resource: config_behat.yml }
+    - { resource: config.yml }
+    - { resource: parameters_test.yml }
     - { resource: ../../tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../tests/back/Acceptance/Resources/config/pim/file_storage.yml }
     - { resource: ../../tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/pim/queries.yml }
@@ -11,9 +12,21 @@ framework:
     test: ~
     session:
         storage_id: session.storage.mock_file
-    csrf_protection: true
     profiler:
         collect: false
 
 swiftmailer:
     disable_delivery: true
+
+pim_import_export:
+    record_mails: true
+
+parameters:
+    max_products_category_removal: 20
+    installer_data:       PimInstallerBundle:minimal
+    upload_dir:           '%kernel.root_dir%/../var/cache/uploads/product'
+    archive_dir:          '%kernel.root_dir%/../var/cache/archive'
+    logs_dir:             '%kernel.logs_dir%'
+    catalog_storage_dir:  '%kernel.root_dir%/../var/cache/file_storage/catalog'
+    tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
+    upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'
