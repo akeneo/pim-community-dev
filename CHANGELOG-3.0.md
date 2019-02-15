@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8127: Be able to save and launch job even if filter values refer to deleted entities.
+
 # 3.0.2 (2019-02-13)
 
 ## Bug fixes
