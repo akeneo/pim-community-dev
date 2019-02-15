@@ -67,7 +67,7 @@ class ReferenceEntityValueNormalizer implements NormalizerInterface
         return $recordCode === null || empty($recordCode->normalize());
     }
 
-    private function formatSimpleLink(ReferenceEntityValueInterface $value, string $catalogLocaleCode)
+    private function formatSimpleLink(ReferenceEntityValueInterface $value, string $catalogLocaleCode): string
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
         $recordInformation = $this->getRecordInformation($attribute, $value);
@@ -88,7 +88,7 @@ class ReferenceEntityValueNormalizer implements NormalizerInterface
     ): RecordInformation {
         $referenceEntityIdentifier = $attribute->getReferenceDataName();
         $recordCode = $value->getData()->normalize();
-        $recordInformation = $this->getRecordInformationQuery->execute($referenceEntityIdentifier, $recordCode);
+        $recordInformation = $this->getRecordInformationQuery->fetch($referenceEntityIdentifier, $recordCode);
 
         return $recordInformation;
     }

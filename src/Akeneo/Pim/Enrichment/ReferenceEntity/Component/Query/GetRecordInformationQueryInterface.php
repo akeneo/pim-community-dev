@@ -13,5 +13,5 @@ namespace Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query;
  */
 interface GetRecordInformationQueryInterface
 {
-    public function execute(string $referenceEntityIdentifier, string $recordCode): RecordInformation;
+    public function fetch(string $referenceEntityIdentifier, string $recordCode): RecordInformation;
 }

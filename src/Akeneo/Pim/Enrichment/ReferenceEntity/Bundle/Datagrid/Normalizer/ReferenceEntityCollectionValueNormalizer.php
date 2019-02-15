@@ -72,7 +72,7 @@ class ReferenceEntityCollectionValueNormalizer implements NormalizerInterface
 
         $labels = array_map(
             function (RecordCode $recordCode) use ($attribute, $catalogLocaleCode) {
-                return $this->formatLink($recordCode, $catalogLocaleCode, $attribute);
+                return $this->formatLink($recordCode, $attribute, $catalogLocaleCode);
             },
             $value->getData()
         );
@@ -80,7 +80,7 @@ class ReferenceEntityCollectionValueNormalizer implements NormalizerInterface
         return implode(', ', $labels);
     }
 
-    private function formatLink(RecordCode $recordCode, string $catalogLocaleCode, $attribute): string
+    private function formatLink(RecordCode $recordCode, AttributeInterface $attribute, string $catalogLocaleCode): string
     {
         $recordInformation = $this->getRecordInformation($attribute, $recordCode);
 
@@ -96,7 +96,7 @@ class ReferenceEntityCollectionValueNormalizer implements NormalizerInterface
     private function getRecordInformation(AttributeInterface $attribute, RecordCode $recordCode): RecordInformation
     {
         $referenceEntityIdentifier = $attribute->getReferenceDataName();
-        $recordInformation = $this->getRecordInformationQuery->execute(
+        $recordInformation = $this->getRecordInformationQuery->fetch(
             $referenceEntityIdentifier,
             $recordCode->normalize()
         );

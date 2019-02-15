@@ -29,7 +29,7 @@ class GetRecordInformationQuery implements GetRecordInformationQueryInterface
         $this->findRecordDetails = $findRecordDetails;
     }
 
-    public function execute(string $referenceEntityIdentifier, string $recordCode): RecordInformation
+    public function fetch(string $referenceEntityIdentifier, string $recordCode): RecordInformation
     {
         $recordDetails = ($this->findRecordDetails)(
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
