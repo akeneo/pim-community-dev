@@ -32,7 +32,7 @@ class AppKernel extends Kernel
     {
         $bundles = $this->registerProjectBundles();
 
-        if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
+        if (in_array($this->getEnvironment(), array('dev', 'test_database', 'test_fake'))) {
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
