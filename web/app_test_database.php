@@ -1,11 +1,17 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Dotenv\Dotenv;
 
 ini_set('display_errors', '1');
 error_reporting(E_ALL);
 
 require __DIR__.'/../vendor/autoload.php';
+
+$envFile = __DIR__ . '/../.env';
+if (file_exists($envFile)) {
+    (new Dotenv())->load($envFile);
+}
 
 $kernel = new AppKernel('test_database', false);
 //$kernel = new AppCache($kernel);
