@@ -1,11 +1,14 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-8058: Backport PIM-8020 to update missing attributes
+
 # 2.0.47 (2019-02-13)
 
 ## Bug fixes
 
 - PIM-7889: Fix product & product model classification in Elasticsearch after a category deletion
-- PIM-8058: Backport PIM-8020 to update missing attributes
 
 # 2.0.46 (2019-01-28)
 
