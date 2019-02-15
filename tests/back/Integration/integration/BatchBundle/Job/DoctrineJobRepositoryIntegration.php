@@ -35,7 +35,9 @@ class DoctrineJobRepositoryIntegration extends TestCase
             'raw_parameters' => '{"foo": "bar"}',
         ];
 
-        $this->assertEquals($expectedResult, $result);
+        $this->assertEquals($expectedResult['status'], $result['status']);
+        $this->assertEquals($expectedResult['exit_code'], $result['exit_code']);
+        $this->assertJsonStringEqualsJsonString($expectedResult['raw_parameters'], $result['raw_parameters']);
     }
 
     public function testGetLastJobExecutionWithJobParameters()
