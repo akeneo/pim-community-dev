@@ -2,7 +2,7 @@ import Value, {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {Column} from "akeneoreferenceentity/application/reducer/grid";
+import {Column} from 'akeneoreferenceentity/application/reducer/grid';
 
 export class InvalidArgument extends Error {}
 
