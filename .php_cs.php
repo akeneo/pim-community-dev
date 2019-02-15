@@ -11,6 +11,7 @@ return PhpCsFixer\Config::create()
             ],
         ]
     )
+    ->setCacheFile('var/php_cs.cache')
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->name('*.php')

@@ -32,7 +32,7 @@ vendor
 !/bin/console
 !/bin/pim-front.sh
 behat.yml
-.php_cs.cache
+var/php_cs.cache
 .phpspec/*.tpl
 composer.phar
 /node_modules
@@ -52,5 +52,4 @@ package-lock.json
 yarn-error.log
 coverage/*
 docker-compose.override.yml
-.php_cs.cache
 /web/test_dist/*
