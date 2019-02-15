@@ -125,7 +125,7 @@ legacy:
             files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
-                env: behat
+                env: test_database
                 debug: false
         SensioLabs\Behat\PageObjectExtension:
             namespaces:
