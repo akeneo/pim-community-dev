@@ -76,7 +76,7 @@ class HookContext extends PimContext
      */
     public function launchJobConsumer()
     {
-        $process = new Process(sprintf('exec bin/console %s --env=behat', JobQueueConsumerCommand::COMMAND_NAME));
+        $process = new Process(sprintf('exec bin/console %s --env=test_database', JobQueueConsumerCommand::COMMAND_NAME));
         $process->setTimeout(null);
         $process->start();
 
