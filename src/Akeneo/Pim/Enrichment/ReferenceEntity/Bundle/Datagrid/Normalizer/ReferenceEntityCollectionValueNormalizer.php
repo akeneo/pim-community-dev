@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ReferenceEntityCollectionValueNormalizer implements NormalizerInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
+    private $attributeRepository;
 
     /** @var GetRecordInformationQueryInterface */
     private $getRecordInformationQuery;
@@ -38,7 +38,7 @@ class ReferenceEntityCollectionValueNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($referenceEntityValue, $format = null, array $context = [])
+    public function normalize($referenceEntityValue, $format = null, array $context = []): ?array
     {
         if ($this->valueIsEmpty($referenceEntityValue)) {
             return null;
@@ -56,7 +56,7 @@ class ReferenceEntityCollectionValueNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return 'datagrid' === $format && $data instanceof ReferenceEntityCollectionValueInterface;
     }

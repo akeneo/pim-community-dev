@@ -113,8 +113,10 @@ class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
         $code,
         $labels
     ): void {
-        $stark = new RecordInformation('designer', $code, $labels);
-        $getRecordInformationQuery->fetch('designer', $code)
-            ->willReturn($stark);
+        $recordInformation = new RecordInformation();
+        $recordInformation->referenceEntityIdentifier = 'designer';
+        $recordInformation->code = $code;
+        $recordInformation->labels = $labels;
+        $getRecordInformationQuery->fetch('designer', $code)->willReturn($recordInformation);
     }
 }

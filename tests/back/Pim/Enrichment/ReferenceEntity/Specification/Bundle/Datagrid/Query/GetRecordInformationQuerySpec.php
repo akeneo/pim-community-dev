@@ -49,7 +49,7 @@ class GetRecordInformationQuerySpec extends ObjectBehavior
             )
         );
         /** @var RecordInformation $recordInformation */
-        $recordInformation = $this->execute(
+        $recordInformation = $this->fetch(
             'designer',
             'stark'
         );
@@ -62,6 +62,6 @@ class GetRecordInformationQuerySpec extends ObjectBehavior
     function it_throws_if_the_record_does_not_exist($findRecordDetails)
     {
         $findRecordDetails->__invoke(Argument::any(), Argument::any())->willReturn(null);
-        $this->shouldThrow(\LogicException::class)->during('execute', ['designer', 'stark']);
+        $this->shouldThrow(\LogicException::class)->during('fetch', ['designer', 'stark']);
     }
 }

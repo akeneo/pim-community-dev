@@ -20,12 +20,5 @@ class RecordInformation
     public $code;
 
     /** @var array */
-    public $labels;
-
-    public function __construct(string $referenceEntityIdentifier, string $code, array $labels)
-    {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $this->code = $code;
-        $this->labels = $labels;
-    }
+    public $labels = [];
 }

@@ -45,6 +45,11 @@ class GetRecordInformationQuery implements GetRecordInformationQueryInterface
             );
         }
 
-        return new RecordInformation($referenceEntityIdentifier, $recordCode, $recordDetails->labels->normalize());
+        $recordInformation = new RecordInformation();
+        $recordInformation->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $recordInformation->code = $recordCode;
+        $recordInformation->labels = $recordDetails->labels->normalize();
+
+        return $recordInformation;
     }
 }

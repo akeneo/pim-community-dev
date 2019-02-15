@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ReferenceEntityValueNormalizer implements NormalizerInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
+    private $attributeRepository;
 
     /** @var GetRecordInformationQueryInterface */
     private $getRecordInformationQuery;
@@ -37,25 +37,23 @@ class ReferenceEntityValueNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($referenceEntityValue, $format = null, array $context = [])
+    public function normalize($referenceEntityValue, $format = null, array $context = []): ?array
     {
         if ($this->valueIsEmpty($referenceEntityValue)) {
             return null;
         }
 
-        $arr = [
+        return [
             'locale' => $referenceEntityValue->getLocaleCode(),
             'scope'  => $referenceEntityValue->getScopeCode(),
             'data'   => $this->formatSimpleLink($referenceEntityValue, $context['data_locale']),
         ];
-
-        return $arr;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return 'datagrid' === $format && $data instanceof ReferenceEntityValueInterface;
     }
