@@ -15,6 +15,7 @@ imports:
     - { resource: ../../vendor/akeneo/pim-community-dev/tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/behat/services.yml }
     - { resource: ../../tests/back/Asset/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Acceptance/Resources/config/behat/services.yml }
+    - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Integration/Resources/config/behat/services.yml }
     - { resource: ../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../tests/back/Platform/Acceptance/Resources/config/services.yml }
 

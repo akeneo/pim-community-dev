@@ -177,6 +177,3 @@ services:
             - '@akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'
         tags:
           - { name: fob.context_service }
-
-    akeneo_file_storage.file_storage.file.file_storer:
-        class: Akeneo\Test\Acceptance\FileStorage\InMemoryFileStorer
