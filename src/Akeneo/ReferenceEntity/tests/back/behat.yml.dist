@@ -3,7 +3,7 @@ default:
         acceptance:
             paths:
                 - '%paths.base%/../features'
-            contexts_services:
+            contexts:
                 - akeneo_referenceentity.tests.back.acceptance.context.edit_reference_entity_context
                 - akeneo_referenceentity.tests.back.acceptance.context.delete_reference_entity_context
                 - akeneo_referenceentity.tests.back.acceptance.context.create_reference_entity_context
@@ -27,7 +27,7 @@ default:
         integration:
             paths:
                 - '%paths.base%/../features'
-            contexts_services:
+            contexts:
                 - akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_record_context
                 - akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_reference_entity_context
                 - akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_attribute_context
@@ -44,14 +44,7 @@ default:
             filters:
                 tags: '@integration-back'
     extensions:
-        FriendsOfBehat\ContextServiceExtension:
-           imports:
-               - 'Acceptance/Resources/config/behat/services.yml'
-               - 'Integration/Resources/config/behat/services.yml'
-        FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
-                env: test_fake
+                environment: test_fake
                 debug: false
-    formatters:
-        pretty: true
