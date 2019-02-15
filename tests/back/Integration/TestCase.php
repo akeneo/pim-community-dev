@@ -68,7 +68,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getFromTestContainer(string $service)
     {
-        return $this->testKernel->getContainer()->get($service);
+        return $this->get($service);
     }
 
     /**
