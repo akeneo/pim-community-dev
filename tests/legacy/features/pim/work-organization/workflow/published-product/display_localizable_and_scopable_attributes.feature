@@ -19,7 +19,7 @@ Feature: Display localizable and scopable attributes
     When I switch the locale to "de_DE"
     Then the field Name should contain "Eine schwarze Jacke"
 
-  @info https://akeneo.atlassian.net/browse/PIM-5949
+  @skip @info https://akeneo.atlassian.net/browse/PIM-5949
   Scenario: Successfully change scope
     Given I show the "black_jacket" Published Product
     And I visit the "Sales" group

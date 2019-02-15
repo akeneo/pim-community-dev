@@ -11,6 +11,7 @@
 
 namespace Akeneo\Asset\Bundle\EventSubscriber\ORM;
 
+use Akeneo\Asset\Component\Query\DeleteVariationsForChannelId;
 use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
 use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
@@ -38,22 +39,32 @@ class RemoveChannelSubscriber implements EventSubscriberInterface
     /** @var RemoverInterface */
     protected $channelConfigRemover;
 
+    /** @var DeleteVariationsForChannelId */
+    protected $deleteVariationsForChannelId;
+
     /**
+     * @todo merge master: remove the variation repository,
+     *                     the variation remover,
+     *                     and the "= null" of "DeleteVariationsForChannelId"
+     *
      * @param VariationRepositoryInterface            $variationRepo
      * @param ChannelConfigurationRepositoryInterface $channelConfigRepo
      * @param RemoverInterface                        $variationRemover
      * @param RemoverInterface                        $channelConfigRemover
+     * @param DeleteVariationsForChannelId            $deleteVariationsForChannelId
      */
     public function __construct(
         VariationRepositoryInterface $variationRepo,
         ChannelConfigurationRepositoryInterface $channelConfigRepo,
         RemoverInterface $variationRemover,
-        RemoverInterface $channelConfigRemover
+        RemoverInterface $channelConfigRemover,
+        DeleteVariationsForChannelId $deleteVariationsForChannelId = null
     ) {
         $this->variationRepo = $variationRepo;
         $this->channelConfigRepo = $channelConfigRepo;
         $this->variationRemover = $variationRemover;
         $this->channelConfigRemover = $channelConfigRemover;
+        $this->deleteVariationsForChannelId = $deleteVariationsForChannelId;
     }
 
     /**
@@ -67,6 +78,8 @@ class RemoveChannelSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * @todo merge master: Remove the if/else and keep only the use of "deleteVariationsForChannelId"
+     *
      * @param GenericEvent $event
      *
      * @throw \InvalidArgumentException
@@ -79,9 +92,13 @@ class RemoveChannelSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $variations = $this->variationRepo->findBy(['channel' => $channel->getId()]);
-        foreach ($variations as $variation) {
-            $this->variationRemover->remove($variation);
+        if (null !== $this->deleteVariationsForChannelId) {
+            $this->deleteVariationsForChannelId->execute($channel->getId());
+        } else {
+            $variations = $this->variationRepo->findBy(['channel' => $channel->getId()]);
+            foreach ($variations as $variation) {
+                $this->variationRemover->remove($variation);
+            }
         }
 
         $channelConfigs = $this->channelConfigRepo->findBy(['channel' => $channel->getId()]);

@@ -2,9 +2,9 @@
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\roductProposal;
 
-use Akeneo\Pim\Permission\Bundle\tests\EndToEnd\ProductProposal\AbstractProposal;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\ProductProposal\AbstractProposal;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
  * | Manager  | View,Edit,Own | View,Edit,Own | View,Edit,Own |
  * +----------+-----------------------------------------------+
  */
-class CreateProductProposal extends AbstractProposal
+class CreateProductProposalIntegration extends AbstractProposal
 {
     public function testCreateProductProposalSuccessful()
     {

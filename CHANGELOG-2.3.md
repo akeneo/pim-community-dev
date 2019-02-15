@@ -2,7 +2,45 @@
 
 ## Bug fixes
 
+- PIM-8021: Fix translations.
+- PIM-8034: Fix a bug that prevents from deleting a channel when there is too many assets.
+
+# 2.3.28 (2019-02-01)
+
+## Bug fixes
+
+- PIM-7970: Fix exception thrown when generating variations of assets with special chars in metadata.
+- PIM-8035: Fix a memory leak on during the generation of missing asset variations.
+
+# 2.3.27 (2019-01-29)
+
+# 2.3.26 (2019-01-28)
+
+## Bug fixes
+
+- PIM-8006: Improve the generation of missing asset variation performances.
+- PIM-7962: Fix the deletion of a user that is a contributor to a TWA project.
+- Force the use of ip-regex at 2.1.0 version. Upper version needs nodejs >= 8 but we have to support nodejs >= 6.
+
+# 2.3.25 (2019-01-17)
+
+# 2.3.24 (2019-01-10)
+
+## Bug fixes
+
+- PIM-7964: Fix database migration
+
+# 2.3.23 (2019-01-03)
+
+## Bug fixes
+
 - PIM-7899: Remove Date of Birth field
+- PIM-7938: Cascade delete missing attributes for published product completeness
+
+
+## Migrations
+
+Please run the doctrine migrations command in order to update the DB schema: `bin/console doctrine:migrations:migrate --env=prod`
 
 # 2.3.22 (2018-12-21)
 
