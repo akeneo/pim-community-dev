@@ -276,7 +276,7 @@ final class EditReferenceEntityContext implements Context
         $referenceEntity = $this->referenceEntityRepository
             ->getByIdentifier(ReferenceEntityIdentifier::fromString($identifier));
 
-        Assert::assertEquals($referenceEntity->getImage()->getKey(), $filePath);
+        Assert::assertEquals($filePath, $referenceEntity->getImage()->getKey());
     }
 
     /**
