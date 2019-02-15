@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - PIM-7889: Fix product & product model classification in Elasticsearch after a category deletion
+- PIM-8058: Backport PIM-8020 to update missing attributes
 
 # 2.0.46 (2019-01-28)
 
@@ -21,7 +22,7 @@
 
 ## Bug fixes
 
-- PIM-7855: Fix the add of optional attributes on product with family, if imported file doesn't have the family column    
+- PIM-7855: Fix the add of optional attributes on product with family, if imported file doesn't have the family column
 
 # 2.0.43 (2018-11-27)
 
@@ -58,7 +59,7 @@
 ## Bug fixes
 
 - PIM-7637: Fix computation of completness of variant products when an attribute at product model level is updated on a bulk action
-- PIM-7639: Fix the "forgot password" title visibility 
+- PIM-7639: Fix the "forgot password" title visibility
 - PIM-7265: Fix attributes groups order on the PEF
 
 # 2.0.36 (2018-09-05)
@@ -71,7 +72,7 @@
 
 ## Bug fixes
 
-- PIM-7595: Add missing acl on family variant managment 
+- PIM-7595: Add missing acl on family variant managment
 - PIM-7557: Don't display attribute group filter if no attribute is chosen in "edit common attributes" action
 
 # 2.0.34 (2018-08-17)
