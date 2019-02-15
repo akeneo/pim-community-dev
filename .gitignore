@@ -44,7 +44,7 @@ behat.yml
 /phpspec.yml
 uploads_test/
 .phpspec/*.tpl
-.php_cs.cache
+var/php_cs.cache
 /node_modules
 npm-debug.log
 /docker/*

@@ -9,6 +9,7 @@ return PhpCsFixer\Config::create()
             'ensure_fully_multiline' => false
         ],
     ))
+    ->setCacheFile('var/php_cs.cache')
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->name('*.php')
