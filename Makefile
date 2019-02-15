@@ -9,7 +9,7 @@ help:
 	@echo ""
 	@echo "Caution: those targets are optimized for docker"
 	@echo ""
-	@echo "Please add your custom Makefile in the dicretory "make-file". They will be automotically loaded!"
+	@echo "Please add your custom Makefile in the directory "make-file". They will be automatically loaded!"
 	@echo ""
 
 ## Include all *.mk files
