@@ -76,9 +76,9 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
                 $output->writeln(sprintf('Launching job execution "%s".', $jobExecutionMessage->getJobExecutionId()));
                 $output->writeln(sprintf('Command line: "%s"', $process->getCommandLine()));
 
-                $process->start();
-
                 $this->getJobExecutionManager()->updateHealthCheck($jobExecutionMessage);
+
+                $process->start();
 
                 $nbIterationBeforeUpdatingHealthCheck = self::HEALTH_CHECK_INTERVAL * 1000000 / self::RUNNING_PROCESS_CHECK_INTERVAL;
                 $iteration = 1;

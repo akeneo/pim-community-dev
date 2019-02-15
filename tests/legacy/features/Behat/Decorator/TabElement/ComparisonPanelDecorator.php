@@ -67,18 +67,28 @@ class ComparisonPanelDecorator extends ElementDecorator
      */
     public function switchSource($source)
     {
-        $this->spin(function () use ($source) {
+        $dropdown = $this->spin(function () {
             $dropdown = $this->find('css', $this->selectors['Copy source dropdown']);
             if (null === $dropdown) {
                 return false;
             }
 
+            return $dropdown;
+        }, 'Copy source dropdown was not found');
+
+        $this->spin(function () use ($dropdown) {
             $toggle = $dropdown->find('css', '.AknActionButton');
             if (null === $toggle) {
                 return false;
             }
+
             $toggle->click();
 
+            return true;
+        }, 'Dropdown action menu was not found');
+
+
+        $this->spin(function () use ($source, $dropdown) {
             $option = $dropdown->find('css', sprintf('.AknDropdown-menuLink[data-source="%s"]', $source));
             if (null === $option) {
                 return false;
@@ -86,7 +96,7 @@ class ComparisonPanelDecorator extends ElementDecorator
             $option->click();
 
             return true;
-        }, 'Can not switch source ');
+        }, 'Dropdown link was not found');
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
@@ -50,7 +51,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         NormalizerInterface $incompleteValuesNormalizer,
         UserContext $userContext,
         MissingAssociationAdder $missingAssociationAdder,
-        NormalizerInterface $parentAssociationsNormalizer
+        NormalizerInterface $parentAssociationsNormalizer,
+        CatalogContext $catalogContext
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -70,7 +72,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $incompleteValuesNormalizer,
             $userContext,
             $missingAssociationAdder,
-            $parentAssociationsNormalizer
+            $parentAssociationsNormalizer,
+            $catalogContext
         );
     }
 

@@ -104,6 +104,7 @@ batch_jobs:
   xlsx_product_model_import:
     label: Importar model de producte a XLSX
     import_product_model_descendants.label: Calcular descendents del model de producte
+    import_associations.label: Importar associacions
   xlsx_group_export:
     label: Exportació de grup en XLSX
     export.label: Exportar grups

@@ -195,13 +195,21 @@ class NavigationContext extends PimContext implements PageObjectAware
      */
     public function iShouldNotBeAbleToAccessThePage($not, $page)
     {
-        $this->iAmOnThePage($page);
+        $this->spin(function () use ($not, $page) {
+            $this->iAmOnThePage($page);
 
-        if (!$not) {
-            $this->getMainContext()->getSubcontext('assertions')->assertPageNotContainsText('Forbidden');
-        } else {
-            $this->getMainContext()->getSubcontext('assertions')->assertPageContainsText('Forbidden');
-        }
+            if (!$not) {
+                $this->assertSession()->pageTextNotContains('Forbidden');
+
+                return true;
+            } else {
+                $this->assertSession()->pageTextContains('Forbidden');
+
+                return true;
+            }
+
+            return false;
+        }, sprintf('Can access to the page "%s"', $page));
     }
 
     /**
@@ -241,7 +249,7 @@ class NavigationContext extends PimContext implements PageObjectAware
 
         $this->openPage(sprintf('%s %s', $page, $action), ['id' => $entity->getId()]);
 
-        return new Step\Then('I should see "Forbidden"');
+        return new Step\Then('I should see the text "Forbidden"');
     }
 
     /**
@@ -258,6 +266,7 @@ class NavigationContext extends PimContext implements PageObjectAware
         $page   = ucfirst($page);
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
+
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
 
         $expectedFullUrl = $this->getPage(sprintf('%s edit', $page))->getUrl(['id' => $entity->getId()]);

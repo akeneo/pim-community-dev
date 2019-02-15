@@ -15,7 +15,7 @@ class FindActivatedCurrenciesIntegration extends TestCase
 {
     public function testThatItReturnsTheActivatedCurrencyOfAChannel()
     {
-        Assert::assertSame(
+        $this->assertSameWithoutOrder(
             $this->get('pim_catalog.query.find_activated_currencies')->forChannel('ecommerce'),
             ['USD']
         );
