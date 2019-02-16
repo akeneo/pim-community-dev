@@ -9,11 +9,16 @@ pim_api:
       list: Lista attributalternativ
     attribute_group:
       edit: Skapa och uppdatera attributalternativ
+      list: Visa attributgrupper
     category:
       edit: Skapa och uppdatera kategorier
       list: Lista Kategorier
     family:
       edit: Skapa och uppdatera familjer
+      list: Visa familjer
+    family_variant:
+      edit: Skapa och uppdatera familj varianter
+      list: Lista familj varianter
     channel:
       edit: Skapa och uppdatera kanaler
       list: Lista kanaler
@@ -25,7 +30,10 @@ pim_api:
     overall_access: Övergripande Web API-åtkomst
     attribute: Attributer
     attribute_option: Attributalternativ
+    attribute_group: Attributgrupper
+    category: Kategorier
     family: Familjer
+    family_variant: Familj varianter
     channel: Kanaler
     locale: Språk
     currency: Valutor

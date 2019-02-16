@@ -50,6 +50,7 @@ pim:
   grid:
     choice_filter:
       label_empty: är tom
+      label_not_empty: är inte tom
       label_in_list: i listan
     price_filter:
       label: Valuta

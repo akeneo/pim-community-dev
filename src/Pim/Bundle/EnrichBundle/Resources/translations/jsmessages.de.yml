@@ -723,7 +723,6 @@ pim_enrich:
           default_label:
             default_metric_unit: Wählen Sie eine Einheit
             group: Wählen Sie die Attributgruppe
-            metric_family: Wählen Sie eine Produktfamilie
             reference_data_name: Wählen Sie den Referenz-Datentyp
         labels:
           title: Feldbezeichner-Übersetzungen
