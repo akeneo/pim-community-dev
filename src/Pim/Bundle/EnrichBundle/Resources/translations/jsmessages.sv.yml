@@ -226,7 +226,10 @@ pim_enrich:
         created: Produkten har skapts
       completeness: Klart
     product_model:
+      create_popin:
+        type: Produktmodell
       add_child:
+        create: Lägg till ny
         cancel: Avbryt
         confirm: Bekräfta
         fields:
@@ -307,6 +310,7 @@ pim_enrich:
       message:
         created: Familjen har skapats
       variant:
+        add_variant: Lägg till variant
         create: Skapa
         cancel: Avbryt
         code: Kod
@@ -387,6 +391,7 @@ pim_enrich:
     required: (obligatorisk)
     product_model:
       family_variant: Variant
+      product_model: Produktmodell
     product:
       tab:
         associations:
@@ -394,6 +399,7 @@ pim_enrich:
           info:
             none_exist: Det finns inga associationstyper.
             show_products: Displayprodukter
+          target: Mål
         attributes:
           title: Attribut
           btn:
@@ -406,6 +412,8 @@ pim_enrich:
             load_more: Laddar fler resultat...
           attribute_group_selector: Attributgrupp
           attribute_group_all: Alla
+          attribute_filter:
+            all: Alla attribut
         categories:
           title: Kategorier
       panel:
@@ -876,6 +884,8 @@ pim_enrich:
       create_btn: Skapa roll
     user_group:
       create_btn: Skapa grupp
+    channel:
+      create_btn: Skapa kanal
     attribute:
       modal_title: Välj attributtyp
     attribute_group:
@@ -885,6 +895,7 @@ pim_enrich:
       create_btn: Skapa
   mass_edit:
     next: Nästa
+    previous: Tillbaka
     cancel: Avbryt
     confirm: Bekräfta
     product:
@@ -901,6 +912,7 @@ pim_enrich:
           description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
           field: Aktivera
         change_family:
+          label: Ändra familj
           description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
           field: Familj
         add_to_group:
@@ -1155,6 +1167,8 @@ batch_jobs:
 job_tracker:
   download_archive:
     archive: Ladda ner genererat arkiv
+    output: Ladda ner genererade filer
+    input: Laddar ner lästa filer
     invalid_xlsx: Hämta ogiltig data
     invalid_csv: Hämta ogiltig data
 pim_menu:
@@ -1193,6 +1207,8 @@ pim_menu:
     info: Systeminformation
     job_tracker: Spåra process
     api_connection: API-anslutning
+  navigation:
+    system: System navigering
   user:
     logout: Logga ut
     user_account: Mitt konto
@@ -1207,3 +1223,4 @@ catalog_volume:
     count_attributes: Attribut
     count_categories: Kategorier
     count_category_trees: Kategoriträd
+    count_product_models: Produktmodeller
