@@ -151,6 +151,7 @@ pim_enrich:
     group_type: Grupptyper
     locale: Språk
     product: Products
+    product_model: Produktmodeller
   create:
     attribute: skapa attribut
     attribute group: skapa attributgrupp

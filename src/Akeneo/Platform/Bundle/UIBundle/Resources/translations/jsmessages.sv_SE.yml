@@ -198,6 +198,8 @@ pim_enrich.entity.job_execution:
   module:
     download:
       archive: Ladda ner genererat arkiv
+      output: Ladda ner genererade filer
+      input: Laddar ner lästa filer
       invalid_xlsx: Hämta ogiltig data
       invalid_csv: Hämta ogiltig data
 pim_title:
@@ -257,6 +259,7 @@ pim_menu:
     job_tracker: Spåra process
     api_connection: API-anslutning
   navigation:
+    system: System navigering
     product: Produkt navigering
     product_infos: Produkt information
   user:

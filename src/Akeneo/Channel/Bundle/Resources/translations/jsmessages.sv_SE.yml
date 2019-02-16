@@ -53,6 +53,8 @@ pim_enrich.entity.channel:
     do_not_convert: Konvertera inte
     label_conversion_units: Välj en konverteringsenhet för varje metriska attribut för att användas under produktexporten
   module:
+    create:
+      button: Skapa kanal
     delete:
       confirm: Är du säker på att du vill ta bort denna kanal?
 pim_enrich.entity.locale:

@@ -3,6 +3,7 @@ pim_title:
   pim_user_role_index: Roles
   pim_user_group_index: Grupos de Usuario
   oro_config_configuration_system: Configuración
+  pim_user_edit: 'Usuario {{ username }} | Editar'
   pim_user_create: 'Usuarios | Crear'
   pim_user_role_update: 'Rol {{ role }} | Editar'
   pim_user_role_create: 'Rol | Crear'
@@ -16,9 +17,23 @@ confirmation:
   remove:
     user: '¿Seguro que desea eliminar este usuario?'
     group: '¿Está seguro que desea eliminar este grupo?'
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: El usuario no puede ser eliminado
+          success: El usuario ha sido eliminado
 pim_user_management:
   entity:
     user:
+      flash:
+        update:
+          success: El usuario se ha actualizado correctamente.
+          fail: No se ha podido actualizar el usuario.
+          fields_not_ready: "El usuario no puede ser registrado ahora. Los siguientes campos aún no se han completado: {{ fields }}"
+        create:
+          success: Se ha creado el usuario satisfactoriamente.
       page_title:
         index: "]-Inf, 1] {{ count }} usuario|]1, Inf [{{ count }} usuarios"
       properties:
@@ -53,6 +68,7 @@ pim_user_management:
           confirm: '¿Seguro que desea eliminar este usuario?'
         update:
           additional: Adicional
+          groups_and_roles: Grupos y roles
           password: Contraseña
           interfaces: Interfaces
           notifications: Notificaciones

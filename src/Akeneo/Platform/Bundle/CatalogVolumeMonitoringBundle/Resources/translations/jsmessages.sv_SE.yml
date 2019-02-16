@@ -6,3 +6,4 @@ pim_catalog_volume:
     count_attributes: Attribut
     count_categories: Kategorier
     count_category_trees: Kategoriträd
+    count_product_models: Produktmodeller

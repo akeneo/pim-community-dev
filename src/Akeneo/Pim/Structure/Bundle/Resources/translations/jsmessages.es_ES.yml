@@ -191,6 +191,7 @@ pim_enrich.entity.attribute:
       validation: Parámetros de validación
     delete:
       confirm: '¿Está seguro que desea eliminar este atributo?'
+      confirm_from_family: '¿Está seguro que quiere eliminar este atributo de la familia?'
       confirm_from_group: '¿Está seguro que desea eliminar el atributo {{ attribute }} de este grupo de atributos?'
       confirm_from_product: '¿Está usted seguro que desea eliminar el atributo de este producto?'
 pim_enrich.entity.attribute_group:
@@ -201,21 +202,26 @@ pim_enrich.entity.attribute_group:
     update:
       success: Grupo de atributos actualizado correctamente
       fail: El grupo del atributo no pudo ser actualizado
+      fields_not_ready: "El grupo de atributos no se puede guardar ahora. No están listos los siguientes campos: {{ fields }}"
     delete:
       success: Grupo de atributos eliminado correctamente
+      fail: No se puede eliminar este grupo de atributos
   module:
     add_attribute_group:
       label: Agregar por grupos
+      no_attribute_groups_available: Ningún grupo de atributos disponible
       attributes_groups_selected: '{{ itemsCount }} grupo(s) seleccionado(s)'
     delete:
       confirm: '¿Está seguro que desea eliminar este grupo de atributo?'
 pim_enrich.mass_edit.family:
   title: Acción masiva sobre las familias
+  confirm: "{1}Está a punto de actualizar una familia con la siguiente información, por favor confirme.|]1, Inf[Está a punto de actualizar {{ itemsCount }} familias con la información siguiente, por favor confirme."
   step:
     select:
       label: Elija familias
     choose:
       title: Acción masiva sobre las familias
+      label_count: "]0, Inf[Seleccione su acción"
     configure:
       label: Configurar
     confirm:
@@ -226,3 +232,4 @@ pim_enrich.mass_edit.family:
     set_requirements:
       label: Establecer los requisitos de atributos
       description: Los siguientes requerimientos de atributos serán aplicados a las familias seleccionadas
+      label_count: "{1}Configurar los requerimientos de atributos de <span class=\"AknFullPage-title--highlight\">1 familia</span>|]1, Inf[Configurar los requerimientos de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familias</span>"
