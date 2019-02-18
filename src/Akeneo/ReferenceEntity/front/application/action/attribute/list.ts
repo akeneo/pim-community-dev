@@ -61,6 +61,7 @@ const getColumn = (attribute: Attribute, channel: ChannelReference, locale: Loca
     channel: channel.normalize() as string,
     locale: locale.normalize() as string,
     code: attribute.getCode().stringValue(),
+    attribute: attribute.normalize()
   };
 };
 
