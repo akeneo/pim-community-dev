@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-8054: Fix slow mysql query in the grid
 - PIM-8058: Backport PIM-8020 to update missing attributes
 
 # 2.0.47 (2019-02-13)
