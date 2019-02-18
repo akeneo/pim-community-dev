@@ -29,7 +29,11 @@ resource "null_resource" "metric" {
       gcloud beta logging metrics create ${var.pfid}-${local.metrics[count.index]} \
         --config-from-file ${local_file.metric-rendered.*.filename[count.index]} \
         --project ${var.google_project_name} \
-        --quiet
+        --quiet && \
+      for limit in {1..600}; do \
+        [[ ! -z "$(gcloud beta logging metrics list --project ${var.google_project_name} --quiet --format='value(name)' --filter='name~^${var.pfid}-${local.metrics[count.index]}$')" ]] \
+        && break || echo "wait $limit"; sleep 1; \
+      done;
 EOF
   }
 
