@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.3 (2019-02-18)
+
 ## Bug fixes
 
 - APAI-550: Add ACL checks on the backend part
