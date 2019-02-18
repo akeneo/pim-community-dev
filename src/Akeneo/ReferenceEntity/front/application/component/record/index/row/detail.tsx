@@ -61,7 +61,7 @@ const DetailRow = memo(
 
           return (
             <td key={column.key} className="AknGrid-bodyCell">
-              <CellView value={value} />
+              <CellView column={column} value={value} />
             </td>
           );
         })}
