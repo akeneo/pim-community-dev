@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
@@ -42,44 +43,82 @@ class VariantProductRatio implements VariantProductRatioInterface
         string $channel = '',
         string $locale = ''
     ): CompleteVariantProducts {
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder->select(
-            'channel.code as channel_code, locale.code as locale_code, variant_product.identifier as product_identifier, CASE WHEN (completeness.ratio = 100) THEN 1 ELSE 0 END as complete'
-        );
+        $join = null;
 
         if (2 === $productModel->getFamilyVariant()->getNumberOfLevel() && $productModel->isRootProductModel()) {
-            $queryBuilder
-                ->from(ProductModelInterface::class, 'root_product_model')
-                ->innerJoin('root_product_model.productModels', 'sub_product_model')
-                ->innerJoin('sub_product_model.products', 'variant_product')
-                ->where('root_product_model.id = :product_model')
-            ;
+            $join = $this->joinToProductWithTwoLevels();
         } else {
-            $queryBuilder
-                ->from(ProductModelInterface::class, 'sub_product_model')
-                ->innerJoin('sub_product_model.products', 'variant_product')
-                ->where('sub_product_model.id = :product_model')
-            ;
+            $join = $this->joinToProductWithOneLevel();
         }
 
-        $queryBuilder
-            ->innerJoin('variant_product.completenesses', 'completeness')
-            ->innerJoin('completeness.locale', 'locale')
-            ->innerJoin('completeness.channel', 'channel')
-            ->setParameter(':product_model', $productModel->getId());
+        return $this->fetchResults($join, $productModel, $channel, $locale);
+    }
 
-        if (!empty($channel)) {
-            $queryBuilder->andWhere('channel.code = :channel')
-                ->setParameter(':channel', $channel);
+    private function joinToProductWithTwoLevels(): string
+    {
+        return <<<SQL
+                FROM pim_catalog_product_model AS root_product_model
+                INNER JOIN pim_catalog_product_model as sub_product_model ON sub_product_model.parent_id = root_product_model.id
+                INNER JOIN pim_catalog_product product ON product.product_model_id = sub_product_model.id
+SQL;
+    }
+
+    private function joinToProductWithOneLevel(): string
+    {
+        return <<<SQL
+                FROM pim_catalog_product_model AS root_product_model
+                INNER JOIN pim_catalog_product product ON product.product_model_id = root_product_model.id
+SQL;
+    }
+
+    private function fetchResults(string $subquery, ProductModelInterface $productModel, string $channel = '', string $locale = ''): CompleteVariantProducts {
+        $query = <<<SQL
+            SELECT channel.code AS channel_code, locale.code AS locale_code, product.identifier as product_identifier, CASE WHEN (product.product_ratio = 100) THEN 1 ELSE 0 END as complete
+            FROM
+              (
+                SELECT DISTINCT product.identifier, completeness.locale_id, completeness.channel_id, completeness.ratio as product_ratio
+                %s
+                INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
+                WHERE
+                    root_product_model.id = :root_product_model_id
+              ) AS product
+            INNER JOIN pim_catalog_locale locale ON locale.id = product.locale_id
+            INNER JOIN pim_catalog_channel channel ON channel.id = product.channel_id
+SQL;
+
+        $query = sprintf($query, $subquery);
+        $parameters = [];
+        $parameters[] = ['name' => 'root_product_model_id', 'value' => $productModel->getId()];
+
+        if (!empty($channel) && !empty($locale)) {
+            $query .= <<<SQL
+            WHERE locale.code = :locale AND channel.code = :channel
+SQL;
+            $parameters[] = ['name' => 'channel', 'value' => $channel];
+            $parameters[] = ['name' => 'locale', 'value' => $locale];
+        } else {
+            if (!empty($locale)) {
+                $query .= <<<SQL
+                    WHERE locale.code = :locale
+SQL;
+                $parameters[] = ['name' => 'locale', 'value' => $locale];
+            }
+            if (!empty($channel)) {
+                $query .= <<<SQL
+                    WHERE channel.code = :channel
+SQL;
+                $parameters[] = ['name' => 'channel', 'value' => $channel];
+            }
         }
 
-        if (!empty($locale)) {
-            $queryBuilder->andWhere('locale.code= :locale')
-                ->setParameter(':locale', $locale);
+        $statement = $this->entityManager->getConnection()->prepare($query);
+
+        foreach ($parameters as $parameter) {
+            $statement->bindValue($parameter['name'], $parameter['value']);
         }
 
-        $result = $queryBuilder->getQuery()->getArrayResult();
+        $statement->execute();
 
-        return new CompleteVariantProducts($result);
+        return new CompleteVariantProducts($statement->fetchAll());
     }
 }
