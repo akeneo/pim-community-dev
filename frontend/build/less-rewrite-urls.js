@@ -1,6 +1,6 @@
 function getProcessor(less) {
     function Processor(options) {
-        this.options = options || {replace: []};
+        this.options = options || { replace: [] };
         this._visitor = new less.visitors.Visitor(this);
     }
 
@@ -26,6 +26,7 @@ function getProcessor(less) {
             });
 
             URLNode.value.value = path;
+
             return URLNode;
         }
     };
@@ -36,7 +37,7 @@ function RewriteImageURLs(options) {
     return {
         install(less, pluginManager) {
             const Processor = getProcessor(less);
-            pluginManager.addVisitor(new Processor(this.options));
+            pluginManager.addVisitor(new Processor(options));
         }
     }
 }

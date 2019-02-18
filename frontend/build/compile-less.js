@@ -1,28 +1,34 @@
 require('colors')
-
-const rootDir = process.cwd();
-const path = require('path');
-const fs = require('fs')
+const { dirname, resolve } = require('path')
+const rootDir = process.cwd()
+const { writeFileSync, readFileSync, existsSync } = require('fs')
 const lessc = require('less')
-const RewriteImageURLs = require('./less-rewrite-urls');
-const bundlePaths = require(path.resolve(rootDir, './web/js/require-paths'));
+const RewriteImageURLs = require('./less-rewrite-urls')
+
+const BUNDLE_REQUIRE_PATH = resolve(rootDir, './web/js/require-paths')
 const BUNDLE_LESS_INDEX_PATH = 'public/less/index.less'
 const OUTPUT_CSS_PATH = 'web/css/pim.css'
+const SOURCEMAP_CSS_PATH = 'web/css/pim.css.map'
+
+if (!existsSync(`${BUNDLE_REQUIRE_PATH}.js`)) {
+    console.error(`web/js/require-paths.js does not exist - Run "bin/console pim:installer:dump-require-paths" and try again.`.red)
+
+    process.exit(1)
+}
+
+const bundlePaths = require(BUNDLE_REQUIRE_PATH)
 
 function getFileContents(filePath) {
     try {
-        const fileContents = fs.readFileSync(filePath, {
-            encoding: 'utf-8'
-        })
-
+        const fileContents = readFileSync(filePath, 'utf-8')
         console.log(`‣ ${filePath}`.blue)
         return fileContents
-    } catch(e) {}
+    } catch (e) { }
 }
 
 function collectBundleImports(bundlePaths) {
     const indexFiles = bundlePaths.map(bundlePath => {
-        return path.dirname(bundlePath)
+        return dirname(bundlePath)
             .replace('config', BUNDLE_LESS_INDEX_PATH)
             .replace(/(^.+)[^vendor](?=\/src|\/vendor)\//gm, '')
     })
@@ -30,12 +36,13 @@ function collectBundleImports(bundlePaths) {
     const bundleImports = []
 
     console.log('\nStarting LESS compilation\n'.green)
+
     for (filePath of indexFiles) {
         bundleImports.push(getFileContents(filePath))
     }
 
     console.log('\n')
-    return bundleImports.join('');
+    return bundleImports.join('')
 }
 
 function formatParseError(error) {
@@ -43,33 +50,28 @@ function formatParseError(error) {
     console.log(error.extract.map(line => `>${line}\n`.red).join(''))
 }
 
-const bundleImports = collectBundleImports(bundlePaths)
-
-lessc.render(
-    bundleImports,
-    {
-        plugins: [
-            new RewriteImageURLs({
-                replace: [{
-                    search: './web/bundles',
-                    replace: '/bundles' }
-                ]
-            })
-        ],
-        // @TODO replace with file output
-        sourceMap: {
-            sourceMapFileInline: true
-        }
+function writeCSSOutput(css) {
+    try {
+        writeFileSync(resolve(rootDir, OUTPUT_CSS_PATH), css, 'utf-8')
+        console.log(`✓ Saved CSS to ${OUTPUT_CSS_PATH}`.green)
+    } catch (e) {
+        console.log(`❌ Error writing CSS ${e.message}`.red)
     }
-).then(function(output) {
-        try {
-            fs.writeFileSync(path.resolve(rootDir, OUTPUT_CSS_PATH), output.css, 'utf-8')
-            console.log(`✓ Successfully compiled to ${OUTPUT_CSS_PATH}\n`.green)
-        } catch(e) {
-            console.log(`❌ Error writing compiled file ${e}`.red)
-        }
-        // @TODO - output source map as a file
-}, function(error) {
+}
+
+lessc.render(collectBundleImports(bundlePaths), {
+    sourceMap: {
+        sourceMapFileInline: true
+    },
+    plugins: [new RewriteImageURLs({
+        replace: [{
+            search: './web/bundles',
+            replace: '/bundles'
+        }]
+    })]
+}).then(function (output) {
+    writeCSSOutput(output.css)
+}, function (error) {
     formatParseError(error)
     process.exit(1)
-}).catch(error => console.log('Other error', error));
+}).catch(error => console.log('Other error', error))
