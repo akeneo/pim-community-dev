@@ -224,7 +224,9 @@ define(
                             const objectValuesDom = this.$('.object-values').empty();
                             if (_.isEmpty(fields)) {
                                 objectValuesDom.append(this.noDataTemplate({
-                                    hint: 'pim_datagrid.no_results',
+                                    hint: __('pim_datagrid.no_results', {
+                                        entityHint: __('pim_enrich.entity.attribute.label')
+                                    }),
                                     subHint: 'pim_datagrid.no_results_subtitle',
                                     imageClass: '',
                                     __
