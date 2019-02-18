@@ -33,7 +33,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function setUp()
     {
-        static::bootKernel(['debug' => false]);
+        static::bootKernel(['environment' => 'test_database', 'debug' => false]);
         $this->testKernel = new \AppKernelTest('test_database', false);
         $this->testKernel->boot();
 
