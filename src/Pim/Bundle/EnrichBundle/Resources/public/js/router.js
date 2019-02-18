@@ -125,6 +125,8 @@ define(
                     case 401:
                         window.location = this.generate('oro_user_security_login');
                         break;
+                    case 200:
+                        break;
                     default:
                         this.errorPage(xhr);
                         break;
