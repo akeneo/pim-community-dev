@@ -97,6 +97,7 @@ security:
         - { path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/reset-request, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/send-email, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml-idp/resume, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
