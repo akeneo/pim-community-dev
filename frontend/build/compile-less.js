@@ -1,7 +1,8 @@
 require('colors')
 const { dirname, resolve } = require('path')
-const rootDir = process.cwd()
 const { writeFileSync, readFileSync, existsSync } = require('fs')
+const rootDir = process.cwd()
+const isDev = process.argv && process.argv.indexOf('--dev') > -1;
 const lessc = require('less')
 
 // A plugin to rewrite the image urls
@@ -88,8 +89,9 @@ function writeCSSOutput(css) {
 
 lessc.render(collectBundleImports(bundlePaths), {
     sourceMap: {
-        sourceMapFileInline: true
+        sourceMapFileInline: isDev
     },
+    compress: true,
     plugins: [new RewriteImageURLs({
         // Remove the 'web' part of the image/font urls
         replace: [{
