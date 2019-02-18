@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8144: Fix spaces on field labels and required note
+
 # 3.0.3 (2019-02-18)
 
 ## Bug fixes
