@@ -18,6 +18,7 @@
 - APAI-518: Add end-to-end scenario on attributes mapping (Franklin Insights)
 - APAI-464: add end to end scenario on bulk subscription (Franklin Insights)
 - APAI-519: add end to end scenario on attribute options mapping (Franklin Insights)
+- PIM-8052: Display the record labels in the product grid instead of the code
 
 # 3.0.2 (2019-02-13)
 
@@ -65,7 +66,7 @@
 - TIP-1041: Adds support for Elasticsearch 6, puts Published products in their own index
 
 ## BC breaks
-- Change constructor of `Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer`. Add argument `Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface`
+- Change constructor of `Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer`. Add argument `Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface`  
 - Two new parameters must be defined for published products: `published_product_index_name` and `published_product_and_product_model_index_name`
 - All product flat writers (CSV, XLSX for products and published products) now have two new arguments of type `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface` and `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface`. There two new services now managed the generation of headers for flat product file at export time.
 - Remove the service `pimee_workflow.twig.extension.group_product_values`
@@ -235,11 +236,11 @@
 - Change constructor of `Akeneo\Pim\Permission\Bundle\MassEdit\Writer\ProductAndProductModelWriter`. Replace argument `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
     with  `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, `Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`, and `string`.
 - Change constructor of `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\FilterConverter`. Remove argument `Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter` and `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser`.
-- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Tasklet\AbstractReviewTasklet`. Remove arguments `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`and `Symfony\Component\Security\Core\User\UserProviderInterface`
-- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet\AbstractProductPublisherTasklet`. Remove arguments `Akeneo\UserManagement\Bundle\Manager\UserManager`, `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and `Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface`
-- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet\UnpublishProductTasklet`. Add argument `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
-- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet\PublishProductTasklet`. Add argument `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
-- Change constructor of `Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductModelRepository`. Add argument `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Tasklet\AbstractReviewTasklet`. Remove arguments `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`and `Symfony\Component\Security\Core\User\UserProviderInterface` 
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet\AbstractProductPublisherTasklet`. Remove arguments `Akeneo\UserManagement\Bundle\Manager\UserManager`, `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and `Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface` 
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet\UnpublishProductTasklet`. Add argument `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface` 
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet\PublishProductTasklet`. Add argument `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface` 
+- Change constructor of `Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductModelRepository`. Add argument `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` 
 - Change constructor of `Akeneo\Pim\Permission\Bundle\MassEdit\Processor\AddAttributeValueProcessor`. Remove arguments `Akeneo\UserManagement\Bundle\Manager\UserManager` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Change constructor of `Akeneo\Pim\Permission\Bundle\MassEdit\Processor\AddProductValueWithPermissionProcessor`. Remove arguments `Akeneo\UserManagement\Bundle\Manager\UserManager` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Change constructor of `Akeneo\Pim\Permission\Bundle\MassEdit\Processor\EditAttributesProcessor`. Remove arguments `Akeneo\UserManagement\Bundle\Manager\UserManager` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
