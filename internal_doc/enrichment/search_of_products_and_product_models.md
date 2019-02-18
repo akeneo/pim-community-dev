@@ -19,11 +19,11 @@ Before explaining how I propose to solve this issue, we need to understand how t
 
 Let's say we have a product model 'shoe' and it's variance by size and color (2 levels):
 
-![screen shot 2018-04-20 at 10 10 36](images/data-set.png)
+![screen shot 2018-04-20 at 10 10 36](images/search/data-set.png)
 
 ### Naïve filtering by attribute
 
-![image](images/naive-filtering.png)
+![image](images/search/naive-filtering.png)
 
 _(The node in blue correspond to lines shown in the datagrid)_
 
@@ -35,7 +35,7 @@ This search does not correspond to our business need because it is very noisy an
 
 The Smart Search feature could also be translated as **"Show me the most relevant nodes corresponding to my search criterias"**
 
-![image](images/smart-filtering-attribute.png)
+![image](images/search/smart-filtering-attribute.png)
 
 To achieve it, you can see that we use additional information (indexed in ES) like 'attribute_for_this_level'. This property is the cornerstone of the working of the actual search because it gives us the opportunity to **differienciate** nodes of one level from other levels, hence showing to the user the right node (in the right level) corresponding to the search criterias.
 
@@ -43,19 +43,19 @@ To achieve it, you can see that we use additional information (indexed in ES) li
 
 ### Search on Categories does not work
 
-![image](images/filtering-on-categories-not-working.png)
+![image](images/search/filtering-on-categories-not-working.png)
 
 But if you look for the 'footwear' category, all the node of the tree are returned where in fact in this case, we only want the node **'model-shoe'** to be shown to the user (because it's the most relevant).
 
 ## Expected results examples
 
-![image](images/expected-result-1.png)
+![image](images/search/expected-result-1.png)
 
-![image](images/expected-result-2.png)
+![image](images/search/expected-result-2.png)
 
-![image](images/expected-result-3.png)
+![image](images/search/expected-result-3.png)
 
-![image](images/expected-result-4.png)
+![image](images/search/expected-result-4.png)
 
 
 ## Brainstorming
@@ -76,7 +76,7 @@ returns the 'model-shoe' node and that's what we want !
 
 **BUT**: Let's see how this request performs when we also filter on some attributes
 
-![image](images/categories-for-this-level.png)
+![image](images/search/categories-for-this-level.png)
 
 The predicate #1 here will return 'model-shoe' just like before
 The predicate #2 will return 'model-shoe-s'
@@ -84,7 +84,7 @@ The intersection of those set is unfortunately **empty**.
 
 The difficulty here is we have to deal with one data structure (Product model hierarchy) which depends on one meta structure (the family variant attribute sets) and is linked to another datastructure (the category tree).
 
-![image](images/sumup-structure.png)
+![image](images/search/sumup-structure.png)
 
 **Is it possible to conciliate both meta structure in the search to always show the topmost / most relevant node in the hierarchy depending on the search criterias ?**
 
@@ -117,18 +117,18 @@ NOT( attributes_of_ancestors HAS 'attribute_1' AND attributes_of_ancestors HAS '
 
 Let's take our failing search example back from above: "'footwear' IN category"
 
-![image](images/testing-solution-1.png)
+![image](images/search/testing-solution-1.png)
 
 The only one node, not having a parent holding the 'footwear' category is the 'model-shoe' node. So that makes sense.
 
 Let's try to mix it up with a filter on attributes: Let's say a user wants to filter "footwear' IN category AND size = 's'" in the datagrid.
 
-![image](images/testing-solution-2.png)
+![image](images/search/testing-solution-2.png)
 
 This first part of the request is inclusive, it returns all the nodes matching at least the criterias of the user (category is 'footwear' and the size is 's').
 **For sure, the right answer lies within this selection**, and it is the second part of the request that will help us to find it.
 
-![image](images/testing-solution-3.png)
+![image](images/search/testing-solution-3.png)
 
 The second part of the request, excludes the nodes that are children: by saying "within the large selection" excludes all the nodes which have a parent already holding the property (therefore they are children). In the end, the only nodes not removed are the topmost nodes matching the criterias.
 
