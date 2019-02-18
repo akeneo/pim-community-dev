@@ -158,7 +158,7 @@ class ProductNormalizer implements NormalizerInterface
         NormalizerInterface $incompleteValuesNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
-        CatalogContext $catalogContext = null
+        CatalogContext $catalogContext
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -225,7 +225,6 @@ class ProductNormalizer implements NormalizerInterface
 
         $normalizedProduct['parent_associations'] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
 
-        // TODO @merge on master, remove condition on catalogContext
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),
             'id'                => $product->getId(),
@@ -235,7 +234,7 @@ class ProductNormalizer implements NormalizerInterface
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'    => $this->getNormalizedCompletenesses($product),
             'required_missing_attributes' => $incompleteValues,
-            'image'             => $this->normalizeImage($product->getImage(), $this->catalogContext ? $this->catalogContext->getLocaleCode() : null),
+            'image'             => $this->normalizeImage($product->getImage(), $this->catalogContext->getLocaleCode()),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
         $normalizedProduct['meta']['ascendant_category_ids'] = $product->isVariant() ?

@@ -128,7 +128,7 @@ class ProductModelNormalizer implements NormalizerInterface
         UserContext $userContext,
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
-        CatalogContext $catalogContext = null
+        CatalogContext $catalogContext
     ) {
         $this->normalizer = $normalizer;
         $this->versionNormalizer = $versionNormalizer;
@@ -207,7 +207,6 @@ class ProductModelNormalizer implements NormalizerInterface
 
         $scopeCode = $context['channel'] ?? null;
 
-        // TODO @merge on master, remove condition on catalogContext
         $normalizedProductModel['meta'] = [
                 'variant_product_completenesses' => $variantProductCompletenesses->values(),
                 'family_variant'            => $normalizedFamilyVariant,
@@ -218,7 +217,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'model_type'                => 'product_model',
                 'attributes_for_this_level' => $levelAttributes,
                 'attributes_axes'           => $axesAttributes,
-                'image'                     => $this->normalizeImage($closestImage, $this->catalogContext ? $this->catalogContext->getLocaleCode() : null),
+                'image'                     => $this->normalizeImage($closestImage, $this->catalogContext->getLocaleCode()),
                 'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
                 'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
                 'required_missing_attributes' => $this->incompleteValuesNormalizer->normalize($productModel, $format, $context),
