@@ -218,7 +218,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - "3.0"
+                            - master
           - setup:
                 requires:
                     - wait_for_user_approval
@@ -242,11 +242,11 @@ workflows:
   nightly:
       triggers:
           - schedule:
-                cron: "0 1 * * *"
+                cron: "0 2 * * *"
                 filters:
                     branches:
                         only:
-                            - "3.0"
+                            - master
       jobs:
           - setup
           - back_static_and_acceptance:
