@@ -35,6 +35,15 @@ class AttributeOptionValidatorSpec extends ObjectBehavior
         $this->validate($validOptions)->shouldReturn([]);
     }
 
+    function it_returns_an_empty_array_if_an_option_without_labels_is_valid()
+    {
+        $validOptions = [
+            'code' => 'Dog'
+        ];
+
+        $this->validate($validOptions)->shouldReturn([]);
+    }
+
     function it_returns_an_error_when_the_code_is_not_provided()
     {
         $invalidCode = [
@@ -44,17 +53,6 @@ class AttributeOptionValidatorSpec extends ObjectBehavior
         ];
 
         $errors = $this->validate($invalidCode);
-        $errors->shouldBeArray();
-        $errors->shouldHaveCount(1);
-    }
-
-    function it_returns_an_error_when_the_labels_are_not_provided()
-    {
-        $invalidLabels = [
-            'code' => 'fish'
-        ];
-
-        $errors = $this->validate($invalidLabels);
         $errors->shouldBeArray();
         $errors->shouldHaveCount(1);
     }

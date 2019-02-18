@@ -23,4 +23,10 @@ class DeleteRecordCommand
 
     /** @var string */
     public $referenceEntityIdentifier;
+
+    public function __construct(string $recordCode, string $referenceEntityIdentifier)
+    {
+        $this->recordCode = $recordCode;
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+    }
 }

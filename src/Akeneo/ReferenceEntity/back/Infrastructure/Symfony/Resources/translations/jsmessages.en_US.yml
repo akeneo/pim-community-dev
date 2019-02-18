@@ -137,8 +137,8 @@ pim_reference_entity:
         completeness:
           label: Complete
           all: ALL
-          yes: YES
-          no: NO
+          'yes': 'YES'
+          'no': 'NO'
       column:
         code: Code
         image: Image

@@ -20,9 +20,13 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
  */
 class EditOptionValueCommand extends AbstractEditValueCommand
 {
-    /** @var OptionAttribute */
-    public $attribute;
-
     /** @var string */
     public $optionCode;
+
+    public function __construct(OptionAttribute $attribute, ?string $channel, ?string $locale, string $optionCode)
+    {
+        parent::__construct($attribute, $channel, $locale);
+
+        $this->optionCode = $optionCode;
+    }
 }

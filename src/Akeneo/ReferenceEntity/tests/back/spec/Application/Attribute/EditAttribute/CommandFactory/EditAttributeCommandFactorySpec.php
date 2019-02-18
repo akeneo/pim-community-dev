@@ -36,20 +36,20 @@ class EditAttributeCommandFactorySpec extends ObjectBehavior
         EditAttributeCommandFactoryInterface $editLabelsCommandFactory
     ) {
         $normalizedCommand = [
-            'identifier'    => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
+            'identifier'    => 'portrait',
             'labels' => ['fr_FR' => 'Image autobiographique'],
             'max_file_size' => '172.50'
         ];
         $editAttributeCommandFactoryRegistry->getFactories($normalizedCommand)->willReturn([$editMaxFileSizeCommandFactory, $editLabelsCommandFactory]);
-        $editMaxFileSizeCommand = new EditMaxFileSizeCommand();
-        $editLabelsCommand = new EditLabelsCommand();
+        $editMaxFileSizeCommand = new EditMaxFileSizeCommand($normalizedCommand['identifier'], $normalizedCommand['max_file_size']);
+        $editLabelsCommand = new EditLabelsCommand($normalizedCommand['identifier'], $normalizedCommand['labels']);
 
         $editMaxFileSizeCommandFactory->create($normalizedCommand)->willReturn($editMaxFileSizeCommand);
         $editLabelsCommandFactory->create($normalizedCommand)->willReturn($editLabelsCommand);
 
         $command = $this->create($normalizedCommand);
         $command->shouldBeAnInstanceOf(EditAttributeCommand::class);
-        $command->identifier->shouldBeEqualTo(['identifier' => 'portrait', 'reference_entity_identifier' => 'designer']);
+        $command->identifier->shouldBeEqualTo('portrait');
         $command->editCommands->shouldBeEqualTo([$editMaxFileSizeCommand, $editLabelsCommand]);
     }
 

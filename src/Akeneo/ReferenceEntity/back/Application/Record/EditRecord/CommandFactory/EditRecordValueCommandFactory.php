@@ -31,11 +31,12 @@ class EditRecordValueCommandFactory implements EditValueCommandFactoryInterface
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
-        $command = new EditRecordValueCommand();
-        $command->attribute = $attribute;
-        $command->channel = $normalizedValue['channel'];
-        $command->locale = $normalizedValue['locale'];
-        $command->recordCode = $normalizedValue['data'];
+        $command = new EditRecordValueCommand(
+            $attribute,
+            $normalizedValue['channel'],
+            $normalizedValue['locale'],
+            $normalizedValue['data']
+        );
 
         return $command;
     }

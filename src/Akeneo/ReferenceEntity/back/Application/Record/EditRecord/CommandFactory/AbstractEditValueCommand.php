@@ -16,9 +16,16 @@ class AbstractEditValueCommand
     /** @var AbstractAttribute */
     public $attribute;
 
-    /** @var string */
+    /** @var string|null */
     public $channel;
 
-    /** @var string */
+    /** @var string|null */
     public $locale;
+
+    public function __construct(AbstractAttribute $attribute, ?string $channel, ?string $locale)
+    {
+        $this->attribute = $attribute;
+        $this->channel = $channel;
+        $this->locale = $locale;
+    }
 }

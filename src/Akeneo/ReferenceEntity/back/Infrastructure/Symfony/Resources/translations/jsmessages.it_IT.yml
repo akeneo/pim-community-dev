@@ -95,8 +95,8 @@ pim_reference_entity:
       filter:
         completeness:
           label: Completo
-          yes: true
-          no: false
+          'yes': 'SI'
+          'no': 'NO'
       column:
         code: Codice
         image: Immagine

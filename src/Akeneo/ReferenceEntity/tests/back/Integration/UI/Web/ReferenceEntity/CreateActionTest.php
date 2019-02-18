@@ -82,6 +82,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             ],
             [
                 'code' => 'designer',
+                'labels' => []
             ]
         );
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
@@ -234,14 +235,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
     public function invalidIdentifiers()
     {
         return [
-            'Identifier is null'              => [
-                null,
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"code":null,"labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-            ],
-            'Identifier is an integer'        => [
-                1234123,
-                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"code":1234123,"labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-            ],
             'Identifier has a dash character' => [
                 'invalid-code',
                 '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"code":"invalid-code","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',

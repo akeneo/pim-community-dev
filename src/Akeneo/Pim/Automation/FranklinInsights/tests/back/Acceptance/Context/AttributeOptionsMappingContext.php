@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttri
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\AttributeOptionsMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject\AttributeOptions;
@@ -190,8 +191,8 @@ class AttributeOptionsMappingContext implements Context
 
         foreach ($this->retrievedAttributeOptionsMapping->mapping() as $index => $attributeOptionMapping) {
             $expectedRow = $expectedMappingTable->getHash()[$index];
-            Assert::eq($attributeOptionMapping->franklinAttributeId(), $expectedRow['franklin_attribute_id']);
-            Assert::eq($attributeOptionMapping->catalogAttributeCode(), $expectedRow['catalog_attribute_code']);
+            Assert::eq($attributeOptionMapping->franklinAttributeOptionId(), $expectedRow['franklin_attribute_option_id']);
+            Assert::eq($attributeOptionMapping->catalogAttributeOptionCode(), $expectedRow['catalog_attribute_option_code']);
             $this->assertStatus($expectedRow['status'], $attributeOptionMapping->status());
         }
     }
@@ -269,7 +270,7 @@ class AttributeOptionsMappingContext implements Context
      */
     public function aWrongOptionAttributeMessageShouldBeSent(): void
     {
-        Assert::isInstanceOf(ExceptionContext::getThrownException(), \InvalidArgumentException::class);
+        Assert::isInstanceOf(ExceptionContext::getThrownException(), AttributeOptionsMappingException::class);
     }
 
     /**
@@ -277,7 +278,7 @@ class AttributeOptionsMappingContext implements Context
      */
     public function anEmptyAttributeOptionsMappingMessageShouldBeSent(): void
     {
-        Assert::isInstanceOf(ExceptionContext::getThrownException(), \InvalidArgumentException::class);
+        Assert::isInstanceOf(ExceptionContext::getThrownException(), AttributeOptionsMappingException::class);
     }
 
     /**

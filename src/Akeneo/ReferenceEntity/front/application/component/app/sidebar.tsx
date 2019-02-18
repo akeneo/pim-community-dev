@@ -5,6 +5,7 @@ import {EditState} from 'akeneoreferenceentity/application/reducer/reference-ent
 import {toggleSidebar, updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
 import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
 import Key from 'akeneoreferenceentity/tools/key';
+import DropdownMenu from 'akeneoreferenceentity/application/component/app/dropdown-menu';
 
 interface SidebarOwnProps {
   backButton?: () => JSX.Element;
@@ -32,16 +33,8 @@ class Sidebar extends React.Component<SidebarProps> {
     this.props.events.toggleSidebar(!this.props.isCollapsed);
   };
 
-  updateCurrentTab = (event: React.MouseEvent<HTMLSpanElement> | React.KeyboardEvent<HTMLSpanElement>) => {
-    event.preventDefault();
-    const target = event.target as HTMLSpanElement;
-    if (undefined === target || undefined === target.dataset || undefined === target.dataset.tab) {
-      return false;
-    }
-
-    this.props.events.updateCurrentTab(target.dataset.tab);
-
-    return false;
+  updateCurrentTab = (tab: Tab) => {
+    this.props.events.updateCurrentTab(tab.code);
   };
 
   render(): JSX.Element | JSX.Element[] {
@@ -51,6 +44,14 @@ class Sidebar extends React.Component<SidebarProps> {
     return (
       <div className={`AknColumn ${colapsedClass}`}>
         <div className="AknColumn-inner column-inner">
+          <div className="AknColumn-navigation">
+            <DropdownMenu
+              label={__('pim_reference_entity.reference_entity.breadcrumb')}
+              elements={this.props.tabs}
+              selectedElement={this.props.currentTab}
+              onSelectionChange={this.updateCurrentTab}
+            />
+          </div>
           <div className="AknColumn-innerTop">
             <div className="AknColumn-block">
               {undefined !== BackButton ? <BackButton /> : null}
@@ -65,9 +66,9 @@ class Sidebar extends React.Component<SidebarProps> {
                     tabIndex={0}
                     className={`AknColumn-navigationLink ${activeClass}`}
                     data-tab={tab.code}
-                    onClick={this.updateCurrentTab}
+                    onClick={() => this.updateCurrentTab(tab)}
                     onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                      if (Key.Space === event.key) this.updateCurrentTab(event);
+                      if (Key.Space === event.key) this.updateCurrentTab(tab);
                     }}
                   >
                     {__(tab.label)}

@@ -119,8 +119,8 @@ pim_reference_entity:
         completeness:
           label: Complet
           all: TOT
-          yes: true
-          no: false
+          'yes': 'YES'
+          'no': 'NO'
       column:
         code: Codi
         image: Imatge

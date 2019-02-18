@@ -62,9 +62,7 @@ class IndexRecordsContext implements Context
      */
     public function theReferenceEntity(string $referenceEntityIdentifier): void
     {
-        $createCommand = new CreateReferenceEntityCommand();
-        $createCommand->code = $referenceEntityIdentifier;
-        $createCommand->labels = [];
+        $createCommand = new CreateReferenceEntityCommand($referenceEntityIdentifier, []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -86,8 +84,7 @@ class IndexRecordsContext implements Context
      */
     public function theSystemAdministratorReindexesAllTheRecordsOf(string $refenceEntityIdentifier): void
     {
-        $command = new IndexRecordsByReferenceEntityCommand();
-        $command->referenceEntityIdentifier = $refenceEntityIdentifier;
+        $command = new IndexRecordsByReferenceEntityCommand($refenceEntityIdentifier);
         $violations = $this->validator->validate($command);
 
         if (0 < $violations->count()) {
@@ -111,8 +108,7 @@ class IndexRecordsContext implements Context
      */
     public function theSystemAdministratorReindexesTheRecordsOfAnReferenceEntityThatDoesNotExist()
     {
-        $command = new IndexRecordsByReferenceEntityCommand();
-        $command->referenceEntityIdentifier = 'unknown_reference_entity';
+        $command = new IndexRecordsByReferenceEntityCommand('unknown_reference_entity');
         $violations = $this->validator->validate($command);
 
         if (0 < $violations->count()) {

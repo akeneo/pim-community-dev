@@ -21,8 +21,8 @@ class MaxFileSizeUpdaterSpec extends ObjectBehavior
         TextAttribute $textAttribute,
         ImageAttribute $imageAttribute
     ) {
-        $maxFileSizeEditCommand = new EditMaxFileSizeCommand();
-        $labelEditCommand = new EditLabelsCommand();
+        $maxFileSizeEditCommand = new EditMaxFileSizeCommand('name', '120');
+        $labelEditCommand = new EditLabelsCommand('name', []);
 
         $this->supports($imageAttribute, $maxFileSizeEditCommand)->shouldReturn(true);
         $this->supports($imageAttribute, $labelEditCommand)->shouldReturn(false);
@@ -31,7 +31,7 @@ class MaxFileSizeUpdaterSpec extends ObjectBehavior
 
     function it_edits_the_max_file_size_property_of_an_image_attribute(ImageAttribute $imageAttribute)
     {
-        $editMaxFileSize = new EditMaxFileSizeCommand();
+        $editMaxFileSize = new EditMaxFileSizeCommand('name', '151.1');
         $editMaxFileSize->maxFileSize = '151.1';
         $imageAttribute->setMaxFileSize(AttributeMaxFileSize::fromString('151.1'))->shouldBeCalled();
         $this->__invoke($imageAttribute, $editMaxFileSize)->shouldReturn($imageAttribute);
@@ -39,16 +39,15 @@ class MaxFileSizeUpdaterSpec extends ObjectBehavior
 
     function it_edits_sets_the_max_file_to_no_limit(ImageAttribute $textAttribute)
     {
-        $editMaxFileSize = new EditMaxFileSizeCommand();
-        $editMaxFileSize->maxLength = null;
+        $editMaxFileSize = new EditMaxFileSizeCommand('name', null);
         $textAttribute->setMaxFileSize(AttributeMaxFileSize::noLimit())->shouldBeCalled();
         $this->__invoke($textAttribute, $editMaxFileSize)->shouldReturn($textAttribute);
     }
 
     function it_throws_if_it_cannot_update_the_attribute(ImageAttribute $rightAttribute, TextAttribute $wrongAttribute)
     {
-        $wrongCommand = new EditLabelsCommand();
-        $rightCommand = new EditMaxFileSizeCommand();
+        $wrongCommand = new EditLabelsCommand('name', []);
+        $rightCommand = new EditMaxFileSizeCommand('name', '120');
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$rightAttribute, $wrongCommand]);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$wrongAttribute, $rightCommand]);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$wrongAttribute, $wrongCommand]);

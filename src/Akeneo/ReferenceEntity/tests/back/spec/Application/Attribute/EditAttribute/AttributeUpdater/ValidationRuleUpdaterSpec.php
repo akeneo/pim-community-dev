@@ -21,8 +21,8 @@ class ValidationRuleUpdaterSpec extends ObjectBehavior
         TextAttribute $textAttribute,
         ImageAttribute $imageAttribute
     ) {
-        $labelEditCommand = new EditLabelsCommand();
-        $isRequiredEditCommand = new EditValidationRuleCommand();
+        $labelEditCommand = new EditLabelsCommand('name', []);
+        $isRequiredEditCommand = new EditValidationRuleCommand('name', 'email');
 
         $this->supports($textAttribute, $isRequiredEditCommand)->shouldReturn(true);
         $this->supports($imageAttribute, $isRequiredEditCommand)->shouldReturn(false);
@@ -31,23 +31,21 @@ class ValidationRuleUpdaterSpec extends ObjectBehavior
 
     function it_edits_the_validation_rule_of_a_text_attribute(TextAttribute $textAttribute)
     {
-        $editRequired = new EditValidationRuleCommand();
-        $editRequired->validationRule = 'email';
+        $editRequired = new EditValidationRuleCommand('name', 'email');
         $textAttribute->setValidationRule(AttributeValidationRule::fromString('email'))->shouldBeCalled();
         $this->__invoke($textAttribute, $editRequired)->shouldReturn($textAttribute);
     }
 
     function it_sets_the_validation_rule_to_none(TextAttribute $textAttribute)
     {
-        $editRequired = new EditValidationRuleCommand();
-        $editRequired->validationRule = null;
+        $editRequired = new EditValidationRuleCommand('name', null);
         $textAttribute->setValidationRule(AttributeValidationRule::none())->shouldBeCalled();
         $this->__invoke($textAttribute, $editRequired)->shouldReturn($textAttribute);
     }
 
     function it_throws_if_it_cannot_update_the_attribute(TextAttribute $textAttribute)
     {
-        $wrongCommand = new EditLabelsCommand();
+        $wrongCommand = new EditLabelsCommand('name', []);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$textAttribute, $wrongCommand]);
     }
 }

@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobInstanceNames;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
@@ -76,6 +77,40 @@ class ProductSubscriptionContext extends PimContext
     {
         $this->loginAsAdmin();
         $this->unsubscribeProductFromFranklin($identifier);
+    }
+
+    /**
+     * @When /I bulk subscribe the products (.*) to Franklin/
+     */
+    public function iSubscribeTheProductsToFranklin(string $identifiers): void
+    {
+        $this->getNavigationContext()->iAmLoggedInAs('admin', 'admin');
+        $this->getNavigationContext()->iAmOnTheGrid('products');
+
+        $identifiers = $this->getMainContext()->listToArray($identifiers);
+
+        foreach ($identifiers as $entity) {
+            $this->getCurrentPage()->selectRow($entity, true);
+        }
+
+        $this->getMainContext()->getSubcontext('webUser')->iPressTheButton('Bulk actions');
+        $this->getMainContext()->getSubcontext('webUser')->iChooseTheOperation('Franklin Insights Subscriptions');
+        $this->getMainContext()->getSubcontext('webUser')->iConfirmTheMassEdit();
+        $this->getMainContext()->getSubcontext('webUser')->iWaitForTheJobToFinish(JobInstanceNames::SUBSCRIBE_PRODUCTS);
+    }
+
+    /**
+     * @Then /the products (.*) should be subscribed/
+     *
+     * @param string $identifiers
+     */
+    public function theProductsShouldBeSubscribed(string $identifiers): void
+    {
+        $identifiers = $this->getMainContext()->listToArray($identifiers);
+
+        foreach ($identifiers as $identifier) {
+            $this->checkSubscriptionIsSaved($identifier);
+        }
     }
 
     /**

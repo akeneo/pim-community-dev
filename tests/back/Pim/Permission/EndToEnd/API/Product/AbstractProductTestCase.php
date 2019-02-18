@@ -2,11 +2,11 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product;
 
+use PHPUnit\Framework\Assert;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractProductTestCase extends ApiTestCase

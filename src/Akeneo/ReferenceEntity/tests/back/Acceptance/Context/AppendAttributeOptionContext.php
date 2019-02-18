@@ -88,11 +88,12 @@ class AppendAttributeOptionContext implements Context
      */
     public function theUserAppendsANewOptionForThisAttribute()
     {
-        $command = new AppendAttributeOptionCommand();
-        $command->referenceEntityIdentifier = 'designer';
-        $command->attributeCode = 'color';
-        $command->optionCode = 'red';
-        $command->labels = ['en_US' => 'Red', 'fr_FR' => 'Rouge'];
+        $command = new AppendAttributeOptionCommand(
+            'designer',
+            'color',
+            'red',
+            ['en_US' => 'Red', 'fr_FR' => 'Rouge']
+        );
 
         $violations = $this->validator->validate($command);
         $this->constraintViolationsContext->addViolations($violations);
@@ -140,7 +141,7 @@ class AppendAttributeOptionContext implements Context
             AttributeOption::create(
                 OptionCode::fromString('blue'),
                 LabelCollection::fromArray([])
-            )
+            ),
         ]);
 
         $this->attributeRepository->create($optionAttribute);
@@ -151,11 +152,12 @@ class AppendAttributeOptionContext implements Context
      */
     public function theUserAppendsANewOptionForThisOptionCollectionAttribute()
     {
-        $command = new AppendAttributeOptionCommand();
-        $command->referenceEntityIdentifier = 'designer';
-        $command->attributeCode = 'color';
-        $command->optionCode = 'red';
-        $command->labels = ['en_US' => 'Red', 'fr_FR' => 'Rouge'];
+        $command = new AppendAttributeOptionCommand(
+            'designer',
+            'color',
+            'red',
+            ['en_US' => 'Red', 'fr_FR' => 'Rouge']
+        );
 
         $violations = $this->validator->validate($command);
         $this->constraintViolationsContext->addViolations($violations);
@@ -276,11 +278,12 @@ class AppendAttributeOptionContext implements Context
      */
     public function theUserAppendsARedOptionIntoTheOptionCollectionAttribute()
     {
-        $command = new AppendAttributeOptionCommand();
-        $command->referenceEntityIdentifier = 'designer';
-        $command->attributeCode = 'color';
-        $command->optionCode = 'red';
-        $command->labels = ['en_US' => 'Red', 'fr_FR' => 'Rouge'];
+        $command = new AppendAttributeOptionCommand(
+            'designer',
+            'color',
+            'red',
+            ['en_US' => 'Red', 'fr_FR' => 'Rouge']
+        );
 
         $violations = $this->validator->validate($command);
         $this->constraintViolationsContext->addViolations($violations);

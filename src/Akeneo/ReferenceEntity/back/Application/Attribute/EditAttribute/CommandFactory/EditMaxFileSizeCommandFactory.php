@@ -21,9 +21,10 @@ class EditMaxFileSizeCommandFactory implements EditAttributeCommandFactoryInterf
         if (!$this->supports($normalizedCommand)) {
             throw new \RuntimeException('Impossible to create an edit max file size property command.');
         }
-        $command = new EditMaxFileSizeCommand();
-        $command->identifier = $normalizedCommand['identifier'];
-        $command->maxFileSize = $normalizedCommand['max_file_size'] ?? null;
+        $command = new EditMaxFileSizeCommand(
+            $normalizedCommand['identifier'],
+            $normalizedCommand['max_file_size']
+        );
 
         return $command;
     }

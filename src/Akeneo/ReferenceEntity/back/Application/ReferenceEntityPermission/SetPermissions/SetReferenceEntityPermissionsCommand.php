@@ -17,4 +17,10 @@ class SetReferenceEntityPermissionsCommand
 
     /** @var SetUserGroupPermissionCommand[] */
     public $permissionsByUserGroup = [];
+
+    public function __construct(string $referenceEntityIdentifier, array $permissionsByUserGroup)
+    {
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->permissionsByUserGroup = $permissionsByUserGroup;
+    }
 }

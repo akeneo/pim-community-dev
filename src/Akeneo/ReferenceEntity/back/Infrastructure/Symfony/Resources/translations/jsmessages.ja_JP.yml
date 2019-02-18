@@ -47,8 +47,8 @@ pim_reference_entity:
       filter:
         completeness:
           label: 網羅率
-          yes: true
-          no: false
+          'yes': 'YES'
+          'no': 'NO'
       column:
         code: コード
         image: イメージ

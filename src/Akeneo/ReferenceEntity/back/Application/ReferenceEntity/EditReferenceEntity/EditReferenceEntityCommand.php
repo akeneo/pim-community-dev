@@ -24,6 +24,13 @@ class EditReferenceEntityCommand
     /** @var array */
     public $labels;
 
-    /** @var ?array */
+    /** @var array|null */
     public $image;
+
+    public function __construct(string $identifier, array $labels, ?array $image)
+    {
+        $this->identifier = $identifier;
+        $this->labels = $labels;
+        $this->image = $image;
+    }
 }

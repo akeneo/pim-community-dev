@@ -22,8 +22,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer as InternalApi;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -31,6 +33,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ProductSubscriptionController
 {
+    use CheckAccessTrait;
+
     /** @var SubscribeProductHandler */
     private $subscribeProductHandler;
 
@@ -48,28 +52,35 @@ class ProductSubscriptionController
      * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
      * @param InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
+     * @param SecurityFacade $securityFacade
      */
     public function __construct(
         SubscribeProductHandler $subscribeProductHandler,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
         UnsubscribeProductHandler $unsubscribeProductHandler,
-        InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
+        InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer,
+        SecurityFacade $securityFacade
     ) {
         $this->subscribeProductHandler = $subscribeProductHandler;
         $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
         $this->productSubscriptionStatusNormalizer = $productSubscriptionStatusNormalizer;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
+     * @param Request $request
      * @param int $productId
-     *
-     * @AclAncestor("akeneo_franklin_insights_product_subscription")
      *
      * @return Response
      */
-    public function subscribeAction(int $productId): Response
+    public function subscribeAction(Request $request, int $productId): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+        $this->checkAccess('akeneo_franklin_insights_product_subscription');
+
         try {
             $command = new SubscribeProductCommand($productId);
             $this->subscribeProductHandler->handle($command);
@@ -94,14 +105,18 @@ class ProductSubscriptionController
     }
 
     /**
+     * @param Request $request
      * @param int $productId
-     *
-     * @AclAncestor("akeneo_franklin_insights_product_subscription")
      *
      * @return Response
      */
-    public function unsubscribeAction(int $productId): Response
+    public function unsubscribeAction(Request $request, int $productId): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+        $this->checkAccess('akeneo_franklin_insights_product_subscription');
+
         try {
             $command = new UnsubscribeProductCommand($productId);
             $this->unsubscribeProductHandler->handle($command);

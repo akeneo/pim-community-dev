@@ -5,7 +5,7 @@ export type NormalizedChannelReference = string | null;
 export default class ChannelReference {
   private constructor(private channelReference: string | null) {
     if (!('string' === typeof channelReference || null === channelReference)) {
-      throw new InvalidTypeError('ChannelReference expect a string or null as parameter to be created');
+      throw new InvalidTypeError('ChannelReference expects a string or null as parameter to be created');
     }
 
     Object.freeze(this);

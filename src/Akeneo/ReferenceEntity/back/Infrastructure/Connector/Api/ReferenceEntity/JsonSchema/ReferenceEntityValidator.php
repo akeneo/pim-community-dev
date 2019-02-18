@@ -43,6 +43,9 @@ class ReferenceEntityValidator
                 'image' => [
                     'type' => ['string', 'null']
                 ],
+                '_links' => [
+                    'type' => 'object'
+                ]
             ],
             'required' => ['code'],
             'additionalProperties' => false,

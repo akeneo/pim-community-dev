@@ -23,9 +23,10 @@ class DeleteRecordHandlerSpec extends ObjectBehavior
 
     function it_deletes_a_record_by_its_code_and_entity_identifier(RecordRepositoryInterface $repository)
     {
-        $command = new DeleteRecordCommand();
-        $command->recordCode = 'record_code';
-        $command->referenceEntityIdentifier = 'entity_identifier';
+        $command = new DeleteRecordCommand(
+            'record_code',
+            'entity_identifier'
+        );
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('entity_identifier');
         $recordCode = RecordCode::fromString('record_code');

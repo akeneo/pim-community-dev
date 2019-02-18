@@ -209,7 +209,8 @@ class CreateAttributeContext implements Context
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
 
         $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
-        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+        $violations = $this->validator->validate($command);
+        $this->constraintViolationsContext->addViolations($violations);
 
         try {
             ($this->handler)($command);

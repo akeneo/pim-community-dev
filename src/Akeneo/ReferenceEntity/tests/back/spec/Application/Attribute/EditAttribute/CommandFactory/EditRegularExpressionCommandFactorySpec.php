@@ -16,15 +16,15 @@ class EditRegularExpressionCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_property_regular_expression_edits()
     {
         $this->supports([
-            'identifier'         => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
+            'identifier'         => 'name',
             'regular_expression' => '/\w+/',
         ])->shouldReturn(true);
         $this->supports([
-            'identifier'         => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
+            'identifier'         => 'name',
             'regular_expression' => null,
         ])->shouldReturn(true);
         $this->supports([
-            'identifier' => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
+            'identifier' => 'name',
             'labels'     => 'wrong_property',
         ])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);
@@ -33,17 +33,11 @@ class EditRegularExpressionCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_to_edit_the_regular_expression()
     {
         $command = $this->create([
-            'identifier' => [
-                'identifier'                 => 'name',
-                'reference_entity_identifier' => 'designer',
-            ],
+            'identifier' => 'name',
             'regular_expression'   => '/\w+/',
         ]);
         $command->shouldBeAnInstanceOf(EditRegularExpressionCommand::class);
-        $command->identifier->shouldBeEqualTo([
-            'identifier'                 => 'name',
-            'reference_entity_identifier' => 'designer',
-        ]);
+        $command->identifier->shouldBeEqualTo('name');
         $command->regularExpression->shouldBeEqualTo('/\w+/');
     }
 
@@ -52,10 +46,7 @@ class EditRegularExpressionCommandFactorySpec extends ObjectBehavior
         $this->shouldThrow(\RuntimeException::class)
             ->during('create', [
                 [
-                    'identifier'     => [
-                        'identifier'                 => 'portrait',
-                        'reference_entity_identifier' => 'designer',
-                    ],
+                    'identifier'     => 'portrait',
                     'wrong_property' => 10,
                 ],
             ]);

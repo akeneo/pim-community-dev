@@ -66,6 +66,9 @@ class CreateOrUpdateAttributeAction
     /** @var AttributeEditionValidator */
     private $jsonSchemaEditValidator;
 
+    /** @var ValidateAttributePropertiesImmutability */
+    private $validateAttributePropertiesImmutability;
+
     public function __construct(
         CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry,
         FindAttributeNextOrderInterface $attributeNextOrder,
@@ -78,7 +81,8 @@ class CreateOrUpdateAttributeAction
         ReferenceEntityExistsInterface $referenceEntityExists,
         ValidatorInterface $validator,
         AttributeCreationValidator $jsonSchemaCreateValidator,
-        AttributeEditionValidator $jsonSchemaEditValidator
+        AttributeEditionValidator $jsonSchemaEditValidator,
+        ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability
     ) {
         $this->createAttributeCommandFactoryRegistry = $createAttributeCommandFactoryRegistry;
         $this->attributeNextOrder = $attributeNextOrder;
@@ -92,6 +96,7 @@ class CreateOrUpdateAttributeAction
         $this->validator = $validator;
         $this->jsonSchemaCreateValidator = $jsonSchemaCreateValidator;
         $this->jsonSchemaEditValidator = $jsonSchemaEditValidator;
+        $this->validateAttributePropertiesImmutability = $validateAttributePropertiesImmutability;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode): Response
@@ -134,24 +139,24 @@ class CreateOrUpdateAttributeAction
     ) {
         $normalizedAttribute['reference_entity_identifier'] = (string) $referenceEntityIdentifier;
 
-        if (isset($normalizedAttribute['validation_regexp'])) {
+        if (array_key_exists('validation_regexp', $normalizedAttribute)) {
             $normalizedAttribute['regular_expression'] = $normalizedAttribute['validation_regexp'];
             unset($normalizedAttribute['validation_regexp']);
         }
 
-        if (isset($normalizedAttribute['is_required_for_completeness'])) {
+        if (array_key_exists('is_required_for_completeness', $normalizedAttribute)) {
             $normalizedAttribute['is_required'] = $normalizedAttribute['is_required_for_completeness'];
             unset($normalizedAttribute['is_required_for_completeness']);
         }
 
-        if (isset($normalizedAttribute['is_required_for_completeness'])) {
-            $normalizedAttribute['is_required'] = $normalizedAttribute['is_required_for_completeness'];
-            unset($normalizedAttribute['is_required_for_completeness']);
-        }
-
-        if (isset($normalizedAttribute['max_characters'])) {
+        if (array_key_exists('max_characters', $normalizedAttribute)) {
             $normalizedAttribute['max_length'] = $normalizedAttribute['max_characters'];
             unset($normalizedAttribute['max_characters']);
+        }
+
+        if (array_key_exists('reference_entity_code', $normalizedAttribute)) {
+            $normalizedAttribute['record_type'] = $normalizedAttribute['reference_entity_code'];
+            unset($normalizedAttribute['reference_entity_code']);
         }
 
         if (isset($normalizedAttribute['type'])) {
@@ -228,6 +233,20 @@ class CreateOrUpdateAttributeAction
                 'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'message' => 'The attribute has an invalid format.',
                 'errors' => JsonSchemaErrorsFormatter::format($invalidFormatErrors),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $invalidImmutablePropertiesErrors = ($this->validateAttributePropertiesImmutability)(
+            $referenceEntityIdentifier,
+            $attributeCode,
+            $normalizedAttribute
+        );
+
+        if (!empty($invalidImmutablePropertiesErrors)) {
+            return new JsonResponse([
+                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message' => 'The attribute has data that does not comply with the business rules.',
+                'errors' => $invalidImmutablePropertiesErrors,
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 

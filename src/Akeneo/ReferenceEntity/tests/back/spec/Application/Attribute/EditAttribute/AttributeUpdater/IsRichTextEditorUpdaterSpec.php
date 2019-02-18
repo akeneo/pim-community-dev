@@ -21,8 +21,8 @@ class IsRichTextEditorUpdaterSpec extends ObjectBehavior
         TextAttribute $textAttribute,
         ImageAttribute $imageAttribute
     ) {
-        $isRichTextEditorEditCommand = new EditIsRichTextEditorCommand();
-        $labelEditCommand = new EditLabelsCommand();
+        $isRichTextEditorEditCommand = new EditIsRichTextEditorCommand('name', true);
+        $labelEditCommand = new EditLabelsCommand('name', []);
 
         $this->supports($textAttribute, $isRichTextEditorEditCommand)->shouldReturn(true);
         $this->supports($textAttribute, $labelEditCommand)->shouldReturn(false);
@@ -31,7 +31,7 @@ class IsRichTextEditorUpdaterSpec extends ObjectBehavior
 
     function it_edits_the_is_rich_text_editor_flag_of_a_text_attribute(TextAttribute $textAttribute)
     {
-        $editIsRichTextEditor = new EditIsRichTextEditorCommand();
+        $editIsRichTextEditor = new EditIsRichTextEditorCommand('name', true);
         $editIsRichTextEditor->isRichTextEditor = true;
         $textAttribute->setIsRichTextEditor(AttributeIsRichTextEditor::fromBoolean(true))->shouldBeCalled();
         $this->__invoke($textAttribute, $editIsRichTextEditor)->shouldReturn($textAttribute);
@@ -39,8 +39,8 @@ class IsRichTextEditorUpdaterSpec extends ObjectBehavior
 
     function it_throws_if_it_cannot_update_the_attribute(TextAttribute $rightAttribute, ImageAttribute $wrongAttribute)
     {
-        $wrongCommand = new EditLabelsCommand();
-        $rightCommand = new EditIsRichTextEditorCommand();
+        $wrongCommand = new EditLabelsCommand('name', []);
+        $rightCommand = new EditIsRichTextEditorCommand('name', true);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$rightAttribute, $wrongCommand]);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$wrongAttribute, $wrongCommand]);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$wrongAttribute, $rightCommand]);

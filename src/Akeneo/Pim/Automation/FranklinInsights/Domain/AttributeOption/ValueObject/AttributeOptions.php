@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\AttributeOptionsMappingException;
+
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -68,7 +70,7 @@ final class AttributeOptions implements \IteratorAggregate
     private function validateOptionsAreNotEmpty(array $options): void
     {
         if (empty($options)) {
-            throw new \InvalidArgumentException('Options cannot be an empty array');
+            throw AttributeOptionsMappingException::emptyAttributeOptionsMapping();
         }
     }
 

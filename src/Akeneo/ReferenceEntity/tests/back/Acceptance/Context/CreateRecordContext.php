@@ -75,10 +75,11 @@ final class CreateRecordContext implements Context
         TableNode $updateTable
     ) {
         $updates = current($updateTable->getHash());
-        $command = new CreateRecordCommand();
-        $command->code = $code;
-        $command->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $command->labels = json_decode($updates['labels'], true);
+        $command = new CreateRecordCommand(
+            $referenceEntityIdentifier,
+            $code,
+            json_decode($updates['labels'], true)
+        );
 
         $this->violationsContext->addViolations($this->validator->validate($command));
 
@@ -162,10 +163,11 @@ final class CreateRecordContext implements Context
     public function randomRecordsForAReferenceEntity(int $number)
     {
         for ($i = 0; $i < $number; $i++) {
-            $command = new CreateRecordCommand();
-            $command->code = uniqid('record_');
-            $command->referenceEntityIdentifier = 'designer';
-            $command->labels = [];
+            $command = new CreateRecordCommand(
+                'designer',
+                uniqid('record_'),
+                []
+            );
 
             $this->violationsContext->addViolations($this->validator->validate($command));
 

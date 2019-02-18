@@ -72,6 +72,7 @@ export default class EditForm extends React.Component<FormProps> {
           <div className="AknFieldContainer-inputContainer">
             <input
               type="text"
+              autoComplete="off"
               name="identifier"
               id="pim_reference_entity.reference_entity.properties.identifier"
               className="AknTextField AknTextField--light AknTextField--disabled"
@@ -94,6 +95,7 @@ export default class EditForm extends React.Component<FormProps> {
           <div className="AknFieldContainer-inputContainer">
             <input
               type="text"
+              autoComplete="off"
               name="label"
               id="pim_reference_entity.reference_entity.properties.label"
               className={`AknTextField AknTextField--light ${true === canEditLabel ? '' : 'AknTextField--disabled'}`}

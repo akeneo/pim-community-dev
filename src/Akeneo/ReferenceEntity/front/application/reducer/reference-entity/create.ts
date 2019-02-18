@@ -1,33 +1,29 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import {
+  NormalizedReferenceEntityCreation,
+  createEmptyReferenceEntityCreation,
+} from 'akeneoreferenceentity/domain/model/reference-entity/creation';
 import sanitize from 'akeneoreferenceentity/tools/sanitize';
 
 export interface CreateState {
   active: boolean;
-  data: {
-    code: string;
-    labels: {
-      [localeCode: string]: string;
-    };
-  };
+  data: NormalizedReferenceEntityCreation;
   errors: ValidationError[];
 }
 
-const initCreateState = (): CreateState => ({
+const initCreationState = (): CreateState => ({
   active: false,
-  data: {
-    code: '',
-    labels: {},
-  },
+  data: createEmptyReferenceEntityCreation().normalize(),
   errors: [],
 });
 
 export default (
-  state: CreateState = initCreateState(),
+  state: CreateState = initCreationState(),
   action: {type: string; locale: string; value: string; errors: ValidationError[]}
 ) => {
   switch (action.type) {
     case 'REFERENCE_ENTITY_CREATION_START':
-      state = {...initCreateState(), active: true};
+      state = {...initCreationState(), active: true};
       break;
 
     case 'REFERENCE_ENTITY_CREATION_CODE_UPDATED':

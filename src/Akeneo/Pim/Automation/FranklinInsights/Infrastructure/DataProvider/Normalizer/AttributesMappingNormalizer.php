@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
@@ -82,11 +83,11 @@ class AttributesMappingNormalizer
     private function computeAttributeStatus(DomainAttributeMapping $attributeMapping): string
     {
         switch ($attributeMapping->getStatus()) {
-            case DomainAttributeMapping::ATTRIBUTE_MAPPED:
+            case AttributeMappingStatus::ATTRIBUTE_ACTIVE:
                 return AttributeMapping::STATUS_ACTIVE;
-            case DomainAttributeMapping::ATTRIBUTE_PENDING:
+            case AttributeMappingStatus::ATTRIBUTE_PENDING:
                 return AttributeMapping::STATUS_PENDING;
-            case DomainAttributeMapping::ATTRIBUTE_UNMAPPED:
+            case AttributeMappingStatus::ATTRIBUTE_INACTIVE:
                 return AttributeMapping::STATUS_INACTIVE;
         }
     }

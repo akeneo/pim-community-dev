@@ -83,12 +83,13 @@ final class EditReferenceEntityContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
-        $createCommand = new CreateReferenceEntityCommand();
-        $createCommand->code = 'designer';
-        $createCommand->labels = [
-            'en_US' => 'Designer',
-            'fr_FR' => 'Concepteur'
-        ];
+        $createCommand = new CreateReferenceEntityCommand(
+            'designer',
+            [
+                'en_US' => 'Designer',
+                'fr_FR' => 'Concepteur'
+            ]
+        );
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -104,9 +105,11 @@ final class EditReferenceEntityContext implements Context
     public function theUserUpdatesTheReferenceEntityWith(string $identifier, TableNode $updateTable)
     {
         $updates = $updateTable->getRowsHash();
-        $command = new EditReferenceEntityCommand();
-        $command->identifier = $identifier;
-        $command->labels = json_decode($updates['labels'], true);
+        $command = new EditReferenceEntityCommand(
+            $identifier,
+            json_decode($updates['labels'], true),
+            null
+        );
         ($this->editReferenceEntityHandler)($command);
     }
 
@@ -179,9 +182,7 @@ final class EditReferenceEntityContext implements Context
 
         $label = json_decode($label);
 
-        $createCommand = new CreateReferenceEntityCommand();
-        $createCommand->code = $identifier;
-        $createCommand->labels = [$localCode => $label];
+        $createCommand = new CreateReferenceEntityCommand($identifier, [$localCode => $label]);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -196,9 +197,7 @@ final class EditReferenceEntityContext implements Context
      */
     public function anImageOnAnReferenceEntityWitPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
-        $createCommand = new CreateReferenceEntityCommand();
-        $createCommand->code = $identifier;
-        $createCommand->labels = [];
+        $createCommand = new CreateReferenceEntityCommand($identifier, []);
 
         $violations = $this->validator->validate($createCommand);
         if ($violations->count() > 0) {
@@ -230,13 +229,14 @@ final class EditReferenceEntityContext implements Context
         $filePath = json_decode($filePath);
         $filename = json_decode($filename);
 
-        $editReferenceEntityCommand = new EditReferenceEntityCommand();
-        $editReferenceEntityCommand->identifier = $identifier;
-        $editReferenceEntityCommand->labels = [];
-        $editReferenceEntityCommand->image = [
-            'filePath' => $filePath,
-            'originalFilename' => $filename
-        ];
+        $editReferenceEntityCommand = new EditReferenceEntityCommand(
+            $identifier,
+            [],
+            [
+                'filePath' => $filePath,
+                'originalFilename' => $filename
+            ]
+        );
         $this->editReferenceEntity($editReferenceEntityCommand);
     }
 
@@ -247,10 +247,11 @@ final class EditReferenceEntityContext implements Context
     {
         $label = json_decode($label);
 
-        $editReferenceEntityCommand = new EditReferenceEntityCommand();
-        $editReferenceEntityCommand->identifier = $identifier;
-        $editReferenceEntityCommand->labels[$localCode] = $label;
-        $editReferenceEntityCommand->image = null;
+        $editReferenceEntityCommand = new EditReferenceEntityCommand(
+            $identifier,
+            [$localCode => $label],
+            null
+        );
         $this->editReferenceEntity($editReferenceEntityCommand);
     }
 
@@ -259,10 +260,7 @@ final class EditReferenceEntityContext implements Context
      */
     public function theUserUpdatesTheReferenceEntityWithAnEmptyImage(string $identifier)
     {
-        $editReferenceEntityCommand = new EditReferenceEntityCommand();
-        $editReferenceEntityCommand->identifier = $identifier;
-        $editReferenceEntityCommand->labels = [];
-        $editReferenceEntityCommand->image = null;
+        $editReferenceEntityCommand = new EditReferenceEntityCommand($identifier, [], null);
         $this->editReferenceEntity($editReferenceEntityCommand);
     }
 
@@ -278,7 +276,7 @@ final class EditReferenceEntityContext implements Context
         $referenceEntity = $this->referenceEntityRepository
             ->getByIdentifier(ReferenceEntityIdentifier::fromString($identifier));
 
-        Assert::assertEquals($referenceEntity->getImage()->getKey(), $filePath);
+        Assert::assertEquals($filePath, $referenceEntity->getImage()->getKey());
     }
 
     /**

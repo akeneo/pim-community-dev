@@ -153,4 +153,11 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->isUpdated()->shouldReturn(true);
         $this->updatedIdentifierCodes()->shouldReturn([]);
     }
+
+    public function it_finds_if_attribute_is_mapped_to_an_identifier($sku, AttributeInterface $attribute): void
+    {
+        $attribute->getCode()->willReturn('test');
+        $this->isMappedTo($sku)->shouldReturn(true);
+        $this->isMappedTo($attribute)->shouldReturn(false);
+    }
 }

@@ -18,15 +18,6 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\R
  */
 class AttributeMapping
 {
-    /* The attribute is not mapped yet */
-    public const ATTRIBUTE_PENDING = 0;
-
-    /** The attribute is mapped */
-    public const ATTRIBUTE_MAPPED = 1;
-
-    /** The attribute was registered to not be mapped */
-    public const ATTRIBUTE_UNMAPPED = 2;
-
     private const UNKNOWN_ATTRIBUTE_TYPE = 'unknown';
 
     /** @var string */

@@ -24,11 +24,11 @@ describe('akeneo > reference entity > domain > model --- channel', () => {
   test('I cannot create a new channel with invalid parameters', () => {
     expect(() => {
       denormalizeChannel({labels: {}, locales: []});
-    }).toThrow('Channel expect a string as code to be created');
+    }).toThrow('Channel expects a string as code to be created');
 
     expect(() => {
       new ConcreteChannel('toto', {}, []);
-    }).toThrow('Channel expect a LabelCollection as second argument');
+    }).toThrow('Channel expects a LabelCollection as second argument');
 
     expect(() => {
       new ConcreteChannel('toto', createLabelCollection({}), [
@@ -40,10 +40,10 @@ describe('akeneo > reference entity > domain > model --- channel', () => {
         }),
         {},
       ]);
-    }).toThrow('Channel expect a Locale collection as third argument');
+    }).toThrow('Channel expects a Locale collection as third argument');
 
     expect(() => {
       new ConcreteChannel('toto', createLabelCollection({}), [{}]);
-    }).toThrow('Channel expect a Locale collection as third argument');
+    }).toThrow('Channel expects a Locale collection as third argument');
   });
 });

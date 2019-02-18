@@ -48,6 +48,7 @@ class RecordView extends React.Component<Props, {referenceEntity: ReferenceEntit
           <div className="AknFieldContainer-inputContainer">
             <input
               type="text"
+              autoComplete="off"
               className="AknTextField AknTextField--light AknTextField--disabled"
               id="pim_reference_entity.attribute.edit.input.record_type"
               name="record_type"

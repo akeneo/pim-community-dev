@@ -49,33 +49,36 @@ $rules = [
         'Akeneo\UserManagement\Bundle\Context\UserContext',
         'Akeneo\Pim\Permission\Bundle\User\UserContext',
 
-        //TODO: draft should be linked to user by ID (and we should not keep the name of the user in the draft)
+        // TIP-982: Rework User/Draft link
         'Akeneo\UserManagement\Component\Event\UserEvent',
 
         // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
 
-        //TODO: We should integrate by database instead of using external repository
+        // TIP-980: Workflow should not be linked to User
         'Akeneo\UserManagement\Bundle\Manager\UserManager',
         'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
-        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
+
+        // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
-        'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
+
+        // TODO: permission
+        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
+        'Akeneo\Pim\Permission\Component\Attributes',
 
         // TIP-983: Workflow should not be linked to Attribute
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+        'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\AttributeTypes',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+        'Akeneo\Pim\Structure\Component\Factory\AttributeFactory',
 
-        //TODO Link by id instead of reference
+        // TIP-987: Published should be less coupled to Product
+        // TIP-988: Split Published vs Draft/Proposal
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
-
-        //TODO: We should rely on type given by a type system and not on public constants
-        'Akeneo\Asset\Bundle\AttributeType\AttributeTypes',
-        'Akeneo\Pim\Permission\Component\Attributes',
 
         // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
@@ -99,11 +102,7 @@ $rules = [
         // TIP-963: Define the Products public API
         'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface', // For the reference data PQB filter
 
-
-        // TODO: Used by twig in the datagrid to create a fake value
-        'Akeneo\Pim\Structure\Component\Factory\AttributeFactory',
-
-        // TODO: product commands extended for drafts :/
+        // TIP-1031: Do not override PIM/Enrichment commands
         'Akeneo\Pim\Enrichment\Bundle\Command\UpdateProductCommand',
         'Akeneo\Pim\Enrichment\Bundle\Command\QueryProductCommand',
 
@@ -162,17 +161,17 @@ $rules = [
         // TODO: createDatagridQueryBuilder method used by datagrid
         'Doctrine\ORM\QueryBuilder',
 
-        // TODO usage of public constant
+        // TODO: permission
         'Akeneo\Pim\Permission\Component\Attributes',
+        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
 
         // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
 
-        //TODO: relationship between bounded context (query data though repository)
+        //TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface',
-        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
         'Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface',
 
         // TIP-987: Published should be less coupled to Product
@@ -210,7 +209,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface',
 
-        //TODO: public constants of formats used to index proposals
+        // TIP-1032: Workflow should not depend on PIM/Enrichment normalizers
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer',

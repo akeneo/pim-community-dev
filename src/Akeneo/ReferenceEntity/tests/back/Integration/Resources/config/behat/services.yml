@@ -2,154 +2,144 @@ services:
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_record_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorRecordContext
         arguments:
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_record_by_reference_entity_and_code'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.media_file'
-            - '@__symfony__.akeneo_file_storage.file_storage.filesystem_provider'
-        tags:
-            - { name: fob.context_service }
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_record_by_reference_entity_and_code'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.media_file'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_records_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorRecordsContext
         arguments:
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.date'
-        tags:
-            - { name: fob.context_service }
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.date'
+
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.not_found_reference_entity_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\NotFoundReferenceEntityContext
         arguments:
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-        tags:
-            - { name: fob.context_service }
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_reference_entity_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorReferenceEntityContext
         arguments:
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_by_reference_entity_identifier'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_by_reference_entity_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
         tags:
         - { name: fob.context_service }
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_reference_entities_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorReferenceEntitiesContext
         arguments:
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_items'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_items'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
         tags:
         - { name: fob.context_service }
 
     akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_record_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect\CreateOrUpdateRecordContext
         arguments:
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.record'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.file_exists'
-            - '@__symfony__.akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
-        tags:
-            - { name: fob.context_service }
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.file_exists'
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_attributes_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorAttributesContext
         arguments:
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_attributes_by_reference_entity_identifier'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-        tags:
-            - { name: fob.context_service }
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_attributes_by_reference_entity_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_attribute_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeContext
         arguments:
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-        tags:
-            - { name: fob.context_service }
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_attribute_option_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeOptionContext
         arguments:
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_option'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-        tags:
-            - { name: fob.context_service }
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_option'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
 
     akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_reference_entity_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect\CreateOrUpdateReferenceEntityContext
         arguments:
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.file_exists'
-            - '@__symfony__.akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
-        tags:
-            - { name: fob.context_service }
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_file_data_by_file_key'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.file_exists'
+            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
+
 
     akeneo_referenceentity.tests.back.integration.connector.distribute.get_connector_attribute_options_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeOptionsContext
         arguments:
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_options'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-        tags:
-            - { name: fob.context_service }
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_options'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
 
     akeneo_referenceentity.tests.back.integration.connector.collect.create_or_update_attribute_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect\CreateOrUpdateAttributeContext
         arguments:
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
-        tags:
-            - { name: fob.context_service }
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
+
     akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_attribute_option_context:
         class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Collect\CreateOrUpdateAttributeOptionContext
         arguments:
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
-            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
-        tags:
-            - { name: fob.context_service }
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@akeneoreference_entity.tests.helper.web_client_helper'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+

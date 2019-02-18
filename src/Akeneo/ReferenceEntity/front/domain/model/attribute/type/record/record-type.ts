@@ -17,7 +17,7 @@ export class RecordType implements NormalizableAdditionalProperty {
     }
 
     if (!(recordType instanceof ReferenceEntityIdentifier)) {
-      throw new InvalidArgumentError('RecordType expect a ReferenceEntityIdentifier argument');
+      throw new InvalidArgumentError('RecordType expects a ReferenceEntityIdentifier argument');
     }
 
     Object.freeze(this);
