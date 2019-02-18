@@ -146,7 +146,7 @@ acceptance:
         pim:
             paths:
                 - '%paths.base%/tests/features/pim'
-            contexts_services:
+            contexts:
                 - test.catalog.product_creation.context
                 - test.catalog.product_validation.context
                 - test.enrichment.enrichment_follow_up_context
@@ -155,7 +155,7 @@ acceptance:
         channel:
             paths:
                 - '%paths.base%/tests/features/channel'
-            contexts_services:
+            contexts:
                 - test.locale.context
                 - test.channel.context
             filters:
@@ -163,7 +163,7 @@ acceptance:
         platform:
             paths:
                 - '%paths.base%/tests/features/platform'
-            contexts_services:
+            contexts:
                 - test.catalog_volume_limits.report_context
                 - test.catalog_volume_limits.system_info_context
                 - test.catalog_volume_limits.system_info_attribute_context
@@ -193,19 +193,9 @@ acceptance:
             filters:
                 tags: '@acceptance-back'
     extensions:
-        FriendsOfBehat\ContextServiceExtension:
-           imports:
-               - 'tests/back/Acceptance/Resources/config/behat/services.yml'
-               - 'tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/behat/services.yml'
-               - 'tests/back/Pim/Enrichment/Acceptance/Resources/config/behat/services.yml'
-        FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
-                env: test_fake
+                environment: test_fake
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
 
-    formatters:
-        pretty: true
-        pim:
-            output_path: /tmp/pod/

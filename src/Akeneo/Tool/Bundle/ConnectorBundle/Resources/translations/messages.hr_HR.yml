@@ -161,6 +161,7 @@ batch_jobs:
     import_associations.label: Uvoz pridruživanja
   xlsx_product_model_import:
     validation.label: Provjera valjanosti datoteke
+    import_associations.label: Uvoz pridruživanja
   xlsx_group_export:
     label: Izvoz grupe u XLSX
     export.label: Izvoz grupe

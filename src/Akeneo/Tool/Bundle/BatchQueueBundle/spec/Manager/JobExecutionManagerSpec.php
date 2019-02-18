@@ -89,9 +89,6 @@ class JobExecutionManagerSpec extends ObjectBehavior
         $status->getValue()->willReturn(BatchStatus::STARTED);
         $exitStatus->isRunning()->willReturn(true);
 
-        $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED))->shouldBeCalled();
-        $jobExecution->setExitStatus(new ExitStatus(ExitStatus::FAILED))->shouldBeCalled();
-
         $this->resolveJobExecutionStatus($jobExecution);
     }
 

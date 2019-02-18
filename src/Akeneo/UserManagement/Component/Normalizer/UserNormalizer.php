@@ -105,7 +105,7 @@ class UserNormalizer implements NormalizerInterface
             ] : $this->fileNormalizer->normalize($user->getAvatar()),
             'meta'                      => [
                 'id'    => $user->getId(),
-                'form'  => $this->isEditGranted($user) ? 'pim-user-edit-form' : 'pim-user-show',
+                'form'  => $this->securityFacade->isGranted('pim_user_user_edit') ? 'pim-user-edit-form' : 'pim-user-show',
                 'image' => [
                     'filePath' => null === $user->getAvatar() ?
                         null :
@@ -153,24 +153,5 @@ class UserNormalizer implements NormalizerInterface
         return $user->getRolesCollection()->map(function (Role $role) {
             return $role->getRole();
         })->toArray();
-    }
-
-    /**
-     * Returns true if the current user has permission to edit user or is the current user.
-     *
-     * @param UserInterface $user
-     *
-     * @return bool
-     */
-    private function isEditGranted($user): bool
-    {
-        if ($this->securityFacade->isGranted('pim_user_user_edit')) {
-            return true;
-        }
-
-        $token = $this->tokenStorage->getToken();
-        $currentUser = $token ? $token->getUser() : null;
-
-        return ($user->getId() && is_object($currentUser) && $currentUser->getId() == $user->getId());
     }
 }

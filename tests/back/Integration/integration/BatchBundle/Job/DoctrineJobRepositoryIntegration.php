@@ -30,12 +30,14 @@ class DoctrineJobRepositoryIntegration extends TestCase
         $result = $stmt->fetch();
 
         $expectedResult = [
-            'status' => 2,
+            'status' => '2',
             'exit_code' => 'UNKNOWN',
-            'raw_parameters' => '{"foo":"bar"}',
+            'raw_parameters' => '{"foo": "bar"}',
         ];
 
-        $this->assertEquals($expectedResult, $result);
+        $this->assertEquals($expectedResult['status'], $result['status']);
+        $this->assertEquals($expectedResult['exit_code'], $result['exit_code']);
+        $this->assertJsonStringEqualsJsonString($expectedResult['raw_parameters'], $result['raw_parameters']);
     }
 
     public function testGetLastJobExecutionWithJobParameters()

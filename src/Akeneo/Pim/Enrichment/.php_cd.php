@@ -191,7 +191,7 @@ $rules = [
         'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException',
         'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager',
 
-        // TODO: EASY PICK! a component should not rely a concrete implementation => use the right repo interface
+        // TIP-1033: PIM/Enrichment should not depend on EntityRepository
         'Doctrine\ORM\EntityRepository',
 
         // TIP-939: Remove filter system for permissions
@@ -208,7 +208,7 @@ $rules = [
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
 
-        // TODO: is ProductMassActionRepositoryInterface still used?
+        // TIP-1034: PIM/Enrichment component should not depend on Oro
         'Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface',
 
         // TIP-1011: Create a Versioning component

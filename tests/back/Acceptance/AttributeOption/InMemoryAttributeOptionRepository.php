@@ -97,7 +97,7 @@ class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInte
         $attributeOptions = [];
         foreach ($this->attributeOptions as $attributeOption) {
             if ($code === $attributeOption->getAttribute()->getCode() && in_array($attributeOption->getCode(), $optionCodes)) {
-                $attributeOptions[] = $attributeOption;
+                $attributeOptions[] = ['code' => $attributeOption->getCode()];
             }
         }
 

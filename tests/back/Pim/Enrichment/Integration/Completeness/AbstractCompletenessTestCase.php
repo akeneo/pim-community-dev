@@ -49,7 +49,9 @@ abstract class AbstractCompletenessTestCase extends TestCase
             return $missingAttribute->getCode();
         }, $missingAttributes->toArray());
 
-        $this->assertEquals(sort($expectedAttributeCodes), sort($missingAttributeCodes));
+        sort($expectedAttributeCodes);
+        sort($missingAttributeCodes);
+        $this->assertEquals($expectedAttributeCodes, $missingAttributeCodes);
     }
 
     /**

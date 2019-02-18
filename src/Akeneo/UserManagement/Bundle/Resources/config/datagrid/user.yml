@@ -86,7 +86,6 @@ datagrid:
                 type:          navigate
                 label:         pim_common.update
                 link:          update_link
-                acl_resource:  pim_user_user_edit
                 rowAction:     true
             delete:
                 launcherOptions:

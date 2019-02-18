@@ -22,7 +22,8 @@ define(
         'oro/loading-mask',
         'oro/messenger',
         'pim/template/mass-edit/product/associate/pick',
-        'pim/template/mass-edit/product/associate/confirm'
+        'pim/template/mass-edit/product/associate/confirm',
+        'pim/template/common/modal-centered'
     ],
     function (
         $,
@@ -39,12 +40,14 @@ define(
         LoadingMask,
         messenger,
         pickTemplate,
-        confirmTemplate
+        confirmTemplate,
+        modalTemplate
     ) {
         return BaseOperation.extend({
             className: 'AknGridContainer--withoutNoDataPanel',
             pickTemplate: _.template(pickTemplate),
             confirmTemplate: _.template(confirmTemplate),
+            modalTemplate: _.template(modalTemplate),
             errors: null,
             formPromise: null,
             events: {
@@ -245,22 +248,23 @@ define(
                         .getFetcher('association-type')
                         .fetch(this.getCurrentAssociationTypeCode())
                         .then((associationType) => {
-                            form.setCustomTitle(__('pim_enrich.entity.product.module.associations.manage', {
-                                associationType: associationType.labels[UserContext.get('catalogLocale')]
-                            }));
-
                             let modal = new Backbone.BootstrapModal({
-                                className: 'modal modal--fullPage modal--topButton',
                                 modalOptions: {
                                     backdrop: 'static',
                                     keyboard: false
                                 },
+                                innerDescription:
+                                __('pim_enrich.entity.product.module.associations.manage_description'),
                                 allowCancel: true,
                                 okCloses: false,
-                                title: '',
+                                title: __('pim_enrich.entity.product.module.associations.manage', {
+                                    associationType: associationType.labels[UserContext.get('catalogLocale')]
+                                }),
                                 content: '',
                                 cancelText: ' ',
-                                okText: __('pim_common.confirm')
+                                okText: __('pim_common.confirm'),
+                                template: this.modalTemplate,
+                                innerClassName: 'AknFullPage--full',
                             });
                             modal.open();
                             modal.on('cancel', deferred.reject);

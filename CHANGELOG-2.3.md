@@ -1,8 +1,45 @@
 # 2.3.x
+
+## Bug fixes
+
+- GITHUB-9408: Fix jobs in minimal fixture - cheerz @userz58 !
+- PIM-7943: Fix duplicate popin mask in family variant edit form.
+- PIM-8007: Content of sortable attribute options is now copyable.
+- PIM-8008: Fix attributes sort order in PEF.
+- PIM-8022: Fix the job status when using the batch command.
+
+# 2.3.28 (2019-02-01)
+
+# 2.3.27 (2019-01-29)
+
+# 2.3.26 (2019-01-28)
+
+## Bug fixes
+
+- PIM-7967: Fix ACL for asset categories
+- PIM-7969: fix special chars in PDF export
+- Force the use of ip-regex at 2.1.0 version. Upper version needs nodejs >= 8 but we have to support nodejs >= 6.
+
+# 2.3.25 (2019-01-17)
+
+## Bug fixes
+
+- PIM-7965: fix families patch endpoint when updating a family with a family variant 
+- PIM-7961: Fix localizable assets used as main image for family and added to product product model
+
+# 2.3.24 (2019-01-10)
+ 
+## Bug fixes
+
+- PIM-7934: Fix translations of product model import
+- GITHUB-8780: Fix error in product normalizer. Cheers @yunosh!
+
+# 2.3.23 (2019-01-03)
  
 ## Bug fixes
 
 - PIM-7899: Remove Date of Birth field
+- PIM-7926: Fix the parent property setter when "enabled comparison" is set to false in an import job definition
 
 # 2.3.22 (2018-12-21)
 

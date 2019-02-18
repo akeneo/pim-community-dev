@@ -342,22 +342,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_product_model_validator_entity }
 
-    pim_connector.validator.constraints.product_filter_data_validator:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterDataValidator'
-        arguments:
-            - '@pim_catalog.query.product_query_builder_factory'
-            - '@translator'
-        tags:
-            - { name: validator.constraint_validator, alias: product_filter_data_validator }
-
-    pim_connector.validator.constraints.product_model_filter_data_validator:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterDataValidator'
-        arguments:
-            - '@pim_catalog.query.product_model_query_builder_factory'
-            - '@translator'
-        tags:
-            - { name: validator.constraint_validator, alias: product_model_filter_data_validator }
-
     pim_connector.validator.constraints.filter_structure_locale_validator:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureLocaleValidator'
         arguments:

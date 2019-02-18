@@ -94,6 +94,8 @@ class SavingProductModelDescendantsIntegration extends TestCase
 
         $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 5);
         $this->get('doctrine.orm.entity_manager')->clear();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        sleep(5);
 
         $rootProductModel = $this->get('pim_catalog.repository.product_model')
             ->findOneByIdentifier('seed_root_product_model');

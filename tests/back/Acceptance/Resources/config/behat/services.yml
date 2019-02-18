@@ -3,105 +3,99 @@ services:
     test.channel.builder:
         class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
-            - '@__symfony__.pim_catalog.factory.channel'
-            - '@__symfony__.pim_catalog.updater.channel'
-            - '@__symfony__.validator'
+            - '@pim_catalog.factory.channel'
+            - '@pim_catalog.updater.channel'
+            - '@validator'
 
     test.locale.builder:
         class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
-            - '@__symfony__.pim_catalog.factory.locale'
-            - '@__symfony__.pim_catalog.updater.locale'
-            - '@__symfony__.validator'
+            - '@pim_catalog.factory.locale'
+            - '@pim_catalog.updater.locale'
+            - '@validator'
 
     test.category.builder:
         class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
-            - '@__symfony__.pim_catalog.factory.category'
-            - '@__symfony__.pim_catalog.updater.category'
-            - '@__symfony__.validator'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
 
     test.currency.builder:
         class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
-            - '@__symfony__.pim_catalog.factory.currency'
-            - '@__symfony__.pim_catalog.updater.currency'
-            - '@__symfony__.validator'
+            - '@pim_catalog.factory.currency'
+            - '@pim_catalog.updater.currency'
+            - '@validator'
 
     test.attribute.builder:
         class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
-            - '@__symfony__.pim_catalog.factory.attribute'
-            - '@__symfony__.pim_catalog.updater.attribute'
-            - '@__symfony__.validator'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
 
     test.attribute_group.builder:
         class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
-            - '@__symfony__.pim_catalog.factory.attribute_group'
-            - '@__symfony__.pim_catalog.updater.attribute_group'
-            - '@__symfony__.validator'
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@validator'
 
     test.family.builder:
         class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
-            - '@__symfony__.pim_catalog.factory.family'
-            - '@__symfony__.pim_catalog.updater.family'
-            - '@__symfony__.validator'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@validator'
 
     test.catalog.product.builder:
         class: 'Akeneo\Test\Common\EntityWithValue\Builder\Product'
         shared: false
         arguments:
-            - '@__symfony__.pim_catalog.builder.product'
-            - '@__symfony__.pim_catalog.updater.product'
-            - '@__symfony__.validator'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@validator'
 
-    ### Behat context, don't forget to tag them (fob.context_service)
     test.locale.context:
         class: 'Akeneo\Test\Acceptance\Locale\LocaleContext'
         arguments:
-            - '@__symfony__.pim_catalog.repository.locale'
+            - '@pim_catalog.repository.locale'
             - '@test.locale.builder'
-        tags:
-            - { name: fob.context_service }
+
 
     test.channel.context:
         class: 'Akeneo\Test\Acceptance\Channel\ChannelContext'
         arguments:
-            - '@__symfony__.pim_catalog.repository.locale'
-            - '@__symfony__.pim_catalog.repository.category'
-            - '@__symfony__.pim_catalog.repository.channel'
-            - '@__symfony__.pim_catalog.repository.currency'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.currency'
             - '@test.category.builder'
             - '@test.channel.builder'
             - '@test.currency.builder'
-        tags:
-            - { name: fob.context_service }
+
 
     test.attribute.context:
         class: 'Akeneo\Test\Acceptance\Attribute\AttributeContext'
         arguments:
-            - '@__symfony__.pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute'
             - '@test.attribute.builder'
-            - '@__symfony__.pim_catalog.repository.attribute_group'
+            - '@pim_catalog.repository.attribute_group'
             - '@test.attribute_group.builder'
-        tags:
-            - { name: fob.context_service }
+
 
     test.catalog.product_creation.context:
         class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductCreation'
         arguments:
-            - '@__symfony__.pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute'
             - '@test.catalog.product.builder'
-            - '@__symfony__.pim_catalog.repository.product'
-        tags:
-            - { name: fob.context_service }
+            - '@pim_catalog.repository.product'
+
 
     test.catalog.product_validation.context:
         class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductValidation'
         arguments:
             - '@test.catalog.product.builder'
-            - '@__symfony__.validator'
-        tags:
-            - { name: fob.context_service }
+            - '@validator'
+

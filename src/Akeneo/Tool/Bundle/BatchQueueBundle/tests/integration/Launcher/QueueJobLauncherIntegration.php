@@ -43,7 +43,7 @@ class QueueJobLauncherIntegration extends TestCase
         $stmt->execute();
         $row = $stmt->fetch();
 
-        $this->assertEquals('{"env":"test","email":"mary@example.com"}', $row['options']);
+        $this->assertJsonStringEqualsJsonString('{"env": "test", "email": "mary@example.com"}', $row['options']);
         $this->assertNotNull($row['create_time']);
         $this->assertNull($row['updated_time']);
         $this->assertNull($row['consumer']);
