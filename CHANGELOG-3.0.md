@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8017: Fix PDF generation
+- PIM-8000: Accept links property when creating or updating a reference entity record with the API
 
 # 3.0.3 (2019-02-18)
 

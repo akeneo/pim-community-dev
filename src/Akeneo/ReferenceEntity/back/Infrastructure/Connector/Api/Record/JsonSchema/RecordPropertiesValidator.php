@@ -37,6 +37,9 @@ class RecordPropertiesValidator
         return [
             'type' => 'object',
             'properties' => [
+                '_links' => [
+                    'type' => 'object'
+                ],
                 'code' => [
                     'type' => ['string'],
                 ],
