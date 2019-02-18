@@ -29,7 +29,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->arrayNode('language')
                         ->children()
-                            ->scalarNode('value')->defaultValue('en')->end()
+                            ->scalarNode('value')->defaultValue('en_US')->end()
                             ->scalarNode('scope')->defaultValue('app')->end()
                         ->end()
                     ->end()
@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
             $rootNode,
             [
                 'loading_message_enabled' => ['value' => false],
-                'language' => ['value' => 'en']
+                'language' => ['value' => 'en_US']
             ]
         );
 
