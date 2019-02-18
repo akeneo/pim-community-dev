@@ -55,6 +55,15 @@ abstract class ApiTestCase extends WebTestCase
         $fixturesLoader->load();
     }
 
+    protected static function createClient(array $options = array(), array $server = array())
+    {
+        if (!isset($options['environment'])) {
+            $options['environment'] = 'test_database';
+        }
+
+        return parent::createClient($options);
+    }
+
     /**
      * Adds a valid access token to the client, so it is included in all its requests.
      *
@@ -125,6 +134,8 @@ abstract class ApiTestCase extends WebTestCase
 
         return [$matches[1], $matches[2]];
     }
+
+
 
     /**
      * Authenticates a user by calling the token route and returns the access token and the refresh token.

@@ -11,7 +11,7 @@ class AggregateVolumesCommandIntegration extends KernelTestCase
 {
     public function testAggregateVolumes()
     {
-        $kernel = self::bootKernel();
+        $kernel = self::bootKernel(['environment' => 'test_database']);
 
         $application = new Application($kernel);
         $application->add(new AggregateVolumesCommand());

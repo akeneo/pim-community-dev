@@ -12,7 +12,7 @@ class CreateClientIntegration extends KernelTestCase
 {
     public function testResponseWhenCreateClient()
     {
-        self::bootKernel();
+        self::bootKernel(['environment' => 'test_database']);
         $application = new Application(self::$kernel);
         $application->add(new CreateClientCommand());
 
@@ -39,7 +39,7 @@ class CreateClientIntegration extends KernelTestCase
      */
     public function testResponseWhenMissingLabel()
     {
-        self::bootKernel();
+        self::bootKernel(['environment' => 'test_database']);
         $application = new Application(self::$kernel);
         $application->add(new CreateClientCommand());
 

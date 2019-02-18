@@ -30,7 +30,7 @@ class YamlWriterIntegration extends KernelTestCase
     public function setUp()
     {
         parent::setUp();
-        static::bootKernel();
+        static::bootKernel(['environment' => 'test_database']);
 
         $this->filePath = static::$kernel->getRootDir().'/../var/a_dump.yml';
         $this->header = 'a_header';

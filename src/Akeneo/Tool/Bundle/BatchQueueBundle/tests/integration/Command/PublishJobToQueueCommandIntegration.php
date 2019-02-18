@@ -51,7 +51,7 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $jobExecutionMessage = $this->getJobExecutionMessage();
 
         $this->assertNotNull($jobExecutionMessage['job_execution_id']);
-        $this->assertJsonStringEqualsJsonString('{"env": "test"}', $jobExecutionMessage['options']);
+        $this->assertJsonStringEqualsJsonString('{"env": "test_database"}', $jobExecutionMessage['options']);
         $this->assertNotNull($jobExecutionMessage['create_time']);
         $this->assertNull($jobExecutionMessage['updated_time']);
         $this->assertNull($jobExecutionMessage['consumer']);
@@ -100,7 +100,7 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $jobExecutionMessage = $this->getJobExecutionMessage();
 
         $this->assertJsonStringEqualsJsonString(
-            '{"env": "test", "no-log": true}',
+            '{"env": "test_database", "no-log": true}',
             $jobExecutionMessage['options']
         );
     }
@@ -111,7 +111,7 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $jobExecutionMessage = $this->getJobExecutionMessage();
 
         $this->assertJsonStringEqualsJsonString(
-            '{"env": "test", "email": "ziggy@akeneo.com"}',
+            '{"env": "test_database", "email": "ziggy@akeneo.com"}',
             $jobExecutionMessage['options']
         );
     }
