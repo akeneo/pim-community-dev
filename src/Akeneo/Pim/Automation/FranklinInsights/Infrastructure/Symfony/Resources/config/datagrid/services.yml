@@ -1,0 +1,15 @@
+services:
+    akeneo.pim.automation.franklin_insights.datagrid.event_listener.configure_product_grid:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid\ConfigureProductGridListener
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
+
+    akeneo.pim.automation.franklin_insights.datagrid.product_subscription_filter:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid\FranklinSubscriptionFilter
+        arguments:
+            - '@oro_filter.choice_filter'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: franklin_subscription }

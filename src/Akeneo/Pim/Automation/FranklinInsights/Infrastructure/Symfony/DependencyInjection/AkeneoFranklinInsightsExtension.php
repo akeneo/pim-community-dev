@@ -35,6 +35,7 @@ class AkeneoFranklinInsightsExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('client/franklin.yml');
         $loader->load('cursors.yml');
+        $loader->load('datagrid/services.yml');
         $loader->load('data_provider/franklin.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('handlers.yml');
