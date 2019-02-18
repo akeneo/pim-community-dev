@@ -1,0 +1,8 @@
+services:
+    akeneo.pim.automation.franklin_insights.elasticsearch.filter.franklin_subscription:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\Filter\FranklinSubscriptionFilter
+        arguments:
+            - ['franklin_subscription']
+            - ['=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
