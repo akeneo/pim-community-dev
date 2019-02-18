@@ -70,18 +70,33 @@ define(
                         __: __,
                         label: this.label,
                         operatorChoices: this._getOperatorChoices(),
-                        selectedOperator: this._getDisplayValue().type,
+                        selectedOperator: this._getDisplayValueOrDefault().type,
                         emptyChoice: this.emptyChoice,
-                        selectedOperatorLabel: this._getOperatorChoices()[this._getDisplayValue().type],
+                        selectedOperatorLabel: this._getOperatorChoices()[this._getDisplayValueOrDefault().type],
                         operatorLabel: __('pim_common.operator'),
                         updateLabel: __('pim_common.update'),
                         units: this.units,
-                        unitLabel: __('pim.grid.metric_filter.label'),
-                        selectedUnit: this._getDisplayValue().unit,
-                        value: this._getDisplayValue().value
+                        unitLabel: __('pim_datagrid.filters.metric_filter.label'),
+                        selectedUnit: this._getDisplayValueOrDefault().unit,
+                        value: this._getDisplayValueOrDefault().value
                     })
                 );
                 return this;
+            },
+
+            /**
+             * Returns the default values just for display
+             */
+            _getDisplayValueOrDefault: function () {
+                const value = this._getDisplayValue();
+                if ('' === value.unit) {
+                    value.unit = this.emptyValue.unit;
+                }
+                if ('' === value.type) {
+                    value.type = this.emptyValue.type;
+                }
+
+                return value;
             },
 
             /**
@@ -117,7 +132,7 @@ define(
                     return this.placeholder;
                 } else {
                     const option = this._getChoiceOption(value.type);
-                    return option.label + ' ' + value.value + ' ' + value.unit;
+                    return option.label + ' ' + value.value + ' ' + __(`pim_measure.units.${value.unit}`);
                 }
             },
 
@@ -222,7 +237,7 @@ define(
             _onSelectUnit: function(e) {
                 const value = $(e.currentTarget).find('.unit_choice').attr('data-value');
                 $(this.criteriaValueSelectors.unit).val(value);
-                this._highlightDropdown(value.unit, '.unit');
+                this._highlightDropdown(value, '.unit');
 
                 e.preventDefault();
             },
