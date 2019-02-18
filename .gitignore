@@ -13,10 +13,9 @@ web/app_local.php
 app/AppKernel_local.php
 app/console_local
 app/archive/*
-var/cache/*
+var/*
+!var/SymfonyRequirements.php
 app/config/*_local.yml
-var/logs/*
-var/bootstrap.php.cache
 app/import/*
 app/export/*
 app/emails/*
@@ -44,7 +43,6 @@ behat.yml
 /phpspec.yml
 uploads_test/
 .phpspec/*.tpl
-var/php_cs.cache
 /node_modules
 npm-debug.log
 /docker/*
@@ -54,7 +52,6 @@ npm-debug.log
 .env
 docker-compose.override.yml
 .web-server-pid
-
 package-lock.json
 .yarn-metadata.json
 yarn-error.log
