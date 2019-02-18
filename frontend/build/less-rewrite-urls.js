@@ -11,7 +11,7 @@ function getProcessor(less) {
         visitUrl: function (URLNode, visitArgs) {
             let path = URLNode.value.value;
 
-            if (!path) return;
+            if (!path) return URLNode;
 
             if (typeof URLNode.value._fileInfo !== "undefined") {
                 const containsURL = new RegExp("^([a-zA-Z]+\:\/\/|\/|data\:).+");
