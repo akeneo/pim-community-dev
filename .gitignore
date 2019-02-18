@@ -7,10 +7,10 @@ web/test_dist/*
 web/cache/*
 app/archive/*
 app/cache/*
-var/cache/*
 app/config/parameters.yml
 app/logs/*
-var/logs/*
+var/*
+!var/SymfonyRequirements.php
 app/import/*
 app/export/*
 app/emails/*
@@ -18,7 +18,6 @@ app/uploads/*
 app/uploads/product/*
 app/file_storage/*
 app/bootstrap.php.cache
-var/bootstrap.php.cache
 app/phpunit.xml
 app/build
 vendor
@@ -32,7 +31,6 @@ vendor
 !/bin/console
 !/bin/pim-front.sh
 behat.yml
-var/php_cs.cache
 .phpspec/*.tpl
 composer.phar
 /node_modules
