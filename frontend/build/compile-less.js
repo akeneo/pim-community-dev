@@ -3,12 +3,18 @@ const { dirname, resolve } = require('path')
 const rootDir = process.cwd()
 const { writeFileSync, readFileSync, existsSync } = require('fs')
 const lessc = require('less')
+
+// A plugin to rewrite the image urls
 const RewriteImageURLs = require('./less-rewrite-urls')
 
+// The file that contains the paths of all required bundles of the PIM
 const BUNDLE_REQUIRE_PATH = resolve(rootDir, './web/js/require-paths')
+
+// The file path for each bundle that imports all the .less files
 const BUNDLE_LESS_INDEX_PATH = 'public/less/index.less'
+
+// The final output path for all the CSS of the PIM
 const OUTPUT_CSS_PATH = 'web/css/pim.css'
-const SOURCEMAP_CSS_PATH = 'web/css/pim.css.map'
 
 if (!existsSync(`${BUNDLE_REQUIRE_PATH}.js`)) {
     console.error(`web/js/require-paths.js does not exist - Run "bin/console pim:installer:dump-require-paths" and try again.`.red)
@@ -18,6 +24,11 @@ if (!existsSync(`${BUNDLE_REQUIRE_PATH}.js`)) {
 
 const bundlePaths = require(BUNDLE_REQUIRE_PATH)
 
+/**
+ * Get the file contents of a given path as a string
+ *
+ * @param {string} filePath
+ */
 function getFileContents(filePath) {
     try {
         const fileContents = readFileSync(filePath, 'utf-8')
@@ -26,7 +37,13 @@ function getFileContents(filePath) {
     } catch (e) { }
 }
 
+/**
+ * Return the contents of each index.less file from each bundle
+ *
+ * @param {array} bundlePaths An array of directories of each required bundle
+ */
 function collectBundleImports(bundlePaths) {
+    // Make each path relative
     const indexFiles = bundlePaths.map(bundlePath => {
         return dirname(bundlePath)
             .replace('config', BUNDLE_LESS_INDEX_PATH)
@@ -45,11 +62,21 @@ function collectBundleImports(bundlePaths) {
     return bundleImports.join('')
 }
 
+/**
+ * Format a lessjs compilation error
+ *
+ * @param {Error} error A LESS error coming from the lessjs parser
+ */
 function formatParseError(error) {
     console.log(`Error compiling less: ${error.message}\n\n`.red, `${error.filename}:${error.line}:${error.column}`.yellow)
     console.log(error.extract.map(line => `>${line}\n`.red).join(''))
 }
 
+/**
+ * Write the final CSS output into a file
+ *
+ * @param {String} css The combined CSS from each bundle
+ */
 function writeCSSOutput(css) {
     try {
         writeFileSync(resolve(rootDir, OUTPUT_CSS_PATH), css, 'utf-8')
@@ -64,14 +91,16 @@ lessc.render(collectBundleImports(bundlePaths), {
         sourceMapFileInline: true
     },
     plugins: [new RewriteImageURLs({
+        // Remove the 'web' part of the image/font urls
         replace: [{
             search: './web/bundles',
             replace: '/bundles'
         }]
     })]
-}).then(function (output) {
-    writeCSSOutput(output.css)
-}, function (error) {
-    formatParseError(error)
-    process.exit(1)
-}).catch(error => console.log('Other error', error))
+}).then(
+    output => writeCSSOutput(output.css),
+    error => {
+        formatParseError(error)
+        process.exit(1)
+    })
+    .catch(error => console.log('Error', error))
