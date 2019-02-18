@@ -1,5 +1,7 @@
 # 2.0.x
 
+# 2.0.48 (2019-02-18)
+
 ## Bug fixes
 
 - PIM-8058: Backport PIM-8020 to update missing attributes
