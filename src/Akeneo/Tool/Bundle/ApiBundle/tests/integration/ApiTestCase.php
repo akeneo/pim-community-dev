@@ -55,13 +55,13 @@ abstract class ApiTestCase extends WebTestCase
         $fixturesLoader->load();
     }
 
-    protected static function createClient(array $options = array(), array $server = array())
+    protected static function createClient(array $options = [], array $server = [])
     {
         if (!isset($options['environment'])) {
             $options['environment'] = 'test_database';
         }
 
-        return parent::createClient($options);
+        return parent::createClient($options, $server);
     }
 
     /**
