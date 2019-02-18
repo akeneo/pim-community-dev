@@ -108,7 +108,7 @@ datagrid:
                 messages:
                     confirm_title: pim_common.confirm_deletion
                     confirm_content: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.confirm_content
-                    confirm_ok: pim_datagrid.mass_action.delete.label
+                    confirm_ok: pim_common.delete
                     success: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.success
                     error: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.error
                     empty_selection: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.empty_selection
