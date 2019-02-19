@@ -8,6 +8,7 @@
 - PIM-8143: Fix missing translations
 - PIM-8147: Fix design issue on boolean fields
 - PIM-8146: Fix centered alignment on drag & drop fields
+- PIM-8153: Fix locale specific field to allow multiple locales 
 
 # 3.0.3 (2019-02-18)
 
