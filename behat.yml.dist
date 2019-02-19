@@ -147,7 +147,7 @@ legacy:
             paths:
                 - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
             filters:
-                tags: '@end-to-end'
+                tags: '@end-to-end&&~@skip'
             contexts:
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext:
                     -
