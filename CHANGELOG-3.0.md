@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-8129: Fix default system locale
 - PIM-8145: Fix design on variant navigation
 - PIM-8144: Fix spaces on field labels and required note
 - PIM-8143: Fix missing translations
