@@ -14,8 +14,10 @@
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
     "unit": "jest --no-cache --config tests/front/unit/jest/unit.jest.js",
     "integration": "jest --no-cache --config ./tests/front/integration/jest/integration.jest.js",
-    "acceptance": "cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
-    "acceptance-html-report": "yarn run acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node webpack/test/acceptance/generate-html-report.js"
+    "acceptance": "cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
+    "acceptance-html-report": "yarn run acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
+    "less": "node ./frontend/build/compile-less.js",
+    "less-watch": "SHELL=/bin/bash chokidar --verbose \"{src,web/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\""
   },
   "repository": {
     "type": "git",
@@ -57,6 +59,7 @@
     "babel-preset-env": "1.6.0",
     "backbone": "0.9.10",
     "bundle-loader": "0.5.5",
+    "chokidar-cli": "^1.2.1",
     "deepmerge": "1.5.1",
     "dropzone": "4.0.1",
     "eslint": "4.5.0",
@@ -64,6 +67,7 @@
     "expose-loader": "0.7.3",
     "imports-loader": "0.7.1",
     "jquery": "3.3.1",
+    "less": "^3.9.0",
     "loader-utils": "1.1.0",
     "lodash": "4.17.4",
     "merge-objects": "1.0.5",

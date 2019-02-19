@@ -27,7 +27,7 @@ There are three commands that can be run:
 
 > Note: If you want to run inspect or add breakpoints in the acceptance tests or step definitions you can follow these steps:
     - Add a breakpoint somewhere in your step definition with `debugger;`
-    - Run `node --inspect-brk node_modules/.bin/cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber ./tests/features/`
+    - Run `node --inspect-brk node_modules/.bin/cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber ./tests/features/`
     - Go to `chrome://inspect` in Chrome and click on the target `node_modules/.bin/cucumber-js`. If you don't see it, you can click on `Open dedicated DevTools for Node` instead. An inspector window will open.
     - Go to the sources tab in the inspector and click the play icon, you should now be able to walk through the steps
 

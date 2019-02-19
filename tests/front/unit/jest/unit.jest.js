@@ -7,7 +7,7 @@ const unitConfig = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   moduleNameMapper: {
-    '^require-context$': `${__dirname}/../../../../webpack/require-context.js`,
+    '^require-context$': `${__dirname}/../../../../frontend/webpack/require-context.js`,
     '^module-registry$': `${__dirname}/../../../../web/js/module-registry.js`,
   },
   testRegex: '(tests/front/unit)(.*)(unit).(jsx?|tsx?)$',

@@ -81,8 +81,6 @@ class AssetsCommand extends ContainerAwareCommand
 
         $this->getEventDispatcher()->dispatch(InstallerEvents::POST_SYMFONY_ASSETS_DUMP, $event);
         $this->commandExecutor
-            ->runCommand('assetic:dump')
-            ->runCommand('oro:assetic:dump')
             ->runCommand('pim:installer:dump-require-paths')
             ->runCommand('pim:installer:dump-extensions');
         $defaultLocales = $this->getContainer()->getParameter('pim_localization.provider.ui_locale.locale_codes');

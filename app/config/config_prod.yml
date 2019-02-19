@@ -23,7 +23,3 @@ monolog:
             level: info
         console:
             type:  console
-
-oro_assetic:
-    css_debug:      ~
-    css_debug_all:  false

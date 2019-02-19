@@ -67,8 +67,8 @@ const utils = {
         const pathSourceFile = require(sourcePath);
         const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir);
         const aliases = Object.assign(paths, getFrontModules(process.cwd(), './web/bundles')(), {
-            'require-polyfill': path.resolve(sourceDir, './webpack/require-polyfill.js'),
-            'require-context': path.resolve(sourceDir, './webpack/require-context.js'),
+            'require-polyfill': path.resolve(sourceDir, './frontend/webpack/require-polyfill.js'),
+            'require-context': path.resolve(sourceDir, './frontend/webpack/require-context.js'),
             'module-registry': path.resolve(baseDir, './web/js/module-registry.js'),
             routes: path.resolve(baseDir, './web/js/routes.js'),
             'fos-routing-base': path.resolve(baseDir, './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js'),

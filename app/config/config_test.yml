@@ -18,9 +18,6 @@ web_profiler:
 swiftmailer:
     disable_delivery: true
 
-assetic:
-    use_controller: false
-
 parameters:
     max_products_category_removal: 20
     installer_data:       PimInstallerBundle:minimal

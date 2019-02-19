@@ -42,11 +42,14 @@ jobs:
           name: Pim database installation
           command: docker-compose exec fpm bin/console --env=behat pim:install --force --clean
       - run:
-            name: Pim yarn dev installation
-            command: docker-compose run --rm node yarn run webpack-dev
+          name: Pim yarn less installation
+          command: docker-compose run --rm node yarn run less
       - run:
-            name: Pim yarn test installation
-            command: docker-compose run --rm node yarn run webpack-test
+          name: Pim yarn dev installation
+          command: docker-compose run --rm node yarn run webpack-dev
+      - run:
+          name: Pim yarn test installation
+          command: docker-compose run --rm node yarn run webpack-test
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project
