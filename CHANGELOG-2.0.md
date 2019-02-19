@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-8158: Improve the label category tree creation button label
+
 # 2.0.48 (2019-02-18)
 
 ## Bug fixes
