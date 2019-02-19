@@ -23,9 +23,5 @@ monolog:
             type:     console
             channels: ['!event', '!doctrine']
 
-oro_assetic:
-    css_debug:      ~
-    css_debug_all:  false
-
 swiftmailer:
     disable_delivery: true

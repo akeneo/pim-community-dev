@@ -85,7 +85,7 @@ To give you a quick overview of the changes made to a standard project, you can 
     ```bash
     export PIM_DIR=/path/to/your/current/pim/installation
     ```
-    
+
     Then apply the changes:
 
     ```bash
@@ -110,11 +110,11 @@ To give you a quick overview of the changes made to a standard project, you can 
     * The configuration file `app/config/security.yml` had somes changes:
 
         - ...
-    
+
     * The configuration file `app/config/pim_parameters.yml` had some changes:
 
         - ...
-    
+
     * The configuration file `app/config/security_test.yml` had some changes:
 
         - ...
@@ -129,9 +129,9 @@ To give you a quick overview of the changes made to a standard project, you can 
     ```
 
     Or you can follow the detailed list of changes:
-    
+
         - ...
-    
+
 5. Update your **app/config/config_prod.yml**
 
     An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
@@ -142,9 +142,9 @@ To give you a quick overview of the changes made to a standard project, you can 
     ```
 
     Or you can update the file with the following changes:
-    
+
     - ...
-        
+
 6. Update your **app/config/routing.yml**
 
     An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
@@ -158,33 +158,33 @@ To give you a quick overview of the changes made to a standard project, you can 
 
     * The following route configurations have been removed:
         - `old_route`
-        
+
     * The following route configurations have been added:
-        
+
         v3.1:
         ```yaml
         route_name:
             resource: "@YOUR_NEW_BUNDLE/config/routing/routing.yml"
         ```
-        
+
     * The following route configurations have been updated:
-        
+
         - route_name
-        
+
         v3.0.x:
         ```yaml
         route_name:
             resource: "@YOUR_OLD_BUNDLE/config/routing/routing.yml"
         ```
-        
+
         to
-        
+
         v3.1:
         ```yaml
         route_name:
             resource: "@YOUR_NEW_BUNDLE/config/routing/routing.yml"
         ```
-    
+
 7. Update your **app/AppKernel.php**:
 
     An easy way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
@@ -216,39 +216,39 @@ Before updating the dependencies and migrating your data, please deactivate all 
 11. Update your dependencies:
 
     The easiest way to update your `composer.json` is to copy/paste from the latest standard edition and add your custom dependencies.
-    
+
     ```bash
     cp composer.json $PIM_DIR/
     # then add your own dependencies
     ```
-    
+
     The easiest way to update your `package.json` is to copy/paste from the latest standard edition and add your custom dependencies.
-    
+
     ```bash
     cp package.json $PIM_DIR/
     # then add your own dependencies
     ```
-    
+
     Now we are ready to update the backend dependencies:
-    
+
     ```bash
     cd $PIM_DIR
     php -d memory_limit=3G composer update
     ```
-    
+
      **This step will copy the upgrades folder from `pim-enterprise-dev/` to your Pim project root in order to migrate.**
     If you have custom code in your project, this step may raise errors in the "post-script" command.
     In this case, go to the chapter "Migrate your custom code" before running the database migration.
 
     And we also have to update the frontend dependencies:
-    
+
     ```bash
     yarn install
     ```
 
-12. Migrate your MySQL database: 
+12. Migrate your MySQL database:
 
-    Please, make sure the folder `upgrades/schema/` does not contain former migration files (from PIM 3.0 to 3.1 for instance), 
+    Please, make sure the folder `upgrades/schema/` does not contain former migration files (from PIM 3.0 to 3.1 for instance),
     otherwise the migration command will surely not work properly.
 
     ```bash
@@ -266,10 +266,34 @@ Before updating the dependencies and migrating your data, please deactivate all 
     TO_FILL_WITH_NEW_SCRIPTS
     ```
 
-14. Then re-generate the PIM assets:
+14. Migrate your .less assets
+
+    If you have defined a Resources/config/assets.yml file in any of your bundles to import .less files, you must move these imports to a new file at Resources/public/less/index.less to import your styles instead.
+
+    For example
+
+    Before in `Resources/config/assets.yml`
+    ```yml
+        css:
+            lib:
+                - bundles/yourbundle/assets/less/styles.css
+                - bundles/yourbundle/assets/less/bundle.less
+    ```
+
+    After in `Resources/public/less/index.less`
+
+    ```less
+        @import (less) "./web/bundles/yourbundle/assets/less/styles.css";
+        @import "./web/bundles/yourbundle/assets/less/bundle.less";
+    ```
+
+    If you are importing a .css file, you must add `(less)` after the import, as above. If you only have .less files in your bundle's assets.yml, you can remove it.
+
+15. Then re-generate the PIM assets:
 
     ```bash
     bin/console pim:installer:assets --clean --env=prod
+    yarn run less
     yarn run webpack
     ```
 

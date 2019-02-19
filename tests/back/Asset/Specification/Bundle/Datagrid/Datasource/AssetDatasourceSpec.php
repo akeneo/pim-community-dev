@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Asset\Bundle\Datagrid\Datasource;
 
 use Akeneo\Asset\Component\Model\Asset;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
-use Assetic\Asset\AssetInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
@@ -32,13 +31,11 @@ class AssetDatasourceSpec extends ObjectBehavior
         $hydrator,
         DatagridInterface $configuration,
         AssetRepositoryInterface $assetRepository,
-        QueryBuilder $qb,
-        AssetInterface $asset1,
-        AssetInterface $asset2
+        QueryBuilder $qb
     ) {
         $results = [
-            new ResultRecord($asset1),
-            new ResultRecord($asset2),
+            new ResultRecord([]),
+            new ResultRecord([]),
         ];
         $config = [
             'entity'            => Asset::class,

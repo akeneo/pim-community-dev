@@ -20,9 +20,6 @@ web_profiler:
 swiftmailer:
     disable_delivery: true
 
-assetic:
-    use_controller: false
-
 parameters:
     installer_data:       PimEnterpriseInstallerBundle:minimal
     upload_dir:           '%kernel.root_dir%/../var/cache/uploads/product'

@@ -45,12 +45,13 @@ install:
     - ./bin/console pim:install:assets --env=behat
     - ./bin/console pim:install:db --withoutIndexes --withoutFixtures --env=behat
     - yarn install
+    - yarn less
     - yarn webpack-test --env=prod
 
 script:
     - yarn unit
     - yarn integration
-    - NODE_OPTIONS="--max-old-space-size=4096" NODE_PATH=./node_modules node_modules/.bin/cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js src/Akeneo/ReferenceEntity/tests/features
+    - NODE_OPTIONS="--max-old-space-size=4096" NODE_PATH=./node_modules node_modules/.bin/cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js src/Akeneo/ReferenceEntity/tests/features
     - yarn lint
     - vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back
     - vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist

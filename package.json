@@ -6,7 +6,8 @@
   "private": true,
   "config": {
     "source": "vendor/akeneo/pim-community-dev",
-    "check": "vendor/akeneo/pim-community-dev/webpack/check-dependencies.js"
+    "check": "vendor/akeneo/pim-community-dev/frontend/build/check-dependencies.js",
+    "styles": "vendor/akeneo/pim-community-dev/frontend/build/compile-less.js"
   },
   "scripts": {
     "sync": "NODE_PATH=node_modules node $npm_package_config_check --source=$npm_package_config_source",
@@ -22,8 +23,10 @@
     "tslint": "node ./node_modules/tslint/bin/tslint",
     "unit": "jest --maxWorkers=4 --config $npm_package_config_source/tests/front/unit/jest/unit.jest.js",
     "integration": "jest --maxWorkers=4 --config $npm_package_config_source/tests/front/integration/jest/integration.jest.js",
-    "acceptance": "NODE_PATH=./node_modules cucumber-js --parallel ${NODE_NUMBER_OF_THREAD:-2} --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js",
-    "acceptance-report": "NODE_PATH=./node_modules yarn run acceptance -- -f json:web/test_dist/acceptance-js.json && node $npm_package_config_source/webpack/test/acceptance/generate-html-report.js"
+    "acceptance": "NODE_PATH=./node_modules cucumber-js --parallel ${NODE_NUMBER_OF_THREAD:-2} --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js",
+    "acceptance-report": "NODE_PATH=./node_modules yarn run acceptance -- -f json:web/test_dist/acceptance-js.json && node $npm_package_config_source/frontend/test/acceptance/generate-html-report.js",
+    "less": "node $npm_package_config_styles",
+    "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,web/bundles}/**/*.{less,css}\" -c \"yarn run less\""
   },
   "devDependencies": {
     "@types/draft-js": "^0.10.25",
@@ -61,6 +64,7 @@
     "babel-preset-env": "1.6.0",
     "backbone": "0.9.10",
     "bundle-loader": "0.5.5",
+    "chokidar-cli": "^1.2.1",
     "deepmerge": "1.5.1",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
@@ -71,6 +75,7 @@
     "html-to-draftjs": "^1.4.0",
     "imports-loader": "0.7.1",
     "jquery": "3.3.1",
+    "less": "^3.9.0",
     "loader-utils": "1.1.0",
     "lodash": "4.17.4",
     "merge-objects": "1.0.5",

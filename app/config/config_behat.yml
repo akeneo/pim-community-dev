@@ -29,9 +29,6 @@ monolog:
 swiftmailer:
     disable_delivery: true
 
-assetic:
-    use_controller: false
-
 pim_import_export:
     record_mails: true
 

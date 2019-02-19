@@ -6,7 +6,7 @@ services:
     pimee_produt_asset.twig_extension.file_exists:
         class: '%pimee_produt_asset.twig_extension.file_exists.class%'
         arguments:
-            - '%assetic.read_from%'
+            - '%kernel.root_dir%/../web'
         tags:
             - { name: twig.extension }
 
