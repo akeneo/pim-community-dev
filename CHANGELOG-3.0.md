@@ -9,6 +9,7 @@
 - PIM-8147: Fix design issue on boolean fields
 - PIM-8146: Fix centered alignment on drag & drop fields
 - PIM-8017: Fix PDF generation
+- PIM-8060: Fix avatars migration 2.3 -> 3.0
 
 # 3.0.3 (2019-02-18)
 
