@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8143: Fix missing translations
+
 # 3.0.3 (2019-02-18)
 
 ## Bug fixes
