@@ -65,7 +65,6 @@ class Version_3_0_20180717082452_migrate_avatars extends AbstractMigration imple
                 $userId = $userWithAvatar['id'];
                 $fileName = $userWithAvatar['image'];
 
-
                 $finder = new Finder();
                 $finder->files()->in($uploadDir)->name($fileName);
                 if ($finder->count()) {
@@ -77,7 +76,10 @@ class Version_3_0_20180717082452_migrate_avatars extends AbstractMigration imple
                         $file = $fileStorer->store($firstFile, FileStorage::CATALOG_STORAGE_ALIAS);
                         $this->connection->update(
                             self::USERS_TABLE,
-                            ['file_info_id' => $file->getId()],
+                            [
+                                'file_info_id' => $file->getId(),
+                                'image' => null,
+                            ],
                             ['id' => $userId]
                         );
                     } else {
