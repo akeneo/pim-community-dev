@@ -19,6 +19,8 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Component\ProductAsset\Job\ComputeCompletenessOfProductsLinkedToAssetsTasklet;
+use PimEnterprise\Component\ProductAsset\Persistence\Query\Sql\FindFamiliesCodesWhereAttributesAreRequiredInterface;
+use Prophecy\Argument;
 
 class ComputeCompletenessOfProductsLinkedToAssetsTaskletSpec extends ObjectBehavior
 {
@@ -28,7 +30,8 @@ class ComputeCompletenessOfProductsLinkedToAssetsTaskletSpec extends ObjectBehav
         EntityManagerInterface $entityManager,
         BulkIndexerInterface $indexer,
         BulkObjectDetacherInterface $bulkDetacher,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        FindFamiliesCodesWhereAttributesAreRequiredInterface $familiesCodesQuery
     ): void {
         $this->beConstructedWith(
             $attributeRepository,
@@ -36,7 +39,8 @@ class ComputeCompletenessOfProductsLinkedToAssetsTaskletSpec extends ObjectBehav
             $entityManager,
             $indexer,
             $bulkDetacher,
-            'pim_catalog_completeness'
+            'pim_catalog_completeness',
+            $familiesCodesQuery
         );
         $this->setStepExecution($stepExecution);
     }
@@ -58,6 +62,7 @@ class ComputeCompletenessOfProductsLinkedToAssetsTaskletSpec extends ObjectBehav
         $indexer,
         $bulkDetacher,
         $stepExecution,
+        $familiesCodesQuery,
         Connection $connection,
         ProductQueryBuilderInterface $pqb,
         JobParameters $jobParameters,
@@ -71,6 +76,10 @@ class ComputeCompletenessOfProductsLinkedToAssetsTaskletSpec extends ObjectBehav
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('asset_codes')->willReturn(['asset_code_1', 'asset_code_2']);
 
+        $attributeRepository->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION)->willReturn(['assets']);
+        $entityManager->getConnection()->willReturn($connection);
+        $familiesCodesQuery->find(['assets'])->shouldBeCalled()->willReturn(['family_1', 'family_2']);
+
         $product123->getId()->willReturn(123);
         $product123->getCompletenesses()->willReturn($completenesses123);
         $product456->getId()->willReturn(456);
@@ -80,11 +89,9 @@ class ComputeCompletenessOfProductsLinkedToAssetsTaskletSpec extends ObjectBehav
         $cursor->current()->willReturn($product123, $product456);
         $cursor->next()->shouldBeCalled();
 
-        $attributeRepository->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION)->willReturn(['assets']);
         $pqb->addFilter('assets', Operators::IN_LIST, ['asset_code_1', 'asset_code_2'])->shouldBeCalled();
+        $pqb->addFilter('family', Operators::IN_LIST, ['family_1', 'family_2'])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
-
-        $entityManager->getConnection()->willReturn($connection);
 
         $completenesses123->clear()->shouldBeCalled();
         $completenesses456->clear()->shouldBeCalled();
@@ -95,8 +102,44 @@ class ComputeCompletenessOfProductsLinkedToAssetsTaskletSpec extends ObjectBehav
             ['productIds' => Connection::PARAM_INT_ARRAY]
         )->shouldBeCalled();
 
-        $indexer->indexAll([$product123, $product456]);
+        $indexer->indexAll([$product123, $product456])->shouldBeCalled();
         $bulkDetacher->detachAll([$product123, $product456])->shouldBeCalled();
+
+        $this->execute()->shouldReturn(null);
+    }
+
+    function it_does_not_reset_any_completeness_if_attribute_is_not_required_in_any_family(
+        $attributeRepository,
+        $productQueryBuilderFactory,
+        $entityManager,
+        $indexer,
+        $bulkDetacher,
+        $stepExecution,
+        $familiesCodesQuery,
+        Connection $connection,
+        ProductQueryBuilderInterface $pqb,
+        JobParameters $jobParameters
+    ): void {
+        $productQueryBuilderFactory->create()->willReturn($pqb);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('asset_codes')->willReturn(['asset_code_1', 'asset_code_2']);
+
+        $attributeRepository
+            ->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION)
+            ->willReturn(['assets_1', 'assets_2']);
+        $entityManager->getConnection()->willReturn($connection);
+
+        $familiesCodesQuery->find(['assets_1', 'assets_2'])->shouldBeCalled()->willReturn([]);
+
+        $pqb->addFilter(Argument::cetera())->shouldNotBeCalled();
+
+        $connection->executeQuery(
+            'DELETE c FROM pim_catalog_completeness c WHERE c.product_id IN (:productIds)',
+            Argument::cetera()
+        )->shouldNotBeCalled();
+
+        $indexer->indexAll()->shouldNotBeCalled();
+        $bulkDetacher->detachAll()->shouldNotBeCalled();
 
         $this->execute()->shouldReturn(null);
     }

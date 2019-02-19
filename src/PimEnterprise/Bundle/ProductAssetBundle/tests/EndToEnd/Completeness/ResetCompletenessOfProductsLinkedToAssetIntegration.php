@@ -28,13 +28,26 @@ class ResetCompletenessOfProductsLinkedToAssetIntegration extends TestCase
     /** @var JobLauncher */
     private $jobLauncher;
 
-    public function test_that_product_completeness_is_reset_when_a_linked_asset_is_updated(): void
+    public function test_that_product_completeness_is_reset_when_a_linked_asset_is_updated_only_if_asset_is_required_in_family(): void
     {
         $asset = $this->createAsset('my_asset_code');
         static::assertFalse($this->jobLauncher->hasJobInQueue());
-        $product = $this->createProduct(
-            'some_sku',
-            'family_with_assets',
+        $productRequired = $this->createProduct(
+            'sku_for_required',
+            'family_with_assets_required',
+            [
+                'my_assets' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => ['my_asset_code'],
+                    ],
+                ],
+            ]
+        );
+        $productNotRequired = $this->createProduct(
+            'sku_for_not_required',
+            'family_with_assets_not_required',
             [
                 'my_assets' => [
                     [
@@ -48,7 +61,8 @@ class ResetCompletenessOfProductsLinkedToAssetIntegration extends TestCase
         // waiting ES indexation
         sleep(2);
 
-        static::assertEquals(50, $this->getCompletenessForProduct($product->getId(), 'ecommerce', 'en_US'));
+        static::assertEquals(50, $this->getCompletenessForProduct($productRequired->getId(), 'ecommerce', 'en_US'));
+        static::assertEquals(100, $this->getCompletenessForProduct($productNotRequired->getId(), 'ecommerce', 'en_US'));
 
         $this->get('pimee_product_asset.updater.asset')->update(
             $asset,
@@ -59,7 +73,8 @@ class ResetCompletenessOfProductsLinkedToAssetIntegration extends TestCase
         static::assertTrue($this->jobLauncher->hasJobInQueue());
         $this->jobLauncher->launchConsumerOnce();
 
-        static::assertNull($this->getCompletenessForProduct($product->getId(), 'ecommerce', 'en_US'));
+        static::assertNull($this->getCompletenessForProduct($productRequired->getId(), 'ecommerce', 'en_US'));
+        static::assertEquals(100, $this->getCompletenessForProduct($productNotRequired->getId(), 'ecommerce', 'en_US'));
     }
 
     /**
@@ -94,18 +109,31 @@ class ResetCompletenessOfProductsLinkedToAssetIntegration extends TestCase
         );
         $this->get('pim_catalog.saver.attribute')->save($assets);
 
-        $family = $this->get('pim_catalog.factory.family')->create();
+        $familyRequired = $this->get('pim_catalog.factory.family')->create();
         $this->get('pim_catalog.updater.family')->update(
-            $family,
+            $familyRequired,
             [
-                'code' => 'family_with_assets',
+                'code' => 'family_with_assets_required',
                 'attributes' => ['sku', 'my_assets'],
                 'attribute_requirements' => [
                     'ecommerce' => ['sku', 'my_assets'],
                 ],
             ]
         );
-        $this->get('pim_catalog.saver.family')->save($family);
+        $this->get('pim_catalog.saver.family')->save($familyRequired);
+
+        $familyNotRequired = $this->get('pim_catalog.factory.family')->create();
+        $this->get('pim_catalog.updater.family')->update(
+            $familyNotRequired,
+            [
+                'code' => 'family_with_assets_not_required',
+                'attributes' => ['sku'],
+                'attribute_requirements' => [
+                    'ecommerce' => ['sku'],
+                ],
+            ]
+        );
+        $this->get('pim_catalog.saver.family')->save($familyNotRequired);
     }
 
     /**
@@ -136,7 +164,7 @@ class ResetCompletenessOfProductsLinkedToAssetIntegration extends TestCase
      * @param string $channelCode
      * @param string $localeCode
      *
-     * @return array|null
+     * @return int|null
      */
     private function getCompletenessForProduct(int $productId, string $channelCode, string $localeCode): ?int
     {
