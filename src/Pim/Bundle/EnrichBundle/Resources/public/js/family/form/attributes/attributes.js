@@ -19,9 +19,10 @@ define([
         'pim/fetcher-registry',
         'pim/dialog',
         'oro/messenger',
-        'oro/loading-mask'
+        'oro/loading-mask',
+        'oro/mediator'
     ],
-    function (
+    (
         _,
         __,
         $,
@@ -33,15 +34,14 @@ define([
         FetcherRegistry,
         Dialog,
         Messenger,
-        LoadingMask
-    ) {
+        LoadingMask,
+        mediator
+    ) => {
         return BaseForm.extend({
             className: 'tabsection-content tab-content',
             attributeRequiredIconClass: 'AknAcl-icon AknAcl-icon--granted icon-ok required',
             attributeNotRequiredIconClass: 'AknAcl-icon icon-circle non-required',
             collapsedClass: 'AknGrid-bodyContainer--collapsed',
-            requiredLabel: __('pim_enrich.form.family.tab.attributes.required_label'),
-            notRequiredLabel: __('pim_enrich.form.family.tab.attributes.not_required_label'),
             identifierAttributeType: 'pim_catalog_identifier',
             template: _.template(template),
             errors: [],
@@ -57,14 +57,14 @@ define([
             /**
              * {@inheritdoc}
              */
-            initialize: function (config) {
+            initialize(config) {
                 this.config = config.config;
             },
 
             /**
              * {@inheritdoc}
              */
-            configure: function () {
+            configure() {
                 this.listenTo(
                     this.getRoot(),
                     'pim_enrich:form:entity:post_fetch',
@@ -74,6 +74,14 @@ define([
                     this.readOnly = readOnly;
 
                     this.render();
+                });
+
+                this.listenTo(mediator, 'mass-edit:form:lock', () => {
+                    this.readOnly = true;
+                });
+
+                this.listenTo(mediator, 'mass-edit:form:unlock', () => {
+                    this.readOnly = false;
                 });
 
                 this.listenTo(
@@ -94,15 +102,26 @@ define([
             /**
              * {@inheritdoc}
              */
-            render: function () {
+            render() {
                 if (!this.configured) {
                     return this;
                 }
 
-                var data = this.getFormData();
-                var attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group'));
+                this.getTemplateContext().then((context) => {
+                    this.$el.html(this.template(context));
 
-                $.when(
+                    $(this.$el).find('[data-original-title]').tooltip();
+
+                    this.delegateEvents();
+                    this.renderExtensions();
+                });
+            },
+
+            getTemplateContext() {
+                const data = this.getFormData();
+                const attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group'));
+
+                return $.when(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
                     FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(
                         attributeGroupsToFetch,
@@ -113,45 +132,66 @@ define([
                     )
                 ).then((channels, attributeGroups) => {
                     this.channels = channels;
-                    var groupedAttributes = _.groupBy(data.attributes, 'group');
+                    const groupedAttributes = _.groupBy(data.attributes, 'group');
 
                     _.sortBy(groupedAttributes, (attributes, group) => {
                         return _.findWhere(attributeGroups, {code: group}).sort_order;
                     });
 
-                    _.each(groupedAttributes, function (attributes, group) {
-                        attributes = _.sortBy(attributes, function (attribute) {
-                            return attribute.sort_order;
-                        });
+                    _.each(groupedAttributes, (attributes, group) => {
+                        attributes = _.sortBy(attributes, (attribute) => attribute.sort_order);
 
                         groupedAttributes[group] = attributes;
                     });
 
-                    this.$el.html(this.template({
+                    return {
                         label: __(this.config.label),
-                        requiredLabel: this.requiredLabel,
-                        notRequiredLabel: this.notRequiredLabel,
                         groupedAttributes: groupedAttributes,
-                        attributeRequirements: data.attribute_requirements,
                         channels: this.channels,
-                        attributeGroups: _.map(attributeGroups, function (group) {
-                            var panel = $('tbody[data-group="' + group.code + '"]');
+                        attributeGroups: _.map(attributeGroups, (group) => {
+                            const panel = $('tbody[data-group="' + group.code + '"]');
                             group.collapsed = $(panel).hasClass(this.collapsedClass);
 
                             return group;
-                        }.bind(this)),
+                        }),
                         colspan: (this.channels.length + 2),
                         i18n: i18n,
                         identifierAttributeType: this.identifierAttributeType,
                         catalogLocale: this.catalogLocale,
-                        readOnly: this.readOnly
-                    }));
-
-                    $(this.$el).find('[data-original-title]').tooltip();
-
-                    this.delegateEvents();
-                    this.renderExtensions();
+                        readOnly: this.readOnly,
+                        isAttributeRequirementRequired: this.isAttributeRequirementRequired.bind(this),
+                        isAttributeEditable: this.isAttributeEditable.bind(this),
+                        getAttributeRequirementTooltip: this.getAttributeRequirementTooltip.bind(this)
+                    };
                 });
+            },
+
+            /**
+             * @param {Object} attribute
+             * @param {Object} channel
+             *
+             * @returns {boolean}
+             */
+            isAttributeRequirementRequired(attribute, channel) {
+                const attributeRequirements = this.getFormData().attribute_requirements;
+
+                if (undefined === attributeRequirements[channel.code]) {
+                    return false;
+                }
+
+                return -1 < attributeRequirements[channel.code].indexOf(attribute.code);
+            },
+
+            /**
+             * @param {Object} attribute
+             * @param {Object} channel
+             *
+             * @returns {string}
+             */
+            getAttributeRequirementTooltip(attribute, channel) {
+                return this.isAttributeRequirementRequired(attribute, channel)
+                    ? __('pim_enrich.form.family.tab.attributes.required_label')
+                    : __('pim_enrich.form.family.tab.attributes.not_required_label');
             },
 
             /**
@@ -159,8 +199,8 @@ define([
              *
              * @param {Object} event
              */
-            toggleGroup: function (event) {
-                var target = event.currentTarget;
+            toggleGroup(event) {
+                const target = event.currentTarget;
                 $(target).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
                 $(target).parent().toggleClass(this.collapsedClass);
 
@@ -172,42 +212,39 @@ define([
              *
              * @param {Object} event
              */
-            toggleAttribute: function (event) {
-                var target = event.currentTarget;
+            toggleAttribute(event) {
+                const attributeCode = event.currentTarget.dataset.attribute;
+                const attributeType = event.currentTarget.dataset.type;
+                const channelCode = event.currentTarget.dataset.channel;
 
                 if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
-                    return this;
+                    return;
                 }
 
-                if (!this.isAttributeEditable(target.dataset.type)) {
-                    return this;
+                if (!this.isAttributeEditable(channelCode, attributeCode, attributeType)) {
+                    return;
                 }
 
-                if (this.readOnly) {
-                    return this;
-                }
-
-                var attribute = target.dataset.attribute;
-                var channel = target.dataset.channel;
-
-                if ('true' === target.dataset.required) {
-                    this.removeFromAttributeRequirements(attribute, channel);
+                if ('true' === event.currentTarget.dataset.required) {
+                    this.removeFromAttributeRequirements(attributeCode, channelCode);
                 } else {
-                    this.addToAttributeRequirements(attribute, channel);
+                    this.addToAttributeRequirements(attributeCode, channelCode);
                 }
 
-                return this.render();
+                this.render();
             },
 
             /**
              * Checks if attribute is editable
              *
-             * @param {string} type
+             * @param {string} channelCode
+             * @param {string} attributeCode
+             * @param {string} attributeType
              *
              * @returns {boolean}
              */
-            isAttributeEditable: function (type) {
-                return this.identifierAttributeType !== type;
+            isAttributeEditable(channelCode, attributeCode, attributeType) {
+                return !this.readOnly && this.identifierAttributeType !== attributeType;
             },
 
             /**
@@ -216,9 +253,9 @@ define([
              * @param {string} attribute
              * @param {string} channel
              */
-            addToAttributeRequirements: function (attribute, channel) {
-                var data = this.getFormData();
-                var requirements = data.attribute_requirements[channel] || [];
+            addToAttributeRequirements(attribute, channel) {
+                const data = this.getFormData();
+                const requirements = data.attribute_requirements[channel] || [];
                 requirements.push(attribute);
                 data.attribute_requirements[channel] = requirements;
 
@@ -231,12 +268,10 @@ define([
              * @param {string} attribute
              * @param {string} channel
              */
-            removeFromAttributeRequirements: function (attribute, channel) {
-                var data = this.getFormData();
+            removeFromAttributeRequirements(attribute, channel) {
+                const data = this.getFormData();
                 data.attribute_requirements[channel] = data.attribute_requirements[channel] ?
-                    data.attribute_requirements[channel].filter(function (item) {
-                        return attribute !== item;
-                    }) : [];
+                    data.attribute_requirements[channel].filter((item) => attribute !== item) : [];
                 this.setData(data);
             },
 
@@ -250,7 +285,11 @@ define([
              *
              * @param {Object} event
              */
-            onRemoveAttribute: function (event) {
+            onRemoveAttribute(event) {
+                if (this.readOnly) {
+                    return;
+                }
+
                 event.preventDefault();
                 const attributeAsLabel = this.getFormData().attribute_as_label;
                 const attributeAsImage = this.getFormData().attribute_as_image;
@@ -294,14 +333,14 @@ define([
              *
              * @param {Object} event
              */
-            onAddAttributes: function (event) {
-                var options = {
+            onAddAttributes(event) {
+                const options = {
                     options: {
                         identifiers: event.codes,
                         limit: event.codes.length
                     }
                 };
-                var loadingMask = new LoadingMask();
+                const loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
 
                 $.when(
@@ -313,7 +352,7 @@ define([
                     });
 
                     this.render();
-                }).always(function () {
+                }).always(() => {
                     loadingMask.hide().$el.remove();
                 });
             },
@@ -323,8 +362,8 @@ define([
              *
              * @param {Object} event
              */
-            onAddAttributesByAttributeGroups: function (event) {
-                var loadingMask = new LoadingMask();
+            onAddAttributesByAttributeGroups(event) {
+                const loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
 
                 $.when(
@@ -337,12 +376,12 @@ define([
                         }),
                     FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
                 ).then((attributeGroups, identifier) => {
-                    var existingAttributes = _.pluck(this.getFormData().attributes, 'code');
-                    var groupsAttributes = [].concat.apply(
+                    const existingAttributes = _.pluck(this.getFormData().attributes, 'code');
+                    const groupsAttributes = [].concat.apply(
                         [],
                         _.pluck(attributeGroups, 'attributes')
                     );
-                    var attributesToAdd = _.filter(groupsAttributes, function (attribute) {
+                    const attributesToAdd = _.filter(groupsAttributes, (attribute) => {
                         return !_.contains(existingAttributes, attribute) &&
                             attribute !== identifier.code;
                     });
@@ -360,7 +399,7 @@ define([
                     });
 
                     this.render();
-                }).always(function () {
+                }).always(() => {
                     loadingMask.hide().$el.remove();
                 });
             },
@@ -370,12 +409,12 @@ define([
              *
              * @return {Object}
              */
-            removeAttribute: function (attribute) {
-                _.each(this.channels, function (channel) {
+            removeAttribute(attribute) {
+                _.each(this.channels, (channel) => {
                     this.removeFromAttributeRequirements(attribute, channel.code);
-                }.bind(this));
+                });
 
-                var data = this.getFormData();
+                const data = this.getFormData();
 
                 data.attributes.splice(
                     _.pluck(data.attributes, 'code').indexOf(attribute),
@@ -392,8 +431,8 @@ define([
              *
              * @param {Object} attribute
              */
-            addAttribute: function (attribute) {
-                var data = this.getFormData();
+            addAttribute(attribute) {
+                const data = this.getFormData();
                 if ('undefined' !== typeof _.findWhere(
                     data.attributes, {
                         code: attribute.code

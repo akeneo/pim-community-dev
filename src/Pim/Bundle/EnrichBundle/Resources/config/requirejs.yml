@@ -834,7 +834,6 @@ config:
         pim/mass-product-edit-form/attributes:           pimenrich/js/product/form/mass-edit/attributes
 
         # Mass family edit
-        pim/mass-family-edit-form/attributes:                   pimenrich/js/family/mass-edit/attributes
         pim/mass-family-edit-form/form-model-updater:           pimenrich/js/family/mass-edit/form-model-updater
         pim/mass-family-edit-form/toolbar/add-select/attribute: pimenrich/js/family/mass-edit/toolbar/add-select/attribute/select
 
