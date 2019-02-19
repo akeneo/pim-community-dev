@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
@@ -26,6 +27,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\Produc
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Handles a SubscribeProduct command.
@@ -54,6 +56,9 @@ class SubscribeProductHandler
     /** @var CreateProposalHandler */
     private $createProposalHandler;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     /**
      * @param ProductRepositoryInterface $productRepository
      * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
@@ -61,6 +66,7 @@ class SubscribeProductHandler
      * @param SubscriptionProviderInterface $subscriptionProvider
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param CreateProposalHandler $createProposalHandler
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -68,7 +74,8 @@ class SubscribeProductHandler
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         SubscriptionProviderInterface $subscriptionProvider,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        CreateProposalHandler $createProposalHandler
+        CreateProposalHandler $createProposalHandler,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->productRepository = $productRepository;
         $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
@@ -76,6 +83,7 @@ class SubscribeProductHandler
         $this->subscriptionProvider = $subscriptionProvider;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->createProposalHandler = $createProposalHandler;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -117,6 +125,8 @@ class SubscribeProductHandler
         $this->productSubscriptionRepository->save($subscription);
 
         $this->createProposalHandler->handle(new CreateProposalCommand($subscription));
+
+        $this->eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, new ProductSubscribed($product));
     }
 
     /**
