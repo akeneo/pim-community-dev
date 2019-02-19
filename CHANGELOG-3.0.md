@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8144: Fix spaces on field labels and required note
+- PIM-8143: Fix missing translations
 
 # 3.0.3 (2019-02-18)
 
