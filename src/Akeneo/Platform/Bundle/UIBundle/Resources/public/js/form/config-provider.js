@@ -7,7 +7,7 @@ define(
 
         var loadConfig = function () {
             if (null === promise) {
-                promise = $.getJSON(Routing.generate('pim_enrich_form_extension_rest_index')).fail(() => {
+                promise = $.get('/js/extensions.json').fail(() => {
                     throw Error('It seems that your web server is not well configured as we were not able ' +
                         'to load the frontend configuration. The most likely reason is that the mod_rewrite ' +
                         'module is not installed/enabled.')
@@ -25,6 +25,7 @@ define(
              */
             getExtensionMap: function () {
                 return loadConfig().then(function (config) {
+                    console.log(Object.values(config.extensions))
                     return Object.values(config.extensions);
                 });
             },

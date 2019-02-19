@@ -17,7 +17,8 @@
     "acceptance": "cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
     "acceptance-html-report": "yarn run acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
     "less": "node ./frontend/build/compile-less.js",
-    "less-watch": "SHELL=/bin/bash chokidar --verbose \"{src,web/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\""
+    "less-watch": "SHELL=/bin/bash chokidar --verbose \"{src,web/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\"",
+    "update-extensions": "node frontend/build/update-extensions.js"
   },
   "repository": {
     "type": "git",
