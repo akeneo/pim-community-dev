@@ -5,6 +5,7 @@
 - PIM-8145: Fix design on variant navigation
 - PIM-8144: Fix spaces on field labels and required note
 - PIM-8143: Fix missing translations
+- PIM-8147: Fix design issue on boolean fields
 
 # 3.0.3 (2019-02-18)
 
