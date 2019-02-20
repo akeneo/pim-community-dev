@@ -2,12 +2,12 @@
 
 namespace Pim\Upgrade\Schema;
 
+use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Migrations\IrreversibleMigrationException;
 use Doctrine\DBAL\Schema\Schema;
-use Pim\Component\Catalog\FileStorage;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
@@ -65,7 +65,6 @@ class Version_3_0_20180717082452_migrate_avatars extends AbstractMigration imple
                 $userId = $userWithAvatar['id'];
                 $fileName = $userWithAvatar['image'];
 
-
                 $finder = new Finder();
                 $finder->files()->in($uploadDir)->name($fileName);
                 if ($finder->count()) {
@@ -77,7 +76,10 @@ class Version_3_0_20180717082452_migrate_avatars extends AbstractMigration imple
                         $file = $fileStorer->store($firstFile, FileStorage::CATALOG_STORAGE_ALIAS);
                         $this->connection->update(
                             self::USERS_TABLE,
-                            ['file_info_id' => $file->getId()],
+                            [
+                                'file_info_id' => $file->getId(),
+                                'image' => null,
+                            ],
                             ['id' => $userId]
                         );
                     } else {
