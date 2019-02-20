@@ -2,7 +2,14 @@ const _ = require('lodash');
 const deepMerge = require('deepmerge');
 const path = require('path');
 const { parse } = require('yamljs');
-const { readFileSync, writeFileSync, readdirSync, statSync } = require('fs');
+const {
+    readFileSync,
+    writeFileSync,
+    readdirSync,
+    statSync,
+    existsSync
+} = require('fs');
+
 
 const getFrontModules = (sourceDir, originalDir, bundle) => (dir, modules) => {
     dir = dir || originalDir + '/';
@@ -63,7 +70,15 @@ const utils = {
      * @param  {String} sourceDir The directory executing webpack
      * @return {Object}               An object requirejs containing module config and aliases
      */
-    getModulePaths(baseDir, sourceDir, sourcePath) {
+    getModulePaths(baseDir, sourceDir) {
+        const sourcePath = path.join(baseDir, 'web/js/require-paths.js');
+
+        if (!existsSync(sourcePath)) {
+            throw new Error(`The web/js/require-paths.js module does not exist - You need to run
+                "bin/console pim:install" or "bin/console pim:installer:dump-require-paths" before
+                running webpack \n`);
+        }
+
         const pathSourceFile = require(sourcePath);
         const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir);
         const aliases = Object.assign(paths, getFrontModules(process.cwd(), './web/bundles')(), {

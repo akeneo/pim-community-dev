@@ -1,9 +1,4 @@
 services:
-    pim_enrich.provider.form_extension:
-        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\FormExtensionProvider'
-        arguments:
-            - '@oro_security.security_facade'
-
     # Field registry
     pim_enrich.provider.field.chained:
         class: 'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldChainedProvider'

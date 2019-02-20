@@ -13,8 +13,3 @@ services:
         arguments:
             - '@pim_localization.provider.ui_locale'
             - '@pim_internal_api_serializer'
-
-    pim_enrich.controller.rest.form_extension:
-        class: 'Akeneo\Platform\Bundle\UIBundle\Controller\InternalApi\FormExtensionController'
-        arguments:
-            - '@pim_enrich.provider.form_extension'
