@@ -62,6 +62,9 @@ class ImageTypeValidator implements RecordValueValidatorInterface
                                     'data' => [
                                         'type' => ['string', 'null'],
                                     ],
+                                    '_links' => [
+                                        'type' => 'object'
+                                    ]
                                 ],
                                 'required' => ['locale', 'channel', 'data'],
                                 'additionalProperties' => false,

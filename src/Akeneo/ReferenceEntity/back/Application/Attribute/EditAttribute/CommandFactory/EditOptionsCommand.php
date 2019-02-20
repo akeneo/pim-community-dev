@@ -12,4 +12,11 @@ class EditOptionsCommand extends AbstractEditAttributeCommand
 {
     /** @var array */
     public $options;
+
+    public function __construct(string $identifier, array $options)
+    {
+        parent::__construct($identifier);
+
+        $this->options = $options;
+    }
 }

@@ -2,6 +2,7 @@ import Value, {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {Column} from 'akeneoreferenceentity/application/reducer/grid';
 
 export class InvalidArgument extends Error {}
 
@@ -14,7 +15,7 @@ export type ViewGenerator = React.SFC<{
   onSubmit: () => void;
   canEditData: boolean;
 }>;
-export type CellView = React.SFC<{value: NormalizedValue}>;
+export type CellView = React.SFC<{column: Column, value: NormalizedValue}>;
 
 type ValueConfig = {
   [type: string]: {

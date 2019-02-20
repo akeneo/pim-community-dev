@@ -63,6 +63,9 @@ class RecordAttributeValidator implements AttributeValidatorInterface
                 'reference_entity_code' => [
                     'type' => [ 'string'],
                 ],
+                '_links' => [
+                    'type' => 'object'
+                ],
             ],
             'additionalProperties' => false,
         ];

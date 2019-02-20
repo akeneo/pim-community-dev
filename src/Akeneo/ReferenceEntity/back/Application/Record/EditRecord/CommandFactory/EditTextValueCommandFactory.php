@@ -31,11 +31,12 @@ class EditTextValueCommandFactory implements EditValueCommandFactoryInterface
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
-        $command = new EditTextValueCommand();
-        $command->attribute = $attribute;
-        $command->channel = $normalizedValue['channel'];
-        $command->locale = $normalizedValue['locale'];
-        $command->text = $normalizedValue['data'];
+        $command = new EditTextValueCommand(
+            $attribute,
+            $normalizedValue['channel'],
+            $normalizedValue['locale'],
+            $normalizedValue['data']
+        );
 
         return $command;
     }

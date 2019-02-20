@@ -22,17 +22,11 @@ class EditOptionsCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_to_edit_the_options_of_an_attribute()
     {
         $command = $this->create([
-            'identifier' => [
-                'identifier'                 => 'favorite_color',
-                'reference_entity_identifier' => 'designer',
-            ],
+            'identifier' => 'favorite_color',
             'options' => ['some_options'],
         ]);
         $command->shouldBeAnInstanceOf(EditOptionsCommand::class);
-        $command->identifier->shouldBeEqualTo([
-            'identifier'                 => 'favorite_color',
-            'reference_entity_identifier' => 'designer',
-        ]);
+        $command->identifier->shouldBeEqualTo('favorite_color');
         $command->options->shouldBeEqualTo(['some_options']);
     }
 
@@ -41,10 +35,7 @@ class EditOptionsCommandFactorySpec extends ObjectBehavior
         $this->shouldThrow(\RuntimeException::class)
             ->during('create', [
                     [
-                        'identifier'     => [
-                            'identifier'                  => 'portrait',
-                            'reference_entity_identifier' => 'designer',
-                        ],
+                        'identifier'     => 'portrait',
                         'wrong_property' => 10,
                     ],
                 ]

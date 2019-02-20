@@ -61,3 +61,4 @@ Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompletenes
                 inverseJoinColumns:
                     missing_attribute_id:
                         referencedColumnName: id
+                        onDelete: CASCADE

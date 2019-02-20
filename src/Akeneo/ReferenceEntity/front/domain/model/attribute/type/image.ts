@@ -59,11 +59,11 @@ export class ConcreteImageAttribute extends ConcreteAttribute implements ImageAt
     );
 
     if (!(maxFileSize instanceof MaxFileSize)) {
-      throw new InvalidArgumentError('Attribute expect a MaxFileSize as maxFileSize');
+      throw new InvalidArgumentError('Attribute expects a MaxFileSize as maxFileSize');
     }
 
     if (!(allowedExtensions instanceof AllowedExtensions)) {
-      throw new InvalidArgumentError('Attribute expect a AllowedExtension as allowedExtension');
+      throw new InvalidArgumentError('Attribute expects a AllowedExtension as allowedExtension');
     }
 
     Object.freeze(this);

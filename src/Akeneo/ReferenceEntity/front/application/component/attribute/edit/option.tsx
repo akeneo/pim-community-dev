@@ -157,6 +157,7 @@ const optionRow = ({
             <div className="AknFieldContainer">
               <div className="AknFieldContainer-inputContainer">
                 <input
+                  autoComplete="off"
                   ref={labelInputReference}
                   placeholder={
                     isLastRow && canEditLabel
@@ -194,6 +195,7 @@ const optionRow = ({
               <div className="AknFieldContainer-inputContainer">
                 <input
                   ref={codeInputReference}
+                  autoComplete="off"
                   type="text"
                   className={
                     'AknTextField AknTextField--light' +
@@ -254,6 +256,7 @@ const helperRow = ({locale, currentOption}: {locale: Locale; currentOption: Norm
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
+            autoComplete="off"
             className="AknTextField AknTextField--light AknTextField--disabled"
             value={label}
             readOnly

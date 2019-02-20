@@ -28,7 +28,7 @@ class AttributeOptionValidator
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'labels'],
+            'required' => ['code'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],

@@ -147,7 +147,7 @@ legacy:
             paths:
                 - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
             filters:
-                tags: '@end-to-end'
+                tags: '@end-to-end&&~@skip'
             contexts:
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext:
                     -
@@ -157,7 +157,13 @@ legacy:
                         window_height: 1024
                 - Context\EnterpriseFixturesContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                - Context\EnterpriseDataGridContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                - Context\EnterpriseWebUser:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                 - Context\EnterpriseCatalogConfigurationContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                - Context\EnterpriseAssertionContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                 - PimEnterprise\Behat\Context\HookContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
@@ -177,9 +183,12 @@ legacy:
                     - '@akeneo_e2e.context.franklin_insights.builder.product'
                     - '@pim_catalog.saver.product'
                     - '@pim_catalog.repository.product'
+                    - '@akeneo_e2e.context.franklin_insights.builder.attribute_option'
+                    - '@pim_catalog.saver.attribute_option'
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FranklinConfigurationContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@akeneo.pim.automation.franklin_insights.repository.configuration'
+                    - '@pim_catalog.command_launcher'
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\ProductSubscriptionContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@pim_catalog.repository.product'
@@ -188,6 +197,19 @@ legacy:
                     - '@pim_catalog.repository.product'
                     - '@pimee_workflow.repository.product_draft'
                     - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\IdentifiersMappingContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                    - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
+                    - '@pim_catalog.repository.attribute'
+                    - '@akeneo_batch.job.job_instance_repository'
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\AttributesMappingContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                    - '@pim_catalog.repository.family'
+                    - '@pim_catalog.repository.attribute'
+                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\AttributeOptionsMappingContext:
+                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
+                    - '@pim_catalog.repository.family'
+                    - '@pim_catalog.repository.attribute_option'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
@@ -227,7 +249,7 @@ acceptance:
 #        pim:
 #            paths:
 #                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/pim'
-#            contexts_services:
+#            contexts:
 #                - test.catalog.product_creation.context
 #                - test.catalog.product_validation.context
 #            filters:
@@ -235,7 +257,7 @@ acceptance:
         channel:
             paths:
                 - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/channel'
-            contexts_services:
+            contexts:
                 - test.locale.context
                 - test.channel.context
             filters:
@@ -243,7 +265,7 @@ acceptance:
         franklin-insights:
             paths:
                 - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
-            contexts_services:
+            contexts:
                 - test.attribute.context
                 - test.channel.context
                 - test.locale.context
@@ -265,7 +287,7 @@ acceptance:
                 - '%paths.base%/tests/features/volume-monitoring'
                 - '%paths.base%/tests/features/authentication'
                 - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/volume-monitoring'
-            contexts_services:
+            contexts:
                 - test.catalog_volume_limits.report_context
                 - test.catalog_volume_limits.system_info_context
                 - test.catalog_volume_limits.system_info_attribute_context
@@ -299,22 +321,8 @@ acceptance:
             filters:
                 tags: '@acceptance-back'
     extensions:
-        FriendsOfBehat\ContextServiceExtension:
-           imports:
-               - 'vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml'
-               - 'vendor/akeneo/pim-community-dev/tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/behat/services.yml'
-               - 'tests/back/Asset/Acceptance/Resources/config/behat/services.yml'
-               - 'src/Akeneo/ReferenceEntity/tests/back/Acceptance/Resources/config/behat/services.yml'
-               - 'src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/behat/services.yml'
-               - 'tests/back/Platform/Acceptance/Resources/config/services.yml'
-        FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
-                env: test_fake
+                environment: test_fake
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
-
-    formatters:
-        pretty: true
-        pim:
-            output_path: /tmp/pod/

@@ -56,21 +56,21 @@ class ImageMetadataBuilder implements MetadataBuilderInterface
         $metadata = $metadataReader->getMetadata();
 
         $imageMetadata = new $this->imageMetadataClass($fileMetadata);
-        $imageMetadata->setExifResolution($this->getHumanReadableResolution($metadata));
-        $imageMetadata->setExifDateTimeOriginal($metadata->get('exif.EXIF.DateTimeOriginal'));
-        $imageMetadata->setExifCameraMake($metadata->get('exif.IFD0.Make'));
-        $imageMetadata->setExifCameraModel($metadata->get('exif.IFD0.Model'));
-        $imageMetadata->setExifSizeWidth($metadata->get('exif.COMPUTED.Width'));
-        $imageMetadata->setExifSizeHeight($metadata->get('exif.COMPUTED.Height'));
-        $imageMetadata->setExifOrientation($metadata->get('exif.IFD0.Orientation'));
-        $imageMetadata->setExifCopyright($metadata->get('exif.IFD0.Copyright'));
-        $imageMetadata->setExifKeywords($metadata->get('exif.IFD0.Keywords'));
-        $imageMetadata->setExifTitle($metadata->get('exif.IFD0.Title'));
-        $imageMetadata->setExifDescription($metadata->get('exif.IFD0.Subject'));
-        $imageMetadata->setExifColorSpace($metadata->get('exif.EXIF.ColorSpace'));
-        $imageMetadata->setIptcKeywords(implode(',', $metadata->get('iptc.Keywords', [])));
-        $imageMetadata->setIptcLocationCountry($metadata->get('iptc.LocationName'));
-        $imageMetadata->setIptcLocationCity($metadata->get('iptc.City'));
+        $imageMetadata->setExifResolution($this->truncateMetadata($this->getHumanReadableResolution($metadata)));
+        $imageMetadata->setExifDateTimeOriginal($this->truncateMetadata($metadata->get('exif.EXIF.DateTimeOriginal')));
+        $imageMetadata->setExifCameraMake($this->truncateMetadata($metadata->get('exif.IFD0.Make')));
+        $imageMetadata->setExifCameraModel($this->truncateMetadata($metadata->get('exif.IFD0.Model')));
+        $imageMetadata->setExifSizeWidth($this->truncateMetadata($metadata->get('exif.COMPUTED.Width')));
+        $imageMetadata->setExifSizeHeight($this->truncateMetadata($metadata->get('exif.COMPUTED.Height')));
+        $imageMetadata->setExifOrientation($this->truncateMetadata($metadata->get('exif.IFD0.Orientation')));
+        $imageMetadata->setExifCopyright($this->truncateMetadata($metadata->get('exif.IFD0.Copyright')));
+        $imageMetadata->setExifKeywords($this->truncateMetadata($metadata->get('exif.IFD0.Keywords')));
+        $imageMetadata->setExifTitle($this->truncateMetadata($metadata->get('exif.IFD0.Title')));
+        $imageMetadata->setExifDescription($this->truncateMetadata($metadata->get('exif.IFD0.Subject')));
+        $imageMetadata->setExifColorSpace($this->truncateMetadata($metadata->get('exif.EXIF.ColorSpace')));
+        $imageMetadata->setIptcKeywords($this->truncateMetadata(implode(',', $metadata->get('iptc.Keywords', []))));
+        $imageMetadata->setIptcLocationCountry($this->truncateMetadata($metadata->get('iptc.LocationName')));
+        $imageMetadata->setIptcLocationCity($this->truncateMetadata($metadata->get('iptc.City')));
 
         return $imageMetadata;
     }
@@ -121,5 +121,19 @@ class ImageMetadataBuilder implements MetadataBuilderInterface
         }
 
         return sprintf('%s %s', $resolution, $resolutionUnits);
+    }
+
+    /**
+     * @param mixed $metadata
+     *
+     * @return mixed
+     */
+    private function truncateMetadata($metadata)
+    {
+        if (is_string($metadata)) {
+            return substr($metadata, 0, 255);
+        }
+
+        return $metadata;
     }
 }

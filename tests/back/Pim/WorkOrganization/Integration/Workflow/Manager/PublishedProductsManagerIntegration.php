@@ -3,7 +3,6 @@
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Manager;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -235,3 +234,4 @@ class PublishedProductsManagerIntegration extends TestCase
         }
     }
 }
+

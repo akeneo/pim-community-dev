@@ -205,7 +205,7 @@ module.exports = async function(cucumber) {
     await modal.save();
   });
 
-  Then('the user should not see the add attribute button', async function () {
+  Then('the user should not see the add attribute button', async function() {
     await answerChannelList.apply(this);
     await loadAttributeTab(this.page);
     const header = await await getElement(this.page, 'Header');

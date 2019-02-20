@@ -57,7 +57,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
         false,
         0
       );
-    }).toThrow('Attribute expect a boolean as isRequired value');
+    }).toThrow('Attribute expects a boolean as isRequired value');
 
     expect(() => {
       new ConcreteImageAttribute(
@@ -68,7 +68,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
         true,
         false
       );
-    }).toThrow('Attribute expect a number as order');
+    }).toThrow('Attribute expects a number as order');
 
     expect(() => {
       new ConcreteImageAttribute(
@@ -80,6 +80,6 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
         false,
         0
       );
-    }).toThrow('Attribute expect an AttributeIdentifier argument');
+    }).toThrow('Attribute expects an AttributeIdentifier argument');
   });
 });

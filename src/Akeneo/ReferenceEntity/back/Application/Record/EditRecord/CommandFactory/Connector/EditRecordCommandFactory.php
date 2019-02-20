@@ -40,10 +40,13 @@ class EditRecordCommandFactory
 
     public function create(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): EditRecordCommand
     {
-        $command = new EditRecordCommand();
-        $command->referenceEntityIdentifier = $referenceEntityIdentifier->normalize();
-        $command->code = $normalizedRecord['code'];
-        $command->editRecordValueCommands = $this->createEditRecordValueCommands($referenceEntityIdentifier, $normalizedRecord);
+        $command = new EditRecordCommand(
+            $referenceEntityIdentifier->normalize(),
+            $normalizedRecord['code'],
+            [],
+            null,
+            $this->createEditRecordValueCommands($referenceEntityIdentifier, $normalizedRecord)
+        );
 
         return $command;
     }
@@ -58,7 +61,7 @@ class EditRecordCommandFactory
         $editRecordValueCommands = [];
 
         foreach ($normalizedRecord['values'] as $attributeCode => $normalizedValues) {
-            $this->assertAttributeExists($attributeCode, $attributesIndexedByCodes);
+            $this->assertAttributeExists((string) $attributeCode, $attributesIndexedByCodes);
             $attribute = $attributesIndexedByCodes[$attributeCode];
 
             foreach ($normalizedValues as $normalizedValue) {

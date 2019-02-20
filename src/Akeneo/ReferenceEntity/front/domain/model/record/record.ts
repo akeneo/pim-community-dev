@@ -39,7 +39,7 @@ export default interface Record {
   getIdentifier: () => Identifier;
   getCode: () => RecordCode;
   getReferenceEntityIdentifier: () => ReferenceEntityIdentifier;
-  getLabel: (locale: string, defaultValue?: boolean) => string;
+  getLabel: (locale: string, fallbackOnCode?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   getImage: () => File;
   getValueCollection: () => ValueCollection;
@@ -61,24 +61,24 @@ class RecordImplementation implements Record {
     private valueCollection: ValueCollection
   ) {
     if (!(identifier instanceof Identifier)) {
-      throw new InvalidArgumentError('Record expect a RecordIdentifier as identifier argument');
+      throw new InvalidArgumentError('Record expects a RecordIdentifier as identifier argument');
     }
     if (!(referenceEntityIdentifier instanceof ReferenceEntityIdentifier)) {
       throw new InvalidArgumentError(
-        'Record expect an ReferenceEntityIdentifier as referenceEntityIdentifier argument'
+        'Record expects an ReferenceEntityIdentifier as referenceEntityIdentifier argument'
       );
     }
     if (!(code instanceof RecordCode)) {
-      throw new InvalidArgumentError('Record expect a RecordCode as code argument');
+      throw new InvalidArgumentError('Record expects a RecordCode as code argument');
     }
     if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('Record expect a LabelCollection as labelCollection argument');
+      throw new InvalidArgumentError('Record expects a LabelCollection as labelCollection argument');
     }
     if (!(image instanceof File)) {
-      throw new InvalidArgumentError('Record expect a File as image argument');
+      throw new InvalidArgumentError('Record expects a File as image argument');
     }
     if (!(valueCollection instanceof ValueCollection)) {
-      throw new InvalidArgumentError('Record expect a ValueCollection as valueCollection argument');
+      throw new InvalidArgumentError('Record expects a ValueCollection as valueCollection argument');
     }
 
     Object.freeze(this);
@@ -114,9 +114,9 @@ class RecordImplementation implements Record {
     return this.code;
   }
 
-  public getLabel(locale: string, defaultValue: boolean = true) {
+  public getLabel(locale: string, fallbackOnCode: boolean = true) {
     if (!this.labelCollection.hasLabel(locale)) {
-      return defaultValue ? `[${this.getCode().stringValue()}]` : '';
+      return fallbackOnCode ? `[${this.getCode().stringValue()}]` : '';
     }
 
     return this.labelCollection.getLabel(locale);

@@ -48,16 +48,16 @@ class EditStoredFileValueCommandFactory implements EditValueCommandFactoryInterf
         $fileKey = $normalizedValue['data']['filePath'] ?? $normalizedValue['data'];
         $storedFile = is_string($fileKey) ? ($this->findFileData)($fileKey) : [];
 
-        $command = new EditStoredFileValueCommand();
-        $command->attribute = $attribute;
-        $command->channel = $normalizedValue['channel'];
-        $command->locale = $normalizedValue['locale'];
-        $command->filePath = $fileKey;
-        $command->originalFilename = $storedFile['originalFilename'] ?? null;
-        $command->mimeType = $storedFile['mimeType'] ?? null;
-        $command->extension = $storedFile['extension'] ?? null;
-        $command->size = $storedFile['size'] ?? null;
-
+        $command = new EditStoredFileValueCommand(
+            $attribute,
+            $normalizedValue['channel'],
+            $normalizedValue['locale'],
+            $fileKey,
+            $storedFile['originalFilename'] ?? null,
+            $storedFile['size'] ?? null,
+            $storedFile['mimeType'] ?? null,
+            $storedFile['extension'] ?? null
+        );
         return $command;
     }
 }

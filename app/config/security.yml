@@ -8,9 +8,11 @@ security:
     providers:
         chain_provider:
             chain:
-                providers: [pim_user]
+                providers: [saml_pim_user, pim_user]
         pim_user:
             id: pim_user.provider.user
+        saml_pim_user:
+            id: akeneo_authentication.sso.user.provider
 
     encoders:
         Akeneo\UserManagement\Component\Model\User: sha512
@@ -95,6 +97,7 @@ security:
         - { path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/reset-request, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/send-email, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml-idp/resume, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }

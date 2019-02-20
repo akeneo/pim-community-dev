@@ -135,9 +135,9 @@ datagrid:
                 acl_resource: pimee_product_asset_remove
                 handler: mass_delete_asset
                 messages:
-                    confirm_title: pim_datagrid.mass_action.delete.confirm_title
+                    confirm_title: pim_common.confirm_deletion
                     confirm_content: pimee_product_asset.datagrid.mass_action.delete.confirm_content
-                    confirm_ok: pim_datagrid.mass_action.delete.label
+                    confirm_ok: pim_common.delete
                     success: pimee_product_asset.datagrid.mass_action.delete.success
                     error: pimee_product_asset.datagrid.mass_action.delete.error
                     empty_selection: pimee_product_asset.datagrid.mass_action.delete.empty_selection

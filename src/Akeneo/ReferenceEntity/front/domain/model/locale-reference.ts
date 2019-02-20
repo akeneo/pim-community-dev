@@ -5,7 +5,7 @@ export type NormalizedLocaleReference = string | null;
 export default class LocaleReference {
   private constructor(private localeReference: string | null) {
     if (!('string' === typeof localeReference || null === localeReference)) {
-      throw new InvalidTypeError('LocaleReference expect a string or null as parameter to be created');
+      throw new InvalidTypeError('LocaleReference expects a string or null as parameter to be created');
     }
 
     Object.freeze(this);

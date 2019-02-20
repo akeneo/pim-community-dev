@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocales;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesDetails;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -24,9 +25,13 @@ class InMemoryFindAttributesDetailsTest extends TestCase
     /** @var InMemoryFindAttributesDetails */
     private $query;
 
+    /** @var InMemoryFindActivatedLocales */
+    private $activatedLocaleQuery;
+
     public function setup()
     {
-        $this->query = new InMemoryFindAttributesDetails();
+        $this->activatedLocaleQuery = new InMemoryFindActivatedLocales();
+        $this->query = new InMemoryFindAttributesDetails($this->activatedLocaleQuery);
     }
 
     /**

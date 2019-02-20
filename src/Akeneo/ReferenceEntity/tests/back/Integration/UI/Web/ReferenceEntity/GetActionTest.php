@@ -86,8 +86,8 @@ class GetActionTest extends ControllerIntegrationTestCase
         ]);
         $entityItem->image = Image::fromFileInfo($file);
         $entityItem->recordCount = 123;
-        $entityItem->attributeAsImage = AttributeAsImageReference::noReference();
-        $entityItem->attributeAsLabel = AttributeAsLabelReference::noReference();
+        $entityItem->attributeAsImage = AttributeAsImageReference::createFromNormalized('designer_portrait_123456');
+        $entityItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized('designer_name_123456');
 
         $name = new AttributeDetails();
         $name->identifier = 'designer_name_123456';

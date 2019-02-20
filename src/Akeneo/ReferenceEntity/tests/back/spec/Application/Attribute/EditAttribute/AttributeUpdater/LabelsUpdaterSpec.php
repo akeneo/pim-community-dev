@@ -21,8 +21,8 @@ class LabelsUpdaterSpec extends ObjectBehavior
         TextAttribute $textAttribute,
         ImageAttribute $imageAttribute
     ) {
-        $labelEditCommand = new EditLabelsCommand();
-        $isRequiredEditCommand = new EditIsRequiredCommand();
+        $labelEditCommand = new EditLabelsCommand('name', []);
+        $isRequiredEditCommand = new EditIsRequiredCommand('name', true);
 
         $this->supports($textAttribute, $labelEditCommand)->shouldReturn(true);
         $this->supports($imageAttribute, $labelEditCommand)->shouldReturn(true);
@@ -31,15 +31,14 @@ class LabelsUpdaterSpec extends ObjectBehavior
 
     function it_edits_the_labels_of_an_attribute(TextAttribute $textAttribute)
     {
-        $labelEditCommand = new EditLabelsCommand();
-        $labelEditCommand->labels = ['fr_FR' => 'Traduction francaise'];
+        $labelEditCommand = new EditLabelsCommand('name', ['fr_FR' => 'Traduction francaise']);
         $textAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Traduction francaise']))->shouldBeCalled();
         $this->__invoke($textAttribute, $labelEditCommand)->shouldReturn($textAttribute);
     }
 
     function it_throws_if_it_cannot_update_the_attribute(TextAttribute $textAttribute)
     {
-        $wrongCommand = new EditIsRequiredCommand();
+        $wrongCommand = new EditIsRequiredCommand('name', true);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$textAttribute, $wrongCommand]);
     }
 }

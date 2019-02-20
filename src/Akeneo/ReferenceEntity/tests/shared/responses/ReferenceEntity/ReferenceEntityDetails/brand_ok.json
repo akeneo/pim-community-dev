@@ -22,7 +22,9 @@
           "attributes": [],
           "permission": {
               "edit": true
-          }
+          },
+          "attribute_as_label": "",
+          "attribute_as_image": ""
       }
   }
 }

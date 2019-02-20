@@ -1,6 +1,10 @@
-version: 2
+version: 2.1
 jobs:
   setup:
+    parameters:
+        is_pull_request:
+            type: boolean
+            default: true
     machine:
       enabled: true
       docker_layer_caching: true
@@ -27,14 +31,17 @@ jobs:
       - run:
           name: Change owner on project dir after restoring cache
           command: sudo chown -R 1000:1000 ../project
-      - run:
-          name: Update composer.json if same branch exists in CE
-          command: >
-            curl --output /dev/null --silent --head --fail
-            https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
-            docker-compose exec fpm php
-            /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
-            echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
+      - when:
+            condition: << parameters.is_pull_request >>
+            steps:
+                - run:
+                      name: Update composer.json if same branch exists in CE
+                      command: >
+                          curl --output /dev/null --silent --head --fail
+                          https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
+                          docker-compose exec fpm php
+                          /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
+                          echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
       - run:
           name: Install dependencies
           command: ./bin/docker/pim-dependencies.sh
@@ -75,6 +82,9 @@ jobs:
                 name: PhpSpec
                 command: docker-compose exec fpm vendor/bin/phpspec run -vvv
           - run:
+                name: PhpSpec (Reference Entities)
+                command: docker-compose exec fpm vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --no-interaction -vvv
+          - run:
                 name: PhpCsFixer
                 command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
           - run:
@@ -84,11 +94,17 @@ jobs:
 #                name: PHPStan
 #                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
           - run:
+                name: PHPStan on Reference Entities
+                command: docker-compose exec -T fpm vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
+          - run:
                 name: Check Pullup
                 command: docker-compose exec -T fpm vendor/akeneo/pim-community-dev/bin/check-pullup
           - run:
                 name: Acceptance back
                 command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
+          - run:
+                name: Acceptance back (Reference Entities)
+                command: docker-compose exec fpm vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --no-interaction --format=progress
           - store_test_results:
                 path: var/tests
           - store_artifacts:
@@ -118,6 +134,11 @@ jobs:
                 command: |
                     TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" "vendor/akeneo/pim-community-dev/tests/back/**/*Integration.php" "vendor/akeneo/pim-community-dev/src/**/*Integration.php" | circleci tests split)
                     vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh $TESTFILES
+          - run:
+                name: PHPunit Integration (Reference Entities)
+                command: |
+                    TESTFILES=$(circleci tests glob "src/Akeneo/ReferenceEntity/tests/back/Integration/**/*Test.php" | circleci tests split)
+                    .circleci/run_phpunit_reference_entities.sh $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -240,7 +261,8 @@ workflows:
                         only:
                             - master
       jobs:
-          - setup
+          - setup:
+                is_pull_request: false
           - back_static_and_acceptance:
                 requires:
                     - setup

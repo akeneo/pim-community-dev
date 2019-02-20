@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  * | Manager  | View,Edit,Own | View,Edit,Own | View,Edit,Own |
  * +----------+-----------------------------------------------+
  */
-class CreateVariantProductProposal extends AbstractProposal
+class CreateVariantProductProposalIntegration extends AbstractProposal
 {
     public function testCreateProductProposalSuccessful()
     {

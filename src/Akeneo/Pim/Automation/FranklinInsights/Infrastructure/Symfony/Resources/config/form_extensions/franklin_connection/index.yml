@@ -61,4 +61,5 @@ extensions:
             tokenFieldPlaceholder: akeneo_franklin_insights.connection.module.activation.paste_activation_code
             tokenSavePreActivationTitle: akeneo_franklin_insights.connection.module.activation.activate
             tokenSavePostActivationTitle:  akeneo_franklin_insights.connection.module.activation.activated
+            saveConnectionFailMessage: akeneo_franklin_insights.connection.flash.error
             code: franklin

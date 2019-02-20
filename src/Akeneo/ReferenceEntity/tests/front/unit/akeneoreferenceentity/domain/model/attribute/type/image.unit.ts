@@ -38,7 +38,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- ImageAttrib
         0,
         true
       );
-    }).toThrow('Attribute expect a MaxFileSize as maxFileSize');
+    }).toThrow('Attribute expects a MaxFileSize as maxFileSize');
 
     expect(() => {
       new ConcreteImageAttribute(
@@ -52,6 +52,6 @@ describe('akeneo > attribute > domain > model > attribute > type --- ImageAttrib
         true,
         MaxFileSize.createFromNormalized('12.4')
       );
-    }).toThrow('Attribute expect a AllowedExtension as allowedExtension');
+    }).toThrow('Attribute expects a AllowedExtension as allowedExtension');
   });
 });

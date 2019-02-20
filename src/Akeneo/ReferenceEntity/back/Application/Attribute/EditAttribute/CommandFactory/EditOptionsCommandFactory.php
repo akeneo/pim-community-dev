@@ -21,9 +21,10 @@ class EditOptionsCommandFactory implements EditAttributeCommandFactoryInterface
         if (!$this->supports($normalizedCommand)) {
             throw new \RuntimeException('Impossible to create an edit max length property command.');
         }
-        $command = new EditOptionsCommand();
-        $command->identifier = $normalizedCommand['identifier'];
-        $command->options = $normalizedCommand['options'];
+        $command = new EditOptionsCommand(
+            $normalizedCommand['identifier'],
+            $normalizedCommand['options']
+        );
 
         return $command;
     }

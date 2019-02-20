@@ -21,8 +21,8 @@ class RegularExpressionUpdaterSpec extends ObjectBehavior
         TextAttribute $textAttribute,
         ImageAttribute $imageAttribute
     ) {
-        $labelEditCommand = new EditLabelsCommand();
-        $editRegularExpression = new EditRegularExpressionCommand();
+        $labelEditCommand = new EditLabelsCommand('name', []);
+        $editRegularExpression = new EditRegularExpressionCommand('name', null);
 
         $this->supports($textAttribute, $editRegularExpression)->shouldReturn(true);
         $this->supports($imageAttribute, $editRegularExpression)->shouldReturn(false);
@@ -31,23 +31,21 @@ class RegularExpressionUpdaterSpec extends ObjectBehavior
 
     function it_edits_the_regular_expression_of_a_text_attribute(TextAttribute $textAttribute)
     {
-        $editRequired = new EditRegularExpressionCommand();
-        $editRequired->regularExpression = '/\w+/';
+        $editRequired = new EditRegularExpressionCommand('name', '/\w+/');
         $textAttribute->setRegularExpression(AttributeRegularExpression::fromString('/\w+/'))->shouldBeCalled();
         $this->__invoke($textAttribute, $editRequired)->shouldReturn($textAttribute);
     }
 
     function it_sets_the_regular_expression_to_none(TextAttribute $textAttribute)
     {
-        $editRequired = new EditRegularExpressionCommand();
-        $editRequired->regularExpression = null;
+        $editRequired = new EditRegularExpressionCommand('name', null);
         $textAttribute->setRegularExpression(AttributeRegularExpression::createEmpty())->shouldBeCalled();
         $this->__invoke($textAttribute, $editRequired)->shouldReturn($textAttribute);
     }
 
     function it_throws_if_it_cannot_update_the_attribute(TextAttribute $textAttribute)
     {
-        $wrongCommand = new EditLabelsCommand();
+        $wrongCommand = new EditLabelsCommand('name', []);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$textAttribute, $wrongCommand]);
     }
 }

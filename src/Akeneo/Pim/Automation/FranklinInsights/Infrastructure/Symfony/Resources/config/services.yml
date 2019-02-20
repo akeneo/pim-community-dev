@@ -41,3 +41,9 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Factory\ProposalSuggestedDataFactory'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.normalizers.suggested_data'
+
+    akeneo.pim.automation.franklin_insights.notifier.notify_about_missing_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification\NotifyUserAboutMissingMapping'
+        arguments:
+            - '@pim_notification.factory.notification'
+            - '@pim_notification.notifier'

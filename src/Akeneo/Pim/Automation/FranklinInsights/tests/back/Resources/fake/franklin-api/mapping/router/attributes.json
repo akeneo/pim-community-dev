@@ -47,7 +47,7 @@
         "type": "multiselect"
       },
       "to": {
-        "id": "product color"
+        "id": "color"
       },
       "summary": [
         "blue",

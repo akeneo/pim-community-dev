@@ -47,6 +47,10 @@ const DetailRow = memo(
           return false;
         }}
       >
+        {0 === columns.length ? (
+          <td className="AknGrid-bodyCell"></td>
+        ) : null}
+
         {columns.map((column: Column) => {
           const CellView = cellViews[column.key];
           const value = record.values[column.key as any];
@@ -57,7 +61,7 @@ const DetailRow = memo(
 
           return (
             <td key={column.key} className="AknGrid-bodyCell">
-              <CellView value={value} />
+              <CellView column={column} value={value} />
             </td>
           );
         })}

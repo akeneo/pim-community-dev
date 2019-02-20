@@ -1,3 +1,5 @@
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+
 export class InvalidArgument extends Error {}
 
 export interface Filter {
@@ -19,6 +21,7 @@ export interface Column {
   channel: string;
   locale: string;
   code: string;
+  attribute: NormalizedAttribute;
 }
 
 export interface Query {

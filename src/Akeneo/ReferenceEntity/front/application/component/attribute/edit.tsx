@@ -28,7 +28,6 @@ import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error
 import ReferenceEntity, {
   denormalizeReferenceEntity,
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import AttributeReference from 'akeneoreferenceentity/domain/model/attribute/attribute-reference';
 
 interface OwnProps {
   rights: {
@@ -152,12 +151,8 @@ class Edit extends React.Component<EditProps> {
     // This will be simplyfied in the near future
     const displayDeleteButton =
       this.props.rights.attribute.delete &&
-      !this.props.referenceEntity
-        .getAttributeAsLabel()
-        .equals(AttributeReference.create(this.props.attribute.getIdentifier().stringValue())) &&
-      !this.props.referenceEntity
-        .getAttributeAsImage()
-        .equals(AttributeReference.create(this.props.attribute.getIdentifier().stringValue()));
+      !this.props.referenceEntity.getAttributeAsLabel().equals(this.props.attribute.getIdentifier()) &&
+      !this.props.referenceEntity.getAttributeAsImage().equals(this.props.attribute.getIdentifier());
 
     return (
       <React.Fragment>
@@ -180,6 +175,7 @@ class Edit extends React.Component<EditProps> {
                 <div className="AknFieldContainer-inputContainer">
                   <input
                     type="text"
+                    autoComplete="off"
                     ref={(input: HTMLInputElement) => {
                       this.labelInput = input;
                     }}
@@ -281,7 +277,7 @@ class Edit extends React.Component<EditProps> {
                   <Trash color="#D4604F" className="AknButton-animatedIcon" />
                   {__('pim_reference_entity.attribute.edit.delete')}
                 </span>
-              ) : null}
+              ) : <span style={{flex: 1}}></span>}
               <span
                 title={__('pim_reference_entity.attribute.edit.cancel')}
                 className="AknButton AknButton--small AknButton--grey AknButton--spaced"

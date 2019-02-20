@@ -11,10 +11,10 @@ describe('akeneo > reference entity > domain > model > record > data --- record 
   test('I cannot create a new RecordData with a value other than a RecordCode collection', () => {
     expect(() => {
       create(12);
-    }).toThrow('RecordCollectionData expect an array of RecordCode as parameter to be created');
+    }).toThrow('RecordCollectionData expects an array of RecordCode as parameter to be created');
     expect(() => {
       create([12]);
-    }).toThrow('RecordCollectionData expect an array of RecordCode as parameter to be created');
+    }).toThrow('RecordCollectionData expects an array of RecordCode as parameter to be created');
   });
 
   test('I can normalize a RecordData', () => {

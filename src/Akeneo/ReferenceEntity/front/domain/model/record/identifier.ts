@@ -5,7 +5,7 @@ export type NormalizedRecordIdentifier = string;
 export default class Identifier {
   private constructor(readonly identifier: string) {
     if ('string' !== typeof identifier) {
-      throw new InvalidTypeError('RecordIdentifier expect a string as parameter to be created');
+      throw new InvalidTypeError('RecordIdentifier expects a string as parameter to be created');
     }
 
     Object.freeze(this);

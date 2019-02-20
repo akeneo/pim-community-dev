@@ -13,7 +13,7 @@ import {generateKey} from 'akeneoreferenceentity/domain/model/record/value-colle
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {getAttributeTypes, AttributeType} from 'akeneoreferenceentity/application/configuration/attribute';
 import {hasDataCellView} from 'akeneoreferenceentity/application/configuration/value';
-import AttributeReference from 'akeneoreferenceentity/domain/model/attribute/attribute-reference';
+import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 
 export class InvalidArgument extends Error {}
 
@@ -61,10 +61,11 @@ const getColumn = (attribute: Attribute, channel: ChannelReference, locale: Loca
     channel: channel.normalize() as string,
     locale: locale.normalize() as string,
     code: attribute.getCode().stringValue(),
+    attribute: attribute.normalize()
   };
 };
 
-export const getColumns = (attributes: Attribute[], channels: Channel[], columnsToExclude: AttributeReference[]) => {
+export const getColumns = (attributes: Attribute[], channels: Channel[], columnsToExclude: AttributeIdentifier[]) => {
   const attributeTypes = getAttributeTypes()
     .filter((attributeType: AttributeType) => hasDataCellView(attributeType.identifier))
     .map((attributeType: AttributeType) => attributeType.identifier);

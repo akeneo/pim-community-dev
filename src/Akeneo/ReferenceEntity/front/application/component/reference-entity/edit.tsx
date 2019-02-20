@@ -6,7 +6,7 @@ import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
 import sidebarProvider from 'akeneoreferenceentity/application/configuration/sidebar';
 import CreateRecordModal from 'akeneoreferenceentity/application/component/record/create';
 import __ from 'akeneoreferenceentity/tools/translator';
-import {redirectToReferenceEntityList} from 'akeneoreferenceentity/application/action/reference-entity/router';
+import {redirectToReferenceEntityListItem} from 'akeneoreferenceentity/application/action/reference-entity/router';
 import Key from 'akeneoreferenceentity/tools/key';
 
 interface StateProps {
@@ -98,7 +98,7 @@ export default connect(
     return {
       events: {
         backToReferenceEntityList: () => {
-          dispatch(redirectToReferenceEntityList());
+          dispatch(redirectToReferenceEntityListItem());
         },
       },
     };

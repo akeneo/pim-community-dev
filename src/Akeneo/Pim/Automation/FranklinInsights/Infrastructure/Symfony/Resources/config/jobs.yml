@@ -11,6 +11,7 @@ services:
                 - '@akeneo.pim.automation.franklin_insights.connector.step.validate_identifiers_mapping'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.subscribe_products'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.create_proposals'
+                - '@akeneo.pim.automation.franklin_insights.connector.step.notify_if_pending_attributes'
         tags:
             - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'mass_edit' }
 
@@ -50,6 +51,7 @@ services:
                 - '@akeneo.pim.automation.franklin_insights.connector.step.validate_connection'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.fetch_products'
                 - '@akeneo.pim.automation.franklin_insights.connector.step.create_proposals'
+                - '@akeneo.pim.automation.franklin_insights.connector.step.notify_if_pending_attributes'
         tags:
             - { name: akeneo_batch.job, connector: 'Franklin Insights Connector', type: 'franklin_insights' }
 

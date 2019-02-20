@@ -239,3 +239,7 @@ pim_menu:
     item:
         asset_category: Asset categories
         upload_asset: Upload Assets
+
+pim_notification:
+    types:
+        mass_upload: Mass upload

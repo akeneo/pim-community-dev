@@ -1,18 +1,20 @@
 @acceptance-back
 Feature: Map some attribute options with Franklin attribute options
 
+  @critical @end-to-end @javascript @skip @info SHOULD BE FIXED ABSOLUTELY
   Scenario: Successfully map an attribute option for the first time
-    Given the family "router"
-    And Franklin is configured with a valid token
+    Given Franklin is configured with a valid token
+    And the product "B00EYZY6AC" of the family "router"
+    And the product "B00EYZY6AC" is subscribed to Franklin
     And the predefined options "color1, color2 and color3" for the attribute "color"
     When the Franklin "color" options are mapped to the PIM "color" options for the family "router" as follows:
       | franklin_attribute_option_id | franklin_attribute_option_label | catalog_attribute_option_code | status   |
-      | color_1                      | red                             |                               | inactive |
-      | color_2                      | blue                            | color2                        | active   |
-      | color_3                      | yellow                          |                               | inactive |
-    Then Franklin option color_1 should not be mapped
-    And Franklin option color_2 should be mapped to color2
-    And Franklin option color_3 should not be mapped
+      | red                          | red                             |                               | inactive |
+      | blue                         | blue                            | color1                        | active   |
+      | black                        | black                           |                               | inactive |
+    Then Franklin option red should not be mapped
+    And Franklin option blue should be mapped to color1
+    And Franklin option black should not be mapped
 
   Scenario: Successfully update an existing attribute options mapping
     Given the family "router"
@@ -41,15 +43,15 @@ Feature: Map some attribute options with Franklin attribute options
     Then Franklin option color_1 should not be mapped
     And Franklin option color_2 should be mapped to color2
 
-  Scenario: Successfully map all attribute options to nothing
+  Scenario: Fail to map all attribute options to nothing
     Given the family "router"
     And Franklin is configured with a valid token
     When the Franklin "color" options are mapped to the PIM "color" options for the family "router" as follows:
       | franklin_attribute_option_id | franklin_attribute_option_label | catalog_attribute_option_code | status   |
       | color_1                      | red                             |                               | inactive |
       | color_2                      | blue                            |                               | inactive |
-    Then Franklin option color_1 should not be mapped
-    And Franklin option color_2 should not be mapped
+    Then an empty attribute options mapping message should be sent
+    And the attribute options mapping should not be saved
 
   Scenario: Fail to map attribute options with an expired token
     Given the family "router"

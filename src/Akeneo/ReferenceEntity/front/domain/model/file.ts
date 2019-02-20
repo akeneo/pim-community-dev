@@ -24,10 +24,10 @@ export default class File {
     }
 
     if (!('string' === typeof filePath && 0 !== filePath.length)) {
-      throw new InvalidTypeError('File expect a non empty string as filePath to be created');
+      throw new InvalidTypeError('File expects a non empty string as filePath to be created');
     }
     if (!('string' === typeof originalFilename && 0 !== originalFilename.length)) {
-      throw new InvalidTypeError('File expect a non empty string as originalFilename to be created');
+      throw new InvalidTypeError('File expects a non empty string as originalFilename to be created');
     }
   }
 

@@ -65,7 +65,10 @@ class ImageAttributeValidator implements AttributeValidatorInterface
                     ]
                 ],
                 'max_file_size' => [
-                    'type' => [ 'integer'],
+                    'type' => [ 'string', 'null'],
+                ],
+                '_links' => [
+                    'type' => 'object'
                 ],
             ],
             'additionalProperties' => false,

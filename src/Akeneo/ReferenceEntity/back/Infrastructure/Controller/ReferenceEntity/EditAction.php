@@ -102,9 +102,10 @@ class EditAction
 
     private function isUserAllowedToEdit(string $referenceEntityIdentifier): bool
     {
-        $query = new CanEditReferenceEntityQuery();
-        $query->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $query = new CanEditReferenceEntityQuery(
+            $referenceEntityIdentifier,
+            $this->tokenStorage->getToken()->getUser()->getUsername()
+        );
         $isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($query);
 
         return $isAllowedToEdit; // && add Check of ACLs

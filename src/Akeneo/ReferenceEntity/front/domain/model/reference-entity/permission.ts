@@ -45,13 +45,13 @@ class PermissionImplementation implements Permission {
     private rightLevel: RightLevel
   ) {
     if (!('number' === typeof userGroupIdentifier)) {
-      throw new InvalidArgumentError('Permission expect a number as userGroupIdentifier argument');
+      throw new InvalidArgumentError('Permission expects a number as userGroupIdentifier argument');
     }
     if (!('string' === typeof userGroupName)) {
-      throw new InvalidArgumentError('Permission expect a string as userGroupName argument');
+      throw new InvalidArgumentError('Permission expects a string as userGroupName argument');
     }
     if (!('string' === typeof rightLevel)) {
-      throw new InvalidArgumentError('Permission expect a string as rightLevel argument');
+      throw new InvalidArgumentError('Permission expects a string as rightLevel argument');
     }
 
     Object.freeze(this);

@@ -12,4 +12,9 @@ class IndexRecordsByReferenceEntityCommand
 {
     /** string $referenceEntity */
     public $referenceEntityIdentifier;
+
+    public function __construct(string $referenceEntityIdentifier)
+    {
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+    }
 }

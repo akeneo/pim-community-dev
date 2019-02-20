@@ -16,8 +16,12 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mappi
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -28,9 +32,10 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 {
     public function let(
         AttributesMappingProviderInterface $attributesMappingProvider,
-        FamilyRepositoryInterface $familyRepository
+        FamilyRepositoryInterface $familyRepository,
+        AttributeRepositoryInterface $attributeRepository
     ): void {
-        $this->beConstructedWith($attributesMappingProvider, $familyRepository);
+        $this->beConstructedWith($attributesMappingProvider, $familyRepository, $attributeRepository);
     }
 
     public function it_is_a_get_attributes_mapping_query_handler(): void
@@ -61,5 +66,39 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 
         $query = new GetAttributesMappingByFamilyQuery('camcorders');
         $this->handle($query)->shouldReturn($attributesMappingResponse);
+    }
+
+    public function it_filters_unknown_attributes(
+        FamilyInterface $family,
+        $familyRepository,
+        $attributesMappingProvider,
+        $attributeRepository,
+        AttributeInterface $attribute
+    ): void {
+        $attributesMappingResponse = new AttributesMappingResponse();
+        $attributesMappingResponse->addAttribute(new AttributeMapping(
+            'series',
+            null,
+            'text',
+            'pim_series',
+            AttributeMappingStatus::ATTRIBUTE_ACTIVE
+        ));
+
+        $familyRepository->findOneByIdentifier('camcorders')->willReturn($family);
+        $attributesMappingProvider->getAttributesMapping('camcorders')->willReturn($attributesMappingResponse);
+
+        $attributeRepository->findBy(['code' => ['pim_series']])->willReturn($attribute);
+
+        $query = new GetAttributesMappingByFamilyQuery('camcorders');
+
+        $expectedMapping = new AttributesMappingResponse();
+        $expectedMapping->addAttribute(new AttributeMapping(
+            'series',
+            null,
+            'text',
+            null,
+            AttributeMappingStatus::ATTRIBUTE_PENDING
+        ));
+        $this->handle($query)->shouldBeLike($expectedMapping);
     }
 }

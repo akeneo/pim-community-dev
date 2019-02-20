@@ -21,26 +21,10 @@ use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateA
  */
 abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeCommandFactoryInterface
 {
-    protected function fillCommonProperties(
-        AbstractCreateAttributeCommand $command,
-        array $normalizedCommand
-    ): AbstractCreateAttributeCommand {
-        $this->checkCommonProperties($normalizedCommand);
-
-        $command->code = $normalizedCommand['code'];
-        $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'];
-        $command->labels = $normalizedCommand['labels'] ?? [];
-        $command->isRequired = $normalizedCommand['is_required'] ?? false;
-        $command->valuePerChannel = $normalizedCommand['value_per_channel'];
-        $command->valuePerLocale = $normalizedCommand['value_per_locale'];
-
-        return $command;
-    }
-
     /**
      * @throws \InvalidArgumentException
      */
-    private function checkCommonProperties(array $nomalizedCommand): void
+    protected function checkCommonProperties(array $nomalizedCommand): void
     {
         $keysToCheck = [
             'code',

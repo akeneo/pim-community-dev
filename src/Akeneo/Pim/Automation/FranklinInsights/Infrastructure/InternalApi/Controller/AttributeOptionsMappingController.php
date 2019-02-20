@@ -22,7 +22,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\OptionsMappingNormalizer;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,6 +33,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AttributeOptionsMappingController
 {
+    use CheckAccessTrait;
+
     /** @var GetAttributeOptionsMappingHandler */
     private $getAttributeOptionsMappingHandler;
 
@@ -40,13 +44,16 @@ class AttributeOptionsMappingController
     /**
      * @param GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
      * @param SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler
+     * @param SecurityFacade $securityFacade
      */
     public function __construct(
         GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler,
-        SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler
+        SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler,
+        SecurityFacade $securityFacade
     ) {
         $this->getAttributeOptionsMappingHandler = $getAttributeOptionsMappingHandler;
         $this->saveAttributeOptionsMappingHandler = $saveAttributeOptionsMappingHandler;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -57,6 +64,8 @@ class AttributeOptionsMappingController
      */
     public function getAction(string $identifier, string $franklinAttributeCode): JsonResponse
     {
+        $this->checkAccess('akeneo_franklin_insights_settings_mapping');
+
         $query = new GetAttributeOptionsMappingQuery(
             new FamilyCode($identifier),
             new FranklinAttributeId($franklinAttributeCode)
@@ -99,10 +108,15 @@ class AttributeOptionsMappingController
      *     }
      * }
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function updateAction(Request $request): JsonResponse
+    public function updateAction(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+        $this->checkAccess('akeneo_franklin_insights_settings_mapping');
+
         $requestContent = json_decode($request->getContent(), true);
 
         $this->validateAttributeOptionsMapping($requestContent);

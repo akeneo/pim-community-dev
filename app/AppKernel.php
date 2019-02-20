@@ -48,6 +48,10 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
         }
 
+        if ('test_fake' === $this->getEnvironment()) {
+            $bundles[] = new FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle();
+        }
+
         $bundles = array_merge(
             $this->getSymfonyBundles(),
             $this->getOroDependencies(),

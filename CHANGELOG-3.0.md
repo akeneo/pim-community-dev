@@ -1,4 +1,53 @@
-# 3.0
+# 3.0.x
+
+# 3.0.3 (2019-02-18)
+
+## Bug fixes
+
+- APAI-550: Add ACL checks on the backend part
+- APAI-561: Silently filter unknown/unexisting attribute options on attribute options (Franklin Insights)
+- PIM-8130: Fixed the product grid filter for attribute with type "Reference Entity" (multi & simple link)
+- PIM-8138: Fix 401 error on password reset page
+
+## Improvements
+
+- APAI-471: Add warning on attribute deletion (Franklin Insights)
+- APAI-494: Notify Julia when she has new attributes "pending" for mapping (Franklin Insights)
+- APAI-581: Update the identifiers mapping when an attribute that belongs to the identifiers mapping is deleted (Franklin Insights)
+- APAI-517: Add end-to-end scenario on identifiers mapping (Franklin Insights)
+- APAI-518: Add end-to-end scenario on attributes mapping (Franklin Insights)
+- APAI-464: add end to end scenario on bulk subscription (Franklin Insights)
+- APAI-519: add end to end scenario on attribute options mapping (Franklin Insights)
+- PIM-8052: Display the record labels in the product grid instead of the code
+
+# 3.0.2 (2019-02-13)
+
+## Bug fixes
+
+- PIM-7985: Fix locale permissions on Reference Entities
+- PIM-8012: Fix json-schema validation for the image attribute property `"max_file_size"` (API)
+- PIM-8011: Some attribute properties are nullable (API)
+- PIM-7999: Fix upsert record type attribute (API)
+- PIM-8000: Accept `_links` property in patch endpoints (API)
+- PIM-7998: Add validation on the immutable attribute properties (API)
+- PIM-8015: Add validation for record attribute creation (API)
+- PIM-8027: Fix create reference entity without labels (API)
+- Fixed the "dot" menu on Reference Entity screen that was not visible if left panel was folded
+- PIM-8032: Fix the image deletion with the keyboard
+- PIM-8043: Fix to keep the Save and Cancel button always on the right during the edition of a reference entity attribute
+- PIM-8046: Fix issue for reference entity attributes with a numeric code
+- PIM-8037: allow to click on record row even if it has not attribute
+
+## Improvements
+
+- PIM-8040: The code should be check when upserting an attribute option (API)
+- AOB-351: Add a user provider used when sso is activated
+
+# 3.0.1 (2019-02-06)
+
+- Name Enterprise version "Rose"
+
+# 3.0.0 (2019-02-06)
 
 ## Manage reference entities
 

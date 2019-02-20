@@ -38,7 +38,7 @@ final class AttributeOptionsMapping
         $this->franklinAttributeId = $franklinAttributeId;
         $this->mapping = $mapping;
         usort($this->mapping, function ($a, $b) {
-            return $a->franklinAttributeLabel() <=> $b->franklinAttributeLabel();
+            return $a->franklinAttributeOptionLabel() <=> $b->franklinAttributeOptionLabel();
         });
     }
 
@@ -74,7 +74,7 @@ final class AttributeOptionsMapping
     public function hasPimAttributeOption(string $attributeOptionCode): bool
     {
         foreach ($this->mapping as $attributeOption) {
-            if ($attributeOption->catalogAttributeCode() === $attributeOptionCode) {
+            if ($attributeOption->catalogAttributeOptionCode() === $attributeOptionCode) {
                 return true;
             }
         }

@@ -148,15 +148,16 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             'extension' => 'png',
         ]);
 
-        $expectedCommand = new EditStoredFileValueCommand();
-        $expectedCommand->attribute = $imageAttribute->getWrappedObject();
-        $expectedCommand->channel = 'ecommerce';
-        $expectedCommand->locale = 'de_DE';
-        $expectedCommand->filePath = '/tmp/stark_portrait.png';
-        $expectedCommand->originalFilename = 'stark_portrait.png';
-        $expectedCommand->size = 1024;
-        $expectedCommand->mimeType = 'image/png';
-        $expectedCommand->extension = 'png';
+        $expectedCommand = new EditStoredFileValueCommand(
+            $imageAttribute->getWrappedObject(),
+            'ecommerce',
+            'de_DE',
+            '/tmp/stark_portrait.png',
+            'stark_portrait.png',
+            1024,
+            'image/png',
+            'png'
+        );
 
         $this->create($imageAttribute, $normalizedValue)->shouldBeLike($expectedCommand);
     }
@@ -179,15 +180,16 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             'extension' => 'png',
         ]);
 
-        $expectedCommand = new EditStoredFileValueCommand();
-        $expectedCommand->attribute = $imageAttribute->getWrappedObject();
-        $expectedCommand->channel = 'ecommerce';
-        $expectedCommand->locale = 'de_DE';
-        $expectedCommand->filePath = '/tmp/stark_portrait.png';
-        $expectedCommand->originalFilename = 'stark_portrait.png';
-        $expectedCommand->size = 1024;
-        $expectedCommand->mimeType = 'image/png';
-        $expectedCommand->extension = 'png';
+        $expectedCommand = new EditStoredFileValueCommand(
+            $imageAttribute->getWrappedObject(),
+            'ecommerce',
+            'de_DE',
+            '/tmp/stark_portrait.png',
+            'stark_portrait.png',
+            1024,
+            'image/png',
+            'png'
+        );
 
         $this->create($imageAttribute, $normalizedValue)->shouldBeLike($expectedCommand);
     }

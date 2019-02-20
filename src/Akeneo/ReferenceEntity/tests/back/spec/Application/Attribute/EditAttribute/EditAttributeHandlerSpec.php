@@ -48,17 +48,23 @@ class EditAttributeHandlerSpec extends ObjectBehavior
 
     private function getEditCommand(): EditAttributeCommand
     {
-        $editRequiredAttribute = new EditIsRequiredCommand();
-        $editRequiredAttribute->identifier = 'designer_name_fingerprint';
-        $editRequiredAttribute->isRequired = true;
+        $editRequiredAttribute = new EditIsRequiredCommand(
+            'designer_name_fingerprint',
+            true
+        );
 
-        $editMaxFileSize = new EditMaxFileSizeCommand();
-        $editMaxFileSize->identifier = 'designer_name_fingerprint';
-        $editMaxFileSize->maxFileSize = '154';
+        $editMaxFileSize = new EditMaxFileSizeCommand(
+            'designer_name_fingerprint',
+            '154'
+        );
 
-        $editAttributeCommand = new EditAttributeCommand();
-        $editAttributeCommand->identifier = 'designer_name_fingerprint';
-        $editAttributeCommand->editCommands = [$editRequiredAttribute, $editMaxFileSize];
+        $editAttributeCommand = new EditAttributeCommand(
+            'designer_name_fingerprint',
+            [
+                $editRequiredAttribute,
+                $editMaxFileSize
+            ]
+        );
 
         return $editAttributeCommand;
     }

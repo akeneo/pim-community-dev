@@ -3,22 +3,19 @@ services:
         class: 'AkeneoTestEnterprise\Asset\Acceptance\Context\AssetContext'
         arguments:
             - '@test.catalog_volume_limits.report_context'
-            - '@__symfony__.pimee_volume_monitoring.persistence.query.count_assets'
-        tags:
-            - { name: fob.context_service }
+            - '@pimee_volume_monitoring.persistence.query.count_assets'
+
 
     test.product_asset.asset_category_context:
         class: 'AkeneoTestEnterprise\Asset\Acceptance\Context\AssetCategoryContext'
         arguments:
             - '@test.catalog_volume_limits.report_context'
-            - '@__symfony__.pimee_volume_monitoring.persistence.query.count_asset_categories'
-        tags:
-            - { name: fob.context_service }
+            - '@pimee_volume_monitoring.persistence.query.count_asset_categories'
+
 
     test.product_asset.asset_category_tree_context:
         class: 'AkeneoTestEnterprise\Asset\Acceptance\Context\AssetCategoryTreeContext'
         arguments:
             - '@test.catalog_volume_limits.report_context'
-            - '@__symfony__.pimee_volume_monitoring.persistence.query.count_asset_category_trees'
-        tags:
-            - { name: fob.context_service }
+            - '@pimee_volume_monitoring.persistence.query.count_asset_category_trees'
+

@@ -33,17 +33,11 @@ class EditIsRichTextEditorCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_to_edit_the_is_rich_text_editor_flag()
     {
         $command = $this->create([
-            'identifier' => [
-                'identifier'                 => 'name',
-                'reference_entity_identifier' => 'designer',
-            ],
+            'identifier' => 'name',
             'is_rich_text_editor'   => true,
         ]);
         $command->shouldBeAnInstanceOf(EditIsRichTextEditorCommand::class);
-        $command->identifier->shouldBeEqualTo([
-            'identifier'                 => 'name',
-            'reference_entity_identifier' => 'designer',
-        ]);
+        $command->identifier->shouldBeEqualTo('name');
         $command->isRichTextEditor->shouldBeEqualTo(true);
     }
 
@@ -52,10 +46,7 @@ class EditIsRichTextEditorCommandFactorySpec extends ObjectBehavior
         $this->shouldThrow(\RuntimeException::class)
             ->during('create', [
                 [
-                    'identifier'     => [
-                        'identifier'                 => 'portrait',
-                        'reference_entity_identifier' => 'designer',
-                    ],
+                    'identifier'     => 'portrait',
                     'wrong_property' => 10,
                 ],
             ]);

@@ -81,8 +81,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     public function __construct(
         ChannelConfigurationRepositoryInterface $configurationRepository,
         FilesystemProvider $filesystemProvider,
-        SaverInterface $metadataSaver,
-        SaverInterface $variationSaver,
+        SaverInterface $metadataSaver, // TODO: @pull-up - To remove in master
+        SaverInterface $variationSaver, // TODO: @pull-up - To remove in master
         FileTransformerInterface $fileTransformer,
         FileStorerInterface $fileStorer,
         FileFetcherInterface $fileFetcher,
@@ -127,12 +127,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
 
         $variationMetadata = $this->extractMetadata($variationFileInfo);
         $variationFile = $this->fileStorer->store($variationFileInfo, $this->filesystemAlias, true);
-
         $variationMetadata->setFileInfo($variationFile);
-        $this->metadataSaver->save($variationMetadata);
-
         $variation->setFileInfo($variationFile);
-        $this->variationSaver->save($variation);
 
         $this->deleteFile($sourceFileInfo);
     }
