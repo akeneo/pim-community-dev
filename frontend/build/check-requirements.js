@@ -4,7 +4,7 @@ const BUNDLE_REQUIRE_PATH = './web/js/require-paths.js'
 const ROUTES_PATH = './web/js/routes.js'
 const EXTENSIONS_PATH = './web/js/extensions.json'
 
-console.log(`Checking PIM frontend requirements in ${process.cwd()}`.blue)
+console.log('Checking PIM frontend requirements'.blue)
 
 if (!existsSync(BUNDLE_REQUIRE_PATH)) {
     console.log(`${BUNDLE_REQUIRE_PATH} does not exist - Run "bin/console pim:installer:dump-require-paths" and try again.`.red)

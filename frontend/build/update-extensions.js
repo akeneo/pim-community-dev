@@ -7,7 +7,7 @@ const { readFileSync, writeFileSync } = require('fs')
 const deepmerge = require('deepmerge')
 const _ = require('lodash');
 
-console.log(`Updating form extensions.json in ${rootDir}`.blue)
+console.log('Updating form extensions.json'.blue)
 
 const BUNDLE_REQUIRE_PATH = resolve(rootDir, './web/js/require-paths')
 const EXTENSIONS_JSON_PATH = 'web/js/extensions.json'
