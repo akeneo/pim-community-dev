@@ -81,7 +81,7 @@ class CharsetValidator implements StepExecutionAwareInterface
             (count($errors) < $this->maxErrors)
         ) {
             $lineNo++;
-            if (false === iconv($this->charset, $this->charset, $line)) {
+            if (false === @iconv($this->charset, $this->charset, $line)) {
                 $errors[] = $lineNo;
             }
         }
