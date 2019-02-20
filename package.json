@@ -4,9 +4,9 @@
   "homepage": "http://www.akeneo.com",
   "scripts": {
     "requirements": "node frontend/build/check-requirements.js",
-    "webpack": "webpack --config webpack.config.js --env=prod",
-    "webpack-dev": "webpack --config webpack.config.js",
-    "webpack-watch": "webpack --progress --config webpack.config.js --watch",
+    "webpack": "yarn requirements && webpack --config webpack.config.js --env=prod",
+    "webpack-dev": "yarn requirements && webpack --config webpack.config.js",
+    "webpack-watch": "yarn requirements && webpack --progress --config webpack.config.js --watch",
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
     "before-commit": "yarn prettier && yarn lint && yarn test",
     "test": "yarn unit && yarn webpack-test --env=prod && yarn integration && yarn acceptance tests/features",
