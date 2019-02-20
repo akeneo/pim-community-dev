@@ -3,14 +3,6 @@
 {% block content %}
 
     <div class="AknDefault-mainContent">
-
-        {% set image %}
-            <img
-                class="AknTitleContainer-image"
-                src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('thumbnail_small') : asset('bundles/pimui/images/info-user.png') }}"
-            >
-        {% endset %}
-
         {{ elements.page_header(
             {
                 title: 'pim_dashboard.title'|trans,
@@ -30,12 +22,14 @@
             [
                 'pim/common/breadcrumbs',
                 'pim/fetcher-registry',
-                'pim/form-builder'
+                'pim/form-builder',
+                'pim/form/common/user-main-image'
             ],
             function(
                 Breadcrumbs,
                 FetcherRegistry,
-                FormBuilder
+                FormBuilder,
+                UserMainImage
             ) {
                 $(function() {
                     var breadcrumbs = new Breadcrumbs({
@@ -55,6 +49,10 @@
                             form.render();
                         }.bind(this));
                     });
+
+                    const userMainImage = new UserMainImage({ config: {} });
+                    $('*[data-drop-zone="main-image"]').append(userMainImage.el);
+                    userMainImage.render();
                 });
             }
         );

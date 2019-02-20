@@ -419,24 +419,24 @@ class UserUpdater implements ObjectUpdaterInterface
      */
     private function setAvatar($user, $data)
     {
-        if ($data['filePath'] === null || $data['filePath'] === '') {
-            return;
-        }
+        $fileInfo = null;
 
-        $fileInfo = $this->fileInfoRepository->findOneBy([
-            'key' => str_replace($this->fileStorageFolder, '', $data['filePath']),
-        ]);
+        if ($data['filePath'] !== null && $data['filePath'] !== '') {
+            $fileInfo = $this->fileInfoRepository->findOneBy([
+                'key' => str_replace($this->fileStorageFolder, '', $data['filePath']),
+            ]);
 
-        if (null === $fileInfo) {
-            $rawFile = new \SplFileInfo($data['filePath']);
-            if (!$rawFile->isFile()) {
-                throw InvalidPropertyException::validPathExpected(
-                    'avatar',
-                    static::class,
-                    $data['filePath']
-                );
+            if (null === $fileInfo) {
+                $rawFile = new \SplFileInfo($data['filePath']);
+                if (!$rawFile->isFile()) {
+                    throw InvalidPropertyException::validPathExpected(
+                        'avatar',
+                        static::class,
+                        $data['filePath']
+                    );
+                }
+                $fileInfo = $this->fileStorer->store($rawFile, 'catalogStorage');
             }
-            $fileInfo = $this->fileStorer->store($rawFile, 'catalogStorage');
         }
 
         $user->setAvatar($fileInfo);

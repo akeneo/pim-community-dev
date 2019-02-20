@@ -37,17 +37,21 @@ define([
                             let previousDefaultCategoryTree = user.default_category_tree;
                             let previousUserLocale = user.user_default_locale;
                             let previousCatalogLocale = user.catalog_default_locale;
+                            let previousAvatarFilePath = user.avatar ? user.avatar.filePath : null;
                             form.on('pim_enrich:form:entity:post_save', (data) => {
+                                const dataAvatarFilePath = data.avatar ? data.avatar.filePath : null;
                                 if (data.user_default_locale !== previousUserLocale ||
                                     data.catalog_default_locale !== previousCatalogLocale ||
                                     data.catalog_default_scope !== previousCatalogScope ||
-                                    data.default_category_tree !== previousDefaultCategoryTree
+                                    data.default_category_tree !== previousDefaultCategoryTree ||
+                                    dataAvatarFilePath !== previousAvatarFilePath
                                 ) {
                                     previousUserLocale = data.user_default_locale;
                                     previousCatalogLocale = data.catalog_default_locale;
                                     previousCatalogScope = data.catalog_default_scope;
                                     previousDefaultCategoryTree = data.default_category_tree;
-                                    // Reload the page to reload new language
+                                    previousAvatarFilePath = dataAvatarFilePath;
+                                    // Reload the page to reload new user interface variables
                                     location.reload();
                                 }
                             });
