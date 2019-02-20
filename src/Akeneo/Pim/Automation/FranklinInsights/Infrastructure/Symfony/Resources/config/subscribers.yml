@@ -77,5 +77,6 @@ services:
         arguments:
             - '@pim_catalog.elasticsearch.indexer.product'
             - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.repository.product'
         tags:
             - { name: kernel.event_subscriber }

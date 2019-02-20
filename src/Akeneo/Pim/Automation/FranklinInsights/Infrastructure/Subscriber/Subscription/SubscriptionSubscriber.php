@@ -15,6 +15,8 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Subsc
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductsSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductUnsubscribed;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -30,16 +32,24 @@ class SubscriptionSubscriber implements EventSubscriberInterface
     /** @var BulkIndexerInterface */
     private $bulkProductIndexer;
 
-    public function __construct(IndexerInterface $productIndexer, BulkIndexerInterface $bulkProductIndexer)
-    {
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
+
+    public function __construct(
+        IndexerInterface $productIndexer,
+        BulkIndexerInterface $bulkProductIndexer,
+        ProductRepositoryInterface $productRepository
+    ) {
         $this->productIndexer = $productIndexer;
         $this->bulkProductIndexer = $bulkProductIndexer;
+        $this->productRepository = $productRepository;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            ProductSubscribed::EVENT_NAME => 'reindexProduct',
+            ProductSubscribed::EVENT_NAME => 'reindexSubscribedProduct',
+            ProductUnsubscribed::EVENT_NAME => 'reindexUnsubscribedProduct',
             ProductsSubscribed::EVENT_NAME => 'bulkReindexProducts',
         ];
     }
@@ -49,9 +59,20 @@ class SubscriptionSubscriber implements EventSubscriberInterface
      *
      * @param ProductSubscribed $event
      */
-    public function reindexProduct(ProductSubscribed $event): void
+    public function reindexSubscribedProduct(ProductSubscribed $event): void
     {
         $this->productIndexer->index($event->getSubscribedProduct());
+    }
+
+    /**
+     * On product unsubscribed it re-indexes product to change the franklin insights status in ES.
+     *
+     * @param ProductUnsubscribed $event
+     */
+    public function reindexUnsubscribedProduct(ProductUnsubscribed $event): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($event->getUnsubscribedProductId());
+        $this->productIndexer->index($product);
     }
 
     /**

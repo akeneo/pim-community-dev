@@ -15,8 +15,10 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Su
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductsSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductUnsubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Subscription\SubscriptionSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use PhpSpec\ObjectBehavior;
@@ -24,9 +26,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SubscriptionSubscriberSpec extends ObjectBehavior
 {
-    public function let(IndexerInterface $indexer, BulkIndexerInterface $bulkIndexer): void
-    {
-        $this->beConstructedWith($indexer, $bulkIndexer);
+    public function let(
+        IndexerInterface $indexer,
+        BulkIndexerInterface $bulkIndexer,
+        ProductRepositoryInterface $productRepository
+    ): void {
+        $this->beConstructedWith($indexer, $bulkIndexer, $productRepository);
     }
 
     public function it_is_an_event_subscriber(): void
@@ -43,6 +48,7 @@ class SubscriptionSubscriberSpec extends ObjectBehavior
     {
         $this::getSubscribedEvents()->shouldHaveKey(ProductSubscribed::EVENT_NAME);
         $this::getSubscribedEvents()->shouldHaveKey(ProductsSubscribed::EVENT_NAME);
+        $this::getSubscribedEvents()->shouldHaveKey(ProductUnsubscribed::EVENT_NAME);
     }
 
     public function it_reindexes_product_which_has_been_subscribed(
@@ -53,7 +59,7 @@ class SubscriptionSubscriberSpec extends ObjectBehavior
         $event->getSubscribedProduct()->willReturn($subscribedProduct);
         $indexer->index($subscribedProduct)->shouldBeCalled();
 
-        $this->reindexProduct($event);
+        $this->reindexSubscribedProduct($event);
     }
 
     public function it_reindexes_products_which_have_been_subscribed(
@@ -67,5 +73,18 @@ class SubscriptionSubscriberSpec extends ObjectBehavior
         $bulkIndexer->indexAll([$subscribedProductA, $subscribedProductB, $subscribedProductC])->shouldBeCalled();
 
         $this->bulkReindexProducts($event);
+    }
+
+    public function it_reindexes_product_which_has_been_unsubscribed(
+        $indexer,
+        $productRepository,
+        ProductUnsubscribed $event,
+        ProductInterface $product
+    ): void {
+        $event->getUnsubscribedProductId()->willReturn(42);
+        $productRepository->findOneByIdentifier(42)->willReturn($product);
+        $indexer->index($product)->shouldBeCalled();
+
+        $this->reindexUnsubscribedProduct($event);
     }
 }

@@ -198,6 +198,7 @@ $rules = [
 
             'Akeneo\Channel\Component\Model\ChannelInterface',
             'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber'),
 
