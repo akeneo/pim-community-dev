@@ -10,7 +10,11 @@
 - PIM-8146: Fix centered alignment on drag & drop fields
 - PIM-8156: Fix multiselect field alignment
 - PIM-8017: Fix PDF generation
+- PIM-8153: Fix locale specific field to allow multiple locales 
+- PIM-8146: Fix centered alignment on drag & drop field
+- PIM-8017: Fix PDF generation
 - PIM-8060: Fix avatars migration 2.3 -> 3.0
+- PIM-8149: Fix design of the cross deletion in the Item Picker
 
 # 3.0.3 (2019-02-18)
 
