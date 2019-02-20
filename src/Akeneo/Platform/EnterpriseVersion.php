@@ -19,7 +19,7 @@ namespace Akeneo\Platform;
 class EnterpriseVersion
 {
     /** @staticvar string */
-    const VERSION = '3.0.3';
+    const VERSION = '3.0.4';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Rose';
