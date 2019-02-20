@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
-use PimEnterprise\Component\ProductAsset\Persistence\Query\Sql\FindFamiliesCodesWhereAttributesAreRequiredInterface;
+use PimEnterprise\Component\ProductAsset\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequiredInterface;
 
 /**
  * This tasklet is meant to be launched by a job after some assets or asset references are updated.
@@ -51,17 +51,17 @@ final class ComputeCompletenessOfProductsLinkedToAssetsTasklet implements Taskle
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var FindFamiliesCodesWhereAttributesAreRequiredInterface */
-    private $familiesCodesQuery;
+    /** @var FindFamilyCodesWhereAttributesAreRequiredInterface */
+    private $familyCodesQuery;
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
-     * @param EntityManagerInterface $entityManager
-     * @param BulkIndexerInterface $indexer
-     * @param BulkObjectDetacherInterface $bulkDetacher
-     * @param string $completenessTableName
-     * @param FindFamiliesCodesWhereAttributesAreRequiredInterface $familiesCodesQuery
+     * @param AttributeRepositoryInterface                       $attributeRepository
+     * @param ProductQueryBuilderFactoryInterface                $productQueryBuilderFactory
+     * @param EntityManagerInterface                             $entityManager
+     * @param BulkIndexerInterface                               $indexer
+     * @param BulkObjectDetacherInterface                        $bulkDetacher
+     * @param string                                             $completenessTableName
+     * @param FindFamilyCodesWhereAttributesAreRequiredInterface $familiesCodesQuery
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
@@ -70,7 +70,7 @@ final class ComputeCompletenessOfProductsLinkedToAssetsTasklet implements Taskle
         BulkIndexerInterface $indexer,
         BulkObjectDetacherInterface $bulkDetacher,
         string $completenessTableName,
-        FindFamiliesCodesWhereAttributesAreRequiredInterface $familiesCodesQuery = null
+        FindFamilyCodesWhereAttributesAreRequiredInterface $familiesCodesQuery = null
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
@@ -78,7 +78,7 @@ final class ComputeCompletenessOfProductsLinkedToAssetsTasklet implements Taskle
         $this->indexer = $indexer;
         $this->bulkDetacher = $bulkDetacher;
         $this->completenessTableName = $completenessTableName;
-        $this->familiesCodesQuery = $familiesCodesQuery;
+        $this->familyCodesQuery = $familiesCodesQuery;
     }
 
     /**
@@ -98,38 +98,38 @@ final class ComputeCompletenessOfProductsLinkedToAssetsTasklet implements Taskle
 
         $attributeCodes = $this->attributeRepository->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION);
 
-        // TODO merge master remove condition
-        $familiesCodes = null !== $this->familiesCodesQuery ?
-            $this->familiesCodesQuery->find($attributeCodes):
+        // TODO merge 3.1: remove condition
+        $familyCodes = null !== $this->familyCodesQuery ?
+            $this->familyCodesQuery->find($attributeCodes):
             [];
 
-        // TODO merge master remove second part of condition
-        if (!empty($familiesCodes) || null === $this->familiesCodesQuery) {
+        // TODO merge 3.1: remove second part of condition
+        if (!empty($familyCodes) || null === $this->familyCodesQuery) {
             foreach ($attributeCodes as $attributeCode) {
-                $products = $this->findProductsLinkedToAssetsForAttribute($attributeCode, $assetCodes, $familiesCodes);
+                $products = $this->findProductsLinkedToAssetsForAttribute($attributeCode, $assetCodes, $familyCodes);
                 $this->resetCompletenessFor($products);
             }
         }
     }
 
     /**
-     * @param string $attributeCode
-     * @param array $assetCodes
-     * @param array $familiesCodes
+     * @param string   $attributeCode
+     * @param string[] $assetCodes
+     * @param string[] $familyCodes
      *
      * @return CursorInterface
      */
     private function findProductsLinkedToAssetsForAttribute(
         string $attributeCode,
         array $assetCodes,
-        array $familiesCodes
+        array $familyCodes
     ): CursorInterface {
         $pqb = $this->productQueryBuilderFactory->create();
         $pqb->addFilter($attributeCode, Operators::IN_LIST, $assetCodes);
 
         // TODO merge master remove condition
-        if (!empty($familiesCodes)) {
-            $pqb->addFilter('family', Operators::IN_LIST, $familiesCodes);
+        if (!empty($familyCodes)) {
+            $pqb->addFilter('family', Operators::IN_LIST, $familyCodes);
         }
 
         return $pqb->execute();

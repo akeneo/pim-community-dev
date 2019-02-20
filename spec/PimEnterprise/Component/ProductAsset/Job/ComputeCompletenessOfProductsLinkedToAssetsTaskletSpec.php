@@ -19,7 +19,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Component\ProductAsset\Job\ComputeCompletenessOfProductsLinkedToAssetsTasklet;
-use PimEnterprise\Component\ProductAsset\Persistence\Query\Sql\FindFamiliesCodesWhereAttributesAreRequiredInterface;
+use PimEnterprise\Component\ProductAsset\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequiredInterface;
 use Prophecy\Argument;
 
 class ComputeCompletenessOfProductsLinkedToAssetsTaskletSpec extends ObjectBehavior
@@ -31,7 +31,7 @@ class ComputeCompletenessOfProductsLinkedToAssetsTaskletSpec extends ObjectBehav
         BulkIndexerInterface $indexer,
         BulkObjectDetacherInterface $bulkDetacher,
         StepExecution $stepExecution,
-        FindFamiliesCodesWhereAttributesAreRequiredInterface $familiesCodesQuery
+        FindFamilyCodesWhereAttributesAreRequiredInterface $familiesCodesQuery
     ): void {
         $this->beConstructedWith(
             $attributeRepository,

@@ -22,11 +22,11 @@ use Pim\Component\Catalog\AttributeTypes;
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class FindFamiliesCodesWhereAttributesAreRequiredIntegration extends TestCase
+class FindFamilyCodesWhereAttributesAreRequiredIntegration extends TestCase
 {
-    public function testFindFamiliesCodesWhereAttributesAreRequired()
+    public function testFindFamilyCodesWhereAttributesAreRequired()
     {
-        $query = $this->get('pimee_product_asset.query.families_codes_where_attributes_are_required');
+        $query = $this->get('pimee_product_asset.query.family_codes_where_attributes_are_required');
         Assert::assertEquals(['family_A', 'family_B'], $query->find(['attribute_A', 'attribute_B']));
         Assert::assertEquals(['family_A'], $query->find(['attribute_B']));
         Assert::assertEquals([], $query->find(['attribute_C', 'attribute_D']));

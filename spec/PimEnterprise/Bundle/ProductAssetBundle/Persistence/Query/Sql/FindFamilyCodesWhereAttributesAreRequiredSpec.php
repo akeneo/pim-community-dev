@@ -5,10 +5,10 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql\FindFamiliesCodesWhereAttributesAreRequired;
+use PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequired;
 use Prophecy\Argument;
 
-class FindFamiliesCodesWhereAttributesAreRequiredSpec extends ObjectBehavior
+class FindFamilyCodesWhereAttributesAreRequiredSpec extends ObjectBehavior
 {
     function let(Connection $connection)
     {
@@ -17,7 +17,7 @@ class FindFamiliesCodesWhereAttributesAreRequiredSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(FindFamiliesCodesWhereAttributesAreRequired::class);
+        $this->shouldHaveType(FindFamilyCodesWhereAttributesAreRequired::class);
     }
 
     function it_finds_families_codes_where_given_attributes_are_required($connection, Statement $statement)

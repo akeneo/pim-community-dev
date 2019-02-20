@@ -18,7 +18,7 @@ namespace PimEnterprise\Component\ProductAsset\Persistence\Query\Sql;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-interface FindFamiliesCodesWhereAttributesAreRequiredInterface
+interface FindFamilyCodesWhereAttributesAreRequiredInterface
 {
     /**
      * @param string[] $attributeCodes

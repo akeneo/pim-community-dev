@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql;
 
 use Doctrine\DBAL\Connection;
-use PimEnterprise\Component\ProductAsset\Persistence\Query\Sql\FindFamiliesCodesWhereAttributesAreRequiredInterface;
+use PimEnterprise\Component\ProductAsset\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequiredInterface;
 
 /**
  * It finds families codes where given attributes codes are required.
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class FindFamiliesCodesWhereAttributesAreRequired implements FindFamiliesCodesWhereAttributesAreRequiredInterface
+class FindFamilyCodesWhereAttributesAreRequired implements FindFamilyCodesWhereAttributesAreRequiredInterface
 {
     /** @var Connection */
     private $connection;

@@ -23,7 +23,7 @@ services:
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
-    pimee_product_asset.query.families_codes_where_attributes_are_required:
-        class: 'PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql\FindFamiliesCodesWhereAttributesAreRequired'
+    pimee_product_asset.query.family_codes_where_attributes_are_required:
+        class: 'PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequired'
         arguments:
             - '@database_connection'
