@@ -200,9 +200,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 foreach ($data as $code) {
                     $groups[] = $this->findGroup($code);
                 }
-                if (count($groups) > 0) {
-                    $user->setGroups($groups);
-                }
+                $user->setGroups($groups);
                 break;
             case 'phone':
                 $user->setPhone($data);
