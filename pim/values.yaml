@@ -127,6 +127,7 @@ pim:
       enabled: true
       pimCommand: "akeneo:rule:run"
       schedule: "0 5 * * *"
+      mountPimData: true
     versionning-refresh:
       enabled: true
       pimCommand: "pim:versioning:refresh"

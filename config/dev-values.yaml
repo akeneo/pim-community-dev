@@ -14,6 +14,7 @@ pim:
   defaultCatalog: icecat
   persistence:
     diskSize: 10Gi
+  numDaemon: 1
   users:
     admin:
       firstName: cloud

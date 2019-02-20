@@ -16,6 +16,7 @@ nfs:
 pim:
   persistence:
     diskSize: 80Gi
+  numDaemon: 1
 
 mysql:
   mysql:
