@@ -296,11 +296,11 @@ category:
     edit:     edit category
     suggest selection: Please select a category on the left
     or: or
-    create new: Create a new category
+    create new: Create a new category tree
 
 tree:
     title:    tree
-    create:   create tree
+    create:   create category tree
     edit:     edit tree
 channel:
     title:    channel
@@ -343,7 +343,7 @@ btn:
         attribute:        create attribute
         attribute group:  create attribute group
         category:         create category
-        tree:             create tree
+        tree:             create category tree
         channel:          create channel
         currency:         create currency
         family:           create family
