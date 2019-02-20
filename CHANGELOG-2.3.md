@@ -2,11 +2,19 @@
 
 ## Bug fixes
 
-- GITHUB-9408: Fix jobs in minimal fixture - cheerz @userz58 !
+- PIM-7939: Fix PQB search when an attribute as label is on an ancestor.
+  -> Not mandatory, you can re-index your products and product models to enjoy this fix with commands: `bin/console pim:product:index --all` and `bin/console pim:product-model:index --all`.
+
+# 2.3.29 (2019-02-11)
+
+## Bug fixes
+
 - PIM-7943: Fix duplicate popin mask in family variant edit form.
+- PIM-8010: Add missing job in minimal fixture
 - PIM-8007: Content of sortable attribute options is now copyable.
 - PIM-8008: Fix attributes sort order in PEF.
 - PIM-8022: Fix the job status when using the batch command.
+- PIM-8050: Fix ElasticSearch mappings loader
 
 # 2.3.28 (2019-02-01)
 
@@ -32,7 +40,7 @@
 ## Bug fixes
 
 - PIM-7934: Fix translations of product model import
-- GITHUB-8780: Fix error in product normalizer. Cheers @yunosh!
+- PIM-7961: Fix localizable assets used as main image for family and added to product product model
 
 # 2.3.23 (2019-01-03)
  
@@ -49,7 +57,7 @@
 - PIM-7898: Fix tab navigation when the column is collapsed
 - PIM-7866: Do not show delete icon on import/export profile if the user doesn't have the right to delete.
 - PIM-7910: Search parent filter is now case insensitive
-- GITHUB-8482: Fix missing breadcrumbs - cheers @userz58!
+- PIM-7936: Missing breadcrumb when you create Attribute group or Channel
 
  ## Elasticsearch
  
