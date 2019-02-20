@@ -6,8 +6,7 @@ const {
     readFileSync,
     writeFileSync,
     readdirSync,
-    statSync,
-    existsSync
+    statSync
 } = require('fs');
 
 
@@ -71,15 +70,7 @@ const utils = {
      * @return {Object}               An object requirejs containing module config and aliases
      */
     getModulePaths(baseDir, sourceDir) {
-        const sourcePath = path.join(baseDir, 'web/js/require-paths.js');
-
-        if (!existsSync(sourcePath)) {
-            throw new Error(`The web/js/require-paths.js module does not exist - You need to run
-                "bin/console pim:install" or "bin/console pim:installer:dump-require-paths" before
-                running webpack \n`);
-        }
-
-        const pathSourceFile = require(sourcePath);
+        const pathSourceFile = require(path.join(baseDir, 'web/js/require-paths.js'));
         const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir);
         const aliases = Object.assign(paths, getFrontModules(process.cwd(), './web/bundles')(), {
             'require-polyfill': path.resolve(sourceDir, './frontend/webpack/require-polyfill.js'),

@@ -3,6 +3,7 @@
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
   "scripts": {
+    "requirements": "node frontend/build/check-requirements.js",
     "webpack": "webpack --config webpack.config.js --env=prod",
     "webpack-dev": "webpack --config webpack.config.js",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
