@@ -45,7 +45,7 @@ const utils = {
 
         requireYamls.forEach((yaml) => {
             try {
-                const contents = readFileSync(yaml, 'utf8');
+                const contents = readFileSync(`${yaml}/Resources/config/requirejs.yml`, 'utf8');
                 const parsed = parse(contents);
                 const requirePaths = parsed.config.paths || {};
                 const requireMaps = _.get(parsed.config, 'map.*') || {};

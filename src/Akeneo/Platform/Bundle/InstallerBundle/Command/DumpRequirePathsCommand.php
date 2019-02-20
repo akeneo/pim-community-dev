@@ -55,7 +55,7 @@ class DumpRequirePathsCommand extends ContainerAwareCommand
 
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
-            $fileName = dirname($reflection->getFilename()) . '/Resources/config/requirejs.yml';
+            $fileName = dirname($reflection->getFilename());
             $paths[] = $fileName;
         }
 

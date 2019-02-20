@@ -12,7 +12,7 @@ const RewriteImageURLs = require('./less-rewrite-urls')
 const BUNDLE_REQUIRE_PATH = resolve(rootDir, './web/js/require-paths')
 
 // The file path for each bundle that imports all the .less files
-const BUNDLE_LESS_INDEX_PATH = 'public/less/index.less'
+const BUNDLE_LESS_INDEX_PATH = 'Resources/public/less/index.less'
 
 // The final output path for all the CSS of the PIM
 const OUTPUT_CSS_PATH = 'web/css/pim.css'
@@ -45,9 +45,8 @@ function getFileContents(filePath) {
 function collectBundleImports(bundlePaths) {
     // Make each path relative
     const indexFiles = bundlePaths.map(bundlePath => {
-        return dirname(bundlePath)
-            .replace('config', BUNDLE_LESS_INDEX_PATH)
-            .replace(/(^.+)[^vendor](?=\/src|\/vendor)\//gm, '')
+        return `${bundlePath}/${BUNDLE_LESS_INDEX_PATH}`
+                .replace(/(^.+)[^vendor](?=\/src|\/vendor)\//gm, '')
     })
 
     const bundleImports = []

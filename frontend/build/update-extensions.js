@@ -37,13 +37,10 @@ function getFileContents(path) {
 
 function getExtensionsFromRequiredBundles() {
     const requiredBundles = require(BUNDLE_REQUIRE_PATH);
-    const bundleDirectories = requiredBundles.map(
-        bundle => dirname(getRelativeBundlePath(bundle))
-    )
     const formExtensions = []
 
-    bundleDirectories.forEach(dir => {
-        formExtensions.push(glob.sync(`${dir}/{form_extensions/**/*.yml,form_extensions.yml}`))
+    requiredBundles.forEach(dir => {
+        formExtensions.push(glob.sync(`${dir}/Resources/config/{form_extensions/**/*.yml,form_extensions.yml}`))
     })
 
     return [].concat.apply([], formExtensions);
