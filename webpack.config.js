@@ -10,6 +10,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
+const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
@@ -193,6 +194,10 @@ const webpackConfig = {
     new WebpackShellPlugin({
       onBuildStart: ['yarn update-extensions'],
       dev: false
+    }),
+
+    new ExtraWatchWebpackPlugin({
+      files: ['src/**/*{form_extensions/**/*.yml,form_extensions.yml}'],
     }),
 
     // Map modules to variables for global use
