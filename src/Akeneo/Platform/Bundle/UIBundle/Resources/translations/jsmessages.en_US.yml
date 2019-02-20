@@ -192,6 +192,7 @@ pim_common:
     permissions: Permissions
     previous: Previous
     properties: Properties
+    remove: Remove
     required_label: (required)
     save: Save
     select2:
