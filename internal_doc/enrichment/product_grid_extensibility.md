@@ -11,7 +11,7 @@ The property to display in the product datagrid must be indexed into the product
 
 # Configuring the datagrid with the new property
  
-In your bundle, add the following content in a new file `Resources/config/product.yml`:
+In your bundle, add the following content in a new file `Resources/config/datagrid/custom_product.yml`:
 
 ```
 datagrid:
@@ -23,6 +23,8 @@ datagrid:
                 type:          field
 ```
 
+Do not name your file with the same name as the datagrid you try to extend. Otherwise, it will not work. In this example you should NOT name it `Resources/config/datagrid/product.yml`.
+
 # Add the property into the read model 
 
 The product grid returns data both from products and product models.
@@ -30,7 +32,7 @@ Depending of the entity, the queries are probably not the same. Therefore, you h
 - one for the product rows
 - one for the product model rows
 
-The name of the property must be the same as the name in the `data_name` configuration key in the file `Resources/config/product.yml`.
+The name of the property must be the same as the name in the `data_name` configuration key in the file `Resources/config/datagrid/custom_product.yml`.
 
 You have to add the new property in both the product and product models rows.
 If one of these entities does not have such property, a `null` value should be added for the property, as it is declared in the datagrid configuration.
@@ -63,7 +65,7 @@ class FetchSubscriptionDateForProductRows implements AddAdditionalProductPropert
         $rowsWithAdditionalProperty = [];
         
         $currentDate = new \DateTime();
-        $formattedCurrentDate= $now->format('c')
+        $formattedCurrentDate= $currentDate->format('c');
         foreach ($rows as $row) {
             $property = new AdditionalProperty('subscribed_date_to_data_provider', $formattedCurrentDate);
             $rowsWithAdditionalProperty[] = $row->addAdditionalProperty($property);
