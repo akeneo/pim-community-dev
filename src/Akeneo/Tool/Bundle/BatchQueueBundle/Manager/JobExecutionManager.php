@@ -9,7 +9,6 @@ use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
-use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -54,9 +53,6 @@ class JobExecutionManager
         $healthCheck = $jobExecution->getHealthCheckTime();
 
         if (null === $healthCheck) {
-            $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
-            $jobExecution->setExitStatus(new ExitStatus(ExitStatus::FAILED));
-
             return $jobExecution;
         }
 

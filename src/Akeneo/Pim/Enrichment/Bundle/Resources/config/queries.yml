@@ -71,24 +71,24 @@ services:
     akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FetchProductAndProductModelRows'
         arguments:
-        - '@akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers'
-        - '@akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes'
-        - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_properties'
-        - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_model_properties'
+            - '@akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers'
+            - '@akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes'
+            - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_properties'
+            - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_model_properties'
 
     akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductModelRowsFromCodes'
         arguments:
-        - '@database_connection'
-        - '@pim_catalog.factory.value_collection'
-        - '@akeneo.pim.enrichment.product.grid.query.product_model_images_from_codes'
+            - '@database_connection'
+            - '@pim_catalog.factory.value_collection'
+            - '@akeneo.pim.enrichment.product.grid.query.product_model_images_from_codes'
 
     akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromIdentifiers'
         arguments:
-        - '@database_connection'
-        - '@pim_catalog.factory.value_collection'
-        -
+            - '@database_connection'
+            - '@pim_catalog.factory.value_collection'
+            -
     akeneo.pim.enrichment.product.grid.query.add_additional_product_properties:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductPropertiesRegistry'
         arguments:
@@ -113,5 +113,10 @@ services:
 
     akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Writer\File\Flat\GenerateHeadersFromAttributeCodes'
+        arguments:
+            - '@database_connection'
+
+    pim_catalog.query.get_descendent_category_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetDescendentCategoryCodes'
         arguments:
             - '@database_connection'

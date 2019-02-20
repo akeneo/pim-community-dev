@@ -224,7 +224,9 @@ define(
                             const objectValuesDom = this.$('.object-values').empty();
                             if (_.isEmpty(fields)) {
                                 objectValuesDom.append(this.noDataTemplate({
-                                    hint: 'pim_datagrid.no_results',
+                                    hint: __('pim_datagrid.no_results', {
+                                        entityHint: __('pim_enrich.entity.attribute.label')
+                                    }),
                                     subHint: 'pim_datagrid.no_results_subtitle',
                                     imageClass: '',
                                     __
@@ -506,6 +508,18 @@ define(
                 return FetcherRegistry.getFetcher('attribute')
                     .fetchByIdentifiers(Object.keys(values))
                     .then((attributes) => {
+                        attributes.sort((a, b) => {
+                            if (a.sortOrder < b.sortOrder) {
+                                return -1;
+                            }
+
+                            if (a.sortOrder > b.sortOder) {
+                                return 1;
+                            }
+
+                            return (a.meta.id < b.meta.id ? -1 : 1);
+                        });
+
                         return $.when.apply($, attributes.map((attribute) => {
                             return this.createAttributeField(data, attribute.code, values[attribute.code]);
                         }));

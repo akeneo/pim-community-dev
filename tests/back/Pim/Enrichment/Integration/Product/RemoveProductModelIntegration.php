@@ -36,14 +36,12 @@ class RemoveProductModelIntegration extends TestCase
         $this->assertNull($productModelRepository->findOneByIdentifier('sub_product_model'));
         $this->assertNull($productRepository->findOneByIdentifier('variant_product_1'));
     }
-
     /**
      * Inserts and returns a product model hierarchy of 1 root, 1 sub-model and 1 variant
      */
     private function arrange(): array
     {
         $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
-
         $entityBuilder->createFamilyVariant(
             [
                 'code' => 'two_level_family_variant',

@@ -47,7 +47,7 @@
                       {% else %}
                           {{ elements.deleteLink(
                               path(route ~ '_categorytree_remove', { id: form.vars.value.id }),
-                              'pim_enrich_product_category_remove',
+                              acl ~ '_category_remove',
                               form.vars.value.parent ? path(route ~ '_categorytree_edit', { id: form.vars.value.parent.id }) : path(route ~ '_categorytree_create'),
                               'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
                                   ~ 'info.category.remove children'|trans ~ '<br />'

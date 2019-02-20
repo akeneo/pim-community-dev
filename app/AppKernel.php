@@ -49,6 +49,10 @@ class AppKernel extends Kernel
             $bundles
         );
 
+        if ('test_fake' === $this->getEnvironment()) {
+            $bundles[] = new FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle();
+        }
+
         return $bundles;
     }
 

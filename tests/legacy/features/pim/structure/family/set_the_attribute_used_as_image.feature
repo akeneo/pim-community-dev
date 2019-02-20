@@ -29,7 +29,7 @@ Feature: Set the attribute used as the main picture
     And I save the family
     And I should not see the text "There are unsaved changes."
     When I am on the "Bags" family page
-    Then I should see "Image"
+    Then I should see the text "Image"
 
   Scenario: Successfully disallow removal of attribute_as_image from attributes
     Given I am on the "Bags" family page

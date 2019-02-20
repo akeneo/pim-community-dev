@@ -6,9 +6,10 @@ define([
         'pim/dialog',
         'oro/datagrid/model-action',
         'oro/mediator',
-        'pim/user-context'
+        'pim/user-context',
+        'oro/datagrid/delete-confirm'
     ],
-    function(_, messenger, __, Dialog, ModelAction, mediator, userContext) {
+    function(_, messenger, __, Dialog, ModelAction, mediator, userContext, DeleteConfirm) {
         'use strict';
 
         /**
@@ -80,11 +81,8 @@ define([
              * Get view for confirm modal
              */
             getConfirmDialog: function() {
-                const entityCode = this.getEntityCode();
-
-                this.confirmModal = Dialog.confirmDelete(
-                    __(`pim_enrich.entity.${entityCode}.module.delete.confirm`),
-                    __('pim_common.confirm_deletion'),
+                this.confirmModal = DeleteConfirm.getConfirmDialog(
+                    this.getEntityCode(),
                     this.doDelete.bind(this),
                     this.getEntityHint(true)
                 );
