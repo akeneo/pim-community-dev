@@ -72,7 +72,7 @@ up: .env docker-compose.override.yml app/config/parameters.yml app/config/parame
 .PHONY: init-pim
 init-pim: clean docker-compose.override.yml app/config/parameters.yml app/config/parameters_test.yml vendor node_modules
 	$(PHP_EXEC) bin/console --env=prod pim:install --force --symlink --clean
-	$(PHP_EXEC) bin/console --env=behat pim:installer:db
+	$(PHP_EXEC) bin/console --env=test_database pim:installer:db
 	$(YARN_EXEC) run webpack-dev
 	$(YARN_EXEC) run webpack-test
 
@@ -81,6 +81,17 @@ init-pim: clean docker-compose.override.yml app/config/parameters.yml app/config
 down:
 	$(DOCKER_COMPOSE) down -v
 
+## Enable xdebug
+.PHONY: enable-xdebug
+enable-xdebug: docker-compose.override.yml
+	sed -i "s/PHP_XDEBUG_ENABLED: 0/PHP_XDEBUG_ENABLED: 1/g" docker-compose.override.yml
+	make up
+
+## Disable xdebug
+.PHONY: disable-xdebug
+disable-xdebug: docker-compose.override.yml
+	sed -i "s/PHP_XDEBUG_ENABLED: 1/PHP_XDEBUG_ENABLED: 0/g" docker-compose.override.yml
+	make up
 
 ##
 ## Run tests suite
@@ -90,6 +101,6 @@ down:
 coupling: structure-coupling user-management-coupling channel-coupling enrichment-coupling
 
 ### Acceptance tests
-.PHONY: coupling ## Run all acceptance tests
+.PHONY: acceptance ## Run all acceptance tests
 acceptance:
 	vendor/bin/behat --strict -p acceptance -vv
