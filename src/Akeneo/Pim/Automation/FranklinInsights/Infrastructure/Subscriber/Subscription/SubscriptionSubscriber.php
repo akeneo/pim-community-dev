@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Subscription;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductsSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
+use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -25,15 +27,20 @@ class SubscriptionSubscriber implements EventSubscriberInterface
     /** @var IndexerInterface */
     private $productIndexer;
 
-    public function __construct(IndexerInterface $productIndexer)
+    /** @var BulkIndexerInterface */
+    private $bulkProductIndexer;
+
+    public function __construct(IndexerInterface $productIndexer, BulkIndexerInterface $bulkProductIndexer)
     {
         $this->productIndexer = $productIndexer;
+        $this->bulkProductIndexer = $bulkProductIndexer;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            ProductSubscribed::EVENT_NAME => 'reindexProduct'
+            ProductSubscribed::EVENT_NAME => 'reindexProduct',
+            ProductsSubscribed::EVENT_NAME => 'bulkReindexProducts',
         ];
     }
 
@@ -45,5 +52,15 @@ class SubscriptionSubscriber implements EventSubscriberInterface
     public function reindexProduct(ProductSubscribed $event): void
     {
         $this->productIndexer->index($event->getSubscribedProduct());
+    }
+
+    /**
+     * On products subscribed it re-indexes products to change the franklin insights status in ES.
+     *
+     * @param ProductsSubscribed $event
+     */
+    public function bulkReindexProducts(ProductsSubscribed $event): void
+    {
+        $this->bulkProductIndexer->indexAll($event->getSubscribedProducts());
     }
 }

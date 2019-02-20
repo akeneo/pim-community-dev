@@ -188,6 +188,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent',
             'Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface',
+            'Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface',
 
             'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',

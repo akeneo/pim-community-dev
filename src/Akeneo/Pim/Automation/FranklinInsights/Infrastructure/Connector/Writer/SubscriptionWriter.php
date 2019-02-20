@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductsSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
@@ -26,6 +27,7 @@ use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -47,19 +49,25 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
     /** @var IdentifiersMapping */
     private $identifiersMapping;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     /**
      * @param SubscriptionProviderInterface $subscriptionProvider
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         SubscriptionProviderInterface $subscriptionProvider,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->subscriptionProvider = $subscriptionProvider;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -86,6 +94,7 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
         $collection = $this->subscriptionProvider->bulkSubscribe($items);
         $warnings = $collection->warnings();
 
+        $subscribedProducts = [];
         foreach ($items as $item) {
             $productId = $item->getProduct()->getId();
             $response = $collection->get($productId);
@@ -106,7 +115,10 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
             $subscription = $this->buildSubscription($item, $response);
             $this->productSubscriptionRepository->save($subscription);
             $this->stepExecution->incrementSummaryInfo('subscribed');
+            $subscribedProducts[] = $item->getProduct();
         }
+
+        $this->eventDispatcher->dispatch(ProductsSubscribed::EVENT_NAME, new ProductsSubscribed($subscribedProducts));
     }
 
     /**
