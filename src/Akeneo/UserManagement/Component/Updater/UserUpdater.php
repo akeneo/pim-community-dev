@@ -436,7 +436,6 @@ class UserUpdater implements ObjectUpdaterInterface
                     );
                 }
                 $fileInfo = $this->fileStorer->store($rawFile, 'catalogStorage');
-
             }
         }
 
