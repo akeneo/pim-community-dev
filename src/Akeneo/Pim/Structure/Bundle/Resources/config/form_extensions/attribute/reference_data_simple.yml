@@ -30,6 +30,7 @@ extensions:
         config:
             fieldName: available_locales
             label: pim_enrich.entity.attribute.property.available_locales
+            isMultiple: true
 
     pim-attribute-form-ref-data-simple-type-specific-params:
         module: pim/common/simple-view
