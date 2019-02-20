@@ -36,16 +36,16 @@ const utils = {
      * Grab the RequireJS.yaml from each bundle required by the application
      * and extract the module paths, config, and maps
      *
-     * @param  {Array} requireYamls An array containing the filenames of each RequireJS.yaml
+     * @param  {Array} bundlePaths An array containing the paths of each required bundle
      * @return {Object}             Returns an object containing the extracted config, and all the absolute module paths
      */
-    getRequireConfig(requireYamls, baseDir) {
+    getRequireConfig(bundlePaths, baseDir) {
         let paths = {};
         let config = {};
 
-        requireYamls.forEach((yaml) => {
+        bundlePaths.forEach((bundle) => {
             try {
-                const contents = readFileSync(`${yaml}/Resources/config/requirejs.yml`, 'utf8');
+                const contents = readFileSync(`${bundle}/Resources/config/requirejs.yml`, 'utf8');
                 const parsed = parse(contents);
                 const requirePaths = parsed.config.paths || {};
                 const requireMaps = _.get(parsed.config, 'map.*') || {};

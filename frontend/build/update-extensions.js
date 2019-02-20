@@ -18,7 +18,8 @@ const EXTENSION_DEFAULTS = {
     targetZone: 'self',
     zones: [],
     aclResourceId: null,
-    config: []
+    config: [],
+    position: 100
 }
 
 function getRelativeBundlePath(path) {
@@ -37,9 +38,13 @@ function getFileContents(path) {
 
 function getExtensionsFromRequiredBundles() {
     const requiredBundles = require(BUNDLE_REQUIRE_PATH);
+    const bundleDirectories = requiredBundles.map(
+        bundle => getRelativeBundlePath(bundle)
+    )
+
     const formExtensions = []
 
-    requiredBundles.forEach(dir => {
+    bundleDirectories.forEach(dir => {
         formExtensions.push(glob.sync(`${dir}/Resources/config/{form_extensions/**/*.yml,form_extensions.yml}`))
     })
 
@@ -65,7 +70,7 @@ function mergeExtensions(paths) {
 
     return {
         attribute_fields: merged.attribute_fields,
-        extensions: configuredExtensions
+        extensions: _.sortBy(configuredExtensions, 'position')
     }
 }
 
