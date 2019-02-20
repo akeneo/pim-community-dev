@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
-use Pim\Component\Catalog\Exception\InvalidOperatorException;
-use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 
 /**
  * An ancestor is a product model that is either a parent or a grand parent.
