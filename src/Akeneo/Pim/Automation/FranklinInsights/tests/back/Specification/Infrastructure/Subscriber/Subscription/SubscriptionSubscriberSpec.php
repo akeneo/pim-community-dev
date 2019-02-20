@@ -55,7 +55,7 @@ class SubscriptionSubscriberSpec extends ObjectBehavior
         $indexer,
         ProductSubscribed $event,
         ProductInterface $subscribedProduct
-    ):void {
+    ): void {
         $event->getSubscribedProduct()->willReturn($subscribedProduct);
         $indexer->index($subscribedProduct)->shouldBeCalled();
 

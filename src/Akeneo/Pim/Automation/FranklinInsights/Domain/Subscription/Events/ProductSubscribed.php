@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ProductSubscribed extends Event
 {
-    const EVENT_NAME = 'franklin_insights.product_subscribed';
+    public const EVENT_NAME = 'franklin_insights.product_subscribed';
 
     /** @var ProductInterface */
     private $subscribedProduct;

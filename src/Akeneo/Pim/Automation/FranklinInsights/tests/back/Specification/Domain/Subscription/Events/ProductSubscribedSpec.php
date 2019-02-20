@@ -25,17 +25,17 @@ class ProductSubscribedSpec extends ObjectBehavior
         $this->beConstructedWith($subscribedProduct);
     }
 
-    public function it_is_an_event()
+    public function it_is_an_event(): void
     {
         $this->shouldHaveType(Event::class);
     }
 
-    public function it_is_a_product_subscribed_event()
+    public function it_is_a_product_subscribed_event(): void
     {
         $this->shouldBeAnInstanceOf(ProductSubscribed::class);
     }
 
-    public function it_returns_the_subscribed_product($subscribedProduct)
+    public function it_returns_the_subscribed_product($subscribedProduct): void
     {
         $this->getSubscribedProduct()->shouldReturn($subscribedProduct);
     }

@@ -144,7 +144,6 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $subscriptionRepository->save($productSubscription)->shouldBeCalled();
 
         $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($event) use ($product) {
-
             return $event instanceof ProductSubscribed &&
                 $product->getWrappedObject() === $event->getSubscribedProduct();
         }))->shouldBeCalled();

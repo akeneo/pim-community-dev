@@ -158,11 +158,9 @@ class SubscriptionWriterSpec extends ObjectBehavior
         $eventDispatcher->dispatch(
             ProductsSubscribed::EVENT_NAME,
             Argument::that(function ($event) use ($product2) {
-
                 return $event instanceof ProductsSubscribed &&
                     1 === count($event->getSubscribedProducts()) &&
                     $product2->getWrappedObject() === $event->getSubscribedProducts()[0];
-
             })
         )->shouldBeCalled();
 
