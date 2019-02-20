@@ -2,6 +2,7 @@ imports:
     - { resource: config_dev.yml }
     - { resource: parameters_test.yml }
     - { resource: security_test.yml }
+    - { resource: ../../tests/back/Integration/IntegrationTestsBundle/Resources/config/services.yml }
 
 framework:
     test: ~

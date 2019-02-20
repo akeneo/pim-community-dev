@@ -116,7 +116,7 @@ class ClassifyProductModelIntegration extends TestCase
     {
         parent::setUp();
 
-        $builder = new EntityBuilder($this->testKernel->getContainer());
+        $builder = new EntityBuilder(static::$kernel->getContainer());
 
         $productModel = $builder->createProductModel('model-tee', 'clothing_color_size', null, []);
         $this->getFromTestContainer('pim_catalog.updater.product_model')->update($productModel, ['categories' => ['supplier_zaro']]);
