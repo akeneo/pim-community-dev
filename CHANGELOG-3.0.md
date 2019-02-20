@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.4 (2019-02-20)
+
 ## Bug fixes
 
 - PIM-8129: Fix default system locale
