@@ -3,4 +3,4 @@ services:
         class: 'Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactory'
         arguments:
             - 'Akeneo\Tool\Component\StorageUtils\Cursor\Paginator'
-            - '1000'
+            - '%pim_job_product_batch_size%'

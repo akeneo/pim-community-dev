@@ -12,6 +12,7 @@
 - PIM-8153: Fix locale specific field to allow multiple locales 
 - PIM-8017: Fix PDF generation
 - PIM-8060: Fix avatars migration 2.3 -> 3.0
+- PIM-8135: Fix cursor paginator sequence
 - PIM-8053: Fix avatar deletion and avatar update on dashboard page and user navigation
 - PIM-8149: Fix design of the cross deletion in the Item Picker
 
