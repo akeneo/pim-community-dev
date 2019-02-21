@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-8134: Fix flickering on assets
 - PIM-8131: Labels cannot be used for search in bulk actions
 - PIM-7939: Fix PQB search when an attribute as label is on an ancestor.
   -> Not mandatory, you can re-index your products and product models to enjoy this fix with commands: `bin/console pim:product:index --all` and `bin/console pim:product-model:index --all`.
