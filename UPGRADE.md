@@ -597,6 +597,7 @@ Before updating the dependencies and migrating your data, please deactivate all 
 12. Then re-generate the PIM assets:
 
     ```bash
+    service php7.2-fpm restart
     bin/console pim:installer:assets --clean --env=prod
     yarn run webpack
     ```
