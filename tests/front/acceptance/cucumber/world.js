@@ -44,7 +44,7 @@ module.exports = function(cucumber) {
         });
       }
 
-      if (request.url().includes('/form/extensions')) {
+      if (request.url().includes('/js/extensions.json')) {
         request.respond({
           contentType: 'application/json',
           body: `${JSON.stringify(extensions)}`,
@@ -56,6 +56,13 @@ module.exports = function(cucumber) {
           contentType: 'application/json',
           body: `${JSON.stringify(translations)}`,
         });
+      }
+
+      if (request.url().includes('/security')) {
+        request.respond({
+          contentType: 'application/json',
+          body: `${JSON.stringify({})}`
+        })
       }
     });
 

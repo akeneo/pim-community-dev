@@ -5,6 +5,11 @@ define(
     function ($, _, SecurityContext) {
         var promise = null;
 
+        /**
+         * Filters form extensions by ACL
+         *
+         * @param {Object} extensions
+         */
         const filterByGranted = (extensions) => {
             const filtered = _.filter(extensions, extension => {
                 return null === extension.aclResourceId || SecurityContext.isGranted(extension.aclResourceId)
