@@ -51,6 +51,8 @@ define([
                                     previousCatalogScope = data.catalog_default_scope;
                                     previousDefaultCategoryTree = data.default_category_tree;
                                     previousAvatarFilePath = dataAvatarFilePath;
+                                    // Prevent warning message (Firefox only)
+                                    form.getExtension('state').collectAndRender();
                                     // Reload the page to reload new user interface variables
                                     location.reload();
                                 }
