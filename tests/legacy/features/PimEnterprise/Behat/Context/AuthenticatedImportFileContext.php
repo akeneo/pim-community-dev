@@ -60,15 +60,6 @@ final class AuthenticatedImportFileContext extends PimContext implements Snippet
         $launcher = $this->mainContext->getContainer()->get('pim_connector.launcher.authenticated_job_launcher');
         $launcher->launch($this->jobInstance, $user);
 
-        $application = new Application($this->getKernel());
-        $application->setAutoExit(false);
-
-        $arrayInput = ['command' => JobQueueConsumerCommand::COMMAND_NAME, '--run-once' => true];
-
-        $input = new ArrayInput($arrayInput);
-        $output = new BufferedOutput();
-        $application->run($input, $output);
-
         $this->jobExecution = $this->waitForJobToFinish($this->jobInstance);
     }
 
