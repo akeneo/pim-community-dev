@@ -277,7 +277,6 @@ extensions:
         module: pim/job/product/edit/content/data/add-select/attribute
         parent: pim-job-instance-xlsx-product-export-edit-content-data
         targetZone: headings
-        aclResourceId: pim_enrich_product_add_attribute
         position: 90
 
     pim-job-instance-xlsx-product-export-edit-validation:
