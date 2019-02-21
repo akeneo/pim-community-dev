@@ -42,7 +42,7 @@ class FixturesLoader
     private $referenceRepository;
 
     /** @var ContainerInterface */
-    private $container;
+    protected $container;
 
     const CACHE_DIR = '/pim-legacy-tests-data-cache/';
 
@@ -126,7 +126,7 @@ class FixturesLoader
     /**
      * @param string $filepath
      */
-    private function restoreDatabase($filepath): void
+    protected function restoreDatabase($filepath): void
     {
         $this->execCommand([
             'mysql',
@@ -144,7 +144,7 @@ class FixturesLoader
      *
      * @return string
      */
-    private function execCommand(array $arguments, $timeout = 120): string
+    protected function execCommand(array $arguments, $timeout = 120): string
     {
         $process = new Process(implode(' ', $arguments));
         $process->setTimeout($timeout);

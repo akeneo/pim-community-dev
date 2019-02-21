@@ -22,7 +22,7 @@ class CatalogConfigurationContext extends PimContext
     protected $extraDirectories = [];
 
     /** @var FixturesLoader */
-    private $fixturesLoader;
+    protected $fixturesLoader;
 
     /**
      * Add an additional directory for catalog configuration files
