@@ -17,6 +17,7 @@
 - PIM-8135: Fix cursor paginator sequence
 - PIM-8053: Fix avatar deletion and avatar update on dashboard page and user navigation
 - PIM-8149: Fix design of the cross deletion in the Item Picker
+- PIM-8157: Fix issues on user edit (scroll and groups)
 
 # 3.0.3 (2019-02-18)
 
