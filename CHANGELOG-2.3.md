@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.30 (2019-02-21)
+
 ## Bug fixes
 
 - PIM-8134: Fix flickering on assets
