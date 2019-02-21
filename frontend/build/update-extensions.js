@@ -22,10 +22,20 @@ const EXTENSION_DEFAULTS = {
     position: 100
 }
 
+/**
+ * Get the bundle path relative to the source folder
+ *
+ * @param {string} path
+ */
 function getRelativeBundlePath(path) {
     return path.replace(/(^.+)[^vendor](?=\/src|\/vendor)\//gm, '')
 }
 
+/**
+ * Read a file and return the contents as a string
+ *
+ * @param {string} path
+ */
 function getFileContents(path) {
     try {
         return parse(readFileSync(path, 'utf-8'))
@@ -36,6 +46,9 @@ function getFileContents(path) {
     }
 }
 
+/**
+ * Given a list of bundles required by the app, return a list of form extension .yml files
+ */
 function getExtensionsFromRequiredBundles() {
     const requiredBundles = require(BUNDLE_REQUIRE_PATH);
     const bundleDirectories = requiredBundles.map(
@@ -51,6 +64,13 @@ function getExtensionsFromRequiredBundles() {
     return [].concat.apply([], formExtensions);
 }
 
+/**
+ * Get the form extension configuration from the .yml files and merge them
+ *
+ * Returns an object containing the attribute fields and form extensions sorted by position
+ *
+ * @param {string} paths
+ */
 function mergeExtensions(paths) {
     const config = paths.map(path => getFileContents(path))
     const merged = deepmerge.all(config)
@@ -74,6 +94,11 @@ function mergeExtensions(paths) {
     }
 }
 
+/**
+ * Writes the merged form extensions to a file at web/js/extensions.json
+ *
+ * @param {Object} contents
+ */
 function writeExtensionsJSON(contents) {
     try {
         writeFileSync(EXTENSIONS_JSON_PATH, JSON.stringify(contents), {
@@ -90,4 +115,3 @@ const extensions = getExtensionsFromRequiredBundles()
 const mergedExtensions = mergeExtensions(extensions)
 
 writeExtensionsJSON(mergedExtensions)
-
