@@ -917,12 +917,30 @@ Before updating the dependencies and migrating your data, please deactivate all 
     php upgrades/schema/es_20190128120000_ee_update_document_type_proposal_and_published.php
     ```
 
-14. Then re-generate the PIM assets:
+14. Re-generate the PIM assets:
 
+    Please, execute the restart of php-fpm as **root** user:
+    
+    ```bash
+    service php7.2-fpm restart
+    ```
+    
+    Then re-generate the PIM assets:
+    
     ```bash
     bin/console pim:installer:assets --clean --env=prod
     yarn run webpack
     ```
+
+    **For Akeneo Cloud environments**
+
+    ```bash
+    partners_clear_cache
+    bin/console --env=prod pim:installer:assets
+    yarn run webpack
+    ```
+
+Use the partners_clear_cache command available on [Partners](https://docs.akeneo.com/3.0/cloud_edition/flexibility_mode/docs/partners.html).
 
 ## Migrate your custom code
 
