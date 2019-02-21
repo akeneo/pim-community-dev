@@ -143,6 +143,8 @@ legacy:
                     - '@pim_catalog.repository.product_model'
                     - '@pimee_workflow.repository.product_model_draft'
                     - '@doctrine.orm.entity_manager'
+                - Context\EnterpriseReferenceEntityContext:
+                    - 'Context\EnterpriseFeatureContext'
         franklin-insights:
             paths:
                 - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
