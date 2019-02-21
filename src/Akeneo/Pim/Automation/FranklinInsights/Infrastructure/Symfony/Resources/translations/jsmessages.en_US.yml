@@ -133,7 +133,8 @@ akeneo_franklin_insights:
                 activate: 'Activate'
 
     settings:
-        page_title: 'Franklin Insights Settings'
+        attributes_mapping_title: 'Attributes mapping'
+        identifiers_mapping_title: 'Identifiers mapping'
         module:
             title:
                 sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
