@@ -85,7 +85,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
 
-        $dumpFile = sys_get_temp_dir().self::CACHE_DIR.$fixturesHash.'.sql';
+        $dumpFile = $this->container->getParameter('kernel.cache_dir') .self::CACHE_DIR.$fixturesHash.'.sql';
 
         if (file_exists($dumpFile)) {
             $this->databaseSchemaHandler->reset();

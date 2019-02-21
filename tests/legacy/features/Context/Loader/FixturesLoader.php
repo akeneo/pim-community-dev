@@ -78,7 +78,7 @@ class FixturesLoader
     private function loadCatalogOrRestoreDatabase(array $configurationFiles)
     {
         $fixturesHash = $this->getHashForFiles($configurationFiles);
-        $dumpFile = sys_get_temp_dir() . self::CACHE_DIR . $fixturesHash . '.sql';
+        $dumpFile = $this->container->getParameter('kernel.cache_dir') . self::CACHE_DIR . $fixturesHash . '.sql';
 
         if (file_exists($dumpFile)) {
             $this->restoreDatabase($dumpFile);
