@@ -12,7 +12,8 @@ define(
         'pimee/template/asset/mass-upload-row',
         'pim/form-builder',
         'pim/common/breadcrumbs',
-        'pim/form'
+        'pim/form',
+        'pim/template/common/modal-centered'
     ],
     function (
         $,
@@ -26,7 +27,8 @@ define(
         rowTemplate,
         formBuilder,
         Breadcrumbs,
-        BaseForm
+        BaseForm,
+        manageAssetModalTemplate
     ) {
         /**
          * Override to be able to use template root different other than 'div'
@@ -112,12 +114,14 @@ define(
 
                 const modal = new Backbone.BootstrapModal({
                     className: 'modal mass-upload-modal',
-                    allowCancel: false,
+                    title: __('pim_title.pimee_product_asset_index'),
+                    subtitle: __('pimee_product_asset.mass_upload.menu'),
+                    allowCancel: true,
+                    okText: '',
                     content: this.pageTemplate({
-                        __,
-                        subTitleLabel: 'Assets',
-                        titleLabel: 'Upload assets'
-                    })
+                        __
+                    }),
+                    template: _.template(manageAssetModalTemplate)
                 });
 
                 modal.open();

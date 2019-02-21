@@ -6,6 +6,7 @@
 
 - PIM-8017: Fix PDF generation
 - PIM-8000: Accept links property when creating or updating a reference entity record with the API
+- PIM-8023: Fix to center the title in the Assets mass upload modal
 
 # 3.0.3 (2019-02-18)
 
