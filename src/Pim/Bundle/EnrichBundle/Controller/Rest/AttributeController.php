@@ -145,10 +145,14 @@ class AttributeController
      */
     public function indexAction(Request $request)
     {
-        $options = [];
+        $options = $request->request->get(
+            'options',
+            ['limit' => SearchableRepositoryInterface::FETCH_LIMIT, 'locale' => null]
+        );
 
         if ($request->request->has('identifiers')) {
             $options['identifiers'] = array_unique(explode(',', $request->request->get('identifiers')));
+            $options['limit'] = count($options['identifiers']);
         }
 
         if ($request->request->has('types')) {
@@ -159,12 +163,6 @@ class AttributeController
             $options['attribute_groups'] = explode(',', $request->request->get('attribute_groups'));
         }
 
-        if (empty($options)) {
-            $options = $request->request->get(
-                'options',
-                ['limit' => SearchableRepositoryInterface::FETCH_LIMIT, 'locale' => null]
-            );
-        }
         if ($request->request->has('rights')) {
             $options['rights'] = (bool) $request->request->get('rights');
         }

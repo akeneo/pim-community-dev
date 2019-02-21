@@ -56,6 +56,16 @@ init-pim: clean docker-compose.yml app/config/parameters.yml app/config/paramete
 up: docker-compose.yml app/config/parameters.yml app/config/parameters_test.yml
 	$(DOCKER_COMPOSE) up -d --remove-orphan
 
+.PHONY: xdebug-on
+xdebug-on: docker-compose.yml app/config/parameters.yml app/config/parameters_test.yml
+	sed -i "s/XDEBUG_ENABLED: 0/XDEBUG_ENABLED: 1/g" docker-compose.yml
+	$(DOCKER_COMPOSE) up -d --remove-orphan
+
+.PHONY: xdebug-off
+xdebug-off: docker-compose.yml app/config/parameters.yml app/config/parameters_test.yml
+	sed -i "s/XDEBUG_ENABLED: 1/XDEBUG_ENABLED: 0/g" docker-compose.yml
+	$(DOCKER_COMPOSE) up -d --remove-orphan
+
 .PHONY: down ## Stop docker containers, remove volumes and networks.
 down:
 	$(DOCKER_COMPOSE) down -v
