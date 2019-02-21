@@ -594,10 +594,17 @@ Before updating the dependencies and migrating your data, please deactivate all 
     php upgrades/schema/es_20190128110000_ce_update_document_type_product_and_product_model.php
     ```
 
-12. Then re-generate the PIM assets:
+12. Re-generate the PIM assets:
 
+    Please, execute the restart of php-fpm as **root** user:
+    
     ```bash
     service php7.2-fpm restart
+    ```
+    
+    Then re-generate the PIM assets:
+    
+    ```bash
     bin/console pim:installer:assets --clean --env=prod
     yarn run webpack
     ```
