@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Indexing\Normalizer;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\IsProductSubscribedToFranklinQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\ProductSubscriptionsExistQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Indexing\Normalizer\ProductSubscriptionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
@@ -24,7 +24,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionNormalizerSpec extends ObjectBehavior
 {
-    public function let(IsProductSubscribedToFranklinQueryInterface $isProductSubscribedToFranklinQuery): void
+    public function let(ProductSubscriptionsExistQueryInterface $isProductSubscribedToFranklinQuery): void
     {
         $this->beConstructedWith($isProductSubscribedToFranklinQuery);
     }
@@ -49,10 +49,10 @@ class ProductSubscriptionNormalizerSpec extends ObjectBehavior
     {
         $product->getId()->willReturn(42);
 
-        $isProductSubscribedToFranklinQuery->execute(42)->willReturn(false);
+        $isProductSubscribedToFranklinQuery->execute([42])->willReturn([42 => false]);
         $this->normalize($product)->shouldReturn(['franklin_subscription' => false]);
 
-        $isProductSubscribedToFranklinQuery->execute(42)->willReturn(true);
+        $isProductSubscribedToFranklinQuery->execute([42])->willReturn([42 => true]);
         $this->normalize($product)->shouldReturn(['franklin_subscription' => true]);
     }
 }

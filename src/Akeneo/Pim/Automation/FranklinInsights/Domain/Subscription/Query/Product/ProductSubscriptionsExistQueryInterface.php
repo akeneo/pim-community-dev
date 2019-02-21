@@ -16,12 +16,12 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Produ
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-interface IsProductSubscribedToFranklinQueryInterface
+interface ProductSubscriptionsExistQueryInterface
 {
     /**
-     * @param int $productId
+     * @param array $productIds
      *
-     * @return bool
+     * @return array
      */
-    public function execute(int $productId): bool;
+    public function execute(array $productIds): array;
 }

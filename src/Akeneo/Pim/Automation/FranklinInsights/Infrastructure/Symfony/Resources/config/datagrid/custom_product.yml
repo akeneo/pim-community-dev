@@ -1,0 +1,7 @@
+datagrid:
+    product-grid:
+        other_columns:
+            franklin_subscription:
+                label:         Franklin subscription
+                data_name:     franklin_subscription
+                type:          field
