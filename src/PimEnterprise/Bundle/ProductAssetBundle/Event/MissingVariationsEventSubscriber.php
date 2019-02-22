@@ -12,11 +12,12 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Event;
 
 use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Asset events listenener
+ * Asset events listener
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
@@ -58,10 +59,14 @@ class MissingVariationsEventSubscriber implements EventSubscriberInterface
      */
     public function onAssetFilesUploaded(AssetEvent $event)
     {
-        $variations = $this->finder->retrieveVariationsNotGenerated($event->getSubject());
-        $processed = $this->generator->generate($variations, true);
+        $notLockedVariations = array_filter(
+            $this->finder->retrieveVariationsNotGenerated($event->getSubject()),
+            function (VariationInterface $variation) {
+                return !$variation->isLocked();
+            }
+        );
 
-        $event->setProcessedList($processed);
+        $event->setProcessedList($this->generator->generate($notLockedVariations, true));
 
         return $event;
     }
