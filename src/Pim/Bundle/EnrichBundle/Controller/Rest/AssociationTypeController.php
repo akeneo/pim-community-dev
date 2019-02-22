@@ -98,8 +98,6 @@ class AssociationTypeController
      * @param string $identifier
      *
      * @return JsonResponse
-     *
-     * @AclAncestor("pim_enrich_associationtype_index")
      */
     public function getAction($identifier)
     {
