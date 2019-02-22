@@ -311,7 +311,7 @@ pim_enrich.mass_edit.product:
             label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
             description: Select the groups in which to add the selected products
             field: Groups
-            no_update: Please select a group before continue
+            no_update: Please select a group before to continue
         add_to_category:
             label: Add to categories
             label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
