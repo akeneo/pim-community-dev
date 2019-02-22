@@ -376,7 +376,13 @@ class FixturesLoader implements FixturesLoaderInterface
         $clients = $clientRegistry->getClients();
 
         foreach ($clients as $client) {
-            $client->resetIndex();
+            $client->refreshIndex();
+            $client->deleteByQuery([
+                'query' => [
+                    'match_all' => new \stdClass()
+                ],
+            ]);
+            $client->refreshIndex();
         }
     }
 }
