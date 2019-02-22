@@ -58,6 +58,7 @@ pim_common:
   permissions: Rettigheder
   properties: Egenskaber
   name: Navn
+  remove: Fjern
 pim_enrich:
   acl:
     locale:

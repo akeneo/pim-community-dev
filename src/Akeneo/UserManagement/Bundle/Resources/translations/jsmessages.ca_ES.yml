@@ -24,6 +24,9 @@ pim_enrich:
         delete:
           fail: No es pot suprimir l'usuari
           success: L'usuari s'ha suprimit
+      module:
+        delete:
+          confirm: Esteu segur que voleu eliminar aquest usuari?
 pim_user_management:
   entity:
     user:

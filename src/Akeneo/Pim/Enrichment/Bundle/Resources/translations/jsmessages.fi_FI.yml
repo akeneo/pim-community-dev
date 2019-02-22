@@ -43,6 +43,8 @@ pim_enrich.entity.product:
     create:
       success: Tuote luotu
       fail: Yhtään attribuuttia ei ole määritetty tuotteen tunnisteeksi tai sinulla ei ole muokkausoikeuksia.
+  page_title:
+    index: "]-Inf, 1]{{ count }} tulos|]1, Inf[{{ count }} tulosta"
   module:
     create:
       subtitle: Luo tuote
@@ -80,6 +82,7 @@ pim_enrich.entity.product:
       remove_optional: Poista tämä attribuutti
       locale_specific_unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
       locale_unavailable: Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
+      to_fill_count: "{1}1 vaadittu attribuutti puuttuu|]1, Inf[{{ count }} vaadittua attribuuttia puuttuu"
       add_attribute_option: Lisää määritteen vaihtoehto
       add_option: Lisää vaihtoehto
     completeness:
@@ -87,6 +90,7 @@ pim_enrich.entity.product:
       complete: Valmis
       no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
       no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
+      missing_values: "{1}1 puuttuva arvo|]1, Inf[{{ count }} puuttuvaa arvoa"
     sequential_edit:
       item_limit: Vain 1000 ensimmäistä näytetään peräkkäisessä muokkauksessa ({{ count }} valittuna)
       empty: Valintasi on tyhjä, muuta hakuehtoja
@@ -95,6 +99,7 @@ pim_enrich.entity.product:
     associations:
       title: Assosiaatiot
       none_exist: Assosiaatiotyyppiä ei ole olemassa.
+      show_products: Näytä tuotteet
       show_groups: Näytä ryhmät
       number_of_associations: "{{ productCount }} tuotetta, {{ productModelCount }} tuotemallia ja {{ groupCount }} ryhmää"
       association_type_selector: Assosiaatiotyyppi
@@ -119,6 +124,7 @@ pim_enrich.entity.product:
     delete:
       confirm: Oletko varma, että haluat poistaa tämän tuotteen?
 pim_enrich.entity.product_model:
+  label: tuotemalli
   uppercase_label: Tuotemalli
   plural_label: Tuotemallit
   flash:
@@ -132,6 +138,7 @@ pim_enrich.entity.product_model:
       fields_not_ready: "Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
     delete:
       success: Tuotemallin poisto onnistui.
+      fail: Tuotemallia ei voi poistaa
   choose: Valitse tuotemalli
   property:
     family_variant: Tuotevariaatio
@@ -143,9 +150,12 @@ pim_enrich.entity.product_model:
       read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
       read_only_parent_attribute_from_model: "Tätä attribuuttia voidaan muokata {{ axes }} attribuuteissa"
     variant_axis:
+      label: 'varianttiulottuvuus'
       create: Luo uusi
       create_label: "Luo uusi {{ axes }}"
       required_label: '(varianttiulottuvuus)'
+    completeness:
+      variant_product: "]-Inf, 1]{{ complete }} / {{ total }} tuotevariantti|]1, Inf[{{ complete }} / {{ total }} tuotevarianttia"
     delete:
       confirm: Oletko varma, että haluat poistaa tämän tuotemallin? Kaikki lapset, tuotemallit ja variantit poistetaan myös.
       confirm_for_products_and_product_models: Oletko varma, että haluat poistaa valitut tuotteet ja tuotemallit? Kaikki tuotemallin variantit poistetaan myös.
@@ -161,6 +171,8 @@ pim_enrich.entity.group:
     delete:
       success: Ryhmän poistaminen onnistui
       fail: Ryhmää ei voi poistaa
+  page_title:
+    index: "]-Inf, 1]{{ count }} ryhmä|]1, Inf[{{ count }} ryhmää"
   module:
     create:
       button: Luo ryhmä
@@ -247,11 +259,13 @@ pim_enrich.export.product:
     title: Yleiset asetukset
 pim_enrich.mass_edit.product:
   title: Tuotteiden massamuokkaus
+  confirm: "{1}Olet päivittämässä tuotetta seuraavilla tiedoilla. Olet hyvä ja vahvista.|]1, Inf[Olet päivittämässä {{ itemsCount }} tuotetta seuravilla tiedoilla. Ole hyvä ja vahvista."
   step:
     select:
       label: Valitse tuotteet
     choose:
       title: Tuotteiden massamuokkaus
+      label_count: "]0, Inf[Valitse toiminto"
     configure:
       label: Konfiguroi
     confirm:
@@ -265,13 +279,16 @@ pim_enrich.mass_edit.product:
       select_attributes: Valitse attribuutit
     change_status:
       label: Muuta tuotteen tila
+      label_count: "{1}Muuta <span class=\"AknFullPage-title--highlight\">1 tuotteen tila</span>|]1, Inf[Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen tila</span>"
       description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
       field: Ottaa käyttöön
     edit_common:
       label: Muokkaa attribuuttien arvoja
+      label_count: "{1}Muokkaa <span class=\"AknFullPage-title--highlight\">1 tuotteen </span> attribuutteja|]1, Inf[Muokkaa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen</span> attribuutteja"
       description: Vain attribuutit, jotka kuuluvat valittujen tuotteiden perheisiin muokataan seuraavilla tiedoilla ({{ locale }} / {{ scope }}).
     add_attribute_value:
       label: Lisää attribuutin arvoja
+      label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuotteelle</span> attribuutin arvoja|]1, Inf[Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteelle attribuutin arvoja</span>"
       description: Vain moniarvoiset tuotteen perheeseen kuuluvat attribuutit muokataan seuraavilla arvoilla lokaatiolle {{ locale }} ja kanavalle {{ scope }}. Uudet attribuuttien arvot lisätään ja nykyiset arvot säilytetään.
     change_family:
       label: Muuta perhe
@@ -382,3 +399,11 @@ batch_jobs:
   set_attribute_requirements:
     label: Aseta vaaditut attribuutit
     perform.label: Aseta vaaditut attribuutit
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Tuoteruudukon kontekstin nopea vienti XLSX-muodossa
+    quick_export_product_model.label: Tuotemalliruudukon kontekstin nopea vienti XLSX-muodossa
+    perform.label: Tuoteruudukon kontekstin nopea vienti XLSX-muodossa
+  xlsx_product_quick_export:
+    quick_export.label: Tuotteen nopea vienti XLSX-muodossa
+    quick_export_product_model.label: Tuotemallin nopea vienti XLSX-muodossa
+    perform.label: Tuotteen nopea vienti XLSX-muodossa

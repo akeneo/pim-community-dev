@@ -144,6 +144,7 @@ pim_common:
   permissions: Rettigheder
   previous: Forrige
   properties: Egenskaber
+  remove: Fjern
   required_label: (Påkrævet)
   save: Gem
   select2:

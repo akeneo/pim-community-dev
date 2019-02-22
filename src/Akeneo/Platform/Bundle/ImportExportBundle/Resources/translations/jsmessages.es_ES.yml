@@ -28,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: Perfil de importación creado con éxito
+      page_title:
+        index: "]-Inf, 1] {{ count }} perfil de importación|]1, Inf [{{ count }} perfiles de importación"
       module:
         create:
           button: Crear perfil de importación
@@ -36,6 +38,8 @@ pim_import_export:
       flash:
         create:
           success: Perfil de exportación creado con éxito
+      page_title:
+        index: "]-Inf, 1] {{ count }} perfil de exportación|]1, Inf [{{ count }} perfiles de exportación"
       module:
         create:
           button: Crear perfil de exportación

@@ -136,6 +136,7 @@ pim_common:
   permissions: Права доступа
   previous: Предыдущая
   properties: Свойства
+  remove: Удалить
   required_label: (требуется)
   save: Сохранить
   select2:

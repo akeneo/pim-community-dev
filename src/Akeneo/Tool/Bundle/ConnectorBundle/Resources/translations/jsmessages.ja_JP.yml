@@ -99,7 +99,6 @@ batch_jobs:
     import.label: 製品のインポート
   xlsx_product_model_import:
     import_product_model_descendants.label: 製品モデルの子孫を計算します。
-    import_associations.label: 関連付けのインポート
   xlsx_group_export:
     label: グループをXLSX形式でインポート
     export.label: グループエクスポート
