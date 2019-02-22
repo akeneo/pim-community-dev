@@ -17,8 +17,8 @@ pim_api:
       edit: Skapa och uppdatera familjer
       list: Visa familjer
     family_variant:
-      edit: Skapa och uppdatera familjevarianter
-      list: Lista familjevarianter
+      edit: Skapa och uppdatera familj varianter
+      list: Lista familj varianter
     channel:
       edit: Skapa och uppdatera kanaler
       list: Lista kanaler
@@ -34,7 +34,7 @@ pim_api:
     attribute_group: Attributgrupper
     category: Kategorier
     family: Familjer
-    family_variant: Familjevarianter
+    family_variant: Familj varianter
     channel: Kanaler
     locale: Språk
     currency: Valutor

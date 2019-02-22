@@ -24,6 +24,7 @@ pim_catalog_volume:
     average_max_options_per_attribute: Opzioni per attributo
     count_categories: Categorie
     count_category_trees: Albero della categoria
-    count_variant_products: Prodotti varianti
     count_product_models: Modelli di prodotto
     warning: Wow! Hai raggiunto il record con questo asse! Non esitare a contattarci se hai bisogno di aiuto con questo tipo di volume.
+  mean: 'Medio:'
+  max: 'Massimo:'

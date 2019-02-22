@@ -49,6 +49,7 @@ pim_enrich:
       success_flash: Produkterna har tagits bort från de valda kategorierna
       launched_flash: Massåtgärd "ta bort från kategorier" har inletts. Du meddelas när det är klart.
     change-family:
+      label: Ändra familj
       description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
       success_flash: Familjen av vald(a) produkt(er) har ändrats
       launched_flash: Massåtgärd "ändra familj" har inletts. Du meddelas när det är gjort.

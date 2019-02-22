@@ -51,12 +51,8 @@ pim_catalog:
     family_variant_axes_attribute_type: Variantenachsen "%axis%" müssen boolesche, einfache Auswahl, einfache Referenzdaten oder metrische Werte sein
     family_variant_axes_wrong_type: Variantenachsen "%axis%" können nicht lokalisierbar, nicht skalierbar und nicht ortsspezifisch sein
     family_variant_axes_number_of_axes: 'Ein Variantenattribut-Set darf nicht mehr als %max_axes_number% Achsen haben'
-    family_variant_no_axis: Es sollte mindestens ein Attribut als Achse für das Attribut-Set der Ebene "%level%" definiert sein
     family_variant_axis_level: Attribut "%axis%" muss als Attribut im selben Variantattribut gesetzt sein, in dem es als Achse gesetzt wurde
     family_variant_has_family_attribute: 'Attribut "%attribute%" kann nicht der Variantenfamilie "%family_variant%" hinzugefügt werden, da es kein Attribut der Familie "%family%" ist'
-    family_variant_level_do_not_exist: Für die Ebene "%level%" ist kein Variantenattribut gesetzt
-    family_variant_no_level: Es sollte mindestens eine Ebene in der Variantenfamilie definiert sein
-    family_variant_maximum_number_of_level: Die Variantenfamilie kann nicht mehr als "%level%" Ebene haben
     family_variant_unique_attributes_in_last_level: Eindeutiges Attribut "%attribute%" muss auf Produktebene gesetzt sein
     product_identifier: Diese Kennungen "%s" sind nicht vorhanden.
     0: Es ist ein unerwarteter Fehler aufgetreten.

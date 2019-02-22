@@ -152,7 +152,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'axe de variante'
       create: Créer
-      create_label: "Créer un nouveau variant sur l'/les axe(s) {{ axes }}"
+      create_label: "Créer un nouvel axe avec {{ axes }}"
       required_label: '(axe de variante)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} produit variant|]1, Inf[{{ complete }} / {{ total }} produits variants"

@@ -59,6 +59,7 @@ pim_common:
   permissions: Käyttöoikeudet
   properties: Ominaisuudet
   name: Nimi
+  remove: Poista
 pim_enrich:
   acl:
     locale:

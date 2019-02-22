@@ -129,7 +129,7 @@ pim_common:
   create: Créer
   created: Créé
   delete: Supprimer
-  done: Fermer
+  done: Fait
   edit: Modifier
   entity_updated: Des modifications n'ont pas encore été sauvegardées.
   from: De
