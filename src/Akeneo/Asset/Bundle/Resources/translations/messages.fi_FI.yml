@@ -25,9 +25,9 @@ pimee_product_asset:
       delete: Poista
       download: Lataa
       generate_from_reference: Luo viittauksesta
-      reset_variations: Nollaa variaatiot
+      reset_variations: Luo variaatiot
     confirmation.remove: Oletko varma, että haluat poistaa assetin "%asset%" ?
-    confirmation.subTitle: Resurssit
+    confirmation.subTitle: Assetit
     grid:
       edit: Muokkaa assetin ominaisuuksia
     view:
@@ -81,7 +81,7 @@ pimee_product_asset:
   popin.create:
     title: Luo uusi resurssi
     is_localized: Lokalisoitavissa
-  menu: Resurssit
+  menu: Assetit
   page_tab:
     title:
       view: Tuoteresurssi %asset.code% | Näkymä
@@ -141,13 +141,20 @@ pimee_product_asset:
       apply_on_children.help: Kopioi käyttöoikeusmuutokset kaikkiin alatason objekteihin, olemassaolevat käyttöoikeudet alatason objekteihin pysyvät muuttumattomina
   mass_edit_action:
     asset:
-      page_title: Resurssit
+      page_title: Assetit
+      page_subtitle: Massamuokkaa (1 assetti)|Massamuokkaa (%count% assettia)
+      confirm: Olet päivittämässä assetin seuraavilla tiedoilla. Ole hyvä ja vahvista.|Olet päivittämässä %count% assettia seuraavilla tiedoilla. Ole hyvä ja vahvista.
       steps:
+        first: Valitse assetit
         second: Konfiguroi
         third: Vahvista
+  not_editable: Sinulla ei ole muokkausoikeuksia assettiin "%code%".
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
+      label: Siirrä assetit kategorioihin
+      description: Assetit liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan
+      success_flash: Assetit siirrettiin valittuihin kategorioihin
       launched_flash: Massatoiminto "siirrä kategorioihin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     add-tags-to-assets:
       label: Lisää tunnisteita asseteille
@@ -158,13 +165,17 @@ pim_enrich:
 pim:
   grid:
     mass_action:
+      mass_classify_assets: Luokittele
       add_tags_to_assets: Lisää tunnisteita
+      delete_assets: Poista assetteja
 btn.create.asset: Luo assetti
-btn.drag_or_upload: Vedä ja tiputa tiedosto tai klikkaa tästä
+btn.drag_or_upload: Vedä ja pudota tiedosto tai klikkaa tästä
 job_execution.summary:
   variations_not_generated: Variaatioita ei luotu
   pimee_product_asset.mass_upload.new: Assetti luotu tiedostosta
   pimee_product_asset.mass_upload.updated: Assetti päivitetty
+  error: Virhe assetin käsittelyssä
+  skipped_assets: Ohitetut assetit
 assets_mass_upload.steps:
   asset_mass_upload.title: Assettien massatuonti
 import_asset.steps.channel_configuration_processor.title: Prosessikanavien konfiguraatiot
@@ -172,7 +183,12 @@ pim_datagrid:
   cells:
     type:
       mass_upload: Massatuo assetteja
+pim_analytics:
+  info_type:
+    nb_assets: Assettien lukumäärä
 pim_assets_collection: Resurssien keruu
+akeneo_reference_entity: Viitetiedot yksinkertainen valinta
+akeneo_reference_entity_collection: Viitetiedot monivalinta
 pim_api:
   acl:
     asset_category:
@@ -183,7 +199,7 @@ pim_api:
       list: Listaa assetit ja lataa niiden alkuperäiset ja varioidut tiedostot
   acl_group:
     asset_category: Assettikategoriat
-    asset: Resurssit
+    asset: Assetit
 pimee_enrich:
   channel:
     tab:

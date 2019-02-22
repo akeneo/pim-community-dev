@@ -53,7 +53,11 @@ pim_reference_entity:
         count: '{0}Aucune entité référentielle|{1}{{ count }} entité référentielle|]1,Inf[{{ count }} entités référentielles'
         help:
           title: 'Bienvenue dans les entités référentielles !'
+          description_part_one: 'Enrichissez des informations communes liées aux produits (ex: marques, fabricants, couleurs, matières, ingrédients...).'
+          description_part_two: Cela vous permettra de fournir une meilleure expérience produit à vos clients.
           description_part_three: Cliquez sur le bouton "Créer" pour créer votre 1ère entité référentielle, définir ses attributs et ses enregistrements.
+          description_part_four: Ensuite, pour lier aux produits, créez un type d’attribut de produit associé à cette entité référentielle.
+          description_part_five: Pour plus d'informations, nous vous invitons à lire cet article.
     create:
       header:
         title: Créer
@@ -133,8 +137,6 @@ pim_reference_entity:
         completeness:
           label: Complet
           all: TOUT
-          'yes': 'OUI'
-          'no': 'NON'
       column:
         code: Code
         image: Image

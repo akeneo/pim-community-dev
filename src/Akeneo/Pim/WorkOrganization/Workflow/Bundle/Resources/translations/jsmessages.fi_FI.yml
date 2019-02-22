@@ -4,6 +4,13 @@ Approve: Hyväksy
 Refuse: Hylkää
 Approve selected: Hyväksy valitut
 Refuse selected: Hylkää valitut
+pim_datagrid:
+  no_entities:
+    proposal: Ehdotuksia ei ole tarkistettavaksi.
+    product_draft: Tuoteluonnoksia ei ole tarkistettavaksi.
+  no_results:
+    proposal: Ehdotuksia ei ole tarkistettavaksi. Yritä muuttaa hakuehtoja.
+    product_draft: Tuoteluonnoksia ei ole tarkistettavaksi. Yritä muuttaa hakuehtoja.
 pimee_datagrid:
   cells:
     expand:
@@ -17,7 +24,11 @@ pimee_workflow:
     proposal:
       modal.title: Jätä kommentti (valinnainen - 255 merkkiä max.)
   proposal:
+    overview: "]-Inf, 1]{{ count }} ehdotus|]1, Inf[{{ count }} ehdotusta"
     selected: ehdotusta valittu
+    mass_action_group:
+      review:
+        label: Massatoiminnot
     partial_accept:
       modal.title: Hyväksy osittaisia tietoja
       modal.label: Jätä kommentti (valinnainen)
@@ -25,11 +36,16 @@ pimee_workflow:
       modal.success: Ehdotus on osittain vahvistettu onnistuneesti
     partial_approve:
       modal:
+        title: Hyväksy muutokset osittain
         label: Jätä kommentti (valinnainen)
         error: Virhe, ehdotusta ei ole hyväksytty osittain
+        success: Muutokset hyväksytty onnistuneesti
     partial_reject:
       modal:
+        title: Hylkää muutokset osittain
         label: Jätä kommentti (valinnainen)
+        error: Virhe tapahtui. Ehdotusta ei hylätty osittain
+        success: Muutokset hylätty onnistuneesti
 batch_jobs:
   csv_published_product_export:
     label: Julkaistun tuotteen vienti CSV-muodossa
@@ -44,7 +60,23 @@ batch_jobs:
     label: Hylkää ehdotus
     perform.label: Hylkää ehdotus
   xlsx_published_product_export:
+    label: Julkaistujen tuotteiden vienti XLSX-muodossa
     export.label: Julkaistun tuotteen vienti
+  xlsx_product_proposal_import:
+    label: Tuote-ehdotusten tuonti XLSX-muodossa
+    import.label: Tuote-ehdotusten tuonti XLSX-muodossa
+  csv_published_product_quick_export:
+    export.label: Julkaistujen tuotteiden nopea vienti CSV-muodossa
+    perform.label: Julkaistujen tuotteiden nopea vienti CSV-muodossa
+  csv_published_product_grid_context_quick_export:
+    export.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti CSV-muodossa
+    perform.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti CSV-muodossa
+  xlsx_published_product_quick_export:
+    export.label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
+    perform.label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti XLSX-muodossa
+    perform.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti XLSX-muodossa
   publish_product:
     perform.label: Julkaise tuotteet
 pim_notification:
@@ -52,6 +84,8 @@ pim_notification:
     pimee_workflow_product_draft_notification_new_proposal: Uusi ehdotus
     pimee_workflow_import_notification_new_proposals: Uusia ehdotuksia tuontiin
     pimee_workflow_product_draft_notification_partial_approve: Osittain hyväksytty ehdotus
+    pimee_workflow_product_draft_notification_partial_reject: Ehdotus hylätty osittain
+    pimee_workflow_product_draft_notification_partial_remove: Ehdotus poistettu osittain
     pimee_workflow_product_draft_notification_approve: Ehdotus hyväksytty
     pimee_workflow_product_draft_notification_refuse: Ehdotus hylätty
     pimee_workflow_product_draft_notification_remove: Ehdotus poistettu
@@ -68,6 +102,9 @@ pimee_enrich.entity.product:
     history:
       published: Julkaistu
       revert: Palauta
+    attribute:
+      can_be_updated_by_a_rule: "Tämä attribuutti voidaan päivittää säännöllä: {{ rule }}"
+      value_updated: Nykyinen luonnos muuttaa tätä arvoa
     meta:
       published_version: Julkaistu versio
       owner_groups: Omistajaryhmät
@@ -102,6 +139,8 @@ pimee_enrich.entity.published_product:
       fail: Tuotteen julkaisun peruuttaminen epäonnistui
     revert:
       success: Tuote palautettu onnistuneesti
+  page_title:
+    index: "]-Inf, 1]{{ count }} julkaistu tuote|]1, Inf[{{ count }} julkaistua tuotetta"
   module:
     publish:
       label: Julkaise
@@ -142,10 +181,12 @@ pimee_enrich.mass_edit.product:
   operation:
     publish:
       label: Julkaise
+      label_count: "{1}Julkaise <span class=\"AknFullPage-title--highlight\">1 tuote</span>|]1, Inf[Julkaise <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span>"
       description: Tuotteet julkaistaan
       warning: '{{ itemsCount }} valittua tuotetta julkaistaan.'
     unpublish:
       label: Peruuta julkaisu
+      label_count: "{1}Poista julkaisu <span class=\"AknFullPage-title--highlight\">1 tuotteelta</span>|]1, Inf[Poista julkaisu <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteelta</span>"
       description: Tuotteen julkaisu perutaan
       warning: '{{ itemsCount }} valitun tuotteen julkaisu perutaan.'
 pim_menu:

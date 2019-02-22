@@ -1,19 +1,33 @@
 pim_title:
   akeneo_reference_entities_reference_entity_index: Crear una nueva entidad
+  akeneo_reference_entities_reference_entity_edit: Editar una entidad de referencia
+  akeneo_reference_entities_record_edit: Editar un registro
 pim_reference_entity:
   app:
     image:
       wide:
+        remove: Eliminar la imagen
+        download: Descargar la imagen
         upload: Arrastrar y soltar para cargar o haga clic aquí
       small:
         remove: Quitar
         download: Descargar
+        upload: Arrastrar y soltar para subir
   reference_entity:
+    validation:
+      code:
+        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        should_be_unique: 'El código ya existe para esta entidad.'
+        limit_reached: 'No se puede crear la entidad de referencia "{{ %reference_entity_label% }}" ya ha alcanzado el límite de {{ %limit% }} entidades de referencia'
     button:
       save: Guardar
       save_permission: Guardar
       create: Crear
+    permission:
+      title: Permisos de la entidad
     title: Entidades
+    breadcrumb: Entidades de referencia
+    img: La imagen principal de la entidad de referencia denominada "{{ label }}"
     tab:
       records: Registros
       attribute: Atributos
@@ -24,58 +38,140 @@ pim_reference_entity:
       identifier: Código
       label: Etiqueta
       image: Imagen
+    attribute:
+      title: Atributos del registro
+      attribute:
+        error:
+          render_list: 'Ocurrió un error durante el procesamiento del atributo "{{ %attribute_code%}}"'
+          render_edit: 'Ocurrió un error durante el procesamiento de los campos de propiedad adicionales de atributo "{{ %attribute_code% }}"'
+    module:
+      delete:
+        button: Eliminar entidad
+        confirm: '¿Está seguro de que quiere eliminar esta entidad?'
+    index:
+      grid:
+        count: '{0} Sin información de referencia|{1} {{ count }} Información de referencia|]1,Inf] {{ count }} Información de referencia'
+        help:
+          title: '¡Bienvenido a las Entidades de Referencia!'
+          description_part_one: Enriquecer la información relevante relacionada con los productos (por ejemplo, marcas, fabricantes, colores, materiales, ingredientes...).
+          description_part_two: Le permitirá ofrecer una mejor experiencia del producto a sus clientes.
+          description_part_three: Haga clic en el botón "Crear" para crear su primera entidad de referencia, establezca sus atributos y registros.
+          description_part_four: Luego, para enlazar con productos, cree un tipo de atributo de producto relacionado con esta entidad de referencia.
+          description_part_five: Para más detalles, le invitamos a navegar por este artículo.
     create:
       header:
         title: Crear
+      subtitle: Información de referencia
       title: Crear una nueva entidad
       input:
         label: Etiqueta
         code: Código (requerido)
       confirm: Guardar
     delete:
+      message: '¿Está seguro que desea eliminar la entidad "{{ referenceEntityLabel }}"?'
       title: Atributo
+    notification:
+      save:
+        success: Entidad de referencia actualizada correctamente.
+        fail: Un error ha ocurrido durante el guardado de la entidad de referencia
+      create:
+        success: Entidad de referencia creada correctamente.
+        fail: Un error ha ocurrido durante la creación de la entidad de referencia
+      delete:
+        success: Entidad de referencia eliminada correctamente.
+        fail: Un error ha ocurrido durante la eliminación de la entidad de referencia
+  permission:
+    notification:
+      save:
+        success: Los permisos de la entidad de referencia se han actualizado correctamente.
+        fail: Al menos un grupo de usuarios debe tener permiso de edición sobre esta entidad
+    no_data:
+      title: No tiene ningún grupo de usuarios
+      subtitle: Para gestionar los permisos de la entidad de referencia es necesario tener al menos un grupo de usuarios.
+      link: Haga clic aquí para añadir su primer grupo de usuarios
   record:
+    validation:
+      limit_reached: 'No puede crear el registro "{{ %record_label% }}" porque ha llegado al límite de registros {{ %limit% }} para esta entidad de referencia'
+      code:
+        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        should_be_unique: 'El código ya existe para esta entidad.'
+    no_data:
+      title: No hay ningún registro para {{ entityLabel }}
+      subtitle: Haga clic en el botón "Agregar nuevo" para crear el primer registro
     no_result:
+      title: No hay ningún resultado para su búsqueda
       subtitle: Pruebe con nuevos criterios de búsqueda.
+    selector:
+      no_value: Haz clic aquí para seleccionar un registro.
+    error:
+      value: Ups parece que el procesamiento del campo "{{ fieldName }}" ha fallado. Revise la consola de administración para más detalles.
     button:
       save: Guardar
       create: Añadir nuevo
       delete: Eliminar
+      delete_all: Eliminar todos los registros
+      back: Volver a la lista
     enrich:
+      title: Atributos del registro
       code: Código
       label: Etiqueta
     title: Registros
     create:
       header:
         title: Crear
+      subtitle: Información de referencia
+      title: Añadir nuevo {{ entityLabel }}
       input:
         label: Etiqueta
         code: Código (requerido)
+        create_another: Crear otro registro
       confirm: Guardar
+    delete:
+      message: '¿Está seguro que desea eliminar el registro "{{ recordLabel }}"? Si se encuentra asociado a productos o registros, los mismos serán eliminados.'
+      title: Registro
+    delete_all:
+      confirm: '¿Está seguro que desea eliminar todos los registros de "{{ entityIdentifier }}"? Si están vinculados a los productos, se eliminarán los enlaces a los productos.'
     grid:
+      search: Buscar en la etiqueta, el código y el texto de los atributos
       filter:
         completeness:
           label: Completo
-          'yes': 'YES'
-          'no': 'NO'
+          all: TODOS
       column:
         code: Código
         image: Imagen
         label: Etiqueta
         complete: Completo
         action: Acciones
+      more_result:
+        title: '¡No es eso!'
+        description: Te has desplazado a través de los primeros 500 resultados de {{ total }} registros. Para ver más, intente con criterios de búsqueda más específicos.
+      completeness:
+        title_no_required: No se requiere ningún atributo
+        title_non_complete: 0 de los atributos {{ required }} completos
+        title_ongoing: '{{ complete }}} de los {{ required }} atributos completados'
+        title_complete: Todos los atributos {{ required }} completados
     tab:
       enrich: Enriquecer
     notification:
       save:
         success: Registro actualizado correctamente.
         fail: Un error ha ocurrido durante el guardado del registro
+        validation_error: El registro no puede ser actualizado
       create:
         success: Registro creado correctamente.
         fail: Un error ha ocurrido durante la creación del registro
+      delete:
+        success: Registro "{{ code }}" eliminado con éxito.
+        fail: Un error ha ocurrido durante la eliminación del registro
+      delete_all:
+        success: Todos los registros "{{ entityIdentifier }}" se han eliminado correctamente.
+        fail: Un error ha ocurrido durante la eliminación de todos los registros de la entidad de referencia
     completeness:
       label: Completo
   attribute:
+    validation:
+      limit_reached: 'No puede crear el atributo "{{ %attribute_label% }}" porque a llegado al límite de atributos {{ %limit% }} para esta entidad de referencia'
     default:
       code: Código
       label: Etiqueta
@@ -83,31 +179,58 @@ pim_reference_entity:
     type:
       text: Texto
       image: Imagen
+      option: Opción única
+      option_collection: Opciones múltiples
+    is_required: necesarios para la integridad
+    no_data:
+      title: No hay atributos personalizados para {{ entityLabel }}
+      subtitle: Haga clic en el botón "Añadir un atributo" para configurar su primer atributo personalizado
+    button:
+      add: Añadir un atributo
     create:
       header:
         title: Crear
+      subtitle: Información de referencia
+      title: Añadir un atributo al registro
+      description: Los siguientes parámetros, excepto la etiqueta, no se pueden actualizar después de la creación del atributo
       input:
         code: Código (requerido)
         label: Etiqueta
         type: Tipo de atributo
+        record_type: Entidad de referencia a vincular (obligatorio)
         value_per_locale: Valor por local
         value_per_channel: Valor por canal
+      placeholder:
+        record_type: Seleccione su entidad de referencia vinculada
       confirm: Guardar
     edit:
+      delete: Eliminar el atributo
+      title: Editar atributo {{ code }}
       save: Guardar
       cancel: Cancelar
       input:
         code: Código (requerido)
         label: Etiqueta
         type: Tipo de atributo
+        record_type: Entidad de referencia relacionada (obligatorio)
         value_per_locale: Valor por local
         value_per_channel: Valor por canal
+        is_required: Necesarios para la integridad
         max_length: Caracteres Max
         textarea: Área de Texto
+        is_rich_text_editor: Editor de texto enriquecido
         max_file_size: Tamaño máximo de archivo (MB)
         allowed_extensions: Extensiones permitidas
         validation_rule: Regla de validación
         regular_expression: Expresión regular
+        manage_options:
+          confirmation:
+            discard_changes: Perderá todos los cambios realizados a la lista de opciones si sale de la página actual
+          quick_edit:
+            label: Administrar opciones
+          option:
+            label:
+              placeholder: Escriba su nueva etiqueta para opciones aqui
         options:
           validation_rule:
             none: Ninguno
@@ -115,15 +238,25 @@ pim_reference_entity:
             regular_expression: Expresión regular
             url: URL
     delete:
+      message: '¿Está seguro que desea eliminar el atributo "{{ attributeLabel }}"?'
       title: Atributo
     notification:
+      list:
+        fail: Ha ocurrido un error durante la actualización de la lista de atributos
       save:
         success: Atributo exitosamente actualizado.
+        fail: Ha ocurrido un error durante el guardado del atributo
+        validation_error: El atributo no pudo ser actualizado
       create:
         success: Atributo creado exitosamente.
+        fail: Ha ocurrido un error durante la creación del atributo
+        validation_error: El atributo no pudo ser creado
       delete:
         success: Atributo exitosamente borrado.
+        fail: Ha ocurrido un error durante la eliminación del atributo
     options:
+      no_value: Haz clic aquí para seleccionar una opción.
+      sub_title: Información de referencia
       helper:
         title: Traducciones de etiqueta
   modal:
@@ -140,3 +273,8 @@ pim_enrich:
       property:
         section:
           type_specific: Escriba los parámetros específicos
+        reference_entity:
+          identifier: Entidad de referencia relacionada (obligatorio)
+          default_label: Por favor, selecciona una entidad de referencia
+permission:
+  mass_action: Aplicar {{ rightLevel }} derechos en todos los grupos

@@ -40,8 +40,8 @@ akeneo_franklin_insights:
         franklin_insights:
           label: Estatus d'atribut de Franklin
           pending: Pendent
-          mapped: Actiu
-          unmapped: Inactiu
+          active: Actiu
+          inactive: Inactiu
         values_summary: "Resum de valors: {{ label }}"
       module:
         subscribe:
@@ -51,7 +51,6 @@ akeneo_franklin_insights:
           error: "Necessita crear una família en el catàleg per accedir a aquesta pàgina."
           family_status:
             pending: 'Nou atribut Franklin a revisar'
-            full: 'S''han revisat tots els atributs de Franklin'
       constraint:
         missing_target_key: 'Falta l''objectiu clau pel mapatge'
         missing_attribute_key: 'Falta {{ expectedKey }} clau pel mapatge amb l''objectiu clau "{{ targetKey }}"'
@@ -111,8 +110,6 @@ akeneo_franklin_insights:
     module:
       title:
         sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
-        description:
-          second_step: 'Mentre mapeja els vostres identificadors, si us plau, tingueu en compte que la marca i el MPN han d''anar junts. <a href="#" class="AknDescriptionHeader-link">Llegir més</a>'
       inactive_connection:
         title: 'Ho sentim, no hi ha res que mostrar ara mateix'
         sub_title: 'Si us plau, activa el compte en el Sistema > Connexió Franklin i torna de nou.'

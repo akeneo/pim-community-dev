@@ -8,64 +8,58 @@ pim_reference_entity:
         download: Herunterladen
   reference_entity:
     button:
-      save: Speichern
       save_permission: Speichern
       create: Anlegen
+    title: Entitäten
     tab:
+      records: Aufzeichnungen
       attribute: Attribute
       properties: Eigenschaften
       permission: Berechtigungen
     properties:
       identifier: Code
       label: Bezeichnung
-      image: Abbildung
+    module:
+      delete:
+        button: Entität löschen
     create:
-      header:
-        title: Anlegen
       input:
         label: Bezeichnung
-      confirm: Speichern
     delete:
       title: Attribut
   record:
     no_result:
       subtitle: Wiederholen Sie Ihre Suche mit anderen Suchkriterien.
     button:
-      save: Speichern
-      delete: Löschen
+      delete_all: Alle Einträge löschen
+      back: Zurück zur Liste
     enrich:
-      code: Code
       label: Bezeichnung
     create:
       header:
         title: Anlegen
       input:
         label: Bezeichnung
-      confirm: Speichern
     grid:
       filter:
         completeness:
-          label: Vollständig
-          'yes': 'JA'
-          'no': 'NEIN'
+          all: ALLE
       column:
         code: Code
-        image: Abbildung
         label: Bezeichnung
         complete: Vollständig
         action: Aktionen
     tab:
       enrich: Anreichern
-    completeness:
-      label: Vollständig
   attribute:
     default:
-      code: Code
       label: Bezeichnung
       image: Abbildung
     type:
       text: Text
       image: Abbildung
+    button:
+      add: Ein Attribut hinzufügen
     create:
       header:
         title: Anlegen
@@ -76,7 +70,6 @@ pim_reference_entity:
         value_per_channel: Wert je Ausgabekanal
       confirm: Speichern
     edit:
-      save: Speichern
       cancel: Abbrechen
       input:
         label: Bezeichnung
@@ -89,6 +82,9 @@ pim_reference_entity:
         allowed_extensions: Zulässige Dateiendungen
         validation_rule: Validierungsregel
         regular_expression: Regulärer Ausdruck
+        manage_options:
+          quick_edit:
+            label: Optionen verwalten
         options:
           validation_rule:
             none: Keine
@@ -113,9 +109,3 @@ pim_reference_entity:
       button:
         cancel: Abbrechen
         confirm: Löschen
-pim_enrich:
-  entity:
-    attribute:
-      property:
-        section:
-          type_specific: Spezifische Parameter

@@ -1,0 +1,11 @@
+akeneo_referenceentity:
+  acl:
+    reference_entity:
+      create: Entität erstellen
+      delete: Entität löschen
+    record:
+      create: Einen Datensatz erstellen
+      edit: Datensatz bearbeiten
+      delete: "Datensatz löschen\n"
+    option:
+      edit: Bearbeitungsoptionen

@@ -1,3 +1,8 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Vain luku
 pimee_enrich.entity.category:
   module:
     permissions:

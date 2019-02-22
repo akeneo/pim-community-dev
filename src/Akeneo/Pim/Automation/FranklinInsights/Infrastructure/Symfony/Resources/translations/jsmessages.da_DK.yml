@@ -8,8 +8,8 @@ akeneo_franklin_insights:
     attributes_mapping:
       fields:
         franklin_insights:
-          mapped: Aktiv
-          unmapped: Inaktiv
+          active: Aktiv
+          inactive: Inaktiv
   connection:
     module:
       activation:

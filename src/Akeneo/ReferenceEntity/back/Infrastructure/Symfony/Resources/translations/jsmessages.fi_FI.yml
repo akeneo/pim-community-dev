@@ -1,33 +1,97 @@
+pim_title:
+  akeneo_reference_entities_reference_entity_index: Luo uusi viitetieto
+  akeneo_reference_entities_reference_entity_edit: Muokkaa viitetietoa
+  akeneo_reference_entities_record_edit: Muokkaa tietuetta
 pim_reference_entity:
   app:
     image:
       wide:
+        remove: Poista kuva
+        download: Lataa kuva
         upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
       small:
         remove: Poista
         download: Lataa
+        upload: Vedä ja pudota tuodaksesi
   reference_entity:
+    validation:
+      code:
+        pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
+        should_be_unique: 'Koodi on jo käytössä.'
+        limit_reached: 'Et voi luoda uutta viitetietoa "{{ %reference_entity_label% }}", koska viitetietojen enimmäismäärä {{ %limit% }} on saavutettu'
     button:
       save: Tallenna
       save_permission: Tallenna
       create: Luo
+    permission:
+      title: Viitetiedon käyttöoikeudet
+    title: Viitetiedot
+    breadcrumb: Viitetiedot
     tab:
+      records: Tietueet
       attribute: Attribuutit
       properties: Ominaisuudet
       permission: Käyttöoikeudet
     properties:
+      title: Viitetiedon ominaisuudet
       identifier: Koodi
       label: Nimike
       image: Kuva
+    attribute:
+      title: Tietueen attribuutit
+      attribute:
+        error:
+          render_list: 'Attribuutin "{{ %attribute_code% }}" näyttämisessä tapahtui virhe'
+    module:
+      delete:
+        button: Poista viitetieto
+        confirm: Haluatko varmasti poistaa tämän viitetiedon?
+    index:
+      grid:
+        count: '{0} Ei viitetietoja|{1} {{ count }} viitetieto|]1,Inf] {{ count }} viitetietoa'
+        help:
+          title: 'Tervetuloa viitetietoihin!'
+          description_part_three: Valitse "Luo" -painike luodaksesi ensimmäisen viitetiedon, sen attribuutit ja tietueet.
+          description_part_four: Sen jälkeen, luo tuotteelle attribuutti, joka käyttää tätä viitetietoa.
     create:
       header:
         title: Luo
+      subtitle: Viitetiedot
+      title: Luo uusi viitetieto
       input:
         label: Nimike
+        code: Koodi (pakollinen)
       confirm: Tallenna
     delete:
+      message: Oletko varma, että haluat poistaa viitetiedon "{{ referenceEntityLabel }}"?
       title: Attribuutti
+    notification:
+      save:
+        success: Viitetieto päivitetty onnistuneesti.
+        fail: Viitetiedon tallentamisessa tapahtui virhe
+      create:
+        success: Viitetieto luotu onnistuneesti.
+        fail: Viitetietoa luotaessa tapahtui virhe
+      delete:
+        success: Viitetieto poistettu onnistuneesti.
+        fail: Viitetiedon poistamisessa tapahtui virhe
+  permission:
+    notification:
+      save:
+        success: Viitetiedon oikeudet päivitetty onnistuneesti.
+        fail: Vähintään yhdellä käyttäjäryhmällä on oltava oikeudet tähän viitetietoon
+    no_data:
+      title: Käyttäjäryhmiä ei ole
+      subtitle: Voidaksesi määritellä viitetiedon käyttöoikeudet, vähintään yksi käyttäjäryhmä on oltava olemassa.
+      link: Klikkaa tästä luodaksesi ensimmäisen käyttäjäryhmän
   record:
+    validation:
+      limit_reached: 'Et voi lisätä tietuetta "{{ %record_label% }}", koska tietueiden enimmäismäärä {{ %limit% }} on saavutettu tälle viitetiedolle'
+      code:
+        pattern: 'Tämä kenttä voi sisältää vain kirjaimia, numeroita ja alaviivoja.'
+        should_be_unique: 'Koodi on jo käytössä.'
+    no_data:
+      title: Tietueita ei ole viitetiedolle {{ entityLabel }}
     no_result:
       subtitle: Yritä uudelleen uusilla hakuehdoilla.
     button:
@@ -35,20 +99,22 @@ pim_reference_entity:
       create: Luo uusi
       delete: Poista
     enrich:
+      title: Tietueen attribuutit
       code: Koodi
       label: Nimike
+    title: Tietueet
     create:
       header:
         title: Luo
       input:
         label: Nimike
+        code: Koodi (pakollinen)
       confirm: Tallenna
     grid:
       filter:
         completeness:
           label: Valmis
-          'yes': 'YES'
-          'no': 'NO'
+          all: KAIKKI
       column:
         code: Koodi
         image: Kuva
@@ -56,7 +122,7 @@ pim_reference_entity:
         complete: Valmis
         action: Toiminnot
     tab:
-      enrich: Rikastuta
+      enrich: Rikasta
     completeness:
       label: Valmis
   attribute:
@@ -71,6 +137,7 @@ pim_reference_entity:
       header:
         title: Luo
       input:
+        code: Koodi (pakollinen)
         label: Nimike
         type: Attribuuttityyppi
         value_per_locale: Kielikohtainen arvo
@@ -80,6 +147,7 @@ pim_reference_entity:
       save: Tallenna
       cancel: Peruuta
       input:
+        code: Koodi (pakollinen)
         label: Nimike
         type: Attribuuttityyppi
         value_per_locale: Kielikohtainen arvo

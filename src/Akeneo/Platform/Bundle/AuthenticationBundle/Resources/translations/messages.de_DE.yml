@@ -1,0 +1,6 @@
+akeneo_authentication:
+  acl:
+    sso:
+      title: Verwaltung des Single Sign-On (SSO)
+  sso:
+    unknown_user_error: Sie sind nicht berechtigt, auf diese Anwendung zuzugreifen. Bitte kontaktieren Sie Ihren Administrator.

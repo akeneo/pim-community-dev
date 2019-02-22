@@ -1,29 +1,103 @@
+pim_title:
+  akeneo_franklin_insights_connection_edit: 'Conexión Franklin Insights'
+  akeneo_franklin_insights_identifiers_mapping_edit: 'Configuración de Franklin Insights'
+  akeneo_franklin_insights_attributes_mapping_edit: 'Configuración de Franklin Insights'
 akeneo_franklin_insights:
   entity:
+    data_provider:
+      ask_franklin_down: "¡Vaya, algo ha fallado! Inténtalo de nuevo más tarde."
     identifier_mapping:
       plural_label: Identificadores
+      flash:
+        update:
+          success: 'La asignación de identificadores se ha guardado correctamente.'
+          fail: 'La asignación de identificadores no se ha guardado debido a un error.'
       fields:
         identifier_label:
+          label: Identificador de Franklin
           values:
             brand: Marca
             asin: ASIN
             mpn: MPN
             upc: UPC
+        catalog_attribute: Atributo de catálogo
+        franklin_insights: Estado de identificador de Franklin
         status:
           active: Activo
           inactive: Inactivo
+      constraint:
+        attribute_type: "No se puede definir el tipo de este atributo como un identificador"
     attributes_mapping:
       fields:
+        franklin_attribute: 'Atributo de Franklin'
         franklin_insights:
-          mapped: Activo
-          unmapped: Inactivo
+          label: Estado del atributo de Franklin
+          pending: Pendiente
+          active: Activo
+          inactive: Inactivo
+        values_summary: "Resumen de valores: {{ label }}"
+      module:
+        subscribe:
+          subscribe: 'Suscribir familia a Franklin'
+          subscribed: 'Suscribir a Franklin'
+        index:
+          error: "Es necesario crear una familia en su catálogo para acceder a esta página."
+          family_status:
+            pending: 'Nuevos atributos de Franklin para revisar'
+    product_subscription:
+      constraint:
+        invalid_mapped_values: 'Lo sentimos, no pudo suscribirse el producto a Franklin Insights. Por favor, suscriba el producto con una combinación de identificadores válida.'
+        not_subscribed: 'El producto no se ha suscrito'
+      module:
+        product_edit_form:
+          family_required: 'Familia de producto requerida.'
+          no_identifier_filled: 'Identificadores del producto requeridos.'
+    attribute_options_mapping:
+      fields:
+        franklin_attribute_option: Opción de atributo de Franklin
+        catalog_attribute_option: Opciones de atributo del catálogo
+        attribute_option_status: Status de opciones de Franklin
+      module:
+        edit:
+          title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opciones de atributo'
+          sub_title: '¡Conoce a Franklin, su <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'
+  product:
+    edit:
+      btn.push: Sugerencia de datos
+      subscription_status_title: 'Suscripción de Franklin'
   connection:
+    page_title: 'Conexión Franklin Insights'
+    flash:
+      invalid: Código de activación no válido, lo siento. Por favor, pruebe con uno válido.
+      error: Lo sentimos, se ha producido un error.
     module:
+      title:
+        sub_title: '¡Bienvenido a <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'
+        description:
+          first_step: 'El primer paso en la conexión del asistente es configurar el token de la API.'
       activation:
+        label: 'Conector de Franklin'
         activation_code: 'Código de activación'
+        paste_activation_code: 'Pegar el código de activación'
         activated: 'Habilitado'
         activate: 'Activar'
   settings:
+    page_title: 'Configuración de Franklin Insights'
     module:
+      title:
+        sub_title: '¡Conoce a Franklin, su <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'
       inactive_connection:
         title: 'Lo sentimos, no hay nada que mostrar aquí todavía'
+  mass_edit:
+    product:
+      operation:
+        franklin_insights:
+          label: 'Suscripción a Franklin Insights'
+          description: Por favor, seleccione la acción que desea aplicar en los productos seleccionados en la grilla
+          subscribe_label: Subscribirte
+          unsubscribe_label: Cancelar la suscripción
+          constraint:
+            franklin_activation: "Por favor <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activar</a> Franklin Insights antes de suscribirse a los productos."
+batch_jobs:
+  franklin_insights_subscribe_products:
+    subscribe_products.label: Suscribirse a productos
