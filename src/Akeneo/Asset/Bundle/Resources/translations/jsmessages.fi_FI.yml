@@ -28,14 +28,17 @@ pimee_product_asset:
   enrich_variation:
     popin:
       reset:
-        title: Nollaa variaatiot
+        title: Luo variaatiot
+        message: Oletko varma, että haluat luoda kaikki variaatio uudelleen?
   mass_upload:
     menu: Tuo assetteja
     btn:
+      remove_all_files: Poista kaikki tiedostot
       import: Tuonti
       upload: Tuo assetteja
     success:
       new: Uusi assetti luodaan
+      imported: Tiedostot tuotu assettin käsittelyyn
       canceled: Tuonti onnistuneesti keskeytetty
       deleted: Tuotu tiedosto onnistuneesti poistettu
       need_refresh: <b>Assettien tuonti on käynnistänyt</b><br>Nähdäksesi assetit tuotelomakkeella, päivitä tuotesivu heti kun saat ilmoituksen assettien tuonnista.
@@ -43,10 +46,12 @@ pimee_product_asset:
       list: Jo tuotuja tiedostoja ei voida lukea
       upload: Tuonnin yhteydessä tapahtui virhe
       delete: Tiedostoa ei voida poistaa palvelimelta
+      import: Tuonnin yhteydessä tapahtui virhe
       filename: Assetin tiedostonimi ei ole pätevä
       code: Vääränmuotoinen koodi assetille
       locale: Aseeti on olemassa, mutta se ei ole lokalisoitavissa
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
+      exists: Samanniminen tiedosto on jo tuotu
       conflicts: Tiedostonimissä on konflikti
     status:
       added: Lisätty
@@ -54,10 +59,14 @@ pimee_product_asset:
       uploading: Tuo
       error: Virhe
       success: Onnistui
+    drag_and_drop: Vedä ja pudota assetit tai klikkaa tästä
   datagrid:
     mass_action:
       delete:
         confirm_content: Oletko varma, että halut poistaa valitut assetit?
+        success: Valitut assetit poistettu onnistuneesti.
+        error: Valittujen assettien poistamisessa tapahtui virhe. Ole hyvä ja yritä uudelleen.
+        empty_selection: Assetteja ei ole valittu
 pim_enrich:
   entity:
     attribute:
@@ -71,7 +80,7 @@ pim_dashboard:
         mass_upload: Massatuonti
 pim_title:
   pimee_product_asset_mass_upload: Tuo assetteja
-  pimee_product_asset_index: Resurssit
+  pimee_product_asset_index: Assetit
   pimee_product_asset_edit: Assetti {{ asset.label }} | Muokkaus
   pimee_asset_categorytree_index: Kategoriat
   pimee_asset_categorytree_edit: Kategoria {{ category.label }} | Muokkaus
@@ -83,19 +92,55 @@ batch_jobs:
     label: Assettien massatuonti ja lisääminen tuotteelle
     perform.label: Massatuo assetit ja lisää tuotteelle
   yml_asset_channel_configuration_import:
+    import.label: Assettien kanava-asetusten tuonti
     label: Assettikanavien konfiguraation tuonti Yaml muodossa
     import_asset.label: Assettikanavien konfiguraation tuonti Yaml muodossa
   yml_asset_channel_configuration_export:
     label: Assettikanavien asetusten vienti Yaml -muodossa
     export.label: Assettikanavien asetusten vienti Yaml -muodossa
   csv_asset_import:
+    label: Assettien tuonti CSV-muodossa
     import_tags.label: Tunnisteiden tuonti CSV-muodossa
+    import_asset.label: Assettien tuonti CSV-muodossa
+  csv_asset_export:
+    label: Assettien vienti CSV-muodossa
+    export.label: Assettien vienti CSV-muodossa
+  csv_asset_variation_export:
+    label: Assettien variaatioiden vienti CSV-muodossa
+    export.label: Assettien variaatioiden vienti CSV-muodossa
   csv_tag_import:
     label: Tunnisteiden tuonti CSV-muodossa
     import.label: Tunnisteiden tuonti CSV-muodossa
+  csv_asset_category_import:
+    label: Assettien kategorioiden tuonti CSV-muodossa
+    import_asset_category.label: Assettien kategorioiden tuonti CSV-muodossa
+  csv_asset_configuration_import:
+    label: Assettien kanava-asetusten tuonti CSV-muodossa
+    import_asset.label: Assettien kanava-asetusten tuonti CSV-muodossa
+  csv_asset_category_export:
+    label: Assettien kategorioiden vienti CSV-muodossa
+    export.label: Assettien kategorioiden vienti CSV-muodossa
+  xlsx_tag_import:
+    label: Tunnisteiden tuonti XLSX-muodossa
+    import.label: Tunnisteiden tuonti XLSX-muodossa
+  xlsx_asset_import:
+    label: Assettien tuonti XLSX-muodossa
+    import_tags.label: Tunnisteiden tuonti XLSX-muodossa
+    import_asset.label: Assettien tuonti XLSX-muodossa
+  xlsx_asset_category_import:
+    label: Assettien kategorioiden tuonti XLSX-muodossa
+    import_asset_category.label: Assettien kategorioiden tuonti XLSX-muodossa
+  xlsx_asset_export:
+    label: Assettien vienti XLSX-muodossa
+    export.label: Assettien vienti XLSX-muodossa
+  xlsx_asset_category_export:
+    label: Assettien kategorioiden vienti XLSX-muodossa
+    export.label: Assettien kategorioiden vienti XLSX-muodossa
   xlsx_asset_variation_export:
     label: Assettien variaatioiden vienti CSV-muodossa
     export.label: Assettien variaatioiden vienti CSV-muodossa
+  classify_assets:
+    perform.label: Siirrä assetit kategorioihin
   add_tags_to_assets:
     perform.label: Lisää tunnisteita asseteille
 jstree:
@@ -103,6 +148,7 @@ jstree:
     all: Kaikki assetit
     unclassified: Luokittelemattomat assetit
 asset_grid:
+  title: "]-Inf, 1]{{ count }} tuotteen assetti|]1, Inf[{{ count }} tuotteen assettia"
   selected: valittua assettia
   label: Tuotteen assetit
 create_asset:
@@ -144,9 +190,14 @@ pimee_enrich.entity.channel:
           width: '%value%px leveys'
           height: '%value%px korkeus'
 pimee_enrich.mass_edit.asset:
+  title: Assettien massatoiminnot
+  confirm: "{1}Olet muokkaamassa asettia seuraavilla tiedoilla, ole hyvä ja vahvista.|]1, Inf[Olet muokkaamassa {{ itemsCount }} assettia seuraavilla tiedoilla, ole hyvä ja vahvista."
   step:
+    select:
+      label: Valitse assetit
     choose:
       title: Assettien massatoiminnot
+      label_count: "]0, Inf[Valitse toiminto"
     configure:
       label: Konfiguroi
     confirm:
@@ -155,21 +206,28 @@ pimee_enrich.mass_edit.asset:
     add_tag:
       label: Lisää tunnisteita asseteille
       description: Tunnisteita lisätään assetille.
+      label_count: "{1}Lisää tunnisteet <span class=\"AknFullPage-title--highlight\">1 assetille</span>|]1, Inf[Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assetille</span>"
       field: Tunnisteet
+      empty_selection: Valitse tunnisteet
     add_to_category:
       label: Luokittele assetit kategorioihin
+      description: Assetit liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan.
+      label_count: "{1}Luokittele <span class=\"AknFullPage-title--highlight\">1 assetti</span> kategorioihin|]1, Inf[Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assettia</span> kategorioihin"
 pim_catalog_volume:
   section:
     assets:
       title: Assettien ulottuvuudet
       hint: Voit seurata tässä katalogin kokoa liittyen assetteihin
   axis:
-    count_assets: Resurssit
+    count_assets: Assetit
     count_asset_categories: Assettikategoriat
     count_asset_category_trees: Assettikategoriapuut
 pim_menu:
   tab:
-    asset: Resurssit
+    asset: Assetit
   item:
     asset_category: Assettikategoriat
     upload_asset: Tuo assetteja
+pim_notification:
+  types:
+    mass_upload: Massatuonti

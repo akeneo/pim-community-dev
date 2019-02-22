@@ -1,4 +1,11 @@
 akeneo_franklin_insights:
+  acl:
+    franklin_insights:
+      index: Abbonamento al prodotto Franklin Insights
+    franklin:
+      title: Gestisci la Connessione Franklin Insights
+    settings:
+      mapping: Gestisci le Impostazioni di Franklin Insights
   acl_group:
     franklin_insights: Impostazioni Franklin Insights
   mapping_identifier:
@@ -7,8 +14,19 @@ akeneo_franklin_insights:
   entity:
     product_subscription:
       constraint:
+        family_required: 'Una famiglia prodotto è richiesta per iscrivere il prodotto a Franklin Insights.'
         no_identifiers_mapping: 'Mappa gli identificatori del tuo catalogo prodotti in Impostazioni > Franklin Insights prima di iscrivere i prodotti.'
+        insufficient_credits: "Impossibile iscrivere il prodotto a Franklin Insights. Non hai abbastanza credito."
+        invalid_mapped_values: 'Impossibile iscrivere il prodotto a Franklin Insights. Iscrivi il prodotto con una combinazione di identificatori valida.'
+        already_subscribed_product: 'Il prodotto è già iscritto.'
+        variant_product: 'I prodotti varianti non possono essere iscritti a Franklin Insights.'
+        inactive_connection: 'Impossibile iscrivere il prodotto a Franklin Insights. Configura la tua connessione a Franklin Insights.'
 job_execution.summary:
   configuration_validation: Configurazione Franklin Insights
   subscribed: iscritto
   unsubscribed: disiscritto
+  unsubscription_skipped_not_subscribed: saltato (non iscritto)
+pim_datagrid:
+  cells:
+    type:
+      franklin_insights_fetch_products: Franklin Insights

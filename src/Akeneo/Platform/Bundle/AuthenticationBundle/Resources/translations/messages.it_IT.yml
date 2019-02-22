@@ -1,0 +1,6 @@
+akeneo_authentication:
+  acl:
+    sso:
+      title: Gestisti il Single Sign-On (SSO)
+  sso:
+    unknown_user_error: Non hai il permesso di accedere a questa applicazione. Contatta il tuo amministratore.

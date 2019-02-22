@@ -6,6 +6,7 @@ akeneo_referenceentity:
       create: Créer une entité
       edit: Modifier les propriétés de l'entité
       delete: Supprimer une entité
+      manage_permission: Gérer les permissions d’entité référentielle
     record:
       create: Créer un enregistrement
       edit: Modifier les enregistrements

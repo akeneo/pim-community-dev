@@ -228,3 +228,6 @@ pim_menu:
   item:
     asset_category: Categories de recursos
     upload_asset: Penjar recursos
+pim_notification:
+  types:
+    mass_upload: Carregar en massa

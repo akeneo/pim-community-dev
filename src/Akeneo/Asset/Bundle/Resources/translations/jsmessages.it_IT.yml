@@ -228,3 +228,6 @@ pim_menu:
   item:
     asset_category: Categorie degli asset
     upload_asset: Carica asset
+pim_notification:
+  types:
+    mass_upload: Caricamento di massa
