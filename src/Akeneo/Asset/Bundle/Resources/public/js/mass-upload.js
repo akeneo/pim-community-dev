@@ -116,7 +116,6 @@ define(
                     className: 'modal mass-upload-modal',
                     title: __('pim_title.pimee_product_asset_index'),
                     subtitle: __('pimee_product_asset.mass_upload.menu'),
-                    allowCancel: true,
                     okText: '',
                     content: this.pageTemplate({
                         __
