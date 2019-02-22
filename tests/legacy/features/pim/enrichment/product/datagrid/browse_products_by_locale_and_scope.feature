@@ -62,6 +62,7 @@ Feature: Browse products by locale and scope
       | [description] | Ma description mobile |
       | family        | [furniture]           |
 
+  @skip @info https://akeneo.atlassian.net/browse/PIM-8166
   Scenario: Keep working local context through navigation
     Given I open the category tree
     Then I should see the text "Master catalog"
