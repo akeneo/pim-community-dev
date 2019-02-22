@@ -179,7 +179,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function getFromTestContainer(string $service)
     {
-        return $this->testKernel->getContainer()->get($service);
+        return $this->get($service);
     }
 
     /**
@@ -197,7 +197,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function tearDown()
     {
-        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
+        $connectionCloser = $this->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
         parent::tearDown();
