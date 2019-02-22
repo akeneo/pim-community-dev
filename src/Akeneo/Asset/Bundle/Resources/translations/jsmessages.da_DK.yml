@@ -211,3 +211,6 @@ pim_menu:
   item:
     asset_category: Aktiver kategorier
     upload_asset: Indlæs aktiver
+pim_notification:
+  types:
+    mass_upload: Masse upload

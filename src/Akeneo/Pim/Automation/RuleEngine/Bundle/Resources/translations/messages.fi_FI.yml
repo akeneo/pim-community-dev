@@ -3,6 +3,7 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         delete: Poista
+        execute: Suorita
       title: Säännöt
       column:
         code: Koodi
@@ -11,6 +12,7 @@ pimee_catalog_rule:
         impacted_product_count:
           no_yet_calculated: Ei vielä laskettu
       mass_edit_action:
+        execute: Suorita
         delete: Poista
   actions:
     options:
@@ -22,6 +24,7 @@ pimee_catalog_rule:
       "CONTAINS": sisältää
       "DOES NOT CONTAIN": ei sisällä
       "EMPTY": on tyhjä
+      "NOT EMPTY": ei ole tyhjä
       "BETWEEN": välillä
       "NOT BETWEEN": ei välillä
       "<": pienempi kuin
@@ -30,6 +33,7 @@ pimee_catalog_rule:
   acl:
     rule:
       view_permissions: Näytä säännöt
+      delete_permissions: Poista säännöt
   attribute:
     tab:
       rule.title: Säännöt

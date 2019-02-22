@@ -1,6 +1,21 @@
 akeneo_referenceentity:
+  acl_group:
+    reference_entity: Entidades de referencia
   acl:
     reference_entity:
       create: Crear una entidad
+      edit: Editar las propiedades de la entidad
+      delete: Eliminar una entidad
+      manage_permission: Administrar permisos de entidad de referencia
     record:
       create: Crear un registro
+      edit: Editar los registros
+      delete: Eliminar un registro
+      delete_all: Eliminar todos los registros de entidad
+    attribute:
+      create: Añadir un atributo a una información de referencia
+      edit: Editar un atributo de la información de referencia
+      delete: Eliminar un atributo de una entidad de referencia
+    option:
+      edit: Editar opciones
+      delete: Eliminar opción

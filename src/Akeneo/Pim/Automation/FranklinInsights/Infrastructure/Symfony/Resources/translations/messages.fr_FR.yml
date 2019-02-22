@@ -14,8 +14,13 @@ akeneo_franklin_insights:
   entity:
     product_subscription:
       constraint:
+        family_required: 'Un produit doit appartenir à une famille pour pouvoir s''abonner à Franklin Insights.'
         no_identifiers_mapping: 'Veuillez d''abord mapper les identifiants de votre catalog sur la page Paramètres > Franklin Insights avant d''abonner des produits.'
+        insufficient_credits: "Impossible d'abonner ce produit à Franklin Insights. Vous n’avez pas assez de crédits."
+        invalid_mapped_values: 'Impossible d''abonner ce produit à Franklin Insights. Veuillez vérifier que la combinaison des identifiants est valide.'
         already_subscribed_product: 'Le produit est déjà abonné.'
+        variant_product: 'Les produits variants ne peuvent pas être abonnés à Franklin Insights.'
+        inactive_connection: 'Impossible d''abonner un produit à Franklin Insights. Veuillez configurer votre connexion à Franklin Insights.'
 job_execution.summary:
   configuration_validation: Configuration de Franklin Insights
   subscribed: abonné

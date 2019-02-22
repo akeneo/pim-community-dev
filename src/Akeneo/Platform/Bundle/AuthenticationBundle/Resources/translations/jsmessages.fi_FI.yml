@@ -5,3 +5,12 @@ authentication:
         activation:
           info:
             title: Varoitus
+      field:
+        certificate:
+          label: Sertifikaatti
+        private_key:
+          label: Yksityinen avain
+        metadata_url:
+          tooltip_label: Kopioi URL
+        acs_url:
+          tooltip_label: Kopioi URL

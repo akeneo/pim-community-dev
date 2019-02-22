@@ -1,24 +1,32 @@
 pim_title:
   akeneo_reference_entities_reference_entity_index: Crea una nuova entità
+  akeneo_reference_entities_reference_entity_edit: Modifica un entità di riferimento
   akeneo_reference_entities_record_edit: Modifica riga
 pim_reference_entity:
   app:
     image:
       wide:
+        remove: Rimuovi l'immagine
+        download: Scarica l'immagine
         upload: Drag and drop per caricare un file o fai click qui
       small:
         remove: Rimuovere
         download: Scarica
+        upload: Trascina e rilascia per caricare
   reference_entity:
     validation:
       code:
         pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
         should_be_unique: 'Questo codice è già esistente per questa entità.'
+        limit_reached: 'Non puoi creare l''entità di riferimento "{{ %reference_entity_label% }}" perché hai raggiunto il limite di {{ %limit% }} entità di riferimento'
     button:
       save: Salva
       save_permission: Salva
       create: Crea
+    permission:
+      title: Permessi entità
     title: Entità
+    breadcrumb: Entità di riferimento
     img: Immagine principale dell'entità di riferimento denominata "{{ label }}"
     tab:
       records: Record
@@ -32,19 +40,35 @@ pim_reference_entity:
       image: Immagine
     attribute:
       title: Attributi del record
+      attribute:
+        error:
+          render_list: 'Si è verificato un errore durante il rendering dell''attributo "{{ %attribute_code% }}"'
+          render_edit: 'Si è verificato un errore durante il rendering dei campi di proprietà aggiuntive dell''attributo "{{ %attribute_code% }}"'
     module:
       delete:
         button: Elimina entità
         confirm: Sei sicuro di voler eliminare questa entità?
+    index:
+      grid:
+        count: '{0} Nessuna entità di riferimento|{1} {{ count }} Entità di riferimento|]1,Inf] {{ count }} Entità di riferimento'
+        help:
+          title: 'Benvenuto alle entità di riferimenti!'
+          description_part_one: Arricchisci informazioni rilevanti relative ai prodotti (es. marchi, produttori, colori, materiali, ingredienti...).
+          description_part_two: Ti permetterà di fornire un'esperienza di prodotto migliore ai tuoi clienti.
+          description_part_three: Fai clic sul pulsante "Crea" per creare la tua prima entità riferimento, impostare i suoi attributi e record.
+          description_part_four: Poi, per collegarla ai prodotti, crea un tipo di attributo prodotto correlato a questa entità di riferimento.
+          description_part_five: Per ulteriori dettagli, ti invitiamo a leggere questo articolo.
     create:
       header:
         title: Crea
+      subtitle: Entità di riferimento
       title: Crea una nuova entità
       input:
         label: Etichetta
         code: Codice (richiesto)
       confirm: Salva
     delete:
+      message: Sei sicuro di voler eliminare l'entità "{{ referenceEntityLabel }}"?
       title: Attributo
     notification:
       save:
@@ -56,8 +80,18 @@ pim_reference_entity:
       delete:
         success: Entità di riferimento eliminata correttamente.
         fail: Si è verificato un errore durante l'eliminazione dell'entità di riferimento
+  permission:
+    notification:
+      save:
+        success: Permessi dell'entità di riferimento salvati correttamente.
+        fail: Almeno un gruppo utente dovrebbe avere permesso di modifica su questa entità
+    no_data:
+      title: Non hai nessun gruppo utente
+      subtitle: Per gestire i permessi sulle entità di riferimento devi avere almeno un gruppo utente.
+      link: Fai clic qui per aggiungere il tuo primo gruppo
   record:
     validation:
+      limit_reached: 'Non puoi creare il record "%record_label%" perché hai raggiunto il limite di {{ %limit% }} record per questa entità di riferimento'
       code:
         pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
         should_be_unique: 'Questo codice è già esistente per questa entità.'
@@ -67,6 +101,10 @@ pim_reference_entity:
     no_result:
       title: Non ci sono risultati per la tua ricerca
       subtitle: Riprova con nuovi criteri di ricerca.
+    selector:
+      no_value: Clicca qui per selezionare un record.
+    error:
+      value: Oops, sembra che il rendering del campo "{{ fieldName }}" non sia riuscito. Vedi la console per sviluppatori per maggiori dettagli.
     button:
       save: Salva
       create: Aggiungi nuovo
@@ -81,12 +119,15 @@ pim_reference_entity:
     create:
       header:
         title: Crea
+      subtitle: Entità di riferimento
       title: Aggiungi nuovo {{ entityLabel }}
       input:
         label: Etichetta
         code: Codice (richiesto)
+        create_another: Crea un altro record
       confirm: Salva
     delete:
+      message: Sei sicuro di voler eliminare il record "{{ recordLabel }}"? Se è collegato a prodotti o record, i collegamenti verranno rimossi.
       title: Record
     delete_all:
       confirm: Sei sicuro di voler eliminare tutti i record di "{{ entityIdentifier }}"? Se sono collegati ai prodotti, i collegamenti ai prodotti saranno rimossi.
@@ -95,8 +136,7 @@ pim_reference_entity:
       filter:
         completeness:
           label: Completo
-          'yes': 'SI'
-          'no': 'NO'
+          all: TUTTO
       column:
         code: Codice
         image: Immagine
@@ -106,12 +146,18 @@ pim_reference_entity:
       more_result:
         title: Non è così!
         description: Hai appena visto i primi 500 risultati di {{ total }} record. Per vederne di più, utilizza criteri di ricerca più specifici.
+      completeness:
+        title_no_required: Nessun attributo richiesto
+        title_non_complete: 0 su {{ required }} attributi completati
+        title_ongoing: '{{ complete }} su {{ required }} attributi completati'
+        title_complete: Tutti {{ required }} attributi completati
     tab:
       enrich: Catalogo
     notification:
       save:
         success: Record aggiornato correttamente.
         fail: Si è verificato un errore durante il salvataggio del record
+        validation_error: Il record non può essere aggiornato
       create:
         success: Record creato correttamente.
         fail: Si è verificato un errore durante la creazione del record
@@ -124,6 +170,8 @@ pim_reference_entity:
     completeness:
       label: Completo
   attribute:
+    validation:
+      limit_reached: 'Non puoi creare l''attributo "{{ %attribute_label% }}" perché hai raggiunto il limite di {{ %limit% }} attributi per questa entità di riferimento'
     default:
       code: Codice
       label: Etichetta
@@ -131,6 +179,10 @@ pim_reference_entity:
     type:
       text: Testo
       image: Immagine
+      record: Collegamento singolo entità di riferimento
+      record_collection: Collegamenti multipli entità di riferimento
+      option: Singola opzione
+      option_collection: Opzioni multipli
     is_required: richiesto per la completezza
     no_data:
       title: Non ci sono attributi personalizzati per {{ entityLabel }}
@@ -140,21 +192,29 @@ pim_reference_entity:
     create:
       header:
         title: Crea
+      subtitle: Entità di riferimento
+      title: Aggiungi nuovo attributo di registrazione
+      description: I parametri seguenti, ad eccezione dell'etichetta, non possono essere aggiornati dopo la creazione dell'attributo
       input:
         code: Codice (richiesto)
         label: Etichetta
         type: Tipo di attributo
+        record_type: Entità di riferimento da collegare (obbligatorio)
         value_per_locale: Valore per impostazioni internazionali
         value_per_channel: Valore per canale
+      placeholder:
+        record_type: Seleziona la tua entità di riferimento collegata
       confirm: Salva
     edit:
       delete: Elimina l'attributo
+      title: Modifica attributo {{ code }}
       save: Salva
       cancel: Annulla
       input:
         code: Codice (richiesto)
         label: Etichetta
         type: Tipo di attributo
+        record_type: Entità di riferimento correlata (richiesto)
         value_per_locale: Valore per impostazioni internazionali
         value_per_channel: Valore per canale
         is_required: Richiesto per la completezza
@@ -165,6 +225,14 @@ pim_reference_entity:
         allowed_extensions: Estensioni consentite
         validation_rule: Regola di convalida
         regular_expression: Espressione regolare
+        manage_options:
+          confirmation:
+            discard_changes: Perderai le modifiche fatte all'elenco delle opzioni se lasci la pagina
+          quick_edit:
+            label: Gestisci opzioni
+          option:
+            label:
+              placeholder: Scrivi le tue nuove etichette opzioni qui
         options:
           validation_rule:
             none: Nessun
@@ -172,18 +240,25 @@ pim_reference_entity:
             regular_expression: Espressione regolare
             url: URL
     delete:
+      message: Sei sicuro di voler eliminare l'attributo "{{ attributeLabel }}"?
       title: Attributo
     notification:
+      list:
+        fail: Si è verificato un errore durante l'aggiornamento della lista degli attributi
       save:
         success: Attributo aggiornato con successo.
         fail: Si è verificato un errore durante il salvataggio dell'attributo
+        validation_error: L'attributo non può essere aggiornato
       create:
         success: Attributo creato con successo.
         fail: Si è verificato un errore durante la creazione dell'attributo
+        validation_error: L'attributo non può essere creato
       delete:
         success: Attributo eliminato correttamente.
         fail: Si è verificato un errore durate la cancellazione dell'attributo
     options:
+      no_value: Clicca qui per selezionare un'opzione.
+      sub_title: Entità di riferimento
       helper:
         title: Traduzioni etichetta
   modal:
@@ -198,5 +273,13 @@ pim_enrich:
   entity:
     attribute:
       property:
+        type:
+          akeneo_reference_entity_collection: Collegamenti multipli entità di riferimento
+          akeneo_reference_entity: Collegamento singolo entità di riferimento
         section:
           type_specific: Digita parametri specifici
+        reference_entity:
+          identifier: Entità di riferimento correlata (richiesto)
+          default_label: Si prega di seleziona un'entità di riferimento
+permission:
+  mass_action: Applica il diritto {{ rightLevel }} a tutti i gruppi

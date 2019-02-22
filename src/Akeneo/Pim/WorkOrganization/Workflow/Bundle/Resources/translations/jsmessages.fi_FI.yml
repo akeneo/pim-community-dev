@@ -4,6 +4,11 @@ Approve: Hyväksy
 Refuse: Hylkää
 Approve selected: Hyväksy valitut
 Refuse selected: Hylkää valitut
+pim_datagrid:
+  no_entities:
+    product_draft: Tuoteluonnoksia ei ole tarkistettavaksi.
+  no_results:
+    product_draft: Tuoteluonnoksia ei ole tarkistettavaksi. Yritä muuttaa hakuehtoja.
 pimee_datagrid:
   cells:
     expand:
@@ -17,6 +22,7 @@ pimee_workflow:
     proposal:
       modal.title: Jätä kommentti (valinnainen - 255 merkkiä max.)
   proposal:
+    overview: "]-Inf, 1]{{ count }} ehdotus|]1, Inf[{{ count }} ehdotusta"
     selected: ehdotusta valittu
     partial_accept:
       modal.title: Hyväksy osittaisia tietoja
@@ -68,6 +74,9 @@ pimee_enrich.entity.product:
     history:
       published: Julkaistu
       revert: Palauta
+    attribute:
+      can_be_updated_by_a_rule: "Tämä attribuutti voidaan päivittää säännöllä: {{ rule }}"
+      value_updated: Nykyinen luonnos muuttaa tätä arvoa
     meta:
       published_version: Julkaistu versio
       owner_groups: Omistajaryhmät
@@ -102,6 +111,8 @@ pimee_enrich.entity.published_product:
       fail: Tuotteen julkaisun peruuttaminen epäonnistui
     revert:
       success: Tuote palautettu onnistuneesti
+  page_title:
+    index: "]-Inf, 1]{{ count }} julkaistu tuote|]1, Inf[{{ count }} julkaistua tuotetta"
   module:
     publish:
       label: Julkaise
@@ -128,7 +139,7 @@ pimee_enrich.entity.product_draft:
       label: Tallenna luonnos
     proposal:
       accept: Hyväksy ehdotus
-      accept_selected: Hyväksy valittu ehdotus / ehdotukset
+      accept_selected: Hyävksy valittu ehdotus / ehdotukset
       reject: Hylkää ehdotus
       reject_selected: Hylkää valittu ehdotus / ehdotukset
       remove: Poista ehdotus
@@ -142,10 +153,12 @@ pimee_enrich.mass_edit.product:
   operation:
     publish:
       label: Julkaise
+      label_count: "{1}Julkaise <span class=\"AknFullPage-title--highlight\">1 tuote</span>|]1, Inf[Julkaise <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span>"
       description: Tuotteet julkaistaan
       warning: '{{ itemsCount }} valittua tuotetta julkaistaan.'
     unpublish:
       label: Peruuta julkaisu
+      label_count: "{1}Poista julkaisu <span class=\"AknFullPage-title--highlight\">1 tuotteelta</span>|]1, Inf[Poista julkaisu <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteelta</span>"
       description: Tuotteen julkaisu perutaan
       warning: '{{ itemsCount }} valitun tuotteen julkaisu perutaan.'
 pim_menu:

@@ -84,3 +84,5 @@ update_product_value_with_permission_and_rules:
 edit_common_attributes_with_permission_and_rules:
   steps.perform: Muokkaa attribuutteja
   steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
+pim_enrich_attribute_form:
+  isReadOnly: Vain luku
