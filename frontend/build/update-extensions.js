@@ -5,7 +5,6 @@ const glob = require('glob')
 const { parse } = require('yamljs')
 const { readFileSync, writeFileSync } = require('fs')
 const deepmerge = require('deepmerge')
-const _ = require('lodash');
 
 console.log('Updating form extensions.json'.blue)
 
@@ -74,23 +73,19 @@ function getExtensionsFromRequiredBundles() {
 function mergeExtensions(paths) {
     const config = paths.map(path => getFileContents(path))
     const merged = deepmerge.all(config)
-    const configuredExtensions = {}
-    let i = 0;
-
-    for (let extension in merged.extensions) {
-        const extensionConfig = _.defaults(
-            merged.extensions[extension],
-            EXTENSION_DEFAULTS,
-            { code: extension },
-        )
-
-        configuredExtensions[i] = extensionConfig
-        i++
-    }
+    const mergedExtensions = Object.entries(merged.extensions).map(([code, extension]) => {
+        return extensionConfig = {
+            ...EXTENSION_DEFAULTS,
+            ...extension,
+            ...{ code }
+        }
+    })
 
     return {
         attribute_fields: merged.attribute_fields,
-        extensions: _.sortBy(configuredExtensions, 'position')
+        extensions: mergedExtensions.sort((a, b) => {
+            return a.position - b.position
+        })
     }
 }
 

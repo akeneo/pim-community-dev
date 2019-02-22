@@ -17,7 +17,7 @@ const BUNDLE_LESS_INDEX_PATH = 'Resources/public/less/index.less'
 // The final output path for all the CSS of the PIM
 const OUTPUT_CSS_PATH = 'web/css/pim.css'
 
-if (!existsSync(BUNDLE_REQUIRE_PATH + '.js')) {
+if (!existsSync(`${BUNDLE_REQUIRE_PATH}.js`)) {
     console.log(`${BUNDLE_REQUIRE_PATH} does not exist - Run "bin/console pim:installer:dump-require-paths" and try again.`.red)
     process.exit(1)
 }
