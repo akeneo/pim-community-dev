@@ -39,7 +39,7 @@
         "behat/transliterator":"1.0.1",
         "doctrine/mongodb-odm-bundle": "3.2.0",
         "kriswallsmith/buzz": ">=0.5",
-        "liuggio/fastest": "1.6.*",
+        "liuggio/fastest": "1.5.*",
         "pdepend/pdepend": "2.1.*",
         "phpmd/phpmd": "1.*",
         "phpspec/phpspec": "3.4.*",
