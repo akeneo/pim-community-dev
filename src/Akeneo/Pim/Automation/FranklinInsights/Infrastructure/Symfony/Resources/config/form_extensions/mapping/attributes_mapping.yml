@@ -58,6 +58,7 @@ extensions:
                 - { label: akeneo_franklin_insights.entity.identifier_mapping.plural_label, route: akeneo_franklin_insights_identifiers_mapping_edit }
                 - { label: pim_enrich.entity.attribute.plural_label, route: akeneo_franklin_insights_attributes_mapping_index }
             selected: 1
+            sticky: true
 
     akeneo-franklin-insights-settings-attributes-mapping-index-tab-content:
         module: pim/common/simple-view

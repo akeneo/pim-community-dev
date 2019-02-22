@@ -19,6 +19,7 @@ const template = require('akeneo/franklin-insights/template/common/tabs');
 interface Config {
   tabs: Array<{ label: string, route: string, checkAllowed: boolean }>;
   selected: number | null;
+  sticky: boolean;
 }
 
 /**
@@ -32,6 +33,7 @@ class Tabs extends BaseView {
   private readonly config: Config = {
     tabs: [],
     selected: null,
+    sticky: false,
   };
   private stateFullAllowed: boolean[];
 
@@ -100,6 +102,7 @@ class Tabs extends BaseView {
    */
   public render(): BaseView {
     this.$el.html(this.template({
+      sticky: this.config.sticky,
       tabs: this.config.tabs,
       selected: this.config.selected,
       checkAllowed: this.checkAllowed.bind(this),
