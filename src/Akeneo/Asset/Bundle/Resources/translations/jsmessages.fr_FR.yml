@@ -41,7 +41,7 @@ pimee_product_asset:
       imported: Fichiers importés pour le traitement des ressources
       canceled: Téléchargement annulé avec succès
       deleted: Le fichier téléchargé a été supprimé
-      need_refresh: <b>L'import des ressources a bien été lancé</b><br>Pour voir les ressources importées dans le formulaire produit, n'oubliez pas de rafraîchir votre page dès que vous recevez la notification.
+      need_refresh: <b>L'import des ressources a bien été lancé</b><br>Pour vous les ressources importées dans le formulaire produit, n'oubliez pas de rafraîchir votre page dès que vous recevez la notification.
     error:
       list: Impossible de lire les fichiers déjà téléchargés
       upload: Une erreur s'est produite lors du téléchargement
@@ -228,3 +228,6 @@ pim_menu:
   item:
     asset_category: Catégories de ressources
     upload_asset: Télécharger les ressources
+pim_notification:
+  types:
+    mass_upload: Téléchargement massif

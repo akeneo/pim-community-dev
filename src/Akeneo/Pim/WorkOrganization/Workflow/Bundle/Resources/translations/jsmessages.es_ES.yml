@@ -102,6 +102,9 @@ pimee_enrich.entity.product:
     history:
       published: Publicado
       revert: Restaurar
+    attribute:
+      can_be_updated_by_a_rule: "Este atributo se puede actualizar por una regla: {{ rule }}"
+      value_updated: Este valor se actualizará para el proyecto actual
     meta:
       published_version: Versión publicada
       owner_groups: Grupos de propietario
@@ -136,6 +139,8 @@ pimee_enrich.entity.published_product:
       fail: Error al remover la publicación de este Producto
     revert:
       success: Producto restaurado con éxito
+  page_title:
+    index: "]-Inf, 1]{{ count }} producto publicado|]1, Inf[{{ count }} productos publicados"
   module:
     publish:
       label: Publicar
@@ -176,10 +181,12 @@ pimee_enrich.mass_edit.product:
   operation:
     publish:
       label: Publicar
+      label_count: "{1}Publicar <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: Los productos se publicarán
       warning: Los {{ itemsCount }} seleccionados serán publicados.
     unpublish:
       label: Despublicar
+      label_count: "{1}No publicar <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[No publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: Los productos serán despublicados
       warning: Los {{ itemsCount }} productos seleccionados serán quitados de la publicación.
 pim_menu:

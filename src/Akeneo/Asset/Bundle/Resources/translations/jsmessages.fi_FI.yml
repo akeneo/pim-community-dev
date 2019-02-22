@@ -29,6 +29,7 @@ pimee_product_asset:
     popin:
       reset:
         title: Nollaa variaatiot
+        message: Oletko varma, että haluat luoda kaikki variaatio uudelleen?
   mass_upload:
     menu: Tuo assetteja
     btn:
@@ -103,6 +104,7 @@ jstree:
     all: Kaikki assetit
     unclassified: Luokittelemattomat assetit
 asset_grid:
+  title: "]-Inf, 1]{{ count }} tuotteen assetti|]1, Inf[{{ count }} tuotteen assettia"
   selected: valittua assettia
   label: Tuotteen assetit
 create_asset:
@@ -144,6 +146,7 @@ pimee_enrich.entity.channel:
           width: '%value%px leveys'
           height: '%value%px korkeus'
 pimee_enrich.mass_edit.asset:
+  confirm: "{1}Olet muokkaamassa asettia seuraavilla tiedoilla, ole hyvä ja vahvista.|]1, Inf[Olet muokkaamassa {{ itemsCount }} assettia seuraavilla tiedoilla, ole hyvä ja vahvista."
   step:
     choose:
       title: Assettien massatoiminnot
@@ -155,9 +158,11 @@ pimee_enrich.mass_edit.asset:
     add_tag:
       label: Lisää tunnisteita asseteille
       description: Tunnisteita lisätään assetille.
+      label_count: "{1}Lisää tunnisteet <span class=\"AknFullPage-title--highlight\">1 assetille</span>|]1, Inf[Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assetille</span>"
       field: Tunnisteet
     add_to_category:
       label: Luokittele assetit kategorioihin
+      label_count: "{1}Luokittele <span class=\"AknFullPage-title--highlight\">1 assetti</span> kategorioihin|]1, Inf[Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assettia</span> kategorioihin"
 pim_catalog_volume:
   section:
     assets:
@@ -173,3 +178,6 @@ pim_menu:
   item:
     asset_category: Assettikategoriat
     upload_asset: Tuo assetteja
+pim_notification:
+  types:
+    mass_upload: Massatuonti

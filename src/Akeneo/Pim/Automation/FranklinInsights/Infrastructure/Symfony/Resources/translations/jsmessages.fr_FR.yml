@@ -46,8 +46,8 @@ akeneo_franklin_insights:
         franklin_insights:
           label: Statut de l'attribut Franklin
           pending: En attente
-          mapped: Actif
-          unmapped: Inactif
+          active: Actif
+          inactive: Inactif
         values_summary: "Exemples de valeurs : {{ label }}"
       module:
         subscribe:
@@ -57,7 +57,6 @@ akeneo_franklin_insights:
           error: "Vous devez créer une famille dans votre catalogue pour accéder à cette page."
           family_status:
             pending: 'Nouveaux attributs de Franklin à réviser'
-            full: 'Tous les attributs Franklin sont passés en revue'
           types_mismatch_warning: 'Avertissement: les types d''attributs ne correspondent pas.'
       constraint:
         missing_target_key: 'Clé cible manquante pour le mapping'
@@ -130,8 +129,6 @@ akeneo_franklin_insights:
     module:
       title:
         sub_title: 'Rencontrez Franklin, votre <span class="AknDescriptionHeader-title--highlight">assistant IA des informations produit</span> !'
-        description:
-          second_step: 'Pendant que vous mappez vos identifiants, gardez à l''esprit que les attributs Brand et MPN vont de pair. <a href="#" class="AknDescriptionHeader-link">Voir plus</a>'
       inactive_connection:
         title: 'Désolé, rien à afficher pour le moment'
         sub_title: 'Veuillez activer votre compte dans Système > Connexion Franklin puis revenez sur cette page.'
@@ -173,3 +170,7 @@ pim_dashboard:
     last_operations:
       job_type:
         franklin_insights_fetch_products: Franklin Insights
+pim_enrich.entity.attribute:
+  module:
+    save:
+      title: 'Attention !'

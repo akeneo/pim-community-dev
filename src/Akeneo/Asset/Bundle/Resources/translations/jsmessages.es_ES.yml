@@ -29,6 +29,7 @@ pimee_product_asset:
     popin:
       reset:
         title: Reinicializar variaciones
+        message: '¿Está seguro que desea reiniciar todas las variaciones?'
   mass_upload:
     menu: Cargar recursos
     btn:
@@ -190,11 +191,13 @@ pimee_enrich.entity.channel:
           height: 'Alto px %value%'
 pimee_enrich.mass_edit.asset:
   title: Acción en masa de recursos
+  confirm: "{1}Usted esta a punto de actualizar un recurso con la siguiente información, por favor confírmela. |]1, Inf[Usted está a punto de actualizar {{ itemsCount }} recursos con la siguiente información, por favor confírmela."
   step:
     select:
       label: Elegir recurso
     choose:
       title: Acciones en masa de recursos
+      label_count: "]0, Inf[Seleccione su acción"
     configure:
       label: Configurar
     confirm:
@@ -203,11 +206,13 @@ pimee_enrich.mass_edit.asset:
     add_tag:
       label: Añadir etiquetas a los recursos
       description: Las etiquetas serán agregadas a los activos
+      label_count: "{1}Agregar etiquetas a<span class=\"AknFullPage-title--highlight\">1 recurso</span>|]1, Inf [Agregar etiquetas a <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} recursos</span>"
       field: Etiquetas
       empty_selection: Por favor, seleccione las etiquetas
     add_to_category:
       label: Clasificar los activos en categorías
       description: Los recursos serán posicionados en las siguientes categorías, las posiciones actuales serán perdidas.
+      label_count: "{1}Clasificar <span class=\"AknFullPage-title--highlight\">1 recurso</span> a categorías|]1, Inf[Clasificar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} recursos </span> a categorías"
 pim_catalog_volume:
   section:
     assets:
@@ -223,3 +228,6 @@ pim_menu:
   item:
     asset_category: Categorías de recursos
     upload_asset: Subir activos
+pim_notification:
+  types:
+    mass_upload: Carga masiva

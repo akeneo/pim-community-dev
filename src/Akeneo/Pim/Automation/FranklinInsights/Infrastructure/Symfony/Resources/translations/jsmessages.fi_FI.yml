@@ -2,15 +2,33 @@ akeneo_franklin_insights:
   entity:
     identifier_mapping:
       fields:
+        identifier_label:
+          values:
+            brand: Tuotemerkki
+            asin: ASIN
         status:
           active: Aktiivinen
           inactive: Ei aktiivinen
     attributes_mapping:
       fields:
         franklin_insights:
-          mapped: Aktiivinen
-          unmapped: Ei aktiivinen
+          active: Aktiivinen
+          inactive: Ei aktiivinen
   connection:
     module:
       activation:
         activated: 'Aktivoitu'
+        activate: 'Aktivoi'
+  settings:
+    module:
+      save:
+        title: 'Varoitus!'
+  mass_edit:
+    product:
+      operation:
+        franklin_insights:
+          subscribe_label: Tilaa
+pim_enrich.entity.attribute:
+  module:
+    save:
+      title: 'Varoitus!'

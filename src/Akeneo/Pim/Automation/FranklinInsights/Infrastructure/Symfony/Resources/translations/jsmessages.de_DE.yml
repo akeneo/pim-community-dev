@@ -1,15 +1,27 @@
 akeneo_franklin_insights:
   entity:
+    data_provider:
+      bad_request_error: "Entschuldigung, ein Problem ist aufgetreten bei Kommunikation mit Franklin Insights. Bitte kontaktieren Sie Ihren Administrator."
     identifier_mapping:
+      plural_label: Identifikatoren
+      flash:
+        update:
+          first: 'Vielen Dank für Ihre Katalog-Produkt-IDs zuordnung. Sie können nun Produkte für die Anreicherung mit Franklin Insights abonnieren.'
       fields:
+        identifier_label:
+          values:
+            brand: Marke
+            asin: ASIN
         status:
           active: Aktiv
           inactive: Inaktiv
+      constraint:
+        duplicate_attribute_code: "Eine Zuordnung pro Katalog-Attribut erlaubt"
     attributes_mapping:
       fields:
         franklin_insights:
-          mapped: Aktiv
-          unmapped: Inaktiv
+          active: Aktiv
+          inactive: Inaktiv
   connection:
     module:
       activation:

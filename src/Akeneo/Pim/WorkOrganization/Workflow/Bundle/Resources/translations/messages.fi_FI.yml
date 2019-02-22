@@ -16,6 +16,8 @@ pimee_workflow:
       can_not_be_approved: Ei voi tarkastella
       can_not_be_deleted: Ei voi poistaa
     action:
+      approve: Hyväksy kaikki
+      refuse: Hylkää kaikki
       remove: Poista
       partial_approve: Hyväksy muutokset tuote-%product% %attribute% attribuuttiin
     notification:

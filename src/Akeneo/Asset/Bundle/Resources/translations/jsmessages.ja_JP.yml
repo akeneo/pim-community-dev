@@ -203,3 +203,6 @@ pim_menu:
   item:
     asset_category: アセットカテゴリー
     upload_asset: アセットをアップロードする
+pim_notification:
+  types:
+    mass_upload: 大量アップロード
