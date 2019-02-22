@@ -5,6 +5,7 @@
 - PIM-8157: Fix issues on user edit (scroll and groups)
 - PIM-8165: Increase font sizes
 - PIM-8018: Move Confirm button on mass edit screen
+- PIM-8154: Fix dropdown overlapped with the sticky footer
 
 # 3.0.4 (2019-02-20)
 
