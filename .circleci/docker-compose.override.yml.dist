@@ -1,0 +1,7 @@
+version: '2'
+
+services:
+  mysql-behat:
+    tmpfs:
+      - '/tmp'
+      - '/var/lib/mysql'

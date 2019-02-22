@@ -33,6 +33,7 @@ composer.phar
 !/bin/docker/pim-dependencies.sh
 !/bin/docker/pim-front.sh
 !/bin/docker/pim-initialize.sh
+!/bin/docker/pim-setup.sh
 behat.yml
 /phpspec.yml
 web/uploads/*

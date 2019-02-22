@@ -4,7 +4,7 @@ default:
     context:
         class:  Context\FeatureContext
         parameters:
-            base_url: http://akeneo-pim-behat.local/
+            base_url: http://akeneo-behat/
             timeout: 30000
             window_width: 1280
             window_height: 1024
@@ -12,11 +12,13 @@ default:
         Behat\MinkExtension\Extension:
             default_session: symfony2
             show_cmd: chromium-browser %s
-            selenium2: ~
-            base_url: http://akeneo-pim-behat.local/
+            selenium2:
+                wd_host: 'http://selenium:4444/wd/hub/'
+            base_url: http://akeneo-behat/
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat
                 debug: false
         SensioLabs\Behat\PageObjectExtension\Extension: ~
+        Liuggio\Fastest\Behat2\ListFeaturesExtension\Extension: ~
