@@ -32,6 +32,8 @@ use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CreateAssetType;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Component\ProductAsset\Builder\ReferenceBuilderInterface;
+use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -125,6 +127,12 @@ class ProductAssetController extends Controller
     /** @var CategoryManager */
     protected $categoryManager;
 
+    /** @var ReferenceBuilderInterface */
+    private $referenceBuilder;
+
+    /** @var VariationBuilderInterface */
+    private $variationBuilder;
+
     /**
      * @param AssetRepositoryInterface         $assetRepository
      * @param ReferenceRepositoryInterface     $referenceRepository
@@ -146,6 +154,8 @@ class ProductAssetController extends Controller
      * @param AssetCategoryRepositoryInterface $assetCategoryRepo
      * @param CategoryRepositoryInterface      $categoryRepository
      * @param CategoryManager                  $categoryManager
+     * @param ReferenceBuilderInterface|null $referenceBuilder
+     * @param VariationBuilderInterface|null $variationBuilder
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -167,7 +177,9 @@ class ProductAssetController extends Controller
         FileController $fileController,
         AssetCategoryRepositoryInterface $assetCategoryRepo,
         CategoryRepositoryInterface $categoryRepository,
-        CategoryManager $categoryManager
+        CategoryManager $categoryManager,
+        ReferenceBuilderInterface $referenceBuilder = null,
+        VariationBuilderInterface $variationBuilder = null
     ) {
         $this->assetRepository = $assetRepository;
         $this->referenceRepository = $referenceRepository;
@@ -189,6 +201,8 @@ class ProductAssetController extends Controller
         $this->assetCategoryRepo = $assetCategoryRepo;
         $this->categoryRepository = $categoryRepository;
         $this->categoryManager = $categoryManager;
+        $this->referenceBuilder = $referenceBuilder;
+        $this->variationBuilder = $variationBuilder;
     }
 
     /**
@@ -494,6 +508,21 @@ class ProductAssetController extends Controller
     public function editAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
+
+        if (null !== $this->referenceBuilder && null !== $this->variationBuilder) {
+            $this->referenceBuilder->buildMissingLocalized($productAsset);
+
+            $variations = array_reduce($productAsset->getReferences()->toArray(), function ($carry, ReferenceInterface $reference) {
+                $missings = $this->variationBuilder->buildMissing($reference);
+
+                return $missings !== null ? $carry + $missings : $carry;
+            }, []);
+
+            if (count($variations) > 0) {
+                $this->assetSaver->save($productAsset);
+            }
+        }
+
         if ($this->isGranted(Attributes::EDIT, $productAsset)) {
             return $this->edit($request, $id);
         }
