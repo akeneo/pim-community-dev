@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Integration\integration\BatchBundle\Command;
+namespace AkeneoTest\Platform\Integration\BatchBundle\Command;
 
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Test\Integration\Configuration;
