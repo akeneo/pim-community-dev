@@ -6,6 +6,7 @@
 - PIM-8164: Always display cancel cross on popins
 - PIM-8165: Increase font sizes
 - PIM-8018: Move Confirm button on mass edit screen
+- PIM-8167: regsiter command "pim:installer:check-requirements"
 
 # 3.0.4 (2019-02-20)
 
