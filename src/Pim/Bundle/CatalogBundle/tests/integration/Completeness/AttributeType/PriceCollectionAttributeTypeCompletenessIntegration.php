@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessIntegration;
+use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
@@ -22,7 +22,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractCompletenessIntegration
+class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractCompletenessTestCase
 {
     public function setUp()
     {

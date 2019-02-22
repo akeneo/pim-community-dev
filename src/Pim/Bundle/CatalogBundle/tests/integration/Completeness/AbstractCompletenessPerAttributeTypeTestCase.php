@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractCompletenessPerAttributeTypeIntegration extends AbstractCompletenessIntegration
+abstract class AbstractCompletenessPerAttributeTypeTestCase extends AbstractCompletenessTestCase
 {
     /**
      * Here, the identifier and the attribute should be filled in.

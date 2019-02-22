@@ -80,7 +80,7 @@
         "sebastian/exporter": "2.0.*",
         "akeneo/phpspec-skip-example-extension": "2.0.*",
         "akeneo/php-coupling-detector": "0.2",
-        "liuggio/fastest": "1.6.*"
+        "liuggio/fastest": "1.5.*"
     },
     "include-path": ["lib/"],
     "suggest": {

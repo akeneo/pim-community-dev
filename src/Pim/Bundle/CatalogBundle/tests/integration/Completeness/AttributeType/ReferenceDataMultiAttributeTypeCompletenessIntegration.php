@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
 use Akeneo\Test\Integration\Configuration;
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeIntegration;
+use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 
 /**
@@ -13,7 +13,7 @@ use Pim\Component\Catalog\AttributeTypes;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ReferenceDataMultiAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeIntegration
+class ReferenceDataMultiAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeTestCase
 {
     public function testCompleteMultiSelectReferenceData()
     {
