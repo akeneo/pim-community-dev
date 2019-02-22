@@ -81,7 +81,6 @@ define(
              * UI modal parameters
              */
             modalParameters: {
-                allowCancel: true,
                 okCloses:    false,
                 content:     '',
                 title:       '[modal_title]',

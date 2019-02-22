@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8157: Fix issues on user edit (scroll and groups)
+- PIM-8164: Always display cancel cross on popins
 
 # 3.0.4 (2019-02-20)
 
