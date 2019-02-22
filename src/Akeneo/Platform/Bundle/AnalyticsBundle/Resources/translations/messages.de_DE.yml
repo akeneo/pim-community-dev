@@ -26,6 +26,8 @@ pim_analytics:
     nb_scopable_attributes: Anzahl der Attribute mit Gültigkeitsbereichen
     nb_localizable_attributes: Anzahl der lokalisierbaren Attribute
     nb_scopable_localizable_attributes: Anzahl der lokalisierbaren Attribute mit Gültigkeitsbereichen
+    avg_percentage_scopable_attributes_per_family: Durchschnittlicher Prozentsatz von skalierbaren Attribute pro Produktfamilie
+    avg_number_attributes_per_family: Durchschnittliche Anzahl der Attribute pro Familie
     nb_locales: Anzahl der Gebietsschemas
     nb_families: Anzahl der Familien
     nb_users: Anzahl der Benutzer

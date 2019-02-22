@@ -72,4 +72,7 @@ pim_enrich:
       quick_export:
         launched_flash: Tuotteiden vienti on parhaillaan käynnissä
 category:
+  edit: Muokkaa kategoriaa
   overview: Kategoriat
+tree:
+  edit: Muokkaa kategoriapuuta

@@ -59,6 +59,7 @@ pim_common:
   permissions: Käyttöoikeudet
   properties: Ominaisuudet
   name: Nimi
+  remove: Poista
 pim_enrich:
   acl:
     locale:
@@ -281,6 +282,7 @@ Useable as grid column: Käytettävissä ruudukko-sarakkeena
 Useable as grid filter: Käytettävissä ruudukossa
 Family: Perhe
 Image: Kuva
+Variant products: Varianttituotteet
 Available locales: Saatavilla olevat alueet
 Locale specific: Aluespesifi
 default: Oletusarvo
@@ -293,7 +295,7 @@ Close: Sulje
 Search: Etsi
 Choose the attribute type: Valitse attribuutin tyyppi
 Choose the attribute group: Valitse attribuuttiryhmä
-Drag and drop a file or click here: Vedä ja tiputa tiedosto tai klikkaa tästä
+Drag and drop a file or click here: Vedä ja pudota tiedosto tai klikkaa tästä
 Drop an image or click here: Pudota kuva tai klikkaa tästä
 Automatic option sorting: Automaattinen vaihtoehtojen lajittelu
 save_attribute_before_manage_option: Hallinnoidaksesi vaihtoehtoja, ole hyvä ja tallenna ensin attribuutti

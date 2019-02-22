@@ -12,6 +12,8 @@ pim_dashboard:
         mass_edit: Massamuokkaus
         quick_export: Nopea vienti
         compute_product_models_descendants: Lasketaan tuotemallin rakenne
+        compute_family_variant_structure_changes: Laske varianttiperheen rakenteen muutokset
+        compute_completeness_of_products_family: Laske perheiden valmiusaste
         mass_delete: Massapoista tuotteet
     completeness:
       load_more: 'Lataa lisää...'

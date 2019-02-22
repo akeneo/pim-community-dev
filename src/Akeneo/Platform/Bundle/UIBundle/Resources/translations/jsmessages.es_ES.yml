@@ -104,6 +104,9 @@ oro_config:
           label: Activar los mensajes de carga
         loading_messages:
           label: Mensajes de carga disponibles
+pim_ui:
+  flash:
+    unsaved_changes: 'Tiene cambios sin guardar, ¿está seguro que desea salir?'
 "Sorry, page was not loaded correctly": "Lo sentimos, la página no se cargó correctamente"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Se perderán los cambios locales. ¿Está seguro que desea actualizar la página?"
 "navigation.message.content.outdated": "El contenido de la página {{ title }} es obsoleto, por favor <a href='#' data-action='page-refresh'> actualice la página</a>"
@@ -146,6 +149,7 @@ pim_common:
   permissions: Permisos
   previous: Previo
   properties: Propiedades
+  remove: Quitar
   required_label: (obligatorio)
   save: Guardar
   select2:
@@ -205,7 +209,12 @@ pim_enrich.entity.api_connection:
       success: Conexión API creada exitosamente
     delete:
       success: Conexión API revocada con éxito
+      fail: No puede revocar esta conexión API
+  page_title:
+    index: "]-Inf, 1]{{ count }} conexión API|]1, Inf[{{ count }} conexiones API"
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} operación|]1, Inf[{{ count }} operaciones"
   module:
     create:
       upload: Soltar su archivo {{ type }} aquí, o haga clic para buscar en el disco

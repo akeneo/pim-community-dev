@@ -91,6 +91,9 @@ pim_enrich.entity.product:
       title: Associationer
       none_exist: Det finns inga associationstyper.
       show_products: Displayprodukter
+      target: Mål
+    attribute_filter:
+      all: Alla attribut
     change_family:
       title: Välj produktfamilj
       merge_attributes: Aktuella attribut slås samman med de i den nya familjen.
@@ -103,8 +106,13 @@ pim_enrich.entity.product:
     delete:
       confirm: Är du säker på att du vill ta bort denna produkt?
 pim_enrich.entity.product_model:
+  uppercase_label: Produktmodell
+  plural_label: Produktmodeller
   property:
     family_variant: Variant
+  module:
+    variant_axis:
+      create: Lägg till ny
 pim_enrich.entity.group:
   label: Grupp
   flash:
@@ -211,6 +219,7 @@ pim_enrich.mass_edit.product:
       description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
       field: Aktivera
     change_family:
+      label: Ändra familj
       description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
     add_to_group:
       label: Lägg till i grupp
