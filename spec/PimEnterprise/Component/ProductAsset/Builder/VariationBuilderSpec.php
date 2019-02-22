@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Builder;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -35,7 +36,8 @@ class VariationBuilderSpec extends ObjectBehavior
         $ecommerce,
         $print,
         $mobile,
-        ReferenceInterface $reference
+        ReferenceInterface $reference,
+        FileInfoInterface $fileInfo
     ) {
         $reference->getLocale()->willReturn(null);
 
@@ -44,6 +46,7 @@ class VariationBuilderSpec extends ObjectBehavior
         $reference->hasVariation($mobile)->willReturn(false);
 
         $reference->addVariation(Argument::any())->shouldBeCalledTimes(2);
+        $reference->getFileInfo()->willReturn($fileInfo);
 
         $missings = $this->buildMissing($reference);
         $missings->shouldHaveCount(2);
@@ -55,7 +58,8 @@ class VariationBuilderSpec extends ObjectBehavior
         $ecommerce,
         $print,
         $mobile,
-        ReferenceInterface $reference
+        ReferenceInterface $reference,
+        FileInfoInterface $fileInfo
     ) {
         $reference->getLocale()->willReturn($en_US);
         $ecommerce->hasLocale($en_US)->willReturn(true);
@@ -66,6 +70,7 @@ class VariationBuilderSpec extends ObjectBehavior
         $reference->hasVariation($mobile)->willReturn(false);
 
         $reference->addVariation(Argument::any())->shouldBeCalledTimes(2);
+        $reference->getFileInfo()->willReturn($fileInfo);
 
         $missings = $this->buildMissing($reference);
         $missings->shouldHaveCount(2);
@@ -117,11 +122,13 @@ class VariationBuilderSpec extends ObjectBehavior
     }
 
     function it_builds_all_variations_on_a_non_localized_reference(
-        ReferenceInterface $reference
+        ReferenceInterface $reference,
+        FileInfoInterface $fileInfo
     ) {
         $reference->getLocale()->willReturn(null);
 
         $reference->addVariation(Argument::any())->shouldBeCalledTimes(3);
+        $reference->getFileInfo()->willReturn($fileInfo);
 
         $all = $this->buildAll($reference);
         $all->shouldHaveCount(3);
@@ -133,7 +140,8 @@ class VariationBuilderSpec extends ObjectBehavior
         $ecommerce,
         $print,
         $mobile,
-        ReferenceInterface $reference
+        ReferenceInterface $reference,
+        FileInfoInterface $fileInfo
     ) {
         $reference->getLocale()->willReturn($en_US);
         $ecommerce->hasLocale($en_US)->willReturn(true);
@@ -141,6 +149,7 @@ class VariationBuilderSpec extends ObjectBehavior
         $mobile->hasLocale($en_US)->willReturn(true);
 
         $reference->addVariation(Argument::any())->shouldBeCalledTimes(2);
+        $reference->getFileInfo()->willReturn($fileInfo);
 
         $all = $this->buildAll($reference);
         $all->shouldHaveCount(2);
