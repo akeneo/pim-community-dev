@@ -4,9 +4,6 @@ batch_jobs:
     import_associations: Importazione associazioni
     import_root_product_model: Importazione modello di prodotto radice
     import_sub_product_model: Importazione sotto-modelli di prodotto
-    compute_data_related_to_family_root_product_models: Calcola dati modelli di prodotto radice
-    compute_data_related_to_family_sub_product_models: Calcola dati modelli di sotto-prodotti
-    compute_data_related_to_family_products: Calcola dati prodotto
   csv_product_export:
     label: Esportazione prodotti in CSV
     export.label: Esportazione Prodotti
@@ -104,7 +101,6 @@ batch_jobs:
   xlsx_product_model_import:
     label: Importazione modello di prodotto in XLSX
     import_product_model_descendants.label: Calcola i modelli di prodotto discendenti
-    import_associations.label: Importazione associazioni
   xlsx_group_export:
     label: Esportazione gruppi in XLSX
     export.label: Esportazione gruppi

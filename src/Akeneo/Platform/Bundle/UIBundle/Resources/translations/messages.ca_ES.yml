@@ -59,6 +59,7 @@ pim_common:
   permissions: Permisos
   properties: Propietats
   name: Nom
+  remove: Eliminar
 pim_enrich:
   acl:
     locale:

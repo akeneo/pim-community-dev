@@ -40,7 +40,6 @@ required: (obbligatorio)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Abilita i messaggi di caricamento
-    loading_message_enabled.tooltip: Mostra messaggi amichevoli agli utenti mentre attendono il caricamento della pagina
     loading_messages.label: Messaggi di caricamento disponibili
     loading_messages.tooltip: Tutti i messagi disponibili di caricamento separati da interruzioni di riga
   group:
@@ -59,6 +58,7 @@ pim_common:
   permissions: Autorizzazioni
   properties: Proprietà
   name: Nome
+  remove: Rimuovere
 pim_enrich:
   acl:
     locale:

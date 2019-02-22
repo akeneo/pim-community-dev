@@ -101,7 +101,6 @@ batch_jobs:
     import.label: Produkt import
   xlsx_product_model_import:
     import_product_model_descendants.label: Beregne underliggende produkt modeller
-    import_associations.label: Association import
   xlsx_group_export:
     label: Gruppe eksport til XLSX
     export.label: Gruppe eksport

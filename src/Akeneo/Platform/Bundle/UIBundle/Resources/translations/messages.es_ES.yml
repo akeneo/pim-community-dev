@@ -59,6 +59,7 @@ pim_common:
   permissions: Permisos
   properties: Propiedades
   name: Nombre
+  remove: Quitar
 pim_enrich:
   acl:
     locale:
@@ -109,6 +110,7 @@ pim_enrich:
       create: Crear una familia
       edit_properties: Editar propiedades de una familia
       edit_attributes: Editar atributos de una familia
+      edit_variants: Editar una variante de familia
       remove: Eliminar una familia
       history: Ver historial de la familia
     family_variant:

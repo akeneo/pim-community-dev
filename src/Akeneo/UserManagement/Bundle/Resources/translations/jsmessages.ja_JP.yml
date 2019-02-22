@@ -9,6 +9,12 @@ confirmation:
   remove:
     user: このユーザーを削除してもよろしいですか?
     group: このグループを削除してもよろしいですか。
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: このユーザーを削除してもよろしいですか?
 pim_user_management:
   entity:
     user:

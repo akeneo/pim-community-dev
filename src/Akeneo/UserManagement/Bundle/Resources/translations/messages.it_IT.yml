@@ -65,7 +65,6 @@ pim_user:
       request: Richiesta
       password_reset: Reimposta password
       reset: Azzera
-      password_reset_email_sent: E' stata inviata una email all'utente. Contiene il link per reimpostare la password.
       homepage: Vai alla Homepage
   group:
     tab:

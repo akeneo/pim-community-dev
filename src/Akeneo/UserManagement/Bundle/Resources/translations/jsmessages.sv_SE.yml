@@ -9,6 +9,12 @@ confirmation:
   remove:
     user: Är du säker på att du vill ta bort denna användare?
     group: Är du säker på att du vill ta bort denna grupp?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: Är du säker på att du vill ta bort denna användare?
 pim_user_management:
   entity:
     user:
