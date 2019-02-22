@@ -118,7 +118,7 @@ jobs:
           - store_artifacts:
                 path: var/tests/phpunit
 
-  back_behat:
+  back_behat_legacy:
     machine:
       enabled: true
       docker_layer_caching: true
@@ -166,7 +166,7 @@ workflows:
           - back_phpunit_integration:
                 requires:
                     - static_and_specs
-          - back_behat:
+          - back_behat_legacy:
                 requires:
                     - back_phpunit_integration
 
@@ -187,6 +187,6 @@ workflows:
           - back_phpunit_integration:
                 requires:
                     - static_and_specs
-          - back_behat:
+          - back_behat_legacy:
                 requires:
                     - back_phpunit_integration
