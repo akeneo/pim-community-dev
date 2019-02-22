@@ -73,7 +73,7 @@ extensions:
         config:
             fieldName: code
             label: pim_enrich.entity.family.uppercase_label
-            choiceRoute: akeneo_sugggest_data_attributes_mapping_list
+            choiceRoute: akeneo_franklin_insights_attributes_mapping_list
 
     akeneo-franklin-insights-settings-attributes-mapping-index-attribute-attributes-mapping:
         module: akeneo/franklin-insights/view/settings/attributes-mapping/table
