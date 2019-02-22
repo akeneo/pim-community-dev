@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8157: Fix issues on user edit (scroll and groups)
+- PIM-8165: Increase font sizes
 - PIM-8018: Move Confirm button on mass edit screen
 
 # 3.0.4 (2019-02-20)
