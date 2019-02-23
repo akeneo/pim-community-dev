@@ -1,6 +1,4 @@
 user:
-  email:
-    notifications: E-mail påmindelser
   proposals:
     notifications:
       to_review: Når nye forslag til revision

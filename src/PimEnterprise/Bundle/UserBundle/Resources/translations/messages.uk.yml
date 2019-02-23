@@ -1,6 +1,4 @@
 user:
-  email:
-    notifications: Сповіщення ел. пошти
   proposals:
     notifications:
       to_review: Коли нова пропозиції для розгляду

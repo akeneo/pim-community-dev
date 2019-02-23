@@ -1,6 +1,4 @@
 user:
-  email:
-    notifications: Sähköposti-ilmoitukset
   proposals:
     notifications:
       to_review: Milloin uusi ehdotus on käytävissä läpi

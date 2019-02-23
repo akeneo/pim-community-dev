@@ -6,3 +6,8 @@ pimee_dashboard:
       product: Produkt
       review: Überprüfung
       empty: Keine zu überprüfende Vorschläge
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        compute_completeness_of_products_linked_to_assets: Vollständigkeit der Produkte, die mit Assets verknüpft sind

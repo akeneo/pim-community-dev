@@ -215,7 +215,9 @@ page_title:
   pimee_workflow_proposal_index: Vorschläge
   pimee_workflow_published_product_index: Veröffentlichte Produkte
   pimee_product_asset_index: Assets
+  pimee_product_asset_edit: Asset {{ asset.label }} | Bearbeiten
   pimee_asset_categorytree_index: Kategorien
+  pimee_asset_categorytree_edit: Kategorie {{ category.label }} | Bearbeiten
   pimee_catalog_rule_rule_index: Regeln
 batch_jobs:
   yml_asset_channel_configuration_import:
