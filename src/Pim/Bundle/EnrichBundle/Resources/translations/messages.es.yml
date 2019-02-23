@@ -182,6 +182,7 @@ pim_enrich:
       create: Crear una familia
       edit_properties: Editar propiedades de una familia
       edit_attributes: Editar atributos de una familia
+      edit_variants: Editar una variante de familia
       remove: Eliminar una familia
       history: Ver historial de la familia
     attribute_group:
@@ -262,10 +263,8 @@ category:
   edit: editar categoría
   suggest selection: Por favor, seleccione una categoría de la izquierda
   or: o
-  create new: Crear una nueva categoría
 tree:
   title: árbol
-  create: crear árbol
   edit: editar árbol
 channel:
   title: canal
@@ -304,7 +303,6 @@ btn:
     attribute: Crear atributo
     attribute group: crear grupo de atributos
     category: crear categoría
-    tree: crear árbol
     channel: crear canal
     currency: crear moneda
     family: crear familia

@@ -253,10 +253,8 @@ category:
   edit: Kategorie bearbeiten
   suggest selection: Bitte wählen Sie eine Kategorie auf der linken Seite
   or: oder
-  create new: Eine neue Kategorie anlegen
 tree:
   title: Struktur
-  create: Strukturbaum anlegen
   edit: Strukturbaum bearbeiten
 channel:
   title: Ausgabekanal
@@ -295,7 +293,6 @@ btn:
     attribute: Attribut anlegen
     attribute group: Attributgruppe anlegen
     category: Kategorie anlegen
-    tree: Strukturbaum anlegen
     channel: Ausgabekanal anlegen
     currency: Währung anlegen
     family: Produktfamilie anlegen

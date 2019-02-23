@@ -262,10 +262,8 @@ category:
   edit: redigere kategori
   suggest selection: Vælg venligst en kategori til venstre
   or: eller
-  create new: Opret ny kategori
 tree:
   title: træ
-  create: opret træ
   edit: redigere træ
 channel:
   title: kanal
@@ -304,7 +302,6 @@ btn:
     attribute: opret attribut
     attribute group: opret attributgruppe
     category: opret kategori
-    tree: opret træ
     channel: opret kanal
     currency: opret valuta
     family: opret familie
