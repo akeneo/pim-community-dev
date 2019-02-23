@@ -4,6 +4,7 @@ teamwork_assistant:
     warning: Ole huoleti, projektin muodostaminen voi kestää hetken, joten projektisi ei välttämättä näy välittömästi.
   grid:
     view_selector:
+      edit: Muokkaa projektia
       loading: Ladataan...
       confirmation:
         delete: Poista vahvistus
@@ -12,7 +13,9 @@ teamwork_assistant:
     locale: Lokaatio
     channel: Kanava
     description: Kuvaus
+    due_date: Määräpäivä
   edit_project_modal:
+    title: Muokkaa projektia
     confirm: Tallenna
     cancel: Peruuta
   create_project_modal:
@@ -21,5 +24,9 @@ teamwork_assistant:
   widget:
     no_project_create: luo uusi projekti
     description: Kuvaus
+    due_date: Määräpäivä
     completeness:
       to_start: TUOTTEET TYÖJONOSSA
+pim_datagrid:
+  view_selector:
+    project: Projektit
