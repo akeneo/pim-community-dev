@@ -179,6 +179,7 @@ pimee_enrich:
           description: Die Veröffentlichung der Produkte wird entzogen
           warning: '{{ itemsCount }} Produkten wird die Veröffentlichung entzogen.'
     asset:
+      title: Massenbearbeitung Assets
       step:
         select:
           label: Asset auswählen
@@ -194,8 +195,10 @@ pimee_enrich:
           label: Stichworte zu Assets hinzufügen
           description: Tags werden den Assets hinzugefügt.
           field: Stichworte
+          empty_selection: Bitte Tags auswählen
         add_to_category:
           label: Zuordnung von Assets in Kategorien
+          description: Die Assets werden in folgende Kategorien eingeteilt, die bestehende Zuordnung geht verloren.
           field: Kategorien
 pim_menu:
   tab:
@@ -210,7 +213,9 @@ page_title:
   pimee_workflow_proposal_index: Vorschläge
   pimee_workflow_published_product_index: Veröffentlichte Produkte
   pimee_product_asset_index: Assets
+  pimee_product_asset_edit: Asset {{ asset.label }} | Bearbeiten
   pimee_asset_categorytree_index: Kategorien
+  pimee_asset_categorytree_edit: Kategorie {{ category.label }} | Bearbeiten
   pimee_catalog_rule_rule_index: Regeln
 batch_jobs:
   yml_asset_channel_configuration_import:
