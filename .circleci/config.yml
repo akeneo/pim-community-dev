@@ -77,12 +77,15 @@ jobs:
           - run:
                 name: PhpCsFixer
                 command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+                when: always
           - run:
                 name: PhpCouplingDetector
                 command: docker-compose run -T fpm vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src
+                when: always
           - run:
                 name: Acceptance back
                 command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
+                when: always
           - store_test_results:
                 path: var/tests
           - store_artifacts:
@@ -173,9 +176,11 @@ jobs:
         - run:
             name: Front unit tests
             command: docker-compose run --rm node yarn run unit
+            when: always
         - run:
             name: Front acceptance tests
             command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+            when: always
 workflows:
     version: 2
     pull_request:
