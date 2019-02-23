@@ -26,10 +26,22 @@ pim_analytics:
     nb_scopable_attributes: Antal scopable attribut
     nb_localizable_attributes: Antal lokaliserbara attribut
     nb_scopable_localizable_attributes: Antal lokaliserbara och scopable attribut
+    nb_useable_as_grid_filter_attributes: Antal attribut som användbara som tabellfilter
+    avg_percentage_scopable_attributes_per_family: Genomsnittliga andelen scopable attribut per familj (%)
+    avg_percentage_localizable_attributes_per_family: Genomsnittliga andelen lokaliserbara attribut per familj (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Genomsnittliga andelen lokaliserbara och scopable attribut per familj (%)
+    avg_number_attributes_per_family: Genomsnittligt antal attribut per familj
     nb_locales: Antal språk
     nb_families: Antal familjer
     nb_users: Antal användare
     nb_categories: Antalet kategorier
+    nb_category_trees: Antal kategoriträd
+    max_category_in_one_category: Max antal kategorier i en kategori
+    max_category_levels: Max antal kategorinivåer
+    nb_product_values: Antalet produktvärden
+    avg_product_values_by_product: Genomsnittligt antal produktvärden av produkt
+    avg_product_values_by_family: Genomsnittligt antal potentiella produktvärden av familj
+    max_product_values_by_family: Max antal potentiella produktvärden av familj
     pim_storage_version: Lagringsmodell
     os_version: OS version
     php_version: PHP-version
