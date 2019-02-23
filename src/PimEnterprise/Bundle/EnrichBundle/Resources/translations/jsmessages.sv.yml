@@ -157,12 +157,14 @@ pimee_enrich:
         height: '%value%px höjd'
   mass_edit:
     next: Nästa
+    previous: Tillbaka
     cancel: Avbryt
     confirm: Bekräfta
     product:
       operation:
         publish:
           label: Publicera
+          description: Produkterna kommer att publiceras
         unpublish:
           label: Avpublicera
     asset:

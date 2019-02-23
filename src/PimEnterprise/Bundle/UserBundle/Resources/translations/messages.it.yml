@@ -1,6 +1,6 @@
 user:
   email:
-    notifications: Notifiche email
+    notifications: Ricevi una notifica quanto gli asset scadono
   proposals:
     notifications:
       to_review: Quando una nuova proposta è da revisionare

@@ -1,6 +1,4 @@
 user:
-  email:
-    notifications: Obavijesti e-poštom
   proposals:
     notifications:
       to_review: Kada recenzirati novi prijedlog

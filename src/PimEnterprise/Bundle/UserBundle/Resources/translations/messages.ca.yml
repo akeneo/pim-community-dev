@@ -1,6 +1,4 @@
 user:
-  email:
-    notifications: Notificacions per correu electrònic
   proposals:
     notifications:
       to_review: Quan hi hagi una nova proposta per revisar

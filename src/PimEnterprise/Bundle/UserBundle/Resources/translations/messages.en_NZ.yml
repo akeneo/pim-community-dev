@@ -1,6 +1,4 @@
 user:
-  email:
-    notifications: Email notifications
   proposals:
     notifications:
       to_review: When new proposal to review

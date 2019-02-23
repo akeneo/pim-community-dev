@@ -1,6 +1,4 @@
 user:
-  email:
-    notifications: Notificaciones por e-mail
   proposals:
     notifications:
       to_review: Si hay nuevas propuestas a revisar

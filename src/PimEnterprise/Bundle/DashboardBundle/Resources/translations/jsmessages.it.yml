@@ -6,3 +6,8 @@ pimee_dashboard:
       product: Prodotto
       review: Da rivedere
       empty: Nessuna proposta da revisionare
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        compute_completeness_of_products_linked_to_assets: Calcolo della completezza dei prodotti legati alle risorse

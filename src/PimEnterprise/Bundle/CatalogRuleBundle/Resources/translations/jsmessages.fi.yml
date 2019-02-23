@@ -35,7 +35,7 @@ pimee_catalog_rule:
           confirm_ok: OK
       mass_edit_action:
         confirm_title: Vahvista laskenta
-        confirm_content: Oletko varma, että haluat laske tuotteet, joita sääntö koskee?
+        confirm_content: Oletko varma, että haluat laskea tuotteet, joita sääntö koskee?
         confirm_ok: OK
       mass_action:
         execute:
