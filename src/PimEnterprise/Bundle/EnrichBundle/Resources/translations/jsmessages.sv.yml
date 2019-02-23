@@ -155,6 +155,7 @@ pimee_enrich:
         height: '%value%px höjd'
   mass_edit:
     next: Nästa
+    previous: Tillbaka
     cancel: Avbryt
     confirm: Bekräfta
     product:
