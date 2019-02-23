@@ -106,6 +106,7 @@ pim_enrich:
       success_flash: Produkterna har tagits bort från de valda kategorierna
       launched_flash: Massåtgärd "ta bort från kategorier" har inletts. Du meddelas när det är klart.
     change-family:
+      label: Ändra familj
       description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
       success_flash: Familjen av vald(a) produkt(er) har ändrats
       launched_flash: Massåtgärd "ändra familj" har inletts. Du meddelas när det är gjort.
@@ -218,6 +219,7 @@ pim_enrich:
     group_type: Grupptyper
     locale: Språk
     product: Products
+    product_model: Produktmodeller
   reference_data:
     empty_value:
       reference_data_type:
@@ -633,6 +635,7 @@ pim_enrich.mass_edit_action:
     description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen hålls.
     success_flash: Produkten har klassificerats i valda kategorier
   change-family:
+    label: Ändra familj
     description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
     success_flash: Familjen av vald(a) produkt(er) har ändrats
     no_family: Ingen familj
