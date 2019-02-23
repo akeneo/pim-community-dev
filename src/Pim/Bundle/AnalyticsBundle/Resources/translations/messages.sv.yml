@@ -20,6 +20,7 @@ pim_analytics:
     nb_channels: Antal kanaler
     nb_products: Antal produkter
     nb_attributes: Antal attribut
+    nb_scopable_attributes: Antal scopable attribut
     nb_localizable_attributes: Antal lokaliserbara attribut
     nb_scopable_localizable_attributes: Antal lokaliserbara och scopable attribut
     nb_locales: Antal språk

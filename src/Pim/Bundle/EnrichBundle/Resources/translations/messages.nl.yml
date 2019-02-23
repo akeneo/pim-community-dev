@@ -221,10 +221,8 @@ category:
   edit: categorie bewerken
   suggest selection: Select een categorie aan de linkerkant
   or: of
-  create new: Maak een nieuwe categorie
 tree:
   title: structuur
-  create: structuur aanmaken
   edit: structuur bewerken
 channel:
   title: kanaal
@@ -263,7 +261,6 @@ btn:
     attribute: Attribuut aanmaken
     attribute group: attribuutgroep aanmaken
     category: categorie aanmaken
-    tree: structuur aanmaken
     channel: kanaal aanmaken
     currency: valuta aanmaken
     family: familie aanmaken

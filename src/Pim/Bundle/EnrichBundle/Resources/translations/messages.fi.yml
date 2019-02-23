@@ -257,10 +257,8 @@ category:
   edit: muokkaa kategoriaa
   suggest selection: Valitse kategoria vasemmalta
   or: tai
-  create new: Luo uusi kategoria
 tree:
   title: tuotepuu
-  create: luo tuotepuu
   edit: muokkaa tuotepuuta
 channel:
   title: kanava
@@ -299,7 +297,6 @@ btn:
     attribute: luo attribuutti
     attribute group: luo attribuuttiryhmä
     category: luo kategoria
-    tree: luo tuotepuu
     channel: luo kanava
     currency: luo valuutta
     family: luo tuoteperhe
