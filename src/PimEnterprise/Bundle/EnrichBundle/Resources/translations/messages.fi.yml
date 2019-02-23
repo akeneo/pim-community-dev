@@ -161,3 +161,5 @@ job_execution.summary:
   proposal: Ehdotus luotu
   proposal_deleted: poistettu
 pim_assets_collection: Resurssien keruu
+pim_enrich_attribute_form:
+  isReadOnly: Vain luku
