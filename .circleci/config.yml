@@ -84,12 +84,15 @@ jobs:
             - run:
                   name: PhpCsFixer
                   command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+                  when: always
             - run:
                   name: PhpCouplingDetector
                   command: docker-compose run -T fpm vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src
+                  when: always
             - run:
                   name: Acceptance back
                   command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
+                  when: always
             - store_test_results:
                   path: var/tests
             - store_artifacts:
