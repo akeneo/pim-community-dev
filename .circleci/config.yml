@@ -94,6 +94,8 @@ jobs:
                   path: var/tests
             - store_artifacts:
                   path: var/tests
+            - store_artifacts:
+                  path: var/logs
 
     back_phpunit_integration:
         machine:
@@ -123,6 +125,8 @@ jobs:
                   path: var/tests/phpunit
             - store_artifacts:
                   path: var/tests/phpunit
+            - store_artifacts:
+                  path: var/logs
 
     back_behat_legacy:
         machine:
@@ -152,6 +156,8 @@ jobs:
                   path: var/tests/behat
             - store_artifacts:
                   path: var/tests/behat
+            - store_artifacts:
+                  path: var/logs
             - store_artifacts:
                   path: var/tests/screenshots
 
