@@ -197,8 +197,10 @@ class CommunityRequirements
     protected function getMySQLVersion(): string
     {
         $mysqlVersion = $this->getConnection()->getAttribute(PDO::ATTR_SERVER_VERSION);
-        $sanitizedMysqlVersion = substr($mysqlVersion, 0, strpos($mysqlVersion, '-'));
-        return $sanitizedMysqlVersion;
+        if (strpos($mysqlVersion, '-')) {
+            $mysqlVersion = substr($mysqlVersion, 0, strpos($mysqlVersion, '-'));
+        }
+        return $mysqlVersion;
     }
 
     /**
