@@ -403,7 +403,7 @@ services:
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
     pim_catalog.query.elasticsearch.filter.self_and_ancestor_label_or_identifier:
-        class: 'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\SelfAndAncestorFilterLabelOrIdentifier'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\SelfAndAncestorFilterLabelOrIdentifier'
         arguments:
             - ['self_and_ancestor.label_or_identifier']
             - ['CONTAINS']
