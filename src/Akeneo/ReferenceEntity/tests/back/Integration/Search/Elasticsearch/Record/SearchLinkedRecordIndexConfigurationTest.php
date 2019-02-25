@@ -12,7 +12,7 @@ use PHPUnit\Framework\Assert;
  */
 class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

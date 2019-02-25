@@ -36,7 +36,7 @@ class SqlReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeTest extends
     /** @var ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface */
     private $query;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

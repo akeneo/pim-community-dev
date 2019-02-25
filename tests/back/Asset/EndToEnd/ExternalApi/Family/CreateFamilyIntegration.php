@@ -68,7 +68,7 @@ JSON;
         return $this->catalog->useTechnicalCatalog();
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

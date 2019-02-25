@@ -28,7 +28,7 @@ class InMemoryFindConnectorReferenceEntityItemsTest extends TestCase
     /** @var InMemoryFindConnectorReferenceEntityItems */
     private $findConnectorReferenceEntityItems;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->findConnectorReferenceEntityItems = new InMemoryFindConnectorReferenceEntityItems();
     }

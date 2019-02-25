@@ -34,7 +34,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         if (null === $this->testKernel) {
             $this->bootTestKernel();
@@ -66,7 +66,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();

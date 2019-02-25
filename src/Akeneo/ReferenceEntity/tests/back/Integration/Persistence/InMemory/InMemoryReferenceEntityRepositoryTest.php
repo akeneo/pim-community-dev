@@ -28,8 +28,9 @@ class InMemoryReferenceEntityRepositoryTest extends TestCase
     /** @var InMemoryReferenceEntityRepository */
     private $referenceEntityRepository;
 
-    public function setup()
+    public function setUp(): void
     {
+        parent::setUp();
         $this->referenceEntityRepository = new InMemoryReferenceEntityRepository(
             new EventDispatcher()
         );

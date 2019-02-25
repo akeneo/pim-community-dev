@@ -36,7 +36,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

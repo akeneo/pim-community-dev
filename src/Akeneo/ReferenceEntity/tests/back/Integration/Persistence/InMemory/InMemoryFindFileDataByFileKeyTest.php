@@ -21,7 +21,7 @@ class InMemoryFindFileDataByFileKeyTest extends TestCase
     /** @var InMemoryFindFileDataByFileKey */
     private $findFileDataByFileKey;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->findFileDataByFileKey = new InMemoryFindFileDataByFileKey();
     }

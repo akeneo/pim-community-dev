@@ -30,8 +30,9 @@ class InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends Te
     /** @var InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute */
     private $query;
 
-    public function setup()
+    public function setUp(): void
     {
+        parent::setUp();
         $referenceEntityattribute = new Attribute();
         $referenceEntityattribute->setCode('main_designer');
         $referenceEntityattribute->setType(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION);

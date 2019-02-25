@@ -23,7 +23,7 @@ class InMemoryMediaFileRepositoryTest extends TestCase
     /** @var InMemoryMediaFileRepository */
     private $mediaFileRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

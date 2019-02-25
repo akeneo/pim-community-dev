@@ -30,7 +30,7 @@ class FixturesInstallerTest extends SqlIntegrationTestCase
 
     private const TOTAL_RECORDS = 10026;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->fixturesInstaller = $this->get('akeneo_referenceentity.command.installer.fixtures_installer');

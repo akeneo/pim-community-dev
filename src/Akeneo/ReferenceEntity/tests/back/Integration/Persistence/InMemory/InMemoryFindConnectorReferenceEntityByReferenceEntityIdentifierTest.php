@@ -26,7 +26,7 @@ class InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifierTest extend
     /** @var InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifierTest */
     private $query;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->query = new InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier();
     }

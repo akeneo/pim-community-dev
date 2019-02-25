@@ -38,8 +38,10 @@ class InMemoryAttributeRepositoryTest extends TestCase
     /** @var InMemoryAttributeRepository*/
     private $attributeRepository;
 
-    public function setup()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->attributeRepository = new InMemoryAttributeRepository(new EventDispatcher());
     }
 

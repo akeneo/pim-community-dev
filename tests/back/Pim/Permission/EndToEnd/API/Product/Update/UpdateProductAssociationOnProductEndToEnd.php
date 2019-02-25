@@ -11,7 +11,7 @@ class UpdateProductAssociationOnProductEndToEnd extends AbstractProductTestCase
     /** @var PermissionFixturesLoader */
     private $loader;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

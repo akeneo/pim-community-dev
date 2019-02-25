@@ -62,7 +62,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

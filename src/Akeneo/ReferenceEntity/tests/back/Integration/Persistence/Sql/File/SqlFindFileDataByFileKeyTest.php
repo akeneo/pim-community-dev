@@ -26,7 +26,7 @@ class SqlFindFileDataByFileKeyTest extends SqlIntegrationTestCase
     /** @var SaverInterface */
     private $fileSaver;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

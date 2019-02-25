@@ -30,7 +30,7 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
     /** @var SqlFindSearchableRecords */
     private $findSearchableRecords;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -20,7 +20,7 @@ class SqlFindActivatedLocalesByIdentifiersTest extends SqlIntegrationTestCase
 {
     private $localesAreActivated;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

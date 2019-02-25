@@ -23,7 +23,7 @@ class InMemoryFindActivatedLocalesByIdentifiersTest extends TestCase
     /** @var InMemoryFindActivatedLocalesByIdentifiers */
     private $findActivatedLocalesByIdentifiers;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->findActivatedLocalesByIdentifiers = new InMemoryFindActivatedLocalesByIdentifiers();
     }

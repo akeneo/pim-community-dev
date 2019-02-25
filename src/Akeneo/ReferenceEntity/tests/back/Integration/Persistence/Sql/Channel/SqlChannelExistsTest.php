@@ -22,7 +22,7 @@ class SqlChannelExistsTest extends SqlIntegrationTestCase
     /** @var ChannelExistsInterface */
     private $channelExist;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

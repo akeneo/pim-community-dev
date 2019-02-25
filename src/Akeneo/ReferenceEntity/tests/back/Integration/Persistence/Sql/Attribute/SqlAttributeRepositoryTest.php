@@ -53,7 +53,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     /** @var EventDispatcherMock */
     private $eventDispatcherMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

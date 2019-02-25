@@ -12,7 +12,7 @@ use PHPUnit\Framework\Assert;
  */
 class SearchRecordCompletenessIndexConfigurationTest extends SearchIntegrationTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

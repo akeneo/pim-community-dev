@@ -32,8 +32,10 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends Tes
     /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
     private $query;
 
-    public function setup()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->attributeRepository = new InMemoryAttributeRepository(new EventDispatcher());
         $this->query = new InMemoryFindRequiredValueKeyCollectionForChannelAndLocales($this->attributeRepository);
     }

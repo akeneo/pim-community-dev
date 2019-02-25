@@ -41,7 +41,7 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
     /** @var RecordIdentifier */
     private $cocoIdentifier;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

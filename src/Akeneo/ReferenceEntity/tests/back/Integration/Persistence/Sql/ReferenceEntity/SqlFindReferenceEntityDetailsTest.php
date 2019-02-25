@@ -27,7 +27,7 @@ class SqlFindReferenceEntityDetailsTest extends SqlIntegrationTestCase
     /** @var FindReferenceEntityDetailsInterface */
     private $findReferenceEntityDetails;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

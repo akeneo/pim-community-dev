@@ -31,7 +31,7 @@ class InMemoryFindReferenceEntityAttributeAsLabelTest extends TestCase
     /** @var InMemoryReferenceEntityRepository */
     private $referenceEntityRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->referenceEntityRepository = new InMemoryReferenceEntityRepository(
             new EventDispatcher()

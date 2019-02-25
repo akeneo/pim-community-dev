@@ -67,7 +67,7 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
     /** @var InMemoryFindRecordItemsForIdentifiersAndQuery */
     private $query;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->recordRepository = new InMemoryRecordRepository();
         $this->referenceEntityRepository = new InMemoryReferenceEntityRepository(new EventDispatcher());

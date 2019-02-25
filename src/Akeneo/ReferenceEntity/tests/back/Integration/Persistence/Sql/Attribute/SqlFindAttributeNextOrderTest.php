@@ -34,7 +34,7 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
     /** @var FindAttributeNextOrderInterface */
     private $findAttributeNextOrder;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

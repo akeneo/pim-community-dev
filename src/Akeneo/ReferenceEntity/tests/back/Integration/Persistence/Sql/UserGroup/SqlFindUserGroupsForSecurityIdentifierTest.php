@@ -15,7 +15,7 @@ class SqlFindUserGroupsForSecurityIdentifierTest extends SqlIntegrationTestCase
     /** @var FindUserGroupsForSecurityIdentifierInterface */
     private $findUserGroupsForSecurityIdentifiers;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

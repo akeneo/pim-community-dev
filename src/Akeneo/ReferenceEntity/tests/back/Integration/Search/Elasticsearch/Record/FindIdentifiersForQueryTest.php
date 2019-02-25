@@ -35,7 +35,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
     /** @var FindIdentifiersForQueryInterface */
     private $findIdentifiersForQuery;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

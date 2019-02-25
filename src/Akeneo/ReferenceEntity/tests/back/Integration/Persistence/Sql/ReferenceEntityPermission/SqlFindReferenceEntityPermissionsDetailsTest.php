@@ -20,7 +20,7 @@ class SqlFindReferenceEntityPermissionsDetailsTest extends SqlIntegrationTestCas
     /** @var FindReferenceEntityPermissionsDetailsInterface */
     private $query;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

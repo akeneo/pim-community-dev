@@ -71,7 +71,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /** @var AttributeAsImageReference */
     private $attributeAsImage;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

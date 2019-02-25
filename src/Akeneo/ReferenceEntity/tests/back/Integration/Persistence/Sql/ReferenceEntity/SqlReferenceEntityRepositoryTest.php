@@ -42,7 +42,7 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

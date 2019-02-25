@@ -40,7 +40,7 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
     /** @var RecordIdentifier */
     private $recordIdentifier;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

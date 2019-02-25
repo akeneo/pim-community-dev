@@ -36,7 +36,7 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         if (null === $this->testKernel) {
             $this->bootTestKernel();

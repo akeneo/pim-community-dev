@@ -36,7 +36,7 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
     /** @var AttributeExistsInterface */
     private $attributeExists;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

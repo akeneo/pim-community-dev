@@ -18,8 +18,9 @@ class InMemoryFindUserGroupsForSecurityIdentifierTest extends TestCase
     /** @var InMemoryFindUserGroupsForSecurityIdentifier */
     private $query;
 
-    public function setup()
+    public function setUp(): void
     {
+        parent::setUp();
         $this->query = new InMemoryFindUserGroupsForSecurityIdentifier();
     }
 

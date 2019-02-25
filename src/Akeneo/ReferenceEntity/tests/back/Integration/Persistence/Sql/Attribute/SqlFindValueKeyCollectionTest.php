@@ -38,7 +38,7 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
 
     private $order = 2;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

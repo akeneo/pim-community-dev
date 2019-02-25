@@ -37,7 +37,7 @@ class SqlGetAttributeIdentifierTest extends SqlIntegrationTestCase
     /** @var GetAttributeIdentifierInterface */
     private $getAttributeIdentifier;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

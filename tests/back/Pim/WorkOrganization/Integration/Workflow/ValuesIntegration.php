@@ -27,7 +27,7 @@ use AkeneoTestEnterprise\Pim\Permission\Integration\Security\AbstractSecurityTes
  */
 class ValuesIntegration extends AbstractSecurityTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -13,7 +13,7 @@ class DeleteVariantProductWithPermissionEndToEnd extends ApiTestCase
     /** @var PermissionFixturesLoader */
     private $loader;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -38,7 +38,7 @@ class InMemoryRecordRepositoryTest extends TestCase
     /** @var InMemoryRecordRepository */
     private $recordRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->recordRepository = new InMemoryRecordRepository();
     }

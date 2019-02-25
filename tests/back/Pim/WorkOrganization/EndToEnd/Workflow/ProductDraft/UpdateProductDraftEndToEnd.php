@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UpdateProductDraftEndToEnd extends AbstractProductTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

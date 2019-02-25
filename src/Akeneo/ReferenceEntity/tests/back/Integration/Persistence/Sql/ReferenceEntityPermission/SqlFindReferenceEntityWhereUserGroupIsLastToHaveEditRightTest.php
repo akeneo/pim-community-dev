@@ -19,7 +19,7 @@ class SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRightTest extends SqlI
     /** @var SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight */
     private $query;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

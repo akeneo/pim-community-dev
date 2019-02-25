@@ -36,7 +36,7 @@ class SqlFindReferenceEntityAttributeAsLabelTest extends SqlIntegrationTestCase
     /** @var FindReferenceEntityAttributeAsLabelInterface */
     private $findAttributeAsLabel;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

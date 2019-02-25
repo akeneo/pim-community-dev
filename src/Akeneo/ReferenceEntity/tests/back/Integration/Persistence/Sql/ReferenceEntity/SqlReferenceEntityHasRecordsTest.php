@@ -36,7 +36,7 @@ class SqlReferenceEntityHasRecordsTest extends SqlIntegrationTestCase
     /** @var ReferenceEntityHasRecordsInterface */
     private $referenceEntityHasRecords;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

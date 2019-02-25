@@ -43,8 +43,10 @@ class InMemoryGetAttributeIdentifierTest extends TestCase
     /** @var GetAttributeIdentifierInterface */
     private $getAttributeIdentifier;
 
-    public function setup()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->attributeRepository = new InMemoryAttributeRepository(new EventDispatcher());
         $this->getAttributeIdentifier = new InMemoryGetAttributeIdentifier($this->attributeRepository);
     }

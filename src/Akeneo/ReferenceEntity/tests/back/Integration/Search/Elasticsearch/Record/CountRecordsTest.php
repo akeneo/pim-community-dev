@@ -30,7 +30,7 @@ class CountRecordsTest extends SearchIntegrationTestCase
     /** @var ReferenceEntityIdentifier */
     private $referenceEntityIdentifiersWithRecords;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -25,7 +25,7 @@ class InMemoryFindConnectorRecordTest extends TestCase
     /** @var InMemoryFindConnectorRecordByReferenceEntityAndCode */
     private $query;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->query = new InMemoryFindConnectorRecordByReferenceEntityAndCode();
     }

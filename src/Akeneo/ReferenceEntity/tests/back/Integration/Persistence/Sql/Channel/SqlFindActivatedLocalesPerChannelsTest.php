@@ -17,7 +17,7 @@ class SqlFindActivatedLocalesPerChannelsTest extends SqlIntegrationTestCase
     /** @var FindActivatedLocalesPerChannelsInterface */
     private $findActivatedLocalesPerChannels;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -35,7 +35,7 @@ class InMemoryFindAttributesIndexedByIdentifierTest extends TestCase
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->attributeRepository = new InMemoryAttributeRepository(new EventDispatcher());
         $this->query = new InMemoryFindAttributesIndexedByIdentifier($this->attributeRepository);

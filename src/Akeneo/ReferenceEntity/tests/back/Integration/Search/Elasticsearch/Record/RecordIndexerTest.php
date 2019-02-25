@@ -47,7 +47,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
     /** @var RecordIndexerInterface */
     protected $recordIndexer;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

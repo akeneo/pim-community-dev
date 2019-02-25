@@ -33,7 +33,7 @@ abstract class ControllerIntegrationTestCase extends KernelTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         if (null === $this->testKernel) {
             $this->bootTestFakeKernel();

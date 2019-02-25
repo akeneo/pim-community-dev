@@ -40,7 +40,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     /** @var FindAttributesDetailsInterface */
     private $findAttributesDetails;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

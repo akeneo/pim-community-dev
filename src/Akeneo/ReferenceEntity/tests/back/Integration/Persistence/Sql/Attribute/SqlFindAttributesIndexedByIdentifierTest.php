@@ -61,7 +61,7 @@ class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
     /** @var AbstractAttribute */
     private $attributeAsImage;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

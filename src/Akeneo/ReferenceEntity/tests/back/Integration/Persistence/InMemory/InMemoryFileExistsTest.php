@@ -25,7 +25,7 @@ class InMemoryFileExistsTest extends TestCase
     /** @var InMemoryFileExists */
     private $fileExists;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->fileExists = new InMemoryFileExists();
         $this->fileExists->save('files/kartell.jpg');

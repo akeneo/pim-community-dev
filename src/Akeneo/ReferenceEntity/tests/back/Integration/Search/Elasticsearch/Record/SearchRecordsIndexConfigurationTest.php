@@ -31,7 +31,7 @@ use PHPUnit\Framework\Assert;
  */
 class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

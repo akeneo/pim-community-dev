@@ -28,7 +28,7 @@ class InMemoryFindAttributesDetailsTest extends TestCase
     /** @var InMemoryFindActivatedLocales */
     private $activatedLocaleQuery;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->activatedLocaleQuery = new InMemoryFindActivatedLocales();
         $this->query = new InMemoryFindAttributesDetails($this->activatedLocaleQuery);

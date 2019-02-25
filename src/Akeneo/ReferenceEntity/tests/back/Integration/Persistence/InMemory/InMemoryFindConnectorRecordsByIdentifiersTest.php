@@ -28,8 +28,10 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
     /** @var InMemoryFindConnectorRecordsByIdentifiers */
     private $findConnectorRecordsByIdentifiers;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->findConnectorRecordsByIdentifiers = new InMemoryFindConnectorRecordsByIdentifiers();
     }
 

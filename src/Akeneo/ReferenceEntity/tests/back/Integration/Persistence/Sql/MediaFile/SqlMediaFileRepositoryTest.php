@@ -27,7 +27,7 @@ class SqlMediaFileRepositoryTest extends SqlIntegrationTestCase
     /** @var MediaFileRepositoryInterface */
     private $mediaFileRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

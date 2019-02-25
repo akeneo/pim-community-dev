@@ -17,8 +17,10 @@ class InMemoryReferenceEntityPermissionRepositoryTest extends TestCase
     /** @var InMemoryReferenceEntityPermissionRepository */
     private $inMemoryReferenceEntityPermissionRepository;
 
-    public function setup()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->inMemoryReferenceEntityPermissionRepository = new InMemoryReferenceEntityPermissionRepository();
     }
 

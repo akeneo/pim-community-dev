@@ -35,7 +35,7 @@ class SqlFindValueKeysToIndexForChannelAndLocaleTest extends SqlIntegrationTestC
     /** @var \Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForChannelAndLocale */
     private $findValuesToIndexForChannelAndLocale;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

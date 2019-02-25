@@ -53,7 +53,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
     /** @var int */
     private $attributeOrder;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

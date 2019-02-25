@@ -30,7 +30,7 @@ class SqlReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlInte
     /** @var ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface */
     private $query;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

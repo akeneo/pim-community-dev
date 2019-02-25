@@ -28,7 +28,7 @@ class SqlReferenceEntityExistsTest extends SqlIntegrationTestCase
     /** @var ReferenceEntityExistsInterface */
     private $referenceEntityExists;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
