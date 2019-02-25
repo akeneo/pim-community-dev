@@ -22,4 +22,4 @@ SUITES=$@
 # - PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset\CreateAssetIntegration::testResponseWhenContentIsEmpty
 # - PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset\CreateAssetIntegration::testResponseWhenValidationFailed
 
-vendor/bin/phpunit -c app --testsuite=$SUITES --list-tests | tail -n +4 | cut -c4- | cut -d ':' -f 1 | sort | uniq | head -n10
+vendor/bin/phpunit -c app --testsuite=$SUITES --list-tests | tail -n +4 | cut -c4- | cut -d ':' -f 1 | sort | uniq | sed -e 's/\\/\\\\/g'
