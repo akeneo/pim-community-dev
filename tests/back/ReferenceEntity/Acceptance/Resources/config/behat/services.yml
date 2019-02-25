@@ -1,0 +1,24 @@
+services:
+    test.catalog_volume_limits.reference_entity_context:
+        class: 'AkeneoTestEnterprise\ReferenceEntity\Acceptance\Context\ReferenceEntityContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pimee_volume_monitoring.persistence.query.count_reference_entities'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.max_records_per_reference_entity_context:
+        class: 'AkeneoTestEnterprise\ReferenceEntity\Acceptance\Context\MaxRecordsPerReferenceEntityContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pimee_volume_monitoring.persistence.query.max_records_per_reference_entities'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.avg_records_per_reference_entity_context:
+        class: 'AkeneoTestEnterprise\ReferenceEntity\Acceptance\Context\AvgRecordsPerReferenceEntityContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pimee_volume_monitoring.persistence.query.average_records_per_reference_entities'
+        tags:
+            - { name: fob.context_service }
