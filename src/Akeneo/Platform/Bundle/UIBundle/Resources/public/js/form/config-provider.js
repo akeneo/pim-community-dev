@@ -28,7 +28,10 @@ define(
                     return config;
                 })
                 .fail(() => {
-                    throw Error(`It seems that your web server is not well configured as we were not able to load the frontend configuration. The most likely reason is that the mod_rewrite module is not installed/enabled.`)
+                    throw Error(`It seems that your web server is not well
+                     configured as we were not able to load the frontend
+                      configuration. The most likely reason is that the
+                       mod_rewrite module is not installed/enabled.`)
                 });
             }
 
