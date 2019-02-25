@@ -2,8 +2,9 @@
 
 set -eu
 
-if [[ -z "${1}" ]]; then
+if [ -z "$1" ]; then
     echo "Provide the argument SUITES you want to list-tests as first argument"
+    exit 1
 fi
 
 SUITES=$@
@@ -21,4 +22,4 @@ SUITES=$@
 # - PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset\CreateAssetIntegration::testResponseWhenContentIsEmpty
 # - PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset\CreateAssetIntegration::testResponseWhenValidationFailed
 
-vendor/bin/phpunit -c app --testsuite=$SUITES --list-tests | tail -n +4 | cut -c4- | cut -d ':' -f 1 | sort | uniq | sed -e 's/\\/\\\\/g'
+vendor/bin/phpunit -c app --testsuite=$SUITES --list-tests | tail -n +4 | cut -c4- | cut -d ':' -f 1 | sort | uniq | head -n10
