@@ -2,7 +2,7 @@
 
 set -eu
 
-if [[ -z "$1}" ]]; then
+if [[ -z "${1}" ]]; then
     echo "Provide the argument SUITES you want to list-tests as first argument"
 fi
 
