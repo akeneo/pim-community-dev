@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 

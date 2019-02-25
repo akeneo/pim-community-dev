@@ -1,14 +1,14 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\SelfAndAncestorFilterLabelOrIdentifier;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
-use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\SelfAndAncestorFilterLabelOrIdentifier;
-use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
-use Pim\Component\Catalog\Exception\InvalidOperatorException;
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
 
 class SelfAndAncestorFilterLabelOrIdentifierSpec extends ObjectBehavior
 {
