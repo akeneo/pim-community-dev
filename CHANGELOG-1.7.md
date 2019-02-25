@@ -1,5 +1,7 @@
 # 1.7.x
 
+# 1.7.39 (2019-02-25)
+
 ## Bug fixes
 
 - PIM-8161: Fix Asset Variation generation on new channel
