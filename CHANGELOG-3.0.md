@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.5 (2019-02-25)
+
 ## Bug fixes
 
 - PIM-8157: Fix issues on user edit (scroll and groups)
