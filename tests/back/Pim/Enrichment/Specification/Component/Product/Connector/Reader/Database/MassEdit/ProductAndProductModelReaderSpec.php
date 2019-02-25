@@ -26,7 +26,6 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
         $this->beConstructedWith(
             $pqbFactory,
             $channelRepository,
-            $completenessManager,
             true
         );
 
@@ -50,7 +49,6 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
     function it_reads_products_and_product_models(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
         StepExecution $stepExecution,
         ChannelInterface $channel,
         ProductQueryBuilderInterface $pqb,
@@ -66,7 +64,6 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
         $this->beConstructedWith(
             $pqbFactory,
             $channelRepository,
-            $completenessManager,
             false
         );
 
@@ -104,7 +101,6 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($cursor);
 
-        $completenessManager->generateMissingForChannel($channel)->shouldBeCalled();
         $products = [$productModel1, $product1, $productModel2, $product2, $product3, $productModel3];
         $productsCount = count($products);
         $cursor->valid()->will(
@@ -134,7 +130,6 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
     function it_reads_products_and_product_models_with_read_children(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
         StepExecution $stepExecution,
         ChannelInterface $channel,
         ProductQueryBuilderInterface $pqb,
@@ -150,7 +145,6 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
         $this->beConstructedWith(
             $pqbFactory,
             $channelRepository,
-            $completenessManager,
             true
         );
 

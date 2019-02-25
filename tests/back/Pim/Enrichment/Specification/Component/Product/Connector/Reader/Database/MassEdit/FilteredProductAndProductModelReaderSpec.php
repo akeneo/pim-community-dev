@@ -23,15 +23,12 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
     function it_is_initializable(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
         MetricConverter $metricConverter
     ) {
         $this->beConstructedWith(
             $pqbFactory,
             $channelRepository,
-            $completenessManager,
             $metricConverter,
-            true,
             false
         );
 
@@ -74,9 +71,7 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
         $this->beConstructedWith(
             $pqbFactory,
             $channelRepository,
-            $completenessManager,
             $metricConverter,
-            true,
             false
         );
 
@@ -161,9 +156,7 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
         $this->beConstructedWith(
             $pqbFactory,
             $channelRepository,
-            $completenessManager,
             $metricConverter,
-            true,
             true
         );
 
@@ -213,7 +206,6 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($cursor);
 
-        $completenessManager->generateMissingForChannel($channel)->shouldBeCalled();
         $products = [$productModel1, $product1, $productModel2, $product2, $product3, $productModel3];
         $productsCount = count($products);
         $cursor->valid()->will(
