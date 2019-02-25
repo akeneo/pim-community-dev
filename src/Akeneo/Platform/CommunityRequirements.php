@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform;
 
-use \PDO;
+use PDO;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Yaml\Yaml;
 
@@ -38,7 +38,7 @@ class CommunityRequirements
         'xml',
         'zip',
         'exif',
-        'imagick'
+        'imagick',
     ];
 
     public function __construct(string $baseDir, array $directoriesToCheck = [])
@@ -53,10 +53,10 @@ class CommunityRequirements
      */
     public function getRequirements(): array
     {
-        $phpVersion  = phpversion();
-        $gdVersion   = defined('GD_VERSION') ? GD_VERSION : null;
+        $phpVersion = phpversion();
+        $gdVersion = defined('GD_VERSION') ? GD_VERSION : null;
         $curlVersion = function_exists('curl_version') ? curl_version() : null;
-        $icuVersion  = Intl::getIcuVersion();
+        $icuVersion = Intl::getIcuVersion();
 
         $requirements = [];
 
@@ -102,20 +102,20 @@ class CommunityRequirements
             'Set the "<strong>memory_limit</strong>" setting in php.ini<a href="#phpini">*</a> to at least "512M".'
         );
 
-        $directories = array(
-            'web/bundles'
-        );
+        $directories = [
+            'web/bundles',
+        ];
         foreach ($directories as $directory) {
             $requirements[] = new Requirement(
-                is_writable($this->baseDir.'/'.$directory),
-                $directory.' directory must be writable',
-                'Change the permissions of the "<strong>'.$directory.'</strong>" directory so that the web server can write into it.'
+                is_writable($this->baseDir . '/' . $directory),
+                $directory . ' directory must be writable',
+                'Change the permissions of the "<strong>' . $directory . '</strong>" directory so that the web server can write into it.'
             );
         }
 
         $currentMySQLVersion = $this->getMySQLVersion();
         $requirements[] = new Requirement(
-            version_compare($currentMySQLVersion, self::LOWEST_REQUIRED_MYSQL_VERSION, '>=')  &&
+            version_compare($currentMySQLVersion, self::LOWEST_REQUIRED_MYSQL_VERSION, '>=') &&
             version_compare($currentMySQLVersion, self::GREATEST_REQUIRED_MYSQL_VERSION, '<'),
             sprintf(
                 'MySQL version must be greater or equal to %s and lower than %s',
@@ -135,10 +135,10 @@ class CommunityRequirements
             $innodbPageSize >= 8192,
             'Check support for correct innodb_page_size for utf8mb4 support',
             sprintf(
-                'In order for the PIM to implement full UTF8 support via MySQL utf8mb4 charset,'.
-                ' MySQL must have innodb_page_size >= 8KB.'.
-                ' Current innodb_page_size is at "%s".'.
-                ' Please change your MySQL server configuration to use the correct settings'.
+                'In order for the PIM to implement full UTF8 support via MySQL utf8mb4 charset,' .
+                ' MySQL must have innodb_page_size >= 8KB.' .
+                ' Current innodb_page_size is at "%s".' .
+                ' Please change your MySQL server configuration to use the correct settings' .
                 ' (innodb_page_size is at 16KB by default on MySQL 5.7)',
                 $innodbPageSize
             )
@@ -171,7 +171,7 @@ class CommunityRequirements
     /**
      * Returns a global MySQL configuration variable value
      */
-    protected function getMySQLVariableValue(string $variableName) : ?string
+    protected function getMySQLVariableValue(string $variableName): ?string
     {
         $variableValue = null;
 
@@ -190,10 +190,15 @@ class CommunityRequirements
 
     /**
      * Gets the MySQL server version thanks to a PDO connection.
+     *
+     * It can accept version with suffix
+     * @see https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_version
      */
-    protected function getMySQLVersion() : string
+    protected function getMySQLVersion(): string
     {
-        return $this->getConnection()->getAttribute(PDO::ATTR_SERVER_VERSION);
+        $mysqlVersion = $this->getConnection()->getAttribute(PDO::ATTR_SERVER_VERSION);
+        $sanitizedMysqlVersion = substr($mysqlVersion, 0, strpos($mysqlVersion, '-'));
+        return $sanitizedMysqlVersion;
     }
 
     /**
@@ -203,9 +208,9 @@ class CommunityRequirements
      * If it exits, an attempt to connect is done, and can result in an exception
      * if no connection is reached.
      */
-    protected function getConnection() : PDO
+    protected function getConnection(): PDO
     {
-        $file = file_get_contents($this->baseDir.'/app/config/parameters.yml');
+        $file = file_get_contents($this->baseDir . '/app/config/parameters.yml');
 
         if (false === $file) {
             throw new RuntimeException(
@@ -222,7 +227,7 @@ class CommunityRequirements
                 );
             }
         } catch (RuntimeException $e) {
-            $parameters = Yaml::parse(file_get_contents($this->baseDir.'/app/config/parameters_test.yml'));
+            $parameters = Yaml::parse(file_get_contents($this->baseDir . '/app/config/parameters_test.yml'));
 
             if (null === $parameters) {
                 throw $e;
