@@ -397,6 +397,9 @@ batch_jobs:
     perform.label: Modificare gli attributi
     clean.label: Pulisci i file per gli attributi
     cleaner.label: Pulisci i file per gli attributi
+  compute_completeness_of_products_family:
+    label: Calcola completezza
+    perform.label: Calcola completezza
   move_to_category:
     label: Sposta a categoria
     perform.label: Sposta a categoria
@@ -409,3 +412,11 @@ batch_jobs:
   set_attribute_requirements:
     label: Imposta i requisiti degli attributi
     perform.label: Imposta i requisiti degli attributi
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Esportazione rapida prodotti in XLSX presenti nel contesto griglia
+    quick_export_product_model.label: Esportazione rapida contesto di griglia dei modelli di prodotto in XLSX
+    perform.label: Esportazione rapida prodotti in XLSX presenti nel contesto griglia
+  xlsx_product_quick_export:
+    quick_export.label: Esportazione rapida prodotti in XLSX
+    quick_export_product_model.label: Esportazione rapida modelli di prodotto in XLSX
+    perform.label: Esportazione rapida prodotti in XLSX

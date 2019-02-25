@@ -104,6 +104,9 @@ oro_config:
           label: Aktivoi latausviestit
         loading_messages:
           label: Käytettävät latausviestit
+pim_ui:
+  flash:
+    unsaved_changes: 'Sinulla on tallentamattomia muutoksia. Haluatko poistua?'
 "Sorry, page was not loaded correctly": "Valitettavasti sivua ei ole ladattu oikein"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Paikalliset muutoksesi menetetään. Oletko varma, että haluat päivittää sivun?"
 "navigation.message.content.outdated": "{{ title }} sivun sisältö on vanhentunut, ole hyvä ja <a href='#' data-action='page-refresh'> päivitä sivu</a>"
@@ -112,14 +115,17 @@ pim_common:
   actions: Toiminnot
   add: Lisää
   add_attributes: Lisää attribuutteja
+  after: Jälkeen
   all: Kaikki
   and: ja
   apply: Valitse
+  before: Ennen
   by: tehnyt
   cancel: Peruuta
   code: Koodi
   confirm: Vahvista
   confirm_deletion: Vahvista poisto
+  confirm_revocation: Vahvista poisto
   create: Luo
   created: Luotu
   delete: Poista
@@ -144,6 +150,7 @@ pim_common:
   permissions: Käyttöoikeudet
   previous: Edellinen
   properties: Ominaisuudet
+  remove: Poista
   required_label: (vaadittu)
   save: Tallenna
   select2:
@@ -192,15 +199,23 @@ pim_enrich.entity.fallback:
       title: Poista tämä {{ itemName }}
       alternative_title: Vahvista poisto
       item: Oletko varma että haluat poistaa tämän kohteen?
+      item_placeholder: Oletko varma, että haluat poistaa tämän {{ itemName }}? Et voi peruuttaa tätä toimintoa.
     edit:
       leave: Oletko varma että haluat poistua sivulta?
       discard_changes: Menetät muutokset tähän {{ entity }}, jos poistut sivulta.
+      discard_changes_title: Oletko varma?
 pim_enrich.entity.api_connection:
   flash:
     create:
       success: API -yhteyden luominen onnistui
     delete:
       success: API -yhteys poistettu onnistuneesti
+      fail: API -yhteyttä ei voi poistaa
+  page_title:
+    index: "]-Inf, 1]{{ count }} API -yhteys|]1, Inf[{{ count }} API -yhteyttä"
+  module:
+    revoke:
+      confirm: Haluatko varmasti poistaa tämän API -yhteyden?
 pim_enrich.entity.job_execution:
   module:
     create:

@@ -125,6 +125,7 @@ pim_common:
   code: Codice
   confirm: Conferma
   confirm_deletion: Conferma cancellazione
+  confirm_revocation: Conferma revoca
   create: Crea
   created: Creato
   delete: Eliminare
@@ -149,6 +150,7 @@ pim_common:
   permissions: Autorizzazioni
   previous: Precedente
   properties: Proprietà
+  remove: Rimuovere
   required_label: (obbligatorio)
   save: Salva
   select2:
@@ -211,6 +213,9 @@ pim_enrich.entity.api_connection:
       fail: Non è possibile revocare questa connessione API
   page_title:
     index: "]-Inf, 1]{{ count }} connessione API|]1, Inf[{{ count }} Connesioni API"
+  module:
+    revoke:
+      confirm: Sei sicuro di voler revocare questa connessione API?
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} operazione|]1, Inf[{{ count }} operazioni"

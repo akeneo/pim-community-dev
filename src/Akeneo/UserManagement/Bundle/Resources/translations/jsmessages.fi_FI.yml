@@ -3,15 +3,42 @@ pim_title:
   pim_user_role_index: Roolit
   pim_user_group_index: Käyttäjäryhmät
   oro_config_configuration_system: Kokoonpano
+  pim_user_edit: 'Käyttäjä {{ username }} | muokkaus'
+  pim_user_create: 'Käyttäjät | luo'
+  pim_user_role_update: 'Rooli {{ role }} | muokkaus'
+  pim_user_role_create: 'Rooli | luo'
   pim_user_security_login: Kirjaudu sisään
+  pim_user_reset_reset: Salasanan nollaus
   pim_user_reset_request: Unohdin salasanani
+  pim_user_reset_check_email: Salasanan nollaus | tarkista sähköposti
+  pim_user_group_create: 'Käyttäjäryhmät | luo'
+  pim_user_group_update: 'Ryhmä {{ group }} | muokkaus'
 confirmation:
   remove:
     user: Haluatko varmasti poistaa tämän käyttäjän?
     group: Oletko varma että haluat poistaa tämän ryhmän?
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: Käyttäjää ei voi poistaa
+          success: Käyttäjä on poistettu
+      module:
+        delete:
+          confirm: Haluatko varmasti poistaa tämän käyttäjän?
 pim_user_management:
   entity:
     user:
+      flash:
+        update:
+          success: Käyttäjä päivitettiin onnistuneesti.
+          fail: Käyttäjää ei voitu päivittää.
+          fields_not_ready: "Käyttäjää ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+        create:
+          success: Käyttäjä luotiin onnistuneesti.
+      page_title:
+        index: "]-Inf, 1] {{ count }} käyttäjä|]1, Inf [{{ count }} käyttäjää"
       properties:
         username: Käyttäjänimi
         name_prefix: Nimen etuliite
@@ -19,6 +46,7 @@ pim_user_management:
         middle_name: Toinen nimi
         last_name: Sukunimi
         name_suffix: Nimen liite
+        phone: Puhelin
         avatar: Avatar
         email: Sähköpostiosoite
         catalog_locale: Katalogin lokaatio
@@ -30,6 +58,7 @@ pim_user_management:
         new_password: Uusi salasana
         new_password_repeat: Uusi salasana (toista)
         password: Salasana
+        password_repeat: Salasana (toista)
         ui_locale: Käyttöliittymän kieli
         timezone: Aikavyöhyke
         default_product_grid_view: Tuoteruudukon oletusnäkymä
@@ -43,11 +72,14 @@ pim_user_management:
           confirm: Haluatko varmasti poistaa tämän käyttäjän?
         update:
           additional: Lisää
+          groups_and_roles: Käyttäjäyhmät ja roolit
           password: Salasana
           interfaces: Rajapinnat
           notifications: Ilmoitukset
     role:
       plural_label: Roolit
+      page_title:
+        index: "]-Inf, 1] {{ count }} rooli|]1, Inf [{{ count }} roolia"
       module:
         create:
           button: Luo rooli
@@ -55,6 +87,8 @@ pim_user_management:
           confirm: Oletko varma, että haluat poistaa tämän roolin?
     group:
       plural_label: Käyttäjäryhmät
+      page_title:
+        index: "]-Inf, 1] {{ count }} ryhmä|]1, Inf [{{ count }} ryhmää"
       module:
         create:
           button: Luo ryhmä

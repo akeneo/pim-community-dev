@@ -51,6 +51,7 @@ pim_common:
   permissions: Права доступа
   properties: Свойства
   name: Имя
+  remove: Удалить
 pim_enrich:
   acl:
     locale:

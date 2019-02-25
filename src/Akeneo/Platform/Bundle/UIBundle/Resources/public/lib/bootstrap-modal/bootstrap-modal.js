@@ -45,9 +45,7 @@
         </div>\
       </div>\
     </div>\
-    <% if (typeof cancelText === undefined && (typeof allowCancel === \'undefined\' || allowCancel)) { %>\
-      <div class="AknFullPage-cancel cancel"></div>\
-    <%\ } %>\
+    <div class="AknFullPage-cancel cancel"></div>\
   ');
 
   var Modal = Backbone.View.extend({
@@ -117,7 +115,7 @@
         template: template
       }, options);
     },
-
+    
     /**
      * Creates the DOM element
      *

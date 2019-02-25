@@ -30,6 +30,7 @@ pim_analytics:
     avg_percentage_scopable_attributes_per_family: Percentuale media di attributi per famiglia customizzabili per canale (%)
     avg_percentage_localizable_attributes_per_family: Percentuale media di attributi localizzabili per famiglia (%)
     avg_percentage_scopable_localizable_attributes_per_family: Percentuale media di attributi per famiglia localizzabili e customizzabili per canale (%)
+    avg_number_attributes_per_family: Numero medio di attributi per famiglia
     nb_locales: Numero di localizzazioni
     nb_families: Numero di famiglie
     nb_users: Numero di utenti

@@ -28,6 +28,9 @@ pim_enrich.entity.family:
 pim_enrich.entity.family_variant:
   short_plural_label: Varianter
   short_label: Variant
+  module:
+    create:
+      label: Lägg till variant
 pim_enrich.entity.attribute_option:
   short_uppercase_label: Inställningar
   flash:

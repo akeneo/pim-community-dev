@@ -1,5 +1,17 @@
 # 3.0.x
 
+# 3.0.5 (2019-02-25)
+
+## Bug fixes
+
+- PIM-8157: Fix issues on user edit (scroll and groups)
+- PIM-8164: Always display cancel cross on popins
+- PIM-8165: Increase font sizes
+- PIM-8018: Move Confirm button on mass edit screen
+- PIM-8167: register missing command "pim:reference-data:check"
+
+# 3.0.4 (2019-02-20)
+
 ## Bug fixes
 
 - PIM-8129: Fix default system locale
@@ -9,11 +21,11 @@
 - PIM-8147: Fix design issue on boolean fields
 - PIM-8146: Fix centered alignment on drag & drop fields
 - PIM-8156: Fix multiselect field alignment
-- PIM-8017: Fix PDF generation
 - PIM-8153: Fix locale specific field to allow multiple locales 
-- PIM-8146: Fix centered alignment on drag & drop field
 - PIM-8017: Fix PDF generation
 - PIM-8060: Fix avatars migration 2.3 -> 3.0
+- PIM-8135: Fix cursor paginator sequence
+- PIM-8053: Fix avatar deletion and avatar update on dashboard page and user navigation
 - PIM-8149: Fix design of the cross deletion in the Item Picker
 
 # 3.0.3 (2019-02-18)

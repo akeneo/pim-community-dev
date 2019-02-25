@@ -58,6 +58,7 @@ pim_common:
   permissions: パーミッション
   properties: プロパティ
   name: 名前
+  remove: 削除
 pim_enrich:
   acl:
     locale:
