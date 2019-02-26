@@ -18,8 +18,8 @@ Feature: Import variant products through XLSX import
     And the family of "apollon_blue_xl" should be "clothing"
     And the english localizable value name of "apollon_blue_xl" should be "Long gray suit jacket and matching pants unstructured"
     And the product "apollon_blue_xl" should have the following values:
-      | color  | [blue]        |
-      | size   | [xl]          |
+      | color  | blue          |
+      | size   | xl            |
       | weight | 800.0000 GRAM |
       | ean    | EAN           |
 
@@ -32,7 +32,7 @@ Feature: Import variant products through XLSX import
     When the products are imported via the job xlsx_catalog_modeling_product_import
     Then product "1111111121" should be disabled
     And the product "1111111121" should have the following values:
-      | color  | [blue]        |
-      | size   | [s]           |
+      | color  | blue          |
+      | size   | s             |
       | weight | 600.0000 GRAM |
       | ean    | EAN           |

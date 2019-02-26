@@ -85,14 +85,14 @@ class AttributeValidationContext extends PimContext
                         if ('' === $value) {
                             Assert::assertNull($attribute->getNumberMin());
                         } else {
-                            Assert::assertEquals($value, $attribute->getNumberMin());
+                            Assert::assertEquals((float) $value, (float) $attribute->getNumberMin());
                         }
                         break;
                     case 'number_max':
                         if ('' === $value) {
                             Assert::assertNull($attribute->getNumberMax());
                         } else {
-                            Assert::assertEquals($value, $attribute->getNumberMax());
+                            Assert::assertEquals((float) $value, (float) $attribute->getNumberMax());
                         }
                         break;
                     case 'metric_family':

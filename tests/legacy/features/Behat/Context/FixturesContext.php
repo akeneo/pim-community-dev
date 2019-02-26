@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
@@ -25,6 +26,7 @@ use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Debug;
 use Doctrine\Common\Util\Inflector;
+use Doctrine\DBAL\Driver\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -197,26 +199,76 @@ class FixturesContext extends PimContext
         return $entity;
     }
 
-    /**
-     * @param mixed  $data
-     * @param string $value
-     */
-    protected function assertDataEquals($data, $value)
+    protected function getAttributeBackendType(string $attributeCode): string
     {
-        switch ($value) {
-            case 'true':
-                Assert::assertTrue($data);
-                break;
+        /** @var Connection $db */
+        $db = $this->getMainContext()->getContainer()->get('doctrine.dbal.default_connection');
 
-            case 'false':
-                Assert::assertFalse($data);
-                break;
+        $sql = "SELECT backend_type FROM pim_catalog_attribute WHERE code = :attribute_code";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue("attribute_code", $attributeCode);
+        $stmt->execute();
 
-            default:
-                if ($data instanceof \DateTime) {
-                    $data = $data->format('Y-m-d');
-                }
-                Assert::assertEquals($value, $data);
+        return $stmt->fetch()['backend_type'];
+    }
+
+    /**
+     * @param mixed $value
+     * @param ?ValueInterface $productValue
+     * @param string $attributeCode
+     * @param array $infos
+     */
+    protected function assertProductDataValueEquals($value, ?ValueInterface $productValue, string $attributeCode, $infos = [])
+    {
+        $backendType = $this->getAttributeBackendType($attributeCode);
+
+        $priceCurrency = $infos['price_currency'] ?? null;
+
+        if ('' === $value) {
+            Assert::assertEmpty((string) $productValue);
+        } elseif ('media' === $backendType) {
+            // media filename is auto generated during media handling and cannot be guessed
+            // (it contains a timestamp)
+            if ('**empty**' === $value) {
+                Assert::assertEmpty((string) $productValue);
+            } else {
+                Assert::assertTrue(
+                    null !== $productValue->getData() &&
+                    false !== strpos($productValue->getData()->getOriginalFilename(), $value)
+                );
+            }
+        } elseif ('prices' === $backendType && null !== $priceCurrency) {
+            // $priceCurrency can be null if we want to test all the currencies at the same time
+            // in this case, it's a simple string comparison
+            // example: 180.00 EUR, 220.00 USD
+
+            $price = $productValue->getPrice($priceCurrency);
+
+            if ($value === null) {
+                Assert::isNull($price);
+            } else {
+                Assert::assertEquals((float)$value, (float)$price->getData());
+            }
+        } elseif ('boolean' === $backendType) {
+            if ($value === "false") {
+                $value = false;
+            }
+            if ($value === "true") {
+                $value = true;
+            }
+            Assert::assertEquals((bool) $value, (bool) $productValue->getData());
+        } elseif ('date' === $backendType) {
+            Assert::assertEquals($value, $productValue->getData()->format('Y-m-d'));
+        } elseif ('decimal' === $backendType) {
+            Assert::assertEquals((float) $value, (float) $productValue->getData());
+        } elseif ('option' === $backendType) {
+            Assert::assertEquals($value, $productValue->getData());
+        } elseif ('metric' === $backendType) {
+            Assert::assertEquals((float) $value, (float) $productValue->getData()->getData());
+        } elseif ('text' === $backendType) {
+            Assert::assertEquals((string) $value, (string) $productValue->getData());
+        } else {
+            Assert::assertEquals($value, (string) $productValue);
         }
     }
 

@@ -23,7 +23,7 @@ Feature: Save only filled fields after a save
     Then the product "summer-sneaker" should have the following values:
       | description-en_US-tablet | Sneakers are perfect for summer ! |
       | price                    | 10.00 EUR                         |
-      | rating                   | [2]                               |
+      | rating                   | 2                                 |
     But the product "summer-sneaker" should not have the following values:
       | description-en_US-mobile |
       | name-en_US               |

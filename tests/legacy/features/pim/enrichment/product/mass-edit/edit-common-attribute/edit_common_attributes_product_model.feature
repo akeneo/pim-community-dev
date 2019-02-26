@@ -172,13 +172,13 @@ Feature: Edit common attributes of many products and product models at once
     And the product model value composition of "model-col-white" should be "100% cotton"
     And the product model value brand of "model-col-white" should be "Nyke"
     And the product "col-white-m" should have the following values:
-      | brand       | [Nyke]        |
+      | brand       | Nyke          |
       | composition | 100% cotton   |
       | weight      | 500.0000 GRAM |
     And the product "tool-tee" should have the following values:
       | composition | 100% cotton   |
       | weight      | 500.0000 GRAM |
-      | brand       | [Nyke]        |
+      | brand       | Nyke          |
     And the product model value brand of "model-nin" should be "Nyke"
     And the product "nin-s" should have the following values:
       | weight      | 500.0000 GRAM |
@@ -207,13 +207,13 @@ Feature: Edit common attributes of many products and product models at once
     And the product model value composition of "model-col-white" should be "100% cotton"
     And the product model value brand of "model-col-white" should be "Nyke"
     And the product "col-white-m" should have the following values:
-      | brand       | [Nyke]        |
+      | brand       | Nyke          |
       | composition | 100% cotton   |
       | weight      | 500.0000 GRAM |
     And the product "tool-tee" should have the following values:
       | composition | 100% cotton   |
       | weight      | 500.0000 GRAM |
-      | brand       | [Nyke]        |
+      | brand       | Nyke        |
     And the product "nin-s" should have the following values:
       | brand       |           |
       | weight      |           |
