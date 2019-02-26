@@ -21,7 +21,9 @@ class StructuredAttributeOptionNormalizer extends AttributeOptionNormalizer
     protected $objectFilter;
 
     /**
-     * @param ObjectFilterInterface $objectFilter
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param SimpleFactoryInterface    $attributeOptionValueFactory
+     * @param ObjectFilterInterface     $objectFilter
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,

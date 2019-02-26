@@ -2,9 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-
 /**
  * Product. An entity with flexible values, completeness, categories, associations and much more...
  *

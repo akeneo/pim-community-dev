@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
 use Akeneo\Tool\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Product model category repository interface

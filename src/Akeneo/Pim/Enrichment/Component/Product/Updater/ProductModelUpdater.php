@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -277,7 +276,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             );
         }
 
-        if ($productModel->getFamilyVariant() instanceof FamilyVariantInterface &&
+        if ($productModel->getFamilyVariant() !== null &&
            $productModel->getFamilyVariant()->getCode() !== $newParentModel->getFamilyVariant()->getCode()
         ) {
             throw InvalidPropertyException::validEntityCodeExpected(

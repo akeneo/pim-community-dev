@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 /**

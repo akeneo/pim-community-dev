@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MediaValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Doctrine\DBAL\Connection;
 

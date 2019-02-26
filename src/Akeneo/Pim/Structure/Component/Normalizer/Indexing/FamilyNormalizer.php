@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\Normalizer\Indexing;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
@@ -25,8 +24,8 @@ class FamilyNormalizer implements NormalizerInterface
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var LocaleInterface[] */
-    protected $activatedLocales;
+    /** @var string[] */
+    protected $activatedLocaleCodes;
 
     /**
      * @param NormalizerInterface       $translationNormalizer
@@ -45,12 +44,12 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        if (null === $this->activatedLocales) {
-            $this->activatedLocales = $this->localeRepository->getActivatedLocaleCodes();
+        if (null === $this->activatedLocaleCodes) {
+            $this->activatedLocaleCodes = $this->localeRepository->getActivatedLocaleCodes();
         }
 
         $context = array_merge($context, [
-            'locales' => $this->activatedLocales,
+            'locales' => $this->activatedLocaleCodes,
         ]);
 
         return [

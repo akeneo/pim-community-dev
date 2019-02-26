@@ -19,7 +19,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  *  - a price is required on the channel "ecommerce" and all locales
  *  - ...
  *
- * This object gives you the informAttributeRequirementInterfaceation of the requirement in the matrix: attribute, channel, locale.
+ * This object gives you the information of the requirement in the matrix: attribute, channel, locale.
  * that's why the functions forAttribute, forChannel and ForLocale always return an object representing the value in those
  * axis.
  *
