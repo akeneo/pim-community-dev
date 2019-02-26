@@ -21,5 +21,7 @@ Feature: Revert product attributes to a previous version
     And I visit the "History" column tab
     Then I should see 2 versions in the history
     When I revert the product version number 1
+    And I visit the "Attributes" column tab
+    And I visit the "Product Information" group
     Then the product "jeans" should have the following values:
       | handmade | 1 |

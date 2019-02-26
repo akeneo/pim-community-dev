@@ -70,7 +70,7 @@ JSON;
                 "values": {
                     "a_number_float": [
                         {
-                            "data": "12.05",
+                            "data": "12.0500",
                             "locale": null,
                             "scope": null
                         }

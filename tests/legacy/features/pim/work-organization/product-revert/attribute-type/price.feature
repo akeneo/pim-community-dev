@@ -50,6 +50,8 @@ Feature: Revert product attributes to a previous version
     When I visit the "History" column tab
     Then I should see 3 versions in the history
     When I revert the product version number 2
+    And I visit the "Attributes" column tab
+    And I visit the "Marketing" group
     Then the product "t-shirt" should have the following values:
     | price | 49.00 EUR |
 

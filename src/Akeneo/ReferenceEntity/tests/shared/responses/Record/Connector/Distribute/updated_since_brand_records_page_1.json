@@ -30,7 +30,7 @@
               }
             },
             "code": "brand_0",
-            "values": []
+            "values": {}
           },
           {
             "_links": {
@@ -39,7 +39,7 @@
               }
             },
             "code": "brand_1",
-            "values": []
+            "values": {}
           },
           {
             "_links": {
@@ -48,7 +48,7 @@
               }
             },
             "code": "brand_2",
-            "values": []
+            "values": {}
           }
         ]
       }

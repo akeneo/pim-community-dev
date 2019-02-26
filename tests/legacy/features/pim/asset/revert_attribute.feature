@@ -40,5 +40,7 @@ Feature: Revert an assets collection in a product
       | version | property | value          |
       | 3       | gallery  | chicagoskyline |
     When I revert the product version number 2
+    And I visit the "Attributes" column tab
+    And I visit the "Media" group
     Then the product "jeans" should have the following values:
       | gallery | [paint], [chicagoskyline] |

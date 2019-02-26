@@ -36,7 +36,7 @@ Feature: Review only possible values giving permissions on draft changes
       | name-en_US               | South Park Hoodie - Timmy |
       | description-en_US-mobile | Timmy!!!                  |
       | weather_conditions       | [cold], [dry]             |
-      | manufacturer             | [Volcom]                  |
+      | manufacturer             | Volcom                    |
       | size                     |                           |
     And the row "South Park Hoodie - Timmy" should contain:
       | column | value             |

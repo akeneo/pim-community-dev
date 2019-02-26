@@ -330,7 +330,7 @@ Feature: Read a single product by applying rules
       | length                   | 50.0000 CENTIMETER |
       | weather_conditions       | [dry], [hot]       |
       | number_in_stock-tablet   | 8000               |
-      | size                     | [L]                |
+      | size                     | L                  |
       | price-EUR                | 180.00             |
       | description-fr_FR-tablet | En cuir            |
     Then product "my-jacket" should be disabled
@@ -437,8 +437,8 @@ Feature: Read a single product by applying rules
       | climate                  | [cold], [hot]          |
       | number_in_stock-mobile   | 800                    |
       | number_in_stock-tablet   | 800                    |
-      | main_color               | [white]                |
-      | secondary_color          | [white]                |
+      | main_color               | white                  |
+      | secondary_color          | white                  |
       | name-en_US               | White jacket           |
       | name-fr_FR               | White jacket           |
       | description-en_US-mobile | A stylish white jacket |

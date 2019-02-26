@@ -35,6 +35,8 @@ Feature: Revert product attributes to a previous version
     When I visit the "History" column tab
     Then I should see 3 versions in the history
     When I revert the product version number 2
+    And I visit the "Attributes" column tab
+    And I visit the "Product Information" group
     Then the product "t-shirt" should have the following values:
     | description-en_US-tablet | A nice t-shirt. |
     Given I am on the "marcel" product page
@@ -49,5 +51,7 @@ Feature: Revert product attributes to a previous version
     When I visit the "History" column tab
     Then I should see 2 versions in the history
     When I revert the product version number 1
+    And I visit the "Attributes" column tab
+    And I visit the "All" group
     Then the product "marcel" should have the following values:
     | comment |  |

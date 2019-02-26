@@ -25,6 +25,8 @@ Feature: Revert product attributes to a previous version
     And I visit the "History" column tab
     Then I should see 2 versions in the history
     When I revert the product version number 1
+    And I visit the "Attributes" column tab
+    And I visit the "Product information" group
     Then the product "akeneo-jacket" should have the following values:
       | release_date-mobile |  |
 
@@ -44,6 +46,8 @@ Feature: Revert product attributes to a previous version
     And I visit the "History" column tab
     Then I should see 2 versions in the history
     When I revert the product version number 1
+    And I visit the "Attributes" column tab
+    And I visit the "Product information" group
     Then the product "akeneo-jacket" should have the following values:
       | release_date-mobile |  |
 
@@ -66,5 +70,7 @@ Feature: Revert product attributes to a previous version
     And I visit the "History" column tab
     Then I should see 3 versions in the history
     When I revert the product version number 2
+    And I visit the "Attributes" column tab
+    And I visit the "Product information" group
     Then the product "akeneo-jacket" should have the following values:
       | release_date-mobile | 2011-08-17 |

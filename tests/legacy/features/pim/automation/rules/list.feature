@@ -229,6 +229,9 @@ Feature: List all rules
     Then I should see the text "Confirm execution"
     And I should see the text "Are you sure you want to execute the selected rules?"
     When I confirm the execution
+    And I am on the "my-jacket" product page
+    And I visit the "Attributes" column tab
+    And I visit the "Product Information" group
     Then the product "my-jacket" should have the following values:
       | name-fr_FR | Original |
       | name-en_US | Lorem    |

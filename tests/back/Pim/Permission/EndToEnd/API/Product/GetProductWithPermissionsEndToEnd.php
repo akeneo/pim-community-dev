@@ -72,7 +72,7 @@ class GetProductWithPermissionsEndToEnd extends AbstractProductTestCase
     "values": {
         "a_number_float": [
             {
-                "data": "12.05",
+                "data": "12.0500",
                 "locale": null,
                 "scope": null
             }
@@ -251,7 +251,7 @@ JSON;
 
         NormalizedProductCleaner::clean($expected);
         NormalizedProductCleaner::clean($result);
-
-        $this->assertEquals($expected, $result);
+        
+        $this->assertJsonStringEqualsJsonString(json_encode($expected), json_encode($result));
     }
 }

@@ -28,6 +28,8 @@ Feature: Revert product attributes to a previous version
     And I visit the "History" column tab
     Then I should see 3 versions in the history
     When I revert the product version number 2
+    And I visit the "Attributes" column tab
+    And I visit the "Sizes" group
     Then the product "t-shirt" should have the following values:
     | length | 70.0000 CENTIMETER |
 
@@ -45,5 +47,7 @@ Feature: Revert product attributes to a previous version
     And I visit the "History" column tab
     Then I should see 2 versions in the history
     When I revert the product version number 1
+    And I visit the "Attributes" column tab
+    And I visit the "Sizes" group
     Then the product "marcel" should have the following values:
       | length |  |

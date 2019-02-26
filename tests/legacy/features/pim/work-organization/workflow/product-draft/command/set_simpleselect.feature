@@ -30,7 +30,7 @@ Feature: Create a draft with a simple select fields
       | product       | username | result                                                                                                                                                      |
       | akeneo_tshirt | Mary     | {"values": {"rating": [{"locale": null, "scope": null, "data": "2"}]}, "review_statuses": {"rating": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
-      | rating | [3] |
+      | rating | 3 |
 
   Scenario: Do not create a draft with same values as product
     Given the following product values:

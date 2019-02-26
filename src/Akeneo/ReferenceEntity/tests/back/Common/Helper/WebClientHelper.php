@@ -110,26 +110,29 @@ HTML;
 
     public function assertJsonFromFile(Response $response, string $relativeFilePath): void
     {
-        $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
-        if (null === $expectedResponse) {
+        $fileContents = file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath);
+        $expectedResponseArray = json_decode($fileContents, true);
+        $expectedResponseObject = json_decode($fileContents);
+        if (null === $expectedResponseArray) {
             throw new \RuntimeException(
                 sprintf('Impossible to load "%s" file, the file is not be present or is malformed', $relativeFilePath)
             );
         }
-        $expectedContent = $this->getBody($expectedResponse['response']);
+        $expectedContent = $this->getBody($expectedResponseArray['response']);
+        $expectedContentJson = json_encode($expectedResponseObject->response->body);
 
         $errorMessage = sprintf(
             'Expected response status code is not the same as the actual. Failed with content %s',
             $response->getContent()
         );
-        Assert::assertSame($expectedResponse['response']['status'], $response->getStatusCode(), $errorMessage);
+        Assert::assertSame($expectedResponseArray['response']['status'], $response->getStatusCode(), $errorMessage);
 
         $expectedContent !== ''
-            ? Assert::assertJsonStringEqualsJsonString($expectedContent, $response->getContent(), 'Expected response content is not the same as the actual.')
+            ? Assert::assertJsonStringEqualsJsonString($expectedContentJson, $response->getContent(), 'Expected response content is not the same as the actual.')
             : Assert::assertSame('', $response->getContent(), 'Expected response content should be empty but it is not.');
 
-        if (isset($expectedResponse['response']['headers'])) {
-            $this->assertResponseHeaders($expectedResponse['response']['headers'], $response);
+        if (isset($expectedResponseArray['response']['headers'])) {
+            $this->assertResponseHeaders($expectedResponseArray['response']['headers'], $response);
         }
     }
 

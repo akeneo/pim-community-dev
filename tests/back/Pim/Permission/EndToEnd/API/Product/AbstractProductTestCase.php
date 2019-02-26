@@ -169,7 +169,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
             {"locale":null,"scope":null,"data":["optionA","optionB"]}
         ],
         "a_number_float": [
-            { "data": "12.05", "locale": null, "scope": null }
+            { "data": "12.0500", "locale": null, "scope": null }
         ],
         "a_localizable_image": [
             {

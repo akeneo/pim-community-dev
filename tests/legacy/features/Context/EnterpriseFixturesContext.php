@@ -357,7 +357,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getPublishedProductValue($identifier, strtolower($attribute));
-        $this->assertDataEquals($productValue->getData(), $value);
+
+        $this->assertProductDataValueEquals($value, $productValue, strtolower($attribute));
     }
 
     /**

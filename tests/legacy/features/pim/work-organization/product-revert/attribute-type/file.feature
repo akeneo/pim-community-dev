@@ -32,5 +32,7 @@ Feature: Revert product attributes to a previous version
     When I visit the "History" column tab
     Then I should see 3 versions in the history
     When I revert the product version number 2
+    And I visit the "Attributes" column tab
+    And I visit the "Media" group
     Then the product "t-shirt" should have the following values:
       | datasheet | bic-core-148.txt |
