@@ -32,6 +32,7 @@ class AkeneoReferenceEntityExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_factories.yml');
+        $loader->load('analytics.yml');
         $loader->load('attribute_command_factories.yml');
         $loader->load('record_command_factories.yml');
         $loader->load('controllers.yml');
