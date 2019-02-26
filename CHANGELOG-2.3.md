@@ -4,6 +4,7 @@
 
 - PIM-8056: Remove bad ACL on the internal API end-point that get an association-type
 - PIM-8162: use the catalog locale in product export builder
+- PIM-8155: Fix bad ACL set on xlsx product export edit form
 
 # 2.3.30 (2019-02-21)
 
@@ -13,7 +14,6 @@
 - PIM-8131: Labels cannot be used for search in bulk actions
 - PIM-7939: Fix PQB search when an attribute as label is on an ancestor.
   -> Not mandatory, you can re-index your products and product models to enjoy this fix with commands: `bin/console pim:product:index --all` and `bin/console pim:product-model:index --all`.
-- PIM-8155: Fix bad ACL set on xlsx product export edit form
 
 # 2.3.29 (2019-02-11)
 
