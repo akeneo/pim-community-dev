@@ -13,4 +13,4 @@ extensions:
         targetZone: self
         position: 100
         config:
-            resourceName: '%pim_catalog.entity.attribute.class%'
+            resourceName: Akeneo\Pim\Structure\Component\Model\Attribute

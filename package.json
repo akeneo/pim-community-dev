@@ -6,14 +6,15 @@
   "private": true,
   "config": {
     "source": "vendor/akeneo/pim-community-dev",
-    "check": "vendor/akeneo/pim-community-dev/frontend/build/check-dependencies.js",
+    "sync": "vendor/akeneo/pim-community-dev/frontend/build/check-dependencies.js",
     "styles": "vendor/akeneo/pim-community-dev/frontend/build/compile-less.js"
   },
   "scripts": {
-    "sync": "NODE_PATH=node_modules node $npm_package_config_check --source=$npm_package_config_source",
-    "webpack": "yarn run sync && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
-    "webpack-dev": "yarn run sync && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
-    "webpack-watch": "yarn run sync && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch",
+    "requirements": "node $npm_package_config_source/frontend/build/check-requirements.js",
+    "sync": "NODE_PATH=node_modules node $npm_package_config_sync --source=$npm_package_config_source",
+    "webpack": "yarn requirements && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
+    "webpack-dev": "yarn requirements && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
+    "webpack-watch": "yarn requirements && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch",
     "prettier": "prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./{src,tests}/Akeneo/ReferenceEntity/**/*.ts\"; prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./{src,tests}/Akeneo/ReferenceEntity/**/*.tsx\"; prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./tests/front/**/*.js\";",
     "before-commit": "yarn prettier && yarn lint && yarn test",
     "test": "yarn unit && yarn webpack-test --env=prod && yarn integration && yarn acceptance src/Akeneo/ReferenceEntity/tests/features && yarn acceptance tests/features && yarn acceptance $npm_package_config_source/tests/features",
@@ -26,7 +27,8 @@
     "acceptance": "NODE_PATH=./node_modules cucumber-js --parallel ${NODE_NUMBER_OF_THREAD:-2} --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js",
     "acceptance-report": "NODE_PATH=./node_modules yarn run acceptance -- -f json:web/test_dist/acceptance-js.json && node $npm_package_config_source/frontend/test/acceptance/generate-html-report.js",
     "less": "node $npm_package_config_styles",
-    "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,web/bundles}/**/*.{less,css}\" -c \"yarn run less\""
+    "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,web/bundles}/**/*.{less,css}\" -c \"yarn run less\"",
+    "update-extensions": "node vendor/akeneo/pim-community-dev/frontend/build/update-extensions.js"
   },
   "devDependencies": {
     "@types/draft-js": "^0.10.25",
@@ -72,6 +74,7 @@
     "eslint": "4.5.0",
     "exports-loader": "0.6.4",
     "expose-loader": "0.7.3",
+    "extra-watch-webpack-plugin": "^1.0.3",
     "html-to-draftjs": "^1.4.0",
     "imports-loader": "0.7.1",
     "jquery": "3.3.1",
@@ -97,6 +100,7 @@
     "webpack": "3.5.5",
     "webpack-cleanup-plugin": "0.5.1",
     "webpack-livereload-plugin": "1.2.0",
+    "webpack-shell-plugin": "^0.5.0",
     "write-file-webpack-plugin": "4.1.0",
     "yamljs": "0.3.0"
   },

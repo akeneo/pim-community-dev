@@ -25,6 +25,15 @@ module.exports = async function(cucumber) {
   getElement = createElementDecorator(config);
 
   Given('a catalog with {int} asset categories', async function(int) {
+    this.page.on('request', request => {
+      if (request.url().includes('/security')) {
+        request.respond({
+          contentType: 'application/json',
+          body: `${JSON.stringify({})}`
+        })
+      }
+    })
+
     await renderView(this.page, 'pim-catalog-volume-index', data);
     assert(int);
   });
