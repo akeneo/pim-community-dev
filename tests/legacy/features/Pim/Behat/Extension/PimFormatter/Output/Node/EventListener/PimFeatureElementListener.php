@@ -13,9 +13,17 @@ use Behat\Behat\EventDispatcher\Event\StepTested;
 use Behat\Behat\Output\Node\Printer\FeaturePrinter;
 use Behat\Behat\Output\Node\Printer\JUnit\JUnitScenarioPrinter;
 use Behat\Behat\Output\Node\Printer\StepPrinter;
+use Behat\Behat\Tester\Result\StepResult;
 use Behat\Gherkin\Node\FeatureNode;
+use Behat\Gherkin\Node\ScenarioLikeInterface;
+use Behat\Gherkin\Node\StepNode;
+use Behat\Testwork\Hook\Tester\Setup\HookedTeardown;
 use Behat\Testwork\Output\Formatter;
 use Behat\Testwork\Output\Node\EventListener\EventListener;
+use Behat\Testwork\Output\Printer\JUnitOutputPrinter;
+use Behat\Testwork\Output\Printer\OutputPrinter;
+use Behat\Testwork\Tester\Result\ExceptionResult;
+use Behat\Testwork\Tester\Result\TestResult;
 use Pim\Behat\Extension\PimFormatter\Output\Node\Printer\PimScenarioPrinter;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -102,6 +110,7 @@ final class PimFeatureElementListener implements EventListener
             foreach ($afterScenario['step_events'] as $afterStepTested) {
                 $this->stepPrinter->printStep($formatter, $afterScenarioTested->getScenario(), $afterStepTested->getStep(), $afterStepTested->getTestResult());
             }
+            $this->markScenarioAsFailedWhenThereAreTeardownExceptions($afterScenario['step_events'], $formatter);
         }
 
         $this->featurePrinter->printFooter($formatter, $event->getTestResult());
@@ -148,6 +157,63 @@ final class PimFeatureElementListener implements EventListener
     {
         if ($event instanceof AfterStepTested) {
             $this->afterStepTestedEvents[$event->getStep()->getLine()] = $event;
+        }
+    }
+
+    /**
+     * The common error format of the Junit output file is:
+     *    <testcase
+     *      name="tests/legacy/features/update/add_association.feature:6"
+     *      file="tests/legacy/features/update/add_association.feature:6"
+     *      status="failed"
+     *      time="3.787"
+     *    >
+     *       <failure message="Then I should get the following products after apply the following updater to it"></failure>
+     *    </testcase>
+     *
+     * Though, when there is a JS error caught into a hook triggered after a step, the Junit output is:
+     *     <testcase
+     *          name="tests/legacy/features/category/create_a_category.feature:11"
+     *          file="tests/legacy/features/category/create_a_category.feature:11" status="failed" time="5.215">
+     *     </testcase>
+     *
+     * The testcase is considered as failed because there was an exception triggered in the teardown.
+     * https://github.com/Behat/Behat/blob/v3.4.3/src/Behat/Testwork/Tester/Result/TestWithSetupResult.php#L67
+     *
+     * But the failure node is missing, because there are not any step considered as failed, only SUCCESS or SKIPPED.
+     * Skipped steps are never printed into a testcase node.
+     *
+     * https://github.com/Behat/Behat/blob/v3.4.3/src/Behat/Behat/Output/Node/Printer/JUnit/JUnitStepPrinter.php#L63
+     *
+     * This is problematic, because our current CI (Circle CI) does not consider this scenario as failing despite the testcase status "failed".
+     * To consider the test as failed, there should be a failure node inside the testcase node.
+     *
+     * So, when there is an exception caught into the teardown of a step, we add a failure node.
+     *
+     */
+    private function markScenarioAsFailedWhenThereAreTeardownExceptions(array $stepEvents, Formatter $formatter):void
+    {
+        $message = 'This scenario has an error not properly catched by behat. It is probably a JS error. Exception: "%s".';
+        $failedSteps = array_filter($stepEvents, function (AfterStepTested $afterStepTested) {
+            return in_array($afterStepTested->getTestResult()->getResultCode(), [TestResult::FAILED, TestResult::PENDING, StepResult::UNDEFINED]);
+        });
+
+        if (count($failedSteps) > 0) {
+            return;
+        }
+
+        foreach ($stepEvents as $stepEvent) {
+            $teardown = $stepEvent->getTeardown();
+            if ($teardown instanceof HookedTeardown && !$teardown->isSuccessful()) {
+                foreach ($teardown->getHookCallResults() as $result) {
+                    if ($result->hasException()) {
+                        $formatter->getOutputPrinter()->addTestcaseChild(
+                            'failure',
+                            ['message' => sprintf($message, $result->getException()->getMessage())]
+                        );
+                    }
+                };
+            };
         }
     }
 }

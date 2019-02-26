@@ -68,6 +68,7 @@ final class PimScenarioPrinter
 
         $outputPrinter->addTestcase([
             'name'   => $fileAndLine,
+            'file' => $fileAndLine,
             'status' => $this->resultConverter->convertResultToString($result),
             'time' => $this->durationListener->getDuration($scenario),
         ]);
