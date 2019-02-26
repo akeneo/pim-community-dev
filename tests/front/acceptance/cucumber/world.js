@@ -24,6 +24,7 @@ module.exports = function(cucumber) {
     await this.page.setRequestInterception(true);
 
     this.consoleLogs = [];
+
     this.page.on('console', message => {
       if (['error', 'warning'].includes(message.type())) {
         this.consoleLogs.push(message.text());
@@ -56,13 +57,6 @@ module.exports = function(cucumber) {
           contentType: 'application/json',
           body: `${JSON.stringify(translations)}`,
         });
-      }
-
-      if (request.url().includes('/security')) {
-        request.respond({
-          contentType: 'application/json',
-          body: `${JSON.stringify({})}`
-        })
       }
     });
 
