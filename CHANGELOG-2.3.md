@@ -1,5 +1,14 @@
 # 2.3.x
 
+# 2.3.30 (2019-02-21)
+
+## Bug fixes
+
+- PIM-8059: Optimize `compute_completeness_of_products_linked_to_assets` job.
+The job does not remove completeness of product if the asset is not required by the family.
+
+# 2.3.29 (2019-02-11)
+
 ## Bug fixes
 
 - PIM-8021: Fix translations.

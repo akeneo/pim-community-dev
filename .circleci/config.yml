@@ -18,7 +18,7 @@ jobs:
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots
       - run:
           name: Setup the parameters.yml files
           command: ./bin/docker/pim-setup.sh
@@ -84,28 +84,33 @@ jobs:
           - run:
                 name: PhpCsFixer
                 command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+                when: always
           - run:
                 name: PhpCoupling Detector
                 command: DOCKER=true make coupling
-#          - run:
-#                name: PHPStan
-#                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
+                when: always
           - run:
                 name: PHPStan on Reference Entities
                 command: docker-compose exec -T fpm vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
+                when: always
           - run:
                 name: Check Pullup
                 command: docker-compose exec -T fpm vendor/akeneo/pim-community-dev/bin/check-pullup
+                when: always
           - run:
                 name: Acceptance back
                 command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
+                when: always
           - run:
                 name: Acceptance back (Reference Entities)
                 command: docker-compose exec fpm vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --no-interaction --format=progress
+                when: always
           - store_test_results:
                 path: var/tests
           - store_artifacts:
                 path: var/tests
+          - store_artifacts:
+                path: var/logs
 
   back_phpunit_integration:
       machine:
@@ -140,6 +145,8 @@ jobs:
                 path: var/tests/phpunit
           - store_artifacts:
                 path: var/tests/phpunit
+          - store_artifacts:
+                path: var/logs
 
   back_phpunit_end_to_end:
       machine:
@@ -169,6 +176,8 @@ jobs:
                 path: var/tests/phpunit
           - store_artifacts:
                 path: var/tests/phpunit
+          - store_artifacts:
+                path: var/logs
 
   back_behat_legacy:
     machine:
@@ -194,10 +203,22 @@ jobs:
           command: |
             TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy | circleci tests split)
             vendor/akeneo/pim-community-dev/.circleci/run_behat.sh $TESTFILES
+      - run:
+          name: Gather Junit test result files in the same directory to improve the render of failing tests
+          command: |
+              set -e
+              cd var/tests/behat
+              sudo chmod -R 777 .
+              for subdir in */*; do mv "${subdir}" "${subdir/\//_}"; done
+          when: always
       - store_test_results:
           path: var/tests/behat
       - store_artifacts:
           path: var/tests/behat
+      - store_artifacts:
+          path: var/logs
+      - store_artifacts:
+          path: var/tests/screenshots
 
   front_static_acceptance_and_integration:
       machine:
