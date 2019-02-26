@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\tests\Integration\Persistence\Query;
+namespace AkeneoTestEnterprise\Asset\Integration\Persistence\Query;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>

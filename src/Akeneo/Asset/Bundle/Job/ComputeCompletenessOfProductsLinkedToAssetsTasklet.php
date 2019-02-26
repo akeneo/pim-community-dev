@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Asset\Bundle\Job;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
+use Akeneo\Asset\Component\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequiredInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -16,7 +17,6 @@ use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
-use PimEnterprise\Component\ProductAsset\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequiredInterface;
 
 /**
  * This tasklet is meant to be launched by a job after some assets or asset references are updated.

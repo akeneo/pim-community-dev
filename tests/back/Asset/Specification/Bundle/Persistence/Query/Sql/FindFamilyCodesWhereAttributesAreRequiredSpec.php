@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql;
+namespace Specification\Akeneo\Asset\Bundle\Persistence\Query\Sql;
 
+use Akeneo\Asset\Bundle\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequired;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequired;
 use Prophecy\Argument;
 
 class FindFamilyCodesWhereAttributesAreRequiredSpec extends ObjectBehavior

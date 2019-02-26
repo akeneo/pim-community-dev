@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Asset\Bundle\Job;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Asset\Bundle\Job\ComputeCompletenessOfProductsLinkedToAssetsTasklet;
+use Akeneo\Asset\Component\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequiredInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -19,7 +20,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequiredInterface;
+use Prophecy\Argument;
 
 class ComputeCompletenessOfProductsLinkedToAssetsTaskletSpec extends ObjectBehavior
 {

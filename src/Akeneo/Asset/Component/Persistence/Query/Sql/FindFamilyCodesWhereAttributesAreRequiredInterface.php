@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Persistence\Query\Sql;
+namespace Akeneo\Asset\Component\Persistence\Query\Sql;
 
 /**
  * It finds families codes where given attributes codes are required.

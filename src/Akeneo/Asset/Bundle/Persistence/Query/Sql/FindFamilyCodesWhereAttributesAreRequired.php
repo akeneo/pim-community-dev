@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql;
+namespace Akeneo\Asset\Bundle\Persistence\Query\Sql;
 
+use Akeneo\Asset\Component\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequiredInterface;
 use Doctrine\DBAL\Connection;
-use PimEnterprise\Component\ProductAsset\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequiredInterface;
 
 /**
  * It finds families codes where given attributes codes are required.
