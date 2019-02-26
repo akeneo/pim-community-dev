@@ -4,6 +4,10 @@
 
 ## Bug fixes
 
+- PIM-8051: Fix display of product model images in the datagrid when "Attribute used as main picture" is at the variant attributes level one
+
+## Bug fixes
+
 - PIM-8157: Fix issues on user edit (scroll and groups)
 - PIM-8164: Always display cancel cross on popins
 - PIM-8165: Increase font sizes
