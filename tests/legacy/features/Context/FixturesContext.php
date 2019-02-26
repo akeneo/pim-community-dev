@@ -18,7 +18,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
@@ -1177,7 +1176,8 @@ class FixturesContext extends BaseFixturesContext
     {
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute));
-        $this->assertDataEquals($productValue->getData(), $value);
+
+        $this->assertProductDataValueEquals($value, $productValue, strtolower($attribute));
     }
 
     /**
@@ -1193,7 +1193,7 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang]);
 
-        $this->assertDataEquals($productValue->getData(), $value);
+        $this->assertProductDataValueEquals($value, $productValue, strtolower($attribute));
     }
 
     /**
@@ -1209,7 +1209,7 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), null, $channel);
 
-        $this->assertDataEquals($productValue->getData(), $value);
+        $this->assertProductDataValueEquals($value, $productValue, strtolower($attribute));
     }
 
     /**
@@ -1230,7 +1230,7 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $locale, $scope);
 
-        $this->assertDataEquals($productValue->getData(), $value);
+        $this->assertProductDataValueEquals($value, $productValue, strtolower($attribute));
     }
 
     /**
@@ -1243,16 +1243,17 @@ class FixturesContext extends BaseFixturesContext
     public function thePricesOfProductsShouldBe($attribute, $products, TableNode $table)
     {
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
+
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-
             foreach ($table->getHash() as $price) {
-                $productPrice = $productValue->getPrice($price['currency']);
-                if ('' === trim($price['amount'])) {
-                    Assert::assertEquals(null, $productPrice ? $productPrice->getData() : $productPrice);
-                } else {
-                    Assert::assertEquals($price['amount'], $productPrice->getData());
-                }
+                $infos = ['price_currency' => $price['currency']];
+                $this->assertProductDataValueEquals(
+                    ('' === trim($price['amount'])) ? null : $price['amount'],
+                    $productValue,
+                    strtolower($attribute),
+                    $infos
+                );
             }
         }
     }
@@ -1349,9 +1350,10 @@ class FixturesContext extends BaseFixturesContext
     public function theMetricOfProductsShouldBe($attribute, $products, $data)
     {
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
+
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            Assert::assertEquals($data, $productValue->getData()->getData());
+            $this->assertProductDataValueEquals($data, $productValue, strtolower($attribute));
         }
     }
 
@@ -1366,7 +1368,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $productValue = $this->getProductModelValue($identifier, strtolower($attribute));
 
-        $this->assertDataEquals((string) $productValue->getData(), $value);
+        $this->assertProductDataValueEquals($value, $productValue, strtolower($attribute));
     }
 
     /**
@@ -1465,48 +1467,20 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
-        $this->spin(function () use ($identifier, $table) {
-            $product = $this->getProduct($identifier);
+        $product = $this->getProduct($identifier);
 
-            foreach ($table->getRowsHash() as $rawCode => $value) {
-                $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
+        foreach ($table->getRowsHash() as $rawCode => $value) {
+            $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
 
-                $attribute     = $infos['attribute'];
-                $attributeCode = $attribute->getCode();
-                $localeCode    = $infos['locale_code'];
-                $scopeCode     = $infos['scope_code'];
-                $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
-                $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
+            $attribute = $infos['attribute'];
+            $attributeCode = $attribute->getCode();
+            $localeCode = $infos['locale_code'];
+            $scopeCode = $infos['scope_code'];
 
-                if ('' === $value) {
-                    Assert::assertEmpty((string) $productValue);
-                } elseif ('media' === $attribute->getBackendType()) {
-                    // media filename is auto generated during media handling and cannot be guessed
-                    // (it contains a timestamp)
-                    if ('**empty**' === $value) {
-                        Assert::assertEmpty((string) $productValue);
-                    } else {
-                        Assert::assertTrue(
-                            null !== $productValue->getData() &&
-                            false !== strpos($productValue->getData()->getOriginalFilename(), $value)
-                        );
-                    }
-                } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
-                    // $priceCurrency can be null if we want to test all the currencies at the same time
-                    // in this case, it's a simple string comparison
-                    // example: 180.00 EUR, 220.00 USD
+            $productValue = $product->getValue($attributeCode, $localeCode, $scopeCode);
 
-                    $price = $productValue->getPrice($priceCurrency);
-                    Assert::assertEquals($value, $price->getData());
-                } elseif ('date' === $attribute->getBackendType()) {
-                    Assert::assertEquals($value, $productValue->getData()->format('Y-m-d'));
-                } else {
-                    Assert::assertEquals($value, (string) $productValue);
-                }
-            }
-
-            return true;
-        }, sprintf('Cannot get the values of the product %s', $identifier));
+            $this->assertProductDataValueEquals($value, $productValue, $attributeCode, $infos);
+        }
     }
 
     /**
@@ -2178,10 +2152,11 @@ class FixturesContext extends BaseFixturesContext
         if (null === $value = $product->getValue($attribute, $locale, $scope)) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Could not find product value for attribute "%s" in locale "%s" for scope "%s"',
+                    'Could not find product value for attribute "%s" in locale "%s" for scope "%s for product %s"',
                     $attribute,
                     $locale,
-                    $scope
+                    $scope,
+                    $identifier
                 )
             );
         }

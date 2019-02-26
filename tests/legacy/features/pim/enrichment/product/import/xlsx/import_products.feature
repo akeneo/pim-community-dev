@@ -71,7 +71,7 @@ Feature: Import XLSX products
     When the products are imported via the job xlsx_footwear_product_import
     Then there should be 1 products
     And the product "renault-kangoo" should have the following value:
-      | rating | [5] |
+      | rating | 5 |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6085
   @javascript
