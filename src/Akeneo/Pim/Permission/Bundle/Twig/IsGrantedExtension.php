@@ -11,8 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Twig;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Security\Acl\Voter\FieldVote;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -26,21 +25,16 @@ class IsGrantedExtension extends \Twig_Extension
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var LocaleRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $localeRepository;
 
-    /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param AttributeRepositoryInterface  $attributeRepository
-     * @param LocaleRepositoryInterface     $localeRepository
-     */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        AttributeRepositoryInterface $attributeRepository,
-        LocaleRepositoryInterface $localeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->attributeRepository = $attributeRepository;

@@ -9,6 +9,6 @@ services:
     pimee_enrich.twig.attribute_extension:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\AttributeExtension'
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: twig.extension }
