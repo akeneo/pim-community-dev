@@ -61,13 +61,6 @@ services:
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
 
-    pim_enrich.twig.attribute_extension:
-        class: 'Akeneo\Pim\Structure\Bundle\Twig\AttributeExtension'
-        arguments:
-            - '@pim_catalog.repository.attribute'
-        tags:
-            - { name: twig.extension }
-
     # Form
     pim_enrich.form.family:
         class: 'Symfony\Component\Form\Form'
