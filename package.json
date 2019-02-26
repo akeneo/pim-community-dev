@@ -3,9 +3,10 @@
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
   "scripts": {
-    "webpack": "webpack --config webpack.config.js --env=prod",
-    "webpack-dev": "webpack --config webpack.config.js",
-    "webpack-watch": "webpack --progress --config webpack.config.js --watch",
+    "requirements": "node frontend/build/check-requirements.js",
+    "webpack": "yarn requirements && webpack --config webpack.config.js --env=prod",
+    "webpack-dev": "yarn requirements && webpack --config webpack.config.js",
+    "webpack-watch": "yarn requirements && webpack --progress --config webpack.config.js --watch",
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
     "before-commit": "yarn prettier && yarn lint && yarn test",
     "test": "yarn unit && yarn webpack-test --env=prod && yarn integration && yarn acceptance tests/features",
@@ -15,9 +16,10 @@
     "unit": "jest --no-cache --config tests/front/unit/jest/unit.jest.js",
     "integration": "jest --no-cache --config ./tests/front/integration/jest/integration.jest.js",
     "acceptance": "cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
-    "acceptance-html-report": "yarn run acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
+    "acceptance-html-report": "yarn acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
     "less": "node ./frontend/build/compile-less.js",
-    "less-watch": "SHELL=/bin/bash chokidar --verbose \"{src,web/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\""
+    "less-watch": "SHELL=/bin/bash chokidar --verbose \"{src,web/bundles}/**/*.{less,css}\" -c \"yarn less --dev\"",
+    "update-extensions": "node frontend/build/update-extensions.js"
   },
   "repository": {
     "type": "git",
@@ -65,6 +67,7 @@
     "eslint": "4.5.0",
     "exports-loader": "0.6.4",
     "expose-loader": "0.7.3",
+    "extra-watch-webpack-plugin": "^1.0.3",
     "imports-loader": "0.7.1",
     "jquery": "3.3.1",
     "less": "^3.9.0",
@@ -84,6 +87,7 @@
     "webpack": "3.5.5",
     "webpack-cleanup-plugin": "0.5.1",
     "webpack-livereload-plugin": "1.2.0",
+    "webpack-shell-plugin": "^0.5.0",
     "write-file-webpack-plugin": "4.1.0",
     "yamljs": "0.3.0"
   },

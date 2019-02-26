@@ -59,6 +59,6 @@ extensions:
         config:
             fieldName: allowed_extensions
             label: pim_enrich.entity.attribute.property.allowed_extensions
-            choices: '%pim_catalog_image_allowed_extensions%'
+            choices: [gif, jfif, jif, jpeg, jpg, pdf, png, psd, tif, tiff]
             isMultiple: true
             defaultValue: []

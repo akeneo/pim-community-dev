@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Dump a file called require-paths containing all requirejs.yml config files for reach registered bundle
+ * Dump a file called require-paths containing a list of required bundle paths
  *
  * @author Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -55,7 +55,7 @@ class DumpRequirePathsCommand extends ContainerAwareCommand
 
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
-            $fileName = dirname($reflection->getFilename()) . '/Resources/config/requirejs.yml';
+            $fileName = dirname($reflection->getFilename());
             $paths[] = $fileName;
         }
 

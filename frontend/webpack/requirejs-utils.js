@@ -2,7 +2,13 @@ const _ = require('lodash');
 const deepMerge = require('deepmerge');
 const path = require('path');
 const { parse } = require('yamljs');
-const { readFileSync, writeFileSync, readdirSync, statSync } = require('fs');
+const {
+    readFileSync,
+    writeFileSync,
+    readdirSync,
+    statSync
+} = require('fs');
+
 
 const getFrontModules = (sourceDir, originalDir, bundle) => (dir, modules) => {
     dir = dir || originalDir + '/';
@@ -30,16 +36,16 @@ const utils = {
      * Grab the RequireJS.yaml from each bundle required by the application
      * and extract the module paths, config, and maps
      *
-     * @param  {Array} requireYamls An array containing the filenames of each RequireJS.yaml
+     * @param  {Array} bundlePaths An array containing the paths of each required bundle
      * @return {Object}             Returns an object containing the extracted config, and all the absolute module paths
      */
-    getRequireConfig(requireYamls, baseDir) {
+    getRequireConfig(bundlePaths, baseDir) {
         let paths = {};
         let config = {};
 
-        requireYamls.forEach((yaml) => {
+        bundlePaths.forEach((bundle) => {
             try {
-                const contents = readFileSync(yaml, 'utf8');
+                const contents = readFileSync(`${bundle}/Resources/config/requirejs.yml`, 'utf8');
                 const parsed = parse(contents);
                 const requirePaths = parsed.config.paths || {};
                 const requireMaps = _.get(parsed.config, 'map.*') || {};
@@ -63,8 +69,8 @@ const utils = {
      * @param  {String} sourceDir The directory executing webpack
      * @return {Object}               An object requirejs containing module config and aliases
      */
-    getModulePaths(baseDir, sourceDir, sourcePath) {
-        const pathSourceFile = require(sourcePath);
+    getModulePaths(baseDir, sourceDir) {
+        const pathSourceFile = require(path.join(baseDir, 'web/js/require-paths.js'));
         const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir);
         const aliases = Object.assign(paths, getFrontModules(process.cwd(), './web/bundles')(), {
             'require-polyfill': path.resolve(sourceDir, './frontend/webpack/require-polyfill.js'),

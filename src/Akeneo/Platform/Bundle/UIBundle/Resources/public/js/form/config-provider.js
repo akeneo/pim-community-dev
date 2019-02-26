@@ -1,16 +1,37 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'routing'],
-    function ($, _, Routing) {
+    ['jquery', 'pim/security-context'],
+    function ($, SecurityContext) {
         var promise = null;
 
-        var loadConfig = function () {
+        /**
+         * Filters form extensions by ACL
+         *
+         * @param {Object} extensions
+         */
+        const filterByGranted = (extensions) => {
+            return extensions.filter(extension => {
+                return null === extension.aclResourceId || SecurityContext.isGranted(extension.aclResourceId)
+            })
+        }
+
+        const loadConfig = function () {
             if (null === promise) {
-                promise = $.getJSON(Routing.generate('pim_enrich_form_extension_rest_index')).fail(() => {
-                    throw Error('It seems that your web server is not well configured as we were not able ' +
-                        'to load the frontend configuration. The most likely reason is that the mod_rewrite ' +
-                        'module is not installed/enabled.')
+                promise = $.when(
+                    $.get('/js/extensions.json'),
+                    SecurityContext.initialize()
+                )
+                .then(([config]) => {
+                    config.extensions = filterByGranted(config.extensions)
+
+                    return config;
+                })
+                .fail(() => {
+                    throw Error(`It seems that your web server is not well
+                     configured as we were not able to load the frontend
+                      configuration. The most likely reason is that the
+                       mod_rewrite module is not installed/enabled.`)
                 });
             }
 
@@ -23,10 +44,8 @@ define(
              *
              * @return {Promise}
              */
-            getExtensionMap: function () {
-                return loadConfig().then(function (config) {
-                    return Object.values(config.extensions);
-                });
+            getExtensionMap() {
+                return loadConfig().then(({extensions}) => extensions)
             },
 
             /**
@@ -34,16 +53,14 @@ define(
              *
              * @return {Promise}
              */
-            getAttributeFields: function () {
-                return loadConfig().then(function (config) {
-                    return config.attribute_fields;
-                });
+            getAttributeFields() {
+                return loadConfig().then(({attribute_fields}) => attribute_fields)
             },
 
             /**
              * Clear cache of form registry
              */
-            clear: function () {
+            clear() {
                 promise = null;
             }
         };

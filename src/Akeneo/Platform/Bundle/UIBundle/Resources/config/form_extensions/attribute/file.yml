@@ -59,6 +59,6 @@ extensions:
         config:
             fieldName: allowed_extensions
             label: pim_enrich.entity.attribute.property.allowed_extensions
-            choices: '%pim_catalog_file_allowed_extensions%'
+            choices: [csv, doc, docx, mp3, pdf, ppt, pptx, rtf, svg, txt, wav]
             isMultiple: true
             defaultValue: []

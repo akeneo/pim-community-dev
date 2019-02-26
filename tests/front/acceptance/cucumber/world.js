@@ -24,6 +24,7 @@ module.exports = function(cucumber) {
     await this.page.setRequestInterception(true);
 
     this.consoleLogs = [];
+
     this.page.on('console', message => {
       if (['error', 'warning'].includes(message.type())) {
         this.consoleLogs.push(message.text());
@@ -44,7 +45,7 @@ module.exports = function(cucumber) {
         });
       }
 
-      if (request.url().includes('/form/extensions')) {
+      if (request.url().includes('/js/extensions.json')) {
         request.respond({
           contentType: 'application/json',
           body: `${JSON.stringify(extensions)}`,

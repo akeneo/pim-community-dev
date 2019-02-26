@@ -5,22 +5,15 @@ const rootDir = process.cwd();
 const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
-
+const WebpackShellPlugin = require('webpack-shell-plugin');
+const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
-const sourcePath = path.join(rootDir, 'web/js/require-paths.js');
-
-if (!fs.existsSync(sourcePath)) {
-  throw new Error(`The web/js/require-paths.js module does not exist - You need to run
-    "bin/console pim:install" or "bin/console pim:installer:dump-require-paths" before
-    running webpack \n`);
-}
-
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
-const {aliases, config} = getModulePaths(rootDir, __dirname, sourcePath);
+const {aliases, config} = getModulePaths(rootDir, __dirname);
 
 createModuleRegistry(Object.keys(aliases), rootDir);
 
@@ -198,8 +191,14 @@ const webpackConfig = {
   },
 
   plugins: [
-    // Clean up the dist folder and source maps before rebuild
-    new WebpackCleanupPlugin(),
+    new WebpackShellPlugin({
+      onBuildStart: ['yarn update-extensions'],
+      dev: false
+    }),
+
+    new ExtraWatchWebpackPlugin({
+      files: ['src/**/*{form_extensions/**/*.yml,form_extensions.yml}'],
+    }),
 
     // Map modules to variables for global use
     new webpack.ProvidePlugin({_: 'underscore', Backbone: 'backbone', $: 'jquery', jQuery: 'jquery'}),

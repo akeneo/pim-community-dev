@@ -12,14 +12,13 @@ const RewriteImageURLs = require('./less-rewrite-urls')
 const BUNDLE_REQUIRE_PATH = resolve(rootDir, './web/js/require-paths')
 
 // The file path for each bundle that imports all the .less files
-const BUNDLE_LESS_INDEX_PATH = 'public/less/index.less'
+const BUNDLE_LESS_INDEX_PATH = 'Resources/public/less/index.less'
 
 // The final output path for all the CSS of the PIM
 const OUTPUT_CSS_PATH = 'web/css/pim.css'
 
 if (!existsSync(`${BUNDLE_REQUIRE_PATH}.js`)) {
-    console.error(`web/js/require-paths.js does not exist - Run "bin/console pim:installer:dump-require-paths" and try again.`.red)
-
+    console.log(`${BUNDLE_REQUIRE_PATH} does not exist - Run "bin/console pim:installer:dump-require-paths" and try again.`.red)
     process.exit(1)
 }
 
@@ -46,9 +45,8 @@ function getFileContents(filePath) {
 function collectBundleImports(bundlePaths) {
     // Make each path relative
     const indexFiles = bundlePaths.map(bundlePath => {
-        return dirname(bundlePath)
-            .replace('config', BUNDLE_LESS_INDEX_PATH)
-            .replace(/(^.+)[^vendor](?=\/src|\/vendor)\//gm, '')
+        return `${bundlePath}/${BUNDLE_LESS_INDEX_PATH}`
+                .replace(/(^.+)[^vendor](?=\/src|\/vendor)\//gm, '')
     })
 
     const bundleImports = []
