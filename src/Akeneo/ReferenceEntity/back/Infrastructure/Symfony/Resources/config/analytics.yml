@@ -1,6 +1,6 @@
 services:
     akeneo_referenceentity.persistence.analytics.reference_entity_statistics_collector:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics\ReferenceEntityStatisticsCollector
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities'
             - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity'
