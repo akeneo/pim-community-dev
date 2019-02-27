@@ -90,9 +90,18 @@ install-database-test: docker-compose.override.yml app/config/parameters_test.ym
 install-database-prod: docker-compose.override.yml app/config/parameters.yml vendor
 	$(PHP_EXEC) bin/console --env=prod pim:installer:db
 
+## Initialize the PIM frontend depending on an environment
+.PHONY: build-front-dev install-asset
+build-front-dev: docker-compose.override.yml node_modules
+	$(YARN_EXEC) run webpack-dev
+
+.PHONY: build-front-test install-asset
+build-front-test: docker-compose.override.yml node_modules
+	$(YARN_EXEC) run webpack-test
+
 ## Initialize the PIM: install database (behat/prod) and run webpack
 .PHONY: install-pim
-install-pim: app/config/parameters.yml app/config/parameters_test.yml vendor node_modules clean install-asset install-database-test install-database-prod
+install-pim: app/config/parameters.yml app/config/parameters_test.yml vendor node_modules clean install-asset build-front-dev build-front-test install-database-test install-database-prod
 
 ##
 ## Docker
