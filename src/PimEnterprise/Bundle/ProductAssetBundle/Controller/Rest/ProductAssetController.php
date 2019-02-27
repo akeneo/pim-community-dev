@@ -50,7 +50,7 @@ class ProductAssetController
      */
     public function indexAction(Request $request)
     {
-        $options = $request->query->get('options', ['limit' => 20]);
+        $options = $request->query->get('options');
 
         if ($request->query->has('identifiers')) {
             $options['identifiers'] = explode(',', $request->query->get('identifiers'));

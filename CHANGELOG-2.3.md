@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8173: Remove limit of 20 assets displayed when uploading assets
+
 # 2.3.30 (2019-02-21)
 
 ## Bug fixes
