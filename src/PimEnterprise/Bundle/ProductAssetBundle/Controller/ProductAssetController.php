@@ -32,9 +32,6 @@ use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CreateAssetType;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Component\ProductAsset\Builder\ReferenceBuilderInterface;
-use PimEnterprise\Component\ProductAsset\Builder\VariationBuilder;
-use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -492,8 +489,15 @@ class ProductAssetController extends Controller
         // TODO merge master: remove condition
         if (null !== $this->referenceBuilder && null !== $this->variationBuilder) {
             $this->referenceBuilder->buildMissingLocalized($productAsset);
-            foreach ($productAsset->getReferences() as $reference) {
-                $this->variationBuilder->buildMissing($reference);
+
+            $variations = array_reduce($productAsset->getReferences()->toArray(), function ($carry, ReferenceInterface $reference) {
+                $missings = $this->variationBuilder->buildMissing($reference);
+
+                return $missings !== null ? $carry + $missings : $carry;
+            }, []);
+
+            if (count($variations) > 0) {
+                $this->assetSaver->save($productAsset);
             }
         }
 

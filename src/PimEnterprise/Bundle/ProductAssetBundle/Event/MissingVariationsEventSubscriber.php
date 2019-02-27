@@ -17,7 +17,7 @@ use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInter
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Asset events listenener
+ * Asset events listener
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
