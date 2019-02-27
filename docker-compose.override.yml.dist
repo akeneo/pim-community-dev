@@ -9,7 +9,7 @@ services:
       COMPOSER_HOME: '/home/docker/.composer'
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
       PHP_IDE_CONFIG: 'serverName=pim-ee-cli'
-      PHP_XDEBUG_ENABLED: 0
+      PHP_XDEBUG_ENABLED: "${PHP_XDEBUG_ENABLED:-0}"
       XDEBUG_CONFIG: 'remote_host=172.17.0.1'
     volumes:
       - '~/.composer:/home/docker/.composer'

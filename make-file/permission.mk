@@ -3,5 +3,5 @@
 ##
 
 .PHONY: permission-coupling
-permission-coupling:
-	$(PHP_EXEC) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Permission/.php_cd.php src/Akeneo/Pim/Permission
+permission-coupling: vendor
+	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Permission/.php_cd.php src/Akeneo/Pim/Permission

@@ -1,6 +1,8 @@
 DOCKER_COMPOSE = docker-compose
-PHP_EXEC = $(DOCKER_COMPOSE) exec fpm php
 YARN_EXEC = $(DOCKER_COMPOSE) run --rm node yarn
+DEBUG_PHP_RUN = $(DOCKER_COMPOSE) run --rm -e PHP_XDEBUG_ENABLED=1 fpm php
+PHP_RUN = $(DOCKER_COMPOSE) run -u docker --rm -e PHP_XDEBUG_ENABLED=0 fpm php
+PHP_EXEC = $(DOCKER_COMPOSE) exec -u docker fpm php
 
 .DEFAULT_GOAL := help
 
@@ -16,16 +18,14 @@ help:
 ## Include all *.mk files
 include make-file/*.mk
 
+## Clean backend cache
+.PHONY: clean
+clean:
+	rm -rf var/cache
 
 ##
-## PIM initialization
+## PIM configuration
 ##
-
-vendor:
-	$(PHP_EXEC) /usr/local/bin/composer install
-
-node_modules: package.json
-	$(YARN_EXEC) install
 
 behat.yml:
 	cp ./behat.yml.dist ./behat.yml
@@ -57,35 +57,110 @@ docker-compose.override.yml:
 .env:
 	cp .env.dist .env
 
-## Clean backend cache
-.PHONY: clean
-clean:
-	rm -rf var/cache
+## Remove all configuration file generated
+.PHONY: reset-conf
+reset-conf:
+	rm .env docker-compose.override.yml app/config/parameters_test.yml app/config/parameters.yml behat.yml
+
+##
+## PIM installation
+##
+
+composer.lock: composer.json
+	$(PHP_RUN) /usr/local/bin/composer update
+
+vendor: composer.lock
+	$(PHP_RUN) /usr/local/bin/composer install
+
+node_modules: package.json
+	$(YARN_EXEC) install
+
+## Instal the PIM asset: copy asset from src to web, generate require path, form extension and translation
+.PHONY: install-asset
+install-asset: vendor node_modules
+	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
+	$(YARN_EXEC) run less
+	$(YARN_EXEC) run webpack-dev
+	$(YARN_EXEC) run webpack-test
+
+## Initialize the PIM database depending on an environment
+.PHONY: install-database-test
+install-database-test: docker-compose.override.yml app/config/parameters_test.yml vendor
+	$(PHP_EXEC) bin/console --env=behat pim:installer:db
+
+.PHONY: install-database-prod
+install-database-prod: docker-compose.override.yml app/config/parameters.yml vendor
+	$(PHP_EXEC) bin/console --env=prod pim:installer:db
+
+## Initialize the PIM frontend depending on an environment
+.PHONY: build-front-dev install-asset
+build-front-dev: docker-compose.override.yml node_modules
+	$(YARN_EXEC) run webpack-dev
+
+.PHONY: build-front-test install-asset
+build-front-test: docker-compose.override.yml node_modules
+	$(YARN_EXEC) run webpack-test
+
+## Initialize the PIM: install database (behat/prod) and run webpack
+.PHONY: install-pim
+install-pim: app/config/parameters.yml app/config/parameters_test.yml vendor node_modules clean install-asset build-front-dev build-front-test install-database-test install-database-prod
+
+##
+## Docker
+##
 
 ## Start docker containers
 .PHONY: up
 up: .env docker-compose.override.yml app/config/parameters.yml app/config/parameters_test.yml
-	$(DOCKER_COMPOSE) up -d --remove-orphan
-
-## Initialize the PIM: install database (behat/prod) and run webpack
-.PHONY: init-pim
-init-pim: clean docker-compose.override.yml app/config/parameters.yml app/config/parameters_test.yml vendor node_modules
-	$(PHP_EXEC) bin/console --env=prod pim:install --force --symlink --clean
-	$(PHP_EXEC) bin/console --env=behat pim:installer:db
-	$(YARN_EXEC) run webpack-dev
-	$(YARN_EXEC) run webpack-test
+	PHP_XDEBUG_ENABLED=0 $(DOCKER_COMPOSE) up -d --remove-orphan
 
 ## Stop docker containers, remove volumes and networks
 .PHONY: down
 down:
 	$(DOCKER_COMPOSE) down -v
 
+##
+## Xdebug
+##
+
+## Enable Xdebug
+.PHONY: xdebug-on
+xdebug-on: docker-compose.override.yml
+	PHP_XDEBUG_ENABLED=1 make up
+
+## Disable Xdebug
+.PHONY: xdebug-off
+xdebug-off: docker-compose.override.yml
+	PHP_XDEBUG_ENABLED=0 make up
 
 ##
 ## Run tests suite
 ##
 
-## Run the coupling detector on everything
 .PHONY: coupling
 coupling: twa-coupling asset-coupling franklin-insights-coupling reference-entity-coupling rule-engine-coupling workflow-coupling permission-coupling
+
+.PHONY: phpspec
+phpspec: vendor
+	${PHP_RUN} vendor/bin/phpspec run ${F}
+
+.PHONY: phpspec-debug
+phpspec-debug: vendor
+	${DEBUG_PHP_RUN} vendor/bin/phpspec run ${F}
+
+.PHONY: behat-acceptance
+behat-acceptance: behat.yml app/config/parameters_test.yml vendor
+	${PHP_RUN} vendor/bin/behat -p acceptance ${F}
+
+.PHONY: behat-acceptance-debug
+behat-acceptance-debug: behat.yml app/config/parameters_test.yml vendor
+	${DEBUG_PHP_RUN} vendor/bin/behat -p acceptance ${F}
+
+.PHONY: phpunit
+phpunit: app/config/parameters_test.yml vendor
+	${PHP_EXEC} vendor/bin/phpunit -c app ${F}
+
+.PHONY: behat-legacy
+behat-legacy: behat.yml app/config/parameters_test.yml vendor node_modules
+	${PHP_EXEC} vendor/bin/behat -p legacy ${F}
 
