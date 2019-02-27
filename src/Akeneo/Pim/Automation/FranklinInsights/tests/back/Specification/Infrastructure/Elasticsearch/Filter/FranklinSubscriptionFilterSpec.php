@@ -13,11 +13,6 @@ use PhpSpec\ObjectBehavior;
 
 class FranklinSubscriptionFilterSpec extends ObjectBehavior
 {
-    public function let(): void
-    {
-        $this->beConstructedWith(['franklin_subscription'], ['=']);
-    }
-
     public function it_is_a_field_filter(): void
     {
         $this->shouldImplement(FieldFilterInterface::class);

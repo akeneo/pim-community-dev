@@ -19,14 +19,10 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 class FranklinSubscriptionFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    /**
-     * @param array $supportedFields
-     * @param array $supportedOperators
-     */
-    public function __construct(array $supportedFields = [], array $supportedOperators = [])
+    public function __construct()
     {
-        $this->supportedFields = $supportedFields;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedFields = ['franklin_subscription'];
+        $this->supportedOperators = ['='];
     }
 
     /**
