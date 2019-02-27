@@ -199,6 +199,7 @@ legacy:
                     - '@pim_catalog.repository.product'
                     - '@pimee_workflow.repository.product_draft'
                     - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+                    - '@doctrine.orm.entity_manager'
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\IdentifiersMappingContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
