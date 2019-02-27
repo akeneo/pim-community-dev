@@ -40,25 +40,6 @@
 {% endmacro %}
 
 {#
-    Create the button
-    Parameters - array:
-        [
-            'path' - button url
-            'aClass' - additional button class
-            'title' - button title
-            'iClass' - css class for 'i' tag (icon)
-            'label' - button label
-        ]
-#}
-{% macro button(parameters) %}
-    <a href="#{{ parameters.path }}"
-       class="AknButton {{ parameters.aClass is defined? parameters.aClass : '' }}"
-       title="{{ parameters.title|trans }}">
-        {{ parameters.label|trans }}
-    </a>
-{% endmacro %}
-
-{#
     Delete button with javascript handler
     Parameters - array:
         [

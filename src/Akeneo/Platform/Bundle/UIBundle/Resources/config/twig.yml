@@ -53,3 +53,8 @@ services:
             - '@request_stack'
         tags:
             - { name: twig.extension }
+
+    pim_enrich.twig.object_class_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\ObjectClassExtension'
+        tags:
+            - { name: twig.extension }
