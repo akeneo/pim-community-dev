@@ -3,6 +3,13 @@ YARN_EXEC = $(DOCKER_COMPOSE) run --rm node yarn
 PHP_RUN = $(DOCKER_COMPOSE) run -u docker --rm fpm php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u docker fpm php
 
+LESS_FILES=$(shell find web/bundles -name "*.less")
+REQUIRE_JS_FILES=$(shell find . -name "requirejs.yml")
+FORM_EXTENSION_FILES=$(shell find . -name "form_extensions.yml")
+TRANSLATION_FILES=$(shell find . -name "jsmessages*.yml")
+ASSET_FILES=$(shell find . -path "*/Resources/public/*")
+LOCALE_TO_REFRESH=$(shell find . -newer web/js/translation  -name "jsmessages*.yml" | grep -o '[a-zA-Z]\{2\}_[a-zA-Z]\{2\}')
+
 .DEFAULT_GOAL := help
 
 .PHONY: help
@@ -107,13 +114,30 @@ vendor: composer.lock
 node_modules: package.json
 	$(YARN_EXEC) install
 
+web/css/pim.css: $(LESS_FILES)
+	$(YARN_EXEC) run less
+
+web/js/require-paths.js: $(REQUIRE_JS_FILES)
+	$(PHP_EXEC) bin/console pim:installer:dump-require-paths
+
+web/js/extensions.json: $(FORM_EXTENSION_FILES)
+	$(PHP_EXEC) bin/console pim:installer:dump-extensions
+
+web/bundles: $(ASSET_FILES)
+	$(PHP_EXEC) bin/console assets:install --relative --symlink
+
+web/js/translation:
+	$(PHP_EXEC) bin/console oro:translation:dump 'en_US, ca_ES, da_DK, de_DE, es_ES, fi_FI, fr_FR, hr_HR, it_IT, ja_JP, nl_NL, pl_PL, pt_BR, pt_PT, ru_RU, sv_SE, tl_PH, zh_CN, sv_SE, en_NZ'
+
 ## Instal the PIM asset: copy asset from src to web, generate require path, form extension and translation
 .PHONY: install-asset
-install-asset: vendor node_modules
-	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
-	$(YARN_EXEC) run less
-	$(YARN_EXEC) run webpack-dev
-	$(YARN_EXEC) run webpack-test
+install-asset: vendor node_modules web/bundles web/css/pim.css web/js/require-paths.js web/js/extensions.json web/js/translation
+	for locale in $(LOCALE_TO_REFRESH) ; do \
+		$(PHP_EXEC) bin/console oro:translation:dump $$locale ; \
+	done
+	## Prevent translations update next time
+	touch web/js/translation
+	bin/console fos:js-routing:dump --target web/js/routes.js
 
 ## Initialize the PIM database depending on an environment
 .PHONY: install-database-test
