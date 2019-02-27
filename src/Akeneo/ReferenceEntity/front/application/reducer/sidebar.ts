@@ -1,6 +1,12 @@
+import * as React from 'react';
+
+export interface SidebarLabel {
+  default: React.SFC;
+}
+
 export interface Tab {
   code: string;
-  label: string;
+  label: string|SidebarLabel;
 }
 
 export interface SidebarState {

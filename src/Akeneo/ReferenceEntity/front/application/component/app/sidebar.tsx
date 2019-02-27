@@ -71,7 +71,7 @@ class Sidebar extends React.Component<SidebarProps> {
                       if (Key.Space === event.key) this.updateCurrentTab(tab);
                     }}
                   >
-                    {__(tab.label)}
+                    {'string' === typeof tab.label ? __(tab.label) : <tab.label.default />}
                   </span>
                 );
               })}

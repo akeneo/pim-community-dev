@@ -67,7 +67,7 @@ config:
             akeneo_reference_entities_reference_entity_edit:
                 tabs:
                     record:
-                        label: pim_reference_entity.reference_entity.tab.records
+                        label: '@akeneoreferenceentity/application/component/reference-entity/edit/record/label'
                         view: '@akeneoreferenceentity/application/component/reference-entity/edit/record'
                     attribute:
                         label: pim_reference_entity.reference_entity.tab.attribute

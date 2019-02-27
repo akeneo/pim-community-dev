@@ -1,10 +1,11 @@
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
 import Key from 'akeneoreferenceentity/tools/key';
+import {SidebarLabel} from "akeneoreferenceentity/application/reducer/sidebar";
 
 export interface DropdownMenuElement {
   code: string;
-  label: string;
+  label: string|SidebarLabel;
 }
 
 const DefaultButtonView = ({onClick}: {onClick: () => void}) => {
@@ -41,7 +42,7 @@ const DefaultItemView = ({
         }}
         tabIndex={0}
       >
-        <span>{__(element.label)}</span>
+        <span>{'string' === typeof element.label ? __(element.label) : <element.label.default />}</span>
       </div>
     </React.Fragment>
   );
