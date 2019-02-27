@@ -107,6 +107,41 @@ final class ProductGridFixturesLoader
         return $subProductModel;
     }
 
+    public function createProductModelsWithLabelInSubProductModel()
+    {
+        $rootProductModelWithoutSubProductModel = $this->container->get('pim_catalog.factory.product_model')->create();
+        $this->container->get('pim_catalog.updater.product_model')->update($rootProductModelWithoutSubProductModel, [
+            'code' => 'root_product_model_with_image_in_sub_product_model',
+            'family_variant' => 'family_variant_image_in_sub_product_model',
+            'values' => []
+        ]);
+
+        $errors = $this->container->get('pim_catalog.validator.product')->validate($rootProductModelWithoutSubProductModel);
+        Assert::assertCount(0, $errors);
+        $this->container->get('pim_catalog.saver.product_model')->save($rootProductModelWithoutSubProductModel);
+
+        $subProductModel = $this->container->get('pim_catalog.factory.product_model')->create();
+        $this->container->get('pim_catalog.updater.product_model')->update($subProductModel, [
+            'code' => 'sub_product_model_with_image_in_sub_product_model',
+            'parent' => 'root_product_model_with_image_in_sub_product_model',
+            'family_variant' => 'family_variant_image_in_sub_product_model',
+            'values' => [
+                'a_yes_no' => [
+                    ['data' => true, 'locale' => null, 'scope' => null],
+                ],
+                'an_image' => [
+                    ['data' => $this->akeneoImagePath, 'locale' => null, 'scope' => null],
+                ],
+            ]
+        ]);
+
+        $errors = $this->container->get('pim_catalog.validator.product')->validate($subProductModel);
+        Assert::assertCount(0, $errors);
+        $this->container->get('pim_catalog.saver.product_model')->save($subProductModel);
+
+        return $rootProductModelWithoutSubProductModel;
+    }
+
     public function createProductAndProductModels()
     {
         return [
@@ -242,6 +277,28 @@ final class ProductGridFixturesLoader
                 [
                     'axes' => ['a_yes_no'],
                     'attributes' => [],
+                    'level'=> 1
+                ],
+                [
+                    'axes' => ['a_simple_select_size'],
+                    'attributes' => [],
+                    'level'=> 2
+                ]
+            ],
+        ]);
+
+        $errors = $this->container->get('validator')->validate($familyVariant);
+        Assert::assertCount(0, $errors);
+        $this->container->get('pim_catalog.saver.family_variant')->save($familyVariant);
+
+        $familyVariant = $this->container->get('pim_catalog.factory.family_variant')->create();
+        $this->container->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant_image_in_sub_product_model',
+            'family' => 'test_family',
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['a_yes_no'],
+                    'attributes' => ['an_image'],
                     'level'=> 1
                 ],
                 [
