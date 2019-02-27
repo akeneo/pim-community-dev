@@ -113,7 +113,7 @@ class LocaleExtension extends \Twig_Extension
         return Intl\Intl::getCurrencyBundle()->getCurrencyName($code, $language);
     }
 
-        /**
+    /**
      * Returns the flag icon for a locale with its country as long label or short code
      *
      * @param Twig_Environment $environment
