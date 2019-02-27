@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
+use PimEnterprise\Component\Workflow\Query\DraftAuthors as DraftAuthorsInterface;
 
 /**
  * Find all authors for all drafts (product & product model)
  */
-class DraftAuthors
+class DraftAuthors implements DraftAuthorsInterface
 {
     /** @var EntityManagerInterface */
     private $entityManager;
