@@ -4,7 +4,6 @@ import * as React from 'react';
 type Props = {
   value: string;
   changeThreshold: number;
-  matchesCount: number;
   onChange: (newValue: string) => void;
 };
 
@@ -39,7 +38,6 @@ export default class SearchField extends React.Component<Props> {
           defaultValue={this.props.value}
           onChange={this.onSearchUpdated.bind(this)}
         />
-        <span className="AknFilterBox-span">{this.props.matchesCount}</span>
       </div>
     );
   }
