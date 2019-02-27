@@ -30,5 +30,7 @@ export default connect(
       },
     };
   },
-  () => {return {}}
+  () => {
+    return {};
+  }
 )(RecordLabel);

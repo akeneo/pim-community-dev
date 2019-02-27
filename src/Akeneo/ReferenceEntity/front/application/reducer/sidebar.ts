@@ -6,7 +6,7 @@ export interface SidebarLabel {
 
 export interface Tab {
   code: string;
-  label: string|SidebarLabel;
+  label: string | SidebarLabel;
 }
 
 export interface SidebarState {
