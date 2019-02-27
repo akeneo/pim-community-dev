@@ -68,7 +68,7 @@ final class PimScenarioPrinter
 
         $outputPrinter->addTestcase([
             'name'   => $fileAndLine,
-            'file' => $fileAndLine,
+            'file' => $fileAndLine, // allow to split by timing the scenarios to execute in Circle CI
             'status' => $this->resultConverter->convertResultToString($result),
             'time' => $this->durationListener->getDuration($scenario),
         ]);
