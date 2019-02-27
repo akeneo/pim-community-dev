@@ -2,9 +2,6 @@ parameters:
     pim_ui.twig.extension.class: Akeneo\Platform\Bundle\UIBundle\Twig\UiExtension
     pim_ui.twig.style_extension.class: Akeneo\Platform\Bundle\UIBundle\Twig\StyleExtension
     pim_ui.loading_messages_file: '@@PimUIBundle/Resources/config/loading_messages.txt'
-    pim_ui.twig.ceil.class: Akeneo\Platform\Bundle\UIBundle\Twig\CeilExtension
-    pim_ui.twig.md5.class:  Akeneo\Platform\Bundle\UIBundle\Twig\Md5Extension
-    pim_ui.twig.date.class: Akeneo\Platform\Bundle\UIBundle\Twig\DateExtension
 
 services:
     pim_ui.twig.ui_extension:
@@ -16,25 +13,6 @@ services:
     pim_ui.twig.style_extension:
         class: '%pim_ui.twig.style_extension.class%'
         public: false
-        tags:
-            - { name: twig.extension }
-
-    pim_ui.twig.ceil_extension:
-        class: '%pim_ui.twig.ceil.class%'
-        tags:
-            - { name: twig.extension }
-
-    pim_ui.twig.md5_extension:
-        class: '%pim_ui.twig.md5.class%'
-        arguments:
-            - '@serializer'
-        tags:
-            - { name: twig.extension }
-
-    pim_ui.twig.date_extension:
-        class: '%pim_ui.twig.date.class%'
-        arguments:
-            - '@translator'
         tags:
             - { name: twig.extension }
 

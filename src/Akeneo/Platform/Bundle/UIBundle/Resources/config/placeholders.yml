@@ -13,15 +13,9 @@ placeholders:
         label: Head styles
     head_script:
         label: Head scripts
-    requirejs_config_extend:
-        items:
-            ui_requirejs_config:
-                order: 10
 
 items:
     logo:
         template: PimUIBundle:Default:logo.html.twig
     help:
         template: PimUIBundle:Default:help.html.twig
-    ui_requirejs_config:
-        template: PimUIBundle::requirejs.config.js.twig

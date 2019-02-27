@@ -1,55 +1,9 @@
-{% macro createBtn(entity, url, attr, acl, icon) %}
-{% spaceless %}
-    {% if acl is null or resource_granted(acl) %}
-        {% if attr == 'dialog' %}
-            {% set buttonId = 'create-'~(entity|replace({' ': '-', '.': '-'})|lower) %}
-            {% set attr = { 'id': buttonId, 'data-form-url': url } %}
-            {% set url = null %}
-        {% endif %}
-        {% set title = ('pim_enrich.create.' ~ entity)|trans|capitalize %}
-        <a class="AknButton AknButton--apply{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? '#' ~ url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
-          {{ title }}
-        </a>
-        {% if buttonId is defined %}
-            <script type="text/javascript">
-                require(
-                    ['jquery', 'pim/dialogform'],
-                    function ($, DialogForm) {
-                        'use strict';
-                        $(function() {
-                            new DialogForm('#{{ buttonId }}');
-                        });
-                    }
-                );
-            </script>
-        {% endif %}
-    {% endif %}
-{% endspaceless %}
-{% endmacro %}
-
 {% macro submitBtn(text, icon, class = '') %}
 {% spaceless %}
     {% set text = text|default('pim_common.save')|trans|capitalize %}
     <button type="submit" class="AknButton AknButton--apply {{ class }}" title="{{ text }}">
         {{ text }}
     </button>
-{% endspaceless %}
-{% endmacro %}
-
-{% macro submitDropdownBtn(actions) %}
-{% spaceless %}
-    <div class="btn-group submit-form">
-        {% for actionKey, action in actions %}
-            {% if loop.first %}
-                <button type="submit" class="btn btn-primary" title="{{ action.text|default('')|trans|capitalize }}">{{ action.text|default('')|trans|capitalize }}</button>
-                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
-                <ul class="dropdown-menu right-align">
-            {% else %}
-                    <li><a href="javascript:void(0);" value="{{ actionKey }}">{{ action.text|default('')|trans|capitalize }}</a></li>
-            {% endif %}
-        {% endfor %}
-        </ul>
-    </div>
 {% endspaceless %}
 {% endmacro %}
 
@@ -199,59 +153,6 @@
             }
         );
     </script>
-{% endspaceless %}
-{% endmacro %}
-
-{% macro enabledSwitch(form) %}
-{% spaceless %}
-    {% if form.enabled is defined %}
-        {% set switchId = 'switch_status' %}
-        {% set enableLabel = 'info.product.enable'|trans %}
-        {% set disableLabel = 'info.product.disable'|trans %}
-        {% set enabledLabel = 'info.product.enabled'|trans %}
-        {% set disabledLabel = 'info.product.disabled'|trans %}
-        {{ form_widget(form.enabled) }}
-        <div class="btn-group">
-            <button id="{{ switchId }}" type="button" class="btn">{{ form.enabled.vars.value ? disableLabel : enableLabel }}</button>
-        </div>
-        <script type="text/javascript">
-            require(
-                ['jquery'],
-                function ($) {
-                    'use strict';
-                    $(function () {
-                        $('#{{ switchId }}').on('click', function () {
-                            var $field = $('#{{ form.enabled.vars.id }}'),
-                                $status = $('.status-enabled').find('.badge');
-                            if (+$field.val()) {
-                                $field.val(0).trigger('change');
-                                $(this).html('{{ enableLabel }}');
-                                $status.html('<i class="icon-status-disabled icon-circle"></i>{{ disabledLabel }}').removeClass('badge-enabled status-enabled').addClass('badge-disabled status-disabled');
-                            } else {
-                                $field.val(1).trigger('change');
-                                $(this).html('{{ disableLabel }}');
-                                $status.html('<i class="icon-status-enabled icon-circle"></i>{{ enabledLabel }}').removeClass('badge-disabled status-disabled').addClass('badge-enabled status-enabled');
-                            }
-                        });
-                    });
-                }
-            );
-        </script>
-    {% endif %}
-{% endspaceless %}
-{% endmacro %}
-
-{% macro enabledLabel(form) %}
-{% spaceless %}
-    {% if form.enabled is defined %}
-        <div class="status-enabled pull-left">
-            {% if form.enabled.vars.value %}
-                <div class="AknBadge AknBadge--enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
-            {% else %}
-                <div class="AknBadge AknBadge--disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
-            {% endif %}
-        </div>
-    {% endif %}
 {% endspaceless %}
 {% endmacro %}
 
