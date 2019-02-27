@@ -113,6 +113,29 @@ class LocaleExtension extends \Twig_Extension
         return Intl\Intl::getCurrencyBundle()->getCurrencyName($code, $language);
     }
 
+        /**
+     * Returns the flag icon for a locale with its country as long label or short code
+     *
+     * @param Twig_Environment $environment
+     * @param string           $code
+     * @param bool             $short
+     * @param string           $translateIn
+     *
+     * @return string
+     */
+    public function flag(Twig_Environment $environment, $code, $short = true, $translateIn = null)
+    {
+        return $environment->render(
+            'PimUIBundle:Locale:_flag.html.twig',
+            [
+                'label'    => $this->localeLabel($code, $translateIn),
+                'region'   => \Locale::getRegion($code),
+                'language' => \Locale::getPrimaryLanguage($code),
+                'short'    => $short,
+            ]
+        );
+    }
+
     /**
      * Returns the current locale code
      *
