@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.31 (2019-02-27)
+
 ## Bug fixes
 
 - PIM-8056: Remove bad ACL on the internal API end-point that get an association-type
