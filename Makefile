@@ -95,13 +95,56 @@ install-database-prod: docker-compose.override.yml app/config/parameters.yml ven
 install-pim: app/config/parameters.yml app/config/parameters_test.yml vendor node_modules clean install-asset install-database-test install-database-prod
 
 ##
+## PIM installation
+##
+
+composer.lock: composer.json
+	$(PHP_RUN) /usr/local/bin/composer update
+
+vendor: composer.lock
+	$(PHP_RUN) /usr/local/bin/composer install
+
+node_modules: package.json
+	$(YARN_EXEC) install
+
+## Instal the PIM asset: copy asset from src to web, generate require path, form extension and translation
+.PHONY: install-asset
+install-asset: vendor node_modules
+	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
+	$(YARN_EXEC) run less
+	$(YARN_EXEC) run webpack-dev
+	$(YARN_EXEC) run webpack-test
+
+## Initialize the PIM database depending on an environment
+.PHONY: install-database-test
+install-database-test: docker-compose.override.yml app/config/parameters_test.yml vendor
+	$(PHP_EXEC) bin/console --env=behat pim:installer:db
+
+.PHONY: install-database-prod
+install-database-prod: docker-compose.override.yml app/config/parameters.yml vendor
+	$(PHP_EXEC) bin/console --env=prod pim:installer:db
+
+## Initialize the PIM frontend depending on an environment
+.PHONY: build-front-dev install-asset
+build-front-dev: docker-compose.override.yml node_modules
+	$(YARN_EXEC) run webpack-dev
+
+.PHONY: build-front-test install-asset
+build-front-test: docker-compose.override.yml node_modules
+	$(YARN_EXEC) run webpack-test
+
+## Initialize the PIM: install database (behat/prod) and run webpack
+.PHONY: install-pim
+install-pim: app/config/parameters.yml app/config/parameters_test.yml vendor node_modules clean install-asset build-front-dev build-front-test install-database-test install-database-prod
+
+##
 ## Docker
 ##
 
 ## Start docker containers
 .PHONY: up
 up: .env docker-compose.override.yml app/config/parameters.yml app/config/parameters_test.yml
-	$(DOCKER_COMPOSE) up -d --remove-orphan
+	PHP_XDEBUG_ENABLED=0 $(DOCKER_COMPOSE) up -d --remove-orphan
 
 ## Stop docker containers, remove volumes and networks
 .PHONY: down
