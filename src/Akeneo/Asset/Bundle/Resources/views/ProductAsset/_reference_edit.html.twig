@@ -1,7 +1,7 @@
 {% if currentLocale is not null %}
     <div class="tabsection-title">
         <div class="pull-right">
-            {% include 'PimUIBundle:Locale:_locale_switcher.html.twig' with {
+            {% include 'AkeneoAssetBundle:ProductAsset:_locale_switcher.html.twig' with {
             'locales':           asset.locales,
             'currentLocaleCode': currentLocale.code,
             'routeName':         'pimee_product_asset_edit',
