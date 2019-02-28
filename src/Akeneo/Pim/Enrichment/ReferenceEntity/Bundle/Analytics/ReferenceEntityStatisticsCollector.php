@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics;
+namespace Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Analytics;
 
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlLocalizableOnly;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableAndLocalizable;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableOnly;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlLocalizableOnly;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableAndLocalizable;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableOnly;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAttributesPerReferenceEntity;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfRecordsPerReferenceEntity;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerRecord;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlCountReferenceEntities;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 
 /**
@@ -59,8 +63,8 @@ class ReferenceEntityStatisticsCollector implements DataCollectorInterface
         return [
             'nb_reference_entities' => $this->countReferenceEntities->fetch()->getVolume(),
             'max_number_of_records_per_reference_entity' => $this->averageMaxNumberOfRecordsPerReferenceEntity->fetch()->getMaxVolume(),
-            'average_number_of_values_per_records' => $this->averageMaxNumberOfValuesPerRecord->fetch()->getAverageVolume(),
             'average_number_of_records_per_reference_entity' => $this->averageMaxNumberOfRecordsPerReferenceEntity->fetch()->getAverageVolume(),
+            'average_number_of_values_per_records' => $this->averageMaxNumberOfValuesPerRecord->fetch()->getAverageVolume(),
             'max_number_of_attributes_per_reference_entity' => $this->averageMaxNumberOfAttributesPerReferenceEntity->fetch()->getMaxVolume(),
             'average_number_of_attributes_per_reference_entity' => $this->averageMaxNumberOfAttributesPerReferenceEntity->fetch()->getAverageVolume(),
             'average_percentage_localizable_only_attributes' => $this->localizableOnly->fetch()->getAverageVolume(),

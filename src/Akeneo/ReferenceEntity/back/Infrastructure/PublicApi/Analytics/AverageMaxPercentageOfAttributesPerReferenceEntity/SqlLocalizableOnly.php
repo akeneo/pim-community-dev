@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics;
+namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity;
 
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
@@ -12,9 +12,9 @@ use Doctrine\DBAL\Connection;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlAverageMaxNumberOfValuesPerRecord implements AverageMaxQuery
+class SqlLocalizableOnly implements AverageMaxQuery
 {
-    private const VOLUME_NAME = 'average_max_number_of_values_per_record';
+    private const VOLUME_NAME = 'average_max_localizable_only_attributes_per_reference_entity';
 
     /** @var Connection */
     private $sqlConnection;
@@ -31,10 +31,16 @@ class SqlAverageMaxNumberOfValuesPerRecord implements AverageMaxQuery
     public function fetch(): AverageMaxVolumes
     {
         $sql = <<<SQL
-            SELECT
-              MAX(JSON_LENGTH(JSON_EXTRACT(value_collection, '$.*'))) AS max,
-              CEIL(AVG(JSON_LENGTH(JSON_EXTRACT(value_collection, '$.*')))) AS average
-            FROM akeneo_reference_entity_record;
+SELECT 
+	MAX(number_of_localizable_only_attributes_per_reference_entity * 100 / number_of_attributes) as max,
+	CEIL(AVG(number_of_localizable_only_attributes_per_reference_entity * 100 / number_of_attributes)) as average
+FROM (
+	SELECT reference_entity_identifier,
+	       SUM(value_per_locale = 1 AND value_per_channel = 0) as number_of_localizable_only_attributes_per_reference_entity,
+	       COUNT(*) as number_of_attributes
+	FROM akeneo_reference_entity_attribute 
+	GROUP BY reference_entity_identifier
+) AS rec;
 SQL;
         $result = $this->sqlConnection->query($sql)->fetch();
         $volume = new AverageMaxVolumes(

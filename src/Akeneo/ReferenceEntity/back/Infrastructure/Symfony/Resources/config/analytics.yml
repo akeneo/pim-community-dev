@@ -1,6 +1,6 @@
 services:
     akeneo_referenceentity.persistence.analytics.reference_entity_statistics_collector:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics\ReferenceEntityStatisticsCollector
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Analytics\ReferenceEntityStatisticsCollector
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities'
             - '@akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity'
@@ -15,43 +15,49 @@ services:
 
     # Query functions
     akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics\SqlCountReferenceEntities
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlCountReferenceEntities
         arguments:
             - '@database_connection'
             - '%reference_entity_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
 
     akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics\SqlAverageMaxNumberOfRecordsPerReferenceEntity
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfRecordsPerReferenceEntity
         arguments:
             - '@database_connection'
             - '%reference_entity_record_limit_per_reference_entity%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_values_per_record:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerRecord
+        arguments:
+            - '@database_connection'
+            - '-1'
 
     akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_reference_entity:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics\SqlAverageMaxNumberOfAttributesPerReferenceEntity
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAttributesPerReferenceEntity
         arguments:
             - '@database_connection'
             - '%reference_entity_maximum_attribute%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
 
     akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.localizable_only:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlLocalizableOnly
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlLocalizableOnly
         arguments:
             - '@database_connection'
             - '-1'
 
     akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.scopable_only:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableOnly
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableOnly
         arguments:
             - '@database_connection'
             - '-1'
 
     akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.scopable_only_and_localizable:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableAndLocalizable
-        arguments:
-            - '@database_connection'
-            - '-1'
-
-    akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_values_per_record:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics\SqlAverageMaxNumberOfValuesPerRecord
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableAndLocalizable
         arguments:
             - '@database_connection'
             - '-1'

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Analytics;
+namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics;
 
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
@@ -12,9 +12,9 @@ use Doctrine\DBAL\Connection;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlAverageMaxNumberOfRecordsPerReferenceEntity implements AverageMaxQuery
+class SqlAverageMaxNumberOfValuesPerRecord implements AverageMaxQuery
 {
-    private const VOLUME_NAME = 'average_max_records_per_reference_entity';
+    private const VOLUME_NAME = 'average_max_number_of_values_per_record';
 
     /** @var Connection */
     private $sqlConnection;
@@ -31,14 +31,10 @@ class SqlAverageMaxNumberOfRecordsPerReferenceEntity implements AverageMaxQuery
     public function fetch(): AverageMaxVolumes
     {
         $sql = <<<SQL
-SELECT
-	MAX(number_of_records_per_reference_entity) as max,
-	CEIL(AVG(number_of_records_per_reference_entity)) as average
-FROM (
-	SELECT reference_entity_identifier, COUNT(code) as number_of_records_per_reference_entity
-	FROM akeneo_reference_entity_record
-	GROUP BY reference_entity_identifier
-) as rec;
+            SELECT
+              MAX(JSON_LENGTH(JSON_EXTRACT(value_collection, '$.*'))) AS max,
+              CEIL(AVG(JSON_LENGTH(JSON_EXTRACT(value_collection, '$.*')))) AS average
+            FROM akeneo_reference_entity_record;
 SQL;
         $result = $this->sqlConnection->query($sql)->fetch();
         $volume = new AverageMaxVolumes(

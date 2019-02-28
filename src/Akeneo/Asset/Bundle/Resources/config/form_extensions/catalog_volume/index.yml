@@ -11,3 +11,16 @@ extensions:
                 code: hint-asset-axes
                 title: pim_catalog_volume.section.assets.hint
             axes: [count_assets, count_asset_categories, count_asset_category_trees]
+
+    pimee-catalog-volume-reference-entity-section:
+        module: pim/catalog-volume/section
+        parent: pim-catalog-volume-index
+        template: pim/template/catalog-volume/section
+        targetZone: content
+        position: 60
+        config:
+            title: pim_catalog_volume.section.reference_entity.title
+            hint:
+                code: hint-asset-axes
+                title: pim_catalog_volume.section.reference_entity.hint
+            axes: [count_reference_entity, average_max_records_per_reference_entity, average_max_attributes_per_reference_entity]

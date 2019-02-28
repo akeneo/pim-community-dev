@@ -288,3 +288,14 @@ pim_enrich:
 
 permission:
   mass_action: Apply {{ rightLevel }} right on all groups
+
+# Analytics
+pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Axes on reference entities
+      hint: You can follow the volume regarding the reference entities right here
+  axis:
+    count_reference_entity: Reference entities
+    average_max_records_per_reference_entity: Records per reference entity
+    average_max_attributes_per_reference_entity: Attributes per reference entity
