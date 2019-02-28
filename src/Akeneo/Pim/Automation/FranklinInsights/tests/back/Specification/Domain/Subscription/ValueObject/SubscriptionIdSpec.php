@@ -35,4 +35,10 @@ class SubscriptionIdSpec extends ObjectBehavior
     {
         $this->__toString()->shouldReturn('subscription-id');
     }
+
+    public function it_cannot_be_instantiated_with_an_empty_subscription_id(): void
+    {
+        $this->beConstructedWith('');
+        $this->shouldThrow(new \InvalidArgumentException('subscription id cannot be empty'))->duringInstantiation();
+    }
 }

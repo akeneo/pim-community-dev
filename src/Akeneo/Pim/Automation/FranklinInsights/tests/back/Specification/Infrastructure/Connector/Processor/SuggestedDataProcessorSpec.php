@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Co
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -45,7 +46,7 @@ class SuggestedDataProcessorSpec extends ObjectBehavior
     public function it_throws_an_invalid_item_exception_when_subscription_does_not_exist_anymore(
         $subscriptionRepository
     ): void {
-        $subscriptionResponse = new ProductSubscriptionResponse(42, 'fake-subscription-id', [], true, false);
+        $subscriptionResponse = new ProductSubscriptionResponse(42, new SubscriptionId('fake-subscription-id'), [], true, false);
         $subscriptionRepository->findOneByProductId(42)->willReturn(null);
 
         $this->shouldThrow(InvalidItemException::class)->during('process', [$subscriptionResponse]);
@@ -53,9 +54,9 @@ class SuggestedDataProcessorSpec extends ObjectBehavior
 
     public function it_returns_a_susbcription($subscriptionRepository): void
     {
-        $subscriptionResponse = new ProductSubscriptionResponse(42, 'fake-subscription-id', [], true, false);
+        $subscriptionResponse = new ProductSubscriptionResponse(42, new SubscriptionId('fake-subscription-id'), [], true, false);
 
-        $subscription = new ProductSubscription(42, 'fake-subscription-id', []);
+        $subscription = new ProductSubscription(42, new SubscriptionId('fake-subscription-id'), []);
         $subscriptionRepository->findOneByProductId(42)->willReturn($subscription);
 
         $this->process($subscriptionResponse)->shouldReturn($subscription);
@@ -64,9 +65,9 @@ class SuggestedDataProcessorSpec extends ObjectBehavior
 
     public function it_returns_a_cancelled_subscription($subscriptionRepository): void
     {
-        $subscriptionResponse = new ProductSubscriptionResponse(42, 'fake-subscription-id', [], true, true);
+        $subscriptionResponse = new ProductSubscriptionResponse(42, new SubscriptionId('fake-subscription-id'), [], true, true);
 
-        $subscription = new ProductSubscription(42, 'fake-subscription-id', []);
+        $subscription = new ProductSubscription(42, new SubscriptionId('fake-subscription-id'), []);
         $subscriptionRepository->findOneByProductId(42)->willReturn($subscription);
 
         Assert::false($subscription->isCancelled());

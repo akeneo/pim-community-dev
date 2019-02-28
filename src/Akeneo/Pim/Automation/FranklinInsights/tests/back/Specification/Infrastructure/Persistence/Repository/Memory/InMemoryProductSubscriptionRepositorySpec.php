@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Pe
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -46,7 +47,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_saves_a_product_subscription(): void
     {
-        $subscription = new ProductSubscription(42, 'a-fake-subscription', ['sku' => '72527273070']);
+        $subscription = new ProductSubscription(42, new SubscriptionId('a-fake-subscription'), ['sku' => '72527273070']);
         $this->save($subscription);
 
         $this->findOneByProductId(42)->shouldReturn($subscription);
@@ -54,8 +55,8 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_bulk_saves_subscriptions(): void
     {
-        $subscription = new ProductSubscription(42, 'a-fake-subscription', ['sku' => '72527273070']);
-        $subscription2 = new ProductSubscription(43, 'fake-id-43', ['asin' => '123']);
+        $subscription = new ProductSubscription(42, new SubscriptionId('a-fake-subscription'), ['sku' => '72527273070']);
+        $subscription2 = new ProductSubscription(43, new SubscriptionId('fake-id-43'), ['asin' => '123']);
         $this->bulkSave([$subscription, $subscription2]);
 
         $this->findOneByProductId(42)->shouldReturn($subscription);
@@ -69,11 +70,11 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_finds_subscriptions_from_given_product_ids(): void
     {
-        $subscription1 = new ProductSubscription(44, 'a-fake-subscription', ['sku' => '72527273070']);
+        $subscription1 = new ProductSubscription(44, new SubscriptionId('a-fake-subscription'), ['sku' => '72527273070']);
         $this->save($subscription1);
-        $subscription2 = new ProductSubscription(42, 'yet-another-id', []);
+        $subscription2 = new ProductSubscription(42, new SubscriptionId('yet-another-id'), []);
         $this->save($subscription2);
-        $subscription3 = new ProductSubscription(56, 'another-id', []);
+        $subscription3 = new ProductSubscription(56, new SubscriptionId('another-id'), []);
         $this->save($subscription3);
 
         $subscriptions = $this->findByProductIds([12, 56, 98, 44]);
@@ -85,13 +86,13 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_finds_product_subscriptions_with_suggested_data(): void
     {
-        $subscription = new ProductSubscription(42, 'a-fake-subscription', ['sku' => '72527273070']);
+        $subscription = new ProductSubscription(42, new SubscriptionId('a-fake-subscription'), ['sku' => '72527273070']);
         $subscription->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
         $this->save($subscription);
 
         $otherSubscription = new ProductSubscription(
             44,
-            'another-fake-subscription',
+            new SubscriptionId('another-fake-subscription'),
             ['sku' => '72527273070']
         );
         $this->save($otherSubscription);
@@ -101,13 +102,13 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_searches_pending_subscriptions(): void
     {
-        $subscription1 = new ProductSubscription(42, 'fake-id', ['asin' => 'ABC']);
+        $subscription1 = new ProductSubscription(42, new SubscriptionId('fake-id'), ['asin' => 'ABC']);
         $subscription1->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
         $this->save($subscription1);
-        $subscription2 = new ProductSubscription(44, 'abc', ['asin' => 'ABC']);
+        $subscription2 = new ProductSubscription(44, new SubscriptionId('abc'), ['asin' => 'ABC']);
         $subscription2->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
         $this->save($subscription2);
-        $subscription3 = new ProductSubscription(56, 'def', ['asin' => 'ABC']);
+        $subscription3 = new ProductSubscription(56, new SubscriptionId('def'), ['asin' => 'ABC']);
         $subscription3->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
         $this->save($subscription3);
 
@@ -118,7 +119,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_deletes_a_product_susbcription(): void
     {
-        $subscription = new ProductSubscription(42, 'fake-id', ['asin' => 'ABC']);
+        $subscription = new ProductSubscription(42, new SubscriptionId('fake-id'), ['asin' => 'ABC']);
         $this->save($subscription);
         $this->findOneByProductId(42)->shouldReturn($subscription);
 
@@ -128,8 +129,8 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_bulk_deletes_subscriptions(): void
     {
-        $subscription = new ProductSubscription(42, 'fake-id-42', ['asin' => 'ABC']);
-        $subscription2 = new ProductSubscription(43, 'fake-id-43', ['asin' => '123']);
+        $subscription = new ProductSubscription(42, new SubscriptionId('fake-id-42'), ['asin' => 'ABC']);
+        $subscription2 = new ProductSubscription(43, new SubscriptionId('fake-id-43'), ['asin' => '123']);
         $this->bulkSave([$subscription, $subscription2]);
 
         $this->findOneByProductId(42)->shouldReturn($subscription);
@@ -142,7 +143,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_empties_suggested_data_for_specified_product_ids(): void
     {
-        $subscription = new ProductSubscription(42, 'fake-subscription-id', []);
+        $subscription = new ProductSubscription(42, new SubscriptionId('fake-subscription-id'), []);
         $subscription->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
 
         $this->save($subscription);
@@ -154,9 +155,9 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_empties_suggested_data(): void
     {
-        $subscription1 = new ProductSubscription(42, 'fake-id', []);
+        $subscription1 = new ProductSubscription(42, new SubscriptionId('fake-id'), []);
         $subscription1->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
-        $subscription2 = new ProductSubscription(43, 'other-fake-id', []);
+        $subscription2 = new ProductSubscription(43, new SubscriptionId('other-fake-id'), []);
         $subscription2->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'bar', 'value' => 'baz']]));
         Assert::false($subscription1->getSuggestedData()->isEmpty());
         Assert::false($subscription2->getSuggestedData()->isEmpty());

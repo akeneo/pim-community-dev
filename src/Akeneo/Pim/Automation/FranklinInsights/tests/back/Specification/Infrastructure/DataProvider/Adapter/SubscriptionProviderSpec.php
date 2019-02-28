@@ -25,6 +25,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\I
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\ApiResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Subscription\Request;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Subscription\RequestCollection;
@@ -251,38 +252,38 @@ class SubscriptionProviderSpec extends ObjectBehavior
     {
         $subscriptionApi->unsubscribeProduct('123456')->shouldBeCalled();
 
-        $this->unsubscribe('123456');
+        $this->unsubscribe(new SubscriptionId('123456'));
     }
 
     public function it_throws_a_data_provider_exception_when_server_is_down_on_unsubscription($subscriptionApi): void
     {
         $thrownException = new FranklinServerException();
-        $subscriptionApi->unsubscribeProduct(Argument::any())->willThrow($thrownException);
+        $subscriptionApi->unsubscribeProduct('fake-subscription-id')->willThrow($thrownException);
 
         $this
             ->shouldThrow(DataProviderException::serverIsDown($thrownException))
-            ->during('unsubscribe', [Argument::any()]);
+            ->during('unsubscribe', [new SubscriptionId('fake-subscription-id')]);
     }
 
     public function it_throws_a_data_provider_exception_when_token_is_invalid_on_unsubscription($subscriptionApi): void
     {
         $thrownException = new InvalidTokenException();
-        $subscriptionApi->unsubscribeProduct(Argument::any())->willThrow($thrownException);
+        $subscriptionApi->unsubscribeProduct('fake-subscription-id')->willThrow($thrownException);
 
         $this
             ->shouldThrow(DataProviderException::authenticationError($thrownException))
-            ->during('unsubscribe', [Argument::any()]);
+            ->during('unsubscribe', [new SubscriptionId('fake-subscription-id')]);
     }
 
     public function it_throws_a_data_provider_exception_when_bad_request_occurs_on_unsubscription(
         $subscriptionApi
     ): void {
         $thrownException = new BadRequestException();
-        $subscriptionApi->unsubscribeProduct(Argument::any())->willThrow($thrownException);
+        $subscriptionApi->unsubscribeProduct('fake-subscription-id')->willThrow($thrownException);
 
         $this
             ->shouldThrow(DataProviderException::badRequestError($thrownException))
-            ->during('unsubscribe', [Argument::any()]);
+            ->during('unsubscribe', [new SubscriptionId('fake-subscription-id')]);
     }
 
     public function it_updates_family_infos_for_a_subscription($subscriptionApi): void
@@ -302,7 +303,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ['en_US' => 'My new family label']
         );
 
-        $this->updateFamilyInfos('123456-987654', $family);
+        $this->updateFamilyInfos(new SubscriptionId('123456-987654'), $family);
     }
 
     public function it_throws_a_data_provider_exception_when_server_is_down_on_family_infos_update(
@@ -317,7 +318,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(DataProviderException::serverIsDown($thrownException))
-            ->during('updateFamilyInfos', [$subscriptionId, $family]);
+            ->during('updateFamilyInfos', [new SubscriptionId($subscriptionId), $family]);
     }
 
     public function it_throws_a_data_provider_exception_when_token_is_invalid_on_family_infos_update(
@@ -335,7 +336,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(DataProviderException::authenticationError($thrownException))
-            ->during('updateFamilyInfos', [$subscriptionId, $family]);
+            ->during('updateFamilyInfos', [new SubscriptionId($subscriptionId), $family]);
     }
 
     public function it_throws_a_data_provider_exception_when_bad_request_occurs_on_family_infos_update(
@@ -353,7 +354,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(DataProviderException::badRequestError($thrownException))
-            ->during('updateFamilyInfos', [$subscriptionId, $family]);
+            ->during('updateFamilyInfos', [new SubscriptionId($subscriptionId), $family]);
     }
 
     /**

@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Co
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Cursor\PendingSubscriptionCursor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Reader\PendingSubscriptionReader;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -54,13 +55,13 @@ class PendingSubscriptionReaderSpec extends ObjectBehavior
 
     public function it_iterates_on_the_pending_subscriptions($subscriptionRepository): void
     {
-        $subscription1 = new ProductSubscription(42, 'subscription-42', ['asin' => 'asin-42']);
-        $subscription2 = new ProductSubscription(43, 'subscription-43', ['upc' => 'upc-43']);
-        $subscription3 = new ProductSubscription(44, 'subscription-44', ['asin' => 'asin-44']);
+        $subscription1 = new ProductSubscription(42, new SubscriptionId('subscription-42'), ['asin' => 'asin-42']);
+        $subscription2 = new ProductSubscription(43, new SubscriptionId('subscription-43'), ['upc' => 'upc-43']);
+        $subscription3 = new ProductSubscription(44, new SubscriptionId('subscription-44'), ['asin' => 'asin-44']);
 
         $subscriptionRepository->findPendingSubscriptions(2, null)->willReturn([$subscription1, $subscription2]);
-        $subscriptionRepository->findPendingSubscriptions(2, 'subscription-43')->willReturn([$subscription3]);
-        $subscriptionRepository->findPendingSubscriptions(2, 'subscription-44')->willReturn([]);
+        $subscriptionRepository->findPendingSubscriptions(2, new SubscriptionId('subscription-43'))->willReturn([$subscription3]);
+        $subscriptionRepository->findPendingSubscriptions(2, new SubscriptionId('subscription-44'))->willReturn([]);
 
         $this->read()->shouldReturn($subscription1);
         $this->read()->shouldReturn($subscription2);
@@ -70,11 +71,11 @@ class PendingSubscriptionReaderSpec extends ObjectBehavior
 
     public function it_increments_the_reading_count($subscriptionRepository, $stepExecution): void
     {
-        $subscription1 = new ProductSubscription(42, 'subscription-42', ['asin' => 'asin-42']);
-        $subscription2 = new ProductSubscription(43, 'subscription-43', ['upc' => 'upc-43']);
+        $subscription1 = new ProductSubscription(42, new SubscriptionId('subscription-42'), ['asin' => 'asin-42']);
+        $subscription2 = new ProductSubscription(43, new SubscriptionId('subscription-43'), ['upc' => 'upc-43']);
 
         $subscriptionRepository->findPendingSubscriptions(2, null)->willReturn([$subscription1, $subscription2]);
-        $subscriptionRepository->findPendingSubscriptions(2, 'subscription-43')->willReturn([]);
+        $subscriptionRepository->findPendingSubscriptions(2, new SubscriptionId('subscription-43'))->willReturn([]);
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(2);
 

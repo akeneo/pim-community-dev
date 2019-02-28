@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\Produc
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product\ProductUpdateSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
@@ -139,7 +140,7 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         $resubscribeProducts,
         ProductInterface $product
     ): void {
-        $subscription = new ProductSubscription(42, 'abc-123', ['asin' => 'ABC123']);
+        $subscription = new ProductSubscription(42, new SubscriptionId('abc-123'), ['asin' => 'ABC123']);
         $product->getId()->willReturn(42);
 
         $identifierValuesCollection = new ProductIdentifierValuesCollection();
@@ -165,7 +166,7 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         $resubscribeProducts,
         ProductInterface $product
     ): void {
-        $subscription = new ProductSubscription(42, 'a-fake-id', ['asin' => '123456']);
+        $subscription = new ProductSubscription(42, new SubscriptionId('a-fake-id'), ['asin' => '123456']);
         $subscriptionRepository->findByProductIds([42])->willReturn([$subscription]);
 
         $product->getId()->willReturn(42);
@@ -194,8 +195,8 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
         $product2->getId()->willReturn(44);
         $subscriptionRepository->findByProductIds([42, 44])->willReturn(
             [
-                new ProductSubscription(42, 'abc-123', ['asin' => 'ABC123', 'upc' => '987654321']),
-                new ProductSubscription(44, 'def-456', ['asin' => 'DEF987']),
+                new ProductSubscription(42, new SubscriptionId('abc-123'), ['asin' => 'ABC123', 'upc' => '987654321']),
+                new ProductSubscription(44, new SubscriptionId('def-456'), ['asin' => 'DEF987']),
             ]
         );
 

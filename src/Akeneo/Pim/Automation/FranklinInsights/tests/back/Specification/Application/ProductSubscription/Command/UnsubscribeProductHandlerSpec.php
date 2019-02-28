@@ -11,6 +11,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductUns
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -53,7 +54,7 @@ class UnsubscribeProductHandlerSpec extends ObjectBehavior
         ProductSubscription $subscription
     ): void {
         $productId = 42;
-        $subscriptionId = 'foo-bar';
+        $subscriptionId = new SubscriptionId('foo-bar');
 
         $subscriptionRepository->findOneByProductId($productId)->willReturn($subscription);
         $subscription->getSubscriptionId()->willReturn($subscriptionId);

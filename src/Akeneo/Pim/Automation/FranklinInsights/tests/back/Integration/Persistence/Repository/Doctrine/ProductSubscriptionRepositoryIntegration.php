@@ -113,7 +113,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     {
         $subscription1 = new ProductSubscription(
             $this->createProduct('a_product')->getId(),
-            'subscription-1',
+            new SubscriptionId('subscription-1'),
             ['sku' => '72527273070']
         );
         $subscription1->setSuggestedData(new SuggestedData([]));
@@ -121,7 +121,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
 
         $subscription2 = new ProductSubscription(
             $this->createProduct('another_product')->getId(),
-            'subscription-2',
+            new SubscriptionId('subscription-2'),
             ['sku' => '72527273070']
         );
         $this->getRepository()->save($subscription2);

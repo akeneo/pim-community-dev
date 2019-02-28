@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Propo
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Factory\ProposalSuggestedDataFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -35,7 +36,7 @@ class ProposalSuggestedDataFactorySpec extends ObjectBehavior
 
     public function it_returns_null_if_suggested_data_cannot_be_normalized($normalizer): void
     {
-        $subscription = new ProductSubscription(42, 'fake-id', [['pimAttributeCode' => 'foo', 'value' => 'bar']]);
+        $subscription = new ProductSubscription(42, new SubscriptionId('fake-id'), [['pimAttributeCode' => 'foo', 'value' => 'bar']]);
         $normalizer->normalize($subscription->getSuggestedData())->willReturn([]);
 
         $this->fromSubscription($subscription)->shouldReturn(null);
@@ -43,7 +44,7 @@ class ProposalSuggestedDataFactorySpec extends ObjectBehavior
 
     public function it_returns_null_if_suggested_values_are_empty($normalizer): void
     {
-        $subscription = new ProductSubscription(42, 'fake-id', []);
+        $subscription = new ProductSubscription(42, new SubscriptionId('fake-id'), []);
         $normalizer->normalize($subscription->getSuggestedData())->willReturn([]);
 
         $this->fromSubscription($subscription)->shouldReturn(null);

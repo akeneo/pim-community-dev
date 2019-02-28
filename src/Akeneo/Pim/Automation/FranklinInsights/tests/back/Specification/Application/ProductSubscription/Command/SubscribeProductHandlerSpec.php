@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\Produc
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -99,7 +100,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         ValueInterface $eanValue
     ): void {
         $productId = 42;
-        $subscriptionId = uniqid();
+        $subscriptionId = new SubscriptionId(uniqid());
         $suggestedValues = [[
             'pimAttributeCode' => 'foo',
             'value' => 'bar',

@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -54,7 +55,7 @@ class UpdateSubscriptionFamilyHandlerSpec extends ObjectBehavior
         FamilyRepositoryInterface $familyRepository
     ): void {
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(
-            new ProductSubscription(42, '123456-abcdef', [])
+            new ProductSubscription(42, new SubscriptionId('123456-abcdef'), [])
         );
 
         $familyCode = new FamilyCode('router');
