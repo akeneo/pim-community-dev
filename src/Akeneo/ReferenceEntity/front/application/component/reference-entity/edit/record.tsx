@@ -132,9 +132,9 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
         <Header
           label={referenceEntity.getLabel(context.locale)}
           image={referenceEntity.getImage()}
-          primaryAction={(defaultFocus: React.RefObject<any>) => {
+          primaryAction={() => {
             return rights.record.create ? (
-              <button className="AknButton AknButton--action" onClick={events.onRecordCreationStart} ref={defaultFocus}>
+              <button className="AknButton AknButton--action" onClick={events.onRecordCreationStart}>
                 {__('pim_reference_entity.record.button.create')}
               </button>
             ) : null;
