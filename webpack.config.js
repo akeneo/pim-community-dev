@@ -6,7 +6,7 @@ const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
 
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -43,12 +43,7 @@ const webpackConfig = {
   },
   mode: (isProd ? 'production' : 'development'),
   target: 'web',
-  entry: [
-    "core-js/modules/es6.promise",
-    "core-js/modules/es6.array.iterator",
-    'babel-polyfill',
-    path.resolve(rootDir, './web/bundles/pimui/js/index.js')
-  ],
+  entry: ['babel-polyfill', path.resolve(rootDir, './web/bundles/pimui/js/index.js')],
   output: {
     path: path.resolve('./web/dist/'),
     publicPath: '/dist/',
@@ -156,7 +151,6 @@ const webpackConfig = {
         use: {
           loader: 'babel-loader',
           options: {
-            plugins: ["@babel/plugin-syntax-dynamic-import"],
             presets: ['@babel/preset-env'],
             cacheDirectory: 'web/cache',
           },
