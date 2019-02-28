@@ -190,9 +190,13 @@ export default class Table extends React.Component<TableProps, {columns: Column[
             <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250}/>
             <div className="AknFilterBox-filterContainer">
               <p className="AknFilterBox-itemsCounter">
-                {__('pim_reference_entity.record.grid.filter.counter', {
-                  matchesCount: grid.matchesCount,
-                })}
+                {__(
+                  'pim_reference_entity.record.grid.filter.counter',
+                  {
+                    matchesCount: grid.matchesCount,
+                  },
+                  grid.matchesCount
+                )}
               </p>
             </div>
             <CompletenessFilter value={completenessValue} onChange={this.props.onCompletenessFilterUpdated} />
