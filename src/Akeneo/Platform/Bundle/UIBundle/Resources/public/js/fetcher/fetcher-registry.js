@@ -24,7 +24,7 @@ function ($, _, BaseFetcher, requireContext) {
 
                 for (var fetcher in fetcherList) {
                     var moduleName = fetcherList[fetcher].module || defaultFetcher
-                    var ResolvedModule = requireContext(moduleName);
+                    var ResolvedModule = import(`${moduleName}`);
                     fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options)
                     fetchers[fetcher].options = fetcherList[fetcher].options
                 }

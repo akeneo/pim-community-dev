@@ -6,31 +6,15 @@ const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
 
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
 createModuleRegistry(Object.keys(aliases), rootDir);
-
-const babelPresets = [
-  [
-    'babel-preset-env',
-    {
-      targets: {
-        browsers: ['firefox >= 45'],
-      },
-    },
-  ],
-];
-
-if (isProd) {
-  babelPresets.push('babel-preset-minify');
-}
 
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
@@ -42,8 +26,29 @@ const webpackConfig = {
     timings: true,
     version: true,
   },
+  optimization: {
+    moduleIds: 'hashed',
+    minimizer: [new TerserPlugin({
+      cache: true,
+      parallel: true,
+      sourceMap: false,
+      terserOptions: {
+        ecma: 6,
+        mangle: true,
+        output: {
+          comments: false,
+        },
+      },
+    })]
+  },
+  mode: (isProd ? 'production' : 'development'),
   target: 'web',
-  entry: ['babel-polyfill', path.resolve(rootDir, './web/bundles/pimui/js/index.js')],
+  entry: [
+    "core-js/modules/es6.promise",
+    "core-js/modules/es6.array.iterator",
+    'babel-polyfill',
+    path.resolve(rootDir, './web/bundles/pimui/js/index.js')
+  ],
   output: {
     path: path.resolve('./web/dist/'),
     publicPath: '/dist/',
@@ -67,6 +72,7 @@ const webpackConfig = {
           {
             loader: path.resolve(__dirname, 'frontend/webpack/config-loader'),
             options: {
+              aliases,
               configMap: config,
             },
           },
@@ -84,7 +90,6 @@ const webpackConfig = {
           },
         ],
       },
-
       // Expose the Backbone variable to window
       {
         test: /node_modules\/backbone\/backbone.js/,
@@ -151,7 +156,8 @@ const webpackConfig = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: babelPresets,
+            plugins: ["@babel/plugin-syntax-dynamic-import"],
+            presets: ['@babel/preset-env'],
             cacheDirectory: 'web/cache',
           },
         },
@@ -171,6 +177,7 @@ const webpackConfig = {
           {
             loader: path.resolve(__dirname, 'frontend/webpack/config-loader'),
             options: {
+              aliases,
               configMap: config,
             },
           },
@@ -183,11 +190,6 @@ const webpackConfig = {
 
   watchOptions: {
     ignored: /node_modules|var\/cache|vendor/,
-  },
-
-  // Support old loader declarations
-  resolveLoader: {
-    moduleExtensions: ['-loader'],
   },
 
   plugins: [
@@ -211,37 +213,20 @@ const webpackConfig = {
       path.resolve(rootDir, './vendor'),
     ]),
 
-    // Inject live reload to auto refresh the page (hmr not compatible with our app)
-    new LiveReloadPlugin({appendScriptTag: true, ignore: /node_modules/}),
-
-    // Split the app into chunks for performance
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'lib',
-      minChunks: module => module.context && module.context.indexOf('lib') !== -1,
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: module => module.context && module.context.indexOf('node_modules') !== -1,
-    }),
+    // // Split the app into chunks for performance
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'lib',
+    //   minChunks: module => module.context && module.context.indexOf('lib') !== -1,
+    // }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor',
+    //   minChunks: module => module.context && module.context.indexOf('node_modules') !== -1,
+    // }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
     }),
-    new webpack.optimize.CommonsChunkPlugin({name: 'manifest'}),
+    // new webpack.optimize.CommonsChunkPlugin({name: 'manifest'}),
   ],
 };
-
-if (isProd) {
-  webpackConfig.plugins.push(
-    new UglifyJsPlugin({
-      sourceMap: true,
-      uglifyOptions: {
-        ecma: 8,
-        compress: {
-          warnings: false,
-        },
-      },
-    })
-  );
-}
 
 module.exports = webpackConfig;
