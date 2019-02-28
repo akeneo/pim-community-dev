@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\FranklinInsights\Integration\Persistence\Re
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
@@ -32,7 +33,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $subscriptionId = 'a-random-string';
         $subscription = new ProductSubscription(
             $product->getId(),
-            $subscriptionId,
+            new SubscriptionId($subscriptionId),
             ['upc' => '72527273070', 'asin' => 'B00005N5PF', 'mpn' => 'AS4561AD142', 'brand' => 'intel']
         );
         $subscription->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
@@ -43,7 +44,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
             '
-            SELECT product_id, subscription_id, raw_suggested_data, 
+            SELECT product_id, raw_subscription_id, raw_suggested_data, 
             requested_upc, requested_asin, requested_mpn, requested_brand 
             from pimee_franklin_insights_subscription;
         '
@@ -54,7 +55,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $subscriptionData = $retrievedSubscriptions[0];
         $expectedValues = [
             'product_id' => $product->getId(),
-            'subscription_id' => $subscriptionId,
+            'raw_subscription_id' => $subscriptionId,
             'requested_upc' => '72527273070',
             'requested_asin' => 'B00005N5PF',
             'requested_mpn' => 'AS4561AD142',
@@ -82,7 +83,8 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
 
         $subscription = $this->getRepository()->findOneByProductId($product->getId());
         Assert::assertInstanceOf(ProductSubscription::class, $subscription);
-        Assert::assertSame($subscriptionId, $subscription->getSubscriptionId());
+        Assert::assertInstanceOf(SubscriptionId::class, $subscription->getSubscriptionId());
+        Assert::assertSame($subscriptionId, (string) $subscription->getSubscriptionId());
         Assert::assertSame($suggestedData, $subscription->getSuggestedData()->getRawValues());
     }
 
@@ -101,8 +103,10 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
 
         $subscriptions = $this->getRepository()->findByProductIds([12, 56, 98, 40]);
         Assert::assertCount(1, $subscriptions);
+        Assert::assertInstanceOf(ProductSubscription::class, $subscriptions[0]);
         Assert::assertSame(56, $subscriptions[0]->getProductId());
-        Assert::assertSame('another-fake-subscription-id', $subscriptions[0]->getSubscriptionId());
+        Assert::assertInstanceOf(SubscriptionId::class, $subscriptions[0]->getSubscriptionId());
+        Assert::assertSame('another-fake-subscription-id', (string) $subscriptions[0]->getSubscriptionId());
     }
 
     public function test_it_saves_empty_suggested_data_as_null(): void
@@ -338,7 +342,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     private function insertSubscription(int $productId, string $subscriptionId, array $suggestedData): void
     {
         $query = <<<SQL
-INSERT INTO pimee_franklin_insights_subscription (product_id, subscription_id, raw_suggested_data, misses_mapping)
+INSERT INTO pimee_franklin_insights_subscription (product_id, raw_subscription_id, raw_suggested_data, misses_mapping)
 VALUES (:productId, :subscriptionId, :suggestedData, true)
 SQL;
         $entityManager = $this->get('doctrine.orm.entity_manager');

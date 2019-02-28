@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryIdentifiersMappingRepository;
@@ -244,7 +245,7 @@ class DataFixturesContext implements Context
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
-        $subscription = new ProductSubscription($product->getId(), uniqid(), ['sku' => '72527273070']);
+        $subscription = new ProductSubscription($product->getId(), new SubscriptionId(uniqid()), ['sku' => '72527273070']);
         $this->subscriptionRepository->save($subscription);
     }
 

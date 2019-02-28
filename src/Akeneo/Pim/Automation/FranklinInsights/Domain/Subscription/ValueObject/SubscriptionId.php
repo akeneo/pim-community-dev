@@ -26,6 +26,10 @@ class SubscriptionId
      */
     public function __construct(string $subscriptionId)
     {
+        if (empty($subscriptionId)) {
+            throw new \InvalidArgumentException('subscription id cannot be empty');
+        }
+
         $this->subscriptionId = $subscriptionId;
     }
 

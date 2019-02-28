@@ -50,7 +50,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
      */
     public function save(ProductSubscription $subscription): void
     {
-        $this->subscriptions[$subscription->getSubscriptionId()] = $subscription;
+        $this->subscriptions[(string) $subscription->getSubscriptionId()] = $subscription;
         ksort($this->subscriptions);
     }
 
@@ -91,7 +91,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
                 if ($subscription->getSuggestedData()->isEmpty()) {
                     return false;
                 }
-                if (null !== $searchAfter && $subscription->getSubscriptionId() <= $searchAfter) {
+                if (null !== $searchAfter && (string) $subscription->getSubscriptionId() <= $searchAfter) {
                     return false;
                 }
 
@@ -107,7 +107,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
      */
     public function delete(ProductSubscription $subscription): void
     {
-        unset($this->subscriptions[$subscription->getSubscriptionId()]);
+        unset($this->subscriptions[(string) $subscription->getSubscriptionId()]);
     }
 
     /**

@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\Product
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -34,9 +35,9 @@ interface SubscriptionProviderInterface
     public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse;
 
     /**
-     * @param string $subscriptionId
+     * @param SubscriptionId $subscriptionId
      */
-    public function unsubscribe(string $subscriptionId): void;
+    public function unsubscribe(SubscriptionId $subscriptionId): void;
 
     /**
      * @param ProductSubscriptionRequest[] $requests
@@ -57,8 +58,10 @@ interface SubscriptionProviderInterface
     public function fetch(\DateTime $updatedSince): \Iterator;
 
     /**
-     * @param string $subscriptionId
+     * @param SubscriptionId $subscriptionId
      * @param Family $family
+     *
+     * @throws ProductSubscriptionException
      */
-    public function updateFamilyInfos(string $subscriptionId, Family $family): void;
+    public function updateFamilyInfos(SubscriptionId $subscriptionId, Family $family): void;
 }
