@@ -141,15 +141,15 @@ workflows:
           - setup:
                 requires:
                     - wait_for_user_approval
-          - static_and_specs:
-                requires:
-                    - setup
-          - back_phpunit_integration:
-                requires:
-                    - static_and_specs
+#          - static_and_specs:
+#                requires:
+#                    - setup
+#          - back_phpunit_integration:
+#                requires:
+#                    - static_and_specs
           - back_behat_legacy:
                 requires:
-                    - back_phpunit_integration
+                    - setup
 
   nightly:
       triggers:
