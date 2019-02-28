@@ -15,7 +15,7 @@ Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscrip
             id: true
             generator:
                 strategy: AUTO
-        subscriptionId:
+        rawSubscriptionId:
             type: string
             column: subscription_id
             nullable: false

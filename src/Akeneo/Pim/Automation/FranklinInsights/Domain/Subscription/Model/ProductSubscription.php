@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 
 /**
@@ -23,8 +24,11 @@ class ProductSubscription
     /** @var int */
     private $id;
 
-    /** @var string */
+    /** @var SubscriptionId */
     private $subscriptionId;
+
+    /** @var string */
+    private $rawSubscriptionId;
 
     /** @var SuggestedData */
     private $suggestedData;
@@ -55,13 +59,13 @@ class ProductSubscription
 
     /**
      * @param int $productId
-     * @param string $subscriptionId
+     * @param SubscriptionId $subscriptionId
      * @param array $productIdentifiers
      */
-    public function __construct(int $productId, string $subscriptionId, array $productIdentifiers)
+    public function __construct(int $productId, SubscriptionId $subscriptionId, array $productIdentifiers)
     {
         $this->productId = $productId;
-        $this->subscriptionId = $subscriptionId;
+        $this->setSubscriptionId($subscriptionId);
         $this->isMappingMissing = false;
         $this->isCancelled = false;
 
@@ -76,11 +80,12 @@ class ProductSubscription
         return $this->productId;
     }
 
-    /**
-     * @return string
-     */
-    public function getSubscriptionId(): string
+    public function getSubscriptionId(): SubscriptionId
     {
+        if (null === $this->subscriptionId) {
+            $this->subscriptionId = new SubscriptionId($this->rawSubscriptionId);
+        }
+
         return $this->subscriptionId;
     }
 
@@ -162,6 +167,12 @@ class ProductSubscription
                 'mpn' => $this->requestedMpn,
             ]
         );
+    }
+
+    private function setSubscriptionId(SubscriptionId $subscriptionId): void
+    {
+        $this->subscriptionId = $subscriptionId;
+        $this->rawSubscriptionId = (string) $subscriptionId;
     }
 
     /**
