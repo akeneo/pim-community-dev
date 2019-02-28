@@ -33,6 +33,6 @@ class SubscriptionIdSpec extends ObjectBehavior
 
     public function it_returns_a_subscription_id(): void
     {
-        $this->subscriptionId()->shouldReturn('subscription-id');
+        $this->__toString()->shouldReturn('subscription-id');
     }
 }

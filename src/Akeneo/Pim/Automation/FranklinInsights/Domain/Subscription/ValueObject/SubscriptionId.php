@@ -32,7 +32,7 @@ class SubscriptionId
     /**
      * @return string
      */
-    public function subscriptionId(): string
+    public function __toString()
     {
         return $this->subscriptionId;
     }
