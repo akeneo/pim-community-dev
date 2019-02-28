@@ -31,6 +31,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerRecord;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -40,7 +41,7 @@ use Ramsey\Uuid\Uuid;
  */
 class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
 {
-    /** @var AverageMaxQuery */
+    /** @var SqlAverageMaxNumberOfValuesPerRecord */
     private $averageMaxNumberOfValuesPerRecords;
 
     /** @var AttributeRepositoryInterface */
@@ -71,8 +72,6 @@ class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
 
         $this->assertEquals('4', $volume->getMaxVolume());
         $this->assertEquals('3', $volume->getAverageVolume());
-        $this->assertEquals('average_max_number_of_values_per_record', $volume->getVolumeName());
-        $this->assertFalse($volume->hasWarning(), 'There shouldn\'t be a warning for this reference entity volume');
     }
 
     private function resetDB(): void
@@ -87,7 +86,6 @@ class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
 
         $this->createRecordWithOneValueForEachAttribute($referenceEntityIdentifier, $attributes);
     }
-
 
     private function createReferenceEntity(): ReferenceEntityIdentifier
     {

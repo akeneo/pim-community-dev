@@ -4,28 +4,21 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity;
 
-use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
-use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxVolumes;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlLocalizableOnly implements AverageMaxQuery
+class SqlLocalizableOnly
 {
-    private const VOLUME_NAME = 'average_max_localizable_only_attributes_per_reference_entity';
-
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var int */
-    private $limit;
-
-    public function __construct(Connection $sqlConnection, int $limit)
+    public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
-        $this->limit = $limit;
     }
 
     public function fetch(): AverageMaxVolumes
@@ -45,9 +38,7 @@ SQL;
         $result = $this->sqlConnection->query($sql)->fetch();
         $volume = new AverageMaxVolumes(
             (int) $result['max'],
-            (int) $result['average'],
-            $this->limit,
-            self::VOLUME_NAME
+            (int) $result['average']
         );
 
         return $volume;

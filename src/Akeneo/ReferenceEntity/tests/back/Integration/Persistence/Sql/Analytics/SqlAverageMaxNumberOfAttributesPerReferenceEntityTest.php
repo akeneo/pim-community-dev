@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
-use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
@@ -26,12 +25,9 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAttributesPerReferenceEntity;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -41,14 +37,14 @@ use Ramsey\Uuid\Uuid;
  */
 class SqlAverageMaxNumberOfAttributesPerReferenceEntityTest extends SqlIntegrationTestCase
 {
-    /** @var AverageMaxQuery */
-    private $averageMaxNumberOfAttributessPerReferenceEntity;
+    /** @var SqlAverageMaxNumberOfAttributesPerReferenceEntity */
+    private $averageMaxNumberOfAttributesPerReferenceEntity;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->averageMaxNumberOfAttributessPerReferenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_reference_entity');
+        $this->averageMaxNumberOfAttributesPerReferenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_reference_entity');
         $this->resetDB();
     }
 
@@ -59,13 +55,12 @@ class SqlAverageMaxNumberOfAttributesPerReferenceEntityTest extends SqlIntegrati
     {
         $this->loadAttributesForReferenceEntity(2);
         $this->loadAttributesForReferenceEntity(4);
+        $this->loadAttributesForReferenceEntity(0);
 
-        $volume = $this->averageMaxNumberOfAttributessPerReferenceEntity->fetch();
+        $volume = $this->averageMaxNumberOfAttributesPerReferenceEntity->fetch();
 
         $this->assertEquals('4', $volume->getMaxVolume());
         $this->assertEquals('3', $volume->getAverageVolume());
-        $this->assertEquals('average_max_attributes_per_reference_entity', $volume->getVolumeName());
-        $this->assertFalse($volume->hasWarning(), 'There shouldn\'t be a warning for this reference entity volume');
     }
 
     private function resetDB(): void
@@ -73,7 +68,7 @@ class SqlAverageMaxNumberOfAttributesPerReferenceEntityTest extends SqlIntegrati
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadAttributesForReferenceEntity(int $numberOfRecordsPerReferenceEntitiestoLoad): void
+    private function loadAttributesForReferenceEntity(int $numberOfAttributesPerReferenceEntitiestoLoad): void
     {
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($this->getRandomIdentifier());
@@ -85,7 +80,7 @@ class SqlAverageMaxNumberOfAttributesPerReferenceEntityTest extends SqlIntegrati
 
         // By default, there are already 2 attributes created for each reference entity
         $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
-        for ($i=0; $i < $numberOfRecordsPerReferenceEntitiestoLoad - 2; $i++) {
+        for ($i = 0; $i < $numberOfAttributesPerReferenceEntitiestoLoad - 2; $i++) {
             $attributeRepository->create(
                 TextAttribute::createText(
                     AttributeIdentifier::fromString(sprintf('%s_%d', $i, $referenceEntityIdentifier->normalize())),

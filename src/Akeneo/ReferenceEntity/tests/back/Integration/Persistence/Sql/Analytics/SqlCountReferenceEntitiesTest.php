@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
-use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlCountReferenceEntities;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 /**
@@ -25,14 +25,14 @@ use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
  */
 class SqlCountReferenceEntitiesTest extends SqlIntegrationTestCase
 {
-    /** @var CountQuery */
+    /** @var SqlCountReferenceEntities */
     private $countReferenceEntities;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->countReferenceEntities = $this->get('akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_number_of_records_per_reference_entity');
+        $this->countReferenceEntities = $this->get('akeneo_referenceentity.infrastructure.persistence.query.analytics.count_reference_entities');
         $this->resetDB();
     }
 
@@ -42,12 +42,8 @@ class SqlCountReferenceEntitiesTest extends SqlIntegrationTestCase
     public function it_returns_the_number_of_reference_entities_without_warning()
     {
         $this->loadReferenceEntities(2);
-
         $volume = $this->countReferenceEntities->fetch();
-
         $this->assertEquals('2', $volume->getVolume());
-        $this->assertEquals('count_reference_entity', $volume->getVolumeName());
-        $this->assertFalse($volume->hasWarning(), 'There shouldn\'t be a warning for this reference entity volume');
     }
 
     private function resetDB(): void

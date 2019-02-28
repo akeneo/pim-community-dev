@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record\AverageMaxPercentageOfAttributesPerReferenceEntity;
 
-use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableOnly;
 use Akeneo\ReferenceEntity\Integration\Persistence\Sql\Analytics\AverageMaxPercentageOfAttributes\CreateAttributesHelper;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
@@ -27,7 +27,7 @@ use Ramsey\Uuid\Uuid;
  */
 class SqlScopableAndLocalizableTest extends SqlIntegrationTestCase
 {
-    /** @var AverageMaxQuery */
+    /** @var SqlScopableOnly */
     private $averageMaxPercentageOfScopableOnlyAttributessPerReferenceEntity;
 
     /** @var CreateAttributesHelper */
@@ -69,9 +69,6 @@ class SqlScopableAndLocalizableTest extends SqlIntegrationTestCase
 
         $this->assertEquals('11', $volume->getMaxVolume());
         $this->assertEquals('10', $volume->getAverageVolume());
-        $this->assertEquals('average_max_scopable_and_localizable_attributes_per_reference_entity',
-            $volume->getVolumeName());
-        $this->assertFalse($volume->hasWarning(), 'There shouldn\'t be a warning for this reference entity volume');
     }
 
     private function resetDB(): void

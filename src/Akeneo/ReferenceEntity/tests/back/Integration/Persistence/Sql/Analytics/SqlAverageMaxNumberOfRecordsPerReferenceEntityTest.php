@@ -21,6 +21,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfRecordsPerReferenceEntity;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -30,7 +31,7 @@ use Ramsey\Uuid\Uuid;
  */
 class SqlAverageMaxNumberOfRecordsPerReferenceEntityTest extends SqlIntegrationTestCase
 {
-    /** @var AverageMaxQuery */
+    /** @var SqlAverageMaxNumberOfRecordsPerReferenceEntity */
     private $averageMaxNumberOfRecordsPerReferenceEntity;
 
     public function setUp()
@@ -48,13 +49,12 @@ class SqlAverageMaxNumberOfRecordsPerReferenceEntityTest extends SqlIntegrationT
     {
         $this->loadRecordsForReferenceEntity(2);
         $this->loadRecordsForReferenceEntity(4);
+        $this->loadRecordsForReferenceEntity(0);
 
         $volume = $this->averageMaxNumberOfRecordsPerReferenceEntity->fetch();
 
         $this->assertEquals('4', $volume->getMaxVolume());
-        $this->assertEquals('3', $volume->getAverageVolume());
-        $this->assertEquals('average_max_records_per_reference_entity', $volume->getVolumeName());
-        $this->assertFalse($volume->hasWarning(), 'There shouldn\'t be a warning for this reference entity volume');
+        $this->assertEquals('2', $volume->getAverageVolume());
     }
 
     private function resetDB(): void
@@ -77,7 +77,7 @@ class SqlAverageMaxNumberOfRecordsPerReferenceEntityTest extends SqlIntegrationT
         for ($i=0; $i < $numberOfRecordsPerReferenceEntitiestoLoad; $i++) {
             $recordRepository->create(
                 Record::create(
-                    RecordIdentifier::fromString(sprintf('%s_%d', $i, $referenceEntityIdentifier->normalize())),
+                    RecordIdentifier::fromString(sprintf('%s', $this->getRandomIdentifier())),
                     $referenceEntityIdentifier,
                     RecordCode::fromString(sprintf('%s_%d', $i, $referenceEntityIdentifier->normalize())),
                     ValueCollection::fromValues([])
