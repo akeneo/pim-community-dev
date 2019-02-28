@@ -182,7 +182,7 @@ define([
             var choiceUrl = this.getChoiceUrl(attribute);
 
             if (null === this.choicePromise) {
-                this.choicePromise = $.get(choiceUrl);
+                this.choicePromise = $.post(choiceUrl);
             }
 
             return this.choicePromise;

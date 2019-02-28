@@ -109,7 +109,7 @@ define(
                             var id = $(element).val();
                             if ('' !== id) {
                                 if (null === this.choicePromise || this.promiseIdentifier !== id) {
-                                    this.choicePromise = $.get(choiceUrl, {options: {identifiers: [id]}});
+                                    this.choicePromise = $.post(choiceUrl, {options: {identifiers: [id]}});
                                     this.promiseIdentifier = id;
                                 }
 
