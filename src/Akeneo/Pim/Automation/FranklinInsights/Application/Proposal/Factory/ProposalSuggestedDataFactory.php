@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Factory;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard\SuggestedDataNormalizer;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Normalizer\SuggestedDataNormalizerInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 
@@ -22,13 +22,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubs
  */
 class ProposalSuggestedDataFactory
 {
-    /** @var SuggestedDataNormalizer */
+    /** @var SuggestedDataNormalizerInterface */
     private $normalizer;
 
-    /**
-     * @param SuggestedDataNormalizer $normalizer
-     */
-    public function __construct(SuggestedDataNormalizer $normalizer)
+    public function __construct(SuggestedDataNormalizerInterface $normalizer)
     {
         $this->normalizer = $normalizer;
     }

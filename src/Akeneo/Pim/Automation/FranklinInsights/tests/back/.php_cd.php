@@ -26,9 +26,6 @@ $rules = [
         [
             'Akeneo\Pim\Automation\FranklinInsights\Domain',
 
-            'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
-            'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException',
-
             // TODO remove all links by reference
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
@@ -165,8 +162,15 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
 
+            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+            'Akeneo\Pim\Structure\Component\AttributeTypes',
+            'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
+            'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException',
+
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal'),
 
