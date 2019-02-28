@@ -129,7 +129,7 @@ define(
                             ).data;
 
                             if (null === this.choicePromise || this.promiseIdentifiers !== identifiers) {
-                                this.choicePromise = $.get(choiceUrl, {
+                                this.choicePromise = $.post(choiceUrl, {
                                     options: {
                                         identifiers: identifiers
                                     }
