@@ -2,13 +2,16 @@
 
 # 2.0.50 (2019-03-01)
 
+## Bug fixes
+
+- PIM-8174: Fix too long URI for multi-select with a lots of options
+
 # 2.0.49 (2019-02-25)
 
 ## Bug fixes
 
 - PIM-8158: Improve the label category tree creation button label
 - PIM-8141: Fix attribute filter selection in export profile edition
-- PIM-8174: Fix too long URI for multi-select with a lots of options
 
 # 2.0.48 (2019-02-18)
 
