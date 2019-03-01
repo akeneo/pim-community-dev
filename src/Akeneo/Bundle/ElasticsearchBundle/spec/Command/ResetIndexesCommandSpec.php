@@ -49,6 +49,8 @@ class ResetIndexesCommandSpec extends ObjectBehavior
         $container->get('akeneo_elasticsearch.registry.clients')->willReturn($clientRegistry);
         $clientRegistry->getClients()->willReturn([$client1, $client2]);
 
+        $input->getOption('index')->willReturn([]);
+
         $client1->resetIndex()->shouldBeCalled();
         $client1->getIndexName()->willReturn('index_1');
         $client1->hasIndex()->willReturn(true);
@@ -57,7 +59,11 @@ class ResetIndexesCommandSpec extends ObjectBehavior
         $client2->resetIndex()->shouldBeCalled();
         $client2->hasIndex()->willReturn(true);
 
-        $output->writeln('<info>This action will entirely reset all indexes registered in the PIM.</info>')->shouldBeCalled();
+        $output->writeln('<info>This action will entirely reset the following indexes in the PIM:</info>')->shouldBeCalled();
+        $output->writeln('<info>index_1</info>')->shouldBeCalled();
+        $output->writeln('<info>index_2</info>')->shouldBeCalled();
+
+
         $helperSet->get('question')->willReturn($questionHelper);
         $questionHelper->ask($input, $output, Argument::cetera())->willReturn(true);
 
@@ -66,7 +72,70 @@ class ResetIndexesCommandSpec extends ObjectBehavior
         $output->writeln('')->shouldBeCalled();
 
         $output->writeln('')->shouldBeCalled();
-        $output->writeln('<info>All the registered indexes have been successfully reset!</info>')
+        $output->writeln('<info>All the indexes have been successfully reset!</info>')
+            ->shouldBeCalled();
+        $output->writeln('')->shouldBeCalled();
+        $output->writeln('<info>You can now use the command pim:product:index and pim:product-model:index to start re-indexing your product and product models.</info>')
+            ->shouldBeCalled();
+
+        $commandInput = new ArrayInput([
+            'command'    => 'pim:indexes:reset',
+            '--all'      => true,
+            '--no-debug' => true,
+        ]);
+        $definition->getOptions()->willReturn([]);
+        $definition->getArguments()->willReturn([]);
+
+        $application->run($commandInput, $output)->willReturn(0);
+        $application->getHelperSet()->willReturn($helperSet);
+        $application->getDefinition()->willReturn($definition);
+
+        $this->setApplication($application);
+        $this->setContainer($container);
+        $input->bind(Argument::any())->shouldBeCalled();
+        $input->isInteractive()->shouldBeCalled();
+        $input->hasArgument(Argument::any())->shouldBeCalled();
+        $input->validate()->shouldBeCalled();
+        $this->run($input, $output);
+    }
+
+    function it_resets_an_index_provided_int_the_option_of_the_command_line(
+        ContainerInterface $container,
+        ClientRegistry $clientRegistry,
+        Client $client1,
+        Client $client2,
+        InputInterface $input,
+        OutputInterface $output,
+        Application $application,
+        HelperSet $helperSet,
+        InputDefinition $definition,
+        QuestionHelper $questionHelper
+    ) {
+        $container->get('akeneo_elasticsearch.registry.clients')->willReturn($clientRegistry);
+        $clientRegistry->getClients()->willReturn([$client1, $client2]);
+
+        $input->getOption('index')->willReturn(['index_1']);
+
+        $client1->resetIndex()->shouldBeCalled();
+        $client1->getIndexName()->willReturn('index_1');
+        $client1->hasIndex()->willReturn(true);
+
+        $client2->getIndexName()->willReturn('index_2');
+        $client2->resetIndex()->shouldNotBeCalled();
+
+        $output->writeln('<info>This action will entirely reset the following indexes in the PIM:</info>')->shouldBeCalled();
+        $output->writeln('<info>index_1</info>')->shouldBeCalled();
+        $output->writeln('<info>index_2</info>')->shouldNotBeCalled();
+
+
+        $helperSet->get('question')->willReturn($questionHelper);
+        $questionHelper->ask($input, $output, Argument::cetera())->willReturn(true);
+
+        $output->writeln('<info>Resetting the index: index_1</info>')->shouldBeCalled();
+        $output->writeln('')->shouldBeCalled();
+
+        $output->writeln('')->shouldBeCalled();
+        $output->writeln('<info>All the indexes have been successfully reset!</info>')
             ->shouldBeCalled();
         $output->writeln('')->shouldBeCalled();
         $output->writeln('<info>You can now use the command pim:product:index and pim:product-model:index to start re-indexing your product and product models.</info>')
@@ -100,18 +169,26 @@ class ResetIndexesCommandSpec extends ObjectBehavior
         Application $application,
         HelperSet $helperSet,
         InputDefinition $definition,
-        QuestionHelper $questionHelper
+        QuestionHelper $questionHelper,
+        ClientRegistry $clientRegistry,
+        Client $client1,
+        Client $client2
     ) {
-        $output->writeln('<info>This action will entirely reset all indexes registered in the PIM.</info>')
-            ->shouldBeCalled();
+        $input->getOption('index')->willReturn([]);
+        $container->get('akeneo_elasticsearch.registry.clients')->willReturn($clientRegistry);
+        $clientRegistry->getClients()->willReturn([$client1, $client2]);
+        $client1->getIndexName()->willReturn('index_1');
+        $client2->getIndexName()->willReturn('index_2');
+
+        $output->writeln('<info>This action will entirely reset the following indexes in the PIM:</info>')->shouldBeCalled();
+        $output->writeln('<info>index_1</info>')->shouldBeCalled();
+        $output->writeln('<info>index_2</info>')->shouldBeCalled();
 
         $helperSet->get('question')->willReturn($questionHelper);
         $questionHelper->ask($input, $output, Argument::cetera())->willReturn(false);
 
         $output->writeln('<info>Operation aborted. Nothing has been done.</info>')
             ->shouldBeCalled();
-
-        $container->get('akeneo_elasticsearch.registry.clients')->shouldNotBeCalled();
 
         $commandInput = new ArrayInput([
             'command'    => 'pim:indexes:reset',
@@ -146,6 +223,8 @@ class ResetIndexesCommandSpec extends ObjectBehavior
         InputDefinition $definition,
         QuestionHelper $questionHelper
     ) {
+        $input->getOption('index')->willReturn([]);
+
         $container->get('akeneo_elasticsearch.registry.clients')->willReturn($clientRegistry);
         $clientRegistry->getClients()->willReturn([$client1, $client2]);
 
@@ -157,7 +236,10 @@ class ResetIndexesCommandSpec extends ObjectBehavior
         $client2->resetIndex()->shouldBeCalled();
         $client2->hasIndex()->willReturn(false);
 
-        $output->writeln('<info>This action will entirely reset all indexes registered in the PIM.</info>')->shouldBeCalled();
+        $output->writeln('<info>This action will entirely reset the following indexes in the PIM:</info>')->shouldBeCalled();
+        $output->writeln('<info>index_1</info>')->shouldBeCalled();
+        $output->writeln('<info>index_2</info>')->shouldBeCalled();
+
         $helperSet->get('question')->willReturn($questionHelper);
         $questionHelper->ask($input, $output, Argument::cetera())->willReturn(true);
 

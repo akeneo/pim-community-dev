@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Improvement
+
+- PIM-8175: add the possibility to filter on one or several index names when resetting ES indexes
+
 # 2.3.31 (2019-02-28)
 
 ## Bug fixes
