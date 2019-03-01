@@ -74,23 +74,33 @@ const DefaultItemView = ({
 interface Props {
   elements: DropdownElement[];
   selectedElement: string;
-  ButtonView?: (
-    {label, selectedElement, onClick}: {label: string; selectedElement: DropdownElement; onClick: () => void}
-  ) => JSX.Element;
-  ItemView?: (
-    {
-      isOpen,
-      element,
-      isActive,
-      onClick,
-    }: {isOpen: boolean; element: DropdownElement; isActive: boolean; onClick: (element: DropdownElement) => void}
-  ) => JSX.Element;
+  ButtonView?: ({
+    label,
+    selectedElement,
+    onClick,
+  }: {
+    label: string;
+    selectedElement: DropdownElement;
+    onClick: () => void;
+  }) => JSX.Element;
+  ItemView?: ({
+    isOpen,
+    element,
+    isActive,
+    onClick,
+  }: {
+    isOpen: boolean;
+    element: DropdownElement;
+    isActive: boolean;
+    onClick: (element: DropdownElement) => void;
+  }) => JSX.Element;
   label: string;
   className?: string;
   onSelectionChange: (element: DropdownElement) => void;
   allowEmpty?: boolean;
   placeholder?: string;
   readOnly?: boolean;
+  isOpenUp?: boolean;
 }
 
 interface State {
@@ -134,6 +144,7 @@ class Dropdown extends React.Component<Props, State> {
 
   render() {
     const openClass = this.state.isOpen ? 'AknDropdown-menu--open' : '';
+    const dropdownTopClass = this.props.isOpenUp ? 'AknDropdown-menu--top' : '';
     const dropdownButton = (
       selectedElement: string,
       label: string,
@@ -180,7 +191,7 @@ class Dropdown extends React.Component<Props, State> {
           this.props.readOnly
         )}
         {!this.props.readOnly ? (
-          <div className={`AknDropdown-menu AknDropdown-menu--heightLimited ${openClass}`}>
+          <div className={`AknDropdown-menu AknDropdown-menu--heightLimited ${openClass} ${dropdownTopClass}`}>
             <div className="AknDropdown-menuTitle">{this.props.label}</div>
             {ElementViews}
           </div>

@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-8154: Fix validation rule dropdown overlapped with the sticky footer
 - PIM-8049: Fix font size list of the rich text editor behind the next field
 
 # 3.0.5 (2019-02-25)
