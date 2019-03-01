@@ -19,6 +19,7 @@ class ListGrantedChildrenCategoriesWithCountNotIncludingSubCategoriesIntegration
         parent::setUp();
 
         $fixturesLoader = new CategoryTreeFixturesLoaderWithPermission($this->testKernel->getContainer());
+        $fixturesLoader->adminUserAsRedactorAndITSupport();
         $fixturesLoader->givenTheCategoryTreesWithoutViewPermission([
             'tree_1' => [
                 'tree_1_child_1_level_1' => [

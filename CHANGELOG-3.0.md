@@ -4,6 +4,7 @@
 
 - PIM-8154: Fix validation rule dropdown overlapped with the sticky footer
 - PIM-8049: Fix font size list of the rich text editor behind the next field
+- PIM-8014: Fix the display of duplicate category trees in the product grid
 
 # 3.0.5 (2019-02-25)
 
