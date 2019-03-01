@@ -63,4 +63,72 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             ]
         );
     }
+
+    function it_sorts_conditions_on_rules(
+        $ruleNormalizer,
+        RuleDefinitionInterface $ruleDefinition
+    ) {
+        $ruleDefinition->getCode()->shouldBeCalled()->willReturn('camera_copy_name_to_model');
+
+        $ruleNormalizer->normalize($ruleDefinition)->shouldBeCalled()->willReturn(
+            [
+                'code'       => 'camera_copy_name_to_model',
+                'conditions' => [
+                    [
+                        'c' => ['camcorders'],
+                        'b' => 'family.code',
+                        'a' => 'IN',
+                    ]
+                ],
+            ]
+        );
+
+        $this->process($ruleDefinition)->shouldReturn(
+            [
+                'camera_copy_name_to_model' => [
+                    'conditions' => [
+                        [
+                            'a' => 'IN',
+                            'b' => 'family.code',
+                            'c' => ['camcorders'],
+                        ]
+                    ],
+                ],
+            ]
+        );
+    }
+
+    function it_sorts_actions_on_rules(
+        $ruleNormalizer,
+        RuleDefinitionInterface $ruleDefinition
+    ) {
+        $ruleDefinition->getCode()->shouldBeCalled()->willReturn('camera_copy_name_to_model');
+
+        $ruleNormalizer->normalize($ruleDefinition)->shouldBeCalled()->willReturn(
+            [
+                'code'    => 'camera_copy_name_to_model',
+                'actions' => [
+                    [
+                        'c' => 'copy_value',
+                        'b' => 'camera_model_name',
+                        'a' => 'name',
+                    ]
+                ],
+            ]
+        );
+
+        $this->process($ruleDefinition)->shouldReturn(
+            [
+                'camera_copy_name_to_model' => [
+                    'actions' => [
+                        [
+                            'a' => 'name',
+                            'b' => 'camera_model_name',
+                            'c' => 'copy_value',
+                        ]
+                    ],
+                ],
+            ]
+        );
+    }
 }

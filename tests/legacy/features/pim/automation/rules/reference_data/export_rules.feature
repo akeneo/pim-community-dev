@@ -71,23 +71,23 @@ Feature: Export rules
                         - chiffon
             actions:
                 -
-                    type: set
                     field: sleeve_color
+                    type: set
                     value: yellow
                 -
-                    type: set
                     field: sleeve_fabric
+                    type: set
                     value:
                         - kevlar
                         - chiffon
                         - satin
                         - wool
                 -
-                    type: copy
                     from_field: zip_color
-                    to_field: zip_color
                     from_locale: en_US
-                    to_locale: en_US
                     from_scope: mobile
+                    to_field: zip_color
+                    to_locale: en_US
                     to_scope: tablet
+                    type: copy
     """

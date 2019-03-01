@@ -78,10 +78,10 @@ Feature: Export rules
                     value: my-loafer
             actions:
                 -
-                    type: set
                     field: name
-                    value: 'My loafer'
                     locale: en_US
+                    type: set
+                    value: 'My loafer'
         set_another_name:
             priority: 20
             conditions:
@@ -91,11 +91,11 @@ Feature: Export rules
                     value: my
             actions:
                 -
-                    type: set
                     field: description
-                    value: 'A stylish white loafer'
                     locale: en_US
                     scope: mobile
+                    type: set
+                    value: 'A stylish white loafer'
         copy_name_loafer:
             priority: 30
             conditions:
@@ -109,21 +109,23 @@ Feature: Export rules
                     value: my-loafer
             actions:
                 -
-                    type: copy
                     from_field: name
-                    to_field: name
                     from_locale: en_US
+                    to_field: name
                     to_locale: fr_FR
+                    type: copy
         remove_categories:
             priority: 40
             conditions:
-                - field:    enabled
-                  operator: =
-                  value:    false
+                -
+                    field: enabled
+                    operator: '='
+                    value: false
             actions:
-                - type:  remove
-                  field: categories
-                  items:
-                      - 2014_collection
-                  include_children: true
+                -
+                    field: categories
+                    include_children: true
+                    items:
+                        - 2014_collection
+                    type:  remove
     """
