@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8049: Fix font size list of the rich text editor behind the next field
+
 # 3.0.5 (2019-02-25)
 
 # 3.0.4 (2019-02-20)
