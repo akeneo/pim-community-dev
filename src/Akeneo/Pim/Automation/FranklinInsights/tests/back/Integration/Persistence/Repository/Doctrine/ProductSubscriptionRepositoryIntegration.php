@@ -44,7 +44,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
             '
-            SELECT product_id, raw_subscription_id, raw_suggested_data, 
+            SELECT product_id, subscription_id, raw_suggested_data, 
             requested_upc, requested_asin, requested_mpn, requested_brand 
             from pimee_franklin_insights_subscription;
         '
@@ -55,7 +55,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $subscriptionData = $retrievedSubscriptions[0];
         $expectedValues = [
             'product_id' => $product->getId(),
-            'raw_subscription_id' => $subscriptionId,
+            'subscription_id' => $subscriptionId,
             'requested_upc' => '72527273070',
             'requested_asin' => 'B00005N5PF',
             'requested_mpn' => 'AS4561AD142',
@@ -180,7 +180,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
 
             Assert::assertCount(count($expectedIds), $pendingSubscriptions);
             foreach ($pendingSubscriptions as $pendingSubscription) {
-                Assert::assertContains($pendingSubscription->getSubscriptionId(), $expectedIds);
+                Assert::assertContains((string) $pendingSubscription->getSubscriptionId(), $expectedIds);
             }
         }
     }
@@ -342,7 +342,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     private function insertSubscription(int $productId, string $subscriptionId, array $suggestedData): void
     {
         $query = <<<SQL
-INSERT INTO pimee_franklin_insights_subscription (product_id, raw_subscription_id, raw_suggested_data, misses_mapping)
+INSERT INTO pimee_franklin_insights_subscription (product_id, subscription_id, raw_suggested_data, misses_mapping)
 VALUES (:productId, :subscriptionId, :suggestedData, true)
 SQL;
         $entityManager = $this->get('doctrine.orm.entity_manager');

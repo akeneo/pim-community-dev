@@ -82,10 +82,10 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
             $qb->expr()->isNotNull('subscription.rawSuggestedData')
         );
         if (null !== $searchAfter) {
-            $qb->andWhere('subscription.subscriptionId > :searchAfter')
+            $qb->andWhere('subscription.rawSubscriptionId > :searchAfter')
                ->setParameter('searchAfter', $searchAfter);
         }
-        $qb->addOrderBy('subscription.subscriptionId', 'ASC')
+        $qb->addOrderBy('subscription.rawSubscriptionId', 'ASC')
            ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
