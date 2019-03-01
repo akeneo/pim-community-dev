@@ -1,5 +1,7 @@
 # 2.0.x
 
+# 2.0.50 (2019-03-01)
+
 ## Improvements
 
 - PIM-8172: Better ES index configuration parameters.
