@@ -60,6 +60,7 @@ pimee_product_asset:
       error: Erreur
       success: Succès
     drag_and_drop: Glissez déposez vos ressources ou cliquez ici
+    tabsection_title: Ressources envoyées
   datagrid:
     mass_action:
       delete:

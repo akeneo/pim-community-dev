@@ -38,3 +38,4 @@ pim_datagrid:
   cells:
     type:
       project_calculation: Calcul du projet
+      refresh_project_completeness_calculation: Calcul du rafraîchissement de la complétude du projet

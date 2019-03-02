@@ -57,6 +57,7 @@ akeneo_franklin_insights:
           error: "Vous devez créer une famille dans votre catalogue pour accéder à cette page."
           family_status:
             pending: 'Nouveaux attributs de Franklin à réviser'
+            full: 'Tous les attributs Franklin sont mappés'
           types_mismatch_warning: 'Avertissement: les types d''attributs ne correspondent pas.'
       constraint:
         missing_target_key: 'Clé cible manquante pour le mapping'
@@ -93,6 +94,8 @@ akeneo_franklin_insights:
           no_identifier_filled: 'Identifiants du produit requis.'
           invalid_mapping: "Mappings d'identifiants requis."
     attribute_options_mapping:
+      constraint:
+        no_attribute_options_mapped: 'Les options d''attributs Franklin ne peuvent pas être mappés avec un mapping vide'
       fields:
         franklin_attribute_option: Option d'attribut Franklin
         catalog_attribute_option: Option d'attribut du catalogue
@@ -129,6 +132,9 @@ akeneo_franklin_insights:
     module:
       title:
         sub_title: 'Rencontrez Franklin, votre <span class="AknDescriptionHeader-title--highlight">assistant IA des informations produit</span> !'
+        description:
+          first_step: 'Afin de vous aider à enrichir votre catalogue, Franklin a besoin de connaître les identifiants de votre catalogue.'
+          second_step: 'Lorsque vous mappez vos identifiants, gardez à l''esprit que la Marque et le MPN vont ensemble. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html" class="AknDescriptionHeader-link" target="_blank">En savoir plus</a>'
       inactive_connection:
         title: 'Désolé, rien à afficher pour le moment'
         sub_title: 'Veuillez activer votre compte dans Système > Connexion Franklin puis revenez sur cette page.'
@@ -174,3 +180,4 @@ pim_enrich.entity.attribute:
   module:
     save:
       title: 'Attention !'
+      warning: '{1}Supprimer un attribut peut impacter 1 abonnement Franklin. Êtes vous sûr(e) ?|]1,+Inf[Supprimer un attribut peut impacter {{ count }} abonnements Franklin. Êtes vous sûr(e) ?'
