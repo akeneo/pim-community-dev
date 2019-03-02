@@ -137,6 +137,8 @@ pim_reference_entity:
         completeness:
           label: Complet
           all: TOUT
+          'yes': 'OUI'
+          'no': 'NON'
       column:
         code: Code
         image: Image
