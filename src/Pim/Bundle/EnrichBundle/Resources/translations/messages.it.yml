@@ -268,10 +268,8 @@ category:
   edit: Modifica categoria
   suggest selection: Scegli una categoria a sinistra
   or: o
-  create new: Crea nuova categoria
 tree:
   title: Struttura
-  create: Crea struttura
   edit: modifica struttura
 channel:
   title: canale
@@ -310,7 +308,6 @@ btn:
     attribute: Crea attributo
     attribute group: crea gruppo attributi
     category: Crea categoria
-    tree: Crea struttura
     channel: crea il canale
     currency: crea valuta
     family: Crea Famiglia

@@ -253,10 +253,8 @@ category:
   edit: カテゴリを編集
   suggest selection: 左側のカテゴリから選択してください
   or: または
-  create new: 新しいカテゴリを作成
 tree:
   title: ツリー
-  create: ツリーを作成
   edit: ツリーを編集
 channel:
   title: チャネル
@@ -295,7 +293,6 @@ btn:
     attribute: 属性を作成
     attribute group: 属性グループを作成
     category: カテゴリを作成
-    tree: ツリーを作成
     channel: チャンネルを作成
     currency: 通貨を作成
     family: ファミリーを作成
