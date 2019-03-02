@@ -243,10 +243,8 @@ category:
   edit: redigera kategori
   suggest selection: Vänligen välj en kategori till vänster
   or: eller
-  create new: Skapa ny kategori
 tree:
   title: träd
-  create: skapa träd
   edit: redigera träd
 channel:
   title: kanal
@@ -285,7 +283,6 @@ btn:
     attribute: skapa attribut
     attribute group: skapa attributgrupp
     category: skapa kategori
-    tree: skapa träd
     channel: skapa kanal
     currency: skapa valuta
     family: skapa familj

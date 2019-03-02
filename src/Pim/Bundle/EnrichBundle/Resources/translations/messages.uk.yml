@@ -268,10 +268,8 @@ category:
   edit: редагувати категорію
   suggest selection: Будь ласка, оберіть категорію ліворуч
   or: або
-  create new: Створіть нову категорію
 tree:
   title: дерево
-  create: створити дерево
   edit: редагувати дерево
 channel:
   title: канал
@@ -310,7 +308,6 @@ btn:
     attribute: створити атрибут
     attribute group: створити групу атрибутів
     category: створити категорію
-    tree: створити дерево
     channel: створити канал
     currency: створити валюту
     family: створити сімейство

@@ -239,10 +239,8 @@ category:
   edit: uredi kategoriju
   suggest selection: Molimo odaberi kategoriju na lijevoj strani
   or: ili
-  create new: Kreiraj novu kategoriju
 tree:
   title: stablo
-  create: kreiraj stablo
   edit: uredi stablo
 channel:
   title: kanal
@@ -281,7 +279,6 @@ btn:
     attribute: kreiraj atribut
     attribute group: kreiraj grupu atributa
     category: kreiraj kategoriju
-    tree: kreiraj stablo
     channel: kreiraj kanal
     currency: kreiraj valutu
     family: kreiraj obitelj
