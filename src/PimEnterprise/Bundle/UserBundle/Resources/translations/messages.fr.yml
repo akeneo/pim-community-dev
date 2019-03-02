@@ -1,4 +1,6 @@
 user:
+  email:
+    notifications: Être averti lorsque les ressources expirent
   proposals:
     notifications:
       to_review: Lors d'une nouvelle proposition à examiner
