@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8178: Fix Attribute search on family edit page
+
 # 3.0.5 (2019-02-25)
 
 ## Bug fixes
