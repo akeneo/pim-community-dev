@@ -11,24 +11,38 @@ define(
     [
         'jquery',
         'underscore',
-        'pim/product/add-select/attribute'
+        'pim/product/add-select/attribute',
+        'pim/fetcher-registry'
     ],
     function (
         $,
         _,
-        AddAttributeSelect
+        AddAttributeSelect,
+        FetcherRegistry
     ) {
         return AddAttributeSelect.extend({
+
+            /**
+             * Fetches items from the backend.
+             *
+             * @param {Object} searchParameters
+             *
+             * @return {Promise}
+             */
+            fetchItems: function (searchParameters) {
+                return this.getItemsToExclude()
+                    .then(function (familyCode) {
+                        searchParameters.options.exclude_identifiers_from_family = familyCode;
+
+                        return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters);
+                    }.bind(this));
+            },
+
             /**
              * {@inheritdoc}
              */
             getItemsToExclude: function () {
-                return $.Deferred().resolve(
-                    _.pluck(
-                        this.getFormData().attributes,
-                        'code'
-                    )
-                );
+                return $.Deferred().resolve(this.getFormData().code);
             },
 
             /**

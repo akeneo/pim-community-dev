@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -70,6 +69,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                 'is_locale_specific'     => null,
                 'useable_as_grid_filter' => null,
                 'families'               => null,
+                'exclude_identifiers_from_family' => null,
             ]
         );
         $resolver->setAllowedTypes('identifiers', 'array');
@@ -87,6 +87,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver->setAllowedTypes('is_locale_specific', ['bool', 'null']);
         $resolver->setAllowedTypes('useable_as_grid_filter', ['bool', 'null']);
         $resolver->setAllowedTypes('families', ['array', 'null']);
+        $resolver->setAllowedTypes('exclude_identifiers_from_family', ['string', 'null']);
 
         $options = $resolver->resolve($options);
 
@@ -110,7 +111,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
      * @param string $search
      * @param array  $options
      *
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
     protected function findBySearchQb($search, array $options)
     {
@@ -184,6 +185,12 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
             $qb->leftJoin('a.families', 'af');
             $qb->andWhere('af.code IN (:families)');
             $qb->setParameter('families', $options['families']);
+        }
+
+        if (null !== $options['exclude_identifiers_from_family']) {
+            $qb->leftJoin('a.families', 'xf');
+            $qb->andWhere('xf.code IS NULL OR xf.code <> :excluded_family');
+            $qb->setParameter('excluded_family', $options['exclude_identifiers_from_family']);
         }
 
         $qb->leftJoin('a.group', 'ag');
