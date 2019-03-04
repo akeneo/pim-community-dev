@@ -27,9 +27,6 @@ class ProductSubscription
     /** @var SubscriptionId */
     private $subscriptionId;
 
-    /** @var string */
-    private $rawSubscriptionId;
-
     /** @var SuggestedData */
     private $suggestedData;
 
@@ -65,7 +62,7 @@ class ProductSubscription
     public function __construct(int $productId, SubscriptionId $subscriptionId, array $productIdentifiers)
     {
         $this->productId = $productId;
-        $this->setSubscriptionId($subscriptionId);
+        $this->subscriptionId = $subscriptionId;
         $this->isMappingMissing = false;
         $this->isCancelled = false;
 
@@ -82,10 +79,6 @@ class ProductSubscription
 
     public function getSubscriptionId(): SubscriptionId
     {
-        if (null === $this->subscriptionId) {
-            $this->subscriptionId = new SubscriptionId($this->rawSubscriptionId);
-        }
-
         return $this->subscriptionId;
     }
 
@@ -167,12 +160,6 @@ class ProductSubscription
                 'mpn' => $this->requestedMpn,
             ]
         );
-    }
-
-    private function setSubscriptionId(SubscriptionId $subscriptionId): void
-    {
-        $this->subscriptionId = $subscriptionId;
-        $this->rawSubscriptionId = (string) $subscriptionId;
     }
 
     /**
