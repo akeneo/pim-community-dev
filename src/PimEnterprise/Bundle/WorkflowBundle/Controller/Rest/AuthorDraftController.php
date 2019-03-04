@@ -15,7 +15,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Query\DraftAuthors;
+use PimEnterprise\Component\Workflow\Query\DraftAuthors;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
