@@ -30,7 +30,15 @@ define(
                     .then(function (familyCode) {
                         searchParameters.options.exclude_identifiers_from_family = familyCode;
 
-                        return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters);
+                        return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters)
+                            .then(function (attributes) {
+                                const groupCodes = _.unique(_.pluck(attributes, 'group'));
+
+                                return FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(groupCodes)
+                                    .then(function (attributeGroups) {
+                                        return this.populateGroupProperties(attributes, attributeGroups);
+                                    }.bind(this));
+                            }.bind(this));
                     }.bind(this));
             },
 
@@ -45,7 +53,7 @@ define(
              * {@inheritdoc}
              */
             addItems: function () {
-                this.getRoot().trigger(this.addEvent, { codes: this.selection });
+                this.getRoot().trigger(this.addEvent, {codes: this.selection});
             },
 
             /**
