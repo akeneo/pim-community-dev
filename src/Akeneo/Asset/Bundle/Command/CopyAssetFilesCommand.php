@@ -11,7 +11,6 @@
 namespace Akeneo\Asset\Bundle\Command;
 
 use Akeneo\Asset\Component\Upload\UploadContext;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -45,7 +44,7 @@ class CopyAssetFilesCommand extends ContainerAwareCommand
             )
             ->addOption(
                 'user',
-                UserInterface::SYSTEM_USER_NAME,
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'Username to process'
             )

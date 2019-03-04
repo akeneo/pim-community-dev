@@ -11,8 +11,9 @@
 
 namespace Akeneo\Asset\Bundle\Command;
 
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
-use Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -124,7 +125,7 @@ class SendAlertNotificationsCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return UserRepositoryInterface
+     * @return AssetRepositoryInterface
      */
     protected function getAssetRepository()
     {
