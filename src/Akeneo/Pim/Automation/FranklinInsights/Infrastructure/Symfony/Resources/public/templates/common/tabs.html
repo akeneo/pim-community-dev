@@ -1,4 +1,4 @@
-<header class="AknHorizontalNavtab ">
+<header class="AknHorizontalNavtab<%- sticky ? ' AknHorizontalNavtab--sticky' : '' %>">
     <ul class="AknHorizontalNavtab-list nav nav-tabs form-tabs">
         <% tabs.forEach((tab, index) => { %>
             <% const active = index === selected %>
