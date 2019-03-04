@@ -17,8 +17,11 @@ Feature: Compare and copy from working copy
     And I change the Description to "Hiking tee"
     And I open the comparison panel
     And I switch the comparison locale to "en_US"
+    And I wait 1 seconds
     And I switch the comparison scope to "mobile"
+    And I wait 1 seconds
     And I switch the comparison source to "working_copy"
+    And I wait 1 seconds
     Then the Name comparison value should be ""
     And the Description comparison value should be "City tee"
     When I select all translations
