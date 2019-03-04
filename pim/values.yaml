@@ -28,6 +28,8 @@ common:
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "60"
+  - name: "PHP_CONF_MAX_INPUT_VARS"
+    value: "1000"
   - name: "PHP_CONF_UPLOAD_LIMIT"
     value: "512M"
   - name: "PHP_CONF_MAX_POST_SIZE"
@@ -44,6 +46,8 @@ common:
   phpConfCLI:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "0"
+  - name: "PHP_CONF_MAX_INPUT_VARS"
+    value: "1000"
   - name: "PHP_CONF_UPLOAD_LIMIT"
     value: "512M"
   - name: "PHP_CONF_MAX_POST_SIZE"
