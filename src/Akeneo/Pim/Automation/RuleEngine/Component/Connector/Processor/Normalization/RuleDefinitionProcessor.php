@@ -47,6 +47,24 @@ class RuleDefinitionProcessor implements ItemProcessorInterface, StepExecutionAw
         unset($normalizedRule['code']);
         unset($normalizedRule['type']);
 
+        if (isset($normalizedRule['conditions'])) {
+            $sortedConditions = [];
+            foreach ($normalizedRule['conditions'] as $condition) {
+                ksort($condition);
+                $sortedConditions[] = $condition;
+            }
+            $normalizedRule['conditions'] = $sortedConditions;
+        }
+
+        if (isset($normalizedRule['actions'])) {
+            $sortedActions = [];
+            foreach ($normalizedRule['actions'] as $action) {
+                ksort($action);
+                $sortedActions[] = $action;
+            }
+            $normalizedRule['actions'] = $sortedActions;
+        }
+
         $rule[$item->getCode()] = $normalizedRule;
 
         return $rule;

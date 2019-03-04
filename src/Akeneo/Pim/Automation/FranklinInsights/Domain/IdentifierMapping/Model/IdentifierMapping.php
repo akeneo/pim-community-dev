@@ -18,7 +18,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 /**
  * Identifier Mapping doctrine entity.
  */
-final class IdentifierMapping
+class IdentifierMapping
 {
     /** @var int|null */
     private $id;
@@ -40,7 +40,7 @@ final class IdentifierMapping
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFranklinCode(): string
     {
@@ -48,7 +48,7 @@ final class IdentifierMapping
     }
 
     /**
-     * @return mixed
+     * @return AttributeInterface|null
      */
     public function getAttribute(): ?AttributeInterface
     {

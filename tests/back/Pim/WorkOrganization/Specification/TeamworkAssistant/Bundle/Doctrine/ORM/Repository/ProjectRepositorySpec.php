@@ -5,16 +5,16 @@ namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doc
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\ProjectRepository;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\Project;
 
 class ProjectRepositorySpec extends ObjectBehavior
 {
-    function let(ClassMetadata $classMetadata)
+    function let(EntityManagerInterface $objectManager, ClassMetadata $classMetadata)
     {
-        $this->beConstructedWith(Project::class, $classMetadata);
+        $this->beConstructedWith($objectManager, $classMetadata);
     }
 
     function it_is_initializable()
