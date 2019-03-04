@@ -23,11 +23,7 @@ define(
         return AddAttributeSelect.extend({
 
             /**
-             * Fetches items from the backend.
-             *
-             * @param {Object} searchParameters
-             *
-             * @return {Promise}
+             * {@inheritdoc}
              */
             fetchItems: function (searchParameters) {
                 return this.getItemsToExclude()
