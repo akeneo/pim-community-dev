@@ -516,7 +516,7 @@ To support our new search usecases, we need to update the index with the "links"
         ],
     ]
 
-**When a record is removed**, we need to refresh all the records refencing the removed record.
+**When a record is removed**, we need to refresh all the records referencing the removed record.
 
     // 'brand_kartell' record has been removed, let's find all the record linked to it to refresh them
     [
@@ -583,6 +583,12 @@ To support our new search usecases, we need to update the index with the "links"
             ],
         ],
     ]
+    
+##### Results
+
+| Batch Size                | Refresh 10 000 records    | Refresh 1 000 000 records  |
+|---------------------------|---------------------------|---------------------------|
+| 100 Records               | 35.87 s                   | ~1 hour                    | 
 
 
 ## 07/01/19
