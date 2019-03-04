@@ -319,3 +319,35 @@ export default connect(
     };
   }
 )(Records);
+
+interface RecordLabelProps {
+  grid: {
+    totalCount: number;
+  };
+}
+
+class RecordLabel extends React.Component<RecordLabelProps> {
+  render() {
+    const {grid} = this.props;
+
+    return (
+      <React.Fragment>
+        {__('pim_reference_entity.reference_entity.tab.records')}
+        <span className="AknColumn-span">({grid.totalCount})</span>
+      </React.Fragment>
+    );
+  }
+}
+
+export const label =  connect(
+  (state: EditState): RecordLabelProps => {
+    return {
+      grid: {
+        totalCount: state.grid.totalCount,
+      },
+    };
+  },
+  () => {
+    return {};
+  }
+)(RecordLabel);

@@ -1,12 +1,8 @@
-import * as React from 'react';
-
-export interface SidebarLabel {
-  default: React.SFC;
-}
+import {SidebarLabel} from "akeneoreferenceentity/application/component/app/sidebar";
 
 export interface Tab {
   code: string;
-  label: string | SidebarLabel;
+  label: SidebarLabel;
 }
 
 export interface SidebarState {
