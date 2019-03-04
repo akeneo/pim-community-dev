@@ -58,7 +58,8 @@ define(
                             FetcherRegistry
                                 .getFetcher('contributor')
                                 .search(searchParameters).then(function (contributors) {
-                                    var choices = this.arrayToSelect2Format(contributors);
+                                    var choices = this.arrayToSelect2Format(contributors)
+                                        .map(choice => this.updateCurrentUsername(choice));
 
                                     if (1 === page && '' === searchParameters.search) {
                                         choices.unshift({
@@ -84,6 +85,7 @@ define(
 
                         if (this.getFormModel().has('currentContributor')) {
                             choice = this.toSelect2Format(this.getFormData().currentContributor);
+                            choice = this.updateCurrentUsername(choice);
                         }
 
                         callback(choice);
@@ -163,6 +165,21 @@ define(
                     text: contributor.first_name + ' ' + contributor.last_name,
                     id: contributor.meta.id
                 };
+            },
+
+            /**
+             * Update the choice text with the current user context to display '(You)'.
+             * 
+             * @param {{id: string, text: string}} choice
+             * 
+             * @return {{id: string, text: string}}
+             */
+            updateCurrentUsername: function (choice) {
+                if (choice.id === UserContext.get('meta').id) {
+                    choice.text += ` (${__('teamwork_assistant.widget.you')})`;
+                }
+
+                return choice;
             },
 
             /**
