@@ -212,7 +212,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
 
         // TODO: The family code should be retrieve from a FranklinInsights product read model
         $familyCode = new FamilyCode($product->getFamily()->getCode());
-        $family =  $this->familyRepository->findOneByIdentifier($familyCode);
+        $family = $this->familyRepository->findOneByIdentifier($familyCode);
         $familyInfos = $normalizer->normalize($family);
 
         return new Request($mapped, $product->getId(), $familyInfos);
@@ -237,7 +237,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
 
         return new ProductSubscriptionResponse(
             $subscription->getTrackerId(),
-            $subscription->getSubscriptionId(),
+            new SubscriptionId($subscription->getSubscriptionId()),
             $suggestedValues,
             $subscription->isMappingMissing(),
             $subscription->isCancelled()

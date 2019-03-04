@@ -3,5 +3,5 @@ Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\Subscript
     fields:
         subscriptionId:
             type: string
+            column: subscription_id
             nullable: false
-            name: subscription_id

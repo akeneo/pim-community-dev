@@ -105,12 +105,12 @@ class SubscriptionWriterSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($productSubscribed) {
             return $productSubscribed instanceof ProductSubscribed &&
-                '123-465-789' === $productSubscribed->getProductSubscription()->getSubscriptionId();
+                '123-465-789' === (string) $productSubscribed->getProductSubscription()->getSubscriptionId();
         }))->shouldBeCalled();
 
         $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($productSubscribed) {
             return $productSubscribed instanceof ProductSubscribed &&
-                'abc-def-987' === $productSubscribed->getProductSubscription()->getSubscriptionId();
+                'abc-def-987' === (string) $productSubscribed->getProductSubscription()->getSubscriptionId();
         }))->shouldBeCalled();
 
         $this->write($items)->shouldReturn(null);
@@ -159,7 +159,7 @@ class SubscriptionWriterSpec extends ObjectBehavior
         $productSubscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalledTimes(1);
         $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($productSubscribed) {
             return $productSubscribed instanceof ProductSubscribed &&
-                'abc-def-987' === $productSubscribed->getProductSubscription()->getSubscriptionId();
+                'abc-def-987' === (string) $productSubscribed->getProductSubscription()->getSubscriptionId();
         }))->shouldBeCalled();
 
         $this->write($items)->shouldReturn(null);
