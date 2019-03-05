@@ -53,7 +53,7 @@ class FilterProductValuesHelper
 
         foreach ($values as $value) {
             $attributeCode = $value->getAttributeCode();
-            $attribute = $this->findOneByIdentifier($attributeCode);
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             if (null !== $locale && $attribute->isLocalizable() && $value->getLocaleCode() !== $locale) {
                 continue;

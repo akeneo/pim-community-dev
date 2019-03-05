@@ -8,7 +8,7 @@
  */
 
 import * as _ from 'underscore';
-import AttributeMapping = require('./table');
+import FamilySelectorAndStatus = require('./family-selector-and-status');
 
 const BaseSelect = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -78,13 +78,13 @@ class FamilySelector extends BaseSelect {
   public convertBackendItem(item: { status: number }) {
     const result = BaseSelect.prototype.convertBackendItem.apply(this, arguments);
     switch (item.status) {
-      case AttributeMapping.FAMILY_MAPPING_FULL:
+      case FamilySelectorAndStatus.FAMILY_MAPPING_FULL:
         result.className = 'select2-result-label-attribute select2-result-label-attribute--full';
         break;
-      case AttributeMapping.FAMILY_MAPPING_PENDING:
+      case FamilySelectorAndStatus.FAMILY_MAPPING_PENDING:
         result.className = 'select2-result-label-attribute select2-result-label-attribute--pending';
         break;
-      case AttributeMapping.FAMILY_MAPPING_EMPTY:
+      case FamilySelectorAndStatus.FAMILY_MAPPING_EMPTY:
       default:
         result.className = '';
     }

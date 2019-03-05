@@ -277,7 +277,9 @@ class Edit extends React.Component<EditProps> {
                   <Trash color="#D4604F" className="AknButton-animatedIcon" />
                   {__('pim_reference_entity.attribute.edit.delete')}
                 </span>
-              ) : <span style={{flex: 1}}></span>}
+              ) : (
+                <span style={{flex: 1}} />
+              )}
               <span
                 title={__('pim_reference_entity.attribute.edit.cancel')}
                 className="AknButton AknButton--small AknButton--grey AknButton--spaced"

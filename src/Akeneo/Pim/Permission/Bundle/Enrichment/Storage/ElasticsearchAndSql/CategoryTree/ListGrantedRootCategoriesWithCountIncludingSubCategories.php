@@ -63,8 +63,6 @@ class ListGrantedRootCategoriesWithCountIncludingSubCategories implements Query\
      */
     private function getRootCategories(int $userId, string $translationLocaleCode): array
     {
-        $this->connection->exec('SET SESSION group_concat_max_len = 1000000');
-
         $sql = <<<SQL
             SELECT
                 root.id as root_id,
@@ -73,29 +71,37 @@ class ListGrantedRootCategoriesWithCountIncludingSubCategories implements Query\
                 COALESCE(ct.label, CONCAT('[', root.code, ']')) as label
             FROM 
                 pim_catalog_category AS root
-                JOIN pimee_security_product_category_access ca on ca.category_id = root.id
-                JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id  
                 LEFT JOIN pim_catalog_category_translation ct ON ct.foreign_key = root.id AND ct.locale = :locale
                 LEFT JOIN
                 (
                     SELECT 
                         child.root as root_id,
-                        GROUP_CONCAT(child.code) as children_codes
+                        JSON_ARRAYAGG(child.code) as children_codes
                     FROM 
                         pim_catalog_category child
-                        JOIN pimee_security_product_category_access ca ON ca.category_id = child.id
-                        JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id
                     WHERE 
                         child.parent_id IS NOT NULL
-                        AND ag.user_id = :user_id_1
-                        AND ca.view_items = 1
+                       AND EXISTS (
+                            SELECT * FROM pimee_security_product_category_access ca
+                            JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id
+                            WHERE
+                                ca.category_id = child.id
+                                AND ca.view_items = 1
+                                AND ag.user_id = :user_id_1
+                        ) 
                     GROUP BY 
                         child.root
                 ) AS child ON root.id = child.root_id
             WHERE 
                 root.parent_id IS NULL
-                AND ag.user_id = :user_id_2
-                AND ca.view_items = 1
+                AND EXISTS (
+                    SELECT * FROM pimee_security_product_category_access ca
+                    JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id
+                    WHERE
+                        ca.category_id = root.id
+                        AND ca.view_items = 1
+                        AND ag.user_id = :user_id_2
+                ) 
             ORDER BY 
                 label, root.code
 SQL;
@@ -111,9 +117,8 @@ SQL;
 
         $categories = [];
         foreach ($rows as $row) {
-            $childrenCategoriesCodes = null !== $row['children_codes'] ? explode(',', $row['children_codes']) : [];
-            $row['children_codes'] = $childrenCategoriesCodes;
-
+            $row['children_codes'] = null !== $row['children_codes'] ? json_decode($row['children_codes'], true) : [];
+            ;
             $categories[] = $row;
         }
 

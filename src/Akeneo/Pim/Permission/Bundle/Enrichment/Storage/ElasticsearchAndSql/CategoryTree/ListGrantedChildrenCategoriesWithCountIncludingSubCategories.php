@@ -143,18 +143,26 @@ class ListGrantedChildrenCategoriesWithCountIncludingSubCategories implements Qu
                 COALESCE(ct.label, CONCAT('[', child.code, ']')) as label
             FROM 
                 pim_catalog_category child 
-                JOIN pimee_security_product_category_access ca ON ca.category_id = child.id 
-                JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id
                 JOIN pim_catalog_category subchild ON subchild.lft >= child.lft AND subchild.lft < child.rgt AND subchild.root = child.root
-                JOIN pimee_security_product_category_access ca_subchild ON ca_subchild.category_id = subchild.id
-                JOIN oro_user_access_group ag_subchild ON ag_subchild.group_id = ca_subchild.user_group_id
                 LEFT JOIN pim_catalog_category_translation ct ON ct.foreign_key = child.id AND ct.locale = :locale
             WHERE 
                 child.parent_id = :parent_category_id
-                AND ag.user_id = :user_id
-                AND ag_subchild.user_id = ag.user_id
-                AND ca.view_items = 1
-                AND ca_subchild.view_items = 1
+                AND EXISTS (
+                    SELECT * FROM pimee_security_product_category_access ca
+                    JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id
+                    WHERE
+                        ca.category_id = child.id
+                        AND ca.view_items = 1
+                        AND ag.user_id = :user_id
+                )
+                AND EXISTS (
+                    SELECT * FROM pimee_security_product_category_access ca
+                    JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id
+                    WHERE
+                        ca.category_id = subchild.id
+                        AND ca.view_items = 1
+                        AND ag.user_id = :user_id
+                )
             GROUP BY 
                 child.id,
                 label

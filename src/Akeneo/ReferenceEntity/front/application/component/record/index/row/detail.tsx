@@ -47,9 +47,7 @@ const DetailRow = memo(
           return false;
         }}
       >
-        {0 === columns.length ? (
-          <td className="AknGrid-bodyCell"></td>
-        ) : null}
+        {0 === columns.length ? <td className="AknGrid-bodyCell" /> : null}
 
         {columns.map((column: Column) => {
           const CellView = cellViews[column.key];

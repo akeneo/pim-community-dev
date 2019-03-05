@@ -58,6 +58,7 @@ extensions:
                 - { label: akeneo_franklin_insights.entity.identifier_mapping.plural_label, route: akeneo_franklin_insights_identifiers_mapping_edit }
                 - { label: pim_enrich.entity.attribute.plural_label, route: akeneo_franklin_insights_attributes_mapping_index }
             selected: 1
+            sticky: true
 
     akeneo-franklin-insights-settings-attributes-mapping-index-tab-content:
         module: pim/common/simple-view
@@ -65,15 +66,23 @@ extensions:
         config:
             template: akeneo/franklin-insights/template/settings/attributes-mapping/family-mapping
 
+    akeneo-franklin-insights-settings-attributes-mapping-index-attribute-family-selector-and-status:
+        module: akeneo/franklin-insights/view/settings/attributes-mapping/family-selector-and-status
+        parent: akeneo-franklin-insights-settings-attributes-mapping-index-tab-content
+        targetZone: family-selector-and-status
+        config:
+            labels:
+                familyMappingPending: akeneo_franklin_insights.entity.attributes_mapping.module.index.family_status.pending
+                familyMappingFull: akeneo_franklin_insights.entity.attributes_mapping.module.index.family_status.full
+
     akeneo-franklin-insights-settings-attributes-mapping-index-attribute-family-selector:
         module: akeneo/franklin-insights/view/settings/attributes-mapping/family-selector
-        parent: akeneo-franklin-insights-settings-attributes-mapping-index-tab-content
-        position: 10
+        parent: akeneo-franklin-insights-settings-attributes-mapping-index-attribute-family-selector-and-status
         targetZone: family-selector
         config:
             fieldName: code
             label: pim_enrich.entity.family.uppercase_label
-            choiceRoute: akeneo_sugggest_data_attributes_mapping_list
+            choiceRoute: akeneo_franklin_insights_attributes_mapping_list
 
     akeneo-franklin-insights-settings-attributes-mapping-index-attribute-attributes-mapping:
         module: akeneo/franklin-insights/view/settings/attributes-mapping/table
@@ -90,8 +99,6 @@ extensions:
                 attributeMappingStatus: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.label
                 valuesSummary: akeneo_franklin_insights.entity.attributes_mapping.fields.values_summary
                 type: pim_common.type
-                familyMappingPending: akeneo_franklin_insights.entity.attributes_mapping.module.index.family_status.pending
-                familyMappingFull: akeneo_franklin_insights.entity.attributes_mapping.module.index.family_status.full
 
     akeneo-franklin-insights-settings-attributes-mapping-index-front-search-filter:
         module: akeneo/franklin-insights/view/common/front-search-filter

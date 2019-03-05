@@ -5,7 +5,7 @@ class SibebarMissConfigurationError extends Error {}
 
 interface TabConfiguration {
   [code: string]: {
-    label: string;
+    label: string | { label: typeof React.Component};
     view: {default: typeof React.Component};
   };
 }
@@ -48,7 +48,26 @@ Actual conf: ${JSON.stringify(this.configuration)}`
     }
 
     return Object.keys(this.configuration[sidebarIdentifier].tabs).map((code: string) => {
-      return {code, label: this.configuration[sidebarIdentifier].tabs[code].label};
+      const tabConf = this.configuration[sidebarIdentifier].tabs[code];
+      if ('string' === typeof tabConf.label) {
+        return {code, label: tabConf.label};
+      }
+
+      if (undefined === tabConf.label.label) {
+        const confPath = `
+config:
+    config:
+        akeneoreferenceentity/application/configuration/sidebar:
+            ${sidebarIdentifier}:
+                tabs:
+                    tab-code:
+                        label: '@your_view_path_here'`;
+        throw new SibebarMissConfigurationError(
+          `The Component loaded to display the label needs to export the label property from the configuration ${confPath}`
+        );
+      }
+
+      return {code, label: tabConf.label.label};
     });
   }
 

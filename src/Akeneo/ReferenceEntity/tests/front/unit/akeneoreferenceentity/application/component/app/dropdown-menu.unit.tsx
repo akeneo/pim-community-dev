@@ -195,12 +195,7 @@ describe('>>>COMPONENT --- dropdown menu', () => {
 
   test("Doesn't display anything if no elements passed", () => {
     const dropdown = mount(
-      <DropdownMenu
-        elements={[]}
-        label={'my dropdown menu'}
-        onSelectionChange={() => {}}
-        selectedElement={'tab'}
-      />
+      <DropdownMenu elements={[]} label={'my dropdown menu'} onSelectionChange={() => {}} selectedElement={'tab'} />
     );
 
     expect(dropdown.find('.AknSecondaryActions-button').length).toEqual(1);
@@ -251,7 +246,7 @@ describe('>>>COMPONENT --- dropdown menu', () => {
         label={'my dropdown menu'}
         onSelectionChange={() => {}}
         selectedElement={'tab'}
-        className={"myCustomClass"}
+        className={'myCustomClass'}
       />
     );
 
