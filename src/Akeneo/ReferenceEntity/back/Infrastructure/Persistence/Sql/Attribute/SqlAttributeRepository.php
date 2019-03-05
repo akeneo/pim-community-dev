@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\AttributeOptionsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\BeforeAttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
@@ -115,6 +116,18 @@ SQL;
     public function update(AbstractAttribute $attribute): void
     {
         $normalizedAttribute = $attribute->normalize();
+        if ('option_collection' === $normalizedAttribute['type']) {
+            $attributeFromDatabase = $this->getByIdentifier(AttributeIdentifier::fromString($normalizedAttribute['identifier']));
+            $normalizedAttributeFromDatabase = $attributeFromDatabase->normalize();
+
+            if (count($normalizedAttribute['options']) < count($normalizedAttributeFromDatabase['options'])) {
+                $this->eventDispatcher->dispatch(
+                    AttributeOptionsDeletedEvent::class,
+                    new AttributeOptionsDeletedEvent($normalizedAttribute['reference_entity_identifier'], $normalizedAttribute['identifier'])
+                );
+            }
+        }
+
         $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
         $update = <<<SQL
         UPDATE akeneo_reference_entity_attribute SET
