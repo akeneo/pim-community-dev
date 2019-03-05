@@ -16,7 +16,7 @@ final class CertificateMetadata
     {
         $x509 = (new X509())->loadX509($certificate);
 
-        if(false === $x509)  {
+        if (false === $x509) {
             throw new \InvalidArgumentException('The certificate is not valid.');
         }
 
