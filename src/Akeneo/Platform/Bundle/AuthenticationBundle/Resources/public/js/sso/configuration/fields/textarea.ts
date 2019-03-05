@@ -7,7 +7,7 @@ class Textarea extends BaseTextarea {
   readonly template = _.template(template);
 
   isReadOnly() {
-    return !this.getFormData().is_enabled;
+    return !this.getFormData().configuration.is_enabled;
   }
 }
 

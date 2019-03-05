@@ -18,6 +18,8 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repos
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProvider;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProviderDefaultConfiguration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Url;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,13 +31,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ControllerSpec extends ObjectBehavior
 {
+    const CERTIFICATE = 'MIIDYDCCAkigAwIBAgIJAOGDWOB07tCyMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTgwOTE0MDkzMDEzWhcNMjgwOTEzMDkzMDEzWjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4J5iDNmrQLn4NHVvjTR0Z+xqmW6mYWFP/MxI4D4urwv6J0CLZppxfcSXLYogxrC5U+JxlF7jv9CM6Dpvkc4xBFyCNVIKAwBh/W+fL85m48Fd7Nh1VW+fK8ZBDUKFfuRxK+H/0shU96z2onVB6uYiNxF0+26MwZwjecLIh6st+pEKzd2aUNgB9RYPJWqdxw8R5mZH2EfzjTDKyomAeENcVW6zK9kQP6YNC7T8mYaUus4jhAcC/jV8Iqy7Oc1h+tEQV3rqFLLKezuNZWufoOrzaPoKMOkXgasxtadM1wU9InIpiO6pWPCwNc6TLpmZCcry6yIoveMx5fzMGjgxmmmUrwIDAQABo1MwUTAdBgNVHQ4EFgQUitGGamyDFTInis6Umd+Wc+NoFoMwHwYDVR0jBBgwFoAUitGGamyDFTInis6Umd+Wc+NoFoMwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEA05pnfsR6Atm9Wx+fdaFG7DVnrQjLDXRCXqkRJ09ygrpJlIF6YBPXcYA0kidoVlBbkZhWzz1ht5i1BYKzKdWzB2BQZLUnkaM8UotKFjdHu7/7vnM7w/n3S5zx3gtoCMSegp9vk6H2wjsPYfR0mVJOYcFzRY48bdQLV6nJRU3gV+ZikM/u92xArcaTCS6l4YEBCqJWtvlVojc6nwwv262t6NJ8NHRHqV98aoNMO4ltjFIkXa0xtNqYo7pI01kkTlPrignb4djZjCpdwu/lZJTy4FAra4lTdu2j4nn8QxNKDoBIrsNx6b+C767Mtf1f3JSRMAvt/IE4Wjp5IIAeLsTHSA==';
+
     function let(
         ValidatorInterface $validator,
         NormalizerInterface $normalizer,
         CreateOrUpdateConfigurationHandler $createOrUpdateConfigHandler,
         Repository $repository,
         ServiceProviderDefaultConfiguration $serviceProviderDefaultConfiguration,
-        CreateArchive $createArchive
+        CreateArchive $createArchive,
+        PresenterInterface $datePresenter,
+        UserContext $userContext
     ) {
         $this->beConstructedWith(
             $validator,
@@ -44,8 +50,21 @@ class ControllerSpec extends ObjectBehavior
             $repository,
             $serviceProviderDefaultConfiguration,
             $createArchive,
+            $datePresenter,
+            $userContext,
             'http://my.akeneopim.com'
         );
+
+        $userContext->getUiLocaleCode()->willReturn('en_US');
+        $userContext->getUserTimezone()->willReturn('UTC');
+
+        $datePresenter->present(
+            new \DateTime('2028-09-13 09:30:13.000000'),
+            [
+                'locale'   => 'en_US',
+                'timezone' => 'UTC',
+            ]
+        )->willReturn('09/13/2028');
     }
 
     function it_saves_configuration($validator, $createOrUpdateConfigHandler)
@@ -56,9 +75,9 @@ class ControllerSpec extends ObjectBehavior
                 'identity_provider_entity_id'   => 'https://idp.jambon.com',
                 'identity_provider_sign_on_url' => 'https://idp.jambon.com/signon',
                 'identity_provider_logout_url'  => 'https://idp.jambon.com/logout',
-                'identity_provider_certificate' => 'certificate',
+                'identity_provider_certificate' => self::CERTIFICATE,
                 'service_provider_entity_id'    => 'https://sp.jambon.com',
-                'service_provider_certificate'  => 'certificate',
+                'service_provider_certificate'  => self::CERTIFICATE,
                 'service_provider_private_key'  => 'private_key',
             ]
         );
@@ -71,13 +90,15 @@ class ControllerSpec extends ObjectBehavior
 
         $createOrUpdateConfigHandler->handle(Argument::type(CreateOrUpdateConfiguration::class))->shouldBeCalled();
 
-        $response = $this->saveAction($request);
         $expectedResponse = new JsonResponse();
 
-        $response->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
-        $expectedResponse->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
+        $now = new \DateTime();
+        $expectedResponse->setDate($now);
 
-        $response->shouldBeLike($expectedResponse);
+        $actualResponse = $this->saveAction($request);
+        $actualResponse->setDate($now);
+
+        $actualResponse->shouldBeLike($expectedResponse);
     }
 
     function it_returns_normalized_errors_if_configuration_is_invalid(
@@ -91,9 +112,9 @@ class ControllerSpec extends ObjectBehavior
                 'identity_provider_entity_id'   => '',
                 'identity_provider_sign_on_url' => 'https://idp.jambon.com/signon',
                 'identity_provider_logout_url'  => 'https://idp.jambon.com/logout',
-                'identity_provider_certificate' => 'certificate',
+                'identity_provider_certificate' => self::CERTIFICATE,
                 'service_provider_entity_id'    => 'https://sp.jambon.com',
-                'service_provider_certificate'  => 'certificate',
+                'service_provider_certificate'  => self::CERTIFICATE,
                 'service_provider_private_key'  => 'private_key',
             ]
         );
@@ -106,9 +127,9 @@ class ControllerSpec extends ObjectBehavior
             '',
             'https://idp.jambon.com/signon',
             'https://idp.jambon.com/logout',
-            'certificate',
+            self::CERTIFICATE,
             'https://sp.jambon.com',
-            'certificate',
+            self::CERTIFICATE,
             'private_key'
         );
 
@@ -141,14 +162,15 @@ class ControllerSpec extends ObjectBehavior
 
         $createOrUpdateConfigHandler->handle(Argument::cetera())->shouldNotBeCalled();
 
-        $response = $this->saveAction($request);
         $expectedResponse = new JsonResponse($normalizedErrors, 400);
 
-        $response->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
-        $expectedResponse->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
+        $now = new \DateTime();
+        $expectedResponse->setDate($now);
 
+        $actualResponse = $this->saveAction($request);
+        $actualResponse->setDate($now);
 
-        $response->shouldBeLike($expectedResponse);
+        $actualResponse->shouldBeLike($expectedResponse);
     }
 
     function it_gives_an_existing_configuration($repository)
@@ -160,40 +182,43 @@ class ControllerSpec extends ObjectBehavior
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/signon'),
                 new Url('https://idp.jambon.com/logout'),
-                new Certificate('certificate')
+                new Certificate(self::CERTIFICATE)
             ),
             new ServiceProvider(
                 new EntityId('https://sp.jambon.com'),
-                new Certificate('certificate'),
+                new Certificate(self::CERTIFICATE),
                 new Certificate('private_key')
             )
         );
 
         $repository->find('authentication_sso')->willReturn($config);
 
-        $normalizedConfig = [
-            'is_enabled'                    => true,
-            'identity_provider_entity_id'   => 'https://idp.jambon.com',
-            'identity_provider_sign_on_url' => 'https://idp.jambon.com/signon',
-            'identity_provider_logout_url'  => 'https://idp.jambon.com/logout',
-            'identity_provider_certificate' => 'certificate',
-            'service_provider_entity_id'    => 'https://sp.jambon.com',
-            'service_provider_certificate'  => 'certificate',
-            'service_provider_private_key'  => 'private_key',
-        ];
+        $expectedResponse = new JsonResponse([
+            'configuration' => [
+                'is_enabled'                    => true,
+                'identity_provider_entity_id'   => 'https://idp.jambon.com',
+                'identity_provider_sign_on_url' => 'https://idp.jambon.com/signon',
+                'identity_provider_logout_url'  => 'https://idp.jambon.com/logout',
+                'identity_provider_certificate' => self::CERTIFICATE,
+                'service_provider_entity_id'    => 'https://sp.jambon.com',
+                'service_provider_certificate'  => self::CERTIFICATE,
+                'service_provider_private_key'  => 'private_key',
+            ],
+            'meta' => [
+                'service_provider_certificate_expiration_date' => '09/13/2028',
+                'service_provider_certificate_expires_soon'    => false,
+                'service_provider_metadata_url'                => 'http://my.akeneopim.com/saml/metadata',
+                'service_provider_acs_url'                     => 'http://my.akeneopim.com/saml/acs',
+            ],
+        ]);
 
-        $staticConfiguration = [
-            'service_provider_metadata_url' => 'http://my.akeneopim.com/saml/metadata',
-            'service_provider_acs_url' => 'http://my.akeneopim.com/saml/acs'
-        ];
+        $now = new \DateTime();
+        $expectedResponse->setDate($now);
 
-        $response = $this->getAction();
-        $expectedResponse = new JsonResponse($normalizedConfig + $staticConfiguration);
+        $actualResponse = $this->getAction();
+        $actualResponse->setDate($now);
 
-        $response->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
-        $expectedResponse->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
-
-        $response->shouldBeLike($expectedResponse);
+        $actualResponse->shouldBeLike($expectedResponse);
     }
 
     function it_gives_a_default_configuration($repository, $serviceProviderDefaultConfiguration)
@@ -202,35 +227,37 @@ class ControllerSpec extends ObjectBehavior
 
         $serviceProviderConfiguration = new ServiceProvider(
             new EntityId('https://sp.jambon.com/saml/metadata'),
-            new Certificate('default_certificate'),
+            new Certificate(self::CERTIFICATE),
             new Certificate('default_private_key')
         );
 
         $serviceProviderDefaultConfiguration->getServiceProvider()->willReturn($serviceProviderConfiguration);
 
-        $defaultConfig = [
-            'is_enabled'                    => false,
-            'identity_provider_entity_id'   => '',
-            'identity_provider_sign_on_url' => '',
-            'identity_provider_logout_url'  => '',
-            'identity_provider_certificate' => '',
-            'service_provider_entity_id'    => 'https://sp.jambon.com/saml/metadata',
-            'service_provider_certificate'  => 'default_certificate',
-            'service_provider_private_key'  => 'default_private_key',
-        ];
+        $expectedResponse = new JsonResponse([
+            'configuration' => [
+                'is_enabled'                    => false,
+                'identity_provider_entity_id'   => '',
+                'identity_provider_sign_on_url' => '',
+                'identity_provider_logout_url'  => '',
+                'identity_provider_certificate' => '',
+                'service_provider_entity_id'    => 'https://sp.jambon.com/saml/metadata',
+                'service_provider_certificate'  => self::CERTIFICATE,
+                'service_provider_private_key'  => 'default_private_key',
+            ],
+            'meta' => [
+                'service_provider_certificate_expiration_date' => '09/13/2028',
+                'service_provider_certificate_expires_soon'    => false,
+                'service_provider_metadata_url'                => 'http://my.akeneopim.com/saml/metadata',
+                'service_provider_acs_url'                     => 'http://my.akeneopim.com/saml/acs',
+            ],
+        ]);
 
-        $staticConfiguration = [
-            'service_provider_metadata_url' => 'http://my.akeneopim.com/saml/metadata',
-            'service_provider_acs_url' => 'http://my.akeneopim.com/saml/acs'
-        ];
+        $now = new \DateTime();
+        $expectedResponse->setDate($now);
 
-        $response = $this->getAction();
-        $expectedResponse = new JsonResponse($defaultConfig + $staticConfiguration);
+        $actualResponse = $this->getAction();
+        $actualResponse->setDate($now);
 
-        $response->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
-        $expectedResponse->headers->set('Date', 'Mon, 21 Jan 2019 13:11:36 GMT');
-
-
-        $response->shouldBeLike($expectedResponse);
+        $actualResponse->shouldBeLike($expectedResponse);
     }
 }
