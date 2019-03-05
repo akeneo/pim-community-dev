@@ -1,7 +1,6 @@
 DOCKER_COMPOSE = docker-compose
 YARN_EXEC = $(DOCKER_COMPOSE) run --rm node yarn
-DEBUG_PHP_RUN = $(DOCKER_COMPOSE) run --rm -e PHP_XDEBUG_ENABLED=1 fpm php
-PHP_RUN = $(DOCKER_COMPOSE) run -u docker --rm -e PHP_XDEBUG_ENABLED=0 fpm php
+PHP_RUN = $(DOCKER_COMPOSE) run -u docker --rm fpm php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u docker fpm php
 
 .DEFAULT_GOAL := help
@@ -13,7 +12,6 @@ help:
 	@echo ""
 	@echo "Please add your custom Makefile in the directory "make-file". They will be automatically loaded!"
 	@echo ""
-
 
 ## Include all *.mk files
 include make-file/*.mk
@@ -112,7 +110,7 @@ install-pim: app/config/parameters.yml app/config/parameters_test.yml vendor nod
 ## Start docker containers
 .PHONY: up
 up: .env docker-compose.override.yml app/config/parameters.yml app/config/parameters_test.yml
-	PHP_XDEBUG_ENABLED=0 $(DOCKER_COMPOSE) up -d --remove-orphan
+	$(DOCKER_COMPOSE) up -d --remove-orphan
 
 ## Stop docker containers, remove volumes and networks
 .PHONY: down
@@ -142,19 +140,19 @@ coupling: twa-coupling asset-coupling franklin-insights-coupling reference-entit
 
 .PHONY: phpspec
 phpspec: vendor
-	${PHP_RUN} vendor/bin/phpspec run ${F}
+	PHP_XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/phpspec run ${F}
 
 .PHONY: phpspec-debug
 phpspec-debug: vendor
-	${DEBUG_PHP_RUN} vendor/bin/phpspec run ${F}
+	PHP_XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/phpspec run ${F}
 
 .PHONY: behat-acceptance
 behat-acceptance: behat.yml app/config/parameters_test.yml vendor
-	${PHP_RUN} vendor/bin/behat -p acceptance ${F}
+	PHP_XDEBUG_ENABLED=0 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
 
 .PHONY: behat-acceptance-debug
 behat-acceptance-debug: behat.yml app/config/parameters_test.yml vendor
-	${DEBUG_PHP_RUN} vendor/bin/behat -p acceptance ${F}
+	PHP_XDEBUG_ENABLED=1 ${PHP_RUN} vendor/bin/behat -p acceptance ${F}
 
 .PHONY: phpunit
 phpunit: app/config/parameters_test.yml vendor
