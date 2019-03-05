@@ -10,7 +10,7 @@ class AttributeExtensionSpec extends ObjectBehavior
 {
     function let(AttributeRepositoryInterface $repository)
     {
-        $this->beConstructedWith($repository, [], []);
+        $this->beConstructedWith($repository);
     }
 
     function it_is_a_twig_extension()
@@ -21,9 +21,12 @@ class AttributeExtensionSpec extends ObjectBehavior
     function it_has_functions()
     {
         $functions = $this->getFunctions();
+        $functions->shouldHaveCount(2);
 
-        $functions[0]->getName()->shouldBeEqualTo('is_attribute_localizable');
+        $functions[0]->getName()->shouldBeEqualTo('get_attribute_label_from_code');
         $functions[0]->shouldBeAnInstanceOf(\Twig_SimpleFunction::class);
+        $functions[1]->getName()->shouldBeEqualTo('is_attribute_localizable');
+        $functions[1]->shouldBeAnInstanceOf(\Twig_SimpleFunction::class);
     }
 
     function it_returns_true_when_attribute_is_localizable($repository, AttributeInterface $attribute)
