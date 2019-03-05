@@ -71,7 +71,7 @@ final class ComputeCompletenessOfProductsLinkedToAssetsTasklet implements Taskle
         BulkIndexerInterface $indexer,
         BulkObjectDetacherInterface $bulkDetacher,
         string $completenessTableName,
-        FindFamilyCodesWhereAttributesAreRequiredInterface $familiesCodesQuery = null
+        FindFamilyCodesWhereAttributesAreRequiredInterface $familiesCodesQuery
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
@@ -99,13 +99,9 @@ final class ComputeCompletenessOfProductsLinkedToAssetsTasklet implements Taskle
 
         $attributeCodes = $this->attributeRepository->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION);
 
-        // TODO merge 3.1: remove condition
-        $familyCodes = null !== $this->familyCodesQuery ?
-            $this->familyCodesQuery->find($attributeCodes):
-            [];
+        $familyCodes = $this->familyCodesQuery->find($attributeCodes);
 
-        // TODO merge 3.1: remove second part of condition
-        if (!empty($familyCodes) || null === $this->familyCodesQuery) {
+        if (!empty($familyCodes)) {
             foreach ($attributeCodes as $attributeCode) {
                 $products = $this->findProductsLinkedToAssetsForAttribute($attributeCode, $assetCodes, $familyCodes);
                 $this->resetCompletenessFor($products);
@@ -127,11 +123,7 @@ final class ComputeCompletenessOfProductsLinkedToAssetsTasklet implements Taskle
     ): CursorInterface {
         $pqb = $this->productQueryBuilderFactory->create();
         $pqb->addFilter($attributeCode, Operators::IN_LIST, $assetCodes);
-
-        // TODO merge master remove condition
-        if (!empty($familyCodes)) {
-            $pqb->addFilter('family', Operators::IN_LIST, $familyCodes);
-        }
+        $pqb->addFilter('family', Operators::IN_LIST, $familyCodes);
 
         return $pqb->execute();
     }
