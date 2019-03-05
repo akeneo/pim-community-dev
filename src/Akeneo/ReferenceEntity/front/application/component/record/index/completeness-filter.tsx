@@ -67,7 +67,6 @@ export enum CompletenessValue {
 }
 
 export default class CompletenessFilter extends React.Component<Props> {
-  // @todo : Hot fix on the YES, NO label because crowdin is broken on those translation keys. Should be changed.
   private getCompletenessFilter = (): DropdownElement[] => {
     return [
       {
@@ -76,13 +75,11 @@ export default class CompletenessFilter extends React.Component<Props> {
       },
       {
         identifier: CompletenessValue.Yes,
-        label: 'YES',
-        // label: __('pim_reference_entity.record.grid.filter.completeness.yes'),
+        label: __('pim_reference_entity.record.grid.filter.completeness.yes'),
       },
       {
         identifier: CompletenessValue.No,
-        label: 'NO',
-        // label: __('pim_reference_entity.record.grid.filter.completeness.no'),
+        label: __('pim_reference_entity.record.grid.filter.completeness.no'),
       },
     ];
   };

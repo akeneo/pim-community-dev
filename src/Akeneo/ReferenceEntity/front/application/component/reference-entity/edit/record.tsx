@@ -132,9 +132,9 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
         <Header
           label={referenceEntity.getLabel(context.locale)}
           image={referenceEntity.getImage()}
-          primaryAction={(defaultFocus: React.RefObject<any>) => {
+          primaryAction={() => {
             return rights.record.create ? (
-              <button className="AknButton AknButton--action" onClick={events.onRecordCreationStart} ref={defaultFocus}>
+              <button className="AknButton AknButton--action" onClick={events.onRecordCreationStart}>
                 {__('pim_reference_entity.record.button.create')}
               </button>
             ) : null;
@@ -319,3 +319,35 @@ export default connect(
     };
   }
 )(Records);
+
+interface RecordLabelProps {
+  grid: {
+    totalCount: number;
+  };
+}
+
+class RecordLabel extends React.Component<RecordLabelProps> {
+  render() {
+    const {grid} = this.props;
+
+    return (
+      <React.Fragment>
+        {__('pim_reference_entity.reference_entity.tab.records')}
+        <span className="AknColumn-span">({grid.totalCount})</span>
+      </React.Fragment>
+    );
+  }
+}
+
+export const label =  connect(
+  (state: EditState): RecordLabelProps => {
+    return {
+      grid: {
+        totalCount: state.grid.totalCount,
+      },
+    };
+  },
+  () => {
+    return {};
+  }
+)(RecordLabel);
