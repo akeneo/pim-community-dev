@@ -108,14 +108,13 @@ Feature: List attribute groups
   Scenario: Successfully display attribute group labels translated from the catalog locale
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the "tablet" channel page
     And I add the "german" locale to the "tablet" channel
-    And I save the channel
     And I edit the "Julia" user
     And I visit the "Additional" tab
     And I fill in the following information:
       | Catalog locale | German (Germany) |
     And I save the user
+    And I should not see the text "There are unsaved changes"
     When I am on the attribute groups page
     Then I should see the text "[marketing]"
 
