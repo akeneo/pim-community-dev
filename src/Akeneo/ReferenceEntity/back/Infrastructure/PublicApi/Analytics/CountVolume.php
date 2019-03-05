@@ -16,11 +16,6 @@ class CountVolume
     /** @var int */
     private $volume;
 
-    /**
-     * @param int    $volume
-     * @param int    $limit
-     * @param string $volumeName
-     */
     public function __construct(int $volume)
     {
         $this->volume = $volume;

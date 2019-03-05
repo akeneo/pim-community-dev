@@ -11,9 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\ReferenceEntity\Integration\PublicApi\Analytics;
 
-use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
@@ -42,6 +41,11 @@ class SqlAverageMaxNumberOfRecordsPerReferenceEntityTest extends SqlIntegrationT
         $this->resetDB();
     }
 
+    private function resetDB(): void
+    {
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+    }
+
     /**
      * @test
      */
@@ -57,11 +61,6 @@ class SqlAverageMaxNumberOfRecordsPerReferenceEntityTest extends SqlIntegrationT
         $this->assertEquals('2', $volume->getAverageVolume());
     }
 
-    private function resetDB(): void
-    {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
-    }
-
     private function loadRecordsForReferenceEntity(int $numberOfRecordsPerReferenceEntitiestoLoad): void
     {
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
@@ -74,7 +73,7 @@ class SqlAverageMaxNumberOfRecordsPerReferenceEntityTest extends SqlIntegrationT
 
         $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
 
-        for ($i=0; $i < $numberOfRecordsPerReferenceEntitiestoLoad; $i++) {
+        for ($i = 0; $i < $numberOfRecordsPerReferenceEntitiestoLoad; $i++) {
             $recordRepository->create(
                 Record::create(
                     RecordIdentifier::fromString(sprintf('%s', $this->getRandomIdentifier())),

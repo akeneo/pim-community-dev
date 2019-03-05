@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\ReferenceEntity\Integration\PublicApi\Analytics;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -48,6 +48,11 @@ class SqlAverageMaxNumberOfAttributesPerReferenceEntityTest extends SqlIntegrati
         $this->resetDB();
     }
 
+    private function resetDB(): void
+    {
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+    }
+
     /**
      * @test
      */
@@ -61,11 +66,6 @@ class SqlAverageMaxNumberOfAttributesPerReferenceEntityTest extends SqlIntegrati
 
         $this->assertEquals('4', $volume->getMaxVolume());
         $this->assertEquals('3', $volume->getAverageVolume());
-    }
-
-    private function resetDB(): void
-    {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadAttributesForReferenceEntity(int $numberOfAttributesPerReferenceEntitiestoLoad): void

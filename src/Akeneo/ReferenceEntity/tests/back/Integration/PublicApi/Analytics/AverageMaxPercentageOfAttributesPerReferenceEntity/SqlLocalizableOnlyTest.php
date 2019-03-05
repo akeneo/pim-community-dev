@@ -11,13 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record\AverageMaxPercentageOfAttributesPerReferenceEntity;
+namespace Akeneo\ReferenceEntity\Integration\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlLocalizableOnly;
-use Akeneo\ReferenceEntity\Integration\Persistence\Sql\Analytics\AverageMaxPercentageOfAttributes\CreateAttributesHelper;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -40,6 +39,11 @@ class SqlLocalizableOnlyTest extends SqlIntegrationTestCase
         $this->averageMaxPercentageOfLocalizableOnlyAttributessPerReferenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_reference_entity.localizable_only');
         $this->createAttributesHelper = new CreateAttributesHelper($this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute'));
         $this->resetDB();
+    }
+
+    private function resetDB(): void
+    {
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     /**
@@ -69,11 +73,6 @@ class SqlLocalizableOnlyTest extends SqlIntegrationTestCase
 
         $this->assertEquals('11', $volume->getMaxVolume());
         $this->assertEquals('10', $volume->getAverageVolume());
-    }
-
-    private function resetDB(): void
-    {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function createReferenceEntity(): ReferenceEntityIdentifier

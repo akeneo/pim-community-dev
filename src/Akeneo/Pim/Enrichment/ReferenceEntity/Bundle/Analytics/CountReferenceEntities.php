@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Analytics;
 
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\CountVolume as ReferenceEntityCountVolume;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\CountVolume as ReferenceEntityCountVolume;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlCountReferenceEntities;
 
 /**

@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Analytics;
+namespace Akeneo\ReferenceEntity\Integration\PublicApi\Analytics;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -41,14 +40,14 @@ use Ramsey\Uuid\Uuid;
  */
 class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
 {
+    /** @var RecordRepositoryInterface */
+    private $recordRepository;
+
     /** @var SqlAverageMaxNumberOfValuesPerRecord */
     private $averageMaxNumberOfValuesPerRecords;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
-
-    /** @var RecordRepositoryInterface */
-    protected $recordRepository;
 
     public function setUp()
     {
@@ -58,6 +57,11 @@ class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
         $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $this->recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $this->resetDB();
+    }
+
+    private function resetDB(): void
+    {
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     /**
@@ -72,11 +76,6 @@ class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
 
         $this->assertEquals('4', $volume->getMaxVolume());
         $this->assertEquals('3', $volume->getAverageVolume());
-    }
-
-    private function resetDB(): void
-    {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadRecordWithNumberOfValues(int $numberOfValuesForRecord): void
@@ -98,41 +97,6 @@ class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
         ));
 
         return $referenceEntityIdentifier;
-    }
-
-    /**
-     * @param AttributeInterface[] $attributes
-     */
-    private function createRecordWithOneValueForEachAttribute(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributes): void
-    {
-        $valueCollection = $this->generateValues($attributes);
-        $this->recordRepository->create(
-            Record::create(
-                RecordIdentifier::fromString($this->randomString()),
-                $referenceEntityIdentifier,
-                RecordCode::fromString($this->randomString()),
-                $valueCollection
-            )
-        );
-    }
-
-    /**
-     * @param AttributeInterface[] $attributes
-     */
-    private function generateValues(array $attributes): ValueCollection
-    {
-        $valueCollection = ValueCollection::fromValues(
-            array_map(function (AbstractAttribute $attribute) {
-                return Value::create(
-                    $attribute->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::noReference(),
-                    TextData::fromString('Some text data')
-                );
-            }, $attributes)
-        );
-
-        return $valueCollection;
     }
 
     /**
@@ -177,5 +141,42 @@ class SqlAverageMaxNumberOfValuesPerRecordTest extends SqlIntegrationTestCase
         );
 
         return $attributes;
-}
+    }
+
+    /**
+     * @param AttributeInterface[] $attributes
+     */
+    private function createRecordWithOneValueForEachAttribute(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        array $attributes
+    ): void {
+        $valueCollection = $this->generateValues($attributes);
+        $this->recordRepository->create(
+            Record::create(
+                RecordIdentifier::fromString($this->randomString()),
+                $referenceEntityIdentifier,
+                RecordCode::fromString($this->randomString()),
+                $valueCollection
+            )
+        );
+    }
+
+    /**
+     * @param AttributeInterface[] $attributes
+     */
+    private function generateValues(array $attributes): ValueCollection
+    {
+        $valueCollection = ValueCollection::fromValues(
+            array_map(function (AbstractAttribute $attribute) {
+                return Value::create(
+                    $attribute->getIdentifier(),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    TextData::fromString('Some text data')
+                );
+            }, $attributes)
+        );
+
+        return $valueCollection;
+    }
 }

@@ -11,13 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record\AverageMaxPercentageOfAttributesPerReferenceEntity;
+namespace Akeneo\ReferenceEntity\Integration\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableOnly;
-use Akeneo\ReferenceEntity\Integration\Persistence\Sql\Analytics\AverageMaxPercentageOfAttributes\CreateAttributesHelper;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -27,11 +26,11 @@ use Ramsey\Uuid\Uuid;
  */
 class SqlScopableAndLocalizableTest extends SqlIntegrationTestCase
 {
-    /** @var SqlScopableOnly */
-    private $averageMaxPercentageOfScopableOnlyAttributessPerReferenceEntity;
-
     /** @var CreateAttributesHelper */
     protected $createAttributesHelper;
+
+    /** @var SqlScopableOnly */
+    private $averageMaxPercentageOfScopableOnlyAttributessPerReferenceEntity;
 
     public function setUp()
     {
@@ -42,11 +41,16 @@ class SqlScopableAndLocalizableTest extends SqlIntegrationTestCase
         $this->resetDB();
     }
 
+    private function resetDB(): void
+    {
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+    }
+
     /**
      * @test
      */
-    public function it_returns_the_average_and_max_percentage_of_scopable_and_localizable_attributes_per_reference_entity()
-    {
+    public function it_returns_the_average_and_max_percentage_of_scopable_and_localizable_attributes_per_reference_entity(
+    ) {
         $referenceEntityIdentifier = $this->createReferenceEntity();
         $this->createAttributesHelper->loadLocalizableAndScopableAttributesForReferenceEntity($referenceEntityIdentifier,
             4);
@@ -69,11 +73,6 @@ class SqlScopableAndLocalizableTest extends SqlIntegrationTestCase
 
         $this->assertEquals('11', $volume->getMaxVolume());
         $this->assertEquals('10', $volume->getAverageVolume());
-    }
-
-    private function resetDB(): void
-    {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function createReferenceEntity(): ReferenceEntityIdentifier

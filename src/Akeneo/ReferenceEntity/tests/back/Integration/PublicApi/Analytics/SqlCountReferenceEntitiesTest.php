@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\ReferenceEntity\Integration\PublicApi\Analytics;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
@@ -36,6 +36,11 @@ class SqlCountReferenceEntitiesTest extends SqlIntegrationTestCase
         $this->resetDB();
     }
 
+    private function resetDB(): void
+    {
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+    }
+
     /**
      * @test
      */
@@ -44,11 +49,6 @@ class SqlCountReferenceEntitiesTest extends SqlIntegrationTestCase
         $this->loadReferenceEntities(2);
         $volume = $this->countReferenceEntities->fetch();
         $this->assertEquals('2', $volume->getVolume());
-    }
-
-    private function resetDB(): void
-    {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadReferenceEntities(int $numberOfReferenceEntitiestoLoad): void

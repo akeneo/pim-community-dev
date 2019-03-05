@@ -5,6 +5,9 @@
 - PIM-8154: Fix validation rule dropdown overlapped with the sticky footer
 - PIM-8049: Fix font size list of the rich text editor behind the next field
 - PIM-8014: Fix the display of duplicate category trees in the product grid
+
+## Improvements
+
 - PIM-7863: Add reference entity metrics in the catalog volume monitoring as well as system info
 
 ## Improvements

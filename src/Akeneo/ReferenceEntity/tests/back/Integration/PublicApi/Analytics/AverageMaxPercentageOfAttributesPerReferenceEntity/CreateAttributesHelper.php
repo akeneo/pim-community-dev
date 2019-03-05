@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Analytics\AverageMaxPercentageOfAttributes;
+namespace Akeneo\ReferenceEntity\Integration\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -35,28 +35,13 @@ class CreateAttributesHelper
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function loadLocalizableOnlyAttributesForReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier, int $numberOfAttributesToCreate): void
-    {
+    public function loadLocalizableOnlyAttributesForReferenceEntity(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        int $numberOfAttributesToCreate
+    ): void {
         // By default the label is localizable only
         $numberOfAttributesToCreate = $numberOfAttributesToCreate - 1;
         $this->createAttributesWith($referenceEntityIdentifier, $numberOfAttributesToCreate, false, true);
-    }
-
-    public function loadLocalizableAndScopableAttributesForReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier, int $numberOfAttributesToCreate): void
-    {
-        $this->createAttributesWith($referenceEntityIdentifier, $numberOfAttributesToCreate, true, true);
-    }
-
-    public function loadScopableOnlyAttributesForReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier, int $numberOfAttributesToCreate): void
-    {
-        $this->createAttributesWith($referenceEntityIdentifier, $numberOfAttributesToCreate, true, false);
-    }
-
-    public function loadNotLocalizableNotScopableAttributesForReferenceEntity($referenceEntityIdentifier, int $numberOfAttributesToCreate)
-    {
-        // By default, the image is not localizable nor scopable
-        $numberOfAttributesToCreate -= 1;
-        $this->createAttributesWith($referenceEntityIdentifier, $numberOfAttributesToCreate, false, false);
     }
 
     private function createAttributesWith(
@@ -87,4 +72,26 @@ class CreateAttributesHelper
         }
     }
 
+    public function loadLocalizableAndScopableAttributesForReferenceEntity(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        int $numberOfAttributesToCreate
+    ): void {
+        $this->createAttributesWith($referenceEntityIdentifier, $numberOfAttributesToCreate, true, true);
+    }
+
+    public function loadScopableOnlyAttributesForReferenceEntity(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        int $numberOfAttributesToCreate
+    ): void {
+        $this->createAttributesWith($referenceEntityIdentifier, $numberOfAttributesToCreate, true, false);
+    }
+
+    public function loadNotLocalizableNotScopableAttributesForReferenceEntity(
+        $referenceEntityIdentifier,
+        int $numberOfAttributesToCreate
+    ) {
+        // By default, the image is not localizable nor scopable
+        $numberOfAttributesToCreate -= 1;
+        $this->createAttributesWith($referenceEntityIdentifier, $numberOfAttributesToCreate, false, false);
+    }
 }

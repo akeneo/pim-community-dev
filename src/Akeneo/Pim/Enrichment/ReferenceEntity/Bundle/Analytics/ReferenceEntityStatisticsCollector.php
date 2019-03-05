@@ -71,6 +71,5 @@ class ReferenceEntityStatisticsCollector implements DataCollectorInterface
             'average_percentage_scopable_only_attributes' => $this->scopableOnly->fetch()->getAverageVolume(),
             'average_percentage_scopable_and_localizable_attributes' => $this->scopableAndLocalizable->fetch()->getAverageVolume(),
         ];
-
     }
 }
