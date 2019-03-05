@@ -92,6 +92,8 @@ class ProjectCompletenessController
         $projectCompleteness = $this->projectCompletenessRepository->getProjectCompleteness($project, $contributor);
         $projectCompleteness = $this->projectCompletenessNormalizer->normalize($projectCompleteness, 'internal_api');
 
+        $projectCompleteness['is_completeness_computed'] = $project->isCompletenessComputed();
+
         return new JsonResponse($projectCompleteness);
     }
 }
