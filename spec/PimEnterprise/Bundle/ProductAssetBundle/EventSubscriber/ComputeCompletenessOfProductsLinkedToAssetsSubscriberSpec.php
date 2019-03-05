@@ -14,6 +14,9 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\VariationHasBeenCreated;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\VariationHasBeenDeleted;
 use PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ComputeCompletenessOfProductsLinkedToAssetsSubscriber;
 use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -55,21 +58,11 @@ class ComputeCompletenessOfProductsLinkedToAssetsSubscriberSpec extends ObjectBe
         $this->shouldBeAnInstanceOf(EventSubscriberInterface::class);
     }
 
-    function it_subscribes_to_post_save_events(): void
+    function it_subscribes_to_multiple_events(): void
     {
-        $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
-        $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE_ALL);
-    }
-
-    function it_only_applies_to_assets_or_asset_references(
-        $jobInstanceRepository,
-        $jobLauncher
-    ): void {
-        $jobInstanceRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
-        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
-
-        $this->computeCompletenessOfProductsLinkedToAsset(new GenericEvent(new \stdClass()));
-        $this->computeCompletenessOfProductsLinkedToAssets(new GenericEvent([new \stdClass(), 'a_string']));
+        $this::getSubscribedEvents()->shouldHaveKey(AssetEvent::POST_UPLOAD_FILES);
+        $this::getSubscribedEvents()->shouldHaveKey(VariationHasBeenDeleted::VARIATION_HAS_BEEN_DELETED);
+        $this::getSubscribedEvents()->shouldHaveKey(VariationHasBeenCreated::VARIATION_HAS_BEEN_CREATED);
     }
 
     function it_removes_completenesses_if_compute_job_instance_does_not_exist(
@@ -83,7 +76,7 @@ class ComputeCompletenessOfProductsLinkedToAssetsSubscriberSpec extends ObjectBe
         $completenessRemover->removeForAsset($asset)->shouldBeCalled();
         $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
 
-        $this->computeCompletenessOfProductsLinkedToAsset(new GenericEvent($asset->getWrappedObject()));
+        $this->onFilesUploaded(new AssetEvent($asset->getWrappedObject()));
     }
 
     function it_does_not_launch_the_compute_completeness_job_if_no_product_is_impacted(
@@ -120,10 +113,10 @@ class ComputeCompletenessOfProductsLinkedToAssetsSubscriberSpec extends ObjectBe
         $completenessRemover->removeForAsset(Argument::any())->shouldNotBeCalled();
         $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
 
-        $this->computeCompletenessOfProductsLinkedToAsset(new GenericEvent($asset->getWrappedObject()));
+        $this->onFilesUploaded(new AssetEvent($asset->getWrappedObject()));
     }
 
-    function it_launches_the_compute_completeness_job_on_post_save_for_an_asset(
+    function it_launches_the_compute_completeness_job_on_post_upload_files(
         $jobInstanceRepository,
         $attributeRepository,
         $productQueryBuilderFactory,
@@ -151,50 +144,16 @@ class ComputeCompletenessOfProductsLinkedToAssetsSubscriberSpec extends ObjectBe
         $jobLauncher->launch($jobInstance, Argument::type(UserInterface::class), ['asset_codes' => ['asset_code_1']])
                     ->shouldBeCalled();
 
-        $this->computeCompletenessOfProductsLinkedToAsset(new GenericEvent($asset->getWrappedObject()));
+        $this->onFilesUploaded(new AssetEvent($asset->getWrappedObject()));
     }
 
-    function it_launches_the_compute_completeness_job_on_post_save_for_an_asset_reference(
+    function it_launches_the_compute_completeness_job_on_post_upload_of_multiple_files(
         $jobInstanceRepository,
         $attributeRepository,
         $productQueryBuilderFactory,
         $jobLauncher,
         $completenessRemover,
         JobInstance $jobInstance,
-        ReferenceInterface $reference,
-        AssetInterface $asset,
-        ProductQueryBuilderInterface $pqb,
-        CursorInterface $productCursor
-    ): void {
-        $jobInstanceRepository->findOneByIdentifier('compute_completeness_of_products_linked_to_assets')
-                              ->willReturn($jobInstance);
-        $asset->getCode()->willReturn('asset_code_1');
-        $reference->getAsset()->willReturn($asset);
-
-        $attributeRepository
-            ->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION)
-            ->willReturn(['assets']);
-
-        $productQueryBuilderFactory->create()->willReturn($pqb);
-        $pqb->addFilter('assets', Operators::IN_LIST, ['asset_code_1'])->shouldBeCalled();
-        $pqb->execute()->willReturn($productCursor);
-        $productCursor->count()->willReturn(10);
-
-        $completenessRemover->removeForAsset(Argument::any())->shouldNotBeCalled();
-        $jobLauncher->launch($jobInstance, Argument::type(UserInterface::class), ['asset_codes' => ['asset_code_1']])
-                    ->shouldBeCalled();
-
-        $this->computeCompletenessOfProductsLinkedToAsset(new GenericEvent($reference->getWrappedObject()));
-    }
-
-    function it_launches_the_compute_completeness_job_on_post_save_all_for_assets_and_references(
-        $jobInstanceRepository,
-        $attributeRepository,
-        $productQueryBuilderFactory,
-        $jobLauncher,
-        $completenessRemover,
-        JobInstance $jobInstance,
-        ReferenceInterface $reference,
         AssetInterface $asset1,
         AssetInterface $asset2,
         ProductQueryBuilderInterface $pqb,
@@ -204,7 +163,6 @@ class ComputeCompletenessOfProductsLinkedToAssetsSubscriberSpec extends ObjectBe
                               ->willReturn($jobInstance);
         $asset1->getCode()->willReturn('asset_code_1');
         $asset2->getCode()->willReturn('asset_code_2');
-        $reference->getAsset()->willReturn($asset1);
 
         $attributeRepository
             ->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION)
@@ -222,13 +180,81 @@ class ComputeCompletenessOfProductsLinkedToAssetsSubscriberSpec extends ObjectBe
             ['asset_codes' => ['asset_code_1', 'asset_code_2']]
         )->shouldBeCalled();
 
-        $this->computeCompletenessOfProductsLinkedToAssets(
-            new GenericEvent(
+        $this->onFilesUploaded(
+            new AssetEvent(
                 [
-                    $reference->getWrappedObject(),
+                    $asset1->getWrappedObject(),
                     $asset2->getWrappedObject(),
                 ]
             )
         );
+    }
+
+    function it_launches_the_compute_completeness_job_on_variation_creation(
+        $jobInstanceRepository,
+        $attributeRepository,
+        $productQueryBuilderFactory,
+        $jobLauncher,
+        $completenessRemover,
+        JobInstance $jobInstance,
+        AssetInterface $asset,
+        ProductQueryBuilderInterface $pqb,
+        CursorInterface $productCursor
+    ): void {
+        $jobInstanceRepository->findOneByIdentifier('compute_completeness_of_products_linked_to_assets')
+            ->willReturn($jobInstance);
+        $asset->getCode()->willReturn('asset_code_1');
+
+        $attributeRepository
+            ->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION)
+            ->willReturn(['assets']);
+
+        $productQueryBuilderFactory->create()->willReturn($pqb);
+        $pqb->addFilter('assets', Operators::IN_LIST, ['asset_code_1'])->shouldBeCalled();
+        $pqb->execute()->willReturn($productCursor);
+        $productCursor->count()->willReturn(25);
+
+        $completenessRemover->removeForAsset(Argument::any())->shouldNotBeCalled();
+        $jobLauncher->launch(
+            $jobInstance,
+            Argument::type(UserInterface::class),
+            ['asset_codes' => ['asset_code_1']]
+        )->shouldBeCalled();
+
+        $this->onVariationCreated(new VariationHasBeenCreated($asset->getWrappedObject()));
+    }
+
+    function it_launches_the_compute_completeness_job_on_variation_deletion(
+        $jobInstanceRepository,
+        $attributeRepository,
+        $productQueryBuilderFactory,
+        $jobLauncher,
+        $completenessRemover,
+        JobInstance $jobInstance,
+        AssetInterface $asset,
+        ProductQueryBuilderInterface $pqb,
+        CursorInterface $productCursor
+    ): void {
+        $jobInstanceRepository->findOneByIdentifier('compute_completeness_of_products_linked_to_assets')
+            ->willReturn($jobInstance);
+        $asset->getCode()->willReturn('asset_code_1');
+
+        $attributeRepository
+            ->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION)
+            ->willReturn(['assets']);
+
+        $productQueryBuilderFactory->create()->willReturn($pqb);
+        $pqb->addFilter('assets', Operators::IN_LIST, ['asset_code_1'])->shouldBeCalled();
+        $pqb->execute()->willReturn($productCursor);
+        $productCursor->count()->willReturn(25);
+
+        $completenessRemover->removeForAsset(Argument::any())->shouldNotBeCalled();
+        $jobLauncher->launch(
+            $jobInstance,
+            Argument::type(UserInterface::class),
+            ['asset_codes' => ['asset_code_1']]
+        )->shouldBeCalled();
+
+        $this->onVariationDeleted(new VariationHasBeenDeleted($asset->getWrappedObject()));
     }
 }

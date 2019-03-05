@@ -16,15 +16,17 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Doctrine\Common\Util\Debug;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\VariationHasBeenCreated;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\VariationHasBeenDeleted;
 use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -84,61 +86,27 @@ final class ComputeCompletenessOfProductsLinkedToAssetsSubscriber implements Eve
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_SAVE => 'computeCompletenessOfProductsLinkedToAsset',
-            StorageEvents::POST_SAVE_ALL => 'computeCompletenessOfProductsLinkedToAssets',
+            AssetEvent::POST_UPLOAD_FILES => 'onFilesUploaded',
+            VariationHasBeenDeleted::VARIATION_HAS_BEEN_DELETED => 'onVariationDeleted',
+            VariationHasBeenCreated::VARIATION_HAS_BEEN_CREATED => 'onVariationCreated',
         ];
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function computeCompletenessOfProductsLinkedToAsset(GenericEvent $event): void
+    public function onFilesUploaded(AssetEvent $event): void
     {
-        if ($event->hasArgument('unitary') && !$event->getArgument('unitary')) {
-            return;
-        }
-
-        if (!$event->getSubject() instanceof AssetInterface
-            && !$event->getSubject() instanceof ReferenceInterface
-        ) {
-            return;
-        }
-
-        if ($event->getSubject() instanceof AssetInterface) {
-            $asset = $event->getSubject();
-        } else {
-            $asset = $event->getSubject()->getAsset();
-        }
-
-        $this->computeCompletenessForAssets([$asset]);
-    }
-
-    /**
-     * @param GenericEvent $event
-     */
-    public function computeCompletenessOfProductsLinkedToAssets(GenericEvent $event): void
-    {
-        $assets = [];
-
-        foreach ($event->getSubject() as $item) {
-            if (!$item instanceof AssetInterface
-                && !$item instanceof ReferenceInterface
-            ) {
-                continue;
-            }
-
-            if ($item instanceof AssetInterface) {
-                $assets[] = $item;
-            } else {
-                $assets[] = $item->getAsset();
-            }
-        }
-
-        if (empty($assets)) {
-            return;
-        }
+        $assets = is_array($event->getSubject()) ? $event->getSubject() : [$event->getSubject()];
 
         $this->computeCompletenessForAssets($assets);
+    }
+
+    public function onVariationDeleted(VariationHasBeenDeleted $event): void
+    {
+        $this->computeCompletenessForAssets([$event->getAsset()]);
+    }
+
+    public function onVariationCreated(VariationHasBeenCreated $event): void
+    {
+        $this->computeCompletenessForAssets([$event->getAsset()]);
     }
 
     /**

@@ -187,6 +187,7 @@ services:
             - '@router'
             - '@pimee_product_asset.saver.asset'
             - '@pimee_product_asset.factory.variation'
+            - '@event_dispatcher'
 
     pimee_api.controller.asset:
         class : '%pimee_api.controller.asset.class%'

@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
 use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
@@ -282,6 +283,8 @@ SQL;
      */
     protected function buildAssets(array $assetCodes): void
     {
+        $eventDispatcher = $this->getContainer()->get('event_dispatcher');
+
         $chunks = array_chunk($assetCodes, static::BATCH_SIZE);
         foreach ($chunks as $assetCodesToBuild) {
             $assets = $this->fetchAssetsByCode($assetCodesToBuild);
@@ -294,6 +297,7 @@ SQL;
                 $assets
             );
             $this->getAssetSaver()->saveAll($builtAssets);
+            $eventDispatcher->dispatch(AssetEvent::POST_UPLOAD_FILES, new AssetEvent($builtAssets));
 
             $this->clearCache();
         }

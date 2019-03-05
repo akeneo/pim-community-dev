@@ -29,6 +29,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\VariationHasBeenDeleted;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CreateAssetType;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
@@ -381,6 +382,12 @@ class ProductAssetController extends Controller
         try {
             $this->assetFilesUpdater->deleteVariationFile($variation);
             $this->variationSaver->save($variation);
+
+            $this->eventDispatcher->dispatch(
+                VariationHasBeenDeleted::VARIATION_HAS_BEEN_DELETED,
+                new VariationHasBeenDeleted($asset)
+            );
+
             $this->addFlashMessage('success', 'pimee_product_asset.enrich_variation.flash.delete.success');
         } catch (\Exception $e) {
             $this->addFlashMessage('error', 'pimee_product_asset.enrich_variation.flash.delete.error');
@@ -722,11 +729,15 @@ class ProductAssetController extends Controller
             try {
                 $this->assetFilesUpdater->updateAssetFiles($productAsset);
                 $this->assetSaver->save($productAsset);
-                $event = $this->eventDispatcher->dispatch(
-                    AssetEvent::POST_UPLOAD_FILES,
-                    new AssetEvent($productAsset)
-                );
-                $this->handleGenerationEventResult($event);
+
+                if ($request->files->count() > 0) {
+                    $event = $this->eventDispatcher->dispatch(
+                        AssetEvent::POST_UPLOAD_FILES,
+                        new AssetEvent($productAsset)
+                    );
+                    $this->handleGenerationEventResult($event);
+                }
+
                 $this->addFlashMessage('success', 'pimee_product_asset.enrich_asset.flash.update.success');
             } catch (\Exception $e) {
                 $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.update.error');
