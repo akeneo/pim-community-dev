@@ -164,13 +164,7 @@ interface ProjectInterface
      */
     public function getProjectStatus();
 
-    /**
-     * @return bool
-     */
-    public function isCompletenessComputed(): bool;
+    public function startCompletenessComputing(): void;
 
-    /**
-     * @param bool $isCompletenessComputed
-     */
-    public function setIsCompletenessComputed(bool $isCompletenessComputed): void;
+    public function endCompletenessComputing(): void;
 }
