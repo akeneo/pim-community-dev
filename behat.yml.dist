@@ -321,9 +321,6 @@ acceptance:
                 - test.product_asset.asset_category_context
                 - test.product_asset.asset_category_tree_context
                 - test.authentication.sso_context
-                - test.catalog_volume_limits.reference_entity_context
-                - test.catalog_volume_limits.max_records_per_reference_entity_context
-                - test.catalog_volume_limits.avg_records_per_reference_entity_context
             filters:
                 tags: '@acceptance-back'
     extensions:
