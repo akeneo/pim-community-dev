@@ -99,6 +99,7 @@ pim_enrich.entity.product:
     associations:
       title: Assosiaatiot
       none_exist: Assosiaatiotyyppiä ei ole olemassa.
+      show_products: Näytä tuotteet
       show_groups: Näytä ryhmät
       number_of_associations: "{{ productCount }} tuotetta, {{ productModelCount }} tuotemallia ja {{ groupCount }} ryhmää"
       association_type_selector: Assosiaatiotyyppi
@@ -264,6 +265,7 @@ pim_enrich.mass_edit.product:
       label: Valitse tuotteet
     choose:
       title: Tuotteiden massamuokkaus
+      label_count: "]0, Inf[Valitse toiminto"
     configure:
       label: Konfiguroi
     confirm:

@@ -30,4 +30,4 @@ extensions:
         config:
             fieldName: available_locales
             label: pim_enrich.entity.attribute.property.available_locales
-
+            isMultiple: true

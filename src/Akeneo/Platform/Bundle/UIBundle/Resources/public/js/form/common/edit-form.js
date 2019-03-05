@@ -80,6 +80,8 @@ define(
                 if (!this.configured) {
                     return this;
                 }
+                const scrollPosition = this.$el.find('.edit-form').scrollTop();
+
                 this.getRoot().trigger('pim_enrich:form:render:before');
 
                 this.$el.html(this.template());
@@ -87,6 +89,8 @@ define(
                 this.renderExtensions();
 
                 this.getRoot().trigger('pim_enrich:form:render:after');
+
+                this.$el.find('.edit-form').scrollTop(scrollPosition);
             },
 
             /**

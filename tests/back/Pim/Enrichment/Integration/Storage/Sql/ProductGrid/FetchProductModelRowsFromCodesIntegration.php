@@ -84,10 +84,11 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
 
         $fixturesLoader = new ProductGridFixturesLoader(static::$kernel->getContainer(), $this->getFixturePath('akeneo.jpg'));
         $rootProductModelWithLabelInProduct = $fixturesLoader->createProductModelsWithLabelInProduct();
+        $rootProductModelWithLabelInSubProductModel = $fixturesLoader->createProductModelsWithLabelInSubProductModel();
         $subProductModelWithLabelInParent = $fixturesLoader->createProductModelsWithLabelInParentProductModel();
 
         $query = $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes');
-        $rows = $query(['root_product_model_without_sub_product_model', 'sub_product_model'], [], 'ecommerce', 'en_US', $userId);
+        $rows = $query(['root_product_model_without_sub_product_model', 'root_product_model_with_image_in_sub_product_model', 'sub_product_model'], [], 'ecommerce', 'en_US', $userId);
 
         $akeneoImage = current($this
             ->get('akeneo_file_storage.repository.file_info')
@@ -104,6 +105,18 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
                 MediaValue::value('an_image', $akeneoImage),
                 $rootProductModelWithLabelInProduct->getId(),
                 ['total' => 1, 'complete' => 1],
+                null,
+                new ValueCollection([])
+            ),
+            Row::fromProductModel(
+                'root_product_model_with_image_in_sub_product_model',
+                '[test_family]',
+                $rootProductModelWithLabelInSubProductModel->getCreated(),
+                $rootProductModelWithLabelInSubProductModel->getUpdated(),
+                '[root_product_model_with_image_in_sub_product_model]',
+                MediaValue::value('an_image', $akeneoImage),
+                $rootProductModelWithLabelInSubProductModel->getId(),
+                ['total' => 0, 'complete' => 0],
                 null,
                 new ValueCollection([])
             ),

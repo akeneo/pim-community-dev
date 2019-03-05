@@ -49,8 +49,8 @@
                               path(route ~ '_categorytree_remove', { id: form.vars.value.id }),
                               acl ~ '_category_remove',
                               form.vars.value.parent ? path(route ~ '_categorytree_edit', { id: form.vars.value.parent.id }) : path(route ~ '_categorytree_create'),
-                              'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
-                                  ~ 'info.category.remove children'|trans ~ '<br />'
+                              'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ ' '
+                                  ~ 'info.category.remove children'|trans ~ ' '
                                   ~ 'info.category.keep products'|trans,
                               (form.vars.value.parent ? 'flash.category.removed' : 'flash.tree.removed')|trans,
                               '',

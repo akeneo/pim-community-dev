@@ -108,9 +108,7 @@ class Version_3_0_20180823184342_switch_to_utf8mb4 extends AbstractMigration
             );
         }
 
-        $this->addSql(
-            sprintf('ALTER TABLE pim_session CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin', $tableName)
-        );
+        $this->addSql('ALTER TABLE pim_session CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin');
     }
 
     /**

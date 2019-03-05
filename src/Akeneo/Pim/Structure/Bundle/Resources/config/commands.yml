@@ -1,0 +1,6 @@
+services:
+
+  Akeneo\Pim\Structure\Bundle\ReferenceData\Command\CheckRequirementsCommand:
+    tags:
+      - { name: 'console.command' }
+

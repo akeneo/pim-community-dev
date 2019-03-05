@@ -255,7 +255,6 @@ define(
                                 },
                                 innerDescription:
                                 __('pim_enrich.entity.product.module.associations.manage_description'),
-                                allowCancel: true,
                                 okCloses: false,
                                 title: __('pim_enrich.entity.product.module.associations.manage', {
                                     associationType: associationType.labels[UserContext.get('catalogLocale')]

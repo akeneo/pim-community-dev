@@ -876,6 +876,7 @@ config:
     pim/form/common/meta:                                pimui/js/form/common/meta
     pim/form/common/subsection:                          pimui/js/form/common/subsection
     pim/form/common/main-image:                          pimui/js/form/common/main-image
+    pim/form/common/user-main-image:                     pimui/js/form/common/user-main-image
     pim/form/common/meta/created:                        pimui/js/form/common/meta/created
     pim/form/common/meta/updated:                        pimui/js/form/common/meta/updated
     pim/form/common/meta/status:                         pimui/js/form/common/meta/status

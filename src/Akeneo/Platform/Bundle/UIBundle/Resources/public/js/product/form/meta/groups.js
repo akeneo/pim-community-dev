@@ -141,7 +141,6 @@ define(
                     ).done(function (productList, identifierAttribute) {
                         loadingMask.remove();
                         this.groupModal = new Backbone.BootstrapModal({
-                            allowCancel: true,
                             okText: __('pim_enrich.entity.product.module.show_group.view_group'),
                             cancelText: __('pim_common.cancel'),
                             title: __(

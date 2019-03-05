@@ -30,6 +30,7 @@ pim_enrich:
 pim_user_management:
   entity:
     user:
+      label: utilisateur
       flash:
         update:
           success: L'utilisateur a bien été mis à jour.
