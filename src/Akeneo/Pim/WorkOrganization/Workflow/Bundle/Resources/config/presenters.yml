@@ -27,7 +27,7 @@ services:
     pimee_workflow.twig.extension.product_draft_changes:
         class: '%pimee_workflow.twig.extension.product_draft_changes.class%'
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.cached_attribute'
             - '@pimee_workflow.product_draft_renderer'
             - '@translator'
             - '@pim_catalog.factory.value'
@@ -120,7 +120,7 @@ services:
         class: '%pimee_workflow.presenter.option.class%'
         arguments:
             - '@pim_catalog.repository.cached_attribute'
-            - '@pim_catalog.repository.attribute_option'
+            - '@pim_catalog.repository.cached_attribute_option'
         tags:
             - { name: pimee_workflow.presenter }
 
@@ -128,7 +128,7 @@ services:
         class: '%pimee_workflow.presenter.options.class%'
         arguments:
             - '@pim_catalog.repository.cached_attribute'
-            - '@pim_catalog.repository.attribute_option'
+            - '@pim_catalog.repository.cached_attribute_option'
         tags:
             - { name: pimee_workflow.presenter }
 

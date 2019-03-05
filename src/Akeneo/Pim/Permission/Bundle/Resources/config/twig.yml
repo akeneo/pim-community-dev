@@ -6,7 +6,7 @@ services:
         class: '%pimee_security.twig.is_granted_extension.class%'
         arguments:
             - '@security.authorization_checker'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
         tags:
             - { name: twig.extension }

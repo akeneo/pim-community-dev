@@ -2,18 +2,16 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\ORM;
 
-use Doctrine\ORM\EntityManager;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\FindExistingAttributeCodesQuery;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 
 class ExcludeDeletedAttributeSubscriberSpec extends ObjectBehavior
 {
-    function let()
+    function let(FindExistingAttributeCodesQuery $query)
     {
-        $this->beConstructedWith('pim_catalog_attribute');
+        $this->beConstructedWith($query);
     }
 
     function it_is_an_event_subscriber()
@@ -27,33 +25,28 @@ class ExcludeDeletedAttributeSubscriberSpec extends ObjectBehavior
     }
 
     function it_excludes_unexistant_attributes(
-        AttributeRepositoryInterface $attributeRepository,
+        $query,
         EntityWithValuesDraftInterface $productDraft,
-        EntityManager $entityManager,
-        AttributeInterface $nameAttribute,
         LifecycleEventArgs $args
     ) {
         $dbData = [
-            'values'          => [
-                'name'        => ['data' => 'Pipoux', 'locale' => null, 'scope' => null],
+            'values' => [
+                'name' => ['data' => 'Pipoux', 'locale' => null, 'scope' => null],
                 'description' => ['data' => 'undefined', 'locale' => null, 'scope' => null],
+                'something' => ['status' => 'draft', 'locale' => null, 'scope' => null],
             ],
             'review_statuses' => [
-                'name'        => ['status' => 'draft', 'locale' => null, 'scope' => null],
-                'description' => ['status' => 'draft', 'locale' => null, 'scope' => null],
+                'name' => ['status' => 'draft', 'locale' => null, 'scope' => null],
+                'something' => ['status' => 'draft', 'locale' => null, 'scope' => null],
             ]
         ];
 
         $args->getObject()->willReturn($productDraft);
         $productDraft->getChanges()->willReturn($dbData);
 
-        $args->getObjectManager()->willReturn($entityManager);
-        $entityManager->getRepository('pim_catalog_attribute')->willReturn($attributeRepository);
+        $query->execute(['name', 'description', 'something'])->willReturn(['name', 'description']);
 
-        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-        $attributeRepository->findOneByIdentifier('description')->willReturn(null);
-
-        unset($dbData['values']['description'], $dbData['review_statuses']['description']);
+        unset($dbData['values']['something'], $dbData['review_statuses']['something']);
         $productDraft->setChanges($dbData)->shouldBeCalled();
 
         $this->postLoad($args);

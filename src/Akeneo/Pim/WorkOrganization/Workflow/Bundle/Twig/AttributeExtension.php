@@ -11,22 +11,17 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
- * Override Twig extension to add 'isAttributeLocalizable' method
- *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class AttributeExtension extends \Twig_Extension
 {
-    /** @var AttributeRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     private $repository;
 
-    /**
-     * @param AttributeRepositoryInterface $repository
-     */
-    public function __construct(AttributeRepositoryInterface $repository)
+    public function __construct(IdentifiableObjectRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
@@ -36,9 +31,28 @@ class AttributeExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array_merge([
+        return [
+            new \Twig_SimpleFunction(
+                'get_attribute_label_from_code',
+                [$this, 'getAttributeLabelFromCode'],
+                ['is_safe' => ['html']]
+            ),
             new \Twig_SimpleFunction('is_attribute_localizable', [$this, 'isAttributeLocalizable']),
-        ]);
+        ];
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getAttributeLabelFromCode($code)
+    {
+        if (null !== $attribute = $this->repository->findOneByIdentifier($code)) {
+            return (string) $attribute;
+        }
+
+        return $code;
     }
 
     /**

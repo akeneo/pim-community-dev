@@ -32,3 +32,9 @@ services:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\CountProductModelProposals
         arguments:
             - '@database_connection'
+
+    pimee_workflow.sql.product.find_existing_attribute_codes:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\FindExistingAttributeCodesQuery
+        arguments:
+            - '@database_connection'
+            - '@akeneo_storage_utils.doctrine.table_name_builder'
