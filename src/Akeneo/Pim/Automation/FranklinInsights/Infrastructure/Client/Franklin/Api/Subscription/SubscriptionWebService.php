@@ -72,7 +72,7 @@ class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInte
             }
 
             throw new BadRequestException(sprintf(
-                'Something went wrong during product subscription: ',
+                'Something went wrong during product subscription: %s',
                 $e->getMessage()
             ));
         }

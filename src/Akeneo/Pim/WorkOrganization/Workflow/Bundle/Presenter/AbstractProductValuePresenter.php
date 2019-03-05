@@ -53,7 +53,7 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
         $change = array_merge($change, ['attribute' => $value->getAttributeCode()]);
 
         return $this->renderer->renderDiff(
-            $this->normalizeData($value->getData(), $value->getAttributeCode()),
+            $this->normalizeData($value->getData()),
             $this->normalizeChange($change)
         );
     }

@@ -128,7 +128,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 }, $attributePaths);
                 $mustNotClause = $this->addBooleanClause($clauses);
 
-                $clauses = array_map(function ($attributePath) use ($value) {
+                $clauses = array_map(function ($attributePath) {
                     return [
                         'exists' => [
                             'field' => $attributePath . '.' . self::PATH_SUFFIX,
@@ -168,7 +168,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 break;
 
             case Operators::IS_EMPTY:
-                $clauses = array_map(function ($attributePath) use ($value) {
+                $clauses = array_map(function ($attributePath) {
                     return [
                         'exists' => [
                             'field' => $attributePath . '.' . self::PATH_SUFFIX
@@ -181,7 +181,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 break;
 
             case Operators::IS_NOT_EMPTY:
-                $clauses = array_map(function ($attributePath) use ($value) {
+                $clauses = array_map(function ($attributePath) {
                     return [
                         'exists' => [
                             'field' => $attributePath . '.' . self::PATH_SUFFIX

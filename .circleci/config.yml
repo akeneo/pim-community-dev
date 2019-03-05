@@ -94,6 +94,10 @@ jobs:
                 command: docker-compose exec -T fpm vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
                 when: always
           - run:
+                name: PHPStan
+                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
+                when: always
+          - run:
                 name: Check Pullup
                 command: docker-compose exec -T fpm vendor/akeneo/pim-community-dev/bin/check-pullup
                 when: always

@@ -49,7 +49,7 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
         SelectLastCompletedFetchProductsExecutionDatetimeQuery $selectLastCompletedFetchProductsExecutionDatetimeQuery
     ) {
         $this->subscriptionProvider = $subscriptionProvider;
-        $this->SelectLastCompletedFetchProductsExecutionDatetimeQuery = $selectLastCompletedFetchProductsExecutionDatetimeQuery;
+        $this->selectLastCompletedFetchProductsExecutionDatetimeQuery = $selectLastCompletedFetchProductsExecutionDatetimeQuery;
     }
 
     /**
@@ -106,7 +106,7 @@ class SuggestedDataReader implements ItemReaderInterface, InitializableInterface
      */
     private function geLastExecutionDateTime()
     {
-        $lastExecutionDatetime = $this->SelectLastCompletedFetchProductsExecutionDatetimeQuery->execute();
+        $lastExecutionDatetime = $this->selectLastCompletedFetchProductsExecutionDatetimeQuery->execute();
         if (null === $lastExecutionDatetime) {
             $lastExecutionDatetime = '2012-10-01';
         }

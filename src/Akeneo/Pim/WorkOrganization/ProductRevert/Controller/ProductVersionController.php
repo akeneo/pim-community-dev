@@ -33,6 +33,9 @@ class ProductVersionController
     /** @var string */
     protected $versionClass;
 
+    /** @var ManagerRegistry */
+    protected $doctrine;
+
     /**
      * @param ManagerRegistry $doctrine
      * @param string          $versionClass

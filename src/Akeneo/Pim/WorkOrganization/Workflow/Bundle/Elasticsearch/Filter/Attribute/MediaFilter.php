@@ -103,7 +103,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
 
                 $mustNotClause = $this->addBooleanClause($clauses);
 
-                $clauses = array_map(function ($attributePath) use ($value) {
+                $clauses = array_map(function ($attributePath) {
                     return [
                         'exists' => ['field' => $attributePath],
                     ];

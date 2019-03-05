@@ -36,6 +36,9 @@ class ProductCategoryAccessSubscriber implements EventSubscriberInterface
     /** @var array */
     protected $grantedCategoryIdsPerUser;
 
+    /** @var array */
+    protected $grantedCategoryCodesPerUser;
+
     /**
      * @param TokenStorageInterface    $tokenStorage
      * @param CategoryAccessRepository $accessRepository
