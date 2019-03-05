@@ -35,6 +35,7 @@ config:
                     module: pim/base-fetcher
                     options:
                         urls:
+                            list: akeneo_sugggest_data_attributes_mapping_list
                             get: akeneo_franklin_insights_attributes_mapping_get
                 attribute-options-mapping:
                     module: pim/base-fetcher
@@ -69,6 +70,7 @@ config:
         akeneo/franklin-insights/view/settings/attributes-mapping/family-selector-and-status: akeneofranklininsights/js/view/attributes-mapping/family-selector-and-status.ts
         akeneo/franklin-insights/view/settings/attributes-mapping/table: akeneofranklininsights/js/view/attributes-mapping/table.ts
         akeneo/franklin-insights/view/settings/identifiers-mapping/table: akeneofranklininsights/js/view/identifiers-mapping/table.ts
+        akeneo/franklin-insights/view/settings/attributes-mapping/title: akeneofranklininsights/js/view/attributes-mapping/title.ts
         akeneo/franklin-insights/view/settings/attribute-options-mapping/edit: akeneofranklininsights/js/view/attribute-options-mapping/edit.ts
         akeneo/franklin-insights/view/settings/mapping/common/tabs: akeneofranklininsights/js/view/common/tabs.ts
         akeneo/franklin-insights/view/common/description-header: akeneofranklininsights/js/view/common/description-header.ts
