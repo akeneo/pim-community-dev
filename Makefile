@@ -115,12 +115,12 @@ down:
 ## Enable Xdebug
 .PHONY: xdebug-on
 xdebug-on: docker-compose.override.yml
-	PHP_XDEBUG_ENABLED=1 make up
+	PHP_XDEBUG_ENABLED=1 $(MAKE) up
 
 ## Disable Xdebug
 .PHONY: xdebug-off
 xdebug-off: docker-compose.override.yml
-	PHP_XDEBUG_ENABLED=0 make up
+	PHP_XDEBUG_ENABLED=0 $(MAKE) up
 
 ##
 ## Run tests suite
