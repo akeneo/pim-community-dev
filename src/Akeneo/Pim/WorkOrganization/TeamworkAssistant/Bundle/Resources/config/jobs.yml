@@ -122,8 +122,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pimee_teamwork_assistant.step.start_project_completeness_computing'
                 - '@pimee_teamwork_assistant.step.prepare_project_calculation'
+                - '@pimee_teamwork_assistant.step.start_project_completeness_computing'
                 - '@pimee_teamwork_assistant.step.project_calculation'
                 - '@pimee_teamwork_assistant.step.clean_contributor_group'
                 - '@pimee_teamwork_assistant.step.end_project_completeness_computing'
