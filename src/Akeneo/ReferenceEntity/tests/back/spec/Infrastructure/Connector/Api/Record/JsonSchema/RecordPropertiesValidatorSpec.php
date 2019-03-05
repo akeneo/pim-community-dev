@@ -53,4 +53,18 @@ class RecordPropertiesValidatorSpec extends ObjectBehavior
 
         $this->validate($record)->shouldReturn([]);
     }
+
+    function it_accepts_links_in_order_to_update_a_record_previously_requested_with_the_api()
+    {
+        $record = [
+            'code' => 'starck',
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost:8082/api/rest/v1/reference-entities/ref_test_2/records/0000747832346'
+                ]
+            ]
+        ];
+
+        $this->validate($record)->shouldReturn([]);
+    }
 }

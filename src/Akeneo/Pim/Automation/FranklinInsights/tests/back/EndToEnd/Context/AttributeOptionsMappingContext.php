@@ -53,7 +53,15 @@ class AttributeOptionsMappingContext extends PimContext
 
         $this->selectFamily($familyCode);
 
-        $this->getCurrentPage()->find('css', sprintf('.option-mapping[data-franklin-attribute-code="%s"]', $catalogAttrCode))->click();
+        $this->spin(function () use ($catalogAttrCode) {
+            $optionMappingButton = $this->getCurrentPage()->find('css', sprintf('.option-mapping[data-franklin-attribute-code="%s"]', $catalogAttrCode));
+            if (null === $optionMappingButton) {
+                return false;
+            }
+            $optionMappingButton->click();
+
+            return true;
+        }, sprintf('Could not find attribute "%s" option mapping button', $catalogAttrCode));
 
         $options = $this->extractAttributeOptionsMappingFromTable($table);
         foreach ($options as $targetOptionCode => $pimOptionCode) {
@@ -62,8 +70,16 @@ class AttributeOptionsMappingContext extends PimContext
                 $this->getAttributeOptionLabel($catalogAttrCode, $pimOptionCode)
             );
         }
-        $saveButton = $this->getCurrentPage()->find('css', '.modal .AknButton--apply.save');
-        $saveButton->click();
+
+        $this->spin(function () {
+            $saveButton = $this->getCurrentPage()->find('css', '.modal .AknButton--apply.save');
+            if (null === $saveButton) {
+                return false;
+            }
+            $saveButton->click();
+
+            return true;
+        }, 'Could not find save button');
     }
 
     /**

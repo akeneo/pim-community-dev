@@ -193,6 +193,7 @@ const TextView = ({
               onSelectionChange={(value: DropdownElement) =>
                 onAdditionalPropertyUpdated('validation_rule', ValidationRule.createFromString(value.identifier))
               }
+              isOpenUp={true}
             />
           </div>
           {getErrorsView(errors, 'validationRule')}

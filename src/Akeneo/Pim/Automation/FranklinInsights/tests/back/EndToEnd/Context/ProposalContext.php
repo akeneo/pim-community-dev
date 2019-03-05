@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\EntityWithValuesDraftRepository;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Behat\Behat\Context\Context;
+use Doctrine\ORM\EntityManager;
 use Webmozart\Assert\Assert;
 
 /**
@@ -36,19 +37,25 @@ class ProposalContext implements Context
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
 
+    /** @var EntityManager */
+    private $entityManager;
+
     /**
-     * @param ProductRepositoryInterface $productRepository
-     * @param EntityWithValuesDraftRepository $draftRepository
+     * @param ProductRepositoryInterface             $productRepository
+     * @param EntityWithValuesDraftRepository        $draftRepository
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+     * @param EntityManager                          $entityManager
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         EntityWithValuesDraftRepository $draftRepository,
-        ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
+        EntityManager $entityManager
     ) {
         $this->productRepository = $productRepository;
         $this->draftRepository = $draftRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -58,6 +65,12 @@ class ProposalContext implements Context
      */
     public function thereShouldBeAProposalForProduct(string $identifier): void
     {
+        /*
+         * Clearing the Doctrine entity manager is necessary before calling the repositories to avoid cache issues
+         * A previous spin guarantees that the Ajax request is finished at this step, so there's no need to re-use a spin here
+         */
+        $this->entityManager->clear();
+
         $product = $this->productRepository->findOneByIdentifier($identifier);
         $draft = $this->draftRepository->findUserEntityWithValuesDraft($product, ProposalAuthor::USERNAME);
 

@@ -16,16 +16,12 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class RemoveChannelSubscriberSpec extends ObjectBehavior
 {
     function let(
-        VariationRepositoryInterface $variationRepo,
         ChannelConfigurationRepositoryInterface $channelConfigRepo,
-        RemoverInterface $variationRemover,
         RemoverInterface $channelConfigRemover,
         DeleteVariationsForChannelId $deleteVariationsForChannelId
     ) {
         $this->beConstructedWith(
-            $variationRepo,
             $channelConfigRepo,
-            $variationRemover,
             $channelConfigRemover,
             $deleteVariationsForChannelId
         );

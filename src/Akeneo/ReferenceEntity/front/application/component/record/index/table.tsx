@@ -17,6 +17,7 @@ import SearchField from 'akeneoreferenceentity/application/component/record/inde
 import CompletenessFilter, {
   CompletenessValue,
 } from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
+import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
 
 interface TableState {
   locale: string;
@@ -185,9 +186,12 @@ export default class Table extends React.Component<TableProps, {columns: Column[
 
     return (
       <React.Fragment>
-        <div className="AknTitleContainer-line">
-          <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
-          <CompletenessFilter value={completenessValue} onChange={this.props.onCompletenessFilterUpdated} />
+        <div className="AknFilterBox AknFilterBox--search">
+          <div className="AknFilterBox-list filter-box">
+            <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250}/>
+            <ItemsCounter matchesCount={grid.matchesCount} />
+            <CompletenessFilter value={completenessValue} onChange={this.props.onCompletenessFilterUpdated} />
+          </div>
         </div>
         {noResult ? (
           <NoResult entityLabel={this.props.referenceEntity.getLabel(locale)} />

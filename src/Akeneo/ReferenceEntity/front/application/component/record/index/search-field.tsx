@@ -8,10 +8,23 @@ type Props = {
 };
 
 export default class SearchField extends React.Component<Props> {
+  private defaultFocus: React.RefObject<any>;
   private timer = null;
   static defaultProps = {
     changeThreshold: 250,
   };
+
+  constructor(props: Props) {
+    super(props);
+
+    this.defaultFocus = React.createRef();
+  }
+
+  componentDidMount() {
+    if (null !== this.defaultFocus.current) {
+      this.defaultFocus.current.focus();
+    }
+  }
 
   /**
    * This method is triggered each time the user types on the search field
@@ -37,6 +50,7 @@ export default class SearchField extends React.Component<Props> {
           placeholder={__('pim_reference_entity.record.grid.search')}
           defaultValue={this.props.value}
           onChange={this.onSearchUpdated.bind(this)}
+          ref={this.defaultFocus}
         />
       </div>
     );

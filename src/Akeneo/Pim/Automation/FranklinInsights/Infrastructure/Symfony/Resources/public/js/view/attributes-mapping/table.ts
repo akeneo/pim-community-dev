@@ -15,6 +15,7 @@ import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
+import AttributesMappingForFamily from '../../model/attributes-mapping-for-family';
 import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttributeWithWarning = require('./simple-select-attribute-with-warning');
 
@@ -27,23 +28,6 @@ const modalTemplate = require('pim/template/common/modal-centered');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 
-interface AttributesMappingForFamily {
-  [franklinAttribute: string]: {
-    franklinAttribute: {
-      label: string,
-      type: string,
-      summary: string[],
-    },
-    attribute: string,
-    status: number,
-  };
-}
-
-interface NormalizedAttributesMappingForFamily {
-  code: string;
-  mapping: AttributesMappingForFamily;
-}
-
 interface Config {
   labels: {
     pending: string,
@@ -54,8 +38,6 @@ interface Config {
     attributeMappingStatus: string,
     valuesSummary: string,
     type: string,
-    familyMappingPending: string,
-    familyMappingFull: string,
   };
 }
 
@@ -66,15 +48,10 @@ interface Config {
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class AttributeMapping extends BaseView {
-  /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\Family */
-  public static readonly FAMILY_MAPPING_PENDING: number = 0;
-  public static readonly FAMILY_MAPPING_FULL: number = 1;
-  public static readonly FAMILY_MAPPING_EMPTY: number = 2;
-
   /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus */
-  private static readonly ATTRIBUTE_PENDING: number = 0;
-  private static readonly ATTRIBUTE_ACTIVE: number = 1;
-  private static readonly ATTRIBUTE_INACTIVE: number = 2;
+  public static readonly ATTRIBUTE_PENDING: number = 0;
+  public static readonly ATTRIBUTE_ACTIVE: number = 1;
+  public static readonly ATTRIBUTE_INACTIVE: number = 2;
 
   /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping */
   private static readonly PERFECT_MAPPINGS: { [attributeType: string]: string[] } = {
@@ -114,8 +91,6 @@ class AttributeMapping extends BaseView {
       attributeMappingStatus: '',
       valuesSummary: '',
       type: '',
-      familyMappingPending: '',
-      familyMappingFull: '',
     },
   };
   private attributeOptionsMappingModal: any = null;
@@ -147,14 +122,12 @@ class AttributeMapping extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    const familyMapping: NormalizedAttributesMappingForFamily = this.getFormData();
+    const familyMapping: AttributesMappingForFamily = this.getFormData();
     const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
-    const familyMappingStatus = this.getFamilyMappingStatus(mapping);
 
     this.$el.html(this.template({
       __,
       mapping,
-      familyMappingStatus: this.formatFamilyMappingStatus(familyMappingStatus),
       escapeHtml: EscapeHtml.escapeHtml,
       statuses: this.getMappingStatuses(),
       franklinAttribute: __(this.config.labels.franklinAttribute),
@@ -258,56 +231,6 @@ class AttributeMapping extends BaseView {
     statuses[AttributeMapping.ATTRIBUTE_INACTIVE] = __(this.config.labels.inactive);
 
     return statuses;
-  }
-
-  /**
-   * @param {AttributesMappingForFamily} mapping
-   *
-   * @return {number}
-   */
-  private getFamilyMappingStatus(mapping: AttributesMappingForFamily): number {
-    const franklinAttributes = Object.keys(mapping);
-    let status = AttributeMapping.FAMILY_MAPPING_FULL;
-
-    if (0 === franklinAttributes.length) {
-      status = AttributeMapping.FAMILY_MAPPING_EMPTY;
-    }
-
-    franklinAttributes.forEach((franklinAttribute: string) => {
-      if (AttributeMapping.ATTRIBUTE_PENDING === mapping[franklinAttribute].status) {
-        status = AttributeMapping.FAMILY_MAPPING_PENDING;
-      }
-    });
-
-    return status;
-  }
-
-  /**
-   * Format the message (label and style) that will be display on the view
-   * according to the status of the family mapping.
-   *
-   * @param {number} familyMappingStatus
-   *
-   * @return {object}
-   */
-  private formatFamilyMappingStatus(familyMappingStatus: number): { className: string, label: string } {
-    const formattedFamilyMappingStatus = {
-      className: '',
-      label: '',
-    };
-
-    switch (familyMappingStatus) {
-      case AttributeMapping.FAMILY_MAPPING_PENDING:
-        formattedFamilyMappingStatus.className = 'AknFieldContainer-familyAttributeMapping--pending';
-        formattedFamilyMappingStatus.label = this.config.labels.familyMappingPending;
-        break;
-      case AttributeMapping.FAMILY_MAPPING_FULL:
-        formattedFamilyMappingStatus.className = 'AknFieldContainer-familyAttributeMapping--full';
-        formattedFamilyMappingStatus.label = this.config.labels.familyMappingFull;
-        break;
-    }
-
-    return formattedFamilyMappingStatus;
   }
 
   /**
