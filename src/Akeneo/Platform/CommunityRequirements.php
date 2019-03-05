@@ -190,10 +190,17 @@ class CommunityRequirements
 
     /**
      * Gets the MySQL server version thanks to a PDO connection.
+     *
+     * It can accept version with suffix
+     * @see https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_version
      */
-    protected function getMySQLVersion() : string
+    protected function getMySQLVersion(): string
     {
-        return $this->getConnection()->getAttribute(PDO::ATTR_SERVER_VERSION);
+        $mysqlVersion = $this->getConnection()->getAttribute(PDO::ATTR_SERVER_VERSION);
+        if (strpos($mysqlVersion, '-')) {
+            $mysqlVersion = substr($mysqlVersion, 0, strpos($mysqlVersion, '-'));
+        }
+        return $mysqlVersion;
     }
 
     /**

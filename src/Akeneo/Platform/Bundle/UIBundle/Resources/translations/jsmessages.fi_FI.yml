@@ -150,6 +150,7 @@ pim_common:
   permissions: Käyttöoikeudet
   previous: Edellinen
   properties: Ominaisuudet
+  remove: Poista
   required_label: (vaadittu)
   save: Tallenna
   select2:

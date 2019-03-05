@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -31,6 +33,20 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     private const FIELD_PARENT = 'parent';
     private const FIELD_ANCESTORS = 'ancestors';
     private const FIELD_CATEGORIES_OF_ANCESTORS = 'categories_of_ancestors';
+
+    /** @var ChannelRepositoryInterface */
+    private $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
+    public function __construct(
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository
+    ) {
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
+    }
 
     /**
      * {@inheritdoc}
@@ -78,7 +94,6 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 $context
             ) : [];
-
 
         $familyVariantCode = null;
         if ($product->isVariant()) {
@@ -177,14 +192,17 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     {
         $ancestorsIds = [];
         $ancestorsCodes = [];
+        $ancestorsLabels = [];
         if ($product->isVariant()) {
             $ancestorsIds = $this->getAncestorsIds($product);
             $ancestorsCodes = $this->getAncestorsCodes($product);
+            $ancestorsLabels = $this->getAncestorsLabels($product);
         }
 
         $ancestors = [
-            'ids'   => $ancestorsIds,
+            'ids' => $ancestorsIds,
             'codes' => $ancestorsCodes,
+            'labels' => $ancestorsLabels,
         ];
 
         return $ancestors;
@@ -220,5 +238,113 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
         }
 
         return $ancestorsCodes;
+    }
+
+    /**
+     * Retrieves ancestors labels for each locales and channels.
+     *
+     * @param EntityWithFamilyVariantInterface $entity
+     *
+     * @return array
+     */
+    private function getAncestorsLabels(EntityWithFamilyVariantInterface $entity): array
+    {
+        $family = $entity->getFamily();
+        if (null === $family) {
+            return [];
+        }
+
+        $attributeAsLabel = $family->getAttributeAsLabel();
+        if (null === $attributeAsLabel) {
+            return [];
+        }
+
+        $ancestorsLabels = [];
+        $attributeCodeAsLabel = $attributeAsLabel->getCode();
+        switch (true) {
+            case $attributeAsLabel->isScopable() && $attributeAsLabel->isLocalizable():
+                $ancestorsLabels = $this->getLocalizableAndScopableLabels($entity, $attributeCodeAsLabel);
+                break;
+
+            case $attributeAsLabel->isScopable():
+                $ancestorsLabels = $this->getScopableLabels($entity, $attributeCodeAsLabel);
+                break;
+
+            case $attributeAsLabel->isLocalizable():
+                $ancestorsLabels = $this->getLocalizableLabels($entity, $attributeCodeAsLabel);
+                break;
+
+            default:
+                $value = $entity->getValue($attributeCodeAsLabel);
+                if (null !== $value) {
+                    $ancestorsLabels['<all_channels>']['<all_locales>'] = $value->getData();
+                }
+                break;
+        }
+
+        return $ancestorsLabels;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param string $attributeCodeAsLabel
+     *
+     * @return array
+     */
+    private function getLocalizableAndScopableLabels(
+        EntityWithFamilyVariantInterface $entity,
+        string $attributeCodeAsLabel
+    ): array {
+        $ancestorsLabels = [];
+        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        foreach ($this->channelRepository->getChannelCodes() as $channelCode) {
+            foreach ($localeCodes as $localeCode) {
+                $value = $entity->getValue($attributeCodeAsLabel, $localeCode, $channelCode);
+                if (null !== $value) {
+                    $ancestorsLabels[$channelCode][$localeCode] = $value->getData();
+                }
+            }
+        }
+
+        return $ancestorsLabels;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param string $attributeCodeAsLabel
+     *
+     * @return array
+     */
+    private function getScopableLabels(EntityWithFamilyVariantInterface $entity, string $attributeCodeAsLabel): array
+    {
+        $ancestorsLabels = [];
+        foreach ($this->channelRepository->getChannelCodes() as $channelCode) {
+            $value = $entity->getValue($attributeCodeAsLabel, null, $channelCode);
+            if (null !== $value) {
+                $ancestorsLabels[$channelCode]['<all_locales>'] = $value->getData();
+            }
+        }
+
+        return $ancestorsLabels;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param string $attributeCodeAsLabel
+     *
+     * @return array
+     */
+    private function getLocalizableLabels(EntityWithFamilyVariantInterface $entity, string $attributeCodeAsLabel): array
+    {
+        $ancestorsLabels = [];
+        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        foreach ($localeCodes as $localeCode) {
+            $value = $entity->getValue($attributeCodeAsLabel, $localeCode);
+            if (null !== $value) {
+                $ancestorsLabels['<all_channels>'][$localeCode] = $value->getData();
+            }
+        }
+
+        return $ancestorsLabels;
     }
 }

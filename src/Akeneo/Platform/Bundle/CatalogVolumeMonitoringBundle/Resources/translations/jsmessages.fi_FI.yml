@@ -24,4 +24,7 @@ pim_catalog_volume:
     average_max_options_per_attribute: Attribuuttioptioita
     count_categories: Kategoriat
     count_category_trees: Kategoriahierarkia
+    count_variant_products: Varianttituotteita
     count_product_models: Tuotemallit
+  mean: 'Keskiarvo:'
+  max: 'Maksimi:'

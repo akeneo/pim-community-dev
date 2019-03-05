@@ -56,7 +56,7 @@ class CommandLauncher
         return sprintf(
             '%s %s%sconsole --env=%s %s',
             $this->getPhp(),
-            sprintf('%s%s..%sbin', $this->rootDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
+            sprintf('%s%s..%sbin', escapeshellarg($this->rootDir), DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
             DIRECTORY_SEPARATOR,
             $this->environment,
             $command

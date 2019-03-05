@@ -62,7 +62,6 @@ define(
             redirect: function (content, title, okText, location) {
                 if (!_.isUndefined(Backbone.BootstrapModal)) {
                     var redirectModal = new Backbone.BootstrapModal({
-                        allowCancel: true,
                         title: title,
                         content: content,
                         okText: okText,

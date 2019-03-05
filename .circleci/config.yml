@@ -14,7 +14,7 @@ jobs:
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots
       - run:
           name: Setup the parameters.yml files
           command: ./bin/docker/pim-setup.sh
@@ -85,22 +85,29 @@ jobs:
           - run:
                 name: PhpCsFixer
                 command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+                when: always
           - run:
                 name: PhpCoupling Detector
                 command: DOCKER=true make coupling
+                when: always
           - run:
                 name: PHPStan
                 command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
+                when: always
           - run:
                 name: Check Pullup
                 command: docker-compose exec -T fpm bin/check-pullup
+                when: always
           - run:
                 name: Acceptance back
                 command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
+                when: always
           - store_test_results:
                 path: var/tests
           - store_artifacts:
                 path: var/tests
+          - store_artifacts:
+                path: var/logs
 
   back_phpunit_integration:
       machine:
@@ -130,6 +137,8 @@ jobs:
                 path: var/tests/phpunit
           - store_artifacts:
                 path: var/tests/phpunit
+          - store_artifacts:
+                path: var/logs
 
   back_phpunit_end_to_end:
       machine:
@@ -159,6 +168,8 @@ jobs:
                 path: var/tests/phpunit
           - store_artifacts:
                 path: var/tests/phpunit
+          - store_artifacts:
+                path: var/logs
 
   back_behat_legacy:
     machine:
@@ -184,10 +195,22 @@ jobs:
           command: |
             TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy | circleci tests split)
             .circleci/run_behat.sh $TESTFILES
+      - run:
+          name: Gather Junit test result files in the same directory to improve the render of failing tests
+          command: |
+              set -e
+              cd var/tests/behat
+              sudo chmod -R 777 .
+              for subdir in */*; do mv "${subdir}" "${subdir/\//_}"; done
+          when: always
       - store_test_results:
           path: var/tests/behat
       - store_artifacts:
           path: var/tests/behat
+      - store_artifacts:
+          path: var/tests/screenshots
+      - store_artifacts:
+          path: var/logs
 
   front_static_acceptance_and_integration:
       machine:
@@ -205,12 +228,15 @@ jobs:
         - run:
             name: Front unit tests
             command: docker-compose run --rm node yarn run unit
+            when: always
         - run:
             name: Front acceptance tests
             command: MAX_RANDOM_LATENCY_MS=100 docker-compose run --rm node yarn run acceptance ./tests/features
+            when: always
         - run:
             name: Front integration tests
             command: docker-compose run --rm node yarn run integration
+            when: always
 
 workflows:
   version: 2

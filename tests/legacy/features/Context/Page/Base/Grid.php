@@ -148,7 +148,11 @@ class Grid extends Index
         'identifier' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Grid\Filter\StringDecorator',
-        ]
+        ],
+        'reference-entity-collection' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\Select2ChoiceDecorator',
+        ],
     ];
 
     /**

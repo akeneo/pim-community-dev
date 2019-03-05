@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterInterface;
@@ -34,9 +36,20 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
     /** @var CompleteFilterInterface */
     private $completenessGridFilterQuery;
 
-    public function __construct(CompleteFilterInterface $completenessGridFilterQuery)
-    {
+    /** @var ChannelRepositoryInterface */
+    private $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
+    public function __construct(
+        CompleteFilterInterface $completenessGridFilterQuery,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository
+    ) {
         $this->completenessGridFilterQuery = $completenessGridFilterQuery;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -152,10 +165,12 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
     {
         $ancestorsIds = $this->getAncestorsIds($productModel);
         $ancestorsCodes = $this->getAncestorsCodes($productModel);
+        $ancestorsLabels = $this->getAncestorsLabels($productModel);
 
         $ancestors = [
-            'ids'   => $ancestorsIds,
+            'ids' => $ancestorsIds,
             'codes' => $ancestorsCodes,
+            'labels' => $ancestorsLabels,
         ];
 
         return $ancestors;
@@ -191,5 +206,113 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
         }
 
         return $ancestorsCodes;
+    }
+
+    /**
+     * Retrieves ancestors labels for each locales and channels.
+     *
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    private function getAncestorsLabels(ProductModelInterface $productModel): array
+    {
+        $family = $productModel->getFamily();
+        if (null === $family) {
+            return [];
+        }
+
+        $attributeAsLabel = $family->getAttributeAsLabel();
+        if (null === $attributeAsLabel) {
+            return [];
+        }
+
+        $ancestorsLabels = [];
+        $attributeCodeAsLabel = $attributeAsLabel->getCode();
+        switch (true) {
+            case $attributeAsLabel->isScopable() && $attributeAsLabel->isLocalizable():
+                $ancestorsLabels = $this->getLocalizableAndScopableLabels($productModel, $attributeCodeAsLabel);
+                break;
+
+            case $attributeAsLabel->isScopable():
+                $ancestorsLabels = $this->getScopableLabels($productModel, $attributeCodeAsLabel);
+                break;
+
+            case $attributeAsLabel->isLocalizable():
+                $ancestorsLabels = $this->getLocalizableLabels($productModel, $attributeCodeAsLabel);
+                break;
+
+            default:
+                $value = $productModel->getValue($attributeCodeAsLabel);
+                if (null !== $value) {
+                    $ancestorsLabels['<all_channels>']['<all_locales>'] = $value->getData();
+                }
+                break;
+        }
+
+        return $ancestorsLabels;
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     * @param string $attributeCodeAsLabel
+     *
+     * @return array
+     */
+    private function getLocalizableAndScopableLabels(
+        ProductModelInterface $productModel,
+        string $attributeCodeAsLabel
+    ): array {
+        $ancestorsLabels = [];
+        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        foreach ($this->channelRepository->getChannelCodes() as $channelCode) {
+            foreach ($localeCodes as $localeCode) {
+                $value = $productModel->getValue($attributeCodeAsLabel, $localeCode, $channelCode);
+                if (null !== $value) {
+                    $ancestorsLabels[$channelCode][$localeCode] = $value->getData();
+                }
+            }
+        }
+
+        return $ancestorsLabels;
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     * @param string $attributeCodeAsLabel
+     *
+     * @return array
+     */
+    private function getScopableLabels(ProductModelInterface $productModel, string $attributeCodeAsLabel): array
+    {
+        $ancestorsLabels = [];
+        foreach ($this->channelRepository->getChannelCodes() as $channelCode) {
+            $value = $productModel->getValue($attributeCodeAsLabel, null, $channelCode);
+            if (null !== $value) {
+                $ancestorsLabels[$channelCode]['<all_locales>'] = $value->getData();
+            }
+        }
+
+        return $ancestorsLabels;
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     * @param string $attributeCodeAsLabel
+     *
+     * @return array
+     */
+    private function getLocalizableLabels(ProductModelInterface $productModel, string $attributeCodeAsLabel): array
+    {
+        $ancestorsLabels = [];
+        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        foreach ($localeCodes as $localeCode) {
+            $value = $productModel->getValue($attributeCodeAsLabel, $localeCode);
+            if (null !== $value) {
+                $ancestorsLabels['<all_channels>'][$localeCode] = $value->getData();
+            }
+        }
+
+        return $ancestorsLabels;
     }
 }

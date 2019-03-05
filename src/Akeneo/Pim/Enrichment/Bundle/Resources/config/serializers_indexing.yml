@@ -157,6 +157,8 @@ services:
         class: '%pim_catalog.normalizer.indexing_product_and_product_model.product_model.properties.class%'
         arguments:
             - '@pim_catalog.doctrine.query.complete_filter'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 40 }
 
@@ -170,6 +172,9 @@ services:
 
     pim_catalog.normalizer.indexing_product_and_product_model.product.properties:
         class: '%pim_catalog.normalizer.indexing_product_and_product_model.product.properties.class%'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 40 }
 

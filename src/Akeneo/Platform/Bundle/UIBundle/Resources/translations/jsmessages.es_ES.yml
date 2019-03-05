@@ -149,6 +149,7 @@ pim_common:
   permissions: Permisos
   previous: Previo
   properties: Propiedades
+  remove: Quitar
   required_label: (obligatorio)
   save: Guardar
   select2:

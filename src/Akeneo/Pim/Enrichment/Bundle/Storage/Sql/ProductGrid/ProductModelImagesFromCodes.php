@@ -107,8 +107,8 @@ final class ProductModelImagesFromCodes
             SELECT 
                 product_model_code,
                 CASE
-                    WHEN product_model_level = 0 AND image_code_level = 1 AND parent_id IS NOT NULL THEN 'image_in_sub_product_model'
-                    WHEN product_model_level = 0 AND image_code_level = 1 AND parent_id IS NULL THEN 'image_in_variant_product'
+                    WHEN product_model_level = 0 AND image_code_level = 1 AND number_level = 2 THEN 'image_in_sub_product_model'
+                    WHEN product_model_level = 0 AND image_code_level = 1 AND number_level = 1 THEN 'image_in_variant_product'
                     WHEN product_model_level = 0 AND image_code_level = 2 THEN 'image_in_variant_product'
                     WHEN product_model_level = 1 AND image_code_level = 1 THEN 'image_in_current_or_parent_product_model'
                     WHEN product_model_level = 1 AND image_code_level = 2 THEN 'image_in_variant_product'
@@ -117,7 +117,7 @@ final class ProductModelImagesFromCodes
             FROM (
                 SELECT 
                     pm.code as product_model_code,
-                    pm.parent_id,
+                    COUNT(all_attribute_sets.family_variant_id) as number_level,
                     pm.lvl as product_model_level,
                     fv_set.level as image_code_level
                 FROM
@@ -128,8 +128,10 @@ final class ProductModelImagesFromCodes
                     JOIN pim_catalog_family_variant_has_variant_attribute_sets attr_set ON  attr_set.family_variant_id = fv.id
                     JOIN pim_catalog_family_variant_attribute_set fv_set ON fv_set.id = variant_attribute_sets_id
                     JOIN pim_catalog_variant_attribute_set_has_attributes attr ON attr.variant_attribute_set_id = fv_set.id AND attr.attributes_id = a_image.id
+                    JOIN pim_catalog_family_variant_has_variant_attribute_sets all_attribute_sets ON  all_attribute_sets.family_variant_id = fv.id
                 WHERE 
                     pm.code IN (:codes)
+                GROUP BY pm.code, all_attribute_sets.family_variant_id, fv_set.level
             ) as product_models
 SQL;
 
@@ -242,7 +244,6 @@ SQL;
             LIMIT 1
 SQL;
 
-        $images = [];
         foreach ($codes as $code) {
             $row = $this->connection->executeQuery(
                 $sql,
