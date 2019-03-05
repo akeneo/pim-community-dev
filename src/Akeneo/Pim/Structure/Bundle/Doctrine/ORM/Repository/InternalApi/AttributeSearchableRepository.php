@@ -69,7 +69,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                 'is_locale_specific'     => null,
                 'useable_as_grid_filter' => null,
                 'families'               => null,
-                'exclude_identifiers_from_family' => null,
+                'excluded_family'        => null,
             ]
         );
         $resolver->setAllowedTypes('identifiers', 'array');
@@ -87,7 +87,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver->setAllowedTypes('is_locale_specific', ['bool', 'null']);
         $resolver->setAllowedTypes('useable_as_grid_filter', ['bool', 'null']);
         $resolver->setAllowedTypes('families', ['array', 'null']);
-        $resolver->setAllowedTypes('exclude_identifiers_from_family', ['string', 'null']);
+        $resolver->setAllowedTypes('excluded_family', ['string', 'null']);
 
         $options = $resolver->resolve($options);
 
@@ -126,10 +126,10 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
 
         if (null !== $search) {
             $qb->leftJoin('a.translations', 'at');
-            $qb->where('a.code like :search')->setParameter('search', '%'.$search.'%');
+            $qb->where('a.code like :search')->setParameter('search', '%' . $search . '%');
             if (null !== $localeCode = $options['locale']) {
                 $qb->orWhere('at.label like :search AND at.locale like :locale');
-                $qb->setParameter('search', '%'.$search.'%');
+                $qb->setParameter('search', '%' . $search . '%');
                 $qb->setParameter('locale', $localeCode);
             }
         }
@@ -187,10 +187,10 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
             $qb->setParameter('families', $options['families']);
         }
 
-        if (null !== $options['exclude_identifiers_from_family']) {
+        if (null !== $options['excluded_family']) {
             $qb->leftJoin('a.families', 'xf');
             $qb->andWhere('xf.code IS NULL OR xf.code <> :excluded_family');
-            $qb->setParameter('excluded_family', $options['exclude_identifiers_from_family']);
+            $qb->setParameter('excluded_family', $options['excluded_family']);
         }
 
         $qb->leftJoin('a.group', 'ag');
