@@ -193,6 +193,7 @@ define(
                 var project = _.defaults(this.getFormData(), {label: null});
                 project.datagrid_view = DatagridState.get('product-grid', ['filters', 'columns']);
                 project.locale = UserContext.get('catalogLocale');
+                project.channel = UserContext.get('catalogScope');
 
                 this.$el.empty().append(loadingMask.render().$el.show());
 

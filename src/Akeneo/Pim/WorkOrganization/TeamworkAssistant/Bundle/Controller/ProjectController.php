@@ -164,7 +164,6 @@ class ProjectController
             $this->projectUpdater->update($project, $projectData);
         } else {
             $projectData['owner'] = $user->getUsername();
-            $projectData['channel'] = $datagridViewFilters['f']['scope']['value'];
             $projectData['product_filters'] = $this->filterConverter->convert($datagridViewFilters['f']);
 
             $project = $this->projectFactory->create($projectData);
