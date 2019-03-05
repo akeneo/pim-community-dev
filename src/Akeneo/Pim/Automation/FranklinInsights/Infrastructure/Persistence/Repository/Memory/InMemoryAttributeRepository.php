@@ -17,16 +17,17 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface as PimAttributeRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 final class InMemoryAttributeRepository implements AttributeRepositoryInterface
 {
-    /** @var \Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface */
+    /** @var PimAttributeRepositoryInterface */
     private $attributeRepository;
 
-    public function __construct(\Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface $attributeRepository)
+    public function __construct(PimAttributeRepositoryInterface $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
     }

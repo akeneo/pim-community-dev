@@ -50,6 +50,7 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
         $identifiersMappingRepository,
         Attribute $asin
     ): void {
+        $asin->getCode()->willReturn(new AttributeCode('asin'));
         $identifiersMapping = new IdentifiersMapping(['asin' => $asin->getWrappedObject()]);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);

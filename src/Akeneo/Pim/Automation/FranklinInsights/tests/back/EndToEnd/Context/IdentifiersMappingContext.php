@@ -212,7 +212,7 @@ class IdentifiersMappingContext extends PimContext
                         return false;
                     }
                 } else {
-                    if ($expectedPimCode !== $mappedAttribute->getCode()) {
+                    if ($expectedPimCode !== (string) $mappedAttribute->getCode()) {
                         return false;
                     }
                 }

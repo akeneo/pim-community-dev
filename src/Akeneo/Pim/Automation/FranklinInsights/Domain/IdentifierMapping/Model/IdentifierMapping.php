@@ -29,6 +29,9 @@ class IdentifierMapping
     /** @var Attribute|null */
     private $attribute;
 
+    /** @var string|null */
+    private $attributeCode;
+
     /**
      * @param string $franklinCode
      * @param Attribute|null $attribute
@@ -37,6 +40,9 @@ class IdentifierMapping
     {
         $this->franklinCode = $franklinCode;
         $this->attribute = $attribute;
+        if ($attribute instanceof Attribute && !empty($attribute->getCode())) {
+            $this->attributeCode = (string) $attribute->getCode();
+        }
     }
 
     /**
@@ -53,5 +59,13 @@ class IdentifierMapping
     public function getAttribute(): ?Attribute
     {
         return $this->attribute;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getAttributeCode(): ?string
+    {
+        return $this->attributeCode;
     }
 }

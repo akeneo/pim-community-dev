@@ -81,10 +81,11 @@ class SubscriptionProviderSpec extends ObjectBehavior
         Attribute $ean,
         ValueInterface $eanValue
     ): void {
+        $ean->getCode()->willReturn(new AttributeCode('ean'));
+
         $identifiersMapping = new IdentifiersMapping(['upc' => $ean->getWrappedObject()]);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
-        $ean->getCode()->willReturn(new AttributeCode('ean'));
         $eanValue->hasData()->willReturn(false);
         $product->getValue('ean')->willReturn($eanValue);
         $product->getId()->willReturn(42);
@@ -107,6 +108,9 @@ class SubscriptionProviderSpec extends ObjectBehavior
         FamilyInterface $family,
         FamilyRepositoryInterface $familyRepository
     ): void {
+        $ean->getCode()->willReturn(new AttributeCode('ean'));
+        $sku->getCode()->willReturn(new AttributeCode('sku'));
+
         $identifiersMapping = new IdentifiersMapping(
             [
                 'upc' => $ean->getWrappedObject(),
@@ -114,9 +118,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ]
         );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-
-        $ean->getCode()->willReturn(new AttributeCode('ean'));
-        $sku->getCode()->willReturn(new AttributeCode('sku'));
 
         $product->getId()->willReturn(42);
         $product->getFamily()->willReturn($family);
@@ -170,6 +171,9 @@ class SubscriptionProviderSpec extends ObjectBehavior
         FamilyInterface $family,
         FamilyRepositoryInterface $familyRepository
     ): void {
+        $ean->getCode()->willReturn(new AttributeCode('ean'));
+        $sku->getCode()->willReturn(new AttributeCode('sku'));
+
         $identifiersMapping = new IdentifiersMapping(
             [
                 'upc' => $ean->getWrappedObject(),
@@ -177,9 +181,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ]
         );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-
-        $ean->getCode()->willReturn(new AttributeCode('ean'));
-        $sku->getCode()->willReturn(new AttributeCode('sku'));
 
         $product->getId()->willReturn(42);
         $product->getFamily()->willReturn($family);

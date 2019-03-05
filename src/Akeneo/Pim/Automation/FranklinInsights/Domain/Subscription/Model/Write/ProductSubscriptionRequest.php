@@ -64,7 +64,7 @@ final class ProductSubscriptionRequest
                 continue;
             }
 
-            $value = $this->product->getValue($mappedAttribute->getCode());
+            $value = $this->product->getValue((string) $mappedAttribute->getCode());
             if (null !== $value && $value->hasData()) {
                 $mapped[$franklinCode] = (string) $value;
             }

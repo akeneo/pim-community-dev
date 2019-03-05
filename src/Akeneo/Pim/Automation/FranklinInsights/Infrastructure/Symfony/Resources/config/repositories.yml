@@ -8,6 +8,7 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\IdentifiersMappingRepository'
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@akeneo.pim.automation.franklin_insights.repository.attribute'
 
     akeneo.pim.automation.franklin_insights.repository.product_subscription:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\ProductSubscriptionRepository'

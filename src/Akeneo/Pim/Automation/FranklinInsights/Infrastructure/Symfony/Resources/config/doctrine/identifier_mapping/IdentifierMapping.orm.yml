@@ -15,10 +15,8 @@ Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\Identifier
         franklinCode:
             type: string
             column: franklin_code
-    oneToOne:
-        attribute:
-            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
-            joinColumns:
-                attribute_id:
-                    referencedColumnName: id
-                    onDelete: 'SET NULL'
+        attributeCode:
+            column: attribute_id
+            type: string
+            unique: true
+            nullable: true

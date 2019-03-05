@@ -50,8 +50,10 @@ class Attribute
     /** @var string|null */
     private $defaultMetricUnit;
 
-    public function __construct(AttributeCode $code, int $id, string $type, bool $isScopable, bool $isLocalizable, bool $decimalsAllowed, bool $isLocaleSpecific, array $labels, ?string $metricFamily, ?string $defaultMetricUnit)
-    {
+    public function __construct(
+        AttributeCode $code, int $id, string $type, bool $isScopable, bool $isLocalizable, bool $decimalsAllowed,
+        bool $isLocaleSpecific, array $labels, ?string $metricFamily, ?string $defaultMetricUnit
+    ) {
         $this->code = $code;
         $this->id = $id;
         $this->type = $type;
@@ -70,6 +72,14 @@ class Attribute
     public function getCode(): AttributeCode
     {
         return $this->code;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     /**

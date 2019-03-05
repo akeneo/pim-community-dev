@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Query\Doctrine;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
@@ -43,10 +45,10 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
         $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
                         ->find();
         $mapping
-            ->map('asin', $this->getAttribute('asin'))
-            ->map('upc', $this->getAttribute('ean'))
-            ->map('mpn', $this->getAttribute('pim_mpn'))
-            ->map('brand', $this->getAttribute('pim_brand'));
+            ->map('asin', $this->buildAttribute('asin'))
+            ->map('upc', $this->buildAttribute('ean'))
+            ->map('mpn', $this->buildAttribute('pim_mpn'))
+            ->map('brand', $this->buildAttribute('pim_brand'));
         $this->saveMapping($mapping);
 
         $product = $this->createProduct(
@@ -89,10 +91,10 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
         $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
                         ->find();
         $mapping
-            ->map('asin', $this->getAttribute('asin'))
-            ->map('upc', $this->getAttribute('ean'))
-            ->map('mpn', $this->getAttribute('pim_mpn'))
-            ->map('brand', $this->getAttribute('pim_brand'));
+            ->map('asin', $this->buildAttribute('asin'))
+            ->map('upc', $this->buildAttribute('ean'))
+            ->map('mpn', $this->buildAttribute('pim_mpn'))
+            ->map('brand', $this->buildAttribute('pim_brand'));
         $this->saveMapping($mapping);
 
         $product = $this->createProduct(
@@ -142,7 +144,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
                 'pim_brand' => 'akeneo',
             ]
         );
-        $mapping->map('upc', $this->getAttribute('ean'));
+        $mapping->map('upc', $this->buildAttribute('ean'));
         $this->saveMapping($mapping);
 
         $nonExistingProductId = $product->getId() + 10;
@@ -172,7 +174,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
     {
         $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
                         ->find();
-        $mapping->map('upc', $this->getAttribute('ean'));
+        $mapping->map('upc', $this->buildAttribute('ean'));
         $this->saveMapping($mapping);
 
         $product = $this->createProduct(
@@ -203,10 +205,10 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
         $mapping = $this->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.identifiers_mapping')
                         ->find();
         $mapping
-            ->map('asin', $this->getAttribute('asin'))
-            ->map('upc', $this->getAttribute('ean'))
-            ->map('mpn', $this->getAttribute('pim_mpn'))
-            ->map('brand', $this->getAttribute('pim_brand'));
+            ->map('asin', $this->buildAttribute('asin'))
+            ->map('upc', $this->buildAttribute('ean'))
+            ->map('mpn', $this->buildAttribute('pim_mpn'))
+            ->map('brand', $this->buildAttribute('pim_brand'));
         $this->saveMapping($mapping);
 
         $product = $this->createProduct('some_sku', []);
@@ -325,5 +327,10 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
     private function getAttribute(string $name): ?AttributeInterface
     {
         return $this->getFromTestContainer('pim_catalog.repository.attribute')->findOneByIdentifier($name);
+    }
+
+    private function buildAttribute($name)
+    {
+        return new Attribute(new AttributeCode($name), $this->getAttribute($name)->getId(), 'pim_catalog_text', false, false, false, false, [], null, null);
     }
 }

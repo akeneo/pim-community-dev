@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -28,12 +29,13 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     /** @var EntityManagerInterface */
     private $em;
 
-    /**
-     * @param EntityManagerInterface $em
-     */
-    public function __construct(EntityManagerInterface $em)
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    public function __construct(EntityManagerInterface $em, AttributeRepositoryInterface $attributeRepository)
     {
         $this->em = $em;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -63,7 +65,10 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
         $mappedAttributes = [];
 
         foreach ($identifierMappings as $identifierMapping) {
-            $mappedAttributes[$identifierMapping->getFranklinCode()] = $identifierMapping->getAttribute();
+            if (! empty($identifierMapping->getAttributeCode())) {
+                $attribute = $this->attributeRepository->findOneByIdentifier($identifierMapping->getAttributeCode());
+                $mappedAttributes[$identifierMapping->getFranklinCode()] = $attribute;
+            }
         }
 
         return new IdentifiersMapping($mappedAttributes);
