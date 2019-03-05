@@ -8,7 +8,8 @@
 
 ## Improvements
 
-PIM-7933: Display the number of records and results for an entity in the grid
+- PIM-7933: Display the number of records and results for an entity in the grid
+- AOB-337: Display the expiration date of the certificate on the SSO config page
 
 # 3.0.5 (2019-02-25)
 
