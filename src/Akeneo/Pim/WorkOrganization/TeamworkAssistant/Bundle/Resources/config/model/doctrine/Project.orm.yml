@@ -27,6 +27,12 @@ Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\Project:
         productFilters:
             type: array
             nullable: true
+        isCompletenessComputed:
+            type: boolean
+            column: is_completeness_computed
+            nullable: false
+            options:
+                default: 1
     manyToOne:
         owner:
             targetEntity: Akeneo\UserManagement\Component\Model\UserInterface

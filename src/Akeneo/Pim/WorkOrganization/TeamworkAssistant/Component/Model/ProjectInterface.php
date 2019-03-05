@@ -163,4 +163,14 @@ interface ProjectInterface
      * @return ArrayCollection
      */
     public function getProjectStatus();
+
+    /**
+     * @return bool
+     */
+    public function isCompletenessComputed(): bool;
+
+    /**
+     * @param bool $isCompletenessComputed
+     */
+    public function setIsCompletenessComputed(bool $isCompletenessComputed): void;
 }

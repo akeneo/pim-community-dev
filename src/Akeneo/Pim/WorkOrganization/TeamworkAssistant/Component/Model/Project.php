@@ -59,6 +59,9 @@ class Project implements ProjectInterface
     /** @var ArrayCollection */
     protected $projectStatus;
 
+    /** @var bool */
+    protected $isCompletenessComputed;
+
     public function __construct()
     {
         $this->userGroups = new ArrayCollection();
@@ -275,5 +278,21 @@ class Project implements ProjectInterface
     public function getProjectStatus()
     {
         return $this->projectStatus;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCompletenessComputed(): bool
+    {
+        return $this->isCompletenessComputed;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIsCompletenessComputed(bool $isCompletenessComputed): void
+    {
+        $this->isCompletenessComputed = $isCompletenessComputed;
     }
 }
