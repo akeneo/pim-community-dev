@@ -40,12 +40,9 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     /** @var LocaleRepositoryInterface */
     private $localeRepository;
 
-    /**
-     * @todo merge master: remove "= null"
-     */
     public function __construct(
-        ChannelRepositoryInterface $channelRepository = null,
-        LocaleRepositoryInterface $localeRepository = null
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository
     ) {
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
@@ -244,8 +241,6 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     }
 
     /**
-     * @todo merge master: remove "$hasRepositories".
-     *
      * Retrieves ancestors labels for each locales and channels.
      *
      * @param EntityWithFamilyVariantInterface $entity
@@ -264,23 +259,18 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
             return [];
         }
 
-        $hasRepositories = false;
-        if (null !== $this->channelRepository && null !== $this->localeRepository) {
-            $hasRepositories = true;
-        }
-
         $ancestorsLabels = [];
         $attributeCodeAsLabel = $attributeAsLabel->getCode();
         switch (true) {
-            case $attributeAsLabel->isScopable() && $attributeAsLabel->isLocalizable() && $hasRepositories:
+            case $attributeAsLabel->isScopable() && $attributeAsLabel->isLocalizable():
                 $ancestorsLabels = $this->getLocalizableAndScopableLabels($entity, $attributeCodeAsLabel);
                 break;
 
-            case $attributeAsLabel->isScopable() && $hasRepositories:
+            case $attributeAsLabel->isScopable():
                 $ancestorsLabels = $this->getScopableLabels($entity, $attributeCodeAsLabel);
                 break;
 
-            case $attributeAsLabel->isLocalizable() && $hasRepositories:
+            case $attributeAsLabel->isLocalizable():
                 $ancestorsLabels = $this->getLocalizableLabels($entity, $attributeCodeAsLabel);
                 break;
 
