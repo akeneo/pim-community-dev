@@ -75,8 +75,6 @@ services:
     akeneo.pim.automation.franklin_insights.subscriber.subscription:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Subscription\SubscriptionSubscriber'
         arguments:
-            - '@pim_catalog.elasticsearch.indexer.product'
-            - '@pim_catalog.elasticsearch.indexer.product'
-            - '@pim_catalog.repository.product'
+            - '@akeneo.pim.automation.franklin_insights.elasticsearch.updater.product_subscription'
         tags:
             - { name: kernel.event_subscriber }

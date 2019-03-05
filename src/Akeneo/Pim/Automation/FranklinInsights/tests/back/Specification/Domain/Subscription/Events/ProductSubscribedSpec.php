@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\Event;
 
 class ProductSubscribedSpec extends ObjectBehavior
 {
-    public function let(ProductInterface $subscribedProduct): void
+    public function let(ProductSubscription $productSubscription): void
     {
-        $this->beConstructedWith($subscribedProduct);
+        $this->beConstructedWith($productSubscription);
     }
 
     public function it_is_an_event(): void
@@ -35,8 +35,8 @@ class ProductSubscribedSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ProductSubscribed::class);
     }
 
-    public function it_returns_the_subscribed_product($subscribedProduct): void
+    public function it_returns_the_product_subscription($productSubscription): void
     {
-        $this->getSubscribedProduct()->shouldReturn($subscribedProduct);
+        $this->getProductSubscription()->shouldReturn($productSubscription);
     }
 }

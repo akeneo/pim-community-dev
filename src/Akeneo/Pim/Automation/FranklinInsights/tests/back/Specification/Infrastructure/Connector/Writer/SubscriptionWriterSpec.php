@@ -16,7 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Co
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductsSubscribed;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
@@ -101,15 +101,16 @@ class SubscriptionWriterSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('subscribed')->shouldBeCalledTimes(2);
         $productSubscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalledTimes(2);
-        $eventDispatcher->dispatch(
-            ProductsSubscribed::EVENT_NAME,
-            Argument::that(function ($event) use ($product1, $product2) {
-                return $event instanceof ProductsSubscribed &&
-                    2 === count($event->getSubscribedProducts()) &&
-                    $product1->getWrappedObject() === $event->getSubscribedProducts()[0] &&
-                    $product2->getWrappedObject() === $event->getSubscribedProducts()[1];
-            })
-        )->shouldBeCalled();
+
+        $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($productSubscribed) {
+            return $productSubscribed instanceof ProductSubscribed &&
+                '123-465-789' === $productSubscribed->getProductSubscription()->getSubscriptionId();
+        }))->shouldBeCalled();
+
+        $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($productSubscribed) {
+            return $productSubscribed instanceof ProductSubscribed &&
+                'abc-def-987' === $productSubscribed->getProductSubscription()->getSubscriptionId();
+        }))->shouldBeCalled();
 
         $this->write($items)->shouldReturn(null);
     }
@@ -155,14 +156,10 @@ class SubscriptionWriterSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('subscribed')->shouldBeCalledTimes(1);
         $productSubscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalledTimes(1);
-        $eventDispatcher->dispatch(
-            ProductsSubscribed::EVENT_NAME,
-            Argument::that(function ($event) use ($product2) {
-                return $event instanceof ProductsSubscribed &&
-                    1 === count($event->getSubscribedProducts()) &&
-                    $product2->getWrappedObject() === $event->getSubscribedProducts()[0];
-            })
-        )->shouldBeCalled();
+        $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($productSubscribed) {
+            return $productSubscribed instanceof ProductSubscribed &&
+                'abc-def-987' === $productSubscribed->getProductSubscription()->getSubscriptionId();
+        }))->shouldBeCalled();
 
         $this->write($items)->shouldReturn(null);
     }

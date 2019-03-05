@@ -13,25 +13,19 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Subscription;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductsSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductUnsubscribed;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\ProductSubscriptionUpdater;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Subscription\SubscriptionSubscriber;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SubscriptionSubscriberSpec extends ObjectBehavior
 {
-    public function let(
-        IndexerInterface $indexer,
-        BulkIndexerInterface $bulkIndexer,
-        ProductRepositoryInterface $productRepository
-    ): void {
-        $this->beConstructedWith($indexer, $bulkIndexer, $productRepository);
+    public function let(ProductSubscriptionUpdater $productSubscriptionUpdater): void
+    {
+        $this->beConstructedWith($productSubscriptionUpdater);
     }
 
     public function it_is_an_event_subscriber(): void
@@ -47,44 +41,28 @@ class SubscriptionSubscriberSpec extends ObjectBehavior
     public function it_subscribes_to_a_product_subscribed(): void
     {
         $this::getSubscribedEvents()->shouldHaveKey(ProductSubscribed::EVENT_NAME);
-        $this::getSubscribedEvents()->shouldHaveKey(ProductsSubscribed::EVENT_NAME);
         $this::getSubscribedEvents()->shouldHaveKey(ProductUnsubscribed::EVENT_NAME);
     }
 
     public function it_reindexes_product_which_has_been_subscribed(
-        $indexer,
+        ProductSubscriptionUpdater $productSubscriptionUpdater,
         ProductSubscribed $event,
-        ProductInterface $subscribedProduct
+        ProductSubscription $productSubscription
     ): void {
-        $event->getSubscribedProduct()->willReturn($subscribedProduct);
-        $indexer->index($subscribedProduct)->shouldBeCalled();
+        $event->getProductSubscription()->willReturn($productSubscription);
+        $productSubscription->getProductId()->willReturn(42);
+        $productSubscriptionUpdater->updateSubscribedProduct(42)->shouldBeCalled();
 
-        $this->reindexSubscribedProduct($event);
-    }
-
-    public function it_reindexes_products_which_have_been_subscribed(
-        $bulkIndexer,
-        ProductsSubscribed $event,
-        ProductInterface $subscribedProductA,
-        ProductInterface $subscribedProductB,
-        ProductInterface $subscribedProductC
-    ): void {
-        $event->getSubscribedProducts()->willReturn([$subscribedProductA, $subscribedProductB, $subscribedProductC]);
-        $bulkIndexer->indexAll([$subscribedProductA, $subscribedProductB, $subscribedProductC])->shouldBeCalled();
-
-        $this->bulkReindexProducts($event);
+        $this->updateSubscribedProduct($event);
     }
 
     public function it_reindexes_product_which_has_been_unsubscribed(
-        $indexer,
-        $productRepository,
-        ProductUnsubscribed $event,
-        ProductInterface $product
+        ProductSubscriptionUpdater $productSubscriptionUpdater,
+        ProductUnsubscribed $event
     ): void {
         $event->getUnsubscribedProductId()->willReturn(42);
-        $productRepository->findOneByIdentifier(42)->willReturn($product);
-        $indexer->index($product)->shouldBeCalled();
+        $productSubscriptionUpdater->updateUnsubscribedProduct(42)->shouldBeCalled();
 
-        $this->reindexUnsubscribedProduct($event);
+        $this->updateUnsubscribedProduct($event);
     }
 }

@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductsSubscribed;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
@@ -94,7 +94,6 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
         $collection = $this->subscriptionProvider->bulkSubscribe($items);
         $warnings = $collection->warnings();
 
-        $subscribedProducts = [];
         foreach ($items as $item) {
             $productId = $item->getProduct()->getId();
             $response = $collection->get($productId);
@@ -115,10 +114,9 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
             $subscription = $this->buildSubscription($item, $response);
             $this->productSubscriptionRepository->save($subscription);
             $this->stepExecution->incrementSummaryInfo('subscribed');
-            $subscribedProducts[] = $item->getProduct();
-        }
 
-        $this->eventDispatcher->dispatch(ProductsSubscribed::EVENT_NAME, new ProductsSubscribed($subscribedProducts));
+            $this->eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, new ProductSubscribed($subscription));
+        }
     }
 
     /**

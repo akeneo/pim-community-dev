@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -25,16 +25,16 @@ class ProductSubscribed extends Event
 {
     public const EVENT_NAME = 'franklin_insights.product_subscribed';
 
-    /** @var ProductInterface */
-    private $subscribedProduct;
+    /** @var ProductSubscription */
+    private $productSubscription;
 
-    public function __construct(ProductInterface $subscribedProduct)
+    public function __construct(ProductSubscription $productSubscription)
     {
-        $this->subscribedProduct = $subscribedProduct;
+        $this->productSubscription = $productSubscription;
     }
 
-    public function getSubscribedProduct(): ProductInterface
+    public function getProductSubscription(): ProductSubscription
     {
-        return $this->subscribedProduct;
+        return $this->productSubscription;
     }
 }

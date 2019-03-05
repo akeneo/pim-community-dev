@@ -37,7 +37,7 @@ class AkeneoFranklinInsightsExtension extends Extension
         $loader->load('cursors.yml');
         $loader->load('datagrid/services.yml');
         $loader->load('data_provider/franklin.yml');
-        $loader->load('elasticsearch/query_builders.yml');
+        $loader->load('elasticsearch/services.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('handlers.yml');
         $loader->load('jobs.yml');

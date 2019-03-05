@@ -126,7 +126,7 @@ class SubscribeProductHandler
 
         $this->createProposalHandler->handle(new CreateProposalCommand($subscription));
 
-        $this->eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, new ProductSubscribed($product));
+        $this->eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, new ProductSubscribed($subscription));
     }
 
     /**
