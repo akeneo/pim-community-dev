@@ -28,7 +28,7 @@ define(
             fetchItems: function (searchParameters) {
                 return this.getItemsToExclude()
                     .then(function (familyCode) {
-                        searchParameters.options.exclude_identifiers_from_family = familyCode;
+                        searchParameters.options.excluded_family = familyCode;
 
                         return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters)
                             .then(function (attributes) {
