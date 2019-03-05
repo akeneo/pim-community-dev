@@ -19,12 +19,11 @@ extensions:
             logout: pim_menu.user.logout
 
     akeneo-franklin-insights-settings-attributes-mapping-index-title:
-        module: pim/common/grid-title
+        module: akeneo/franklin-insights/view/settings/attributes-mapping/title
         parent: akeneo-franklin-insights-settings-attributes-mapping-edit
         targetZone: title
         config:
-            countable: false
-            title: akeneo_franklin_insights.settings.page_title
+            title: akeneo_franklin_insights.settings.attributes_mapping_title
 
     akeneo-franklin-insights-settings-attributes-mapping-index-save-buttons:
         module: pim/form/common/save-buttons
