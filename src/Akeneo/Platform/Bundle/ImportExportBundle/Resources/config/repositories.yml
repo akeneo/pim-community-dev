@@ -16,4 +16,3 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%akeneo_batch.entity.job_instance.class%'
-

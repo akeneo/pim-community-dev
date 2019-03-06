@@ -1,0 +1,5 @@
+services:
+    pim_import_export.registry.not_visible_jobs:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Registry\NotVisibleJobsRegistry'
+        arguments:
+            - !tagged akeneo_batch.job.not_visible

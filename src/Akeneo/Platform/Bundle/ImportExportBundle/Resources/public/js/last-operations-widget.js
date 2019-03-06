@@ -2,12 +2,13 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'pim/router',
         'pim/dashboard/abstract-widget',
-        'pim/dashboard/template/last-operations-widget',
-        'pim/dashboard/template/view-all-btn'
+        'pim/importexport/template/widget/last-operations-widget',
+        'pim/importexport/template/widget/view-all-btn'
     ],
-    function ($, _, router, AbstractWidget, template, viewAllBtnTemplate) {
+    function ($, _, __, router, AbstractWidget, template, viewAllBtnTemplate) {
         'use strict';
 
         return AbstractWidget.extend({
@@ -110,11 +111,14 @@ define(
                 this.options.contentLoaded = true;
 
                 _.each(data, function (operation) {
+                    const statusLabel = __(operation.statusLabel);
+
                     operation.labelClass = this.labelClasses[operation.status] ?
                         this.labelClasses[operation.status]
                         : '';
-                    operation.statusLabel = operation.statusLabel.slice(0, 1).toUpperCase() +
-                        operation.statusLabel.slice(1).toLowerCase();
+
+                    operation.statusLabel = statusLabel.slice(0, 1).toUpperCase() +
+                        statusLabel.slice(1).toLowerCase();
                 }, this);
 
                 return data;

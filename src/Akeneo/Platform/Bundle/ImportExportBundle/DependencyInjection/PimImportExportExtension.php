@@ -31,10 +31,12 @@ class PimImportExportExtension extends Extension
         $loader->load('form_types.yml');
         $loader->load('forms.yml');
         $loader->load('grid.yml');
-        $loader->load('managers.yml');
         $loader->load('normalizers.yml');
+        $loader->load('queries.yml');
+        $loader->load('registries.yml');
         $loader->load('repositories.yml');
         $loader->load('services.yml');
+        $loader->load('widget.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');

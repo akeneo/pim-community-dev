@@ -1,8 +1,4 @@
 config:
     paths:
-        pim/dashboard/abstract-widget:        pimdashboard/js/abstract-widget
-        pim/dashboard/last-operations-widget: pimdashboard/js/last-operations-widget
-        pim/dashboard/widget-container:       pimdashboard/js/widget-container
-
-        pim/dashboard/template/last-operations-widget: pimdashboard/templates/last-operations-widget.html
-        pim/dashboard/template/view-all-btn:           pimdashboard/templates/view-all-btn.html
+        pim/dashboard/abstract-widget: pimdashboard/js/abstract-widget
+        pim/dashboard/widget-container: pimdashboard/js/widget-container

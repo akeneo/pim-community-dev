@@ -173,3 +173,12 @@ services:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.job-tracker-grid, method: onBuildAfter }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-import-executions-grid, method: onBuildAfter }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-export-executions-grid, method: onBuildAfter }
+
+    pim_enrich.event_listener.black_list_job_codes_from_grid_listener:
+        class: 'Oro\Bundle\PimDataGridBundle\EventListener\BlackListJobsFromGridListener'
+        arguments:
+            - '@pim_import_export.registry.not_visible_jobs'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.job-tracker-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-import-executions-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-export-executions-grid, method: onBuildAfter }

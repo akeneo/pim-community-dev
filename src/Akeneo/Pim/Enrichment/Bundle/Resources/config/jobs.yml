@@ -109,6 +109,8 @@ services:
                 name: akeneo_batch.job
                 connector: '%pim_catalog.compute_descendants.connector_name%'
                 type: '%pim_catalog.compute_product_models_descendants.job_type%'
+            -
+                name: akeneo_batch.job.not_visible
 
     pim_catalog.job.compute_completeness_of_products_family:
         class: '%pim_connector.job.simple_job.class%'
@@ -124,6 +126,8 @@ services:
                 name: akeneo_batch.job
                 connector: '%pim_catalog.compute_completeness_of_products_family.connector_name%'
                 type: '%pim_catalog.compute_completeness_of_products_family.job_type%'
+            -
+                name: akeneo_batch.job.not_visible
 
     pim_catalog.tasklet.compute_family_variant_structure_changes:
         class: '%pim_catalog.tasklet.compute_family_variant_structure_changes.class%'
@@ -161,6 +165,8 @@ services:
                 name: akeneo_batch.job
                 connector: '%pim_catalog.compute_family_variant_structure_changes.connector_name%'
                 type: '%pim_catalog.compute_family_variant_structure_changes.job_type%'
+            -
+                name: akeneo_batch.job.not_visible
 
     pim_connector.tasklet.csv_family.compute_data_related_to_family_root_product_models:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet'

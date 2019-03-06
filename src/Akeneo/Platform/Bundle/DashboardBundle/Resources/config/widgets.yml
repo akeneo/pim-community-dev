@@ -1,21 +1,6 @@
 parameters:
-    pim_dashboard.widget.registry.class:        Akeneo\Platform\Bundle\DashboardBundle\Widget\Registry
-    pim_dashboard.widget.last_operations.class: Akeneo\Platform\Bundle\DashboardBundle\Widget\LastOperationsWidget
+    pim_dashboard.widget.registry.class: Akeneo\Platform\Bundle\DashboardBundle\Widget\Registry
 
 services:
     pim_dashboard.widget.registry:
         class: '%pim_dashboard.widget.registry.class%'
-
-    ##
-    # Widgets
-    ##
-    pim_dashboard.widget.last_operations:
-        class: '%pim_dashboard.widget.last_operations.class%'
-        arguments:
-            - '@pim_import_export.manager.job_execution'
-            - '@translator'
-            - '@pim_catalog.localization.presenter.datetime'
-            - '@security.token_storage'
-            - '@oro_security.security_facade'
-        tags:
-            - { name: pim_dashboard.widget, position: 30 }
