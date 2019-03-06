@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -53,11 +53,11 @@ class AttributesMapping
     /**
      * @param string $franklinAttrId
      * @param string $franklinAttrType
-     * @param AttributeInterface|null $pimAttribute
+     * @param Attribute|null $pimAttribute
      *
      * @throws \Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException
      */
-    public function map(string $franklinAttrId, string $franklinAttrType, ?AttributeInterface $pimAttribute): void
+    public function map(string $franklinAttrId, string $franklinAttrType, ?Attribute $pimAttribute): void
     {
         $this->mapping[] = new AttributeMapping($franklinAttrId, $franklinAttrType, $pimAttribute);
     }

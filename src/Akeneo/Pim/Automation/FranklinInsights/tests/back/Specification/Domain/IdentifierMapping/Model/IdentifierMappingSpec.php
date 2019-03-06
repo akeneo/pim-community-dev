@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -21,7 +21,7 @@ use PhpSpec\ObjectBehavior;
  */
 class IdentifierMappingSpec extends ObjectBehavior
 {
-    public function let(AttributeInterface $akeneoAttribute): void
+    public function let(Attribute $akeneoAttribute): void
     {
         $this->beConstructedWith('franklin_code', $akeneoAttribute);
     }

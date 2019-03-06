@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 
 /**
  * Identifier Mapping doctrine entity.
@@ -26,14 +26,14 @@ class IdentifierMapping
     /** @var string */
     private $franklinCode;
 
-    /** @var AttributeInterface|null */
+    /** @var Attribute|null */
     private $attribute;
 
     /**
      * @param string $franklinCode
-     * @param AttributeInterface|null $attribute
+     * @param Attribute|null $attribute
      */
-    public function __construct(string $franklinCode, ?AttributeInterface $attribute)
+    public function __construct(string $franklinCode, ?Attribute $attribute)
     {
         $this->franklinCode = $franklinCode;
         $this->attribute = $attribute;
@@ -48,9 +48,9 @@ class IdentifierMapping
     }
 
     /**
-     * @return AttributeInterface|null
+     * @return Attribute|null
      */
-    public function getAttribute(): ?AttributeInterface
+    public function getAttribute(): ?Attribute
     {
         return $this->attribute;
     }

@@ -19,7 +19,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdent
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Attribute\AttributeRemoveSubscriber;
@@ -102,6 +104,8 @@ class AttributeRemoveSubscriberSpec extends ObjectBehavior
         GenericEvent $event,
         AttributeInterface $asin,
         AttributeInterface $upc,
+        Attribute $asinIdentifier,
+        Attribute $upcIdentifier,
         $familyCodesByAttributeQuery,
         $identifiersMappingRepository,
         $saveIdentifiersMappingHandler
@@ -109,12 +113,14 @@ class AttributeRemoveSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($upc);
         $upc->getCode()->willReturn('attribute_code');
         $asin->getCode()->willReturn('asin');
+        $asinIdentifier->getCode()->willReturn(new AttributeCode('asin'));
+        $upcIdentifier->getCode()->willReturn(new AttributeCode('attribute_code'));
 
         $familyCodesByAttributeQuery->execute('attribute_code')->shouldBeCalled();
 
         $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping([
-            'asin' => $asin->getWrappedObject(),
-            'upc' => $upc->getWrappedObject(),
+            'asin' => $asinIdentifier->getWrappedObject(),
+            'upc' => $upcIdentifier->getWrappedObject(),
             'brand' => null,
             'mpn' => null,
         ]));

@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -23,15 +24,15 @@ use PhpSpec\ObjectBehavior;
 class IdentifiersMappingSpec extends ObjectBehavior
 {
     public function let(
-        AttributeInterface $manufacturer,
-        AttributeInterface $model,
-        AttributeInterface $ean,
-        AttributeInterface $sku
+        Attribute $manufacturer,
+        Attribute $model,
+        Attribute $ean,
+        Attribute $sku
     ): void {
-        $manufacturer->getCode()->willReturn('manufacturer');
-        $model->getCode()->willReturn('model');
-        $ean->getCode()->willReturn('ean');
-        $sku->getCode()->willReturn('sku');
+        $manufacturer->getCode()->willReturn(new AttributeCode('manufacturer'));
+        $model->getCode()->willReturn(new AttributeCode('model'));
+        $ean->getCode()->willReturn(new AttributeCode('ean'));
+        $sku->getCode()->willReturn(new AttributeCode('sku'));
 
         $this->beConstructedWith(
             [
@@ -123,10 +124,10 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->isEmpty()->shouldReturn(true);
     }
 
-    public function it_can_tell_if_it_has_been_updated(AttributeInterface $asin): void
+    public function it_can_tell_if_it_has_been_updated(Attribute $asin): void
     {
         $this->isUpdated()->shouldReturn(false);
-        $asin->getCode()->willReturn('asin');
+        $asin->getCode()->willReturn(new AttributeCode('asin'));
         $this->map('asin', $asin->getWrappedObject());
         $this->isUpdated()->shouldReturn(true);
     }
@@ -138,9 +139,9 @@ class IdentifiersMappingSpec extends ObjectBehavior
     }
 
     public function it_provides_the_identifier_codes_with_an_updated_or_removed_mapping(
-        AttributeInterface $asin
+        Attribute $asin
     ): void {
-        $asin->getCode()->willReturn('asin');
+        $asin->getCode()->willReturn(new AttributeCode('asin'));
         $this->map('asin', $asin->getWrappedObject());
         $this->map('upc', null);
         $this->updatedIdentifierCodes()->shouldReturn(['asin', 'upc']);
@@ -154,10 +155,10 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->updatedIdentifierCodes()->shouldReturn([]);
     }
 
-    public function it_finds_if_attribute_is_mapped_to_an_identifier($sku, AttributeInterface $attribute): void
+    public function it_finds_if_attribute_is_mapped_to_an_identifier($sku, Attribute $attribute): void
     {
-        $attribute->getCode()->willReturn('test');
-        $this->isMappedTo($sku)->shouldReturn(true);
-        $this->isMappedTo($attribute)->shouldReturn(false);
+        $attribute->getCode()->willReturn(new AttributeCode('test'));
+        $this->isMappedTo($sku->getWrappedObject()->getCode())->shouldReturn(true);
+        $this->isMappedTo($attribute->getWrappedObject()->getCode())->shouldReturn(false);
     }
 }

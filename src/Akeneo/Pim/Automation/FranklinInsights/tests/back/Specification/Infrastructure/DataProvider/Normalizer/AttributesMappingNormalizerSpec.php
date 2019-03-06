@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -47,11 +47,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_attribute_mapping_mapped_to_attribute(): void
     {
-        $attrColor = new Attribute();
-        $attrColor->setCode('pim_color');
-        $attrColor->setLocalizable(false);
-        $attrColor->setScopable(false);
-        $attrColor->setType(AttributeTypes::OPTION_SIMPLE_SELECT);
+        $attrColor = new Attribute(new AttributeCode('pim_color'), 1, AttributeTypes::OPTION_SIMPLE_SELECT, false, false, false, false, [], null, null);
 
         $attributesMapping = new AttributesMapping('router');
         $attributesMapping->map('color', 'select', $attrColor);
@@ -71,12 +67,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_metric_attributes_with_its_unit(): void
     {
-        $attrWeight = new Attribute();
-        $attrWeight->setCode('pim_weight');
-        $attrWeight->setLocalizable(false);
-        $attrWeight->setScopable(false);
-        $attrWeight->setType(AttributeTypes::METRIC);
-        $attrWeight->setDefaultMetricUnit('KILOGRAM');
+        $attrWeight = new Attribute(new AttributeCode('pim_weight'), 1, AttributeTypes::METRIC, false, false, false, false, [], null, 'KILOGRAM');
 
         $attributesMapping = new AttributesMapping('router');
         $attributesMapping->map('weight', 'metric', $attrWeight);
@@ -97,21 +88,21 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_attribute_translations(): void
     {
-        $attrName = new Attribute();
-        $attrName->setCode('pim_name');
-        $attrName->setLocalizable(false);
-        $attrName->setScopable(false);
-        $attrName->setType(AttributeTypes::TEXT);
-
-        $attrNameEn = new AttributeTranslation();
-        $attrNameEn->setLocale('en_US');
-        $attrNameEn->setLabel('Name');
-        $attrName->addTranslation($attrNameEn);
-
-        $attrNameFr = new AttributeTranslation();
-        $attrNameFr->setLocale('fr_FR');
-        $attrNameFr->setLabel('Nom');
-        $attrName->addTranslation($attrNameFr);
+        $attrName = new Attribute(
+            new AttributeCode('pim_name'),
+            1,
+            AttributeTypes::TEXT,
+            false,
+            false,
+            false,
+            false,
+            [
+                'en_US' => 'Name',
+                'fr_FR' => 'Nom',
+            ],
+            null,
+            null
+        );
 
         $attributesMapping = new AttributesMapping('router');
         $attributesMapping->map('name', 'text', $attrName);

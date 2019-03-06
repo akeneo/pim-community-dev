@@ -19,9 +19,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\At
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -115,7 +115,7 @@ class SaveAttributeOptionsMappingHandler
      */
     private function ensureAttributeExists(string $attributeCode): void
     {
-        if (!$this->attributeRepository->findOneByIdentifier($attributeCode) instanceof AttributeInterface) {
+        if (!$this->attributeRepository->findOneByIdentifier($attributeCode) instanceof Attribute) {
             throw new \InvalidArgumentException(
                 sprintf('Attribute "%s" does not exist', $attributeCode)
             );

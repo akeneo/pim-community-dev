@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
@@ -39,7 +38,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueO
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\SubscriptionsCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -77,13 +78,13 @@ class SubscriptionProviderSpec extends ObjectBehavior
     public function it_throws_an_exception_if_product_has_no_mapped_value_on_subscription(
         $identifiersMappingRepository,
         ProductInterface $product,
-        AttributeInterface $ean,
+        Attribute $ean,
         ValueInterface $eanValue
     ): void {
         $identifiersMapping = new IdentifiersMapping(['upc' => $ean->getWrappedObject()]);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
-        $ean->getCode()->willReturn('ean');
+        $ean->getCode()->willReturn(new AttributeCode('ean'));
         $eanValue->hasData()->willReturn(false);
         $product->getValue('ean')->willReturn($eanValue);
         $product->getId()->willReturn(42);
@@ -99,8 +100,8 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $identifiersMappingRepository,
         $subscriptionApi,
         ProductInterface $product,
-        AttributeInterface $ean,
-        AttributeInterface $sku,
+        Attribute $ean,
+        Attribute $sku,
         ValueInterface $eanValue,
         ValueInterface $skuValue,
         FamilyInterface $family,
@@ -114,8 +115,8 @@ class SubscriptionProviderSpec extends ObjectBehavior
         );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
-        $ean->getCode()->willReturn('ean');
-        $sku->getCode()->willReturn('sku');
+        $ean->getCode()->willReturn(new AttributeCode('ean'));
+        $sku->getCode()->willReturn(new AttributeCode('sku'));
 
         $product->getId()->willReturn(42);
         $product->getFamily()->willReturn($family);
@@ -162,8 +163,8 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $identifiersMappingRepository,
         $subscriptionApi,
         ProductInterface $product,
-        AttributeInterface $ean,
-        AttributeInterface $sku,
+        Attribute $ean,
+        Attribute $sku,
         ValueInterface $eanValue,
         ValueInterface $skuValue,
         FamilyInterface $family,
@@ -177,8 +178,8 @@ class SubscriptionProviderSpec extends ObjectBehavior
         );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
-        $ean->getCode()->willReturn('ean');
-        $sku->getCode()->willReturn('sku');
+        $ean->getCode()->willReturn(new AttributeCode('ean'));
+        $sku->getCode()->willReturn(new AttributeCode('sku'));
 
         $product->getId()->willReturn(42);
         $product->getFamily()->willReturn($family);

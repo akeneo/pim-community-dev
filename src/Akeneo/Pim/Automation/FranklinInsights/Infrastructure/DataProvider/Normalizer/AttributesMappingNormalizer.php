@@ -56,14 +56,9 @@ class AttributesMappingNormalizer
 
         $normalizedPimAttribute = null;
         if (null !== $attribute) {
-            $labels = [];
-            foreach ($attribute->getTranslations() as $translation) {
-                $labels[$translation->getLocale()] = $translation->getLabel();
-            }
-
             $normalizedPimAttribute = [
-                'id' => $attribute->getCode(),
-                'label' => $labels,
+                'id' => (string) $attribute->getCode(),
+                'label' => $attribute->getLabels(),
                 'type' => DomainAttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[$attribute->getType()],
             ];
 

@@ -16,8 +16,8 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeM
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -25,7 +25,7 @@ use PhpSpec\ObjectBehavior;
  */
 class AttributeMappingSpec extends ObjectBehavior
 {
-    public function it_is_initializable_with_an_attribute(AttributeInterface $attribute): void
+    public function it_is_initializable_with_an_attribute(Attribute $attribute): void
     {
         $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $attribute->isLocalizable()->willReturn(false);
@@ -42,7 +42,7 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(AttributeMapping::class);
     }
 
-    public function it_returns_an_active_status_when_attribute_is_mapped(AttributeInterface $attribute): void
+    public function it_returns_an_active_status_when_attribute_is_mapped(Attribute $attribute): void
     {
         $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $attribute->isLocalizable()->willReturn(false);
@@ -68,7 +68,7 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->getTargetAttributeCode()->shouldReturn('target');
     }
 
-    public function it_throws_an_exception_if_franklin_attribute_type_is_invalid(AttributeInterface $attribute): void
+    public function it_throws_an_exception_if_franklin_attribute_type_is_invalid(Attribute $attribute): void
     {
         $this->beConstructedWith('target', 'invalid-type', $attribute);
         $this
@@ -76,7 +76,7 @@ class AttributeMappingSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_throws_an_exception_if_pim_attribute_type_is_invalid(AttributeInterface $attribute): void
+    public function it_throws_an_exception_if_pim_attribute_type_is_invalid(Attribute $attribute): void
     {
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -91,7 +91,7 @@ class AttributeMappingSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_throws_an_exception_if_attribute_is_localizable(AttributeInterface $attribute): void
+    public function it_throws_an_exception_if_attribute_is_localizable(Attribute $attribute): void
     {
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(false);
@@ -104,7 +104,7 @@ class AttributeMappingSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_throws_an_exception_if_attribute_is_scopable(AttributeInterface $attribute): void
+    public function it_throws_an_exception_if_attribute_is_scopable(Attribute $attribute): void
     {
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(true);
@@ -117,7 +117,7 @@ class AttributeMappingSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_throws_an_exception_if_attribute_is_locale_specific(AttributeInterface $attribute): void
+    public function it_throws_an_exception_if_attribute_is_locale_specific(Attribute $attribute): void
     {
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);

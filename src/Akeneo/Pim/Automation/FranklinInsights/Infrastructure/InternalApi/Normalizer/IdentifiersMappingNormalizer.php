@@ -33,7 +33,7 @@ class IdentifiersMappingNormalizer
             $normalizedMapping[$franklinIdentifierCode] = null;
             $attribute = $identifier->getAttribute();
             if (null !== $attribute) {
-                $normalizedMapping[$franklinIdentifierCode] = $attribute->getCode();
+                $normalizedMapping[$franklinIdentifierCode] = (string) $attribute->getCode();
             }
         }
 

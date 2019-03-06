@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdent
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetIdentifiersMappingQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -25,7 +26,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeCl
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\InMemoryIdentifyProductsToResubscribe;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -407,9 +407,7 @@ class IdentifiersMappingContext implements Context
     {
         if (null !== $pimCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($pimCode);
-            foreach ($attribute->getTranslations() as $translation) {
-                $locale = $translation->getLocale();
-                $label = $translation->getLabel();
+            foreach ($attribute->getLabels() as $locale => $label) {
                 Assert::assertEquals($label, $clientMapping['to']['label'][$locale]);
             }
         }

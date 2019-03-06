@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\InMemory;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
@@ -13,7 +15,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\InMe
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
 
 class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
@@ -47,7 +48,7 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
     public function it_filters_non_existing_products(
         $productRepository,
         $identifiersMappingRepository,
-        AttributeInterface $asin
+        Attribute $asin
     ): void {
         $identifiersMapping = new IdentifiersMapping(['asin' => $asin->getWrappedObject()]);
 
@@ -63,18 +64,18 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
         $productRepository,
         $identifiersMappingRepository,
         ProductInterface $product,
-        AttributeInterface $asin,
-        AttributeInterface $ean,
-        AttributeInterface $mpn,
-        AttributeInterface $brand,
+        Attribute $asin,
+        Attribute $ean,
+        Attribute $mpn,
+        Attribute $brand,
         ValueInterface $asinValue
     ): void {
         $productRepository->find(42)->willReturn($product);
 
-        $asin->getCode()->willReturn('asin');
-        $ean->getCode()->willReturn('ean');
-        $mpn->getCode()->willReturn('mpn');
-        $brand->getCode()->willReturn('brand');
+        $asin->getCode()->willReturn(new AttributeCode('asin'));
+        $ean->getCode()->willReturn(new AttributeCode('ean'));
+        $mpn->getCode()->willReturn(new AttributeCode('mpn'));
+        $brand->getCode()->willReturn(new AttributeCode('brand'));
 
         $identifiersMapping = new IdentifiersMapping(
             [

@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdent
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -99,7 +100,7 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
         $this->familyCodes = $this->familyCodesByAttributeQuery->execute($attribute->getCode());
 
         $identifiersMapping = $this->identifiersMappingRepository->find();
-        if ($identifiersMapping->isMappedTo($attribute)) {
+        if ($identifiersMapping->isMappedTo(new AttributeCode($attribute->getCode()))) {
             $this->updateIdentifiersMapping($identifiersMapping, $attribute);
         }
     }
@@ -137,7 +138,8 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
     ): void {
         foreach ($identifiersMapping as $identifier => $identifierMapping) {
             $attribute = $identifierMapping->getAttribute();
-            if (null !== $attribute && $removedAttribute->getCode() === $attribute->getCode()) {
+            $attributeCode = $attribute !== null ? (string) $attribute->getCode() : null;
+            if (null !== $attribute && $removedAttribute->getCode() === $attributeCode) {
                 $mapping = $this->computeNewMapping($identifiersMapping, $identifier);
 
                 $command = new SaveIdentifiersMappingCommand($mapping);
@@ -159,7 +161,7 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
         $mapping = array_map(function (IdentifierMapping $identifierMapping) {
             $attribute = $identifierMapping->getAttribute();
 
-            return null !== $attribute ? $attribute->getCode() : null;
+            return null !== $attribute ? (string) $attribute->getCode() : null;
         }, $identifiersMapping->getMapping());
 
         $mapping[$removedIdentifier] = null;

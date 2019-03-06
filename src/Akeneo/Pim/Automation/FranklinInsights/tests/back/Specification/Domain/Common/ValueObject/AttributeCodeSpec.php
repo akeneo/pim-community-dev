@@ -38,4 +38,15 @@ class AttributeCodeSpec extends ObjectBehavior
         $this->beConstructedWith('foo');
         $this->__toString()->shouldReturn('foo');
     }
+
+    public function it_can_test_if_2_attribute_codes_are_equal(): void
+    {
+        $this->beConstructedWith('foo');
+
+        $attributeCode2 = new AttributeCode('foo');
+        $this->equals($attributeCode2)->shouldReturn(true);
+
+        $attributeCode3 = new AttributeCode('bar');
+        $this->equals($attributeCode3)->shouldReturn(false);
+    }
 }

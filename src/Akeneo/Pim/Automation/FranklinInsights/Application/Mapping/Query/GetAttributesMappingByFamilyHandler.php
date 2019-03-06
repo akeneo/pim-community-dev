@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\At
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -117,8 +117,8 @@ class GetAttributesMappingByFamilyHandler
         }
 
         $attributesCodes = [];
-        foreach ($this->attributeRepository->findBy(['code' => $attributeCodesFromResponse]) as $attribute) {
-            $attributesCodes[] = $attribute->getCode();
+        foreach ($this->attributeRepository->findByCodes($attributeCodesFromResponse) as $attribute) {
+            $attributesCodes[] = (string) $attribute->getCode();
         }
 
         return array_diff($attributeCodesFromResponse, $attributesCodes);

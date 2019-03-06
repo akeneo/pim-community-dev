@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 
 /**
  * Holds the identifiers mapping. Collection of IdentifierMapping entities.
@@ -37,7 +38,7 @@ class IdentifiersMapping implements \IteratorAggregate
     private $diff;
 
     /**
-     * @param array $mappedAttributes array of AttributeInterface|null, indexed by Franklin identifier codes,
+     * @param array $mappedAttributes array of Attribute|null, indexed by Franklin identifier codes,
      *                                e.g: ['asin' => $asinAttribute, 'upc' => null, 'brand' => 'null, 'mpn' => null]
      */
     public function __construct(array $mappedAttributes)
@@ -63,9 +64,9 @@ class IdentifiersMapping implements \IteratorAggregate
     /**
      * @param string $name
      *
-     * @return AttributeInterface|null
+     * @return Attribute|null
      */
-    public function getMappedAttribute(string $name): ?AttributeInterface
+    public function getMappedAttribute(string $name): ?Attribute
     {
         if (array_key_exists($name, $this->mapping)) {
             return $this->mapping[$name]->getAttribute();
@@ -79,11 +80,11 @@ class IdentifiersMapping implements \IteratorAggregate
      * This method is used to mutate the entity.
      *
      * @param string $franklinIdentifierCode
-     * @param AttributeInterface|null $attribute
+     * @param Attribute|null $attribute
      *
      * @return IdentifiersMapping
      */
-    public function map(string $franklinIdentifierCode, ?AttributeInterface $attribute): self
+    public function map(string $franklinIdentifierCode, ?Attribute $attribute): self
     {
         if (!in_array($franklinIdentifierCode, static::FRANKLIN_IDENTIFIERS)) {
             throw new \InvalidArgumentException(sprintf('Invalid identifier %s', $franklinIdentifierCode));
@@ -163,16 +164,11 @@ class IdentifiersMapping implements \IteratorAggregate
         );
     }
 
-    /**
-     * @param AttributeInterface $referenceAttribute
-     *
-     * @return bool
-     */
-    public function isMappedTo(AttributeInterface $referenceAttribute): bool
+    public function isMappedTo(AttributeCode $referenceAttributeCode): bool
     {
         foreach ($this->mapping as $identifierMapping) {
             $attribute = $identifierMapping->getAttribute();
-            if (null !== $attribute && $referenceAttribute->getCode() === $attribute->getCode()) {
+            if (null !== $attribute && $referenceAttributeCode->equals($attribute->getCode())) {
                 return true;
             }
         }

@@ -24,9 +24,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyReposi
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -59,7 +59,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $attributeRepository,
         $attributeOptionRepository,
         $mappingProvider,
-        AttributeInterface $attribute
+        Attribute $attribute
     ): void {
         $familyCode = new FamilyCode('foo');
         $attributeCode = new AttributeCode('burger');
@@ -93,7 +93,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $attributeRepository,
         $attributeOptionRepository,
         $mappingProvider,
-        AttributeInterface $attribute
+        Attribute $attribute
     ): void {
         $familyCode = new FamilyCode('foo');
         $attributeCode = new AttributeCode('burger');
@@ -127,7 +127,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $attributeRepository,
         $attributeOptionRepository,
         $mappingProvider,
-        AttributeInterface $attribute
+        Attribute $attribute
     ): void {
         $familyCode = new FamilyCode('foo');
         $attributeCode = new AttributeCode('burger');

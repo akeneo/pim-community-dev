@@ -16,8 +16,8 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeM
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -40,7 +40,7 @@ class AttributesMappingSpec extends ObjectBehavior
         $this->familyCode()->shouldReturn('watches');
     }
 
-    public function it_maps_a_franklin_attribute_to_a_pim_attribute(AttributeInterface $pimAttribute): void
+    public function it_maps_a_franklin_attribute_to_a_pim_attribute(Attribute $pimAttribute): void
     {
         $pimAttribute->getType()->willReturn(AttributeTypes::TEXT);
         $pimAttribute->isLocalizable()->willReturn(false);
@@ -52,7 +52,7 @@ class AttributesMappingSpec extends ObjectBehavior
         $this->mapping()[0]->shouldBeAnInstanceOf(AttributeMapping::class);
     }
 
-    public function it_throws_an_exception_when_it_cannot_map_the_attribute(AttributeInterface $pimAttribute): void
+    public function it_throws_an_exception_when_it_cannot_map_the_attribute(Attribute $pimAttribute): void
     {
         $pimAttribute->isLocalizable()->willReturn(true);
 

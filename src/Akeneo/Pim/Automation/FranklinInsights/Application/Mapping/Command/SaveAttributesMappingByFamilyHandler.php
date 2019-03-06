@@ -17,11 +17,11 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMa
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\SelectFamilyAttributeCodesQueryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -88,8 +88,8 @@ class SaveAttributesMappingByFamilyHandler
         $mappedAttrCodes = array_intersect($mappedAttrCodes, $familyAttributeCodes);
 
         $attributes = [];
-        foreach ($this->attributeRepository->findBy(['code' => $mappedAttrCodes]) as $attribute) {
-            $attributes[$attribute->getCode()] = $attribute;
+        foreach ($this->attributeRepository->findByCodes($mappedAttrCodes) as $attribute) {
+            $attributes[(string) $attribute->getCode()] = $attribute;
         }
 
         if (empty($attributes)) {

@@ -19,18 +19,18 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject;
 final class AttributeCode
 {
     /** @var string */
-    private $attributeCode;
+    private $code;
 
     /**
-     * @param string $attributeCode
+     * @param string $code
      */
-    public function __construct(string $attributeCode)
+    public function __construct(string $code)
     {
-        if (empty($attributeCode)) {
+        if (empty($code)) {
             throw new \InvalidArgumentException('Attribute code cannot be an empty string');
         }
 
-        $this->attributeCode = $attributeCode;
+        $this->code = $code;
     }
 
     /**
@@ -38,6 +38,11 @@ final class AttributeCode
      */
     public function __toString(): string
     {
-        return (string) $this->attributeCode;
+        return (string) $this->code;
+    }
+
+    public function equals(AttributeCode $attributeCode): bool
+    {
+        return $this->code === (string) $attributeCode;
     }
 }
