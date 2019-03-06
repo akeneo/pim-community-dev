@@ -35,6 +35,7 @@ teamwork_assistant:
         in_progress: IN PROGRESS
         done: DONE
         all_contributors: All contributors
+        you: You
         display_products: Display products
         placeholder:
             contributor_selector: Search contributor
