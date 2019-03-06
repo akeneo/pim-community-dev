@@ -1,5 +1,12 @@
 # 2.0.x
 
+# 2.0.49 (2019-02-25)
+
+## Bug fixes
+
+- PIM-8158: Improve the label category tree creation button label
+- PIM-8141: Fix attribute filter selection in export profile edition
+
 # 2.0.48 (2019-02-18)
 
 ## Bug fixes

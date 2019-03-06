@@ -11,7 +11,7 @@ Feature: List categories
     Then I should see the text "2014 collection"
     And I should see the text "Summer collection"
     And I should see the text "Winter collection"
-    And I should see the text "Please select a category on the left or Create a new category"
+    And I should see the text "Please select a category on the left or Create a new category tree"
 
   Scenario: Click on a category without the right permissions do nothing
     Given a "footwear" catalog configuration
