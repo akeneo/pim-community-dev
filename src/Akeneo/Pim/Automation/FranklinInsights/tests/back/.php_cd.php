@@ -138,7 +138,6 @@ $rules = [
             // TODO: link by ID instead of reference
             'Akeneo\Pim\Structure\Component\Model\Family',
             'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
 
             // Oro config is used

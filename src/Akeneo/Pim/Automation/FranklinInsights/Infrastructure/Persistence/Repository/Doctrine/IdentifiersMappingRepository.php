@@ -16,7 +16,6 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -29,17 +28,12 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     /** @var EntityManagerInterface */
     private $em;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
     /**
      * @param EntityManagerInterface $em
-     * @param AttributeRepositoryInterface $attributeRepository
      */
-    public function __construct(EntityManagerInterface $em, AttributeRepositoryInterface $attributeRepository)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->attributeRepository = $attributeRepository;
     }
 
     /**
