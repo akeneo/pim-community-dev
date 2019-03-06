@@ -27,6 +27,19 @@ const webpackConfig = {
     version: true,
   },
   optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendor",
+          filename: "vendor.min.js",
+          chunks: "all"
+        },
+        main: {
+          filename: 'main.min.js'
+        }
+      }
+    },
     moduleIds: 'hashed',
     minimizer: [new TerserPlugin({
       cache: true,
@@ -55,7 +68,7 @@ const webpackConfig = {
     symlinks: false,
     alias: _.mapKeys(aliases, (path, key) => `${key}$`),
     modules: [path.resolve('./web/bundles'), path.resolve('./node_modules')],
-    extensions: ['.js', '.json', '.ts', '.tsx'],
+    extensions: ['.js', '.json', '.ts', '.tsx']
   },
   module: {
     rules: [
