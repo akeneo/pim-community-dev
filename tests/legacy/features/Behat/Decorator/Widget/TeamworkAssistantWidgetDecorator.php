@@ -84,22 +84,24 @@ class TeamworkAssistantWidgetDecorator extends ElementDecorator
     }
 
     /**
-     * Get link to product grid from a teamwork assistant widget section
+     * Get link to product grid from a teamwork assistant widget section or null if it doesn't exists.
      *
      * @param string $sectionName
      *
-     * @return NodeElement
+     * @return NodeElement|null
      */
     public function getLinkFromSection($sectionName)
     {
-        $box = $this->spin(function () use ($sectionName) {
-            return $this->find('css', sprintf('.teamwork-assistant-completeness-%s', $sectionName));
+        $parent = $this->spin(function () use ($sectionName) {
+            $box = $this->find('css', sprintf('.teamwork-assistant-completeness-%s', $sectionName));
+            if (null === $box) {
+                return false;
+            }
+            return $box->getParent();
         }, sprintf('"%s" box not found in completeness.', $sectionName));
 
-        return $this->spin(function () use ($box) {
-            $box->getParent()->mouseOver();
+        $parent->mouseOver();
 
-            return $box->getParent()->find('css', 'a');
-        }, sprintf('Link not found in box "%s" of the teamwork assistant widget.', $sectionName));
+        return $parent->find('css', 'a');
     }
 }
