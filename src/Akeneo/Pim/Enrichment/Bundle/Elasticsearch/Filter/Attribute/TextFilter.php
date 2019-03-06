@@ -53,13 +53,13 @@ class TextFilter extends AbstractAttributeFilter implements AttributeFilterInter
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
-            $escapedValue = QueryString::escapeValue($value);
         }
 
         $attributePath = $this->getAttributePath($attribute, $locale, $channel);
 
         switch ($operator) {
             case Operators::STARTS_WITH:
+                $escapedValue = QueryString::escapeValue($value);
                 $clause = [
                     'query_string' => [
                         'default_field' => $attributePath,
@@ -70,6 +70,7 @@ class TextFilter extends AbstractAttributeFilter implements AttributeFilterInter
                 break;
 
             case Operators::CONTAINS:
+                $escapedValue = QueryString::escapeValue($value);
                 $clause = [
                     'query_string' => [
                         'default_field' => $attributePath,
@@ -80,6 +81,7 @@ class TextFilter extends AbstractAttributeFilter implements AttributeFilterInter
                 break;
 
             case Operators::DOES_NOT_CONTAIN:
+                $escapedValue = QueryString::escapeValue($value);
                 $mustNotClause = [
                     'query_string' => [
                         'default_field' => $attributePath,
