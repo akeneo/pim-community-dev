@@ -81,3 +81,10 @@ services:
             - '@database_connection'
             - '@security.token_storage'
             - '@akeneo.pim.enrichement.connector.write.file.flat.generate_headers_from_attribute_codes_without_permission'
+
+    pimee_security.query.get_last_operations:
+        class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\GetLastOperations'
+        decorates: pim_import_export.query.get_last_operations
+        decoration_inner_name: pim_import_export.query.get_last_operations.without_permission
+        arguments:
+            - '@pim_import_export.query.get_last_operations.without_permission'

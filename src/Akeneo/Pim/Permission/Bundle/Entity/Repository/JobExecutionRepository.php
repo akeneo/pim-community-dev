@@ -22,27 +22,6 @@ use Doctrine\ORM\QueryBuilder;
 class JobExecutionRepository extends BaseJobExecutionRepository
 {
     /**
-     * Get last operations
-     *
-     * @param array        $types
-     * @param QueryBuilder $subQB
-     * @param null|string  $user
-     *
-     * @return array
-     *
-     * @see JobExecutionRepository::getLastOperationsData()
-     */
-    public function getLastOperations(array $types, QueryBuilder $subQB, ?string $user = null)
-    {
-        $qb = parent::getLastOperationsQB($types, $user);
-        $qb
-            ->andWhere($qb->expr()->in('j.id', $subQB->getDQL()))
-            ->setParameters($subQB->getParameters());
-
-        return $qb->getQuery()->getArrayResult();
-    }
-
-    /**
      * Inject subquery to filter jobs depending on permissions
      *
      * @param QueryBuilder $qb

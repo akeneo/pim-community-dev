@@ -94,7 +94,7 @@ $rules = [
         //TODO: It uses jobs (maybe ImportExportBundle is not part of the Platform)
         'Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents',
         'Akeneo\Platform\Bundle\ImportExportBundle\Event\JobProfileEvents',
-        'Akeneo\Platform\Bundle\ImportExportBundle\Manager\JobExecutionManager',
+        'Akeneo\Platform\Bundle\ImportExportBundle\Query\GetLastOperationsInterface',
         //TODO: we listen to this event to save the permissions
         'Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents',
         'Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents',
@@ -156,7 +156,7 @@ $rules = [
         'Akeneo\UserManagement\Bundle\Context\UserContext',
 
         //TODO: just because we override ProductController
-        'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder'
+        'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',
