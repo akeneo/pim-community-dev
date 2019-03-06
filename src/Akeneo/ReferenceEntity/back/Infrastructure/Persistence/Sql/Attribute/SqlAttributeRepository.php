@@ -123,7 +123,10 @@ SQL;
             if (count($normalizedAttribute['options']) < count($normalizedAttributeFromDatabase['options'])) {
                 $this->eventDispatcher->dispatch(
                     AttributeOptionsDeletedEvent::class,
-                    new AttributeOptionsDeletedEvent($normalizedAttribute['reference_entity_identifier'], $normalizedAttribute['identifier'])
+                    new AttributeOptionsDeletedEvent(
+                        $attribute->getReferenceEntityIdentifier(),
+                        $attribute->getIdentifier()
+                    )
                 );
             }
         }

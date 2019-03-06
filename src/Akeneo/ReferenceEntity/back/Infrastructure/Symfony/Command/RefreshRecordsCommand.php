@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class RefreshRecordsCommand extends ContainerAwareCommand
 {
-    private const REFRESH_ALL_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:refresh-all-records';
+    public const REFRESH_ALL_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:refresh-all-records';
     private const BATCH_SIZE = 100;
 
     /** @var FindIdentifiersForQueryInterface */

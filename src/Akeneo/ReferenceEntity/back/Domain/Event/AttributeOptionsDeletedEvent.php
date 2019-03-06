@@ -5,13 +5,14 @@ namespace Akeneo\ReferenceEntity\Domain\Event;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @internal
  */
-class AttributeOptionsDeletedEvent
+class AttributeOptionsDeletedEvent extends Event
 {
     /** @var ReferenceEntityIdentifier  */
     private $referenceEntityIdentifier;

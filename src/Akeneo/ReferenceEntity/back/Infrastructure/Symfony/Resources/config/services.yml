@@ -61,3 +61,10 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
         tags:
             - { name: kernel.event_subscriber }
+
+    akeneo_referenceentity.infrastructure.reference_entity.subscribers.refresh_record_subscriber:
+            class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Subscribers\RefreshRecordsSubscriber
+            arguments:
+                - '@pim_catalog.command_launcher'
+            tags:
+                - { name: kernel.event_subscriber }
