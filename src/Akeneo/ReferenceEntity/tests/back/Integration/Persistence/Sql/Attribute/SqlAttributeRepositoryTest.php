@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\AttributeOptionsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
@@ -359,6 +360,116 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
 
         $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
         $this->assertAttribute($expectedAttribute, $actualAttribute);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_an_option_attribute()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'name', 'test');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $expectedAttribute = OptionAttribute::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+        $expectedAttribute->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray(['fr_FR' => 'rouge'])
+                ),
+                AttributeOption::create(
+                    OptionCode::fromString('blue'),
+                    LabelCollection::fromArray(['fr_FR' => 'bleu'])
+                ),
+            ]);
+        $this->attributeRepository->create($expectedAttribute);
+
+        $expectedAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Surnom', 'en_US' => 'Nickname']));
+        $expectedAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('blue'),
+                LabelCollection::fromArray(['fr_FR' => 'bleu'])
+            ),
+        ]);
+        $this->attributeRepository->update($expectedAttribute);
+
+        $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedAttribute, $actualAttribute);
+        $this->eventDispatcherMock->assertEventDispatched(AttributeOptionsDeletedEvent::class);
+
+        /** @var AttributeOptionsDeletedEvent $event */
+        $event = $this->eventDispatcherMock->getEvent(AttributeOptionsDeletedEvent::class);
+        $this->assertTrue($identifier->equals($event->getAttributeIdentifier()));
+        $this->assertTrue($referenceEntityIdentifier->equals($event->getReferenceEntityIdentifier()));
+        $this->assertEquals(
+            ['red'],
+            array_map(function (AttributeOption $attributeOption) {
+                return $attributeOption->normalize()['code'];
+            }, $event->getDeletedAttributeOptions())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_an_option_collection_attribute()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'name', 'test');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $expectedAttribute = OptionCollectionAttribute::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+        $expectedAttribute->setOptions(
+            [
+                AttributeOption::create(
+                    OptionCode::fromString('red'),
+                    LabelCollection::fromArray(['fr_FR' => 'rouge'])
+                ),
+                AttributeOption::create(
+                    OptionCode::fromString('blue'),
+                    LabelCollection::fromArray(['fr_FR' => 'bleu'])
+                ),
+            ]);
+        $this->attributeRepository->create($expectedAttribute);
+
+        $expectedAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Surnom', 'en_US' => 'Nickname']));
+        $expectedAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('blue'),
+                LabelCollection::fromArray(['fr_FR' => 'bleu'])
+            ),
+        ]);
+        $this->attributeRepository->update($expectedAttribute);
+
+        $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedAttribute, $actualAttribute);
+        $this->eventDispatcherMock->assertEventDispatched(AttributeOptionsDeletedEvent::class);
+
+        /** @var AttributeOptionsDeletedEvent $event */
+        $event = $this->eventDispatcherMock->getEvent(AttributeOptionsDeletedEvent::class);
+        $this->assertTrue($identifier->equals($event->getAttributeIdentifier()));
+        $this->assertTrue($referenceEntityIdentifier->equals($event->getReferenceEntityIdentifier()));
+        $this->assertEquals(
+            ['red'],
+            array_map(function (AttributeOption $attributeOption) {
+                return $attributeOption->normalize()['code'];
+            }, $event->getDeletedAttributeOptions())
+        );
     }
 
     /**
