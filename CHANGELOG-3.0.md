@@ -8,6 +8,10 @@
 
 ## Improvements
 
+- PIM-7863: Add reference entity metrics in the catalog volume monitoring as well as system info
+
+## Improvements
+
 - PIM-7933: Display the number of records and results for an entity in the grid
 - AOB-337: Display the expiration date of the certificate on the SSO config page
 

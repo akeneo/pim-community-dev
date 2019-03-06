@@ -627,3 +627,4 @@ Use proper constructor on our commands.
 We will dedicate someone on the next bloom to list all comamnds and create subtasks.
 Then we will be able to create a PR to fix them one by one (use of a feature branch could be possible).
 Then take cards one by one and fix them. It should not create any conflicts
+

@@ -411,3 +411,4 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\File\SqlFileExists
         arguments:
             - '@database_connection'
+
