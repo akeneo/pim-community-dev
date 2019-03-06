@@ -39,6 +39,7 @@ const getPackageDiffs = (source) => {
 
     const sourceJSON = read(source);
     const currentJSON = read(rootDir);
+
     const diffList = diff(currentJSON.dependencies, sourceJSON.dependencies);
 
     return diffList.filter(dep => !(dep instanceof RemovedDep));
