@@ -79,6 +79,7 @@ const webpackConfig = {
         test: /\.html$/,
         exclude: /node_modules|spec/,
         use: [
+          'thread-loader',
           {
             loader: 'raw-loader',
             options: {},
@@ -148,13 +149,16 @@ const webpackConfig = {
         test: /\.js$/,
         include: /(web\/bundles|webpack|spec)/,
         exclude: /lib|node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-            cacheDirectory: 'web/cache',
-          },
-        },
+        use: [
+          'thread-loader',
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+              cacheDirectory: 'web/cache',
+            },
+          }
+        ],
       },
 
       // Process the typescript loader files
