@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Bundle\Controller\ExternalApi;
 
+use Akeneo\Asset\Bundle\Event\VariationHasBeenCreated;
 use Akeneo\Asset\Component\Factory\ReferenceFactory;
 use Akeneo\Asset\Component\Factory\VariationFactory;
 use Akeneo\Asset\Component\FileStorage;
@@ -31,7 +32,6 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\ProductAssetBundle\Event\VariationHasBeenCreated;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\FileBag;

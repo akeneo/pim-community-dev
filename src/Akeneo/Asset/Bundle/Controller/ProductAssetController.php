@@ -12,6 +12,7 @@
 namespace Akeneo\Asset\Bundle\Controller;
 
 use Akeneo\Asset\Bundle\Event\AssetEvent;
+use Akeneo\Asset\Bundle\Event\VariationHasBeenDeleted;
 use Akeneo\Asset\Bundle\Form\Type\AssetType;
 use Akeneo\Asset\Bundle\Form\Type\CreateAssetType;
 use Akeneo\Asset\Component\Builder\ReferenceBuilderInterface;
@@ -49,7 +50,6 @@ use Akeneo\Tool\Component\FileTransformer\Exception\NotApplicableTransformation\
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\ProductAssetBundle\Event\VariationHasBeenDeleted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -792,7 +792,7 @@ class ProductAssetController extends Controller
      *
      * @throws AccessDeniedException()
      *
-     * @return array
+     * @return array|Response
      */
     protected function view($id)
     {

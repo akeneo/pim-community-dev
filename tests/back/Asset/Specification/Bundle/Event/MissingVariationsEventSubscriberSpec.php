@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Event;
+namespace Specification\Akeneo\Asset\Bundle\Event;
 
+use Akeneo\Asset\Bundle\Event\AssetEvent;
+use Akeneo\Asset\Component\Finder\AssetFinderInterface;
+use Akeneo\Asset\Component\Model\Asset;
+use Akeneo\Asset\Component\Model\Variation;
+use Akeneo\Asset\Component\ProcessedItemList;
+use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
-use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
-use PimEnterprise\Component\ProductAsset\Model\Asset;
-use PimEnterprise\Component\ProductAsset\Model\Variation;
-use PimEnterprise\Component\ProductAsset\ProcessedItemList;
-use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
 use Webmozart\Assert\Assert;
 
 /**

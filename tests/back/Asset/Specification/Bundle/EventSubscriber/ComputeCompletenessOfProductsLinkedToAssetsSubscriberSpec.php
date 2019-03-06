@@ -4,6 +4,8 @@ namespace Specification\Akeneo\Asset\Bundle\EventSubscriber;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Asset\Bundle\Event\AssetEvent;
+use Akeneo\Asset\Bundle\Event\VariationHasBeenCreated;
+use Akeneo\Asset\Bundle\Event\VariationHasBeenDeleted;
 use Akeneo\Asset\Bundle\EventSubscriber\ComputeCompletenessOfProductsLinkedToAssetsSubscriber;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface;
@@ -16,8 +18,6 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\ProductAssetBundle\Event\VariationHasBeenCreated;
-use PimEnterprise\Bundle\ProductAssetBundle\Event\VariationHasBeenDeleted;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
