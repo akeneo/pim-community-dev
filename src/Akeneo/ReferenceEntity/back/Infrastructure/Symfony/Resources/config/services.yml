@@ -26,8 +26,9 @@ services:
     akeneo_referenceentity.command.refresh_records:
         class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\RefreshRecordsCommand
         arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.client.record'
+            - '@doctrine.dbal.default_connection'
         tags:
             - { name: 'console.command'}
 

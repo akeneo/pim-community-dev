@@ -10,7 +10,6 @@ use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\RefreshRecordsCommand;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -40,7 +39,7 @@ class RefreshRecordsSubscriber implements EventSubscriberInterface
     public function onEvent(): void
     {
         $this->commandLauncher->executeBackground(
-            sprintf('%s', RefreshRecordsCommand::REFRESH_ALL_RECORDS_COMMAND_NAME)
+            sprintf('%s', RefreshRecordsCommand::REFRESH_RECORDS_COMMAND_NAME)
         );
     }
 }

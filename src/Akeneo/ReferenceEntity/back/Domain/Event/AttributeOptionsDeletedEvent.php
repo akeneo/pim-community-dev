@@ -51,6 +51,6 @@ class AttributeOptionsDeletedEvent extends Event
      */
     public function getDeletedAttributeOptions(): array
     {
-       return $this->deletedAttributeOptions;
+        return $this->deletedAttributeOptions;
     }
 }
