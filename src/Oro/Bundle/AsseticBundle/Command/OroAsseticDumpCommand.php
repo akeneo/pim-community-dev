@@ -84,7 +84,7 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
     protected function dumpAssets($output)
     {
         foreach ($this->am->getAssets() as $node) {
-            foreach ($node->getCompressAssets() as $asset){
+            foreach ($node->getCompressAssets() as $asset) {
                 $this->doDump($asset, $output);
             }
         }
