@@ -44,6 +44,7 @@ class HeaderView extends BaseView {
 
     if (undefined !== productValues && productValues.value > 0) {
       const headerContents: string = this.headerTemplate({
+        __: __,
         title: __(this.config.title)
           .replace('{{values}}', productValues.value.toLocaleString(
             userContext.get('uiLocale').split('_')[0],
