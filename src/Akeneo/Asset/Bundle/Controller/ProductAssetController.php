@@ -49,6 +49,7 @@ use Akeneo\Tool\Component\FileTransformer\Exception\NotApplicableTransformation\
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\VariationHasBeenDeleted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -404,6 +405,12 @@ class ProductAssetController extends Controller
         try {
             $this->assetFilesUpdater->deleteVariationFile($variation);
             $this->variationSaver->save($variation);
+
+            $this->eventDispatcher->dispatch(
+                VariationHasBeenDeleted::VARIATION_HAS_BEEN_DELETED,
+                new VariationHasBeenDeleted($asset)
+            );
+
             $this->addFlashMessage('success', 'pimee_product_asset.enrich_variation.flash.delete.success');
         } catch (\Exception $e) {
             $this->addFlashMessage('error', 'pimee_product_asset.enrich_variation.flash.delete.error');
@@ -511,9 +518,19 @@ class ProductAssetController extends Controller
     {
         $productAsset = $this->findProductAssetOr404($id);
 
-        $this->referenceBuilder->buildMissingLocalized($productAsset);
-        foreach ($productAsset->getReferences() as $reference) {
-            $this->variationBuilder->buildMissing($reference);
+        // TODO merge 3.1: remove condition
+        if (null !== $this->referenceBuilder && null !== $this->variationBuilder) {
+            $this->referenceBuilder->buildMissingLocalized($productAsset);
+
+            $variations = array_reduce($productAsset->getReferences()->toArray(), function ($carry, ReferenceInterface $reference) {
+                $missings = $this->variationBuilder->buildMissing($reference);
+
+                return $missings !== null ? $carry + $missings : $carry;
+            }, []);
+
+            if (count($variations) > 0) {
+                $this->assetSaver->save($productAsset);
+            }
         }
 
         if ($this->isGranted(Attributes::EDIT, $productAsset)) {
@@ -735,11 +752,15 @@ class ProductAssetController extends Controller
             try {
                 $this->assetFilesUpdater->updateAssetFiles($productAsset);
                 $this->assetSaver->save($productAsset);
-                $event = $this->eventDispatcher->dispatch(
-                    AssetEvent::POST_UPLOAD_FILES,
-                    new AssetEvent($productAsset)
-                );
-                $this->handleGenerationEventResult($event);
+
+                if ($request->files->count() > 0) {
+                    $event = $this->eventDispatcher->dispatch(
+                        AssetEvent::POST_UPLOAD_FILES,
+                        new AssetEvent($productAsset)
+                    );
+                    $this->handleGenerationEventResult($event);
+                }
+
                 $this->addFlashMessage('success', 'pimee_product_asset.enrich_asset.flash.update.success');
             } catch (\Exception $e) {
                 $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.update.error');

@@ -93,3 +93,27 @@ Feature: Edit product assets variations
     And I save the asset
     Then I should not see the text "There are unsaved changes."
     And the new update date of the asset "dog" should be more recent than the previous one
+
+  Scenario: Successfully create variation for assets when a new channel is added
+    Given I am on the "bridge" asset page
+    And I visit the "Variations" tab
+    Then I should see the text "tablet"
+    And I should see the text "mobile"
+    When I am on the channel creation page
+    And I fill in the following information:
+      | Code                    | foo             |
+      | English (United States) | foo             |
+      | Category tree           | 2014 collection |
+      | Currencies              | EUR             |
+      | Locales                 | French          |
+    And I press the "Save" button
+    Then I should be redirected to the "foo" channel page
+    Given I am on the "bridge" asset page
+    And I visit the "Variations" tab
+    Then I should see the text "foo"
+    When I upload the reference file akene.jpg
+    And I upload the foo variation file akene.jpg
+    And I save the asset
+    And I am on the homepage
+    And I am on the "bridge" asset page
+    Then I should see the text "617.91 KB"

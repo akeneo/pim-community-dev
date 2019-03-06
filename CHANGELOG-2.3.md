@@ -1,5 +1,23 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8188: Check mysql port in PimRequirements
+
+## Improvements
+
+- PIM-8150: compute the product completeness only on asset variation changes
+
+## BC breaks
+
+- PIM-8150: Change constructor of `src/PimEnterprise/Bundle/ApiBundle/Controller/AssetVariationController.php` to add the event dispatcher
+
+# 2.3.31 (2019-02-28)
+
+## Bug fixes
+
+- PIM-8173: Remove limit of 20 assets displayed when uploading assets
+
 # 2.3.30 (2019-02-21)
 
 ## Bug fixes

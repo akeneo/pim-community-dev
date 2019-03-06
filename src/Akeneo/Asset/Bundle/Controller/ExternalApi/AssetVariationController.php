@@ -31,6 +31,8 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\VariationHasBeenCreated;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -90,6 +92,9 @@ class AssetVariationController
     /** @var VariationFactory */
     protected $variationFactory;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $assetRepository
      * @param IdentifiableObjectRepositoryInterface $channelRepository
@@ -104,6 +109,7 @@ class AssetVariationController
      * @param RouterInterface                       $router
      * @param SaverInterface                        $assetSaver
      * @param VariationFactory                      $variationFactory
+     * @param EventDispatcherInterface              $eventDispatcher
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $assetRepository,
@@ -118,7 +124,8 @@ class AssetVariationController
         ReferenceFactory $referenceFactory,
         RouterInterface $router,
         SaverInterface $assetSaver,
-        VariationFactory $variationFactory
+        VariationFactory $variationFactory,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->assetRepository = $assetRepository;
         $this->channelRepository = $channelRepository;
@@ -133,6 +140,7 @@ class AssetVariationController
         $this->router = $router;
         $this->assetSaver = $assetSaver;
         $this->variationFactory = $variationFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -262,6 +270,11 @@ class AssetVariationController
 
         $this->validateAsset($asset);
         $this->assetSaver->save($asset);
+
+        $this->eventDispatcher->dispatch(
+            VariationHasBeenCreated::VARIATION_HAS_BEEN_CREATED,
+            new VariationHasBeenCreated($asset)
+        );
 
         $response = new Response(null, Response::HTTP_CREATED);
         $route = $this->router->generate(
