@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.32 (2019-03-07)
+
 ## Bug fixes
 
 - PIM-8188: Check mysql port in PimRequirements
