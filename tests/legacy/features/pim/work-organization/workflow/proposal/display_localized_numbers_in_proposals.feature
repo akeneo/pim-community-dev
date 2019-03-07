@@ -33,6 +33,7 @@ Feature: Display localized numbers in proposals
     And I fill in the following information:
       | UI locale | French (France) |
     And I save the user
+    And I should not see the text "There are unsaved changes"
     And I am on the "tshirt" product page
     And I refresh current page
     When I visit the "Propositions" column tab

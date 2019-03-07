@@ -2,6 +2,7 @@
 
 # 1.7.38 (2019-01-15)
 
+- PIM-8161: Fix Asset Variation generation on new channel
 - PIM-7953: Fix back button link in user profile view template
 
 # 1.7.37 (2019-01-09)

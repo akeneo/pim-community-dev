@@ -13,11 +13,12 @@ namespace Akeneo\Asset\Bundle\Event;
 
 use Akeneo\Asset\Component\Finder\AssetFinderInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Asset\Component\ProcessedItemList;
 use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Asset events listenener
+ * Asset events listener
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
@@ -59,11 +60,21 @@ class MissingVariationsEventSubscriber implements EventSubscriberInterface
      */
     public function onAssetFilesUploaded(AssetEvent $event)
     {
-        $variations = $this->finder->retrieveVariationsNotGenerated($event->getSubject());
-        $notLockedVariations = array_filter($variations, function (VariationInterface $variation) {
-            return !$variation->isLocked();
-        });
-        $processed = $this->generator->generate($notLockedVariations, true);
+        $assets = is_array($event->getSubject()) ? $event->getSubject() : [$event->getSubject()];
+
+        $processed = new ProcessedItemList();
+
+        foreach ($assets as $asset) {
+            $variations = $this->finder->retrieveVariationsNotGenerated($asset);
+            $notLockedVariations = array_filter($variations, function (VariationInterface $variation) {
+                return !$variation->isLocked();
+            });
+
+            $processedVariations = $this->generator->generate($notLockedVariations, true);
+            foreach ($processedVariations as $processedVariation) {
+                $processed[] = $processedVariation;
+            }
+        }
 
         $event->setProcessedList($processed);
 
