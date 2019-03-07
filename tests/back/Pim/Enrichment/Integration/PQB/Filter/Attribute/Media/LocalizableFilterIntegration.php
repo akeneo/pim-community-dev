@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Media;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -108,21 +109,17 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['product_one', 'product_two']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_localizable_image" expects a locale, none given.
-     */
     public function testErrorLocale()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localizable_image" expects a locale, none given.');
         $this->executeFilter([['a_localizable_image', Operators::NOT_EQUAL, '2016-09-23']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_localizable_image" expects an existing and activated locale, "NOT_FOUND" given.
-     */
     public function testLocaleNotFound()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localizable_image" expects an existing and activated locale, "NOT_FOUND" given.');
         $this->executeFilter([['a_localizable_image', Operators::NOT_EQUAL, '2016-09-23', ['locale' => 'NOT_FOUND']]]);
     }
 }
