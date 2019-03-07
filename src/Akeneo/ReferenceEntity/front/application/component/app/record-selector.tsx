@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import * as $ from 'jquery';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
@@ -52,7 +51,14 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
     multiple: false,
     readOnly: false,
   };
+  private DOMel: React.RefObject<HTMLInputElement>;
   private el: any;
+
+  constructor(props: RecordSelectorProps & any) {
+    super(props);
+
+    this.DOMel = React.createRef();
+  }
 
   formatItem(normalizedRecord: NormalizedRecord): Select2Item {
     return {
@@ -71,7 +77,11 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
   }
 
   componentDidMount() {
-    this.el = $(ReactDOM.findDOMNode(this) as Element);
+    if (null === this.DOMel.current) {
+      return;
+    }
+
+    this.el = $(this.DOMel.current);
 
     if (undefined !== this.el.select2) {
       this.el.select2({
@@ -218,9 +228,16 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
     const {referenceEntityIdentifier, ...props} = this.props;
     const className = `record-selector ${this.props.readOnly ? 'record-selector--disabled' : ''}`;
 
+    const valueList = props.multiple
+      ? (this.props.value as RecordCode[])
+      : null !== this.props.value
+      ? [this.props.value]
+      : [];
+
     return (
-      <React.Fragment>
+      <div className="record-selector-container">
         <input
+          ref={this.DOMel}
           className={className}
           {...props}
           type="hidden"
@@ -235,18 +252,21 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
             this.props.onChange(newValue);
           }}
         />
-        {!props.multiple && null !== this.props.value ? (
-          <a
-            className="AknFieldContainer-inputLink AknIconButton AknIconButton--small AknIconButton--link"
-            href={`#${routing.generate('akeneo_reference_entities_record_edit', {
-              referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
-              recordCode: this.props.value.stringValue(),
-              tab: 'enrich',
-            })}`}
-            target="_blank"
-          />
-        ) : null}
-      </React.Fragment>
+        <div className="record-selector-link-container">
+          {valueList.map((value: RecordCode) => (
+            <a
+              className="AknFieldContainer-inputLink AknIconButton AknIconButton--small AknIconButton--link"
+              href={`#${routing.generate('akeneo_reference_entities_record_edit', {
+                referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
+                recordCode: value.stringValue(),
+                tab: 'enrich',
+              })}`}
+              target="_blank"
+            />
+          ))}
+          {this.props.multiple ? <span className="AknFieldContainer-inputLink" /> : null}
+        </div>
+      </div>
     );
   }
 }

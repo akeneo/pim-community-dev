@@ -1,11 +1,9 @@
 import {ConcreteRecordCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/record-collection';
-import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntityIdentifier, {
-  createIdentifier as createReferenceEntityIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
+import {RecordType} from 'akeneoreferenceentity/domain/model/attribute/type/record/record-type';
 
 const normalizedBrand = {
   identifier: 'brand',
@@ -24,6 +22,11 @@ describe('akeneo > attribute > domain > model > attribute > type --- RecordColle
   test('I can create a ConcreteRecordCollectionAttribute from normalized', () => {
     expect(ConcreteRecordCollectionAttribute.createFromNormalized(normalizedBrand).normalize()).toEqual(
       normalizedBrand
+    );
+  });
+  test('I can create get a record type', () => {
+    expect(ConcreteRecordCollectionAttribute.createFromNormalized(normalizedBrand).getRecordType()).toEqual(
+      RecordType.createFromString('brand')
     );
   });
   test('I cannot create an invalid ConcreteRecordCollectionAttribute', () => {

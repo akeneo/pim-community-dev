@@ -1,11 +1,8 @@
 import {ConcreteRecordAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/record';
-import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntityIdentifier, {
-  createIdentifier as createReferenceEntityIdentifier,
-} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
 import {RecordType} from 'akeneoreferenceentity/domain/model/attribute/type/record/record-type';
 
 const normalizedBrand = {
