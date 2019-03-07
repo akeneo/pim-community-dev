@@ -11,16 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard;
+namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard\SuggestedValue\BooleanNormalizer;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard\SuggestedValue\MetricNormalizer;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard\SuggestedValue\MultiSelectNormalizer;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard\SuggestedValue\NumberNormalizer;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard\SuggestedValue\SimpleSelectNormalizer;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard\SuggestedValue\TextNormalizer;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Normalizer\SuggestedDataNormalizerInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedValue;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue\BooleanNormalizer;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue\MetricNormalizer;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue\MultiSelectNormalizer;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue\NumberNormalizer;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue\SimpleSelectNormalizer;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue\TextNormalizer;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -33,7 +34,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class SuggestedDataNormalizer
+class SuggestedDataNormalizer implements SuggestedDataNormalizerInterface
 {
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
@@ -44,11 +45,6 @@ class SuggestedDataNormalizer
     /** @var MeasureConverter */
     private $measureConverter;
 
-    /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param AttributeOptionRepositoryInterface $attributeOptionRepository
-     * @param MeasureConverter $measureConverter
-     */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         AttributeOptionRepositoryInterface $attributeOptionRepository,
@@ -60,18 +56,7 @@ class SuggestedDataNormalizer
     }
 
     /**
-     * Returns suggested values in standard format.
-     *
-     * We first get the attribute types for each of the attributes of the suggested values.
-     * The attribute types list is formatted as follow:
-     *    [
-     *        'attribute_code' => 'attribute_type',
-     *    ]
-     * If a suggested value refers to an attribute that does not exists, it will not be present in this list.
-     *
-     * @param SuggestedData $suggestedData
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function normalize(SuggestedData $suggestedData): array
     {
