@@ -6,33 +6,23 @@ use Assetic\Asset\AssetInterface;
 
 class OroAsseticNode extends \Twig_Node
 {
-    /**
-     * @var AssetInterface
-     */
-    protected $compressedAsset;
+    /** @var AssetInterface[] */
+    protected $compressAssets;
 
-    /**
-     * @var AssetInterface
-     */
-    protected $unCompressAsset;
-
-    protected $nameCompress;
-    protected $nameUnCompress;
+    /** @var AssetInterface[] */
+    protected $unCompressAssets;
 
     public function __construct(
         array $assets,
-        array $names,
-        $filters,
-        $inputs,
+        array $filters,
+        array $inputs,
         \Twig_NodeInterface $body,
         array $attributes = [],
-        $lineno = 0,
-        $tag = null
+        int $lineno = 0,
+        ?string $tag = null
     ) {
-        $this->nameCompress = $names['compress'];
-        $this->nameUnCompress = $names['un_compress'];
-        $this->compressedAsset = $assets['compress'];
-        $this->unCompressAsset = $assets['un_compress'];
+        $this->compressAssets = $assets['compress'];
+        $this->unCompressAssets = $assets['un_compress'];
 
         $nodes = ['body' => $body];
 
@@ -48,121 +38,108 @@ class OroAsseticNode extends \Twig_Node
         $this->tag = $tag;
     }
 
-    /**
-     * @return AssetInterface
-     */
-    public function getUnCompressAsset()
+    public function getCompressAssets(): array
     {
-        return $this->unCompressAsset;
+        return $this->compressAssets;
     }
 
-    /**
-     * @return AssetInterface
-     */
-    public function getCompressAsset()
+    public function getUnCompressAssets(): array
     {
-        return $this->compressedAsset;
+        return $this->unCompressAssets;
     }
 
-    /**
-     * @return array
-     */
-    public function getNameUnCompress()
-    {
-        return $this->nameUnCompress;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function compile(\Twig_Compiler $compiler)
     {
         $compiler->addDebugInfo($this);
 
+        $isMain = true;
+        foreach ($this->compressAssets as $name => $compressAsset) {
+            $this->compileMainStylesheetFlag($compiler, $isMain);
+            $this->compileCombineDebugAssetUrl($compiler, $compressAsset->getTargetPath(), $name);
 
-        $this->compileAsset($compiler, $this->compressedAsset, $this->nameCompress);
-        $this->compileDebug($compiler);
+            $compiler->write('unset($context[\'isMain\']);'."\n");
+            $isMain = false;
+        }
 
-        $compiler
-            ->write('unset($context[')
-            ->repr($this->getAttribute('var_name'))
-            ->raw("]);\n");
-    }
+        $isMain = true;
+        foreach ($this->unCompressAssets as $name => $unCompressAsset) {
+            $this->compileMainStylesheetFlag($compiler, $isMain);
+            $this->compileDebug($compiler, $unCompressAsset, $name);
 
-    /**
-     * @param \Twig_Compiler $compiler
-     */
-    protected function compileDebug(\Twig_Compiler $compiler)
-    {
-        $i = 0;
-        foreach ($this->unCompressAsset as $leaf) {
-            $leafName = $this->nameUnCompress . '_' . $i++;
-            $this->compileAsset($compiler, $leaf, $leafName);
+            $compiler->write('unset($context[\'isMain\']);'."\n");
+            $isMain = false;
         }
     }
 
-    /**
-     * @param \Twig_Compiler $compiler
-     * @param AssetInterface $asset
-     * @param $name
-     */
-    protected function compileAsset(\Twig_Compiler $compiler, AssetInterface $asset, $name)
+    protected function compileDebug(\Twig_Compiler $compiler, AssetInterface $asset, string $name): void
+    {
+        $inputs = $this->getAttribute('inputs');
+        $i = 0;
+
+        foreach ($asset as $leafAsset) {
+            $leafName = $name.'_'.$i++;
+            if (!in_array($asset->getSourcePath(), $inputs['uncompress'][0])) {
+                $this->compileAssetUrl($compiler, $leafName);
+            } else {
+                $this->compileCombineDebugAssetUrl($compiler, $leafAsset->getSourcePath(), $leafName);
+            }
+        }
+    }
+
+    protected function compileCombineDebugAssetUrl(\Twig_Compiler $compiler, string $path, string $name): void
     {
         $compiler
             ->write("// asset \"$name\"\n")
+            ->write('$context[\'name\'] = ')
+            ->repr($name)
+            ->raw(";\n")
             ->write('$context[')
             ->repr($this->getAttribute('var_name'))
-            ->raw('] = ');
-
-        if ($this->compressedAsset == $asset) {
-            $this->compileCombineDebugAssetUrl($compiler, $asset->getTargetPath(), $name);
-        } else {
-            $inputs = $this->getAttribute('inputs');
-            if (!in_array($asset->getSourcePath(), $inputs['uncompress'][0])) {
-                $this->compileAssetUrl($compiler, $asset, $name);
-            } else {
-                $this->compileCombineDebugAssetUrl($compiler, $asset->getSourcePath(), $name);
-            }
-        }
-
-        $compiler
-            ->raw(";\n")
-            ->subcompile($this->getNode('body'));
-    }
-
-    /**
-     * @param \Twig_Compiler $compiler
-     * @param string $path
-     * @param $name
-     */
-    protected function compileCombineDebugAssetUrl(\Twig_Compiler $compiler, $path, $name)
-    {
-        $compiler->raw('$this->env->getExtension(\'asset\')->getAssetUrl(')
+            ->raw('] = ')
+            ->raw('$this->env->getExtension(\'asset\')->getAssetUrl(')
             ->repr($path)
-            ->raw(')');
+            ->raw(')')
+            ->raw(";\n")
+            ->subcompile($this->getNode('body'))
+            ->write('unset($context[\'name\'])'."\n;")
+            ->write('unset($context[')
+            ->repr($this->getAttribute('var_name'))
+            ->raw("]);\n")
+        ;
     }
 
-    /**
-     * @param \Twig_Compiler $compiler
-     * @param AssetInterface $asset
-     * @param $name
-     */
-    protected function compileAssetUrl(\Twig_Compiler $compiler, AssetInterface $asset, $name)
+    protected function compileAssetUrl(\Twig_Compiler $compiler, string $name): void
     {
-        $compiler->subcompile($this->getPathFunction($name));
+        $compiler
+            ->write("// asset \"$name\"\n")
+            ->write('$context[\'name\'] = ')
+            ->repr($name)
+            ->raw(";\n")
+            ->write('$context[')
+            ->repr($this->getAttribute('var_name'))
+            ->raw('] = ')
+            ->subcompile(
+                new \Twig_Node_Expression_Function(
+                    'path',
+                    new \Twig_Node([new \Twig_Node_Expression_Constant('_assetic_'.$name, $this->getTemplateLine())]),
+                    $this->getTemplateLine()
+                )
+            )
+            ->raw(";\n")
+            ->subcompile($this->getNode('body'))
+            ->write('unset($context[\'name\'])'."\n;")
+            ->write('unset($context[')
+            ->repr($this->getAttribute('var_name'))
+            ->raw("]);\n")
+        ;
     }
 
-    /**
-     * @param $name
-     * @return \Twig_Node_Expression_Function
-     */
-    private function getPathFunction($name)
+    private function compileMainStylesheetFlag(\Twig_Compiler $compiler, bool $isMain): void
     {
-        return new \Twig_Node_Expression_Function(
-            version_compare(\Twig_Environment::VERSION, '1.2.0-DEV', '<')
-            ? new \Twig_Node_Expression_Name('path', $this->getTemplateLine()) : 'path',
-            new \Twig_Node([new \Twig_Node_Expression_Constant('_assetic_' . $name, $this->getTemplateLine())]),
-            $this->getTemplateLine()
-        );
+        $compiler
+            ->write('$context[\'isMain\'] = ')
+            ->repr($isMain)
+            ->raw(";\n")
+        ;
     }
 }
