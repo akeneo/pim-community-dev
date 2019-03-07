@@ -212,7 +212,7 @@ legacy:
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\AttributeOptionsMappingContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@akeneo.pim.automation.franklin_insights.repository.family'
-                    - '@pim_catalog.repository.attribute_option'
+                    - '@akeneo.pim.automation.franklin_insights.repository.attribute_option'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

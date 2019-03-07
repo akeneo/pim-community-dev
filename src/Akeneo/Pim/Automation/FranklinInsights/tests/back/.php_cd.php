@@ -30,11 +30,9 @@ $rules = [
 
             // TODO remove all links by reference
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-            'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
 
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
@@ -87,9 +85,6 @@ $rules = [
 
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
-
-            //Used to get all option translations to send to Franklin
-            'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider'),
 
@@ -143,6 +138,7 @@ $rules = [
             //Needed for the memory repositories
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository',
+            'Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence'),
 
@@ -167,7 +163,6 @@ $rules = [
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal'),
 

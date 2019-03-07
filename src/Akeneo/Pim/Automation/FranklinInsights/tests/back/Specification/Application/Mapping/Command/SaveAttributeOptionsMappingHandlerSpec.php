@@ -19,12 +19,12 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttri
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\AttributeOptionsMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject\AttributeOptions;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
-use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -69,7 +69,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
         $attributeOptionRepository
             ->findCodesByIdentifiers((string) $attributeCode, ['color1', 'color2'])
-            ->willReturn([['code' => 'color1'], ['code' => 'color2']]);
+            ->willReturn(['color1', 'color2']);
 
         $writeOptionsMapping = new AttributeOptionsMapping();
         $writeOptionsMapping->addAttributeOption(new AttributeOption('color_1', 'Color 1', 'color1'));
@@ -103,7 +103,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
         $attributeOptionRepository
             ->findCodesByIdentifiers((string) $attributeCode, ['color1', 'color2'])
-            ->willReturn([['code' => 'color1']]);
+            ->willReturn(['color1']);
 
         $writeOptionsMapping = new AttributeOptionsMapping();
         $writeOptionsMapping->addAttributeOption(new AttributeOption('color_1', 'Color 1', 'color1'));

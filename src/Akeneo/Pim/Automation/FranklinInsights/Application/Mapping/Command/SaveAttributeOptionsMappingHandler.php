@@ -18,10 +18,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\Attr
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -129,14 +129,9 @@ class SaveAttributeOptionsMappingHandler
      */
     private function getOptionCodes(SaveAttributeOptionsMappingCommand $command): array
     {
-        $optionCodes = $this->attributeOptionRepository->findCodesByIdentifiers(
+        return $this->attributeOptionRepository->findCodesByIdentifiers(
             (string) $command->attributeCode(),
             $command->attributeOptions()->getCatalogOptionCodes()
         );
-        $optionCodes = array_map(function ($option) {
-            return $option['code'];
-        }, $optionCodes);
-
-        return $optionCodes;
     }
 }

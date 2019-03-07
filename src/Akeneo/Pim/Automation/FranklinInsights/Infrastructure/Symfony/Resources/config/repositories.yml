@@ -25,6 +25,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.automation.franklin_insights.repository.attribute_option:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\AttributeOptionRepository'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.automation.franklin_insights.repository.attribute:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\AttributeRepository'
         arguments:

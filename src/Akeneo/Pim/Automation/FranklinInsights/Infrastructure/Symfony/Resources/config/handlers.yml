@@ -68,7 +68,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.data_provider.attribute_options_mapping'
             - '@akeneo.pim.automation.franklin_insights.repository.family'
             - '@akeneo.pim.automation.franklin_insights.repository.attribute'
-            - '@pim_catalog.repository.attribute_option'
+            - '@akeneo.pim.automation.franklin_insights.repository.attribute_option'
 
     # Query Handlers
     akeneo.pim.automation.franklin_insights.handler.get_product_subscription_status:

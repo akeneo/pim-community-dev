@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOption;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedValue;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue\SimpleSelectNormalizer;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -35,9 +36,9 @@ class SimpleSelectNormalizerSpec extends ObjectBehavior
     }
 
     public function it_normalizes_a_simple_select_suggested_value(
-        $attributeOptionRepository,
-        AttributeOptionInterface $attributeOption
+        $attributeOptionRepository
     ): void {
+        $attributeOption = new AttributeOption('option_code', new AttributeCode('attribute_code'));
         $suggestedValue = new SuggestedValue('attribute_code', 'an_option');
 
         $attributeOptionRepository
