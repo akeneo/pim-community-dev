@@ -14,8 +14,11 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -23,13 +26,44 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
  */
 class RecordCollectionDataHydrator implements DataHydratorInterface
 {
+    /** @var RecordExistsInterface */
+    private $recordExists;
+
+    /**
+     * Maybe inject a Bulk Record Exists here
+     */
+    public function __construct(RecordExistsInterface $recordExists)
+    {
+        $this->recordExists = $recordExists;
+    }
+
     public function supports(AbstractAttribute $attribute): bool
     {
         return $attribute instanceof RecordCollectionAttribute;
     }
 
-    public function hydrate($normalizedData): ValueDataInterface
+    public function hydrate($normalizedData, AbstractAttribute $attribute): ValueDataInterface
     {
-        return RecordCollectionData::createFromNormalize($normalizedData);
+        $filteredRecords = $this->keepExistingRecordsOnly($normalizedData, $attribute);
+        if (empty($filteredRecords)) {
+            return EmptyData::create();
+        }
+
+        return RecordCollectionData::createFromNormalize($filteredRecords);
+    }
+
+    private function keepExistingRecordsOnly(
+        array $recordCodesFromDatabase,
+        RecordCollectionAttribute $recordCollectionAttribute
+    ): array {
+        return array_filter(
+            $recordCodesFromDatabase,
+            function (string $recordCodeFromDatabase) use ($recordCollectionAttribute) {
+                return $this->recordExists->withReferenceEntityAndCode(
+                    $recordCollectionAttribute->getRecordType(),
+                    RecordCode::fromString($recordCodeFromDatabase)
+                );
+            }
+        );
     }
 }

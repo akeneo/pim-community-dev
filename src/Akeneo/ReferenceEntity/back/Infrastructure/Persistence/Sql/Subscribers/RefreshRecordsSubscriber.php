@@ -6,7 +6,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Subscribers;
 use Akeneo\ReferenceEntity\Domain\Event\AttributeOptionsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
-use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\RefreshRecordsCommand;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI\RefreshRecordsCommand;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

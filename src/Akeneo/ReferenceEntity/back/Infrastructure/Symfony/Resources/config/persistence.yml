@@ -285,11 +285,15 @@ services:
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_data:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDataHydrator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_collection_data:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordCollectionDataHydrator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
 
@@ -412,3 +416,15 @@ services:
         arguments:
             - '@database_connection'
 
+    # CLI Queries
+    akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers:
+        class: Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\AllRecordIdentifiers
+        arguments:
+            - '@database_connection'
+
+    # Commands
+    akeneo_referenceentity.infrastructure.persistence.records.refresh_records:
+        class: Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecords
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'

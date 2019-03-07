@@ -24,7 +24,7 @@ services:
             - { name: 'console.command'}
 
     akeneo_referenceentity.command.refresh_records:
-        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\RefreshRecordsCommand
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI\RefreshRecordsCommand
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
             - '@akeneo_referenceentity.client.record'

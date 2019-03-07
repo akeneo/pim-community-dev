@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
