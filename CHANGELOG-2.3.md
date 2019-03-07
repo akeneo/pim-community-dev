@@ -11,6 +11,7 @@
 ## Improvement
 
 - PIM-8175: add the possibility to filter on one or several index names when resetting ES indexes
+- PIM-8187: Add the possibility to fetch descendant products and product models
 
 # 2.3.31 (2019-02-28)
 
