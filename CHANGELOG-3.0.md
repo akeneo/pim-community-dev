@@ -7,13 +7,11 @@
 - PIM-8014: Fix the display of duplicate category trees in the product grid
 - PIM-8189: Fix wrong edition being displayed on standard edition
 - PIM-8194: Reference entity record values sanitizing
+- PIM-8186: Fix variant axis with attribute of type Reference Entity link
 
 ## Improvements
 
 - PIM-7863: Add reference entity metrics in the catalog volume monitoring as well as system info
-
-## Improvements
-
 - PIM-7933: Display the number of records and results for an entity in the grid
 - AOB-337: Display the expiration date of the certificate on the SSO config page
 
