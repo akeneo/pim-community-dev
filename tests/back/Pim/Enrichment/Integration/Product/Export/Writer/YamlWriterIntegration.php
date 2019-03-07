@@ -43,7 +43,7 @@ class YamlWriterIntegration extends KernelTestCase
         $this->writer->setStepExecution($stepExecution);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 

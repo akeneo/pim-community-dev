@@ -2,7 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Boolean;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -57,31 +59,25 @@ class BooleanFilterIntegration extends AbstractProductQueryBuilderTestCase
         $result = $this->executeFilter([['a_yes_no', Operators::IS_NOT_EMPTY, '']]);
         $this->assert($result, ['yes', 'no']);
     }
-
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_yes_no" expects a boolean as data, "string" given.
-     */
+    
     public function testErrorDataIsMalformed()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_yes_no" expects a boolean as data, "string" given.');
         $this->executeFilter([['a_yes_no', Operators::NOT_EQUAL, 'string']]);
     }
-
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_yes_no" expects a boolean as data, "NULL" given.
-     */
+    
     public function testErrorDataIsNull()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_yes_no" expects a boolean as data, "NULL" given.');
         $this->executeFilter([['a_yes_no', Operators::NOT_EQUAL, null]]);
     }
-
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
-     * @expectedExceptionMessage Filter on property "a_yes_no" is not supported or does not support operator "CONTAINS"
-     */
+    
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(UnsupportedFilterException::class);
+        $this->expectExceptionMessage('Filter on property "a_yes_no" is not supported or does not support operator "CONTAINS"');
         $this->executeFilter([['a_yes_no', Operators::CONTAINS, true]]);
     }
 }
