@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8178: Fix Attribute search on family edit page
+- PIM-8189: Fix new patch availability display
 
 # 3.0.5 (2019-02-25)
 
