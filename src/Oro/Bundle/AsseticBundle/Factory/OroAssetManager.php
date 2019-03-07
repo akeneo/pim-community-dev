@@ -144,7 +144,7 @@ class OroAssetManager
     {
         $assets = [];
         if ($node instanceof OroAsseticNode) {
-            $assets[$node->getNameUnCompress()] = $node;
+            $assets[] = $node;
         }
 
         foreach ($node as $child) {

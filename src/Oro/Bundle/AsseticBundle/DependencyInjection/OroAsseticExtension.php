@@ -15,6 +15,8 @@ use Symfony\Component\Yaml\Yaml;
  */
 class OroAsseticExtension extends Extension
 {
+    private const DEFAULT_STYLESHEET_NAME = 'pim';
+
     /**
      * {@inheritDoc}
      */
@@ -51,51 +53,75 @@ class OroAsseticExtension extends Extension
         $bundles = $container->getParameter('kernel.bundles');
 
         $css = [];
+        $stylesheets = [];
 
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/assets.yml')) {
                 $bundleConfig = Yaml::parse(file_get_contents(realpath($file)));
+
                 if (isset($bundleConfig['css'])) {
                     $css = array_merge_recursive($css, $bundleConfig['css']);
+                }
+
+                if (isset($bundleConfig['stylesheets'])) {
+                    $stylesheets = array_merge_recursive($stylesheets, $bundleConfig['stylesheets']);
                 }
             }
         }
 
+        $allGroups = array_keys($css);
+
+        if (empty($stylesheets)) {
+            $stylesheets = [self::DEFAULT_STYLESHEET_NAME => ['groups' => $allGroups]];
+        }
+
         $container->setParameter(
             'oro_assetic.assets_groups',
-            [
-                'css' => array_keys($css)
-            ]
+            ['css' => $allGroups]
         );
 
         $container->setParameter(
             'oro_assetic.compiled_assets_groups',
-            [
-                'css' => $config['css_debug']
-            ]
+            ['css' => $config['css_debug']]
         );
 
         return [
-            'css' => $this->getAssetics($css, $config['css_debug'], $config['css_debug_all']),
+            'css' => $this->getAssetics($css, $config['css_debug'], $config['css_debug_all'], $stylesheets),
         ];
     }
 
-    protected function getAssetics($assetsArray, $debugBlocks, $debugAll)
+    protected function getAssetics(array $assets, array $debugGroups, bool $debugAll, array $stylesheets): array
     {
-        $compressAssets = [];
-        $uncompressAssets = [];
-        foreach ($assetsArray as $blockName => $files) {
-            if ($debugAll || in_array($blockName, $debugBlocks)) {
-                $uncompressAssets = array_merge($uncompressAssets, $files);
-            } else {
-                $compressAssets = array_merge($compressAssets, $files);
+        $assetsGroupedByStylesheets = [];
+
+        foreach ($stylesheets as $stylesheetName => $stylesheetConf) {
+            if (!array_key_exists($stylesheetName, $assetsGroupedByStylesheets)) {
+                $assetsGroupedByStylesheets[$stylesheetName] = [
+                    'uncompress' => [],
+                    'compress'   => [],
+                ];
+            }
+
+            foreach ($assets as $groupName => $files) {
+                if (!in_array($groupName, $stylesheetConf['groups'])) {
+                    continue;
+                }
+
+                if ($debugAll || in_array($groupName, $debugGroups)) {
+                    $assetsGroupedByStylesheets[$stylesheetName]['uncompress'] = array_merge(
+                        $assetsGroupedByStylesheets[$stylesheetName]['uncompress'],
+                        $files
+                    );
+                } else {
+                    $assetsGroupedByStylesheets[$stylesheetName]['compress'] = array_merge(
+                        $assetsGroupedByStylesheets[$stylesheetName]['compress'],
+                        $files
+                    );
+                }
             }
         }
 
-        return [
-            'compress'   => [$compressAssets],
-            'uncompress' => [$uncompressAssets]
-        ];
+        return $assetsGroupedByStylesheets;
     }
 }
