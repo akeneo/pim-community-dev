@@ -18,7 +18,7 @@ spec:
       component: {{ template "pim.fullName" . }}
       role: pim-web
   strategy:
-    type: Recreate
+    type: {{ .Values.pim.updateStrategy.type }}
   template:
     metadata:
       labels:

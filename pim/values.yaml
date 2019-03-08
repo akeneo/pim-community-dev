@@ -93,7 +93,8 @@ pim:
     upgradeES:
       enabled: true
       hook: "pre-upgrade"
-
+  updateStrategy:
+    type: RollingUpdate
   replicas: 1
   numDaemon: 2
   extraLabels: {}
