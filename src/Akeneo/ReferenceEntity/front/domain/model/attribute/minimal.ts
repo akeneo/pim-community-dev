@@ -8,6 +8,9 @@ import LabelCollection, {
 import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
 import {RecordType, NormalizedRecordType} from 'akeneoreferenceentity/domain/model/attribute/type/record/record-type';
 
+/**
+ * @api
+ */
 export interface MinimalNormalizedAttribute {
   reference_entity_identifier: string;
   type: string;
@@ -17,6 +20,9 @@ export interface MinimalNormalizedAttribute {
   value_per_channel: boolean;
 }
 
+/**
+ * @api
+ */
 export default interface MinimalAttribute {
   referenceEntityIdentifier: ReferenceEntityIdentifier;
   code: AttributeCode;
@@ -38,6 +44,9 @@ export const isRecordAttributeType = (attributeType: string) => {
   return ['record', 'record_collection'].includes(attributeType);
 };
 
+/**
+ * @api
+ */
 export class MinimalConcreteAttribute implements MinimalAttribute {
   protected constructor(
     readonly referenceEntityIdentifier: ReferenceEntityIdentifier,

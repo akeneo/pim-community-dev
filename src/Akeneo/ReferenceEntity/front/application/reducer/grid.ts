@@ -14,6 +14,9 @@ export enum Sort {
   Descending,
 }
 
+/**
+ * @api
+ */
 export interface Column {
   key: string;
   labels: {[locale: string]: string};

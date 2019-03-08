@@ -7,12 +7,18 @@ import AttributeCode from 'akeneoreferenceentity/domain/model/attribute/code';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import LabelCollection from 'akeneoreferenceentity/domain/model/label-collection';
 
+/**
+ * @api
+ */
 export interface NormalizedAttribute extends MinimalNormalizedAttribute {
   identifier: NormalizedAttributeIdentifier;
   order: number;
   is_required: boolean;
 }
 
+/**
+ * @api
+ */
 export interface Attribute extends MinimalAttribute {
   identifier: Identifier;
   order: number;
@@ -26,6 +32,9 @@ export interface NormalizableAdditionalProperty {
   normalize(): any;
 }
 
+/**
+ * @api
+ */
 export abstract class ConcreteAttribute extends MinimalConcreteAttribute implements Attribute {
   protected constructor(
     readonly identifier: Identifier,

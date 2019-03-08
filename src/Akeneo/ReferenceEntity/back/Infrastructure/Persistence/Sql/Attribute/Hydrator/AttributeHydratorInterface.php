@@ -5,6 +5,11 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrat
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 
+/**
+ * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @api
+ */
 interface AttributeHydratorInterface
 {
     public function supports(array $result): bool;

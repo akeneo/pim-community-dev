@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @api
  */
 interface DataHydratorInterface
 {
