@@ -23,7 +23,7 @@ class PathGeneratorSpec extends ObjectBehavior
         $pathInfo->shouldBeValidPathInfo('Lorem_ipsum_dolor_sit_amet__consectetur_adipiscing_elit__sed_do_eiusmod_tempor_incididunt_ut_la.pdf');
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beValidPathInfo' => function ($subject, $expectedFilename) {

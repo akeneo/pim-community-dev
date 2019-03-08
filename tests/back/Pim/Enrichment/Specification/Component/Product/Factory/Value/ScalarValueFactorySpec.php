@@ -625,7 +625,7 @@ class ScalarValueFactorySpec extends ObjectBehavior
             ->during('create', [$attribute, 'ecommerce', 'en_US', ['foo' => 'bar']]);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveAttribute' => function ($subject, $attributeCode) {

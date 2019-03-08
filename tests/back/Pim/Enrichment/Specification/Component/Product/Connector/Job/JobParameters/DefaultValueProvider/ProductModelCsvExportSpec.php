@@ -49,7 +49,7 @@ class ProductModelCsvExportSpec extends ObjectBehavior
         $this->supports($job)->shouldReturn(true);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'returnWellFormedDefaultValues' => function ($parameters) {

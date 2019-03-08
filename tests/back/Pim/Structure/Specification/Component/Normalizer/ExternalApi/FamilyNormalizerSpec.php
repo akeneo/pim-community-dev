@@ -39,7 +39,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $normalizedFamily->shouldHaveAttributeRequirements($data);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveLabels' => function ($subject) {

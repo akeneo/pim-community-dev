@@ -207,7 +207,7 @@ class ReferenceDataValueFactorySpec extends ObjectBehavior
         $this->shouldThrow($exception)->during('create', [$attribute, null, null, 'foobar']);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveAttribute'     => function ($subject, $attributeCode) {

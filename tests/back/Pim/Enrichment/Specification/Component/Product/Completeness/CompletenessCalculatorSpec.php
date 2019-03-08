@@ -102,7 +102,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         $completenesses->shouldContainCompleteness($expectedCompleteness);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beAnArrayOfCompletenesses' => function ($completenesses) {

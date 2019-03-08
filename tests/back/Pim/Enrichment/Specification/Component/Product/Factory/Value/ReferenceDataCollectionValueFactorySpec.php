@@ -306,7 +306,7 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveReferenceData(['silk']);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveAttribute'     => function ($subject, $attributeCode) {

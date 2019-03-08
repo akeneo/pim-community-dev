@@ -234,7 +234,7 @@ class OptionValueFactorySpec extends ObjectBehavior
             ->during('create', [$attribute, 'ecommerce', 'en_US', 'foobar']);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveAttribute'  => function ($subject, $attributeCode) {

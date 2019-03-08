@@ -204,7 +204,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
         );
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beAnArrayOfInstanceOf' => function (array $subjects, $class) {
