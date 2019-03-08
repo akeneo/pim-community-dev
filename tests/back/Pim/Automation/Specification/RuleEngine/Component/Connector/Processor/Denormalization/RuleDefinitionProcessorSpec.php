@@ -322,7 +322,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $this->shouldThrow(InvalidItemException::class)->during('process', [$item]);
     }
 
-    function getMatchers()
+    function getMatchers(): array
     {
         return [
             'beValidRuleDefinition' => function ($subject, $expected) {

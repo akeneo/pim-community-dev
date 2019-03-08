@@ -69,7 +69,7 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
         $res->shouldBeListOfSuccessfulProcessedVariations();
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beListOfProcessedVariations' => function($subject) {

@@ -242,7 +242,7 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
 //        $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['dyson']]);
 //    }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveAttribute'     => function ($subject, $attributeCode) {
