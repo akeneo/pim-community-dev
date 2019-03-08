@@ -416,15 +416,20 @@ services:
         arguments:
             - '@database_connection'
 
-    # CLI Queries
+    # CLI
     akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers:
-        class: Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\AllRecordIdentifiers
+        class: Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers
         arguments:
             - '@database_connection'
 
+    akeneo_referenceentity.infrastructure.persistence.sql.record.refresh_records.refresh_record:
+        class: Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecord
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
     # Commands
-    akeneo_referenceentity.infrastructure.persistence.records.refresh_records:
-        class: Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecords
+    akeneo_referenceentity.infrastructure.persistence.records.refresh_all_records:
+        class: Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.sql.record.refresh_records.refresh_record'

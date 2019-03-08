@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record\RefreshRecords;
 
-use Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\AllRecordIdentifiers;
+use Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
@@ -17,7 +17,7 @@ use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 class AllRecordIdentifiersTest extends SqlIntegrationTestCase
 {
-    /** @var AllRecordIdentifiers */
+    /** @var FindAllRecordIdentifiers */
     private $allRecordIdentifiers;
 
     protected function setUp(): void

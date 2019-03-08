@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\CLI\RefreshRecords;
 
-use Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecords;
+use Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
@@ -33,10 +33,12 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class RefreshRecordOptionsTest extends SqlIntegrationTestCase
 {
-    /** @var RefreshRecords */
+    /** @var RefreshAllRecords */
     private $refreshRecords;
     
     /** @var ReferenceEntityIdentifier */
@@ -52,7 +54,7 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->refreshRecords = $this->get('akeneo_referenceentity.infrastructure.persistence.records.refresh_records');
+        $this->refreshRecords = $this->get('akeneo_referenceentity.infrastructure.persistence.records.refresh_all_records');
         $this->resetDB();
     }
 
@@ -66,7 +68,7 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
         $this->removeOptionFromAttribute('red');
         $this->assertTrue($this->IsRecordHavingValue('red'));
 
-        $this->refreshRecords->execute();
+        $this->runRefreshRecordsCommand();
 
         $this->assertFalse($this->IsRecordHavingValue('red'));
     }
@@ -91,6 +93,17 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
     private function resetDB(): void
     {
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+    }
+
+    private function runRefreshRecordsCommand(): void
+    {
+        $application = new Application($this->testKernel);
+        $command = $application->find('akeneo:reference-entity:refresh-records');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--all' => true
+        ]);
     }
 
     /**

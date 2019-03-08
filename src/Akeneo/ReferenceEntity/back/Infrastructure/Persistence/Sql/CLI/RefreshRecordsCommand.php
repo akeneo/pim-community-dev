@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
+use Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -24,13 +22,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RefreshRecordsCommand extends ContainerAwareCommand
 {
     public const REFRESH_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:refresh-records';
-    private const BATCH_SIZE = 100;
 
     /** @var RecordRepositoryInterface */
     private $recordRepository;
-
-    /** @var Client */
-    private $recordClient;
 
     /** @var Connection */
     private $sqlConnection;
@@ -41,25 +35,19 @@ class RefreshRecordsCommand extends ContainerAwareCommand
     /** @var int */
     private $totalRecords;
 
-    /** @var int */
-    private $nbRecordsRefreshed = 0;
-
-    /** @var int */
-    private $size = self::BATCH_SIZE;
-
-    /** @var int */
-    private $page = 0;
+    /** @var RefreshAllRecords */
+    private $refreshRecords;
 
     public function __construct(
         RecordRepositoryInterface $recordRepository,
-        Client $recordClient,
+        RefreshAllRecords $refreshRecords,
         Connection $sqlConnection
     ) {
         parent::__construct(self::REFRESH_RECORDS_COMMAND_NAME);
 
         $this->recordRepository = $recordRepository;
-        $this->recordClient = $recordClient;
         $this->sqlConnection = $sqlConnection;
+        $this->refreshRecords = $refreshRecords;
     }
 
     /**
@@ -89,16 +77,7 @@ class RefreshRecordsCommand extends ContainerAwareCommand
         $this->progressBar = new ProgressBar($output, $this->totalRecords);
         $this->progressBar->start();
 
-        while ($this->nbRecordsRefreshed < $this->totalRecords) {
-            $recordIdentifiersResult = $this->fetchRecords($this->page, $this->size);
-            $this->refreshRecords($recordIdentifiersResult);
-            $this->progressBar->advance(100);
-
-            if ($this->totalRecords - $this->nbRecordsRefreshed < self::BATCH_SIZE) {
-                $this->size = $this->totalRecords - $this->nbRecordsRefreshed;
-            }
-            $this->page++;
-        }
+        $this->refreshRecords->execute();
 
         $this->progressBar->finish();
     }
@@ -112,32 +91,5 @@ class RefreshRecordsCommand extends ContainerAwareCommand
         }
 
         return Type::getType('integer')->convertToPHPValue($result, $this->sqlConnection->getDatabasePlatform());
-    }
-
-    private function fetchRecords(int $page, int $size): IdentifiersForQueryResult
-    {
-        $query = [
-            '_source' => '_id',
-            'from'    => $size * $page,
-            'size'    => $size,
-        ];
-        $matches = $this->recordClient->search('pimee_reference_entity_record', $query);
-        $identifiers = array_map(function (array $hit) {
-            return $hit['_id'];
-        }, $matches['hits']['hits']);
-
-        return new IdentifiersForQueryResult($identifiers, $matches['hits']['total']);
-    }
-
-    private function refreshRecords(IdentifiersForQueryResult $recordIdentifiersResult): void
-    {
-        foreach ($recordIdentifiersResult->identifiers as $recordIdentifier) {
-            $record = $this->recordRepository->getByIdentifier(RecordIdentifier::fromString($recordIdentifier));
-            $this->recordRepository->update($record);
-            $this->nbRecordsRefreshed++;
-            if ($this->nbRecordsRefreshed === $this->totalRecords) {
-                break;
-            }
-        }
     }
 }

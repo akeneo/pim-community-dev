@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\CLI\RefreshRecords;
 
-use Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecords;
+use Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
@@ -20,7 +20,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
@@ -32,10 +31,12 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class RefreshRecordLinksTest extends SqlIntegrationTestCase
 {
-    /** @var RefreshRecords */
+    /** @var RefreshAllRecords */
     private $refreshRecords;
     
     /** @var AttributeIdentifier */
@@ -48,7 +49,7 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->refreshRecords = $this->get('akeneo_referenceentity.infrastructure.persistence.records.refresh_records');
+        $this->refreshRecords = $this->get('akeneo_referenceentity.infrastructure.persistence.records.refresh_all_records');
         $this->resetDB();
     }
 
@@ -64,7 +65,7 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         $this->removeRecord('designer','stark');
         $this->assertTrue($this->IsRecordHavingValue('kartell', 'stark'));
 
-        $this->refreshRecords->execute();
+        $this->runRefreshRecordsCommand();
 
         $this->assertFalse($this->IsRecordHavingValue('kartell', 'stark'));
     }
@@ -82,7 +83,7 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         $this->assertTrue($this->IsRecordHavingValue('kartell', 'stark'));
         $this->assertTrue($this->IsRecordHavingValue('kartell', 'dyson'));
 
-        $this->refreshRecords->execute();
+        $this->runRefreshRecordsCommand();
 
         $this->assertFalse($this->IsRecordHavingValue('kartell', 'stark'));
         $this->assertTrue($this->IsRecordHavingValue('kartell', 'dyson'));
@@ -91,6 +92,17 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
     private function resetDB(): void
     {
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+    }
+
+    private function runRefreshRecordsCommand(): void
+    {
+        $application = new Application($this->testKernel);
+        $command = $application->find('akeneo:reference-entity:refresh-records');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--all' => true
+        ]);
     }
 
     private function loadReferenceEntity(string $referenceEntityIdentifier)
@@ -181,6 +193,7 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         $recordRepository->update($fromRecord);
     }
 
+
     private function linkMultipleRecordsFromTo(string $fromRecord, array $toRecords): void
     {
         /** @var RecordRepositoryInterface $recordRepository */
@@ -196,7 +209,6 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         );
         $recordRepository->update($fromRecord);
     }
-
 
     private function removeRecord(string $referenceEntityIdentifier, string $recordToRemove): void
     {
