@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.6 (2019-03-08)
+
 ## Bug fixes
 
 - PIM-8154: Fix validation rule dropdown overlapped with the sticky footer
