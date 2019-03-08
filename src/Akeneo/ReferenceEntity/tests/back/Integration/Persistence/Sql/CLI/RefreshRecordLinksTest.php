@@ -62,7 +62,7 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         $this->loadRecordsForReferenceEntity('designer', ['stark']);
         $this->createAttributeRecordSingleLinkOnReferenceEntity('brand', 'designer');
         $this->linkRecordFromTo('kartell', 'stark');
-        $this->removeRecord('designer','stark');
+        $this->removeRecord('designer', 'stark');
         $this->assertTrue($this->IsRecordHavingValue('kartell', 'stark'));
 
         $this->runRefreshRecordsCommand();
@@ -79,7 +79,7 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         $this->loadRecordsForReferenceEntity('designer', ['stark', 'dyson']);
         $this->createAttributeRecordMultipleLinkOnReferenceEntity('brand', 'designer');
         $this->linkMultipleRecordsFromTo('kartell', ['stark', 'dyson']);
-        $this->removeRecord('designer','stark');
+        $this->removeRecord('designer', 'stark');
         $this->assertTrue($this->IsRecordHavingValue('kartell', 'stark'));
         $this->assertTrue($this->IsRecordHavingValue('kartell', 'dyson'));
 

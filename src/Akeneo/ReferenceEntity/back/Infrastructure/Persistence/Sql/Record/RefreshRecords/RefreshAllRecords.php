@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

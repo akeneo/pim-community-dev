@@ -113,7 +113,6 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
     {
         $this->loadReferenceEntity('designer');
         $this->loadOptionAttributeWithOptions($options);
-
     }
     /**
      * @param string[] $options

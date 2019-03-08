@@ -153,6 +153,11 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
         $this->assertNull($recordFound);
     }
 
+    private function resetDB(): void
+    {
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+    }
+
     private function createStarckRecord(): Record
     {
         $recordCode = RecordCode::fromString('starck');

@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueH
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class RecordHydratorSpec extends ObjectBehavior
 {
@@ -97,6 +98,7 @@ class RecordHydratorSpec extends ObjectBehavior
         ];
         $labelfrFR->normalize()->willReturn($labelFrFrNormalized);
         $labelfrFR->getValueKey()->willReturn($labelfrFrValueKey);
+        $labelfrFR->isEmpty()->willReturn(false);
 
         $labelenUSValueKey = ValueKey::createFromNormalized('label_game_fingerprint-en_US');
         $labelenUSNormalized = [
@@ -107,6 +109,7 @@ class RecordHydratorSpec extends ObjectBehavior
         ];
         $labelenUS->normalize()->willReturn($labelenUSNormalized);
         $labelenUS->getValueKey()->willReturn($labelenUSValueKey);
+        $labelenUS->isEmpty()->willReturn(false);
 
         $imageValueKey = ValueKey::createFromNormalized('image_game_fingerprint');
         $imageNormalized = [
@@ -120,6 +123,7 @@ class RecordHydratorSpec extends ObjectBehavior
         ];
         $image->normalize()->willReturn($imageNormalized);
         $image->getValueKey()->willReturn($imageValueKey);
+        $image->isEmpty()->willReturn(false);
 
         $gameDescriptionFrFrValueKey = ValueKey::createFromNormalized('description_game_finger-fr_FR');
         $gameDescriptionFrFrNormalized = [
@@ -130,6 +134,7 @@ class RecordHydratorSpec extends ObjectBehavior
         ];
         $gameDescriptionFrFr->normalize()->willReturn($gameDescriptionFrFrNormalized);
         $gameDescriptionFrFr->getValueKey()->willReturn($gameDescriptionFrFrValueKey);
+        $gameDescriptionFrFr->isEmpty()->willReturn(false);
 
         $gameDescriptionEnUsValueKey = ValueKey::createFromNormalized('description_game_finger-en_US');
         $gameDescriptionEnUSNormalized = [
@@ -140,6 +145,7 @@ class RecordHydratorSpec extends ObjectBehavior
         ];
         $gameDescriptionEnUS->normalize()->willReturn($gameDescriptionEnUSNormalized);
         $gameDescriptionEnUS->getValueKey()->willReturn($gameDescriptionEnUsValueKey);
+        $gameDescriptionEnUS->isEmpty()->willReturn(false);
 
         $gameBoxImageIdentifier->normalize()->willReturn('boximage_game_fingerprint');
         $gameBoxImage->getIdentifier()->willReturn($gameBoxImageIdentifier);
@@ -155,6 +161,7 @@ class RecordHydratorSpec extends ObjectBehavior
         ];
         $gameBoxImageMobile->normalize()->willReturn($gameBoxImageMobileNormalized);
         $gameBoxImageMobile->getValueKey()->willReturn($gameBoxImageMobileValueKey);
+        $gameBoxImageMobile->isEmpty()->willReturn(false);
 
         $rawValues = [
             'label_game_fingerprint-fr_FR'     => $labelFrFrNormalized,
@@ -223,6 +230,7 @@ class RecordHydratorSpec extends ObjectBehavior
         ];
         $gameDescriptionFrFr->normalize()->willReturn($gameDescriptionFrFrNormalized);
         $gameDescriptionFrFr->getValueKey()->willReturn($descriptionGameFrFRValueKey);
+        $gameDescriptionFrFr->isEmpty()->willReturn(false);
 
         $gameDescriptionIdentifier->normalize()->willReturn('description_game_fingerprint');
         $gameDescription->getIdentifier()->willReturn($gameDescriptionIdentifier);
@@ -265,5 +273,34 @@ class RecordHydratorSpec extends ObjectBehavior
         $record->getValues()->normalize()->shouldReturn([
             'description_game_finger-fr_FR' => $gameDescriptionFrFrNormalized,
         ]);
+    }
+
+    public function it_does_not_add_empty_values_to_the_value_collection(
+        $valueHydrator,
+        TextAttribute $gameDescription,
+        AttributeIdentifier $attributeIdentifier,
+        Value $emptyValue
+    ) {
+        $attributeIdentifier->normalize()->willReturn('description_game_fingerprint');
+        $gameDescription->getIdentifier()->willReturn($attributeIdentifier);
+        $indexedAttributes = ['description_game_fingerprint' => $gameDescription];
+        $expectedValueKeys = ValueKeyCollection::fromValueKeys(
+            [ValueKey::createFromNormalized('description_game_finger-fr_FR')]
+        );
+        $emptyValue->isEmpty()->willReturn(true);
+        $valueHydrator->hydrate(Argument::any(), Argument::any())->willReturn($emptyValue);
+        $record = $this->hydrate(
+            [
+                'identifier'                  => 'wow_game_A8E76F8A76E87F6A',
+                'code'                        => 'world_of_warcraft',
+                'reference_entity_identifier' => 'game',
+                'labels'                      => json_encode([]),
+                'value_collection' => json_encode(['description_game_finger-fr_FR' => ['attribute' => 'description_game_fingerprint']]),
+            ],
+            $expectedValueKeys,
+            $indexedAttributes
+        );
+
+        $record->getValues()->normalize()->shouldReturn([]);
     }
 }
