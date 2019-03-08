@@ -134,6 +134,7 @@ Feature: Assign assets to a product
     And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
+    And I search "video_"
     And I check the row "video_9"
     And I check the row "video_10"
     Then the item picker basket should contain video_9, video_10
