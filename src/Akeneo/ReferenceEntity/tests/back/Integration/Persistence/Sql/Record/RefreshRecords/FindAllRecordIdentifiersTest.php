@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record\RefreshRecords;
 
-use Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
@@ -13,9 +12,10 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
-class AllRecordIdentifiersTest extends SqlIntegrationTestCase
+class FindAllRecordIdentifiersTest extends SqlIntegrationTestCase
 {
     /** @var FindAllRecordIdentifiers */
     private $allRecordIdentifiers;

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI;
 
-use Akeneo\ReferenceEntity\back\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
