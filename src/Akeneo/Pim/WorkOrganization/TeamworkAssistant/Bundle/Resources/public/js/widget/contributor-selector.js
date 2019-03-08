@@ -169,9 +169,9 @@ define(
 
             /**
              * Update the choice text with the current user context to display '(You)'.
-             * 
+             *
              * @param {{id: string, text: string}} choice
-             * 
+             *
              * @return {{id: string, text: string}}
              */
             updateCurrentUsername: function (choice) {
