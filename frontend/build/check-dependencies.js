@@ -37,7 +37,7 @@ const getPackageDiffs = (source) => {
         return [];
     }
 
-    const sourceJSON = read({cwd: 'vendor/akeneo/pim-enterprise-dev'});
+    const sourceJSON = read({cwd: source});
     const currentJSON = read({cwd: rootDir});
 
 
