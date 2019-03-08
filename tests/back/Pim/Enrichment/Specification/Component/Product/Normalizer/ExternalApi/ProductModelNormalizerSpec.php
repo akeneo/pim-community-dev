@@ -113,7 +113,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $normalizedProduct->shouldHaveValues($productStandard);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveValues' => function ($subject) {

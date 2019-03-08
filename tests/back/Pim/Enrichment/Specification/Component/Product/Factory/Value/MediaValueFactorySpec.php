@@ -350,7 +350,7 @@ class MediaValueFactorySpec extends ObjectBehavior
             ->during('create', [$attribute, 'ecommerce', 'en_US', 'foo/bar.txt']);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveAttribute' => function ($subject, $attributeCode) {

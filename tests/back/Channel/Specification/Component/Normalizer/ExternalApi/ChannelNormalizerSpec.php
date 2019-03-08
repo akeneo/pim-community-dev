@@ -39,7 +39,7 @@ class ChannelNormalizerSpec extends ObjectBehavior
         $normalizedChannel->shouldHaveConversionUnits($data);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveLabels' => function ($subject) {

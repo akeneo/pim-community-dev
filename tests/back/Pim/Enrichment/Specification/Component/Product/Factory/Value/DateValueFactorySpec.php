@@ -185,7 +185,7 @@ class DateValueFactorySpec extends ObjectBehavior
             ->during('create', [$attribute, 'ecommerce', 'en_US', '03-04-2013']);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveAttribute' => function ($subject, $attributeCode) {

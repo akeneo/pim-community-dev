@@ -293,7 +293,7 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
         $results['data'][2]->getValue('id')->shouldReturn('product-model-2');
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beAnArrayOfInstanceOf' => function (array $subjects, $class) {

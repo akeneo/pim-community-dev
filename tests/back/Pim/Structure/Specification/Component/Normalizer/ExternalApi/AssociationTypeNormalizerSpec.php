@@ -54,7 +54,7 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
         $this->normalize($associationType, 'external_api', [])->shouldReturn($data);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveLabels' => function ($subject) {

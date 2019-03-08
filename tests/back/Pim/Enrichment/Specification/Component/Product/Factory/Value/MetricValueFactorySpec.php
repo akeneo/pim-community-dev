@@ -234,7 +234,7 @@ class MetricValueFactorySpec extends ObjectBehavior
             ->during('create', [$attribute, 'ecommerce', 'en_US', ['amount' => 42, 'bar' => 'GRAM']]);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveAttribute' => function ($subject, $attributeCode) {

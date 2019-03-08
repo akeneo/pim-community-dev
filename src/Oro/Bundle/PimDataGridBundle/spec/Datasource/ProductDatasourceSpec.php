@@ -128,7 +128,7 @@ class ProductDatasourceSpec extends ObjectBehavior
         $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beAnArrayOfInstanceOf' => function (array $subjects, $class) {

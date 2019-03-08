@@ -63,7 +63,7 @@ class LocaleExtensionSpec extends ObjectBehavior
 
     }
 
-    function getMatchers()
+    function getMatchers(): array
     {
         $filterArgs = new \Twig_Node();
 

@@ -398,7 +398,7 @@ class CategoryExtensionSpec extends ObjectBehavior
         $this->getProductsLimitForRemoval()->shouldReturn(10);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'equalUsingJSON' => function ($subject, $value) {
