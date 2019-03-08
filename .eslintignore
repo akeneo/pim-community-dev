@@ -1,3 +1,4 @@
 src/**/lib/**/*.js
 src/**/DataGridBundle/**/*.js
 src/Oro/**/**/*.js
+src/Akeneo/ReferenceEntity/tests/front

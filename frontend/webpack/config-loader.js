@@ -30,7 +30,7 @@ module.exports = function(content) {
   this.cacheable();
   if (!hasModule(content)) return content;
 
-  const aliases = chain(this.options.resolve.alias)
+  const aliases = chain(options.aliases)
     .invert()
     .mapValues(alias => alias.replace(/\$$/, ''))
     .value();

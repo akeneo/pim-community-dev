@@ -91,7 +91,7 @@ define(
              * @param  {String}   buttonClass       The class for OK button
              * @param  {String}   buttonText        The OK button label
              * @param  {String}   illustrationClass Class for the illustration
-             * @return {Promise}                    
+             * @return {Promise}
              */
             confirm: function (content, title, callback, subTitle, buttonClass, buttonText, illustrationClass) {
                 const deferred = $.Deferred();
