@@ -28,7 +28,7 @@ class DescendantProductIdsIntegration extends TestCase
         $expectedProductIds = array_map(function ($product) {
             return (int) $product->getId();
         }, $products);
-        
+
         $resultRows = $query->fetchFromProductModelIds([$productModel->getId(), $productModel2->getId()]);
         $this->assertCount(count($expectedProductIds), $resultRows);
         $this->assertSame($expectedProductIds, $resultRows);
