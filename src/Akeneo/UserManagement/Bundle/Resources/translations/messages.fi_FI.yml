@@ -65,7 +65,6 @@ pim_user:
       request: Pyyntö
       password_reset: Salasanan nollaus
       reset: Nollaa muutokset
-      password_reset_email_sent: Sähköposti lähetettiin käyttäjälle. Se sisältää linkin salasanan vaihtamiseksi.
       homepage: Siirry etusivulle
   group:
     tab:

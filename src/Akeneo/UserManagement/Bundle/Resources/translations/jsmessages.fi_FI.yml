@@ -30,6 +30,7 @@ pim_enrich:
 pim_user_management:
   entity:
     user:
+      label: käyttäjä
       flash:
         update:
           success: Käyttäjä päivitettiin onnistuneesti.

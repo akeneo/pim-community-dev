@@ -48,6 +48,8 @@ pim_enrich.entity.channel:
     delete:
       success: Kanavan poistaminen onnistui
       fail: Kanavaa ei voi poistaa
+  page_title:
+    index: "]-Inf, 1] {{ count }} kanava|]1, Inf [{{ count }} kanavaa"
   property:
     category_tree: Kategoriahierarkia
     do_not_convert: Älä muunna
@@ -61,5 +63,9 @@ pim_enrich.entity.locale:
   label: lokaatio
   uppercase_label: Lokaatio
   plural_label: Alueet
+  page_title:
+    index: "]-Inf, 1] {{ count }} lokaatio|]1, Inf [{{ count }} lokaatiota"
 pim_enrich.entity.currency:
   plural_label: Valuutat
+  page_title:
+    index: "] -Inf, 1] {{ count }} valuutta|]1, Inf [{{ count }} valuuttaa"

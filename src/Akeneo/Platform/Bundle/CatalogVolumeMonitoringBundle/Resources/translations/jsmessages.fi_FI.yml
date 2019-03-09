@@ -26,5 +26,6 @@ pim_catalog_volume:
     count_category_trees: Kategoriahierarkia
     count_variant_products: Varianttituotteita
     count_product_models: Tuotemallit
+    warning: Wow! Teit tässä ennätyksen. Älä epäröi ottaa yhteyttä, mikäli tarvitset tässä mittakaavassa apua.
   mean: 'Keskiarvo:'
   max: 'Maksimi:'
