@@ -4,6 +4,9 @@ batch_jobs:
     import_associations: Liitännäisten tuonti
     import_root_product_model: Juuritason tuotemallin tuonti
     import_sub_product_model: Alatason tuotemallin tuonti
+    compute_data_related_to_family_root_product_models: Käsittele ylätason tuotemallin tiedot
+    compute_data_related_to_family_sub_product_models: Käsittele alatuotemallin tiedot
+    compute_data_related_to_family_products: Tuotteiden käsittely
   csv_product_export:
     label: Tuotteiden vienti CSV-muodossa
     export.label: Tuotteiden vienti
@@ -52,6 +55,7 @@ batch_jobs:
   csv_family_import:
     label: Ryhmän tuonti CSV-tiedostona
     import.label: Ryhmätuonti
+    compute_data_related_to_family_variants.label: Tuotemallien käsittely
   csv_family_variant_import:
     label: Varianttiperheen tuonti CSV-muodossa
     import.label: Varianttiperheen tuonti

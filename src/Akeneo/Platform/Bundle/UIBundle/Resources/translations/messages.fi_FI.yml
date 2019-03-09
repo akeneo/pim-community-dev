@@ -110,6 +110,7 @@ pim_enrich:
       create: Luo tuoteperhe
       edit_properties: Muokkaa tuoteperheen ominaisuuksia
       edit_attributes: Muokkaa tuoteperheen määritteitä
+      edit_variants: Muokkaa varianttiperhettä
       remove: Poista tuoteperhe
       history: Tarkastele tuoteperheen historiaa
     family_variant:
@@ -166,6 +167,11 @@ pim_enrich:
     locale: Alueet
     product: Tuotteet
     product_model: Tuotemallit
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Lokaatio on poistettu kanavalta. Puhdistamme parhaillaan siihen linkitettyjä valmiusasteita.
+        done: Kanavan lokaation poistaminen valmis.
   create:
     attribute: luo attribuutti
     attribute group: luo attribuuttiryhmä
@@ -467,6 +473,7 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa att
 update_product_value.steps.update_product_value_processor.title: Päivitä tuotteen arvo
 remove_product_value.steps.update_product_value_processor.title: Poista tuotteen arvo
 edit_common_attributes: Muokkaa attribuutteja
+edit_common_attributes_clean: Puhdista tiedostot yhteisiä attribuutteja varten
 perform.steps.duplicated.title: Päällekkäät akselit
 perform.steps.excluded.title: Poissuljetut tuotteet
 mass_edit report:
