@@ -217,7 +217,6 @@ pim_catalog_volume:
   section:
     assets:
       title: Ejes en los recursos
-      hint: Puede seguir el volumen respecto a los recursos aquí
   axis:
     count_assets: Recursos
     count_asset_categories: Categorías de recursos

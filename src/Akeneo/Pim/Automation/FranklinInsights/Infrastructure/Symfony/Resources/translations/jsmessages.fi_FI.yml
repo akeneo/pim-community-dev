@@ -27,6 +27,7 @@ akeneo_franklin_insights:
     product:
       operation:
         franklin_insights:
+          description: Valitse toiminto, jonka haluat kohdistaa tuotelistasta valitsemillesi tuotteille
           subscribe_label: Tilaa
 pim_enrich.entity.attribute:
   module:

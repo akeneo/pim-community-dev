@@ -28,8 +28,10 @@ pimee_enrich.entity.attribute_group:
 pimee_enrich.entity.job_instance:
   module:
     permissions:
+      added: Käyttäjäryhmä {{ group }} on oikeutettu {{ permission }} työprofiilia
       execute: Työprofiilin suorittaminen sallittu
       edit: Työprofiilin muokkaaminen sallittu
+      removed: Käyttäjäryhmä {{ group }} ei ole oikeutettu {{ permission }} työprofiilia
 batch_jobs:
   add_product_value_with_permission_and_rules:
     perform.label: Lisää tuotteen arvo

@@ -49,7 +49,7 @@ pimee_product_asset:
       import: Tuonnin yhteydessä tapahtui virhe
       filename: Assetin tiedostonimi ei ole pätevä
       code: Vääränmuotoinen koodi assetille
-      locale: Aseeti on olemassa, mutta se ei ole lokalisoitavissa
+      locale: Assetti on olemassa, mutta se ei ole lokalisoitavissa
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
       exists: Samanniminen tiedosto on jo tuotu
       conflicts: Tiedostonimissä on konflikti
@@ -60,6 +60,7 @@ pimee_product_asset:
       error: Virhe
       success: Onnistui
     drag_and_drop: Vedä ja pudota assetit tai klikkaa tästä
+    tabsection_title: Assetit
   datagrid:
     mass_action:
       delete:
@@ -72,7 +73,7 @@ pim_enrich:
     attribute:
       property:
         type:
-          pim_assets_collection: Resurssien keruu
+          pim_assets_collection: Assetit
 pim_dashboard:
   widget:
     last_operations:
@@ -160,7 +161,7 @@ pim_datagrid:
 pimee_enrich.entity.channel:
   module:
     asset_transformation:
-      title: Resurssien muunnokset
+      title: Assettien muunnokset
       not_found: Ei muunnosta löydettävissä
       transformation: Muunnos
       options: Vaihtoehdot
@@ -217,7 +218,6 @@ pim_catalog_volume:
   section:
     assets:
       title: Assettien ulottuvuudet
-      hint: Voit seurata tässä katalogin kokoa liittyen assetteihin
   axis:
     count_assets: Assetit
     count_asset_categories: Assettikategoriat
