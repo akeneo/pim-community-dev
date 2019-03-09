@@ -29,6 +29,10 @@ category.permissions:
   apply_on_children.label: Tee muutokset myös alatasolle
   apply_on_children.help: Kopioi käyttöoikeusmuutokset kaikkiin alatason objekteihin, olemassaolevat käyttöoikeudet alatason objekteihin pysyvät muuttumattomina
 locale.permissions:
+  view.label: Tietojen katselu sallittu
+  view.help: Salli tietojen katselu tällä lokaatiolla
+  edit.label: Tietojen muokkaaminen sallittu
+  edit.help: Salli tietojen muokkaaminen tällä alueella (edellyttää katseluoikeutta)
   no_access_to_products: Sinulla ei ole pääsyä tuotedataan millään aktivoidulla alueella, ole hyvä ja ota yhteyttä järjestelmänvalvojaasi
 flash.locale.updated: Alueen asetukset ja käyttöoikeudet on päivitetty
 pim_enrich:

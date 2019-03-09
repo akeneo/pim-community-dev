@@ -106,7 +106,7 @@ akeneo_franklin_insights:
         activated: 'Activat'
         activate: 'Activat'
   settings:
-    page_title: 'Configuració de les estadístiques de Franklin'
+    attributes_mapping_title: 'Mapatge dels atributs'
     module:
       title:
         sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'

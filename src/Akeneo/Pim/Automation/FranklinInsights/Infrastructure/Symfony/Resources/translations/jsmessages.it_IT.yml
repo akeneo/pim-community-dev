@@ -125,7 +125,7 @@ akeneo_franklin_insights:
         activated: 'Attivato'
         activate: 'Attiva'
   settings:
-    page_title: 'Impostazioni Franklin Insights'
+    attributes_mapping_title: 'Mappatura attributi'
     module:
       title:
         sub_title: 'Conosci Franklin, il tuo <span class="AknDescriptionHeader-title--highlight">assistente AI Informazioni Prodotto</span>!'
