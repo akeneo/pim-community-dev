@@ -92,7 +92,7 @@ pimee_enrich:
       permission.title: Käyttöoikeudet
   channel:
     tab:
-      asset_transformation.title: Resurssien muunnokset
+      asset_transformation.title: Assettien muunnokset
   acl.product_ownership.title: Omistajuus
   attributes:
     empty: ei mitään
