@@ -41,6 +41,7 @@ job_execution.summary:
     skipped: ohitetaan, laajennus valkolistattu
   product_skipped_no_diff: ohitettu tuote (ei eroavaisuuksia)
   product_skipped_no_associations: ohitettu tuote (ei havaittuja assosiaatioita)
+  product_model_skipped_no_associations: ohitettu tuotemalli (ei havaittuja assosiaatioita)
   product_model_skipped_no_diff: ohitettu tuotemalli (ei eroavaisuuksia)
   item_position: lue rivit
   skipped_in_root_product_model: ohitettu tuotemalli ylätason kanssa

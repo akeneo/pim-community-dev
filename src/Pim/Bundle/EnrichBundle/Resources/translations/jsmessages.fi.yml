@@ -823,7 +823,7 @@ pim_enrich:
       filter:
         channel:
           title: Kanava
-          help: Kanava määrittää tuotearvojen laajuuden, arvojen lokaation ja tuotepuun, jolla rajataan mukaan otettavat tuotteet.
+          help: Kanava määrittää tuotetietojen julkaisukanavan, käytetyt lokaatiot ja tuotteiden valinnan kategoriapuusta.
         locales:
           title: Alueet
           help: "Lokaatiot määrittävät minkäkieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot."
@@ -1167,6 +1167,8 @@ batch_jobs:
     label: Muokkaa attribuutteja
     perform:
       label: Muokkaa attribuutteja
+    cleaner:
+      label: Puhdista tiedostot yhteisiä attribuutteja varten
   add_to_category:
     label: Lisää kategorioihin
     perform:
@@ -1266,6 +1268,8 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
     compute_data_related_to_family_variants.label: Tuotemallien käsittely
+    compute_data_related_to_family_root_product_models.label: Käsittele ylätason tuotemallin tiedot
+    compute_data_related_to_family_sub_product_models.label: Käsittele alatuotemallin tiedot
     compute_data_related_to_family_products.label: Tuotteiden käsittely
   csv_family_variant_import:
     label: Varianttiperheen tuonti CSV-muodossa
@@ -1331,6 +1335,8 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
     compute_data_related_to_family_variants.label: Tuotemallien käsittely
+    compute_data_related_to_family_root_product_models.label: Käsittele ylätason tuotemallin tiedot
+    compute_data_related_to_family_sub_product_models.label: Käsittele alatuotemallin tiedot
     compute_data_related_to_family_products.label: Tuotteiden käsittely
   xlsx_family_variant_import:
     label: Varianttiperheen tuonti XLSX-muodossa
@@ -1495,3 +1501,6 @@ catalog_volume:
     count_category_trees: Kategoriahierarkia
     count_variant_products: Varianttituotteita
     count_product_models: Tuotemallit
+    warning: Wow! Teit tässä ennätyksen. Älä epäröi ottaa yhteyttä, mikäli tarvitset tässä mittakaavassa apua.
+  mean: 'Keskiarvo:'
+  max: 'Maksimi:'
