@@ -16,10 +16,10 @@ permission-changes:
 pim_enrich:
   entity:
     attribute_label:
-      pim_assets_collection: Resurssien keruu
+      pim_assets_collection: Assetit
     attribute:
       type:
-        pim_assets_collection: Resurssien keruu
+        pim_assets_collection: Assetit
   form:
     attribute:
       tab:
@@ -43,7 +43,7 @@ pimee_enrich:
     channel:
       tab:
         asset-transformation:
-          title: Resurssien muunnokset
+          title: Assettien muunnokset
     attribute_group:
       tab:
         permission:
@@ -239,14 +239,23 @@ batch_jobs:
   edit_common_attributes_with_permission_and_rules:
     perform.label: Muokkaa attribuutteja
     execute_rules.label: Sääntöjen suorittaminen
+    cleaner.label: Poista väliaikaiset tiedostot
   csv_published_product_quick_export:
     export.label: Julkaistujen tuotteiden nopea vienti CSV-muodossa
     perform:
       label: Julkaistujen tuotteiden nopea vienti CSV-muodossa
+  csv_published_product_grid_context_quick_export:
+    export.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti CSV-muodossa
+    perform:
+      label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti CSV-muodossa
   xlsx_published_product_quick_export:
     export.label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
     perform:
       label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti XLSX-muodossa
+    perform:
+      label: Julkaistujen tuotteiden (ruudukon sarakkeet) nopea vienti XLSX-muodossa
   add_attribute_value:
     execute_rules.label: Sääntöjen suorittaminen
   publish_product:
