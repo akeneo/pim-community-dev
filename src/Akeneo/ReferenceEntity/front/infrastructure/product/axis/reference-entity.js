@@ -105,10 +105,10 @@ define([
             ajax: ajaxConfig,
             initSelection: (element, callback) => {
               const initialValue = element.val();
-              recordFetcher.default
+              recordFetcher
                 .fetch(ReferenceEntityIdentifier.create(attribute.reference_data_name), RecordCode.create(initialValue))
-                .then(record => {
-                  callback(this.formatItem(record.normalize()));
+                .then(result => {
+                  callback(this.formatItem(result.record.normalize()));
                 });
             },
             multiple: false,
