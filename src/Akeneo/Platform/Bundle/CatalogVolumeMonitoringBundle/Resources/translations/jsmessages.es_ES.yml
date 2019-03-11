@@ -14,8 +14,6 @@ pim_catalog_volume:
     average_max_attributes_per_family: Atributos por familia
     count_channels: Canales
     count_locales: Locales (activado)
-    count_scopable_attributes: Atributos alcanzables
-    count_localizable_and_scopable_attributes: Atributos localizables y alcanzables
     count_localizable_attributes: Atributos localizables
     count_families: Familias
     count_attributes: Atributos
@@ -25,4 +23,3 @@ pim_catalog_volume:
     count_variant_products: Variante de productos
     count_product_models: Modelos de producto
     warning: '¡Wow, ha alcanzado un récord con este eje! No dude en contactarnos si necesita ayuda con estos volúmenes.'
-  max: 'Máximo:'

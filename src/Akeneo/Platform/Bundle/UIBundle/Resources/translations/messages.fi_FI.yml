@@ -110,6 +110,7 @@ pim_enrich:
       create: Luo tuoteperhe
       edit_properties: Muokkaa tuoteperheen ominaisuuksia
       edit_attributes: Muokkaa tuoteperheen määritteitä
+      edit_variants: Muokkaa varianttiperhettä
       remove: Poista tuoteperhe
       history: Tarkastele tuoteperheen historiaa
     family_variant:
@@ -166,6 +167,11 @@ pim_enrich:
     locale: Alueet
     product: Tuotteet
     product_model: Tuotemallit
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Lokaatio on poistettu kanavalta. Puhdistamme parhaillaan siihen linkitettyjä valmiusasteita.
+        done: Kanavan lokaation poistaminen valmis.
   create:
     attribute: luo attribuutti
     attribute group: luo attribuuttiryhmä
@@ -295,7 +301,7 @@ Close: Sulje
 Search: Etsi
 Choose the attribute type: Valitse attribuutin tyyppi
 Choose the attribute group: Valitse attribuuttiryhmä
-Drag and drop a file or click here: Vedä ja pudota tiedosto tai klikkaa tästä
+Drag and drop a file or click here: Vedä ja tiputa tiedosto tai klikkaa tästä
 Drop an image or click here: Pudota kuva tai klikkaa tästä
 Automatic option sorting: Automaattinen vaihtoehtojen lajittelu
 save_attribute_before_manage_option: Hallinnoidaksesi vaihtoehtoja, ole hyvä ja tallenna ensin attribuutti
@@ -467,6 +473,7 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa att
 update_product_value.steps.update_product_value_processor.title: Päivitä tuotteen arvo
 remove_product_value.steps.update_product_value_processor.title: Poista tuotteen arvo
 edit_common_attributes: Muokkaa attribuutteja
+edit_common_attributes_clean: Puhdista tiedostot yhteisiä attribuutteja varten
 perform.steps.duplicated.title: Päällekkäät akselit
 perform.steps.excluded.title: Poissuljetut tuotteet
 mass_edit report:

@@ -286,6 +286,7 @@ pim_enrich.mass_edit.product:
       label: Modifier les valeurs d’attributs
       label_count: "{1}Ajouter des valeurs d'attributs d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Ajouter des valeurs d'attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
       description: Seuls les attributs appartenant aux familles des produits sélectionnés seront édités avec les données suivantes pour la locale {{ locale }} et le canal de {{ scope }}.
+      no_update: Veuillez sélectionner au moins un champ à mettre à jour.
     add_attribute_value:
       label: Ajouter des valeurs d’attributs
       label_count: "{1}Ajouter des valeurs d'attributs d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Ajouter des valeurs d'attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
@@ -299,6 +300,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à des groupes|]1, Inf[Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des groupes"
       description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
       field: Groupes
+      no_update: Veuillez sélectionner un groupe pour continuer.
     add_to_category:
       label: Ajouter à des catégories
       label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à des catégories|]1, Inf[Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des categories"
@@ -315,6 +317,7 @@ pim_enrich.mass_edit.product:
       label: Ajouter à un modèle de produit existant
       label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à un modèle de produit existant|]1, Inf[Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à un modèle de produit existant"
       description: Le modèle de produit sélectionné va rassembler des produits et améliorer l'enrichissement de leurs propriétés communes.
+      no_update: Veuillez sélectionner un modèle de produit avant de continuer
     associate_to_product_and_product_model:
       label: Associer
       label_count: "{1}Associer <span class=\"AknFullPage-title--highlight\">1 produit</span> à des produits ou modèles de produits|]1, Inf[Associer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des produits ou modèles de produits"

@@ -9,6 +9,7 @@ pim_enrich.entity.family:
       cant_remove_attribute_as_label: Otsikkona käytettyä attribuuttia ei voida poistaa
       cant_remove_attribute_as_image: Pääkuvana käytettyä attribuuttia ei voi poistaa
       cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
+      fields_not_ready: "Attribuuttiperhettä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
     create:
       success: Tuoteperhe luotu
     delete:
@@ -18,6 +19,8 @@ pim_enrich.entity.family:
     attribute_as_label: Otsikkona käytettävä attribuutti
     attribute_as_image: Pääkuvana käytettävä attribuutti
     empty_attribute_as_image: Ei ole valittu
+  page_title:
+    index: "]-Inf, 1] {{ count }} perhe|]1, Inf [{{ count }} perhettä"
   module:
     attributes:
       not_required_label: Ei vaadittu
@@ -27,11 +30,13 @@ pim_enrich.entity.family:
     delete:
       confirm: Oletko varma, että haluat poistaa tämän ryhmän?
 pim_enrich.entity.family_variant:
+  label: varianttiperhe
   short_plural_label: Variantit
   short_label: Tuotevariaatio
   flash:
     update:
       success: Varianttiperhe päivitetty onnistuneesti. Tuotteet ja variantit päivitetään tekemilläsi muutoksilla.
+      fail: Varianttiperhettä ei voitu päivittää.
     create:
       success: Varianttiperhe onnistuneesti luotu
   module:
@@ -43,6 +48,8 @@ pim_enrich.entity.family_variant:
       level_1: Variantin attribuutit tasolla 1
       level_2: Variantin attribuutit tasolla 2
       description: Vedä ja pudota attribuutit valitulle tasolle, jotta niiden rikastaminen tapahtuu varianttien tasolla.
+      attribute_remove: Poista attribuutti
+      attribute_group_remove: Poista attribuuttiryhmä
       confirm_attribute_removal_title: Vahvista attribuuttien poisto
       confirm_attribute_removal_message: Poistamalla nämä attribuutit, siirrät ne takaisin varianttiperheen yhteisiin attribuutteihin ja poistat arvot varianteilta
     create:
@@ -50,6 +57,8 @@ pim_enrich.entity.family_variant:
       title: Luo uusi varianttiperhe
       description: Varianttiperheelle voit määrittää tuoterakenteen varianteille. Valitse ylläpidettävien varianttitulottuvuuksien määrä, valitse varianttiulottuvuuksien eri tasoilla käytetyt määrittävät attribuutit ja valitse sitten miten attribuutit on jaettu eri tasoille.
       variant_levels: Varianttitasot
+    update_translations:
+      title: Päivitä käännökset
 pim_enrich.entity.attribute_option:
   short_uppercase_label: Vaihtoehdot
   flash:
@@ -63,6 +72,7 @@ pim_enrich.entity.attribute_option:
   module:
     edit:
       cancel_title: Peruuta muokkaukset
+      cancel_description: Varoitus, menetät tallentamattomat tiedot. Oletko varma, että haluat peruuttaa muutoksesi tallentamatta tätä uutta vaihtoehtoa?
 pim_enrich.entity.association_type:
   label: sidoksen tyyppi
   flash:
@@ -75,6 +85,8 @@ pim_enrich.entity.association_type:
     delete:
       success: Sidostyyppi poistettu onnistuneesti
       fail: Assosiaatiotyyppiä ei voi poistaa
+  page_title:
+    index: "]-Inf, 1] {{ count }} assosiaatiotyyppi|]1, Inf [{{ count }} assosiaatiotyyppiä"
   module:
     create:
       button: Luo assosiaatiotyyppi
@@ -92,6 +104,8 @@ pim_enrich.entity.group_type:
     delete:
       success: Ryhmätyyppi poistettu onnistuneesti
       fail: Ryhmätyyppiä ei voi poistaa
+  page_title:
+    index: "]-Inf, 1] {{ count }} ryhmätyyppi|]1, Inf [{{ count }} ryhmätyyppiä"
   module:
     create:
       button: Luo ryhmätyyppi
@@ -108,6 +122,8 @@ pim_enrich.entity.attribute:
     delete:
       success: Attribuutin poistaminen onnistui
       fail: Attribuuttia ei voi poistaa
+  page_title:
+    index: "]-Inf, 1] {{ count }} attribuutti|]1, Inf [{{ count }} attribuuttia"
   property:
     allowed_extensions: Sallitut laajennukset
     auto_option_sorting: Järjestä vaihtoehdot automaattisesti aakkosjärjestykseen
@@ -174,6 +190,7 @@ pim_enrich.entity.attribute:
       validation: Validaatioparametrit
     delete:
       confirm: Oletko varma, että haluat poistaa tämän määritteen?
+      confirm_from_family: Oletko varma, että haluat poistaa tämän attribuutin attribuuttiperheeltä?
       confirm_from_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?
       confirm_from_product: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
 pim_enrich.entity.attribute_group:
@@ -184,8 +201,10 @@ pim_enrich.entity.attribute_group:
     update:
       success: Attribuuttiryhmän päivittäminen onnistui
       fail: Attribuuttiyhmää ei voitu päivittää
+      fields_not_ready: "Attribuuttiryhmää ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
     delete:
       success: Attribuuttiryhmän poisto onnistui
+      fail: Attribuuttiryhmää ei voi poistaa
   module:
     add_attribute_group:
       label: Lisää ryhmittäin
@@ -194,11 +213,13 @@ pim_enrich.entity.attribute_group:
       confirm: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
 pim_enrich.mass_edit.family:
   title: Perheiden massamuokkaus
+  confirm: "{1}Olet muokkaamassa perhettä seuraavilla tiedoilla, ole hyvä ja vahvista.|]1, Inf[Olet muokkaamassa {{ itemsCount }} perhettä seuraavilla tiedoilla, ole hyvä ja vahvista."
   step:
     select:
       label: Valitse tuoteperheet
     choose:
       title: Perheiden massamuokkaus
+      label_count: "]0, Inf[Valitse toiminto"
     configure:
       label: Konfiguroi
     confirm:
@@ -209,3 +230,4 @@ pim_enrich.mass_edit.family:
     set_requirements:
       label: Aseta vaaditut attribuutit
       description: Seuraavat vaaditut attribuutit lisätään valituille perheille
+      label_count: "{1}Aseta vaaditut attribuutit <span class=\"AknFullPage-title--highlight\">1 perheelle</span>|]1, Inf[Aseta vaaditut attribuutit <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} perheelle</span>"

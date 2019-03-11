@@ -26,6 +26,11 @@ pim_analytics:
     nb_scopable_attributes: Kanavakohtaisten attribuuttien määrä
     nb_localizable_attributes: Kielikohtaisten attribuuttien määrä
     nb_scopable_localizable_attributes: Kielikohtaisten ja kanavakohtaisten attribuuttien määrä
+    nb_useable_as_grid_filter_attributes: Tuoteruudukon suodattimissa käytettävien attribuuttien määrä
+    avg_percentage_scopable_attributes_per_family: Kanavakohtaisia attribuutteja attribuuttiperhettä kohden keskimäärin (%)
+    avg_percentage_localizable_attributes_per_family: Lokalistoitavia attribuutteja attribuuttiperhettä kohden keskimäärin (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Lokalistoitavia ja kanavakohtaisia attribuutteja attribuuttiperhettä kohden keskimäärin (%)
+    avg_number_attributes_per_family: Attribuutteja keskimäärin attribuuttiperhettä kohden
     nb_locales: Lokaatioiden määrä
     nb_families: Perheiden määrä
     nb_users: Käyttäjien määrä
@@ -35,6 +40,8 @@ pim_analytics:
     max_category_levels: Kategoriatasojen suurin määrä
     nb_product_values: Tuotearvojen määrä
     avg_product_values_by_product: Keskimääräinen tuotearvojen määrä tuotteella
+    avg_product_values_by_family: Potentiaalisia tuotearvoja keskimäärin attribuuttiperhettä kohden
+    max_product_values_by_family: Potentiaalisia tuotearvoja maksimissaan attribuuttiperhettä kohden
     pim_storage_version: Tallennusversio
     os_version: Käyttöjärjestelmäversio
     php_version: PHP-versio
