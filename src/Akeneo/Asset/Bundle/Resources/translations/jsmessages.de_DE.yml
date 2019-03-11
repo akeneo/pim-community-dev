@@ -209,7 +209,6 @@ pim_catalog_volume:
   section:
     assets:
       title: Achsen auf Assets
-      hint: Sie können den Umfang bezüglich der Assets genau hier verfolgen
   axis:
     count_assets: Assets
     count_asset_categories: Assetkategorien

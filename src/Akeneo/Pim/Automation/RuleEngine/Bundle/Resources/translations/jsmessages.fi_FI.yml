@@ -1,4 +1,5 @@
 pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} sääntö|]1, Inf[{{ count }} sääntöä"
   execution_button: Suorita säännöt
   selected: 'sääntöä valittu'
   popin:
@@ -96,6 +97,7 @@ batch_jobs:
 pim_notification:
   types:
     rule: Sääntöjen asetukset
+    mass_edit_rule: Massamuokkaa sääntöä
 pim_menu:
   item:
     rule: Säännöt

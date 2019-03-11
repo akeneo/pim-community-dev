@@ -250,3 +250,6 @@ pim_enrich:
           type_specific: Escriu els paràmetres específics
         reference_entity:
           default_label: Si us plau, selecciona una entitat de referència
+pim_catalog_volume:
+  axis:
+    count_reference_entity: Entitats de referència

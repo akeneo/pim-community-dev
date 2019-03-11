@@ -213,3 +213,6 @@ pim_enrich:
           type_specific: Type specific parameters
         reference_entity:
           default_label: Please select a reference entity
+pim_catalog_volume:
+  axis:
+    count_reference_entity: Reference entities
