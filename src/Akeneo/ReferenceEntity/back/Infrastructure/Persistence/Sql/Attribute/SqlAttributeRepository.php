@@ -14,15 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\AttributeOptionsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\BeforeAttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
@@ -119,9 +114,6 @@ SQL;
 
     public function update(AbstractAttribute $attribute): void
     {
-        // Preferably, this computation should be done in the AttributeOption/AttributeOptionCollection models
-        $removedOptions = $this->computeRemovedOptions($attribute);
-
         $normalizedAttribute = $attribute->normalize();
         $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
         $update = <<<SQL
@@ -148,21 +140,9 @@ SQL;
                 'additional_properties' => Type::getType(Type::JSON_ARRAY),
             ]
         );
-
         if ($affectedRows > 1) {
             throw new \RuntimeException(
                 sprintf('Expected to edit one attribute, but %d rows were affected', $affectedRows)
-            );
-        }
-
-        if (!empty($removedOptions)) {
-            $this->eventDispatcher->dispatch(
-                AttributeOptionsDeletedEvent::class,
-                new AttributeOptionsDeletedEvent(
-                    $attribute->getReferenceEntityIdentifier(),
-                    $attribute->getIdentifier(),
-                    $removedOptions
-                )
             );
         }
     }
@@ -336,44 +316,5 @@ SQL;
         }
 
         return ReferenceEntityIdentifier::fromString($result['reference_entity_identifier']);
-    }
-
-    private function computeRemovedOptions(AbstractAttribute $updatedAttribute): array
-    {
-        if (!$updatedAttribute instanceof OptionAttribute && !$updatedAttribute instanceof OptionCollectionAttribute) {
-            return [];
-        }
-        /** @var OptionAttribute $originalAttribute */
-        $originalAttribute = $this->getByIdentifier($updatedAttribute->getIdentifier());
-        $originalOptionsCode = $this->getOptionsCode($originalAttribute->getAttributeOptions());
-        $updatedOptionsCode = $this->getOptionsCode($updatedAttribute->getAttributeOptions());
-
-        /** @var OptionCode[] $removedOptions */
-        $removedOptions = array_diff($originalOptionsCode, $updatedOptionsCode);
-
-        $removedAttributeOption = array_filter($originalAttribute->getAttributeOptions(),
-            function (AttributeOption $attributeOption) use ($removedOptions) {
-                /** @var OptionCode $removedOption */
-                foreach ($removedOptions as $removedOption) {
-                    if ((string) $removedOption === (string) $attributeOption->getCode()) {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        );
-
-        return $removedAttributeOption;
-    }
-
-    /**
-     * @param AttributeOption[] $attributeOptions
-     */
-    private function getOptionsCode(array $attributeOptions): array
-    {
-        return array_map(function (AttributeOption $attributeOption) {
-            return $attributeOption->getCode();
-        }, $attributeOptions);
     }
 }

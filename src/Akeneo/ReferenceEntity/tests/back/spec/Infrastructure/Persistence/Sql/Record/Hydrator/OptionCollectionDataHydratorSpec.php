@@ -30,11 +30,7 @@ class OptionCollectionDataHydratorSpec extends ObjectBehavior
 
     function it_hydrates_option_collection_data_if_the_option_still_exists(OptionCollectionAttribute $optionCollectionAttribute)
     {
-        $optionCollectionAttribute->hasAttributeOption(
-            Argument::that(function (OptionCode $code) {
-                return 'blue' === (string) $code || 'red' === (string) $code;
-            })
-        )->willReturn(true);
+        $optionCollectionAttribute->normalize()->willReturn(['options' => [['code' => 'blue'], ['code' => 'red']]]);
         $optionCollectionData = $this->hydrate(['blue', 'red'], $optionCollectionAttribute);
         $optionCollectionData->shouldBeAnInstanceOf(OptionCollectionData::class);
         $optionCollectionData->normalize()->shouldReturn(['blue', 'red']);
@@ -42,11 +38,7 @@ class OptionCollectionDataHydratorSpec extends ObjectBehavior
 
     function it_returns_an_empty_data_if_the_options_does_not_exist_anymore(OptionCollectionAttribute $optionCollectionAttribute)
     {
-        $optionCollectionAttribute->hasAttributeOption(
-            Argument::that(function (OptionCode $code) {
-                return 'blue' === (string) $code || 'red' === (string) $code;
-            })
-        )->willReturn(false);
+        $optionCollectionAttribute->normalize()->willReturn(['options' => []]);
         $optionCollectionData = $this->hydrate(['blue', 'red'], $optionCollectionAttribute);
         $optionCollectionData->shouldBeAnInstanceOf(EmptyData::class);
     }

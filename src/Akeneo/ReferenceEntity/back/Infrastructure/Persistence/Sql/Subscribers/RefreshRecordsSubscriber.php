@@ -29,17 +29,16 @@ class RefreshRecordsSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return [
-            RecordDeletedEvent::class => 'onEvent',
-            ReferenceEntityRecordsDeletedEvent::class => 'onEvent',
-            AttributeOptionsDeletedEvent::class => 'onEvent',
-        ];
+//        To activate when we improve the refresh performances
+//        return [
+//            RecordDeletedEvent::class => 'onEvent',
+//            ReferenceEntityRecordsDeletedEvent::class => 'onEvent',
+//            AttributeOptionsDeletedEvent::class => 'onEvent',
+//        ];
+        return [];
     }
 
     public function onEvent(): void
     {
-        $this->commandLauncher->executeBackground(
-            sprintf('%s', RefreshRecordsCommand::REFRESH_RECORDS_COMMAND_NAME)
-        );
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI;
 
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecord;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -22,32 +24,27 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RefreshRecordsCommand extends ContainerAwareCommand
 {
     public const REFRESH_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:refresh-records';
-
-    /** @var RecordRepositoryInterface */
-    private $recordRepository;
+    private const BULK_SIZE = 100;
 
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var ProgressBar */
-    private $progressBar;
+    /** @var FindAllRecordIdentifiers */
+    private $findAllRecordIdentifiers;
 
-    /** @var int */
-    private $totalRecords;
-
-    /** @var RefreshAllRecords */
-    private $refreshRecords;
+    /** @var RefreshRecord */
+    private $refreshRecord;
 
     public function __construct(
-        RecordRepositoryInterface $recordRepository,
-        RefreshAllRecords $refreshRecords,
+        FindAllRecordIdentifiers $findAllRecordIdentifiers,
+        RefreshRecord $refreshRecord,
         Connection $sqlConnection
     ) {
         parent::__construct(self::REFRESH_RECORDS_COMMAND_NAME);
 
-        $this->recordRepository = $recordRepository;
         $this->sqlConnection = $sqlConnection;
-        $this->refreshRecords = $refreshRecords;
+        $this->findAllRecordIdentifiers = $findAllRecordIdentifiers;
+        $this->refreshRecord = $refreshRecord;
     }
 
     /**
@@ -61,9 +58,9 @@ class RefreshRecordsCommand extends ContainerAwareCommand
                 'all',
                 true,
                 InputOption::VALUE_NONE,
-                'Refresh all existing records into Elasticsearch'
+                'Refresh all existing records'
             )
-            ->setDescription('Resets all records that have the record, the records of a reference entity or the attribute option deleted.');
+            ->setDescription('Refresh all records referencing a deleted record or a deleted attribute option.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -73,13 +70,20 @@ class RefreshRecordsCommand extends ContainerAwareCommand
             $output->writeln('Please use the flag --all to refresh all records');
         }
 
-        $this->totalRecords = $this->getTotalRecords();
-        $this->progressBar = new ProgressBar($output, $this->totalRecords);
-        $this->progressBar->start();
+        $totalRecords = $this->getTotalRecords();
+        $progressBar = new ProgressBar($output, $totalRecords);
+        $progressBar->start();
 
-        $this->refreshRecords->execute();
-
-        $this->progressBar->finish();
+        $recordIdentifiers = $this->findAllRecordIdentifiers->fetch();
+        $i = 0;
+        foreach ($recordIdentifiers as $recordIdentifier) {
+            $this->refreshRecord->refresh($recordIdentifier);
+            if ($i % self::BULK_SIZE === 0) {
+                $progressBar->advance(self::BULK_SIZE);
+            }
+            $i++;
+        }
+        $progressBar->finish();
     }
 
     private function getTotalRecords(): int

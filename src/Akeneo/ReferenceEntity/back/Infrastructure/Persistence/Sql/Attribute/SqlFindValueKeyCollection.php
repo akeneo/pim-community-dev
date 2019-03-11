@@ -32,23 +32,13 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier)
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection
     {
         if (!isset($this->cachedResult[$referenceEntityIdentifier->normalize()])) {
             $this->cachedResult[$referenceEntityIdentifier->normalize()] = $this->fetch($referenceEntityIdentifier);
         }
 
         return $this->cachedResult[$referenceEntityIdentifier->normalize()];
-    }
-
-    private function createValueKeyCollection($rows): ValueKeyCollection
-    {
-        $valueKeys = [];
-        foreach ($rows as $row) {
-            $valueKeys[] = ValueKey::createFromNormalized($row);
-        }
-
-        return ValueKeyCollection::fromValueKeys($valueKeys);
     }
 
     /**
@@ -101,5 +91,15 @@ SQL;
         $rows = $statement->fetchAll(\PDO::FETCH_COLUMN);
 
         return $this->createValueKeyCollection($rows);
+    }
+
+    private function createValueKeyCollection($rows): ValueKeyCollection
+    {
+        $valueKeys = [];
+        foreach ($rows as $row) {
+            $valueKeys[] = ValueKey::createFromNormalized($row);
+        }
+
+        return ValueKeyCollection::fromValueKeys($valueKeys);
     }
 }

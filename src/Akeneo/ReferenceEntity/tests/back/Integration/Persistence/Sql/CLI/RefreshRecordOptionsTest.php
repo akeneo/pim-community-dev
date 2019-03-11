@@ -30,7 +30,6 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -38,9 +37,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class RefreshRecordOptionsTest extends SqlIntegrationTestCase
 {
-    /** @var RefreshAllRecords */
-    private $refreshRecords;
-    
     /** @var ReferenceEntityIdentifier */
     private $currentReferenceEntityIdentifier;
 
@@ -53,8 +49,6 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->refreshRecords = $this->get('akeneo_referenceentity.infrastructure.persistence.records.refresh_all_records');
         $this->resetDB();
     }
 
@@ -84,7 +78,7 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
         $this->assertTrue($this->IsRecordHavingValue('red'));
         $this->assertTrue($this->IsRecordHavingValue('blue'));
 
-        $this->refreshRecords->execute();
+        $this->runRefreshRecordsCommand();
 
         $this->assertTrue($this->IsRecordHavingValue('blue'));
         $this->assertFalse($this->IsRecordHavingValue('red'));
@@ -102,7 +96,7 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
-            '--all' => true
+            '--all'   => true,
         ]);
     }
 
@@ -114,6 +108,7 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
         $this->loadReferenceEntity('designer');
         $this->loadOptionAttributeWithOptions($options);
     }
+
     /**
      * @param string[] $options
      */
@@ -152,7 +147,8 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(false)
         );
         foreach ($optionCodes as $optionCode) {
-            $optionAttribute->addOption(AttributeOption::create(OptionCode::fromString($optionCode), LabelCollection::fromArray([])));
+            $optionAttribute->addOption(AttributeOption::create(OptionCode::fromString($optionCode),
+                LabelCollection::fromArray([])));
         }
 
         /** @var AttributeRepositoryInterface $attributeRepository */
@@ -174,7 +170,8 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(false)
         );
         foreach ($optionCodes as $optionCode) {
-            $optionAttribute->addOption(AttributeOption::create(OptionCode::fromString($optionCode), LabelCollection::fromArray([])));
+            $optionAttribute->addOption(AttributeOption::create(OptionCode::fromString($optionCode),
+                LabelCollection::fromArray([])));
         }
 
         /** @var AttributeRepositoryInterface $attributeRepository */
@@ -257,7 +254,7 @@ class RefreshRecordOptionsTest extends SqlIntegrationTestCase
         $statement = $sqlConnection->executeQuery(
             'SELECT value_collection FROM akeneo_reference_entity_record WHERE identifier = :identifier',
             [
-                'identifier' => $this->currentRecordIdentifier->normalize()
+                'identifier' => $this->currentRecordIdentifier->normalize(),
             ]
         );
         $result = $statement->fetch(\PDO::FETCH_COLUMN);

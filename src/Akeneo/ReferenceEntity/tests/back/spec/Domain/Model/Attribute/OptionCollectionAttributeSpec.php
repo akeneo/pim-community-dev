@@ -101,7 +101,7 @@ class OptionCollectionAttributeSpec extends ObjectBehavior
         ]);
     }
 
-    function it_cannot_have_more_too_options()
+    function it_cannot_have_too_much_options()
     {
         for ($i = 0; $i < 101; $i++) {
             $tooManyOptions[] = AttributeOption::create(

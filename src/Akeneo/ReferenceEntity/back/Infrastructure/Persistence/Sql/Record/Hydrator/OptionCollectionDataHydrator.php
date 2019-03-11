@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionCollectionData;
@@ -42,14 +41,16 @@ class OptionCollectionDataHydrator implements DataHydratorInterface
     }
 
     private function keepExistingOptionsOnly(
-        array $optionsFromDatabase,
+        array $optionCodesFromDatabase,
         OptionCollectionAttribute $optionCollectionAttribute
     ): array {
-        return array_filter(
-            $optionsFromDatabase,
-            function (string $optionFromDatabase) use ($optionCollectionAttribute) {
-                return $optionCollectionAttribute->hasAttributeOption(OptionCode::fromString($optionFromDatabase));
-            }
+        $optionCodesFromModel = array_map(
+            function (array $normalizedOption) {
+                return $normalizedOption['code'];
+            },
+            $optionCollectionAttribute->normalize()['options']
         );
+
+        return array_intersect($optionCodesFromDatabase, $optionCodesFromModel);
     }
 }

@@ -28,7 +28,6 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -36,9 +35,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class RefreshRecordLinksTest extends SqlIntegrationTestCase
 {
-    /** @var RefreshAllRecords */
-    private $refreshRecords;
-    
     /** @var AttributeIdentifier */
     private $currentAttributeIdentifier;
 
@@ -49,7 +45,6 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->refreshRecords = $this->get('akeneo_referenceentity.infrastructure.persistence.records.refresh_all_records');
         $this->resetDB();
     }
 
@@ -101,7 +96,7 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
-            '--all' => true
+            '--all'   => true,
         ]);
     }
 
@@ -137,8 +132,10 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         }
     }
 
-    private function createAttributeRecordSingleLinkOnReferenceEntity(string $fromReferenceEntityIdentifier, string $toReferenceEntity): void
-    {
+    private function createAttributeRecordSingleLinkOnReferenceEntity(
+        string $fromReferenceEntityIdentifier,
+        string $toReferenceEntity
+    ): void {
         $this->currentAttributeIdentifier = AttributeIdentifier::fromString('favorite_designer');
         $optionAttribute = RecordAttribute::create(
             $this->currentAttributeIdentifier,
@@ -157,8 +154,10 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         $attributeRepository->create($optionAttribute);
     }
 
-    private function createAttributeRecordMultipleLinkOnReferenceEntity(string $fromReferenceEntityIdentifier, string $toReferenceEntity): void
-    {
+    private function createAttributeRecordMultipleLinkOnReferenceEntity(
+        string $fromReferenceEntityIdentifier,
+        string $toReferenceEntity
+    ): void {
         $this->currentAttributeIdentifier = AttributeIdentifier::fromString('favorite_designer');
         $optionAttribute = RecordCollectionAttribute::create(
             $this->currentAttributeIdentifier,
@@ -193,7 +192,6 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         $recordRepository->update($fromRecord);
     }
 
-
     private function linkMultipleRecordsFromTo(string $fromRecord, array $toRecords): void
     {
         /** @var RecordRepositoryInterface $recordRepository */
@@ -227,7 +225,7 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         $statement = $sqlConnection->executeQuery(
             'SELECT value_collection FROM akeneo_reference_entity_record WHERE identifier = :identifier',
             [
-                'identifier' => $recordFrom
+                'identifier' => $recordFrom,
             ]
         );
         $result = $statement->fetch(\PDO::FETCH_COLUMN);
