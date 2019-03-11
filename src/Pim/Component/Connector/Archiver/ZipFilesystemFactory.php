@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Archiver;
 
 use League\Flysystem\Filesystem;
-use League\Flysystem\ZipArchive\ZipArchiveAdapter;
+use Pim\Component\Connector\Archiver\WriteStreamZipArchiveAdapter;
 
 /**
  * Factory of Flysystem Filesystem configured with the Zip adapter
@@ -27,6 +27,6 @@ class ZipFilesystemFactory
             throw new \InvalidArgumentException(sprintf('The provided path "%s" is not a valid directory', $absolutePath));
         }
 
-        return new Filesystem(new ZipArchiveAdapter($absolutePath));
+        return new Filesystem(new WriteStreamZipArchiveAdapter($absolutePath));
     }
 }

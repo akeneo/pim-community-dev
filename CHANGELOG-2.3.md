@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8177: Remove pages not accessible in case of product number higher than maximum ES window limit (10.000 by default) and add warning message on the last page
+- PIM-8197: Use ZipArchive::addFile to avoid too much ram consumption
 
 # 2.3.32 (2019-03-07)
 
