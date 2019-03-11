@@ -183,6 +183,7 @@ $rules = [
         [
             'Akeneo\Pim\Automation\FranklinInsights\Domain',
             'Akeneo\Pim\Automation\FranklinInsights\Application',
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch',
 
             // External dependencies
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
