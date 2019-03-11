@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Improvements
+
+- PIM-8159: Adds a command to be able to refresh records completenesses
+
 # 3.0.6 (2019-03-08)
 
 ## Bug fixes
