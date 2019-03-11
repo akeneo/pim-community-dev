@@ -183,6 +183,7 @@ pim_enrich:
       create: Luo perhe
       edit_properties: Muokkaa perheen attribuutteja
       edit_attributes: Muokkaa perheen attribuutteja
+      edit_variants: Muokkaa varianttiperhettä
       remove: Poista perhe
       history: Tarkastele perheen historiaa
     family_variant:
@@ -267,9 +268,11 @@ category:
   edit: muokkaa kategoriaa
   suggest selection: Valitse kategoria vasemmalta
   or: tai
+  create new: Luo uusi kategoriapuu
 tree:
-  title: tuotepuu
-  edit: muokkaa tuotepuuta
+  title: kategoriapuu
+  create: luo kategoriapuu
+  edit: muokkaa kategoriapuuta
 channel:
   title: kanava
   overview: kanavan tarkastelu
@@ -307,6 +310,7 @@ btn:
     attribute: luo attribuutti
     attribute group: luo attribuuttiryhmä
     category: luo kategoria
+    tree: luo kategoriapuu
     channel: luo kanava
     currency: luo valuutta
     family: luo perhe
@@ -781,6 +785,7 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa att
 update_product_value.steps.update_product_value_processor.title: Päivitä tuotteen arvo
 remove_product_value.steps.update_product_value_processor.title: Poista tuotteen arvo
 edit_common_attributes: Muokkaa attribuutteja
+edit_common_attributes_clean: Puhdista tiedostot yhteisiä attribuutteja varten
 perform.steps.duplicated.title: Päällekkäät akselit
 perform.steps.excluded.title: Poissuljetut tuotteet
 batch_jobs:
@@ -800,6 +805,12 @@ batch_jobs:
     label: Muokkaa attribuutteja
     perform:
       label: Muokkaa attribuutteja
+    clean:
+      label: Puhdista tiedostot yhteisiä attribuutteja varten
+    cleaner:
+      label: Puhdista tiedostot yhteisiä attribuutteja varten
+  compute_completeness_of_products_family:
+    compute_completeness_of_products_family.label: Laske valmiusaste
   add_to_category:
     label: Lisää kategoriaan
     perform:
