@@ -14,8 +14,8 @@ const BaseController = require('pim/controller/front');
 const FetcherRegistry = require('pim/fetcher-registry');
 const Router = require('pim/router');
 
-interface Families {
-  [index: string]: object;
+interface Family {
+  code: string;
 }
 
 /**
@@ -26,9 +26,9 @@ interface Families {
  */
 class IndexAttributeMappingController extends BaseController {
   public renderForm(): object {
-    return FetcherRegistry.getFetcher('family')
+    return FetcherRegistry.getFetcher('attributes-mapping-by-family')
       .fetchAll()
-      .then((families: Families) => {
+      .then((families: Family[]) => {
         if (0 === Object.keys(families).length) {
           return $.Deferred().reject({
             status: 404,
@@ -36,9 +36,9 @@ class IndexAttributeMappingController extends BaseController {
           });
         }
 
-        const firstFamilyCode = Object.keys(families).sort()[0];
+        const familyCode = families.map((family) => family.code).sort()[0];
 
-        Router.redirectToRoute('akeneo_franklin_insights_attributes_mapping_edit', {familyCode: firstFamilyCode});
+        Router.redirectToRoute('akeneo_franklin_insights_attributes_mapping_edit', {familyCode});
 
         return undefined;
       });

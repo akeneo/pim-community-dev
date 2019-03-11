@@ -2,12 +2,12 @@ akeneo_franklin_insights_attributes_mapping_index:
     path: /index
     methods: [GET]
 
-akeneo_sugggest_data_attributes_mapping_list:
+akeneo_franklin_insights_attributes_mapping_list:
     path: /
     defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.attributes_mapping:listAction }
     methods: [GET]
 
-akeneo_sugggest_data_attributes_mapping_get:
+akeneo_franklin_insights_attributes_mapping_get:
     path: /{identifier}
     defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.attributes_mapping:getAction }
     requirements:

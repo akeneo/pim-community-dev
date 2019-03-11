@@ -26,6 +26,8 @@ pim_reference_entity:
     permission:
       title: Viitetiedon käyttöoikeudet
     title: Viitetiedot
+    breadcrumb: Viitetiedot
+    img: Viittaustiedon "{{ label }}" pääkuva
     tab:
       records: Tietueet
       attribute: Attribuutit
@@ -55,6 +57,7 @@ pim_reference_entity:
     create:
       header:
         title: Luo
+      subtitle: Viitetiedot
       title: Luo uusi viitetieto
       input:
         label: Nimike
@@ -90,12 +93,15 @@ pim_reference_entity:
         should_be_unique: 'Koodi on jo käytössä.'
     no_data:
       title: Tietueita ei ole viitetiedolle {{ entityLabel }}
+      subtitle: Valitse "luo uusi" lisätäksesi ensimmäisen tietueen
     no_result:
       subtitle: Yritä uudelleen uusilla hakuehdoilla.
     button:
       save: Tallenna
       create: Luo uusi
       delete: Poista
+      delete_all: Poista kaikki tietueet
+      back: Takaisin listaan
     enrich:
       title: Tietueen attribuutit
       code: Koodi
@@ -104,23 +110,51 @@ pim_reference_entity:
     create:
       header:
         title: Luo
+      subtitle: Viitetiedot
+      title: Lisää uusi {{ entityLabel }}
       input:
         label: Nimike
         code: Koodi (pakollinen)
+        create_another: Luo toinen tietue
       confirm: Tallenna
+    delete:
+      message: Oletko varma, että haluat poistaa tietueen ”{{ recordLabel }}”? Jos se on liitetty tuotteisiin tai tietueisiin, liitokset poistetaan.
+      title: Tietue
+    delete_all:
+      confirm: Oletko varma, että haluat poistaa kaikki ”{{ entityIdentifier }}” tietueet? Jos ne on liitetty tuotteisiin, liitokset poistetaan.
     grid:
+      search: Esti otsikolla, koodilla tai tekstiattribuutilla
       filter:
         completeness:
           label: Valmis
           all: KAIKKI
+          'yes': 'KYLLÄ'
+          'no': 'EI'
       column:
         code: Koodi
         image: Kuva
         label: Nimike
         complete: Valmis
         action: Toiminnot
+      completeness:
+        title_non_complete: 0 vaadittua attribuuttia {{ required }}:sta valmiina
+        title_ongoing: '{{ complete }} vaadittua attribuuttia {{ required }}:sta valmiina'
+        title_complete: Kaikki ({{ required }}) vaaditut attribuutit valmiina
     tab:
       enrich: Rikastuta
+    notification:
+      save:
+        success: Tietue päivitetty onnistuneesti.
+        fail: Tietueen tallentamisessa tapahtui virhe
+        validation_error: Tietuetta ei voitu päivittää
+      create:
+        success: Tietue luotu onnistuneesti.
+        fail: Tietueen tallentamisessa tapahtui virhe
+      delete:
+        success: Tietue ”{{ code }}” poistettu.
+        fail: Tietueen poistamisessa tapahtui virhe
+      delete_all:
+        success: Kaikki viitetiedon "{{ entityIdentifier }}" tietueet poistettu onnistuneesti.
     completeness:
       label: Valmis
   attribute:
@@ -131,9 +165,18 @@ pim_reference_entity:
     type:
       text: Teksti
       image: Kuva
+      record: Viitetiedot yksinkertainen valinta
+      record_collection: Viitetiedot monivalinta
+      option: Yksinkertainen valinta
+      option_collection: Monivalinta
+    is_required: vaadittu täyteen valmiusasteeseen
+    button:
+      add: Lisää attribuutti
     create:
       header:
         title: Luo
+      subtitle: Viitetiedot
+      title: Lisää uusi tietueen attribuutti
       input:
         code: Koodi (pakollinen)
         label: Nimike
@@ -142,14 +185,18 @@ pim_reference_entity:
         value_per_channel: Kanavakohtainen arvo
       confirm: Tallenna
     edit:
+      delete: Poista attribuutti
+      title: Muokkaa attribuuttia {{ code }}
       save: Tallenna
       cancel: Peruuta
       input:
         code: Koodi (pakollinen)
         label: Nimike
         type: Attribuuttityyppi
+        record_type: Liittyvä viittaustieto (vaadittu)
         value_per_locale: Kielikohtainen arvo
         value_per_channel: Kanavakohtainen arvo
+        is_required: Vaadittu täyteen valmiusasteeseen
         max_length: Maksimimerkkimäärä
         textarea: Tekstialue
         max_file_size: Suurin tiedostokoko (Mt)
@@ -163,15 +210,24 @@ pim_reference_entity:
             regular_expression: Tavallinen virke
             url: URL-osoite
     delete:
+      message: Oletko varma, että haluat poistaa attribuutin "{{ attributeLabel }}"?
       title: Attribuutti
     notification:
+      list:
+        fail: Attribuuttilistan päivittämisessä tapahtui virhe
       save:
         success: Attribuutin päivittäminen onnistui.
+        fail: Attribuutin tallentamisessa tapahtui virhe
+        validation_error: Attribuuttia ei voitu päivittää
       create:
         success: Attribuutin luominen onnistui.
+        fail: Attribuutin luomisessa tapahtui virhe
+        validation_error: Attribuuttia ei voitu luoda
       delete:
         success: Attribuutin poistaminen onnistui.
+        fail: Attribuutin poistamisessa tapahtui virhe
     options:
+      sub_title: Viitetiedot
       helper:
         title: Nimikkeiden käännökset
   modal:
@@ -181,8 +237,16 @@ pim_reference_entity:
         cancel: Peruuta
         confirm: Poista
 pim_enrich:
+  confirmation:
+    discard_changes: 'Menetät muutokset tähän "{{ entity }}", jos poistut sivulta.'
   entity:
     attribute:
       property:
+        type:
+          akeneo_reference_entity_collection: Viitetiedot monivalinta
+          akeneo_reference_entity: Viitetiedot yksinkertainen valinta
         section:
           type_specific: Tyyppikohtaiset parametrit
+        reference_entity:
+          identifier: Liittyvä viittaustieto (vaadittu)
+          default_label: Valitse viittaustieto

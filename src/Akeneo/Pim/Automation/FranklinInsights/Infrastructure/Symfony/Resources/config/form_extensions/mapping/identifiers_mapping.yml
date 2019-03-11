@@ -24,7 +24,7 @@ extensions:
         targetZone: title
         config:
             countable: false
-            title: akeneo_franklin_insights.settings.page_title
+            title: akeneo_franklin_insights.settings.identifiers_mapping_title
 
     akeneo-franklin-insights-settings-identifiers-mapping-index-save-buttons:
         module: pim/form/common/save-buttons

@@ -31,6 +31,7 @@ cache:
 
 before_install:
     - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+    - nvm install 10.15.0
     - node tests/travis/check-changes.js $BRANCH src/Akeneo/ReferenceEntity/,.travis.yml,tests/travis/,tests/front,package.json,composer.json
     - php src/Akeneo/ReferenceEntity/tests/check-fake-implementations.php
     - phpenv config-rm xdebug.ini

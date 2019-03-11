@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard\SuggestedValue;
+namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedValue;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 
 /**
- * Normalizes a suggested value to Akeneo standard format for simple-select attribute type.
+ * Normalizes a suggested value to Akeneo standard format for multi-select attribute type.
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-final class SimpleSelectNormalizer
+final class MultiSelectNormalizer
 {
     /** @var AttributeOptionRepositoryInterface */
     private $attributeOptionRepository;
@@ -42,9 +42,18 @@ final class SimpleSelectNormalizer
     public function normalize(SuggestedValue $suggestedValue): array
     {
         $attributeCode = $suggestedValue->pimAttributeCode();
-        $optionCode = $suggestedValue->value();
+        $providedOptionCodes = $suggestedValue->value();
 
-        if (!$this->optionExistsForAttribute($attributeCode, $optionCode)) {
+        if (is_string($providedOptionCodes)) {
+            $providedOptionCodes = explode(',', $providedOptionCodes);
+        }
+
+        $existingOptionCodes = $this->attributeOptionRepository->findCodesByIdentifiers(
+            $attributeCode,
+            $providedOptionCodes
+        );
+
+        if (empty($existingOptionCodes)) {
             return [];
         }
 
@@ -52,25 +61,8 @@ final class SimpleSelectNormalizer
             $attributeCode => [[
                 'scope' => null,
                 'locale' => null,
-                'data' => $optionCode,
+                'data' => $existingOptionCodes,
             ]],
         ];
-    }
-
-    /**
-     * Checks that an option exists for a given attribute.
-     *
-     * @param string $attributeCode
-     * @param string $optionCode
-     *
-     * @return bool
-     */
-    private function optionExistsForAttribute(string $attributeCode, string $optionCode): bool
-    {
-        return null !== $this->attributeOptionRepository->findOneByIdentifier(sprintf(
-            '%s.%s',
-            $attributeCode,
-            $optionCode
-        ));
     }
 }

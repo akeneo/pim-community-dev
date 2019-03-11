@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Factory;
 
-use Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard\SuggestedDataNormalizer;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Factory\ProposalSuggestedDataFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use PhpSpec\ObjectBehavior;

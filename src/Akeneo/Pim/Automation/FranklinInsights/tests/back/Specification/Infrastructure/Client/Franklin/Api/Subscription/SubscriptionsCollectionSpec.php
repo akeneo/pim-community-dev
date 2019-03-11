@@ -108,7 +108,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->valid()->shouldReturn(false);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveSubscriptionId' => function (Subscription $subscription, $id) {

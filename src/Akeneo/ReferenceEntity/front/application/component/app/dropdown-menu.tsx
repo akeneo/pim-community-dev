@@ -1,17 +1,14 @@
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
 import Key from 'akeneoreferenceentity/tools/key';
+import {SidebarLabel} from 'akeneoreferenceentity/application/component/app/sidebar';
 
 export interface DropdownMenuElement {
   code: string;
-  label: string;
+  label: SidebarLabel;
 }
 
-const DefaultButtonView = ({
-   onClick
- }: {
-  onClick: () => void;
-}) => {
+const DefaultButtonView = ({onClick}: {onClick: () => void}) => {
   return (
     <React.Fragment>
       <div
@@ -21,7 +18,7 @@ const DefaultButtonView = ({
           if (Key.Space === event.key) onClick();
         }}
         tabIndex={0}
-      ></div>
+      />
     </React.Fragment>
   );
 };
@@ -45,7 +42,7 @@ const DefaultItemView = ({
         }}
         tabIndex={0}
       >
-        <span>{__(element.label)}</span>
+        <span>{'string' === typeof element.label ? __(element.label) : <element.label />}</span>
       </div>
     </React.Fragment>
   );
@@ -54,17 +51,14 @@ const DefaultItemView = ({
 interface Props {
   elements: DropdownMenuElement[];
   selectedElement: string;
-  ButtonView?: (
-    {
-      onClick,
-    }: {onClick: (element: DropdownMenuElement) => void}
-  ) => JSX.Element;
-  ItemView?: (
-    {
-      element,
-      onClick,
-    }: {element: DropdownMenuElement; onClick: (element: DropdownMenuElement) => void}
-  ) => JSX.Element;
+  ButtonView?: ({onClick}: {onClick: (element: DropdownMenuElement) => void}) => JSX.Element;
+  ItemView?: ({
+    element,
+    onClick,
+  }: {
+    element: DropdownMenuElement;
+    onClick: (element: DropdownMenuElement) => void;
+  }) => JSX.Element;
   label: string;
   className?: string;
   onSelectionChange: (element: DropdownMenuElement) => void;
@@ -95,11 +89,7 @@ class DropdownMenu extends React.Component<Props, State> {
   getDropdownButton() {
     const Button = undefined !== this.props.ButtonView ? this.props.ButtonView : DefaultButtonView;
 
-    return (
-      <Button
-        onClick={this.open.bind(this)}
-      />
-    );
+    return <Button onClick={this.open.bind(this)} />;
   }
 
   getElementViews() {
@@ -113,7 +103,7 @@ class DropdownMenu extends React.Component<Props, State> {
           onClick={(element: DropdownMenuElement) => this.elementSelected(element)}
         />
       );
-    })
+    });
   }
 
   render() {
@@ -122,7 +112,9 @@ class DropdownMenu extends React.Component<Props, State> {
     const DropdownButton = this.getDropdownButton();
 
     return (
-      <div className={`AknSecondaryActions AknDropdown ${undefined !== this.props.className ? this.props.className : ''}`}>
+      <div
+        className={`AknSecondaryActions AknDropdown ${undefined !== this.props.className ? this.props.className : ''}`}
+      >
         {this.state.isOpen ? <div className="AknDropdown-mask" onClick={this.close.bind(this)} /> : null}
         {DropdownButton}
         <div className={`AknDropdown-menu ${openClass}`}>

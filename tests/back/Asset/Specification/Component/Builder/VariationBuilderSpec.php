@@ -152,7 +152,7 @@ class VariationBuilderSpec extends ObjectBehavior
         $all->shouldBeArrayOfVariations();
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beArrayOfVariations' => function ($subject) {

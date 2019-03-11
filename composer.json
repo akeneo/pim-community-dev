@@ -64,13 +64,13 @@
         "behat/symfony2-extension": "2.1.4",
         "behat/transliterator":"1.2.0",
         "league/flysystem-memory": "^1.0",
-        "phpspec/phpspec": "~3.4.2",
-        "phpunit/phpunit": "^7.5.6",
+        "phpspec/phpspec": "~5.1.0",
+        "phpunit/phpunit": "^8.0.4",
         "sebastian/exporter": "~3.1.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",
         "friends-of-behat/symfony-extension": "^2.0",
         "liuggio/fastest": "1.6.*",
-        "phpstan/phpstan": "0.10.*"
+        "phpstan/phpstan": "dev-master#04093eefa1b64580228635b8a38b3c3cdc0a920f"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"

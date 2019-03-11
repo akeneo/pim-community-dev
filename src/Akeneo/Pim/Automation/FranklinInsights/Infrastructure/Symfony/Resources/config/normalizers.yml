@@ -1,6 +1,6 @@
 services:
     akeneo.pim.automation.franklin_insights.normalizers.suggested_data:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard\SuggestedDataNormalizer'
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedDataNormalizer'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.attribute_option'

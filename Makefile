@@ -1,5 +1,5 @@
 DOCKER_COMPOSE = docker-compose
-PHP_EXEC = $(DOCKER_COMPOSE) exec -u docker fpm php
+PHP_EXEC = $(DOCKER_COMPOSE) exec fpm php
 YARN_EXEC = $(DOCKER_COMPOSE) run --rm node yarn
 
 .DEFAULT_GOAL := help

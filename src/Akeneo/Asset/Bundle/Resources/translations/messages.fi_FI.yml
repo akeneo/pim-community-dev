@@ -145,6 +145,7 @@ pimee_product_asset:
       steps:
         second: Konfiguroi
         third: Vahvista
+  not_editable: Sinulla ei ole muokkausoikeuksia assettiin "%code%".
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
@@ -173,6 +174,8 @@ pim_datagrid:
     type:
       mass_upload: Massatuo assetteja
 pim_assets_collection: Resurssien keruu
+akeneo_reference_entity: Viitetiedot yksinkertainen valinta
+akeneo_reference_entity_collection: Viitetiedot monivalinta
 pim_api:
   acl:
     asset_category:

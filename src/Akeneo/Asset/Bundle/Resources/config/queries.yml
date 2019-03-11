@@ -22,3 +22,8 @@ services:
             - '%count_asset_category_trees_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
+
+    pimee_product_asset.query.family_codes_where_attributes_are_required:
+        class: 'Akeneo\Asset\Bundle\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequired'
+        arguments:
+            - '@database_connection'

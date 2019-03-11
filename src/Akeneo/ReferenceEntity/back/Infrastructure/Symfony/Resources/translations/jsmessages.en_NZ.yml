@@ -105,10 +105,6 @@ pim_reference_entity:
       confirm: Are you sure you want to delete all "{{ entityIdentifier }}" records? If they are linked to products, the links to the products will be removed.
     grid:
       search: Search on label, code and text attributes
-      filter:
-        completeness:
-          'yes': 'YES'
-          'no': 'NO'
       column:
         code: Code
         image: Image

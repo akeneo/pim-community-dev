@@ -26,6 +26,8 @@ interface SidebarDispatch {
 
 interface SidebarProps extends SidebarState, SidebarDispatch {}
 
+export type SidebarLabel = string | typeof React.Component
+
 class Sidebar extends React.Component<SidebarProps> {
   props: SidebarProps;
 
@@ -71,7 +73,7 @@ class Sidebar extends React.Component<SidebarProps> {
                       if (Key.Space === event.key) this.updateCurrentTab(tab);
                     }}
                   >
-                    {__(tab.label)}
+                    {'string' === typeof tab.label ? __(tab.label) : <tab.label />}
                   </span>
                 );
               })}

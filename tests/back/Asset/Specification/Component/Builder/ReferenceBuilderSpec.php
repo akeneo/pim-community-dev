@@ -53,7 +53,7 @@ class ReferenceBuilderSpec extends ObjectBehavior
 
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beArrayOfReferences' => function ($subject) {

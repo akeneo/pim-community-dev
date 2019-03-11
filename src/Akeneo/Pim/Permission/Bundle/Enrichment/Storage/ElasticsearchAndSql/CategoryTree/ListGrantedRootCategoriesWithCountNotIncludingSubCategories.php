@@ -69,13 +69,14 @@ class ListGrantedRootCategoriesWithCountNotIncludingSubCategories implements Que
                 COALESCE(ct.label, CONCAT('[', root.code, ']')) as label
             FROM 
                 pim_catalog_category root
-                JOIN pimee_security_product_category_access ca ON ca.category_id = root.id 
-                JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id 
                 LEFT JOIN pim_catalog_category_translation ct ON ct.foreign_key = root.id AND ct.locale = :locale
             WHERE 
                 root.parent_id IS NULL
-                AND ag.user_id = :user_id
-                AND ca.view_items = 1
+                AND EXISTS (
+                    SELECT * FROM pimee_security_product_category_access ca
+                    JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id
+                    WHERE ca.category_id = root.id AND ca.view_items = 1 AND ag.user_id = :user_id
+                )
             ORDER BY 
                 label, root.code
 SQL;

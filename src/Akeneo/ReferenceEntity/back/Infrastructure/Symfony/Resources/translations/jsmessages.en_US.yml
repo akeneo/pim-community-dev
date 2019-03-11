@@ -134,6 +134,7 @@ pim_reference_entity:
     grid:
       search: Search on label, code and text attributes
       filter:
+        counter: '{{ matchesCount }} result|{{ matchesCount }} results'
         completeness:
           label: Complete
           all: ALL

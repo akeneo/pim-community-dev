@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\ORM;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\FindExistingAttributeCodesQuery;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
@@ -22,15 +23,12 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  */
 class ExcludeDeletedAttributeSubscriber implements EventSubscriber
 {
-    /** @var string */
-    protected $attributeClassName;
+    /** @var FindExistingAttributeCodesQuery */
+    private $query;
 
-    /**
-     * @param string $attributeClassName
-     */
-    public function __construct($attributeClassName)
+    public function __construct(FindExistingAttributeCodesQuery $query)
     {
-        $this->attributeClassName = $attributeClassName;
+        $this->query = $query;
     }
 
     /**
@@ -54,15 +52,21 @@ class ExcludeDeletedAttributeSubscriber implements EventSubscriber
             return;
         }
 
-        $attributeRepository = $args->getObjectManager()->getRepository($this->attributeClassName);
-
         $changes = $productDraft->getChanges();
+        $codesToCheck = [];
+        $types = [];
         foreach ($changes as $type => $attributes) {
-            foreach ($attributes as $code => $change) {
-                $attribute = $attributeRepository->findOneByIdentifier($code);
-                if (null === $attribute) {
-                    unset($changes[$type][$code]);
-                }
+            $codesToCheck = array_merge($codesToCheck, array_keys($attributes));
+            $types[] = $type;
+        }
+        $codesToCheck = array_unique($codesToCheck);
+
+        $existingAttributeCodes = $this->query->execute($codesToCheck);
+        $deletedAttributeCodes = array_diff($codesToCheck, $existingAttributeCodes);
+
+        foreach ($deletedAttributeCodes as $code) {
+            foreach ($types as $type) {
+                unset($changes[$type][$code]);
             }
         }
 

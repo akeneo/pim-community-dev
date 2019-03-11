@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard;
+namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as EnterpriseAttributeTypes;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\AttributeTypes;

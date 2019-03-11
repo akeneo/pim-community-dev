@@ -1,4 +1,5 @@
 pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} sääntö|]1, Inf[{{ count }} sääntöä"
   selected: 'sääntöä valittu'
   popin:
     execute_rules:
@@ -55,6 +56,9 @@ batch_jobs:
     import.label: Tuotteiden tuonti
   xlsx_product_model_import_with_rules:
     label: Tuotemallien ja sääntöjen tuonti XLSX-muodossa
+pim_notification:
+  types:
+    mass_edit_rule: Massamuokkaa sääntöä
 pim_menu:
   item:
     rule: Säännöt

@@ -14,3 +14,7 @@ teamwork_assistant:
     project_completeness: Projektin edistyminen
     contributor_in_progress: Toiminto käynnissä
     contributor_done: Valmis
+pim_datagrid:
+  cells:
+    type:
+      refresh_project_completeness_calculation: Päivitä projektin valmiusaste

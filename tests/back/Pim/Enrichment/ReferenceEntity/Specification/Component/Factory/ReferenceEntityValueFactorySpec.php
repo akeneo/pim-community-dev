@@ -212,7 +212,7 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeEmpty();
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveAttribute' => function ($subject, $attributeCode) {
