@@ -33,7 +33,7 @@ class SqlRecordsExists
     }
 
     /**
-     * @param string $codes
+     * @param string[] $codes
      *
      * @return string[]
      */
