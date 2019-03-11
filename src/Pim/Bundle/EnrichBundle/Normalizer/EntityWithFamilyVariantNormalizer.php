@@ -236,7 +236,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
      * Generate an array for the given $entity to represent its order among all its axes values.
      *
      * For example, if its axes values are "Blue, 10 CENTIMETER" and Blue is an option with a sort order equals to 4,
-     * it will return [4, blue, 10 CENTIMETER].
+     * it will return [4, "blue", "CENTIMETER", 10].
      *
      * It allows to sort on front-end to respect sort orders of attribute options.
      *
@@ -255,6 +255,10 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
                 $option = $value->getData();
                 $orderArray[] = $option->getSortOrder();
                 $orderArray[] = $option->getCode();
+            } else if (AttributeTypes::METRIC === $axisAttribute->getType()) {
+                $data = $value->getData();
+                $orderArray[] = $data->getUnit();
+                $orderArray[] = floatval($data->getData());
             } else {
                 $orderArray[] = (string) $value;
             }
