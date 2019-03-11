@@ -82,7 +82,6 @@ akeneo_franklin_insights:
         activated: 'Habilitado'
         activate: 'Activar'
   settings:
-    page_title: 'Configuración de Franklin Insights'
     module:
       title:
         sub_title: '¡Conoce a Franklin, su <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'

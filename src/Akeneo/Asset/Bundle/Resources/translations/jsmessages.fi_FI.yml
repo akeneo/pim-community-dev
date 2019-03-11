@@ -55,6 +55,7 @@ pimee_product_asset:
       uploading: Tuo
       error: Virhe
       success: Onnistui
+    tabsection_title: Assetit
   datagrid:
     mass_action:
       delete:
@@ -150,6 +151,7 @@ pimee_enrich.mass_edit.asset:
   step:
     choose:
       title: Assettien massatoiminnot
+      label_count: "]0, Inf[Valitse toiminto"
     configure:
       label: Konfiguroi
     confirm:
