@@ -217,6 +217,8 @@ pim_enrich.entity.api_connection:
     revoke:
       confirm: Haluatko varmasti poistaa tämän API -yhteyden?
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} operaatio|]1, Inf[{{ count }} operaatiota"
   module:
     create:
       upload: Pudota {{ type }}-tiedosto tähän tai klikkaa selataksesi tiedostoja
