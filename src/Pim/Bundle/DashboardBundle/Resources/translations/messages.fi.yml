@@ -11,7 +11,7 @@ pim_dashboard:
       title: Virhe ladatessa widgettiä
       message: Widgettiä "%alias%" ei ole
     completeness:
-      title: Kanavien ja lokaatioiden täyttöaste
+      title: Kanavien ja lokaatioiden valmiusaste
     last_operations:
       title: Viimeiset toiminnot
       empty: Toimintoja ei löytynyt
