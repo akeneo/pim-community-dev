@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8211: Fix DI for pimee_product_asset.controller.asset_variation
+
 ## Improvements
 
 - PIM-8159: Adds a command to be able to refresh records completenesses

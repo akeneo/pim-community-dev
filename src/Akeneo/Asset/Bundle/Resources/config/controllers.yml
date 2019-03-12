@@ -154,6 +154,7 @@ services:
             - '@router'
             - '@pimee_product_asset.saver.asset'
             - '@pimee_product_asset.factory.variation'
+            - '@event_dispatcher'
 
     pimee_product_asset.controller.asset:
         class : '%pimee_product_asset.controller.asset.class%'
