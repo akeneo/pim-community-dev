@@ -26,9 +26,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         LocaleRepositoryInterface $localeRepository
     ) {
         $this->beConstructedWith($channelRepository, $localeRepository);
-
-        $serializer->implement(NormalizerInterface::class);
-        $this->setSerializer($serializer);
     }
 
     function it_is_initializable()
@@ -59,6 +56,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $valueCollection,
         Collection $completenesses
     ) {
+        $serializer->implement(NormalizerInterface::class);
+        $this->setSerializer($serializer);
+
         $product->getId()->willReturn(67);
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $family = null;
@@ -130,6 +130,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         AttributeInterface $sku,
         Collection $completenesses
     ) {
+        $serializer->implement(NormalizerInterface::class);
+        $this->setSerializer($serializer);
+
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->isVariant()->willReturn(false);
@@ -263,6 +266,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         ValueInterface $enEcomSku,
         ValueInterface $enPrintSku
     ) {
+        $serializer->implement(NormalizerInterface::class);
+        $this->setSerializer($serializer);
+
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $variantProduct->isVariant()->willReturn(true);
@@ -449,6 +455,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         ValueInterface $ecommerceSku,
         ValueInterface $printSku
     ) {
+        $serializer->implement(NormalizerInterface::class);
+        $this->setSerializer($serializer);
+
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $variantProduct->isVariant()->willReturn(true);
@@ -565,6 +574,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         ValueInterface $frSku,
         ValueInterface $enSku
     ) {
+        $serializer->implement(NormalizerInterface::class);
+        $this->setSerializer($serializer);
+
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $variantProduct->isVariant()->willReturn(true);
@@ -726,5 +738,95 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 'label' => [],
             ]
         );
+    }
+
+    function it_adds_extra_data_with_optionnal_normalizers(
+        NormalizerInterface $normalizer1,
+        NormalizerInterface $normalizer2,
+        ProductInterface $product,
+        ValueCollectionInterface $valueCollection,
+        Collection $completenesses,
+        $serializer,
+        $channelRepository,
+        $localeRepository
+    ) {
+        $this->beConstructedWith($channelRepository, $localeRepository, [$normalizer1, $normalizer2]);
+        $serializer->implement(NormalizerInterface::class);
+        $this->setSerializer($serializer);
+
+        $product->getId()->willReturn(67);
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $family = null;
+
+        $product->isVariant()->willReturn(false);
+        $product->getIdentifier()->willReturn('sku-001');
+        $product->getFamily()->willReturn($family);
+        $serializer->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->willReturn(null);
+
+        $product->getCreated()->willReturn($now);
+        $serializer->normalize(
+            $product->getWrappedObject()->getCreated(),
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        )->willReturn($now->format('c'));
+
+        $product->getUpdated()->willReturn($now);
+        $serializer->normalize(
+            $product->getWrappedObject()->getUpdated(),
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        )->willReturn($now->format('c'));
+
+        $product->isEnabled()->willReturn(false);
+        $product->getValues()->willReturn($valueCollection);
+        $product->getFamily()->willReturn(null);
+        $product->getGroupCodes()->willReturn([]);
+        $product->getCategoryCodes()->willReturn([]);
+        $valueCollection->isEmpty()->willReturn(true);
+
+        $product->getCompletenesses()->willReturn($completenesses);
+        $completenesses->isEmpty()->willReturn(false);
+
+        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            [])->willReturn(['the completenesses']);
+
+        $normalizer1
+            ->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+            ->willReturn(['extraData1' => ['extraData1' => true]]);
+
+        $normalizer2
+            ->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+            ->willReturn(['extraData2' => ['extraData2' => false]]);
+
+        $this->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+            [
+                'id'                      => 'product_67',
+                'identifier'              => 'sku-001',
+                'created'                 => $now->format('c'),
+                'updated'                 => $now->format('c'),
+                'family'                  => null,
+                'enabled'                 => false,
+                'categories'              => [],
+                'categories_of_ancestors' => [],
+                'groups'                  => [],
+                'completeness'            => ['the completenesses'],
+                'family_variant'          => null,
+                'parent'                  => null,
+                'values'                  => [],
+                'ancestors'               => [
+                    'ids'   => [],
+                    'codes' => [],
+                    'labels' => [],
+                ],
+                'label'                   => [],
+                'extraData1'              => ['extraData1' => true],
+                'extraData2'              => ['extraData2' => false],
+            ]
+        );
+    }
+
+    public function it_fails_if_an_extra_normalizer_is_not_a_normalizer($channelRepository, $localeRepository)
+    {
+        $this->beConstructedWith($channelRepository, $localeRepository, [new \stdClass()]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

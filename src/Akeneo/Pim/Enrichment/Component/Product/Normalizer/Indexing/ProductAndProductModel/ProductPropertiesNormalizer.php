@@ -40,12 +40,19 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     /** @var LocaleRepositoryInterface */
     private $localeRepository;
 
+    /** @var NormalizerInterface[] */
+    private $additionalDataNormalizers;
+
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        iterable $additionalDataNormalizers = []
     ) {
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
+
+        $this->ensureAdditionalNormalizersAreValid($additionalDataNormalizers);
+        $this->additionalDataNormalizers = $additionalDataNormalizers;
     }
 
     /**
@@ -121,6 +128,10 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
             $data[StandardPropertiesNormalizer::FIELD_VALUES],
             $product
         );
+
+        foreach ($this->additionalDataNormalizers as $normalizer) {
+            $data = array_merge($data, $normalizer->normalize($product, $format, $context));
+        }
 
         return $data;
     }
@@ -346,5 +357,14 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
         }
 
         return $ancestorsLabels;
+    }
+
+    private function ensureAdditionalNormalizersAreValid(iterable $additionalNormalizers): void
+    {
+        foreach ($additionalNormalizers as $normalizer) {
+            if (! $normalizer instanceof NormalizerInterface) {
+                throw new \InvalidArgumentException('$normalizer is not a Normalizer');
+            }
+        }
     }
 }
