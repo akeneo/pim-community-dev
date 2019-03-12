@@ -81,6 +81,11 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
+    akeneo_referenceentity.infrastructure.persistence.query.records_exists:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordsExists
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
     akeneo_referenceentity.infrastructure.persistence.query.attribute_exists:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeExists
         arguments:

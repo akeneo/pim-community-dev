@@ -29,7 +29,7 @@ class FileDataHydrator implements DataHydratorInterface
         return $attribute instanceof ImageAttribute;
     }
 
-    public function hydrate($normalizedData): ValueDataInterface
+    public function hydrate($normalizedData, AbstractAttribute $attribute): ValueDataInterface
     {
         return FileData::createFromNormalize($normalizedData);
     }

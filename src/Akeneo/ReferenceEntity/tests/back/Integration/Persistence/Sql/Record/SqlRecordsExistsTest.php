@@ -25,32 +25,23 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordsExists;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlRecordExistsTest extends SqlIntegrationTestCase
+class SqlRecordsExistsTest extends SqlIntegrationTestCase
 {
-    /** @var RecordExistsInterface */
-    private $recordExists;
-
-    /** @var ReferenceEntityIdentifier */
-    private $referenceEntityIdentifier;
-
-    /** @var RecordIdentifier */
-    private $recordIdentifier;
-
-    /** @var RecordCode */
-    private $recordCode;
+    /** @var SqlRecordsExists */
+    private $recordsExistsForReferenceEntity;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->recordExists = $this->get('akeneo_referenceentity.infrastructure.persistence.query.record_exists');
+        $this->recordsExistsForReferenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.query.records_exists');
         $this->resetDB();
         $this->loadReferenceEntityDesigner();
         $this->loadRecordStarck();
@@ -59,21 +50,13 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_tells_if_there_is_a_corresponding_record_identifier()
+    public function it_tells_if_there_are_corresponding_records_identifiers()
     {
-        $this->assertTrue($this->recordExists->withIdentifier($this->recordIdentifier));
-        $this->assertFalse($this->recordExists->withIdentifier(RecordIdentifier::fromString('unknown_record_identifier')));
-    }
-
-    /**
-     * @test
-     */
-    public function it_tells_if_there_is_a_corresponding_record_code_for_reference_entity()
-    {
-        $this->assertTrue($this->recordExists->withReferenceEntityAndCode($this->referenceEntityIdentifier, $this->recordCode));
-        $this->assertFalse(
-            $this->recordExists->withReferenceEntityAndCode($this->referenceEntityIdentifier, RecordCode::fromString('unknown'))
+        $existingRecordCodes = $this->recordsExistsForReferenceEntity->withReferenceEntityAndCodes(
+            ReferenceEntityIdentifier::fromString('designer'),
+            ['starck', 'unknown']
         );
+        $this->assertEquals(['starck'], $existingRecordCodes);
     }
 
     private function resetDB(): void
@@ -97,19 +80,19 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
 
     public function loadRecordStarck(): void
     {
-        $this->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = $referenceEntityRepository->getByIdentifier($this->referenceEntityIdentifier);
+        $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
 
         $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $this->recordCode = RecordCode::fromString('starck');
-        $this->recordIdentifier = RecordIdentifier::fromString('stark_designer_fingerprint');
+        $recordCode = RecordCode::fromString('starck');
+        $recordIdentifier = RecordIdentifier::fromString('stark_designer_fingerprint');
 
         $recordRepository->create(
             Record::create(
-                $this->recordIdentifier,
-                $this->referenceEntityIdentifier,
-                $this->recordCode,
+                $recordIdentifier,
+                $referenceEntityIdentifier,
+                $recordCode,
                 ValueCollection::fromValues([
                     Value::create(
                         $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),

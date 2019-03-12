@@ -516,7 +516,7 @@ To support our new search usecases, we need to update the index with the "links"
         ],
     ]
 
-**When a record is removed**, we need to refresh all the records refencing the removed record.
+**When a record is removed**, we need to refresh all the records referencing the removed record.
 
     // 'brand_kartell' record has been removed, let's find all the record linked to it to refresh them
     [
@@ -583,6 +583,12 @@ To support our new search usecases, we need to update the index with the "links"
             ],
         ],
     ]
+    
+##### Results
+
+| Batch Size                | Refresh 10 000 records    | Refresh 1 000 000 records  |
+|---------------------------|---------------------------|---------------------------|
+| 100 Records               | 35.87 s                   | ~1 hour                    | 
 
 
 ## 07/01/19
@@ -628,3 +634,24 @@ We will dedicate someone on the next bloom to list all comamnds and create subta
 Then we will be able to create a PR to fix them one by one (use of a feature branch could be possible).
 Then take cards one by one and fix them. It should not create any conflicts
 
+# Ideas for performance improvement:
+
+Progress bar step: 1
+10 000 -> 345 (5m45) (29 records/seconds)
+1 000 000 -> ?
+x = (1 000 000 * 345) / 10 000 => 9.5 hours
+
+Progress bar step: 100
+10 000 -> 286 (4m46) (35 records/seconds)
+1 000 000 -> ?
+x = (1000000*286)/10000 => 8 hours
+
+After optim:
+10000 -> 180 (3mins) (55 records/secs)
+x = (1000000*180)/10000 => 5 hours
+
+Pistes d'amélioration:
+- Bulk saving + bulk index (without event all done in the record repository)
+- Bulk get records from identifiers
+- Build SearchableRecords From Record object instead of fetch from DB
+- Adaptater SQL => SqlElasticsearch (remove Event)

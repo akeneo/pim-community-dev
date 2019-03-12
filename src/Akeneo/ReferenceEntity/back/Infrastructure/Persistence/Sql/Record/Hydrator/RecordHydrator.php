@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
@@ -75,10 +76,11 @@ class RecordHydrator implements RecordHydratorInterface
 
             $rawValue = $valueCollection[$key];
             $attributeIdentifier = $rawValue['attribute'];
-            $hydratedValues[$key] = $this->valueHydrator->hydrate(
-                $rawValue,
-                $attributes[$attributeIdentifier]
-            );
+            $value = $this->valueHydrator->hydrate($rawValue, $attributes[$attributeIdentifier]);
+            if ($value->isEmpty()) {
+                continue;
+            }
+            $hydratedValues[$key] = $value;
         }
 
         return $hydratedValues;

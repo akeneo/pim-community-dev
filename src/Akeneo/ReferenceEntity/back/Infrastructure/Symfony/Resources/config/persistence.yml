@@ -87,6 +87,12 @@ services:
         arguments:
             - '@database_connection'
 
+    # Record query functions
+    akeneo_referenceentity.infrastructure.persistence.query.records_exists:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordsExists
+        arguments:
+            - '@database_connection'
+
     akeneo_referenceentity.infrastructure.persistence.query.find_record_details:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordDetails
         arguments:
@@ -285,11 +291,15 @@ services:
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_data:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDataHydrator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_collection_data:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordCollectionDataHydrator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.records_exists'
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
 
@@ -412,3 +422,20 @@ services:
         arguments:
             - '@database_connection'
 
+    # CLI
+    akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\FindAllRecordIdentifiers
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.sql.record.refresh_records.refresh_record:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshRecord
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    # Commands
+    akeneo_referenceentity.infrastructure.persistence.records.refresh_all_records:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\RefreshRecords\RefreshAllRecords
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers'
+            - '@akeneo_referenceentity.infrastructure.persistence.sql.record.refresh_records.refresh_record'

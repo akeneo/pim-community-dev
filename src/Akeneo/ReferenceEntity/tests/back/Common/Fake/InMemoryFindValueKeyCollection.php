@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Common\Fake;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 /**
@@ -26,7 +27,7 @@ class InMemoryFindValueKeyCollection implements FindValueKeyCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ReferenceEntityIdentifier $identifier): array
+    public function __invoke(ReferenceEntityIdentifier $identifier): ValueKeyCollection
     {
         throw new NotImplementedException('__invoke');
     }

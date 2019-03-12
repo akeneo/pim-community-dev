@@ -23,6 +23,7 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForAllChannelsAndLocales;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
@@ -30,9 +31,9 @@ use PHPUnit\Framework\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindValueKeysToIndexForChannelAndLocaleTest extends SqlIntegrationTestCase
+class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegrationTestCase
 {
-    /** @var \Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForChannelAndLocale */
+    /** @var SqlFindValueKeysToIndexForAllChannelsAndLocales */
     private $findValuesToIndexForChannelAndLocale;
 
     public function setUp()
@@ -48,8 +49,16 @@ class SqlFindValueKeysToIndexForChannelAndLocaleTest extends SqlIntegrationTestC
      */
     public function it_generates_an_empty_list()
     {
-        $valueKeyCollection = ($this->findValuesToIndexForChannelAndLocale)(ReferenceEntityIdentifier::fromString('designer'), ChannelIdentifier::fromCode('ecommerce'), LocaleIdentifier::fromCode('en_US'));
-        Assert::assertEmpty($valueKeyCollection->normalize());
+        $valueKeyCollection = ($this->findValuesToIndexForChannelAndLocale)(ReferenceEntityIdentifier::fromString('designer'),
+            ChannelIdentifier::fromCode('ecommerce'), LocaleIdentifier::fromCode('en_US'));
+        Assert::assertEquals(
+            [
+                'ecommerce' => ['fr_FR' => [], 'en_US' => []],
+                'mobile'    => ['de_DE' => []],
+                'print'     => ['en_US' => []],
+            ],
+            $valueKeyCollection
+        );
     }
 
     /**
@@ -69,10 +78,33 @@ class SqlFindValueKeysToIndexForChannelAndLocaleTest extends SqlIntegrationTestC
             ->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
         $attributeAsLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
 
-        Assert::assertEquals([
-            sprintf('%s_en_US', $attributeAsLabelIdentifier),
-            'name_designer_fingerprint_ecommerce_en_US',
-        ], $valueKeyCollection->normalize());
+        Assert::assertEquals(
+            [
+                'ecommerce' => [
+                    'fr_FR' => [
+                        sprintf('%s_fr_FR', $attributeAsLabelIdentifier),
+                        'name_designer_fingerprint_ecommerce_fr_FR',
+                    ],
+                    'en_US' => [
+                        sprintf('%s_en_US', $attributeAsLabelIdentifier),
+                        'name_designer_fingerprint_ecommerce_en_US',
+                    ],
+                ],
+                'mobile'    => [
+                    'de_DE' => [
+                        sprintf('%s_de_DE', $attributeAsLabelIdentifier),
+                        'name_designer_fingerprint_mobile_de_DE',
+                    ],
+                ],
+                'print'     => [
+                    'en_US' => [
+                        sprintf('%s_en_US', $attributeAsLabelIdentifier),
+                        'name_designer_fingerprint_print_en_US',
+                    ],
+                ],
+            ],
+            $valueKeyCollection
+        );
     }
 
 
