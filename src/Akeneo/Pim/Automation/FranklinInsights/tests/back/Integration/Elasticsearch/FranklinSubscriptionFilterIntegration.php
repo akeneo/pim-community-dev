@@ -24,6 +24,24 @@ use PHPUnit\Framework\Assert;
  */
 class FranklinSubscriptionFilterIntegration extends TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $family = $this->createFamily('family');
+        $product1 = $this->createProduct('product1', $family->getCode());
+        $product2 = $this->createProduct('product2', $family->getCode());
+        $this->createProduct('product3', $family->getCode());
+
+        $this->insertSubscription($product1->getId(), true);
+        $this->insertSubscription($product2->getId(), true);
+
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll([$product1, $product2]);
+    }
+
     public function test_products_are_filterable_by_franklin_subscription(): void
     {
         $pqbFactoryService = 'akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.' .
@@ -45,24 +63,6 @@ class FranklinSubscriptionFilterIntegration extends TestCase
 
         Assert::assertCount(2, $subscribedProducts);
         Assert::assertCount(1, $notSubscribedProducts);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $family = $this->createFamily('family');
-        $product1 = $this->createProduct('product1', $family->getCode());
-        $product2 = $this->createProduct('product2', $family->getCode());
-        $this->createProduct('product3', $family->getCode());
-
-        $this->insertSubscription($product1->getId(), true);
-        $this->insertSubscription($product2->getId(), true);
-
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll([$product1, $product2]);
     }
 
     /**
