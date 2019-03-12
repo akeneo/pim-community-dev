@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Archiver;
+namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use League\Flysystem\Config;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;

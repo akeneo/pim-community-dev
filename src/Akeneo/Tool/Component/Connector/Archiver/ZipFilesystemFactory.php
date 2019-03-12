@@ -3,7 +3,6 @@
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use League\Flysystem\Filesystem;
-use Pim\Component\Connector\Archiver\WriteStreamZipArchiveAdapter;
 
 /**
  * Factory of Flysystem Filesystem configured with the Zip adapter
