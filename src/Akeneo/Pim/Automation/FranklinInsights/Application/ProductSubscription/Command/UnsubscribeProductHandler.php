@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductUnsubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Handles an UnsubscribeProduct command.
@@ -32,16 +34,22 @@ class UnsubscribeProductHandler
     /** @var SubscriptionProviderInterface */
     private $subscriptionProvider;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     /**
      * @param ProductSubscriptionRepositoryInterface $subscriptionRepository,
      * @param SubscriptionProviderInterface $subscriptionProvider
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        SubscriptionProviderInterface $subscriptionProvider
+        SubscriptionProviderInterface $subscriptionProvider,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->subscriptionRepository = $subscriptionRepository;
         $this->subscriptionProvider = $subscriptionProvider;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -59,5 +67,10 @@ class UnsubscribeProductHandler
         $this->subscriptionProvider->unsubscribe($subscription->getSubscriptionId());
 
         $this->subscriptionRepository->delete($subscription);
+
+        $this->eventDispatcher->dispatch(
+            ProductUnsubscribed::EVENT_NAME,
+            new ProductUnsubscribed($command->getProductId())
+        );
     }
 }

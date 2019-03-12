@@ -30,12 +30,14 @@ services:
             - '@akeneo.pim.automation.franklin_insights.data_provider.product_subscription'
             - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
             - '@akeneo.pim.automation.franklin_insights.handler.create_proposal'
+            - '@event_dispatcher'
 
     akeneo.pim.automation.franklin_insights.product_subscription.handler.unsubscribe_product:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
             - '@akeneo.pim.automation.franklin_insights.data_provider.product_subscription'
+            - '@event_dispatcher'
 
     akeneo.pim.automation.franklin_insights.product_subscription.handler.update_subscription_family:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyHandler'

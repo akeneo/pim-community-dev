@@ -1,0 +1,5 @@
+mappings:
+    pim_catalog_product:
+        properties:
+            franklin_subscription:
+                type: boolean

@@ -14,6 +14,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreatePr
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
@@ -28,6 +29,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SubscribeProductHandlerSpec extends ObjectBehavior
 {
@@ -37,7 +39,8 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionProviderInterface $subscriptionProvider,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        CreateProposalHandler $createProposalHandler
+        CreateProposalHandler $createProposalHandler,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $this->beConstructedWith(
             $productRepository,
@@ -45,7 +48,8 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
             $subscriptionRepository,
             $subscriptionProvider,
             $identifiersMappingRepository,
-            $createProposalHandler
+            $createProposalHandler,
+            $eventDispatcher
         );
     }
 
@@ -89,6 +93,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $subscriptionRepository,
         $identifiersMappingRepository,
         $createProposalHandler,
+        $eventDispatcher,
         ProductInterface $product,
         AttributeInterface $ean,
         ValueInterface $eanValue
@@ -137,6 +142,11 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $createProposalHandler->handle(new CreateProposalCommand($productSubscription))->shouldBeCalled();
 
         $subscriptionRepository->save($productSubscription)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($event) use ($productSubscription) {
+            return $event instanceof ProductSubscribed &&
+                $productSubscription->getSubscriptionId() === $event->getProductSubscription()->getSubscriptionId();
+        }))->shouldBeCalled();
 
         $this->handle(new SubscribeProductCommand($productId));
     }

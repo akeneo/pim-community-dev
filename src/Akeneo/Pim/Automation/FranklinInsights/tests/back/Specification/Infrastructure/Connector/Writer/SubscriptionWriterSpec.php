@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Co
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
@@ -30,6 +31,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -41,13 +43,15 @@ class SubscriptionWriterSpec extends ObjectBehavior
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         StepExecution $stepExecution,
-        IdentifiersMapping $identifiersMapping
+        IdentifiersMapping $identifiersMapping,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $this->beConstructedWith(
             $subscriptionProvider,
             $productSubscriptionRepository,
-            $identifiersMappingRepository
+            $identifiersMappingRepository,
+            $eventDispatcher
         );
         $this->setStepExecution($stepExecution);
         $this->initialize();
@@ -73,6 +77,7 @@ class SubscriptionWriterSpec extends ObjectBehavior
         $productSubscriptionRepository,
         $identifiersMapping,
         $stepExecution,
+        $eventDispatcher,
         ProductInterface $product1,
         ProductInterface $product2,
         AttributeInterface $asin
@@ -97,6 +102,16 @@ class SubscriptionWriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('subscribed')->shouldBeCalledTimes(2);
         $productSubscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalledTimes(2);
 
+        $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($productSubscribed) {
+            return $productSubscribed instanceof ProductSubscribed &&
+                '123-465-789' === $productSubscribed->getProductSubscription()->getSubscriptionId();
+        }))->shouldBeCalled();
+
+        $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($productSubscribed) {
+            return $productSubscribed instanceof ProductSubscribed &&
+                'abc-def-987' === $productSubscribed->getProductSubscription()->getSubscriptionId();
+        }))->shouldBeCalled();
+
         $this->write($items)->shouldReturn(null);
     }
 
@@ -105,6 +120,7 @@ class SubscriptionWriterSpec extends ObjectBehavior
         $productSubscriptionRepository,
         $identifiersMapping,
         $stepExecution,
+        $eventDispatcher,
         ProductInterface $product1,
         ProductInterface $product2,
         AttributeInterface $upc
@@ -140,6 +156,10 @@ class SubscriptionWriterSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('subscribed')->shouldBeCalledTimes(1);
         $productSubscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalledTimes(1);
+        $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($productSubscribed) {
+            return $productSubscribed instanceof ProductSubscribed &&
+                'abc-def-987' === $productSubscribed->getProductSubscription()->getSubscriptionId();
+        }))->shouldBeCalled();
 
         $this->write($items)->shouldReturn(null);
     }

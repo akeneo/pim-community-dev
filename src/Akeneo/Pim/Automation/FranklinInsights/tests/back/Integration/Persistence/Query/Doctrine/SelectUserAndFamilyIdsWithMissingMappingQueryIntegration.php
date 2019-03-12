@@ -52,18 +52,14 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
 
         $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
 
-        Assert::assertEquals(
+        Assert::assertEqualsCanonicalizing(
             [
                 $this->getUserId('admin') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
                 $this->getUserId('julia') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
                 $this->getUserId('mary') => [$this->getFamilyId('familyA')],
                 $this->getUserId('kevin') => [$this->getFamilyId('familyA')],
             ],
-            $queryResult,
-            '',
-            0.0,
-            10,
-            true
+            $queryResult
         );
     }
 
@@ -80,18 +76,14 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
 
         $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
 
-        Assert::assertEquals(
+        Assert::assertEqualsCanonicalizing(
             [
                 $this->getUserId('admin') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
                 $this->getUserId('julia') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
                 $this->getUserId('mary') => [$this->getFamilyId('familyA')],
                 $this->getUserId('kevin') => [$this->getFamilyId('familyA')],
             ],
-            $queryResult,
-            '',
-            0.0,
-            10,
-            true
+            $queryResult
         );
     }
 

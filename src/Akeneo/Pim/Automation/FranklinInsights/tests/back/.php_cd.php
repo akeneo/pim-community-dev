@@ -17,6 +17,9 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
 
+            // Used for business events
+            'Symfony\Component\EventDispatcher\Event',
+
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
         ]
@@ -40,6 +43,8 @@ $rules = [
 
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
+
+            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Application'),
 
@@ -178,6 +183,7 @@ $rules = [
         [
             'Akeneo\Pim\Automation\FranklinInsights\Domain',
             'Akeneo\Pim\Automation\FranklinInsights\Application',
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch',
 
             // External dependencies
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
@@ -186,6 +192,8 @@ $rules = [
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent',
+            'Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface',
+            'Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface',
 
             'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
@@ -195,6 +203,7 @@ $rules = [
 
             'Akeneo\Channel\Component\Model\ChannelInterface',
             'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber'),
 

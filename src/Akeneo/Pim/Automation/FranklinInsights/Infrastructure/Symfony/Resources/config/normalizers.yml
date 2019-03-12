@@ -22,3 +22,10 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer'
         arguments:
             - '@pim_catalog.repository.attribute_option'
+
+    akeneo.pim.automation.franklin_insights.normalizer.indexing.product_subscription:
+            class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Indexing\Normalizer\ProductSubscriptionNormalizer'
+            arguments:
+                - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.is_product_subscribed_to_franklin'
+            tags:
+                - { name: 'pim_catalog.normalizer.indexing_product_and_product_model.product.additional_properties' }

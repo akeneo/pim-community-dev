@@ -7,20 +7,25 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Produ
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductUnsubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UnsubscribeProductHandlerSpec extends ObjectBehavior
 {
     public function let(
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        SubscriptionProviderInterface $subscriptionProvider
+        SubscriptionProviderInterface $subscriptionProvider,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $this->beConstructedWith(
             $subscriptionRepository,
-            $subscriptionProvider
+            $subscriptionProvider,
+            $eventDispatcher
         );
     }
 
@@ -42,6 +47,7 @@ class UnsubscribeProductHandlerSpec extends ObjectBehavior
     }
 
     public function it_unsubscribes_the_product_and_deletes_the_subscription(
+        $eventDispatcher,
         $subscriptionRepository,
         $subscriptionProvider,
         ProductSubscription $subscription
@@ -54,6 +60,11 @@ class UnsubscribeProductHandlerSpec extends ObjectBehavior
 
         $subscriptionProvider->unsubscribe($subscriptionId)->shouldBeCalled();
         $subscriptionRepository->delete($subscription)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(ProductUnsubscribed::EVENT_NAME, Argument::that(function ($event) use ($productId) {
+            return $event instanceof ProductUnsubscribed &&
+                $event->getUnsubscribedProductId() === $productId;
+        }))->shouldBeCalled();
 
         $command = new UnsubscribeProductCommand($productId);
         $this->handle($command)->shouldReturn(null);
