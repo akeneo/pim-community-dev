@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
@@ -64,8 +66,11 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         ProductInterface $variantProduct,
         AttributeInterface $colorAttribute,
         AttributeInterface $sizeAttribute,
+        AttributeInterface $weightAttribute,
         ValueInterface $colorValue,
         ValueInterface $sizeValue,
+        MetricValueInterface $weightValue,
+        MetricInterface $weightData,
         AttributeOptionInterface $colorAttributeOption,
         AttributeOptionValueInterface $colorAttributeOptionValue,
         CompletenessInterface $completeness1,
@@ -87,15 +92,24 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
 
         $attributesProvider->getAxes($variantProduct)->willReturn([
             $colorAttribute,
-            $sizeAttribute
+            $sizeAttribute,
+            $weightAttribute,
         ]);
 
         $colorAttribute->getCode()->willReturn('color');
         $colorAttribute->getType()->willReturn('pim_catalog_simpleselect');
         $sizeAttribute->getCode()->willReturn('size');
         $sizeAttribute->getType()->willReturn('pim_catalog_text');
+        $weightAttribute->getCode()->willReturn('weight');
+        $weightAttribute->getType()->willReturn('pim_catalog_metric');
         $variantProduct->getValue('color')->willReturn($colorValue);
         $variantProduct->getValue('size')->willReturn($sizeValue);
+        $variantProduct->getValue('weight')->willReturn($weightValue);
+        $weightValue->getData()->willReturn($weightData);;
+        $weightValue->getAmount()->willReturn(10);
+        $weightValue->getUnit()->willReturn('KILOGRAM');
+        $weightData->getUnit()->willReturn('KILOGRAM');
+        $weightData->getData()->willReturn(10);
 
         $colorValue->getData()->willReturn('white');
         $colorValue->getAttributeCode()->willReturn('color');
@@ -124,14 +138,14 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             'id'                 => 42,
             'identifier'         => 'tshirt_white_s',
             'axes_values_labels' => [
-                'fr_FR' => 'Blanc, S',
-                'en_US' => 'White, S',
+                'fr_FR' => 'Blanc, S, 10 KILOGRAM',
+                'en_US' => 'White, S, 10 KILOGRAM',
             ],
             'labels'             => [
                 'fr_FR' => 'Tshirt Blanc S',
                 'en_US' => 'Tshirt White S',
             ],
-            'order'              => [2, 'white', 'S'],
+            'order'              => [2, 'white', 'S', 'KILOGRAM', 10.0],
             'image'              => null,
             'model_type'         => 'product',
             'completeness'       => ['NORMALIZED_COMPLETENESS']
