@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -19,6 +20,7 @@ use Pim\Component\Catalog\ProductModel\ImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Value\MetricValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
@@ -61,8 +63,11 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         ProductInterface $variantProduct,
         AttributeInterface $colorAttribute,
         AttributeInterface $sizeAttribute,
+        AttributeInterface $weightAttribute,
         ValueInterface $colorValue,
         ValueInterface $sizeValue,
+        MetricValueInterface $weightValue,
+        MetricInterface $weightData,
         AttributeOptionInterface $colorAttributeOption,
         AttributeOptionValueInterface $colorAttributeOptionValue,
         CompletenessInterface $completeness1,
@@ -83,15 +88,24 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
 
         $attributesProvider->getAxes($variantProduct)->willReturn([
             $colorAttribute,
-            $sizeAttribute
+            $sizeAttribute,
+            $weightAttribute,
         ]);
 
         $colorAttribute->getCode()->willReturn('color');
         $colorAttribute->getType()->willReturn('pim_catalog_simpleselect');
         $sizeAttribute->getCode()->willReturn('size');
         $sizeAttribute->getType()->willReturn('pim_catalog_text');
+        $weightAttribute->getCode()->willReturn('weight');
+        $weightAttribute->getType()->willReturn('pim_catalog_metric');
         $variantProduct->getValue('color')->willReturn($colorValue);
         $variantProduct->getValue('size')->willReturn($sizeValue);
+        $variantProduct->getValue('weight')->willReturn($weightValue);
+        $weightValue->getData()->willReturn($weightData);;
+        $weightValue->getAmount()->willReturn(10);
+        $weightValue->getUnit()->willReturn('KILOGRAM');
+        $weightData->getUnit()->willReturn('KILOGRAM');
+        $weightData->getData()->willReturn(10);
 
         $colorValue->getData()->willReturn($colorAttributeOption);
         $colorAttributeOption->setLocale('fr_FR')->shouldBeCalled();
@@ -116,14 +130,14 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             'id'                 => 42,
             'identifier'         => 'tshirt_white_s',
             'axes_values_labels' => [
-                'fr_FR' => 'Blanc, S',
-                'en_US' => 'White, S',
+                'fr_FR' => 'Blanc, S, 10 KILOGRAM',
+                'en_US' => 'White, S, 10 KILOGRAM',
             ],
             'labels'             => [
                 'fr_FR' => 'Tshirt Blanc S',
                 'en_US' => 'Tshirt White S',
             ],
-            'order'              => [2, 'white', 'S'],
+            'order'              => [2, 'white', 'S', 'KILOGRAM', 10.0],
             'image'              => null,
             'model_type'         => 'product',
             'completeness'       => ['NORMALIZED_COMPLETENESS']
