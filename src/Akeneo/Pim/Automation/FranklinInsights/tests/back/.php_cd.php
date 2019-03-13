@@ -14,7 +14,6 @@ $rules = [
     $builder->only(
         [
             // TODO remove all links by reference
-            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
 
             // Used for business events
@@ -31,13 +30,11 @@ $rules = [
 
             // TODO remove all links by reference
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
 
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
@@ -136,13 +133,16 @@ $rules = [
             'Doctrine',
 
             // TODO: link by ID instead of reference
-            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Model\Family',
             'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
 
             // Oro config is used
             'Oro\Bundle\ConfigBundle\Entity\Config',
+
+            //Needed for the memory repositories
+            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence'),
 
@@ -161,7 +161,6 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
 
-            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
             'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
             'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException',
@@ -169,7 +168,6 @@ $rules = [
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal'),
 
@@ -216,7 +214,6 @@ $rules = [
             'Symfony\Component',
 
             // TODO remove all links by reference
-            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
