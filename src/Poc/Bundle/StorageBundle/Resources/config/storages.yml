@@ -1,0 +1,9 @@
+services:
+    poc_storage.google_storage.client:
+        class: Google\Cloud\Storage\StorageClient
+
+    poc_storage.google_storage.bucket:
+        class: Google\Cloud\Storage\Bucket
+        factory: 'poc_storage.google_storage.client:bucket'
+        arguments:
+            - '%cloud_storage_bucket_name%'

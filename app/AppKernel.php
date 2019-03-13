@@ -22,7 +22,19 @@ class AppKernel extends Kernel
         return [
             // your app bundles should be registered here
             new Acme\Bundle\AppBundle\AcmeAppBundle(),
+            new Poc\Bundle\StorageBundle\PocStorageBundle(),
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(string $environment, bool $debug)
+    {
+        parent::__construct($environment, $debug);
+
+        // This is a POC, OK?!
+        putenv('GOOGLE_APPLICATION_CREDENTIALS=/srv/pim/docker/serviceAccount.json');
     }
 
     /**

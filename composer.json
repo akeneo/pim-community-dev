@@ -70,6 +70,7 @@
         "sensio/distribution-bundle": "5.0.20",
         "sensio/framework-extra-bundle": "3.0.26",
         "sensio/generator-bundle": "3.1.6",
+        "superbalist/flysystem-google-storage": "7.2.0",
         "symfony/assetic-bundle": "2.8.2",
         "symfony/monolog-bundle": "3.1.2",
         "symfony/swiftmailer-bundle": "3.0.3",
