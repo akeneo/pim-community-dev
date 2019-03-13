@@ -17,7 +17,7 @@ use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 
 /**
- * Update the Franklin Insights subscription status for a product in ES
+ * Update the Franklin Insights subscription status for a product in ES.
  */
 class ProductSubscriptionUpdater
 {
@@ -29,8 +29,8 @@ class ProductSubscriptionUpdater
 
     /**
      * @param ClientBuilder $clientBuilder
-     * @param array         $hosts
-     * @param string        $indexName
+     * @param array $hosts
+     * @param string $indexName
      */
     public function __construct(
         ClientBuilder $clientBuilder,
@@ -60,7 +60,7 @@ class ProductSubscriptionUpdater
     }
 
     /**
-     * @param int  $productId
+     * @param int $productId
      * @param bool $isSubscribed
      */
     private function updateProduct(int $productId, bool $isSubscribed): void
@@ -68,17 +68,17 @@ class ProductSubscriptionUpdater
         $this->esClient->updateByQuery(
             [
                 'index' => $this->indexName,
-                'type'  => 'pim_catalog_product',
-                'body'  => [
+                'type' => 'pim_catalog_product',
+                'body' => [
                     'script' => [
                         'inline' => sprintf('ctx._source.franklin_subscription = %s', $isSubscribed ? 'true' : 'false'),
                     ],
-                    'query'  => [
+                    'query' => [
                         'term' => [
                             'id' => sprintf('product_%d', $productId),
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ]
         );
     }

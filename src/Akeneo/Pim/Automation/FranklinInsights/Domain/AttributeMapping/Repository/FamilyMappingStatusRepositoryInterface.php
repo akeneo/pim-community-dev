@@ -23,7 +23,7 @@ interface FamilyMappingStatusRepositoryInterface
     /**
      * @param int $limit
      * @param int $page
-     * @param null|string $search
+     * @param string|null $search
      *
      * @return FamilyMappingStatusCollection
      */

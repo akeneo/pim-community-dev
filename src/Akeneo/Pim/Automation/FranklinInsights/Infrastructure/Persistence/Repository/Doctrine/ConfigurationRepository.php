@@ -102,7 +102,7 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
     }
 
     /**
-     * @return null|Config
+     * @return Config|null
      */
     private function findOroConfig(): ?Config
     {

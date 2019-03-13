@@ -62,7 +62,7 @@ class IdentifierMapping
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getAttributeCode(): ?string
     {

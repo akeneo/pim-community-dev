@@ -21,7 +21,7 @@ use PHPUnit\Framework\Assert;
 
 class ProductSubscriptionUpdaterIntegration extends TestCase
 {
-    public function test_product_subscription_is_updated()
+    public function test_product_subscription_is_updated(): void
     {
         $family = $this->createFamily('family');
         $subscribedProduct = $this->createProduct('subscribed_product', $family->getCode());
@@ -66,12 +66,12 @@ INSERT INTO pimee_franklin_insights_subscription (product_id, subscription_id, m
 VALUES (:productId, :subscriptionId, 1)
 SQL;
         $queryParameters = [
-            'productId'        => $productId,
-            'subscriptionId'   => uniqid(),
+            'productId' => $productId,
+            'subscriptionId' => uniqid(),
         ];
         $types = [
-            'productId'        => Type::INTEGER,
-            'subscriptionId'   => Type::STRING,
+            'productId' => Type::INTEGER,
+            'subscriptionId' => Type::STRING,
         ];
         $this->get('doctrine.orm.entity_manager')->getConnection()->executeUpdate($query, $queryParameters, $types);
     }
@@ -94,11 +94,11 @@ SQL;
         $esClient->refreshIndex();
 
         $searchResult = $esClient->search('pim_catalog_product', [
-            'query'  => [
+            'query' => [
                 'term' => [
-                    'id' => sprintf('product_%d', $product->getId())
-                ]
-            ]
+                    'id' => sprintf('product_%d', $product->getId()),
+                ],
+            ],
         ]);
 
         $productDocument = $searchResult['hits']['hits'][0]['_source'];

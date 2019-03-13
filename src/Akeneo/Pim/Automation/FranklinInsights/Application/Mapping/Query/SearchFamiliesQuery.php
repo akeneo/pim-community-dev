@@ -30,7 +30,7 @@ class SearchFamiliesQuery
     /**
      * @param int $limit
      * @param int $page
-     * @param null|string $search
+     * @param string|null $search
      */
     public function __construct(int $limit, int $page, ?string $search)
     {

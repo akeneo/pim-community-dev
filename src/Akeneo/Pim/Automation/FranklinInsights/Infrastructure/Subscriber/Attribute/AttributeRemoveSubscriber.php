@@ -138,7 +138,7 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
     ): void {
         foreach ($identifiersMapping as $identifier => $identifierMapping) {
             $attribute = $identifierMapping->getAttribute();
-            $attributeCode = $attribute !== null ? (string) $attribute->getCode() : null;
+            $attributeCode = null !== $attribute ? (string) $attribute->getCode() : null;
             if (null !== $attribute && $removedAttribute->getCode() === $attributeCode) {
                 $mapping = $this->computeNewMapping($identifiersMapping, $identifier);
 

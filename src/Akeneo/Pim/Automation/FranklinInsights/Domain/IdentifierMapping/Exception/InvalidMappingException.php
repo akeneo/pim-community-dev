@@ -190,7 +190,7 @@ class InvalidMappingException extends \Exception
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPath(): ?string
     {
