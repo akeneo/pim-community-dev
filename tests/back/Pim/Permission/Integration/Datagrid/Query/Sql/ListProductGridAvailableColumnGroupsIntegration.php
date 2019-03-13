@@ -6,6 +6,7 @@ namespace AkeneoTestEnterprise\Pim\Permission\Integration\Datagrid\Query\Sql;
 
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\TestCase;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 
 class ListProductGridAvailableColumnGroupsIntegration extends TestCase
 {
@@ -55,7 +56,7 @@ class ListProductGridAvailableColumnGroupsIntegration extends TestCase
         $expectedColumnGroups = [
             [
                 'code'  => 'system',
-                'count' => 11,
+                'count' => $this->getExpectedSystemColumnsCount(),
                 'label' => 'System',
             ],
             [
@@ -84,5 +85,18 @@ class ListProductGridAvailableColumnGroupsIntegration extends TestCase
         $this->get('pim_catalog.updater.attribute')->update($attribute, $attributeData);
 
         return $attribute;
+    }
+
+    private function getExpectedSystemColumnsCount(): int
+    {
+        $datagridConfiguration = $this->get('oro_datagrid.configuration.provider.chain')->getConfiguration('product-grid');
+
+        $systemColumns = $datagridConfiguration->offsetGetByPath(
+                sprintf('[%s]', Configuration::COLUMNS_KEY), []
+            ) + $datagridConfiguration->offsetGetByPath(
+                sprintf('[%s]', Configuration::OTHER_COLUMNS_KEY), []
+            );
+
+        return count($systemColumns);
     }
 }
