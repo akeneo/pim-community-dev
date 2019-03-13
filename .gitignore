@@ -52,6 +52,7 @@ npm-debug.log
 !/docker/akeneo.conf
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
+!/docker/fpm/
 .env
 docker-compose.override.yml
 .web-server-pid
