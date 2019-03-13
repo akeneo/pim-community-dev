@@ -1,6 +1,7 @@
 import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 
+const __ = require('oro/translator');
 const mediator = require('oro/mediator');
 const Routing = require('routing');
 
@@ -31,15 +32,14 @@ class FiltersColumn extends BaseView {
   readonly config: FiltersConfig;
   readonly template: string = `
     <button type="button" class="AknFilterBox-addFilterButton" aria-haspopup="true" style="width: 280px" data-toggle>
-        <div>Filters</div>
+        <div><%- filtersLabel %></div>
     </button>
     <div class="filter-selector"><div>
     <div class="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-addFilterButton AknFilterBox-column filter-list select-filter-widget pimmultiselect">
         <div class="ui-multiselect-filter"><input placeholder="" type="search"></div>
         <div class="AknLoadingMask loading-mask filter-loading" style="top: 50px"></div>
         <div class="filters-column"></div>
-        <div class="AknColumn-bottomButtonContainer AknColumn-bottomButtonContainer--sticky"><div class="AknButton AknButton--apply close">Done</div></div>
-    </div>
+        <div class="AknColumn-bottomButtonContainer AknColumn-bottomButtonContainer--sticky"><div class="AknButton AknButton--apply close"><%- doneLabel %></div></div>    </div>
   `;
 
   readonly filterGroupTemplate: string = `
@@ -303,7 +303,10 @@ class FiltersColumn extends BaseView {
   render(): BaseView {
     $('.filter-list').remove();
 
-    this.$el.html(_.template(this.template));
+    this.$el.html(_.template(this.template)({
+      filtersLabel: __('pim_datagrid.filters.label'),
+      doneLabel: __('pim_common.done')
+    }));
     this.filterList = $('.filter-list').appendTo($('body'));
 
     $(this.searchSelector, this.filterList).on('keyup search', this.searchFilters.bind(this));
