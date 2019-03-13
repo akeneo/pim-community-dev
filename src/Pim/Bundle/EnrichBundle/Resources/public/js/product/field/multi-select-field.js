@@ -135,7 +135,7 @@ define(
                                 || this.choiceUrl !== choiceUrl
                             ) {
                                 this.choiceUrl = choiceUrl;
-                                this.choicePromise = $.get(choiceUrl, {
+                                this.choicePromise = $.post(choiceUrl, {
                                     options: {
                                         identifiers: identifiers
                                     }
