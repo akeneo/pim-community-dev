@@ -3,8 +3,8 @@
 ##
 
 .PHONY: franklin-insights-coupling
-franklin-insights-coupling:
-	$(PHP_EXEC) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/FranklinInsights/tests/back/.php_cd.php src/Akeneo/Pim/Automation/FranklinInsights
+franklin-insights-coupling: vendor
+	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/FranklinInsights/tests/back/.php_cd.php src/Akeneo/Pim/Automation/FranklinInsights
 
 .PHONY: franklin-insights-specs
 franklin-insights-specs:

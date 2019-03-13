@@ -3,6 +3,6 @@
 ##
 
 .PHONY: reference-entity-coupling
-reference-entity-coupling:
-	$(PHP_EXEC) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back
+reference-entity-coupling: vendor
+	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back
 
