@@ -22,17 +22,18 @@ class IsProductSubscribedToFranklinQueryIntegration extends TestCase
 {
     public function test_is_product_is_subscribed_to_franklin(): void
     {
-        $isProductSubscribed = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.is_product_subscribed_to_franklin')
-            ->execute(42);
-        $this->assertFalse($isProductSubscribed);
+        $productSubscriptionExist = $this
+            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product_subscriptions_exist')
+            ->execute([15, 42]);
+        $this->assertEquals([15 => false, 42 => false], $productSubscriptionExist);
 
+        $this->insertSubscription(15);
         $this->insertSubscription(42);
 
-        $isProductSubscribed = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.is_product_subscribed_to_franklin')
-            ->execute(42);
-        $this->assertTrue($isProductSubscribed);
+        $productSubscriptionExist = $this
+            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product_subscriptions_exist')
+            ->execute([15, 42]);
+        $this->assertEquals([15 => true, 42 => true], $productSubscriptionExist);
     }
 
     protected function getConfiguration()

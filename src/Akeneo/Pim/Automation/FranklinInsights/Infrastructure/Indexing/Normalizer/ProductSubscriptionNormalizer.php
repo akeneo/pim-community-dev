@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Indexing\Normalizer;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\IsProductSubscribedToFranklinQueryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\ProductSubscriptionsExistQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -25,12 +23,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductSubscriptionNormalizer implements NormalizerInterface
 {
-    /** @var IsProductSubscribedToFranklinQueryInterface */
-    private $isProductSubscribedToFranklinQuery;
+    /** @var ProductSubscriptionsExistQueryInterface */
+    private $productSubscriptionsExistQuery;
 
-    public function __construct(IsProductSubscribedToFranklinQueryInterface $isProductSubscribedToFranklinQuery)
+    public function __construct(ProductSubscriptionsExistQueryInterface $productSubscriptionsExistQuery)
     {
-        $this->isProductSubscribedToFranklinQuery = $isProductSubscribedToFranklinQuery;
+        $this->productSubscriptionsExistQuery = $productSubscriptionsExistQuery;
     }
 
     /**
@@ -38,9 +36,9 @@ class ProductSubscriptionNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $isProductSubscribedToFranklin = $this->isProductSubscribedToFranklinQuery->execute($object->getId());
+        $productsSubscribedToFranklin = $this->productSubscriptionsExistQuery->execute([$object->getId()]);
 
-        return ['franklin_subscription' => $isProductSubscribedToFranklin];
+        return ['franklin_subscription' => $productsSubscribedToFranklin[$object->getId()]];
     }
 
     /**

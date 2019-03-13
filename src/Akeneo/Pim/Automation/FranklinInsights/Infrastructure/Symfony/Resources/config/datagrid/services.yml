@@ -13,3 +13,15 @@ services:
             - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: franklin_subscription }
+
+    akeneo.pim.automation.franklin_insights.datagrid.fetch_subscription_date_for_product_rows:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid\FetchFranklinSubscriptionForProductRows'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product_subscriptions_exist'
+        tags:
+            - { name: akeneo.pim.enrichment.product.grid.add_additional_product_properties }
+
+    akeneo.pim.automation.franklin_insights.datagrid.fetch_subscription_date_for_product_model_rows:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid\FetchFranklinSubscriptionForProductModelRows'
+        tags:
+            - { name: akeneo.pim.enrichment.product.grid.add_additional_product_model_properties }

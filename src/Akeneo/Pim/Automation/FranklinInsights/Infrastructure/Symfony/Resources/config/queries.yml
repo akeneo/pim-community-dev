@@ -34,7 +34,7 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.is_product_subscribed_to_franklin:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\IsProductSubscribedToFranklinQuery'
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product_subscriptions_exist:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\ProductSubscriptionsExistQuery'
         arguments:
             - '@database_connection'
