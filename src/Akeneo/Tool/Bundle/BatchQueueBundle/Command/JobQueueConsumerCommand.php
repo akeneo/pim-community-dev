@@ -41,6 +41,9 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
     /** Interval in microseconds before checking if the process is still running. */
     private const RUNNING_PROCESS_CHECK_INTERVAL = 200000;
 
+    /** Set to true on a kill signal, will finish current job and stop  */
+    private $shouldStop = false;
+
     /**
      * {@inheritdoc}
      */
@@ -57,6 +60,12 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (extension_loaded('pcntl')) {
+            pcntl_async_signals(true);
+            pcntl_signal(SIGTERM, [$this, 'stopCommand']);
+            pcntl_signal(SIGINT, [$this, 'stopCommand']);
+        }
+
         $errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
 
         $consumerName = Uuid::uuid4();
@@ -114,7 +123,7 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
 
                 sleep(self::EXCEPTION_WAIT_INTERVAL);
             }
-        } while (false === $input->getOption('run-once'));
+        } while (false === $this->shouldStop && false === $input->getOption('run-once'));
     }
 
     /**
@@ -168,5 +177,10 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
     private function getJobExecutionManager(): JobExecutionManager
     {
         return $this->getContainer()->get('akeneo_batch_queue.manager.job_execution_manager');
+    }
+
+    public function stopCommand(): void
+    {
+        $this->shouldStop = true;
     }
 }
