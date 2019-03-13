@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.33 (2019-03-13)
+
 ## Bug fixes
 
 - PIM-7966: Fix variant product order on variant product navigation in case of metric variations
