@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8187: When delete a product model / product the proposals linked in ES where not deleted
+
 # 2.3.33 (2019-03-13)
 
 # 2.3.32 (2019-03-07)
