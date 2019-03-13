@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.7 (2019-03-13)
+
 ## Bug fixes
 
 - PIM-8211: Fix DI for pimee_product_asset.controller.asset_variation
