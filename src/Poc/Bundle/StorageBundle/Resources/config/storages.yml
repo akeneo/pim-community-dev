@@ -2,8 +2,32 @@ services:
     poc_storage.google_storage.client:
         class: Google\Cloud\Storage\StorageClient
 
-    poc_storage.google_storage.bucket:
+    poc_storage.google_storage.bucket.catalog_storage:
         class: Google\Cloud\Storage\Bucket
         factory: 'poc_storage.google_storage.client:bucket'
         arguments:
-            - '%cloud_storage_bucket_name%'
+            - 'poc-sassification-catalog-storage'
+
+    poc_storage.google_storage.bucket.tmp_storage:
+        class: Google\Cloud\Storage\Bucket
+        factory: 'poc_storage.google_storage.client:bucket'
+        arguments:
+            - 'poc-sassification-tmp-storage'
+
+    poc_storage.google_storage.bucket.archivist:
+        class: Google\Cloud\Storage\Bucket
+        factory: 'poc_storage.google_storage.client:bucket'
+        arguments:
+            - 'poc-sassification-archivist'
+
+    poc_storage.google_storage.bucket.upload:
+        class: Google\Cloud\Storage\Bucket
+        factory: 'poc_storage.google_storage.client:bucket'
+        arguments:
+            - 'poc-sassification-upload'
+
+    poc_storage.google_storage.bucket.tmp_upload:
+        class: Google\Cloud\Storage\Bucket
+        factory: 'poc_storage.google_storage.client:bucket'
+        arguments:
+            - 'poc-sassification-tmp-upload'

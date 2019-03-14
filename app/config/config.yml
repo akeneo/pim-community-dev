@@ -62,28 +62,28 @@ oneup_flysystem:
         catalog_storage_adapter:
             googlecloudstorage:
                 client: poc_storage.google_storage.client
-                bucket: poc_storage.google_storage.bucket
-                prefix: '%catalog_storage_dir%'
+                bucket: poc_storage.google_storage.bucket.catalog_storage
+                prefix: ''
         tmp_storage_adapter:
             googlecloudstorage:
                 client: poc_storage.google_storage.client
-                bucket: poc_storage.google_storage.bucket
-                prefix: '%tmp_storage_dir%'
+                bucket: poc_storage.google_storage.bucket.tmp_storage
+                prefix: ''
         archivist_adapter:
             googlecloudstorage:
                 client: poc_storage.google_storage.client
-                bucket: poc_storage.google_storage.bucket
-                prefix: '%archive_dir%'
+                bucket: poc_storage.google_storage.bucket.archivist
+                prefix: ''
         upload_adapter:
             googlecloudstorage:
                 client: poc_storage.google_storage.client
-                bucket: poc_storage.google_storage.bucket
-                prefix: '%upload_dir%'
+                bucket: poc_storage.google_storage.bucket.upload
+                prefix: ''
         tmp_upload_adapter:
             googlecloudstorage:
                 client: poc_storage.google_storage.client
-                bucket: poc_storage.google_storage.bucket
-                prefix: '%upload_tmp_dir%'
+                bucket: poc_storage.google_storage.bucket.tmp_upload
+                prefix: ''
     filesystems:
         catalog_storage:
             adapter: catalog_storage_adapter
@@ -120,4 +120,3 @@ akeneo_pim_structure:
 
 parameters:
     pim_ce_dev_src_folder_location: '%kernel.project_dir%'
-    cloud_storage_bucket_name: 'damien-poc-sassification' # Hardcoded for the POC
