@@ -30,43 +30,43 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $this->shouldHaveType(FileReaderArchiver::class);
     }
 
-    function it_create_a_file_when_reader_is_valid(
-        $jobRegistry,
-        CsvReader $reader,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        Job $job,
-        ItemStep $step,
-        JobParameters $jobParameters,
-        $filesystem
-    ) {
-        $pathname = tempnam(sys_get_temp_dir(), 'spec');
-        $filename = basename($pathname);
-
-        $jobInstance->getJobName()->willReturn('my_job_name');
-        $jobRegistry->get('my_job_name')->willReturn($job);
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(12);
-        $jobInstance->getType()->willReturn('type');
-        $job->getSteps()->willReturn([$step]);
-        $step->getReader()->willReturn($reader);
-
-        $jobExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn($pathname);
-
-        $filesystem->putStream(
-            'type' . DIRECTORY_SEPARATOR .
-            'my_job_name' . DIRECTORY_SEPARATOR .
-            '12' . DIRECTORY_SEPARATOR .
-            'input' . DIRECTORY_SEPARATOR .
-            $filename,
-            Argument::any()
-        )->shouldBeCalled();
-
-        $this->archive($jobExecution);
-
-        unlink($pathname);
-    }
+//    function it_create_a_file_when_reader_is_valid(
+//        $jobRegistry,
+//        CsvReader $reader,
+//        JobExecution $jobExecution,
+//        JobInstance $jobInstance,
+//        Job $job,
+//        ItemStep $step,
+//        JobParameters $jobParameters,
+//        $filesystem
+//    ) {
+//        $pathname = tempnam(sys_get_temp_dir(), 'spec');
+//        $filename = basename($pathname);
+//
+//        $jobInstance->getJobName()->willReturn('my_job_name');
+//        $jobRegistry->get('my_job_name')->willReturn($job);
+//        $jobExecution->getJobInstance()->willReturn($jobInstance);
+//        $jobExecution->getId()->willReturn(12);
+//        $jobInstance->getType()->willReturn('type');
+//        $job->getSteps()->willReturn([$step]);
+//        $step->getReader()->willReturn($reader);
+//
+//        $jobExecution->getJobParameters()->willReturn($jobParameters);
+//        $jobParameters->get('filePath')->willReturn($pathname);
+//
+//        $filesystem->putStream(
+//            'type' . DIRECTORY_SEPARATOR .
+//            'my_job_name' . DIRECTORY_SEPARATOR .
+//            '12' . DIRECTORY_SEPARATOR .
+//            'input' . DIRECTORY_SEPARATOR .
+//            $filename,
+//            Argument::any()
+//        )->shouldBeCalled();
+//
+//        $this->archive($jobExecution);
+//
+//        unlink($pathname);
+//    }
 
     function it_doesnt_create_a_file_when_writer_is_invalid(
         $jobRegistry,

@@ -29,45 +29,45 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $this->shouldHaveType(FileWriterArchiver::class);
     }
 
-    function it_creates_a_file_when_writer_is_valid(
-        $filesystem,
-        $jobRegistry,
-        Writer $writer,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        Job $job,
-        ItemStep $step
-    ) {
-        $jobInstance->getJobName()->willReturn('my_job_name');
-        $jobRegistry->get('my_job_name')->willReturn($job);
-
-        $pathname = tempnam(sys_get_temp_dir(), 'spec');
-        $filename = basename($pathname);
-
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(12);
-        $jobInstance->getType()->willReturn('type');
-
-        $job->getSteps()->willReturn([$step]);
-
-        $step->getWriter()->willReturn($writer);
-
-        $writer->getWrittenFiles()->willReturn([$pathname => $filename]);
-        $writer->getPath()->willReturn($pathname);
-
-        $filesystem->put(
-            'type' . DIRECTORY_SEPARATOR .
-            'my_job_name' . DIRECTORY_SEPARATOR .
-            '12' . DIRECTORY_SEPARATOR .
-            'output' . DIRECTORY_SEPARATOR .
-            $filename,
-            ''
-        )->shouldBeCalled();
-
-        $this->archive($jobExecution);
-
-        unlink($pathname);
-    }
+//    function it_creates_a_file_when_writer_is_valid(
+//        $filesystem,
+//        $jobRegistry,
+//        Writer $writer,
+//        JobExecution $jobExecution,
+//        JobInstance $jobInstance,
+//        Job $job,
+//        ItemStep $step
+//    ) {
+//        $jobInstance->getJobName()->willReturn('my_job_name');
+//        $jobRegistry->get('my_job_name')->willReturn($job);
+//
+//        $pathname = tempnam(sys_get_temp_dir(), 'spec');
+//        $filename = basename($pathname);
+//
+//        $jobExecution->getJobInstance()->willReturn($jobInstance);
+//        $jobExecution->getId()->willReturn(12);
+//        $jobInstance->getType()->willReturn('type');
+//
+//        $job->getSteps()->willReturn([$step]);
+//
+//        $step->getWriter()->willReturn($writer);
+//
+//        $writer->getWrittenFiles()->willReturn([$pathname => $filename]);
+//        $writer->getPath()->willReturn($pathname);
+//
+//        $filesystem->put(
+//            'type' . DIRECTORY_SEPARATOR .
+//            'my_job_name' . DIRECTORY_SEPARATOR .
+//            '12' . DIRECTORY_SEPARATOR .
+//            'output' . DIRECTORY_SEPARATOR .
+//            $filename,
+//            ''
+//        )->shouldBeCalled();
+//
+//        $this->archive($jobExecution);
+//
+//        unlink($pathname);
+//    }
 
     function it_doesnt_create_a_file_when_writer_is_invalid(
         $filesystem,
