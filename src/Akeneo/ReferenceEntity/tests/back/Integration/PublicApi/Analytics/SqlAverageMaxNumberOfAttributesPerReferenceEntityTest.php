@@ -40,7 +40,7 @@ class SqlAverageMaxNumberOfAttributesPerReferenceEntityTest extends SqlIntegrati
     /** @var SqlAverageMaxNumberOfAttributesPerReferenceEntity */
     private $averageMaxNumberOfAttributesPerReferenceEntity;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

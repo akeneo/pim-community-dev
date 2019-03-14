@@ -37,7 +37,7 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
     /** @var SqlRecordsExists */
     private $recordsExistsForReferenceEntity;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

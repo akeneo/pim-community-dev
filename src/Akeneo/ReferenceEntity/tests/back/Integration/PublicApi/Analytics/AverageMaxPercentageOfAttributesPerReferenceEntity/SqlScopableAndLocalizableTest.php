@@ -32,7 +32,7 @@ class SqlScopableAndLocalizableTest extends SqlIntegrationTestCase
     /** @var SqlScopableOnly */
     private $averageMaxPercentageOfScopableOnlyAttributessPerReferenceEntity;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

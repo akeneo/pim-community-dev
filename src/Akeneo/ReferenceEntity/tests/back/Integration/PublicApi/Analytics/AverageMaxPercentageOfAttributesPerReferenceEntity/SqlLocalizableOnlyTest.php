@@ -32,7 +32,7 @@ class SqlLocalizableOnlyTest extends SqlIntegrationTestCase
     /** @var CreateAttributesHelper */
     private $createAttributesHelper;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

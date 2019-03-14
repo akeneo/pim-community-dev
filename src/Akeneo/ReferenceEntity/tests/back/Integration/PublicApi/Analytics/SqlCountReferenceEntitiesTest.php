@@ -28,7 +28,7 @@ class SqlCountReferenceEntitiesTest extends SqlIntegrationTestCase
     /** @var SqlCountReferenceEntities */
     private $countReferenceEntities;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

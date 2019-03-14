@@ -33,7 +33,7 @@ class SqlAverageMaxNumberOfRecordsPerReferenceEntityTest extends SqlIntegrationT
     /** @var SqlAverageMaxNumberOfRecordsPerReferenceEntity */
     private $averageMaxNumberOfRecordsPerReferenceEntity;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
