@@ -2,103 +2,101 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Sql;
 
-use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
 
 final class Attribute
 {
     /** @var int */
-    protected $id;
+    private $id;
 
     /** @var string */
-    protected $code;
+    private $code;
 
     /** @var string */
-    protected $label;
+    private $label;
 
     /** @var string */
-    protected $type;
+    private $type;
 
     /** @var string */
-    protected $backendType;
+    private $backendType;
 
     /** @var bool */
-    protected $required;
+    private $required;
 
     /** @var bool */
-    protected $unique;
+    private $unique;
 
     /** @var bool */
-    protected $localizable;
+    private $localizable;
 
     /** @var bool */
-    protected $scopable;
+    private $scopable;
 
     /** @var ArrayCollection */
-    protected $properties;
+    private $properties;
 
     /** @var array */
-    protected $options;
+    private $options;
 
     /** @var string */
-    protected $groupCode;
+    private $groupCode;
 
     /** @var bool */
-    protected $useableAsGridFilter;
+    private $useableAsGridFilter;
 
     /** @var ArrayCollection */
-    protected $availableLocales;
+    private $availableLocales;
 
     /** @var ArrayCollection */
-    protected $families;
+    private $families;
 
     /** @var int */
-    protected $maxCharacters;
+    private $maxCharacters;
 
     /** @var string */
-    protected $validationRule;
+    private $validationRule;
 
     /** @var string */
-    protected $validationRegexp;
+    private $validationRegexp;
 
     /** @var bool */
-    protected $wysiwygEnabled;
+    private $wysiwygEnabled;
 
     /** @var float */
-    protected $numberMin;
+    private $numberMin;
 
     /** @var float */
-    protected $numberMax;
+    private $numberMax;
 
     /** @var bool */
-    protected $decimalsAllowed;
+    private $decimalsAllowed;
 
     /** @var bool */
-    protected $negativeAllowed;
+    private $negativeAllowed;
 
     /** @var \Datetime */
-    protected $dateMin;
+    private $dateMin;
 
     /** @var \Datetime */
-    protected $dateMax;
+    private $dateMax;
 
     /** @var string */
-    protected $metricFamily;
+    private $metricFamily;
 
     /** @var string */
-    protected $defaultMetricUnit;
+    private $defaultMetricUnit;
 
     /**
      * @var float expressed in MB so decimal is needed for values < 1 MB
      */
-    protected $maxFileSize;
+    private $maxFileSize;
 
     /** @var array */
-    protected $allowedExtensions;
+    private $allowedExtensions;
 
     /** @var int */
-    protected $minimumInputLength;
+    private $minimumInputLength;
 
     /**
      * @param int             $id

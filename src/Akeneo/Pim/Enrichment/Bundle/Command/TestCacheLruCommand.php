@@ -67,7 +67,7 @@ class TestCacheLruCommand extends ContainerAwareCommand
 
     private function sqlWithLruCache(int $batchSize, int $cacheSize)
     {
-        $repository =  new LruArrayAttributeRepository($this->getContainer()->get('pim_catalog.repository.sql_attribute'), $cacheSize);
+        $repository =  new LruAttributeRepository($this->getContainer()->get('pim_catalog.repository.sql_attribute'), $cacheSize);
         $elapsedTime = $this->benchmark($batchSize, $repository);
         echo "Sql with LRU cache $elapsedTime" . PHP_EOL;
     }
@@ -76,7 +76,7 @@ class TestCacheLruCommand extends ContainerAwareCommand
     {
         $repository =  new LruArrayAttributeRepository($this->getContainer()->get('pim_catalog.repository.sql_attribute'), $cacheSize);
         $elapsedTime = $this->benchmark($batchSize, $repository);
-        echo "Sql with LRU cache $elapsedTime" . PHP_EOL;
+        echo "Sql with LRU ARRAY cache $elapsedTime" . PHP_EOL;
     }
 
     private function sqlWithoutCacheBatchCall(int $batchSize)
@@ -97,7 +97,7 @@ class TestCacheLruCommand extends ContainerAwareCommand
     {
         $repository =  new LruArrayAttributeRepository($this->getContainer()->get('pim_catalog.repository.sql_attribute'), $cacheSize);
         $elapsedTime = $this->benchmarkBatch($batchSize, $repository);
-        echo "Sql with LRU cache in batch call $elapsedTime" . PHP_EOL;
+        echo "Sql with LRU ARRAY cache in batch call $elapsedTime" . PHP_EOL;
     }
 
     private function benchmark(int $batchSize, $repository)

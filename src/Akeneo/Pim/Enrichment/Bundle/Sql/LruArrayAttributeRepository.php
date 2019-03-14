@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Sql;
 
-use cash\LRUCache;
-
 class LruArrayAttributeRepository
 {
-    private const NOT_FOUND = 'NOT_FOUND';
-
     private const NOT_EXISTING = 'NOT_EXISTING';
 
     /** @var AttributeRepository */
@@ -17,7 +13,6 @@ class LruArrayAttributeRepository
 
     /** @var LRUCache */
     private $cache;
-
 
     public function __construct(AttributeRepository $attributeRepository, int $capacity)
     {
@@ -37,8 +32,8 @@ class LruArrayAttributeRepository
         $cachedAttributes = [];
         $uncachedAttributeCodes = [];
         foreach ($codes as $code) {
-            $attribute = $this->cache->get($code, self::NOT_FOUND);
-            if (self::NOT_FOUND !== $attribute) {
+            $attribute = $this->cache->get($code);
+            if (null !== $attribute) {
                 $cachedAttributes[$code] = self::NOT_EXISTING === $attribute ? null : $attribute;
             } else {
                 $uncachedAttributeCodes[] = $code;
@@ -51,8 +46,7 @@ class LruArrayAttributeRepository
 
         $uncachedAttributes = $this->attributeRepository->findSeveralByIdentifiers($uncachedAttributeCodes);
         foreach ($uncachedAttributes as $code => $attribute) {
-            $attribute = null === $attribute ? self::NOT_EXISTING : $attribute;
-            $this->cache->put($code, $attribute);
+            $this->cache->put($code, $attribute ?? self::NOT_EXISTING);
         }
 
         return array_merge($cachedAttributes, $uncachedAttributes);
