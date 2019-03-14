@@ -19,6 +19,9 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeyCollectionForAttributeType;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlGetRecordTypeForRecordLinkAttribute;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordsExists;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -33,16 +36,34 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
     /** @var AbstractPlatform */
     private $platform;
 
-    public function __construct(Connection $connection)
-    {
+    /** @var SqlFindValueKeyCollectionForAttributeType */
+    private $findValueKeyCollectionForAttributeType;
+
+    /** @var SqlGetRecordTypeForRecordLinkAttribute */
+    private $getRecordTypeForRecordLinkAttribute;
+
+    /** @var SqlRecordsExists */
+    private $recordsExists;
+
+    public function __construct(
+        Connection $connection,
+        SqlFindValueKeyCollectionForAttributeType $findValueKeyCollectionForAttributeType,
+        SqlGetRecordTypeForRecordLinkAttribute $getRecordTypeForRecordLinkAttribute,
+        SqlRecordsExists $recordsExists
+    ) {
         $this->platform = $connection->getDatabasePlatform();
+        $this->findValueKeyCollectionForAttributeType = $findValueKeyCollectionForAttributeType;
+        $this->connection = $connection;
+        $this->getRecordTypeForRecordLinkAttribute = $getRecordTypeForRecordLinkAttribute;
+        $this->recordsExists = $recordsExists;
     }
 
     public function hydrate(array $row, array $emptyValues): RecordDetails
     {
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
-        $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
+        $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'],
+            $this->platform);
         $recordIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
         $referenceEntityIdentifier = Type::getType(Type::STRING)
@@ -50,8 +71,8 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         $recordCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
 
-        $allValues = $this->allValues($emptyValues, $valueCollection);
-        $allValues = $this->filterBrokenRecordLinks($valueCollection);
+        $allValues = $this->filterBrokenRecordSimpleLinks($referenceEntityIdentifier, $valueCollection);
+        $allValues = $this->allValues($emptyValues, $allValues);
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
         $recordImage = $this->getImage($valueCollection, $attributeAsImage);
 
@@ -120,8 +141,62 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         return $result;
     }
 
-    private function filterBrokenRecordLinks($valueCollection): array
+    private function filterBrokenRecordSimpleLinks(string $referenceEntityIdentifier, array $allValues): array
     {
+        $simpleRecordLinkAttributeValueKeys = $this->findValueKeyCollectionForAttributeType->fetch(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            'record'
+        );
+        $valueKeys = $simpleRecordLinkAttributeValueKeys->normalize();
+        foreach ($valueKeys as $valueKey) {
+            $value = $allValues[$valueKey] ?? null;
+            if (null === $value) {
+                continue;
+            }
 
+            $recordType = $this->getRecordTypeForRecordLinkAttribute->fetch($value['attribute']['identifier']);
+            $recordLinks = $this->getRecordCodes($value);
+            $existingRecordLinks = $this->recordsExists->withReferenceEntityAndCodes(ReferenceEntityIdentifier::fromString($recordType),
+                $recordLinks);
+            $allValues = $this->updateValuesWithExistingRecordsOnly($allValues, $existingRecordLinks, $valueKey);
+        }
+
+        return $allValues;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return array
+     *
+     */
+    private function getRecordCodes($value): array
+    {
+        if (is_array($value['data'])) {
+            $recordLinks = $value['data'];
+        } else {
+            $recordLinks = [$value['data']];
+        }
+
+        return $recordLinks;
+    }
+
+    /**
+     * @param array $allValues
+     * @param       $existingRecordLinks
+     * @param       $valueKey
+     *
+     * @return array
+     *
+     */
+    private function updateValuesWithExistingRecordsOnly(array $allValues, $existingRecordLinks, $valueKey): array
+    {
+        if (empty($existingRecordLinks)) {
+            unset($allValues[$valueKey]);
+        } else {
+            $allValues[$valueKey]['data'] = $existingRecordLinks;
+        }
+
+        return $allValues;
     }
 }
