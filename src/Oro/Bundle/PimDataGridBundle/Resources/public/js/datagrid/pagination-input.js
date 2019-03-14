@@ -15,8 +15,7 @@ define(
         'oro/translator',
         'oro/datagrid/pagination',
         'pim/template/datagrid/pagination',
-        'oro/messenger',
-        'jquery.numeric'
+        'oro/messenger'
     ], function(
         $,
         mediator,
