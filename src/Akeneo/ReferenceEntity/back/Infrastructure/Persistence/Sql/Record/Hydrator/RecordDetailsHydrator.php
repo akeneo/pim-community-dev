@@ -50,7 +50,8 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         $recordCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
 
-        $allValues = $this->createEmptyValues($emptyValues, $valueCollection);
+        $allValues = $this->allValues($emptyValues, $valueCollection);
+        $allValues = $this->filterBrokenRecordLinks($valueCollection);
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
         $recordImage = $this->getImage($valueCollection, $attributeAsImage);
 
@@ -67,7 +68,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         return $recordDetails;
     }
 
-    private function createEmptyValues(array $emptyValues, array $valueCollection): array
+    private function allValues(array $emptyValues, array $valueCollection): array
     {
         $result = [];
         foreach ($emptyValues as $key => $value) {
@@ -117,5 +118,10 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         }
 
         return $result;
+    }
+
+    private function filterBrokenRecordLinks($valueCollection): array
+    {
+
     }
 }
