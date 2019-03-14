@@ -32,7 +32,7 @@ class AttributeRepository
     public function findSeveralByIdentifiers(array $codes): array
     {
         if (empty($codes)) {
-            return[] ;
+            return [];
         }
 
         $results = [];
@@ -43,13 +43,13 @@ class AttributeRepository
         $sql = <<<SQL
           SELECT
             a.*,
-            ag.code AS group_code,
-            JSON_ARRAYAGG(l.code) AS available_locales
+            attribute_group.code AS group_code,
+            JSON_ARRAYAGG(locale.code) AS available_locales
           FROM
             pim_catalog_attribute a
-            JOIN pim_catalog_attribute_group ag ON ag.id = a.group_id
+            JOIN pim_catalog_attribute_group attribute_group ON attribute_group.id = a.group_id
             LEFT JOIN pim_catalog_attribute_locale al ON al.attribute_id = a.id
-            LEFT JOIN pim_catalog_locale l on l.id = al.locale_id
+            LEFT JOIN pim_catalog_locale locale on locale.id = al.locale_id
           WHERE 
             a.code IN (:codes)
 		  GROUP BY a.id
@@ -60,7 +60,6 @@ SQL;
              ['codes' => Connection::PARAM_STR_ARRAY]
 
         )->fetchAll();
-
 
         foreach ($rows as $row) {
             $results[$row['code']] = new Attribute(
