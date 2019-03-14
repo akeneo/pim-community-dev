@@ -1,11 +1,9 @@
 /* eslint-env es6 */
-const fs = require('fs');
 const process = require('process');
 const rootDir = process.cwd();
 const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
-
 
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
@@ -26,14 +24,17 @@ const webpackConfig = {
     timings: true,
     version: true,
   },
+  performance: {
+    hints: false
+  },
   optimization: {
     splitChunks: {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: "vendor",
-          filename: "vendor.min.js",
-          chunks: "all"
+          name: 'vendor',
+          filename: 'vendor.min.js',
+          chunks: 'all'
         },
         main: {
           filename: 'main.min.js'
@@ -56,7 +57,7 @@ const webpackConfig = {
   },
   mode: (isProd ? 'production' : 'development'),
   target: 'web',
-  entry: ['babel-polyfill', path.resolve(rootDir, './web/bundles/pimui/js/index.js')],
+  entry:  ['babel-polyfill', path.resolve(rootDir, './web/bundles/pimui/js/index.js')],
   output: {
     path: path.resolve('./web/dist/'),
     publicPath: '/dist/',
@@ -167,7 +168,17 @@ const webpackConfig = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env'],
+              presets: [
+                [
+                  '@babel/preset-env',
+                {
+                    useBuiltIns: 'entry',
+                    targets: {
+                      firefox: '45'
+                    }
+                  }
+                ]
+              ],
               cacheDirectory: 'web/cache',
             },
           }
