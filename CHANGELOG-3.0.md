@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8217: Fix missing translations on product grid (Filters, Done, Yes and No)
+- PIM-8221: Fix missing translations on family attributes tab (Required, Not required)
 
 # 3.0.7 (2019-03-13)
 
