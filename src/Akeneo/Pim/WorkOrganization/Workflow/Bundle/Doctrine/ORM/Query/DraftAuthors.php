@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\DraftAuthors as DraftAuthorsInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Find all authors for all drafts (product & product model)
  */
-class DraftAuthors
+class DraftAuthors implements DraftAuthorsInterface
 {
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -50,7 +51,7 @@ class DraftAuthors
         $sqlPd .= ' LIMIT :start,:limit';
         $start = $limit * ($page - 1);
 
-        $sql = '('.$sqlPmd.') UNION ('.$sqlPd.')';
+        $sql = '(' . $sqlPmd . ') UNION (' . $sqlPd . ')';
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
 

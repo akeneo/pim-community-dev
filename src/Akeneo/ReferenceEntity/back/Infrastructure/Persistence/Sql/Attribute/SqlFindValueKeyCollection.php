@@ -24,12 +24,31 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
     /** @var Connection */
     private $sqlConnection;
 
+    /** @var array */
+    private $cachedResult = [];
+
     public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier)
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection
+    {
+        if (!isset($this->cachedResult[$referenceEntityIdentifier->normalize()])) {
+            $this->cachedResult[$referenceEntityIdentifier->normalize()] = $this->fetch($referenceEntityIdentifier);
+        }
+
+        return $this->cachedResult[$referenceEntityIdentifier->normalize()];
+    }
+
+    /**
+     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
+     *
+     * @return ValueKeyCollection
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    private function fetch(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection
     {
         $query = <<<SQL
             SELECT

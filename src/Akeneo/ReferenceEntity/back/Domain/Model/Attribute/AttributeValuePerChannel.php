@@ -28,9 +28,9 @@ class AttributeValuePerChannel
         $this->value = $value;
     }
 
-    public static function fromBoolean(bool $hasOneValuePerLocale): self
+    public static function fromBoolean(bool $hasOneValuePerChannel): self
     {
-        return new self($hasOneValuePerLocale);
+        return new self($hasOneValuePerChannel);
     }
 
     public function normalize(): bool

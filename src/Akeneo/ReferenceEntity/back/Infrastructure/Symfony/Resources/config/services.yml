@@ -23,6 +23,15 @@ services:
             - { name: kernel.event_subscriber }
             - { name: 'console.command'}
 
+    akeneo_referenceentity.command.refresh_records:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI\RefreshRecordsCommand
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers'
+            - '@akeneo_referenceentity.infrastructure.persistence.sql.record.refresh_records.refresh_record'
+            - '@doctrine.dbal.default_connection'
+        tags:
+            - { name: 'console.command'}
+
     akeneo_referenceentity.event_subscriber.remove_user_group:
         class: Akeneo\ReferenceEntity\Infrastructure\EventSubscriber\RemoveUserGroupSubscriber
         arguments:
@@ -53,3 +62,10 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
         tags:
             - { name: kernel.event_subscriber }
+
+    akeneo_referenceentity.infrastructure.reference_entity.subscribers.refresh_record_subscriber:
+            class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Subscribers\RefreshRecordsSubscriber
+            arguments:
+                - '@pim_catalog.command_launcher'
+            tags:
+                - { name: kernel.event_subscriber }

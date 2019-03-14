@@ -68,8 +68,8 @@ class ProjectCompletenessFilter extends OroChoiceFilter
         TokenStorageInterface $tokenStorage,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->formFactory = $factory;
-        $this->util = $util;
+        parent::__construct($factory, $util);
+
         $this->requestParams = $requestParams;
         $this->projectCompletenessRepo = $projectCompletenessRepo;
         $this->projectRepository = $projectRepository;

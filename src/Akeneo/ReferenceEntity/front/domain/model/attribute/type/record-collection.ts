@@ -23,6 +23,7 @@ export type RecordAdditionalProperty = RecordType;
 export interface RecordCollectionAttribute extends Attribute {
   recordType: RecordType;
   normalize(): NormalizedRecordCollectionAttribute;
+  getRecordType(): RecordType;
 }
 
 export class InvalidArgumentError extends Error {}
@@ -70,6 +71,10 @@ export class ConcreteRecordCollectionAttribute extends ConcreteAttribute impleme
       normalizedRecordCollectionAttribute.is_required,
       RecordType.createFromNormalized(normalizedRecordCollectionAttribute.record_type)
     );
+  }
+
+  getRecordType(): RecordType {
+    return this.recordType;
   }
 
   public normalize(): NormalizedRecordCollectionAttribute {

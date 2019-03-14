@@ -15,6 +15,11 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFa
 
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 
+/**
+ * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @api
+ */
 interface CreateAttributeCommandFactoryInterface
 {
     public function supports(array $normalizedCommand): bool;

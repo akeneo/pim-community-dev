@@ -258,7 +258,5 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
         } catch (BadRequestException $e) {
             throw DataProviderException::badRequestError($e);
         }
-
-        return $clientResponse->content();
     }
 }

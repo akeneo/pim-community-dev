@@ -14,8 +14,10 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordsExists;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -23,13 +25,36 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
  */
 class RecordCollectionDataHydrator implements DataHydratorInterface
 {
+    /** @var SqlRecordsExists */
+    private $recordsExists;
+
+    public function __construct(SqlRecordsExists $recordsExists)
+    {
+        $this->recordsExists = $recordsExists;
+    }
+
     public function supports(AbstractAttribute $attribute): bool
     {
         return $attribute instanceof RecordCollectionAttribute;
     }
 
-    public function hydrate($normalizedData): ValueDataInterface
+    public function hydrate($normalizedData, AbstractAttribute $attribute): ValueDataInterface
     {
-        return RecordCollectionData::createFromNormalize($normalizedData);
+        $filteredRecords = $this->keepExistingRecordsOnly($normalizedData, $attribute);
+        if (empty($filteredRecords)) {
+            return EmptyData::create();
+        }
+
+        return RecordCollectionData::createFromNormalize($filteredRecords);
+    }
+
+    private function keepExistingRecordsOnly(
+        array $recordCodesFromDatabase,
+        RecordCollectionAttribute $recordCollectionAttribute
+    ): array {
+        return $this->recordsExists->withReferenceEntityAndCodes(
+            $recordCollectionAttribute->getRecordType(),
+            $recordCodesFromDatabase
+        );
     }
 }

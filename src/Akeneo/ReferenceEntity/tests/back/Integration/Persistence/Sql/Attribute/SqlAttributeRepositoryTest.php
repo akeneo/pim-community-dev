@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\AttributeOptionsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;

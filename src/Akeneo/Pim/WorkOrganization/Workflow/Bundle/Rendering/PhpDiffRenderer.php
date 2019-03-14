@@ -21,6 +21,9 @@ class PhpDiffRenderer implements RendererInterface
     /** @var \Diff_Renderer_Html_Array */
     protected $renderer;
 
+    /** @var DiffFactory */
+    protected $factory;
+
     /**
      * @param \Diff_Renderer_Html_Array $renderer
      * @param DiffFactory               $factory

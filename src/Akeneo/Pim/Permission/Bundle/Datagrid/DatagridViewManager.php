@@ -28,6 +28,10 @@ class DatagridViewManager extends BaseDatagridViewManager
 {
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
+    /** @var SaverInterface */
+    private $saver;
+    /** @var RemoverInterface */
+    private $remover;
 
     /**
      * Constructor
@@ -45,8 +49,10 @@ class DatagridViewManager extends BaseDatagridViewManager
         RemoverInterface $remover,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        parent::__construct($repository, $datagridManager, $saver, $remover);
+        parent::__construct($repository, $datagridManager);
 
+        $this->saver = $saver;
+        $this->remover = $remover;
         $this->authorizationChecker = $authorizationChecker;
     }
 

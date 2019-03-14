@@ -29,6 +29,9 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    /** @var SerializerInterface */
+    private $serializer;
+
     /** @var NormalizerInterface */
     private $normalizer;
 

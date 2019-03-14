@@ -57,6 +57,7 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
         $name = $this->loadAttribute('designer', 'name', false, true);
         $age = $this->loadAttribute('designer', 'age', true, false);
         $weight = $this->loadAttribute('designer', 'weigth', true, true);
+
         $actualValueKeyCollection = ($this->findValueKeyCollection)($designer);
 
         /** @var ReferenceEntity $referenceEntity */

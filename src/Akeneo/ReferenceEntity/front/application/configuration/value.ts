@@ -15,6 +15,9 @@ export type ViewGenerator = React.SFC<{
   onSubmit: () => void;
   canEditData: boolean;
 }>;
+/**
+ * @api
+ */
 export type CellView = React.SFC<{column: Column; value: NormalizedValue}>;
 
 type ValueConfig = {

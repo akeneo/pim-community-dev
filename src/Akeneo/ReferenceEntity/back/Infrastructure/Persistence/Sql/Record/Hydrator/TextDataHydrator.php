@@ -29,7 +29,7 @@ class TextDataHydrator implements DataHydratorInterface
         return $attribute instanceof TextAttribute;
     }
 
-    public function hydrate($normalizedData): ValueDataInterface
+    public function hydrate($normalizedData, AbstractAttribute $attribute): ValueDataInterface
     {
         return TextData::createFromNormalize($normalizedData);
     }

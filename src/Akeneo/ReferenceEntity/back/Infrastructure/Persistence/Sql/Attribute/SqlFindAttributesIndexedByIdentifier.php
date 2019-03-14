@@ -31,6 +31,9 @@ class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIde
     /** @var AttributeHydratorRegistry */
     private $attributeHydratorRegistry;
 
+    /** @var array */
+    private $cachedResults = [];
+
     public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
     {
         $this->sqlConnection = $sqlConnection;
@@ -44,9 +47,12 @@ class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIde
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        $results = $this->fetchResult($referenceEntityIdentifier);
+        if (!isset($this->cachedResults[$referenceEntityIdentifier->normalize()])) {
+            $results = $this->fetchResult($referenceEntityIdentifier);
+            $this->cachedResults[$referenceEntityIdentifier->normalize()] = $this->hydrateAttributes($results);
+        }
 
-        return $this->hydrateAttributes($results);
+        return $this->cachedResults[$referenceEntityIdentifier->normalize()];
     }
 
     private function fetchResult(ReferenceEntityIdentifier $referenceEntityIdentifier): array

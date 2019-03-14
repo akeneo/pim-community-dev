@@ -228,7 +228,7 @@ pim_catalog_volume:
     section:
         assets:
             title: Axes on assets
-            hint: You can follow the volume regarding the assets right here
+            hint: You can follow the volume regarding the assets right here.
     axis:
         count_assets: Assets
         count_asset_categories: Asset categories

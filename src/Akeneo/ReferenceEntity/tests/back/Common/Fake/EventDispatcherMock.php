@@ -54,6 +54,11 @@ class EventDispatcherMock implements EventDispatcherInterface
         );
     }
 
+    public function getEvent(string $eventClass): Event
+    {
+        return $this->dispatchedEvents[$eventClass];
+    }
+
     public function reset(): void
     {
         $this->dispatchedEvents = [];

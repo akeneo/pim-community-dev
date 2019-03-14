@@ -69,7 +69,7 @@ class DatagridViewAccessManager
     public function isUserGranted(UserInterface $user, DatagridView $view, $attribute)
     {
         if (Attributes::VIEW !== $attribute) {
-            throw new \LogicException(sprintf('Attribute "%" is not supported.', $attribute));
+            throw new \LogicException(sprintf('Attribute "%s" is not supported.', $attribute));
         }
 
         if (null !== $categoryId = $this->getCategoryIdFromViewFilters($view)) {

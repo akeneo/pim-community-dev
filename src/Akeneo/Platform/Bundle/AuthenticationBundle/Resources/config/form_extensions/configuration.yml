@@ -96,7 +96,7 @@ extensions:
         targetZone: content
         position: 100
         config:
-            fieldName: is_enabled
+            fieldName: configuration.is_enabled
             label: authentication.sso.configuration.field.activation.label
 
     authentication-sso-configuration-identity-provider-section:
@@ -128,7 +128,7 @@ extensions:
         targetZone: content
         position: 100
         config:
-            fieldName: identity_provider_entity_id
+            fieldName: configuration.identity_provider_entity_id
             label: authentication.sso.configuration.field.entity_id.label
 
     authentication-sso-configuration-identity-provider-sign-on-url-field:
@@ -137,7 +137,7 @@ extensions:
         targetZone: content
         position: 110
         config:
-            fieldName: identity_provider_sign_on_url
+            fieldName: configuration.identity_provider_sign_on_url
             label: authentication.sso.configuration.field.sign_on_url.label
 
     authentication-sso-configuration-identity-provider-logout-url-field:
@@ -146,7 +146,7 @@ extensions:
         targetZone: content
         position: 120
         config:
-            fieldName: identity_provider_logout_url
+            fieldName: configuration.identity_provider_logout_url
             label: authentication.sso.configuration.field.logout_url.label
 
     authentication-sso-configuration-identity-provider-certificate-field:
@@ -155,7 +155,7 @@ extensions:
         targetZone: content
         position: 130
         config:
-            fieldName: identity_provider_certificate
+            fieldName: configuration.identity_provider_certificate
             label: authentication.sso.configuration.field.certificate.label
 
     authentication-sso-configuration-service-provider-section:
@@ -175,7 +175,7 @@ extensions:
         targetZone: content
         position: 90
         config:
-            fieldName: service_provider_metadata_url
+            fieldName: meta.service_provider_metadata_url
             label: authentication.sso.configuration.field.metadata_url.label
             templateParams:
                 tooltipLabel: authentication.sso.configuration.field.metadata_url.tooltip_label
@@ -186,7 +186,7 @@ extensions:
         targetZone: content
         position: 91
         config:
-            fieldName: service_provider_acs_url
+            fieldName: meta.service_provider_acs_url
             label: authentication.sso.configuration.field.acs_url.label
             templateParams:
                 tooltipLabel: authentication.sso.configuration.field.acs_url.tooltip_label
@@ -209,16 +209,16 @@ extensions:
         targetZone: content
         position: 100
         config:
-            fieldName: service_provider_entity_id
+            fieldName: configuration.service_provider_entity_id
             label: authentication.sso.configuration.field.entity_id.label
 
     authentication-sso-configuration-service-provider-certificate-field:
-        module: pim/authentication/sso/configuration/fields/textarea
+        module: pim/authentication/sso/configuration/fields/sp-certificate
         parent: authentication-sso-configuration-service-provider-section
         targetZone: content
         position: 110
         config:
-            fieldName: service_provider_certificate
+            fieldName: configuration.service_provider_certificate
             label: authentication.sso.configuration.field.certificate.label
 
     authentication-sso-configuration-service-provider-private-key-field:
@@ -227,5 +227,5 @@ extensions:
         targetZone: content
         position: 120
         config:
-            fieldName: service_provider_private_key
+            fieldName: configuration.service_provider_private_key
             label: authentication.sso.configuration.field.private_key.label

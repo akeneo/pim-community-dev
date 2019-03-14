@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
 
+/**
+ * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @api
+ */
 interface EditAttributeCommandFactoryInterface
 {
     public function supports(array $normalizedCommand): bool;

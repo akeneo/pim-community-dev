@@ -7,6 +7,7 @@ imports:
 
 parameters:
     pimee_mass_edit_asset_batch_size: 100
+    pim_catalog.version.class: Akeneo\Platform\EnterpriseVersion
 
 twig:
     form_theme: ['AkeneoAssetBundle:Form:pimee-fields.html.twig']

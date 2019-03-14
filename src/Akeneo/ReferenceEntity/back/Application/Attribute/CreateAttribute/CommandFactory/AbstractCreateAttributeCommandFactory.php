@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateA
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @api
  */
 abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeCommandFactoryInterface
 {
