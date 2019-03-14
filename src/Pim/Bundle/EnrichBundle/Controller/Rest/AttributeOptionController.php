@@ -37,6 +37,8 @@ class AttributeOptionController
     /**
      * Return the attribute option array
      *
+     * TODO in 3.x pull up: this action should only respond to POST method
+     *
      * @param Request $request
      * @param int     $identifier
      *
