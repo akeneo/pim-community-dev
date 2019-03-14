@@ -7,6 +7,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Set Google Cloud service account
+          command: echo $GCLOUD_SERVICE_ACCOUNT | base64 --decode >> ~/project/docker/serviceAccount.json
+      - run:
           name: Copy env file
           command: cp .env.dist .env
       - run:
@@ -115,6 +118,9 @@ jobs:
           - attach_workspace:
                 at: ~/
           - run:
+              name: Replace docker-compose.yml to put the PIM in read-only mode
+              command: cp .circleci/docker-compose.yml.dist docker-compose.yml
+          - run:
                 name: Change owner on project dir in order to archive the project into the workspace
                 command: sudo chown -R 1000:1000 ../project
           - run:
@@ -146,6 +152,9 @@ jobs:
           - attach_workspace:
                 at: ~/
           - run:
+              name: Replace docker-compose.yml to put the PIM in read-only mode
+              command: cp .circleci/docker-compose.yml.dist docker-compose.yml
+          - run:
                 name: Change owner on project dir in order to archive the project into the workspace
                 command: sudo chown -R 1000:1000 ../project
           - run:
@@ -176,6 +185,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - run:
+            name: Replace docker-compose.yml to put the PIM in read-only mode
+            command: cp .circleci/docker-compose.yml.dist docker-compose.yml
       - run:
             name: Change owner on project dir in order to archive the project into the workspace
             command: sudo chown -R 1000:1000 ../project
