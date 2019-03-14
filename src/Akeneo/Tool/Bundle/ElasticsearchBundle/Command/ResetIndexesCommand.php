@@ -6,6 +6,7 @@ namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Command;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand;
 use Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -32,8 +33,9 @@ class ResetIndexesCommand extends ContainerAwareCommand
                 'reset-indexes',
                 true,
                 InputOption::VALUE_NONE,
-                'Resets all registered ES indexes prior to reindex'
+                'Resets registered ES indexes prior to reindex'
             )
+            ->addOption('index', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'ES index name to reset')
             ->setDescription('Resets all registered ES indexes');
     }
 
@@ -46,7 +48,7 @@ class ResetIndexesCommand extends ContainerAwareCommand
             return;
         }
 
-        $esClients = $this->getEsClients();
+        $esClients = $this->getFilteredEsClients($input);
         $this->resetIndexes($output, $esClients);
 
         if (!$this->areIndexesExisting($output, $esClients)) {
@@ -64,7 +66,16 @@ class ResetIndexesCommand extends ContainerAwareCommand
      */
     private function userConfirmation(InputInterface $input, OutputInterface $output): bool
     {
-        $output->writeln('<info>This action will entirely reset all indexes registered in the PIM.</info>');
+        $esClients = $this->getFilteredEsClients($input);
+        if (empty($esClients)) {
+            $output->writeln('<info>There is not any index to reset. Maybe you provided an index to reset that does not exist.</info>');
+        }
+
+        $output->writeln('<info>This action will entirely reset the following indexes in the PIM:</info>');
+        foreach ($esClients as $esClient) {
+            $output->writeln(sprintf('<info>%s</info>', $esClient->getIndexName()));
+        }
+
         $question = new ConfirmationQuestion(
             '<question>Are you sure you want to proceed ?</question> (Y/n)',
             true
@@ -79,6 +90,27 @@ class ResetIndexesCommand extends ContainerAwareCommand
         }
 
         return true;
+    }
+
+    /**
+     * Gets the clients to reset filtered by those provided in the arguments of the function.
+     *
+     * @return Client[]
+     */
+    private function getFilteredEsClients(InputInterface $input): array
+    {
+        $esClients = $this->getEsClients();
+        $selectedIndexes = $input->getOption('index');
+
+        if (empty($selectedIndexes)) {
+            return $esClients;
+        }
+
+        $filteredEsClients = array_filter($esClients, function (Client $client) use ($selectedIndexes) {
+            return in_array($client->getIndexName(), $selectedIndexes);
+        });
+
+        return $filteredEsClients;
     }
 
     /**
@@ -145,7 +177,7 @@ class ResetIndexesCommand extends ContainerAwareCommand
     protected function showSuccessMessages(OutputInterface $output): void
     {
         $output->writeln('');
-        $output->writeln('<info>All the registered indexes have been successfully reset!</info>');
+        $output->writeln('<info>All the indexes have been successfully reset!</info>');
         $output->writeln('');
         $output->writeln(
             sprintf(

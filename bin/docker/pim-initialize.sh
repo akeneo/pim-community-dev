@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 docker-compose exec fpm rm -rf var/cache/*
 

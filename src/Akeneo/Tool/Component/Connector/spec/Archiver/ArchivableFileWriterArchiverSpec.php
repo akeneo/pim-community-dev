@@ -151,8 +151,8 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $filesystem->createDir('type/my_job_name/12/archive')->shouldBeCalled();
 
         $factory->createZip(Argument::any())->willReturn($filesystem);
-        $filesystem->put('file1', '')->shouldBeCalled();
-        $filesystem->put('file2', '')->shouldBeCalled();
+        $filesystem->putStream('file1', Argument::type('resource'))->shouldBeCalled();
+        $filesystem->putStream('file2', Argument::type('resource'))->shouldBeCalled();
 
         $this->archive($jobExecution);
 

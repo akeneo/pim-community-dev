@@ -11,31 +11,49 @@ define(
     [
         'jquery',
         'underscore',
-        'pim/product/add-select/attribute'
+        'pim/product/add-select/attribute',
+        'pim/fetcher-registry'
     ],
     function (
         $,
         _,
-        AddAttributeSelect
+        AddAttributeSelect,
+        FetcherRegistry
     ) {
         return AddAttributeSelect.extend({
+
+            /**
+             * {@inheritdoc}
+             */
+            fetchItems: function (searchParameters) {
+                return this.getItemsToExclude()
+                    .then(function (familyCode) {
+                        searchParameters.options.excluded_family = familyCode;
+
+                        return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters)
+                            .then(function (attributes) {
+                                const groupCodes = _.unique(_.pluck(attributes, 'group'));
+
+                                return FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(groupCodes)
+                                    .then(function (attributeGroups) {
+                                        return this.populateGroupProperties(attributes, attributeGroups);
+                                    }.bind(this));
+                            }.bind(this));
+                    }.bind(this));
+            },
+
             /**
              * {@inheritdoc}
              */
             getItemsToExclude: function () {
-                return $.Deferred().resolve(
-                    _.pluck(
-                        this.getFormData().attributes,
-                        'code'
-                    )
-                );
+                return $.Deferred().resolve(this.getFormData().code);
             },
 
             /**
              * {@inheritdoc}
              */
             addItems: function () {
-                this.getRoot().trigger(this.addEvent, { codes: this.selection });
+                this.getRoot().trigger(this.addEvent, {codes: this.selection});
             },
 
             /**

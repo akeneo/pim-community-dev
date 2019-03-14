@@ -12,14 +12,19 @@ define(
         'jquery',
         'oro/mediator',
         'underscore',
+        'oro/translator',
         'oro/datagrid/pagination',
-        'pim/template/datagrid/pagination'
+        'pim/template/datagrid/pagination',
+        'oro/messenger',
+        'jquery.numeric'
     ], function(
         $,
         mediator,
         _,
+        __,
         Pagination,
-        template
+        template,
+        Messenger
     ) {
     'use strict';
 
@@ -108,7 +113,10 @@ define(
                     });
                 });
 
-                if (state.totalRecords > this.maxRescoreWindow) {
+                if (
+                    state.totalRecords > this.maxRescoreWindow &&
+                    (previousId + 1) * state.pageSize < this.maxRescoreWindow
+                ) {
                     handles.push({
                         label: this.fastForwardHandleConfig.gap.label,
                         title: this.fastForwardHandleConfig.gap.label,
@@ -129,10 +137,11 @@ define(
 
             let lastPage = state.lastPage ? state.lastPage : state.firstPage;
             lastPage = state.firstPage === 0 ? lastPage : lastPage - 1;
+            const lastAccessiblePage = Math.floor(this.maxRescoreWindow / state.pageSize);
             const currentPage = state.firstPage === 0 ? state.currentPage : state.currentPage - 1;
             let windowStart = currentPage - (this.windowSize - 1) / 2;
             windowStart = Math.max(Math.min(windowStart, lastPage - this.windowSize + 1), 0);
-            const windowEnd = Math.min(windowStart + this.windowSize, lastPage);
+            const windowEnd = Math.min(windowStart + this.windowSize, lastPage, lastAccessiblePage);
             let ids = [];
 
             ids.push(state.firstPage - 1);
@@ -168,6 +177,15 @@ define(
                 this.$el.empty();
             } else {
                 Pagination.prototype.renderPagination.apply(this, arguments);
+
+                const state = this.collection.state;
+                const currentPage = state.firstPage === 0 ? state.currentPage : state.currentPage - 1;
+                if ((currentPage + 1) === Math.floor(this.maxRescoreWindow / state.pageSize)) {
+                    Messenger.notify(
+                        'warning',
+                        __('oro.datagrid.pagination.limit_warning', { limit: this.maxRescoreWindow }),
+                    );
+                }
 
                 if (this.options.appendToGrid) {
                     this.gridElement.prepend(this.$el);

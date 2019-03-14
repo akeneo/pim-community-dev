@@ -24,6 +24,18 @@ define(
             /**
              * {@inheritdoc}
              */
+            fetchItems: function (searchParameters) {
+                return this.getItemsToExclude()
+                    .then(function (identifiersToExclude) {
+                        searchParameters.options.excluded_identifiers = identifiersToExclude;
+
+                        return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters);
+                    }.bind(this));
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             getItemsToExclude: function () {
                 return FetcherRegistry.getFetcher(this.mainFetcher)
                     .getIdentifierAttribute()
@@ -43,4 +55,3 @@ define(
         });
     }
 );
-

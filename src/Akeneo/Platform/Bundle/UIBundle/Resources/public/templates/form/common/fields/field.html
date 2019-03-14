@@ -7,9 +7,15 @@
     <div class="field-input"></div>
 </div>
 <div class="AknFieldContainer-footer">
-    <% _.each(errors, function(error) { %>
+    <% errors.forEach(function(error) { %>
         <span class="AknFieldContainer-validationError">
             <span class="error-message"><%- error.message %></span>
         </span>
+    <% }) %>
+    <% warnings.forEach(function(warning) { %>
+        <div>
+            <i class="icon-warning-sign"></i>
+            <%- warning.message %>
+        </div>
     <% }) %>
 </div>
