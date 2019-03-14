@@ -2,10 +2,12 @@ version: '2'
 
 services:
   fpm:
-    image: 'akeneo/fpm:php-7.2'
+    build: './docker/fpm/'
+    image: 'akeneo/fpm:php-7.2-ro'
     user: 'docker'
     volumes:
-      - './:/srv/pim'
+      - '.:/srv/pim:ro'
+      - './var:/srv/pim/var:rw'
     working_dir: '/srv/pim'
     networks:
       - 'akeneo'
@@ -23,8 +25,6 @@ services:
 
   selenium:
     image: 'selenium/standalone-firefox-debug:2.53.1-beryllium'
-    volumes:
-      - './:/srv/pim:ro'
     networks:
       - 'behat'
 

@@ -18,6 +18,7 @@ class AppKernelTest extends AppKernel
     {
         return [
             new Acme\Bundle\AppBundle\AcmeAppBundle(),
+            new Poc\Bundle\StorageBundle\PocStorageBundle(),
             new Akeneo\Test\IntegrationTestsBundle\AkeneoIntegrationTestsBundle()
         ];
     }

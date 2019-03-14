@@ -24,9 +24,3 @@ assetic:
 parameters:
     max_products_category_removal: 20
     installer_data:       PimInstallerBundle:minimal
-    upload_dir:           '%kernel.root_dir%/../var/cache/uploads/product'
-    archive_dir:          '%kernel.root_dir%/../var/cache/archive'
-    logs_dir:             '%kernel.logs_dir%'
-    catalog_storage_dir:  '%kernel.root_dir%/../var/cache/file_storage/catalog'
-    tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
-    upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'
