@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-8217: Allow mass edition of hundreds of manually selected elements in a grid (prevent 414 Too Long URI)
+
 # 2.0.50 (2019-03-01)
 
 ## Bug fixes
