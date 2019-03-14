@@ -192,8 +192,8 @@ define([
              */
             getAttributeRequirementTooltip(attribute, channel) {
                 return this.isAttributeRequirementRequired(attribute, channel)
-                    ? __('pim_enrich.form.family.tab.attributes.required_label')
-                    : __('pim_enrich.form.family.tab.attributes.not_required_label');
+                    ? this.requiredLabel
+                    : this.notRequiredLabel;
             },
 
             /**
