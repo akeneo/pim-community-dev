@@ -55,21 +55,29 @@ define(
              * {@inheritdoc}
              */
             _handleAjax(action) {
-                var modalParameters = {
-                    title: __('pimee_enrich.entity.product_draft.module.proposal.accept'),
-                    okText: __('pimee_enrich.entity.product.module.approval.send'),
-                    cancelText: __('pim_common.cancel')
-                };
+                if (this._isAllowedToComment(action)) {
+                    const modalParameters = {
+                        title: __('pimee_enrich.entity.product_draft.module.proposal.accept'),
+                        okText: __('pimee_enrich.entity.product.module.approval.send'),
+                        cancelText: __('pim_common.cancel')
+                    };
 
-                var formModal = new FormModal(
-                    'pimee-workflow-proposal-add-comment',
-                    this.validateForm.bind(this),
-                    modalParameters
-                );
+                    const formModal = new FormModal(
+                        'pimee-workflow-proposal-add-comment',
+                        this.validateForm.bind(this),
+                        modalParameters
+                    );
 
-                formModal.open().then(function () {
+                    formModal.open().then(function () {
+                        AjaxAction.prototype._handleAjax.apply(this, [action]);
+                    }.bind(this));
+                } else {
                     AjaxAction.prototype._handleAjax.apply(this, [action]);
-                }.bind(this));
+                }
+            },
+
+            _isAllowedToComment(action) {
+                return 'Franklin' !== action.model.attributes.author;
             },
 
             /**
