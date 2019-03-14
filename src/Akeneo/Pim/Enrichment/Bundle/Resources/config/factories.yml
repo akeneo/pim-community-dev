@@ -161,7 +161,7 @@ services:
         class: '%pim_catalog.factory.value.option.class%'
         public: false
         arguments:
-            - '@pim_catalog.repository.cached_attribute_option'
+            - '@pim_catalog.repository.attribute_option'
             - '%pim_catalog.entity.value.option.class%'
             - 'pim_catalog_simpleselect'
         tags:
