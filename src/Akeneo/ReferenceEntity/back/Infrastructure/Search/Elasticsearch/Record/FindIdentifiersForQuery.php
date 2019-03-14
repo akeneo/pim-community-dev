@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
@@ -71,6 +75,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
         $completeFilter = ($recordQuery->hasFilter('complete')) ? $recordQuery->getFilter('complete') : null;
         $updatedFilter = ($recordQuery->hasFilter('updated')) ? $recordQuery->getFilter('updated') : null;
+        $linkFilter = ($recordQuery->hasFilter('links..*')) ? $recordQuery->getFilter('links.*') : null;
 
         $query = [
             '_source' => '_id',
@@ -145,6 +150,20 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'range' => [
                    'updated_at' => ['gt' => $this->getFormattedDate($updatedFilter['value'])]
+                ]
+            ];
+        }
+
+        if (null !== $linkFilter && !empty($linkFilter['value'] && 'IN' === $linkFilter['operator'])) {
+            $vk = ValueKey::create(
+                AttributeIdentifier::fromString($linkFilter['field']),
+                ChannelReference::createfromNormalized($recordQuery->getChannel()),
+                LocaleReference::createfromNormalized($recordQuery->getLocale())
+            );
+            $path = sprintf('links.%s', (string) $vk);
+            $query['query']['constant_score']['filter']['bool']['filter'][] = [
+                'terms' => [
+                    $path => $linkFilter['value']
                 ]
             ];
         }

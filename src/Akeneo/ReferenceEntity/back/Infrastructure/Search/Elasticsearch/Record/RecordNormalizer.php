@@ -36,7 +36,7 @@ class RecordNormalizer implements RecordNormalizerInterface
 
     public function __construct(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
-        SqlFindSearchableRecords $findSearchableRecords
+        SqlFindSearchableRecords $findSearchableRecords,
     ) {
         $this->findValueKeysToIndexForAllChannelsAndLocales = $findValueKeysToIndexForAllChannelsAndLocales;
         $this->findSearchableRecords = $findSearchableRecords;
@@ -53,6 +53,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
         $codeLabelMatrix = $this->createCodeLabelMatrix($searchableRecordItem);
         $filledValueKeysMatrix = $this->generateFilledValueKeys($searchableRecordItem);
+        $recordLinks = $this->generaterecordLinks($searchableRecordItem);
 
         return $this->normalize(
             $searchableRecordItem,
@@ -148,5 +149,9 @@ class RecordNormalizer implements RecordNormalizerInterface
         ];
 
         return $normalizedRecord;
+    }
+
+    private function generaterecordLinks(SearchableRecordItem $searchableRecordItem): array
+    {
     }
 }
