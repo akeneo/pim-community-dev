@@ -43,8 +43,6 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
 
         $this->recordsExistsForReferenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.query.records_exists');
         $this->resetDB();
-        $this->loadReferenceEntityDesigner();
-        $this->loadRecordStarck();
     }
 
     /**
@@ -52,11 +50,25 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
      */
     public function it_tells_if_there_are_corresponding_records_identifiers()
     {
+        $this->loadReferenceEntityDesigner();
+        $this->loadRecordStarck();
         $existingRecordCodes = $this->recordsExistsForReferenceEntity->withReferenceEntityAndCodes(
             ReferenceEntityIdentifier::fromString('designer'),
             ['starck', 'coco', 'unknown']
         );
         $this->assertEquals(['coco', 'starck'], $existingRecordCodes);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_empty_list_if_none_of_the_records_exists()
+    {
+        $existingRecordCodes = $this->recordsExistsForReferenceEntity->withReferenceEntityAndCodes(
+            ReferenceEntityIdentifier::fromString('designer'),
+            ['unknown']
+        );
+        $this->assertEmpty($existingRecordCodes);
     }
 
     private function resetDB(): void

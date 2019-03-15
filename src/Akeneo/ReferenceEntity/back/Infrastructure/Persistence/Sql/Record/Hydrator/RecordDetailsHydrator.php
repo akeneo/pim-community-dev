@@ -72,6 +72,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
             ->convertToPHPValue($row['code'], $this->platform);
 
         $allValues = $this->filterBrokenRecordSimpleLinks($referenceEntityIdentifier, $valueCollection);
+        $allValues = $this->filterBrokenRecordMultipleLinks($referenceEntityIdentifier, $allValues);
         $allValues = $this->allValues($emptyValues, $allValues);
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
         $recordImage = $this->getImage($valueCollection, $attributeAsImage);
@@ -154,10 +155,37 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
                 continue;
             }
 
-            $recordType = $this->getRecordTypeForRecordLinkAttribute->fetch($value['attribute']['identifier']);
+            $recordType = $this->getRecordTypeForRecordLinkAttribute->fetch($value['attribute']);
             $recordLinks = $this->getRecordCodes($value);
-            $existingRecordLinks = $this->recordsExists->withReferenceEntityAndCodes(ReferenceEntityIdentifier::fromString($recordType),
-                $recordLinks);
+            $existingRecordLinks = $this->recordsExists->withReferenceEntityAndCodes(
+                ReferenceEntityIdentifier::fromString($recordType),
+                $recordLinks
+            );
+            $allValues = $this->updateValuesWithExistingRecordsOnly($allValues, current($existingRecordLinks), $valueKey);
+        }
+
+        return $allValues;
+    }
+
+    private function filterBrokenRecordMultipleLinks(string $referenceEntityIdentifier, array $allValues): array
+    {
+        $multipleRecordLinkAttributeValueKeys = $this->findValueKeyCollectionForAttributeType->fetch(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            'record_collection'
+        );
+        $valueKeys = $multipleRecordLinkAttributeValueKeys->normalize();
+        foreach ($valueKeys as $valueKey) {
+            $value = $allValues[$valueKey] ?? null;
+            if (null === $value) {
+                continue;
+            }
+
+            $recordType = $this->getRecordTypeForRecordLinkAttribute->fetch($value['attribute']);
+            $recordLinks = $this->getRecordCodes($value);
+            $existingRecordLinks = $this->recordsExists->withReferenceEntityAndCodes(
+                ReferenceEntityIdentifier::fromString($recordType),
+                $recordLinks
+            );
             $allValues = $this->updateValuesWithExistingRecordsOnly($allValues, $existingRecordLinks, $valueKey);
         }
 
@@ -183,18 +211,18 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
 
     /**
      * @param array $allValues
-     * @param       $existingRecordLinks
+     * @param       $existingRecord
      * @param       $valueKey
      *
      * @return array
      *
      */
-    private function updateValuesWithExistingRecordsOnly(array $allValues, $existingRecordLinks, $valueKey): array
+    private function updateValuesWithExistingRecordsOnly(array $allValues, $existingRecord, $valueKey): array
     {
-        if (empty($existingRecordLinks)) {
+        if (empty($existingRecord)) {
             unset($allValues[$valueKey]);
         } else {
-            $allValues[$valueKey]['data'] = $existingRecordLinks;
+            $allValues[$valueKey]['data'] = $existingRecord;
         }
 
         return $allValues;

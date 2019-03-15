@@ -38,7 +38,7 @@ class SqlGetRecordTypeForRecordLinkAttributeTest extends SqlIntegrationTestCase
     /** @var ReferenceEntityIdentifier */
     private $referenceEntityIdentifier;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
