@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\InMemory;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
@@ -47,11 +45,9 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
 
     public function it_filters_non_existing_products(
         $productRepository,
-        $identifiersMappingRepository,
-        Attribute $asin
+        $identifiersMappingRepository
     ): void {
-        $asin->getCode()->willReturn(new AttributeCode('asin'));
-        $identifiersMapping = new IdentifiersMapping(['asin' => $asin->getWrappedObject()]);
+        $identifiersMapping = new IdentifiersMapping(['asin' => 'asin']);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $productRepository->find(42)->willReturn(null);
@@ -65,25 +61,16 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
         $productRepository,
         $identifiersMappingRepository,
         ProductInterface $product,
-        Attribute $asin,
-        Attribute $ean,
-        Attribute $mpn,
-        Attribute $brand,
         ValueInterface $asinValue
     ): void {
         $productRepository->find(42)->willReturn($product);
 
-        $asin->getCode()->willReturn(new AttributeCode('asin'));
-        $ean->getCode()->willReturn(new AttributeCode('ean'));
-        $mpn->getCode()->willReturn(new AttributeCode('mpn'));
-        $brand->getCode()->willReturn(new AttributeCode('brand'));
-
         $identifiersMapping = new IdentifiersMapping(
             [
-                'asin' => $asin->getWrappedObject(),
-                'upc' => $ean->getWrappedObject(),
-                'mpn' => $mpn->getWrappedObject(),
-                'brand' => $brand->getWrappedObject(),
+                'asin' => 'asin',
+                'upc' => 'ean',
+                'mpn' => 'mpn',
+                'brand' => 'brand',
             ]
         );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);

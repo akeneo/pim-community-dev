@@ -49,7 +49,9 @@ class IdentifiersMappingNormalizer
 
         $attributeCodes = [];
         foreach ($mapping->getMapping() as $identifierMapping) {
-            $attributeCodes[] = (string) $identifierMapping->getAttributeCode();
+            if (!empty($identifierMapping->getAttributeCode())) {
+                $attributeCodes[] = (string) $identifierMapping->getAttributeCode();
+            }
         }
 
         $attributes = [];

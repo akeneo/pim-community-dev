@@ -14,11 +14,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
@@ -78,12 +76,9 @@ class SubscriptionProviderSpec extends ObjectBehavior
     public function it_throws_an_exception_if_product_has_no_mapped_value_on_subscription(
         $identifiersMappingRepository,
         ProductInterface $product,
-        Attribute $ean,
         ValueInterface $eanValue
     ): void {
-        $ean->getCode()->willReturn(new AttributeCode('ean'));
-
-        $identifiersMapping = new IdentifiersMapping(['upc' => $ean->getWrappedObject()]);
+        $identifiersMapping = new IdentifiersMapping(['upc' => 'ean']);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $eanValue->hasData()->willReturn(false);
@@ -101,20 +96,15 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $identifiersMappingRepository,
         $subscriptionApi,
         ProductInterface $product,
-        Attribute $ean,
-        Attribute $sku,
         ValueInterface $eanValue,
         ValueInterface $skuValue,
         FamilyInterface $family,
         FamilyRepositoryInterface $familyRepository
     ): void {
-        $ean->getCode()->willReturn(new AttributeCode('ean'));
-        $sku->getCode()->willReturn(new AttributeCode('sku'));
-
         $identifiersMapping = new IdentifiersMapping(
             [
-                'upc' => $ean->getWrappedObject(),
-                'asin' => $sku->getWrappedObject(),
+                'upc' => 'ean',
+                'asin' => 'sku',
             ]
         );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
@@ -164,20 +154,15 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $identifiersMappingRepository,
         $subscriptionApi,
         ProductInterface $product,
-        Attribute $ean,
-        Attribute $sku,
         ValueInterface $eanValue,
         ValueInterface $skuValue,
         FamilyInterface $family,
         FamilyRepositoryInterface $familyRepository
     ): void {
-        $ean->getCode()->willReturn(new AttributeCode('ean'));
-        $sku->getCode()->willReturn(new AttributeCode('sku'));
-
         $identifiersMapping = new IdentifiersMapping(
             [
-                'upc' => $ean->getWrappedObject(),
-                'asin' => $sku->getWrappedObject(),
+                'upc' => 'ean',
+                'asin' => 'sku',
             ]
         );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);

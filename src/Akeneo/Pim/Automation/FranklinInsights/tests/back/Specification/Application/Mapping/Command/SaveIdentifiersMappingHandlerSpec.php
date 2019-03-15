@@ -164,8 +164,8 @@ class SaveIdentifiersMappingHandlerSpec extends ObjectBehavior
 
         $identifiersMapping = new IdentifiersMapping(
             [
-                'asin' => $asin->getWrappedObject(),
-                'upc' => $sku->getWrappedObject(),
+                'asin' => 'asin',
+                'upc' => 'sku',
             ]
         );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);

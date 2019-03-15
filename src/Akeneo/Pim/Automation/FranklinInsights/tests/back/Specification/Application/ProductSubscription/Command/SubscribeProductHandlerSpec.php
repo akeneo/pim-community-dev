@@ -11,9 +11,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
@@ -97,7 +95,6 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $createProposalHandler,
         $eventDispatcher,
         ProductInterface $product,
-        Attribute $ean,
         ValueInterface $eanValue
     ): void {
         $productId = 42;
@@ -124,11 +121,10 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
             )
         );
 
-        $ean->getCode()->willReturn(new AttributeCode('ean'));
         $eanValue->hasData()->willReturn(true);
         $eanValue->__toString()->willReturn('an_ean');
 
-        $identifiersMapping = new IdentifiersMapping(['upc' => $ean->getWrappedObject()]);
+        $identifiersMapping = new IdentifiersMapping(['upc' => 'ean']);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);

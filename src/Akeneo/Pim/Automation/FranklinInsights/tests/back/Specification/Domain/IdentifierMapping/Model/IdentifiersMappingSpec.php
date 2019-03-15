@@ -36,22 +36,22 @@ class IdentifiersMappingSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             [
-                'asin' => $sku,
-                'upc' => $ean,
-                'brand' => $manufacturer,
-                'mpn' => $model,
+                'asin' => 'sku',
+                'upc' => 'ean',
+                'brand' => 'manufacturer',
+                'mpn' => 'model',
             ]
         );
     }
 
-    public function it_gets_identifiers($manufacturer, $model, $ean, $sku): void
+    public function it_gets_identifiers(): void
     {
         $this->getMapping()->shouldBeLike(
             [
-                'brand' => new IdentifierMapping('brand', $manufacturer->getWrappedObject()),
-                'mpn' => new IdentifierMapping('mpn', $model->getWrappedObject()),
-                'upc' => new IdentifierMapping('upc', $ean->getWrappedObject()),
-                'asin' => new IdentifierMapping('asin', $sku->getWrappedObject()),
+                'brand' => new IdentifierMapping('brand', 'manufacturer'),
+                'mpn' => new IdentifierMapping('mpn', 'model'),
+                'upc' => new IdentifierMapping('upc', 'ean'),
+                'asin' => new IdentifierMapping('asin', 'sku'),
             ]
         );
     }
@@ -61,24 +61,24 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->isValid()->shouldReturn(true);
     }
 
-    public function it_is_valid_if_mapping_is_filled_with_upc($ean): void
+    public function it_is_valid_if_mapping_is_filled_with_upc(): void
     {
-        $this->beConstructedWith(['upc' => $ean]);
+        $this->beConstructedWith(['upc' => 'ean']);
         $this->isValid()->shouldReturn(true);
     }
 
-    public function it_is_valid_if_mapping_is_filled_with_asin($sku): void
+    public function it_is_valid_if_mapping_is_filled_with_asin(): void
     {
-        $this->beConstructedWith(['asin' => $sku]);
+        $this->beConstructedWith(['asin' => 'sku']);
         $this->isValid()->shouldReturn(true);
     }
 
-    public function it_is_valid_if_mapping_is_filled_with_mpn_and_brand($manufacturer, $model): void
+    public function it_is_valid_if_mapping_is_filled_with_mpn_and_brand(): void
     {
         $this->beConstructedWith(
             [
-                'brand' => $manufacturer,
-                'mpn' => $model,
+                'brand' => 'manufacturer',
+                'mpn' => 'model',
             ]
         );
 
@@ -91,16 +91,16 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->isValid()->shouldReturn(false);
     }
 
-    public function it_is_not_valid_if_mapping_is_filled_only_with_brand($manufacturer): void
+    public function it_is_not_valid_if_mapping_is_filled_only_with_brand(): void
     {
-        $this->beConstructedWith(['brand' => $manufacturer]);
+        $this->beConstructedWith(['brand' => 'manufacturer']);
 
         $this->isValid()->shouldReturn(false);
     }
 
-    public function it_is_not_valid_if_mapping_is_filled_only_with_mpn($model): void
+    public function it_is_not_valid_if_mapping_is_filled_only_with_mpn(): void
     {
-        $this->beConstructedWith(['mpn' => $model]);
+        $this->beConstructedWith(['mpn' => 'model']);
 
         $this->isValid()->shouldReturn(false);
     }
@@ -112,45 +112,42 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->getIterator()->shouldReturnAnInstanceOf(\Iterator::class);
     }
 
-    public function it_can_check_if_mapping_is_defined($sku): void
+    public function it_can_check_if_mapping_is_defined(): void
     {
         $this->beConstructedWith([]);
         $this->isEmpty()->shouldReturn(true);
 
-        $this->map('asin', $sku->getWrappedObject());
+        $this->map('asin', new AttributeCode('sku'));
         $this->isEmpty()->shouldReturn(false);
 
         $this->map('asin', null);
         $this->isEmpty()->shouldReturn(true);
     }
 
-    public function it_can_tell_if_it_has_been_updated(Attribute $asin): void
+    public function it_can_tell_if_it_has_been_updated(): void
     {
         $this->isUpdated()->shouldReturn(false);
-        $asin->getCode()->willReturn(new AttributeCode('asin'));
-        $this->map('asin', $asin->getWrappedObject());
+        $this->map('asin', new AttributeCode('asin'));
         $this->isUpdated()->shouldReturn(true);
     }
 
-    public function it_is_not_updated_when_the_same_attribute_is_mapped($ean): void
+    public function it_is_not_updated_when_the_same_attribute_is_mapped(): void
     {
-        $this->map('upc', $ean->getWrappedObject());
+        $this->map('upc', new AttributeCode('ean'));
         $this->isUpdated()->shouldReturn(false);
     }
 
-    public function it_provides_the_identifier_codes_with_an_updated_or_removed_mapping(
-        Attribute $asin
-    ): void {
-        $asin->getCode()->willReturn(new AttributeCode('asin'));
-        $this->map('asin', $asin->getWrappedObject());
+    public function it_provides_the_identifier_codes_with_an_updated_or_removed_mapping(): void
+    {
+        $this->map('asin', new AttributeCode('asin'));
         $this->map('upc', null);
         $this->updatedIdentifierCodes()->shouldReturn(['asin', 'upc']);
     }
 
-    public function it_does_not_provide_the_identifier_codes_with_an_added_mapping($sku, $ean): void
+    public function it_does_not_provide_the_identifier_codes_with_an_added_mapping(): void
     {
-        $this->beConstructedWith(['asin' => $sku]);
-        $this->map('upc', $ean->getWrappedObject());
+        $this->beConstructedWith(['asin' => 'sku']);
+        $this->map('upc', new AttributeCode('ean'));
         $this->isUpdated()->shouldReturn(true);
         $this->updatedIdentifierCodes()->shouldReturn([]);
     }

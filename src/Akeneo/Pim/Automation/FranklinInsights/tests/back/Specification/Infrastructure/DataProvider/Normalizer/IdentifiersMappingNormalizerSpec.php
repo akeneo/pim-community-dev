@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Da
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 use PhpSpec\ObjectBehavior;
@@ -24,6 +25,11 @@ use PhpSpec\ObjectBehavior;
  */
 class IdentifiersMappingNormalizerSpec extends ObjectBehavior
 {
+    public function let(AttributeRepositoryInterface $attributeRepository): void
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     public function it_is_subscription_collection(): void
     {
         $this->shouldHaveType(IdentifiersMappingNormalizer::class);
@@ -31,7 +37,8 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_identifiers_mapping(
         Attribute $attributeSku,
-        Attribute $attributeBrand
+        Attribute $attributeBrand,
+        $attributeRepository
     ): void {
         $attributeSku->getCode()->willReturn(new AttributeCode('sku'));
         $attributeSku->getLabels()->willReturn([]);
@@ -42,10 +49,12 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
             'en_US' => 'Brand',
         ]);
 
+        $attributeRepository->findByCodes(['brand_code', 'sku'])->willReturn([$attributeSku, $attributeBrand]);
+
         $mapping = new IdentifiersMapping([]);
         $mapping
-            ->map('mpn', $attributeSku->getWrappedObject())
-            ->map('brand', $attributeBrand->getWrappedObject());
+            ->map('mpn', new AttributeCode('sku'))
+            ->map('brand', new AttributeCode('brand_code'));
 
         $this->normalize($mapping)->shouldReturn(
             [

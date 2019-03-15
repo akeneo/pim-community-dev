@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use PhpSpec\ObjectBehavior;
 
@@ -23,23 +22,14 @@ use PhpSpec\ObjectBehavior;
  */
 class IdentifiersMappingNormalizerSpec extends ObjectBehavior
 {
-    public function it_normalizes_identifiers_mapping(
-        Attribute $manufacturer,
-        Attribute $model,
-        Attribute $ean,
-        Attribute $sku
-    ): void {
-        $manufacturer->getCode()->willReturn(new AttributeCode('brand'));
-        $model->getCode()->willReturn(new AttributeCode('mpn'));
-        $ean->getCode()->willReturn(new AttributeCode('ean'));
-        $sku->getCode()->willReturn(new AttributeCode('sku'));
-
+    public function it_normalizes_identifiers_mapping(): void
+    {
         $identifiersMapping = new IdentifiersMapping([]);
         $identifiersMapping
-            ->map('brand', $manufacturer->getWrappedObject())
-            ->map('mpn', $model->getWrappedObject())
-            ->map('upc', $ean->getWrappedObject())
-            ->map('asin', $sku->getWrappedObject());
+            ->map('brand', new AttributeCode('brand'))
+            ->map('mpn', new AttributeCode('mpn'))
+            ->map('upc', new AttributeCode('ean'))
+            ->map('asin', new AttributeCode('sku'));
 
         $this->normalize($identifiersMapping)->shouldReturn([
             'brand' => 'brand',
@@ -59,18 +49,13 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_normalizes_incomplete_identifiers_mapping(
-        Attribute $manufacturer,
-        Attribute $ean
-    ): void {
-        $manufacturer->getCode()->willReturn(new AttributeCode('brand'));
-        $ean->getCode()->willReturn(new AttributeCode('ean'));
-
+    public function it_normalizes_incomplete_identifiers_mapping(): void
+    {
         $identifiersMapping = new IdentifiersMapping([]);
         $identifiersMapping
-            ->map('brand', $manufacturer->getWrappedObject())
+            ->map('brand', new AttributeCode('brand'))
             ->map('mpn', null)
-            ->map('upc', $ean->getWrappedObject())
+            ->map('upc', new AttributeCode('ean'))
             ->map('asin', null);
 
         $this->normalize($identifiersMapping)->shouldReturn([

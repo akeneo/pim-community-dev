@@ -24,16 +24,14 @@ class IdentifierMappingSpec extends ObjectBehavior
 {
     public function it_gets_franklin_attribute_code(): void
     {
-        $attribute = $this->buildAttribute();
-        $this->beConstructedWith('franklin_code', $attribute);
+        $this->beConstructedWith('franklin_code', 'test');
         $this->getFranklinCode()->shouldReturn('franklin_code');
     }
 
     public function it_gets_akeneo_attribute(): void
     {
-        $attribute = $this->buildAttribute();
-        $this->beConstructedWith('franklin_code', $attribute);
-        $this->getAttribute()->shouldReturn($attribute);
+        $this->beConstructedWith('franklin_code', 'test');
+        $this->getAttributeCode()->shouldBeLike(new AttributeCode('test'));
     }
 
     public function it_build_an_identifier_mapping_object_without_akeneo_attribute(): void
@@ -41,7 +39,7 @@ class IdentifierMappingSpec extends ObjectBehavior
         $this->beConstructedWith('franklin_code', null);
 
         $this->getFranklinCode()->shouldReturn('franklin_code');
-        $this->getAttribute()->shouldReturn(null);
+        $this->getAttributeCode()->shouldReturn(null);
     }
 
     private function buildAttribute()
