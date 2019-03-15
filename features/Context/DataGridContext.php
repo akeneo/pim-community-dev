@@ -908,6 +908,9 @@ class DataGridContext extends PimContext implements PageObjectAware
         foreach ($rows as $row) {
             $this->spin(function () use ($row, $notChecked) {
                 $gridRow  = $this->getDatagrid()->getRow($row);
+                if (null === $gridRow) {
+                    return false;
+                }
                 $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
 
                 if (!$checkbox) {
