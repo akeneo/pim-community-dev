@@ -39,10 +39,11 @@ define(
                     return 'values' === parameter.key;
                 }).value.split('%2C'); // %2C = ,
                 const queryWithoutValues = query.replace(/&values=[^&]+/, '');
+
                 return $.ajax({
                     url: Routing.generate('pim_enrich_mass_edit_rest_get_filter') + queryWithoutValues,
                     method: 'POST',
-                    data: { values },
+                    data: { values }
                 }).then((response) => {
                     const filters = response.filters;
                     const itemsCount = response.itemsCount;
