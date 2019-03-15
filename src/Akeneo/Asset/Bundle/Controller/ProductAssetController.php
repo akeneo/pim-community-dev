@@ -518,19 +518,16 @@ class ProductAssetController extends Controller
     {
         $productAsset = $this->findProductAssetOr404($id);
 
-        // TODO merge 3.1: remove condition
-        if (null !== $this->referenceBuilder && null !== $this->variationBuilder) {
-            $this->referenceBuilder->buildMissingLocalized($productAsset);
+        $this->referenceBuilder->buildMissingLocalized($productAsset);
 
-            $variations = array_reduce($productAsset->getReferences()->toArray(), function ($carry, ReferenceInterface $reference) {
-                $missings = $this->variationBuilder->buildMissing($reference);
+        $variations = array_reduce($productAsset->getReferences()->toArray(), function ($carry, ReferenceInterface $reference) {
+            $missings = $this->variationBuilder->buildMissing($reference);
 
-                return $missings !== null ? $carry + $missings : $carry;
-            }, []);
+            return $missings !== null ? $carry + $missings : $carry;
+        }, []);
 
-            if (count($variations) > 0) {
-                $this->assetSaver->save($productAsset);
-            }
+        if (count($variations) > 0) {
+            $this->assetSaver->save($productAsset);
         }
 
         if ($this->isGranted(Attributes::EDIT, $productAsset)) {
