@@ -13,7 +13,7 @@ class VersionProviderIntegration extends KernelTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         static::bootKernel(['debug' => false]);
     }
