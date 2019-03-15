@@ -83,7 +83,7 @@ pim_enrich.entity.product:
       locale_specific_unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
       locale_unavailable: Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
       to_fill_count: "{1}1 vaadittu attribuutti puuttuu|]1, Inf[{{ count }} vaadittua attribuuttia puuttuu"
-      add_attribute_option: Lisää määritteen vaihtoehto
+      add_attribute_option: Lisää attribuutin vaihtoehto
       add_option: Lisää vaihtoehto
     completeness:
       title: Valmistumisaste

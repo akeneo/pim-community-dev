@@ -57,7 +57,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
                 );
 
                 foreach ($writer->getWrittenFiles() as $fullPath => $localPath) {
-                    $filesystem->put($localPath, file_get_contents($fullPath));
+                    $filesystem->putStream($localPath, fopen($fullPath, 'r'));
                 }
             }
         }

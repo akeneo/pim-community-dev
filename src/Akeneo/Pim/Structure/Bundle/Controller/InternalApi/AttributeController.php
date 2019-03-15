@@ -145,10 +145,14 @@ class AttributeController
      */
     public function indexAction(Request $request)
     {
-        $options = [];
+        $options = $request->request->get(
+            'options',
+            ['limit' => SearchableRepositoryInterface::FETCH_LIMIT, 'locale' => null]
+        );
 
         if ($request->get('identifiers', null) !== null) {
             $options['identifiers'] = array_unique(explode(',', $request->get('identifiers')));
+            $options['limit'] = count($options['identifiers']);
         }
 
         if ($request->get('types', null) !== null) {
