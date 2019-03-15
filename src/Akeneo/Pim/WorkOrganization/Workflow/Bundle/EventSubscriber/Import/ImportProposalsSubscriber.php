@@ -65,6 +65,9 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
     /** @var string */
     protected $username;
 
+    /** @var ?UserInterface */
+    private $author;
+
     /**
      * @param NotifierInterface       $notifier
      * @param UserRepositoryInterface $userRepository

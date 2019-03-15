@@ -8,7 +8,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForChannelAndLocaleInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
@@ -25,15 +25,10 @@ use Prophecy\Argument;
 class RecordNormalizerSpec extends ObjectBehavior
 {
     function let(
-        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
-        FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
+        FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords
     ) {
-        $this->beConstructedWith(
-            $findActivatedLocalesPerChannels,
-            $findValueKeysToIndexForChannelAndLocale,
-            $findSearchableRecords
-        );
+        $this->beConstructedWith($findValueKeysToIndexForAllChannelsAndLocales, $findSearchableRecords);
     }
 
     function it_is_initializable()
@@ -42,8 +37,7 @@ class RecordNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_searchable_record_by_record_identifier(
-        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
-        FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
+        FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords
     ) {
         $recordIdentifier = RecordIdentifier::fromString('stark');
@@ -53,7 +47,7 @@ class RecordNormalizerSpec extends ObjectBehavior
         $stark->code = 'stark';
         $stark->labels = ['fr_FR' => 'Philippe Stark'];
         $stark->values = [
-            'name' => [
+            'name'                     => [
                 'data' => 'Bio',
             ],
             'description_mobile_en_US' => [
@@ -64,18 +58,16 @@ class RecordNormalizerSpec extends ObjectBehavior
             ->byRecordIdentifier($recordIdentifier)
             ->willReturn($stark);
 
-        $findActivatedLocalesPerChannels
-            ->__invoke()
+        $findValueKeysToIndexForAllChannelsAndLocales->__invoke(Argument::type(ReferenceEntityIdentifier::class))
             ->willReturn(
-                ['ecommerce' => ['fr_FR'], 'mobile' => ['en_US']]
-            );
-        $findValueKeysToIndexForChannelAndLocale
-            ->__invoke(
-                Argument::type(ReferenceEntityIdentifier::class),
-                Argument::type(ChannelIdentifier::class),
-                Argument::type(LocaleIdentifier::class)
-            )->willReturn(
-                ValueKeyCollection::fromValueKeys([ValueKey::createFromNormalized('name')])
+                [
+                    'ecommerce' => [
+                        'fr_FR' => ['name'],
+                    ],
+                    'mobile'    => [
+                        'en_US' => ['name'],
+                    ],
+                ]
             );
 
         $normalizedRecord = $this->normalizeRecord($recordIdentifier);
@@ -92,16 +84,15 @@ class RecordNormalizerSpec extends ObjectBehavior
             ]
         );
         $normalizedRecord['complete_value_keys']->shouldBeEqualTo([
-                'name' => true,
+                'name'                     => true,
                 'description_mobile_en_US' => true,
             ]
         );
         $normalizedRecord['updated_at']->shouldBeInt();
-     }
+    }
 
     function it_normalizes_a_searchable_records_by_reference_entity(
-        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
-        FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
+        FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords,
         \Iterator $searchableRecordItemIterator
     ) {
@@ -112,7 +103,7 @@ class RecordNormalizerSpec extends ObjectBehavior
         $stark->code = 'stark';
         $stark->labels = ['fr_FR' => 'Philippe Stark'];
         $stark->values = [
-            'name' => [
+            'name'                     => [
                 'data' => 'starck Bio',
             ],
             'description_mobile_en_US' => [
@@ -126,7 +117,7 @@ class RecordNormalizerSpec extends ObjectBehavior
         $coco->code = 'coco';
         $coco->labels = ['fr_FR' => 'Coco Chanel'];
         $coco->values = [
-            'name' => [
+            'name'                     => [
                 'data' => 'Coco bio',
             ],
             'description_mobile_en_US' => [
@@ -139,18 +130,16 @@ class RecordNormalizerSpec extends ObjectBehavior
         $searchableRecordItemIterator->valid()->willReturn(true, true, false);
         $searchableRecordItemIterator->current()->willReturn($stark, $coco);
 
-        $findActivatedLocalesPerChannels
-            ->__invoke()
+        $findValueKeysToIndexForAllChannelsAndLocales->__invoke(Argument::type(ReferenceEntityIdentifier::class))
             ->willReturn(
-                ['ecommerce' => ['fr_FR'], 'mobile' => ['en_US']]
-            );
-        $findValueKeysToIndexForChannelAndLocale
-            ->__invoke(
-                Argument::type(ReferenceEntityIdentifier::class),
-                Argument::type(ChannelIdentifier::class),
-                Argument::type(LocaleIdentifier::class)
-            )->willReturn(
-                ValueKeyCollection::fromValueKeys([ValueKey::createFromNormalized('name')])
+                [
+                    'ecommerce' => [
+                        'fr_FR' => ['name'],
+                    ],
+                    'mobile'    => [
+                        'en_US' => ['name'],
+                    ],
+                ]
             );
 
         $this->normalizeRecordsByReferenceEntity($referenceEntityIdentifier);

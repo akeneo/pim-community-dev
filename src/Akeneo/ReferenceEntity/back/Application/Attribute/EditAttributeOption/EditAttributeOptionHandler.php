@@ -3,7 +3,6 @@
 namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;

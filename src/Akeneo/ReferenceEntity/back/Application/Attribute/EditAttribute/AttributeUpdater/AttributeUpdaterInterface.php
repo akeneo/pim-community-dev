@@ -6,6 +6,11 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUp
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 
+/**
+ * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @api
+ */
 interface AttributeUpdaterInterface
 {
     public function supports(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): bool;

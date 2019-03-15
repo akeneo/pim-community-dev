@@ -25,6 +25,8 @@ class SqlFindActivatedLocalesPerChannels implements FindActivatedLocalesPerChann
     /** @var Connection */
     private $sqlConnection;
 
+    // TODO caching ?
+
     public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;

@@ -18,6 +18,8 @@ imports:
     - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Integration/Resources/config/behat/services.yml }
     - { resource: ../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../tests/back/Platform/Acceptance/Resources/config/services.yml }
+    - { resource: ../../tests/back/ReferenceEntity/Acceptance/Resources/config/behat/services.yml }
+    - { resource: ../../tests/back/ReferenceEntity/Acceptance/Resources/config/pim/queries.yml }
 
 framework:
     test: ~

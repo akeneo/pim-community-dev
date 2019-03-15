@@ -74,26 +74,30 @@ const DefaultItemView = ({
 interface Props {
   elements: DropdownElement[];
   selectedElement: string;
-  ButtonView?: ({
-    label,
-    selectedElement,
-    onClick,
-  }: {
-    label: string;
-    selectedElement: DropdownElement;
-    onClick: () => void;
-  }) => JSX.Element;
-  ItemView?: ({
-    isOpen,
-    element,
-    isActive,
-    onClick,
-  }: {
-    isOpen: boolean;
-    element: DropdownElement;
-    isActive: boolean;
-    onClick: (element: DropdownElement) => void;
-  }) => JSX.Element;
+  ButtonView?: (
+    {
+      label,
+      selectedElement,
+      onClick,
+    }: {
+      label: string;
+      selectedElement: DropdownElement;
+      onClick: () => void;
+    }
+  ) => JSX.Element;
+  ItemView?: (
+    {
+      isOpen,
+      element,
+      isActive,
+      onClick,
+    }: {
+      isOpen: boolean;
+      element: DropdownElement;
+      isActive: boolean;
+      onClick: (element: DropdownElement) => void;
+    }
+  ) => JSX.Element;
   label: string;
   className?: string;
   onSelectionChange: (element: DropdownElement) => void;

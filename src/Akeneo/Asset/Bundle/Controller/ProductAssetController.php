@@ -12,6 +12,7 @@
 namespace Akeneo\Asset\Bundle\Controller;
 
 use Akeneo\Asset\Bundle\Event\AssetEvent;
+use Akeneo\Asset\Bundle\Event\VariationHasBeenDeleted;
 use Akeneo\Asset\Bundle\Form\Type\AssetType;
 use Akeneo\Asset\Bundle\Form\Type\CreateAssetType;
 use Akeneo\Asset\Component\Builder\ReferenceBuilderInterface;
@@ -404,6 +405,12 @@ class ProductAssetController extends Controller
         try {
             $this->assetFilesUpdater->deleteVariationFile($variation);
             $this->variationSaver->save($variation);
+
+            $this->eventDispatcher->dispatch(
+                VariationHasBeenDeleted::VARIATION_HAS_BEEN_DELETED,
+                new VariationHasBeenDeleted($asset)
+            );
+
             $this->addFlashMessage('success', 'pimee_product_asset.enrich_variation.flash.delete.success');
         } catch (\Exception $e) {
             $this->addFlashMessage('error', 'pimee_product_asset.enrich_variation.flash.delete.error');
@@ -512,8 +519,15 @@ class ProductAssetController extends Controller
         $productAsset = $this->findProductAssetOr404($id);
 
         $this->referenceBuilder->buildMissingLocalized($productAsset);
-        foreach ($productAsset->getReferences() as $reference) {
-            $this->variationBuilder->buildMissing($reference);
+
+        $variations = array_reduce($productAsset->getReferences()->toArray(), function ($carry, ReferenceInterface $reference) {
+            $missings = $this->variationBuilder->buildMissing($reference);
+
+            return $missings !== null ? $carry + $missings : $carry;
+        }, []);
+
+        if (count($variations) > 0) {
+            $this->assetSaver->save($productAsset);
         }
 
         if ($this->isGranted(Attributes::EDIT, $productAsset)) {
@@ -735,11 +749,15 @@ class ProductAssetController extends Controller
             try {
                 $this->assetFilesUpdater->updateAssetFiles($productAsset);
                 $this->assetSaver->save($productAsset);
-                $event = $this->eventDispatcher->dispatch(
-                    AssetEvent::POST_UPLOAD_FILES,
-                    new AssetEvent($productAsset)
-                );
-                $this->handleGenerationEventResult($event);
+
+                if ($request->files->count() > 0) {
+                    $event = $this->eventDispatcher->dispatch(
+                        AssetEvent::POST_UPLOAD_FILES,
+                        new AssetEvent($productAsset)
+                    );
+                    $this->handleGenerationEventResult($event);
+                }
+
                 $this->addFlashMessage('success', 'pimee_product_asset.enrich_asset.flash.update.success');
             } catch (\Exception $e) {
                 $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.update.error');
@@ -771,7 +789,7 @@ class ProductAssetController extends Controller
      *
      * @throws AccessDeniedException()
      *
-     * @return array
+     * @return array|Response
      */
     protected function view($id)
     {

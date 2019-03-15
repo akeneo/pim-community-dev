@@ -7,33 +7,58 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForChannelAndLocaleInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindValueKeysToIndexForChannelAndLocale implements FindValueKeysToIndexForChannelAndLocaleInterface
+class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysToIndexForAllChannelsAndLocalesInterface
 {
     /** @var Connection */
     private $sqlConnection;
 
-    public function __construct(Connection $sqlConnection)
-    {
+    /** @var FindActivatedLocalesPerChannelsInterface */
+    private $findActivatedLocalesPerChannels;
+
+    /** @var array */
+    private $cachedResult = [];
+
+    public function __construct(
+        Connection $sqlConnection,
+        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels
+    ) {
         $this->sqlConnection = $sqlConnection;
+        $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
     }
 
-    public function __invoke(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        ChannelIdentifier $channelIdentifier,
-        LocaleIdentifier $localeIdentifier
-    ): ValueKeyCollection {
-        $rows = $this->fetchValueKeys($referenceEntityIdentifier, $channelIdentifier, $localeIdentifier);
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    {
+        if (!isset($this->cachedResult[$referenceEntityIdentifier->normalize()])) {
+            $this->cachedResult[$referenceEntityIdentifier->normalize()] = $this->generateSearchMatrixWithValueKeys($referenceEntityIdentifier);
+        }
 
-        return $this->createValueKeyCollection($rows);
+        return $this->cachedResult[$referenceEntityIdentifier->normalize()];
+    }
+
+    private function generateSearchMatrixWithValueKeys(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    {
+        $matrixLocalesPerChannels = ($this->findActivatedLocalesPerChannels)();
+        $matrix = [];
+        foreach ($matrixLocalesPerChannels as $channelCode => $locales) {
+            foreach ($locales as $localeCode) {
+                $valueKeys = $this->fetchValueKeys(
+                    $referenceEntityIdentifier,
+                    ChannelIdentifier::fromCode($channelCode),
+                    LocaleIdentifier::fromCode($localeCode)
+                );
+                $matrix[$channelCode][$localeCode] = $valueKeys;
+            }
+        }
+
+        return $matrix;
     }
 
     private function fetchValueKeys(
@@ -80,14 +105,5 @@ SQL;
         ]);
 
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
-    }
-
-    private function createValueKeyCollection($rows): ValueKeyCollection
-    {
-        $valueKeys = [];
-        foreach ($rows as $row) {
-            $valueKeys[] = ValueKey::createFromNormalized($row);
-        }
-        return ValueKeyCollection::fromValueKeys($valueKeys);
     }
 }

@@ -8,6 +8,9 @@ import {
 } from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 
+/**
+ * @api
+ */
 export type NormalizedValue = {
   attribute: NormalizedAttribute;
   channel: NormalizedChannelReference;

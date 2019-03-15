@@ -121,7 +121,7 @@ SQL;
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['identifier'], $platform);
         $referenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['reference_entity_identifier'], $platform);
         $code = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['code'], $platform);
-        $valueCollection = $this->cleanValues($normalizedRecordItem['value_collection']);
+        $valueCollection = ValuesDecoder::decode($normalizedRecordItem['value_collection']);
 
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['attribute_as_label'], $platform);
         $labels = $this->getLabels($valueCollection, $attributeAsLabel);
@@ -138,13 +138,6 @@ SQL;
         $recordItem->completeness = $this->getCompleteness($requiredValueKeyCollection, $valueCollection);
 
         return $recordItem;
-    }
-
-    private function cleanValues(string $values): array
-    {
-        $cleanValues = strip_tags(html_entity_decode(str_replace(["\r", "\n"], ' ', $values)));
-
-        return json_decode($cleanValues, true);
     }
 
     private function getCompleteness(ValueKeyCollection $requiredValueKeys, $valueCollection): array

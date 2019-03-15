@@ -7,6 +7,11 @@ pimee_enrich.groups.label: Omistajaryhmät
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lisää käyttöoikeudellinen tuotearvo
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Päivitä käyttöoikeudellinen tuotearvo
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Käyttöoikeudeltaan mukautettujen lokaalien määrä
+    nb_custom_category_accesses: Käyttöoikeudeltaan mukautettujen kategorioiden määrä
+    nb_custom_attribute_group_accesses: Käyttöoikeudeltaan mukautettujen attribuuttiryhmien määrä
 job_profile.permissions:
   execute.label: Työprofiilin suorittaminen sallittu
   edit.label: Työprofiilin muokkaaminen sallittu

@@ -82,7 +82,7 @@ class FakeClient implements ClientInterface
             return $this->authenticate($method, $uri, $options);
         }
 
-        $this->handleToken($method, $uri, $options);
+        $this->handleToken($method, $uri);
 
         $this->handleCredits($method, $uri);
 

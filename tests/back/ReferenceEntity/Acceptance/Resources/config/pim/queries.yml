@@ -1,0 +1,21 @@
+services:
+    pimee.reference_entity.catalog_volume_monitoring.count_reference_entities:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_reference_entities'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pimee.reference_entity.catalog_volume_monitoring.average_max_number_of_records_per_reference_entity:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_records_per_reference_entities'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pimee.reference_entity.catalog_volume_monitoring.average_max_number_of_attributes_per_reference_entity:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_attributes_per_reference_entities'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }

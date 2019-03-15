@@ -106,6 +106,8 @@ config:
         pim/reference-entity-collection-field: akeneoreferenceentity/infrastructure/product/reference-entity-collection-field.tsx
         pim/reference-entity-field: akeneoreferenceentity/infrastructure/product/reference-entity-field.tsx
 
-        oro/datafilter/reference-entity-collection-filter: akeneoreferenceentity/infrastructure/product_grid/filter/attribute/reference-entity-collection
+        oro/datafilter/reference-entity-collection-filter: akeneoreferenceentity/infrastructure/product-grid/filter/attribute/reference-entity-collection
+
+        pim/form/common/fields/values/reference-entity: akeneoreferenceentity/infrastructure/product/axis/reference-entity.js
 
         pimee/filter/attribute/reference-entity-collection: pimenterpriseui/js/filter/attribute/reference-entity-collection

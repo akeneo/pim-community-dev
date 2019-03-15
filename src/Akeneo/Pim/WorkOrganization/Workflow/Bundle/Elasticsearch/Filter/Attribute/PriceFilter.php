@@ -168,7 +168,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
 
             case Operators::IS_EMPTY:
             case Operators::IS_EMPTY_ON_ALL_CURRENCIES:
-                $clauses = array_map(function ($attributePath) use ($value) {
+                $clauses = array_map(function ($attributePath) {
                     return [
                         'exists' => [
                             'field' => $attributePath,
@@ -195,7 +195,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
 
             case Operators::IS_NOT_EMPTY:
             case Operators::IS_NOT_EMPTY_ON_AT_LEAST_ONE_CURRENCY:
-                $clauses = array_map(function ($attributePath) use ($value) {
+                $clauses = array_map(function ($attributePath) {
                     return [
                         'exists' => [
                             'field' => $attributePath,
@@ -254,9 +254,8 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         if (!is_numeric($data['amount'])) {
             throw InvalidPropertyTypeException::numericExpected(
                 $attribute->getCode(),
-                sprintf('key "amount" has to be a numeric, "%s" given', gettype($data['amount'])),
                 static::class,
-                $data
+                $data['amount']
             );
         }
     }

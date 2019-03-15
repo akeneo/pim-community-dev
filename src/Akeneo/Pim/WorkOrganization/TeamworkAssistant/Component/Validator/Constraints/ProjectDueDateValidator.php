@@ -60,7 +60,7 @@ class ProjectDueDateValidator extends ConstraintValidator
         }
 
         $dueDate->setTime(0, 0);
-        $today = new \Datetime('now');
+        $today = new \DateTime('now');
         $today->setTime(0, 0);
 
         $interval = $today->diff($dueDate);

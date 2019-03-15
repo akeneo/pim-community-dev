@@ -21,6 +21,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @api
  */
 interface AttributeFactoryInterface
 {

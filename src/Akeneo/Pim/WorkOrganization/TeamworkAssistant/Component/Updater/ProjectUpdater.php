@@ -176,8 +176,7 @@ class ProjectUpdater implements ObjectUpdaterInterface
             throw InvalidPropertyException::dataExpected(
                 $field,
                 'a string with the format yyyy-mm-dd',
-                static::class,
-                gettype($data)
+                static::class
             );
         }
     }

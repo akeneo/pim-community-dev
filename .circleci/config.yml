@@ -97,6 +97,10 @@ jobs:
                 command: docker-compose exec -T fpm vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
                 when: always
           - run:
+                name: PHPStan
+                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
+                when: always
+          - run:
                 name: Check Pullup
                 command: docker-compose exec -T fpm vendor/akeneo/pim-community-dev/bin/check-pullup
                 when: always
@@ -137,7 +141,7 @@ jobs:
           - run:
                 name: PHPunit Integration
                 command: |
-                    TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" "vendor/akeneo/pim-community-dev/tests/back/**/*Integration.php" "vendor/akeneo/pim-community-dev/src/**/*Integration.php" | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm vendor/akeneo/pim-community-dev/.circleci/find_phpunit.sh PIM_Integration_Test | circleci tests split)
                     vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh $TESTFILES
           - run:
                 name: PHPunit Integration (Reference Entities)
@@ -204,7 +208,7 @@ jobs:
       - run:
           name: Behat
           command: |
-            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy | circleci tests split)
+            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy | circleci tests split --split-by=timings)
             vendor/akeneo/pim-community-dev/.circleci/run_behat.sh $TESTFILES
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests

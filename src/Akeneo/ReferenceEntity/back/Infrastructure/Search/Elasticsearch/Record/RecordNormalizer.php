@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForChannelAndLocaleInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
@@ -30,22 +28,17 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const RECORD_CODE_LABEL_SEARCH = 'record_code_label_search';
     private const COMPLETE_VALUE_KEYS = 'complete_value_keys';
 
-    /** @var FindActivatedLocalesPerChannelsInterface */
-    private $findActivatedLocalesPerChannels;
-
-    /** @var FindValueKeysToIndexForChannelAndLocaleInterface */
-    private $findValueKeysToIndexForChannelAndLocale;
+    /** @var FindValueKeysToIndexForAllChannelsAndLocalesInterface */
+    private $findValueKeysToIndexForAllChannelsAndLocales;
 
     /** @var SqlFindSearchableRecords */
     private $findSearchableRecords;
 
     public function __construct(
-        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
-        FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
+        FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords
     ) {
-        $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
-        $this->findValueKeysToIndexForChannelAndLocale = $findValueKeysToIndexForChannelAndLocale;
+        $this->findValueKeysToIndexForAllChannelsAndLocales = $findValueKeysToIndexForAllChannelsAndLocales;
         $this->findSearchableRecords = $findSearchableRecords;
     }
 
@@ -56,7 +49,7 @@ class RecordNormalizer implements RecordNormalizerInterface
             throw RecordNotFoundException::withIdentifier($recordIdentifier);
         }
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($searchableRecordItem->referenceEntityIdentifier);
-        $matrixWithValueKeys = $this->generateSearchMatrixWithValueKeys($referenceEntityIdentifier);
+        $matrixWithValueKeys = ($this->findValueKeysToIndexForAllChannelsAndLocales)($referenceEntityIdentifier);
         $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
         $codeLabelMatrix = $this->createCodeLabelMatrix($searchableRecordItem);
         $filledValueKeysMatrix = $this->generateFilledValueKeys($searchableRecordItem);
@@ -71,7 +64,7 @@ class RecordNormalizer implements RecordNormalizerInterface
 
     public function normalizeRecordsByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): \Iterator
     {
-        $matrixWithValueKeys = $this->generateSearchMatrixWithValueKeys($referenceEntityIdentifier);
+        $matrixWithValueKeys = ($this->findValueKeysToIndexForAllChannelsAndLocales)($referenceEntityIdentifier);
         $searchableRecordItems = $this->findSearchableRecords->byReferenceEntityIdentifier($referenceEntityIdentifier);
         foreach ($searchableRecordItems as $searchableRecordItem) {
             $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
@@ -85,24 +78,6 @@ class RecordNormalizer implements RecordNormalizerInterface
                 $filledValueKeysMatrix
             );
         }
-    }
-
-    private function generateSearchMatrixWithValueKeys(ReferenceEntityIdentifier $referenceEntityIdentifier): array
-    {
-        $matrixLocalesPerChannels = ($this->findActivatedLocalesPerChannels)();
-        $matrix = [];
-        foreach ($matrixLocalesPerChannels as $channelCode => $locales) {
-            foreach ($locales as $localeCode) {
-                $valueKeys = ($this->findValueKeysToIndexForChannelAndLocale)(
-                    $referenceEntityIdentifier,
-                    ChannelIdentifier::fromCode($channelCode),
-                    LocaleIdentifier::fromCode($localeCode)
-                )->normalize();
-                $matrix[$channelCode][$localeCode] = array_flip($valueKeys);
-            }
-        }
-
-        return $matrix;
     }
 
     private function createCodeLabelMatrix(SearchableRecordItem $searchableRecordItem): array
@@ -121,11 +96,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         $searchRecordListMatrix = [];
         foreach ($matrix as $channelCode => $valueKeysPerLocales) {
             foreach ($valueKeysPerLocales as $localeCode => $valueKeys) {
-                $indexedValues = $this->concatenateDataToIndex($searchableRecordItem, $valueKeys);
-                $searchRecordListMatrix[$channelCode][$localeCode] = sprintf(
-                    '%s %s', $searchableRecordItem->code,
-                    $indexedValues
-                );
+                $searchRecordListMatrix[$channelCode][$localeCode] = $this->concatenateDataToIndex($searchableRecordItem, $valueKeys);
             }
         }
 
@@ -134,7 +105,7 @@ class RecordNormalizer implements RecordNormalizerInterface
 
     private function concatenateDataToIndex(SearchableRecordItem $searchableRecordItem, array $valueKeys): string
     {
-        $valuesToIndex = array_intersect_key($searchableRecordItem->values, $valueKeys);
+        $valuesToIndex = array_intersect_key($searchableRecordItem->values, array_flip($valueKeys));
         $dataToIndex = array_map(
             function (array $value) {
                 return $value['data'];
@@ -145,8 +116,9 @@ class RecordNormalizer implements RecordNormalizerInterface
         $stringToIndex = implode(' ', $dataToIndex);
         $cleanedData = str_replace(["\r", "\n"], " ", $stringToIndex);
         $cleanedData = strip_tags(html_entity_decode($cleanedData));
+        $result = sprintf('%s %s', $searchableRecordItem->code, $cleanedData);
 
-        return $cleanedData;
+        return $result;
     }
 
     private function now(): int

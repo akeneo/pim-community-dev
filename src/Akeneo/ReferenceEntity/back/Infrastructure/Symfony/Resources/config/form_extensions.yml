@@ -70,6 +70,19 @@ extensions:
             fieldName: reference_data_name
             label: pim_enrich.entity.attribute.property.reference_entity.identifier
 
+    pimee-catalog-volume-reference-entity-section:
+        module: pim/catalog-volume/section
+        parent: pim-catalog-volume-index
+        template: pim/template/catalog-volume/section
+        targetZone: content
+        position: 60
+        config:
+            title: pim_catalog_volume.section.reference_entity.title
+            hint:
+                code: hint-reference-entities-axes
+                title: pim_catalog_volume.section.reference_entity.hint
+            axes: [count_reference_entity, average_max_records_per_reference_entity, average_max_attributes_per_reference_entity]
+
 attribute_fields:
     akeneo-reference-entity-collection-field: pim/reference-entity-collection-field
     akeneo-reference-entity-field: pim/reference-entity-field

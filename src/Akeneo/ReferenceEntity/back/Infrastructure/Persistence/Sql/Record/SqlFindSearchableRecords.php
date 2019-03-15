@@ -41,7 +41,7 @@ SQL;
             $result['identifier'],
             $result['reference_entity_identifier'],
             $result['code'],
-            $this->cleanValues($result['value_collection']),
+            ValuesDecoder::decode($result['value_collection']),
             $result['attribute_as_label']
         );
     }
@@ -61,7 +61,7 @@ SQL;
                 $result['identifier'],
                 $result['reference_entity_identifier'],
                 $result['code'],
-                $this->cleanValues($result['value_collection']),
+                ValuesDecoder::decode($result['value_collection']),
                 $result['attribute_as_label']
             );
         }
@@ -90,13 +90,6 @@ SQL;
         $recordItem->values = $values;
 
         return $recordItem;
-    }
-
-    private function cleanValues(string $values): array
-    {
-        $cleanValues = strip_tags(html_entity_decode(str_replace(["\r", "\n"], ' ', $values)));
-
-        return json_decode($cleanValues, true);
     }
 
     private function getLabels(?string $attributeAsLabelIdentifier, array $values): array

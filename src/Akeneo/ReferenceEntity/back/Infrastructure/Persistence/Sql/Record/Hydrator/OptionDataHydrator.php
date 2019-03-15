@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
 
@@ -29,8 +31,13 @@ class OptionDataHydrator implements DataHydratorInterface
         return $attribute instanceof OptionAttribute;
     }
 
-    public function hydrate($normalizedData): ValueDataInterface
+    public function hydrate($normalizedData, AbstractAttribute $attribute): ValueDataInterface
     {
+        /** @var OptionAttribute $attribute */
+        if (!$attribute->hasAttributeOption(OptionCode::fromString($normalizedData))) {
+            return EmptyData::create();
+        }
+
         return OptionData::createFromNormalize($normalizedData);
     }
 }
