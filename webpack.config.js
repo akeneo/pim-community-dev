@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
 
+const WebpackBundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -238,6 +239,10 @@ const webpackConfig = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
     }),
+
+    new WebpackBundleAnalyzer({
+      analyzerMode: 'static'
+    })
   ],
 };
 
