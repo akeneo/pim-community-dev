@@ -56,6 +56,7 @@ config:
         pimee/template/product/original-product:                akeneopimworkflow/templates/product/original-product.html
         pimee/template/product/tab/attribute/modified-by-draft: akeneopimworkflow/templates/product/tab/attributes/modified-by-draft.html
         pimee/templates/dashboard/proposal-widget: akeneopimworkflow/templates/proposal/widget/proposal-widget.html
+        pimee/templates/dashboard/view-all-btn: akeneopimworkflow/templates/proposal/widget/view-all-btn.html
 
         oro/datagrid/expand-cell:                  akeneopimworkflow/js/datagrid/cell/expand-cell
         oro/datagrid/approve-proposal-action:      akeneopimworkflow/js/datagrid/action/approve-proposal-action

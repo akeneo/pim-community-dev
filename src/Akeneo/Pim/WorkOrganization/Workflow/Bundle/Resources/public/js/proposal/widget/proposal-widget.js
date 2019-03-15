@@ -7,7 +7,7 @@ define(
         'pim/router',
         'pim/dashboard/abstract-widget',
         'pimee/templates/dashboard/proposal-widget',
-        'pim/dashboard/template/view-all-btn'
+        'pimee/templates/dashboard/view-all-btn'
     ],
     function ($, _, router, AbstractWidget, widgetTemplate, widgetTemplateHeader) {
         return AbstractWidget.extend({

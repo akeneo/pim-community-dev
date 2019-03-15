@@ -186,6 +186,8 @@ services:
                 name: akeneo_batch.job
                 connector: '%pimee_teamwork_assistant.project_calculation.connector_name%'
                 type: '%pimee_teamwork_assistant.refresh_project_completeness_calculation.job_type%'
+            -
+                name: akeneo_batch.job.not_visible
 
     ### Job launcher
     pimee_teamwork_assistant.launcher.job.refresh_project_completeness_calculation:

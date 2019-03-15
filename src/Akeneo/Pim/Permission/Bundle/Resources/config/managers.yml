@@ -5,7 +5,6 @@ parameters:
     pimee_security.manager.locale_access.class:          Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager
     pimee_security.manager.datagtrid_view_access.class:  Akeneo\Pim\Permission\Bundle\Manager\DatagridViewAccessManager
     pim_catalog.manager.category.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager
-    pimee_security.manager.job_execution.class: Akeneo\Pim\Permission\Bundle\Manager\JobExecutionManager
 
 services:
     pimee_security.manager.attribute_group_access:
@@ -61,14 +60,6 @@ services:
             - '@pim_catalog.repository.category'
             - '@pimee_security.repository.category_access'
             - '@security.authorization_checker'
-
-    pimee_security.manager.job_execution:
-        class: '%pimee_security.manager.job_execution.class%'
-        arguments:
-            - '@pim_enrich.repository.job_execution'
-            - '@oro_security.security_facade'
-            - '@pimee_security.repository.job_profile_access'
-            - '@security.token_storage'
 
     pim_catalog.resolver.attribute_values_with_permissions:
         class: 'Akeneo\Pim\Permission\Component\Manager\AttributeValuesResolver'

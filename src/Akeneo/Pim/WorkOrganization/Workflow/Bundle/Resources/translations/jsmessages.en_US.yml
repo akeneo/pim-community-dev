@@ -104,6 +104,7 @@ pimee_dashboard:
             product: Product
             review:  Review
             empty:   No proposals to review
+        header.view_all: View all
 
 pimee_enrich.entity.product:
     module:
