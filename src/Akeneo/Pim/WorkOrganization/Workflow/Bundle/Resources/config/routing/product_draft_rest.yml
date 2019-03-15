@@ -27,3 +27,8 @@ pimee_workflow_product_draft_rest_attribute_choice:
     path: /rest/attribute-choice
     defaults: { _controller: pimee_workflow.controller.product_draft_rest:attributeChoiceAction, _format: json }
     methods: [GET]
+
+pimee_workflow_product_draft_rest_manage_filters_attribute_choice:
+    path: /rest/manage-filters-attribute-choice
+    defaults: { _controller: pimee_workflow.controller.product_draft_rest:manageFiltersAttributeChoiceAction, _format: json }
+    methods: [GET]

@@ -26,6 +26,12 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftMan
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
+use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension;
+use Oro\Bundle\PimDataGridBundle\Query\ListAttributesUseableInProductGrid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,20 +89,15 @@ class ProductDraftController
     /** @var SearchableRepositoryInterface */
     protected $attributeSearchableRepository;
 
-    /**
-     * @param AuthorizationCheckerInterface            $authorizationChecker
-     * @param EntityWithValuesDraftRepositoryInterface $repository
-     * @param EntityWithValuesDraftManager             $manager
-     * @param ProductRepositoryInterface               $productRepository
-     * @param NormalizerInterface                      $normalizer
-     * @param TokenStorageInterface                    $tokenStorage
-     * @param AttributeRepositoryInterface             $attributeRepository
-     * @param ChannelRepositoryInterface               $channelRepository
-     * @param LocaleRepositoryInterface                $localeRepository
-     * @param UserContext                              $userContext
-     * @param CollectionFilterInterface                $collectionFilter
-     * @param SearchableRepositoryInterface            $attributeSearchableRepository
-     */
+    /** @var ConfiguratorInterface */
+    private $filtersConfigurator;
+
+    /** @var FilterExtension */
+    private $filterExtension;
+
+    /** @var ListAttributesUseableInProductGrid */
+    private $attributesUseableInGrid;
+
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         EntityWithValuesDraftRepositoryInterface $repository,
@@ -109,7 +110,10 @@ class ProductDraftController
         LocaleRepositoryInterface $localeRepository,
         UserContext $userContext,
         CollectionFilterInterface $collectionFilter,
-        SearchableRepositoryInterface $attributeSearchableRepository
+        SearchableRepositoryInterface $attributeSearchableRepository,
+        ListAttributesUseableInProductGrid $attributesUseableInGrid,
+        ConfiguratorInterface $filtersConfigurator,
+        FilterExtension $filterExtension
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->repository = $repository;
@@ -123,6 +127,9 @@ class ProductDraftController
         $this->userContext = $userContext;
         $this->collectionFilter = $collectionFilter;
         $this->attributeSearchableRepository = $attributeSearchableRepository;
+        $this->attributesUseableInGrid = $attributesUseableInGrid;
+        $this->filtersConfigurator = $filtersConfigurator;
+        $this->filterExtension = $filterExtension;
     }
 
     /**
@@ -341,6 +348,64 @@ class ProductDraftController
         }
 
         return new JsonResponse(['results' => $normalizedAttributes]);
+    }
+
+    /**
+     * Get the attribute choice collection through the manage filter
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function manageFiltersAttributeChoiceAction(Request $request)
+    {
+        $page = (int) $request->get('page', 1);
+        $search = (string) $request->get('search', '');
+        $locale = $request->get('locale', null);
+        $user = $this->userContext->getUser();
+
+        if (null == $locale) {
+            $locale = $user->getCatalogLocale()->getCode();
+        }
+
+        $attributes = $this->attributesUseableInGrid->fetch($locale, $page, $search, $user->getId());
+        $attributesAsFilters = empty($attributes) ? [] : $this->formatAttributesAsFilters($attributes);
+
+        return new JsonResponse($attributesAsFilters);
+    }
+
+    /**
+     * Format a list of attributes as filters using the product-grid configuration
+     *
+     * @param array $attributes
+     *
+     * @return array
+     */
+    private function formatAttributesAsFilters(array $attributes): array
+    {
+        $configurationAttributes = [];
+        foreach ($attributes as $index => $attribute) {
+            $attribute['sortOrder'] = $attribute['order'];
+            $attribute['useableAsGridFilter'] = true;
+
+            $configurationAttributes[$attribute['code']] = $attribute;
+        }
+
+        $gridConfiguration = DatagridConfiguration::createNamed('proposal-grid', [
+            ConfiguratorInterface::SOURCE_KEY => [
+                ConfiguratorInterface::USEABLE_ATTRIBUTES_KEY => $configurationAttributes
+            ],
+            FilterConfiguration::FILTERS_KEY => [],
+        ]);
+
+        $this->filtersConfigurator->configure($gridConfiguration);
+
+        $gridMetadata = MetadataIterableObject::createNamed('proposal-grid', ['filters' => []]);
+        $this->filterExtension->visitMetadata($gridConfiguration, $gridMetadata);
+
+        $attributesAsFilters = $gridMetadata->offsetGet('filters');
+
+        return $attributesAsFilters;
     }
 
     /**
