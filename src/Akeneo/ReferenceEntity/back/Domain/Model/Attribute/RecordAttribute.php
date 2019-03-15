@@ -22,7 +22,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 class RecordAttribute extends AbstractAttribute
 {
-    public const ATTRIBUTE_TYPE = 'record';
+    private const ATTRIBUTE_TYPE = 'record';
 
     /** @var ReferenceEntityIdentifier */
     private $recordType;
