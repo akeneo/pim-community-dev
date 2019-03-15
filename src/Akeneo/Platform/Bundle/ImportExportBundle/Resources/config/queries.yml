@@ -1,0 +1,6 @@
+services:
+    pim_import_export.query.get_last_operations:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Query\GetLastOperations'
+        arguments:
+            - '@database_connection'
+            - '@pim_import_export.registry.not_visible_jobs'

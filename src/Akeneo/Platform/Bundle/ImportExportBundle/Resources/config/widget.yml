@@ -1,0 +1,15 @@
+services:
+    pim_import_export.widget.last_operations:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Widget\LastOperationsWidget'
+        arguments:
+            - '@pim_import_export.widget.fetcher.last_operations'
+        tags:
+            - { name: pim_dashboard.widget, position: 30 }
+
+    pim_import_export.widget.fetcher.last_operations:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Widget\LastOperationsFetcher'
+        arguments:
+            - '@pim_import_export.query.get_last_operations'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@pim_catalog.localization.presenter.datetime'

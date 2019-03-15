@@ -2,19 +2,19 @@
     <thead>
         <tr>
             <th class="AknGrid-headerCell">
-                <%- __('pim_dashboard.widget.last_operations.date') %>
+                <%- __('pim_import_export.widget.last_operations.date') %>
             </th>
             <th class="AknGrid-headerCell">
                 <%- __('pim_common.type') %>
             </th>
             <th class="AknGrid-headerCell">
-                <%- __('pim_dashboard.widget.last_operations.profile_name') %>
+                <%- __('pim_import_export.widget.last_operations.profile_name') %>
             </th>
             <th class="AknGrid-headerCell">
                 <%- __('pim_common.status') %>
             </th>
             <th class="AknGrid-headerCell">
-                <%- __('pim_dashboard.widget.last_operations.warning_count') %>
+                <%- __('pim_import_export.widget.last_operations.warning_count') %>
             </th>
             <th class="AknGrid-headerCell"></th>
         </tr>
@@ -28,7 +28,7 @@
 
         <tr class="AknGrid-bodyRow">
             <td class="AknGrid-bodyCell"> <%- operation.date %></td>
-            <td class="AknGrid-bodyCell"> <%- __('pim_dashboard.widget.last_operations.job_type.'+operation.type) %></td>
+            <td class="AknGrid-bodyCell"> <%- __('pim_import_export.widget.last_operations.job_type.'+operation.type) %></td>
             <td class="AknGrid-bodyCell"><%- operation.label %></td>
             <td class="AknGrid-bodyCell">
                 <span class="AknBadge AknBadge--<%- status %>">
@@ -45,7 +45,7 @@
                 <span class="AknButton AknButton--small AknButton--grey show-details-btn"
                 data-id="<%- operation.id %>"
                 data-operation-type="<%- operation.type %>">
-                    <%- __('pim_dashboard.widget.last_operations.details') %>
+                    <%- __('pim_import_export.widget.last_operations.details') %>
                 </span>
             <% } %>
             </td>
@@ -56,7 +56,7 @@
     <tr>
         <td class="AknGrid-bodyCell AknGrid-bodyCell--full">
             <div class="AknMessageBox AknMessageBox--centered">
-                <%- __('pim_dashboard.widget.last_operations.empty') %>
+                <%- __('pim_import_export.widget.last_operations.empty') %>
             </div>
         </td>
     </tr>

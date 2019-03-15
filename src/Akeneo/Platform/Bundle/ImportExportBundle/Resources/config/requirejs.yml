@@ -1,0 +1,6 @@
+config:
+    paths:
+        pim/importexport/widget/last-operations-widget: pimimportexport/js/last-operations-widget
+
+        pim/importexport/template/widget/last-operations-widget: pimimportexport/templates/last-operations-widget.html
+        pim/importexport/template/widget/view-all-btn: pimimportexport/templates/view-all-btn.html
