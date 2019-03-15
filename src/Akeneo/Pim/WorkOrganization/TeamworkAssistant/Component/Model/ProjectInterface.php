@@ -163,4 +163,8 @@ interface ProjectInterface
      * @return ArrayCollection
      */
     public function getProjectStatus();
+
+    public function startCompletenessComputing(): void;
+
+    public function endCompletenessComputing(): void;
 }

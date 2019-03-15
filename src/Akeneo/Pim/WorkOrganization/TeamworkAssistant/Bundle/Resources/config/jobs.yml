@@ -56,6 +56,20 @@ services:
             - '@pimee_teamwork_assistant.saver.project'
         public: false
 
+    pimee_teamwork_assistant.tasklet.start_project_completeness_computing:
+        class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\ProjectCalculation\StartProjectCompletenessComputing'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@pimee_teamwork_assistant.saver.project'
+        public: false
+
+    pimee_teamwork_assistant.tasklet.end_project_completeness_computing:
+        class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\ProjectCalculation\EndProjectCompletenessComputing'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@pimee_teamwork_assistant.saver.project'
+        public: false
+
     ### Steps
     pimee_teamwork_assistant.step.project_calculation:
         class: '%pim_connector.step.tasklet.class%'
@@ -84,6 +98,22 @@ services:
             - '@pimee_teamwork_assistant.tasklet.clean_contributor_group'
         public: false
 
+    pimee_teamwork_assistant.step.start_project_completeness_computing:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'start_project_completeness_computing'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_teamwork_assistant.tasklet.start_project_completeness_computing'
+
+    pimee_teamwork_assistant.step.end_project_completeness_computing:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'start_project_completeness_computing'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_teamwork_assistant.tasklet.end_project_completeness_computing'
+
     ### Job
     pimee_teamwork_assistant.job.project_calculation:
         class: '%pim_connector.job.simple_job.class%'
@@ -93,8 +123,10 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_teamwork_assistant.step.prepare_project_calculation'
+                - '@pimee_teamwork_assistant.step.start_project_completeness_computing'
                 - '@pimee_teamwork_assistant.step.project_calculation'
                 - '@pimee_teamwork_assistant.step.clean_contributor_group'
+                - '@pimee_teamwork_assistant.step.end_project_completeness_computing'
         public: false
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_teamwork_assistant.project_calculation.connector_name%', type: '%pimee_teamwork_assistant.project_calculation.job_type%' }

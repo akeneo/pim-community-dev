@@ -130,13 +130,9 @@ class WidgetContext extends PimContext
     public function iShouldNotSeeTheSelectProjectLinkInTheSection($sectionName)
     {
         $this->spin(function () use ($sectionName) {
-            try {
-                $link = $this->getTeamworkAssistantWidget()->getLinkFromSection($sectionName);
+            $link = $this->getTeamworkAssistantWidget()->getLinkFromSection($sectionName);
 
-                return null !== $link ? false : true;
-            } catch (TimeoutException $e) {
-                return true;
-            }
+            return null !== $link ? false : true;
         }, sprintf('The "%s" section in the widget should not be clickable.', $sectionName));
     }
 
@@ -147,7 +143,11 @@ class WidgetContext extends PimContext
      */
     public function iClickOnTheSectionOfTheTeamworkAssistantWidget($sectionName)
     {
-        $this->getTeamworkAssistantWidget()->clickOnSection($sectionName);
+        $link = $this->spin(function () use ($sectionName) {
+            return $this->getTeamworkAssistantWidget()->getLinkFromSection($sectionName);
+        }, sprintf('The "%s" section in the widget should be clickable.', $sectionName));
+
+        $link->click();
     }
 
     /**

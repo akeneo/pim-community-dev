@@ -83,4 +83,13 @@ class ProjectSpec extends ObjectBehavior
         $this->resetUserGroups()->shouldReturn(null);
         $this->getUserGroups()->toArray()->shouldReturn([]);
     }
+
+    function it_has_a_completeness_computing_status()
+    {
+        $this->isCompletenessComputed()->shouldReturn(false);
+        $this->startCompletenessComputing();
+        $this->isCompletenessComputed()->shouldReturn(false);
+        $this->endCompletenessComputing();
+        $this->isCompletenessComputed()->shouldReturn(true);
+    }
 }

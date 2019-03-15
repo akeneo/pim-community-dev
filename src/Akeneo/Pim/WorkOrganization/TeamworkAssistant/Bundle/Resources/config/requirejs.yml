@@ -66,4 +66,5 @@ config:
         teamwork-assistant/templates/widget/contributor-selector-line: akeneopimteamworkassistant/templates/widget/contributor-selector-line.html
         teamwork-assistant/templates/widget/project-due-date: akeneopimteamworkassistant/templates/widget/project-due-date.html
         teamwork-assistant/templates/widget/project-completeness-data: akeneopimteamworkassistant/templates/widget/project-completeness-data.html
+        teamwork-assistant/templates/widget/project-completeness-data-pending: akeneopimteamworkassistant/templates/widget/project-completeness-data-pending.html
         teamwork-assistant/templates/widget/project-description: akeneopimteamworkassistant/templates/widget/project-description.html
