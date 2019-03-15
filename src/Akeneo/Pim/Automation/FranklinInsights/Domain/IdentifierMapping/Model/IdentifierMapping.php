@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 
 /**
  * Identifier Mapping doctrine entity.
@@ -26,46 +26,22 @@ class IdentifierMapping
     /** @var string */
     private $franklinCode;
 
-    /** @var Attribute|null */
-    private $attribute;
-
     /** @var string|null */
     private $attributeCode;
 
-    /**
-     * @param string $franklinCode
-     * @param Attribute|null $attribute
-     */
-    public function __construct(string $franklinCode, ?Attribute $attribute)
+    public function __construct(string $franklinCode, ?string $attributeCode)
     {
         $this->franklinCode = $franklinCode;
-        $this->attribute = $attribute;
-        if ($attribute instanceof Attribute && !empty($attribute->getCode())) {
-            $this->attributeCode = (string) $attribute->getCode();
-        }
+        $this->attributeCode = $attributeCode;
     }
 
-    /**
-     * @return string
-     */
     public function getFranklinCode(): string
     {
         return $this->franklinCode;
     }
 
-    /**
-     * @return Attribute|null
-     */
-    public function getAttribute(): ?Attribute
+    public function getAttributeCode(): ?AttributeCode
     {
-        return $this->attribute;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getAttributeCode(): ?string
-    {
-        return $this->attributeCode;
+        return !empty($this->attributeCode) ? new AttributeCode($this->attributeCode) : null;
     }
 }

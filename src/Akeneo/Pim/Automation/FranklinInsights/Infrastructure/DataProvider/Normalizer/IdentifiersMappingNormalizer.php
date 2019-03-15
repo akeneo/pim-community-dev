@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 
 /**
@@ -22,6 +23,14 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\Identi
  */
 class IdentifiersMappingNormalizer
 {
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
+
     /**
      * @param IdentifiersMapping $mapping
      *
@@ -38,13 +47,23 @@ class IdentifiersMappingNormalizer
             ];
         }
 
+        $attributeCodes = [];
+        foreach ($mapping->getMapping() as $identifierMapping) {
+            $attributeCodes[] = (string) $identifierMapping->getAttributeCode();
+        }
+
+        $attributes = [];
+        foreach ($this->attributeRepository->findByCodes($attributeCodes) as $attribute) {
+            $attributes[(string) $attribute->getCode()] = $attribute;
+        }
+
         foreach ($mapping->getMapping() as $franklinIdentifierCode => $identifier) {
-            $attribute = $identifier->getAttribute();
-            if (null !== $attribute) {
+            $attributeCode = $identifier->getAttributeCode();
+            if (null !== $attributeCode) {
                 $normalizedMapping[$franklinIdentifierCode]['status'] = 'active';
                 $normalizedMapping[$franklinIdentifierCode]['to'] = [
-                    'id' => (string) $attribute->getCode(),
-                    'label' => $attribute->getLabels(),
+                    'id' => (string) $attributeCode,
+                    'label' => $attributes[(string) $attributeCode]->getLabels(),
                 ];
             }
         }

@@ -16,7 +16,7 @@ Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\Identifier
             type: string
             column: franklin_code
         attributeCode:
-            column: attribute_id
+            column: attribute_code
             type: string
             unique: true
             nullable: true

@@ -44,9 +44,9 @@ class InMemoryIdentifiersMappingRepository implements IdentifiersMappingReposito
     {
         $mappedAttributes = [];
         foreach ($this->identifiersMapping as $franklinCode => $identifierMapping) {
-            $mappedAttributes[$franklinCode] = $identifierMapping->getAttribute();
+            $mappedAttributes[$franklinCode] = (string) $identifierMapping->getAttributeCode();
         }
 
-        return $newIdentifiersMapping = new IdentifiersMapping($mappedAttributes);
+        return new IdentifiersMapping($mappedAttributes);
     }
 }

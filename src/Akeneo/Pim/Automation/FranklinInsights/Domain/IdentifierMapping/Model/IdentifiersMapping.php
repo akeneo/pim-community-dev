@@ -64,12 +64,12 @@ class IdentifiersMapping implements \IteratorAggregate
     /**
      * @param string $name
      *
-     * @return Attribute|null
+     * @return AttributeCode|null
      */
-    public function getMappedAttribute(string $name): ?Attribute
+    public function getMappedAttributeCode(string $name): ?AttributeCode
     {
         if (array_key_exists($name, $this->mapping)) {
-            return $this->mapping[$name]->getAttribute();
+            return $this->mapping[$name]->getAttributeCode();
         }
 
         return null;
@@ -80,23 +80,23 @@ class IdentifiersMapping implements \IteratorAggregate
      * This method is used to mutate the entity.
      *
      * @param string $franklinIdentifierCode
-     * @param Attribute|null $attribute
+     * @param AttributeCode|null $attribute
      *
      * @return IdentifiersMapping
      */
-    public function map(string $franklinIdentifierCode, ?Attribute $attribute): self
+    public function map(string $franklinIdentifierCode, ?AttributeCode $attributeCode): self
     {
         if (!in_array($franklinIdentifierCode, static::FRANKLIN_IDENTIFIERS)) {
             throw new \InvalidArgumentException(sprintf('Invalid identifier %s', $franklinIdentifierCode));
         }
 
         $formerAttributeCode =
-            (null !== $this->getMappedAttribute($franklinIdentifierCode))
-            ? $this->getMappedAttribute($franklinIdentifierCode)->getCode() : null;
-        $newAttributeCode = null !== $attribute ? $attribute->getCode() : null;
+            (null !== $this->getMappedAttributeCode($franklinIdentifierCode))
+            ? (string) $this->getMappedAttributeCode($franklinIdentifierCode) : null;
+        $newAttributeCode = null !== $attributeCode ? (string) $attributeCode : null;
 
         if ($formerAttributeCode !== $newAttributeCode) {
-            $this->mapping[$franklinIdentifierCode] = new IdentifierMapping($franklinIdentifierCode, $attribute);
+            $this->mapping[$franklinIdentifierCode] = new IdentifierMapping($franklinIdentifierCode, (string) $attributeCode);
             $this->diff[$franklinIdentifierCode] = [
                 'former' => $formerAttributeCode,
                 'new' => $newAttributeCode,
@@ -122,7 +122,7 @@ class IdentifiersMapping implements \IteratorAggregate
         return empty(array_filter(
             $this->mapping,
             function (IdentifierMapping $identifierMapping) {
-                return null !== $identifierMapping->getAttribute();
+                return null !== $identifierMapping->getAttributeCode();
             }
         ));
     }
@@ -132,9 +132,9 @@ class IdentifiersMapping implements \IteratorAggregate
      */
     public function isValid(): bool
     {
-        $validMPNAndBrand = null !== $this->getMappedAttribute('mpn') && null !== $this->getMappedAttribute('brand');
-        $validUPC = null !== $this->getMappedAttribute('upc');
-        $validASIN = null !== $this->getMappedAttribute('asin');
+        $validMPNAndBrand = null !== $this->getMappedAttributeCode('mpn') && null !== $this->getMappedAttributeCode('brand');
+        $validUPC = null !== $this->getMappedAttributeCode('upc');
+        $validASIN = null !== $this->getMappedAttributeCode('asin');
 
         return $validASIN || $validUPC || $validMPNAndBrand;
     }
@@ -167,8 +167,8 @@ class IdentifiersMapping implements \IteratorAggregate
     public function isMappedTo(AttributeCode $referenceAttributeCode): bool
     {
         foreach ($this->mapping as $identifierMapping) {
-            $attribute = $identifierMapping->getAttribute();
-            if (null !== $attribute && $referenceAttributeCode->equals($attribute->getCode())) {
+            $attributeCode = $identifierMapping->getAttributeCode();
+            if (null !== $attributeCode && $referenceAttributeCode->equals($attributeCode)) {
                 return true;
             }
         }

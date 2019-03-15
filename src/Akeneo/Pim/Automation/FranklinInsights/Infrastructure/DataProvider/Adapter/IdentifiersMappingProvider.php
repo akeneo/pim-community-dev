@@ -31,17 +31,22 @@ class IdentifiersMappingProvider extends AbstractProvider implements Identifiers
     /** @var IdentifiersMappingWebService */
     private $api;
 
+    /** @var IdentifiersMappingNormalizer */
+    private $normalizer;
+
     /**
      * @param IdentifiersMappingWebService $api
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
         IdentifiersMappingWebService $api,
-        ConfigurationRepositoryInterface $configurationRepository
+        ConfigurationRepositoryInterface $configurationRepository,
+        IdentifiersMappingNormalizer $normalizer
     ) {
         parent::__construct($configurationRepository);
 
         $this->api = $api;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -50,10 +55,9 @@ class IdentifiersMappingProvider extends AbstractProvider implements Identifiers
     public function saveIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
     {
         $this->api->setToken($this->getToken());
-        $normalizer = new IdentifiersMappingNormalizer();
 
         try {
-            $this->api->save($normalizer->normalize($identifiersMapping));
+            $this->api->save($this->normalizer->normalize($identifiersMapping));
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {

@@ -66,8 +66,7 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
 
         foreach ($identifierMappings as $identifierMapping) {
             if (!empty($identifierMapping->getAttributeCode())) {
-                $attribute = $this->attributeRepository->findOneByIdentifier($identifierMapping->getAttributeCode());
-                $mappedAttributes[$identifierMapping->getFranklinCode()] = $attribute;
+                $mappedAttributes[$identifierMapping->getFranklinCode()] = (string) $identifierMapping->getAttributeCode();
             }
         }
 

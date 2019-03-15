@@ -90,7 +90,11 @@ class SaveIdentifiersMappingHandler
         $identifiersMapping = $this->identifiersMappingRepository->find();
 
         foreach ($identifiers as $franklinIdentifier => $pimAttribute) {
-            $identifiersMapping->map($franklinIdentifier, $pimAttribute);
+            $attributeCode = null;
+            if (null !== $pimAttribute) {
+                $attributeCode = $pimAttribute->getCode();
+            }
+            $identifiersMapping->map($franklinIdentifier, $attributeCode);
         }
 
         if ($identifiersMapping->isUpdated()) {

@@ -200,11 +200,11 @@ class IdentifiersMappingContext implements Context
 
         $expectedIdentifiersMapping = $this->extractIdentifiersMappingFromTable($table);
         foreach ($expectedIdentifiersMapping as $expectedIdentifier => $expectedMappedAttribute) {
-            $mappedAttribute = $this->retrievedIdentifiersMapping->getMappedAttribute($expectedIdentifier);
+            $mappedAttributeCode = $this->retrievedIdentifiersMapping->getMappedAttributeCode($expectedIdentifier);
             if (null === $expectedMappedAttribute) {
-                Assert::assertNull($mappedAttribute);
+                Assert::assertNull($mappedAttributeCode);
             } else {
-                Assert::assertEquals($expectedMappedAttribute, $mappedAttribute->getCode());
+                Assert::assertEquals($expectedMappedAttribute, (string) $mappedAttributeCode);
             }
         }
     }
@@ -436,11 +436,11 @@ class IdentifiersMappingContext implements Context
         Assert::assertCount(count($expectedMappings), $persistedMappings);
 
         foreach ($expectedMappings as $expectedFranklinCode => $expectedPimCode) {
-            $mappedAttribute = $persistedMappings->getMappedAttribute($expectedFranklinCode);
-            if (null === $mappedAttribute) {
+            $mappedAttributeCode = $persistedMappings->getMappedAttributeCode($expectedFranklinCode);
+            if (null === $mappedAttributeCode) {
                 Assert::assertNull($expectedPimCode);
             } else {
-                Assert::assertEquals($expectedPimCode, $mappedAttribute->getCode());
+                Assert::assertEquals($expectedPimCode, (string) $mappedAttributeCode);
             }
         }
     }
