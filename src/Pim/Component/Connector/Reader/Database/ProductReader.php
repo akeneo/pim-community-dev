@@ -186,13 +186,25 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
      */
     protected function getProductsCursor(array $filters, ChannelInterface $channel = null)
     {
-        $options = ['filters' => $filters];
-
-        if (null !== $channel) {
-            $options['default_scope'] = $channel->getCode();
-        }
+        $options = null !== $channel ? ['default_scope' => $channel->getCode()] : [];
 
         $productQueryBuilder = $this->pqbFactory->create($options);
+        foreach ($filters as $filter) {
+            try {
+                $productQueryBuilder->addFilter(
+                    $filter['field'],
+                    $filter['operator'],
+                    $filter['value'],
+                    $filter['context'] ?? []
+                );
+            } catch (ObjectNotFoundException $e) {
+                /**
+                 * PIM-8127: If a filter can not be applied because the object can not be found, it is ignored.
+                 * ie: Family or group does not exists.
+                 */
+                continue;
+            }
+        }
 
         return $productQueryBuilder->execute();
     }

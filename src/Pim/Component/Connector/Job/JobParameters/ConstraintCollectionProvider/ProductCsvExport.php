@@ -54,7 +54,6 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
             ]
         );
         $constraintFields['filters'] = [
-            new ProductFilterData(['groups' => ['Default', 'DataFilters']]),
             new Collection(
                 [
                     'fields'           => [
