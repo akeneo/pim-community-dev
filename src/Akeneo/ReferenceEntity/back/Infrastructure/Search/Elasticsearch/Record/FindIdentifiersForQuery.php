@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
@@ -25,6 +26,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ValueKey\SqlGetValueKeyForAttributeChannelAndLocale;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Elasticsearch\QueryString;
 
@@ -42,16 +44,21 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     /** @var FindRequiredValueKeyCollectionForChannelAndLocalesInterface */
     private $findRequiredValueKeyCollectionForChannelAndLocale;
 
+    /** @var SqlGetValueKeyForAttributeChannelAndLocale */
+    private $getValueKeyForAttributeChannelAndLocale;
+
     /**
      * @param Client                                                      $recordClient
      * @param FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale
      */
     public function __construct(
         Client $recordClient,
-        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale
+        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
+        SqlGetValueKeyForAttributeChannelAndLocale $getValueKeyForAttributeChannelAndLocale
     ) {
         $this->recordClient = $recordClient;
         $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
+        $this->getValueKeyForAttributeChannelAndLocale = $getValueKeyForAttributeChannelAndLocale;
     }
 
     /**
@@ -75,7 +82,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
         $completeFilter = ($recordQuery->hasFilter('complete')) ? $recordQuery->getFilter('complete') : null;
         $updatedFilter = ($recordQuery->hasFilter('updated')) ? $recordQuery->getFilter('updated') : null;
-        $linkFilter = ($recordQuery->hasFilter('links..*')) ? $recordQuery->getFilter('links.*') : null;
+        $attributeFilter = ($recordQuery->hasFilter('values..*')) ? $recordQuery->getFilter('values.*') : null;
 
         $query = [
             '_source' => '_id',
@@ -154,16 +161,21 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             ];
         }
 
-        if (null !== $linkFilter && !empty($linkFilter['value'] && 'IN' === $linkFilter['operator'])) {
-            $vk = ValueKey::create(
-                AttributeIdentifier::fromString($linkFilter['field']),
-                ChannelReference::createfromNormalized($recordQuery->getChannel()),
-                LocaleReference::createfromNormalized($recordQuery->getLocale())
+        if (null !== $attributeFilter && !empty($attributeFilter['value'] && 'IN' === $attributeFilter['operator'])) {
+            // Better preg match here ?
+            // Need to rework this and check if we actually match something
+            preg_match('/values.(.*)$/', $attributeFilter['field'], $attributeIdentifier);
+            $attributeIdentifier = $attributeIdentifier[1];
+
+            $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(
+                AttributeIdentifier::fromString($attributeIdentifier),
+                ChannelIdentifier::fromCode($recordQuery->getchannel()),
+                LocaleIdentifier::fromCode($recordQuery->getLocale())
             );
-            $path = sprintf('links.%s', (string) $vk);
+            $path = sprintf('values.%s', (string) $valueKey);
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'terms' => [
-                    $path => $linkFilter['value']
+                    $path => $attributeFilter['value']
                 ]
             ];
         }

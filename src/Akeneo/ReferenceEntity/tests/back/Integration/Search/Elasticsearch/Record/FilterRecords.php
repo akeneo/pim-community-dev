@@ -33,13 +33,16 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SearchIntegrationTestCase;
 
 /**
- * Testing the search usecases for the record grid for information in the code of the record.
+ * Testing the search usecases to filter on attributes:
+ * - option
+ * - option_collection
+ * - record
+ * - record_collection
  *
- * @see       https://akeneo.atlassian.net/wiki/spaces/AKN/pages/572424236/Search+an+entity+record
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SearchRecordsLinkedToAnOptionTest extends SearchIntegrationTestCase
+class FilterRecords extends SearchIntegrationTestCase
 {
     /** @var FindIdentifiersForQueryInterface */
     private $findIdentifiersForQuery;
@@ -65,6 +68,7 @@ class SearchRecordsLinkedToAnOptionTest extends SearchIntegrationTestCase
         $this->loadReferenceEntity();
         $this->loadAttributeWithOptions('main_color_designers_fingerprint', ['red', 'blue']);
         $this->loadRecordHavingOption('stark', 'red');
+        $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
             'ecommerce', 'en_US', 'main_color_designers_fingerprint', 'red'
@@ -88,6 +92,7 @@ class SearchRecordsLinkedToAnOptionTest extends SearchIntegrationTestCase
     {
     }
 
+    // TODO: Write the tests for the following usecases
     // public function it_searches_all_records_having_multiple_options()
     // public function it_searches_all_records_linked_to_another_record()
     // public function it_searches_all_records_linked_to_multiple_records()
@@ -108,7 +113,7 @@ class SearchRecordsLinkedToAnOptionTest extends SearchIntegrationTestCase
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(true)
+            AttributeValuePerLocale::fromBoolean(false)
         );
 
         $attributeOptions = array_map(
@@ -179,7 +184,7 @@ class SearchRecordsLinkedToAnOptionTest extends SearchIntegrationTestCase
                         'context'  => [],
                     ],
                     [
-                        'field' => sprintf('links.option.%s', $attributeIdentifier),
+                        'field' => sprintf('values.%s', $attributeIdentifier),
                         'operator'  => 'IN',
                         'value'     => [$options],
                         'context'   => [],

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Doctrine\DBAL\Driver\Connection;
 
@@ -13,25 +14,30 @@ use Doctrine\DBAL\Driver\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FindOptionValueKey
+class FindValueKeysToFilterOn
 {
     /** @var Connection */
     private $sqlConnection;
+
+    /** @var array */
+    private $cachedResult;
 
     public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(
-        ReferenceEntityIdentifier $referenceEntityIdentifier
-    ): ValueKeyCollection {
-        $rows = $this->fetchValueKeys($referenceEntityIdentifier);
+    public function fetch(string $referenceEntityIdentifier): array
+    {
+        if (!isset($this->cachedResult[$referenceEntityIdentifier])) {
+            $this->cachedResult[$referenceEntityIdentifier] = $this->fetchValueKeys($referenceEntityIdentifier);
+        }
 
-        return $this->createValueKeyCollection($rows);
+        return $this->cachedResult[$referenceEntityIdentifier];
     }
 
-    private function fetchValueKeys(ReferenceEntityIdentifier $referenceEntityIdentifier): array {
+    private function fetchValueKeys(string $referenceEntityIdentifier): array
+    {
         $query = <<<SQL
             SELECT
                 CONCAT(
@@ -60,22 +66,15 @@ class FindOptionValueKey
                             JOIN pim_catalog_locale l ON l.id = locale_id
                         WHERE
                             l.is_activated = 1
-                            AND a.type = 'option'
                     ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
                 WHERE
-                    reference_entity_identifier = :reference_entity_identifier
+                    a.reference_entity_identifier = 'designer'
+                    AND a.attribute_type IN ('option', 'option_collection', 'record', 'record_collection')
+                ) as mask;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, ['reference_entity_identifier' => $referenceEntityIdentifier]);
 
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
     }
 
-    private function createValueKeyCollection($rows): ValueKeyCollection
-    {
-        $valueKeys = [];
-        foreach ($rows as $row) {
-            $valueKeys[] = ValueKey::createFromNormalized($row);
-        }
-        return ValueKeyCollection::fromValueKeys($valueKeys);
-    }
 }
