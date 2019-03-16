@@ -3,7 +3,7 @@ confirmation:
   remove:
     item: Oletko varma että haluat poistaa tämän kohteen?
     association_type: Oletko varma, että haluat poistaa tämän assosiaatiotyypin?
-    attribute: Oletko varma, että haluat poistaa tämän määritteen?
+    attribute: Oletko varma, että haluat poistaa tämän attribuutin?
     attribute_group: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
     family: Oletko varma, että haluat poistaa tämän perheen?
     family_variant: Oletko varma, että haluat poistaa tämän varianttiperheen?
@@ -190,7 +190,7 @@ pim_enrich:
         update_successful: Tuote päivitetty.
         update_failed: Tuotetta ei voitu päivittää.
         field_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
-        already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
+        already_in_upload: Tiedosto on jo ladattu attribuutin lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       error:
         upload: Virhe tiedoston lataamisessa
       meta:
@@ -250,7 +250,7 @@ pim_enrich:
         content: Tuotemalli kokoaa tuotevariantit ja helpottaa niille yhteisten attribuuttien rikastamista.
       info:
         create_successful: Tuotemallin luominen onnistui
-        update_successful: Tuotemallin päivittäminen onnistui. Tuotevarianttien täyttöaste lasketaan uudelleen.
+        update_successful: Tuotemallin päivittäminen onnistui. Tuotevarianttien valmiusaste lasketaan uudelleen.
         deletion_successful: Tuotemallin poisto onnistui.
         update_failed: Tuotemallia ei voitu päivittää.
         field_not_ready: "Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
@@ -443,7 +443,7 @@ pim_enrich:
     remove_item: Vahvista poisto
     remove: Poista
     delete:
-      attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
+      attribute: Oletko varma, että haluat poistaa tämän attribuutin tuotteesta?
       attribute_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?
       product_model: Vahvista poisto
   info:
@@ -506,8 +506,8 @@ pim_enrich:
         completeness:
           title: Valmistumisaste
           info:
-            no_family: Perhettä ei ole määritelty. Määritä perhe, jotta voit laskea tuotteen täyttöasteen.
-            no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden perheen täyttöasteen.
+            no_family: Perhettä ei ole määritelty. Määritä perhe, jotta voit laskea tuotteen valmiusasteen.
+            no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden perheen valmiusasteen.
           missing_values: "{1}1 puuttuva arvo|] 1, Inf [{{ count }} puuttuvaa arvoa"
         history:
           title: Historia
@@ -530,7 +530,7 @@ pim_enrich:
           change_family_to: Vaihda perheeksi
           empty_selection: Valitse perhe
       flash:
-        attribute_deletion_error: Määritteen poistamisen aikana tapahtui virhe
+        attribute_deletion_error: Attribuutin poistamisessa tapahtui virhe
       mass_edit:
         select_attributes: Valitse attribuutit
         select: Valitse
@@ -564,7 +564,7 @@ pim_enrich:
           locales: Alueet
           category_tree: Kategoriahierarkia
           label_translations: Nimikkeiden käännökset
-          label_conversion_units: Valitse muunnosyksikkö jokaisella metrimääritteelle jota käytetään tuotteen viennin yhteydessä
+          label_conversion_units: Valitse muunnosyksikkö jokaisella metriselleattribuutille, jota käytetään tuotteen viennin yhteydessä
           conversion_unit:
             do_not_convert: Älä muunna
     family:
@@ -601,10 +601,10 @@ pim_enrich:
           title: Nimikkeiden käännökset
     attribute_option:
       flash:
-        option_created: Määritteen asetuksen luominen onnistui
-        error_creating_option: Virhe yritettäessä luoda määritteen asetusta
+        option_created: Attribuutin vaihtoehdon luominen onnistui
+        error_creating_option: Virhe yritettäessä luoda attribuutin vaihtoehtoa
       add_option_modal:
-        title: Lisää määritteen vaihtoehto
+        title: Lisää attribuutin vaihtoehto
         confirm: Lisää
         cancel: Peruuta
     entity:
@@ -994,7 +994,7 @@ pim_enrich:
     locale:
       title: "] -Inf, 1] {{ count }} lokaatio|] 1, Inf [{{ count }} lokaatiota"
     user:
-      title: "[] -Inf, 1] {{ count }} käyttäjä |] 1, Inf [{{ count }} käyttäjää"
+      title: "] -Inf, 1] {{ count }} käyttäjä |] 1, Inf [{{ count }} käyttäjää"
       create_btn: Luo käyttäjä
     user_role:
       title: "[] -Inf, 1] {{ count }} rooli |] 1, Inf [{{ count }} roolia"
@@ -1226,8 +1226,8 @@ batch_jobs:
     label: Attribuuttien vienti CSV-muodossa
     export.label: Attribuuttien vienti
   csv_attribute_option_export:
-    label: Attribuuttien määritteiden vienti CSV-muodossa
-    export.label: Attribuuttien määritteiden vienti
+    label: Attribuuttien vaihtoehtojen vienti CSV-muodossa
+    export.label: Attribuuttien vaihtoehtojen vienti
   csv_association_type_export:
     label: Liitännäistyyppien vienti CSV-muodossa
     export.label: Liitännäistyyppien vienti
@@ -1256,9 +1256,9 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttien tuonti
   csv_attribute_option_import:
-    label: Attribuuttien määritteiden tuonti CSV-muodossa
+    label: Attribuuttien vaihtoehtojen tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
-    import.label: Attribuuttien määritteiden tuonti
+    import.label: Attribuuttien vaihtoehtojen tuonti
   csv_association_type_import:
     label: Liitännäistyyppien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -1327,9 +1327,9 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttien tuonti
   xlsx_attribute_option_import:
-    label: Attribuuttien määritteiden tuonti XLSX-muodossa
+    label: Attribuuttien vaihtoehtojen tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
-    import.label: Attribuuttien määritteiden tuonti
+    import.label: Attribuuttien vaihtoehtojen tuonti
   xlsx_family_import:
     label: Perheiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -1375,8 +1375,8 @@ batch_jobs:
     label: Attribuuttivienti XLSX-muodossa
     export.label: Attribuuttivienti XLSX-muodossa
   xlsx_attribute_option_export:
-    label: Attribuuttien määritteiden vienti XLSX-muodossa
-    export.label: Attribuuttien määritteiden vienti XLSX-muodossa
+    label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
+    export.label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
   xlsx_association_type_export:
     label: Liitännäistyyppien vienti XLSX-muodossa
     export.label: Liitännäistyyppien vienti XLSX-muodossa
