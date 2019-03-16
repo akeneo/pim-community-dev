@@ -4,7 +4,9 @@ akeneo_referenceentity:
   acl:
     reference_entity:
       create: Crear una entitat
+      edit: Editar les propietats d'entitat
       delete: Suprimir una entitat
+      manage_permission: Gestionar permisos d'entitat de referència
     record:
       create: Crear registre
       edit: Editar els registres
@@ -13,6 +15,7 @@ akeneo_referenceentity:
     attribute:
       create: Afegeix un atribut a una entitat de referència
       edit: Editar un atribut d'una entitat de referència
+      delete: Suprimir un atribut d'una entitat de referència
     option:
       edit: Edita les opcions
       delete: Elimina una opció

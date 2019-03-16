@@ -9,6 +9,8 @@ akeneo_franklin_insights:
   entity:
     data_provider:
       ask_franklin_down: "Ho sentim, algo ha anat malament. Si us plau, prova-ho una altra vegada més tard."
+      authentication_error: "Ho sentim, no s'ha pogut autenticar a Franklin Insights, el token no és vàlid. Introduïu un token vàlid o contacteu amb nosaltres per obtenir ajuda, si us plau."
+      bad_request_error: "Ho sentim. S'ha produït un problema durant la comunicació amb Franklin Insights. Contacteu amb l'administrador, si us plau."
     identifier_mapping:
       plural_label: Identificadors
       flash:
@@ -32,7 +34,9 @@ akeneo_franklin_insights:
       constraint:
         duplicate_attribute_code: "Un mapatge admet l'atribut de catàleg"
         missing_or_invalid_identifiers: "Alguns mapatges d'identificadors clau falten o són invàlids. Esperant: \"{{ expected }}\", que tingui \"{{ given }}\"."
+        mandatory_identifier_mapping: "Mapatge de Marca i MPN requerits"
         attribute_type: "No es pot definir el tipus d'aquest atribut com a identificador"
+        localizable_not_allowed: "Els atributs localitzables no s'admeten com a identificadors"
     attributes_mapping:
       label: Mapatge dels atributs
       fields:
@@ -51,9 +55,11 @@ akeneo_franklin_insights:
           error: "Necessita crear una família en el catàleg per accedir a aquesta pàgina."
           family_status:
             pending: 'Nou atribut Franklin a revisar'
+          types_mismatch_warning: 'Atenció: incompatibilitat de tipus d''atributs.'
       constraint:
         missing_target_key: 'Falta l''objectiu clau pel mapatge'
         missing_attribute_key: 'Falta {{ expectedKey }} clau pel mapatge amb l''objectiu clau "{{ targetKey }}"'
+        attribute_not_in_family_not_allowed: 'L''atribut PIM ha de ser de la família seleccionada.'
     product_subscription:
       flash:
         create:
@@ -69,6 +75,9 @@ akeneo_franklin_insights:
         invalid_mapped_values: 'Ho sentim, ha fallat la subscripció del producte a les estadístiques de Franklin. Si us plau subscriu el producte amb una combinació d''identificadors vàlid.'
         data_provider_error: 'Franklin ha retornat un error en intentar subscriure el producte'
         not_subscribed: 'El producte no està subscrit'
+        already_subscribed_product: 'El producte ja està subscrit.'
+        variant_product: 'Ho sentim. Els productes variants no poden ser subscrits a Franklin Insights.'
+        inactive_connection: 'Ho sentim. No s''ha pogut subscriure el producte a Franklin Insights. Configureu la connexió a les Franklin Insights, si us plau.'
       module:
         product_edit_form:
           family_required: 'Família de productes requerit.'
@@ -83,6 +92,7 @@ akeneo_franklin_insights:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opcions d''atribut'
           sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
+          description: 'Per tal d''ajudar a enriquir el seu catàleg, Franklin haurà de saber les seves opcions d''atribut del catàleg per trobar coincidències. <a href="#" target="_blank" class="AknDescriptionHeader-link">Llegir més</a>'
   product:
     edit:
       btn.push: Suggerència de dades
@@ -110,9 +120,15 @@ akeneo_franklin_insights:
     module:
       title:
         sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
+        description:
+          first_step: 'Per tal d''ajudar a enriquir el ser catàleg, Franklin haurà de saber els identificadors del seu catàleg.'
       inactive_connection:
         title: 'Ho sentim, no hi ha res que mostrar ara mateix'
         sub_title: 'Si us plau, activa el compte en el Sistema > Connexió Franklin i torna de nou.'
+      no_active_english_locale:
+        title: 'Les estadístiques de Franklin només estan disponibles per locals en anglès.'
+      save:
+        title: 'Atenció!'
   mass_edit:
     product:
       operation:
@@ -144,3 +160,8 @@ pim_dashboard:
     last_operations:
       job_type:
         franklin_insights_fetch_products: Estadístiques de Franklin
+pim_enrich.entity.attribute:
+  module:
+    save:
+      title: 'Atenció!'
+      warning: '{1}Suprimir un atribut pot afectar 1 subscripció de Franklin. Esteu segur? |]1,+Inf[Suprimir un atribut pot afectar {{ count }} subscripcions de Franklin. Esteu segur?'

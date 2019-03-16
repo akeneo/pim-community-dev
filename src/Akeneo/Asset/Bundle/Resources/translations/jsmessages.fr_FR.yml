@@ -218,6 +218,7 @@ pim_catalog_volume:
   section:
     assets:
       title: Axes sur les ressources
+      hint: Vous pouvez suivre votre volumétrie en rapport avec les ressources ici
   axis:
     count_assets: Ressources
     count_asset_categories: Catégories de ressources

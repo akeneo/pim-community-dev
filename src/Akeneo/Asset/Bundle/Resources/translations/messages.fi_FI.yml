@@ -84,8 +84,8 @@ pimee_product_asset:
   menu: Resurssit
   page_tab:
     title:
-      view: Assetti %asset.code% | Näkymä
-      edit: Assetti %asset.code% | Muokkaa
+      view: Tuoteresurssi %asset.code% | Näkymä
+      edit: Tuotteen assetti %asset.code% | Muokkaa
       index: Tuotteen assetit
   code:
     label: Koodi
@@ -173,10 +173,7 @@ pim_datagrid:
   cells:
     type:
       mass_upload: Massatuo assetteja
-pim_analytics:
-  info_type:
-    nb_assets: Assettien lukumäärä
-pim_assets_collection: Assetit
+pim_assets_collection: Resurssien keruu
 akeneo_reference_entity: Viitetiedot yksinkertainen valinta
 akeneo_reference_entity_collection: Viitetiedot monivalinta
 pim_api:
@@ -193,7 +190,7 @@ pim_api:
 pimee_enrich:
   channel:
     tab:
-      asset_transformation.title: Assettien muunnokset
+      asset_transformation.title: Resurssien muunnokset
   asset_transformation:
     not_found: Ei muunnosta löydettävissä
     title:

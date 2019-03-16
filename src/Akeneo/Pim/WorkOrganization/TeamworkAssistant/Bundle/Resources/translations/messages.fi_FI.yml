@@ -17,5 +17,4 @@ teamwork_assistant:
 pim_datagrid:
   cells:
     type:
-      project_calculation: Projektin muodostaminen
       refresh_project_completeness_calculation: Päivitä projektin valmiusaste

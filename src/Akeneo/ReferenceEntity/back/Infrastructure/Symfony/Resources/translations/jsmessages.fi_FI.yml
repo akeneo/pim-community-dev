@@ -250,9 +250,3 @@ pim_enrich:
         reference_entity:
           identifier: Liittyvä viittaustieto (vaadittu)
           default_label: Valitse viittaustieto
-        reference_entity:
-          identifier: Liittyvä viittaustieto (vaadittu)
-          default_label: Valitse viittaustieto
-pim_catalog_volume:
-  axis:
-    count_reference_entity: Viitetiedot

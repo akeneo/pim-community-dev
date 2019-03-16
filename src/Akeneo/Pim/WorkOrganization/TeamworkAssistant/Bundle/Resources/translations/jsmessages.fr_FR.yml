@@ -35,6 +35,7 @@ teamwork_assistant:
     in_progress: EN COURS
     done: FINI
     all_contributors: Tous les contributeurs
+    you: Vous
     display_products: Afficher les produits
     placeholder:
       contributor_selector: Rechercher un contributeur

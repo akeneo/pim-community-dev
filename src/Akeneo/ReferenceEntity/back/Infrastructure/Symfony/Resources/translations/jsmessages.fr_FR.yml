@@ -134,6 +134,7 @@ pim_reference_entity:
     grid:
       search: Rechercher sur le libellé, le code et les attributs texte
       filter:
+        counter: '{{ matchesCount }} résultat|{{ matchesCount }} résultats'
         completeness:
           label: Complet
           all: TOUT
@@ -285,6 +286,3 @@ pim_enrich:
           default_label: Veuillez sélectionner une entité référentielle
 permission:
   mass_action: Appliquer {{ rightLevel }} sur tous les groupes
-pim_catalog_volume:
-  axis:
-    count_reference_entity: Entités référentielles
