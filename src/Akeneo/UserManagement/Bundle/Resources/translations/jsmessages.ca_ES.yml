@@ -30,6 +30,7 @@ pim_enrich:
 pim_user_management:
   entity:
     user:
+      label: usuari
       flash:
         update:
           success: Usuari actualitzat correctament.
@@ -58,6 +59,7 @@ pim_user_management:
         new_password: Contrasenya nova
         new_password_repeat: Nova contrasenya (repetir)
         password: Contrasenya
+        password_repeat: Contrasenya (repetir)
         ui_locale: Configuració regional de la interfície d'usuari
         timezone: Zona horària
         default_product_grid_view: Vista de quadrícula de producte per defecte
