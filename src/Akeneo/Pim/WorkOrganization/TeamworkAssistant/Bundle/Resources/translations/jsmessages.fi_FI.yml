@@ -58,8 +58,8 @@ batch_jobs:
     prepare_project_calculation.label: Valmistele projektin muodostaminen
     clean_contributor_group.label: Tarkista käyttäjien käyttöoikeudet projektin lokaaliin
   refresh_project_completeness_calculation:
-    label: Päivitä projektin täyttöaste
-    refresh_project_completeness_calculation.label: Päivitä projektin täyttöaste
+    label: Päivitä projektin valmiusaste
+    refresh_project_completeness_calculation.label: Päivitä projektin valmiusaste
 pim_notification:
   types:
     project_created: Uusi projekti sinulle
