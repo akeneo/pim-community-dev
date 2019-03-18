@@ -12,6 +12,7 @@
 - PIM-8136: Fix display order of datepicker
 - PIM-8227: Fix disappearing columns when saving view columns
 - PXD-10: Fix comment deletion Popin
+- PXD-11: Fix Done button position on category tree
 
 # 3.0.7 (2019-03-13)
 
