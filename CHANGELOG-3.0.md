@@ -17,6 +17,7 @@
 - PXD-13: Fix disable filter cross on filters list
 - PXD-15: Fix margins on filters column
 - PXD-17: Fix grid margins
+- PXD-19: Fix Forgot Password page design
 
 # 3.0.7 (2019-03-13)
 
