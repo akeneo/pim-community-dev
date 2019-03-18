@@ -159,7 +159,7 @@ jobs:
           - run:
                 name: PHPunit End to end
                 command: |
-                    TESTFILES=$(circleci tests glob "tests/back/**/*EndToEnd.php" "src/**/*EndToEnd.php" | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm .circleci/find_phpunit.sh End_to_End | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
