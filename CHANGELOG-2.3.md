@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.34 (2019-03-18)
+
 ## Bug fixes
 
 - PIM-8222: Fix product model issues when code contains `/` (create variant through UI and get product models via API)
