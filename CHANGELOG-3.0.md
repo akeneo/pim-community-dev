@@ -15,6 +15,7 @@
 - PXD-11: Fix Done button position on category tree
 - PXD-12: Move view selector in the search box
 - PXD-13: Fix disable filter cross on filters list
+- PXD-15: Fix margins on filters column
 
 # 3.0.7 (2019-03-13)
 
