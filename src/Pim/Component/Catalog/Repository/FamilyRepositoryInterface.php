@@ -35,7 +35,7 @@ interface FamilyRepositoryInterface extends
      * @param FamilyInterface  $family
      * @param ChannelInterface $channel
      *
-     * @return array
+     * @return FamilyInterface[]
      */
     public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null);
 

@@ -171,12 +171,12 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 'requiredCount' => $requiredCount,
                 'ratio'         => $ratio,
                 'channel'       => $normalizedReqs[$missingComp]['channel'],
-                'locale'        => $normalizedReqs[$missingComp]['locale']
+                'locale'        => $normalizedReqs[$missingComp]['locale'],
             ];
 
             $completenesses[$missingComp] = [
                 'object' => $compObject,
-                'ratio'  => $ratio
+                'ratio'  => $ratio,
             ];
         }
 
@@ -263,7 +263,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
                 $collection->update($query, $compObject, $options);
 
-                $normalizedComp = ['$set' => ['normalizedData.completenesses.'.$key => $value['ratio']]];
+                $normalizedComp = ['$set' => ['normalizedData.completenesses.' . $key => $value['ratio']]];
                 $collection->update($query, $normalizedComp, $options);
             }
         }
@@ -378,6 +378,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $channels = [];
 
             foreach ($family->getAttributeRequirements() as $attributeReq) {
+                if (!$attributeReq->isRequired()) {
+                    continue;
+                }
                 $channel = $attributeReq->getChannel();
 
                 $channels[$channel->getCode()] = $channel;
@@ -410,7 +413,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $fields = [];
         foreach ($channels as $channel) {
             foreach ($channel->getLocales() as $locale) {
-                $expectedCompleteness = $channel->getCode().'-'.$locale->getCode();
+                $expectedCompleteness = $channel->getCode() . '-' . $locale->getCode();
                 $fields[$expectedCompleteness] = [];
                 $fields[$expectedCompleteness]['channel'] = $channel->getId();
                 $fields[$expectedCompleteness]['locale'] = $locale->getId();
@@ -488,7 +491,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             if (!empty($combinations)) {
                 foreach ($combinations as $combination) {
                     $expr = new Expr();
-                    $expr->field('normalizedData.completenesses.'.$combination)->exists(false);
+                    $expr->field('normalizedData.completenesses.' . $combination)->exists(false);
                     $productsQb->addOr($expr);
                 }
             }
@@ -519,7 +522,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         foreach ($channels as $channel) {
             $locales = $channel->getLocales();
             foreach ($locales as $locale) {
-                $combinations[] = $channel->getCode().'-'.$locale->getCode();
+                $combinations[] = $channel->getCode() . '-' . $locale->getCode();
             }
         }
 
@@ -559,8 +562,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $productQb = $this->documentManager->createQueryBuilder($this->productClass);
 
         $pullExpr = $productQb->expr()
-                ->addAnd($productQb->expr()->field('channel')->equals($channel->getId()))
-                ->addAnd($productQb->expr()->field('locale')->equals($locale->getId()));
+            ->addAnd($productQb->expr()->field('channel')->equals($channel->getId()))
+            ->addAnd($productQb->expr()->field('locale')->equals($locale->getId()));
 
         $productQb
             ->update()
