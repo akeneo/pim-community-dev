@@ -177,7 +177,7 @@ jobs:
           - run:
                 name: PHPunit End to end
                 command: |
-                    TESTFILES=$(circleci tests glob "tests/back/**/*EndToEnd.php" "vendor/akeneo/pim-community-dev/tests/back/**/*EndToEnd.php" "vendor/akeneo/pim-community-dev/src/**/*EndToEnd.php" | circleci tests split)
+                    TESTFILES=$(docker-compose exec -T fpm vendor/akeneo/pim-community-dev/.circleci/find_phpunit.sh End_to_End  | circleci tests split)
                     vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
