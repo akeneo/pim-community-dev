@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -24,24 +23,18 @@ class GroupUpdater implements ObjectUpdaterInterface
     /** @var GroupTypeRepositoryInterface */
     protected $groupTypeRepository;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var ProductQueryBuilderFactoryInterface */
     protected $productQueryBuilderFactory;
 
     /**
      * @param GroupTypeRepositoryInterface        $groupTypeRepository
-     * @param AttributeRepositoryInterface        $attributeRepository
      * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
      */
     public function __construct(
         GroupTypeRepositoryInterface $groupTypeRepository,
-        AttributeRepositoryInterface $attributeRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
     ) {
         $this->groupTypeRepository = $groupTypeRepository;
-        $this->attributeRepository = $attributeRepository;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
     }
 

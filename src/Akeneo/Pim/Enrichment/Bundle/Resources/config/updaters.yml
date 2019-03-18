@@ -106,7 +106,6 @@ services:
         class: '%pim_catalog.updater.group.class%'
         arguments:
             - '@pim_catalog.repository.group_type'
-            - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.product_query_builder_factory'
 
     pim_enrichment.updater.translatable:

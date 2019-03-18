@@ -2,29 +2,27 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\GroupUpdater;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
+use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslation;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\GroupUpdater;
 
 class GroupUpdaterSpec extends ObjectBehavior
 {
     function let(
         GroupTypeRepositoryInterface $groupTypeRepository,
-        AttributeRepositoryInterface $attributeRepository,
         ProductQueryBuilderFactoryInterface $pqbFactory
     ) {
-        $this->beConstructedWith($groupTypeRepository, $attributeRepository, $pqbFactory);
+        $this->beConstructedWith($groupTypeRepository, $pqbFactory);
     }
 
     function it_is_initializable()
@@ -52,20 +50,15 @@ class GroupUpdaterSpec extends ObjectBehavior
 
     function it_updates_a_group(
         $groupTypeRepository,
-        $attributeRepository,
         $pqbFactory,
         GroupInterface $group,
         GroupTypeInterface $type,
         GroupTranslation $translatable,
-        AttributeInterface $attributeColor,
-        AttributeInterface $attributeSize,
         ProductInterface $removedProduct,
         ProductInterface $addedProduct,
         ProductQueryBuilderInterface $pqb
     ) {
         $groupTypeRepository->findOneByIdentifier('RELATED')->willReturn($type);
-        $attributeRepository->findOneByIdentifier('color')->willReturn($attributeColor);
-        $attributeRepository->findOneByIdentifier('size')->willReturn($attributeSize);
 
         $pqbFactory->create()->willReturn($pqb);
         $pqb->addFilter('identifier', 'IN', ['foo'])->shouldBeCalled();
