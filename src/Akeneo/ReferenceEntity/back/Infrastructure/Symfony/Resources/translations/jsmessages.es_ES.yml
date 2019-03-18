@@ -278,6 +278,3 @@ pim_enrich:
           default_label: Por favor, selecciona una entidad de referencia
 permission:
   mass_action: Aplicar {{ rightLevel }} derechos en todos los grupos
-pim_catalog_volume:
-  axis:
-    count_reference_entity: Entidades de referencia

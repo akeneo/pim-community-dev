@@ -60,6 +60,7 @@ pimee_product_asset:
       error: Error
       success: Correcte
     drag_and_drop: Arrossegueu-hi els seus recursos o feu clic aquí
+    tabsection_title: Actius carregats
   datagrid:
     mass_action:
       delete:
@@ -217,6 +218,7 @@ pim_catalog_volume:
   section:
     assets:
       title: Eixos dels recursos
+      hint: Pot seguir la relació del volum de recursos aquí
   axis:
     count_assets: Recursos
     count_asset_categories: Categories de recursos

@@ -14,7 +14,16 @@ akeneo_franklin_insights:
   entity:
     product_subscription:
       constraint:
+        family_required: 'Una família de producte és necessària per subscriure el producte a les estadístiques de Franklin.'
         no_identifiers_mapping: 'Si us plau, mapa els teus identificadors de producte de catàleg a Configuració > Abans de subscriure''s productes a Franklin Insights.'
+        insufficient_credits: "No s'ha pogut subscriure el producte a les Franklin Insights. No té prou crèdit."
+        invalid_mapped_values: 'No s''ha pogut subscriure el producte a les Franklin Insights. Subscriu el producte amb una combinació de valors vàlids, si us plau.'
+        already_subscribed_product: 'El producte ja està subscrit.'
+        variant_product: 'Els productes variants no poden ser subscrits al Franklin Insights.'
+        inactive_connection: 'No s''ha pogut subscriure el producte a les Franklin Insights. Configureu la connexió a les Franklin Insights, su us plau.'
+    attributes_mapping:
+      notification:
+        new_attributes_to_map: 'Teniu nous atributs per assignar per a la família "%familyLabel%"'
 job_execution.summary:
   configuration_validation: Configuració de les estadístiques de Franklin
   subscribed: subscrit
@@ -24,3 +33,4 @@ pim_datagrid:
   cells:
     type:
       franklin_insights_fetch_products: Estadístiques de Franklin
+Franklin subscription: Subscripció a Franklin
