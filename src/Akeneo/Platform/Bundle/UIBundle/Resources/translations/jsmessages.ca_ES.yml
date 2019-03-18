@@ -125,6 +125,7 @@ pim_common:
   code: Codi
   confirm: Confirmar
   confirm_deletion: Confirmar l'eliminació
+  confirm_revocation: Confirmar la revocació
   create: Crear
   created: Creat
   delete: Suprimir
@@ -212,6 +213,9 @@ pim_enrich.entity.api_connection:
       fail: No pot revocar aquesta connexió API
   page_title:
     index: "]-Inf, 1]{{ count }} connexió API|]1, Inf[{{ count }} connexions API"
+  module:
+    revoke:
+      confirm: Està segur que vol revocar aquesta connexió d'API?
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} operació|]1, Inf[{{ count }} operacions"
