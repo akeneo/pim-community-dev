@@ -40,6 +40,7 @@ oro.datagrid.nocolumns: Aucune colonne configurée pour cette grille
 oro.datagrid.pagination.label: "Page"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} éléments"
+oro.datagrid.pagination.limit_warning: "La grille ne peut afficher plus de {{ limit }} résultats, essayez de filtrer sur des critères de recherche supplémentaires."
 oro.datagrid.action.reset: "Réinitialiser"
 oro.datagrid.action.refresh: "Mettre à jour"
 oro_datagrid.select.all: "Tous"

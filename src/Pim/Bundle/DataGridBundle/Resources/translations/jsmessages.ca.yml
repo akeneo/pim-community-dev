@@ -40,6 +40,7 @@ oro.datagrid.nocolumns: Sense columnes configurades per aquesta graella
 oro.datagrid.pagination.label: "Pàgina"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registres"
+oro.datagrid.pagination.limit_warning: "La grilla no pot mostrar més resultats {{ limit }}, prova a filtrar criteris de cerca addicionals."
 oro.datagrid.action.reset: "Reinicia"
 oro.datagrid.action.refresh: "Actualitza"
 oro_datagrid.select.all: "Tots"
