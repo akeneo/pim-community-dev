@@ -54,7 +54,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordItemsForIdentifiersAndQuery
         arguments:
             - '@database_connection'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_item'
 
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_has_records:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityHasRecords
