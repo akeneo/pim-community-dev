@@ -63,7 +63,7 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
             $jobInstance->getType() . DIRECTORY_SEPARATOR .
             $jobInstance->getJobName() . DIRECTORY_SEPARATOR .
             $jobExecution->getId() . DIRECTORY_SEPARATOR .
-            uniqid() . DIRECTORY_SEPARATOR .
+            $jobExecution->getUniqId() . DIRECTORY_SEPARATOR .
             $this->getName() . DIRECTORY_SEPARATOR .
             '%filename%';
     }

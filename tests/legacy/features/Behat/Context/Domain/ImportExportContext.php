@@ -197,7 +197,13 @@ class ImportExportContext extends PimContext
             ;
         }
 
-        $reader->open($path);
+        $filesystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.archivist_filesystem');
+        $stream = $filesystem->readStream($path);
+
+        $localPath = sprintf('/srv/pim/var/%s.csv', uniqid('', true));
+        file_put_contents($localPath, $stream);
+
+        $reader->open($localPath);
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $lines = iterator_to_array($sheet->getRowIterator());
         $reader->close();

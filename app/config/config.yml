@@ -63,27 +63,17 @@ oneup_flysystem:
             googlecloudstorage:
                 client: poc_storage.google_storage.client
                 bucket: poc_storage.google_storage.bucket.catalog_storage
-                prefix: ''
+                prefix: '%catalog_storage_dir%'
         tmp_storage_adapter:
             googlecloudstorage:
                 client: poc_storage.google_storage.client
                 bucket: poc_storage.google_storage.bucket.tmp_storage
-                prefix: ''
+                prefix: '%tmp_storage_dir%'
         archivist_adapter:
             googlecloudstorage:
                 client: poc_storage.google_storage.client
                 bucket: poc_storage.google_storage.bucket.archivist
-                prefix: ''
-        upload_adapter:
-            googlecloudstorage:
-                client: poc_storage.google_storage.client
-                bucket: poc_storage.google_storage.bucket.upload
-                prefix: ''
-        tmp_upload_adapter:
-            googlecloudstorage:
-                client: poc_storage.google_storage.client
-                bucket: poc_storage.google_storage.bucket.tmp_upload
-                prefix: ''
+                prefix: '%archive_dir%'
     filesystems:
         catalog_storage:
             adapter: catalog_storage_adapter
@@ -96,16 +86,6 @@ oneup_flysystem:
         archivist:
             adapter: archivist_adapter
             mount: archivist
-            plugins:
-                - oneup_flysystem.plugin.list_files
-        upload:
-            adapter: upload_adapter
-            mount: upload
-            plugins:
-                - oneup_flysystem.plugin.list_files
-        tmp_upload:
-            adapter: tmp_upload_adapter
-            mount: tmpUpload
             plugins:
                 - oneup_flysystem.plugin.list_files
 

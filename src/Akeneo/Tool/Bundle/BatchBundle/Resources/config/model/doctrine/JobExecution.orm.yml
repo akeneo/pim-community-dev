@@ -11,6 +11,9 @@ Akeneo\Tool\Component\Batch\Model\JobExecution:
             id: true
             generator:
                 strategy: AUTO
+        uniqId:
+            type: string
+            column: uniq_id
         pid:
             type: integer
             column: pid

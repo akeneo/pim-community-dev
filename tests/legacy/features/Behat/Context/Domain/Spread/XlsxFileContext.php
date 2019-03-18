@@ -25,7 +25,13 @@ class XlsxFileContext extends PimContext
         $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);
 
         $reader = ReaderFactory::create(Type::XLSX);
-        $reader->open($path);
+
+        $filesystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.archivist_filesystem');
+        $stream = $filesystem->readStream($path);
+        $localPath = sprintf('/srv/pim/var/%s.xlsx', uniqid('', true));
+        file_put_contents($localPath, $stream);
+
+        $reader->open($localPath);
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = iterator_to_array($sheet->getRowIterator());
         $reader->close();
@@ -46,7 +52,13 @@ class XlsxFileContext extends PimContext
         $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);
 
         $reader = ReaderFactory::create(Type::XLSX);
-        $reader->open($path);
+
+        $filesystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.archivist_filesystem');
+        $stream = $filesystem->readStream($path);
+        $localPath = sprintf('/srv/pim/var/%s.xlsx', uniqid('', true));
+        file_put_contents($localPath, $stream);
+
+        $reader->open($localPath);
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = iterator_to_array($sheet->getRowIterator());
         $reader->close();
@@ -68,9 +80,14 @@ class XlsxFileContext extends PimContext
         unset($expectedLines[0]);
 
         $reader = ReaderFactory::create(Type::XLSX);
+        $filesystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.archivist_filesystem');
 
         foreach ($filePaths as $path) {
-            $reader->open($path);
+            $stream = $filesystem->readStream($path);
+            $localPath = sprintf('/srv/pim/var/%s.xlsx', uniqid('', true));
+            file_put_contents($localPath, $stream);
+
+            $reader->open($localPath);
             $sheet = current(iterator_to_array($reader->getSheetIterator()));
             $actualLines = iterator_to_array($sheet->getRowIterator());
 
@@ -102,7 +119,13 @@ class XlsxFileContext extends PimContext
         $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
 
         $reader = ReaderFactory::create(Type::XLSX);
-        $reader->open($path);
+
+        $filesystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.archivist_filesystem');
+        $stream = $filesystem->readStream($path);
+        $localPath = sprintf('/srv/pim/var/%s.xlsx', uniqid('', true));
+        file_put_contents($localPath, $stream);
+
+        $reader->open($localPath);
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = iterator_to_array($sheet->getRowIterator());
         $reader->close();
@@ -235,9 +258,6 @@ class XlsxFileContext extends PimContext
      */
     protected function compareLines(array $expectedLines, array $actualLines, $path)
     {
-        $expectedCount = count($expectedLines);
-        $actualCount = count($actualLines);
-
         $headerDiff = array_diff($actualLines[0], $expectedLines[0]);
         if (0 !== count(array_diff($actualLines[0], $expectedLines[0]))) {
             throw new \Exception(

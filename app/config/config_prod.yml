@@ -27,3 +27,6 @@ monolog:
 oro_assetic:
     css_debug:      ~
     css_debug_all:  false
+
+parameters:
+    installer_data: PimInstallerBundle:minimal

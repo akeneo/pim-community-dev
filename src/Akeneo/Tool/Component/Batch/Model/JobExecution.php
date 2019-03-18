@@ -23,6 +23,9 @@ class JobExecution
     /** @var integer */
     private $id;
 
+    /** @var string */
+    private $uniqId;
+
     /** @var ArrayCollection */
     private $stepExecutions;
 
@@ -82,6 +85,7 @@ class JobExecution
      */
     public function __construct()
     {
+        $this->uniqId = uniqid();
         $this->setStatus(new BatchStatus(BatchStatus::STARTING));
         $this->setExitStatus(new ExitStatus(ExitStatus::UNKNOWN));
         $this->executionContext = new ExecutionContext();
@@ -114,6 +118,14 @@ class JobExecution
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniqId()
+    {
+        return $this->uniqId;
     }
 
     /**

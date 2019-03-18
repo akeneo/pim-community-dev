@@ -150,10 +150,11 @@ class ImportProfilesContext extends ImportExportContext
 
         $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
         $filePath = sprintf(
-            '%simport/%s/%s/invalid_%s/invalid_items.%s',
+            '%simport/%s/%s/%s/invalid_%s/invalid_items.%s',
             $filePath,
             $jobInstance->getJobName(),
             $jobExecution->getId(),
+            $jobExecution->getUniqId(),
             $fileType,
             $fileType
         );

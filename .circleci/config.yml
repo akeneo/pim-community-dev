@@ -26,7 +26,7 @@ jobs:
           command: sudo chown -R 1000:1000 ../project
       - run:
           name: Start containers
-          command: docker-compose up -d
+          command: docker-compose up -d --build
       - restore_cache:
           name: Restore cache - node_modules
           keys:
@@ -43,7 +43,7 @@ jobs:
           command: ./bin/docker/pim-dependencies.sh
       - run:
           name: Pim database installation
-          command: docker-compose exec fpm bin/console --env=behat pim:install --force --clean
+          command: docker-compose exec fpm bin/console --env=prod pim:install --force --clean
       - run:
             name: Pim yarn dev installation
             command: docker-compose run --rm node yarn run webpack-dev
@@ -77,14 +77,11 @@ jobs:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: sudo chown -R 1000:1000 ../project
           - run:
-                name: Start containers
-                command: docker-compose up -d fpm
-          - run:
                 name: PhpSpec
-                command: docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+                command: docker-compose run --rm -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
           - run:
                 name: PhpCsFixer
-                command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+                command: docker-compose run --rm -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
                 when: always
           - run:
                 name: PhpCoupling Detector
@@ -92,15 +89,15 @@ jobs:
                 when: always
           - run:
                 name: PHPStan
-                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
+                command: docker-compose run --rm -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
                 when: always
           - run:
                 name: Check Pullup
-                command: docker-compose exec -T fpm bin/check-pullup
+                command: docker-compose run --rm -T fpm bin/check-pullup
                 when: always
           - run:
                 name: Acceptance back
-                command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
+                command: docker-compose run --rm fpm vendor/bin/behat --strict -p acceptance -vv
                 when: always
           - store_test_results:
                 path: var/tests
