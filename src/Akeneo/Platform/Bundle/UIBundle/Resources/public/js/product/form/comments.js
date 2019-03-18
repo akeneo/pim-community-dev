@@ -62,7 +62,7 @@ define(
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
-                    label: __('pim_comment.product.panel.comment.title')
+                    label: __('pim_enrich.entity.product.module.comment.title')
                 });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -84,7 +84,7 @@ define(
                             __: __,
                             comments: this.comments,
                             username: UserContext.get('username'),
-                            emptyLabel: __('pim_comment.index.empty')
+                            emptyLabel: __('pim_enrich.entity.product.module.comment.empty')
                         })
                     );
                     this.delegateEvents();
@@ -160,10 +160,10 @@ define(
              * @param {Event} event
              */
             removeComment: function (event) {
-                Dialog.confirm(
-                    __('confirmation.remove.comment'),
+                Dialog.confirmDelete(
+                    __('pim_enrich.entity.product.module.comment.delete_confirm'),
                     __('pim_common.confirm_deletion'),
-                    this.doRemove.bind(this, event)
+                    this.doRemove.bind(this, event),
                 );
             },
 
