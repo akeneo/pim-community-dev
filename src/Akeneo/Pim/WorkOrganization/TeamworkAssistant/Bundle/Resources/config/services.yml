@@ -102,7 +102,7 @@ services:
         arguments:
             - '@pimee_teamwork_assistant.factory.project_notification'
             - '@pim_notification.notifier'
-            - '@pim_catalog.localization.presenter.date'
+            - '@pimee_workflow.presenter.date'
             - '%pimee_teamwork_assistant.reminder.days%'
 
     pimee_teamwork_assistant.event_subscriber.notification:
