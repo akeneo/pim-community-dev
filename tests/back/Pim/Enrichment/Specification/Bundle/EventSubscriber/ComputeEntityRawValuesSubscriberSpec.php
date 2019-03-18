@@ -2,24 +2,23 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeEntityRawValuesSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ComputeEntityRawValuesSubscriberSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $serializer, AttributeRepositoryInterface $attributeRepository)
+    function let(NormalizerInterface $serializer)
     {
-        $this->beConstructedWith($serializer, $attributeRepository);
+        $this->beConstructedWith($serializer);
     }
 
     function it_is_initializable()
