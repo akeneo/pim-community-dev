@@ -149,8 +149,8 @@ extensions:
 
     pim-product-index-display-selector:
         module: pim/datagrid/display-selector
-        parent: pim-product-index-grid-container
-        targetZone: toolbar
+        parent: pim-product-index
+        targetZone: search
         position: 20
         config:
             gridName: product-grid
