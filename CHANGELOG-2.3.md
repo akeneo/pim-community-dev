@@ -6,6 +6,7 @@
 
 - PIM-8187: When delete a product model / product the proposals linked in ES where not deleted
 - PIM-8225: Show reference image on assets grid when there is no variation file info for the channel
+- PIM-8041: Use project locale when switching between projects
 
 # 2.3.33 (2019-03-13)
 
@@ -93,9 +94,9 @@ Please run the doctrine migrations command in order to update the DB schema: `bi
 - PIM-7931: When a new Channel or Locale is added, assets are well updated.
 
  ## Elasticsearch
- 
+
  - Please re-index the products and product models by launching the commands `console akeneo:elasticsearch:reset-indexes -e prod` and `pim:product:index --all -e prod`.
- 
+
 # 2.3.21 (2018-12-07)
 
 # 2.3.20 (2018-12-06)
@@ -140,9 +141,9 @@ Please run the doctrine migrations command in order to update the DB schema: `bi
 
 ## Bug fixes
 
-- PIM-7723: fix consistency between TWA widget numbers and the datagrid view 
-- PIM-7731: check for attribute as label not null in normalizers 
-- PIM-7734: fix published product datagrid status filter 
+- PIM-7723: fix consistency between TWA widget numbers and the datagrid view
+- PIM-7731: check for attribute as label not null in normalizers
+- PIM-7734: fix published product datagrid status filter
 - PIM-7733: Fix memory leak during mass publishing
 - PIM-7742: fix expired assets notification
 - PIM-7736: Fix memory leak during published products indexing
