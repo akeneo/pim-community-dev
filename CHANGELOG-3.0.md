@@ -19,6 +19,7 @@
 - PXD-17: Fix grid margins
 - PXD-19: Fix Forgot Password page design
 - PXD-20: Fix version number design in history pages
+- PXD-21: Fix Dashboard Last operation widget design
 
 # 3.0.7 (2019-03-13)
 
