@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface as PimAttributeRepositoryInterface;
+use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository as PimAttributeRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -32,7 +32,7 @@ final class InMemoryAttributeRepository implements AttributeRepositoryInterface
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function findByCodes(array $codes)
+    public function findByCodes(array $codes): array
     {
         $attributes = [];
 
@@ -43,9 +43,9 @@ final class InMemoryAttributeRepository implements AttributeRepositoryInterface
         return $attributes;
     }
 
-    public function findOneByIdentifier(string $attributeCode)
+    public function findOneByIdentifier(string $code): ?Attribute
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        $attribute = $this->attributeRepository->findOneByIdentifier($code);
 
         if ($attribute instanceof AttributeInterface) {
             return $this->buildAttribute($attribute);
@@ -54,9 +54,9 @@ final class InMemoryAttributeRepository implements AttributeRepositoryInterface
         return null;
     }
 
-    public function getAttributeTypeByCodes(array $attributeCodes): array
+    public function getAttributeTypeByCodes(array $codes): array
     {
-        return $this->attributeRepository->getAttributeTypeByCodes($attributeCodes);
+        return $this->attributeRepository->getAttributeTypeByCodes($codes);
     }
 
     public function save($attribute): void

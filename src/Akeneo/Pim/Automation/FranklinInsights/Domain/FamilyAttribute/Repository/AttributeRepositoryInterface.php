@@ -13,14 +13,31 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
+
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 interface AttributeRepositoryInterface
 {
-    public function findOneByIdentifier(string $attributeCode);
+    /**
+     * @param string $code
+     *
+     * @return Attribute|null
+     */
+    public function findOneByIdentifier(string $code): ?Attribute;
 
-    public function findByCodes(array $codes);
+    /**
+     * @param string[] $codes
+     *
+     * @return Attribute[]
+     */
+    public function findByCodes(array $codes): array;
 
-    public function getAttributeTypeByCodes(array $attributeCodes): array;
+    /**
+     * @param string[] $codes
+     *
+     * @return array
+     */
+    public function getAttributeTypeByCodes(array $codes): array;
 }

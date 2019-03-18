@@ -27,19 +27,19 @@ final class AttributeRepositoryIntegration extends TestCase
     {
         $attribute = $this
             ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.attribute')
-            ->findOneByIdentifier('color');
+            ->findOneByIdentifier('size');
         $this->assertNull($attribute);
 
-        $id = $this->createAttributeWithAllValues('color');
+        $id = $this->createAttributeWithAllValues('size');
 
         $attribute = $this
             ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.attribute')
-            ->findOneByIdentifier('color');
+            ->findOneByIdentifier('size');
 
         $expectedAttribute = new Attribute(
-            new AttributeCode('color'),
+            new AttributeCode('size'),
             $id,
-            'pim_catalog_identifier',
+            'pim_catalog_metric',
             true,
             true,
             true,
@@ -53,15 +53,15 @@ final class AttributeRepositoryIntegration extends TestCase
         );
         $this->assertEquals($expectedAttribute, $attribute);
 
-        $id2 = $this->createAttributeWithMinimumValues('size');
+        $id2 = $this->createAttributeWithMinimumValues('size2');
         $attribute = $this
             ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.attribute')
-            ->findOneByIdentifier('size');
+            ->findOneByIdentifier('size2');
 
         $expectedAttribute = new Attribute(
-            new AttributeCode('size'),
+            new AttributeCode('size2'),
             $id2,
-            'pim_catalog_text',
+            'pim_catalog_metric',
             false,
             false,
             false,
@@ -92,15 +92,15 @@ final class AttributeRepositoryIntegration extends TestCase
 
     public function test_get_attribute_type_by_codes(): void
     {
-        $this->createAttributeWithAllValues('color');
-        $this->createAttributeWithMinimumValues('size');
+        $this->createAttributeWithAllValues('size');
+        $this->createAttributeWithMinimumValues('size2');
 
         $attributeTypes = $this
             ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.attribute')
-            ->getAttributeTypeByCodes(['color', 'size']);
+            ->getAttributeTypeByCodes(['size', 'size2']);
 
         $this->assertEquals(
-            ['color' => 'pim_catalog_identifier', 'size' => 'pim_catalog_text'],
+            ['size' => 'pim_catalog_metric', 'size2' => 'pim_catalog_metric'],
             $attributeTypes
         );
     }
@@ -115,7 +115,7 @@ final class AttributeRepositoryIntegration extends TestCase
         $attribute = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')->build(
             [
                 'code' => $code,
-                'type' => 'pim_catalog_identifier',
+                'type' => 'pim_catalog_metric',
                 'group' => 'other',
                 'localizable' => true,
                 'scopable' => true,
@@ -140,7 +140,7 @@ final class AttributeRepositoryIntegration extends TestCase
         $attribute = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')->build(
             [
                 'code' => $code,
-                'type' => 'pim_catalog_text',
+                'type' => 'pim_catalog_metric',
                 'group' => 'other',
             ]
         );

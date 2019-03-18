@@ -142,7 +142,7 @@ $rules = [
 
             //Needed for the memory repositories
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
-            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+            'Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence'),
 

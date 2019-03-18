@@ -31,18 +31,18 @@ class AttributeRepository implements AttributeRepositoryInterface
         $this->connection = $connection;
     }
 
-    public function findOneByIdentifier(string $attributeCode)
+    public function findOneByIdentifier(string $code): ?Attribute
     {
         $query = <<<SQL
         SELECT attribute.id, code, attribute_type, is_localizable, is_scopable, decimals_allowed, metric_family, default_metric_unit,
-        EXISTS (SELECT 1 from pim_catalog_attribute_locale WHERE attribute_id = attribute.id) AS is_locale_specific,
+        EXISTS (SELECT id from pim_catalog_attribute_locale WHERE attribute_id = attribute.id) AS is_locale_specific,
         (SELECT JSON_OBJECTAGG(IFNULL(locale, 0), label) FROM pim_catalog_attribute_translation WHERE foreign_key = attribute.id) AS labels
         FROM pim_catalog_attribute attribute
         WHERE code = :attribute_code;
 SQL;
         $statement = $this->connection->executeQuery(
             $query,
-            ['attribute_code' => $attributeCode],
+            ['attribute_code' => $code],
             ['attribute_code' => \PDO::PARAM_STR]
         );
 
@@ -55,18 +55,18 @@ SQL;
         return $this->buildAttribute($result);
     }
 
-    public function findByCodes(array $attributeCodes): array
+    public function findByCodes(array $codes): array
     {
         $query = <<<SQL
         SELECT attribute.id, code, attribute_type, is_localizable, is_scopable, decimals_allowed, metric_family, default_metric_unit,
-        EXISTS (SELECT 1 from pim_catalog_attribute_locale WHERE attribute_id = attribute.id) AS is_locale_specific,
+        EXISTS (SELECT id from pim_catalog_attribute_locale WHERE attribute_id = attribute.id) AS is_locale_specific,
         (SELECT JSON_OBJECTAGG(IFNULL(locale, 0), label) FROM pim_catalog_attribute_translation WHERE foreign_key = attribute.id) AS labels
         FROM pim_catalog_attribute attribute
         WHERE code IN(:attribute_codes);
 SQL;
         $statement = $this->connection->executeQuery(
             $query,
-            ['attribute_codes' => $attributeCodes],
+            ['attribute_codes' => $codes],
             ['attribute_codes' => Connection::PARAM_STR_ARRAY]
         );
 
@@ -77,7 +77,7 @@ SQL;
         }, $results);
     }
 
-    public function getAttributeTypeByCodes(array $attributeCodes): array
+    public function getAttributeTypeByCodes(array $codes): array
     {
         $query = <<<SQL
         SELECT code, attribute_type
@@ -86,7 +86,7 @@ SQL;
 SQL;
         $statement = $this->connection->executeQuery(
             $query,
-            ['attribute_codes' => $attributeCodes],
+            ['attribute_codes' => $codes],
             ['attribute_codes' => Connection::PARAM_STR_ARRAY]
         );
 
