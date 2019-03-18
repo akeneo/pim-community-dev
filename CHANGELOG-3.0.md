@@ -18,6 +18,7 @@
 - PXD-15: Fix margins on filters column
 - PXD-17: Fix grid margins
 - PXD-19: Fix Forgot Password page design
+- PXD-20: Fix version number design in history pages
 
 # 3.0.7 (2019-03-13)
 
