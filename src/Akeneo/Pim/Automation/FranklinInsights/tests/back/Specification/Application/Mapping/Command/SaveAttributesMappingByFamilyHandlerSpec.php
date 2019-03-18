@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\A
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\SelectFamilyAttributeCodesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
@@ -60,7 +61,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     ): void {
         $attribute->getCode()->willReturn('tshirt_style');
         $attributeRepository->findByCodes(['tshirt_style'])->willReturn([$attribute]);
-        $familyRepository->exist('router')->willReturn(false);
+        $familyRepository->exist(new FamilyCode('router'))->willReturn(false);
 
         $command = new SaveAttributesMappingByFamilyCommand('router', [
             'color' => [
@@ -83,8 +84,9 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             ],
         ]);
 
-        $familyRepository->exist('router')->willReturn(true);
-        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['tshirt_style']);
+        $familyCode = new FamilyCode('router');
+        $familyRepository->exist($familyCode)->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute($familyCode)->willReturn(['tshirt_style']);
 
         $attributeRepository->findByCodes(['tshirt_style'])->willReturn([]);
 
@@ -117,8 +119,9 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributesMapping);
 
-        $familyRepository->exist('router')->willReturn(true);
-        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'ram', 'product_weight']);
+        $familyCode = new FamilyCode('router');
+        $familyRepository->exist($familyCode)->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute($familyCode)->willReturn(['sku', 'ram', 'product_weight']);
 
         $attributeRepository
             ->findByCodes(['ram', 'product_weight'])
@@ -171,8 +174,9 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributesMapping);
 
-        $familyRepository->exist('router')->willReturn(true);
-        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'ram']);
+        $familyCode = new FamilyCode('router');
+        $familyRepository->exist($familyCode)->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute($familyCode)->willReturn(['sku', 'ram']);
 
         $attributeRepository
             ->findByCodes(['ram'])
@@ -215,8 +219,9 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             ],
         ]);
 
-        $familyRepository->exist('router')->willReturn(true);
-        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'release_date']);
+        $familyCode = new FamilyCode('router');
+        $familyRepository->exist($familyCode)->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute($familyCode)->willReturn(['sku', 'release_date']);
 
         $attributeRepository
             ->findByCodes(['release_date'])
@@ -258,8 +263,9 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributesMapping);
 
-        $familyRepository->exist('router')->willReturn(true);
-        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'ram', 'product_weight']);
+        $familyCode = new FamilyCode('router');
+        $familyRepository->exist($familyCode)->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute($familyCode)->willReturn(['sku', 'ram', 'product_weight']);
 
         $attributeRepository
             ->findByCodes(['ram', 'product_weight'])
@@ -310,8 +316,9 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 
         $attributeRepository->findByCodes(['ram'])->willReturn([$memoryAttribute]);
 
-        $familyRepository->exist('router')->willReturn(true);
-        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'ram']);
+        $familyCode = new FamilyCode('router');
+        $familyRepository->exist($familyCode)->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute($familyCode)->willReturn(['sku', 'ram']);
 
         $memoryAttribute->getCode()->willReturn(new AttributeCode('ram'));
         $memoryAttribute->getType()->willReturn(AttributeTypes::METRIC);
@@ -337,8 +344,9 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
-        $familyRepository->exist('router')->willReturn(true);
-        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'ram']);
+        $familyCode = new FamilyCode('router');
+        $familyRepository->exist($familyCode)->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute($familyCode)->willReturn(['sku', 'ram']);
 
         $attributeRepository->findByCodes(['ram'])->willReturn([$memoryAttribute]);
 
@@ -368,8 +376,9 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
-        $familyRepository->exist('router')->willReturn(true);
-        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'ram']);
+        $familyCode = new FamilyCode('router');
+        $familyRepository->exist($familyCode)->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute($familyCode)->willReturn(['sku', 'ram']);
 
         $attributeRepository->findByCodes(['ram'])->willReturn([$memoryAttribute]);
         $attributeRepository->findOneByIdentifier('ram')->willReturn($memoryAttribute);

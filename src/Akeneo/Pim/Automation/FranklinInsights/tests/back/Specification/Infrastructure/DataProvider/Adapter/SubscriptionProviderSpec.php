@@ -296,7 +296,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
     public function it_throws_a_data_provider_exception_when_server_is_down_on_family_infos_update(
         $subscriptionApi
     ): void {
-
         $subscriptionId = '123456';
         $family = new Family(new FamilyCode('new_family_code'), []);
 
@@ -308,13 +307,8 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ->during('updateFamilyInfos', [new SubscriptionId($subscriptionId), $family]);
     }
 
-    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_family_infos_update(
-        $subscriptionApi,
-        FamilyInterface $family
-    ): void {
-        $family->getCode()->willReturn('foo');
-        $family->getTranslations()->willReturn([]);
-
+    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_family_infos_update($subscriptionApi): void
+    {
         $subscriptionId = '123456';
         $family = new Family(new FamilyCode('new_family_code'), []);
 
@@ -326,13 +320,8 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ->during('updateFamilyInfos', [new SubscriptionId($subscriptionId), $family]);
     }
 
-    public function it_throws_a_data_provider_exception_when_bad_request_occurs_on_family_infos_update(
-        $subscriptionApi,
-        FamilyInterface $family
-    ): void {
-        $family->getCode()->willReturn('foo');
-        $family->getTranslations()->willReturn([]);
-
+    public function it_throws_a_data_provider_exception_when_bad_request_occurs_on_family_infos_update($subscriptionApi): void
+    {
         $subscriptionId = '123456';
         $family = new Family(new FamilyCode('new_family_code'), []);
 
