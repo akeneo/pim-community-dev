@@ -1,8 +1,8 @@
 services:
-    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.empty_suggested_data_query:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\InMemory\EmptySuggestedDataQuery'
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attribute_option_codes_by_identifiers:
+        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\InMemory\InMemorySelectAttributeOptionCodesByIdentifiersQuery
         arguments:
-            - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+            - '@pim_catalog.repository.attribute_option'
 
     akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_attribute_codes:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\InMemory\InMemorySelectFamilyAttributeCodesQuery'

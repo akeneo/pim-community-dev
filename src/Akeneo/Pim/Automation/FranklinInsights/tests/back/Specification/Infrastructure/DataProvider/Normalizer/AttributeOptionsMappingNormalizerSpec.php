@@ -54,7 +54,7 @@ class AttributeOptionsMappingNormalizerSpec extends ObjectBehavior
         ]);
 
         $attributeOptionRepository
-            ->findByCode(['color_1', 'color_3'])
+            ->findByCodes(['color_1', 'color_3'])
             ->willReturn([$option1, $option2])
         ;
 

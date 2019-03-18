@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOption;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 
 /**
  * @author Paul Chasle <paul.chasle@akeneo.com>
@@ -23,25 +24,17 @@ interface AttributeOptionRepositoryInterface
     /**
      * Find an attribute option by identifier.
      */
-    public function findOneByIdentifier(string $identifier): ?AttributeOption;
-
-    /**
-     * Return an array of attribute option codes.
-     *
-     * @param string[] $attributeOptionCodes
-     *
-     * @return string[]
-     */
-    public function findCodesByIdentifiers(string $attributeCode, array $attributeOptionCodes): array;
+    public function findOneByIdentifier(AttributeCode $attributeCode, string $attributeOptionCode): ?AttributeOption;
 
     /**
      * Find attribute options by codes.
      *
-     * @deprecated
+     * @deprecated It shouldn't be possible to fetch options without an attribute code associated, to form a coherent
+     * identifier.
      *
      * @param string[] $attributeOptionCodes
      *
      * @return AttributeOption[]
      */
-    public function findByCode(array $attributeOptionCodes): array;
+    public function findByCodes(array $attributeOptionCodes): array;
 }

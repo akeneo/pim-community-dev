@@ -88,7 +88,7 @@ class AttributeOptionsMappingNormalizer
      */
     private function getAllOptionTranslations(array $optionsCodes)
     {
-        $options = $this->attributeOptionRepository->findByCode(array_values($optionsCodes));
+        $options = $this->attributeOptionRepository->findByCodes(array_values($optionsCodes));
 
         $translationsByOptionCode = [];
         foreach ($options as $option) {

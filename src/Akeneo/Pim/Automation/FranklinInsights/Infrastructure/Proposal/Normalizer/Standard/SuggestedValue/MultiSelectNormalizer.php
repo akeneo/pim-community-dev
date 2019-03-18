@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedValue;
 
 /**
@@ -23,15 +23,13 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\Sugge
  */
 final class MultiSelectNormalizer
 {
-    /** @var AttributeOptionRepositoryInterface */
-    private $attributeOptionRepository;
+    /** @var SelectAttributeOptionCodesByIdentifiersQueryInterface */
+    private $selectAttributeOptionCodesByIdentifiersQuery;
 
-    /**
-     * @param AttributeOptionRepositoryInterface $attributeOptionRepository
-     */
-    public function __construct(AttributeOptionRepositoryInterface $attributeOptionRepository)
-    {
-        $this->attributeOptionRepository = $attributeOptionRepository;
+    public function __construct(
+        SelectAttributeOptionCodesByIdentifiersQueryInterface $selectAttributeOptionCodesByIdentifiersQuery
+    ) {
+        $this->selectAttributeOptionCodesByIdentifiersQuery = $selectAttributeOptionCodesByIdentifiersQuery;
     }
 
     /**
@@ -48,7 +46,7 @@ final class MultiSelectNormalizer
             $providedOptionCodes = explode(',', $providedOptionCodes);
         }
 
-        $existingOptionCodes = $this->attributeOptionRepository->findCodesByIdentifiers(
+        $existingOptionCodes = $this->selectAttributeOptionCodesByIdentifiersQuery->execute(
             $attributeCode,
             $providedOptionCodes
         );
@@ -58,11 +56,13 @@ final class MultiSelectNormalizer
         }
 
         return [
-            $attributeCode => [[
-                'scope' => null,
-                'locale' => null,
-                'data' => $existingOptionCodes,
-            ]],
+            $attributeCode => [
+                [
+                    'scope' => null,
+                    'locale' => null,
+                    'data' => $existingOptionCodes,
+                ],
+            ],
         ];
     }
 }

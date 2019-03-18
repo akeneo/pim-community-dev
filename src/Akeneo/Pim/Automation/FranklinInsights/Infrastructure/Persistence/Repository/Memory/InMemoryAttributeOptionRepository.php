@@ -24,60 +24,29 @@ use Akeneo\Test\Acceptance\Common\NotImplementedException;
  */
 final class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInterface
 {
-    /** @var PimAttributeOption[] */
-    private $attributeOptionCollection = [];
+    /**
+     * @var \Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository
+     */
+    private $inMemoryAttributeOptionRepository;
 
-    public function findOneByIdentifier(string $code): ?AttributeOption
+    public function __construct(
+        \Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository $inMemoryAttributeOptionRepository
+    ) {
+        $this->inMemoryAttributeOptionRepository = $inMemoryAttributeOptionRepository;
+    }
+
+    public function findOneByIdentifier(AttributeCode $attributeCode, string $attributeOptionCode): ?AttributeOption
     {
         throw new NotImplementedException('findOneByIdentifier');
     }
 
-    public function findCodesByIdentifiers(string $attributeCode, array $attributeOptionCodes): array
+    public function findByCodes(array $codes): array
     {
-        $query = \array_filter(
-            $this->attributeOptionCollection,
-            function (PimAttributeOption $attributeOption) use ($attributeCode, $attributeOptionCodes) {
-                return $attributeOption->getAttribute()->getCode() === $attributeCode &&
-                    false !== \array_search($attributeOption->getCode(), $attributeOptionCodes);
-            }
-        );
-
-        return \array_map(
-            function (PimAttributeOption $attributeOption) {
-                return $attributeOption->getCode();
-            },
-            $query
-        );
-    }
-
-    public function findByCode(array $codes): array
-    {
-        $pimAttributeOptions = \array_filter(
-            $this->attributeOptionCollection,
-            function (PimAttributeOption $attributeOption) use ($codes) {
-                return \array_search($attributeOption->getCode(), $codes);
-            }
-        );
-
-        return \array_map(
-            function (PimAttributeOption $pimAttributeOption) {
-                $translations = [];
-                foreach ($pimAttributeOption->getOptionValues() as $optionValue) {
-                    $translations[$optionValue->getLocale()] = $optionValue->getValue();
-                }
-
-                return new AttributeOption(
-                    $pimAttributeOption->getCode(),
-                    new AttributeCode($pimAttributeOption->getAttribute()->getCode()),
-                    $translations
-                );
-            },
-            $pimAttributeOptions
-        );
+        return $this->inMemoryAttributeOptionRepository->findBy(['code' => $codes]);
     }
 
     public function save(PimAttributeOption $attributeOption): void
     {
-        $this->attributeOptionCollection[] = $attributeOption;
+        $this->inMemoryAttributeOptionRepository->save($attributeOption);
     }
 }

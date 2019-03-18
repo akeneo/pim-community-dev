@@ -39,6 +39,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attribute_option_codes_by_identifiers:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectAttributeOptionCodesByIdentifiersQuery'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_attribute_codes:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectFamilyAttributeCodesQuery'
         arguments:

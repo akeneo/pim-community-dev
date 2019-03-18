@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -39,6 +39,11 @@ final class AttributeOption
     public function getCode(): string
     {
         return $this->code;
+    }
+
+    public function getAttributeCode(): AttributeCode
+    {
+        return $this->attributeCode;
     }
 
     public function getTranslations(): array

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -11,11 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Test\Pim\Automation\FranklinInsights\Integration\Persistence\Repository\Doctrine;
+namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Query\Doctrine;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOption;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as PimAttribute;
@@ -28,7 +26,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 /**
  * @author Paul Chasle <paul.chasle@akeneo.com>
  */
-final class AttributeOptionRepositoryIntegration extends TestCase
+final class SelectAttributeOptionCodesByIdentifiersQueryIntegration extends TestCase
 {
     /** @var EntityBuilder */
     private $attributeBuilder;
@@ -39,8 +37,8 @@ final class AttributeOptionRepositoryIntegration extends TestCase
     /** @var SaverInterface */
     private $attributeOptionSaver;
 
-    /** @var AttributeOptionRepositoryInterface */
-    private $attributeOptionRepository;
+    /** @var SelectAttributeOptionCodesByIdentifiersQueryInterface */
+    private $selectAttributeOptionCodesByIdentifiersQuery;
 
     protected function setUp(): void
     {
@@ -49,48 +47,31 @@ final class AttributeOptionRepositoryIntegration extends TestCase
         $this->attributeBuilder = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute');
         $this->attributeSaver = $this->getFromTestContainer('pim_catalog.saver.attribute');
         $this->attributeOptionSaver = $this->getFromTestContainer('pim_catalog.saver.attribute_option');
-        $this->attributeOptionRepository = $this->getFromTestContainer(
-            'akeneo.pim.automation.franklin_insights.repository.attribute_option'
+        $this->selectAttributeOptionCodesByIdentifiersQuery = $this->getFromTestContainer(
+            'akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attribute_option_codes_by_identifiers'
         );
     }
 
-    public function test_it_finds_an_attribute_option_by_identifier(): void
+    public function test_it_finds_attribute_option_codes_for_an_attribute(): void
     {
-        $attributeOption = $this->attributeOptionRepository->findOneByIdentifier(
-            new AttributeCode('router'),
-            'color'
+        $attributeOptionCodes = $this->selectAttributeOptionCodesByIdentifiersQuery->execute(
+            'router',
+            ['color', 'size']
         );
-        $this->assertNull($attributeOption);
+        $this->assertEmpty($attributeOptionCodes);
 
         $attribute = $this->createAttribute('router');
         $this->createAttributeOption('color', $attribute);
         $this->createAttributeOption('size', $attribute);
-
-        $attributeOption = $this->attributeOptionRepository->findOneByIdentifier(
-            new AttributeCode('router'),
-            'color'
-        );
-        $expectedAttributeOption = new AttributeOption('color', new AttributeCode('router'));
-        $this->assertEquals($attributeOption, $expectedAttributeOption);
-    }
-
-    public function test_it_finds_attribute_options_by_codes(): void
-    {
-        $attributeOptions = $this->attributeOptionRepository->findByCodes(['color']);
-        $this->assertEmpty($attributeOptions);
-
-        $attribute = $this->createAttribute('router');
-        $this->createAttributeOption('color', $attribute);
-        $this->createAttributeOption('size', $attribute);
+        $this->createAttributeOption('width', $attribute);
         $this->createAttributeOption('color', $this->createAttribute('shoes'));
-        $this->createAttributeOption('size', $this->createAttribute('bike'));
 
-        $attributeOptions = $this->attributeOptionRepository->findByCodes(['color']);
-        $expectedAttributeOptions = [
-            new AttributeOption('color', new AttributeCode('router')),
-            new AttributeOption('color', new AttributeCode('shoes')),
-        ];
-        $this->assertEquals($attributeOptions, $expectedAttributeOptions);
+        $attributeOptionCodes = $this->selectAttributeOptionCodesByIdentifiersQuery->execute(
+            'router',
+            ['color', 'size']
+        );
+        $expectedAttributeOptionCodes = ['color', 'size'];
+        $this->assertEquals($attributeOptionCodes, $expectedAttributeOptionCodes);
     }
 
     protected function getConfiguration(): Configuration

@@ -17,8 +17,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributeOpt
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\AttributeOptionsMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
@@ -37,29 +37,25 @@ class SaveAttributeOptionsMappingHandler
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var AttributeOptionRepositoryInterface */
-    private $attributeOptionRepository;
+    /** @var SelectAttributeOptionCodesByIdentifiersQueryInterface */
+    private $selectAttributeOptionCodesByIdentifiersQuery;
 
-    /**
-     * @param AttributeOptionsMappingProviderInterface $mappingProvider
-     * @param FamilyRepositoryInterface $familyRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param AttributeOptionRepositoryInterface $attributeOptionRepository
-     */
     public function __construct(
         AttributeOptionsMappingProviderInterface $mappingProvider,
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
-        AttributeOptionRepositoryInterface $attributeOptionRepository
+        SelectAttributeOptionCodesByIdentifiersQueryInterface $selectAttributeOptionCodesByIdentifiersQuery
     ) {
         $this->mappingProvider = $mappingProvider;
         $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->attributeOptionRepository = $attributeOptionRepository;
+        $this->selectAttributeOptionCodesByIdentifiersQuery = $selectAttributeOptionCodesByIdentifiersQuery;
     }
 
     /**
      * @param SaveAttributeOptionsMappingCommand $command
+     *
+     * @throws AttributeOptionsMappingException
      */
     public function handle(SaveAttributeOptionsMappingCommand $command): void
     {
@@ -72,7 +68,7 @@ class SaveAttributeOptionsMappingHandler
 
         $attributeOptionsMapping = new AttributeOptionsMapping();
         foreach ($command->attributeOptions() as $franklinOptionId => $attributeOption) {
-            $optionCode = in_array($attributeOption->getPimAttributeOptionCode(), $optionCodes)
+            $optionCode = in_array($attributeOption->getPimAttributeOptionCode(), $optionCodes, true)
                 ? $attributeOption->getPimAttributeOptionCode() : null;
 
             $attributeOptionsMapping->addAttributeOption(new AttributeOption(
@@ -129,7 +125,7 @@ class SaveAttributeOptionsMappingHandler
      */
     private function getOptionCodes(SaveAttributeOptionsMappingCommand $command): array
     {
-        return $this->attributeOptionRepository->findCodesByIdentifiers(
+        return $this->selectAttributeOptionCodesByIdentifiersQuery->execute(
             (string) $command->attributeCode(),
             $command->attributeOptions()->getCatalogOptionCodes()
         );

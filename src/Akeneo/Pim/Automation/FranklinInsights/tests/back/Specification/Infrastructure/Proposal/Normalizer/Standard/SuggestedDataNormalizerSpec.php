@@ -7,7 +7,9 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Pr
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as EnterpriseAttributeTypes;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
@@ -24,9 +26,15 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
     public function let(
         AttributeRepositoryInterface $attributeRepository,
         AttributeOptionRepositoryInterface $attributeOptionRepository,
-        MeasureConverter $measureConverter
+        MeasureConverter $measureConverter,
+        SelectAttributeOptionCodesByIdentifiersQueryInterface $selectAttributeOptionCodesByIdentifiersQuery
     ): void {
-        $this->beConstructedWith($attributeRepository, $attributeOptionRepository, $measureConverter);
+        $this->beConstructedWith(
+            $attributeRepository,
+            $attributeOptionRepository,
+            $measureConverter,
+            $selectAttributeOptionCodesByIdentifiersQuery
+        );
     }
 
     public function it_is_a_suggested_data_normalizer(): void
@@ -37,7 +45,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
     public function it_normalizes_suggested_data(
         $attributeRepository,
         $measureConverter,
-        $attributeOptionRepository,
+        $selectAttributeOptionCodesByIdentifiersQuery,
         Attribute $attribute
     ): void {
         $suggestedData = [
@@ -67,8 +75,8 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $attributeOptionRepository
-            ->findCodesByIdentifiers('baz', ['option1', 'option2'])
+        $selectAttributeOptionCodesByIdentifiersQuery
+            ->execute('baz', ['option1', 'option2'])
             ->willReturn(['option1', 'option2']);
 
         $attribute->getMetricFamily()->willReturn('Frequency');
@@ -167,7 +175,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
                 'baz' => 'pim_catalog_simpleselect',
             ]
         );
-        $attributeOptionRepository->findOneByIdentifier('baz.option1')->willReturn(null);
+        $attributeOptionRepository->findOneByIdentifier(new AttributeCode('baz'), 'option1')->willReturn(null);
 
         $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
             [
@@ -191,7 +199,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_suggested_data_ignoring_multi_select_if_no_option_at_all_exists(
         $attributeRepository,
-        $attributeOptionRepository
+        $selectAttributeOptionCodesByIdentifiersQuery
     ): void {
         $suggestedData = [
             ['pimAttributeCode' => 'foo', 'value' => 'bar'],
@@ -205,7 +213,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
                 'baz' => 'pim_catalog_multiselect',
             ]
         );
-        $attributeOptionRepository->findCodesByIdentifiers('baz', ['option1', 'option2'])->willReturn([]);
+        $selectAttributeOptionCodesByIdentifiersQuery->execute('baz', ['option1', 'option2'])->willReturn([]);
 
         $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
             [
@@ -229,7 +237,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_suggested_data_ignoring_multi_select_options_that_do_not_exist(
         $attributeRepository,
-        $attributeOptionRepository
+        $selectAttributeOptionCodesByIdentifiersQuery
     ): void {
         $suggestedData = [
             ['pimAttributeCode' => 'foo', 'value' => 'bar'],
@@ -243,8 +251,8 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
                 'baz' => 'pim_catalog_multiselect',
             ]
         );
-        $attributeOptionRepository
-            ->findCodesByIdentifiers('baz', ['option1', 'option2', 'option3'])
+        $selectAttributeOptionCodesByIdentifiersQuery
+            ->execute('baz', ['option1', 'option2', 'option3'])
             ->willReturn(['option1', 'option3']);
 
         $this->normalize(new SuggestedData($suggestedData))->shouldReturn(

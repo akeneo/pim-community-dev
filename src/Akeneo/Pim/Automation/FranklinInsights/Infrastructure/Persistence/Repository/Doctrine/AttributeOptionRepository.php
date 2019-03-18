@@ -32,10 +32,8 @@ final class AttributeOptionRepository implements AttributeOptionRepositoryInterf
         $this->connection = $connection;
     }
 
-    public function findOneByIdentifier(string $identifier): ?AttributeOption
+    public function findOneByIdentifier(AttributeCode $attributeCode, string $attributeOptionCode): ?AttributeOption
     {
-        list($attributeCode, $attributeOptionCode) = explode('.', $identifier);
-
         $sql = <<<'SQL'
             SELECT
                 a.code as attribute_code,
@@ -57,7 +55,7 @@ SQL;
         $stmt = $this->connection->executeQuery(
             $sql,
             [
-                'attribute_code' => $attributeCode,
+                'attribute_code' => (string)$attributeCode,
                 'attribute_option_code' => $attributeOptionCode,
             ],
             [
@@ -66,7 +64,7 @@ SQL;
             ]
         );
 
-        $row = $stmt->fetch(FetchMode::ASSOCIATIVE);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
         if (false === $row) {
             return null;
         }
@@ -74,38 +72,7 @@ SQL;
         return $this->buildAttributeOption($row);
     }
 
-    public function findCodesByIdentifiers(string $attributeCode, array $attributeOptionCodes): array
-    {
-        $sql = <<<'SQL'
-            SELECT ao.code as attribute_option_code
-            FROM pim_catalog_attribute_option ao
-            INNER JOIN pim_catalog_attribute a
-                ON a.id = ao.attribute_id
-            WHERE a.code = :attribute_code
-            AND ao.code IN (:attribute_option_codes);
-SQL;
-
-        $stmt = $this->connection->executeQuery(
-            $sql,
-            [
-                'attribute_code' => $attributeCode,
-                'attribute_option_codes' => $attributeOptionCodes,
-            ],
-            [
-                'attribute_code' => \PDO::PARAM_STR,
-                'attribute_option_codes' => Connection::PARAM_STR_ARRAY,
-            ]
-        );
-
-        return array_map(
-            function ($row) {
-                return $row['attribute_option_code'];
-            },
-            $stmt->fetchAll(FetchMode::ASSOCIATIVE)
-        );
-    }
-
-    public function findByCode(array $attributeOptionCodes): array
+    public function findByCodes(array $attributeOptionCodes): array
     {
         $sql = <<<'SQL'
             SELECT
@@ -134,7 +101,7 @@ SQL;
         );
 
         return $this->buildAttributeOptionCollection(
-            $stmt->fetchAll(FetchMode::ASSOCIATIVE)
+            $stmt->fetchAll(\PDO::FETCH_ASSOC)
         );
     }
 

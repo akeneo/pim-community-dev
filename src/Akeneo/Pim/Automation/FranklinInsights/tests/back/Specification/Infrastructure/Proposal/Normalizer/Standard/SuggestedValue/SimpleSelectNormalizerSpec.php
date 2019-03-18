@@ -42,7 +42,7 @@ class SimpleSelectNormalizerSpec extends ObjectBehavior
         $suggestedValue = new SuggestedValue('attribute_code', 'an_option');
 
         $attributeOptionRepository
-            ->findOneByIdentifier('attribute_code.an_option')
+            ->findOneByIdentifier(new AttributeCode('attribute_code'), 'an_option')
             ->willReturn($attributeOption);
 
         $this->normalize($suggestedValue)->shouldReturn([
@@ -59,7 +59,7 @@ class SimpleSelectNormalizerSpec extends ObjectBehavior
         $suggestedValue = new SuggestedValue('attribute_code', 'an_option_that_does_not_exist');
 
         $attributeOptionRepository
-            ->findOneByIdentifier('attribute_code.an_option_that_does_not_exist')
+            ->findOneByIdentifier(new AttributeCode('attribute_code'), 'an_option_that_does_not_exist')
             ->willReturn(null);
 
         $this->normalize($suggestedValue)->shouldReturn([]);

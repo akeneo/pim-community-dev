@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normali
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Normalizer\SuggestedDataNormalizerInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedValue;
@@ -45,14 +46,19 @@ class SuggestedDataNormalizer implements SuggestedDataNormalizerInterface
     /** @var MeasureConverter */
     private $measureConverter;
 
+    /** @var SelectAttributeOptionCodesByIdentifiersQueryInterface */
+    private $selectAttributeOptionCodesByIdentifiersQuery;
+
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         AttributeOptionRepositoryInterface $attributeOptionRepository,
-        MeasureConverter $measureConverter
+        MeasureConverter $measureConverter,
+        SelectAttributeOptionCodesByIdentifiersQueryInterface $selectAttributeOptionCodesByIdentifiersQuery
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->attributeOptionRepository = $attributeOptionRepository;
         $this->measureConverter = $measureConverter;
+        $this->selectAttributeOptionCodesByIdentifiersQuery = $selectAttributeOptionCodesByIdentifiersQuery;
     }
 
     /**
@@ -105,7 +111,7 @@ class SuggestedDataNormalizer implements SuggestedDataNormalizerInterface
                     ->normalize($suggestedValue);
                 break;
             case AttributeTypes::OPTION_MULTI_SELECT:
-                $normalizedValue = (new MultiSelectNormalizer($this->attributeOptionRepository))
+                $normalizedValue = (new MultiSelectNormalizer($this->selectAttributeOptionCodesByIdentifiersQuery))
                     ->normalize($suggestedValue);
                 break;
             case AttributeTypes::METRIC:

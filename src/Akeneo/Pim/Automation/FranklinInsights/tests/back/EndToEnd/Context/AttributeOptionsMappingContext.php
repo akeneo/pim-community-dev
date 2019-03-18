@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
 use Behat\Gherkin\Node\TableNode;
@@ -146,7 +147,10 @@ class AttributeOptionsMappingContext extends PimContext
             return '';
         }
 
-        $attributeOption = $this->attributeOptionRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
+        $attributeOption = $this->attributeOptionRepository->findOneByIdentifier(
+            new AttributeCode($attributeCode),
+            $optionCode
+        );
         $attributeOption->setLocale('en_US');
 
         return $attributeOption->getTranslation()->getLabel();
