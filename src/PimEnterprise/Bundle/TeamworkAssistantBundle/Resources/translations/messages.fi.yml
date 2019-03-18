@@ -40,9 +40,9 @@ batch_jobs:
     clean_contributor_group:
       label: Tarkista käyttäjien käyttöoikeudet projektin lokaaliin
   refresh_project_completeness_calculation:
-    label: Päivitä projektin täyttöaste
+    label: Päivitä projektin valmiusaste
     refresh_project_completeness_calculation:
-      label: Päivitä projektin täyttöaste
+      label: Päivitä projektin valmiusaste
 job_execution:
   summary:
     processed_products: Käsitellyt tuotteet

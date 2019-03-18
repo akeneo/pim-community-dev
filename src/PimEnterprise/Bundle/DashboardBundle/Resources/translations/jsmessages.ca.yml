@@ -6,3 +6,8 @@ pimee_dashboard:
       product: Producte
       review: Revisar
       empty: No hi ha propostes per revisar
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        compute_completeness_of_products_linked_to_assets: Calcular la integritat dels productes vinculats actius
