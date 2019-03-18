@@ -16,6 +16,7 @@
 - PXD-12: Move view selector in the search box
 - PXD-13: Fix disable filter cross on filters list
 - PXD-15: Fix margins on filters column
+- PXD-17: Fix grid margins
 
 # 3.0.7 (2019-03-13)
 
