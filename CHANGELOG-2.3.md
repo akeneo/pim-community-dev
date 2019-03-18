@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8187: When delete a product model / product the proposals linked in ES where not deleted
+- PIM-8225: Show reference image on assets grid when there is no variation file info for the channel
 
 # 2.3.33 (2019-03-13)
 

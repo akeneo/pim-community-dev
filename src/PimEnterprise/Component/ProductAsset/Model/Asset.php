@@ -338,7 +338,8 @@ class Asset implements AssetInterface, VersionableInterface
             return null;
         }
 
-        if (null === $variation = $reference->getVariation($channel)) {
+        $variation = $reference->getVariation($channel);
+        if (null === $variation || null === $variation->getFileInfo()) {
             return $reference->getFileInfo();
         }
 
