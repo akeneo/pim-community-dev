@@ -153,6 +153,5 @@ class SqlReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlInte
         }
 
         $this->get('pim_catalog.saver.attribute')->save($attributeReferenceEntity);
-
     }
 }
