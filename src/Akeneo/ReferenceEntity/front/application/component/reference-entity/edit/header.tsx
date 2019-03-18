@@ -96,7 +96,7 @@ class Header extends React.Component<HeaderProps> {
                 </div>
                 <div className="AknTitleContainer-buttonsContainer">
                   <div className={`AknLoadingIndicator ${true === isLoading ? '' : 'AknLoadingIndicator--hidden'}`} />
-                  <div className="user-menu">
+                  <div className="AknTitleContainer-userMenuContainer user-menu">
                     <PimView
                       className={`AknTitleContainer-userMenu ${
                         displayActions ? '' : 'AknTitleContainer--withoutMargin'
@@ -104,10 +104,7 @@ class Header extends React.Component<HeaderProps> {
                       viewName="pim-reference-entity-index-user-navigation"
                     />
                   </div>
-                  <div className="AknButtonList">
-                    {secondaryActions()}
-                    <div className="AknTitleContainer-rightButton">{primaryAction(this.defaultFocus)}</div>
-                  </div>
+                  <div className="AknTitleContainer-actionsContainer AknButtonList">{secondaryActions()}<div className="AknTitleContainer-rightButton">{primaryAction(this.defaultFocus)}</div></div>
                 </div>
               </div>
               <div className="AknTitleContainer-line">
