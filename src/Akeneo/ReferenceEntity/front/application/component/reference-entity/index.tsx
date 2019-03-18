@@ -148,7 +148,7 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
               </div>
             </header>
             <div className="AknGrid--gallery">
-              <div className="AknGridContainer AknGridContainer--withCheckbox">
+              <div className="AknGridContainer">
                 <Table
                   onRedirectToReferenceEntity={events.onRedirectToReferenceEntity}
                   locale={context.locale}
