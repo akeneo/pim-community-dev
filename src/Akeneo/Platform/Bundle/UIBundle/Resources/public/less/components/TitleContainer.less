@@ -134,12 +134,6 @@
     height: @AknDefaultButtonSize;
   }
 
-  &-userMenu:not(:empty):not(&--withoutMargin) {
-    border-right: 1px solid @AknBorderColor;
-    margin-right: 20px;
-    padding-right: 20px;
-  }
-
   &-userIcon {
     height: @AknDefaultButtonSize;
     width: @AknDefaultButtonSize;
@@ -207,5 +201,11 @@
 
   &-mainContainer--contained {
     max-width: ~"calc(100% - 162px)";
+  }
+
+  &-userMenuContainer+&-actionsContainer:not(:empty) {
+    border-left: 1px solid @AknBorderColor;
+    margin-left: 20px;
+    padding-left: 20px;
   }
 }

@@ -21,6 +21,7 @@
 - PXD-20: Fix version number design in history pages
 - PXD-21: Fix Dashboard Last operation widget design
 - PXD-22: Fix grid action buttons margin
+- PXD-23: Fix border between user navigation and actions
 
 # 3.0.7 (2019-03-13)
 
