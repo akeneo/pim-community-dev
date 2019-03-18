@@ -1,9 +1,7 @@
-import * as Backbone from 'backbone';
 import * as _ from 'underscore';
 import BaseView = require('pimui/js/view/base');
 
 const __ = require('oro/translator');
-const template = require('pim/template/catalog-volume/section');
 const requireContext = require('require-context');
 const userContext = require('pim/user-context');
 
@@ -24,12 +22,6 @@ interface SectionConfig {
   warningText: string;
   templates: Templates;
   axes: Array<string>;
-  hint: {
-    code: string;
-    title: string;
-    link: string;
-  };
-  title: string;
 }
 
 interface Axis {
@@ -46,9 +38,6 @@ interface Axis {
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class SectionView extends BaseView {
-  readonly template = _.template(template);
-  public hideHint: boolean = false;
-
   readonly config: SectionConfig = {
     align: 'left',
     warningText: __('pim_catalog_volume.axis.warning'),
@@ -57,42 +46,15 @@ class SectionView extends BaseView {
       count: 'pim/template/catalog-volume/number',
     },
     axes: [],
-    hint: {
-      code: '',
-      title: '',
-      link: '',
-    },
-    title: '',
   };
-
-  public events(): Backbone.EventsHash {
-    return {
-      'click .AknCatalogVolume-remove': 'closeHint',
-      'click .AknCatalogVolume-icon--active': 'closeHint',
-      'click .open-hint:not(.AknCatalogVolume-icon--active)': 'openHint',
-    };
-  }
 
   /**
    * {@inheritdoc}
    */
   constructor(options: {config: SectionConfig}) {
-    super(options);
+    super({...options, ...{className: 'AknCatalogVolume-axisContainer'}});
 
     this.config = {...this.config, ...options.config};
-    this.hideHint = false;
-  }
-
-  /**
-   * If the hint key is in localStorage, don't show it on first render
-   * @return {Boolean}
-   */
-  hintIsHidden(): boolean {
-    if (false === this.hideHint) {
-      return false;
-    }
-
-    return !!localStorage.getItem(this.config.hint.code);
   }
 
   /**
@@ -113,18 +75,15 @@ class SectionView extends BaseView {
     const sectionAxes: string[] = this.config.axes;
     const sectionHasData = this.sectionHasData(sectionData, sectionAxes);
 
+    this.$el.empty();
+
     if (false === sectionHasData) {
       return this;
     }
 
-    this.$el.empty().html(
-      this.template({
-        title: __(this.config.title),
-        hintTitle: __(this.config.hint.title).replace('{{link}}', this.config.hint.link),
-        hintIsHidden: this.hintIsHidden(),
-        align: this.config.align,
-      })
-    );
+    if (this.config.align === 'right') {
+      this.$el.addClass('AknCatalogVolume-axisContainer--right')
+    }
 
     this.renderAxes(this.config.axes, sectionData);
 
@@ -192,25 +151,8 @@ class SectionView extends BaseView {
         userLocale: userContext.get('uiLocale').split('_')[0],
       });
 
-      this.$('.AknCatalogVolume-axisContainer').append(el);
+      this.$el.append(el);
     });
-  }
-
-  /**
-   * Close the hint box and store the key in localStorage
-   */
-  closeHint(): void {
-    localStorage.setItem(this.config.hint.code, '1');
-    this.hideHint = true;
-    this.render();
-  }
-
-  /**
-   * Open the hint box
-   */
-  openHint(): void {
-    this.hideHint = false;
-    this.render();
   }
 }
 

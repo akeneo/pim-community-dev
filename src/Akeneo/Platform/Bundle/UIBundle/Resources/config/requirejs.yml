@@ -964,6 +964,7 @@ config:
     pim/form/common/creation/type:                       pimui/js/form/common/creation/type
     pim/form/common/creation/job:                        pimui/js/form/common/creation/job
     pim/form/common/product/create-button:               pimui/js/form/common/product/create-button
+    pim/form/common/section:                             pimui/js/form/common/section.ts
 
     pim/menu/menu:                                       pimui/js/menu/menu
     pim/menu/tab:                                        pimui/js/menu/tab
@@ -1053,6 +1054,7 @@ config:
     pim/template/common/item-picker-basket:                   pimui/templates/common/item-picker-basket.html
     pim/template/common/description-header:                   pimui/templates/common/description-header.html
     pim/template/common/modal-centered:                       pimui/templates/common/modal-centered.html
+    pim/template/common/section:                              pimui/templates/common/section.html
 
     pim/template/form/group-selector:                         pimui/templates/form/group-selector.html
     pim/template/form/save:                                   pimui/templates/form/save.html
@@ -1310,6 +1312,5 @@ config:
     pimcommunity/grid/view-selector/current:  pimui/js/grid/view-selector-current
 
     # Catalog volume monitoring
-    pim/template/catalog-volume/section:      pimui/templates/catalog-volume/section.html
     pim/template/catalog-volume/number:       pimui/templates/catalog-volume/number.html
     pim/template/catalog-volume/average-max:     pimui/templates/catalog-volume/average-max.html
