@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2019 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,24 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\Family;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyCollection;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface as StructureFamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface as StructureFamilyRepositoryInterface;
 
-/**
- * In memory implementation of the repository of the attribute mapping read model "Family".
- *
- * This implementation is very basic, and has two flaws:
- * - it returns all the families when it should return only those related to subscribed products,
- * - the mapping status of the family is always "pending".
- *
- * This is not a problem for now, but will probably evolve while adding new acceptance tests.
- *
- * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
- */
-final class InMemoryFamilyRepository implements FamilyRepositoryInterface
+class InMemoryFamilyRepository implements FamilyRepositoryInterface
 {
     /** @var StructureFamilyRepositoryInterface */
     private $familyRepository;
@@ -43,87 +32,35 @@ final class InMemoryFamilyRepository implements FamilyRepositoryInterface
         $this->familyRepository = $familyRepository;
     }
 
+    public function findOneByIdentifier(FamilyCode $familyCode): ?Family
+    {
+        $structureFamily = $this->familyRepository->findOneByIdentifier((string) $familyCode);
+
+        return $structureFamily instanceof StructureFamilyInterface ? $this->buildFamily($structureFamily) : null;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function findBySearch(int $page, int $limit, ?string $search): FamilyCollection
+    public function exist(FamilyCode $familyCode): bool
     {
-        $families = $this->familyRepository->findAll();
+        $family = $this->familyRepository->findOneByIdentifier((string) $familyCode);
 
-        $families = $this->applyPagination($families, $page, $limit);
-        $families = $this->applySearchFilter($families, $search);
+        return $family !== null;
+    }
 
-        $familyCollection = new FamilyCollection();
-
-        foreach ($families as $family) {
-            $labels = [];
-            foreach ($family->getTranslations() as $translation) {
-                $labels[$translation->getLocale()] = $translation->getLabel();
-            }
-
-            $familyCollection->add(
-                new Family(
-                    $family->getCode(),
-                    $labels,
-                    Family::MAPPING_PENDING
-                )
-            );
+    /**
+     * @param StructureFamilyInterface $structureFamily
+     *
+     * @return Family
+     */
+    private function buildFamily(StructureFamilyInterface $structureFamily): Family
+    {
+        $labels = [];
+        foreach ($structureFamily->getTranslations() as $translation) {
+            $labels[$translation->getLocale()] = $translation->getLabel();
         }
 
-        return $familyCollection;
-    }
-
-    /**
-     * @param array $families
-     * @param int $page
-     * @param int $limit
-     *
-     * @return array
-     */
-    private function applyPagination(array $families, int $page, int $limit): array
-    {
-        $families = new \LimitIterator(
-            new \ArrayIterator($families),
-            $page,
-            $limit
-        );
-
-        return iterator_to_array($families, false);
-    }
-
-    /**
-     * @param array $families
-     * @param null|string $search
-     *
-     * @return array
-     */
-    private function applySearchFilter(array $families, ?string $search): array
-    {
-        if (empty($search)) {
-            return $families;
-        }
-
-        $families = array_filter($families, function (StructureFamilyInterface $family) use ($search) {
-            if ($this->stringContains($family->getCode(), $search)
-                || $this->stringContains($family->getLabel(), $search)
-            ) {
-                return true;
-            }
-
-            return false;
-        });
-
-        return $families;
-    }
-
-    /**
-     * @param string $string
-     * @param $search
-     *
-     * @return bool
-     */
-    private function stringContains(string $string, $search): bool
-    {
-        return false !== strpos($string, $search);
+        return new Family(new FamilyCode($structureFamily->getCode()), $labels);
     }
 }

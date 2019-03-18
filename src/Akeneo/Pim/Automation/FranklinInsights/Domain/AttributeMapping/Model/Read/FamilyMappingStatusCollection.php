@@ -16,24 +16,24 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\R
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class FamilyCollection implements \IteratorAggregate, \Countable
+class FamilyMappingStatusCollection implements \IteratorAggregate, \Countable
 {
-    /** @var Family[] */
-    private $families;
+    /** @var FamilyMappingStatus[] */
+    private $familiesMappingStatus;
 
     public function __construct()
     {
-        $this->families = [];
+        $this->familiesMappingStatus = [];
     }
 
     /**
-     * @param Family $family
+     * @param FamilyMappingStatus $familyMappingStatus
      *
-     * @return FamilyCollection
+     * @return FamilyMappingStatusCollection
      */
-    public function add(Family $family): self
+    public function add(FamilyMappingStatus $familyMappingStatus): self
     {
-        $this->families[] = $family;
+        $this->familiesMappingStatus[] = $familyMappingStatus;
 
         return $this;
     }
@@ -43,7 +43,7 @@ class FamilyCollection implements \IteratorAggregate, \Countable
      */
     public function getIterator(): \ArrayIterator
     {
-        return new \ArrayIterator($this->families);
+        return new \ArrayIterator($this->familiesMappingStatus);
     }
 
     /**
@@ -51,6 +51,6 @@ class FamilyCollection implements \IteratorAggregate, \Countable
      */
     public function count(): int
     {
-        return count($this->families);
+        return count($this->familiesMappingStatus);
     }
 }

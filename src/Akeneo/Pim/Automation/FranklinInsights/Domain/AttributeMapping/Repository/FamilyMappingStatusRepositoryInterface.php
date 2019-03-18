@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Repository;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyCollection;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyMappingStatusCollection;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-interface FamilyRepositoryInterface
+interface FamilyMappingStatusRepositoryInterface
 {
     /**
      * @param int $limit
      * @param int $page
      * @param null|string $search
      *
-     * @return FamilyCollection
+     * @return FamilyMappingStatusCollection
      */
-    public function findBySearch(int $page, int $limit, ?string $search): FamilyCollection;
+    public function findBySearch(int $page, int $limit, ?string $search): FamilyMappingStatusCollection;
 }

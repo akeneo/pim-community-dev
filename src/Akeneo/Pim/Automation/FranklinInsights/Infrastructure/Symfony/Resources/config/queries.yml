@@ -29,12 +29,17 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_user_and_family_ids_with_missing_mapping:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserAndFamilyIdsWithMissingMappingQuery'
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_user_ids_and_family_codes_with_missing_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserIdsAndFamilyCodesWithMissingMappingQuery'
         arguments:
             - '@database_connection'
 
     akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product_subscriptions_exist:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\ProductSubscriptionsExistQuery'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_attribute_codes:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectFamilyAttributeCodesQuery'
         arguments:
             - '@database_connection'

@@ -13,27 +13,27 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyCollection;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyMappingStatusCollection;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class FamiliesNormalizer
+class FamiliesMappingStatusNormalizer
 {
     /**
-     * @param FamilyCollection $familyCollection
+     * @param FamilyMappingStatusCollection $familyCollection
      *
      * @return array
      */
-    public function normalize(FamilyCollection $familyCollection): array
+    public function normalize(FamilyMappingStatusCollection $familyCollection): array
     {
         $families = [];
 
-        foreach ($familyCollection as $family) {
+        foreach ($familyCollection as $familyMappingStatus) {
             $families[] = [
-                'code' => $family->getCode(),
-                'status' => $family->getMappingStatus(),
-                'labels' => $family->getLabels(),
+                'code' => (string) $familyMappingStatus->getFamily()->getCode(),
+                'status' => $familyMappingStatus->getMappingStatus(),
+                'labels' => $familyMappingStatus->getFamily()->getLabels(),
             ];
         }
 

@@ -20,14 +20,13 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\Attr
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject\AttributeOptions;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -60,14 +59,13 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $attributeRepository,
         $attributeOptionRepository,
         $mappingProvider,
-        FamilyInterface $family,
         AttributeInterface $attribute
     ): void {
         $familyCode = new FamilyCode('foo');
         $attributeCode = new AttributeCode('burger');
         $franklinAttributeId = new FranklinAttributeId('bar');
 
-        $familyRepository->findOneByIdentifier($familyCode)->willReturn($family);
+        $familyRepository->exist($familyCode)->willReturn(true);
         $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
         $attributeOptionRepository
             ->findCodesByIdentifiers((string) $attributeCode, ['color1', 'color2'])
@@ -95,14 +93,13 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $attributeRepository,
         $attributeOptionRepository,
         $mappingProvider,
-        FamilyInterface $family,
         AttributeInterface $attribute
     ): void {
         $familyCode = new FamilyCode('foo');
         $attributeCode = new AttributeCode('burger');
         $franklinAttributeId = new FranklinAttributeId('bar');
 
-        $familyRepository->findOneByIdentifier($familyCode)->willReturn($family);
+        $familyRepository->exist($familyCode)->willReturn(true);
         $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
         $attributeOptionRepository
             ->findCodesByIdentifiers((string) $attributeCode, ['color1', 'color2'])
@@ -130,14 +127,13 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $attributeRepository,
         $attributeOptionRepository,
         $mappingProvider,
-        FamilyInterface $family,
         AttributeInterface $attribute
     ): void {
         $familyCode = new FamilyCode('foo');
         $attributeCode = new AttributeCode('burger');
         $franklinAttributeId = new FranklinAttributeId('bar');
 
-        $familyRepository->findOneByIdentifier($familyCode)->willReturn($family);
+        $familyRepository->exist($familyCode)->willReturn(true);
         $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
         $attributeOptionRepository
             ->findCodesByIdentifiers((string) $attributeCode, ['color1', 'color2'])
@@ -174,7 +170,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
             $this->buildMapping()
         );
 
-        $familyRepository->findOneByIdentifier($familyCode)->willReturn(null);
+        $familyRepository->exist($familyCode)->willReturn(false);
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
@@ -183,8 +179,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_the_attribute_does_not_exist(
         $familyRepository,
-        $attributeRepository,
-        FamilyInterface $family
+        $attributeRepository
     ): void {
         $familyCode = new FamilyCode('foo');
         $attributeCode = new AttributeCode('burger');
@@ -196,7 +191,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
             $this->buildMapping()
         );
 
-        $familyRepository->findOneByIdentifier($familyCode)->willReturn($family);
+        $familyRepository->exist($familyCode)->willReturn(true);
         $attributeRepository->findOneByIdentifier($attributeCode)->willReturn(null);
 
         $this

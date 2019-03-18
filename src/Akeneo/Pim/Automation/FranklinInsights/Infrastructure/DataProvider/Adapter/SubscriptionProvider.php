@@ -15,6 +15,9 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Ada
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -33,7 +36,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Except
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\Subscription;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\SubscriptionsCursor;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -46,20 +48,20 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     /** @var SubscriptionWebService */
     private $api;
 
-    /**
-     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param SubscriptionWebService $api
-     * @param ConfigurationRepositoryInterface $configurationRepository
-     */
+    /** @var FamilyRepositoryInterface */
+    private $familyRepository;
+
     public function __construct(
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         SubscriptionWebService $api,
-        ConfigurationRepositoryInterface $configurationRepository
+        ConfigurationRepositoryInterface $configurationRepository,
+        FamilyRepositoryInterface $familyRepository
     ) {
         parent::__construct($configurationRepository);
 
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->api = $api;
+        $this->familyRepository = $familyRepository;
     }
 
     /**
@@ -168,11 +170,11 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
 
     /**
      * @param string $subscriptionId
-     * @param FamilyInterface $family
+     * @param Family $family
      *
      * @throws DataProviderException
      */
-    public function updateFamilyInfos(string $subscriptionId, FamilyInterface $family): void
+    public function updateFamilyInfos(string $subscriptionId, Family $family): void
     {
         $this->api->setToken($this->getToken());
         try {
@@ -206,7 +208,11 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
             throw ProductSubscriptionException::invalidMappedValues();
         }
         $normalizer = new FamilyNormalizer();
-        $familyInfos = $normalizer->normalize($product->getFamily());
+
+        // TODO: The family code should be retrieve from a FranklinInsights product read model
+        $familyCode = new FamilyCode($product->getFamily()->getCode());
+        $family =  $this->familyRepository->findOneByIdentifier($familyCode);
+        $familyInfos = $normalizer->normalize($family);
 
         return new Request($mapped, $product->getId(), $familyInfos);
     }

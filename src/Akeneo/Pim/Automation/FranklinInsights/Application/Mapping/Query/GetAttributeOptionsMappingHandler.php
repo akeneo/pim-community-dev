@@ -15,8 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributeOptionsMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -48,7 +47,7 @@ class GetAttributeOptionsMappingHandler
      */
     public function handle(GetAttributeOptionsMappingQuery $query): AttributeOptionsMapping
     {
-        if (!$this->familyRepository->findOneByIdentifier((string) $query->familyCode()) instanceof FamilyInterface) {
+        if (!$this->familyRepository->exist($query->familyCode())) {
             throw new \InvalidArgumentException(
                 sprintf('Family "%s" does not exist', $query->familyCode())
             );

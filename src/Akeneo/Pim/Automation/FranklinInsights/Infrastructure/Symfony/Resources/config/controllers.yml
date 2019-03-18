@@ -30,7 +30,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.handler.get_attributes_mapping_by_family'
             - '@akeneo.pim.automation.franklin_insights.handler.update_attributes_mapping_by_family'
             - '@akeneo.pim.automation.franklin_insights.handler.get_families'
-            - '@akeneo.pim.automation.franklin_insights.normalizers.families'
+            - '@akeneo.pim.automation.franklin_insights.normalizers.families_mapping_status'
             - '@akeneo.pim.automation.franklin_insights.normalizers.attributes_mapping'
             - '@oro_security.security_facade'
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Query\Doctrine;
 
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserAndFamilyIdsWithMissingMappingQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserIdsAndFamilyCodesWithMissingMappingQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Common\EntityWithValue\Builder;
 use Akeneo\Test\Integration\Configuration;
@@ -24,7 +24,7 @@ use PHPUnit\Framework\Assert;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
+class SelectUserIdsAndFamilyCodesWithMissingMappingQueryIntegration extends TestCase
 {
     /** @var int[] */
     private $productIds;
@@ -50,14 +50,14 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
             true
         );
 
-        $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
+        $queryResult = $this->getUserIdsAndFamilyCodesQuery()->execute();
 
         Assert::assertEqualsCanonicalizing(
             [
-                $this->getUserId('admin') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
-                $this->getUserId('julia') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
-                $this->getUserId('mary') => [$this->getFamilyId('familyA')],
-                $this->getUserId('kevin') => [$this->getFamilyId('familyA')],
+                $this->getUserId('admin') => ['familyA', 'familyA1'],
+                $this->getUserId('julia') => ['familyA', 'familyA1'],
+                $this->getUserId('mary') => ['familyA'],
+                $this->getUserId('kevin') => ['familyA'],
             ],
             $queryResult
         );
@@ -74,14 +74,14 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
             true
         );
 
-        $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
+        $queryResult = $this->getUserIdsAndFamilyCodesQuery()->execute();
 
         Assert::assertEqualsCanonicalizing(
             [
-                $this->getUserId('admin') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
-                $this->getUserId('julia') => [$this->getFamilyId('familyA'), $this->getFamilyId('familyA1')],
-                $this->getUserId('mary') => [$this->getFamilyId('familyA')],
-                $this->getUserId('kevin') => [$this->getFamilyId('familyA')],
+                $this->getUserId('admin') => ['familyA', 'familyA1'],
+                $this->getUserId('julia') => ['familyA', 'familyA1'],
+                $this->getUserId('mary') => ['familyA'],
+                $this->getUserId('kevin') => ['familyA'],
             ],
             $queryResult
         );
@@ -94,14 +94,14 @@ class SelectUserAndFamilyIdsWithMissingMappingQueryIntegration extends TestCase
             false
         );
 
-        $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
+        $queryResult = $this->getUserIdsAndFamilyCodesQuery()->execute();
 
         Assert::assertSame([], $queryResult);
     }
 
     public function test_that_it_selects_no_user_if_there_are_no_subscriptions(): void
     {
-        $queryResult = $this->getUserAndFamilyIdsQuery()->execute();
+        $queryResult = $this->getUserIdsAndFamilyCodesQuery()->execute();
 
         Assert::assertSame([], $queryResult);
     }
@@ -199,11 +199,11 @@ SQL;
     }
 
     /**
-     * @return SelectUserAndFamilyIdsWithMissingMappingQuery
+     * @return SelectUserIdsAndFamilyCodesWithMissingMappingQuery
      */
-    private function getUserAndFamilyIdsQuery(): SelectUserAndFamilyIdsWithMissingMappingQuery
+    private function getUserIdsAndFamilyCodesQuery(): SelectUserIdsAndFamilyCodesWithMissingMappingQuery
     {
-        return $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_user_and_family_ids_with_missing_mapping');
+        return $this->get('akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_user_ids_and_family_codes_with_missing_mapping');
     }
 
     /**
@@ -214,15 +214,5 @@ SQL;
     private function getUserId(string $username): int
     {
         return $this->get('pim_user.provider.user')->loadUserByUsername($username)->getId();
-    }
-
-    /**
-     * @param string $familyCode
-     *
-     * @return int
-     */
-    private function getFamilyId(string $familyCode): int
-    {
-        return $this->get('pim_catalog.repository.family')->findOneByIdentifier($familyCode)->getId();
     }
 }

@@ -13,25 +13,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer;
 
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
 
 /**
- * Normalizes a PIM family to Franklin array format (for subscription purpose for example).
+ * Normalizes a family to array format (for subscription purpose for example).
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class FamilyNormalizer
 {
-    public function normalize(FamilyInterface $family): array
+    public function normalize(Family $family): array
     {
-        $familyLabels = [];
-        foreach ($family->getTranslations() as $translation) {
-            $familyLabels[$translation->getLocale()] = $translation->getLabel();
-        }
-
         return [
-            'code' => $family->getCode(),
-            'label' => $familyLabels,
+            'code' => (string) $family->getCode(),
+            'label' => $family->getLabels(),
         ];
     }
 }

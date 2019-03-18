@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command;
 
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -23,18 +23,13 @@ final class UpdateSubscriptionFamilyCommand
     /** @var int */
     private $productId;
 
-    /** @var FamilyInterface */
-    private $family;
+    /** @var FamilyCode */
+    private $familyCode;
 
-    /**
-     * @param int $productId
-     * @param FamilyInterface $family
-     */
-    public function __construct(int $productId, FamilyInterface $family)
+    public function __construct(int $productId, FamilyCode $familyCode)
     {
         $this->productId = $productId;
-        // TODO APAI-476: remove the $family argument
-        $this->family = $family;
+        $this->familyCode = $familyCode;
     }
 
     /**
@@ -46,10 +41,10 @@ final class UpdateSubscriptionFamilyCommand
     }
 
     /**
-     * @return FamilyInterface
+     * @return FamilyCode
      */
-    public function family(): Familyinterface
+    public function familyCode(): FamilyCode
     {
-        return $this->family;
+        return $this->familyCode;
     }
 }

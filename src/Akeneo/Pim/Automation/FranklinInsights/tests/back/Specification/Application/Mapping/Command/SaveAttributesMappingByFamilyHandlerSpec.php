@@ -18,12 +18,12 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttri
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\SelectFamilyAttributeCodesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -35,13 +35,15 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
         AttributesMappingProviderInterface $attributesMappingProvider,
-        ProductSubscriptionRepository $subscriptionRepository
+        ProductSubscriptionRepository $subscriptionRepository,
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
         $this->beConstructedWith(
             $familyRepository,
             $attributeRepository,
             $attributesMappingProvider,
-            $subscriptionRepository
+            $subscriptionRepository,
+            $selectFamilyAttributeCodesQuery
         );
     }
 
@@ -51,13 +53,13 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_family_does_not_exist(
-        $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         $attributeRepository,
         AttributeInterface $attribute
     ): void {
         $attribute->getCode()->willReturn('tshirt_style');
         $attributeRepository->findBy(['code' => ['tshirt_style']])->willReturn([$attribute]);
-        $familyRepository->findOneByIdentifier('router')->willReturn(null);
+        $familyRepository->exist('router')->willReturn(false);
 
         $command = new SaveAttributesMappingByFamilyCommand('router', [
             'color' => [
@@ -69,9 +71,9 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_all_attributes_are_unknown(
-        $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         $attributeRepository,
-        FamilyInterface $family
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
         $command = new SaveAttributesMappingByFamilyCommand('router', [
             'color' => [
@@ -80,20 +82,21 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             ],
         ]);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['tshirt_style']);
+        $familyRepository->exist('router')->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['tshirt_style']);
+
         $attributeRepository->findBy(['code' => ['tshirt_style']])->willReturn([]);
 
         $this->shouldThrow(AttributeMappingException::emptyAttributesMapping())->during('handle', [$command]);
     }
 
     public function it_maps_to_null_when_attribute_does_not_exist(
-        $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         $attributeRepository,
         $attributesMappingProvider,
         $subscriptionRepository,
         AttributeInterface $memoryAttribute,
-        FamilyInterface $family
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
         $attributesMapping = [
             'memory' => [
@@ -113,8 +116,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributesMapping);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['sku', 'ram', 'product_weight']);
+        $familyRepository->exist('router')->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'ram', 'product_weight']);
 
         $attributeRepository
             ->findBy(['code' => ['ram', 'product_weight']])
@@ -142,12 +145,12 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     }
 
     public function it_maps_to_null_when_the_attribute_is_not_in_the_family(
-        $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         $attributeRepository,
         $attributesMappingProvider,
         $subscriptionRepository,
-        FamilyInterface $family,
-        AttributeInterface $memoryAttribute
+        AttributeInterface $memoryAttribute,
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
         $attributesMapping = [
             'memory' => [
@@ -167,8 +170,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributesMapping);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['sku', 'ram']);
+        $familyRepository->exist('router')->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'ram']);
 
         $attributeRepository
             ->findBy(['code' => ['ram']])
@@ -196,10 +199,10 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_mapping_type_is_invalid(
-        $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         $attributeRepository,
         AttributeInterface $attribute,
-        FamilyInterface $family
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
         $command = new SaveAttributesMappingByFamilyCommand('router', [
             'memory' => [
@@ -211,8 +214,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             ],
         ]);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['sku', 'release_date']);
+        $familyRepository->exist('router')->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'release_date']);
 
         $attributeRepository
             ->findBy(['code' => ['release_date']])
@@ -228,13 +231,13 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     }
 
     public function it_successfully_save_attributes_mapping(
-        $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         $attributeRepository,
         $attributesMappingProvider,
         $subscriptionRepository,
         AttributeInterface $memoryAttribute,
         AttributeInterface $weightAttribute,
-        FamilyInterface $family
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
         $attributesMapping = [
             'memory' => [
@@ -254,8 +257,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributesMapping);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['sku', 'ram', 'product_weight']);
+        $familyRepository->exist('router')->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'ram', 'product_weight']);
 
         $attributeRepository
             ->findBy(['code' => ['ram', 'product_weight']])
@@ -289,10 +292,10 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_an_attribute_is_localizable(
-        $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         $attributeRepository,
         AttributeInterface $memoryAttribute,
-        FamilyInterface $family
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
         $command = new SaveAttributesMappingByFamilyCommand('router', [
             'memory' => [
@@ -306,8 +309,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 
         $attributeRepository->findBy(['code' => ['ram']])->willReturn([$memoryAttribute]);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['sku', 'ram']);
+        $familyRepository->exist('router')->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'ram']);
 
         $memoryAttribute->getCode()->willReturn('ram');
         $memoryAttribute->getType()->willReturn(AttributeTypes::METRIC);
@@ -317,10 +320,10 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_an_attribute_is_scopable(
-        $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         $attributeRepository,
         AttributeInterface $memoryAttribute,
-        FamilyInterface $family
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
         $attributeMapping = [
             'memory' => [
@@ -333,8 +336,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['sku', 'ram']);
+        $familyRepository->exist('router')->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'ram']);
 
         $attributeRepository->findBy(['code' => ['ram']])->willReturn([$memoryAttribute]);
 
@@ -348,10 +351,10 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_an_attribute_is_locale_specific(
-        $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         $attributeRepository,
         AttributeInterface $memoryAttribute,
-        FamilyInterface $family
+        SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
         $attributeMapping = [
             'memory' => [
@@ -364,8 +367,8 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         ];
         $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
 
-        $familyRepository->findOneByIdentifier('router')->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['sku', 'ram']);
+        $familyRepository->exist('router')->willReturn(true);
+        $selectFamilyAttributeCodesQuery->execute('router')->willReturn(['sku', 'ram']);
 
         $attributeRepository->findBy(['code' => ['ram']])->willReturn([$memoryAttribute]);
         $attributeRepository->findOneByIdentifier('ram')->willReturn($memoryAttribute);

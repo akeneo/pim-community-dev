@@ -13,27 +13,35 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\Family;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyCollection;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesNormalizer;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyMappingStatus;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyMappingStatusCollection;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesMappingStatusNormalizer;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class FamiliesNormalizerSpec extends ObjectBehavior
+class FamiliesMappingStatusNormalizerSpec extends ObjectBehavior
 {
     public function it_is_a_families_normalizer(): void
     {
-        $this->shouldBeAnInstanceOf(FamiliesNormalizer::class);
+        $this->shouldBeAnInstanceOf(FamiliesMappingStatusNormalizer::class);
     }
 
     public function it_normalizes_families(): void
     {
-        $familyCollection = new FamilyCollection();
+        $familyCollection = new FamilyMappingStatusCollection();
         $familyCollection
-            ->add(new Family('router', ['en_US' => 'router', 'fr_FR' => 'routeur'], Family::MAPPING_PENDING))
-            ->add(new Family('camcorders', ['en_US' => 'camcorders'], Family::MAPPING_PENDING));
+            ->add(new FamilyMappingStatus(
+                new Family(new FamilyCode('router'), ['en_US' => 'router', 'fr_FR' => 'routeur']),
+                FamilyMappingStatus::MAPPING_PENDING
+            ))
+            ->add(new FamilyMappingStatus(
+                new Family(new FamilyCode('camcorders'), ['en_US' => 'camcorders']),
+                FamilyMappingStatus::MAPPING_PENDING
+            ));
 
         $expectedFamilies = [
             [

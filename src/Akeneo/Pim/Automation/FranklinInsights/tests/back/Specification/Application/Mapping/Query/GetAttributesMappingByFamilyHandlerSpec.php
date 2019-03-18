@@ -19,11 +19,12 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -47,7 +48,9 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $familyRepository,
         $attributesMappingProvider
     ): void {
-        $familyRepository->findOneByIdentifier('unknown_family')->willReturn(null);
+        $familyRepository->exist(Argument::that(function ($familyCode) {
+            return $familyCode instanceof FamilyCode && 'unknown_family' === (string) $familyCode;
+        }))->willReturn(false);
         $attributesMappingProvider->getAttributesMapping('unknown_family')->shouldNotBeCalled();
 
         $query = new GetAttributesMappingByFamilyQuery('unknown_family');
@@ -55,13 +58,14 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     }
 
     public function it_handles_a_get_attributes_mapping_query(
-        FamilyInterface $family,
         $familyRepository,
         $attributesMappingProvider
     ): void {
         $attributesMappingResponse = new AttributesMappingResponse();
 
-        $familyRepository->findOneByIdentifier('camcorders')->willReturn($family);
+        $familyRepository->exist(Argument::that(function ($familyCode) {
+            return $familyCode instanceof FamilyCode && 'camcorders' === (string) $familyCode;
+        }))->willReturn(true);
         $attributesMappingProvider->getAttributesMapping('camcorders')->willReturn($attributesMappingResponse);
 
         $query = new GetAttributesMappingByFamilyQuery('camcorders');
@@ -69,7 +73,6 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     }
 
     public function it_filters_unknown_attributes(
-        FamilyInterface $family,
         $familyRepository,
         $attributesMappingProvider,
         $attributeRepository,
@@ -84,7 +87,9 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             AttributeMappingStatus::ATTRIBUTE_ACTIVE
         ));
 
-        $familyRepository->findOneByIdentifier('camcorders')->willReturn($family);
+        $familyRepository->exist(Argument::that(function ($familyCode) {
+            return $familyCode instanceof FamilyCode && 'camcorders' === (string) $familyCode;
+        }))->willReturn(true);
         $attributesMappingProvider->getAttributesMapping('camcorders')->willReturn($attributesMappingResponse);
 
         $attributeRepository->findBy(['code' => ['pim_series']])->willReturn($attribute);

@@ -18,9 +18,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Attribu
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -72,9 +72,9 @@ class GetAttributesMappingByFamilyHandler
      */
     private function ensureFamilyExists(string $familyCode): void
     {
-        $family = $this->familyRepository->findOneByIdentifier($familyCode);
+        $familyCode = new FamilyCode($familyCode);
 
-        if (!$family instanceof FamilyInterface) {
+        if (!$this->familyRepository->exist($familyCode)) {
             throw new \InvalidArgumentException(sprintf(
                 'The family with code "%s" does not exist',
                 $familyCode

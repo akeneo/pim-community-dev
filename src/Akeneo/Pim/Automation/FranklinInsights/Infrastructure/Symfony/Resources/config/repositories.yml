@@ -15,7 +15,12 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
-    akeneo.pim.automation.franklin_insights.repository.search_family:
+    akeneo.pim.automation.franklin_insights.repository.family_mapping_status:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\FamilyMappingStatusRepository'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.repository.family:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\FamilyRepository'
         arguments:
             - '@database_connection'

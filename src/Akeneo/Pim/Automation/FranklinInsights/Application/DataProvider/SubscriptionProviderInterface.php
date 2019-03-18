@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -58,9 +58,7 @@ interface SubscriptionProviderInterface
 
     /**
      * @param string $subscriptionId
-     * @param FamilyInterface $family
-     *
-     * @throws ProductSubscriptionException
+     * @param Family $family
      */
-    public function updateFamilyInfos(string $subscriptionId, FamilyInterface $family): void;
+    public function updateFamilyInfos(string $subscriptionId, Family $family): void;
 }

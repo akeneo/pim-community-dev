@@ -17,11 +17,11 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributeOpt
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Exception\AttributeOptionsMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -94,16 +94,16 @@ class SaveAttributeOptionsMappingHandler
      */
     private function validate(SaveAttributeOptionsMappingCommand $command): void
     {
-        $this->ensureFamilyExists((string) $command->familyCode());
+        $this->ensureFamilyExists($command->familyCode());
         $this->ensureAttributeExists((string) $command->attributeCode());
     }
 
     /**
      * @param string $familyCode
      */
-    private function ensureFamilyExists(string $familyCode): void
+    private function ensureFamilyExists(FamilyCode $familyCode): void
     {
-        if (!$this->familyRepository->findOneByIdentifier($familyCode) instanceof FamilyInterface) {
+        if (!$this->familyRepository->exist($familyCode)) {
             throw new \InvalidArgumentException(
                 sprintf('Family "%s" does not exist', $familyCode)
             );

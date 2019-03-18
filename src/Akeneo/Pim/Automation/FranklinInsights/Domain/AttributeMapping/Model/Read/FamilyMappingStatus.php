@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class Family
+class FamilyMappingStatus
 {
     /* Some of the attributes are still pending */
     public const MAPPING_PENDING = 0;
@@ -27,41 +29,28 @@ class Family
     /** There is no attributes to be mapped */
     public const MAPPING_EMPTY = 2;
 
-    /** @var string */
-    private $code;
-
-    /** @var array */
-    private $labels;
+    /** @var Family */
+    private $family;
 
     /** @var int */
     private $mappingStatus;
 
     /**
-     * @param string $code
-     * @param array $labels
-     * @param int $mappingStatus
+     * @param Family $family
+     * @param int    $mappingStatus
      */
-    public function __construct(string $code, array $labels, int $mappingStatus)
+    public function __construct(Family $family, int $mappingStatus)
     {
-        $this->code = $code;
-        $this->labels = $labels;
+        $this->family = $family;
         $this->mappingStatus = $mappingStatus;
     }
 
     /**
-     * @return string
+     * @return Family
      */
-    public function getCode(): string
+    public function getFamily(): Family
     {
-        return $this->code;
-    }
-
-    /**
-     * @return array
-     */
-    public function getLabels(): array
-    {
-        return $this->labels;
+        return $this->family;
     }
 
     /**

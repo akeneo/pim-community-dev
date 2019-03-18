@@ -44,6 +44,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
             - '@akeneo.pim.automation.franklin_insights.data_provider.product_subscription'
+            - '@akeneo.pim.automation.franklin_insights.repository.family'
 
     akeneo.pim.automation.franklin_insights.handler.create_proposal:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalHandler'
@@ -55,16 +56,17 @@ services:
     akeneo.pim.automation.franklin_insights.handler.update_attributes_mapping_by_family:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler'
         arguments:
-            - '@pim_catalog.repository.family'
+            - '@akeneo.pim.automation.franklin_insights.repository.family'
             - '@pim_catalog.repository.attribute'
             - '@akeneo.pim.automation.franklin_insights.data_provider.attributes_mapping'
             - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_attribute_codes'
 
     akeneo.pim.automation.franklin_insights.handler.save_attribute_options_mapping:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributeOptionsMappingHandler'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.data_provider.attribute_options_mapping'
-            - '@pim_catalog.repository.family'
+            - '@akeneo.pim.automation.franklin_insights.repository.family'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.attribute_option'
 
@@ -81,19 +83,19 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.data_provider.attributes_mapping'
-            - '@pim_catalog.repository.family'
+            - '@akeneo.pim.automation.franklin_insights.repository.family'
             - '@pim_catalog.repository.attribute'
 
     akeneo.pim.automation.franklin_insights.handler.get_attribute_options_mapping_by_family_and_attribute:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributeOptionsMappingHandler'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.data_provider.attribute_options_mapping'
-            - '@pim_catalog.repository.family'
+            - '@akeneo.pim.automation.franklin_insights.repository.family'
 
     akeneo.pim.automation.franklin_insights.handler.get_families:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler'
         arguments:
-            - '@akeneo.pim.automation.franklin_insights.repository.search_family'
+            - '@akeneo.pim.automation.franklin_insights.repository.family_mapping_status'
 
     akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler'

@@ -31,13 +31,11 @@ $rules = [
 
             // TODO remove all links by reference
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
 
@@ -63,7 +61,7 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Application',
 
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchProductsExecutionDatetimeQuery',
-            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserAndFamilyIdsWithMissingMappingQuery',
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserIdsAndFamilyCodesWithMissingMappingQuery',
 
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification\NotifyUserAboutMissingMapping',
 
@@ -80,7 +78,6 @@ $rules = [
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector'),
@@ -93,9 +90,6 @@ $rules = [
 
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
-
-            // TODO remove all links by reference
-            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
 
             //Used to get all option translations to send to Franklin
             'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
@@ -223,7 +217,6 @@ $rules = [
 
             // TODO remove all links by reference
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
-            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 

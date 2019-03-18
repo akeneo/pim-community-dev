@@ -9,8 +9,8 @@ services:
     akeneo.pim.automation.franklin_insights.normalizers.attributes_mapping:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer'
 
-    akeneo.pim.automation.franklin_insights.normalizers.families:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesNormalizer'
+    akeneo.pim.automation.franklin_insights.normalizers.families_mapping_status:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesMappingStatusNormalizer'
 
     akeneo.pim.automation.franklin_insights.normalizer.connection_status:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\ConnectionStatusNormalizer'

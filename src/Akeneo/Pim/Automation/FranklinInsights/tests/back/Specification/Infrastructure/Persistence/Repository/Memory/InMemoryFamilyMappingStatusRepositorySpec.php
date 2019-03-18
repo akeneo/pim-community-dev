@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyCollection;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Repository\FamilyRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryFamilyRepository;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyMappingStatusCollection;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Repository\FamilyMappingStatusRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryFamilyMappingStatusRepository;
 use Akeneo\Pim\Structure\Component\Model\Family as StructureFamily;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface as StructureFamilyRepositoryInterface;
@@ -24,7 +24,7 @@ use PhpSpec\ObjectBehavior;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class InMemoryFamilyRepositorySpec extends ObjectBehavior
+class InMemoryFamilyMappingStatusRepositorySpec extends ObjectBehavior
 {
     public function let(StructureFamilyRepositoryInterface $familyRepository): void
     {
@@ -33,12 +33,12 @@ class InMemoryFamilyRepositorySpec extends ObjectBehavior
 
     public function it_is_an_attribute_mapping_family_repository(): void
     {
-        $this->shouldImplement(FamilyRepositoryInterface::class);
+        $this->shouldImplement(FamilyMappingStatusRepositoryInterface::class);
     }
 
     public function it_is_the_in_memory_implementation_of_the_family_repository(): void
     {
-        $this->shouldHaveType(InMemoryFamilyRepository::class);
+        $this->shouldHaveType(InMemoryFamilyMappingStatusRepository::class);
     }
 
     public function it_finds_all_family_without_filter($familyRepository): void
@@ -110,13 +110,14 @@ class InMemoryFamilyRepositorySpec extends ObjectBehavior
     public function getMatchers(): array
     {
         return [
-            'haveTheFollowingFamilies' => function (FamilyCollection $subject, array $expectedFamilyCodes) {
+            'haveTheFollowingFamilies' => function (FamilyMappingStatusCollection $subject, array $expectedFamilyCodes) {
                 if (count($expectedFamilyCodes) !== $subject->getIterator()->count()) {
                     return false;
                 }
 
-                foreach ($subject as $positionInList => $family) {
-                    if ($family->getCode() !== $expectedFamilyCodes[$positionInList]) {
+                foreach ($subject as $positionInList => $familyMappingStatus) {
+                    $familyCode = (string) $familyMappingStatus->getFamily()->getCode();
+                    if ($familyCode !== $expectedFamilyCodes[$positionInList]) {
                         return false;
                     }
                 }

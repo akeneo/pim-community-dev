@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
@@ -106,8 +107,7 @@ class AttributeOptionsMappingContext extends PimContext
      */
     private function selectFamily(string $familyCode): void
     {
-        $family = $this->familyRepository->findOneByIdentifier($familyCode);
-        $family->setLocale('en_US');
+        $family = $this->familyRepository->findOneByIdentifier(new FamilyCode($familyCode));
 
         $this->spin(
             function () {
@@ -116,7 +116,7 @@ class AttributeOptionsMappingContext extends PimContext
             'Could not find family select input'
         );
 
-        $this->getCurrentPage()->fillField('Family', $family->getLabel());
+        $this->getCurrentPage()->fillField('Family', $family->getLabel('en_US'));
     }
 
     /**

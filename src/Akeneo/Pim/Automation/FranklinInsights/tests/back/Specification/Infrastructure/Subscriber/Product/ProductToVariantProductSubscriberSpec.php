@@ -20,7 +20,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Comma
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product\ProductToVariantProductSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -58,10 +57,9 @@ class ProductToVariantProductSubscriberSpec extends ObjectBehavior
 
     public function it_does_nothing_if_the_subject_is_not_a_product(
         GenericEvent $event,
-        FamilyInterface $family,
         UnsubscribeProductHandler $unsubscribeProductHandler
     ): void {
-        $event->getSubject()->willReturn($family);
+        $event->getSubject()->willReturn(new \stdClass());
         $unsubscribeProductHandler->handle()->shouldNotBeCalled();
 
         $this->onPostSave($event);

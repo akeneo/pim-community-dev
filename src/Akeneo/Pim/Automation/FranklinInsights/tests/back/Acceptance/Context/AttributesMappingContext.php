@@ -241,7 +241,7 @@ final class AttributesMappingContext implements Context
         foreach ($expectedFamilyCodes as $familyCode) {
             $found = false;
             foreach ($this->retrievedFamilies as $retrievedFamily) {
-                if ($retrievedFamily->getCode() === $familyCode) {
+                if ((string) $retrievedFamily->getFamily()->getCode() === $familyCode) {
                     $found = true;
                 }
             }

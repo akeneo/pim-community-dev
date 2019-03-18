@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 
@@ -28,16 +30,17 @@ class UpdateSubscriptionFamilyHandler
     /** @var SubscriptionProviderInterface */
     private $subscriptionProvider;
 
-    /**
-     * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
-     * @param SubscriptionProviderInterface $subscriptionProvider
-     */
+    /** @var FamilyRepositoryInterface */
+    private $familyRepository;
+
     public function __construct(
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
-        SubscriptionProviderInterface $subscriptionProvider
+        SubscriptionProviderInterface $subscriptionProvider,
+        FamilyRepositoryInterface $familyRepository
     ) {
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->subscriptionProvider = $subscriptionProvider;
+        $this->familyRepository = $familyRepository;
     }
 
     /**
@@ -52,7 +55,12 @@ class UpdateSubscriptionFamilyHandler
             throw ProductNotSubscribedException::notSubscribed($command->productId());
         }
 
-        $this->subscriptionProvider->updateFamilyInfos($subscription->getSubscriptionId(), $command->family());
+        $family = $this->familyRepository->findOneByIdentifier($command->familyCode());
+        if (!$family instanceof Family) {
+            throw new \RuntimeException(sprintf('The family "%s" was not found.', $command->familyCode()));
+        }
+
+        $this->subscriptionProvider->updateFamilyInfos($subscription->getSubscriptionId(), $family);
         // TODO: empty suggested_data? misses_mapping? dispatch an event?
     }
 }

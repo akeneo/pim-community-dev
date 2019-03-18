@@ -5,6 +5,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
             - '@akeneo.pim.automation.franklin_insights.franklin_client.subscription'
             - '@akeneo.pim.automation.franklin_insights.repository.configuration'
+            - '@akeneo.pim.automation.franklin_insights.repository.family'
 
     akeneo.pim.automation.franklin_insights.data_provider.authentication:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\AuthenticationProvider'
