@@ -14,6 +14,7 @@
 - PXD-10: Fix comment deletion Popin
 - PXD-11: Fix Done button position on category tree
 - PXD-12: Move view selector in the search box
+- PXD-13: Fix disable filter cross on filters list
 
 # 3.0.7 (2019-03-13)
 
