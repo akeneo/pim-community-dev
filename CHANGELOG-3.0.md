@@ -7,6 +7,7 @@
 - PIM-8226: inject correct service to present dates
 - PIM-8213: Fix no message when remove a reference entity linked to a product attribute
 - PIM-8229: fix reference data option value zero value.
+- PXD-9: Fix Revert popin design
 
 # 3.0.7 (2019-03-13)
 
