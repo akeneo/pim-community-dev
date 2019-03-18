@@ -1,7 +1,37 @@
 authentication:
   sso:
     configuration:
+      download_logs_button: Descarregar registres
+      info:
+        update_successful: La configuració s'ha desat
+        update_failed: La configuració no s'ha pogut desar
+        fields_not_ready: "La configuració no s'ha pogut desar en aquest moment. Els següents camps no estan a punt: {{ fields }}"
       section:
         activation:
+          title: Activació SSO
           info:
             title: Avís
+        identity_provider:
+          title: Proveïdor d'identitat (IdP)
+        service_provider:
+          title: Proveïdor de servei (SP)
+      field:
+        activation:
+          label: Activat SSO
+        entity_id:
+          label: Identificador de l'entitat
+        sign_on_url:
+          label: URL d'inici de sessió
+        logout_url:
+          label: URL de desconnexió
+        certificate:
+          label: Certificat
+          expiration_warning: Aquest certificat caduca el {{date}}.
+        private_key:
+          label: Clau privada
+        metadata_url:
+          label: URL de les metadades
+          tooltip_label: Copiar URL
+        acs_url:
+          label: URL ACS
+          tooltip_label: Copiar URL

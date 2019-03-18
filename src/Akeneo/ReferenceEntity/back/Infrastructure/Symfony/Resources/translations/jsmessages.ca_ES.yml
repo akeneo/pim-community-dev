@@ -23,6 +23,8 @@ pim_reference_entity:
       save: Desar
       save_permission: Desar
       create: Crear
+    permission:
+      title: Permisos d'entitat
     title: Entitats
     breadcrumb: Entitats de referència
     img: La imatge principal de l'entitat de referència designada "{{ label }}"
@@ -49,6 +51,9 @@ pim_reference_entity:
     index:
       grid:
         count: '{0} Sense entitats de referència|{1} {{ count }} Entitats de referència|]1,Inf] {{ count }} Entitats de referència'
+        help:
+          title: 'Benvingut a les entitats de referència!'
+          description_part_three: Feu clic al botó "Crea" per crear la teva primera entitat de referència, i estableixi els seus atributs i registres.
     create:
       header:
         title: Crear
@@ -71,6 +76,10 @@ pim_reference_entity:
       delete:
         success: Entitat de referència eliminada correctament.
         fail: S'ha produït un error durant l'eliminació de l'entitat de referència
+  permission:
+    no_data:
+      title: No teniu cap grup d'usuaris
+      link: Clic aquí per afegir el teu primer grup usuari
   record:
     validation:
       limit_reached: 'Vostè no pot crear el registre "{{ %record_label% }}" perquè vostè ha arribat al límit de registres {{ %limit% }} per a aquesta entitat de referència'
@@ -116,9 +125,12 @@ pim_reference_entity:
     grid:
       search: Cerca a l'etiqueta, el codi i el text dels atributs
       filter:
+        counter: '{{ matchesCount }} resultat|{{ matchesCount }} resultats'
         completeness:
           label: Complet
           all: TOT
+          'yes': 'SÍ'
+          'no': 'NO'
       column:
         code: Codi
         image: Imatge
@@ -159,6 +171,8 @@ pim_reference_entity:
     type:
       text: Texte
       image: Imatge
+      record: Enllaç simple de l'entitat de referència
+      record_collection: Enllaç múltiple d'entitat de referència
       option: Única opció
       option_collection: Múltiples opcions
     is_required: necessaris per a la integritat
@@ -176,6 +190,7 @@ pim_reference_entity:
         code: Codi (requerit)
         label: Etiqueta
         type: Tipus d'atribut
+        record_type: Entitat de referència per enllaçar (obligatori)
         value_per_locale: Valor per local
         value_per_channel: Valor per canal
       confirm: Desar
@@ -246,6 +261,9 @@ pim_enrich:
   entity:
     attribute:
       property:
+        type:
+          akeneo_reference_entity_collection: Enllaç múltiple d'entitat de referència
+          akeneo_reference_entity: Enllaç simple de l'entitat de referència
         section:
           type_specific: Escriu els paràmetres específics
         reference_entity:

@@ -97,6 +97,7 @@ batch_jobs:
 pim_notification:
   types:
     rule: Configuració de les regles
+    mass_edit_rule: Editar en massa les regles
 pim_menu:
   item:
     rule: Regles
