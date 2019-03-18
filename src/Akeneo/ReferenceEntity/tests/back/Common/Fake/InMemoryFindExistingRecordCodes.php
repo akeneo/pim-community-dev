@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -36,6 +33,13 @@ class InMemoryFindExistingRecordCodes implements FindExistingRecordCodesInterfac
 
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
     {
-        return $this->recordRepository->getByReferenceEntityAndCodes($referenceEntityIdentifier, $recordCodes);
+        $existingRecords = $this->recordRepository->getByReferenceEntityAndCodes($referenceEntityIdentifier, $recordCodes);
+        $existingCodes = array_map(function (Record $record) {
+            return $record->getCode();
+        }, $existingRecords);
+
+        return array_filter($recordCodes, function ($code) use ($existingCodes) {
+            return in_array($code, $existingCodes);
+        });
     }
 }

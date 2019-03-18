@@ -82,17 +82,17 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         array $recordCodes
     ): array {
-        $recordCodesFound = [];
+        $recordsFound = [];
 
         foreach ($this->records as $record) {
             foreach ($recordCodes as $recordCode) {
                 if ($record->getCode()->equals(RecordCode::fromString($recordCode)) && $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
-                    $recordCodesFound[] = $record->getCode();
+                    $recordsFound[] = $record;
                 }
             }
         }
 
-        return $recordCodesFound;
+        return $recordsFound;
     }
 
     public function deleteByReferenceEntityAndCode(
