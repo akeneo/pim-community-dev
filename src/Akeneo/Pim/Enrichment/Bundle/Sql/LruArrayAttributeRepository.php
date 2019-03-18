@@ -14,6 +14,9 @@ class LruArrayAttributeRepository
     /** @var LRUCache */
     private $cache;
 
+    /** @var string */
+    private $identifierCode;
+
     public function __construct(AttributeRepository $attributeRepository, int $capacity)
     {
         $this->attributeRepository = $attributeRepository;
@@ -52,4 +55,30 @@ class LruArrayAttributeRepository
         return array_merge($cachedAttributes, $uncachedAttributes);
     }
 
+
+
+    /**
+     * Get the identifier code
+     *
+     * @return string
+     */
+    public function getIdentifierCode(): string
+    {
+        if (null === $this->identifierCode) {
+            $this->identifierCode = $this->attributeRepository->getIdentifierCode();
+        }
+
+        return $this->identifierCode;
+    }
+
+    /**
+     * Get the identifier attribute
+     * Only one identifier attribute can exist
+     *
+     * @return Attribute
+     */
+    public function getIdentifier(): Attribute
+    {
+        return $this->findOneByIdentifier($this->getIdentifierCode());
+    }
 }

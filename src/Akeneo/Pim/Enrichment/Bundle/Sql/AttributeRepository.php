@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Sql;
 
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -94,6 +95,21 @@ SQL;
         }
 
         return $results;
+    }
+
+    public function getIdentifierCode(): string
+    {
+        $sql = <<<SQL
+SELECT a.code
+FROM pim_catalog_attribute a
+WHERE a.type = :type;
+SQL;
+        $rows = $this->connection->executeQuery(
+            $sql,
+            ['type' => AttributeTypes::IDENTIFIER]
+        )->fetchAll();
+
+        return $rows[0]['code'];
     }
 }
 
