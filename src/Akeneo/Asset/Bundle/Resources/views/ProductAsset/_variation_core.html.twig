@@ -26,7 +26,7 @@
             <td class="AknGrid-bodyCell">{{ variationModel.fileInfo.size|formatBytes }}</td>
             <td class="AknGrid-bodyCell">{{ variationModel.fileInfo.mimeType }}</td>
             <td class="AknGrid-bodyCell">
-                <div class="AknButtonList AknButtonList--right">
+                <div class="AknButtonList AknButtonList--right AknButtonList--expanded">
                     {% block variation_buttons %}{% endblock %}
                     {% if variationModel.fileInfo %}
                         <a class="AknButtonList-item AknButton AknButton--grey AknButton--small no-hash"
