@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
 
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
@@ -49,6 +50,10 @@ class SqlReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlInte
         $isLinked = ($this->query)($identifier);
         $this->assertTrue($isLinked);
 
+        $identifier = ReferenceEntityIdentifier::fromString('city');
+        $isLinked = ($this->query)($identifier);
+        $this->assertTrue($isLinked);
+
         $identifier = ReferenceEntityIdentifier::fromString('brand');
         $isLinked = ($this->query)($identifier);
         $this->assertFalse($isLinked);
@@ -62,11 +67,22 @@ class SqlReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlInte
     private function loadReferenceEntity(): void
     {
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+
         $referenceEntity = ReferenceEntity::create(
             ReferenceEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
+            ],
+            Image::createEmpty()
+        );
+        $referenceEntityRepository->create($referenceEntity);
+
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('city'),
+            [
+                'fr_FR' => 'Ville',
+                'en_US' => 'City',
             ],
             Image::createEmpty()
         );
@@ -94,26 +110,48 @@ class SqlReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlInte
 
         $this->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
-        $attribute = $this->get('pim_catalog.factory.attribute')
+        $attributeReferenceEntityCollection = $this->get('pim_catalog.factory.attribute')
             ->createAttribute(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION);
         $this->get('pim_catalog.updater.attribute')
-            ->update($attribute, [
+            ->update($attributeReferenceEntityCollection, [
                 'code' => 'main_designer',
                 'reference_data_name' => 'designer',
                 'group' => 'other'
             ]);
 
-        $errors = $this->get('validator')->validate($attribute);
+        $errors = $this->get('validator')->validate($attributeReferenceEntityCollection);
         if ($errors->count() > 0) {
             throw new \Exception(
                 sprintf(
                     'Cannot create the attribute "%s": %s',
-                    $attribute->getCode(),
+                    $attributeReferenceEntityCollection->getCode(),
                     (string) $errors[0]
                 )
             );
         }
 
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attributeReferenceEntityCollection);
+
+        $attributeReferenceEntity = $this->get('pim_catalog.factory.attribute')
+            ->createAttribute(ReferenceEntityType::REFERENCE_ENTITY);
+        $this->get('pim_catalog.updater.attribute')
+            ->update($attributeReferenceEntity, [
+                'code' => 'main_city',
+                'reference_data_name' => 'city',
+                'group' => 'other'
+            ]);
+
+        $errors = $this->get('validator')->validate($attributeReferenceEntity);
+        if ($errors->count() > 0) {
+            throw new \Exception(
+                sprintf(
+                    'Cannot create the attribute "%s": %s',
+                    $attributeReferenceEntity->getCode(),
+                    (string) $errors[0]
+                )
+            );
+        }
+
+        $this->get('pim_catalog.saver.attribute')->save($attributeReferenceEntity);
     }
 }
