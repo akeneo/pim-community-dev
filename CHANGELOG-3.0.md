@@ -8,6 +8,7 @@
 - PIM-8223: Fix missing translation on family variant deletion
 - PIM-8224: Fix missing translations in process tracker (Compute completeness, Compute family variant and Compute product model descendants)
 - PIM-8136: Fix display order of datepicker
+- PIM-8227: Fix disappearing columns when saving view columns
 
 # 3.0.7 (2019-03-13)
 
