@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
@@ -17,7 +18,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
-use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -64,7 +64,7 @@ class ProductController
     /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
@@ -129,7 +129,7 @@ class ProductController
      * @param NormalizerInterface                   $normalizer
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param QueryParametersCheckerInterface       $queryParametersChecker
-     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param LruArrayAttributeRepository           $attributeRepository
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param PaginatorInterface                    $offsetPaginator
      * @param PaginatorInterface                    $searchAfterPaginator
@@ -154,7 +154,7 @@ class ProductController
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
         QueryParametersCheckerInterface $queryParametersChecker,
-        AttributeRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         IdentifiableObjectRepositoryInterface $productRepository,
         PaginatorInterface $offsetPaginator,
         PaginatorInterface $searchAfterPaginator,

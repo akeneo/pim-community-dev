@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -43,7 +43,7 @@ class ValuesController
     /** @var ValidatorInterface */
     protected $productValidator;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var NormalizerInterface */
@@ -56,7 +56,7 @@ class ValuesController
      * @param AttributeConverterInterface  $localizedConverter
      * @param ObjectUpdaterInterface       $productUpdater
      * @param ValidatorInterface           $productValidator
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param LruArrayAttributeRepository  $attributeRepository
      * @param NormalizerInterface          $constraintViolationNormalizer
      */
     public function __construct(
@@ -66,7 +66,7 @@ class ValuesController
         AttributeConverterInterface $localizedConverter,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
-        AttributeRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->productBuilder                = $productBuilder;

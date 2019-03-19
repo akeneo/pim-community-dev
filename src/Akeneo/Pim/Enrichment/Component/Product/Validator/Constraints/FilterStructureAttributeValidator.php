@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -18,13 +18,13 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class FilterStructureAttributeValidator extends ConstraintValidator
 {
-    /** @var AttributeRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param LruArrayAttributeRepository $attributeRepository
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    public function __construct(LruArrayAttributeRepository $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
     }

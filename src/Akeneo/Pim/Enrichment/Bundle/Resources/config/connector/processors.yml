@@ -76,7 +76,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
             - '@pim_catalog.values_filler.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_user.provider.user'
@@ -88,7 +88,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product_model'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
             - '@pim_catalog.values_filler.entity_with_family_variant'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_user.provider.user'

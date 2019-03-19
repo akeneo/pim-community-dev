@@ -331,7 +331,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.validator.unique_value_set'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_product_validator_entity }
 
@@ -352,6 +352,6 @@ services:
     pim_connector.validator.constraints.filter_structure_attribute_validator:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureAttributeValidator'
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
         tags:
             - { name: validator.constraint_validator, alias: filter_structure_attribute_validator }

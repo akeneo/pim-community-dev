@@ -3,12 +3,12 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -38,7 +38,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var EntityWithFamilyValuesFillerInterface */
@@ -59,7 +59,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     /**
      * @param NormalizerInterface                   $normalizer
      * @param ChannelRepositoryInterface            $channelRepository
-     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param LruArrayAttributeRepository           $attributeRepository
      * @param EntityWithFamilyValuesFillerInterface $valuesFiller
      * @param ObjectDetacherInterface               $detacher
      * @param UserProviderInterface                 $userProvider
@@ -69,7 +69,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     public function __construct(
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
-        AttributeRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         EntityWithFamilyValuesFillerInterface $valuesFiller,
         ObjectDetacherInterface $detacher,
         UserProviderInterface $userProvider,
@@ -102,8 +102,8 @@ class ProductAndProductModelProcessor extends AbstractProcessor
 
         if ($this->areAttributesToFilter($parameters)) {
             if (in_array('identifier', $selectedProperties)) {
-                $identifier = $this->attributeRepository->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
-                $selectedProperties[] = $identifier->getCode();
+                $identifier = $this->attributeRepository->getIdentifierCode();
+                $selectedProperties[] = $identifier;
                 $selectedProperties[] = 'code';
             }
             if (in_array('family', $selectedProperties)) {

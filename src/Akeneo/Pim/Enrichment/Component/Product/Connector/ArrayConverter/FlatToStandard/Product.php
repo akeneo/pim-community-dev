@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
@@ -46,7 +46,7 @@ class Product implements ArrayConverterInterface
     /** @var array */
     protected $optionalAssocFields;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var ArrayConverterInterface */
@@ -59,7 +59,7 @@ class Product implements ArrayConverterInterface
      * @param ColumnsMerger                   $columnsMerger
      * @param ColumnsMapper                   $columnsMapper
      * @param FieldsRequirementChecker        $fieldChecker
-     * @param AttributeRepositoryInterface    $attributeRepository
+     * @param LruArrayAttributeRepository    $attributeRepository
      * @param ArrayConverterInterface         $productValueConverter
      */
     public function __construct(
@@ -69,7 +69,7 @@ class Product implements ArrayConverterInterface
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
         FieldsRequirementChecker $fieldChecker,
-        AttributeRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         ArrayConverterInterface $productValueConverter
     ) {
         $this->assocColumnsResolver = $assocColumnsResolver;
@@ -378,7 +378,7 @@ class Product implements ArrayConverterInterface
             return $result;
         }
 
-        $attributes = $this->attributeRepository->findBy(['code' => $attributeCodes]);
+        $attributes = $this->attributeRepository->findSeveralByIdentifiers($attributeCodes);
         foreach ($attributeCodes as $attributeCode) {
             $found = false;
             foreach ($attributes as $attribute) {

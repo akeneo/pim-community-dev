@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Sql;
 
-
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
@@ -23,6 +22,12 @@ class AttributeRepository
         $this->connection = $connection;
     }
 
+    /**
+     * @param string $code
+     *
+     * @return Attribute|null
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function findOneByIdentifier(string $code): ?Attribute
     {
         $rows =  $this->findSeveralByIdentifiers([$code]);
@@ -30,6 +35,12 @@ class AttributeRepository
         return $rows[$code];
     }
 
+    /**
+     * @param string[] $codes
+     *
+     * @return Attribute[]
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function findSeveralByIdentifiers(array $codes): array
     {
         if (empty($codes)) {
@@ -97,12 +108,16 @@ SQL;
         return $results;
     }
 
+    /**
+     * @return string
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function getIdentifierCode(): string
     {
         $sql = <<<SQL
 SELECT a.code
 FROM pim_catalog_attribute a
-WHERE a.type = :type;
+WHERE a.attribute_type = :type;
 SQL;
         $rows = $this->connection->executeQuery(
             $sql,

@@ -92,7 +92,7 @@ services:
     pim_enrich.normalizer.product_violation:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductViolationNormalizer'
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
 
     pim_enrich.normalizer.group_violation:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\GroupViolationNormalizer'

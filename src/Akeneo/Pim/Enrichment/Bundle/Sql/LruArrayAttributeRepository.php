@@ -17,12 +17,21 @@ class LruArrayAttributeRepository
     /** @var string */
     private $identifierCode;
 
+    /**
+     * @param AttributeRepository $attributeRepository
+     * @param int $capacity
+     */
     public function __construct(AttributeRepository $attributeRepository, int $capacity)
     {
         $this->attributeRepository = $attributeRepository;
         $this->cache = new LRUCache($capacity);
     }
 
+    /**
+     * @param string $code
+     *
+     * @return Attribute|null
+     */
     public function findOneByIdentifier(string $code): ?Attribute
     {
         $attributes = $this->findSeveralByIdentifiers([$code]);
@@ -30,6 +39,11 @@ class LruArrayAttributeRepository
         return $attributes[$code];
     }
 
+    /**
+     * @param array $codes
+     *
+     * @return Attribute[]
+     */
     public function findSeveralByIdentifiers(array $codes): array
     {
         $cachedAttributes = [];

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -20,13 +20,13 @@ class ProductViolationNormalizer implements NormalizerInterface
     /** @var string[] */
     protected $supportedFormats = ['internal_api'];
 
-    /** @var AttributeRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param LruArrayAttributeRepository $attributeRepository
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    public function __construct(LruArrayAttributeRepository $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
     }

@@ -36,7 +36,7 @@ services:
             - '@pim_external_api_serializer'
             - '@pim_api.repository.channel'
             - '@pim_api.checker.query_parameters_product'
-            - '@pim_api.repository.attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
             - '@pim_api.repository.product'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.search_after_hal_paginator'
@@ -206,7 +206,7 @@ services:
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
             - '@pim_enrich.normalizer.product_violation'
 
     pim_enrich.controller.rest.mass_edit:

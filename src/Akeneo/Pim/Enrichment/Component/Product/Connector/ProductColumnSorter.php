@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ColumnSorterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter;
 
@@ -17,7 +17,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter;
  */
 class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInterface
 {
-    /** @var  AttributeRepositoryInterface */
+    /** @var  LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var AssociationTypeRepositoryInterface */
@@ -25,13 +25,13 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
 
     /**
      * @param FieldSplitter                         $fieldSplitter
-     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param LruArrayAttributeRepository          $attributeRepository
      * @param AssociationTypeRepositoryInterface    $associationTypeRepository
      * @param array                                 $firstDefaultColumns
      */
     public function __construct(
         FieldSplitter $fieldSplitter,
-        AttributeRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         AssociationTypeRepositoryInterface $associationTypeRepository,
         array $firstDefaultColumns
     ) {
