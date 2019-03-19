@@ -277,6 +277,6 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
 
     private function assertRecordDetails(RecordDetails $expected, RecordDetails $actual)
     {
-        $this->assertEquals($expected->normalize(), $actual->normalize(), '', 0.0, 10, true);
+        $this->assertEqualsCanonicalizing($expected->normalize(), $actual->normalize());
     }
 }
