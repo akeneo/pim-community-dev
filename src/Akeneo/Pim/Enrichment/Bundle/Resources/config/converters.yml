@@ -12,7 +12,7 @@ services:
     pim_enrich.converter.standard_to_enrich.product_value:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Converter\StandardToInternalApi\ValueConverter'
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
             - '@akeneo_file_storage.repository.file_info'
 
     pim_enrich.converter.enrich_to_standard.product_value:

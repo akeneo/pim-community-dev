@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Converter\StandardToInternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetAttributeTypeByCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 
 /**
@@ -14,21 +14,21 @@ use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
  */
 class ValueConverter implements ConverterInterface
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var GetAttributeTypeByCodes */
+    protected $getAttributeTypeByCodes;
 
     /** @var FileInfoRepositoryInterface */
     protected $fileInfoRepository;
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param FileInfoRepositoryInterface  $fileInfoRepository
+     * @param GetAttributeTypeByCodes $getAttributeTypeByCodes
+     * @param FileInfoRepositoryInterface $fileInfoRepository
      */
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributeTypeByCodes $getAttributeTypeByCodes,
         FileInfoRepositoryInterface $fileInfoRepository
     ) {
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributeTypeByCodes = $getAttributeTypeByCodes;
         $this->fileInfoRepository = $fileInfoRepository;
     }
 
@@ -59,7 +59,7 @@ class ValueConverter implements ConverterInterface
      */
     public function convert(array $productValues)
     {
-        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($productValues));
+        $attributeTypes = $this->getAttributeTypeByCodes->execute(array_keys($productValues));
 
         foreach ($productValues as $code => $values) {
             if ($attributeTypes[$code] === AttributeTypes::IMAGE || $attributeTypes[$code] === AttributeTypes::FILE) {

@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetAttributeTypeByCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -23,8 +23,8 @@ class EntityWithValuesFilter implements FilterInterface
     /** @var ComparatorRegistry */
     protected $comparatorRegistry;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var GetAttributeTypeByCodes */
+    protected $getAttributeTypeByCodes;
 
     /** @var array */
     protected $entityFields;
@@ -38,20 +38,20 @@ class EntityWithValuesFilter implements FilterInterface
     /**
      * @param NormalizerInterface          $normalizer
      * @param ComparatorRegistry           $comparatorRegistry
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param GetAttributeTypeByCodes      $getAttributeTypeByCodes
      * @param FilterInterface              $productFieldFilter
      * @param array                        $entityFields
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributeTypeByCodes $getAttributeTypeByCodes,
         FilterInterface $productFieldFilter,
         array $entityFields
     ) {
         $this->normalizer = $normalizer;
         $this->comparatorRegistry = $comparatorRegistry;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributeTypeByCodes = $getAttributeTypeByCodes;
         $this->entityFields = $entityFields;
         $this->productFieldFilter = $productFieldFilter;
         $this->attributeTypeByCodes = [];
@@ -210,6 +210,6 @@ class EntityWithValuesFilter implements FilterInterface
         $codesToFetch = array_diff($codes, array_keys($this->attributeTypeByCodes));
 
         // we can have numeric keys here, we can't use array_merge :(
-        $this->attributeTypeByCodes += $this->attributeRepository->getAttributeTypeByCodes($codesToFetch);
+        $this->attributeTypeByCodes += $this->getAttributeTypeByCodes->execute($codesToFetch);
     }
 }

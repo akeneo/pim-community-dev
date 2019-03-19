@@ -335,6 +335,6 @@ final class Attribute
 
     public function isLocaleSpecific(): bool
     {
-       return !$this->availableLocales->isEmpty();
+        return !$this->availableLocales->isEmpty();
     }
 }

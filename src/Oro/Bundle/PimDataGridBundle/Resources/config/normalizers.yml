@@ -128,7 +128,7 @@ services:
             - '@translator'
             - '@pim_catalog.localization.presenter.datetime'
             - '@pim_catalog.localization.presenter.registry'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
             - '@pim_user.context.user'
         tags:
             - { name: pim_internal_api_serializer.normalizer }

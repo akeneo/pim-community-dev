@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetAttributeTypeByCodes;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -19,8 +19,8 @@ class AttributeConverter implements AttributeConverterInterface
     /** @var LocalizerRegistryInterface */
     protected $localizerRegistry;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var GetAttributeTypeByCodes */
+    protected $getAttributeTypeByCodes;
 
     /** @var ConstraintViolationListInterface */
     protected $violations;
@@ -29,15 +29,15 @@ class AttributeConverter implements AttributeConverterInterface
     protected $attributeTypeByCodes;
 
     /**
-     * @param LocalizerRegistryInterface   $localizerRegistry
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param LocalizerRegistryInterface $localizerRegistry
+     * @param GetAttributeTypeByCodes    $getAttributeTypeByCodes
      */
     public function __construct(
         LocalizerRegistryInterface $localizerRegistry,
-        AttributeRepositoryInterface $attributeRepository
+        GetAttributeTypeByCodes $getAttributeTypeByCodes
     ) {
         $this->localizerRegistry = $localizerRegistry;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributeTypeByCodes = $getAttributeTypeByCodes;
         $this->attributeTypeByCodes = [];
     }
 
@@ -202,6 +202,6 @@ class AttributeConverter implements AttributeConverterInterface
         $codesToFetch = array_diff($codes, array_keys($this->attributeTypeByCodes));
 
         // we can have numeric keys here, we can't use array_merge :(
-        $this->attributeTypeByCodes += $this->attributeRepository->getAttributeTypeByCodes($codesToFetch);
+        $this->attributeTypeByCodes += $this->getAttributeTypeByCodes->execute($codesToFetch);
     }
 }

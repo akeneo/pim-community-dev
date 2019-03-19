@@ -29,7 +29,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product.properties'
             - '@pim_catalog.comparator.registry'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
             - '@pim_catalog.comparator.filter.product_field'
             - ['family', 'enabled', 'groups', 'categories', 'parent']
 
@@ -38,7 +38,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product_model'
             - '@pim_catalog.comparator.registry'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
             - '@pim_catalog.comparator.filter.product_model_field'
             - ['family_variant', 'categories', 'parent']
 

@@ -9,7 +9,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\Sql;
  * A fixed sized cache that removes the element used last when it reaches its
  * size limit.
  */
-class LRUCache {
+class LRUCache
+{
 
     /** @var int */
     private $maximumSize;
@@ -25,7 +26,8 @@ class LRUCache {
      * @param int $size
      * @throws \InvalidArgumentException
      */
-    public function __construct(int $size) {
+    public function __construct(int $size)
+    {
         if ($size <= 0) {
             throw new \InvalidArgumentException();
         }
@@ -41,7 +43,8 @@ class LRUCache {
      *
      * @return mixed
      */
-    public function get(string $key): ?object {
+    public function get(string $key): ?object
+    {
         if (isset($this->data[$key])) {
             $this->recordAccess($key);
             return $this->data[$key];
@@ -56,7 +59,8 @@ class LRUCache {
      * @param int|string $key   The key. Strings that are ints are cast to ints.
      * @param mixed      $value The value to cache
      */
-    public function put(string $key, object $value) {
+    public function put(string $key, object $value)
+    {
         if (isset($this->data[$key])) {
             $this->data[$key] = $value;
             $this->recordAccess($key);
@@ -74,7 +78,8 @@ class LRUCache {
      *
      * @param int|string $key The key
      */
-    private function recordAccess(string $key) {
+    private function recordAccess(string $key)
+    {
         $value = $this->data[$key];
         unset($this->data[$key]);
         $this->data[$key] = $value;

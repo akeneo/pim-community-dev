@@ -120,3 +120,9 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetDescendentCategoryCodes'
         arguments:
             - '@database_connection'
+
+    pim_catalog.query.get_attribute_type_by_codes:
+        class: Akeneo\Pim\Enrichment\Bundle\Sql\GetAttributeTypeByCodes
+        arguments:
+            - '@database_connection'
+    

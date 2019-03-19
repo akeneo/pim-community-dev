@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetAttributeTypeByCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -38,8 +38,8 @@ class VersionNormalizer implements NormalizerInterface
     /** @var PresenterInterface */
     protected $datetimePresenter;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var GetAttributeTypeByCodes */
+    protected $getAttributeTypeByCodes;
 
     /** @var UserContext */
     protected $userContext;
@@ -47,26 +47,26 @@ class VersionNormalizer implements NormalizerInterface
     const ATTRIBUTE_HEADER_SEPARATOR = "-";
 
     /**
-     * @param UserManager                  $userManager
-     * @param TranslatorInterface          $translator
-     * @param PresenterInterface           $datetimePresenter
-     * @param PresenterRegistryInterface   $presenterRegistry
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param UserContext                  $userContext
+     * @param UserManager $userManager
+     * @param TranslatorInterface $translator
+     * @param PresenterInterface $datetimePresenter
+     * @param PresenterRegistryInterface $presenterRegistry
+     * @param GetAttributeTypeByCodes $getAttributeTypeByCodes
+     * @param UserContext $userContext
      */
     public function __construct(
         UserManager $userManager,
         TranslatorInterface $translator,
         PresenterInterface $datetimePresenter,
         PresenterRegistryInterface $presenterRegistry,
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributeTypeByCodes $getAttributeTypeByCodes,
         UserContext $userContext
     ) {
         $this->userManager = $userManager;
         $this->translator = $translator;
         $this->datetimePresenter = $datetimePresenter;
         $this->presenterRegistry = $presenterRegistry;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributeTypeByCodes = $getAttributeTypeByCodes;
         $this->userContext = $userContext;
     }
 
@@ -144,7 +144,7 @@ class VersionNormalizer implements NormalizerInterface
             $attributeCodes[$attributeCode] = true;
         }
 
-        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($attributeCodes));
+        $attributeTypes = $this->getAttributeTypeByCodes->execute(array_keys($attributeCodes));
 
         foreach ($changeset as $valueHeader => $valueChanges) {
             $context['versioned_attribute'] = $valueHeader;

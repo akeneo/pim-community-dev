@@ -14,7 +14,7 @@ services:
         class: '%pim_catalog.localization.localizer.converter.class%'
         arguments:
             - '@pim_catalog.localization.localizer.registry'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
 
     pim_catalog.localization.localizer.number:
         class: '%pim_catalog.localization.localizer.number.class%'
