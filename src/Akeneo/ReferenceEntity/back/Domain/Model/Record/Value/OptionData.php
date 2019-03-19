@@ -26,7 +26,7 @@ class OptionData implements ValueDataInterface
 
     private function __construct(string $optionCode)
     {
-        Assert::notEmpty($optionCode, 'Option code should be a non empty string');
+        Assert::stringNotEmpty($optionCode, 'Option code should be a non empty string');
 
         $this->optionCode = $optionCode;
     }
