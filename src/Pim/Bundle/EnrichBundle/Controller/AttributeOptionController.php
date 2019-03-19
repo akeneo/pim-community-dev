@@ -252,11 +252,15 @@ class AttributeOptionController
      *
      * @param FormInterface $form
      *
-     * @return object
+     * @return array
      */
     protected function getFormErrors($form)
     {
         $errors = [];
+
+        foreach ($form->getErrors() as $error) {
+            $errors[$form->getName()] = $error->getMessage();
+        }
 
         foreach ($form as $child) {
             foreach ($child->getErrors(true) as $error) {
