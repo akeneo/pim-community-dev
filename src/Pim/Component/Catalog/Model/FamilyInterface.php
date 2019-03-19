@@ -58,7 +58,7 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     /**
      * Get attributes
      *
-     * @return AttributeInterface[]|ArrayCollection
+     * @return AttributeInterface[]
      */
     public function getAttributes();
 
@@ -125,7 +125,7 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     /**
      * Get attribute requirements
      *
-     * @return array
+     * @return AttributeRequirementInterface[]
      */
     public function getAttributeRequirements();
 
