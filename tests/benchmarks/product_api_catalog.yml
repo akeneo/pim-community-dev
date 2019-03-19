@@ -34,5 +34,5 @@ catalog:
             count: 100
             attributes_count: 120
         products:
-            count: 1000
+            count: 150
             with_images: false

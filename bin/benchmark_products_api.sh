@@ -2,6 +2,8 @@
 
 set -eu
 
+command -v jq >/dev/null 2>&1 || { echo >&2 "I require jq but it's not installed.  Aborting."; exit 1; }
+
 START=$(date +%s)
 SCRIPT_DIR=$(dirname $0)
 DOCKER_BRIDGE_IP=$(ip address show | grep "global docker" | cut -c10- | cut -d '/' -f1)
@@ -79,8 +81,18 @@ echo "- GET: $GET products/second"
 echo "- CREATE: $CREATE products/second"
 echo "- UPDATE: $UPDATE products/second"
 echo ""
-echo "You can see the detailed results under the folder $WORKING_DIRECTORY/raw_results"
+echo "You can see the detailed results under the folder $WORKING_DIRECTORY/raw_results and the at the name of results.json"
 echo ""
+
+JSON_STRING=$(
+    jq -n \
+    --arg gp "$GET" \
+    --arg cp "$CREATE" \
+    --arg up "$UPDATE" \
+    '{get_result: $gp, create_result: $cp, update_result: $up}'
+)
+
+echo $JSON_STRING > $WORKING_DIRECTORY/results.json
 
 END=$(date +%s)
 RUNTIME=$(expr $END - $START)
