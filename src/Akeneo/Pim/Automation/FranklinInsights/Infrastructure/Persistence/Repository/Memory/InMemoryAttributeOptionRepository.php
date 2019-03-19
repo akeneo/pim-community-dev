@@ -16,7 +16,6 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Structure\Component\Model\AttributeOption as PimAttributeOption;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 /**
@@ -43,10 +42,5 @@ final class InMemoryAttributeOptionRepository implements AttributeOptionReposito
     public function findByCodes(array $codes): array
     {
         return $this->inMemoryAttributeOptionRepository->findBy(['code' => $codes]);
-    }
-
-    public function save(PimAttributeOption $attributeOption): void
-    {
-        $this->inMemoryAttributeOptionRepository->save($attributeOption);
     }
 }
