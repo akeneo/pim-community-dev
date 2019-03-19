@@ -52,15 +52,13 @@ interface Props {
   elements: DropdownMenuElement[];
   selectedElement: string;
   ButtonView?: ({onClick}: {onClick: (element: DropdownMenuElement) => void}) => JSX.Element;
-  ItemView?: (
-    {
-      element,
-      onClick,
-    }: {
-      element: DropdownMenuElement;
-      onClick: (element: DropdownMenuElement) => void;
-    }
-  ) => JSX.Element;
+  ItemView?: ({
+    element,
+    onClick,
+  }: {
+    element: DropdownMenuElement;
+    onClick: (element: DropdownMenuElement) => void;
+  }) => JSX.Element;
   label: string;
   className?: string;
   onSelectionChange: (element: DropdownMenuElement) => void;

@@ -29,10 +29,10 @@ module.exports = async function(cucumber) {
       if (request.url().includes('/security')) {
         request.respond({
           contentType: 'application/json',
-          body: `${JSON.stringify({})}`
-        })
+          body: `${JSON.stringify({})}`,
+        });
       }
-    })
+    });
 
     await renderView(this.page, 'pim-catalog-volume-index', data);
     assert(int);
