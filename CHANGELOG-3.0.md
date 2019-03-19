@@ -23,6 +23,8 @@
 - PXD-22: Fix grid action buttons margin
 - PXD-23: Fix border between user navigation and actions
 - PXD-24: Fix grid bottom panel margins
+- PXD-82: Fix stick header on horizontal scroll
+- PXD-14: Add default placeholder for every select2 search input
 
 # 3.0.7 (2019-03-13)
 

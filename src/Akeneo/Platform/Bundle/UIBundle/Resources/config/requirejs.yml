@@ -20,6 +20,10 @@ config:
     jquery.select2:
       deps:
       - jquery
+    jquery.select2.placeholder:
+      deps:
+      - jquery.select2
+      - underscore
     jquery.jstree:
       deps:
       - jquery
@@ -517,6 +521,7 @@ config:
     jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min
     jquery.numeric:                pimui/lib/jquery-numeric/jquery.numeric
     jquery.select2:                pimui/lib/select2/select2
+    jquery.select2.placeholder:    pimui/lib/select2/select2-placeholder
     jquery.jstree:                 pimui/lib/jstree/jquery.jstree
     jstree/jquery.hotkeys:         pimui/lib/jstree/jquery.hotkeys
     bootstrap:                     pimui/lib/bootstrap/js/bootstrap
