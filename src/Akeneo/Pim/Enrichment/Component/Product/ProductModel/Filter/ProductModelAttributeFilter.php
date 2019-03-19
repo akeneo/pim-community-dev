@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
@@ -30,18 +31,18 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     private $attributeRepository;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $familyVariantRepository
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param LruArrayAttributeRepository $attributeRepository
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        LruArrayAttributeRepository $attributeRepository
     ) {
         $this->familyVariantRepository = $familyVariantRepository;
         $this->productModelRepository = $productModelRepository;

@@ -2,13 +2,13 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -25,10 +25,10 @@ class ProductValueNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $normalizer;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     private $attributeRepository;
 
-    public function __construct(NormalizerInterface $normalizer, IdentifiableObjectRepositoryInterface $attributeRepository)
+    public function __construct(NormalizerInterface $normalizer, LruArrayAttributeRepository $attributeRepository)
     {
         $this->normalizer = $normalizer;
         $this->attributeRepository = $attributeRepository;
@@ -76,7 +76,14 @@ class ProductValueNormalizer implements NormalizerInterface
         $data = [];
         foreach ($value->getData() as $item) {
             if (AttributeTypes::OPTION_MULTI_SELECT === $attributeType ||
-                $attribute->isBackendTypeReferenceData()) {
+                in_array(
+                    $attribute->getBackendType(),
+                    [
+                        AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION,
+                        AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS,
+                    ]
+                )
+            ) {
                 $data[] = $item;
             } else {
                 $data[] = $this->normalizer->normalize($item, $format, $context);

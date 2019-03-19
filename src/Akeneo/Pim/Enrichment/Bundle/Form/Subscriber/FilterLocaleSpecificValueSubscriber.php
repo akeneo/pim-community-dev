@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Form\Subscriber;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -16,13 +16,13 @@ use Symfony\Component\Form\FormEvents;
  */
 class FilterLocaleSpecificValueSubscriber implements EventSubscriberInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var string $currentLocale */
     protected $currentLocale;
 
-    public function __construct(?string $currentLocale, IdentifiableObjectRepositoryInterface $attributeRepository)
+    public function __construct(?string $currentLocale, LruArrayAttributeRepository $attributeRepository)
     {
         $this->currentLocale = $currentLocale;
         $this->attributeRepository = $attributeRepository;

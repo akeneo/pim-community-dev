@@ -150,7 +150,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product_unique_data'
             - '@pim_catalog.validator.unique_value_set'
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
 

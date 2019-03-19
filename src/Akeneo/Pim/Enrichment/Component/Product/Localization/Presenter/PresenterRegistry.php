@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
@@ -28,9 +29,9 @@ class PresenterRegistry implements PresenterRegistryInterface
     protected $presenters = [];
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param LruArrayAttributeRepository $attributeRepository
      */
-    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
+    public function __construct(LruArrayAttributeRepository $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
     }

@@ -87,7 +87,7 @@ SQL;
                 // options
                 $row['group_code'],
                 (bool) $row['useable_as_grid_filter'],
-                new ArrayCollection(array_filter(json_decode($row['available_locales'], true))),
+                array_filter(json_decode($row['available_locales'], true)),
                 (int) $row['max_characters'],
                 $row['validation_rule'],
                 $row['validation_regexp'],

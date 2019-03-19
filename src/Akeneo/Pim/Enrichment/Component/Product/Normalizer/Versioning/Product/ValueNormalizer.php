@@ -2,9 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,7 +22,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var SerializerInterface */
@@ -37,7 +38,7 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
     protected $attributeOptionRepository;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         int $precision = 4
     ) {
@@ -157,12 +158,17 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
 
     /**
      * Check if the attribute is locale specific and check if the given local exist in available locales
+     *
+     * @param ValueInterface $value
+     * @param AttributeInterface $attribute
+     *
+     * @return bool
      */
     protected function filterLocaleSpecific(ValueInterface $value, AttributeInterface $attribute): bool
     {
         if ($attribute->isLocaleSpecific()) {
             $currentLocale = $value->getLocaleCode();
-            $availableLocales = $attribute->getLocaleSpecificCodes();
+            $availableLocales = $attribute->getAvailableLocaleCodes();
             if (!in_array($currentLocale, $availableLocales)) {
                 return true;
             }
@@ -175,6 +181,7 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
      * Sort the collection of options by their defined sort order in the attribute
      *
      * @param Collection $optionsCollection
+     * @param AttributeInterface $attribute
      *
      * @return Collection
      */

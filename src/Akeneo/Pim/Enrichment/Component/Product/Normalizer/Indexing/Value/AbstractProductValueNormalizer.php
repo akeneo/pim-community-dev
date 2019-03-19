@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -21,11 +21,13 @@ abstract class AbstractProductValueNormalizer implements NormalizerInterface, Se
 {
     use SerializerAwareTrait;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
-
-    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
+    /**
+     * @param LruArrayAttributeRepository $attributeRepository
+     */
+    public function __construct(LruArrayAttributeRepository $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
     }

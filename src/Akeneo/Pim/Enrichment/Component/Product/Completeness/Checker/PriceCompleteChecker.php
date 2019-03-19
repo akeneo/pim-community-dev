@@ -4,9 +4,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Check if a product price collection complete or not for a provided channel.
@@ -24,10 +24,10 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 class PriceCompleteChecker implements ValueCompleteCheckerInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
-    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
+    public function __construct(LruArrayAttributeRepository $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
     }

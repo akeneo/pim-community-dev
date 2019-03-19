@@ -4,16 +4,13 @@ namespace Akeneo\Pim\Enrichment\Bundle\Sql;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-final class Attribute
+final class Attribute implements AttributeInterface
 {
     /** @var int */
     private $id;
 
     /** @var string */
     private $code;
-
-    /** @var string */
-    private $label;
 
     /** @var string */
     private $type;
@@ -45,11 +42,8 @@ final class Attribute
     /** @var bool */
     private $useableAsGridFilter;
 
-    /** @var ArrayCollection */
-    private $availableLocales;
-
-    /** @var ArrayCollection */
-    private $families;
+    /** @var array */
+    private $availableLocaleCodes;
 
     /** @var int */
     private $maxCharacters;
@@ -59,9 +53,6 @@ final class Attribute
 
     /** @var string */
     private $validationRegexp;
-
-    /** @var bool */
-    private $wysiwygEnabled;
 
     /** @var float */
     private $numberMin;
@@ -108,10 +99,9 @@ final class Attribute
      * @param bool            $localizable
      * @param bool            $scopable
      * @param ArrayCollection $properties
-     * @param array           $options
      * @param string          $groupCode
      * @param bool            $useableAsGridFilter
-     * @param ArrayCollection $availableLocales
+     * @param string[]        $availableLocaleCodes
      * @param int             $maxCharacters
      * @param string          $validationRule
      * @param string          $validationRegexp
@@ -137,10 +127,9 @@ final class Attribute
         ?bool $localizable,
         ?bool $scopable,
         ArrayCollection $properties,
-        //array $options,
         ?string $groupCode,
         ?bool $useableAsGridFilter,
-        ArrayCollection $availableLocales,
+        array $availableLocaleCodes,
         int $maxCharacters,
         ?string $validationRule,
         ?string $validationRegexp,
@@ -152,7 +141,7 @@ final class Attribute
         ?\Datetime $dateMax,
         ?string $metricFamily,
         ?string $defaultMetricUnit,
-        ?int $maxFileSize,
+        ?float $maxFileSize,
         array $allowedExtensions,
         ?int $minimumInputLength
     ) {
@@ -165,10 +154,9 @@ final class Attribute
         $this->localizable = $localizable;
         $this->scopable = $scopable;
         $this->properties = $properties;
-        //$this->options = $options;
         $this->groupCode = $groupCode;
         $this->useableAsGridFilter = $useableAsGridFilter;
-        $this->availableLocales = $availableLocales;
+        $this->availableLocaleCodes = $availableLocaleCodes;
         $this->maxCharacters = $maxCharacters;
         $this->validationRule = $validationRule;
         $this->validationRegexp = $validationRegexp;
@@ -193,7 +181,7 @@ final class Attribute
         return $this->id;
     }
 
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -203,7 +191,7 @@ final class Attribute
         return $this->backendType;
     }
 
-    public function getAttributeType()
+    public function getType()
     {
         return $this->type;
     }
@@ -253,9 +241,9 @@ final class Attribute
         return $this->useableAsGridFilter;
     }
 
-    public function getLocaleSpecificCodes()
+    public function getAvailableLocaleCodes()
     {
-        return $this->getAvailableLocaleCodes();
+        return $this->availableLocaleCodes;
     }
 
     public function getMaxCharacters()
@@ -320,7 +308,7 @@ final class Attribute
 
     public function getAllowedExtensions(): array
     {
-        return $this->allowedExtensions ? array_map('trim', explode(',', $this->allowedExtensions)) : [];
+        return $this->allowedExtensions;
     }
 
     public function getMinimumInputLength(): int
@@ -328,13 +316,8 @@ final class Attribute
         return $this->minimumInputLength;
     }
 
-    public function sortOrder(): int
-    {
-        return $this->sortOrder;
-    }
-
     public function isLocaleSpecific(): bool
     {
-        return !$this->availableLocales->isEmpty();
+        return !empty($this->availableLocaleCodes);
     }
 }

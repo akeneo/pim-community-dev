@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductUniqueDataRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -25,13 +25,13 @@ class UniqueValueValidator extends ConstraintValidator
     /** @var UniqueValuesSet */
     protected $uniqueValuesSet;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     public function __construct(
         ProductUniqueDataRepositoryInterface $repository,
         UniqueValuesSet $uniqueValueSet,
-        IdentifiableObjectRepositoryInterface $attributeRepository)
+        LruArrayAttributeRepository $attributeRepository)
     {
         $this->repository = $repository;
         $this->uniqueValuesSet = $uniqueValueSet;
