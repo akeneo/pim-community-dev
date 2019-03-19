@@ -110,7 +110,6 @@ $rules = [
             'Symfony\Component\Security\Core\Exception\AccessDeniedException',
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\HttpKernel\Exception',
-            'Symfony\Component\Translation',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi'),
