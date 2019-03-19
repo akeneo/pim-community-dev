@@ -27,9 +27,11 @@ config:
             option:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/option'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/option.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/details/option.tsx'
             option_collection:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/option-collection'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/option-collection.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/details/option-collection.tsx'
 
         akeneoreferenceentity/application/configuration/attribute:
             image:
