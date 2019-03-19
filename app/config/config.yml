@@ -56,39 +56,6 @@ swiftmailer:
     password:                 "%mailer_password%"
     spool:                    { type: memory }
 
-# OneupFlysystemBundle Configuration
-oneup_flysystem:
-    adapters:
-        catalog_storage_adapter:
-            googlecloudstorage:
-                client: poc_storage.google_storage.client
-                bucket: poc_storage.google_storage.bucket.catalog_storage
-                prefix: '%catalog_storage_dir%'
-        tmp_storage_adapter:
-            googlecloudstorage:
-                client: poc_storage.google_storage.client
-                bucket: poc_storage.google_storage.bucket.tmp_storage
-                prefix: '%tmp_storage_dir%'
-        archivist_adapter:
-            googlecloudstorage:
-                client: poc_storage.google_storage.client
-                bucket: poc_storage.google_storage.bucket.archivist
-                prefix: '%archive_dir%'
-    filesystems:
-        catalog_storage:
-            adapter: catalog_storage_adapter
-            mount: catalogStorage
-        tmp_storage:
-            adapter: tmp_storage_adapter
-            mount: tmpStorage
-            plugins:
-                - oneup_flysystem.plugin.list_files
-        archivist:
-            adapter: archivist_adapter
-            mount: archivist
-            plugins:
-                - oneup_flysystem.plugin.list_files
-
 akeneo_pim_structure:
     reference_data:
         fabrics:

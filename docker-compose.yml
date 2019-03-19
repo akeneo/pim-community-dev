@@ -23,8 +23,6 @@ services:
 
   selenium:
     image: 'selenium/standalone-firefox-debug:2.53.1-beryllium'
-    volumes:
-      - './:/srv/pim:ro'
     networks:
       - 'behat'
 

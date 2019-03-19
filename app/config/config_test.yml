@@ -21,6 +21,39 @@ swiftmailer:
 assetic:
     use_controller: false
 
+# OneupFlysystemBundle Configuration
+oneup_flysystem:
+    adapters:
+        archivist_adapter:
+            googlecloudstorage:
+                client: poc_storage.google_storage.client
+                bucket: poc_storage.google_storage.bucket.archivist
+                prefix: '%archive_dir%'
+        catalog_storage_adapter:
+            googlecloudstorage:
+                client: poc_storage.google_storage.client
+                bucket: poc_storage.google_storage.bucket.catalog_storage
+                prefix: '%catalog_storage_dir%'
+        tmp_storage_adapter:
+            googlecloudstorage:
+                client: poc_storage.google_storage.client
+                bucket: poc_storage.google_storage.bucket.tmp_storage
+                prefix: '%tmp_storage_dir%'
+    filesystems:
+        archivist:
+            adapter: archivist_adapter
+            mount: archivist
+            plugins:
+                - oneup_flysystem.plugin.list_files
+        catalog_storage:
+            adapter: catalog_storage_adapter
+            mount: catalogStorage
+        tmp_storage:
+            adapter: tmp_storage_adapter
+            mount: tmpStorage
+            plugins:
+                - oneup_flysystem.plugin.list_files
+
 parameters:
     max_products_category_removal: 20
     installer_data:       PimInstallerBundle:minimal
@@ -28,4 +61,4 @@ parameters:
     catalog_storage_dir:  ''
     tmp_storage_dir:      ''
     upload_dir:           '%kernel.root_dir%/uploads/product'
-    upload_tmp_dir:       '%kernel.root_dir%/var/upload_tmp_dir'
+    upload_tmp_dir:       '%kernel.root_dir%/uploads/tmp'
