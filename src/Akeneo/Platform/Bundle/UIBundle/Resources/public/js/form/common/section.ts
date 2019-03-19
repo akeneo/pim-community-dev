@@ -40,9 +40,8 @@ class SectionView extends BaseView {
    */
   public events(): Backbone.EventsHash {
     return {
-      'click .AknCatalogVolume-remove': 'closeHint',
-      'click .AknCatalogVolume-icon--active': 'closeHint',
-      'click .open-hint:not(.AknCatalogVolume-icon--active)': 'openHint',
+      'click .toggle-hint.active-hint': 'closeHint',
+      'click .toggle-hint:not(.active-hint)': 'openHint',
     };
   }
 
