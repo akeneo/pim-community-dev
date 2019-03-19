@@ -16,18 +16,29 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class AttributeTypeForOptionValidator extends ConstraintValidator
 {
+    /** @var array */
+    protected $supportedAttributeTypes;
+
     /**
-     * @param object     $attributeOption
-     * @param Constraint $constraint
+     * AttributeTypeForOptionValidator constructor.
+     * @param array $supportedAttributeTypes
+     */
+    public function __construct(array $supportedAttributeTypes)
+    {
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
+    }
+
+    /**
+     * @param object                            $attributeOption
+     * @param AttributeTypeForOption|Constraint $constraint
      */
     public function validate($attributeOption, Constraint $constraint)
     {
         /** @var AttributeOptionInterface */
         if ($attributeOption instanceof AttributeOptionInterface) {
             $attribute = $attributeOption->getAttribute();
-            $authorizedTypes = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT];
-            if (null !== $attribute && !in_array($attribute->getType(), $authorizedTypes)) {
-                $this->addInvalidAttributeViolation($constraint, $attributeOption, $authorizedTypes);
+            if (null !== $attribute && !in_array($attribute->getType(), $this->supportedAttributeTypes)) {
+                $this->addInvalidAttributeViolation($constraint, $attributeOption, $this->supportedAttributeTypes);
             }
         }
     }

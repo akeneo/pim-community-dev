@@ -243,6 +243,8 @@ services:
 
     pim_catalog.validator.constraint.attribute_type_for_option:
         class: '%pim_catalog.validator.constraint.attribute_type_for_option.class%'
+        arguments:
+            - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
         tags:
             - { name: validator.constraint_validator, alias: pim_attribute_type_for_option_validator }
 
