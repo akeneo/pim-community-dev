@@ -1,5 +1,9 @@
 # 1.7.x
 
+## Bug fixes
+
+- PIM-8228: Fix incorrect completeness calculation
+
 # 1.7.39 (2019-02-25)
 
 # 1.7.38 (2019-01-15)
