@@ -7,7 +7,7 @@ import {NormalizedOptionCollectionAttribute} from 'akeneoreferenceentity/domain/
 
 const memo = (React as any).memo;
 
-const OptionCollectionCellView: CellView = memo(({column, value}: {column: Column, value: NormalizedValue}) => {
+const OptionCollectionCellView: CellView = memo(({column, value}: {column: Column; value: NormalizedValue}) => {
   const selectedOptionCollectionCode = value.data;
   const normalizedOptionCollectionAttribute = column.attribute as NormalizedOptionCollectionAttribute;
   const selectedOptionCollectionLabel = normalizedOptionCollectionAttribute.options

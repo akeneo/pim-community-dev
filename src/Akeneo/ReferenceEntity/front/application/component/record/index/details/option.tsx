@@ -7,14 +7,16 @@ import {NormalizedOptionAttribute} from 'akeneoreferenceentity/domain/model/attr
 
 const memo = (React as any).memo;
 
-const OptionCellView: CellView = memo(({column, value}: {column: Column, value: NormalizedValue}) => {
+const OptionCellView: CellView = memo(({column, value}: {column: Column; value: NormalizedValue}) => {
   const selectedOptionCode = value.data;
   const normalizedOptionAttribute = column.attribute as NormalizedOptionAttribute;
-  const selectedOption = normalizedOptionAttribute.options.find((option: NormalizedOption) => option.code === selectedOptionCode);
-  const selectedOptionLabel = (selectedOption !== undefined && selectedOption.labels[column.locale]) ?
-    selectedOption.labels[column.locale] :
-    `[${selectedOptionCode}]`
-  ;
+  const selectedOption = normalizedOptionAttribute.options.find(
+    (option: NormalizedOption) => option.code === selectedOptionCode
+  );
+  const selectedOptionLabel =
+    selectedOption !== undefined && selectedOption.labels[column.locale]
+      ? selectedOption.labels[column.locale]
+      : `[${selectedOptionCode}]`;
 
   return (
     <div className="AknGrid-bodyCellContainer" title={selectedOptionLabel}>
