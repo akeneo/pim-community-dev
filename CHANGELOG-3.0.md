@@ -5,6 +5,9 @@
 - PIM-8217: Fix missing translations on product grid (Filters, Done, Yes and No)
 - PIM-8221: Fix missing translations on family attributes tab (Required, Not required)
 - PIM-8128: Fix display of reset password confirmation message
+- PIM-8223: Fix missing translation on family variant deletion
+- PIM-8224: Fix missing translations in process tracker (Compute completeness, Compute family variant and Compute product model descendants)
+- PIM-8136: Fix display order of datepicker
 
 # 3.0.7 (2019-03-13)
 
@@ -43,7 +46,7 @@
 - PIM-8147: Fix design issue on boolean fields
 - PIM-8146: Fix centered alignment on drag & drop fields
 - PIM-8156: Fix multiselect field alignment
-- PIM-8153: Fix locale specific field to allow multiple locales 
+- PIM-8153: Fix locale specific field to allow multiple locales
 - PIM-8017: Fix PDF generation
 - PIM-8060: Fix avatars migration 2.3 -> 3.0
 - PIM-8135: Fix cursor paginator sequence

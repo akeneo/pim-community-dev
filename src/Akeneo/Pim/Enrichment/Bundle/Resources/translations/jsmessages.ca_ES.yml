@@ -286,6 +286,7 @@ pim_enrich.mass_edit.product:
       label: Editar valor dels atributs
       label_count: "{1}Editar valor dels atributs de<span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Editar valor dels atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }}productes</span>"
       description: Només els atributs que pertanyen a les famílies de productes seleccionats s'editaran amb les següents dades per {{ locale }} local i el {{ scope }} canal.
+      no_update: Si us plau, seleccioneu almenys un camp per actualitzar
     add_attribute_value:
       label: Afegir valor dels atributs
       label_count: "{1}Afegir valors del atributs per <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Afegir valors dels atributs per <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes </span>"
@@ -299,6 +300,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Afegir <span class=\"AknFullPage-title--highlight\">1 producte</span> a grups|]1, Inf[Afegir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a grups"
       description: Seleccioneu els grups on volgueu afegir els productes seleccionats
       field: Grups
+      no_update: Si us plau, seleccioneu un grup abans de continuar
     add_to_category:
       label: Afegir a categories
       label_count: "{1}Afegir <span class=\"AknFullPage-title--highlight\">1 producte</span> a categories|]1, Inf[Afegir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a categories"
@@ -315,6 +317,7 @@ pim_enrich.mass_edit.product:
       label: Afegir a un model de producte existent
       label_count: "{1}Afegir <span class=\"AknFullPage-title--highlight\">1 producte</span> a un model de producte existent|]1, Inf[Afegir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a model de producte existent"
       description: El model de producte seleccionat reunirà els productes i permetrà l'enriquiment de les propietats en comú.
+      no_update: Si us plau, seleccioneu un model de producte abans de continuar
     associate_to_product_and_product_model:
       label: Associa
       label_count: "{1}Associar <span class=\"AknFullPage-title--highlight\">1 producte</span> a productes o models de producte|]1, Inf[Associar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a productes o models de productes"
