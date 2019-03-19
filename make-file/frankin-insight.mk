@@ -6,6 +6,11 @@
 franklin-insights-coupling: vendor
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/FranklinInsights/tests/back/.php_cd.php src/Akeneo/Pim/Automation/FranklinInsights
 
+.PHONY: franklin-insights-cs
+franklin-insights-cs:
+	$(PHP_EXEC) vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+	$(YARN_EXEC) tslint -c src/Akeneo/Pim/Automation/FranklinInsights/tests/front/tslint.json src/Akeneo/Pim/Automation/FranklinInsights/**/*.ts
+
 .PHONY: franklin-insights-specs
 franklin-insights-specs:
 	$(PHP_EXEC) vendor/bin/phpspec run src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Specification
