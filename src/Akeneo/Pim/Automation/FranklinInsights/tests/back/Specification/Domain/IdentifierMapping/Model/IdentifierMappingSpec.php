@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -40,10 +39,5 @@ class IdentifierMappingSpec extends ObjectBehavior
 
         $this->getFranklinCode()->shouldReturn('franklin_code');
         $this->getAttributeCode()->shouldReturn(null);
-    }
-
-    private function buildAttribute()
-    {
-        return new Attribute(new AttributeCode('test'), 1, 'text', false, false, false, false, [], null, null);
     }
 }

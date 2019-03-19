@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
 use PhpSpec\ObjectBehavior;
 
@@ -23,17 +22,8 @@ use PhpSpec\ObjectBehavior;
  */
 class IdentifiersMappingSpec extends ObjectBehavior
 {
-    public function let(
-        Attribute $manufacturer,
-        Attribute $model,
-        Attribute $ean,
-        Attribute $sku
-    ): void {
-        $manufacturer->getCode()->willReturn(new AttributeCode('manufacturer'));
-        $model->getCode()->willReturn(new AttributeCode('model'));
-        $ean->getCode()->willReturn(new AttributeCode('ean'));
-        $sku->getCode()->willReturn(new AttributeCode('sku'));
-
+    public function let(): void
+    {
         $this->beConstructedWith(
             [
                 'asin' => 'sku',
@@ -152,10 +142,9 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->updatedIdentifierCodes()->shouldReturn([]);
     }
 
-    public function it_finds_if_attribute_is_mapped_to_an_identifier($sku, Attribute $attribute): void
+    public function it_finds_if_attribute_is_mapped_to_an_identifier(): void
     {
-        $attribute->getCode()->willReturn(new AttributeCode('test'));
-        $this->isMappedTo($sku->getWrappedObject()->getCode())->shouldReturn(true);
-        $this->isMappedTo($attribute->getWrappedObject()->getCode())->shouldReturn(false);
+        $this->isMappedTo(new AttributeCode('sku'))->shouldReturn(true);
+        $this->isMappedTo(new AttributeCode('test'))->shouldReturn(false);
     }
 }

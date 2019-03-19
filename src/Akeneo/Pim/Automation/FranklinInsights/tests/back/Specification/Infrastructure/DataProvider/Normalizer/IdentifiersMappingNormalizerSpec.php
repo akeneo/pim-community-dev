@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Specification\Builder\AttributeBuilder;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -36,18 +36,14 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
     }
 
     public function it_normalizes_identifiers_mapping(
-        Attribute $attributeSku,
-        Attribute $attributeBrand,
         $attributeRepository
     ): void {
-        $attributeSku->getCode()->willReturn(new AttributeCode('sku'));
-        $attributeSku->getLabels()->willReturn([]);
 
-        $attributeBrand->getCode()->willReturn(new AttributeCode('brand_code'));
-        $attributeBrand->getLabels()->willReturn([
+        $attributeSku = (new AttributeBuilder())->withCode('sku')->withLabels([])->build();
+        $attributeBrand = (new AttributeBuilder())->withCode('brand_code')->withLabels([
             'fr_FR' => 'Marque',
             'en_US' => 'Brand',
-        ]);
+        ])->build();
 
         $attributeRepository->findByCodes(['brand_code', 'sku'])->willReturn([$attributeSku, $attributeBrand]);
 

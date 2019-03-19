@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class Attribute
+final class Attribute
 {
     /** @var AttributeCode */
     private $code;

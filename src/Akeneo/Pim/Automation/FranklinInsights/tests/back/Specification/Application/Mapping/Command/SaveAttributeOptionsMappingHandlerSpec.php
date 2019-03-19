@@ -25,8 +25,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyReposi
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Specification\Builder\AttributeBuilder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -58,15 +58,14 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $familyRepository,
         $attributeRepository,
         $mappingProvider,
-        $selectAttributeOptionCodesByIdentifiersQuery,
-        Attribute $attribute
+        $selectAttributeOptionCodesByIdentifiersQuery
     ): void {
         $familyCode = new FamilyCode('foo');
         $attributeCode = new AttributeCode('burger');
         $franklinAttributeId = new FranklinAttributeId('bar');
 
         $familyRepository->exist($familyCode)->willReturn(true);
-        $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier($attributeCode)->willReturn(AttributeBuilder::fromCode('code'));
         $selectAttributeOptionCodesByIdentifiersQuery
             ->execute((string) $attributeCode, ['color1', 'color2'])
             ->willReturn(['color1', 'color2']);
@@ -92,15 +91,14 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $familyRepository,
         $attributeRepository,
         $mappingProvider,
-        $selectAttributeOptionCodesByIdentifiersQuery,
-        Attribute $attribute
+        $selectAttributeOptionCodesByIdentifiersQuery
     ): void {
         $familyCode = new FamilyCode('foo');
         $attributeCode = new AttributeCode('burger');
         $franklinAttributeId = new FranklinAttributeId('bar');
 
         $familyRepository->exist($familyCode)->willReturn(true);
-        $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier($attributeCode)->willReturn(AttributeBuilder::fromCode('code'));
         $selectAttributeOptionCodesByIdentifiersQuery
             ->execute((string) $attributeCode, ['color1', 'color2'])
             ->willReturn(['color1']);
@@ -126,15 +124,14 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $familyRepository,
         $attributeRepository,
         $mappingProvider,
-        $selectAttributeOptionCodesByIdentifiersQuery,
-        Attribute $attribute
+        $selectAttributeOptionCodesByIdentifiersQuery
     ): void {
         $familyCode = new FamilyCode('foo');
         $attributeCode = new AttributeCode('burger');
         $franklinAttributeId = new FranklinAttributeId('bar');
 
         $familyRepository->exist($familyCode)->willReturn(true);
-        $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier($attributeCode)->willReturn(AttributeBuilder::fromCode('code'));
         $selectAttributeOptionCodesByIdentifiersQuery
             ->execute((string) $attributeCode, ['color1', 'color2'])
             ->willReturn([]);

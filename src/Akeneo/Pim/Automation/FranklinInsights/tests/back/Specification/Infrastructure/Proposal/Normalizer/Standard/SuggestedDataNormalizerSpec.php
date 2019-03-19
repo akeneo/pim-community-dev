@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as EnterpriseAttributeTypes;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
@@ -15,6 +14,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\St
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Specification\Builder\AttributeBuilder;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;
 
@@ -45,8 +45,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
     public function it_normalizes_suggested_data(
         $attributeRepository,
         $measureConverter,
-        $selectAttributeOptionCodesByIdentifiersQuery,
-        Attribute $attribute
+        $selectAttributeOptionCodesByIdentifiersQuery
     ): void {
         $suggestedData = [
             [
@@ -79,9 +78,8 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
             ->execute('baz', ['option1', 'option2'])
             ->willReturn(['option1', 'option2']);
 
-        $attribute->getMetricFamily()->willReturn('Frequency');
-        $attribute->getDefaultMetricUnit()->willReturn('MEGAHERTZ');
-        $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute = (new AttributeBuilder())->withMetricFamily('Frequency')->withDefaultMetricUnit('MEGAHERTZ')->build();
+
         $attributeRepository->findOneByIdentifier('processor')->willReturn($attribute);
 
         $measureConverter->setFamily('Frequency')->shouldBeCalled();

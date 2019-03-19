@@ -21,9 +21,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\At
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Specification\Builder\AttributeBuilder;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -66,8 +65,8 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributesMappingResponse->addAttribute(new AttributeMapping('size', 'Size', 'text', 'pim_size', 1));
 
         $attributeRepository->findByCodes(['pim_color', 'pim_size'])->willReturn([
-            new Attribute(new AttributeCode('pim_color'), 1, 'pim_catalog_text', true, true, true, true, [], null, null),
-            new Attribute(new AttributeCode('pim_size'), 2, 'pim_catalog_text', true, true, true, true, [], null, null),
+            AttributeBuilder::fromCode('pim_color'),
+            AttributeBuilder::fromCode('pim_size'),
         ]);
 
         $familyCode = new FamilyCode('camcorders');
@@ -90,7 +89,7 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributesMappingResponse->addAttribute($unknownAttribute);
 
         $attributeRepository->findByCodes(['pim_color', 'unknown_pim_attribute'])->willReturn([
-            new Attribute(new AttributeCode('pim_color'), 1, 'pim_catalog_text', true, true, true, true, [], null, null),
+            AttributeBuilder::fromCode('pim_color'),
         ]);
 
         $familyCode = new FamilyCode('camcorders');

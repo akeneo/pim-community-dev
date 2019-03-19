@@ -17,7 +17,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\Att
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 
 /**
  * @author Paul Chasle <paul.chasle@akeneo.com>

@@ -17,8 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\Att
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Specification\Builder\AttributeBuilder;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -44,24 +43,19 @@ class AttributesMappingSpec extends ObjectBehavior
         $this->familyCode()->shouldReturn($familyCode);
     }
 
-    public function it_maps_a_franklin_attribute_to_a_pim_attribute(Attribute $pimAttribute): void
+    public function it_maps_a_franklin_attribute_to_a_pim_attribute(): void
     {
-        $pimAttribute->getType()->willReturn(AttributeTypes::TEXT);
-        $pimAttribute->isLocalizable()->willReturn(false);
-        $pimAttribute->isScopable()->willReturn(false);
-        $pimAttribute->isLocaleSpecific()->willReturn(false);
-
-        $this->map('franklin_attr', 'text', $pimAttribute)->shouldReturn(null);
+        $this->map('franklin_attr', 'text', AttributeBuilder::fromCode('code'))->shouldReturn(null);
         $this->mapping()->shouldHaveCount(1);
         $this->mapping()[0]->shouldBeAnInstanceOf(AttributeMapping::class);
     }
 
-    public function it_throws_an_exception_when_it_cannot_map_the_attribute(Attribute $pimAttribute): void
+    public function it_throws_an_exception_when_it_cannot_map_the_attribute(): void
     {
-        $pimAttribute->isLocalizable()->willReturn(true);
+        $attribute = (new AttributeBuilder())->isLocalizable()->build();
 
         $this
             ->shouldThrow(AttributeMappingException::localizableAttributeNotAllowed())
-            ->during('map', ['franklin_attr', 'text', $pimAttribute]);
+            ->during('map', ['franklin_attr', 'text', $attribute]);
     }
 }
