@@ -27,7 +27,7 @@ parameters:
     # installer_data: %kernel.root_dir%/../vendor/akeneo/catalogs/master/community/small/fixtures
     # or you can use one of the provided catalogs
     # use PimInstallerBundle:minimal for minimal data set
-    installer_data:       PimInstallerBundle:icecat_demo_dev
+    installer_data:       PimInstallerBundle:minimal
 
     uservoice_key:                 ~
     max_products_category_removal: 100

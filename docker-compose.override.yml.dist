@@ -4,7 +4,7 @@ version: '2'
 # You can find a detailed documentation here: https://docs.akeneo.com/master/install_pim/docker/installation_docker.html
 
 services:
-  fpm:
+  php:
     environment:
       COMPOSER_HOME: '/home/docker/.composer'
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'

@@ -21,12 +21,32 @@ swiftmailer:
 assetic:
     use_controller: false
 
+oneup_flysystem:
+    adapters:
+        archivist_adapter:
+            local:
+                directory: '/data/archive'
+        catalog_storage_adapter:
+            local:
+                directory: '/data/catalog'
+        tmp_storage_adapter:
+            local:
+                directory: '/data/tmp'
+    filesystems:
+        archivist:
+            adapter: archivist_adapter
+            mount: archivist
+            plugins:
+                - oneup_flysystem.plugin.list_files
+        catalog_storage:
+            adapter: catalog_storage_adapter
+            mount: catalogStorage
+        tmp_storage:
+            adapter: tmp_storage_adapter
+            mount: tmpStorage
+            plugins:
+                - oneup_flysystem.plugin.list_files
+
 parameters:
     max_products_category_removal: 20
     installer_data:       PimInstallerBundle:minimal
-    upload_dir:           '%kernel.root_dir%/../var/cache/uploads/product'
-    archive_dir:          '%kernel.root_dir%/../var/cache/archive'
-    logs_dir:             '%kernel.logs_dir%'
-    catalog_storage_dir:  '%kernel.root_dir%/../var/cache/file_storage/catalog'
-    tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
-    upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'

@@ -2,7 +2,24 @@ version: '2'
 
 services:
   fpm:
-    image: 'akeneo/fpm:php-7.2'
+    build: './docker/fpm/'
+    image: 'akeneo/fpm:php-7.2-ro'
+    user: 'docker'
+    volumes:
+      - './var/cache:/srv/pim/var/cache:rw'
+      - './var/logs:/srv/pim/var/logs:rw'
+      - './var/tests:/srv/pim/var/tests:rw'
+      - './data/archive:/data/archive:rw'
+      - './data/catalog:/data/catalog:rw'
+      - './data/tmp:/data/tmp:rw'
+      - './:/srv/pim:ro'
+    working_dir: '/srv/pim'
+    networks:
+      - 'akeneo'
+      - 'behat'
+
+  php:
+    image: 'akeneo/php:7.2'
     user: 'docker'
     volumes:
       - './:/srv/pim'
@@ -23,8 +40,6 @@ services:
 
   selenium:
     image: 'selenium/standalone-firefox-debug:2.53.1-beryllium'
-    volumes:
-      - './:/srv/pim:ro'
     networks:
       - 'behat'
 
