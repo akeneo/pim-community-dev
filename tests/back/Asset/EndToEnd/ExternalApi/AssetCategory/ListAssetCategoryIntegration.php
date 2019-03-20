@@ -22,6 +22,9 @@ class ListAssetCategoryIntegration extends ApiTestCase
         $this->get('pimee_product_asset.saver.category')->save($assetCategory);
     }
 
+    /**
+     * @critical
+     */
     public function testListAssetCategories()
     {
         $client = $this->createAuthenticatedClient();

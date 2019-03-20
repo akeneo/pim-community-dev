@@ -21,6 +21,9 @@ class UpdateProductModelWithPermissionEndToEnd extends ApiTestCase
         $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
     }
 
+    /**
+     * @critical
+     */
     public function testUpdateRootProductModelValuesByMergingNonViewableProductValues()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
@@ -67,6 +70,9 @@ JSON;
         $this->assertSameProduct($expectedProductModel, 'root_product_model');
     }
 
+    /**
+     * @critical
+     */
     public function testUpdateSubProductModelValuesByMergingNonViewableProductValues()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
@@ -123,6 +129,9 @@ JSON;
         $this->assertSameProduct($expectedProductModel, 'sub_product_model');
     }
 
+    /**
+     * @critical
+     */
     public function testUpdateSubProductModelValuesByMergingNonViewableCategories()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -144,6 +153,9 @@ SQL;
         ]);
     }
 
+    /**
+     * @critical
+     */
     public function testUpdateNotViewableProductModel()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -159,6 +171,9 @@ SQL;
         Assert::assertEquals($expectedContent, $response->getContent());
     }
 
+    /**
+     * @critical
+     */
     public function testUpdateOnlyViewableProductModel()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();

@@ -21,6 +21,9 @@ class ListVariantProductWithPermissionEndToEnd extends ApiTestCase
         $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
     }
 
+    /**
+     * @critical
+     */
     public function testGetListOfViewableVariantProducts()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -51,6 +54,9 @@ class ListVariantProductWithPermissionEndToEnd extends ApiTestCase
         Assert::assertSame($expectedIdentifiers, $identifiers);
     }
 
+    /**
+     * @critical
+     */
     public function testGetListOfViewableAttributesAndLocaleValues()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
@@ -131,6 +137,9 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
+    /**
+     * @critical
+     */
     public function testGetViewableAssociationsOnVariantProduct()
     {
         $this->loader->loadProductsForAssociationPermissions();
