@@ -8,7 +8,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.product'
-            - '@pim_api.repository.attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
+            - '@pim_catalog.query.get_media_attribute_codes'
             - '@router'
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
@@ -17,7 +18,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductModelNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.product_model'
-            - '@pim_api.repository.attribute'
+            - '@pim_catalog.query.get_media_attribute_codes'
             - '@router'
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetMediaAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Api\Hal\Link;
@@ -21,24 +22,24 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $productModelNormalizer;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var GetMediaAttributeCodes */
+    protected $getMediaAttributeCodes;
 
     /** @var RouterInterface */
     protected $router;
 
     /**
-     * @param NormalizerInterface          $productModelNormalizer
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param RouterInterface              $router
+     * @param NormalizerInterface $productModelNormalizer
+     * @param GetMediaAttributeCodes $getMediaAttributeCodes
+     * @param RouterInterface $router
      */
     public function __construct(
         NormalizerInterface $productModelNormalizer,
-        AttributeRepositoryInterface $attributeRepository,
+        GetMediaAttributeCodes $getMediaAttributeCodes,
         RouterInterface $router
     ) {
         $this->productModelNormalizer = $productModelNormalizer;
-        $this->attributeRepository = $attributeRepository;
+        $this->getMediaAttributeCodes = $getMediaAttributeCodes;
         $this->router = $router;
     }
 
@@ -49,7 +50,7 @@ class ProductModelNormalizer implements NormalizerInterface
     {
         $productModelStandard = $this->productModelNormalizer->normalize($productModel, 'standard', $context);
 
-        $mediaAttributeCodes = $this->attributeRepository->getMediaAttributeCodes();
+        $mediaAttributeCodes = $this->getMediaAttributeCodes->execute();
         foreach ($productModelStandard['values'] as $attributeCode => $values) {
             // if $context['attributes'] is defined, returns only these attributes
             if (isset($context['attributes']) && !in_array($attributeCode, $context['attributes'])) {

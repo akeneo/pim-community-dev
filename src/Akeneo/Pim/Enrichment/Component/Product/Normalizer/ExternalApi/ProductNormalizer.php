@@ -2,8 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetMediaAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Api\Hal\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -19,24 +20,30 @@ class ProductNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $productNormalizer;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
+
+    /** @var GetMediaAttributeCodes */
+    protected $getMediaAttributeCodes;
 
     /** @var RouterInterface */
     protected $router;
 
     /**
-     * @param NormalizerInterface          $productNormalizer
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param RouterInterface              $router
+     * @param NormalizerInterface $productNormalizer
+     * @param LruArrayAttributeRepository $attributeRepository
+     * @param GetMediaAttributeCodes $getMediaAttributeCodes
+     * @param RouterInterface $router
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
-        AttributeRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
+        GetMediaAttributeCodes $getMediaAttributeCodes,
         RouterInterface $router
     ) {
         $this->productNormalizer = $productNormalizer;
         $this->attributeRepository = $attributeRepository;
+        $this->getMediaAttributeCodes = $getMediaAttributeCodes;
         $this->router = $router;
     }
 
@@ -52,7 +59,7 @@ class ProductNormalizer implements NormalizerInterface
             unset($productStandard['values'][$identifier]);
         }
 
-        $mediaAttributeCodes = $this->attributeRepository->getMediaAttributeCodes();
+        $mediaAttributeCodes = $this->getMediaAttributeCodes->execute();
         foreach ($productStandard['values'] as $attributeCode => $values) {
             // if $context['attributes'] is defined, returns only these attributes
             if (isset($context['attributes']) && !in_array($attributeCode, $context['attributes'])) {
