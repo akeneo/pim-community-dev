@@ -62,7 +62,7 @@ class PartialUpdateListVariantProductEndToEnd extends AbstractProductTestCase
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testCreateAndUpdateAListOfProductsVariant()
     {

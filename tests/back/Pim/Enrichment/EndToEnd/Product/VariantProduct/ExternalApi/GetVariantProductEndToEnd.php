@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 class GetVariantProductEndToEnd extends AbstractProductTestCase
 {
     /**
-     * @critical
+     * @group critical
      */
     public function testGetACompleteVariantProduct()
     {

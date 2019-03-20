@@ -1252,7 +1252,7 @@ JSON;
     /**
      * Get all products, whatever locale, scope, category with a search after pagination
      *
-     * @critical
+     * @group critical
      */
     public function testSearchAfterPaginationListProductsWithoutParameter()
     {

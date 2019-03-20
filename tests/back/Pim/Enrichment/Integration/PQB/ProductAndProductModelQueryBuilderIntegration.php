@@ -17,7 +17,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
 {
 
     /**
-     * @critical
+     * @group critical
      */
     public function testNoFilterAndSortIdentifier()
     {
@@ -59,7 +59,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testIdentifierFilter()
     {
@@ -88,7 +88,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testIdFilter()
     {
@@ -130,7 +130,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchTshirtInDescription()
     {
@@ -155,7 +155,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
      * This mixed result is explained by the fact that the attribute "color" is not set at the same level within those 3
      * family variants.
      *
-     * @critical
+     * @group critical
      */
     public function testSearchColorRed()
     {
@@ -175,7 +175,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchColorGrey()
     {
@@ -185,7 +185,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchColorBlue()
     {
@@ -205,7 +205,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchSizeXXS()
     {
@@ -226,7 +226,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchSize3XL()
     {
@@ -262,7 +262,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
      * - In the "clothing_color_size" family variant, size is defined at the product leve while color is defined at the
      *   subProductModel level. So we show the documents that belongs to the lowest involved. here level products.
      *
-     * @critical
+     * @group critical
      */
     public function testSearchColorGreyAndSizeXXS()
     {
@@ -277,7 +277,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchColorGreyAndSize3XL()
     {
@@ -292,7 +292,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchColorGreyAndDescriptionTshirt()
     {
@@ -307,7 +307,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchMaterialCotton()
     {
@@ -325,7 +325,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchMaterialLeather()
     {
@@ -341,7 +341,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchSize3XLColorWhite()
     {
@@ -359,7 +359,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testRedCotton()
     {
@@ -381,7 +381,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testNotGreyAndXXS()
     {
@@ -409,7 +409,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testNotGreyAndNotXXSAndPolyester()
     {
@@ -442,7 +442,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
      * It is skipped but it should be fix by the support.
      *
      * @group skip
-     * @critical
+     * @group critical
      */
     public function testStatusOnProductWithoutParent()
     {
@@ -660,7 +660,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchCategoriesMenWithoutIncludingChildren()
     {
@@ -674,7 +674,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchCategoriesMenIncludingChildren()
     {
@@ -739,7 +739,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchColorRedAndCategoryMenIncludingChildrenCategories()
     {

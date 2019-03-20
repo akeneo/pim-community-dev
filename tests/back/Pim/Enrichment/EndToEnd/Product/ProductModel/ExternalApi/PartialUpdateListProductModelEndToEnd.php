@@ -48,7 +48,7 @@ class PartialUpdateListProductModelEndToEnd extends AbstractProductModelTestCase
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testCreateAndUpdateAListOfProductModels()
     {

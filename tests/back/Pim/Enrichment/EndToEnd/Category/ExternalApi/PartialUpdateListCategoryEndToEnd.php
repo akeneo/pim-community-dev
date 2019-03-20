@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PartialUpdateListCategoryEndToEnd extends ApiTestCase
 {
     /**
-     * @critical
+     * @group critical
      */
     public function testCreateAndUpdateAListOfCategories()
     {

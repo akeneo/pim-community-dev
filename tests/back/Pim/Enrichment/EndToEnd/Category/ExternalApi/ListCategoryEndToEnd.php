@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ListCategoryEndToEnd extends ApiTestCase
 {
     /**
-     * @critical
+     * @group critical
      */
     public function testListCategories()
     {

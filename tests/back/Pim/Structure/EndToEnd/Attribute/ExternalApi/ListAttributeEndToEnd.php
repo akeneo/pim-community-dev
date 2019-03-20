@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ListAttributeEndToEnd extends ApiTestCase
 {
     /**
-     * @critical
+     * @group critical
      */
     public function testAttributes()
     {
@@ -59,7 +59,8 @@ JSON;
     }
 
     /**
-     * @critical to merge with the first one to test the pagination
+     * @group critical
+     * TODO: to merge with the first one to test the pagination
      */
     public function testAttributesWithLimitAndPage()
     {

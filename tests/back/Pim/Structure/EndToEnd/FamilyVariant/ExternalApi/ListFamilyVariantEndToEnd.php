@@ -38,7 +38,8 @@ class ListFamilyVariantEndToEnd extends ApiTestCase
     }
 
     /**
-     * @critical to test with pagination
+     * @group critical
+     * TODO: to test with pagination
      */
     public function testListFamilyVariants()
     {

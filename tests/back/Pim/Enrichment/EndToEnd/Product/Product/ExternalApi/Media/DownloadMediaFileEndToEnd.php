@@ -17,7 +17,7 @@ class DownloadMediaFileEndToEnd extends AbstractMediaFileTestCase
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testDownloadAMediaFile()
     {

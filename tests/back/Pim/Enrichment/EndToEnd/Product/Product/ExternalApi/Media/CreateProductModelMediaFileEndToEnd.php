@@ -26,7 +26,7 @@ class CreateProductModelMediaFileEndToEnd extends ApiTestCase
     private $fileSystem;
 
     /**
-     * @critical
+     * @group critical
      */
     public function testCreateAMediaFile()
     {

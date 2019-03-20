@@ -739,7 +739,7 @@ JSON;
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testSearchAfterPaginationListProductsWithNextLink()
     {
