@@ -1,0 +1,24 @@
+catalog:
+    entities:
+        channels:
+            - code: ecommerce
+              locales: [en_US]
+              currencies: [USD]
+        category-trees:
+            -
+                code: suppliers
+                children: 10
+                levels: 1
+        attribute-groups:
+            count: 2
+        attributes:
+            count: 10
+            percentage_of_localizable: 12
+            percentage_of_scopable: 3
+            percentage_of_localizable_and_scopable: 6
+        families:
+            count: 10
+            attributes_count: 10
+        products:
+            count: 100
+            with_images: false

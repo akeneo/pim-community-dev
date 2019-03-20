@@ -4,13 +4,23 @@ set -eu
 
 command -v jq >/dev/null 2>&1 || { echo >&2 "I require jq but it's not installed.  Aborting."; exit 1; }
 
+
 START=$(date +%s)
 SCRIPT_DIR=$(dirname $0)
 DOCKER_BRIDGE_IP=$(ip address show | grep "global docker" | cut -c10- | cut -d '/' -f1)
 WORKING_DIRECTORY="$SCRIPT_DIR/../var/benchmarks"
 
 PIM_PATH="$SCRIPT_DIR/.."
-REFERENCE_CATALOG_FILE="$PIM_PATH/tests/benchmarks/product_api_catalog.yml"
+CONFIG_PATH="$PIM_PATH/tests/benchmarks/"
+
+if [ $# -eq 0 ]; then
+    REFERENCE_CATALOG_FILE="$CONFIG_PATH/product_api_catalog.yml"
+else
+    if [ ! -f "$CONFIG_PATH/$1" ]; then
+        echo >&2 "The file does not exist"; exit 1;
+    fi;
+    REFERENCE_CATALOG_FILE="$CONFIG_PATH/$1"
+fi;
 
 PUBLIC_PIM_HTTP_PORT="8081"
 
