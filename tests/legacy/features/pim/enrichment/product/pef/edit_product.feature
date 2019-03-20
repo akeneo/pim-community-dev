@@ -119,3 +119,7 @@ Feature: Edit a product
     Then I should not see the text "There are unsaved changes."
     And I edit the "sandal" product
     Then I should see the text "Sandal"
+
+  @critical @skip
+  Scenario: Successfully access the product edit form from the product datagrid
+  # TODO: this scenario is missing

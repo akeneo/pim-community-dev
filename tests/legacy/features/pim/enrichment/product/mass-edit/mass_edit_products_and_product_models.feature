@@ -49,30 +49,6 @@ Feature: Apply a mass action on products only (and not product models)
     And the family of product "tshirt-unique-size-crimson-red" should be "clothing"
     And the family of product model "model-tshirt-divided-crimson-red" should be "clothing"
 
-  @critical
-  Scenario: Mass edits add categories of products and product models
-    Given I type "col" in the manage filter input
-    And I show the filter "color"
-    And I filter by "color" with operator "in list" and value "Navy blue"
-    And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
-    And I press the "Bulk actions" button
-    And I choose the "Add to categories" operation
-    And I move on to the choose step
-    And I choose the "Add to categories" operation
-    And I select the "Master" tree
-    And I expand the "master" category
-    And I press the "Women" button
-    And I confirm mass edit
-    And I wait for the "add_to_category" job to finish
-    When I go on the last executed job resume of "add_to_category"
-    Then I should see the text "COMPLETED"
-    And I should see the text "processed 3"
-    When I am on the products grid
-    And I open the category tree
-    Then I should be able to use the following filters:
-      | filter   | operator | value        | result                                                              |
-      | category |          | master_women | watch, tshirt-unique-size-navy-blue, model-tshirt-divided-navy-blue |
-
   Scenario: Mass edits move categories of products and product models
     Given I type "col" in the manage filter input
     And I show the filter "color"

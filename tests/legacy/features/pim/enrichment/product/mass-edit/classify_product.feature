@@ -14,24 +14,6 @@ Feature: Classify many products at once
     And I am logged in as "Julia"
     And I am on the products grid
 
-  @critical
-  Scenario: Add several products to categories at once
-    Given I select rows bigfoot and horseshoe
-    And I press the "Bulk actions" button
-    And I choose the "Add to categories" operation
-    And I move on to the choose step
-    And I choose the "Add to categories" operation
-    And I press the "2014 collection" button
-    And I expand the "2014_collection" category
-    And I click on the "winter_collection" category
-    And I confirm mass edit
-    And I wait for the "add_to_category" job to finish
-    When I am on the products grid
-    And I open the category tree
-    And I select the "2014 collection" tree
-    Then I should see the text "Summer collection (2)"
-    And I should see the text "Winter collection (2)"
-
   Scenario: Move several products to categories at once
     Given I select rows bigfoot and horseshoe
     And I press the "Bulk actions" button

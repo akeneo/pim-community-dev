@@ -21,7 +21,6 @@ Feature: Change the parent of a variant product
       | tshirts_variant   | tshirts | size           | size,sku             |                |                      |
       | tshirts_variant_2 | tshirts | color          | color                | size           | size,sku             |
 
-  @critical
   Scenario: Successfully change the parent of several variant products
     Given the following root product models:
       | code  | family_variant |
@@ -35,7 +34,6 @@ Feature: Change the parent of a variant product
     Then the parent of the product bag_yellow should be rita
     And the parent of the product bag_white should be rita
 
-  @critical
   Scenario: Successfully change the parent of several sub product models
     Given the following root product models:
       | code       | family_variant    |
