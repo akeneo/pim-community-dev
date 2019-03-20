@@ -3,11 +3,11 @@ version: '2'
 services:
   fpm:
     build: './docker/fpm/'
-    image: 'akeneo/fpm:php-7.2-ro'
+    image: 'akeneo/fpm-ro:php-7.2'
     user: 'docker'
     volumes:
-      - '.:/srv/pim:ro'
       - './var:/srv/pim/var:rw'
+      - '.:/srv/pim:ro'
     working_dir: '/srv/pim'
     networks:
       - 'akeneo'
@@ -32,8 +32,6 @@ services:
     image: 'httpd:2.4'
     depends_on:
       - 'fpm'
-    ports:
-      - '${DOCKER_PORT_HTTP}:80'
     volumes:
       - './:/srv/pim:ro'
       - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
@@ -45,8 +43,6 @@ services:
     image: 'httpd:2.4'
     depends_on:
       - 'fpm'
-    ports:
-      - '${DOCKER_PORT_HTTP_BEHAT}:80'
     volumes:
       - './:/srv/pim:ro'
       - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
