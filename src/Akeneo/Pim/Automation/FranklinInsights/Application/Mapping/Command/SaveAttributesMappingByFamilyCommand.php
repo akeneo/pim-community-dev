@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 
 /**
  * @author    Romain Monceau <romain@akeneo.com>
@@ -27,14 +28,7 @@ class SaveAttributesMappingByFamilyCommand
     /** @var array */
     private $mapping = [];
 
-    /**
-     * @param string $familyCode
-     * @param array $mapping
-     *
-     * @throws AttributeMappingException
-     * @throws InvalidMappingException
-     */
-    public function __construct(string $familyCode, array $mapping)
+    public function __construct(FamilyCode $familyCode, array $mapping)
     {
         $this->validate($mapping);
         $this->mapping = $mapping;
@@ -43,9 +37,9 @@ class SaveAttributesMappingByFamilyCommand
     }
 
     /**
-     * @return string
+     * @return FamilyCode
      */
-    public function getFamilyCode(): string
+    public function getFamilyCode(): FamilyCode
     {
         return $this->familyCode;
     }

@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
 final class AttributeOptionsMapping
 {
-    /** @var string */
+    /** @var FamilyCode */
     private $familyCode;
 
     /** @var string */
@@ -27,12 +29,7 @@ final class AttributeOptionsMapping
     /** @var AttributeOptionMapping[] */
     private $mapping;
 
-    /**
-     * @param string $familyCode
-     * @param string $franklinAttributeId
-     * @param AttributeOptionMapping[] $mapping
-     */
-    public function __construct(string $familyCode, string $franklinAttributeId, array $mapping = [])
+    public function __construct(FamilyCode $familyCode, string $franklinAttributeId, array $mapping = [])
     {
         $this->familyCode = $familyCode;
         $this->franklinAttributeId = $franklinAttributeId;
@@ -43,9 +40,9 @@ final class AttributeOptionsMapping
     }
 
     /**
-     * @return string
+     * @return FamilyCode
      */
-    public function familyCode(): string
+    public function familyCode(): FamilyCode
     {
         return $this->familyCode;
     }

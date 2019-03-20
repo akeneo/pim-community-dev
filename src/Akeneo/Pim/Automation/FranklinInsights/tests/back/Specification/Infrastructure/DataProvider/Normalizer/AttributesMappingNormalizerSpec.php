@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Da
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
@@ -33,7 +34,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_attributes_mapping_that_does_not_contain_attribute(): void
     {
-        $attributesMapping = new AttributesMapping('router');
+        $attributesMapping = new AttributesMapping(new FamilyCode('router'));
         $attributesMapping->map('label', 'text', null);
 
         $expectedData = [
@@ -49,7 +50,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
     {
         $attrColor = new Attribute(new AttributeCode('pim_color'), 1, AttributeTypes::OPTION_SIMPLE_SELECT, false, false, false, false, [], null, null);
 
-        $attributesMapping = new AttributesMapping('router');
+        $attributesMapping = new AttributesMapping(new FamilyCode('router'));
         $attributesMapping->map('color', 'select', $attrColor);
 
         $expectedData = [
@@ -69,7 +70,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
     {
         $attrWeight = new Attribute(new AttributeCode('pim_weight'), 1, AttributeTypes::METRIC, false, false, false, false, [], null, 'KILOGRAM');
 
-        $attributesMapping = new AttributesMapping('router');
+        $attributesMapping = new AttributesMapping(new FamilyCode('router'));
         $attributesMapping->map('weight', 'metric', $attrWeight);
 
         $expectedData = [
@@ -104,7 +105,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
             null
         );
 
-        $attributesMapping = new AttributesMapping('router');
+        $attributesMapping = new AttributesMapping(new FamilyCode('router'));
         $attributesMapping->map('name', 'text', $attrName);
 
         $expectedData = [

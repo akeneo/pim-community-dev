@@ -94,9 +94,6 @@ class SaveAttributeOptionsMappingHandler
         $this->ensureAttributeExists((string) $command->attributeCode());
     }
 
-    /**
-     * @param string $familyCode
-     */
     private function ensureFamilyExists(FamilyCode $familyCode): void
     {
         if (!$this->familyRepository->exist($familyCode)) {

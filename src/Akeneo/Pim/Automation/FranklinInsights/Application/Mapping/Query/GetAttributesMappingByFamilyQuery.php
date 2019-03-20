@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+
 /**
  * Query the attributes mapping of a family.
  *
@@ -20,25 +22,15 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
  */
 class GetAttributesMappingByFamilyQuery
 {
-    /** @var string */
+    /** @var FamilyCode */
     private $familyCode;
 
-    /**
-     * @param string $familyCode
-     */
-    public function __construct(string $familyCode)
+    public function __construct(FamilyCode $familyCode)
     {
-        if (empty($familyCode)) {
-            throw new \InvalidArgumentException('Family code should not be empty');
-        }
-
         $this->familyCode = $familyCode;
     }
 
-    /**
-     * @return string
-     */
-    public function getFamilyCode(): string
+    public function getFamilyCode(): FamilyCode
     {
         return $this->familyCode;
     }

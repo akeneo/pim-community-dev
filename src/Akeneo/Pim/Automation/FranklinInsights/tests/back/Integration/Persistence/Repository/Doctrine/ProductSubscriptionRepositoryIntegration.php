@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\Integration\Persistence\Repository\Doctrine;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
@@ -276,7 +277,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             [['pimAttributeCode' => 'bar', 'value' => 'baz']]
         );
 
-        $this->getRepository()->emptySuggestedDataAndMissingMappingByFamily('test_family');
+        $this->getRepository()->emptySuggestedDataAndMissingMappingByFamily(new FamilyCode('test_family'));
 
         $persistedProduct1 = $this->getRepository()->findOneByProductId($product1->getId());
         $persistedProduct2 = $this->getRepository()->findOneByProductId($product2->getId());

@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mappi
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -32,27 +33,28 @@ class SaveAttributesMappingByFamilyCommandSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->beConstructedWith('family_code', self::VALID_MAPPING);
+        $this->beConstructedWith(new FamilyCode('family_code'), self::VALID_MAPPING);
         $this->shouldHaveType(SaveAttributesMappingByFamilyCommand::class);
     }
 
     public function it_returns_the_family_code(): void
     {
-        $this->beConstructedWith('family_code', self::VALID_MAPPING);
-        $this->getFamilyCode()->shouldReturn('family_code');
+        $familyCode = new FamilyCode('family_code');
+        $this->beConstructedWith($familyCode, self::VALID_MAPPING);
+        $this->getFamilyCode()->shouldReturn($familyCode);
     }
 
     public function it_returns_an_attribute_mapping(): void
     {
-        $this->beConstructedWith('family_code', self::VALID_MAPPING);
+        $this->beConstructedWith(new FamilyCode('family_code'), self::VALID_MAPPING);
 
-        $attributesMapping = $this->getMapping()->shouldReturn(self::VALID_MAPPING);
+        $this->getMapping()->shouldReturn(self::VALID_MAPPING);
     }
 
     public function it_throws_an_exception_if_target_key_is_missing(): void
     {
         $mapping = [['attribute' => 'tshirt_style']];
-        $this->beConstructedWith('family_code', $mapping);
+        $this->beConstructedWith(new FamilyCode('family_code'), $mapping);
 
         $this
             ->shouldThrow(InvalidMappingException::class)
@@ -62,7 +64,7 @@ class SaveAttributesMappingByFamilyCommandSpec extends ObjectBehavior
     public function it_throws_an_exception_if_attribute_key_is_missing(): void
     {
         $mapping = ['color' => []];
-        $this->beConstructedWith('family_code', $mapping);
+        $this->beConstructedWith(new FamilyCode('family_code'), $mapping);
 
         $this
             ->shouldThrow(InvalidMappingException::expectedKey('color', 'attribute'))
@@ -72,7 +74,7 @@ class SaveAttributesMappingByFamilyCommandSpec extends ObjectBehavior
     public function it_does_not_keep_in_account_status_key(): void
     {
         $mapping = ['color' => ['attribute' => 'tshirt_style', 'status' => 1]];
-        $this->beConstructedWith('family_code', $mapping);
+        $this->beConstructedWith(new FamilyCode('family_code'), $mapping);
 
         $this
             ->shouldNotThrow(InvalidMappingException::expectedKey('color', 'status'))
@@ -100,7 +102,7 @@ class SaveAttributesMappingByFamilyCommandSpec extends ObjectBehavior
             ],
         ];
 
-        $this->beConstructedWith('family_code', $mapping);
+        $this->beConstructedWith(new FamilyCode('family_code'), $mapping);
 
         $this->shouldThrow(AttributeMappingException::duplicatedPimAttribute())->duringInstantiation();
     }

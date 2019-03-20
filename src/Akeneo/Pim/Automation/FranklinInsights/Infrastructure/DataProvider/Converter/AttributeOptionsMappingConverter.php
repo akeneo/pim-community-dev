@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Con
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping
     as FranklinAttributeOptionMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionsMapping
@@ -28,14 +29,14 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueO
 final class AttributeOptionsMappingConverter
 {
     /**
-     * @param string $familyCode
+     * @param FamilyCode $familyCode
      * @param string $franklinAttributeId
      * @param FranklinAttributeOptionsMapping $franklinAttrOptionsMapping
      *
      * @return AttributeOptionsMapping
      */
     public function clientToApplication(
-        string $familyCode,
+        FamilyCode $familyCode,
         string $franklinAttributeId,
         FranklinAttributeOptionsMapping $franklinAttrOptionsMapping
     ): AttributeOptionsMapping {

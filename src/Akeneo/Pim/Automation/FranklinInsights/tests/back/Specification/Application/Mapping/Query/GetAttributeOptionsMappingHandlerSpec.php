@@ -62,8 +62,9 @@ class GetAttributeOptionsMappingHandlerSpec extends ObjectBehavior
 
         $familyRepository->exist($familyCode)->willReturn(true);
 
-        $attributeOptionsMapping = new AttributeOptionsMapping('foo', 'bar', []);
-        $attributeOptionsMappingProvider->getAttributeOptionsMapping('foo', 'bar')->willReturn($attributeOptionsMapping);
+        $familyCode = new FamilyCode('foo');
+        $attributeOptionsMapping = new AttributeOptionsMapping($familyCode, 'bar', []);
+        $attributeOptionsMappingProvider->getAttributeOptionsMapping($familyCode, 'bar')->willReturn($attributeOptionsMapping);
 
         $this->handle($query)->shouldReturn($attributeOptionsMapping);
     }

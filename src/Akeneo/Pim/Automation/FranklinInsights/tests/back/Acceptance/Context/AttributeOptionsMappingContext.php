@@ -180,7 +180,7 @@ class AttributeOptionsMappingContext implements Context
      */
     public function theRetrievedAttributeOptionsMappingShouldBe(TableNode $expectedMappingTable): void
     {
-        Assert::eq($this->retrievedFamilyCode, $this->retrievedAttributeOptionsMapping->familyCode());
+        Assert::eq($this->retrievedFamilyCode, (string) $this->retrievedAttributeOptionsMapping->familyCode());
         Assert::eq($this->retrievedFranklinAttributeId, $this->retrievedAttributeOptionsMapping->franklinAttributeId());
 
         Assert::isInstanceOf($this->retrievedAttributeOptionsMapping, AttributeOptionsMapping::class);

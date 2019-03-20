@@ -86,17 +86,12 @@ class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
         $familyCodes = $this->familyCodesByAttributeQuery->execute($pimAttributeCode);
 
         foreach ($familyCodes as $familyCode) {
-            $this->updateOptionsMappingByFamily($familyCode, $pimAttributeCode, $deletedAttributeOptionCode);
+            $this->updateOptionsMappingByFamily(new FamilyCode($familyCode), $pimAttributeCode, $deletedAttributeOptionCode);
         }
     }
 
-    /**
-     * @param string $familyCode
-     * @param string $pimAttributeCode
-     * @param string $deletedAttributeOptionCode
-     */
     private function updateOptionsMappingByFamily(
-        string $familyCode,
+        FamilyCode $familyCode,
         string $pimAttributeCode,
         string $deletedAttributeOptionCode
     ): void {
@@ -118,21 +113,15 @@ class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
         }
     }
 
-    /**
-     * @param string $franklinAttributeCode
-     * @param string $familyCode
-     * @param string $pimAttributeCode
-     * @param string $deletedAttributeOptionCode
-     */
     private function updateAttributeOptionsMapping(
         string $franklinAttributeCode,
-        string $familyCode,
+        FamilyCode $familyCode,
         string $pimAttributeCode,
         string $deletedAttributeOptionCode
     ): void {
         $attributeOptionsMapping = $this->getAttributeOptionsMappingHandler->handle(
             new GetAttributeOptionsMappingQuery(
-                new FamilyCode($familyCode),
+                $familyCode,
                 new FranklinAttributeId($franklinAttributeCode)
             )
         );
@@ -144,7 +133,7 @@ class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
         $newMapping = $this->buildNewAttributeOptionsMapping($attributeOptionsMapping, $deletedAttributeOptionCode);
 
         $command = new SaveAttributeOptionsMappingCommand(
-            new FamilyCode($familyCode),
+            $familyCode,
             new AttributeCode($pimAttributeCode),
             new FranklinAttributeId($franklinAttributeCode),
             new AttributeOptions($newMapping)

@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\At
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingWebService;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
@@ -51,7 +52,7 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
     /**
      * {@inheritdoc}
      */
-    public function getAttributesMapping(string $familyCode): AttributesMappingResponse
+    public function getAttributesMapping(FamilyCode $familyCode): AttributesMappingResponse
     {
         $this->api->setToken($this->getToken());
 
@@ -84,7 +85,7 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
     /**
      * {@inheritdoc}
      */
-    public function saveAttributesMapping(string $familyCode, AttributesMapping $attributesMapping): void
+    public function saveAttributesMapping(FamilyCode $familyCode, AttributesMapping $attributesMapping): void
     {
         $this->api->setToken($this->getToken());
         $normalizer = new AttributesMappingNormalizer();

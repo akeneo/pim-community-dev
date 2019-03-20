@@ -18,7 +18,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\Att
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\SelectFamilyAttributeCodesQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
@@ -72,7 +71,7 @@ class SaveAttributesMappingByFamilyHandler
      */
     public function handle(SaveAttributesMappingByFamilyCommand $command): void
     {
-        $familyCode = new FamilyCode($command->getFamilyCode());
+        $familyCode = $command->getFamilyCode();
         if (false === $this->familyRepository->exist($familyCode)) {
             throw new \InvalidArgumentException(sprintf('Family "%s" not found', $familyCode));
         }
@@ -96,7 +95,7 @@ class SaveAttributesMappingByFamilyHandler
             throw AttributeMappingException::emptyAttributesMapping();
         }
 
-        $attributesMapping = new AttributesMapping((string) $familyCode);
+        $attributesMapping = new AttributesMapping($familyCode);
         foreach ($command->getMapping() as $franklinAttrId => $attributeMapping) {
             $attributesMapping->map(
                 $franklinAttrId,
@@ -105,7 +104,7 @@ class SaveAttributesMappingByFamilyHandler
             );
         }
 
-        $this->attributesMappingProvider->saveAttributesMapping((string) $familyCode, $attributesMapping);
-        $this->subscriptionRepository->emptySuggestedDataAndMissingMappingByFamily((string) $familyCode);
+        $this->attributesMappingProvider->saveAttributesMapping($familyCode, $attributesMapping);
+        $this->subscriptionRepository->emptySuggestedDataAndMissingMappingByFamily($familyCode);
     }
 }

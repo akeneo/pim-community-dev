@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeM
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use PhpSpec\ObjectBehavior;
@@ -27,7 +28,7 @@ class AttributesMappingSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith('watches');
+        $this->beConstructedWith(new FamilyCode('watches'));
     }
 
     public function it_is_initializable(): void
@@ -37,7 +38,10 @@ class AttributesMappingSpec extends ObjectBehavior
 
     public function it_returns_the_family_code(): void
     {
-        $this->familyCode()->shouldReturn('watches');
+        $familyCode = new FamilyCode('watches');
+        $this->beConstructedWith($familyCode);
+
+        $this->familyCode()->shouldReturn($familyCode);
     }
 
     public function it_maps_a_franklin_attribute_to_a_pim_attribute(Attribute $pimAttribute): void

@@ -68,12 +68,10 @@ class GetAttributesMappingByFamilyHandler
     }
 
     /**
-     * @param string $familyCode
+     * @param FamilyCode $familyCode
      */
-    private function ensureFamilyExists(string $familyCode): void
+    private function ensureFamilyExists(FamilyCode $familyCode): void
     {
-        $familyCode = new FamilyCode($familyCode);
-
         if (!$this->familyRepository->exist($familyCode)) {
             throw new \InvalidArgumentException(sprintf(
                 'The family with code "%s" does not exist',

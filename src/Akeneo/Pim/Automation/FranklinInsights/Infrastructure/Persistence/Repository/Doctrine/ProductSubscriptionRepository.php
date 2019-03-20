@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -152,7 +153,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function emptySuggestedDataAndMissingMappingByFamily(string $familyCode): void
+    public function emptySuggestedDataAndMissingMappingByFamily(FamilyCode $familyCode): void
     {
         $query = <<<SQL
 UPDATE pimee_franklin_insights_subscription s
@@ -161,7 +162,7 @@ INNER JOIN pim_catalog_family f ON f.id = p.family_id
 SET s.raw_suggested_data = NULL, s.misses_mapping = false
 WHERE f.code = :familyCode;
 SQL;
-        $this->em->getConnection()->executeQuery($query, ['familyCode' => $familyCode]);
+        $this->em->getConnection()->executeQuery($query, ['familyCode' => (string) $familyCode]);
     }
 
     /**

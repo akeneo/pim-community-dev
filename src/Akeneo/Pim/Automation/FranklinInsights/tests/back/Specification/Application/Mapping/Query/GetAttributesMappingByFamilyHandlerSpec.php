@@ -25,7 +25,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -49,12 +48,11 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $familyRepository,
         $attributesMappingProvider
     ): void {
-        $familyRepository->exist(Argument::that(function ($familyCode) {
-            return $familyCode instanceof FamilyCode && 'unknown_family' === (string) $familyCode;
-        }))->willReturn(false);
-        $attributesMappingProvider->getAttributesMapping('unknown_family')->shouldNotBeCalled();
+        $familyCode = new FamilyCode('unknown_family');
+        $familyRepository->exist($familyCode)->willReturn(false);
+        $attributesMappingProvider->getAttributesMapping($familyCode)->shouldNotBeCalled();
 
-        $query = new GetAttributesMappingByFamilyQuery('unknown_family');
+        $query = new GetAttributesMappingByFamilyQuery($familyCode);
         $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$query]);
     }
 
@@ -72,12 +70,11 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             new Attribute(new AttributeCode('pim_size'), 2, 'pim_catalog_text', true, true, true, true, [], null, null),
         ]);
 
-        $familyRepository->exist(Argument::that(function ($familyCode) {
-            return $familyCode instanceof FamilyCode && 'camcorders' === (string) $familyCode;
-        }))->willReturn(true);
-        $attributesMappingProvider->getAttributesMapping('camcorders')->willReturn($attributesMappingResponse);
+        $familyCode = new FamilyCode('camcorders');
+        $familyRepository->exist($familyCode)->willReturn(true);
+        $attributesMappingProvider->getAttributesMapping($familyCode)->willReturn($attributesMappingResponse);
 
-        $query = new GetAttributesMappingByFamilyQuery('camcorders');
+        $query = new GetAttributesMappingByFamilyQuery($familyCode);
         $this->handle($query)->shouldReturn($attributesMappingResponse);
     }
 
@@ -96,12 +93,11 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             new Attribute(new AttributeCode('pim_color'), 1, 'pim_catalog_text', true, true, true, true, [], null, null),
         ]);
 
-        $familyRepository->exist(Argument::that(function ($familyCode) {
-            return $familyCode instanceof FamilyCode && 'camcorders' === (string) $familyCode;
-        }))->willReturn(true);
-        $attributesMappingProvider->getAttributesMapping('camcorders')->willReturn($attributesMappingResponse);
+        $familyCode = new FamilyCode('camcorders');
+        $familyRepository->exist($familyCode)->willReturn(true);
+        $attributesMappingProvider->getAttributesMapping($familyCode)->willReturn($attributesMappingResponse);
 
-        $query = new GetAttributesMappingByFamilyQuery('camcorders');
+        $query = new GetAttributesMappingByFamilyQuery($familyCode);
         $expectedMappingResponse = new AttributesMappingResponse();
         $expectedMappingResponse->addAttribute($colorAttribute);
         $expectedMappingResponse->addAttribute(new AttributeMapping('size', 'Size', 'text', null, AttributeMappingStatus::ATTRIBUTE_PENDING));
@@ -122,14 +118,13 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             AttributeMappingStatus::ATTRIBUTE_ACTIVE
         ));
 
-        $familyRepository->exist(Argument::that(function ($familyCode) {
-            return $familyCode instanceof FamilyCode && 'camcorders' === (string) $familyCode;
-        }))->willReturn(true);
-        $attributesMappingProvider->getAttributesMapping('camcorders')->willReturn($attributesMappingResponse);
+        $familyCode = new FamilyCode('camcorders');
+        $familyRepository->exist($familyCode)->willReturn(true);
+        $attributesMappingProvider->getAttributesMapping($familyCode)->willReturn($attributesMappingResponse);
 
         $attributeRepository->findByCodes(['unknown_pim_attr_code'])->willReturn([]);
 
-        $query = new GetAttributesMappingByFamilyQuery('camcorders');
+        $query = new GetAttributesMappingByFamilyQuery($familyCode);
 
         $expectedMapping = new AttributesMappingResponse();
         $expectedMapping->addAttribute(new AttributeMapping(

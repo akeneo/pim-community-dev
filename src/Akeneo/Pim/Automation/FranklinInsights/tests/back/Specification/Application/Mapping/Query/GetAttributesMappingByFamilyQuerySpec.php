@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -21,24 +22,17 @@ use PhpSpec\ObjectBehavior;
  */
 class GetAttributesMappingByFamilyQuerySpec extends ObjectBehavior
 {
-    public function let(): void
-    {
-        $this->beConstructedWith('camcorders');
-    }
-
     public function it_is_a_get_attributes_mapping_query(): void
     {
+        $this->beConstructedWith(new FamilyCode('camcorders'));
         $this->shouldHaveType(GetAttributesMappingByFamilyQuery::class);
     }
 
     public function it_returns_the_family_code(): void
     {
-        $this->getFamilyCode()->shouldReturn('camcorders');
-    }
+        $familyCode = new FamilyCode('camcorders');
+        $this->beConstructedWith($familyCode);
 
-    public function it_throws_an_exception_if_family_code_is_empty(): void
-    {
-        $this->beConstructedWith('');
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->getFamilyCode()->shouldReturn($familyCode);
     }
 }

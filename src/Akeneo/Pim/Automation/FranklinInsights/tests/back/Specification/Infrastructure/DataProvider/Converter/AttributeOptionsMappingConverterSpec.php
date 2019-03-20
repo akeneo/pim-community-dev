@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Converter;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionsMapping
     as FranklinAttributeOptionsMapping;
@@ -37,7 +38,7 @@ class AttributeOptionsMappingConverterSpec extends ObjectBehavior
         $clientMapping = new FranklinAttributeOptionsMapping($mappingData['mapping']);
 
         $pimAttributeOptionsMapping = $this
-            ->clientToApplication('family_code', 'franklin_id', $clientMapping);
+            ->clientToApplication(new FamilyCode('family_code'), 'franklin_id', $clientMapping);
         $pimAttributeOptionsMapping->shouldReturnAnInstanceOf(AttributeOptionsMapping::class);
     }
 }

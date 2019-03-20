@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 
 /**
@@ -20,24 +21,21 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Att
  */
 class AttributesMapping
 {
-    /** @var string */
+    /** @var FamilyCode */
     private $familyCode;
 
     /** @var AttributeMapping[] */
     private $mapping = [];
 
-    /**
-     * @param string $familyCode
-     */
-    public function __construct(string $familyCode)
+    public function __construct(FamilyCode $familyCode)
     {
         $this->familyCode = $familyCode;
     }
 
     /**
-     * @return string
+     * @return FamilyCode
      */
-    public function familyCode(): string
+    public function familyCode(): FamilyCode
     {
         return $this->familyCode;
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
@@ -135,9 +136,9 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     /**
      * {@inheritdoc}
      */
-    public function emptySuggestedDataAndMissingMappingByFamily(string $familyCode): void
+    public function emptySuggestedDataAndMissingMappingByFamily(FamilyCode $familyCode): void
     {
-        $family = $this->familyRepository->findOneByIdentifier($familyCode);
+        $family = $this->familyRepository->findOneByIdentifier((string) $familyCode);
 
         foreach ($this->subscriptions as $subscription) {
             $product = $this->productRepository->find($subscription->getProductId());

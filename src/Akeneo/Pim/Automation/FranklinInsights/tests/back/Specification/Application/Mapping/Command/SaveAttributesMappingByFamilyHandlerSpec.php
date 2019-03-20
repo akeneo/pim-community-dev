@@ -63,7 +63,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributeRepository->findByCodes(['tshirt_style'])->willReturn([$attribute]);
         $familyRepository->exist(new FamilyCode('router'))->willReturn(false);
 
-        $command = new SaveAttributesMappingByFamilyCommand('router', [
+        $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), [
             'color' => [
                 'franklinAttribute' => ['type' => 'multiselect'],
                 'attribute' => 'tshirt_style',
@@ -77,7 +77,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributeRepository,
         SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
-        $command = new SaveAttributesMappingByFamilyCommand('router', [
+        $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), [
             'color' => [
                 'franklinAttribute' => ['type' => 'multiselect'],
                 'attribute' => 'tshirt_style',
@@ -117,7 +117,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                 'attribute' => 'product_weight',
             ],
         ];
-        $command = new SaveAttributesMappingByFamilyCommand('router', $attributesMapping);
+        $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), $attributesMapping);
 
         $familyCode = new FamilyCode('router');
         $familyRepository->exist($familyCode)->willReturn(true);
@@ -133,12 +133,12 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $memoryAttribute->isScopable()->willReturn(false);
         $memoryAttribute->isLocaleSpecific()->willReturn(false);
 
-        $expectedAttributesMapping = new AttributesMapping('router');
+        $expectedAttributesMapping = new AttributesMapping($familyCode);
         $expectedAttributesMapping->map('memory', 'metric', $memoryAttribute->getWrappedObject());
         $expectedAttributesMapping->map('weight', 'metric', null);
 
         $attributesMappingProvider
-            ->saveAttributesMapping('router', $expectedAttributesMapping)
+            ->saveAttributesMapping($familyCode, $expectedAttributesMapping)
             ->shouldBeCalled();
 
         $subscriptionRepository
@@ -172,7 +172,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                 'attribute' => 'product_weight',
             ],
         ];
-        $command = new SaveAttributesMappingByFamilyCommand('router', $attributesMapping);
+        $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), $attributesMapping);
 
         $familyCode = new FamilyCode('router');
         $familyRepository->exist($familyCode)->willReturn(true);
@@ -188,12 +188,12 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $memoryAttribute->isScopable()->willReturn(false);
         $memoryAttribute->isLocaleSpecific()->willReturn(false);
 
-        $expectedAttributesMapping = new AttributesMapping('router');
+        $expectedAttributesMapping = new AttributesMapping($familyCode);
         $expectedAttributesMapping->map('memory', 'metric', $memoryAttribute->getWrappedObject());
         $expectedAttributesMapping->map('weight', 'metric', null);
 
         $attributesMappingProvider
-            ->saveAttributesMapping('router', $expectedAttributesMapping)
+            ->saveAttributesMapping($familyCode, $expectedAttributesMapping)
             ->shouldBeCalled();
 
         $subscriptionRepository
@@ -209,7 +209,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         Attribute $attribute,
         SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
-        $command = new SaveAttributesMappingByFamilyCommand('router', [
+        $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), [
             'memory' => [
                 'franklinAttribute' => [
                     'label' => 'Release date',
@@ -261,7 +261,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                 'attribute' => 'product_weight',
             ],
         ];
-        $command = new SaveAttributesMappingByFamilyCommand('router', $attributesMapping);
+        $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), $attributesMapping);
 
         $familyCode = new FamilyCode('router');
         $familyRepository->exist($familyCode)->willReturn(true);
@@ -283,12 +283,12 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $weightAttribute->isScopable()->willReturn(false);
         $weightAttribute->isLocaleSpecific()->willReturn(false);
 
-        $attributesMapping = new AttributesMapping('router');
+        $attributesMapping = new AttributesMapping($familyCode);
         $attributesMapping->map('memory', 'metric', $memoryAttribute->getWrappedObject());
         $attributesMapping->map('weight', 'metric', $weightAttribute->getWrappedObject());
 
         $attributesMappingProvider
-            ->saveAttributesMapping('router', $attributesMapping)
+            ->saveAttributesMapping($familyCode, $attributesMapping)
             ->shouldBeCalled();
 
         $subscriptionRepository
@@ -304,7 +304,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         Attribute $memoryAttribute,
         SelectFamilyAttributeCodesQueryInterface $selectFamilyAttributeCodesQuery
     ): void {
-        $command = new SaveAttributesMappingByFamilyCommand('router', [
+        $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), [
             'memory' => [
                 'franklinAttribute' => [
                     'label' => 'Memory',
@@ -342,7 +342,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                 'attribute' => 'ram',
             ],
         ];
-        $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
+        $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), $attributeMapping);
 
         $familyCode = new FamilyCode('router');
         $familyRepository->exist($familyCode)->willReturn(true);
@@ -374,7 +374,7 @@ class SaveAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                 'attribute' => 'ram',
             ],
         ];
-        $command = new SaveAttributesMappingByFamilyCommand('router', $attributeMapping);
+        $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode('router'), $attributeMapping);
 
         $familyCode = new FamilyCode('router');
         $familyRepository->exist($familyCode)->willReturn(true);

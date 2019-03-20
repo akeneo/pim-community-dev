@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\Att
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -85,7 +86,7 @@ final class AttributesMappingContext implements Context
     {
         $requestedAttributesMapping = $this->extractPersistedAttributesMappingFromTable($table);
 
-        $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestedAttributesMapping);
+        $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode($familyCode), $requestedAttributesMapping);
         $this->saveAttributesMappingByFamilyHandler->handle($command);
 
         $this->originalAttributesMapping = $this->fakeClient->getAttributesMapping();
@@ -102,7 +103,7 @@ final class AttributesMappingContext implements Context
         $requestedAttributesMapping = $this->extractPersistedAttributesMappingFromTable($table);
 
         try {
-            $command = new SaveAttributesMappingByFamilyCommand($familyCode, $requestedAttributesMapping);
+            $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode($familyCode), $requestedAttributesMapping);
             $this->saveAttributesMappingByFamilyHandler->handle($command);
         } catch (\Exception $e) {
             ExceptionContext::setThrownException($e);
@@ -137,7 +138,7 @@ final class AttributesMappingContext implements Context
     public function iRetrieveTheAttributesMappingForTheFamily($familyCode): void
     {
         try {
-            $query = new GetAttributesMappingByFamilyQuery($familyCode);
+            $query = new GetAttributesMappingByFamilyQuery(new FamilyCode($familyCode));
             $this->retrievedAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle($query);
         } catch (\Exception $e) {
             ExceptionContext::setThrownException($e);
@@ -152,7 +153,7 @@ final class AttributesMappingContext implements Context
     public function theAttributesMappingIsUpdatedWithAnEmptyMapping(string $familyCode): void
     {
         try {
-            $command = new SaveAttributesMappingByFamilyCommand($familyCode, []);
+            $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode($familyCode), []);
             $this->saveAttributesMappingByFamilyHandler->handle($command);
         } catch (\Exception $e) {
             ExceptionContext::setThrownException($e);
