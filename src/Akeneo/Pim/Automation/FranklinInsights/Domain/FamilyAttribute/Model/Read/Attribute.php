@@ -23,9 +23,6 @@ final class Attribute
     /** @var AttributeCode */
     private $code;
 
-    /** @var int */
-    private $id;
-
     /** @var string */
     private $type;
 
@@ -51,11 +48,10 @@ final class Attribute
     private $defaultMetricUnit;
 
     public function __construct(
-        AttributeCode $code, int $id, string $type, bool $isScopable, bool $isLocalizable, bool $decimalsAllowed,
+        AttributeCode $code, string $type, bool $isScopable, bool $isLocalizable, bool $decimalsAllowed,
         bool $isLocaleSpecific, array $labels, ?string $metricFamily, ?string $defaultMetricUnit
     ) {
         $this->code = $code;
-        $this->id = $id;
         $this->type = $type;
         $this->isScopable = $isScopable;
         $this->isLocalizable = $isLocalizable;
@@ -72,14 +68,6 @@ final class Attribute
     public function getCode(): AttributeCode
     {
         return $this->code;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     /**

@@ -78,7 +78,6 @@ final class InMemoryAttributeRepository implements AttributeRepositoryInterface
 
         return new Attribute(
             new AttributeCode($attribute->getCode()),
-            random_int(0, 999),
             $attribute->getType(),
             (bool) $attribute->isScopable(),
             (bool) $attribute->isLocalizable(),

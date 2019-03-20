@@ -30,7 +30,7 @@ final class AttributeRepositoryIntegration extends TestCase
             ->findOneByIdentifier('size');
         $this->assertNull($attribute);
 
-        $id = $this->createAttributeWithAllValues('size');
+        $this->createAttributeWithAllValues('size');
 
         $attribute = $this
             ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.attribute')
@@ -38,7 +38,6 @@ final class AttributeRepositoryIntegration extends TestCase
 
         $expectedAttribute = new Attribute(
             new AttributeCode('size'),
-            $id,
             'pim_catalog_metric',
             true,
             true,
@@ -53,14 +52,13 @@ final class AttributeRepositoryIntegration extends TestCase
         );
         $this->assertEquals($expectedAttribute, $attribute);
 
-        $id2 = $this->createAttributeWithMinimumValues('size2');
+        $this->createAttributeWithMinimumValues('size2');
         $attribute = $this
             ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.attribute')
             ->findOneByIdentifier('size2');
 
         $expectedAttribute = new Attribute(
             new AttributeCode('size2'),
-            $id2,
             'pim_catalog_metric',
             false,
             false,
@@ -146,7 +144,5 @@ final class AttributeRepositoryIntegration extends TestCase
         );
 
         $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
-
-        return $attribute->getId();
     }
 }

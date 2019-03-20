@@ -55,7 +55,7 @@ class AttributeBuilder
 
     public function build(): Attribute
     {
-        return new Attribute($this->code, 1, $this->type, $this->isScopable, $this->isLocalizable, $this->decimalsAllowed, $this->isLocaleSpecific, $this->labels, $this->metricFamily, $this->defaultMetricUnit);
+        return new Attribute($this->code, $this->type, $this->isScopable, $this->isLocalizable, $this->decimalsAllowed, $this->isLocaleSpecific, $this->labels, $this->metricFamily, $this->defaultMetricUnit);
     }
 
     public function isScopable()
@@ -123,6 +123,6 @@ class AttributeBuilder
 
     public static function fromCode(string $code): Attribute
     {
-        return new Attribute(new AttributeCode($code), 1, AttributeTypes::TEXT, false, false, false, false, [], null, null);
+        return new Attribute(new AttributeCode($code), AttributeTypes::TEXT, false, false, false, false, [], null, null);
     }
 }

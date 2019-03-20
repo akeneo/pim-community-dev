@@ -34,7 +34,7 @@ class AttributeRepository implements AttributeRepositoryInterface
     public function findOneByIdentifier(string $code): ?Attribute
     {
         $query = <<<SQL
-        SELECT attribute.id, code, attribute_type, is_localizable, is_scopable, decimals_allowed, metric_family, default_metric_unit,
+        SELECT code, attribute_type, is_localizable, is_scopable, decimals_allowed, metric_family, default_metric_unit,
         EXISTS (SELECT id from pim_catalog_attribute_locale WHERE attribute_id = attribute.id) AS is_locale_specific,
         (SELECT JSON_OBJECTAGG(IFNULL(locale, 0), label) FROM pim_catalog_attribute_translation WHERE foreign_key = attribute.id) AS labels
         FROM pim_catalog_attribute attribute
@@ -58,7 +58,7 @@ SQL;
     public function findByCodes(array $codes): array
     {
         $query = <<<SQL
-        SELECT attribute.id, code, attribute_type, is_localizable, is_scopable, decimals_allowed, metric_family, default_metric_unit,
+        SELECT code, attribute_type, is_localizable, is_scopable, decimals_allowed, metric_family, default_metric_unit,
         EXISTS (SELECT id from pim_catalog_attribute_locale WHERE attribute_id = attribute.id) AS is_locale_specific,
         (SELECT JSON_OBJECTAGG(IFNULL(locale, 0), label) FROM pim_catalog_attribute_translation WHERE foreign_key = attribute.id) AS labels
         FROM pim_catalog_attribute attribute
@@ -111,7 +111,6 @@ SQL;
 
         return new Attribute(
             new AttributeCode($result['code']),
-            (int) $result['id'],
             $result['attribute_type'],
             (bool) $result['is_scopable'],
             (bool) $result['is_localizable'],
