@@ -4,6 +4,7 @@
 
 ## Bug fixes
 
+- PIM-8176: `Nesting level too deep – recursive dependency?` for some custom reference_data attributes
 - PIM-8222: Fix product model issues when code contains `/` (create variant through UI and get product models via API)
 
 # 2.3.33 (2019-03-13)
