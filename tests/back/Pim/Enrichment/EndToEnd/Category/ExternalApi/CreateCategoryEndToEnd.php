@@ -53,6 +53,9 @@ JSON;
         $this->assertSame($categoryStandard, $normalizer->normalize($category));
     }
 
+    /**
+     * @critical
+     */
     public function testCompleteCategoryCreation()
     {
         $client = $this->createAuthenticatedClient();
