@@ -21,6 +21,9 @@ class UpsertVariantProductWithPermissionEndToEnd extends ApiTestCase
         $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
     }
 
+    /**
+     * @critical
+     */
     public function testUpdateVariantProductValuesByMergingNonViewableAssociations()
     {
         $this->loader->loadProductsForAssociationPermissions();
@@ -106,6 +109,9 @@ JSON;
         $this->assertSameProduct($expectedProduct, 'variant_product');
     }
 
+    /**
+     * @critical
+     */
     public function testUpdateVariantProductValuesByMergingNonViewableProductValues()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
@@ -196,6 +202,9 @@ JSON;
         $this->assertSameProduct($expectedProduct, 'variant_product');
     }
 
+    /**
+     * @critical
+     */
     public function testUpdateVariantProductValuesByMergingNonViewableCategories()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -269,6 +278,9 @@ JSON;
         $this->assertUnprocessableEntity('variant_product', $data, $message);
     }
 
+    /**
+     * @critical
+     */
     public function testUpdateNotViewableVariantProduct()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();

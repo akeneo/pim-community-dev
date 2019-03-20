@@ -21,6 +21,9 @@ class ListProductModelWithPermissionEndToEnd extends ApiTestCase
         $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
     }
 
+    /**
+     * @critical
+     */
     public function testGetListOfViewableProductModels()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -54,6 +57,9 @@ class ListProductModelWithPermissionEndToEnd extends ApiTestCase
         Assert::assertSame($expectedCodes, $codes);
     }
 
+    /**
+     * @critical
+     */
     public function testGetListOfViewableAttributesAndLocaleValues()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
