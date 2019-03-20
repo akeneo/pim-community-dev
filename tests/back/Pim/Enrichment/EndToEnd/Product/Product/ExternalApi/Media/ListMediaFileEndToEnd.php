@@ -16,6 +16,9 @@ class ListMediaFileEndToEnd extends AbstractMediaFileTestCase
         $this->createMedia(new \SplFileInfo($this->getFixturePath('akeneo.txt')));
     }
 
+    /**
+     * @critical
+     */
     public function testListMediaFiles()
     {
         $client = $this->createAuthenticatedClient();

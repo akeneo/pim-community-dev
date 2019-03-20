@@ -106,8 +106,6 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
 
     /**
      * Get all products, whatever locale, scope, category with the default pagination type that is with an offset.
-     *
-     * @critical
      */
     public function testDefaultPaginationListProductsWithoutParameter()
     {
@@ -1253,6 +1251,8 @@ JSON;
 
     /**
      * Get all products, whatever locale, scope, category with a search after pagination
+     *
+     * @critical
      */
     public function testSearchAfterPaginationListProductsWithoutParameter()
     {

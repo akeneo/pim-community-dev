@@ -130,7 +130,6 @@ class SuccessListVariantProductEndToEnd extends AbstractProductTestCase
 
     /**
      * Get all products, whatever locale, scope, category with the default pagination type that is with an offset.
-     * @critical
      */
     public function testDefaultPaginationListProductsWithoutParameter()
     {
@@ -739,6 +738,9 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
+    /**
+     * @critical
+     */
     public function testSearchAfterPaginationListProductsWithNextLink()
     {
         $standardizedProducts = $this->getStandardizedProducts();
