@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.8 (2019-03-20)
+
 ## Bug fixes
 
 - PIM-8226: inject correct service to present dates
