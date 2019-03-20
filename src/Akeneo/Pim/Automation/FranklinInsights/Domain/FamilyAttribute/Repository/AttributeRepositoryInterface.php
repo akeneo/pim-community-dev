@@ -33,11 +33,4 @@ interface AttributeRepositoryInterface
      * @return Attribute[]
      */
     public function findByCodes(array $codes): array;
-
-    /**
-     * @param string[] $codes
-     *
-     * @return array
-     */
-    public function getAttributeTypeByCodes(array $codes): array;
 }

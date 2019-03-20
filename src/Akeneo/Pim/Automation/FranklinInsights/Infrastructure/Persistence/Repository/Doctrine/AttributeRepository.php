@@ -77,29 +77,6 @@ SQL;
         }, $results);
     }
 
-    public function getAttributeTypeByCodes(array $codes): array
-    {
-        $query = <<<SQL
-        SELECT code, attribute_type
-        FROM pim_catalog_attribute
-        WHERE code IN(:attribute_codes);
-SQL;
-        $statement = $this->connection->executeQuery(
-            $query,
-            ['attribute_codes' => $codes],
-            ['attribute_codes' => Connection::PARAM_STR_ARRAY]
-        );
-
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
-
-        $attributeTypeByCodes = [];
-        foreach ($results as $result) {
-            $attributeTypeByCodes[$result['code']] = $result['attribute_type'];
-        }
-
-        return $attributeTypeByCodes;
-    }
-
     /**
      * @param array $result
      *

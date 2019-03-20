@@ -88,21 +88,6 @@ final class AttributeRepositoryIntegration extends TestCase
         $this->assertContainsOnlyInstancesOf(Attribute::class, $attributes);
     }
 
-    public function test_get_attribute_type_by_codes(): void
-    {
-        $this->createAttributeWithAllValues('size');
-        $this->createAttributeWithMinimumValues('size2');
-
-        $attributeTypes = $this
-            ->getFromTestContainer('akeneo.pim.automation.franklin_insights.repository.attribute')
-            ->getAttributeTypeByCodes(['size', 'size2']);
-
-        $this->assertEquals(
-            ['size' => 'pim_catalog_metric', 'size2' => 'pim_catalog_metric'],
-            $attributeTypes
-        );
-    }
-
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();

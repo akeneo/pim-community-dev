@@ -54,11 +54,6 @@ final class InMemoryAttributeRepository implements AttributeRepositoryInterface
         return null;
     }
 
-    public function getAttributeTypeByCodes(array $codes): array
-    {
-        return $this->attributeRepository->getAttributeTypeByCodes($codes);
-    }
-
     public function save($attribute): void
     {
         $this->attributeRepository->save($attribute);

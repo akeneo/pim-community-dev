@@ -71,7 +71,11 @@ class SuggestedDataNormalizer implements SuggestedDataNormalizerInterface
         foreach ($suggestedData as $suggestedValue) {
             $attributeCodes[] = $suggestedValue->pimAttributeCode();
         }
-        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes($attributeCodes);
+
+        $attributeTypes = [];
+        foreach ($this->attributeRepository->findByCodes($attributeCodes) as $attribute) {
+            $attributeTypes[(string) $attribute->getCode()] = $attribute->getType();
+        }
 
         foreach ($suggestedData as $suggestedValue) {
             $attributeCode = $suggestedValue->pimAttributeCode();
