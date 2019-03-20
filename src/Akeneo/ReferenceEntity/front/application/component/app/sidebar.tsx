@@ -26,7 +26,7 @@ interface SidebarDispatch {
 
 interface SidebarProps extends SidebarState, SidebarDispatch {}
 
-export type SidebarLabel = string | typeof React.Component
+export type SidebarLabel = string | typeof React.Component;
 
 class Sidebar extends React.Component<SidebarProps> {
   props: SidebarProps;

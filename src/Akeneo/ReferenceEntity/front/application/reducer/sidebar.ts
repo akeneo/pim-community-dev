@@ -1,4 +1,4 @@
-import {SidebarLabel} from "akeneoreferenceentity/application/component/app/sidebar";
+import {SidebarLabel} from 'akeneoreferenceentity/application/component/app/sidebar';
 
 export interface Tab {
   code: string;
