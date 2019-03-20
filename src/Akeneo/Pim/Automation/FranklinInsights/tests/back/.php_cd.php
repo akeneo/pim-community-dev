@@ -43,6 +43,8 @@ $rules = [
 
     $builder->only(
         [
+            'Akeneo\Pim\Automation\FranklinInsights\Domain',
+
             // External dependencies
             'Guzzle',
             'Symfony\Component\HttpFoundation\Response',
@@ -215,6 +217,51 @@ $rules = [
             'Akeneo\Pim\Structure\Component\AttributeTypes',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony'),
+
+    $builder->only(
+        [
+            'Akeneo\Pim\Automation\FranklinInsights\Domain',
+            'Akeneo\Pim\Automation\FranklinInsights\Application',
+
+            'Oro\Bundle\DataGridBundle',
+            'Oro\Bundle\FilterBundle',
+            'Oro\Bundle\PimFilterBundle',
+
+            // TODO relationship between bounded context
+            'Akeneo\Pim\Enrichment\Component\Product\Grid',
+        ]
+    )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid'),
+
+    $builder->only(
+        [
+            'Akeneo\Pim\Automation\FranklinInsights\Domain',
+
+            'Akeneo\Tool\Component\StorageUtils',
+
+            // External dependencies
+            'Elasticsearch\Client',
+            'Elasticsearch\ClientBuilder',
+            'Symfony\Component\Serializer\Normalizer',
+
+            // TODO relationship between bounded context
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\Filter',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
+        ]
+    )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch'),
+
+    $builder->only(
+        [
+            'Akeneo\Pim\Automation\FranklinInsights\Domain',
+
+            'Akeneo\Tool\Component\StorageUtils',
+
+            // TODO relationship between bounded context
+            'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
+        ]
+    )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification'),
 ];
 
 $config = new Configuration($rules, $finder);
