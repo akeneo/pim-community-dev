@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.8 (2019-03-20)
+
 ## Bug fixes
 
 - PIM-8217: Fix missing translations on product grid (Filters, Done, Yes and No)
