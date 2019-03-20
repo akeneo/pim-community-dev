@@ -63,13 +63,11 @@ class LruArrayAttributeRepository
 
         $uncachedAttributes = $this->attributeRepository->findSeveralByIdentifiers($uncachedAttributeCodes);
         foreach ($uncachedAttributes as $code => $attribute) {
-            $this->cache->put($code, $attribute ?? self::NOT_EXISTING);
+            $this->cache->put((string)$code, $attribute ?? self::NOT_EXISTING);
         }
 
-        return array_merge($cachedAttributes, $uncachedAttributes);
+        return $cachedAttributes + $uncachedAttributes;
     }
-
-
 
     /**
      * Get the identifier code
