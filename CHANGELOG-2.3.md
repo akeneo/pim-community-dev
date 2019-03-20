@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8230: Show on hover information for a read-only text in product edit form
+
 # 2.3.34 (2019-03-18)
 
 ## Bug fixes
