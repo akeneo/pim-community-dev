@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8232: Escape quotes in flash messages twig
+- PIM-8231: Product model drafts/proposals through API are well applied.
 
 # 2.3.34 (2019-03-18)
 

@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\ApiBundle\Router;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\ApiBundle\Router\ProxyProductRouter;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
@@ -21,7 +21,7 @@ class ProxyProductRouterSpec extends ObjectBehavior
         UrlGeneratorInterface $router,
         TokenStorageInterface $tokenStorage,
         EntityWithValuesDraftRepositoryInterface $productDraftRepository,
-        ProductRepositoryInterface $productRepository
+        IdentifiableObjectRepositoryInterface $productRepository
     ) {
         $this->beConstructedWith(
             $router,
@@ -104,7 +104,7 @@ class ProxyProductRouterSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('my_product')->willReturn(null);
 
         $this->shouldThrow(
-            new NotFoundHttpException('Product "my_product" does not exist')
+            new NotFoundHttpException('Entity "my_product" does not exist')
         )->during('generate', ['pim_product_get', ['code' => 'my_product'], UrlGeneratorInterface::ABSOLUTE_PATH]);
     }
 }
