@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListAssetCategoryIntegration extends ApiTestCase
 {
+    /**
+     * @critical
+     */
     public function testCreateAndUpdateAListOfAssetCategories()
     {
         $data = <<<JSON
