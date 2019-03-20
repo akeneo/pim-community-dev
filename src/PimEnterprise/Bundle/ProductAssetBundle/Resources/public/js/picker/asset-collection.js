@@ -14,6 +14,7 @@ define(
         'pimee/template/picker/asset-collection',
         'pim/fetcher-registry',
         'pim/form-builder',
+        'oro/mediator',
         'backbone/bootstrap-modal'
     ],
     function (
@@ -22,13 +23,15 @@ define(
         Backbone,
         template,
         FetcherRegistry,
-        FormBuilder
+        FormBuilder,
+        mediator
     ) {
         return Backbone.View.extend({
             className: 'AknAssetCollectionField',
             data: [],
             context: {},
             template: _.template(template),
+            modal: null,
             events: {
                 'click .add-asset': 'updateAssets'
             },
@@ -117,7 +120,16 @@ define(
 
                         deferred.resolve(assets);
                     }.bind(this));
+
+                    this.modal = modal;
                 }.bind(this));
+
+                mediator.once('route_complete', () => {
+                    if (null !== this.modal) {
+                        this.modal.close();
+                        this.modal.off();
+                    }
+                })
 
                 return deferred.promise();
             }
