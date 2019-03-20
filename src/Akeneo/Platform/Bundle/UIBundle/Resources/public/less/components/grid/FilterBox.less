@@ -77,6 +77,10 @@
     cursor: pointer;
     position: relative;
     margin-top: 20px;
+
+    &--inline {
+      display: flex;
+    }
   }
 
   &--search &-filterContainer {
@@ -85,6 +89,10 @@
 
   &-filter {
     margin: 0 0 @AknPaddingLeftColumn 0;
+
+    &--relative {
+      position: relative;
+    }
   }
 
   &-disableFilter {
@@ -153,6 +161,10 @@
     background: none;
     border: none;
     margin: 0 0 0 20px;
+
+    &--smallMargin {
+      margin: 0 0 0 10px;
+    }
   }
 
   &--search &-filterCriteria {
@@ -179,6 +191,16 @@
       margin-right: 3px;
       color: @AknDefaultFontColor;
     }
+  }
+
+  &-filterDetails {
+    background: white;
+    position: absolute;
+    z-index: 804;
+    right: 0;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   }
 
   &--search &-filterContainer {

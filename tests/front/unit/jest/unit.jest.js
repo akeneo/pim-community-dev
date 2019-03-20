@@ -17,7 +17,14 @@ const unitConfig = {
     __moduleConfig: {},
     'ts-jest': {
       tsConfig: `${__dirname}/../../../../tsconfig.json`,
-      isolatedModules: true
+      isolatedModules: true,
+    },
+  },
+  coverageThreshold: {
+    global: {
+      statements: 100,
+      functions: 100,
+      lines: 100,
     },
   },
   setupFiles: [`${__dirname}/enzyme.js`],
