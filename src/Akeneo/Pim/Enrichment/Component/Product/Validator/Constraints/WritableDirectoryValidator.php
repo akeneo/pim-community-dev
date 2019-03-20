@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Validator for writable directory constraint
@@ -19,6 +20,10 @@ class WritableDirectoryValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof WritableDirectory) {
+            throw new UnexpectedTypeException($constraint, WritableDirectory::class);
+        }
+
         if (null === $value) {
             return;
         }

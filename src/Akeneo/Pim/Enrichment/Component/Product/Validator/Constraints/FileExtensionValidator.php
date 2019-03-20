@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Validate files extensions
@@ -32,6 +33,10 @@ class FileExtensionValidator extends ConstraintValidator
      */
     protected function validateFileExtension($filePath, Constraint $constraint)
     {
+        if (!$constraint instanceof FileExtension) {
+            throw new UnexpectedTypeException($constraint, FileExtension::class);
+        }
+
         if (!empty($constraint->allowedExtensions)) {
             $extensionTokens = explode('.', $filePath);
             $extension = end($extensionTokens);

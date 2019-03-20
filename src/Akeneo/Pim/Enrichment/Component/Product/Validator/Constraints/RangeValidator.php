@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\RangeValidator as BaseRangeValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Validator for range constraint
@@ -21,6 +22,10 @@ class RangeValidator extends BaseRangeValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof Range) {
+            throw new UnexpectedTypeException($constraint, Range::class);
+        }
+
         if ($value instanceof \DateTime) {
             if ($constraint->min && $value < $constraint->min) {
                 $this->context->buildViolation(
@@ -54,10 +59,10 @@ class RangeValidator extends BaseRangeValidator
      * Validate the data property of a Metric or ProductPrice value
      * and add the violation to the 'data' property path
      *
-     * @param mixed      $value
-     * @param Constraint $constraint
+     * @param mixed $value
+     * @param Range $constraint
      */
-    protected function validateData($value, Constraint $constraint)
+    protected function validateData($value, Range $constraint)
     {
         if (null === $value) {
             return;

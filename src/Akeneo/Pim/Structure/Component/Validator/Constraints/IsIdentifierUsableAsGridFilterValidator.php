@@ -6,6 +6,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)
@@ -19,6 +20,10 @@ class IsIdentifierUsableAsGridFilterValidator extends ConstraintValidator
      */
     public function validate($attribute, Constraint $constraint)
     {
+        if (!$constraint instanceof IsIdentifierUsableAsGridFilter) {
+            throw new UnexpectedTypeException($constraint, IsIdentifierUsableAsGridFilter::class);
+        }
+
         if ($attribute instanceof AttributeInterface &&
             AttributeTypes::IDENTIFIER === $attribute->getType() &&
             !$attribute->isUseableAsGridFilter()

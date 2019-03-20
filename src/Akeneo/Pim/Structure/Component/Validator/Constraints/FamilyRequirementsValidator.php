@@ -7,6 +7,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Family requirements validator
@@ -44,6 +45,10 @@ class FamilyRequirementsValidator extends ConstraintValidator
      */
     public function validate($family, Constraint $constraint)
     {
+        if (!$constraint instanceof FamilyRequirements) {
+            throw new UnexpectedTypeException($constraint, FamilyRequirements::class);
+        }
+
         if ($family instanceof FamilyInterface) {
             $this->validateMissingChannels($family, $constraint);
             $this->validateRequiredAttributes($family, $constraint);
@@ -53,10 +58,10 @@ class FamilyRequirementsValidator extends ConstraintValidator
     /**
      * Validates that there is no missing channel for the family.
      *
-     * @param FamilyInterface $family
-     * @param Constraint      $constraint
+     * @param FamilyInterface    $family
+     * @param FamilyRequirements $constraint
      */
-    protected function validateMissingChannels(FamilyInterface $family, Constraint $constraint)
+    protected function validateMissingChannels(FamilyInterface $family, FamilyRequirements $constraint)
     {
         $missingChannelCodes = $this->getMissingChannelCodes($family);
         if (0 < count($missingChannelCodes)) {
@@ -76,10 +81,10 @@ class FamilyRequirementsValidator extends ConstraintValidator
     /**
      * Validates that every required attribute is a family attribute.
      *
-     * @param FamilyInterface $family
-     * @param Constraint      $constraint
+     * @param FamilyInterface    $family
+     * @param FamilyRequirements $constraint
      */
-    protected function validateRequiredAttributes(FamilyInterface $family, Constraint $constraint)
+    protected function validateRequiredAttributes(FamilyInterface $family, FamilyRequirements $constraint)
     {
         $familyAttributeCodes = $family->getAttributeCodes();
 

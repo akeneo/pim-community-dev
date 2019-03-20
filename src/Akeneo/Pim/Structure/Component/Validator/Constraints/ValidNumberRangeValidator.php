@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Valid number range validator
@@ -19,9 +20,15 @@ class ValidNumberRangeValidator extends ConstraintValidator
      *
      * @param mixed      $entity
      * @param Constraint $constraint
+     *
+     * @throws \Exception
      */
     public function validate($entity, Constraint $constraint)
     {
+        if (!$constraint instanceof ValidNumberRange) {
+            throw new UnexpectedTypeException($constraint, ValidNumberRange::class);
+        }
+
         $min = $entity->getNumberMin();
         $max = $entity->getNumberMax();
 

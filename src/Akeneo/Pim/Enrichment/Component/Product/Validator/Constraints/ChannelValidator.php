@@ -6,6 +6,7 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Validate that the selected channel exists
@@ -32,6 +33,10 @@ class ChannelValidator extends ChoiceValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof Channel) {
+            throw new UnexpectedTypeException($constraint, Channel::class);
+        }
+
         $channels = $this->channelRepository->getChannelCodes();
         if (0 === count($channels)) {
             throw new ConstraintDefinitionException('No channel is set in the application');

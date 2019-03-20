@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Checks if data is a reference data and if this reference data is configured.
@@ -36,6 +37,10 @@ class IsReferenceDataConfiguredValidator extends ConstraintValidator
      */
     public function validate($attribute, Constraint $constraint)
     {
+        if (!$constraint instanceof IsReferenceDataConfigured) {
+            throw new UnexpectedTypeException($constraint, IsReferenceDataConfigured::class);
+        }
+
         $referenceDataName = $attribute->getReferenceDataName();
 
         if (null === $referenceDataName || '' === $referenceDataName) {

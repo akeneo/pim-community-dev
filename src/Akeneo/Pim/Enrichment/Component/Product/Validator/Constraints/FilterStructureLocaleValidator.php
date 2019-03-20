@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Validator for the product export builder structure filter about locales.
@@ -35,6 +36,10 @@ class FilterStructureLocaleValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof FilterStructureLocale) {
+            throw new UnexpectedTypeException($constraint, FilterStructureLocale::class);
+        }
+
         if (null === $value['scope'] || null === $value['locales']) {
             return;
         }

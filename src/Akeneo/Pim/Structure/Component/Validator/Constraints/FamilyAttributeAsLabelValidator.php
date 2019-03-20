@@ -6,6 +6,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Family attribute_as_label validator
@@ -25,6 +26,10 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
      */
     public function validate($family, Constraint $constraint)
     {
+        if (!$constraint instanceof FamilyAttributeAsLabel) {
+            throw new UnexpectedTypeException($constraint, FamilyAttributeAsLabel::class);
+        }
+
         if (!$family instanceof FamilyInterface) {
             return;
         }

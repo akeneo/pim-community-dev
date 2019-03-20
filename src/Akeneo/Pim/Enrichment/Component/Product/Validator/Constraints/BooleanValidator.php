@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * BooleanValidator
@@ -20,6 +21,10 @@ class BooleanValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof Boolean) {
+            throw new UnexpectedTypeException($constraint, Boolean::class);
+        }
+
         if (null === $value) {
             return;
         }

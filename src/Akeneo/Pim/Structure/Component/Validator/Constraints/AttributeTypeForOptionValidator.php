@@ -6,6 +6,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Validator for attribute used for an option
@@ -22,6 +23,10 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
      */
     public function validate($attributeOption, Constraint $constraint)
     {
+        if (!$constraint instanceof AttributeTypeForOption) {
+            throw new UnexpectedTypeException($constraint, AttributeTypeForOption::class);
+        }
+
         /** @var AttributeOptionInterface */
         if ($attributeOption instanceof AttributeOptionInterface) {
             $attribute = $attributeOption->getAttribute();

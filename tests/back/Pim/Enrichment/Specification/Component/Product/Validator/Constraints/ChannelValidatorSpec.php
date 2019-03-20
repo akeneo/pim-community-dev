@@ -34,7 +34,7 @@ class ChannelValidatorSpec extends ObjectBehavior
         $this->shouldHaveType('\Symfony\Component\Validator\ConstraintValidatorInterface');
     }
 
-    function it_throws_an_exception_if_there_is_no_channel_choices($channelRepository, Constraint $constraint)
+    function it_throws_an_exception_if_there_is_no_channel_choices($channelRepository, Channel $constraint)
     {
         $channelRepository->getChannelCodes()->willReturn([]);
 

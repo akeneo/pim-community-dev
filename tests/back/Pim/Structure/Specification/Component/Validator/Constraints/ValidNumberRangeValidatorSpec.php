@@ -7,7 +7,6 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRange;
 use Prophecy\Argument;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
@@ -26,7 +25,7 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
     function it_does_nothing_when_number_range_is_valid(
         $context,
         AttributeInterface $attribute,
-        Constraint $constraint
+        ValidNumberRange $constraint
     ) {
         $attribute->getNumberMin()->willReturn(1);
         $attribute->getNumberMax()->willReturn(9);
