@@ -96,9 +96,9 @@ echo ""
 
 JSON_STRING=$(
     jq -n \
-    --arg gp "$GET" \
-    --arg cp "$CREATE" \
-    --arg up "$UPDATE" \
+    --arg gp $GET \
+    --arg cp $CREATE" \
+    --arg up $UPDATE \
     '{get_result: $gp, create_result: $cp, update_result: $up}'
 )
 
