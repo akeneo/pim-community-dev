@@ -43,7 +43,7 @@ class LRUCache
      *
      * @return mixed
      */
-    public function get(string $key): ?object
+    public function get(string $key)
     {
         if (isset($this->data[$key])) {
             $this->recordAccess($key);
@@ -59,7 +59,7 @@ class LRUCache
      * @param int|string $key   The key. Strings that are ints are cast to ints.
      * @param mixed      $value The value to cache
      */
-    public function put(string $key, object $value)
+    public function put(string $key, $value)
     {
         if (isset($this->data[$key])) {
             $this->data[$key] = $value;

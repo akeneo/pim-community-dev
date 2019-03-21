@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Sql;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Doctrine\Common\Collections\ArrayCollection;
 
 final class Attribute implements AttributeInterface
@@ -105,8 +106,8 @@ final class Attribute implements AttributeInterface
      * @param int             $maxCharacters
      * @param string          $validationRule
      * @param string          $validationRegexp
-     * @param int           $numberMin
-     * @param int           $numberMax
+     * @param int             $numberMin
+     * @param int             $numberMax
      * @param bool            $decimalsAllowed
      * @param bool            $negativeAllowed
      * @param \Datetime       $dateMin
@@ -228,7 +229,7 @@ final class Attribute implements AttributeInterface
 
     public function getProperty($property)
     {
-        return isset($this->properties[$property]) ? $this->properties[$property] : null;
+        return $this->properties->get($property);
     }
 
     public function getGroupCode()
@@ -319,5 +320,20 @@ final class Attribute implements AttributeInterface
     public function isLocaleSpecific(): bool
     {
         return !empty($this->availableLocaleCodes);
+    }
+
+    public function getReferenceDataName()
+    {
+        if (in_array(
+            $this->backendType,
+            [
+                AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION,
+                AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS,
+            ]
+        )) {
+            return $this->getProperty('reference_data_name');
+        }
+
+        return null;
     }
 }

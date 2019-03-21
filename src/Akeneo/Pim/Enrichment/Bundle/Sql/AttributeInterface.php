@@ -30,4 +30,10 @@ interface AttributeInterface
     public function isDecimalsAllowed();
 
     public function isLocaleSpecific(): bool;
+
+    public function getMetricFamily();
+
+    public function getDefaultMetricUnit();
+
+    public function getReferenceDataName();
 }
