@@ -11,23 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory;
+namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface as StructureFamilyInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface as StructureFamilyRepositoryInterface;
+use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository as InMemoryStructureFamilyRepository;
 
 class InMemoryFamilyRepository implements FamilyRepositoryInterface
 {
-    /** @var StructureFamilyRepositoryInterface */
+    /** @var InMemoryStructureFamilyRepository */
     private $familyRepository;
 
-    /**
-     * @param StructureFamilyRepositoryInterface $familyRepository
-     */
-    public function __construct(StructureFamilyRepositoryInterface $familyRepository)
+    public function __construct(InMemoryStructureFamilyRepository $familyRepository)
     {
         $this->familyRepository = $familyRepository;
     }

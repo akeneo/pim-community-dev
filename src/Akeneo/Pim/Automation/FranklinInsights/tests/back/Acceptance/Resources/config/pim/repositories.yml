@@ -1,32 +1,32 @@
 services:
     akeneo.pim.automation.franklin_insights.repository.configuration:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryConfigurationRepository'
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryConfigurationRepository'
 
     akeneo.pim.automation.franklin_insights.repository.identifiers_mapping:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryIdentifiersMappingRepository'
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryIdentifiersMappingRepository'
 
     akeneo.pim.automation.franklin_insights.repository.product_subscription:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository'
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryProductSubscriptionRepository'
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.product_without_permission'
 
     akeneo.pim.automation.franklin_insights.repository.family_mapping_status:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryFamilyMappingStatusRepository'
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryFamilyMappingStatusRepository'
         arguments:
             - '@pim_catalog.repository.family'
 
     akeneo.pim.automation.franklin_insights.repository.family:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryFamilyRepository'
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryFamilyRepository'
         arguments:
             - '@pim_catalog.repository.family'
 
     akeneo.pim.automation.franklin_insights.repository.attribute_option:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryAttributeOptionRepository'
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryAttributeOptionRepository'
         arguments:
             - '@pim_catalog.repository.attribute_option'
 
     akeneo.pim.automation.franklin_insights.repository.attribute:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory\InMemoryAttributeRepository'
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryAttributeRepository'
         arguments:
             - '@pim_catalog.repository.attribute'

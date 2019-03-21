@@ -1,10 +1,10 @@
 services:
     akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attribute_option_codes_by_identifiers:
-        class: Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\InMemory\InMemorySelectAttributeOptionCodesByIdentifiersQuery
+        class: Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Query\InMemorySelectAttributeOptionCodesByIdentifiersQuery
         arguments:
             - '@pim_catalog.repository.attribute_option'
 
     akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_family_attribute_codes:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\InMemory\InMemorySelectFamilyAttributeCodesQuery'
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Query\InMemorySelectFamilyAttributeCodesQuery'
         arguments:
             - '@pim_catalog.repository.family'

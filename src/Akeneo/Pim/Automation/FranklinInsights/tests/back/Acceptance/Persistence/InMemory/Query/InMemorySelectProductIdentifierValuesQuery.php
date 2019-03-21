@@ -11,13 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\InMemory;
+namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Query;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 
 /**
  * InMemory implementation of the SelectProductIdentifierValuesQuery.
@@ -37,7 +38,7 @@ class InMemorySelectProductIdentifierValuesQuery implements SelectProductIdentif
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
     public function __construct(
-        ProductRepositoryInterface $productRepository,
+        InMemoryProductRepository $productRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ) {
         $this->productRepository = $productRepository;

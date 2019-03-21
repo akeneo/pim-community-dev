@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory;
+namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -28,18 +28,14 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     /** @var ProductSubscription[] */
     private $subscriptions = [];
 
-    /** @var FamilyRepositoryInterface */
+    /** @var InMemoryFamilyRepository */
     private $familyRepository;
 
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
-    /**
-     * @param FamilyRepositoryInterface $familyRepository
-     * @param ProductRepositoryInterface $productRepository
-     */
     public function __construct(
-        FamilyRepositoryInterface $familyRepository,
+        InMemoryFamilyRepository $familyRepository,
         ProductRepositoryInterface $productRepository
     ) {
         $this->familyRepository = $familyRepository;

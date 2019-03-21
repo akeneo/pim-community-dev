@@ -11,22 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\InMemory;
+namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Query;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Query\SelectFamilyAttributeCodesQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 
 class InMemorySelectFamilyAttributeCodesQuery implements SelectFamilyAttributeCodesQueryInterface
 {
-    /** @var FamilyRepositoryInterface */
+    /** @var InMemoryFamilyRepository */
     private $familyRepository;
 
-    /**
-     * @param FamilyRepositoryInterface $familyRepository
-     */
-    public function __construct(FamilyRepositoryInterface $familyRepository)
+    public function __construct(InMemoryFamilyRepository $familyRepository)
     {
         $this->familyRepository = $familyRepository;
     }

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Memory;
+namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyMappingStatusCollection;
@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Repository\Fa
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface as StructureFamilyInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface as StructureFamilyRepositoryInterface;
+use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository as InMemoryStructureFamilyRepository;
 
 /**
  * In memory implementation of the repository of the attribute mapping read model "Family".
@@ -34,13 +34,10 @@ use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface as Struc
  */
 final class InMemoryFamilyMappingStatusRepository implements FamilyMappingStatusRepositoryInterface
 {
-    /** @var StructureFamilyRepositoryInterface */
+    /** @var InMemoryStructureFamilyRepository */
     private $familyRepository;
 
-    /**
-     * @param StructureFamilyRepositoryInterface $familyRepository
-     */
-    public function __construct(StructureFamilyRepositoryInterface $familyRepository)
+    public function __construct(InMemoryStructureFamilyRepository $familyRepository)
     {
         $this->familyRepository = $familyRepository;
     }

@@ -135,11 +135,6 @@ $rules = [
 
             // Oro config is used
             'Oro\Bundle\ConfigBundle\Entity\Config',
-
-            //Needed for the memory repositories
-            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
-            'Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository',
-            'Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence'),
 
