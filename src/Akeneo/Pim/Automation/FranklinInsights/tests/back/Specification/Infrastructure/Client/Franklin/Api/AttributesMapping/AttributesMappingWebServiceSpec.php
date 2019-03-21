@@ -58,7 +58,7 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
 
         $httpClient->request('GET', '/my_route')->willReturn($apiResponse);
 
-        $attributesMapping = $this->fetchByFamily($familyCode);
+        $attributesMapping = $this->fetchByFamily((string) $familyCode);
         $attributesMapping->getIterator()->count()->shouldReturn(2);
     }
 

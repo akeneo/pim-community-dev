@@ -57,7 +57,7 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
         $this->api->setToken($this->getToken());
 
         try {
-            $apiResponse = $this->api->fetchByFamily($familyCode);
+            $apiResponse = $this->api->fetchByFamily((string) $familyCode);
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {
@@ -92,7 +92,7 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
         $mapping = $normalizer->normalize($attributesMapping);
 
         try {
-            $this->api->save($familyCode, $mapping);
+            $this->api->save((string) $familyCode, $mapping);
         } catch (FranklinServerException $e) {
             throw DataProviderException::serverIsDown($e);
         } catch (InvalidTokenException $e) {

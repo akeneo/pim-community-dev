@@ -69,10 +69,9 @@ class AttributesMappingProviderSpec extends ObjectBehavior
                 'summary' => ['blue',  'red'],
             ],
         ]);
-        $familyCode = new FamilyCode('camcorders');
-        $api->fetchByFamily($familyCode)->willReturn($response);
+        $api->fetchByFamily('camcorders')->willReturn($response);
 
-        $attributesMappingResponse = $this->getAttributesMapping($familyCode);
+        $attributesMappingResponse = $this->getAttributesMapping(new FamilyCode('camcorders'));
         $attributesMappingResponse->shouldHaveCount(2);
     }
 
@@ -82,7 +81,7 @@ class AttributesMappingProviderSpec extends ObjectBehavior
         $attributesMapping = new DomainAttributesMapping($familyCode);
 
         $api->setToken('valid-token')->shouldBeCalled();
-        $api->save($familyCode, Argument::type('array'))->shouldBeCalled();
+        $api->save((string) $familyCode, Argument::type('array'))->shouldBeCalled();
 
         $this->saveAttributesMapping($familyCode, $attributesMapping);
     }

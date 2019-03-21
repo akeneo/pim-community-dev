@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AttributesMapping;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AbstractApi;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\BadRequestException;
@@ -32,7 +31,7 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
     /**
      * {@inheritdoc}
      */
-    public function fetchByFamily(FamilyCode $familyCode): AttributesMapping
+    public function fetchByFamily(string $familyCode): AttributesMapping
     {
         $route = $this->uriGenerator->generate(sprintf('/api/mapping/%s/attributes', $familyCode));
 
@@ -69,7 +68,7 @@ class AttributesMappingWebService extends AbstractApi implements AuthenticatedAp
     /**
      * {@inheritdoc}
      */
-    public function save(FamilyCode $familyCode, array $mapping): void
+    public function save(string $familyCode, array $mapping): void
     {
         $route = $this->uriGenerator->generate(sprintf('/api/mapping/%s/attributes', $familyCode));
 
