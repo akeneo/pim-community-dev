@@ -320,8 +320,6 @@ class UpdateFamilyVariantIntegration extends TestCase
     }
 
     /**
-     * @group do
-     *
      * Validation: An attribute cannot be moved from a variant attribute set to an upper one
      */
     public function testRemovingOfAnAttributeToUpperLevel()
