@@ -16,10 +16,12 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\ValueHydratorInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\ValuesDecoder;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -37,12 +39,22 @@ class RecordItemHydrator implements RecordItemHydratorInterface
     /** @var FindRequiredValueKeyCollectionForChannelAndLocalesInterface */
     private $findRequiredValueKeyCollectionForChannelAndLocales;
 
+    /** @var FindAttributesIndexedByIdentifierInterface */
+    private $findAttributesIndexedByIdentifier;
+
+    /** @var ValueHydratorInterface */
+    private $valueHydrator;
+
     public function __construct(
         Connection $connection,
-        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales
+        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales,
+        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        ValueHydratorInterface $valueHydrator
     ) {
         $this->platform = $connection->getDatabasePlatform();
         $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocales;
+        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
+        $this->valueHydrator = $valueHydrator;
     }
 
     public function hydrate(array $row, RecordQuery $query): RecordItem
@@ -50,7 +62,10 @@ class RecordItemHydrator implements RecordItemHydratorInterface
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $this->platform);
         $referenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
         $code = Type::getType(Type::STRING)->convertToPHPValue($row['code'], $this->platform);
+
+        $indexedAttributes = ($this->findAttributesIndexedByIdentifier)(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
         $valueCollection = ValuesDecoder::decode($row['value_collection']);
+        $valueCollection = $this->hydrateValues($valueCollection, $indexedAttributes);
 
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $labels = $this->getLabels($valueCollection, $attributeAsLabel);
@@ -133,5 +148,26 @@ class RecordItemHydrator implements RecordItemHydratorInterface
         }
 
         return $value['data'];
+    }
+
+    /**
+     * Hydrate given $valueCollection according to given $indexedAttributes
+     * using the value hydrator registry.
+     */
+    private function hydrateValues(array $valueCollection, array $indexedAttributes): array
+    {
+        $hydratedValueCollection = [];
+
+        foreach ($valueCollection as $valueKey => $normalizedValue) {
+            $attributeIdentifier = $normalizedValue['attribute'];
+            if (!key_exists($attributeIdentifier, $indexedAttributes)) {
+                continue;
+            }
+
+            $attribute = $indexedAttributes[$attributeIdentifier];
+            $hydratedValueCollection[$valueKey] = $this->valueHydrator->hydrate($normalizedValue, $attribute, []);
+        }
+
+        return $hydratedValueCollection;
     }
 }

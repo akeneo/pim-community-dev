@@ -51,3 +51,4 @@ yarn-error.log
 coverage/*
 docker-compose.override.yml
 /web/test_dist/*
+.phpunit.result.cache

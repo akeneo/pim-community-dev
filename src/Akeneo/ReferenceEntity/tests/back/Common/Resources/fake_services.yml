@@ -196,6 +196,13 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
 
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_codes:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordLabelsByCodes
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
         class: Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy
