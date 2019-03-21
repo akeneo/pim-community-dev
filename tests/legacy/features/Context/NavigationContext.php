@@ -330,12 +330,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnTheProductEditPage(ProductInterface $product)
     {
-        $this->spin(function () use ($product) {
-            $expectedAddress = $this->getPage('Product edit')->getUrl(['id' => $product->getId()]);
-            $this->assertAddress($expectedAddress);
-
-            return true;
-        }, sprintf('Cannot find product "%s"', $product->getId()));
+        $this->assertAddress($this->getPage('Product edit')->getUrl(['id' => $product->getId()]));
 
         $this->getMainContext()->spin(function () {
             return $this->getCurrentPage()->find('css', '.AknTitleContainer-title');
@@ -351,12 +346,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnTheProductModelEditPage(ProductModel $productModel)
     {
-        $this->spin(function () use ($productModel) {
-            $expectedAddress = $this->getPage('ProductModel edit')->getUrl(['id' => $productModel->getId()]);
-            $this->assertAddress($expectedAddress);
-
-            return true;
-        }, sprintf('Cannot find product model "%s"', $productModel->getId()));
+        $this->assertAddress($this->getPage('ProductModel edit')->getUrl(['id' => $productModel->getId()]));
 
         $this->getMainContext()->spin(function () {
             return $this->getCurrentPage()->find('css', '.AknTitleContainer-title');
