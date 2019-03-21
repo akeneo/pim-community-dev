@@ -55,8 +55,8 @@
     &:first-child&--checkbox {
       background: white;
       text-align: center;
-      width: 40px;
-      max-width: 40px;
+      width: @AknCheckboxCellWidth;
+      max-width: @AknCheckboxCellWidth;
     }
   }
 
@@ -68,7 +68,7 @@
     transform: scale(0);
   }
 
-  &-bodyRow:hover,
+  &-body &-bodyRow:not(&-bodyRow--thumbnail):hover,
   &-bodyRow--highlight {
     background: @AknDefaultHoverBackground;
   }
@@ -108,6 +108,7 @@
 
     &--actions {
       width: 1px;
+      padding-right: 20px;
     }
 
     &--credentials {
@@ -168,6 +169,13 @@
     }
   }
 
+  &--withCheckbox &-bodyRow &-bodyCell:nth-child(2),
+  &:not(&--withCheckbox) &-bodyRow &-bodyCell:first-child,
+  &--withCheckbox &-bodyRow &-headerCell:nth-child(2),
+  &:not(&--withCheckbox) &-bodyRow &-headerCell:first-child {
+    padding-left: 20px;
+  }
+
   &-headerCell {
     &--sticky {
       position: sticky;
@@ -211,21 +219,17 @@
   }
 
   &--gallery &-body {
-    margin-top: 20px;
     display: grid;
     grid-gap: 20px;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    margin-left: 20px;
-    margin-right: -20px;
   }
 
   &--gallery &-body--small {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
-  &--inner &-body {
-    margin-left: -20px;
-    margin-top: 0;
+  &--gallery &--withCheckbox &-body {
+    margin-left: @AknCheckboxCellWidth;
   }
 
   & &-bodyRow:first-child &-bodyCell {
@@ -415,6 +419,7 @@
       margin-top: 4px;
       display: grid;
       justify-content: center;
+      width: 100%;
     }
   }
 
@@ -434,7 +439,6 @@
   }
 
   &-bodyRow--thumbnail:hover &-bodyCell--actions {
-    width: 100%;
     display: grid;
   }
 

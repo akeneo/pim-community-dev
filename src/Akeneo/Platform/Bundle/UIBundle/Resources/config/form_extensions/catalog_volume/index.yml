@@ -46,24 +46,28 @@ extensions:
             link: https://medium.com/akeneo-labs/because-your-product-catalog-typology-matters-e1a9af4c33e0
 
     pim-catalog-volume-product-values-section:
-        module: pim/catalog-volume/section
+        module: pim/form/common/section
         parent: pim-catalog-volume-index
-        template: pim/template/catalog-volume/section
         targetZone: content
         position: 20
         config:
-            align: right
             title: pim_catalog_volume.section.product_values.title
             hint:
                 code: hint-product-values
                 title: pim_catalog_volume.section.product_values.hint
                 link: https://medium.com/akeneo-labs/because-your-product-catalog-typology-matters-e1a9af4c33e0
+
+    pim-catalog-volume-product-values-section-content:
+        module: pim/catalog-volume/section
+        parent: pim-catalog-volume-product-values-section
+        targetZone: content
+        config:
+            align: right
             axes: [count_products, count_channels, count_scopable_attributes, average_max_attributes_per_family, count_locales, count_localizable_and_scopable_attributes, count_localizable_attributes]
 
     pim-catalog-volume-catalog-structure-section:
-        module: pim/catalog-volume/section
+        module: pim/form/common/section
         parent: pim-catalog-volume-index
-        template: pim/template/catalog-volume/section
         targetZone: content
         position: 30
         config:
@@ -71,12 +75,17 @@ extensions:
             hint:
                 code: hint-catalog-structure
                 title: pim_catalog_volume.section.catalog_structure.hint
+
+    pim-catalog-volume-catalog-structure-section-content:
+        module: pim/catalog-volume/section
+        parent: pim-catalog-volume-catalog-structure-section
+        targetZone: content
+        config:
             axes: [count_families, count_attributes, average_max_options_per_attribute, count_categories, count_category_trees]
 
     pim-catalog-volume-variant-modelling-section:
-        module: pim/catalog-volume/section
+        module: pim/form/common/section
         parent: pim-catalog-volume-index
-        template: pim/template/catalog-volume/section
         targetZone: content
         position: 40
         config:
@@ -84,4 +93,11 @@ extensions:
             hint:
                 code: hint-variant-modelling
                 title: pim_catalog_volume.section.variant_modelling.hint
+
+    pim-catalog-volume-catalog-modelling-section-content:
+        module: pim/catalog-volume/section
+        parent: pim-catalog-volume-variant-modelling-section
+        targetZone: content
+        position: 70
+        config:
             axes: [count_variant_products, count_product_models]

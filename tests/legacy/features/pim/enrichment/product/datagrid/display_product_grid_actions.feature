@@ -32,5 +32,6 @@ Feature: Display product datagrid row actions
 
   Scenario: Edit a product model from the grid
     When I am on the products grid
+    And I collapse the column
     And I click on the "Edit attributes of the product" action of the row which contains "tshirt"
     Then I should be on the product model "tshirt" edit page

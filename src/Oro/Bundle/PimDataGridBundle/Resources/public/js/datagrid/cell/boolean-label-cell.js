@@ -21,7 +21,7 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
                 var status = (true === value || 'true' === value || '1' === value) ? 'success' : 'important';
                 var label = (true === value || 'true' === value || '1' === value) ? __('pim_common.yes') : __('pim_common.no');
 
-                this.$el.empty().html('<span class="AknBadge AknBadge--medium AknBadge--' + status +'">' + __(label) + '</span>');
+                this.$el.empty().html('<span class="AknBadge AknBadge--' + status +'">' + __(label) + '</span>');
 
                 return this;
             }

@@ -4,15 +4,13 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 10px 0;
 
-  &-center {
+  &-center:not(:empty) {
     order: 5;
     flex-grow: 1;
     justify-content: center;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
   }
 
   &-right {

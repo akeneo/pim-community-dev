@@ -12,6 +12,7 @@ Feature: Remove a product model
   Scenario: Successfully delete a product model from the grid
     Given I am on the products grid
     When I sort by "ID" value ascending
+    And I collapse the column
     And I click on the "Delete the product" action of the row which contains "amor"
     Then I should see the text "Confirm deletion"
     When I confirm the removal

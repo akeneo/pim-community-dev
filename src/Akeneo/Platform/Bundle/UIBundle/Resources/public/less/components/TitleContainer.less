@@ -6,6 +6,7 @@
 
   position: sticky;
   top: 0;
+  left: -@padding;
   margin: 0 -@padding 0 -@padding;
   padding: @padding @padding 10px;
   background: white;
@@ -134,12 +135,6 @@
     height: @AknDefaultButtonSize;
   }
 
-  &-userMenu:not(:empty):not(&--withoutMargin) {
-    border-right: 1px solid @AknBorderColor;
-    margin-right: 20px;
-    padding-right: 20px;
-  }
-
   &-userIcon {
     height: @AknDefaultButtonSize;
     width: @AknDefaultButtonSize;
@@ -180,6 +175,8 @@
   &-search:not(:empty) {
     flex: 1;
     border-bottom: 1px solid @AknBorderColor;
+    display: flex;
+    align-items: center;
   }
 
   &-metaItem {
@@ -205,5 +202,11 @@
 
   &-mainContainer--contained {
     max-width: ~"calc(100% - 162px)";
+  }
+
+  &-userMenuContainer+&-actionsContainer:not(:empty) {
+    border-left: 1px solid @AknBorderColor;
+    margin-left: 20px;
+    padding-left: 20px;
   }
 }

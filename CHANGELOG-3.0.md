@@ -15,6 +15,20 @@
 - PIM-8224: Fix missing translations in process tracker (Compute completeness, Compute family variant and Compute product model descendants)
 - PIM-8136: Fix display order of datepicker
 - PIM-8227: Fix disappearing columns when saving view columns
+- PXD-10: Fix comment deletion Popin
+- PXD-11: Fix Done button position on category tree
+- PXD-12: Move view selector in the search box
+- PXD-13: Fix disable filter cross on filters list
+- PXD-15: Fix margins on filters column
+- PXD-17: Fix grid margins
+- PXD-19: Fix Forgot Password page design
+- PXD-20: Fix version number design in history pages
+- PXD-21: Fix Dashboard Last operation widget design
+- PXD-22: Fix grid action buttons margin
+- PXD-23: Fix border between user navigation and actions
+- PXD-24: Fix grid bottom panel margins
+- PXD-82: Fix stick header on horizontal scroll
+- PXD-14: Add default placeholder for every select2 search input
 
 # 3.0.7 (2019-03-13)
 

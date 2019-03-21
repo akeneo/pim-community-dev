@@ -199,21 +199,21 @@
   // Sizes
   &--big {
     height: @AknBigButtonSize;
-    line-height: @AknBigButtonSize;
+    line-height: calc(@AknBigButtonSize - 2px);
     min-width: @AknBigButtonSize;
     font-size: @AknFontSizeBig;
   }
 
   &--small {
     height: @AknLittleButtonSize;
-    line-height: @AknLittleButtonSize;
+    line-height: calc(@AknLittleButtonSize - 2px);
     min-width: @AknLittleButtonSize;
     font-size: @AknDefaultFontSize;
   }
 
   &--micro {
     height: @AknMicroButtonSize;
-    line-height: @AknMicroButtonSize;
+    line-height: calc(@AknMicroButtonSize - 2px);
     min-width: @AknMicroButtonSize;
     font-size: @AknDefaultFontSize;
   }
@@ -355,5 +355,11 @@
   &--asIcon {
     margin-top: -4px;
     margin-left: 10px;
+  }
+
+  &--round {
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
   }
 }

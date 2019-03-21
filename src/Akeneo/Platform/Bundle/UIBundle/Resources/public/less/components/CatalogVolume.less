@@ -3,59 +3,6 @@
 .AknCatalogVolume {
   display: flex;
 
-  &-section {
-    margin-bottom: 20px;
-  }
-
-  &-sectionHeading {
-    display: flex;
-    flex-direction: column;
-  }
-
-  &-remove {
-    margin: 15px;
-    background-size: 20px;
-  }
-
-  &-hint {
-    background: #F5F9FC;
-    display: flex;
-    padding: 5px;
-    font-size: 13px;
-    color: @AknSlateGrey;
-    min-height: 80px;
-    align-items: center;
-
-    &--header {
-      margin-bottom: 20px;
-    }
-
-    &--hidden {
-      display: none;
-    }
-  }
-
-  &-hintTitle {
-    flex-grow: 1;
-  }
-
-  &-headerTitle {
-    font-size: 18px;
-    color: @AknDarkBlue;
-    margin-top: 20px;
-    margin-bottom: 20px;
-
-    span {
-      color: @AknLightPurple
-    }
-  }
-
-  &-headerDescription {
-    font-size: 13px;
-    color: @AknSlateGrey;
-    margin-top: 10px;
-  }
-
   &-icon {
     min-width: 70px;
     min-height: 60px;
@@ -123,30 +70,6 @@
 
     &--count-reference-entity {
       background-image: url("../../images/icon-reference-entity.svg");
-    }
-
-    &--info {
-      background-size: 24px auto;
-      border-right: 1px @AknMediumGrey solid;
-      background-position: 50%;
-      min-width: 65px;
-      margin-right: 16px;
-      background-image: url("../../images/icon-info.svg");
-    }
-
-    &--info-button {
-      background-image: url("../../images/icon-info.svg");
-      border: 0;
-      margin: 0;
-      background-size: 100%;
-      min-width: 24px;
-      height: 24px;
-      cursor: pointer;
-      filter: grayscale(1);
-    }
-
-    &--active {
-      filter: grayscale(0);
     }
 
     &--header {

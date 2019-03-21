@@ -13,21 +13,6 @@ flash:
             success: Your reply has been created successfully.
             error: An error occured during the creation of your reply.
 
-pim_comment:
-    product:
-        panel:
-            comment:
-                post: Add a new comment
-                reply: Reply
-                title: Comments
-    index:
-        empty: No comment for now
-        header_comment: '{{ user }} comments the product'
-        header_reply: '{{ user }} replies to the comment'
-    placeholder:
-        new: Write a new comment...
-        reply: Reply to this comment...
-
 pim_enrich.entity.product:
     label: product
     uppercase_label: Product
@@ -125,6 +110,14 @@ pim_enrich.entity.product:
             empty_basket: Basket is empty
         delete:
             confirm: Are you sure you want to delete this product?
+        comment:
+            post: Add a new comment
+            reply: Reply
+            title: Comments
+            empty: No comment for now
+            header_comment: '{{ user }} comments the product'
+            header_reply: '{{ user }} replies to the comment'
+            delete_confirm: Are you sure you want to delete this comment?
 
 pim_enrich.entity.product_model:
     label: product model

@@ -12,6 +12,15 @@
       background-color: inherit;
       opacity: 1;
     }
+
+    &.AknIconButton--big {
+      background-size: 24px;
+    }
+
+    &.AknIconButton--white {
+      filter: brightness(200);
+      opacity: 1;
+    }
   }
 
   color: lighten(@AknGrey, 15%);
@@ -125,8 +134,8 @@
     }
   }
 
-  &--white {
-    filter: brightness(200);
+  &--inactive {
+    filter: grayscale(1);
   }
 
   &--plus {
@@ -175,6 +184,10 @@
 
   &--link {
     .imageIcon("../../../images/icon-link.svg");
+  }
+
+  &--info {
+    .imageIcon("../../../images/icon-info.svg");
   }
 
   &--topLeft {
