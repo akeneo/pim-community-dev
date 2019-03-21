@@ -130,4 +130,8 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Sql\GetMediaAttributeCodes
         arguments:
             - '@database_connection'
-    
+
+    pim_catalog.query.get_family_attribute_codes:
+        class: Akeneo\Pim\Enrichment\Bundle\Sql\GetFamilyAttributeCodes
+        arguments:
+            - '@database_connection'
