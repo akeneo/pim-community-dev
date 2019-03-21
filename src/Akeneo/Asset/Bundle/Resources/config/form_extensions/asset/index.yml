@@ -138,8 +138,8 @@ extensions:
 
     pimee-asset-index-display-selector:
         module: pim/datagrid/display-selector
-        parent: pimee-asset-index-grid-container
-        targetZone: toolbar
+        parent: pimee-asset-index
+        targetZone: search
         position: 20
         config:
             gridName: asset-grid

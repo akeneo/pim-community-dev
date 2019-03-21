@@ -177,7 +177,7 @@ class RecordEditView extends React.Component<EditProps> {
                           />
                         </div>
                         <div className="AknTitleContainer-buttonsContainer">
-                          <div className="user-menu">
+                          <div className="AknTitleContainer-userMenuContainer user-menu">
                             <PimView
                               className={`AknTitleContainer-userMenu ${
                                 this.props.rights.record.edit ? '' : 'AknTitleContainer--withoutMargin'
@@ -185,7 +185,7 @@ class RecordEditView extends React.Component<EditProps> {
                               viewName="pim-reference-entity-index-user-navigation"
                             />
                           </div>
-                          <div className="AknButtonList">
+                          <div className="AknTitleContainer-actionsContainer AknButtonList">
                             {this.getSecondaryActions(this.props.rights.record.delete)}
                             {this.props.rights.record.edit ? (
                               <div className="AknTitleContainer-rightButton">

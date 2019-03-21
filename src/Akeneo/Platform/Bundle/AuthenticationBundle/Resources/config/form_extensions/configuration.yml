@@ -68,64 +68,54 @@ extensions:
             template: pim/template/form/tab/sections
 
     authentication-sso-configuration-activation-section:
-        module: pim/common/simple-view
+        module: pim/form/common/section
         parent: authentication-sso-configuration-sections
         targetZone: accordion
         position: 100
         config:
-            template: pim/template/form/tab/section-large
-            templateParams:
-                sectionTitle: authentication.sso.configuration.section.activation.title
-                dropZone: content
+            title: authentication.sso.configuration.section.activation.title
+            hint:
+                code: hint-sso-activation
+                title: authentication.sso.configuration.section.activation.info.description
 
-    authentication-sso-configuration-activation-warning:
+    authentication-sso-configuration-activation-section-content:
         module: pim/common/simple-view
         parent: authentication-sso-configuration-activation-section
-        targetZone: afterTitle
-        position: 100
+        targetZone: content
         config:
-            template: pim/template/common/description-header
-            templateParams:
-                illustration: Api.svg
-                title: authentication.sso.configuration.section.activation.info.title
-                description: authentication.sso.configuration.section.activation.info.description
+            template: pim/template/common/form-container
 
     authentication-sso-configuration-activation-field:
         module: pim/form/common/fields/boolean
-        parent: authentication-sso-configuration-activation-section
-        targetZone: content
+        parent: authentication-sso-configuration-activation-section-content
+        targetZone: form-container
         position: 100
         config:
             fieldName: configuration.is_enabled
             label: authentication.sso.configuration.field.activation.label
 
     authentication-sso-configuration-identity-provider-section:
-        module: pim/common/simple-view
+        module: pim/form/common/section
         parent: authentication-sso-configuration-sections
         targetZone: accordion
         position: 110
         config:
-            template: pim/template/form/tab/section-large
-            templateParams:
-                sectionTitle: authentication.sso.configuration.section.identity_provider.title
-                dropZone: content
+            title: authentication.sso.configuration.section.identity_provider.title
+            hint:
+                code: hint-sso-identity-provider
+                title: authentication.sso.configuration.section.identity_provider.info.description
 
-    authentication-sso-configuration-identity-provider-info:
+    authentication-sso-configuration-identity-provider-section-content:
         module: pim/common/simple-view
         parent: authentication-sso-configuration-identity-provider-section
-        targetZone: afterTitle
-        position: 100
+        targetZone: content
         config:
-            template: pim/template/common/description-header
-            templateParams:
-                illustration: Views.svg
-                title: ~
-                description: authentication.sso.configuration.section.identity_provider.info.description
+            template: pim/template/common/form-container
 
     authentication-sso-configuration-identity-provider-entity-id-field:
         module: pim/authentication/sso/configuration/fields/text
-        parent: authentication-sso-configuration-identity-provider-section
-        targetZone: content
+        parent: authentication-sso-configuration-identity-provider-section-content
+        targetZone: form-container
         position: 100
         config:
             fieldName: configuration.identity_provider_entity_id
@@ -133,8 +123,8 @@ extensions:
 
     authentication-sso-configuration-identity-provider-sign-on-url-field:
         module: pim/authentication/sso/configuration/fields/text
-        parent: authentication-sso-configuration-identity-provider-section
-        targetZone: content
+        parent: authentication-sso-configuration-identity-provider-section-content
+        targetZone: form-container
         position: 110
         config:
             fieldName: configuration.identity_provider_sign_on_url
@@ -142,8 +132,8 @@ extensions:
 
     authentication-sso-configuration-identity-provider-logout-url-field:
         module: pim/authentication/sso/configuration/fields/text
-        parent: authentication-sso-configuration-identity-provider-section
-        targetZone: content
+        parent: authentication-sso-configuration-identity-provider-section-content
+        targetZone: form-container
         position: 120
         config:
             fieldName: configuration.identity_provider_logout_url
@@ -151,28 +141,35 @@ extensions:
 
     authentication-sso-configuration-identity-provider-certificate-field:
         module: pim/authentication/sso/configuration/fields/textarea
-        parent: authentication-sso-configuration-identity-provider-section
-        targetZone: content
+        parent: authentication-sso-configuration-identity-provider-section-content
+        targetZone: form-container
         position: 130
         config:
             fieldName: configuration.identity_provider_certificate
             label: authentication.sso.configuration.field.certificate.label
 
     authentication-sso-configuration-service-provider-section:
-        module: pim/common/simple-view
+        module: pim/form/common/section
         parent: authentication-sso-configuration-sections
         targetZone: accordion
         position: 120
         config:
-            template: pim/template/form/tab/section-large
-            templateParams:
-                sectionTitle: authentication.sso.configuration.section.service_provider.title
-                dropZone: content
+            title: authentication.sso.configuration.section.service_provider.title
+            hint:
+                code: hint-sso-service-provider
+                title: authentication.sso.configuration.section.service_provider.info.description
+
+    authentication-sso-configuration-service-provider-section-content:
+        module: pim/common/simple-view
+        parent: authentication-sso-configuration-service-provider-section
+        targetZone: content
+        config:
+            template: pim/template/common/form-container
 
     authentication-sso-configuration-service-provider-metadata-url-field:
         module: pim/form/common/fields/copiable-text
-        parent: authentication-sso-configuration-service-provider-section
-        targetZone: content
+        parent: authentication-sso-configuration-service-provider-section-content
+        targetZone: form-container
         position: 90
         config:
             fieldName: meta.service_provider_metadata_url
@@ -182,8 +179,8 @@ extensions:
 
     authentication-sso-configuration-service-provider-acs-url-field:
         module: pim/form/common/fields/copiable-text
-        parent: authentication-sso-configuration-service-provider-section
-        targetZone: content
+        parent: authentication-sso-configuration-service-provider-section-content
+        targetZone: form-container
         position: 91
         config:
             fieldName: meta.service_provider_acs_url
@@ -191,22 +188,10 @@ extensions:
             templateParams:
                 tooltipLabel: authentication.sso.configuration.field.acs_url.tooltip_label
 
-    authentication-sso-configuration-service-provider-info:
-        module: pim/common/simple-view
-        parent: authentication-sso-configuration-service-provider-section
-        targetZone: afterTitle
-        position: 100
-        config:
-            template: pim/template/common/description-header
-            templateParams:
-                illustration: Views.svg
-                title: ~
-                description: authentication.sso.configuration.section.service_provider.info.description
-
     authentication-sso-configuration-service-provider-entity-id-field:
         module: pim/authentication/sso/configuration/fields/text
-        parent: authentication-sso-configuration-service-provider-section
-        targetZone: content
+        parent: authentication-sso-configuration-service-provider-section-content
+        targetZone: form-container
         position: 100
         config:
             fieldName: configuration.service_provider_entity_id
@@ -214,8 +199,8 @@ extensions:
 
     authentication-sso-configuration-service-provider-certificate-field:
         module: pim/authentication/sso/configuration/fields/sp-certificate
-        parent: authentication-sso-configuration-service-provider-section
-        targetZone: content
+        parent: authentication-sso-configuration-service-provider-section-content
+        targetZone: form-container
         position: 110
         config:
             fieldName: configuration.service_provider_certificate
@@ -223,8 +208,8 @@ extensions:
 
     authentication-sso-configuration-service-provider-private-key-field:
         module: pim/authentication/sso/configuration/fields/textarea
-        parent: authentication-sso-configuration-service-provider-section
-        targetZone: content
+        parent: authentication-sso-configuration-service-provider-section-content
+        targetZone: form-container
         position: 120
         config:
             fieldName: configuration.service_provider_private_key
