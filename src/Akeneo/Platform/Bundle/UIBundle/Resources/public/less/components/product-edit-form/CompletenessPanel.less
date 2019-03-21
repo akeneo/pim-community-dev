@@ -14,16 +14,20 @@
 
   &-header {
     border-bottom: 1px solid @AknBorderColor;
-    height: @AknBigButtonSize;
-    line-height: @AknBigButtonSize;
+    min-height: @AknBigButtonSize;
+    line-height: 28px;
+    height: auto;
     display: flex;
     color: @AknDarkBlue;
     font-size: @AknFontSizeBig;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 
   &-headerLocale {
     text-transform: uppercase;
     flex-grow: 1;
+    padding-right: 16px;
   }
 
   &-headerStats {
