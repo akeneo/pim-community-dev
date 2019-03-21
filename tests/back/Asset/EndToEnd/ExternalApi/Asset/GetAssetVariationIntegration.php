@@ -21,7 +21,7 @@ use Akeneo\Asset\Bundle\Controller\ExternalApi\AssetVariationController;
 class GetAssetVariationIntegration extends AbstractAssetTestCase
 {
     /**
-     * @critical
+     * @group critical
      */
     public function testGetVariationForNonLocalizableAsset()
     {

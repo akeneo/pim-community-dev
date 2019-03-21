@@ -21,7 +21,7 @@ use Akeneo\Asset\Bundle\Controller\ExternalApi\AssetReferenceController;
 class GetAssetReferenceIntegration extends AbstractAssetTestCase
 {
     /**
-     * @critical
+     * @group critical
      */
     public function testGetReferenceForNonLocalizableAsset()
     {

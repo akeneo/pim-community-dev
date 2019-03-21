@@ -19,7 +19,7 @@ class ContributorGroupIntegration extends TeamworkAssistantTestCase
     /**
      * Several contributor groups access to the locale en_US (except Read only)
      *
-     * @critical
+     * @group critical
      */
     public function testToCreateAProjectOnALocaleGrantedToGroups()
     {
@@ -40,7 +40,7 @@ class ContributorGroupIntegration extends TeamworkAssistantTestCase
     /**
      * The group "All" access to the de_DE locale
      *
-     * @critical
+     * @group critical
      */
     public function testToCreateAProjectOnALocaleGrantedToAll()
     {
@@ -62,7 +62,7 @@ class ContributorGroupIntegration extends TeamworkAssistantTestCase
     /**
      * Marketing and Catalog Manager access to the locale es_ES
      *
-     * @critical
+     * @group critical
      */
     public function testToCreateAProjectOnALocaleGrantedToSpecificGroup()
     {
@@ -80,7 +80,7 @@ class ContributorGroupIntegration extends TeamworkAssistantTestCase
     /**
      * The group "All" access to the de_DE locale and has permission to edit the technical attribute group
      *
-     * @critical
+     * @group critical
      */
     public function testToCreateAProjectWithAnAttributeGroupContainsAllForEditAttributes()
     {

@@ -51,7 +51,7 @@ class CreateAssetVariationIntegration extends AbstractAssetTestCase
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testUpdateAVariationFileOnLocalizableAsset()
     {

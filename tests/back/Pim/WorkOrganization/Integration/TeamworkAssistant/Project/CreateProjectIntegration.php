@@ -16,7 +16,7 @@ use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\Team
 class CreateProjectIntegration extends TeamworkAssistantTestCase
 {
     /**
-     * @critical
+     * @group critical
      */
     public function testCreateProjectGenerateCodeAndAddDatagridView()
     {

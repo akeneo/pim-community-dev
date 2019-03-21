@@ -19,7 +19,7 @@ namespace AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\Asset;
 class DownloadAssetReferenceFileIntegration extends AbstractAssetTestCase
 {
     /**
-     * @critical
+     * @group critical
      */
     public function testGetReferenceForNonLocalizableAsset()
     {
