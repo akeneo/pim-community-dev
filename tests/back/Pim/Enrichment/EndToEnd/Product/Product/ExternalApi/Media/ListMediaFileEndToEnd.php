@@ -17,7 +17,7 @@ class ListMediaFileEndToEnd extends AbstractMediaFileTestCase
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testListMediaFiles()
     {

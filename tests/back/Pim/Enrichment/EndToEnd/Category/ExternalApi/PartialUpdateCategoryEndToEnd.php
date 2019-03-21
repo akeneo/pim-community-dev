@@ -96,7 +96,7 @@ JSON;
     }
 
     /**
-     * @criticial
+     * @group critical
      */
     public function testCompleteCategoryCreationWithCodeProvided()
     {

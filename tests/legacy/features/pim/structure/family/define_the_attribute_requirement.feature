@@ -36,7 +36,7 @@ Feature: Define the attribute requirement
     And I visit the "Attributes" tab
     Then attribute "description" should not be required in channels mobile and tablet
 
-    @TODO move to enrichment
+  # TODO move to enrichment
   Scenario: Ensure attribute requirement removal
     Given the following product:
       | sku      | family | name-en_US | price          | size | color |

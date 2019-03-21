@@ -54,7 +54,7 @@ JSON;
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testCompleteCategoryCreation()
     {

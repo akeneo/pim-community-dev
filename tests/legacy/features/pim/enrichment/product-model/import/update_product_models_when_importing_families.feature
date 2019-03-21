@@ -6,8 +6,7 @@ Feature: Update product models when importing families
   # should be more precise:
   # - attribute as required for the completeness (or not)
   # - adding an attribute to the family
-  @critical
-  @javascript
+  @critical @javascript
   Scenario: Successfully update an existing family computes all product models data in a dedicated step for csv
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
