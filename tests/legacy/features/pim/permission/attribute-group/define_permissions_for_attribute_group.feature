@@ -12,10 +12,12 @@ Feature: Define permissions for an attribute group
     And I am logged in as "Peter"
     And I am on the "info" attribute group page
 
+  @critical
   Scenario: Successfully display the fields for attribute group permissions
     Given I visit the "Permissions" tab
     Then I should see the Allowed to view attributes and Allowed to edit attributes fields
 
+  @critical
   Scenario: Successfully display editable fields for an attribute group
     Given I visit the "Permissions" tab
     And I fill in the following information:
@@ -30,7 +32,7 @@ Feature: Define permissions for an attribute group
     Then the product Name should be "baz"
     Then the product Manufacturer should be "Converse"
 
-  @javascript
+  @javascript @critical
   Scenario: Successfully disable read-only fields for an attribute group
     Given I visit the "Permissions" tab
     And I fill in the following information:

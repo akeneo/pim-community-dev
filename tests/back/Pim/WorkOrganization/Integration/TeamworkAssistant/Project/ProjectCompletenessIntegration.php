@@ -23,6 +23,8 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
      *
      * Channel: ecommerce
      * Locale: en_US
+     *
+     * @group critical
      */
     public function testCreateAProjectOnTheTshirtFamily()
     {
@@ -116,6 +118,8 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
      *
      * Channel: ecommerce
      * Locale: en_US
+     *
+     * @group critical
      */
     public function testCreateAProjectOnTheTshirtAndUsbKeysFamily()
     {
@@ -176,6 +180,8 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
      * Family: tshirt (3 products + 1 uncategorized product)
      * Channel: tablet
      * Locale: fr_FR
+     *
+     * @group critical
      */
     public function testCreateAProjectOnTheTshirtFamilyButWithAnotherChannel()
     {
@@ -262,6 +268,8 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
      * Family: tshirt (3 products + 1 uncategorized product)
      * Channel: tablet
      * Locale: en_ES
+     *
+     * @group critical
      */
     public function testCreateAProjectOnTheTshirtFamilyButWithAnotherChannelAndLocale()
     {

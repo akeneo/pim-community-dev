@@ -18,6 +18,9 @@ namespace AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\Asset;
  */
 class DownloadAssetVariationFileIntegration extends AbstractAssetTestCase
 {
+    /**
+     * @group critical
+     */
     public function testGetVariationForNonLocalizableAsset()
     {
         $client = $this->createAuthenticatedClient();

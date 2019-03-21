@@ -18,12 +18,14 @@ Feature: Define permissions for an attribute group with reference data
       | sku | family | sole_color | sole_fabric |
       | foo | boots  | Red        | Nylon       |
 
+  @critical
   Scenario: Successfully see a reference data attribute
     Given I am logged in as "Mary"
     And I edit the "foo" product
     And I visit the "Other" group
     And I should see the Sole color, Sole fabric fields
 
+  @critical
   Scenario: Successfully forbidden editable fields for an attribute group which contains references data
     Given I am logged in as "Peter"
     And I am on the "Other" attribute group page
@@ -38,6 +40,7 @@ Feature: Define permissions for an attribute group with reference data
     And I visit the "Other" group
     But I should see the Sole color and Sole fabric fields
 
+  @critical
   Scenario: Successfully disable read-only fields for an attribute group which contains references data
     Given I am logged in as "Peter"
     And I am on the "Other" attribute group page

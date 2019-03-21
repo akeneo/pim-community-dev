@@ -50,6 +50,9 @@ class CreateAssetVariationIntegration extends AbstractAssetTestCase
         $this->fileSystem = $mountManager->getFilesystem(FileStorage::ASSET_STORAGE_ALIAS);
     }
 
+    /**
+     * @group critical
+     */
     public function testUpdateAVariationFileOnLocalizableAsset()
     {
         $this->assertCorrectlyCreatedAssetVariation(

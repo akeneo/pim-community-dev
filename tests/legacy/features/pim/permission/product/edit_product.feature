@@ -27,7 +27,7 @@ Feature: Edit a product I have access
       | rangers | vintage, classy | rangers    |
       | boots   | boots           | boots      |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @critical @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully create, edit and save a product I have access
     Given I am on the "rangers" product page
     And I fill in the following information:
@@ -36,6 +36,7 @@ Feature: Edit a product I have access
     Then I should be on the product "rangers" edit page
     Then the product Name should be "My Rangers"
 
+  @critical
   Scenario: Seeing the edit actions on the product grid
     Given I am on the products grid
     And I open the category tree

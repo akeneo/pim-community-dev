@@ -15,6 +15,9 @@ use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\Team
 
 class CreateProjectIntegration extends TeamworkAssistantTestCase
 {
+    /**
+     * @group critical
+     */
     public function testCreateProjectGenerateCodeAndAddDatagridView()
     {
         $projectRepository = $this->get('pimee_teamwork_assistant.repository.project');

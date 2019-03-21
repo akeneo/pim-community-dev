@@ -4,6 +4,7 @@ Feature: Mass add product value to products at once via a form
   As a product manager
   I need to be able to add product values to many products at once via a form without erasing existing values
 
+  @critical
   Scenario: It skips product if I can't edit them
     Given a "catalog_modeling" catalog configuration
     Given I am logged in as "Mary"

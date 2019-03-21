@@ -108,6 +108,7 @@ Feature: Select a project to display products to enrich
     Then the grid should contain 3 elements
     And I should see the text "Start a new project"
 
+  @critical
   Scenario: A contributor can select a project by selecting it in the datagrid view selector
     Given I am logged in as "Mary"
     And I am on the products grid

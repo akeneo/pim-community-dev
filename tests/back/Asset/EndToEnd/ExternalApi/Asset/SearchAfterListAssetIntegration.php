@@ -41,6 +41,9 @@ JSON;
         $this->assert('api/rest/v1/assets?pagination_type=search_after', $expected);
     }
 
+    /**
+     * @group critical
+     */
     public function testIterationOnListOfAssetsWithALimit()
     {
         $assets = $this->getStandardizedAssetsWithLinks();

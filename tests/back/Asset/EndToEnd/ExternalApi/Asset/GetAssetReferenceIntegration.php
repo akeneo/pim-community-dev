@@ -20,6 +20,9 @@ use Akeneo\Asset\Bundle\Controller\ExternalApi\AssetReferenceController;
  */
 class GetAssetReferenceIntegration extends AbstractAssetTestCase
 {
+    /**
+     * @group critical
+     */
     public function testGetReferenceForNonLocalizableAsset()
     {
         $standardizedAssets = $this->getStandardizedAssets();

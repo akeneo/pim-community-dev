@@ -19,10 +19,12 @@ Feature: Enforce read-only permissions for an attribute group
     And user group "IT support" has the permission to view the attribute group "info"
     And I am logged in as "Peter"
 
+  @critical
   Scenario: Successfully disable read-only fields for an attribute group in the product edit form
     Given I edit the "foo" product
     Then the fields SKU, Name and Manufacturer should be disabled
 
+  @critical
   Scenario: Successfully disable read-only fields for an attribute group in the product model edit form
     Given I edit the "bar" product model
     Then the fields Name and Manufacturer should be disabled

@@ -36,6 +36,9 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
+    /**
+     * @group critical
+     */
     public function testGetNonLocalizableAsset()
     {
         $standardizedAssets = $this->getStandardizedAssets();

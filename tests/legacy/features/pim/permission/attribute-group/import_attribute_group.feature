@@ -4,6 +4,7 @@ Feature: Import attribute groups
   As an administrator
   I need to be able to import attribute groups
 
+  @critical
   Scenario: Successfully set default permission on import
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"

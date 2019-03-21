@@ -4,6 +4,7 @@ Feature: Define permissions for a category
   As an administrator
   I need to be able to define permissions for categories
 
+  @critical
   Scenario: Create category keeps the parent's permissions
     Given a "clothing" catalog configuration
     And I am logged in as "Peter"
@@ -17,6 +18,7 @@ Feature: Define permissions for a category
     And I should see the permission Allowed to edit products with user groups IT support, Manager and Redactor
     And I should see the permission Allowed to own products with user groups IT support and Manager
 
+  @critical
   Scenario: By default, update children when the parent's permissions are changed
     Given a "clothing" catalog configuration
     And the following categories:
@@ -35,7 +37,7 @@ Feature: Define permissions for a category
     And I visit the "Permissions" tab
     Then I should see the permission Allowed to view products with user groups Manager
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5999
+  @critical @jira https://akeneo.atlassian.net/browse/PIM-5999
   Scenario: Revoke category access let the user lists categories
     Given a "default" catalog configuration
     And I am logged in as "Peter"

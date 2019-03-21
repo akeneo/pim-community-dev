@@ -14,7 +14,7 @@ Feature: Check product edit tabs visibility
       | pants            | Redactor   | edit   |
       | pants            | Manager    | own    |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4483
+  @critical @jira https://akeneo.atlassian.net/browse/PIM-4483
   Scenario: Not being able to classify a product if I am not owner
     Given I am logged in as "Mary"
     And I edit the "rangers" product
@@ -24,7 +24,7 @@ Feature: Check product edit tabs visibility
     And I edit the "rangers" product
     Then I should see the "Categories" column tab
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4797
+  @critical @jira https://akeneo.atlassian.net/browse/PIM-4797
   Scenario: Not being able to view associations of a product if I am not owner
     Given I am logged in as "Mary"
     And I edit the "rangers" product
@@ -34,7 +34,7 @@ Feature: Check product edit tabs visibility
     And I edit the "rangers" product
     Then I should see the "Associations" column tab
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4764
+  @critical @jira https://akeneo.atlassian.net/browse/PIM-4764
   Scenario: Not being able to view status switcher if I am not owner
     Given I am logged in as "Mary"
     When I edit the "rangers" product

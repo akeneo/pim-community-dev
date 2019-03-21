@@ -4,6 +4,7 @@ Feature: Import categories
   As a product manager
   I need to be able to import categories
 
+  @critical
   Scenario: Set parent's permissions to new categories
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
@@ -35,7 +36,7 @@ Feature: Import categories
     And I should see the permission Allowed to edit products with user groups IT support
     And I should see the permission Allowed to own products with user groups IT support
 
-
+  @critical
   Scenario: Set default permissions to categories that belongs to a new tree
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
