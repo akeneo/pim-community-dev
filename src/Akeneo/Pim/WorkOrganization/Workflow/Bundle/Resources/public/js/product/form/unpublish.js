@@ -22,7 +22,7 @@ define(
         router
     ) {
         return Publish.extend({
-            className: 'btn-group',
+            className: 'AknButtonList-item',
             template: _.template(template),
             getProductId: function () {
                 return this.getFormData().meta.original_product_id;

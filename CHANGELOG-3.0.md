@@ -9,6 +9,7 @@
 - PIM-8229: fix reference data option value zero value.
 - PXD-9: Fix Revert popin design
 - PXD-79: Fix help messages design on SSO page
+- PXD-83: Fix Proposals page design
 
 # 3.0.7 (2019-03-13)
 
