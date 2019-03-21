@@ -5,7 +5,7 @@ services:
     image: 'akeneo/fpm:php-7.2'
     user: 'docker'
     volumes:
-      - './:/srv/pim'
+      - '.:/srv/pim'
     working_dir: '/srv/pim'
     networks:
       - 'akeneo'

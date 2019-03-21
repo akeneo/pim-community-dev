@@ -17,7 +17,7 @@ jobs:
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
       - run:
           name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots
+          command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots var/tmp
       - run:
           name: Setup the parameters.yml files
           command: ./bin/docker/pim-setup.sh
@@ -217,6 +217,8 @@ jobs:
           path: var/tests/screenshots
       - store_artifacts:
           path: var/logs
+      - store_artifacts:
+          path: var/tmp
 
   front_static_acceptance_and_integration:
       machine:
