@@ -1,8 +1,7 @@
 # Table of Contents
 
 1. Architecture
-    1. [Domain and Sub domain](architecture/domain.md)
-    2. [Bounded context and context map](architecture/context_map.md)
+    1. [Contexts and context map](architecture/context_map.md)
 2. Enrichment
     1. [The Product aggregate](enrichment/product_aggregate.md)
     2. [The product grid extensibility](enrichment/product_grid_extensibility.md)
