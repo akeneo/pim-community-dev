@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8232: Escape quotes in flash messages twig
+
 # 2.3.34 (2019-03-18)
 
 ## Bug fixes

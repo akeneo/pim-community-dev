@@ -81,7 +81,7 @@
 {% endblock %}
 
 <script>
-    window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+    window.flashMessages = JSON.parse(`{{ app.session.flashbag.all|json_encode()|raw }}`);
 </script>
 
 <script>
