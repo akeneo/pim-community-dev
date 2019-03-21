@@ -23,7 +23,7 @@ class ListAssetCategoryIntegration extends ApiTestCase
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testListAssetCategories()
     {

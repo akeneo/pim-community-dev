@@ -22,7 +22,7 @@ class ListVariantProductWithPermissionEndToEnd extends ApiTestCase
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testGetListOfViewableVariantProducts()
     {
@@ -55,7 +55,7 @@ class ListVariantProductWithPermissionEndToEnd extends ApiTestCase
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testGetListOfViewableAttributesAndLocaleValues()
     {
@@ -138,7 +138,7 @@ JSON;
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testGetViewableAssociationsOnVariantProduct()
     {

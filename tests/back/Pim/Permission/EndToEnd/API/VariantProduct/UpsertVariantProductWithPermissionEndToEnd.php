@@ -22,7 +22,7 @@ class UpsertVariantProductWithPermissionEndToEnd extends ApiTestCase
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testUpdateVariantProductValuesByMergingNonViewableAssociations()
     {
@@ -110,7 +110,7 @@ JSON;
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testUpdateVariantProductValuesByMergingNonViewableProductValues()
     {
@@ -203,7 +203,7 @@ JSON;
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testUpdateVariantProductValuesByMergingNonViewableCategories()
     {
@@ -279,7 +279,7 @@ JSON;
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testUpdateNotViewableVariantProduct()
     {

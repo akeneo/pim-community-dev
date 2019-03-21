@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PartialUpdateListAssetCategoryIntegration extends ApiTestCase
 {
     /**
-     * @critical
+     * @group critical
      */
     public function testCreateAndUpdateAListOfAssetCategories()
     {

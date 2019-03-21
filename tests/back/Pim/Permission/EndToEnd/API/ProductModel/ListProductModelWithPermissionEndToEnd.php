@@ -22,7 +22,7 @@ class ListProductModelWithPermissionEndToEnd extends ApiTestCase
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testGetListOfViewableProductModels()
     {
@@ -58,7 +58,7 @@ class ListProductModelWithPermissionEndToEnd extends ApiTestCase
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testGetListOfViewableAttributesAndLocaleValues()
     {

@@ -22,7 +22,7 @@ class UpdateProductModelWithPermissionEndToEnd extends ApiTestCase
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testUpdateRootProductModelValuesByMergingNonViewableProductValues()
     {
@@ -71,7 +71,7 @@ JSON;
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testUpdateSubProductModelValuesByMergingNonViewableProductValues()
     {
@@ -130,7 +130,7 @@ JSON;
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testUpdateSubProductModelValuesByMergingNonViewableCategories()
     {
@@ -154,7 +154,7 @@ SQL;
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testUpdateNotViewableProductModel()
     {
@@ -172,7 +172,7 @@ SQL;
     }
 
     /**
-     * @critical
+     * @group critical
      */
     public function testUpdateOnlyViewableProductModel()
     {
