@@ -29,21 +29,21 @@ Each squad is in charge of several bounded contexts.
 
 ![image](images/context_map/all_teams.svg)
 
-This sketch shows the dependencies between squad:
+This sketch shows the dependencies between squads:
 - Raccoon squad is the only squad which only provides information to the other ones.
-- Weasel is the only squad which which only uses information from the other ones.
+- Weasel is the only squad which only uses information from the other ones.
 - Chipmunk is the squad which provides and uses information to/from the other ones.
 
 ## Raccoon squad
 
-The raccoon squad handles the **User Management**, **Channel**, **Asset** and **Enriched Entity** bounded contexts.
+The raccoon squad handles the **User Management**, **Channel**, **Asset** and **Reference entity** bounded contexts.
 
 ### Definitions
 
 - **User Management**: Define the users, their preferences and their functional perimeter, so that it reflects the customer organization.
 - **Channel**: The settings to distribute a product selection to a given market, based on some geographical parameters.
 - **Asset**: Library of media shared by several products to bring added value and leverage the product experience.
-- **Enriched Entity** (Enterprise Edition only): Structured and rich data shared by several products to bring added value and leverage the product experience.
+- **Reference entity** (Enterprise Edition only): Structured and rich data shared by several products to bring added value and leverage the product experience.
 
 ### Context map
 
@@ -53,7 +53,7 @@ The raccoon squad handles the **User Management**, **Channel**, **Asset** and **
 
 ## Chipmunk squad
 
-The chipmunk squad handles the **User Management**, **Channel**, **Asset** and **Enriched Entity** bounded contexts.
+The chipmunk squad handles the **Enrichment**, **Structure**, **Permissions** bounded contexts.
 
 ### Definitions
 
