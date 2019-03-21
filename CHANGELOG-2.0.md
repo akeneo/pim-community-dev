@@ -1,5 +1,7 @@
 # 2.0.x
 
+# 2.0.51 (2019-03-21)
+
 ## Bug fixes
 
 - PIM-7577: Remove asset picker modal on page navigation
