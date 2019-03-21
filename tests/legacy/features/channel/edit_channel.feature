@@ -33,6 +33,7 @@ Feature: Edit a channel
       | English (United States) | My mobile |
     Then I should see the text "There are unsaved changes."
 
+  @critical
   Scenario: Successfully edit a channel to enable a locale and disable unused locales when deleting a channel
     Given I am logged in as "Peter"
     When  I am on the "tablet" channel page

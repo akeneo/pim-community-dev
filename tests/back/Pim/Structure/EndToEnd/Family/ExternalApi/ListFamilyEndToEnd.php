@@ -8,6 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ListFamilyEndToEnd extends ApiTestCase
 {
+    /**
+     * @group critical
+     * TODO: to test with pagination
+     */
     public function testListFamilies()
     {
         $client = $this->createAuthenticatedClient();

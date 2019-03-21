@@ -27,6 +27,7 @@ Feature: Display the completeness of a product with reference data
       | high-heels  | highheels |            |             |                          |                          |                          |                          |                    |                    |                  |                  |
     And I launched the completeness calculator
 
+  @critical
   Scenario: Successfully display the completeness of the products with reference data
     Given I am on the "red-heels" product page
     When I visit the "Completeness" column tab

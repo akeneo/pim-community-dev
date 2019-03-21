@@ -47,6 +47,9 @@ class PartialUpdateListProductModelEndToEnd extends AbstractProductModelTestCase
         ]);
     }
 
+    /**
+     * @group critical
+     */
     public function testCreateAndUpdateAListOfProductModels()
     {
         $data =

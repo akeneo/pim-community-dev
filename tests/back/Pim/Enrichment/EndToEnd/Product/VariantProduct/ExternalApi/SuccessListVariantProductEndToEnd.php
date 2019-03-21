@@ -738,6 +738,9 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchAfterPaginationListProductsWithNextLink()
     {
         $standardizedProducts = $this->getStandardizedProducts();

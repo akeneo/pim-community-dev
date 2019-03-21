@@ -30,6 +30,7 @@ Feature: Filter products with multiples multiselect filters
     And I am logged in as "Mary"
     And I am on the products grid
 
+  @critical
   Scenario: Successfully filter products with the sames attributes
     Given I show the filter "company"
     And I filter by "company" with operator "in list" and value "Suze"

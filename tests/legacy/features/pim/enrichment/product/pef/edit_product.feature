@@ -27,7 +27,7 @@ Feature: Edit a product
       | sandal  | name        | My sandals name                      |        |           |
       | sandal  | length      | 29 CENTIMETER                        |        |           |
 
-  @validate-migration
+  @critical @validate-migration
   Scenario: Successfully create, edit and save a product
     Given I am logged in as "Mary"
     And I am on the "sandal" product page
@@ -38,6 +38,7 @@ Feature: Edit a product
     Then I should not see the text "There are unsaved changes."
     And the product Name should be "My Sandal"
 
+  @critical
   Scenario: Successfully updates the updated date of the product
     Given I am logged in as "Mary"
     And I am on the "sandal" product page
@@ -70,7 +71,7 @@ Feature: Edit a product
     Then the product Description should be "My awesome description for ecommerce"
 
   # Working well in application but scenario fails
-  @skip-pef
+  @skip-pef @critical
   Scenario: Successfully preserve channel filter between datagrid and edit form
     Given I am logged in as "Sandra"
     And I am on the "sandal" product page
@@ -81,6 +82,7 @@ Feature: Edit a product
     When I am on the "sandal" product page
     Then the product Description should be "My awesome description for ecommerce"
 
+  @critical
   Scenario: Successfully add a metric attribute to a product
     Given I am logged in as "Julia"
     And I am on the "sandal" product page
@@ -88,6 +90,7 @@ Feature: Edit a product
     And I save the product
     Then the product Shoes size should be "29 Dekameter"
 
+  @critical
   Scenario: Successfully switch the product scope
     And I am logged in as "Peter"
     When I am on the channel creation page
@@ -116,3 +119,7 @@ Feature: Edit a product
     Then I should not see the text "There are unsaved changes."
     And I edit the "sandal" product
     Then I should see the text "Sandal"
+
+  @critical @skip
+  Scenario: Successfully access the product edit form from the product datagrid
+  # TODO: this scenario is missing

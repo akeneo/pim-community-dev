@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetVariantProductEndToEnd extends AbstractProductTestCase
 {
+    /**
+     * @group critical
+     */
     public function testGetACompleteVariantProduct()
     {
         $product = $this->get('pim_catalog.repository.product')->findoneByIdentifier('biker-jacket-leather-xxs');

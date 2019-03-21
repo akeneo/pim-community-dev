@@ -12,6 +12,7 @@ Feature: Add children to product model
     And the following "reference_color" attribute reference data: Red, Blue and Green
     And I am logged in as "Julia"
 
+  @critical
   Scenario: Successfully add a sub product model with one axis to a root product model
     Given I am on the "apollon" product model page
     When I open the variant navigation children selector for level 1
@@ -75,6 +76,7 @@ Feature: Add children to product model
     And I confirm the child creation
     Then I should be on the product model "apollon_black" edit page
 
+  @critical
   Scenario: Successfully add a variant product to a root product model
     Given I am on the "amor" product model page
     When I open the variant navigation children selector for level 1
@@ -87,6 +89,7 @@ Feature: Add children to product model
     And I confirm the child creation
     Then I should be on the product "amor_black_xl" edit page
 
+  @critical
   Scenario: Successfully add a variant product to a sub product model
     Given I am on the "apollon_blue" product model page
     When I open the variant navigation children selector for level 2

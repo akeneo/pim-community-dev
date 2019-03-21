@@ -21,6 +21,7 @@ Feature: Mass edit common attributes for reference data
     And I am logged in as "Julia"
     And I am on the products grid
 
+  @critical
   Scenario: Successfully update single-valued reference data at once
     Given I select rows heels and platform_shoes
     And I press the "Bulk actions" button

@@ -16,6 +16,9 @@ class DownloadMediaFileEndToEnd extends AbstractMediaFileTestCase
         $this->createMedia(new \SplFileInfo($this->getFixturePath('akeneo.jpg')));
     }
 
+    /**
+     * @group critical
+     */
     public function testDownloadAMediaFile()
     {
         $client = $this->createAuthenticatedClient();

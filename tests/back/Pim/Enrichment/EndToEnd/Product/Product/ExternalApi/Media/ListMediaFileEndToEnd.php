@@ -16,6 +16,9 @@ class ListMediaFileEndToEnd extends AbstractMediaFileTestCase
         $this->createMedia(new \SplFileInfo($this->getFixturePath('akeneo.txt')));
     }
 
+    /**
+     * @group critical
+     */
     public function testListMediaFiles()
     {
         $client = $this->createAuthenticatedClient();
@@ -128,6 +131,9 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
+    /**
+     * @group critical
+     */
     public function testPaginatedListOfMediaFiles()
     {
         $client = $this->createAuthenticatedClient();

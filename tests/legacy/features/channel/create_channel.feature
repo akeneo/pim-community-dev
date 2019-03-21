@@ -4,6 +4,7 @@ Feature: Create a channel
   As an administrator
   I need to be able to create a channel
 
+  @critical
   Scenario: Successfully create a channel
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
@@ -20,7 +21,7 @@ Feature: Create a channel
     Then I should not see the text "There are unsaved changes."
     And I should see the text "Bar Bar"
 
-  @skip 
+  @skip
   Scenario: Successfully display validation error when code is not set
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"

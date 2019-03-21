@@ -8,7 +8,8 @@ Feature: Display reference data in the grid
     Given a "footwear" catalog configuration
     And I am logged in as "Mary"
 
-  Scenario: Successfully edit reference data values to a product
+  @critical
+  Scenario: Successfully display reference data values of a product
     Given the following products:
       | sku        | family |
       | high-heels | heels  |
@@ -32,7 +33,7 @@ Feature: Display reference data in the grid
       | Sole color  | Red                      |
       | Sole fabric | Cashmerewool, [neoprene] |
 
-  Scenario: Successfully edit reference data values to a product with scope
+  Scenario: Successfully display reference data values of a product with scope
     Given the following products:
       | sku        | family |
       | high-heels |        |

@@ -15,6 +15,10 @@ use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
  */
 class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndProductModelQueryBuilderTestCase
 {
+
+    /**
+     * @group critical
+     */
     public function testNoFilterAndSortIdentifier()
     {
         $pqb = $this->get('pim_enrich.query.product_and_product_model_query_builder_from_size_factory')->create(
@@ -54,6 +58,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
+    /**
+     * @group critical
+     */
     public function testIdentifierFilter()
     {
         $pqb = $this->get('pim_enrich.query.product_and_product_model_query_builder_from_size_factory')->create(
@@ -80,6 +87,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
+    /**
+     * @group critical
+     */
     public function testIdFilter()
     {
         $productId = IdEncoder::encode(
@@ -119,6 +129,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchTshirtInDescription()
     {
         $result = $this->executeFilter([['description', Operators::CONTAINS, 'Divided slim T-shirt with 2 buttons']]);
@@ -141,6 +154,8 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
      *
      * This mixed result is explained by the fact that the attribute "color" is not set at the same level within those 3
      * family variants.
+     *
+     * @group critical
      */
     public function testSearchColorRed()
     {
@@ -159,6 +174,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchColorGrey()
     {
         $result = $this->executeFilter([['color', Operators::IN_LIST, ['battleship_grey']]]);
@@ -166,6 +184,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         $this->assert($result, ['model-tshirt-divided-battleship-grey', 'model-braided-hat']);
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchColorBlue()
     {
         $result = $this->executeFilter([['color', Operators::IN_LIST, ['navy_blue']]]);
@@ -183,6 +204,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchSizeXXS()
     {
         $result = $this->executeFilter([['size', Operators::IN_LIST, ['xxs']]]);
@@ -201,6 +225,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchSize3XL()
     {
         $result = $this->executeFilter([['size', Operators::IN_LIST, ['xxxl']]]);
@@ -234,6 +261,8 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
      * - The tshirt products and tshirt models with color battleship-grey and size s
      * - In the "clothing_color_size" family variant, size is defined at the product leve while color is defined at the
      *   subProductModel level. So we show the documents that belongs to the lowest involved. here level products.
+     *
+     * @group critical
      */
     public function testSearchColorGreyAndSizeXXS()
     {
@@ -247,6 +276,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         $this->assert($result, ['tshirt-divided-battleship-grey-xxs']);
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchColorGreyAndSize3XL()
     {
         $result = $this->executeFilter(
@@ -259,6 +291,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         $this->assert($result, ['tshirt-divided-battleship-grey-xxxl', 'braided-hat-xxxl']);
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchColorGreyAndDescriptionTshirt()
     {
         $result = $this->executeFilter(
@@ -271,6 +306,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         $this->assert($result, ['model-tshirt-divided-battleship-grey']);
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchMaterialCotton()
     {
         $result = $this->executeFilter([['material', Operators::IN_LIST, ['cotton']]]);
@@ -286,6 +324,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchMaterialLeather()
     {
         $result = $this->executeFilter([['material', Operators::IN_LIST, ['leather']]]);
@@ -299,6 +340,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchSize3XLColorWhite()
     {
         $result = $this->executeFilter(
@@ -314,6 +358,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
+    /**
+     * @group critical
+     */
     public function testRedCotton()
     {
         $result = $this->executeFilter(
@@ -333,6 +380,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
+    /**
+     * @group critical
+     */
     public function testNotGreyAndXXS()
     {
         $result = $this->executeFilter(
@@ -358,6 +408,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
+    /**
+     * @group critical
+     */
     public function testNotGreyAndNotXXSAndPolyester()
     {
         $result = $this->executeFilter(
@@ -389,6 +442,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
      * It is skipped but it should be fix by the support.
      *
      * @group skip
+     * @group critical
      */
     public function testStatusOnProductWithoutParent()
     {
@@ -605,6 +659,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchCategoriesMenWithoutIncludingChildren()
     {
         $result = $this->executeFilter(
@@ -616,6 +673,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         $this->assert($result, []);
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchCategoriesMenIncludingChildren()
     {
         $result = $this->executeFilter(
@@ -678,6 +738,9 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         ]);
     }
 
+    /**
+     * @group critical
+     */
     public function testSearchColorRedAndCategoryMenIncludingChildrenCategories()
     {
         $result = $this->executeFilter(

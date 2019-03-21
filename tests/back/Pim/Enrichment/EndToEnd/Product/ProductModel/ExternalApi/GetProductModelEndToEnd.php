@@ -13,6 +13,7 @@ class GetProductModelEndToEnd extends ApiTestCase
 {
     /**
      * @group ce
+     * @group critical
      */
     public function testSuccessfullyGetProductModel()
     {

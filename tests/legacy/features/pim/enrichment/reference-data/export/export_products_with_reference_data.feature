@@ -4,6 +4,7 @@ Feature: Export products
   As a product manager
   I need to be able to export the products that have reference data
 
+  @critical
   Scenario: Export products with reference data
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_product_export" configuration:

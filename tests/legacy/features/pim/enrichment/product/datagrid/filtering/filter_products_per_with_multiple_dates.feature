@@ -27,6 +27,7 @@ Feature: Filter products
       | POST-3 | furniture | 2014-09-01 |            |
     And I am logged in as "Mary"
 
+  @critical
   Scenario: Successfully filter products with the sames attributes
     Given I am on the products grid
     And I show the filter "supply"

@@ -14,6 +14,7 @@ Feature: Apply a mass action on all entities
       | sandals     | sandals | Tiny sandals | sandals      | 10 USD, 15 EUR | 42   | red   |
     And I am logged in as "Julia"
 
+  @critical
   Scenario: Edit common attributes of all products
     When I am on the products grid
     And I select rows super_boots

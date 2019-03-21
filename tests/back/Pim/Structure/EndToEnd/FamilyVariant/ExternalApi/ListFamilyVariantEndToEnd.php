@@ -37,6 +37,10 @@ class ListFamilyVariantEndToEnd extends ApiTestCase
         ]);
     }
 
+    /**
+     * @group critical
+     * TODO: to test with pagination
+     */
     public function testListFamilyVariants()
     {
         $client = $this->createAuthenticatedClient();
