@@ -35,7 +35,7 @@ function(_, __, SelectFilter) {
                     '<% }); %>' +
                 '</select>' +
             '</div>' +
-            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter AknIconButton AknIconButton--small AknIconButton--remove disable-filter"></a><% } %>'
+            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter AknIconButton AknIconButton--remove disable-filter"></a><% } %>'
         ),
 
         /**
