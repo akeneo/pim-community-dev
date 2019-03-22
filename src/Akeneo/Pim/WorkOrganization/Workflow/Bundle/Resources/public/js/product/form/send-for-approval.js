@@ -112,7 +112,7 @@ define(
                     {
                         title: __('pimee_enrich.entity.product.module.approval.send'),
                         subtitle: __('pim_enrich.entity.product.plural_label'),
-                        picture: 'illustration-attribute.svg',
+                        picture: 'illustrations/Attribute.svg',
                         okText: __('pimee_enrich.entity.product_draft.module.proposal.confirm'),
                         cancelText: __('pim_common.cancel'),
                         content: '',
