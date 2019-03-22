@@ -3,6 +3,7 @@
 # Bug fixes
 
 - PIM-8196: Fix long channel labels on completeness widget
+- PXD-89: Update illustrations with new colors
 
 # 3.0.8 (2019-03-20)
 

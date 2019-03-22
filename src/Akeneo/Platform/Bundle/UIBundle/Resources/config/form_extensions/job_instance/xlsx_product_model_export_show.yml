@@ -7,7 +7,7 @@ extensions:
         parent: pim-job-instance-xlsx-product-model-export-show
         targetZone: main-image
         config:
-            path: bundles/pimui/images/illustration-export-xlsx.svg
+            path: bundles/pimui/images/illustrations/ExportXLSX.svg
 
     pim-job-instance-xlsx-product-model-export-show-user-navigation:
         module: pim/menu/user-navigation
