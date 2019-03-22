@@ -107,6 +107,8 @@ $rules = [
 
         // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
+
+        'Webmozart\Assert\Assert',
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -222,6 +224,8 @@ $rules = [
 
         // TIP-1020: Move JobLauncherInterface
         'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
+
+        'Akeneo\Pim\Enrichment\Bundle\Sql',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

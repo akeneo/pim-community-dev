@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
-use Akeneo\Pim\Enrichment\Bundle\Sql\LruAttributeRepository;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,13 +33,11 @@ class TestCacheLruCommand extends ContainerAwareCommand
         $batchSize = 30000;
         $cacheSize = 500;
 
-        //$this->doctrineWithoutCache($batchSize);
+        $this->doctrineWithoutCache($batchSize);
         $this->doctrineWithCache($batchSize);
-        //$this->sqlWithoutCache($batchSize);
-        $this->sqlWithLruCache($batchSize, $cacheSize);
+        $this->sqlWithoutCache($batchSize);
         $this->sqlWithArrayLruCache($batchSize, $cacheSize);
-        //$this->sqlWithoutCacheBatchCall($batchSize);
-        $this->sqlWithLruCacheBatchCall($batchSize, $cacheSize);
+        $this->sqlWithoutCacheBatchCall($batchSize);
         $this->sqlWithArrayLruCacheBatchCall($batchSize, $cacheSize);
     }
 
@@ -65,13 +62,6 @@ class TestCacheLruCommand extends ContainerAwareCommand
         echo "Sql without cache $elapsedTime" . PHP_EOL;
     }
 
-    private function sqlWithLruCache(int $batchSize, int $cacheSize)
-    {
-        $repository =  new LruAttributeRepository($this->getContainer()->get('pim_catalog.repository.sql_attribute'), $cacheSize);
-        $elapsedTime = $this->benchmark($batchSize, $repository);
-        echo "Sql with LRU cache $elapsedTime" . PHP_EOL;
-    }
-
     private function sqlWithArrayLruCache(int $batchSize, int $cacheSize)
     {
         $repository =  new LruArrayAttributeRepository($this->getContainer()->get('pim_catalog.repository.sql_attribute'), $cacheSize);
@@ -84,13 +74,6 @@ class TestCacheLruCommand extends ContainerAwareCommand
         $repository =  $this->getContainer()->get('pim_catalog.repository.sql_attribute');
         $elapsedTime = $this->benchmarkBatch($batchSize, $repository);
         echo "Sql without cache in batch call $elapsedTime" . PHP_EOL;
-    }
-
-    private function sqlWithLruCacheBatchCall(int $batchSize, int $cacheSize)
-    {
-        $repository =  new LruAttributeRepository($this->getContainer()->get('pim_catalog.repository.sql_attribute'), $cacheSize);
-        $elapsedTime = $this->benchmarkBatch($batchSize, $repository);
-        echo "Sql with LRU cache in batch call $elapsedTime" . PHP_EOL;
     }
 
     private function sqlWithArrayLruCacheBatchCall(int $batchSize, int $cacheSize)

@@ -79,9 +79,9 @@ jobs:
           - run:
                 name: Start containers
                 command: docker-compose up -d fpm
-          - run:
-                name: PhpSpec
-                command: docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+#          - run:
+#                name: PhpSpec
+#                command: docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
           - run:
                 name: PhpCsFixer
                 command: docker-compose exec -T fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
