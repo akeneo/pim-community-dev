@@ -68,7 +68,7 @@ class FindValueKeysToFilterOn
                             l.is_activated = 1
                     ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
                 WHERE
-                    a.reference_entity_identifier = 'designer'
+                    a.reference_entity_identifier = :reference_entity_identifier
                     AND a.attribute_type IN ('option', 'option_collection', 'record', 'record_collection')
                 ) as mask;
 SQL;

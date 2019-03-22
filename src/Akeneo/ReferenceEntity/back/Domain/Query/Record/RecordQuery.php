@@ -178,9 +178,6 @@ class RecordQuery
             if (\count($matches) > 0) {
                 return true;
             }
-//            if ($filter['field'] === $field) {
-//                return true;
-//            }
         }
 
         return false;

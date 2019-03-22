@@ -82,7 +82,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
         $completeFilter = ($recordQuery->hasFilter('complete')) ? $recordQuery->getFilter('complete') : null;
         $updatedFilter = ($recordQuery->hasFilter('updated')) ? $recordQuery->getFilter('updated') : null;
-        $attributeFilter = ($recordQuery->hasFilter('values..*')) ? $recordQuery->getFilter('values.*') : null;
+        $attributeFilter = ($recordQuery->hasFilter('values.*')) ? $recordQuery->getFilter('values.*') : null;
 
         $query = [
             '_source' => '_id',
@@ -162,10 +162,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         }
 
         if (null !== $attributeFilter && !empty($attributeFilter['value'] && 'IN' === $attributeFilter['operator'])) {
-            // Better preg match here ?
-            // Need to rework this and check if we actually match something
-            preg_match('/values.(.*)$/', $attributeFilter['field'], $attributeIdentifier);
-            $attributeIdentifier = $attributeIdentifier[1];
+            $attributeIdentifier = substr($attributeFilter['field'], 7);
 
             $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(
                 AttributeIdentifier::fromString($attributeIdentifier),
