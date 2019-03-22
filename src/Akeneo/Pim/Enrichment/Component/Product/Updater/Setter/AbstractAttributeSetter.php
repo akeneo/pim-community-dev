@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

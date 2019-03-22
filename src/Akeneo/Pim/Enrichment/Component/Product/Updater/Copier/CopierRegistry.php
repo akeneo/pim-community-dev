@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Copier;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 
 /**
  * Registry of copiers
@@ -20,13 +20,13 @@ class CopierRegistry implements CopierRegistryInterface
     /** @var FieldCopierInterface[] priorized field copiers */
     protected $fieldCopiers = [];
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param LruArrayAttributeRepository $repository
      */
-    public function __construct(IdentifiableObjectRepositoryInterface $repository)
+    public function __construct(LruArrayAttributeRepository $repository)
     {
         $this->attributeRepository = $repository;
     }
@@ -53,6 +53,7 @@ class CopierRegistry implements CopierRegistryInterface
     {
         $fromAttribute = $this->getAttribute($fromProperty);
         $toAttribute = $this->getAttribute($toProperty);
+
         if (null !== $fromAttribute && null !== $toAttribute) {
             $copier = $this->getAttributeCopier($fromAttribute, $toAttribute);
         } else {

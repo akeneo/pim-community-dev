@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AttributeSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
@@ -19,18 +19,18 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
  */
 class PropertySetter implements PropertySetterInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var SetterRegistryInterface */
     protected $setterRegistry;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param SetterRegistryInterface               $setterRegistry
+     * @param LruArrayAttributeRepository $repository
+     * @param SetterRegistryInterface     $setterRegistry
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $repository,
+        LruArrayAttributeRepository $repository,
         SetterRegistryInterface $setterRegistry
     ) {
         $this->attributeRepository = $repository;

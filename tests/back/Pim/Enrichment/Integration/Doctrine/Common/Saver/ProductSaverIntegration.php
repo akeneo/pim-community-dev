@@ -125,7 +125,7 @@ class ProductSaverIntegration extends TestCase
         $product->setFamilyVariant($familyVariant);
         $product->setFamily($familyVariant->getFamily());
 
-        $identifierAttribute = $this->get('pim_catalog.repository.attribute')->getIdentifier();
+        $identifierAttribute = $this->get('pim_catalog.repository.lru_array_attribute')->getIdentifier();
         $this->get('pim_catalog.builder.product')->addOrReplaceValue($product, $identifierAttribute, null, null, $productIdentifier);
 
         return $product;

@@ -68,7 +68,7 @@ services:
     pim_catalog.updater.property_setter:
         class: '%pim_catalog.updater.property_setter.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
             - '@pim_catalog.updater.setter.registry'
 
     pim_catalog.updater.property_adder:
@@ -86,7 +86,7 @@ services:
     pim_catalog.updater.property_copier:
         class: '%pim_catalog.updater.property_copier.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
             - '@pim_catalog.updater.copier.registry'
 
     pim_catalog.updater.category:
@@ -118,7 +118,7 @@ services:
     pim_catalog.updater.setter.registry:
         class: '%pim_catalog.updater.setter.registry.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
 
     pim_catalog.updater.setter.abstract:
         class: '%pim_catalog.updater.setter.abstract.class%'
@@ -261,7 +261,7 @@ services:
     pim_catalog.updater.copier.registry:
         class: '%pim_catalog.updater.copier.registry.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
 
     pim_catalog.updater.copier.text_value:
         class: '%pim_catalog.updater.copier.value.class%'

@@ -135,6 +135,8 @@ services:
         class: '%pim_catalog.normalizer.indexing_product_model.product_model.class%'
         arguments:
             - '@pim_catalog.normalizer.indexing_product_model.product_model.properties'
+            - '@pim_catalog.query.get_family_attribute_codes'
+            - '@pim_catalog.query.get_variant_attribute_set_attribute_codes'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
@@ -150,6 +152,8 @@ services:
         arguments:
             - '@pim_catalog.normalizer.indexing_product_and_product_model.product_model.properties'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_catalog.query.get_family_attribute_codes'
+            - '@pim_catalog.query.get_variant_attribute_set_attribute_codes'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
@@ -167,6 +171,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.indexing_product_and_product_model.product.properties'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_catalog.query.get_family_attribute_codes'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 

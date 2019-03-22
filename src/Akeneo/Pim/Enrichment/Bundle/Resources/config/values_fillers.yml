@@ -9,7 +9,8 @@ services:
             - '@pim_catalog.builder.product'
             - '@pim_catalog.resolver.attribute_values'
             - '@pim_catalog.repository.currency'
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
+            - '@pim_catalog.query.get_family_attribute_codes'
 
     pim_catalog.values_filler.entity_with_family_variant:
         class: '%pim_catalog.values_filler.entity_with_family_variant.class%'
@@ -18,4 +19,4 @@ services:
             - '@pim_catalog.resolver.attribute_values'
             - '@pim_catalog.repository.currency'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.lru_array_attribute'

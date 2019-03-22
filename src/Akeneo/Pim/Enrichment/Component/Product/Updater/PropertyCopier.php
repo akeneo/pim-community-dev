@@ -2,12 +2,12 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopierInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Doctrine\Common\Util\ClassUtils;
 
@@ -20,18 +20,18 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class PropertyCopier implements PropertyCopierInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var CopierRegistryInterface */
     protected $copierRegistry;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param CopierRegistryInterface               $copierRegistry
+     * @param LruArrayAttributeRepository $repository
+     * @param CopierRegistryInterface     $copierRegistry
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $repository,
+        LruArrayAttributeRepository $repository,
         CopierRegistryInterface $copierRegistry
     ) {
         $this->attributeRepository = $repository;

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetFamilyAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAxesCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -11,7 +15,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -33,14 +36,40 @@ class AddBooleanValuesToNewProductSubscriber implements EventSubscriberInterface
     /** @var ValueFactory */
     private $productValueFactory;
 
+    /** @var LruArrayAttributeRepository */
+    private $attributeRepository;
+
+    /** @var GetFamilyAttributeCodes */
+    private $getFamilyAttributeCodes;
+
+    /** @var GetVariantAttributeSetAttributeCodes */
+    private $getVariantAttributeSetAttributeCodes;
+
+    /** @var GetVariantAttributeSetAxesCodes */
+    private $getVariantAttributeSetAxesCodes;
+
     /**
      * @param AttributeValuesResolverInterface $valuesResolver
-     * @param ValueFactory                     $productValueFactory
+     * @param ValueFactory $productValueFactory
+     * @param LruArrayAttributeRepository $attributeRepository
+     * @param GetFamilyAttributeCodes $getFamilyAttributeCodes
+     * @param GetVariantAttributeSetAttributeCodes $getVariantAttributeSetAttributeCodes
+     * @param GetVariantAttributeSetAxesCodes $getVariantAttributeSetAxesCodes
      */
-    public function __construct(AttributeValuesResolverInterface $valuesResolver, ValueFactory $productValueFactory)
-    {
+    public function __construct(
+        AttributeValuesResolverInterface $valuesResolver,
+        ValueFactory $productValueFactory,
+        LruArrayAttributeRepository $attributeRepository,
+        GetFamilyAttributeCodes $getFamilyAttributeCodes,
+        GetVariantAttributeSetAttributeCodes $getVariantAttributeSetAttributeCodes,
+        GetVariantAttributeSetAxesCodes $getVariantAttributeSetAxesCodes
+    ) {
         $this->valuesResolver = $valuesResolver;
         $this->productValueFactory = $productValueFactory;
+        $this->attributeRepository = $attributeRepository;
+        $this->getFamilyAttributeCodes = $getFamilyAttributeCodes;
+        $this->getVariantAttributeSetAttributeCodes = $getVariantAttributeSetAttributeCodes;
+        $this->getVariantAttributeSetAxesCodes = $getVariantAttributeSetAxesCodes;
     }
 
     /**
@@ -73,7 +102,12 @@ class AddBooleanValuesToNewProductSubscriber implements EventSubscriberInterface
                 $value = $product->getValue($attribute->getCode(), $valueData['locale'], $valueData['scope']);
 
                 if (null === $value) {
-                    $value = $this->productValueFactory->create($attribute, $valueData['scope'], $valueData['locale'], false);
+                    $value = $this->productValueFactory->create(
+                        $attribute,
+                        $valueData['scope'],
+                        $valueData['locale'],
+                        false
+                    );
                     $product->addValue($value);
                 }
             }
@@ -83,26 +117,31 @@ class AddBooleanValuesToNewProductSubscriber implements EventSubscriberInterface
     /**
      * @param ProductInterface $product
      *
-     * @return \Generator
+     * @return iterable
      */
-    private function getBooleanAttributesFromFamily(ProductInterface $product): \Generator
+    private function getBooleanAttributesFromFamily(ProductInterface $product): iterable
     {
         $family = $product->getFamily();
-        $familyAttributes = $family instanceof FamilyInterface ? $family->getAttributes() : [];
-
-        foreach ($familyAttributes as $attribute) {
-            if (AttributeTypes::BOOLEAN === $attribute->getType()) {
-                yield $attribute;
+        if ($family instanceof FamilyInterface) {
+            $familyAttributes = $this->attributeRepository->findSeveralByIdentifiers(
+                $this->getFamilyAttributeCodes->execute($family->getCode())
+            );
+            foreach ($familyAttributes as $attribute) {
+                if (AttributeTypes::BOOLEAN === $attribute->getType()) {
+                    yield $attribute;
+                }
             }
         }
+
+        return [];
     }
 
     /**
      * @param ProductInterface $product
      *
-     * @return \Generator
+     * @return iterable
      */
-    private function getBooleanAttributesFromFamilyVariant(ProductInterface $product): \Generator
+    private function getBooleanAttributesFromFamilyVariant(ProductInterface $product): iterable
     {
         $parentProduct = $product->getParent();
         if (!$parentProduct instanceof ProductModelInterface) {
@@ -114,17 +153,17 @@ class AddBooleanValuesToNewProductSubscriber implements EventSubscriberInterface
             return [];
         }
 
-        $variationLevel = $product->getVariationLevel();
-        $variantAttributeSet = $familyVariant->getVariantAttributeSet($variationLevel);
-        if (!$variantAttributeSet instanceof VariantAttributeSetInterface) {
-            return [];
-        }
+        $familyVariantCode = $familyVariant->getCode();
+        $level = $product->getVariationLevel();
+        $variantProductAttributeCodes = array_diff(
+            $this->getVariantAttributeSetAttributeCodes->execute($familyVariantCode, $level),
+            $this->getVariantAttributeSetAxesCodes->execute($familyVariantCode, $level)
+        );
 
-        $attributes = $variantAttributeSet->getAttributes();
-        $axes = $familyVariant->getAxes();
+        $attributes = $this->attributeRepository->findSeveralByIdentifiers($variantProductAttributeCodes);
 
         foreach ($attributes as $attribute) {
-            if (AttributeTypes::BOOLEAN === $attribute->getType() && !$axes->contains($attribute)) {
+            if (AttributeTypes::BOOLEAN === $attribute->getType()) {
                 yield $attribute;
             }
         }

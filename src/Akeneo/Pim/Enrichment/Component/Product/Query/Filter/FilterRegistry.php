@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Query\Filter;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 
 /**
  * Aims to register and retrieve filters usable on product query builder
@@ -20,13 +20,13 @@ class FilterRegistry implements FilterRegistryInterface
     /** @var FieldFilterInterface[] prioritized field filters */
     protected $fieldFilters = [];
 
-    /** @var AttributeRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param LruArrayAttributeRepository $attributeRepository
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    public function __construct(LruArrayAttributeRepository $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
     }
@@ -49,7 +49,7 @@ class FilterRegistry implements FilterRegistryInterface
      */
     public function getFilter($code, $operator)
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => FieldFilterHelper::getCode($code)]);
+        $attribute = $this->attributeRepository->findOneByIdentifier(FieldFilterHelper::getCode($code));
 
         if (null !== $attribute) {
             return $this->getAttributeFilter($attribute, $operator);

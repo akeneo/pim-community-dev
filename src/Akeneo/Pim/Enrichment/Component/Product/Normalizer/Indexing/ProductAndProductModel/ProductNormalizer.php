@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetFamilyAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -29,16 +30,22 @@ class ProductNormalizer implements NormalizerInterface
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $attributesProvider;
 
+    /** @var GetFamilyAttributeCodes */
+    private $getFamilyAttributeCodes;
+
     /**
-     * @param NormalizerInterface                       $propertiesNormalizer
+     * @param NormalizerInterface $propertiesNormalizer
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
+     * @param GetFamilyAttributeCodes $getFamilyAttributeCodes
      */
     public function __construct(
         NormalizerInterface $propertiesNormalizer,
-        EntityWithFamilyVariantAttributesProvider $attributesProvider
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        GetFamilyAttributeCodes $getFamilyAttributeCodes
     ) {
         $this->propertiesNormalizer = $propertiesNormalizer;
         $this->attributesProvider = $attributesProvider;
+        $this->getFamilyAttributeCodes = $getFamilyAttributeCodes;
     }
 
     /**
@@ -130,7 +137,7 @@ class ProductNormalizer implements NormalizerInterface
                 return $attribute->getCode();
             }, $familyAttributes);
         } elseif (null !== $product->getFamily()) {
-            $familyAttributesCodes = $product->getFamily()->getAttributeCodes();
+            $familyAttributesCodes = $this->getFamilyAttributeCodes->execute($product->getFamily()->getCode());
         }
 
         $attributeCodes = array_unique(array_merge($familyAttributesCodes, $attributeCodes));

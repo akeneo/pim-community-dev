@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetFamilyAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAxesCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Attributes and axes provider for EntityWithFamilyVariantInterface entities
@@ -16,6 +20,36 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class EntityWithFamilyVariantAttributesProvider
 {
+    /** @var LruArrayAttributeRepository */
+    private $attributeRepository;
+
+    /** @var GetFamilyAttributeCodes */
+    private $getFamilyAttributeCodes;
+
+    /** @var GetVariantAttributeSetAttributeCodes */
+    private $getVariantAttributeSetAttributeCodes;
+
+    /** @var GetVariantAttributeSetAxesCodes */
+    private $getVariantAttributeSetAxesCodes;
+
+    /**
+     * @param LruArrayAttributeRepository $attributeRepository
+     * @param GetFamilyAttributeCodes $getFamilyAttributeCodes
+     * @param GetVariantAttributeSetAttributeCodes $getVariantAttributeSetAttributeCodes
+     * @param GetVariantAttributeSetAxesCodes $getVariantAttributeSetAxesCodes
+     */
+    public function __construct(
+        LruArrayAttributeRepository $attributeRepository,
+        GetFamilyAttributeCodes $getFamilyAttributeCodes,
+        GetVariantAttributeSetAttributeCodes $getVariantAttributeSetAttributeCodes,
+        GetVariantAttributeSetAxesCodes $getVariantAttributeSetAxesCodes
+    ) {
+        $this->attributeRepository = $attributeRepository;
+        $this->getFamilyAttributeCodes = $getFamilyAttributeCodes;
+        $this->getVariantAttributeSetAttributeCodes = $getVariantAttributeSetAttributeCodes;
+        $this->getVariantAttributeSetAxesCodes = $getVariantAttributeSetAxesCodes;
+    }
+
     /**
      * This method returns all attributes for the given $entityWithFamilyVariant, including axes.
      *
@@ -33,17 +67,17 @@ class EntityWithFamilyVariantAttributesProvider
 
         $level = $entityWithFamilyVariant->getVariationLevel();
         if (EntityWithFamilyVariantInterface::ROOT_VARIATION_LEVEL === $level) {
-            $attributes = $familyVariant->getCommonAttributes()->toArray();
+            // FIXME: probably one query would be enough
+            $attributeCodes = array_diff(
+                $this->getFamilyAttributeCodes->execute($familyVariant->getFamily()->getCode()),
+                $this->getVariantAttributeSetAttributeCodes->execute($familyVariant->getCode(), 1),
+                $this->getVariantAttributeSetAttributeCodes->execute($familyVariant->getCode(), 2)
+            );
         } else {
-            $variantAttributeSet = $familyVariant->getVariantAttributeSet($level);
-            if (null === $variantAttributeSet) {
-                return [];
-            }
-
-            $attributes = $variantAttributeSet->getAttributes()->toArray();
+            $attributeCodes = $this->getVariantAttributeSetAttributeCodes->execute($familyVariant->getCode(), $level);
         }
 
-        return $attributes;
+        return $this->attributeRepository->findSeveralByIdentifiers($attributeCodes);
     }
 
     /**
@@ -60,10 +94,8 @@ class EntityWithFamilyVariantAttributesProvider
             return [];
         }
 
-        return $entityWithFamilyVariant
-            ->getFamilyVariant()
-            ->getVariantAttributeSet($level)
-            ->getAxes()
-            ->toArray();
+        return $this->attributeRepository->findSeveralByIdentifiers(
+            $this->getVariantAttributeSetAxesCodes->execute($familyVariant->getCode(), $level)
+        );
     }
 }

@@ -63,6 +63,10 @@ services:
         arguments:
             - '@pim_catalog.resolver.attribute_values'
             - '@pim_catalog.factory.value'
+            - '@pim_catalog.repository.lru_array_attribute'
+            - '@pim_catalog.query.get_family_attribute_codes'
+            - '@pim_catalog.query.get_variant_attribute_set_attribute_codes'
+            - '@pim_catalog.query.get_variant_attribute_set_axes_codes'
         tags:
             - { name: kernel.event_subscriber}
 

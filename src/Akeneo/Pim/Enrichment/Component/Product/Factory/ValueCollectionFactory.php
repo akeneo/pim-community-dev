@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionsException;
@@ -9,7 +10,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -24,7 +24,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     /** @var ValueFactory */
     private $valueFactory;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     private $attributeRepository;
 
     /** @var LoggerInterface */
@@ -32,7 +32,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
 
     public function __construct(
         ValueFactory $valueFactory,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         LoggerInterface $logger
     ) {
         $this->valueFactory = $valueFactory;

@@ -3,10 +3,10 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
@@ -94,7 +94,7 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
     /**
      * Prepare the data and check if everything is correct
      *
-     * @throws Exception
+     * {@inheritdoc}
      */
     protected function prepareData(AttributeInterface $attribute, $data, ?string $channelCode)
     {

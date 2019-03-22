@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
@@ -10,8 +12,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 
 /**
@@ -23,7 +23,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
  */
 class ProductQueryBuilder implements ProductQueryBuilderInterface
 {
-    /** @var AttributeRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var mixed */
@@ -48,7 +48,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     protected $rawFilters = [];
 
     /**
-     * @param AttributeRepositoryInterface                $attributeRepository
+     * @param LruArrayAttributeRepository                 $attributeRepository
      * @param FilterRegistryInterface                     $filterRegistry
      * @param SorterRegistryInterface                     $sorterRegistry
      * @param CursorFactoryInterface                      $cursorFactory
@@ -56,7 +56,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * @param array                                       $defaultContext
      */
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
@@ -165,7 +165,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addSorter($field, $direction, array $context = [])
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $field]);
+        $attribute = $this->attributeRepository->findOneByIdentifier($field);
 
         if (null !== $attribute) {
             $sorter = $this->sorterRegistry->getAttributeSorter($attribute);

@@ -6,7 +6,7 @@ services:
     pim_catalog.builder.product:
         class: '%pim_catalog.builder.product.class%'
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
             - '@pim_catalog.repository.family'
             - '@event_dispatcher'
             - '@pim_catalog.builder.entity_with_values'

@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Updater\Copier;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)
@@ -68,13 +69,17 @@ class MultiSelectAttributeCopierIntegration extends AbstractCopierTestCase
         $optionB = $this->get('pim_catalog.factory.attribute_option')->create();
         $optionB->setCode('optionB');
 
-        $simpleSelectAttribute = $this->get('pim_catalog.factory.attribute')->createAttribute(
+        $multiSelectAttrribute = $this->get('pim_catalog.factory.attribute')->createAttribute(
             AttributeTypes::OPTION_MULTI_SELECT
         );
-        $simpleSelectAttribute->setCode('another_multi_select');
-        $simpleSelectAttribute->addOption($optionA);
-        $simpleSelectAttribute->addOption($optionB);
+        $multiSelectAttrribute->setCode('another_multi_select');
+        $multiSelectAttrribute->addOption($optionA);
+        $multiSelectAttrribute->addOption($optionB);
 
-        $this->get('pim_catalog.saver.attribute')->save($simpleSelectAttribute);
+        $multiSelectAttrribute->setGroup(
+            $this->get('pim_catalog.repository.attribute_group')->findDefaultAttributeGroup()
+        );
+
+        $this->get('pim_catalog.saver.attribute')->save($multiSelectAttrribute);
     }
 }

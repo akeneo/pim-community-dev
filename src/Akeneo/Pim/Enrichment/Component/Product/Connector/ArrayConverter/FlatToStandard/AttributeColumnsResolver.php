@@ -3,9 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * Resolve attribute field information
@@ -16,7 +16,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  */
 class AttributeColumnsResolver
 {
-    /** @var AttributeRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var CurrencyRepositoryInterface */
@@ -32,12 +32,12 @@ class AttributeColumnsResolver
     protected $identifierField;
 
     /**
-     * @param AttributeRepositoryInterface     $attributeRepository
+     * @param LruArrayAttributeRepository      $attributeRepository
      * @param CurrencyRepositoryInterface      $currencyRepository
      * @param AttributeValuesResolverInterface $valuesResolver
      */
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         CurrencyRepositoryInterface $currencyRepository,
         AttributeValuesResolverInterface $valuesResolver
     ) {

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetFamilyAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -31,16 +33,28 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $attributesProvider;
 
+    /** @var GetFamilyAttributeCodes */
+    private $getFamilyAttributeCodes;
+
+    /** @var GetVariantAttributeSetAttributeCodes */
+    private $getVariantAttributeSetAttributeCodes;
+
     /**
-     * @param NormalizerInterface                       $propertiesNormalizer
+     * @param NormalizerInterface $propertiesNormalizer
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
+     * @param GetFamilyAttributeCodes $getFamilyAttributeCodes
+     * @param GetVariantAttributeSetAttributeCodes $getVariantAttributeSetAttributeCodes
      */
     public function __construct(
         NormalizerInterface $propertiesNormalizer,
-        EntityWithFamilyVariantAttributesProvider $attributesProvider
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        GetFamilyAttributeCodes $getFamilyAttributeCodes,
+        GetVariantAttributeSetAttributeCodes $getVariantAttributeSetAttributeCodes
     ) {
         $this->propertiesNormalizer = $propertiesNormalizer;
         $this->attributesProvider = $attributesProvider;
+        $this->getFamilyAttributeCodes = $getFamilyAttributeCodes;
+        $this->getVariantAttributeSetAttributeCodes = $getVariantAttributeSetAttributeCodes;
     }
 
     /**
@@ -84,13 +98,11 @@ class ProductModelNormalizer implements NormalizerInterface
             return [];
         }
 
-        $attributesOfAncestors = $productModel->getFamilyVariant()
-            ->getCommonAttributes()
-            ->map(
-                function (AttributeInterface $attribute) {
-                    return $attribute->getCode();
-                }
-            )->toArray();
+        $attributesOfAncestors = array_diff(
+            $this->getFamilyAttributeCodes->execute($productModel->getFamily()->getCode()),
+            $this->getVariantAttributeSetAttributeCodes->execute($productModel->getFamilyVariant()->getCode(), 1),
+            $this->getVariantAttributeSetAttributeCodes->execute($productModel->getFamilyVariant()->getCode(), 2)
+        );
 
         sort($attributesOfAncestors);
 

@@ -67,6 +67,10 @@ class SimpleSelectAttributeCopierIntegration extends AbstractCopierTestCase
         $simpleSelectAttribute->setCode('another_simple_select');
         $simpleSelectAttribute->addOption($optionA);
 
+        $simpleSelectAttribute->setGroup(
+            $this->get('pim_catalog.repository.attribute_group')->findDefaultAttributeGroup()
+        );
+
         $this->get('pim_catalog.saver.attribute')->save($simpleSelectAttribute);
     }
 }

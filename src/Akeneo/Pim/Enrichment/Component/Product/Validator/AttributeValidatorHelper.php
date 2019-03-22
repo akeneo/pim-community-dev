@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
 
 /**
  * AttributeValidatorHelper

@@ -4,3 +4,8 @@ parameters:
 services:
     pim_catalog.family_variant.provider.entity_with_family_variant_attributes:
         class: '%pim_catalog.family_variant.provider.entity_with_family_variant_attributes.class%'
+        arguments:
+            - '@pim_catalog.repository.lru_array_attribute'
+            - '@pim_catalog.query.get_family_attribute_codes'
+            - '@pim_catalog.query.get_variant_attribute_set_attribute_codes'
+            - '@pim_catalog.query.get_variant_attribute_set_axes_codes'

@@ -2,9 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\TestCase;
 
 /**
@@ -145,7 +145,7 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
      */
     private function findAttributeByIdentifier($attributeCode)
     {
-        return $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($attributeCode);
+        return $this->get('pim_catalog.repository.lru_array_attribute')->findOneByIdentifier($attributeCode);
     }
 
     /**

@@ -135,3 +135,13 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Sql\GetFamilyAttributeCodes
         arguments:
             - '@database_connection'
+            -
+    pim_catalog.query.get_variant_attribute_set_attribute_codes:
+        class: Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAttributeCodes
+        arguments:
+            - '@database_connection'
+
+    pim_catalog.query.get_variant_attribute_set_axes_codes:
+        class: Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAxesCodes
+        arguments:
+            - '@database_connection'

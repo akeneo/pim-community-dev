@@ -2,6 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
+use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetFamilyAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
@@ -16,6 +21,20 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  */
 class ProductValuesFiller extends AbstractEntityWithFamilyValuesFiller
 {
+    /** @var GetFamilyAttributeCodes */
+    private $getFamilyAttributeCodes;
+
+    public function __construct(
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
+        AttributeValuesResolverInterface $valuesResolver,
+        CurrencyRepositoryInterface $currencyRepository,
+        LruArrayAttributeRepository $attributeRepository,
+        GetFamilyAttributeCodes $getFamilyAttributeCodes
+    ) {
+        parent::__construct($entityWithValuesBuilder, $valuesResolver, $currencyRepository, $attributeRepository);
+        $this->getFamilyAttributeCodes = $getFamilyAttributeCodes;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,8 +55,6 @@ class ProductValuesFiller extends AbstractEntityWithFamilyValuesFiller
         $attributes = [];
 
         // TODO: remove this when optional attributes are gone
-        $productAttributeCodes = $entity->getUsedAttributeCodes();
-
         foreach ($entity->getUsedAttributeCodes() as $productAttributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($productAttributeCode);
             if (null !== $attribute) {
@@ -47,7 +64,10 @@ class ProductValuesFiller extends AbstractEntityWithFamilyValuesFiller
 
         $family = $entity->getFamily();
         if (null !== $family) {
-            foreach ($family->getAttributes() as $attribute) {
+            $familyAttributes = $this->attributeRepository->findSeveralByIdentifiers(
+                $this->getFamilyAttributeCodes->execute($family->getCode())
+            );
+            foreach ($familyAttributes as $attribute) {
                 $attributes[$attribute->getCode()] = $attribute;
             }
         }

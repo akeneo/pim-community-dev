@@ -114,7 +114,7 @@ class EntityBuilder
     ): ProductInterface {
         $variantProduct = new Product();
 
-        $identifierAttribute = $this->container->get('pim_catalog.repository.attribute')->findOneByCode('sku');
+        $identifierAttribute = $this->container->get('pim_catalog.repository.lru_array_attribute')->findOneByIdentifier('sku');
 
         $entityWithValuesBuilder = $this->container->get('pim_catalog.builder.entity_with_values');
         $entityWithValuesBuilder->addOrReplaceValue($variantProduct, $identifierAttribute, null, null, $identifier);

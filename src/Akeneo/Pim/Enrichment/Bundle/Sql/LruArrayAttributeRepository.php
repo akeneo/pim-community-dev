@@ -30,7 +30,7 @@ class LruArrayAttributeRepository
     /**
      * @param string $code
      *
-     * @return Attribute|null
+     * @return AttributeInterface|null
      */
     public function findOneByIdentifier(string $code): ?Attribute
     {
@@ -42,7 +42,7 @@ class LruArrayAttributeRepository
     /**
      * @param array $codes
      *
-     * @return Attribute[]
+     * @return AttributeInterface[]
      */
     public function findSeveralByIdentifiers(array $codes): array
     {
@@ -87,10 +87,19 @@ class LruArrayAttributeRepository
      * Get the identifier attribute
      * Only one identifier attribute can exist
      *
-     * @return Attribute
+     * @return AttributeInterface
      */
-    public function getIdentifier(): Attribute
+    public function getIdentifier(): AttributeInterface
     {
         return $this->findOneByIdentifier($this->getIdentifierCode());
+    }
+
+    /**
+     *
+     * @return AttributeInterface[]
+     */
+    public function findAll(): array
+    {
+        return $this->attributeRepository->findAll();
     }
 }
