@@ -86,9 +86,6 @@ web/css/pim.css: $(LESS_FILES)
 web/js/require-paths.js: $(REQUIRE_JS_FILES)
 	$(PHP_EXEC) bin/console pim:installer:dump-require-paths
 
-web/js/extensions.json: $(FORM_EXTENSION_FILES)
-	$(PHP_EXEC) bin/console pim:installer:dump-extensions
-
 web/bundles: $(ASSET_FILES)
 	$(PHP_EXEC) bin/console assets:install --relative --symlink
 
@@ -97,13 +94,13 @@ web/js/translation:
 
 ## Instal the PIM asset: copy asset from src to web, generate require path, form extension and translation
 .PHONY: install-asset
-install-asset: vendor node_modules web/bundles web/css/pim.css web/js/require-paths.js web/js/extensions.json web/js/translation
+install-asset: vendor node_modules web/bundles web/css/pim.css web/js/require-paths.js  web/js/translation
 	for locale in $(LOCALE_TO_REFRESH) ; do \
 		$(PHP_EXEC) bin/console oro:translation:dump $$locale ; \
 	done
 	## Prevent translations update next time
 	touch web/js/translation
-	bin/console fos:js-routing:dump --target web/js/routes.js
+	$(PHP_EXEC) bin/console fos:js-routing:dump --target web/js/routes.js
 
 ## Initialize the PIM database depending on an environment
 .PHONY: install-database-test
