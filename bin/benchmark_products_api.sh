@@ -41,9 +41,9 @@ boot_and_install_pim()
     rm -rf var/cache/*
     rm -f app/config/parameters_test.yml
     bin/docker/pim-setup.sh
-    docker-compose exec fpm bin/console cache:warmup -e behat
-    docker-compose exec fpm bin/console pim:installer:db -e behat
-    CREDENTIALS=$(docker-compose exec fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
+    docker-compose exec -T fpm bin/console cache:warmup -e behat
+    docker-compose exec -T fpm bin/console pim:installer:db -e behat
+    CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
     export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)
     export API_SECRET=$(echo $CREDENTIALS | cut -d " " -f 3 | cut -d ":" -f 2)
     export API_URL="http://$DOCKER_BRIDGE_IP:$PUBLIC_PIM_HTTP_PORT"
@@ -60,6 +60,7 @@ generate_reference_catalog()
     ABSOLUTE_CATALOG_FILE=$(realpath $REFERENCE_CATALOG_FILE)
 
     docker run \
+        -t \
         -e API_CLIENT -e API_SECRET -e API_URL -e API_USER -e API_PASSWORD \
         -v "$ABSOLUTE_CATALOG_FILE:/app/akeneo-data-generator/app/catalog/product_api_catalog.yml" \
         akeneo/data-generator:3.0 akeneo:api:generate-catalog --with-products --check-minimal-install product_api_catalog.yml
@@ -78,8 +79,8 @@ boot_and_install_pim
 generate_reference_catalog
 
 cd $PIM_PATH
-PRODUCT_SIZE=$(docker-compose exec mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT AVG(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) avg_product_values FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
-PRODUCT_COUNT=$(docker-compose exec mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT COUNT(*) FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
+PRODUCT_SIZE=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT AVG(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) avg_product_values FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
+PRODUCT_COUNT=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT COUNT(*) FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
 message "Start bench products with 120 attributes"
 
 GET=$(launch_bench "get_many_products")
@@ -97,7 +98,7 @@ echo ""
 JSON_STRING=$(
     jq -n \
     --arg gp $GET \
-    --arg cp $CREATE" \
+    --arg cp $CREATE \
     --arg up $UPDATE \
     '{get_result: $gp, create_result: $cp, update_result: $up}'
 )
