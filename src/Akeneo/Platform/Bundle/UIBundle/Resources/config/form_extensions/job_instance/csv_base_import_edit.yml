@@ -7,7 +7,7 @@ extensions:
         parent: pim-job-instance-csv-base-import-edit
         targetZone: main-image
         config:
-            path: bundles/pimui/images/illustration-import-csv.svg
+            path: bundles/pimui/images/illustrations/ImportCSV.svg
 
     pim-job-instance-csv-base-import-edit-user-navigation:
         module: pim/menu/user-navigation

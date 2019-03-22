@@ -7,7 +7,7 @@ extensions:
         parent: pim-job-instance-yml-base-export-edit
         targetZone: main-image
         config:
-            path: bundles/pimui/images/illustration-export-yml.svg
+            path: bundles/pimui/images/illustrations/ExportYML.svg
 
     pim-job-instance-yml-base-export-edit-user-navigation:
         module: pim/menu/user-navigation
