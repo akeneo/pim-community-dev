@@ -18,6 +18,13 @@ services:
             - '%pim_catalog.entity.product.class%'
             - '@pim_catalog.repository.product'
 
+    pim_api.repository.product_model:
+        class: 'Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ProductModelRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.product_model.class%'
+            - '@pim_catalog.repository.product_model'
+
     pim_api.repository.attribute:
         class: '%pim_api.repository.attribute.class%'
         arguments:

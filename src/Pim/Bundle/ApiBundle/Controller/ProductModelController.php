@@ -99,7 +99,7 @@ class ProductModelController
     /** @var AttributeFilterInterface */
     protected $productModelAttributeFilter;
 
-    /** @var ProductModelRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $productModelRepository;
 
     /** @var StreamResourceResponse */
@@ -108,27 +108,6 @@ class ProductModelController
     /** @var QueryParametersCheckerInterface */
     protected $queryParametersChecker;
 
-    /**
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param ProductQueryBuilderFactoryInterface $pqbFromSizeFactory
-     * @param ProductQueryBuilderFactoryInterface $pqbSearchAfterFactory
-     * @param NormalizerInterface $normalizer
-     * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param QueryParametersCheckerInterface $queryParametersChecker
-     * @param ParameterValidatorInterface $parameterValidator
-     * @param PaginatorInterface $offsetPaginator
-     * @param PaginatorInterface $searchAfterPaginator
-     * @param PrimaryKeyEncrypter $primaryKeyEncrypter
-     * @param ObjectUpdaterInterface $updater
-     * @param SimpleFactoryInterface $factory
-     * @param SaverInterface $saver
-     * @param UrlGeneratorInterface $router
-     * @param ValidatorInterface $productValidator
-     * @param AttributeFilterInterface $productModelAttributeFilter
-     * @param ProductModelRepositoryInterface $productModelRepository
-     * @param StreamResourceResponse $partialUpdateStreamResource
-     * @param array $apiConfiguration
-     */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ProductQueryBuilderFactoryInterface $pqbFromSizeFactory,
@@ -146,7 +125,7 @@ class ProductModelController
         UrlGeneratorInterface $router,
         ValidatorInterface $productValidator,
         AttributeFilterInterface $productModelAttributeFilter,
-        ProductModelRepositoryInterface $productModelRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
         StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration
     ) {
