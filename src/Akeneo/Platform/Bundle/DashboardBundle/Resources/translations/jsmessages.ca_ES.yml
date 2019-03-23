@@ -1,23 +1,6 @@
 pim_dashboard:
   widget:
-    last_operations:
-      empty: No s'han trobat operacions
-      date: Data
-      profile_name: Nom del perfil
-      details: Detalls
-      warning_count: Avisos
-      job_type:
-        import: Importar
-        export: Exportar
-        mass_edit: Edició massiva
-        quick_export: Exportació ràpida
-        compute_product_models_descendants: Calcular descendents dels models de producte
-        compute_family_variant_structure_changes: Calcular els canvis d'estructura de la variant familiar
-        compute_completeness_of_products_family: Calcular la completesa de la família de productes
-        mass_delete: Esborrat massiu de productes
     completeness:
       load_more: 'Carrega''n més...'
-    header:
-      view_all: Veure tots
 pim_title:
   pim_dashboard_index: Panell de contol

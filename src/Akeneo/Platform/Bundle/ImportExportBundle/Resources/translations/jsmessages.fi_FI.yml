@@ -129,6 +129,31 @@ pim_import_export:
           family_variant_column:
             title: Varianttiperheen sarake
       file_path: Tiedostopolku
+  widget:
+    last_operations:
+      empty: Toimintoja ei löytynyt
+      date: Päivämäärä
+      profile_name: Profiilinimi
+      details: Lisätiedot
+      warning_count: Varoitus
+      job_type:
+        import: Tuonti
+        export: Vienti
+        mass_edit: Massamuokkaus
+        quick_export: Nopea vienti
+        compute_product_models_descendants: Lasketaan tuotemallin rakenne
+        compute_family_variant_structure_changes: Laske varianttiperheen rakenteen muutokset
+        mass_delete: Massapoista tuotteet
+      header.view_all: Näytä kaikki
+  batch_status:
+    1: Valmis
+    2: Alkaa
+    3: Aloitettu
+    4: Päättyy
+    5: Päättynyt
+    6: Epäonnistunut
+    7: Hylätty
+    8: Tuntematon
 confirmation:
   remove:
     import_profile: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
