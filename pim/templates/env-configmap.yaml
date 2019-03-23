@@ -27,6 +27,7 @@ data:
   MAILER_HOST: {{ .Values.mailer.host | quote }}
   MAILER_PORT: {{ .Values.mailer.port | quote }}
   MAILER_FROM_ADDRESS: {{ .Values.mailer.from_address | quote }}
+  MEMCACHED_SVC:  {{ .Values.memcached.fullnameOverride | quote}}
   {{- if .Values.onboarder.enabled }}
   ONBOARDER_ENABLED: "1"
   GCP_PROJECT_ID: {{ .Values.common.gcpProjectID | quote }}

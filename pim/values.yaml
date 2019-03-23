@@ -95,7 +95,7 @@ pim:
       hook: "pre-upgrade"
   updateStrategy:
     type: RollingUpdate
-  replicas: 1
+  replicas: 2
   numDaemon: 2
   extraLabels: {}
   secret: nil # Generate me with `uuidgen`
@@ -200,6 +200,19 @@ mysql:
       enabled: false
   common:
     class: ssd-retain
+
+memcached:
+  fullnameOverride: memcached
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: "1"
+      memory: "96Mi"
+    requests:
+      cpu: "30m"
+      memory: "64Mi"
+  memcached:
+    maxItemMemory: 64
 
 elasticsearch:
   appVersion: 6.5.4
