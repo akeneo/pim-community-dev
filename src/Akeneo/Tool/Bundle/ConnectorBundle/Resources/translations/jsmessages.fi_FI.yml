@@ -7,6 +7,8 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: Käsittele ylätason tuotemallin tiedot
     compute_data_related_to_family_sub_product_models: Käsittele alatuotemallin tiedot
     compute_data_related_to_family_products: Tuotteiden käsittely
+    compute_product_models_descendants: Lasketaan tuotemallin rakenne
+    compute_family_variant_structure_changes: Laske varianttiperheen rakenteen muutokset
   csv_product_export:
     label: Tuotteiden vienti CSV-muodossa
     export.label: Tuotteiden vienti

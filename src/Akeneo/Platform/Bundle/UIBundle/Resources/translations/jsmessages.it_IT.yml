@@ -153,6 +153,7 @@ pim_common:
   remove: Rimuovere
   required_label: (obbligatorio)
   save: Salva
+  search: Ricerca
   select2:
     search: Ricerca...
     no_match: Nessuna corrispondenza trovata

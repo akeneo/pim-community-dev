@@ -7,6 +7,9 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: Mise à jour des données des modèles de produit racine
     compute_data_related_to_family_sub_product_models: Mise à jour des données des modèles de sous-produit
     compute_data_related_to_family_products: Calcul des données produits
+    compute_product_models_descendants: Mise à jour des descendants des modèles de produit
+    compute_family_variant_structure_changes: Calcul des changements de structure des familles variantes
+    compute_completeness_of_products_family: Calcul de la complétude des familles variantes
   csv_product_export:
     label: Export des produits en CSV
     export.label: Export des produits

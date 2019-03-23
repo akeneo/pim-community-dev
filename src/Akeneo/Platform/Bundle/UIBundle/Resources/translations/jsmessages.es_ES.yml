@@ -152,6 +152,7 @@ pim_common:
   remove: Quitar
   required_label: (obligatorio)
   save: Guardar
+  search: Buscar
   select2:
     search: Buscar...
     no_match: No se encuentran coincidencias

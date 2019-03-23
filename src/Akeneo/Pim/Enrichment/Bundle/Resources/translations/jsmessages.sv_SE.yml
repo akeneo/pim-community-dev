@@ -12,20 +12,6 @@ flash:
     reply:
       success: Ditt svar har skapats.
       error: Ett fel uppstod under skapandet av ditt svar.
-pim_comment:
-  product:
-    panel:
-      comment:
-        post: Lägg till ny kommentar
-        reply: Svara
-        title: Kommentarer
-  index:
-    empty: Inga kommentarer hittades
-    header_comment: '{{ user }} kommentarer produkt'
-    header_reply: '{{ user }} svar till kommentar'
-  placeholder:
-    new: Skriv en ny kommentar...
-    reply: Svara på denna kommentar...
 pim_enrich.entity.product:
   label: produkt
   uppercase_label: Produkt
@@ -105,6 +91,14 @@ pim_enrich.entity.product:
       empty_basket: Korgen är tom
     delete:
       confirm: Är du säker på att du vill ta bort denna produkt?
+    comment:
+      post: Lägg till ny kommentar
+      reply: Svara
+      title: Kommentarer
+      empty: Inga kommentarer hittades
+      header_comment: '{{ user }} kommentarer produkt'
+      header_reply: '{{ user }} svar till kommentar'
+      delete_confirm: Är du säker på att du vill ta bort den här kommentaren?
 pim_enrich.entity.product_model:
   uppercase_label: Produktmodell
   plural_label: Produktmodeller

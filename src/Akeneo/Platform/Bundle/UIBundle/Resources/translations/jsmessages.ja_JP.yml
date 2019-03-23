@@ -147,6 +147,7 @@ pim_common:
   remove: 削除
   required_label: (必須)
   save: 保存
+  search: 検索
   select2:
     search: 検索...
     no_match: 一致するものがみつかりません

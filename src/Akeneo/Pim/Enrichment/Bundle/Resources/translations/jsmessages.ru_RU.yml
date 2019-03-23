@@ -12,19 +12,6 @@ flash:
     reply:
       success: Ваш ответ был успешно создан.
       error: Произошла ошибка во время создания вашего ответа.
-pim_comment:
-  product:
-    panel:
-      comment:
-        post: Добавить новый комментарий
-        reply: Ответить
-        title: Комментарии
-  index:
-    empty: Комментариев не найдено
-    header_comment: 'Комментарий пользователя {{ user }} к продукту'
-  placeholder:
-    new: Написать новый комментарий...
-    reply: Ответить на этот комментарий...
 pim_enrich.entity.product:
   label: продукт
   uppercase_label: Продукт
@@ -109,6 +96,13 @@ pim_enrich.entity.product:
       empty_basket: Корзина пуста
     delete:
       confirm: Вы действительно хотите удалить этот продукт?
+    comment:
+      post: Добавить новый комментарий
+      reply: Ответить
+      title: Комментарии
+      empty: Комментариев не найдено
+      header_comment: 'Комментарий пользователя {{ user }} к продукту'
+      delete_confirm: Вы уверены, что хотите удалить комментарий?
 pim_enrich.entity.product_model:
   property:
     family_variant: Вариант
