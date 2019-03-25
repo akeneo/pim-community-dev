@@ -74,7 +74,7 @@ class PublishProductCommand extends ContainerAwareCommand
      */
     protected function getProduct($identifier)
     {
-        $repository = $this->getContainer()->get('pim_catalog.repository.product_without_permission');
+        $repository = $this->getContainer()->get('pim_catalog.repository.product');
 
         return $repository->findOneByIdentifier($identifier);
     }
