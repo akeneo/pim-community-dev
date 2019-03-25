@@ -1,7 +1,8 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Bundle\FileStorageBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
@@ -23,7 +24,7 @@ class FileInfoRepository extends EntityRepository implements FileInfoRepositoryI
     }
 
     /**
-     * {@inheritdoc}
+     * @return FileInfo | null
      */
     public function findOneByIdentifier($identifier)
     {
