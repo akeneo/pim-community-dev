@@ -44,7 +44,7 @@ class RemoveWrongBooleanValuesOnVariantProductsBatchCommand extends ContainerAwa
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $cleaner = $this->getContainer()
-            ->get('pim_catalog.command.cleaner.wrong_boolean_value_on_variant_product');
+            ->get('pim_catalog.command.cleaner.wrong_value_on_variant_product');
         $validator = $this->getContainer()->get('pim_catalog.validator.product');
         $identifiers = $input->getArgument('identifiers');
         $variantProducts = $this->getVariantProducts(explode(',', $identifiers));
