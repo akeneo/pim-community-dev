@@ -1,3 +1,7 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
 parameters:
     excludes_analyse:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/FranklinInsights/tests
+    symfony:
+        container_xml_path: %rootDir%/../../../var/cache/dev/appDevDebugProjectContainer.xml

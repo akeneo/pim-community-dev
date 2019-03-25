@@ -70,7 +70,8 @@
         "sensiolabs/behat-page-object-extension": "2.1.0",
         "friends-of-behat/symfony-extension": "^2.0",
         "liuggio/fastest": "1.6.*",
-        "phpstan/phpstan": "^0.11.1"
+        "phpstan/phpstan": "^0.11.1",
+        "phpstan/phpstan-symfony": "^0.11.1"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
