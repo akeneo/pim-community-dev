@@ -25,6 +25,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -35,6 +36,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
@@ -120,6 +122,14 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_a_list_of_records_filtered_by_value()
+    {
+        $this->webClientHelper->assertRequest($this->client, 'Record/Search/color_filtered.json');
+    }
+
+    /**
+     * @test
+     */
     public function it_fails_if_desynchronized_reference_entity_identifier()
     {
         $this->webClientHelper->assertRequest($this->client, 'Record/Search/desynchronized_reference_entity_identifier.json');
@@ -159,6 +169,18 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 AttributeRegularExpression::createEmpty()
             )
         );
+        $attributeRepository->create(
+            OptionAttribute::create(
+                AttributeIdentifier::fromString('colors'),
+                ReferenceEntityIdentifier::fromString('designer'),
+                AttributeCode::fromString('colors'),
+                LabelCollection::fromArray(['en_US' => 'Color']),
+                AttributeOrder::fromInteger(5),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false)
+            )
+        );
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
@@ -189,12 +211,18 @@ class IndexActionTest extends ControllerIntegrationTestCase
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString('an awesome designer!')
         );
+        $starkColorValue = Value::create(
+            AttributeIdentifier::fromString('colors'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            OptionData::createFromNormalize('red')
+        );
 
         $recordStarck = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ValueCollection::fromValues([$labelValueEnUS, $starckDescriptionValue])
+            ValueCollection::fromValues([$labelValueEnUS, $starckDescriptionValue, $starkColorValue])
         );
         $recordRepository->create($recordStarck);
 
@@ -251,11 +279,17 @@ class IndexActionTest extends ControllerIntegrationTestCase
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Dyson')
         );
+        $dysonColorValue = Value::create(
+            AttributeIdentifier::fromString('colors'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            OptionData::createFromNormalize('red')
+        );
         $recordDyson = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR])
+            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR, $dysonColorValue])
         );
         $recordRepository->create($recordDyson);
 
