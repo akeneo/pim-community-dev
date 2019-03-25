@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8230: Show on hover information for a read-only text in product edit form
+- PIM-8235: Do not store duplicate media file
 
 # 2.3.34 (2019-03-18)
 

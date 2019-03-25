@@ -2,6 +2,7 @@
 
 namespace Akeneo\Component\FileStorage\File;
 
+use Akeneo\Bundle\FileStorageBundle\Doctrine\ORM\Query\FindKeyByHashQuery;
 use Akeneo\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\FileInfoFactoryInterface;
@@ -31,19 +32,20 @@ class FileStorer implements FileStorerInterface
     /** @var FileInfoFactoryInterface */
     protected $factory;
 
-    /**
-     * @param MountManager             $mountManager
-     * @param SaverInterface           $saver
-     * @param FileInfoFactoryInterface $factory
-     */
+    /** @var FindKeyByHashQuery */
+    private $findKeyByHashQuery;
+
+    // TODO on 3.1, remove the null default value
     public function __construct(
         MountManager $mountManager,
         SaverInterface $saver,
-        FileInfoFactoryInterface $factory
+        FileInfoFactoryInterface $factory,
+        ?FindKeyByHashQuery $findKeyByHashQuery = null
     ) {
         $this->mountManager = $mountManager;
         $this->saver = $saver;
         $this->factory = $factory;
+        $this->findKeyByHashQuery = $findKeyByHashQuery;
     }
 
     /**
@@ -54,29 +56,39 @@ class FileStorer implements FileStorerInterface
         $filesystem = $this->mountManager->getFilesystem($destFsAlias);
         $file = $this->factory->createFromRawFile($localFile, $destFsAlias);
 
-        $error = sprintf(
-            'Unable to move the file "%s" to the "%s" filesystem.',
-            $localFile->getPathname(),
-            $destFsAlias
-        );
-
-        if (false === $resource = fopen($localFile->getPathname(), 'r')) {
-            throw new FileTransferException($error);
+        // TODO on 3.1, remove the null test
+        $existingFileKey = null;
+        if (null !== $this->findKeyByHashQuery) {
+            $existingFileKey = $this->findKeyByHashQuery->fetchKey($file->getHash());
         }
 
-        try {
-            $options = [];
-            $mimeType = $file->getMimeType();
-            if (null !== $mimeType) {
-                $options['ContentType'] = $mimeType;
+        if (null === $existingFileKey) {
+            $error = sprintf(
+                'Unable to move the file "%s" to the "%s" filesystem.',
+                $localFile->getPathname(),
+                $destFsAlias
+            );
+
+            if (false === $resource = fopen($localFile->getPathname(), 'r')) {
+                throw new FileTransferException($error);
             }
-            $isFileWritten = $filesystem->writeStream($file->getKey(), $resource, $options);
-        } catch (FileExistsException $e) {
-            throw new FileTransferException($error, $e->getCode(), $e);
-        }
 
-        if (false === $isFileWritten) {
-            throw new FileTransferException($error);
+            try {
+                $options = [];
+                $mimeType = $file->getMimeType();
+                if (null !== $mimeType) {
+                    $options['ContentType'] = $mimeType;
+                }
+                $isFileWritten = $filesystem->writeStream($file->getKey(), $resource, $options);
+            } catch (FileExistsException $e) {
+                throw new FileTransferException($error, $e->getCode(), $e);
+            }
+
+            if (false === $isFileWritten) {
+                throw new FileTransferException($error);
+            }
+        } else {
+            $file->setKey($existingFileKey);
         }
 
         $this->saver->save($file);
@@ -93,7 +105,7 @@ class FileStorer implements FileStorerInterface
      *
      * @throws FileRemovalException
      */
-    protected function deleteRawFile(\SplFileInfo $file)
+    protected function deleteRawFile(\SplFileInfo $file): void
     {
         $filesystem = new Filesystem();
 

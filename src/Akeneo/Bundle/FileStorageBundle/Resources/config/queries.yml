@@ -1,0 +1,5 @@
+services:
+    akeneo_file_storage.query.find_key_by_hash:
+        class: 'Akeneo\Bundle\FileStorageBundle\Doctrine\ORM\Query\FindKeyByHashQuery'
+        arguments:
+            - '@database_connection'

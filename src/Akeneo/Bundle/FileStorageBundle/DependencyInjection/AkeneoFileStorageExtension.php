@@ -28,6 +28,7 @@ class AkeneoFileStorageExtension extends Extension
         $loader->load('models.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
+        $loader->load('queries.yml');
         $loader->load('savers.yml');
     }
 }
