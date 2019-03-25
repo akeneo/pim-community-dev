@@ -26,6 +26,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -37,6 +38,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
@@ -90,6 +92,22 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_a_list_of_records_filtered_by_option()
+    {
+        $this->webClientHelper->assertRequest($this->client, 'Record/Search/color_filtered.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_list_of_records_filtered_by_linked_record()
+    {
+        $this->webClientHelper->assertRequest($this->client, 'Record/Search/city_filtered.json');
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_an_empty_list()
     {
         $this->webClientHelper->assertRequest($this->client, 'Record/Search/no_result.json');
@@ -117,14 +135,6 @@ class IndexActionTest extends ControllerIntegrationTestCase
     public function it_fails_if_invalid_reference_entity_identifier()
     {
         $this->webClientHelper->assertRequest($this->client, 'Record/Search/invalid_reference_entity_identifier.json');
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_a_list_of_records_filtered_by_value()
-    {
-        $this->webClientHelper->assertRequest($this->client, 'Record/Search/color_filtered.json');
     }
 
     /**
@@ -181,6 +191,19 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 AttributeValuePerLocale::fromBoolean(false)
             )
         );
+        $attributeRepository->create(
+            RecordAttribute::create(
+                AttributeIdentifier::fromString('cities'),
+                ReferenceEntityIdentifier::fromString('designer'),
+                AttributeCode::fromString('cities'),
+                LabelCollection::fromArray(['en_US' => 'Cities']),
+                AttributeOrder::fromInteger(6),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                ReferenceEntityIdentifier::fromString('city')
+            )
+        );
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
@@ -217,12 +240,18 @@ class IndexActionTest extends ControllerIntegrationTestCase
             LocaleReference::noReference(),
             OptionData::createFromNormalize('red')
         );
+        $starkCityValue = Value::create(
+            AttributeIdentifier::fromString('cities'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            RecordData::createFromNormalize('paris')
+        );
 
         $recordStarck = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ValueCollection::fromValues([$labelValueEnUS, $starckDescriptionValue, $starkColorValue])
+            ValueCollection::fromValues([$labelValueEnUS, $starckDescriptionValue, $starkColorValue, $starkCityValue])
         );
         $recordRepository->create($recordStarck);
 
@@ -285,11 +314,17 @@ class IndexActionTest extends ControllerIntegrationTestCase
             LocaleReference::noReference(),
             OptionData::createFromNormalize('red')
         );
+        $dysonCityValue = Value::create(
+            AttributeIdentifier::fromString('cities'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            OptionData::createFromNormalize('paris')
+        );
         $recordDyson = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR, $dysonColorValue])
+            ValueCollection::fromValues([$labelValueEnUS, $labelValuefrFR, $dysonColorValue, $dysonCityValue])
         );
         $recordRepository->create($recordDyson);
 
