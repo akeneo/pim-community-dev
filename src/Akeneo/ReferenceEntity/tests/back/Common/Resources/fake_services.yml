@@ -196,12 +196,14 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
 
-
     akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_codes:
-        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordLabelsByCodes
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+            class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordLabelsByCodes
+            arguments:
+                - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+                - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+
+    akeneo_referenceentity.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryGetValueKeyForAttributeChannelAndLocale
 
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:

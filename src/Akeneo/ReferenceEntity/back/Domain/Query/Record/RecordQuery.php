@@ -159,9 +159,13 @@ class RecordQuery
     public function getFilter(string $field): array
     {
         $filter = current(array_filter($this->filters, function ($filter) use ($field) {
-            preg_match('/' . $field . '/', $filter['field'], $matches);
+            if ('values.*' === $field) {
+                preg_match('/' . $field . '/', $filter['field'], $matches);
 
-            return !empty($matches);
+                return !empty($matches);
+            }
+
+            return $filter['field'] === $field;
         }));
 
         if (false === $filter) {
@@ -174,8 +178,14 @@ class RecordQuery
     public function hasFilter(string $field): bool
     {
         foreach ($this->filters as $filter) {
-            preg_match('/' . $field . '/', $filter['field'], $matches);
-            if (\count($matches) > 0) {
+            if ('values.*' === $field) {
+                preg_match('/' . $field . '/', $filter['field'], $matches);
+                if (\count($matches) > 0) {
+                    return true;
+                }
+            }
+
+            if ($filter['field'] === $field) {
                 return true;
             }
         }

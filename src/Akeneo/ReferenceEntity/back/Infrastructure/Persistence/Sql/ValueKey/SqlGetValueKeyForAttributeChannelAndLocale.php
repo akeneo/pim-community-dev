@@ -29,8 +29,7 @@ class SqlGetValueKeyForAttributeChannelAndLocale implements GetValueKeyForAttrib
         AttributeIdentifier $attributeIdentifier,
         ChannelIdentifier $channelIdentifier,
         LocaleIdentifier $localeIdentifier
-    ): ValueKey
-    {
+    ): ValueKey {
         $query = <<<SQL
             SELECT
                 CONCAT(

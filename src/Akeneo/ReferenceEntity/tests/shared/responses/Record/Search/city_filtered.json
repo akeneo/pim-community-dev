@@ -72,8 +72,8 @@
             }
           },
           "completeness":{
-            "complete":2,
-            "required":4
+            "complete":0,
+            "required":2
           }
         },
         {
@@ -111,8 +111,8 @@
             }
           },
           "completeness":{
-            "complete":3,
-            "required":4
+            "complete":1,
+            "required":2
           }
         }
       ],

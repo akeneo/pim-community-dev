@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record\SearchRecordLinks;
+namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -144,8 +144,8 @@ class FilterRecordsTest extends SearchIntegrationTestCase
     public function it_searches_all_records_having_multiple_options_on_a_specific_channel_and_locale()
     {
         $this->loadReferenceEntity();
-        $this->loadAttributeWithOptionCollection('main_color_designers_fingerprint', ['red', 'blue', 'green'],true, true);
-        $this->loadRecordHavingOptionCollection('stark', ['red', 'blue'],'ecommerce', 'en_US');
+        $this->loadAttributeWithOptionCollection('main_color_designers_fingerprint', ['red', 'blue', 'green'], true, true);
+        $this->loadRecordHavingOptionCollection('stark', ['red', 'blue'], 'ecommerce', 'en_US');
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
@@ -486,4 +486,3 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         return $searchResult;
     }
 }
-

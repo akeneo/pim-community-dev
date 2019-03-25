@@ -147,8 +147,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         array $codeLabelMatrix,
         array $filledValueKeysMatrix,
         array $filterableValues
-    ): array
-    {
+    ): array {
         $normalizedRecord = [
             self::IDENTIFIER => $searchableRecordItem->identifier,
             self::CODE => $searchableRecordItem->code,

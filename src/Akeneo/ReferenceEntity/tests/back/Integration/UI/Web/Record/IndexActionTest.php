@@ -186,7 +186,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 AttributeCode::fromString('colors'),
                 LabelCollection::fromArray(['en_US' => 'Color']),
                 AttributeOrder::fromInteger(5),
-                AttributeIsRequired::fromBoolean(true),
+                AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false)
             )
@@ -198,7 +198,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 AttributeCode::fromString('cities'),
                 LabelCollection::fromArray(['en_US' => 'Cities']),
                 AttributeOrder::fromInteger(6),
-                AttributeIsRequired::fromBoolean(true),
+                AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 ReferenceEntityIdentifier::fromString('city')

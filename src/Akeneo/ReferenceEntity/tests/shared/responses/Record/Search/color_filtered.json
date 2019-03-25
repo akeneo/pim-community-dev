@@ -63,11 +63,17 @@
               "channel":null,
               "locale":null,
               "data":"red"
+            },
+            "cities":{
+              "attribute":"cities",
+              "channel":null,
+              "locale":null,
+              "data":"paris"
             }
           },
           "completeness":{
-            "complete":1,
-            "required":3
+            "complete":0,
+            "required":2
           }
         },
         {
@@ -96,11 +102,17 @@
               "channel":null,
               "locale":null,
               "data":"red"
+            },
+            "cities":{
+              "attribute":"cities",
+              "channel":null,
+              "locale":null,
+              "data":"paris"
             }
           },
           "completeness":{
-            "complete":2,
-            "required":3
+            "complete":1,
+            "required":2
           }
         }
       ],
