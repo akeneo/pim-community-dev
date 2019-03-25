@@ -2,12 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -33,7 +32,7 @@ class EditAttributesProcessor extends AbstractProcessor
     /** @var ObjectUpdaterInterface */
     protected $productModelUpdater;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var CheckAttributeEditable */
@@ -44,8 +43,7 @@ class EditAttributesProcessor extends AbstractProcessor
      * @param ValidatorInterface                    $productModelValidator
      * @param ObjectUpdaterInterface                $productUpdater
      * @param ObjectUpdaterInterface                $productModelUpdater
-     * @param ObjectDetacherInterface               $detacher
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param LruArrayAttributeRepository           $attributeRepository
      * @param CheckAttributeEditable                $checkAttributeEditable
      */
     public function __construct(
@@ -53,7 +51,7 @@ class EditAttributesProcessor extends AbstractProcessor
         ValidatorInterface $productModelValidator,
         ObjectUpdaterInterface $productUpdater,
         ObjectUpdaterInterface $productModelUpdater,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         CheckAttributeEditable $checkAttributeEditable
     ) {
         $this->productValidator = $productValidator;

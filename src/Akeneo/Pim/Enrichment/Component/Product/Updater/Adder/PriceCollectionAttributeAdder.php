@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollectionInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

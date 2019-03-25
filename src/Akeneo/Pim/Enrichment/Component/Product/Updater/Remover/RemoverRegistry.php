@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 
 /**
  * Registry of removers
@@ -20,13 +20,13 @@ class RemoverRegistry implements RemoverRegistryInterface
     /** @var FieldRemoverInterface[] priorized field removers */
     protected $fieldRemovers = [];
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param LruArrayAttributeRepository $repository
      */
-    public function __construct(IdentifiableObjectRepositoryInterface $repository)
+    public function __construct(LruArrayAttributeRepository $repository)
     {
         $this->attributeRepository = $repository;
     }

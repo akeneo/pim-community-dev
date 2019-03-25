@@ -2,12 +2,12 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\AttributeRemoverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Doctrine\Common\Util\ClassUtils;
 
@@ -20,18 +20,18 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class PropertyRemover implements PropertyRemoverInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var RemoverRegistryInterface */
     protected $removerRegistry;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param RemoverRegistryInterface              $removerRegistry
+     * @param LruArrayAttributeRepository $repository
+     * @param RemoverRegistryInterface    $removerRegistry
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $repository,
+        LruArrayAttributeRepository $repository,
         RemoverRegistryInterface $removerRegistry
     ) {
         $this->attributeRepository = $repository;

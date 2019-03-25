@@ -74,13 +74,13 @@ services:
     pim_catalog.updater.property_adder:
         class: '%pim_catalog.updater.property_adder.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
             - '@pim_catalog.updater.adder.registry'
 
     pim_catalog.updater.property_remover:
         class: '%pim_catalog.updater.property_remover.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
             - '@pim_catalog.updater.remover.registry'
 
     pim_catalog.updater.property_copier:
@@ -381,7 +381,7 @@ services:
     pim_catalog.updater.adder.registry:
         class: '%pim_catalog.updater.adder.registry.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
 
     pim_catalog.updater.adder.category_field:
         class: '%pim_catalog.updater.adder.category_field.class%'
@@ -431,7 +431,7 @@ services:
     pim_catalog.updater.remover.registry:
         class: '%pim_catalog.updater.remover.registry.class%'
         arguments:
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
 
     pim_catalog.updater.remover.category_field:
         class: '%pim_catalog.updater.remover.category_field.class%'

@@ -2,12 +2,12 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AttributeAdderInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Doctrine\Common\Util\ClassUtils;
 
@@ -20,18 +20,18 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class PropertyAdder implements PropertyAdderInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var AdderRegistryInterface */
     protected $adderRegistry;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param AdderRegistryInterface                $adderRegistry
+     * @param LruArrayAttributeRepository $repository
+     * @param AdderRegistryInterface      $adderRegistry
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $repository,
+        LruArrayAttributeRepository $repository,
         AdderRegistryInterface $adderRegistry
     ) {
         $this->attributeRepository = $repository;

@@ -72,7 +72,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Filter\ProductValuesEditDataFilter'
         arguments:
             - '@pim_catalog.filter.chained'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.channel'
 

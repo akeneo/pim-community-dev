@@ -91,8 +91,8 @@ SQL;
                 (int) $row['max_characters'],
                 $row['validation_rule'],
                 $row['validation_regexp'],
-                $row['number_min'],
-                $row['number_max'],
+                null === $row['number_min'] ? null : (int)$row['number_min'],
+                null === $row['number_max'] ? null : (int)$row['number_max'],
                 (bool) $row['decimals_allowed'],
                 (bool) $row['negative_allowed'],
                 Type::getType(Type::DATETIME)->convertToPHPValue($row['date_min'], $this->connection->getDatabasePlatform()),
@@ -100,7 +100,7 @@ SQL;
                 $row['metric_family'],
                 $row['default_metric_unit'],
                 (int) $row['max_file_size'],
-                null === $row['allowed_extensions'] ? [] : explode(',', $row['allowed_extensions']),
+                null === $row['allowed_extensions'] || '' === $row['allowed_extensions'] ? [] : explode(',', $row['allowed_extensions']),
                 (int) $row['minimumInputLength']
             );
         }
@@ -169,8 +169,8 @@ SQL;
                 (int)$row['max_characters'],
                 $row['validation_rule'],
                 $row['validation_regexp'],
-                (int)$row['number_min'],
-                (int)$row['number_max'],
+                null === $row['number_min'] ? null : (int)$row['number_min'],
+                null === $row['number_max'] ? null : (int)$row['number_max'],
                 (bool)$row['decimals_allowed'],
                 (bool)$row['negative_allowed'],
                 Type::getType(Type::DATETIME)->convertToPHPValue(
@@ -184,7 +184,7 @@ SQL;
                 $row['metric_family'],
                 $row['default_metric_unit'],
                 (int)$row['max_file_size'],
-                null === $row['allowed_extensions'] ? [] : explode(',', $row['allowed_extensions']),
+                null === $row['allowed_extensions'] || '' === $row['allowed_extensions'] ? [] : explode(',', $row['allowed_extensions']),
                 (int)$row['minimumInputLength']
             );
         }

@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetFamilyAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAxesCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * This service checks if an attribute of an entity with family is editable.
@@ -18,6 +21,30 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class CheckAttributeEditable
 {
+    /** @var GetFamilyAttributeCodes */
+    private $getFamilyAttributeCodes;
+
+    /** @var GetVariantAttributeSetAttributeCodes */
+    private $getVariantAttributeSetAttributeCodes;
+
+    /** @var GetVariantAttributeSetAxesCodes */
+    private $getVariantAttributeSetAxesCodes;
+
+    /**
+     * @param GetFamilyAttributeCodes $getFamilyAttributeCodes
+     * @param GetVariantAttributeSetAttributeCodes $getVariantAttributeSetAttributeCodes
+     * @param GetVariantAttributeSetAxesCodes $getVariantAttributeSetAxesCodes
+     */
+    public function __construct(
+        GetFamilyAttributeCodes $getFamilyAttributeCodes,
+        GetVariantAttributeSetAttributeCodes $getVariantAttributeSetAttributeCodes,
+        GetVariantAttributeSetAxesCodes $getVariantAttributeSetAxesCodes
+    ) {
+        $this->getFamilyAttributeCodes = $getFamilyAttributeCodes;
+        $this->getVariantAttributeSetAttributeCodes = $getVariantAttributeSetAttributeCodes;
+        $this->getVariantAttributeSetAxesCodes = $getVariantAttributeSetAxesCodes;
+    }
+
     /**
      * @param EntityWithFamilyInterface $entity
      * @param AttributeInterface        $attribute
@@ -33,7 +60,8 @@ class CheckAttributeEditable
             return true;
         }
 
-        if (!$family->hasAttribute($attribute)) {
+        $familyAttributeCodes = $this->getFamilyAttributeCodes->execute($family->getCode());
+        if (!in_array($attribute->getCode(), $familyAttributeCodes)) {
             return false;
         }
 
@@ -48,21 +76,16 @@ class CheckAttributeEditable
 
         $level = $entity->getVariationLevel();
         if (0 === $level) {
-            return $familyVariant->getCommonAttributes()->contains($attribute);
-        }
-
-        $attributeSet = $familyVariant->getVariantAttributeSet($level);
-        if (null === $attributeSet) {
-            throw new \Exception(
-                sprintf(
-                    'The variant attribute set of level "%d" was expected for the family variant "%s".',
-                    $level,
-                    $familyVariant->getCode()
-                )
+            $commonAttributeCodes = array_diff(
+                $familyAttributeCodes,
+                $this->getVariantAttributeSetAttributeCodes->execute($familyVariant->getCode(), 1),
+                $this->getVariantAttributeSetAttributeCodes->execute($familyVariant->getCode(), 2)
             );
+
+            return in_array($attribute->getCode(), $commonAttributeCodes);
         }
 
-        return $attributeSet->hasAttribute($attribute);
+        return in_array($attribute->getCode(), $this->getAttributesForLevel($familyVariant->getCode(), $level));
     }
 
     /**
@@ -81,5 +104,19 @@ class CheckAttributeEditable
         }
 
         return false;
+    }
+
+    /**
+     * @param string $familyVariantCode
+     * @param int $level
+     *
+     * @return array
+     */
+    private function getAttributesForLevel(string $familyVariantCode, int $level): array
+    {
+        return array_diff(
+            $this->getVariantAttributeSetAttributeCodes->execute($familyVariantCode, $level),
+            $this->getVariantAttributeSetAxesCodes->execute($familyVariantCode, $level)
+        );
     }
 }

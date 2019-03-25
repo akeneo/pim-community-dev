@@ -6,8 +6,8 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 
 /**
  * Product edit data filter
@@ -21,7 +21,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     /** @var ObjectFilterInterface */
     protected $objectFilter;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var LocaleRepositoryInterface */
@@ -41,13 +41,13 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
 
     /**
      * @param ObjectFilterInterface        $objectFilter
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param LruArrayAttributeRepository $attributeRepository
      * @param LocaleRepositoryInterface    $localeRepository
      * @param ChannelRepositoryInterface   $channelRepository
      */
     public function __construct(
         ObjectFilterInterface $objectFilter,
-        AttributeRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
         ChannelRepositoryInterface $channelRepository
     ) {
@@ -139,7 +139,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
                 return false;
             }
 
-            if ($attribute->isLocaleSpecific() && !in_array($value['locale'], $attribute->getLocaleSpecificCodes())) {
+            if ($attribute->isLocaleSpecific() && !in_array($value['locale'], $attribute->getAvailableLocaleCodes())) {
                 return false;
             }
         }

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Remove a value from an entity with values

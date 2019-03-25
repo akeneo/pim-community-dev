@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\ValueConverterRegistry;
-use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 
 /**
  * Standard to flat array converter for product value
@@ -17,16 +17,16 @@ class ProductValueConverter
     /** @var ValueConverterRegistry */
     protected $converterRegistry;
 
-    /** @var CachedObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepo;
 
     /**
-     * @param ValueConverterRegistry          $converterRegistry
-     * @param CachedObjectRepositoryInterface $attributeRepo
+     * @param ValueConverterRegistry      $converterRegistry
+     * @param LruArrayAttributeRepository $attributeRepo
      */
     public function __construct(
         ValueConverterRegistry $converterRegistry,
-        CachedObjectRepositoryInterface $attributeRepo
+        LruArrayAttributeRepository $attributeRepo
     ) {
         $this->converterRegistry = $converterRegistry;
         $this->attributeRepo = $attributeRepo;

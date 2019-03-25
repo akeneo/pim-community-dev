@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -29,7 +29,7 @@ class AddAttributeValueProcessor extends AbstractProcessor
     /** @var PropertyAdderInterface */
     private $propertyAdder;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var CheckAttributeEditable */
@@ -42,7 +42,7 @@ class AddAttributeValueProcessor extends AbstractProcessor
      * @param ValidatorInterface                    $productValidator
      * @param ValidatorInterface                    $productModelValidator
      * @param PropertyAdderInterface                $propertyAdder
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param LruArrayAttributeRepository           $attributeRepository
      * @param CheckAttributeEditable                $checkAttributeEditable
      * @param array                                 $supportedTypes
      */
@@ -50,7 +50,7 @@ class AddAttributeValueProcessor extends AbstractProcessor
         ValidatorInterface $productValidator,
         ValidatorInterface $productModelValidator,
         PropertyAdderInterface $propertyAdder,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         CheckAttributeEditable $checkAttributeEditable,
         array $supportedTypes
     ) {

@@ -3,11 +3,11 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Converter;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Convert value into channel conversion unit if selected
@@ -24,17 +24,18 @@ class MetricConverter
     /** @var EntityWithValuesBuilderInterface */
     protected $entityWithValuesBuilder;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /**
-     * @param MeasureConverter                 $converter
+     * @param MeasureConverter $converter
      * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param LruArrayAttributeRepository $attributeRepository
      */
     public function __construct(
         MeasureConverter $converter,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        LruArrayAttributeRepository $attributeRepository
     ) {
         $this->converter               = $converter;
         $this->entityWithValuesBuilder = $entityWithValuesBuilder;

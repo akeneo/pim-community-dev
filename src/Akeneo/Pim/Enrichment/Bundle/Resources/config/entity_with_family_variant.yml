@@ -9,6 +9,10 @@ services:
 
     pim_catalog.entity_with_family_variant.check_attribute_editable:
         class: '%pim_catalog.entity_with_family_variant.check_attribute_editable.class%'
+        arguments:
+            - '@pim_catalog.query.get_family_attribute_codes'
+            - '@pim_catalog.query.get_variant_attribute_set_attribute_codes'
+            - '@pim_catalog.query.get_variant_attribute_set_axes_codes'
 
     pim_catalog.entity_with_family_variant.add_parent_to_product:
         class: '%pim_catalog.entity_with_family_variant.add_parent_to_product.class%'

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Converts flat price into structured one.

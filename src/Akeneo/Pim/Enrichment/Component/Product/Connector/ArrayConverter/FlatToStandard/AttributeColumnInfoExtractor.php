@@ -2,7 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
@@ -18,7 +19,7 @@ class AttributeColumnInfoExtractor
     const FIELD_SEPARATOR = '-';
     const UNIT_SEPARATOR = ' ';
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
@@ -37,13 +38,13 @@ class AttributeColumnInfoExtractor
     protected $excludedFieldNames;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param LruArrayAttributeRepository           $attributeRepository
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param AssociationColumnsResolver            $assoColumnResolver
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
         AssociationColumnsResolver $assoColumnResolver = null
@@ -173,7 +174,7 @@ class AttributeColumnInfoExtractor
      *
      * @param AttributeInterface $attribute
      *
-     * @return int
+     * @return int[]
      */
     protected function calculateExpectedSize(AttributeInterface $attribute)
     {
@@ -243,7 +244,7 @@ class AttributeColumnInfoExtractor
     {
         if ($attribute->isLocaleSpecific()) {
             $attributeInfo = $this->extractAttributeInfo($attribute, $explodedFieldNames);
-            $availableLocales = $attribute->getLocaleSpecificCodes();
+            $availableLocales = $attribute->getAvailableLocaleCodes();
             if (!in_array($explodedFieldNames[1], $availableLocales)) {
                 throw new \LogicException(
                     sprintf(
