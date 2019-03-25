@@ -14,6 +14,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\FindValueKeysToFilterOn;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -26,9 +27,14 @@ class RecordNormalizerSpec extends ObjectBehavior
 {
     function let(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
-        SqlFindSearchableRecords $findSearchableRecords
+        SqlFindSearchableRecords $findSearchableRecords,
+        FindValueKeysToFilterOn $findValueKeysToFilterOn
     ) {
-        $this->beConstructedWith($findValueKeysToIndexForAllChannelsAndLocales, $findSearchableRecords);
+        $this->beConstructedWith(
+            $findValueKeysToIndexForAllChannelsAndLocales,
+            $findSearchableRecords,
+            $findValueKeysToFilterOn
+        );
     }
 
     function it_is_initializable()
@@ -38,7 +44,8 @@ class RecordNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_searchable_record_by_record_identifier(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
-        SqlFindSearchableRecords $findSearchableRecords
+        SqlFindSearchableRecords $findSearchableRecords,
+        FindValueKeysToFilterOn $findValueKeysToFilterOn
     ) {
         $recordIdentifier = RecordIdentifier::fromString('stark');
         $stark = new SearchableRecordItem();
@@ -69,6 +76,9 @@ class RecordNormalizerSpec extends ObjectBehavior
                     ],
                 ]
             );
+        $findValueKeysToFilterOn
+            ->fetch($stark->referenceEntityIdentifier)
+            ->willReturn([$stark->referenceEntityIdentifier]);
 
         $normalizedRecord = $this->normalizeRecord($recordIdentifier);
         $normalizedRecord['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
