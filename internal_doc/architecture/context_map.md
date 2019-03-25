@@ -42,7 +42,7 @@ The raccoon squad handles the **User Management**, **Channel**, **Asset** and **
 
 - **User Management**: Define the users, their preferences and their functional perimeter, so that it reflects the customer organization.
 - **Channel**: The settings to distribute a product selection to a given market, based on some geographical parameters.
-- **Asset**: Library of media shared by several products to bring added value and leverage the product experience.
+- **Asset** (Enterprise Edition only): Library of media shared by several products to bring added value and leverage the product experience.
 - **Reference entity** (Enterprise Edition only): Structured and rich data shared by several products to bring added value and leverage the product experience.
 
 ### Context map
