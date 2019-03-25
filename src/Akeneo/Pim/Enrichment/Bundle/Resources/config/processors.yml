@@ -70,7 +70,8 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
+            - '@pim_catalog.query.get_media_attribute_codes'
             - '@pim_connector.processor.bulk_media_fetcher'
             - '@pim_catalog.values_filler.product'
 
@@ -79,7 +80,8 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product_model'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
+            - '@pim_catalog.query.get_media_attribute_codes'
             - '@pim_connector.processor.bulk_media_fetcher'
             - '@pim_catalog.values_filler.entity_with_family_variant'
 

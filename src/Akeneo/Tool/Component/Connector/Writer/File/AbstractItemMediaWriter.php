@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Connector\Writer\File;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetAttributeTypeByCodes;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
@@ -37,8 +37,8 @@ abstract class AbstractItemMediaWriter implements
     /** @var BufferFactory */
     protected $bufferFactory;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var GetAttributeTypeByCodes */
+    protected $getAttributeTypeByCodes;
 
     /** @var FileExporterPathGeneratorInterface */
     protected $fileExporterPath;
@@ -68,7 +68,7 @@ abstract class AbstractItemMediaWriter implements
      * @param ArrayConverterInterface            $arrayConverter
      * @param BufferFactory                      $bufferFactory
      * @param FlatItemBufferFlusher              $flusher
-     * @param AttributeRepositoryInterface       $attributeRepository
+     * @param GetAttributeTypeByCodes            $getAttributeTypeByCodes
      * @param FileExporterPathGeneratorInterface $fileExporterPath
      * @param array                              $mediaAttributeTypes
      * @param String                             $jobParamFilePath
@@ -77,7 +77,7 @@ abstract class AbstractItemMediaWriter implements
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributeTypeByCodes $getAttributeTypeByCodes,
         FileExporterPathGeneratorInterface $fileExporterPath,
         array $mediaAttributeTypes,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
@@ -85,7 +85,7 @@ abstract class AbstractItemMediaWriter implements
         $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;
         $this->flusher = $flusher;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributeTypeByCodes = $getAttributeTypeByCodes;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->fileExporterPath = $fileExporterPath;
         $this->jobParamFilePath = $jobParamFilePath;
@@ -261,7 +261,7 @@ abstract class AbstractItemMediaWriter implements
      */
     protected function resolveMediaPaths(array $item, $tmpDirectory)
     {
-        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($item['values']));
+        $attributeTypes = $this->getAttributeTypeByCodes->execute(array_keys($item['values']));
         $mediaAttributeTypes = array_filter($attributeTypes, function ($attributeCode) {
             return in_array($attributeCode, $this->mediaAttributeTypes);
         });

@@ -2,10 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetMediaAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -31,8 +32,11 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
+
+    /** @var GetMediaAttributeCodes */
+    protected $getMediaAttributeCodes;
 
     /** @var StepExecution */
     protected $stepExecution;
@@ -44,23 +48,26 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     protected $productValuesFiller;
 
     /**
-     * @param NormalizerInterface                   $normalizer
+     * @param NormalizerInterface $normalizer
      * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param BulkMediaFetcher                      $mediaFetcher
+     * @param LruArrayAttributeRepository $attributeRepository
+     * @param GetMediaAttributeCodes $getMediaAttributeCodes
+     * @param BulkMediaFetcher $mediaFetcher
      * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
      */
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
-        AttributeRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
+        GetMediaAttributeCodes $getMediaAttributeCodes,
         BulkMediaFetcher $mediaFetcher,
-        ?EntityWithFamilyValuesFillerInterface $productValuesFiller = null
+        EntityWithFamilyValuesFillerInterface $productValuesFiller
     ) {
-        $this->normalizer          = $normalizer;
-        $this->channelRepository   = $channelRepository;
+        $this->normalizer = $normalizer;
+        $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->mediaFetcher        = $mediaFetcher;
+        $this->getMediaAttributeCodes = $getMediaAttributeCodes;
+        $this->mediaFetcher = $mediaFetcher;
         $this->productValuesFiller = $productValuesFiller;
     }
 
@@ -100,7 +107,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
 
             $this->fetchMedia($product, $directory);
         } else {
-            $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
+            $mediaAttributes = $this->getMediaAttributeCodes->execute();
             $productStandard['values'] = array_filter(
                 $productStandard['values'],
                 function ($attributeCode) use ($mediaAttributes) {

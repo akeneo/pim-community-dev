@@ -18,7 +18,7 @@ services:
     pim_enrich.converter.enrich_to_standard.product_value:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Converter\InternalApiToStandard\ValueConverter'
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_media_attribute_codes'
 
     pim_enrich.converter.mass_operation:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Converter\MassOperationConverter'

@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Mapping;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\AttributeInterface;
+use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
@@ -31,12 +31,12 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     /** @var array */
     protected $attrConstraintsCache;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LruArrayAttributeRepository */
     protected $attributeRepository;
 
     public function __construct(
         ConstraintGuesserInterface $guesser,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        LruArrayAttributeRepository $attributeRepository,
         ClassMetadataFactory $factory = null
     ) {
         $this->guesser = $guesser;

@@ -36,4 +36,24 @@ interface AttributeInterface
     public function getDefaultMetricUnit();
 
     public function getReferenceDataName();
+
+    public function getValidationRule();
+
+    public function getValidationRegexp();
+
+    public function getMaxFileSize();
+
+    public function getAllowedExtensions(): array;
+
+    public function getMaxCharacters();
+
+    public function getNumberMin();
+
+    public function getNumberMax();
+
+    public function isNegativeAllowed();
+
+    public function getDateMin();
+
+    public function getDateMax();
 }

@@ -55,7 +55,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
@@ -67,7 +67,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product_model_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product_model.flat_item_buffer_flusher'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
 
@@ -77,7 +77,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product_quick_export.flat_item_buffer_flusher'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
@@ -90,7 +90,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product_model_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product_model_quick_export.flat_item_buffer_flusher'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
             - 'filePathProductModel'
@@ -101,7 +101,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
@@ -113,7 +113,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product_model_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product_model.flat_item_buffer_flusher'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
 
@@ -123,7 +123,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product_quick_export.flat_item_buffer_flusher'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
@@ -136,7 +136,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product_model_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product_model_quick_export.flat_item_buffer_flusher'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.get_attribute_type_by_codes'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
             - 'filePathProductModel'

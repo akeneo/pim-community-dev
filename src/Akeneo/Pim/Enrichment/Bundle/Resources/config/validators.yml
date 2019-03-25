@@ -282,7 +282,7 @@ services:
         class: '%pim_catalog.validator.mapping.product_value_metadata_factory.class%'
         arguments:
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.lru_array_attribute'
 
     pim_catalog.validator.mapping.delegating_class_metadata_factory:
         public: false

@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetAttributeTypeByCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
@@ -44,7 +44,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributeTypeByCodes $getAttributeTypeByCodes,
         FileExporterPathGeneratorInterface $fileExporterPath,
         GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
         GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes,
@@ -55,7 +55,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
             $arrayConverter,
             $bufferFactory,
             $flusher,
-            $attributeRepository,
+            $getAttributeTypeByCodes,
             $fileExporterPath,
             $mediaAttributeTypes,
             $jobParamFilePath

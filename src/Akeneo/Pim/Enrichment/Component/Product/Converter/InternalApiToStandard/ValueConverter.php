@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Converter\InternalApiToStandard;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetMediaAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -12,15 +12,15 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  */
 class ValueConverter implements ConverterInterface
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var GetMediaAttributeCodes */
+    protected $getMediaAttributeCodes;
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param GetMediaAttributeCodes $getMediaAttributeCodes
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    public function __construct(GetMediaAttributeCodes $getMediaAttributeCodes)
     {
-        $this->attributeRepository = $attributeRepository;
+        $this->getMediaAttributeCodes = $getMediaAttributeCodes;
     }
 
     /**
@@ -49,7 +49,7 @@ class ValueConverter implements ConverterInterface
      */
     public function convert(array $productValues)
     {
-        $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
+        $mediaAttributes = $this->getMediaAttributeCodes->execute();
 
         foreach ($productValues as $code => $values) {
             if (in_array($code, $mediaAttributes)) {

@@ -161,8 +161,8 @@ final class Attribute implements AttributeInterface
         $this->maxCharacters = $maxCharacters;
         $this->validationRule = $validationRule;
         $this->validationRegexp = $validationRegexp;
-        $this->numberMin = $numberMin;
-        $this->numberMax = $numberMax;
+        $this->numberMin = null !== $numberMin ? (int)$numberMin : null;
+        $this->numberMax = null !== $numberMax ? (int)$numberMax : null;
         $this->decimalsAllowed = $decimalsAllowed;
         $this->negativeAllowed = $negativeAllowed;
         $this->dateMin = $dateMin;
