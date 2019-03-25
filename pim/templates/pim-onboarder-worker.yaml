@@ -56,7 +56,7 @@ spec:
       volumes:
         - name: fpm-data
           persistentVolumeClaim:
-            claimName: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}
+            claimName: pvc-data-pim-{{ .Values.global.extraLabels.instanceName }}
         - name: google-cloud-onboarder-key
           secret:
             secretName: pim-secrets

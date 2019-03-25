@@ -1,5 +1,6 @@
 global:
   extraLabels:
+    instanceName: ${instanceName}
     pfid: ${pfid}
 
 common:
@@ -13,7 +14,7 @@ backup:
 
 nfs:
   storageClass:
-    name: nfs-${pfid}
+    name: nfs-${instanceName}
 
 mailer:
   login: ${mailgun_login_email}

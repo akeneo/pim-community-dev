@@ -48,7 +48,7 @@ spec:
           volumes:
             - name: fpm-data
               persistentVolumeClaim:
-                claimName: pvc-data-pim-{{ $tplCtx.Values.global.extraLabels.pfid }}
+                claimName: pvc-data-pim-{{ $tplCtx.Values.global.extraLabels.instanceName }}
           {{- end }}
 ---
 {{- end }}

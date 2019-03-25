@@ -69,7 +69,7 @@ spec:
                 path: channels.csv
         - name: fpm-data
           persistentVolumeClaim:
-            claimName: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}
+            claimName: pvc-data-pim-{{ .Values.global.extraLabels.instanceName }}
         {{- if .Values.onboarder.enabled }}
         - name: google-cloud-onboarder-key
           secret:

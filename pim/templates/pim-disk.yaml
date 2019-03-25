@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}
+  name: pvc-data-pim-{{ .Values.global.extraLabels.instanceName }}
   labels:
     app: {{ template "pim.fullName" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"

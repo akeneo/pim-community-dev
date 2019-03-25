@@ -4,8 +4,12 @@ terraform {
   }
 }
 
+locals {
+  pfid = "srnt-${var.instance_name}"
+}
+
 data "template_file" "mailgun_login" {
-  template = "${format ("%s-%s", var.pfid, var.google_project_name)}"
+  template = "${format ("%s-%s", local.pfid, var.google_project_name)}"
 }
 
 resource "random_string" "mailgun_password" {

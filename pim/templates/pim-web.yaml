@@ -127,7 +127,7 @@ spec:
           emptyDir: {}
         - name: fpm-data
           persistentVolumeClaim:
-            claimName: pvc-data-pim-{{required ".Values.global.extraLabels.pfid is required" .Values.global.extraLabels.pfid }}
+            claimName: pvc-data-pim-{{required ".Values.global.extraLabels.instanceName is required" .Values.global.extraLabels.instanceName }}
         - name: conf-httpd
           configMap:
             name: pim-config

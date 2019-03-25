@@ -12,7 +12,7 @@ variable "pager_duty_service_key" {
   description = "PagerDuty Service key, get it on the pagerduty page of the service"
 }
 
-variable "pfid" {
+variable "instance_name" {
   type = "string"
 }
 
