@@ -16,15 +16,20 @@ class ZipFilesystemFactory
     /**
      * Create a Zip filesystem configured with the given path
      *
-     * @param string $absolutePath
+     * @param Filesystem $filesystem
+     * @param string     $zipName
      *
      * @return Filesystem
      */
-    public function createZip($absolutePath)
+    public function createZip(Filesystem $filesystem, string $zipName)
     {
-//        if (!is_dir(dirname($absolutePath))) {
-//            throw new \InvalidArgumentException(sprintf('The provided path "%s" is not a valid directory', $absolutePath));
-//        }
+        $relativePath = uniqid() . DIRECTORY_SEPARATOR . $zipName;
+
+        if (!$filesystem->has(dirname($relativePath))) {
+            $filesystem->createDir(dirname($relativePath));
+        }
+
+        $absolutePath = $filesystem->getAdapter()->getPathPrefix() . $relativePath;
 
         return new Filesystem(new WriteStreamZipArchiveAdapter($absolutePath));
     }

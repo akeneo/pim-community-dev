@@ -24,18 +24,27 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
     /** @var string */
     protected $directory;
 
+    /** @var Filesystem */
+    private $tmpStorageFilesystem;
+
     /** @var JobRegistry */
     private $jobRegistry;
 
     /**
      * @param ZipFilesystemFactory $factory
-     * @param Filesystem           $filesystem
+     * @param Filesystem           $filesystem      This is the "archivist" filesystem
+     * @param Filesystem           $tmpStorageFilesystem
      * @param JobRegistry          $jobRegistry
      */
-    public function __construct(ZipFilesystemFactory $factory, Filesystem $filesystem, JobRegistry $jobRegistry)
-    {
+    public function __construct(
+        ZipFilesystemFactory $factory,
+        Filesystem $filesystem,
+        Filesystem $tmpStorageFilesystem,
+        JobRegistry $jobRegistry
+    ) {
         $this->factory = $factory;
         $this->filesystem = $filesystem;
+        $this->tmpStorageFilesystem = $tmpStorageFilesystem;
         $this->jobRegistry = $jobRegistry;
     }
 
@@ -51,14 +60,27 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
             }
             $writer = $step->getWriter();
             if ($this->isWriterUsable($writer)) {
-                $filesystem = $this->getZipFilesystem(
-                    $jobExecution,
-                    sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME))
+                $zipName = sprintf(
+                    '%s.zip',
+                    pathinfo($writer->getPath(), PATHINFO_FILENAME)
                 );
+                $zipPath = $this->prepareZipPath($jobExecution, $zipName);
+
+                $zipFilesystem = $this->factory->createZip($this->tmpStorageFilesystem, $zipName);
 
                 foreach ($writer->getWrittenFiles() as $fullPath => $localPath) {
-                    $filesystem->putStream($localPath, fopen($fullPath, 'r'));
+                    $zipFilesystem->putStream($localPath, fopen($fullPath, 'r'));
                 }
+
+                $tmpArchivePath = $zipFilesystem->getAdapter()->getArchive()->filename;
+                $zipFilesystem->getAdapter()->getArchive()->close();
+
+                $this->filesystem->put($zipPath, file_get_contents($tmpArchivePath));
+                $this->tmpStorageFilesystem->delete(str_replace(
+                    $this->tmpStorageFilesystem->getAdapter()->getPathPrefix(),
+                    '',
+                    $tmpArchivePath
+                ));
             }
         }
     }
@@ -77,9 +99,9 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
      * @param JobExecution $jobExecution
      * @param string       $zipName
      *
-     * @return Filesystem
+     * @return string
      */
-    protected function getZipFilesystem(JobExecution $jobExecution, $zipName)
+    protected function prepareZipPath(JobExecution $jobExecution, $zipName)
     {
         $zipPath = strtr(
             $this->getRelativeArchivePath($jobExecution),
@@ -90,10 +112,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
             $this->filesystem->createDir(dirname($zipPath));
         }
 
-        return $this->factory->createZip(
-            $this->filesystem->getAdapter()->getPathPrefix() .
-            $zipPath
-        );
+        return $zipPath;
     }
 
     /**
