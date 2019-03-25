@@ -33,6 +33,7 @@ define(
                 this.model = new Backbone.Model({
                     buttons: []
                 });
+                this.events = {};
 
                 this.on('save-buttons:add-button', this.addButton.bind(this));
 
