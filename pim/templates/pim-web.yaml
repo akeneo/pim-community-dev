@@ -26,6 +26,17 @@ spec:
         role: pim-web
         {{ include "pim.extraLabels" . | indent 8 }}
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  app: "{{ template "pim.fullName" . }}"
+                  release: "{{ .Release.Name }}"
+                  role: pim-web
       initContainers:
         - name: init-fpm
           image:  "{{ .Values.image.pim.repository }}:{{ required "Value .image.pim.tag is required!" .Values.image.pim.tag }}"

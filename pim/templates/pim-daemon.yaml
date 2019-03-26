@@ -27,6 +27,17 @@ spec:
         role: pim-daemon
         {{ include "pim.extraLabels" . | indent 8 }}
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  app: "{{ template "pim.fullName" . }}"
+                  release: "{{ .Release.Name }}"
+                  role: pim-daemon
       containers:
         - name: php
           image: "{{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}"
