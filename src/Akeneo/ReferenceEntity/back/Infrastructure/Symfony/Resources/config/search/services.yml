@@ -48,7 +48,7 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_value_keys_to_filter_on:
-      class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\FindValueKeysToFilterOn
+      class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\FindValueKeysToFilterOnAttributeType
       arguments:
         - '@database_connection'
 

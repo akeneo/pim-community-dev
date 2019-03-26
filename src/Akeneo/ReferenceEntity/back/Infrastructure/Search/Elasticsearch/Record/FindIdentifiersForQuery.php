@@ -162,6 +162,8 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         }
 
         if (null !== $attributeFilter && !empty($attributeFilter['value'] && 'IN' === $attributeFilter['operator'])) {
+            // As the attribute identifier filter will have all the time the same structure values.*. We could extract only the last part of the string
+            // with a substr from the dot.
             $attributeIdentifier = substr($attributeFilter['field'], 7);
 
             $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(

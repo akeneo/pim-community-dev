@@ -27,7 +27,7 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const UPDATED_AT = 'updated_at';
     private const RECORD_CODE_LABEL_SEARCH = 'record_code_label_search';
     private const COMPLETE_VALUE_KEYS = 'complete_value_keys';
-    const VALUES_FIELD = 'values';
+    private const VALUES_FIELD = 'values';
 
     /** @var FindValueKeysToIndexForAllChannelsAndLocalesInterface */
     private $findValueKeysToIndexForAllChannelsAndLocales;
@@ -35,17 +35,17 @@ class RecordNormalizer implements RecordNormalizerInterface
     /** @var SqlFindSearchableRecords */
     private $findSearchableRecords;
 
-    /** @var FindValueKeysToFilterOn */
-    private $findValueKeysToFilterOn;
+    /** @var FindValueKeysToFilterOnAttributeType */
+    private $findValueKeysToFilterOnAttributeType;
 
     public function __construct(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords,
-        FindValueKeysToFilterOn $findValueKeysToFilterOn
+        FindValueKeysToFilterOnAttributeType $findValueKeysToFilterOnAttributeType
     ) {
         $this->findValueKeysToIndexForAllChannelsAndLocales = $findValueKeysToIndexForAllChannelsAndLocales;
         $this->findSearchableRecords = $findSearchableRecords;
-        $this->findValueKeysToFilterOn = $findValueKeysToFilterOn;
+        $this->findValueKeysToFilterOnAttributeType = $findValueKeysToFilterOnAttributeType;
     }
 
     public function normalizeRecord(RecordIdentifier $recordIdentifier): array
@@ -164,7 +164,7 @@ class RecordNormalizer implements RecordNormalizerInterface
 
     private function generateFilterableValues(SearchableRecordItem $searchableRecordItem): array
     {
-        $valueKeys = $this->findValueKeysToFilterOn->fetch($searchableRecordItem->referenceEntityIdentifier);
+        $valueKeys = $this->findValueKeysToFilterOnAttributeType->fetch($searchableRecordItem->referenceEntityIdentifier);
         $result = [];
         foreach ($valueKeys as $valueKey) {
             if (isset($searchableRecordItem->values[$valueKey])) {

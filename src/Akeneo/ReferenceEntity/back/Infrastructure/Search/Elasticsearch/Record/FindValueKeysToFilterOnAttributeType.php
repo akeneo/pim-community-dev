@@ -10,11 +10,13 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Doctrine\DBAL\Driver\Connection;
 
 /**
+ * Query Function to get the value keys on the attribute type option, option_collection, record and record_collection.
+ *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FindValueKeysToFilterOn
+class FindValueKeysToFilterOnAttributeType
 {
     /** @var Connection */
     private $sqlConnection;
