@@ -69,7 +69,10 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
 
         $attributeOptionRepository
             ->findCodesByIdentifiers('baz', ['option1', 'option2'])
-            ->willReturn(['option1', 'option2']);
+            ->willReturn([
+                ['code' => 'option1'],
+                ['code' => 'option2']
+            ]);
 
         $attribute->getMetricFamily()->willReturn('Frequency');
         $attribute->getDefaultMetricUnit()->willReturn('MEGAHERTZ');
@@ -245,7 +248,10 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         );
         $attributeOptionRepository
             ->findCodesByIdentifiers('baz', ['option1', 'option2', 'option3'])
-            ->willReturn(['option1', 'option3']);
+            ->willReturn([
+                ['code' => 'option1'],
+                ['code' => 'option3']
+            ]);
 
         $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
             [

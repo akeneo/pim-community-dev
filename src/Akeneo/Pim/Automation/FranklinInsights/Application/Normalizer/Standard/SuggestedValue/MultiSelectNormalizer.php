@@ -53,6 +53,13 @@ final class MultiSelectNormalizer
             $providedOptionCodes
         );
 
+        $existingOptionCodes = array_map(
+            function ($optionCode) {
+                return $optionCode['code'];
+            },
+            $existingOptionCodes
+        );
+
         if (empty($existingOptionCodes)) {
             return [];
         }
