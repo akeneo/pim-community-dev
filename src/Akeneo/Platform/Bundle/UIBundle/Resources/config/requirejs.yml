@@ -687,6 +687,7 @@ config:
     pim/association-type-edit-form/delete: pimui/js/association-type/form/delete
 
     # Attribute group
+    pim/model/attribute:                  pimui/js/model/attribute.ts
     pim/model/attribute-group:            pimui/js/model/attribute-group.ts
     pim/attribute-group-edit-form/delete: pimui/js/attribute-group/form/delete
     pim/attribute-group-edit-form/list:   pimui/js/attribute-group/form/list
@@ -897,7 +898,6 @@ config:
     pim/group-edit-form/save:                   pimui/js/group/form/save
 
     # Attribute
-    pim/model/attribute:                                    pimui/js/model/attribute.ts
     pim/attribute-edit-form/tab/choices:                    pimui/js/attribute/form/choices
     pim/attribute-edit-form/choices/options-grid:           pimui/js/attribute/form/choices/options-grid
     pim/attribute-edit-form/delete:                         pimui/js/attribute/form/delete
