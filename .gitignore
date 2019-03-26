@@ -60,3 +60,4 @@ coverage/*
 app/config/parameters.yml
 app/config/parameters_test.yml
 .phpunit.result.cache
+composer.lock
