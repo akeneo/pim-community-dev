@@ -18,6 +18,7 @@
 - PIM-8232: Escape quotes in flash messages twig
 - PIM-8231: Product model drafts/proposals through API are well applied.
 - PIM-8041: Use project locale when switching between projects
+- PIM-8234: Fix performance issue on the command that generates missing asset variation files
 
 # 2.3.34 (2019-03-18)
 

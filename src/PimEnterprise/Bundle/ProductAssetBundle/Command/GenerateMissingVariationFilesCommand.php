@@ -54,23 +54,25 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $assetCodes = $this->isGenerateForAllAssets($input) ? $this->getAllAssetsCodes() : [$input->getOption('asset')];
+        $assetsWithMissingVariations = $this->isGenerateForAllAssets($input)
+            ? $this->findAssetsWithMissingVariations()
+            : [$input->getOption('asset')];
         try {
-            $this->buildAssets($assetCodes);
+            $this->buildAssets($assetsWithMissingVariations);
         } catch (\LogicException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
             return 1;
         }
 
-        $missingVariationIds = $this->findMissingVariationIds($input);
-        if (empty($missingVariationIds)) {
+        $variationIdsWithMissingFile = $this->findVariationIdsWithMissingFile($input);
+        if (empty($variationIdsWithMissingFile)) {
             $output->writeln('<info>No missing variation</info>');
 
             return 0;
         }
 
-        $this->generateMissingVariations($output, $missingVariationIds);
+        $this->generateMissingVariationFiles($output, $variationIdsWithMissingFile);
 
         return 0;
     }
@@ -133,18 +135,35 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     }
 
     /**
-     * @return string[]
+     * @return string[] Assets codes
      */
-    protected function getAllAssetsCodes()
+    private function findAssetsWithMissingVariations(): array
     {
         $connection = $this->getContainer()->get('database_connection');
         $sql = <<<SQL
-            SELECT code
-            FROM pimee_product_asset_asset
+    SELECT asset.code
+    FROM pimee_product_asset_reference AS reference
+      INNER JOIN pimee_product_asset_asset AS asset ON reference.asset_id = asset.id
+      INNER JOIN pim_catalog_channel_locale AS channel_locale ON channel_locale.locale_id = reference.locale_id
+      LEFT JOIN pimee_product_asset_variation AS variation 
+        ON reference.id = variation.reference_id AND variation.channel_id = channel_locale.channel_id
+    WHERE reference.locale_id IS NOT NULL 
+      AND reference.file_info_id IS NOT NULL 
+      AND variation.id IS NULL
+UNION
+    SELECT asset.code
+    FROM pimee_product_asset_reference AS reference
+      CROSS JOIN pim_catalog_channel AS channel
+      INNER JOIN pimee_product_asset_asset AS asset ON reference.asset_id = asset.id
+      LEFT JOIN pimee_product_asset_variation AS variation 
+        ON reference.id = variation.reference_id AND variation.channel_id = channel.id
+    WHERE reference.locale_id IS NULL  
+      AND reference.file_info_id IS NOT NULL 
+      AND variation.id IS NULL
 SQL;
         $statement = $connection->query($sql);
 
-        return array_column($statement->fetchAll(), 'code');
+        return $statement->fetchAll(\PDO::FETCH_COLUMN);
     }
 
     protected function clearCache()
@@ -157,7 +176,7 @@ SQL;
      *
      * @return int[]
      */
-    protected function findMissingVariationIds(InputInterface $input): array
+    private function findVariationIdsWithMissingFile(InputInterface $input): array
     {
         $asset = null;
         if (!$this->isGenerateForAllAssets($input)) {
@@ -196,14 +215,14 @@ SQL;
      * @param OutputInterface $output
      * @param int[]           $missingVariationIds
      */
-    protected function generateMissingVariations(OutputInterface $output, array $missingVariationIds): void
+    private function generateMissingVariationFiles(OutputInterface $output, array $missingVariationIds): void
     {
         $chunks = array_chunk($missingVariationIds, static::BATCH_SIZE);
 
         foreach ($chunks as $missingVariationIdsToProcess) {
             $missingVariations = $this->getVariationRepository()->findBy(['id' => $missingVariationIdsToProcess]);
 
-            $processedAssets = $this->generateVariation($output, $missingVariations);
+            $processedAssets = $this->generateVariationFiles($output, $missingVariations);
             $this->scheduleCompleteness($output, $processedAssets);
 
             $this->clearCache();
@@ -218,7 +237,7 @@ SQL;
      *
      * @return array
      */
-    protected function generateVariation(OutputInterface $output, array $missingVariations): array
+    private function generateVariationFiles(OutputInterface $output, array $missingVariations): array
     {
         $generator = $this->getVariationsCollectionFileGenerator();
         $processedList = $generator->generate($missingVariations, true);
