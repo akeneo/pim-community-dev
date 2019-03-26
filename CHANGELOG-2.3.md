@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8234: Fix performance issue on the command that generates missing asset variation files
+
 # 2.3.36 (2019-04-02)
 
 ## Developer Experience Improvement
@@ -18,7 +22,6 @@
 - PIM-8232: Escape quotes in flash messages twig
 - PIM-8231: Product model drafts/proposals through API are well applied.
 - PIM-8041: Use project locale when switching between projects
-- PIM-8234: Fix performance issue on the command that generates missing asset variation files
 
 # 2.3.34 (2019-03-18)
 
@@ -26,6 +29,7 @@
 
 - PIM-8187: When delete a product model / product the proposals linked in ES where not deleted
 - PIM-8225: Show reference image on assets grid when there is no variation file info for the channel
+- PIM-8041: Use project locale when switching between projects
 
 # 2.3.33 (2019-03-13)
 
