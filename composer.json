@@ -49,7 +49,7 @@
         "doctrine/orm": "~2.6.3",
         "doctrine/persistence": "^1.1",
         "doctrine/reflection": "^1.0",
-        "dompdf/dompdf" : "^0.7",
+        "dompdf/dompdf": "^0.7",
         "elasticsearch/elasticsearch": "^6.1",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "friendsofsymfony/oauth-server-bundle": "^1.5.2",
