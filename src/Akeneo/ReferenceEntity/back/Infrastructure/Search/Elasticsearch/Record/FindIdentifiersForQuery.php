@@ -37,6 +37,7 @@ use Akeneo\Tool\Component\Elasticsearch\QueryString;
 class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 {
     private const INDEX_TYPE = 'pimee_reference_entity_record';
+    private const ATTRIBUTE_FILTER_FIELD = 'values.';
 
     /** @var Client */
     private $recordClient;
@@ -162,9 +163,8 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         }
 
         if (null !== $attributeFilter && !empty($attributeFilter['value'] && 'IN' === $attributeFilter['operator'])) {
-            // As the attribute identifier filter will have all the time the same structure values.*. We could extract only the last part of the string
-            // with a substr from the dot.
-            $attributeIdentifier = substr($attributeFilter['field'], 7);
+            // As the attribute identifier filter will have all the time the same structure values.*. We could extract only the last part of the string with a substr from the dot.
+            $attributeIdentifier = substr($attributeFilter['field'], strlen(self::ATTRIBUTE_FILTER_FIELD));
 
             $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(
                 AttributeIdentifier::fromString($attributeIdentifier),
