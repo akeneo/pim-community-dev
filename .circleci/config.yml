@@ -98,10 +98,10 @@ jobs:
                 name: Check Pullup
                 command: docker-compose exec -T fpm bin/check-pullup
                 when: always
-          - run:
-                name: Acceptance back
-                command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
-                when: always
+#          - run:
+#                name: Acceptance back
+#                command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
+#                when: always
           - store_test_results:
                 path: var/tests
           - store_artifacts:
