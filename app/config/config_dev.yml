@@ -9,6 +9,10 @@ web_profiler:
     toolbar: true
     intercept_redirects: false
 
+doctrine:
+    dbal:
+        schema_filter: ~^(?!akeneo_structure_version_last_update|pim_aggregated_volume|pim_configuration|pim_session)~
+
 monolog:
     handlers:
         main:
