@@ -82,6 +82,16 @@
     max-width: 800px;
     margin: 0 auto;
   }
+
+  &--box {
+    border: 1px solid @AknBorderColor;
+    padding: 10px 20px;
+    background: white;
+
+    & + & {
+      margin-top: 20px;
+    }
+  }
 }
 
 @-moz-document url-prefix() {

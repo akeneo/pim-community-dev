@@ -176,6 +176,13 @@
     padding-left: 20px;
   }
 
+  & &--withCheckbox &-bodyRow &-bodyCell:nth-child(2),
+  & &:not(&--withCheckbox) &-bodyRow &-bodyCell:first-child,
+  & &--withCheckbox &-bodyRow &-headerCell:nth-child(2),
+  & &:not(&--withCheckbox) &-bodyRow &-headerCell:first-child {
+    padding-left: 4px;
+  }
+
   &-headerCell {
     &--sticky {
       position: sticky;
@@ -236,7 +243,8 @@
     border-top: none;
   }
 
-  &--unclickable &-bodyRow &-bodyCell {
+  &--unclickable &-bodyRow &-bodyCell,
+  &--unclickable &-bodyRow &-headerCell {
     cursor: default;
   }
 
