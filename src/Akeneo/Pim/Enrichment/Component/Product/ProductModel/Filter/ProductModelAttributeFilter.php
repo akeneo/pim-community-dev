@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetFamilyAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAxesCodes;
 use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * Filter data according to attributes defined on the family variant. All
@@ -34,19 +35,37 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
     /** @var LruArrayAttributeRepository */
     private $attributeRepository;
 
+    /** @var GetFamilyAttributeCodes */
+    private $getFamilyAttributeCodes;
+
+    /** @var GetVariantAttributeSetAttributeCodes */
+    private $getVariantAttributeSetAttributeCodes;
+
+    /** @var GetVariantAttributeSetAxesCodes */
+    private $getVariantAttributeSetAxesCodes;
+
     /**
-     * @param IdentifiableObjectRepositoryInterface $familyVariantRepository
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
+     * @param FamilyVariantRepositoryInterface $familyVariantRepository
+     * @param ProductModelRepositoryInterface $productModelRepository
      * @param LruArrayAttributeRepository $attributeRepository
+     * @param GetFamilyAttributeCodes $getFamilyAttributeCodes
+     * @param GetVariantAttributeSetAttributeCodes $getVariantAttributeSetAttributeCodes
+     * @param GetVariantAttributeSetAxesCodes $getVariantAttributeSetAxesCodes
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $familyVariantRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        LruArrayAttributeRepository $attributeRepository
+        FamilyVariantRepositoryInterface $familyVariantRepository,
+        ProductModelRepositoryInterface $productModelRepository,
+        LruArrayAttributeRepository $attributeRepository,
+        GetFamilyAttributeCodes $getFamilyAttributeCodes,
+        GetVariantAttributeSetAttributeCodes $getVariantAttributeSetAttributeCodes,
+        GetVariantAttributeSetAxesCodes $getVariantAttributeSetAxesCodes
     ) {
         $this->familyVariantRepository = $familyVariantRepository;
         $this->productModelRepository = $productModelRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->getFamilyAttributeCodes = $getFamilyAttributeCodes;
+        $this->getVariantAttributeSetAttributeCodes = $getVariantAttributeSetAttributeCodes;
+        $this->getVariantAttributeSetAxesCodes = $getVariantAttributeSetAxesCodes;
     }
 
     /**
@@ -79,9 +98,17 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
         $parent = $standardProductModel['parent'] ?? '';
         $familyVariant = $standardProductModel['family_variant'] ?? '';
 
+        /** @var FamilyVariantInterface $familyVariant */
         $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariant);
         if (empty($parent) && null !== $familyVariant) {
-            return $this->keepOnlyAttributes($standardProductModel, $familyVariant->getCommonAttributes());
+            $commonAttributes = array_diff(
+                $this->getFamilyAttributeCodes->execute($familyVariant->getFamily()->getCode()),
+                $this->getVariantAttributeSetAttributeCodes->execute($familyVariant->getCode(), 1),
+                $this->getVariantAttributeSetAttributeCodes->execute($familyVariant->getCode(), 2),
+                $this->getVariantAttributeSetAxesCodes->execute($familyVariant->getCode(), 1),
+                $this->getVariantAttributeSetAxesCodes->execute($familyVariant->getCode(), 2)
+            );
+            return $this->keepOnlyAttributes($standardProductModel, $commonAttributes);
         }
 
         $parentProductModel = $this->productModelRepository->findOneByIdentifier($parent);
@@ -101,28 +128,25 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
             return $standardProductModel;
         }
 
-        return $this->keepOnlyAttributes($standardProductModel, $variantAttributeSet->getAttributes());
+        return $this->keepOnlyAttributes($standardProductModel, array_merge(
+            $this->getVariantAttributeSetAttributeCodes->execute($familyVariant->getCode(), $variantAttributeSet->getLevel()),
+            $this->getVariantAttributeSetAxesCodes->execute($familyVariant->getCode(), $variantAttributeSet->getLevel())
+        ));
     }
 
     /**
-     * @param array      $flatProductModel
-     * @param Collection $attributesToKeep
+     * @param array $flatProductModel
+     * @param array $attributeCodesToKeep
      *
      * @return array
      */
-    private function keepOnlyAttributes(array $flatProductModel, Collection $attributesToKeep): array
+    private function keepOnlyAttributes(array $flatProductModel, array $attributeCodesToKeep): array
     {
         foreach ($flatProductModel['values'] as $attributeName => $value) {
             $shortAttributeName = explode('-', $attributeName);
             $shortAttributeName = $shortAttributeName[0];
 
-            $keepedAttributeCodes = $attributesToKeep->exists(
-                function ($key, AttributeInterface $attribute) use ($shortAttributeName) {
-                    return $attribute->getCode() === $shortAttributeName;
-                }
-            );
-
-            if (!$keepedAttributeCodes) {
+            if (!in_array($shortAttributeName, $attributeCodesToKeep)) {
                 unset($flatProductModel['values'][$attributeName]);
             }
         }

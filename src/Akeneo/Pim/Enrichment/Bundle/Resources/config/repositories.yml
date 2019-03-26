@@ -57,7 +57,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository'
         arguments:
             - '@pim_catalog.repository.sql_attribute'
-            - 100
+            - 1000
 
     pim_catalog.repository.cached_attribute_option:
         class: '%akeneo_storage_utils.repository.base_cached_object.class%'

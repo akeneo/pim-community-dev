@@ -56,8 +56,10 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     {
         $values = [];
 
+        $attributes = $this->attributeRepository->findSeveralByIdentifiers(array_keys($rawValues));
+
         foreach ($rawValues as $attributeCode => $channelRawValue) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            $attribute = $attributes[$attributeCode] ?? null;
 
             if (null !== $attribute) {
                 foreach ($channelRawValue as $channelCode => $localeRawValue) {

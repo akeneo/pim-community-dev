@@ -91,6 +91,9 @@ services:
             - '@pim_catalog.repository.family_variant'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.lru_array_attribute'
+            - '@pim_catalog.query.get_family_attribute_codes'
+            - '@pim_catalog.query.get_variant_attribute_set_attribute_codes'
+            - '@pim_catalog.query.get_variant_attribute_set_axes_codes'
 
     pim_connector.processor.attribute_filter.product:
         class: 'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductAttributeFilter'
@@ -99,3 +102,6 @@ services:
             - '@pim_catalog.repository.cached_family'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.lru_array_attribute'
+            - '@pim_catalog.query.get_family_attribute_codes'
+            - '@pim_catalog.query.get_variant_attribute_set_attribute_codes'
+            - '@pim_catalog.query.get_variant_attribute_set_axes_codes'

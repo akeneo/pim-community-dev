@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter;
 
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetFamilyAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAttributeCodes;
+use Akeneo\Pim\Enrichment\Bundle\Sql\GetVariantAttributeSetAxesCodes;
 use Akeneo\Pim\Enrichment\Bundle\Sql\LruArrayAttributeRepository;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
@@ -38,22 +39,40 @@ class ProductAttributeFilter implements AttributeFilterInterface
     /** @var LruArrayAttributeRepository */
     private $attributeRepository;
 
+    /** @var GetFamilyAttributeCodes */
+    private $getFamilyAttributeCodes;
+
+    /** @var GetVariantAttributeSetAttributeCodes */
+    private $getVariantAttributeSetAttributeCodes;
+
+    /** @var GetVariantAttributeSetAxesCodes */
+    private $getVariantAttributeSetAxesCodes;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param IdentifiableObjectRepositoryInterface $familyRepository
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param LruArrayAttributeRepository $attributeRepository
+     * @param GetFamilyAttributeCodes $getFamilyAttributeCodes
+     * @param GetVariantAttributeSetAttributeCodes $getVariantAttributeSetAttributeCodes
+     * @param GetVariantAttributeSetAxesCodes $getVariantAttributeSetAxesCodes
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $familyRepository,
         IdentifiableObjectRepositoryInterface $productRepository,
-        LruArrayAttributeRepository $attributeRepository
+        LruArrayAttributeRepository $attributeRepository,
+        GetFamilyAttributeCodes $getFamilyAttributeCodes,
+        GetVariantAttributeSetAttributeCodes $getVariantAttributeSetAttributeCodes,
+        GetVariantAttributeSetAxesCodes $getVariantAttributeSetAxesCodes
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->familyRepository = $familyRepository;
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->getFamilyAttributeCodes = $getFamilyAttributeCodes;
+        $this->getVariantAttributeSetAttributeCodes = $getVariantAttributeSetAttributeCodes;
+        $this->getVariantAttributeSetAxesCodes = $getVariantAttributeSetAxesCodes;
     }
 
     /**
@@ -86,22 +105,23 @@ class ProductAttributeFilter implements AttributeFilterInterface
         if (isset($standardProduct['parent']) &&
             null !== $parentProductModel = $this->productModelRepository->findOneByIdentifier($standardProduct['parent'])
         ) {
-            $attributeSet = $parentProductModel
-                ->getFamilyVariant()
-                ->getVariantAttributeSet($parentProductModel->getVariationLevel() + 1);
-            $attributes = new ArrayCollection(array_merge(
-                $attributeSet->getAttributes()->toArray(),
-                $attributeSet->getAxes()->toArray()
-            ));
+            /** @var FamilyVariantInterface $familyVariant */
+            $familyVariant = $parentProductModel->getFamilyVariant();
+            $level = $familyVariant->getNumberOfLevel();
+            $attributes = array_merge(
+                $this->getVariantAttributeSetAttributeCodes->execute($familyVariant->getCode(), $level),
+                $this->getVariantAttributeSetAxesCodes->execute($familyVariant->getCode(), $level)
+            );
 
             return $this->keepOnlyAttributes($standardProduct, $attributes);
         }
 
         if (isset($standardProduct['family'])) {
             if (null !== $family = $this->familyRepository->findOneByIdentifier($standardProduct['family'])) {
-                $attributes = $family->getAttributes();
-
-                return $this->keepOnlyAttributes($standardProduct, $attributes);
+                return $this->keepOnlyAttributes(
+                    $standardProduct,
+                    $this->getFamilyAttributeCodes->execute($family->getCode())
+                );
             }
         }
 
@@ -109,17 +129,13 @@ class ProductAttributeFilter implements AttributeFilterInterface
     }
 
     /**
-     * @param array      $flatProduct
-     * @param Collection $attributesToKeep
+     * @param array $flatProduct
+     * @param array $attributeCodesToKeep
      *
      * @return array
      */
-    private function keepOnlyAttributes(array $flatProduct, Collection $attributesToKeep): array
+    private function keepOnlyAttributes(array $flatProduct, array $attributeCodesToKeep): array
     {
-        $attributeCodesToKeep = $attributesToKeep->map(function (AttributeInterface $attribute) {
-            return $attribute->getCode();
-        })->toArray();
-
         foreach ($flatProduct['values'] as $attributeName => $value) {
             if (!in_array($attributeName, $attributeCodesToKeep)) {
                 unset($flatProduct['values'][$attributeName]);

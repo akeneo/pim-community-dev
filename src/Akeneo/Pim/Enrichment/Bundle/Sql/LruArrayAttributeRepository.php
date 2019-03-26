@@ -49,7 +49,7 @@ class LruArrayAttributeRepository
         $cachedAttributes = [];
         $uncachedAttributeCodes = [];
         foreach ($codes as $code) {
-            $attribute = $this->cache->get($code);
+            $attribute = $this->cache->get((string)$code);
             if (null !== $attribute) {
                 $cachedAttributes[$code] = self::NOT_EXISTING === $attribute ? null : $attribute;
             } else {
