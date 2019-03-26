@@ -90,10 +90,9 @@ class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInte
         $result = [];
         foreach ($this->attributeOptions as $attributeOption) {
             $keepThisAttributeOption = true;
-
-            foreach ($criteria as $searchedFieldName => $searchedValue) {
-                $value = \array_reduce(
-                    \explode('.', $searchedFieldName),
+            foreach ($criteria as $key => $value) {
+                $entityValue = \array_reduce(
+                    \explode('.', $key),
                     function ($entity, $fieldName) {
                         $getter = \sprintf('get%s', ucfirst($fieldName));
 
@@ -102,7 +101,7 @@ class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInte
                     $attributeOption
                 );
 
-                if ($value !== $searchedValue) {
+                if ($value !== $entityValue) {
                     $keepThisAttributeOption = false;
                 }
             }
