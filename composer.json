@@ -32,7 +32,7 @@
         "classmap": [ "tests/back/Integration/AppKernelTest.php" ]
     },
     "require": {
-        "php": "7.2.*",
+        "php": "^7.2",
         "ass/xmlsecurity": "1.1.1",
         "doctrine/annotations": "1.6.0",
         "doctrine/cache": "1.8.0",
