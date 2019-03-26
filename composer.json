@@ -52,7 +52,7 @@
         "dompdf/dompdf" : "^0.7",
         "elasticsearch/elasticsearch": "^6.1",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
-        "friendsofsymfony/oauth-server-bundle": "1.5.2",
+        "friendsofsymfony/oauth-server-bundle": "^1.5.2",
         "friendsofsymfony/rest-bundle": "2.1.1",
         "gedmo/doctrine-extensions":"v2.4.26",
         "incenteev/composer-parameter-handler": "2.1.2",
