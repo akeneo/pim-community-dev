@@ -89,7 +89,7 @@ image:
 pim:
   hook:
     upgradePim:
-      enabled: false
+      enabled: true
       hook: "pre-upgrade"
     upgradeES:
       enabled: true
