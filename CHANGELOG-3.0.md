@@ -5,6 +5,7 @@
 - PIM-8196: Fix long channel labels on completeness widget
 - PXD-89: Update illustrations with new colors
 - PIM-8237: Fix ignored query params "options" on the internal API: search attribute
+- PIM-8248: Fix load order of pim/model/attribute in requirejs
 
 # 3.0.8 (2019-03-20)
 
