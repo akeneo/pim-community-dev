@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.9 (2019-03-26)
+
 # Bug fixes
 
 - PIM-8196: Fix long channel labels on completeness widget
