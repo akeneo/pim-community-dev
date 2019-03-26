@@ -8,18 +8,6 @@
 - PXD-89: Update illustrations with new colors
 - PIM-8237: Fix ignored query params "options" on the internal API: search attribute
 - PIM-8248: Fix load order of pim/model/attribute in requirejs
-
-# 3.0.8 (2019-03-20)
-
-## Bug fixes
-
-- PIM-8217: Fix missing translations on product grid (Filters, Done, Yes and No)
-- PIM-8221: Fix missing translations on family attributes tab (Required, Not required)
-- PIM-8128: Fix display of reset password confirmation message
-- PIM-8223: Fix missing translation on family variant deletion
-- PIM-8224: Fix missing translations in process tracker (Compute completeness, Compute family variant and Compute product model descendants)
-- PIM-8136: Fix display order of datepicker
-- PIM-8227: Fix disappearing columns when saving view columns
 - PXD-10: Fix comment deletion Popin
 - PXD-11: Fix Done button position on category tree
 - PXD-12: Move view selector in the search box
@@ -34,6 +22,18 @@
 - PXD-24: Fix grid bottom panel margins
 - PXD-82: Fix stick header on horizontal scroll
 - PXD-14: Add default placeholder for every select2 search input
+
+# 3.0.8 (2019-03-20)
+
+## Bug fixes
+
+- PIM-8217: Fix missing translations on product grid (Filters, Done, Yes and No)
+- PIM-8221: Fix missing translations on family attributes tab (Required, Not required)
+- PIM-8128: Fix display of reset password confirmation message
+- PIM-8223: Fix missing translation on family variant deletion
+- PIM-8224: Fix missing translations in process tracker (Compute completeness, Compute family variant and Compute product model descendants)
+- PIM-8136: Fix display order of datepicker
+- PIM-8227: Fix disappearing columns when saving view columns
 
 # 3.0.7 (2019-03-13)
 
