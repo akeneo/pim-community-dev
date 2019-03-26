@@ -58,7 +58,7 @@
         "incenteev/composer-parameter-handler": "2.1.2",
         "league/flysystem": "^1.0.40",
         "league/flysystem-ziparchive": "^1.0.3",
-        "liip/imagine-bundle": "1.9.1",
+        "liip/imagine-bundle": "^1.9.1",
         "imagine/imagine": "^0.7.1",
         "monolog/monolog": "^1.23",
         "ocramius/proxy-manager": "2.1.1",
