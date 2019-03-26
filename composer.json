@@ -60,7 +60,7 @@
         "league/flysystem-ziparchive": "1.0.3",
         "liip/imagine-bundle": "1.9.1",
         "imagine/imagine": "0.7.1",
-        "monolog/monolog": "1.23.0",
+        "monolog/monolog": "^1.23",
         "ocramius/proxy-manager": "2.1.1",
         "oneup/flysystem-bundle": "1.14.0",
         "ramsey/uuid": "3.7.0",
