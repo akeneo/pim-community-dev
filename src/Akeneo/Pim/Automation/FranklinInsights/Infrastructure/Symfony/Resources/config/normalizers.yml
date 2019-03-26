@@ -24,13 +24,6 @@ services:
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.attribute_option'
 
-    akeneo.pim.automation.franklin_insights.normalizer.elasticsearch.indexing.product_subscription:
-            class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch\Indexing\Normalizer\ProductSubscriptionNormalizer'
-            arguments:
-                - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product_subscriptions_exist'
-            tags:
-                - { name: 'pim_catalog.normalizer.indexing_product_and_product_model.product.additional_properties' }
-
     akeneo.pim.automation.franklin_insights.normalizer.identifiers_mapping:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer'
         arguments:
