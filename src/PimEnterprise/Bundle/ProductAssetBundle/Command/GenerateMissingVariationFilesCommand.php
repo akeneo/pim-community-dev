@@ -139,31 +139,9 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     private function findAssetsWithMissingVariations(): array
     {
-        $connection = $this->getContainer()->get('database_connection');
-        $sql = <<<SQL
-    SELECT asset.code
-    FROM pimee_product_asset_reference AS reference
-      INNER JOIN pimee_product_asset_asset AS asset ON reference.asset_id = asset.id
-      INNER JOIN pim_catalog_channel_locale AS channel_locale ON channel_locale.locale_id = reference.locale_id
-      LEFT JOIN pimee_product_asset_variation AS variation 
-        ON reference.id = variation.reference_id AND variation.channel_id = channel_locale.channel_id
-    WHERE reference.locale_id IS NOT NULL 
-      AND reference.file_info_id IS NOT NULL 
-      AND variation.id IS NULL
-UNION
-    SELECT asset.code
-    FROM pimee_product_asset_reference AS reference
-      CROSS JOIN pim_catalog_channel AS channel
-      INNER JOIN pimee_product_asset_asset AS asset ON reference.asset_id = asset.id
-      LEFT JOIN pimee_product_asset_variation AS variation 
-        ON reference.id = variation.reference_id AND variation.channel_id = channel.id
-    WHERE reference.locale_id IS NULL  
-      AND reference.file_info_id IS NOT NULL 
-      AND variation.id IS NULL
-SQL;
-        $statement = $connection->query($sql);
+        $query = $this->getContainer()->get('pimee_product_asset.query.find_asset_codes_with_missing_variation_with_file');
 
-        return $statement->fetchAll(\PDO::FETCH_COLUMN);
+        return $query->execute();
     }
 
     protected function clearCache()
