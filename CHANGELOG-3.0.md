@@ -1,5 +1,9 @@
 # 3.0.x
 
+# Bug fixes
+
+- PIM-8241: Do not reset filter display when adding a new filter
+
 # 3.0.9 (2019-03-26)
 
 # Bug fixes
