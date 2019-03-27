@@ -60,7 +60,8 @@ define([
                 const query = `?${$.param(actionParameters)}`;
 
                 return $.ajax({
-                    url: Routing.generate('pim_enrich_mass_edit_rest_get_filter') + query
+                    url: Routing.generate('pim_enrich_mass_edit_rest_get_filter') + query,
+                    method: 'POST'
                 }).then((response) => {
                     return {
                         filters: response.filters,
