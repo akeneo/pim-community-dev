@@ -243,6 +243,7 @@ class ProductReaderSpec extends ObjectBehavior
         $channelRepository,
         $metricConverter,
         $stepExecution,
+        $completenessManager,
         ChannelInterface $channel,
         ProductQueryBuilderInterface $pqb,
         CursorInterface $cursor,
@@ -283,6 +284,7 @@ class ProductReaderSpec extends ObjectBehavior
             ->addFilter('family', Operators::IN_LIST, ['does_not_exist'], [])
             ->shouldBeCalled()
             ->willThrow(new ObjectNotFoundException());
+        $pqb->addFilter('completeness', Operators::GREATER_OR_EQUAL_THAN, 100, [])->shouldBeCalled();
         $pqb->execute()
             ->shouldBeCalled()
             ->willReturn($cursor);
@@ -294,6 +296,10 @@ class ProductReaderSpec extends ObjectBehavior
         );
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
+
+        $completenessManager->generateMissingForProducts($channel, array_merge($filters['data'],
+            [["field" => "family", "operator" => "NOT EMPTY", "value" => null]]
+        ))->shouldNotBeCalled();
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);

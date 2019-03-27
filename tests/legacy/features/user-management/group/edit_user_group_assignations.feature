@@ -33,6 +33,7 @@ Feature: Edit a user groups and roles
     And I visit the "Users" tab
     When I check the rows "Peter"
     And I save the group
+    And I should not see the text "There are unsaved changes"
     And I visit the "Users" tab
     Then the row "Peter" should be checked
 
