@@ -4,6 +4,7 @@
 
 - PIM-8244: fix PDF with assets generation
 - PXD-94: Fix Asset transformations tab design
+- PXD-101: Fix SSO page fields width
 
 # 3.0.9 (2019-03-26)
 
