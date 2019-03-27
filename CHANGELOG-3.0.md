@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8244: fix PDF with assets generation
+
 # 3.0.9 (2019-03-26)
 
 # 3.0.8 (2019-03-20)
