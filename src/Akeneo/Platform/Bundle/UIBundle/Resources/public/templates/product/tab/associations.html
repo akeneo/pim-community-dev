@@ -11,9 +11,12 @@
                 <div class="AknGrid AknGrid--gallery AknGrid--inner">
                     <div id="grid-<%- datagridName %>" data-type="datagrid">
                         <% if (addAssociationVisible) { %>
-                        <div class="AknButtonList AknButtonList--right">
-                            <div class="AknButton AknButton--action AknButtonList-item add-associations">
-                                <%- addAssociationsLabel %>
+                        <div class="AknGridToolbar">
+                            <div class="AknGridToolbar-center"></div>
+                            <div class="AknGridToolbar-right AknButtonList AknButtonList--right">
+                                <div class="AknButton AknButton--action AknButtonList-item add-associations">
+                                    <%- addAssociationsLabel %>
+                                </div>
                             </div>
                         </div>
                         <% } %>
