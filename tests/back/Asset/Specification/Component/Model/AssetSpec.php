@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ProductAsset\Model;
+namespace Specification\Akeneo\Asset\Component\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInfo;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
 class AssetSpec extends ObjectBehavior
 {

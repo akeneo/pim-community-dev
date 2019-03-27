@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Storage\Sql;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProposalIdsFromProductIdsQueryInterface;
 use Doctrine\DBAL\Connection;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Query\SelectModelProposalIdsFromProductModelIdsQueryInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class SelectModelProposalIdsFromProductModelIdsQuery implements SelectModelProposalIdsFromProductModelIdsQueryInterface
+class SelectProposalIdsFromProductIdsQuery implements SelectProposalIdsFromProductIdsQueryInterface
 {
     private $connection;
 
@@ -29,18 +29,18 @@ class SelectModelProposalIdsFromProductModelIdsQuery implements SelectModelPropo
         $this->connection = $connection;
     }
 
-    public function fetch(array $productModelIds): array
+    public function fetch(array $productIds): array
     {
         $sql = <<<SQL
-    SELECT id FROM pimee_workflow_product_model_draft
-    WHERE product_model_id IN (:productModelIds)
+    SELECT id FROM pimee_workflow_product_draft
+    WHERE product_id IN (:productIds)
     AND status = :status
 SQL;
 
         $resultRows = $this->connection->executeQuery(
             $sql,
-            ['productModelIds' => $productModelIds, 'status' => EntityWithValuesDraftInterface::READY],
-            ['productModelIds' => Connection::PARAM_INT_ARRAY, 'status' => \PDO::PARAM_INT]
+            ['productIds' => $productIds, 'status' => EntityWithValuesDraftInterface::READY],
+            ['productIds' => Connection::PARAM_INT_ARRAY, 'status' => \PDO::PARAM_INT]
         )->fetchAll();
 
         return array_map(function ($rowData) {

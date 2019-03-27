@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\tests\integration\Storage\Sql;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Sql;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Test\Integration\TestCase;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\ProductModelWorkflow;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow;
 
-use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Pim\Component\Catalog\Model\ProductModelInterface;
-use PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\PermissionFixturesLoader;
-use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductModelWorkflowIntegration extends ApiTestCase
@@ -109,7 +109,7 @@ class ProductModelWorkflowIntegration extends ApiTestCase
             $response->headers->get('location')
         );
 
-        return $this->get('pimee_catalog.repository.product_model')->findOneByIdentifier($code);
+        return $this->get('pimee_security.repository.product_model')->findOneByIdentifier($code);
     }
 
     private function createProductModelProposal(string $code): void
