@@ -2,7 +2,10 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Security\Product;
 
+use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTestEnterprise\Pim\Permission\Integration\Security\AbstractSecurityTestCase;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 /**
  * +----------+--------------------------------------------------------------------------+
@@ -49,12 +52,11 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         $this->assertCategories(['master', 'categoryA1', 'categoryA2', 'categoryB'], $this->getCategoriesFromDatabase('product_a'));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
-     * @expectedExceptionMessage You should at least keep your product in one category on which you have an own permission.
-     */
     public function testFailToRemoveOwnPermissionOnProduct()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('You should at least keep your product in one category on which you have an own permission.');
+
         $this->generateToken('mary');
         $product = $this->getProduct('product_a');
 
@@ -77,12 +79,11 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         $this->assertSame($product->getCategoryCodes(), []);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "categories" expects a valid category code. The category does not exist, "categoryB" given.
-     */
     public function testFailedToCreateAProductWithCategoryNotViewable()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "categories" expects a valid category code. The category does not exist, "categoryB" given.');
+
         $this->generateToken('mary');
         $this->createProduct('product', ['categories' => ['categoryB']]);
     }
@@ -117,12 +118,11 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         $this->assertCategories($categories, $this->getCategoriesFromDatabase('product'));
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "categories" expects a valid category code. The category does not exist, "categoryB" given.
-     */
     public function testFailedToUpdateAProductWithCategoryNotViewable()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "categories" expects a valid category code. The category does not exist, "categoryB" given.');
+
         $product = $this->saveProduct('product', ['categories' => ['master']]);
         $this->generateToken('mary');
 
@@ -165,60 +165,55 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         $this->assertCategories($categories, $this->getCategoriesFromDatabase('product'));
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
-     */
     public function testFailToUpdateACategoryOnAProductOnlyViewable()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('Product "product" cannot be updated. It should be at least in an own category');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['categories' => ['master']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
-     */
     public function testFailToUpdateGroupsOnAProductOnlyViewable()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('Product "product" cannot be updated. It should be at least in an own category');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['groups' => ['groupA']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
-     */
     public function testFailToUpdateEnabledOnAProductOnlyViewable()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('Product "product" cannot be updated. It should be at least in an own category');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['enabled' => false]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
-     */
     public function testFailToUpdateFamilyOnAProductOnlyViewable()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('Product "product" cannot be updated. It should be at least in an own category');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['family' => 'familyA']);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
-     */
     public function testFailToUpdateAssociationsOnAProductOnlyViewable()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('Product "product" cannot be updated. It should be at least in an own category');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
 
@@ -229,12 +224,11 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         ]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
-     */
     public function testFailToUpdateValuesOnAProductOnlyViewable()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('Product "product" cannot be updated. It should be at least in an own category');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
 

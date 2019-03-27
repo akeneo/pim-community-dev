@@ -2,7 +2,10 @@
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow;
 
+use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use AkeneoTestEnterprise\Pim\Permission\Integration\Security\AbstractSecurityTestCase;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 /**
  * +------------------------------------------+-----------------------+
@@ -74,12 +77,11 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assert($updatedValues, $draftValues);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
-     * @expectedExceptionMessage Property "a_multi_select" does not exist.
-     */
     public function testUpdateAProductDraftWithAttributeGroupNotViewable()
     {
+        $this->expectException(UnknownPropertyException::class);
+        $this->expectExceptionMessage('Property "a_multi_select" does not exist.');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'values' => ['a_multi_select' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
         $this->generateToken('mary');
 
@@ -90,12 +92,11 @@ class ValuesIntegration extends AbstractSecurityTestCase
         ]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Attribute "a_number_float" belongs to the attribute group "attributeGroupB" on which you only have view permission.
-     */
     public function testUpdateAProductDraftWithAttributeGroupOnlyViewableWithChange()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('Attribute "a_number_float" belongs to the attribute group "attributeGroupB" on which you only have view permission.');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'values' => ['a_number_float' => [['data' => 12, 'locale' => null, 'scope' => null]]]]);
         $this->generateToken('mary');
 
@@ -120,24 +121,22 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assertSame($product->getValue('a_number_float')->getData(), 12);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
-     * @expectedExceptionMessage Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "de_DE" given
-     */
     public function testUpdateAProductDraftWithLocaleNotViewable()
     {
+        $this->expectException(UnknownPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "de_DE" given');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'de_DE', 'scope' => 'ecommerce']]]]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'de_DE', 'scope' => 'ecommerce']]]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage You only have a view permission on the locale "fr_FR"
-     */
     public function testUpdateAProductDraftWithLocaleOnlyViewableWithChange()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('You only have a view permission on the locale "fr_FR"');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]]]);
         $this->generateToken('mary');
 
@@ -153,12 +152,11 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assertSame($product->getValue('a_localized_and_scopable_text_area', 'fr_FR', 'ecommerce')->getData(), 'text');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
-     * @expectedExceptionMessage You cannot update the field "enabled". You should at least own this product to do it
-     */
     public function testUpdateEnabledFieldOnProductDraft()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('You cannot update the field "enabled". You should at least own this product to do it');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'enabled' => false]);
         $this->generateToken('mary');
 
@@ -174,12 +172,11 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assertFalse($product->isEnabled());
     }
 
-    /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
-     * @expectedExceptionMessage You cannot update the field "family". You should at least own this product to do it
-     */
     public function testUpdateFamilyFieldOnProductDraft()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('You cannot update the field "family". You should at least own this product to do it');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'family' => 'familyA']);
         $this->generateToken('mary');
 
@@ -195,12 +192,11 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assertSame('familyA', $product->getFamily()->getCode());
     }
 
-    /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
-     * @expectedExceptionMessage You cannot update the field "groups". You should at least own this product to do it
-     */
     public function testUpdateGroupsFieldOnProductDraft()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('You cannot update the field "groups". You should at least own this product to do it');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'groups' => ['groupA']]);
         $this->generateToken('mary');
 
@@ -216,12 +212,11 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assertSame('groupA', $product->getGroups()->first()->getCode());
     }
 
-    /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
-     * @expectedExceptionMessage You cannot update the field "categories". You should at least own this product to do it
-     */
     public function testUpdateCategoriesFieldOnProductDraft()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('You cannot update the field "categories". You should at least own this product to do it');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA']]);
         $this->generateToken('mary');
 
@@ -237,12 +232,11 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assertSame('categoryA', $product->getCategories()->first()->getCode());
     }
 
-    /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
-     * @expectedExceptionMessage You cannot update the field "associations". You should at least own this product to do it
-     */
     public function testUpdateAssociationsFieldOnProductDraft()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('You cannot update the field "associations". You should at least own this product to do it');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'associations' => [
             'X_SELL' => [
                 'products' => ['product_a']
@@ -278,12 +272,11 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assertSame('product_a', $product->getAssociationForTypeCode('X_SELL')->getProducts()->first()->getIdentifier());
     }
 
-    /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
-     * @expectedExceptionMessage You cannot update the following fields "categories, enabled". You should at least own this product to do it
-     */
     public function testUpdateMultipleFieldOnProductDraft()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('You cannot update the following fields "categories, enabled". You should at least own this product to do it');
+
         $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'enabled' => true]);
         $this->generateToken('mary');
 

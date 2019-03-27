@@ -2,6 +2,7 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Remover;
 
+use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -80,12 +81,11 @@ class ProductRemoverIntegration extends TestCase
         $this->assertNull($expectedDeletedProduct);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage You can delete a product only if it is classified in at least one category on which you have an own permission.
-     */
     public function testProductIsNotDeletableByUserWhoCanEditBuIsNotOwner()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('You can delete a product only if it is classified in at least one category on which you have an own permission.');
+
         $remover = $this->get('pim_catalog.remover.product');
         $product = $this->createProduct('product_to_delete', [
             'categories' => ['categoryA']
@@ -96,12 +96,11 @@ class ProductRemoverIntegration extends TestCase
         $remover->remove($product);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage You can delete a product only if it is classified in at least one category on which you have an own permission.
-     */
     public function testOneOfTheProductsIsNotDeletableByUserWhoCanEditBuIsNotOwner()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('You can delete a product only if it is classified in at least one category on which you have an own permission.');
+
         $remover = $this->get('pim_catalog.remover.product');
 
         $firstProduct = $this->createProduct('first_product', [
@@ -115,12 +114,11 @@ class ProductRemoverIntegration extends TestCase
         $remover->removeAll([$firstProduct, $secondProduct]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage You can delete a product only if it is classified in at least one category on which you have an own permission.
-     */
     public function testProductIsNotDeletableByUserWhoCanOnlyViewProduct()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('You can delete a product only if it is classified in at least one category on which you have an own permission.');
+
         $remover = $this->get('pim_catalog.remover.product');
         $product = $this->createProduct('product_to_delete', [
             'categories' => ['categoryA1']
@@ -131,12 +129,11 @@ class ProductRemoverIntegration extends TestCase
         $remover->remove($product);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage You can delete a product only if it is classified in at least one category on which you have an own permission.
-     */
     public function testOneOfTheProductsIsNotDeletableByUserWhoCanOnlyViewProduct()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('You can delete a product only if it is classified in at least one category on which you have an own permission.');
+
         $remover = $this->get('pim_catalog.remover.product');
 
         $firstProduct = $this->createProduct('first_product', [
@@ -150,12 +147,11 @@ class ProductRemoverIntegration extends TestCase
         $remover->removeAll([$firstProduct, $secondProduct]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage You can delete a product only if it is classified in at least one category on which you have an own permission.
-     */
     public function testProductNotDeletableByUserWhoHasNoPermissions()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('You can delete a product only if it is classified in at least one category on which you have an own permission.');
+
         $remover = $this->get('pim_catalog.remover.product');
         $product = $this->createProduct('product_to_delete', [
             'categories' => ['categoryB']
@@ -166,12 +162,11 @@ class ProductRemoverIntegration extends TestCase
         $remover->remove($product);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage You can delete a product only if it is classified in at least one category on which you have an own permission.
-     */
     public function testOneOfTheProductsIsNotDeletableByUserWhoHasNoPermissions()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('You can delete a product only if it is classified in at least one category on which you have an own permission.');
+
         $remover = $this->get('pim_catalog.remover.product');
 
         $firstProduct = $this->createProduct('first_product', [

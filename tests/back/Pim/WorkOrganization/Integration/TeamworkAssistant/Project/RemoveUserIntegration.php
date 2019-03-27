@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\Project;
 
 use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\TeamworkAssistantTestCase;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use PHPUnit\Framework\Assert;
 
 class RemoveUserIntegration extends TeamworkAssistantTestCase
 {
-    /**
-     * @expectedException \Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException
-     */
     function testThatAUserLinkedToAProjectCannotBeRemoved()
     {
+        $this->expectException(ForeignKeyConstraintViolationException::class);
+
         $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'ecommerce', [
             [
                 'field'    => 'categories',

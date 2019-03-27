@@ -2,6 +2,8 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Security\Product;
 
+use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use AkeneoTestEnterprise\Pim\Permission\Integration\Security\AbstractSecurityTestCase;
 
 /**
@@ -105,32 +107,29 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assertSame(['raw_values' => $expectedValues], $this->getValuesFromDatabase('product_a'));
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
-     * @expectedExceptionMessage Property "not_found" does not exist.
-     */
     public function testCreateAProductWithAttributeGroupNotFound()
     {
+        $this->expectException(UnknownPropertyException::class);
+        $this->expectExceptionMessage('Property "not_found" does not exist.');
+
         $this->generateToken('mary');
         $this->createProduct('product', ['values' => ['not_found' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
-     * @expectedExceptionMessage Property "a_multi_select" does not exist.
-     */
     public function testCreateAProductWithAttributeGroupNotViewable()
     {
+        $this->expectException(UnknownPropertyException::class);
+        $this->expectExceptionMessage('Property "a_multi_select" does not exist.');
+
         $this->generateToken('mary');
         $this->createProduct('product', ['values' => ['a_multi_select' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Attribute "a_number_float" belongs to the attribute group "attributeGroupB" on which you only have view permission.
-     */
     public function testCreateAProductWithAttributeGroupOnlyViewable()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('Attribute "a_number_float" belongs to the attribute group "attributeGroupB" on which you only have view permission.');
+
         $this->generateToken('mary');
         $this->createProduct('product', ['values' => ['a_number_float' => [['data' => 12.05, 'locale' => null, 'scope' => null]]]]);
     }
@@ -143,12 +142,11 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assertSame($product->getValue('a_text')->getData(), 'The text');
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
-     * @expectedExceptionMessage Property "a_multi_select" does not exist.
-     */
     public function testUpdateAProductWithAttributeGroupNotViewable()
     {
+        $this->expectException(UnknownPropertyException::class);
+        $this->expectExceptionMessage('Property "a_multi_select" does not exist.');
+
         $product = $this->saveProduct('product', ['values' => ['a_multi_select' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
         $this->generateToken('mary');
 
@@ -159,12 +157,11 @@ class ValuesIntegration extends AbstractSecurityTestCase
         ]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage Attribute "a_number_float" belongs to the attribute group "attributeGroupB" on which you only have view permission.
-     */
     public function testUpdateAProductWithAttributeGroupOnlyViewableWithChange()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('Attribute "a_number_float" belongs to the attribute group "attributeGroupB" on which you only have view permission.');
+
         $product = $this->saveProduct('product', ['values' => ['a_number_float' => [['data' => 12, 'locale' => null, 'scope' => null]]]]);
         $this->generateToken('mary');
 
@@ -202,32 +199,29 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assertSame($product->getValue('a_text')->getData(), 'The text bis');
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
-     * @expectedExceptionMessage Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "not_found" given.
-     */
     public function testCreateAProductWithLocaleNotFound()
     {
+        $this->expectException(UnknownPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "not_found" given.');
+
         $this->generateToken('mary');
         $this->createProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'not_found', 'scope' => 'ecommerce']]]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
-     * @expectedExceptionMessage Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "de_DE" given
-     */
     public function testCreateAProductWithLocaleNotViewable()
     {
+        $this->expectException(UnknownPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "de_DE" given');
+
         $this->generateToken('mary');
         $this->createProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'de_DE', 'scope' => 'ecommerce']]]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage You only have a view permission on the locale "fr_FR"
-     */
     public function testCreateAProductWithLocaleOnlyViewable()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('You only have a view permission on the locale "fr_FR"');
+
         $this->generateToken('mary');
         $this->createProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]]]);
     }
@@ -240,24 +234,22 @@ class ValuesIntegration extends AbstractSecurityTestCase
         $this->assertSame($product->getValue('a_localized_and_scopable_text_area', 'en_US', 'ecommerce')->getData(), 'text');
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
-     * @expectedExceptionMessage Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "de_DE" given
-     */
     public function testUpdateAProductWithLocaleNotViewable()
     {
+        $this->expectException(UnknownPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "de_DE" given');
+
         $product = $this->saveProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'de_DE', 'scope' => 'ecommerce']]]]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'de_DE', 'scope' => 'ecommerce']]]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
-     * @expectedExceptionMessage You only have a view permission on the locale "fr_FR"
-     */
     public function testUpdateAProductWithLocaleOnlyViewableWithChange()
     {
+        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectExceptionMessage('You only have a view permission on the locale "fr_FR"');
+
         $product = $this->saveProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]]]);
         $this->generateToken('mary');
 
