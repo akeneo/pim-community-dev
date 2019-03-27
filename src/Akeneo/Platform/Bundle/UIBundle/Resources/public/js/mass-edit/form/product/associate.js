@@ -44,7 +44,7 @@ define(
         modalTemplate
     ) {
         return BaseOperation.extend({
-            className: 'AknGridContainer--withoutNoDataPanel',
+            className: 'AknGridToolbar',
             pickTemplate: _.template(pickTemplate),
             confirmTemplate: _.template(confirmTemplate),
             modalTemplate: _.template(modalTemplate),
@@ -90,6 +90,9 @@ define(
                             label: __('pim_enrich.entity.product.module.associations.association_type_selector'),
                             addAssociationsLabel: __('pim_enrich.entity.product.module.associations.add_associations')
                         }));
+
+                        this.resizeContent(associationTypes.length);
+
                         this.delegateEvents();
                     });
                 } else {
@@ -303,6 +306,18 @@ define(
                 }
 
                 return deferred;
+            },
+
+            /**
+             * The dropdown and the mass edit layout have incompatible CSS displays.
+             * We need to trick the height of the content box to avoid a too small zone to click.
+             * The height is estimated from the count of association types.
+             */
+            resizeContent: function (associationTypesLength) {
+                const contentDom = $('.AknFullPage-content.AknFullPage-content--withIllustration');
+                const headerHeight = $('.AknFullPage-titleContainer').outerHeight();
+                const newHeight = (headerHeight + associationTypesLength * 26 + 150);
+                contentDom.css('min-height', Math.min(newHeight, $('body').outerHeight()) + 'px');
             }
         });
     }

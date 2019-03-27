@@ -6,6 +6,7 @@
 - PXD-91: Fix margins between search filter and grid
 - PXD-92: Fix badges visibility
 - PXD-93: Fix icon colors
+- PXD-95: Fix the too small content zone in the 'Associate' bulk action
 
 # 3.0.9 (2019-03-26)
 
