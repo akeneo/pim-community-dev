@@ -17,8 +17,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubs
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
-use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryIdentifiersMappingRepository;
-use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -32,6 +30,8 @@ use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityBuilder;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryIdentifiersMappingRepository;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryProductSubscriptionRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;

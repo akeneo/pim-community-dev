@@ -20,10 +20,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Comma
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
-use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product\ProductRemoveSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Repository\InMemoryProductSubscriptionRepository;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
