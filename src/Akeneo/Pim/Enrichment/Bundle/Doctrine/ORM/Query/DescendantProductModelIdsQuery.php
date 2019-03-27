@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
 use Doctrine\DBAL\Connection;
-use Pim\Component\Catalog\ProductModel\Query\DescendantProductModelIdsQueryInterface;
 
 /**
  * @author    Romain Monceau <romain@akeneo.com>

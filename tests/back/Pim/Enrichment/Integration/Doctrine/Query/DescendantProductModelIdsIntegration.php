@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Doctrine\ORM\Query;
+namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Query;
 
 use Akeneo\Test\Integration\TestCase;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 class DescendantProductModelIdsIntegration extends TestCase
 {

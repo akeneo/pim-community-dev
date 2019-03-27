@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\ProductModel\Query;
+namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
 /**
  * @author    Romain Monceau <romain@akeneo.com>

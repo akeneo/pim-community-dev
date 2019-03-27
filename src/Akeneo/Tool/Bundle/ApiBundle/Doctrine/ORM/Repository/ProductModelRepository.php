@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Bundle\ApiBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface as CatalogProductModelRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface as CatalogProductModelRepositoryInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
