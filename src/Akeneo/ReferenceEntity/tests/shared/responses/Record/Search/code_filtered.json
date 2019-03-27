@@ -29,33 +29,45 @@
   "response": {
     "status": 200,
     "body": {
-      "items": [
+      "items":[
         {
-          "identifier": "designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
-          "reference_entity_identifier": "designer",
-          "code": "dyson",
-          "labels": {
-            "en_US": "Dyson",
-            "fr_FR": "Dyson"
+          "identifier":"designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
+          "reference_entity_identifier":"designer",
+          "code":"dyson",
+          "labels":{
+            "en_US":"Dyson",
+            "fr_FR":"Dyson"
           },
-          "image": null,
-          "values": {
-            "label_designer_d00de54460082b239164135175588647_en_US": {
-              "attribute": "label_designer_d00de54460082b239164135175588647",
-              "channel": null,
-              "locale": "en_US",
-              "data": "Dyson"
+          "image":null,
+          "values":{
+            "label_designer_d00de54460082b239164135175588647_en_US":{
+              "attribute":"label_designer_d00de54460082b239164135175588647",
+              "channel":null,
+              "locale":"en_US",
+              "data":"Dyson"
             },
-            "label_designer_d00de54460082b239164135175588647_fr_FR": {
-              "attribute": "label_designer_d00de54460082b239164135175588647",
-              "channel": null,
-              "locale": "fr_FR",
-              "data": "Dyson"
+            "label_designer_d00de54460082b239164135175588647_fr_FR":{
+              "attribute":"label_designer_d00de54460082b239164135175588647",
+              "channel":null,
+              "locale":"fr_FR",
+              "data":"Dyson"
+            },
+            "colors":{
+              "attribute":"colors",
+              "channel":null,
+              "locale":null,
+              "data":"red"
+            },
+            "cities":{
+              "attribute":"cities",
+              "channel":null,
+              "locale":null,
+              "data":"paris"
             }
           },
-          "completeness": {
-            "complete": 0,
-            "required": 2
+          "completeness":{
+            "complete":0,
+            "required":2
           }
         }
       ],

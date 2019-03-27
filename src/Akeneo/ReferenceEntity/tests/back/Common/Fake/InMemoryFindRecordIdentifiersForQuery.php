@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Common\Fake;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
@@ -68,6 +69,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
         $codeLabelFilter = ($query->hasFilter('code_label')) ? $query->getFilter('code_label') : null;
         $completeFilter = ($query->hasFilter('complete')) ? $query->getFilter('complete') : null;
         $updatedFilter = ($query->hasFilter('updated')) ? $query->getFilter('updated'): null;
+        $attributeFilter = ($query->hasFilter('values.*')) ? $query->getFilter('values.*') : null;
 
         $records = array_values(array_filter($this->records, function (Record $record) use ($referenceEntityFilter) {
             return '' === $referenceEntityFilter['value']
@@ -161,6 +163,23 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             $recordDate = ($this->updatedDateByRecord[(string) $record->getIdentifier()])->getTimestamp();
 
             return $recordDate >= $updatedSinceDate;
+        }));
+
+        $records = array_values(array_filter($records, function (Record $record) use ($attributeFilter) {
+            if (null === $attributeFilter) {
+                return true;
+            }
+
+            $attributeIdentifier = substr($attributeFilter['field'], 7);
+            $value = $record->getValues()->findValue(ValueKey::createFromNormalized($attributeIdentifier));
+
+            if (null === $value) {
+                return false;
+            }
+
+            $data = (is_array($value->getData()->normalize())) ? $value->getData()->normalize() : [$value->getData()->normalize()];
+
+            return $attributeFilter['value'] === $data;
         }));
 
         if ($query->isPaginatedUsingSearchAfter()) {

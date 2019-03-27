@@ -18,9 +18,9 @@
           "context": {}
         },
         {
-          "field": "complete",
-          "operator": "=",
-          "value": false,
+          "field": "values.colors",
+          "operator": "IN",
+          "value": ["red"],
           "context": {}
         },
         {

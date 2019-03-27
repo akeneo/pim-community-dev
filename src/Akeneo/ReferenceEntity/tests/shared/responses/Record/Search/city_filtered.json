@@ -18,9 +18,9 @@
           "context": {}
         },
         {
-          "field": "complete",
-          "operator": "=",
-          "value": false,
+          "field": "values.cities",
+          "operator": "IN",
+          "value": ["paris"],
           "context": {}
         },
         {

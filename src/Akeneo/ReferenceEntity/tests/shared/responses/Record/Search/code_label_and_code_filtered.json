@@ -35,32 +35,44 @@
   "response": {
     "status": 200,
     "body": {
-      "items": [
+      "items":[
         {
-          "identifier": "designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2",
-          "reference_entity_identifier": "designer",
-          "code": "starck",
-          "labels": {
-            "en_US": "Starck"
+          "identifier":"designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2",
+          "reference_entity_identifier":"designer",
+          "code":"starck",
+          "labels":{
+            "en_US":"Starck"
           },
-          "image": null,
-          "values": {
-            "label_designer_d00de54460082b239164135175588647_en_US": {
-              "attribute": "label_designer_d00de54460082b239164135175588647",
-              "channel": null,
-              "locale": "en_US",
-              "data": "Starck"
+          "image":null,
+          "values":{
+            "label_designer_d00de54460082b239164135175588647_en_US":{
+              "attribute":"label_designer_d00de54460082b239164135175588647",
+              "channel":null,
+              "locale":"en_US",
+              "data":"Starck"
             },
-            "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US": {
-              "attribute": "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
-              "channel": "ecommerce",
-              "locale": "en_US",
-              "data": "an awesome designer!"
+            "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US":{
+              "attribute":"description_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
+              "channel":"ecommerce",
+              "locale":"en_US",
+              "data":"an awesome designer!"
+            },
+            "colors":{
+              "attribute":"colors",
+              "channel":null,
+              "locale":null,
+              "data":"red"
+            },
+            "cities":{
+              "attribute":"cities",
+              "channel":null,
+              "locale":null,
+              "data":"paris"
             }
           },
-          "completeness": {
-            "complete": 1,
-            "required": 2
+          "completeness":{
+            "complete":1,
+            "required":2
           }
         }
       ],

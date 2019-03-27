@@ -33,7 +33,7 @@ mappings:
                     mapping:
                         type: 'boolean'
             -
-                links:
-                    path_match: 'links.*.*'
+                values:
+                    path_match: 'values.*'
                     mapping:
                         type: 'keyword'

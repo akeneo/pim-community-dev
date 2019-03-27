@@ -27,6 +27,7 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const UPDATED_AT = 'updated_at';
     private const RECORD_CODE_LABEL_SEARCH = 'record_code_label_search';
     private const COMPLETE_VALUE_KEYS = 'complete_value_keys';
+    private const VALUES_FIELD = 'values';
 
     /** @var FindValueKeysToIndexForAllChannelsAndLocalesInterface */
     private $findValueKeysToIndexForAllChannelsAndLocales;
@@ -34,12 +35,17 @@ class RecordNormalizer implements RecordNormalizerInterface
     /** @var SqlFindSearchableRecords */
     private $findSearchableRecords;
 
+    /** @var FindValueKeysToFilterOnAttributeType */
+    private $findValueKeysToFilterOnAttributeType;
+
     public function __construct(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
-        SqlFindSearchableRecords $findSearchableRecords
+        SqlFindSearchableRecords $findSearchableRecords,
+        FindValueKeysToFilterOnAttributeType $findValueKeysToFilterOnAttributeType
     ) {
         $this->findValueKeysToIndexForAllChannelsAndLocales = $findValueKeysToIndexForAllChannelsAndLocales;
         $this->findSearchableRecords = $findSearchableRecords;
+        $this->findValueKeysToFilterOnAttributeType = $findValueKeysToFilterOnAttributeType;
     }
 
     public function normalizeRecord(RecordIdentifier $recordIdentifier): array
@@ -53,12 +59,14 @@ class RecordNormalizer implements RecordNormalizerInterface
         $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
         $codeLabelMatrix = $this->createCodeLabelMatrix($searchableRecordItem);
         $filledValueKeysMatrix = $this->generateFilledValueKeys($searchableRecordItem);
+        $filterableValues = $this->generateFilterableValues($searchableRecordItem);
 
         return $this->normalize(
             $searchableRecordItem,
             $fullTextMatrix,
             $codeLabelMatrix,
-            $filledValueKeysMatrix
+            $filledValueKeysMatrix,
+            $filterableValues
         );
     }
 
@@ -70,12 +78,14 @@ class RecordNormalizer implements RecordNormalizerInterface
             $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
             $codeLabelMatrix = $this->createCodeLabelMatrix($searchableRecordItem);
             $filledValueKeysMatrix = $this->generateFilledValueKeys($searchableRecordItem);
+            $valueKeysToFilterOn = $this->generateFilterableValues($searchableRecordItem);
 
             yield $this->normalize(
                 $searchableRecordItem,
                 $fullTextMatrix,
                 $codeLabelMatrix,
-                $filledValueKeysMatrix
+                $filledValueKeysMatrix,
+                $valueKeysToFilterOn
             );
         }
     }
@@ -135,18 +145,33 @@ class RecordNormalizer implements RecordNormalizerInterface
         SearchableRecordItem $searchableRecordItem,
         array $fullTextMatrix,
         array $codeLabelMatrix,
-        array $filledValueKeysMatrix
+        array $filledValueKeysMatrix,
+        array $filterableValues
     ): array {
         $normalizedRecord = [
-            self::IDENTIFIER               => $searchableRecordItem->identifier,
-            self::CODE                     => $searchableRecordItem->code,
-            self::REFERENCE_ENTITY_CODE    => $searchableRecordItem->referenceEntityIdentifier,
-            self::RECORD_FULL_TEXT_SEARCH  => $fullTextMatrix,
+            self::IDENTIFIER => $searchableRecordItem->identifier,
+            self::CODE => $searchableRecordItem->code,
+            self::REFERENCE_ENTITY_CODE => $searchableRecordItem->referenceEntityIdentifier,
+            self::RECORD_FULL_TEXT_SEARCH => $fullTextMatrix,
             self::RECORD_CODE_LABEL_SEARCH => $codeLabelMatrix,
-            self::UPDATED_AT               => $this->now(),
-            self::COMPLETE_VALUE_KEYS      => $filledValueKeysMatrix,
+            self::UPDATED_AT => $this->now(),
+            self::COMPLETE_VALUE_KEYS => $filledValueKeysMatrix,
+            self::VALUES_FIELD => $filterableValues
         ];
 
         return $normalizedRecord;
+    }
+
+    private function generateFilterableValues(SearchableRecordItem $searchableRecordItem): array
+    {
+        $valueKeys = $this->findValueKeysToFilterOnAttributeType->fetch($searchableRecordItem->referenceEntityIdentifier);
+        $result = [];
+        foreach ($valueKeys as $valueKey) {
+            if (isset($searchableRecordItem->values[$valueKey])) {
+                $result[$valueKey] = $searchableRecordItem->values[$valueKey]['data'];
+            }
+        }
+
+        return $result;
     }
 }

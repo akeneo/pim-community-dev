@@ -192,6 +192,18 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               data: 'Dyson',
               locale: 'fr_FR',
             },
+            "cities": {
+              "attribute": "cities",
+              "channel": null,
+              "data": "paris",
+              "locale": null,
+            },
+            "colors": {
+              "attribute": "colors",
+              "channel": null,
+              "data": "red",
+              "locale": null,
+            },
           },
           completeness: {
             complete: 0,
@@ -216,6 +228,18 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               channel: null,
               data: 'Starck',
               locale: 'en_US',
+            },
+            "cities": {
+              "attribute": "cities",
+              "channel": null,
+              "data": "paris",
+              "locale": null,
+            },
+            "colors": {
+              "attribute": "colors",
+              "channel": null,
+              "data": "red",
+              "locale": null,
             },
           },
           completeness: {

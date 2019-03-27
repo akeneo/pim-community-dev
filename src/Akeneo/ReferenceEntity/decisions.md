@@ -634,6 +634,165 @@ We will dedicate someone on the next bloom to list all comamnds and create subta
 Then we will be able to create a PR to fix them one by one (use of a feature branch could be possible).
 Then take cards one by one and fix them. It should not create any conflicts
 
+## 15/03/2019
+
+### Filtering products on values (options and records)
+
+#### Problem #1: Properties and attributes collision
+
+When a user is filtering on an attribute, the attribute path sent to the back-end will be prefixed by 'values.', for instance: 'values.main_color_color_fingerprint'.
+This way, the back-end will know we are not filtering on a property but on a particular attribute.
+
+Another idea would be to put the attribute identifier in a dedicated key on the filter like so:
+
+    // Filtering on a field
+    [
+        'field'    => 'update_at',
+        'operator' => '=',
+        'value'    => '12/01/19',
+        'context   => []
+    ]
+
+    // Filtering on an attribute
+    [
+        'attribute' => 'main_color_color_fingerprint',
+        'operator'  => '=',
+        'value'     => '12/01/19',
+        'context    => []
+    ]
+
+We need to think this trough because this filter will be available trough the API.
+
+#### Problem #2: Performing the search
+
+##### Solution 1: Fast indexing & computations at search time
+
+**Indexing format**
+
+In order to search on values of the records we will index the records values indexed by value keys:
+
+    // There can be options of type 'option', 'option_collection', 'record', 'record_collection'
+    // They can be localizable or not
+    // They can be scopable or not
+    [
+        'values' => [
+            'main_option_finger' => 'red',
+            'main_options_finger_fr_FR' => ['red', 'blue'],
+            'main_record_finger_mobile' => 'stark',
+            'main_records_finger_ecommerce_fr_FR' => ['stark', 'dyson']
+        ],
+    ]
+
+**Performing the search**
+
+When the filters are finally sent to the back-end, we have:
+- A channel the user is currently on
+- A locale the user is currently on
+- An attribute identifier
+
+Now we need to generate the value keys that will match the value keys in the index.
+
+Filtering on non-localizable / non-scopable attribute:
+Let's say the user filtered on the 'main_option' attribute for channel 'ecommerce' and locale 'fr_FR'.
+'main_option' is non-localizable and non-scopable.
+
+We need to call a service, that will generate for us the right value key to search on. Here we would search on the value key "main_option_color_fingerprint".
+
+Filtering on a localizable attribute
+main_option is now localizable only.
+
+When searching on channel 'ecommerce' and locale 'fr_FR'.
+The value key we need to search on is: 'main_option_color_fingerprint_fr_FR'.
+
+The ES query should have the following format:
+
+    // Users searches for the records having a color main_color 'blue' and 'red' on channel 'ecommerce' and locale 'fr_FR'
+    [
+        '_source' => '_id',
+        'query'   => [
+            'constant_score' => [
+                'filter' => [
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'terms' => [
+                                    'values.main_option_color_fingerprint_fr_FR' => ['blue', 'red']
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ]
+
+##### Solution 2: Slower indexing, faster search
+
+**Indexing format**
+
+In order to search on values of the records we will index the records values just like they are searched for indexed by channel, locale and attribute identifiers.
+
+    // There can be options of type 'option', 'option_collection', 'record', 'record_collection'
+    // They can be localizable or not
+    // They can be scopable or not
+    [
+        'values' => [
+            'ecommerce' => [
+                'fr_FR' => [
+                    'main_option_finger'                  => 'red',             <-- Non-localizable, non-scopable
+                    'main_options_finger_fr_FR'           => ['red', 'blue'],   <-- localizable only on fr_FR
+                    'main_records_finger_ecommerce_fr_FR' => ['stark', 'dyson'] <-- localizable scopable on ecommerce fr_FR
+                ],
+                'en_US' => [
+                    'main_option_finger' => 'red',
+                ],
+            'mobile' => [
+                'fr_FR' => [
+                    'main_option_finger' => 'red',
+                    'main_options_finger_fr_FR' => ['red', 'blue'] <-- localizable only on fr_FR
+                    'main_record_finger_mobile' => 'stark', <-- scopable only on mobile
+                ],
+                'en_US' => [
+                    'main_option_finger' => 'red',
+                    'main_record_finger_mobile' => 'stark',
+                ],
+            ]
+        ],
+    ]
+
+**Performing the search**
+
+When the filters are finally sent to the back-end, we have:
+- A channel the user is currently on
+- A locale the user is currently on
+- An attribute identifier
+
+We can directly perform the search.
+
+The ES query should have the following format:
+
+    // Users searches for the records having a color main_color 'blue' and 'red' on channel 'ecommerce' and locale 'fr_FR'
+    [
+        '_source' => '_id',
+        'query'   => [
+            'constant_score' => [
+                'filter' => [
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'terms' => [
+                                    'values.ecommerce.fr_FR.main_color_color_finger' => ['blue', 'red']
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ]
+
+### Status: Pending
+
 # Ideas for performance improvement:
 
 Progress bar step: 1

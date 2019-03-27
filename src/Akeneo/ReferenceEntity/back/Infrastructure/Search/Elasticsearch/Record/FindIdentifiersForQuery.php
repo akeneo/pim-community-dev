@@ -13,14 +13,20 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ValueKey\SqlGetValueKeyForAttributeChannelAndLocale;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Elasticsearch\QueryString;
 
@@ -31,6 +37,7 @@ use Akeneo\Tool\Component\Elasticsearch\QueryString;
 class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 {
     private const INDEX_TYPE = 'pimee_reference_entity_record';
+    private const ATTRIBUTE_FILTER_FIELD = 'values.';
 
     /** @var Client */
     private $recordClient;
@@ -38,16 +45,21 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     /** @var FindRequiredValueKeyCollectionForChannelAndLocalesInterface */
     private $findRequiredValueKeyCollectionForChannelAndLocale;
 
+    /** @var SqlGetValueKeyForAttributeChannelAndLocale */
+    private $getValueKeyForAttributeChannelAndLocale;
+
     /**
      * @param Client                                                      $recordClient
      * @param FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale
      */
     public function __construct(
         Client $recordClient,
-        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale
+        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
+        SqlGetValueKeyForAttributeChannelAndLocale $getValueKeyForAttributeChannelAndLocale
     ) {
         $this->recordClient = $recordClient;
         $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
+        $this->getValueKeyForAttributeChannelAndLocale = $getValueKeyForAttributeChannelAndLocale;
     }
 
     /**
@@ -71,6 +83,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
         $completeFilter = ($recordQuery->hasFilter('complete')) ? $recordQuery->getFilter('complete') : null;
         $updatedFilter = ($recordQuery->hasFilter('updated')) ? $recordQuery->getFilter('updated') : null;
+        $attributeFilter = ($recordQuery->hasFilter('values.*')) ? $recordQuery->getFilter('values.*') : null;
 
         $query = [
             '_source' => '_id',
@@ -145,6 +158,23 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'range' => [
                    'updated_at' => ['gt' => $this->getFormattedDate($updatedFilter['value'])]
+                ]
+            ];
+        }
+
+        if (null !== $attributeFilter && !empty($attributeFilter['value'] && 'IN' === $attributeFilter['operator'])) {
+            // As the attribute identifier filter will have all the time the same structure values.*. We could extract only the last part of the string with a substr from the dot.
+            $attributeIdentifier = substr($attributeFilter['field'], strlen(self::ATTRIBUTE_FILTER_FIELD));
+
+            $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(
+                AttributeIdentifier::fromString($attributeIdentifier),
+                ChannelIdentifier::fromCode($recordQuery->getchannel()),
+                LocaleIdentifier::fromCode($recordQuery->getLocale())
+            );
+            $path = sprintf('values.%s', (string) $valueKey);
+            $query['query']['constant_score']['filter']['bool']['filter'][] = [
+                'terms' => [
+                    $path => $attributeFilter['value']
                 ]
             ];
         }
