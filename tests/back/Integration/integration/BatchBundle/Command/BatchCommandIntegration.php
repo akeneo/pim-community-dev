@@ -88,8 +88,8 @@ class BatchCommandIntegration extends TestCase
     {
         $output = $this->launchJob(['-vvv' => true]);
         $outputContent = $output->fetch();
-        $this->assertContains('DEBUG', $outputContent);
-        $this->assertContains('Export csv_product_export has been successfully executed.', $outputContent);
+        $this->assertStringContainsString('DEBUG', $outputContent);
+        $this->assertStringContainsString('Export csv_product_export has been successfully executed.', $outputContent);
     }
 
     public function testLaunchJobWithValidEmail()
@@ -101,19 +101,19 @@ class BatchCommandIntegration extends TestCase
     public function testLaunchJobWithInvalidJobInstance()
     {
         $output = $this->launchJob(['code' => 'unknown_command']);
-        $this->assertContains('Could not find job instance "unknown_command".', $output->fetch());
+        $this->assertStringContainsString('Could not find job instance "unknown_command".', $output->fetch());
     }
 
     public function testLaunchJobWithInvalidEmail()
     {
         $output = $this->launchJob(['--email' => 'email']);
-        $this->assertContains('Email "email" is invalid', $output->fetch());
+        $this->assertStringContainsString('Email "email" is invalid', $output->fetch());
     }
 
     public function testLaunchJobWithInvalidJobExecutionCode()
     {
         $output = $this->launchJob(['execution' => '1']);
-        $this->assertContains('Could not find job execution "1"', $output->fetch());
+        $this->assertStringContainsString('Could not find job execution "1"', $output->fetch());
     }
 
     public function testLaunchJobAlreadyStarted()
@@ -124,19 +124,19 @@ class BatchCommandIntegration extends TestCase
         $this->assertEquals(BatchStatus::COMPLETED, $jobExecution['status']);
 
         $output = $this->launchJob(['execution' => $jobExecution['id']]);
-        $this->assertContains(sprintf('Job execution "%s" has invalid status: COMPLETED', $jobExecution['id']), $output->fetch());
+        $this->assertStringContainsString(sprintf('Job execution "%s" has invalid status: COMPLETED', $jobExecution['id']), $output->fetch());
     }
 
     public function testLaunchJobExecutionWithConfigOverridden()
     {
         $output = $this->launchJob(['execution' => '1', '--config' => ['filePath' => '/tmp/foo']]);
-        $this->assertContains('Configuration option cannot be specified when launching a job execution.', $output->fetch());
+        $this->assertStringContainsString('Configuration option cannot be specified when launching a job execution.', $output->fetch());
     }
 
     public function testLaunchJobExecutionWithUsernameOverridden()
     {
         $output = $this->launchJob(['execution' => '1', '--username' => 'mary']);
-        $this->assertContains('Username option cannot be specified when launching a job execution', $output->fetch());
+        $this->assertStringContainsString('Username option cannot be specified when launching a job execution', $output->fetch());
     }
 
     /**

@@ -51,7 +51,7 @@ class JobQueueConsumerCommandIntegration extends TestCase
 
         $standardOutput = $output->fetch();
 
-        $this->assertContains(sprintf('Job execution "%s" is finished.', $jobExecution->getId()), $standardOutput);
+        $this->assertStringContainsString(sprintf('Job execution "%s" is finished.', $jobExecution->getId()), $standardOutput);
 
         $row = $this->getJobExecutionDatabaseRow($jobExecution);
 

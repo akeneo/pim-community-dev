@@ -25,10 +25,10 @@ class CreateClientIntegration extends KernelTestCase
         ]);
         $output = $commandTester->getDisplay();
 
-        $this->assertContains('A new client has been added.', $output);
-        $this->assertContains('client_id:', $output);
-        $this->assertContains('secret:', $output);
-        $this->assertContains('label: Magento connector', $output);
+        $this->assertStringContainsString('A new client has been added.', $output);
+        $this->assertStringContainsString('client_id:', $output);
+        $this->assertStringContainsString('secret:', $output);
+        $this->assertStringContainsString('label: Magento connector', $output);
 
         $this->assertSame(0, $commandTester->getStatusCode());
     }
@@ -37,7 +37,6 @@ class CreateClientIntegration extends KernelTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Not enough arguments (missing: "label").');
-
 
         self::bootKernel();
         $application = new Application(self::$kernel);

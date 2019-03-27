@@ -119,13 +119,13 @@ class PublishJobToQueueCommandIntegration extends TestCase
     public function testLaunchJobWithInvalidJobInstance()
     {
         $output = $this->pushJob(['code' => 'unknown_command']);
-        $this->assertContains('Could not find job instance "unknown_command".', $output->fetch());
+        $this->assertStringContainsString('Could not find job instance "unknown_command".', $output->fetch());
     }
 
     public function testLaunchJobWithInvalidEmail()
     {
         $output = $this->pushJob(['--email' => 'email']);
-        $this->assertContains('Email "email" is invalid', $output->fetch());
+        $this->assertStringContainsString('Email "email" is invalid', $output->fetch());
     }
 
     /**
