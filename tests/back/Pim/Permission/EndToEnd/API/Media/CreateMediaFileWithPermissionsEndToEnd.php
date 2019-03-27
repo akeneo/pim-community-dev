@@ -2,10 +2,10 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Media;
 
-use League\Flysystem\FilesystemInterface;
-use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
+use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -76,7 +76,7 @@ class CreateMediaFileWithPermissionsEndToEnd extends AbstractMediaFileTestCase
 
         // check if product value has been created
         $productDraft = $this->testKernel->getContainer()->get('pimee_workflow.repository.product_draft')->findByEntityWithValues($product);
-        $this->assertContains('akeneo.jpg', $productDraft[0]->getChange('an_image', null, null));
+        $this->assertStringContainsString('akeneo.jpg', $productDraft[0]->getChange('an_image', null, null));
     }
 
     public function testErrorWhenProductNotViewableByRedactor()
