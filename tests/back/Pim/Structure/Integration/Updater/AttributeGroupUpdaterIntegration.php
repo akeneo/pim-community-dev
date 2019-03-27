@@ -2,105 +2,99 @@
 
 namespace AkeneoTest\Pim\Structure\Integration\Updater;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Updater\AttributeGroupUpdater;
+use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 
 class AttributeGroupUpdaterIntegration extends TestCase
 {
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException
-     * @expectedExceptionMessage Expects a "Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface", "stdClass" given.
-     */
     public function testUpdateObjectInAttributeGroupUpdater()
     {
+        $this->expectException(InvalidObjectException::class);
+        $this->expectExceptionMessage('Expects a "Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface", "stdClass" given.');
+
         $this->getUpdater()->update(new \stdClass(), []);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "labels" expects an array as data, "NULL" given.
-     */
     public function testAttributeGroupUpdateWithNullLabels()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "labels" expects an array as data, "NULL" given.');
+
         $attributeGroup = $this->createAttributeGroup();
 
         $this->getUpdater()->update($attributeGroup, ['labels' => null]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "attributes" expects an array as data, "NULL" given.
-     */
     public function testAttributeGroupUpdateWithNullAttributes()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "attributes" expects an array as data, "NULL" given.');
+
         $attributeGroup = $this->createAttributeGroup();
 
         $this->getUpdater()->update($attributeGroup, ['attributes' => null]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage one of the "labels" values is not a scalar
-     */
     public function testAttributeGroupUpdateWithNonScalarLabels()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('one of the "labels" values is not a scalar');
+
         $attributeGroup = $this->createAttributeGroup();
 
         $this->getUpdater()->update($attributeGroup, ['labels' => ['en_US' => []]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage one of the "attributes" values is not a scalar
-     */
     public function testAttributeGroupUpdateWithNonScalarAttributess()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('one of the "attributes" values is not a scalar');
+
         $attributeGroup = $this->createAttributeGroup();
 
         $this->getUpdater()->update($attributeGroup, ['attributes' => [[]]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "code" expects a scalar as data, "array" given.
-     */
     public function testAttributeGroupUpdateWithNonScalarCode()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "code" expects a scalar as data, "array" given.');
+
         $attributeGroup = $this->createAttributeGroup();
 
         $this->getUpdater()->update($attributeGroup, ['code' => []]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "sort_order" expects a scalar as data, "array" given.
-     */
     public function testAttributeGroupUpdateWithNonScalarSortOrder()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "sort_order" expects a scalar as data, "array" given.');
+
         $attributeGroup = $this->createAttributeGroup();
 
         $this->getUpdater()->update($attributeGroup, ['sort_order' => []]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
-     * @expectedExceptionMessage Property "unknown_property" does not exist.
-     */
     public function testAttributeGroupUpdateWithUnknownProperty()
     {
+        $this->expectException(UnknownPropertyException::class);
+        $this->expectExceptionMessage('Property "unknown_property" does not exist.');
+
         $attributeGroup = $this->createAttributeGroup();
 
         $this->getUpdater()->update($attributeGroup, ['unknown_property' => null]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "attributes" expects a valid attribute code. The attribute does not exist, "unknown_attribute" given.
-     */
     public function testAttributeGroupUpdateWithNonExistingAttributes()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "attributes" expects a valid attribute code. The attribute does not exist, "unknown_attribute" given.');
+
         $attributeGroup = $this->createAttributeGroup();
 
         $this->getUpdater()->update($attributeGroup, ['code' => 'attributeGroupA', 'attributes' => ['unknown_attribute']]);

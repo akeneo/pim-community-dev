@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Option;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -92,39 +93,35 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         $this->assert($result, ['empty_product', 'product_one']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_localizable_scopable_simple_select" expects a locale, none given.
-     */
     public function testErrorOptionLocalizable()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localizable_scopable_simple_select" expects a locale, none given.');
+
         $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_localizable_scopable_simple_select" expects a scope, none given.
-     */
     public function testErrorOptionScopable()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localizable_scopable_simple_select" expects a scope, none given.');
+
         $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'fr_FR']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_localizable_scopable_simple_select" expects an existing and activated locale, "NOT_FOUND" given.
-     */
     public function testLocaleNotFound()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localizable_scopable_simple_select" expects an existing and activated locale, "NOT_FOUND" given.');
+
         $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'NOT_FOUND']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_localizable_scopable_simple_select" expects an existing scope, "NOT_FOUND" given.
-     */
     public function testScopeNotFound()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localizable_scopable_simple_select" expects an existing scope, "NOT_FOUND" given.');
+
         $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'en_US', 'scope' => 'NOT_FOUND']]]);
     }
 }

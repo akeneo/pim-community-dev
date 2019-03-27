@@ -2,7 +2,10 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\ReferenceData;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -106,30 +109,27 @@ class ReferenceDataMultiSelectFilterIntegration extends AbstractProductQueryBuil
         $this->assert($result, ['product_one', 'product_two']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_ref_data_multi_select" expects an array as data, "string" given.
-     */
     public function testErrorDataIsMalformed()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_ref_data_multi_select" expects an array as data, "string" given.');
+
         $this->executeFilter([['a_ref_data_multi_select', Operators::IN_LIST, 'string']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "a_ref_data_multi_select" expects a valid code. No reference data "fabrics" with code "NOT_FOUND" has been found, "NOT_FOUND" given.
-     */
     public function testErrorOptionNotFound()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "a_ref_data_multi_select" expects a valid code. No reference data "fabrics" with code "NOT_FOUND" has been found, "NOT_FOUND" given.');
+
         $this->executeFilter([['a_ref_data_multi_select', Operators::IN_LIST, ['NOT_FOUND']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
-     * @expectedExceptionMessage Filter on property "a_ref_data_multi_select" is not supported or does not support operator "BETWEEN"
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(UnsupportedFilterException::class);
+        $this->expectExceptionMessage('Filter on property "a_ref_data_multi_select" is not supported or does not support operator "BETWEEN"');
+
         $this->executeFilter([['a_ref_data_multi_select', Operators::BETWEEN, ['NOT_FOUND']]]);
     }
 

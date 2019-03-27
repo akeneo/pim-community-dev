@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Price;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -334,21 +335,19 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['product_two']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_scopable_price" expects a scope, none given.
-     */
     public function testErrorPriceScopable()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_scopable_price" expects a scope, none given.');
+
         $this->executeFilter([['a_scopable_price', Operators::NOT_EQUAL, ['amount' => 250, 'currency' => 'EUR']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_scopable_price" expects an existing scope, "NOT_FOUND" given.
-     */
     public function testScopeNotFound()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_scopable_price" expects an existing scope, "NOT_FOUND" given.');
+
         $this->executeFilter([
             [
                 'a_scopable_price',

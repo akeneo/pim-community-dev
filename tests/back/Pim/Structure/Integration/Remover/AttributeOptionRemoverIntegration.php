@@ -36,12 +36,11 @@ class AttributeOptionRemoverIntegration extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Attribute option "optionA" could not be removed as it is used as variant axis value.
-     */
     public function test_fail_to_remove_attribute_option_if_option_is_used_as_attribute_axes()
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Attribute option "optionA" could not be removed as it is used as variant axis value.');
+
         $this->addAdditionalFixtures();
 
         $attributeOptionRepository = $this->get('pim_catalog.repository.attribute_option');

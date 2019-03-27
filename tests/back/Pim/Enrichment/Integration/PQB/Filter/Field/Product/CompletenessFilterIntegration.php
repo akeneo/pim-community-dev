@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Field\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -409,39 +411,35 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['product_two']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "completeness" expects an array with the key "locales".
-     */
     public function testErrorLocalesIsMissing()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "completeness" expects an array with the key "locales".');
+
         $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75, ['scope' => 'ecommerce']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "completeness" expects an array of arrays as data.
-     */
     public function testErrorLocalesIsMalformed()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "completeness" expects an array of arrays as data.');
+
         $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75, ['scope' => 'ecommerce', 'locales' => 'string']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "completeness" expects a valid scope.
-     */
     public function testErrorScopeIsMissing()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "completeness" expects a valid scope.');
+
         $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "completeness" expects a numeric as data, "string" given.
-     */
     public function testErrorDataIsNotAnNumeric()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "completeness" expects a numeric as data, "string" given.');
+
         $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 'string']]);
     }
 }

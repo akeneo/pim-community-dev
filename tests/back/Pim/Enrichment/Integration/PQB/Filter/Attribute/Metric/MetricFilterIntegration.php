@@ -2,7 +2,10 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Metric;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -152,48 +155,43 @@ class MetricFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['product_one']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_metric" expects an array as data, "string" given.
-     */
     public function testErrorDataIsMalformed()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_metric" expects an array as data, "string" given.');
+
         $this->executeFilter([['a_metric', Operators::NOT_EQUAL, 'string']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_metric" expects an array with the key "amount".
-     */
     public function testErrorAmountIsMissing()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_metric" expects an array with the key "amount".');
+
         $this->executeFilter([['a_metric', Operators::NOT_EQUAL, ['unit' => 'WATT']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_metric" expects an array with the key "unit".
-     */
     public function testErrorCurrencyIsMissing()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_metric" expects an array with the key "unit".');
+
         $this->executeFilter([['a_metric', Operators::NOT_EQUAL, ['amount' => '']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage The unit does not exist in the attribute's family "Power"
-     */
     public function testErrorUnitNotFound()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('The unit does not exist in the attribute\'s family "Power"');
+
         $this->executeFilter([['a_metric', Operators::NOT_EQUAL, ['amount' => 10, 'unit' => 'NOT_FOUND']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
-     * @expectedExceptionMessage Filter on property "a_metric" is not supported or does not support operator "BETWEEN"
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(UnsupportedFilterException::class);
+        $this->expectExceptionMessage('Filter on property "a_metric" is not supported or does not support operator "BETWEEN"');
+
         $this->executeFilter([['a_metric', Operators::BETWEEN, ['amount' => 15, 'unit' => 'KILOWATT']]]);
     }
 }

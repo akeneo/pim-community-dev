@@ -2,60 +2,57 @@
 
 namespace AkeneoTest\Pim\Structure\Integration\Updater;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 
 class AssociationTypeUpdaterIntegration extends TestCase
 {
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException
-     * @expectedExceptionMessage Expects a "Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface", "stdClass" given.
-     */
     public function testUpdateObjectInAssociationTypeUpdater()
     {
+        $this->expectException(InvalidObjectException::class);
+        $this->expectExceptionMessage('Expects a "Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface", "stdClass" given.');
+
         $this->getUpdater()->update(new \stdClass(), []);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "code" expects a scalar as data, "array" given.
-     */
     public function testAssociationTypeUpdateWithNonScalarCode()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "code" expects a scalar as data, "array" given.');
+
         $associationType = $this->createAssociationType();
 
         $this->getUpdater()->update($associationType, ['code' => []]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "labels" expects an array as data, "NULL" given.
-     */
     public function testAssociationTypeUpdateWithNullLabels()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "labels" expects an array as data, "NULL" given.');
+
         $associationType = $this->createAssociationType();
 
         $this->getUpdater()->update($associationType, ['labels' => null]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage one of the "labels" values is not a scalar
-     */
     public function testAssociationTypeUpdateWithNonScalarLabels()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('one of the "labels" values is not a scalar');
+
         $associationType = $this->createAssociationType();
 
         $this->getUpdater()->update($associationType, ['labels' => ['en_US' => []]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
-     * @expectedExceptionMessage Property "unknown_property" does not exist.
-     */
     public function testAssociationTypeUpdateWithUnknownProperty()
     {
+        $this->expectException(UnknownPropertyException::class);
+        $this->expectExceptionMessage('Property "unknown_property" does not exist.');
+
         $associationType = $this->createAssociationType();
 
         $this->getUpdater()->update($associationType, ['unknown_property' => null]);

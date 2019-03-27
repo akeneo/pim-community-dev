@@ -7,6 +7,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -199,12 +200,12 @@ class UpdateFamilyVariantIntegration extends TestCase
 
     /**
      * Validation: The number of level of the family variant cannot be changed
-     *
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException
-     * @expectedExceptionMessage The number of variant attribute sets cannot be changed.
      */
     public function testTheFamilyVariantLevelNumberImmutability()
     {
+        $this->expectException(ImmutablePropertyException::class);
+        $this->expectExceptionMessage('The number of variant attribute sets cannot be changed.');
+
         $familyVariant = $this->getFamilyVariant('shoes_size');
 
         $this->get('pim_catalog.updater.family_variant')->update(

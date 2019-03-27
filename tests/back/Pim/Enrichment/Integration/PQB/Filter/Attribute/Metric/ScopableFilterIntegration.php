@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Metric;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -124,21 +125,19 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['product_one']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_scopable_metric" expects a scope, none given.
-     */
     public function testErrorMetricScopable()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_scopable_metric" expects a scope, none given.');
+
         $this->executeFilter([['a_scopable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_scopable_metric" expects an existing scope, "NOT_FOUND" given.
-     */
     public function testScopeNotFound()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_scopable_metric" expects an existing scope, "NOT_FOUND" given.');
+
         $this->executeFilter([['a_scopable_metric', Operators::NOT_EQUAL, ['amount' => 10, 'unit' => 'KILOWATT'], ['scope' => 'NOT_FOUND']]]);
     }
 }

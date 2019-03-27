@@ -6,6 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)
@@ -14,12 +15,11 @@ use Akeneo\Test\Integration\TestCase;
  */
 class UpdateVariantProductIntegration extends TestCase
 {
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "parent" expects a valid parent code. The parent product model does not exist, "" given.
-     */
     public function testTheParentCannotBeRemoved(): void
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "parent" expects a valid parent code. The parent product model does not exist, "" given.');
+
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_blue_xl');
         $this->get('pim_catalog.updater.product')->update($product, ['parent' => '']);
     }

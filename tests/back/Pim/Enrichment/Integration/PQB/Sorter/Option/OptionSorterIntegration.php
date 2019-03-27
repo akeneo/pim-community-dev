@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Option;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -62,12 +63,11 @@ class OptionSorterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assertOrder($result, ['product_two', 'product_one', 'empty_product']);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException
-     * @expectedExceptionMessage Direction "A_BAD_DIRECTION" is not supported
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(InvalidDirectionException::class);
+        $this->expectExceptionMessage('Direction "A_BAD_DIRECTION" is not supported');
+
         $this->executeSorter([['a_simple_select', 'A_BAD_DIRECTION']]);
     }
 }

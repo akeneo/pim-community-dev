@@ -33,12 +33,12 @@ class CreateClientIntegration extends KernelTestCase
         $this->assertSame(0, $commandTester->getStatusCode());
     }
 
-    /**
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Not enough arguments (missing: "label").
-     */
     public function testResponseWhenMissingLabel()
     {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Not enough arguments (missing: "label").');
+
+
         self::bootKernel();
         $application = new Application(self::$kernel);
         $application->add(new CreateClientCommand());

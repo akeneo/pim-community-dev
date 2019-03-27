@@ -2,7 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Media;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -92,21 +94,19 @@ class MediaFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['akeneo', 'ziggy']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "an_image" expects a string as data, "array" given.
-     */
     public function testErrorDataIsMalformed()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "an_image" expects a string as data, "array" given.');
+
         $this->executeFilter([['an_image', Operators::CONTAINS, []]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
-     * @expectedExceptionMessage Filter on property "an_image" is not supported or does not support operator "BETWEEN"
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(UnsupportedFilterException::class);
+        $this->expectExceptionMessage('Filter on property "an_image" is not supported or does not support operator "BETWEEN"');
+
         $this->executeFilter([['an_image', Operators::BETWEEN, 'ziggy.png']]);
     }
 }

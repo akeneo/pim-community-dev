@@ -2,169 +2,158 @@
 
 namespace AkeneoTest\Pim\Channel\Integration\Channel;
 
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 
 class UpdaterIntegration extends TestCase
 {
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException
-     * @expectedExceptionMessage Expects a "Akeneo\Channel\Component\Model\ChannelInterface", "stdClass" given.
-     */
     public function testUpdateObjectInChannelUpdater()
     {
+        $this->expectException(InvalidObjectException::class);
+        $this->expectExceptionMessage('Expects a "Akeneo\Channel\Component\Model\ChannelInterface", "stdClass" given.');
+
         $this->getUpdater()->update(new \stdClass(), []);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "labels" expects an array as data, "NULL" given.
-     */
     public function testChannelUpdateWithNullLabels()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "labels" expects an array as data, "NULL" given.');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['labels' => null]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "locales" expects an array as data, "NULL" given.
-     */
     public function testChannelUpdateWithNullLocales()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "locales" expects an array as data, "NULL" given.');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['locales' => null]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "currencies" expects an array as data, "NULL" given.
-     */
     public function testChannelUpdateWithNullCurrencies()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "currencies" expects an array as data, "NULL" given.');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['currencies' => null]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "conversion_units" expects an array as data, "NULL" given.
-     */
     public function testChannelUpdateWithNullConversionUnits()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "conversion_units" expects an array as data, "NULL" given.');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['conversion_units' => null]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage one of the "labels" values is not a scalar
-     */
     public function testChannelUpdateWithNonScalarLabels()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('one of the "labels" values is not a scalar');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['labels' => ['en_US' => []]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage one of the "locales" values is not a scalar
-     */
     public function testChannelUpdateWithNonScalarLocales()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('one of the "locales" values is not a scalar');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['locales' => [[]]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage one of the "currencies" values is not a scalar
-     */
     public function testChannelUpdateWithNonScalarCurrencies()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('one of the "currencies" values is not a scalar');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['currencies' => ['EUR', []]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage one of the "conversion_units" values is not a scalar
-     */
     public function testChannelUpdateWithNonScalarConversionUnits()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('one of the "conversion_units" values is not a scalar');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['conversion_units' => ['weight' => 'GRAM', 'display_diagonal' => []]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "code" expects a scalar as data, "array" given.
-     */
     public function testChannelUpdateWithNonScalarCode()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "code" expects a scalar as data, "array" given.');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['code' => []]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "category_tree" expects a scalar as data, "array" given.
-     */
     public function testChannelUpdateWithNonScalarCategoryTree()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "category_tree" expects a scalar as data, "array" given.');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['category_tree' => []]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "category_tree" expects a valid code. The category does not exist, "category_tree" given.
-     */
     public function testChannelUpdateWithUnknownCategoryTree()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "category_tree" expects a valid code. The category does not exist, "category_tree" given.');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['category_tree' => 'category_tree']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "currencies" expects a valid code. The currency does not exist, "YOLO" given.
-     */
     public function testChannelUpdateWithUnknownCurrency()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "currencies" expects a valid code. The currency does not exist, "YOLO" given.');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['currencies' => ['YOLO']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "locales" expects a valid code. The locale does not exist, "YOLO" given.
-     */
     public function testChannelUpdateWithUnknownLocale()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "locales" expects a valid code. The locale does not exist, "YOLO" given.');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['locales' => ['YOLO']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
-     * @expectedExceptionMessage Property "unknown_property" does not exist.
-     */
     public function testChannelUpdateWithUnknownProperty()
     {
+        $this->expectException(UnknownPropertyException::class);
+        $this->expectExceptionMessage('Property "unknown_property" does not exist.');
+
         $channel = $this->createChannel();
 
         $this->getUpdater()->update($channel, ['unknown_property' => null]);

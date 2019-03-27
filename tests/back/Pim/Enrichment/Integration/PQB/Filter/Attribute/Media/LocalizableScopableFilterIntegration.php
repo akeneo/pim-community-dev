@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Media;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -103,39 +104,35 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         $this->assert($result, ['product_one', 'product_two']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_localizable_scopable_image" expects a locale, none given.
-     */
     public function testErrorLocale()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localizable_scopable_image" expects a locale, none given.');
+
         $this->executeFilter([['a_localizable_scopable_image', Operators::NOT_EQUAL, '2016-09-23']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_localizable_scopable_image" expects a scope, none given.
-     */
     public function testErrorScope()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localizable_scopable_image" expects a scope, none given.');
+
         $this->executeFilter([['a_localizable_scopable_image', Operators::NOT_EQUAL, '2016-09-23', ['locale' => 'fr_FR']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_localizable_scopable_image" expects an existing and activated locale, "NOT_FOUND" given.
-     */
     public function testLocaleNotFound()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localizable_scopable_image" expects an existing and activated locale, "NOT_FOUND" given.');
+
         $this->executeFilter([['a_localizable_scopable_image', Operators::NOT_EQUAL, 'akeneo.jpg', ['locale' => 'NOT_FOUND']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_localizable_scopable_image" expects an existing scope, "NOT_FOUND" given.
-     */
     public function testScopeNotFound()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localizable_scopable_image" expects an existing scope, "NOT_FOUND" given.');
+
         $this->executeFilter([['a_localizable_scopable_image', Operators::NOT_EQUAL, 'akeneo.jpg', ['locale' => 'fr_FR', 'scope' => 'NOT_FOUND']]]);
     }
 }

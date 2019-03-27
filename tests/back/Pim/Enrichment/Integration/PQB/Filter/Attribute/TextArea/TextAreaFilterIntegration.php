@@ -2,7 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\TextArea;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -233,21 +235,19 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_cat', 'best_dog']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_text_area" expects a string as data, "array" given.
-     */
     public function testErrorDataIsMalformed()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_text_area" expects a string as data, "array" given.');
+
         $this->executeFilter([['a_text_area', Operators::NOT_EQUAL, [[]]]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
-     * @expectedExceptionMessage Filter on property "a_text_area" is not supported or does not support operator ">="
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(UnsupportedFilterException::class);
+        $this->expectExceptionMessage('Filter on property "a_text_area" is not supported or does not support operator ">="');
+
         $this->executeFilter([['a_text_area', Operators::GREATER_OR_EQUAL_THAN, 'dog']]);
     }
 }
