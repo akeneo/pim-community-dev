@@ -152,3 +152,24 @@ services:
             - '@pim_catalog.elasticsearch.published_product_indexer'
         tags:
             - { name: kernel.event_subscriber }
+
+    # External bounded context events
+    pimee_workflow.subscriber.product.remove_proposals_index:
+        class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Product\RemoveProposalsIndexSubscriber
+        arguments:
+            - '@pimee_workflow.query.select_proposal_ids_from_product_ids'
+            - '@pim_catalog.elasticsearch.product_proposal_indexer'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.subscriber.product_model.remove_model_proposals_index:
+        class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductModel\RemoveModelProposalsIndexSubscriber
+        arguments:
+            - '@pimee_workflow.query.select_model_proposal_ids_from_product_model_ids'
+            - '@pimee_workflow.query.select_proposal_ids_from_product_ids'
+            - '@pim_catalog.query.descendant_product_ids'
+            - '@pim_catalog.query.descendant_product_model_ids'
+            - '@pim_catalog.elasticsearch.product_model_proposal_indexer'
+            - '@pim_catalog.elasticsearch.product_proposal_indexer'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -1,0 +1,21 @@
+parameters:
+    pimee_api.router.proxy_product.class: PimEnterprise\Bundle\ApiBundle\Router\ProxyProductRouter
+
+services:
+    pimee_api.router.proxy_product:
+        class: '%pimee_api.router.proxy_product.class%'
+        arguments:
+            - '@router'
+            - '@security.token_storage'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pim_api.repository.product'
+            - 'pimee_api_product_draft_get'
+
+    pimee_api.router.proxy_product_model:
+        class: 'PimEnterprise\Bundle\ApiBundle\Router\ProxyProductRouter'
+        arguments:
+            - '@router'
+            - '@security.token_storage'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pim_api.repository.product_model'
+            - 'pimee_api_product_model_draft_get'

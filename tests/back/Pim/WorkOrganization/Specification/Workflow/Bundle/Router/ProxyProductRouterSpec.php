@@ -2,12 +2,12 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyProductRouter;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -21,7 +21,7 @@ class ProxyProductRouterSpec extends ObjectBehavior
         UrlGeneratorInterface $router,
         TokenStorageInterface $tokenStorage,
         EntityWithValuesDraftRepositoryInterface $productDraftRepository,
-        ProductRepositoryInterface $productRepository
+        IdentifiableObjectRepositoryInterface $productRepository
     ) {
         $this->beConstructedWith(
             $router,
@@ -104,7 +104,7 @@ class ProxyProductRouterSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('my_product')->willReturn(null);
 
         $this->shouldThrow(
-            new NotFoundHttpException('Product "my_product" does not exist')
+            new NotFoundHttpException('Entity "my_product" does not exist')
         )->during('generate', ['pim_product_get', ['code' => 'my_product'], UrlGeneratorInterface::ABSOLUTE_PATH]);
     }
 }
