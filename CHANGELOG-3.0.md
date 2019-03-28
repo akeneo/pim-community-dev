@@ -3,6 +3,7 @@
 # Bug fixes
 
 - PIM-8258: Fix missing translation for "copy none"
+- PXD-98: Fix panel content size for filters selector column
 
 # 3.0.10 (2019-03-28)
 
@@ -13,7 +14,6 @@
 - PXD-92: Fix badges visibility
 - PXD-93: Fix icon colors
 - PXD-95: Fix the too small content zone in the 'Associate' bulk action
-- PXD-98: Fix panel content size for filters selector column
 
 # 3.0.9 (2019-03-26)
 
@@ -56,6 +56,9 @@
 
 ## Bug fixes
 
+- PIM-8051: Fix display of product model images in the datagrid when "Attribute used as main picture" is at the variant attributes level one
+- PIM-8168: accept MySql version with suffix in requirements check
+- PIM-8152: accept spaces in kernel root dir when executing commands
 - PIM-8178: Fix Attribute search on family edit page
 - PIM-8189: Fix new patch availability display
 - PIM-8195: Fix JS error on Catalog volume monitoring screen
@@ -64,17 +67,11 @@
 
 ## Bug fixes
 
-- PIM-8051: Fix display of product model images in the datagrid when "Attribute used as main picture" is at the variant attributes level one
-
-## Bug fixes
-
 - PIM-8157: Fix issues on user edit (scroll and groups)
 - PIM-8164: Always display cancel cross on popins
 - PIM-8165: Increase font sizes
 - PIM-8018: Move Confirm button on mass edit screen
 - PIM-8167: register missing command "pim:reference-data:check"
-- PIM-8168: accept MySql version with suffix in requirements check
-- PIM-8152: accept spaces in kernel root dir when executing commands
 
 # 3.0.4 (2019-02-20)
 
