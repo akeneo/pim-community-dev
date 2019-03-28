@@ -59,7 +59,7 @@ class FindAssetCodesWithMissingVariationWithFileIntegration extends TestCase
     /**
      * @test
      */
-    public function if_finds_the_codes_of_the_assets_that_have_missing_variation_that_should_have_a_file()
+    public function if_finds_the_codes_of_the_assets_with_missing_generated_variation_file()
     {
         $this->loadLocales();
         $this->loadChannels();
