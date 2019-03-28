@@ -2,7 +2,10 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Price;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -154,48 +157,43 @@ class PriceFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['product_one']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_price" expects an array as data, "string" given.
-     */
     public function testErrorDataIsMalformed()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_price" expects an array as data, "string" given.');
+
         $this->executeFilter([['a_price', Operators::NOT_EQUAL, 'string']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_price" expects an array with the key "amount".
-     */
     public function testErrorAmountIsMissing()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_price" expects an array with the key "amount".');
+
         $this->executeFilter([['a_price', Operators::NOT_EQUAL, ['currency' => 'USD']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_price" expects an array with the key "currency".
-     */
     public function testErrorCurrencyIsMissing()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_price" expects an array with the key "currency".');
+
         $this->executeFilter([['a_price', Operators::NOT_EQUAL, ['amount' => 2]]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "a_price" expects a valid currency. The currency does not exist, "NOT_FOUND" given.
-     */
     public function testErrorCurrencyNotFound()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "a_price" expects a valid currency. The currency does not exist, "NOT_FOUND" given.');
+
         $this->executeFilter([['a_price', Operators::NOT_EQUAL, ['amount' => 10, 'currency' => 'NOT_FOUND']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
-     * @expectedExceptionMessage Filter on property "a_price" is not supported or does not support operator "BETWEEN"
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(UnsupportedFilterException::class);
+        $this->expectExceptionMessage('Filter on property "a_price" is not supported or does not support operator "BETWEEN"');
+
         $this->executeFilter([['a_price', Operators::BETWEEN, ['amount' => 15, 'currency' => 'EUR']]]);
     }
 }

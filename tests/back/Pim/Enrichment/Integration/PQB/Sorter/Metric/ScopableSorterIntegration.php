@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Metric;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -72,12 +73,11 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assertOrder($result, ['product_two', 'product_one', 'product_three', 'empty_product']);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException
-     * @expectedExceptionMessage Direction "A_BAD_DIRECTION" is not supported
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(InvalidDirectionException::class);
+        $this->expectExceptionMessage('Direction "A_BAD_DIRECTION" is not supported');
+
         $this->executeSorter([['a_scopable_metric', 'A_BAD_DIRECTION', ['scope' => 'ecommerce']]]);
     }
 

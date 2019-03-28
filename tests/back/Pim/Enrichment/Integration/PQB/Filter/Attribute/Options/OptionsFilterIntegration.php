@@ -2,7 +2,10 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Options;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -86,30 +89,27 @@ class OptionsFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['empty_product', 'product_two']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_multi_select" expects an array as data, "string" given.
-     */
     public function testErrorDataIsMalformed()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_multi_select" expects an array as data, "string" given.');
+
         $this->executeFilter([['a_multi_select', Operators::IN_LIST, 'string']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException
-     * @expectedExceptionMessage Object "options" with code "NOT_FOUND" does not exist
-     */
     public function testErrorOptionNotFound()
     {
+        $this->expectException(ObjectNotFoundException::class);
+        $this->expectExceptionMessage('Object "options" with code "NOT_FOUND" does not exist');
+
         $this->executeFilter([['a_multi_select', Operators::IN_LIST, ['NOT_FOUND']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
-     * @expectedExceptionMessage Filter on property "a_multi_select" is not supported or does not support operator "BETWEEN"
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(UnsupportedFilterException::class);
+        $this->expectExceptionMessage('Filter on property "a_multi_select" is not supported or does not support operator "BETWEEN"');
+
         $this->executeFilter([['a_multi_select', Operators::BETWEEN, ['orange', 'black']]]);
     }
 }

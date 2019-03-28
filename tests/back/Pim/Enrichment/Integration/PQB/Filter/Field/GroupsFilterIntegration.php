@@ -2,7 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -67,21 +69,19 @@ class GroupsFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['foo']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "groups" expects an array as data, "string" given.
-     */
     public function testErrorDataIsMalformed()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "groups" expects an array as data, "string" given.');
+
         $this->executeFilter([['groups', Operators::IN_LIST, 'string']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
-     * @expectedExceptionMessage Filter on property "groups" is not supported or does not support operator "BETWEEN"
-     */
     public function testErrorOperatorNotSupportedForGroups()
     {
+        $this->expectException(UnsupportedFilterException::class);
+        $this->expectExceptionMessage('Filter on property "groups" is not supported or does not support operator "BETWEEN"');
+
         $this->executeFilter([['groups', Operators::BETWEEN, 'groupB']]);
     }
 }

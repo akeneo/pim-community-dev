@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\TextArea;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -95,12 +96,11 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
         $this->assertOrder($result, ['cat', 'cattle', 'dog', 'empty_product']);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException
-     * @expectedExceptionMessage Direction "A_BAD_DIRECTION" is not supported
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(InvalidDirectionException::class);
+        $this->expectExceptionMessage('Direction "A_BAD_DIRECTION" is not supported');
+
         $this->executeSorter([['a_localizable_scopable_text_area', 'A_BAD_DIRECTION', ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
     }
 }

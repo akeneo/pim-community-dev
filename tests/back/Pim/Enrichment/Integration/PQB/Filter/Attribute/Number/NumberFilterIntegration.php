@@ -2,7 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Number;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -131,21 +133,19 @@ class NumberFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['product_two']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_number_float_negative" expects a numeric as data, "string" given.
-     */
     public function testErrorDataIsMalformed()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_number_float_negative" expects a numeric as data, "string" given.');
+
         $this->executeFilter([['a_number_float_negative', Operators::NOT_EQUAL, 'string']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
-     * @expectedExceptionMessage Filter on property "a_number_float_negative" is not supported or does not support operator "BETWEEN"
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(UnsupportedFilterException::class);
+        $this->expectExceptionMessage('Filter on property "a_number_float_negative" is not supported or does not support operator "BETWEEN"');
+
         $this->executeFilter([['a_number_float_negative', Operators::BETWEEN, '-15.5']]);
     }
 }

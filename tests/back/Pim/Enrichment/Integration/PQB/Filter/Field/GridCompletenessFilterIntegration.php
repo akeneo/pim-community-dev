@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\Assert\AssertEntityWithValues;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -115,22 +116,23 @@ class GridCompletenessFilterIntegration extends AbstractProductQueryBuilderTestC
 
     /**
      * The filter expect a non empty locale
-     *
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "completeness" expects a valid locale.
      */
     public function testErrorLocaleIsNotMissing()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "completeness" expects a valid locale.');
+
+
         $this->executeFilter([['completeness', Operators::AT_LEAST_COMPLETE, null, ['scope' => 'ecommerce']]]);
     }
     /**
      * The filter expect a non empty channel
-     *
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "completeness" expects a valid channel.
      */
     public function testErrorChannelIsNotMissing()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "completeness" expects a valid channel.');
+
         $this->executeFilter([['completeness', Operators::AT_LEAST_COMPLETE, null, ['locale' => 'en_US']]]);
     }
 

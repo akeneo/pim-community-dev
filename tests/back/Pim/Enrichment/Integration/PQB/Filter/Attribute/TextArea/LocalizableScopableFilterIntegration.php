@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\TextArea;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -138,12 +139,11 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         $this->assert($result, ['cat', 'cattle']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_localizable_scopable_text_area" expects a locale, none given.
-     */
     public function testErrorLocalizable()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_localizable_scopable_text_area" expects a locale, none given.');
+
         $this->executeFilter([['a_localizable_scopable_text_area', Operators::NOT_EQUAL, 'data']]);
     }
 }

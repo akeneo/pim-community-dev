@@ -2,7 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -84,36 +86,33 @@ class CompletenessSorterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assertOrder($result, ['empty_product', 'product_one', 'product_two', 'product_three', 'no_family']);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException
-     * @expectedExceptionMessage Direction "A_BAD_DIRECTION" is not supported
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(InvalidDirectionException::class);
+        $this->expectExceptionMessage('Direction "A_BAD_DIRECTION" is not supported');
+
         $this->executeSorter(
             [['completeness', 'A_BAD_DIRECTION']],
             ['default_locale' => 'en_US', 'default_scope' => 'ecommerce']
         );
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "locale" does not expect an empty value.
-     */
     public function testErrorLocaleNotEmpty()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "locale" does not expect an empty value.');
+
         $this->executeSorter(
             [['completeness', Directions::ASCENDING]],
             ['default_scope' => 'ecommerce']
         );
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "scope" does not expect an empty value.
-     */
     public function testErrorScopeNotEmpty()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "scope" does not expect an empty value.');
+
         $this->executeSorter(
             [['completeness', Directions::ASCENDING]],
             ['default_locale' => 'en_US']

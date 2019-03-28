@@ -23,6 +23,6 @@ class AggregateVolumesCommandIntegration extends KernelTestCase
 
         $output = $commandTester->getDisplay();
 
-        $this->assertContains('Catalog volumes aggregation done.', $output);
+        $this->assertStringContainsString('Catalog volumes aggregation done.', $output);
     }
 }

@@ -7,6 +7,8 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\Collection;
 
 class CreateFamilyVariantIntegration extends TestCase
@@ -299,12 +301,11 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->assertSame('This value is too long. It should have 100 characters or less.', $violations->get(0)->getMessage());
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "family" expects a valid family code. The family does not exist, "unknown_family" given
-     */
     public function testCreateFamilyVariantUnknownFamily()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "family" expects a valid family code. The family does not exist, "unknown_family" given');
+
         $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
         $this->get('pim_catalog.updater.family_variant')->update(
             $familyVariant,
@@ -398,12 +399,11 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->assertSame('There should be at least one level defined in the family variant', $violations->get(0)->getMessage());
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "variant_attribute_sets" expects an array of objects as data.
-     */
     public function testCreateFamilyVariantWithVariantAttributeSetAsString()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "variant_attribute_sets" expects an array of objects as data.');
+
         $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
         $this->get('pim_catalog.updater.family_variant')->update(
             $familyVariant,
@@ -418,12 +418,11 @@ class CreateFamilyVariantIntegration extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "variant_attribute_sets" expects an array of objects as data.
-     */
     public function testCreateFamilyVariantWithVariantAttributeSetAsArrayOfString()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "variant_attribute_sets" expects an array of objects as data.');
+
         $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
         $this->get('pim_catalog.updater.family_variant')->update(
             $familyVariant,
@@ -959,12 +958,12 @@ class CreateFamilyVariantIntegration extends TestCase
 
     /**
      * Validation: The attribute set attributes must exists
-     *
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "attribute_set_1" expects a valid attribute code. The attribute does not exist, "weather" given.
      */
     public function testAttributesExist()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "attribute_set_1" expects a valid attribute code. The attribute does not exist, "weather" given.');
+
         $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
 
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
@@ -990,12 +989,12 @@ class CreateFamilyVariantIntegration extends TestCase
 
     /**
      * Validation: The attribute set attributes must exists
-     *
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "attribute_set_1" expects a valid attribute code. The attribute does not exist, "weather" given.
      */
     public function testAxisAttributesExist()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "attribute_set_1" expects a valid attribute code. The attribute does not exist, "weather" given.');
+
         $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
 
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [

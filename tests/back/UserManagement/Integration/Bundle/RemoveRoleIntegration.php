@@ -3,15 +3,15 @@
 namespace AkeneoTest\UserManagement\Integration\Bundle;
 
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\UserManagement\Component\Exception\ForbiddenToRemoveRoleException;
 
 class RemoveRoleIntegration extends TestCase
 {
-    /**
-     * @expectedException \Akeneo\UserManagement\Component\Exception\ForbiddenToRemoveRoleException
-     * @expectedExceptionMessage You can not delete this role, otherwise some users will no longer have a role.
-     */
     public function testUnableToRemoveARoleIfUsersWillNoLongerHaveRole()
     {
+        $this->expectException(ForbiddenToRemoveRoleException::class);
+        $this->expectExceptionMessage('You can not delete this role, otherwise some users will no longer have a role.');
+
         $adminRole = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
         $this->get('pim_user.remover.role')->remove($adminRole);
     }

@@ -2,7 +2,10 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -128,30 +131,27 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['bar', 'baz', 'foo']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "updated" expects an array with valid data, should contain 2 strings with the format "yyyy-mm-dd H:i:s".
-     */
     public function testErrorDataIsMalformedWithEmptyArray()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "updated" expects an array with valid data, should contain 2 strings with the format "yyyy-mm-dd H:i:s".');
+
         $this->executeFilter([['updated', Operators::BETWEEN, []]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "updated" expects a string with the format "yyyy-mm-dd H:i:s" as data, "2016-12-12T00:00:00" given.
-     */
     public function testErrorDataIsMalformedWithISODate()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "updated" expects a string with the format "yyyy-mm-dd H:i:s" as data, "2016-12-12T00:00:00" given.');
+
         $this->executeFilter([['updated', Operators::EQUALS, '2016-12-12T00:00:00']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
-     * @expectedExceptionMessage Filter on property "updated" is not supported or does not support operator "IN CHILDREN"
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(UnsupportedFilterException::class);
+        $this->expectExceptionMessage('Filter on property "updated" is not supported or does not support operator "IN CHILDREN"');
+
         $this->executeFilter([['updated', Operators::IN_CHILDREN_LIST, ['2016-08-29 00:00:01']]]);
     }
 }

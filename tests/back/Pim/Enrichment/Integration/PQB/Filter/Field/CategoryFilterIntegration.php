@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -83,12 +84,11 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['bar', 'baz']);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
-     * @expectedExceptionMessage Filter on property "categories" is not supported or does not support operator ">="
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(UnsupportedFilterException::class);
+        $this->expectExceptionMessage('Filter on property "categories" is not supported or does not support operator ">="');
+
         $this->executeFilter([['categories', Operators::GREATER_OR_EQUAL_THAN, ['categoryA1']]]);
     }
 }

@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Option;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -87,21 +88,19 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['empty_product','product_one']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_select_scopable_simple_select" expects a scope, none given.
-     */
     public function testErrorOptionScopable()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_select_scopable_simple_select" expects a scope, none given.');
+
         $this->executeFilter([['a_select_scopable_simple_select', Operators::IN_LIST, ['orange']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_select_scopable_simple_select" expects an existing scope, "NOT_FOUND" given.
-     */
     public function testScopeNotFound()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_select_scopable_simple_select" expects an existing scope, "NOT_FOUND" given.');
+
         $this->executeFilter([['a_select_scopable_simple_select', Operators::IN_LIST, ['orange'], ['scope' => 'NOT_FOUND']]]);
     }
 }

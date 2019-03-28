@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Number;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -112,21 +113,19 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, []);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_scopable_number" expects a scope, none given.
-     */
     public function testErrorScopable()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_scopable_number" expects a scope, none given.');
+
         $this->executeFilter([['a_scopable_number', Operators::NOT_EQUAL, 12]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Attribute "a_scopable_number" expects an existing scope, "NOT_FOUND" given.
-     */
     public function testScopeNotFound()
     {
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Attribute "a_scopable_number" expects an existing scope, "NOT_FOUND" given.');
+
         $this->executeFilter([['a_scopable_number', Operators::NOT_EQUAL, 12, ['scope' => 'NOT_FOUND']]]);
     }
 }

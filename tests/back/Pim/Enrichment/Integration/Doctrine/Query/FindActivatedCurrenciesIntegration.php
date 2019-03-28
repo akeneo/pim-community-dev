@@ -83,13 +83,6 @@ class FindActivatedCurrenciesIntegration extends TestCase
 
     private function assertSameWithoutOrder(array $expected, array $actual): void
     {
-        Assert::assertEquals(
-            $expected,
-            $actual,
-            '',
-            0.0,
-            10,
-            true
-        );
+        Assert::assertEqualsCanonicalizing($expected, $actual);
     }
 }

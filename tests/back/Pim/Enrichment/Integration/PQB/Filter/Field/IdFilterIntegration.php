@@ -2,7 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -76,57 +78,51 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "id" expects a string as data, "array" given.
-     */
     public function testErrorDataIsMalformed()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "id" expects a string as data, "array" given.');
+
         $this->executeFilter([['id', Operators::EQUALS, ['string']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
-     * @expectedExceptionMessage Filter on property "id" is not supported or does not support operator "BETWEEN"
-     */
     public function testErrorOperatorNotSupported()
     {
+        $this->expectException(UnsupportedFilterException::class);
+        $this->expectExceptionMessage('Filter on property "id" is not supported or does not support operator "BETWEEN"');
+
         $this->executeFilter([['id', Operators::BETWEEN, 'foo']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "id" expects an array as data, "string" given.
-     */
     public function testDataIsMalformedForOperatorInList()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "id" expects an array as data, "string" given.');
+
         $this->executeFilter([['id', Operators::IN_LIST, 'foo']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "id" expects an array with valid data, one of the value is not string.
-     */
     public function testDataIsNotAListOfStringForOperatorInList()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "id" expects an array with valid data, one of the value is not string.');
+
         $this->executeFilter([['id', Operators::IN_LIST, [12, 'foo']]]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "id" expects an array as data, "string" given.
-     */
     public function testDataIsMalformedForOperatorNotInList()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "id" expects an array as data, "string" given.');
+
         $this->executeFilter([['id', Operators::NOT_IN_LIST, 'foo']]);
     }
 
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "id" expects an array with valid data, one of the value is not string.
-     */
     public function testDataIsNotAListOfStringForOperatorNotInList()
     {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "id" expects an array with valid data, one of the value is not string.');
+
         $this->executeFilter([['id', Operators::NOT_IN_LIST, [12, 'foo']]]);
     }
 
