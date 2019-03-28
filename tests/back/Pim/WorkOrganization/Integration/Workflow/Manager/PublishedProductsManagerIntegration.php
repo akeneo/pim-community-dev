@@ -2,14 +2,14 @@
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Manager;
 
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Integration\TestCase;
-use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
+use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Testing strategy:
@@ -91,7 +91,7 @@ class PublishedProductsManagerIntegration extends TestCase
         $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
 
         $this->assertPublishedProductPropertiesEqual($product, $publishedProduct);
-        $this->assertEquals($product->getRawValues(), $publishedProduct->getRawValues(), '', 0.0, 10, true);
+        $this->assertEqualsCanonicalizing($product->getRawValues(), $publishedProduct->getRawValues());
         $this->assertValuesEqual($product->getValues()->toArray(), $publishedProduct->getValues()->toArray());
         $this->assertProductAssociationsEqual($product, $publishedProduct);
 
