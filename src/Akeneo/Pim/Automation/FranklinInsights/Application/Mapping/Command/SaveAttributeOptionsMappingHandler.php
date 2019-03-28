@@ -70,7 +70,7 @@ class SaveAttributeOptionsMappingHandler
             throw AttributeOptionsMappingException::emptyAttributeOptionsMapping();
         }
 
-        $attributeOptionsMapping = new AttributeOptionsMapping();
+        $attributeOptionsMapping = new AttributeOptionsMapping($command->attributeCode());
         foreach ($command->attributeOptions() as $franklinOptionId => $attributeOption) {
             $optionCode = in_array($attributeOption->getPimAttributeOptionCode(), $optionCodes)
                 ? $attributeOption->getPimAttributeOptionCode() : null;

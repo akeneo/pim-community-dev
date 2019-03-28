@@ -21,6 +21,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -45,7 +46,7 @@ class AttributeOptionsMappingNormalizerSpec extends ObjectBehavior
         AttributeOptionValueInterface $optionValue2,
         AttributeOptionValueInterface $optionValue3
     ): void {
-        $mapping = new AttributeOptionsMapping();
+        $mapping = new AttributeOptionsMapping(new AttributeCode('color'));
         $mapping
             ->addAttributeOption(new AttributeOption('color1', 'red', 'color_1'))
             ->addAttributeOption(new AttributeOption('color2', 'blue', null))
@@ -65,7 +66,10 @@ class AttributeOptionsMappingNormalizerSpec extends ObjectBehavior
         $option2->getOptionValues()->willReturn([$optionValue3]);
 
         $attributeOptionRepository
-            ->findBy(['code' => ['color_1', 'color_3']])
+            ->findBy([
+                'attribute.code' => 'color',
+                'code' => ['color_1', 'color_3']
+            ])
             ->willReturn([$option1, $option2])
         ;
 
