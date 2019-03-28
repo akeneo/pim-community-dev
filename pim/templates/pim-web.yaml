@@ -24,6 +24,7 @@ spec:
       labels:
         component: {{ template "pim.fullName" . }}
         role: pim-web
+        nfs-recovery: "true"
         {{ include "pim.extraLabels" . | indent 8 }}
     spec:
       affinity:
@@ -104,10 +105,26 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 1
             successThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+              - timeout
+              - "1"
+              - touch
+              - /data/readinessProbeNFS
+            failureThreshold: 1
+            initialDelaySeconds: 1
+            periodSeconds: 1
+            successThreshold: 1
+            timeoutSeconds: 1
           livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
             tcpSocket:
               port: fpm
-            initialDelaySeconds: 10
+            timeoutSeconds: 1
         - name: httpd
           image: "{{ .Values.image.httpd.repository }}:{{ .Values.image.httpd.tag }}"
           imagePullPolicy: {{ .Values.image.httpd.pullPolicy | quote }}
@@ -122,17 +139,25 @@ spec:
               name: conf-httpd
               readOnly: true
           readinessProbe:
+            failureThreshold: 3
             httpGet:
               path: /user/login
               port: httpd
-            initialDelaySeconds: 5
-            periodSeconds: 2
+              scheme: HTTP
+            initialDelaySeconds: 2
+            periodSeconds: 1
             successThreshold: 3
+            timeoutSeconds: 1
           livenessProbe:
+            failureThreshold: 3
             httpGet:
               path: /user/login
               port: httpd
+              scheme: HTTP
             initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
       volumes:
         - name: web-src
           emptyDir: {}
