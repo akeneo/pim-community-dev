@@ -11,7 +11,6 @@
     font-size: 0;
 
     &:hover {
-      background-color: inherit;
       opacity: 1;
     }
 
@@ -87,26 +86,7 @@
   }
 
   &--remove, &--removeWhite, &--ok, &--edit {
-    background-position: center center;
-    background-repeat: no-repeat;
     background-size: 60%;
-  }
-
-  &--ok {
-    background-image: url("../../../images/icon-checkwhite.svg");
-  }
-
-  &--edit {
-    background-image: url("../../../images/icon-edit-white.svg");
-    background-size: 40%;
-  }
-
-  &--remove {
-    background-image: url("../../../images/icon-delete-slategrey.svg");
-  }
-
-  &--removeWhite {
-    background-image: url("../../../images/icon-delete-white.svg");
   }
 
   &--apply {
@@ -141,6 +121,23 @@
 
   &--inactive {
     filter: grayscale(1);
+  }
+
+
+  &--ok {
+    .imageIcon("../../../images/icon-checkwhite.svg");
+  }
+
+  &--editWhite {
+    .imageIcon("../../../images/icon-edit-white.svg");
+  }
+
+  &--remove {
+    .imageIcon("../../../images/icon-delete-slategrey.svg");
+  }
+
+  &--removeWhite {
+    .imageIcon("../../../images/icon-delete-white.svg");
   }
 
   &--plus {
