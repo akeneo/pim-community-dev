@@ -9,6 +9,7 @@
 - PXD-92: Fix badges visibility
 - PXD-93: Fix icon colors
 - PXD-95: Fix the too small content zone in the 'Associate' bulk action
+- PXD-98: Fix panel content size for filters selector column
 
 # 3.0.9 (2019-03-26)
 
