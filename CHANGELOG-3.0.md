@@ -10,6 +10,12 @@
 
 # 3.0.9 (2019-03-26)
 
+## Bug fixes
+
+- PXD-9: Fix Revert popin design
+- PXD-79: Fix help messages design on SSO page
+- PXD-83: Fix Proposals page design
+
 # 3.0.8 (2019-03-20)
 
 ## Bug fixes
@@ -17,9 +23,6 @@
 - PIM-8226: inject correct service to present dates
 - PIM-8213: Fix no message when remove a reference entity linked to a product attribute
 - PIM-8229: fix reference data option value zero value.
-- PXD-9: Fix Revert popin design
-- PXD-79: Fix help messages design on SSO page
-- PXD-83: Fix Proposals page design
 
 # 3.0.7 (2019-03-13)
 
