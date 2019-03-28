@@ -212,6 +212,11 @@ services:
         arguments:
              - '@database_connection'
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysByAttributeType
+        arguments:
+            - '@database_connection'
+
     # attribute hydrators
     akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry

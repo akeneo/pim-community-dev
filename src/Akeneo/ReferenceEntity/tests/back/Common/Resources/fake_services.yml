@@ -205,6 +205,9 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.get_value_key_for_attribute_channel_and_locale:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryGetValueKeyForAttributeChannelAndLocale
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysByAttributeType
+
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
         class: Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy
