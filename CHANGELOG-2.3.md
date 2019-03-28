@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8243: Fix error when a product draft with a modified reference data is sent for approval
+
 # 2.3.35 (2019-03-26)
 
 ## Bug fixes

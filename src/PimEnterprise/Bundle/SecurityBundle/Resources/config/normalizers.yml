@@ -81,3 +81,8 @@ services:
         class: '%pimee_security.normalizer.authorization.product_model.class%'
         tags:
             - { name: pimee_authorization_serializer.normalizer, priority: 110 }
+
+    pimee_security.normalizer.authorization.product_draft:
+        class: PimEnterprise\Component\Security\Normalizer\Authorization\ProductDraftNormalizer
+        tags:
+            - { name: pimee_authorization_serializer.normalizer, priority: 110 }
