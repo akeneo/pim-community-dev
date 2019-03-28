@@ -58,7 +58,7 @@ define(
                 label = i18n.getLabel(
                     familyVariant.labels,
                     UserContext.get('catalogLocale'),
-                    entity.family_variant
+                    entity.meta.family_variant.code
                 );
 
                 this.$el.html(
