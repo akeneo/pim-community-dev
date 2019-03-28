@@ -1,5 +1,19 @@
 # 2.3.x
 
+# 2.3.35 (2019-03-26)
+
+## Bug fixes
+
+- PIM-8230: Show on hover information for a read-only text in product edit form
+- PIM-8245: Fix the save-buttons extension (js) incorrectly resetting its internal state between calls.
+
+# 2.3.34 (2019-03-18)
+
+## Bug fixes
+
+- PIM-8176: `Nesting level too deep – recursive dependency?` for some custom reference_data attributes
+- PIM-8222: Fix product model issues when code contains `/` (create variant through UI and get product models via API)
+
 # 2.3.33 (2019-03-13)
 
 ## Bug fixes
@@ -7,12 +21,14 @@
 - PIM-7966: Fix variant product order on variant product navigation in case of metric variations
 - PIM-8177: Remove pages not accessible in case of product number higher than maximum ES window limit (10.000 by default) and add warning message on the last page
 - PIM-8197: Use ZipArchive::addFile to avoid too much ram consumption
+- PIM-8214: Be able to save and launch job even if filter values refer to deleted entities.
 
 # 2.3.32 (2019-03-07)
 
 ## Improvement
 
 - PIM-8175: add the possibility to filter on one or several index names when resetting ES indexes
+- PIM-8187: Add the possibility to fetch descendant products and product models
 
 # 2.3.31 (2019-02-28)
 
@@ -58,18 +74,18 @@
 
 ## Bug fixes
 
-- PIM-7965: fix families patch endpoint when updating a family with a family variant 
+- PIM-7965: fix families patch endpoint when updating a family with a family variant
 - PIM-7961: Fix localizable assets used as main image for family and added to product product model
 
 # 2.3.24 (2019-01-10)
- 
+
 ## Bug fixes
 
 - PIM-7934: Fix translations of product model import
 - PIM-7961: Fix localizable assets used as main image for family and added to product product model
 
 # 2.3.23 (2019-01-03)
- 
+
 ## Bug fixes
 
 - PIM-7899: Remove Date of Birth field
@@ -86,7 +102,7 @@
 - PIM-7936: Missing breadcrumb when you create Attribute group or Channel
 
  ## Elasticsearch
- 
+
  - Please re-index the products and product models by launching the commands `console akeneo:elasticsearch:reset-indexes -e prod` and `pim:product:index --all -e prod`.
 
 # 2.3.21 (2018-12-07)
@@ -164,7 +180,7 @@ PIM-7810: Fix to mass delete products and product models
 
 - PIM-7674: fix Avatar image broken on dashboard
 - PIM-7694: fix option null values crashing PDF
-- PIM-7731: check for attribute as label not null in normalizers 
+- PIM-7731: check for attribute as label not null in normalizers
 - PIM-7740: bump summernote version to fix scroll glitches
 - PIM-7746: Fix issue when an attribute code is numeric
 - PIM-7727: parent filter search case insensitive

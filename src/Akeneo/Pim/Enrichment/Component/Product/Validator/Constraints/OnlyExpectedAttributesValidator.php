@@ -64,7 +64,7 @@ class OnlyExpectedAttributesValidator extends ConstraintValidator
                 continue;
             }
 
-            if (!in_array($modelAttributeCode, $levelAttributeCodes)) {
+            if (!in_array($modelAttributeCode, $levelAttributeCodes, true)) {
                 $this->context->buildViolation(
                     OnlyExpectedAttributes::ATTRIBUTE_UNEXPECTED, [
                     '%attribute%' => $modelAttributeCode

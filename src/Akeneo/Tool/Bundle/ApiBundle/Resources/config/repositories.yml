@@ -9,6 +9,13 @@ services:
             - '@fos_oauth_server.entity_manager'
             - '%fos_oauth_server.model.client.class%'
 
+    pim_api.repository.product_model:
+        class: 'Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ProductModelRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.product_model.class%'
+            - '@pim_catalog.repository.product_model'
+
     pim_api.repository.attribute_option:
         class: '%pim_api.repository.api_resource.class%'
         arguments:
