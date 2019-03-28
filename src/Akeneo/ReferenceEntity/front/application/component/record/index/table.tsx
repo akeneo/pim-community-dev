@@ -7,7 +7,7 @@ import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {Column} from 'akeneoreferenceentity/application/reducer/grid';
-import {CellViews} from 'akeneoreferenceentity/application/component/reference-entity/edit/record';
+import {CellViews, FilterViews} from 'akeneoreferenceentity/application/component/reference-entity/edit/record';
 import {MAX_DISPLAYED_RECORDS} from 'akeneoreferenceentity/application/action/record/search';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import {getLabel} from 'pimui/js/i18n';
@@ -18,6 +18,7 @@ import CompletenessFilter, {
   CompletenessValue,
 } from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
+import {NormalizedAttributeIdentifier} from 'web/bundles/akeneoreferenceentity/domain/model/attribute/identifier';
 
 interface TableState {
   locale: string;
@@ -31,6 +32,7 @@ interface TableState {
     filters: Filter[];
   };
   cellViews: CellViews;
+  filterViews: FilterViews;
   recordCount: number;
   referenceEntity: ReferenceEntity;
   rights: {
@@ -69,6 +71,7 @@ interface TableDispatch {
   onDeleteRecord: (recordCode: RecordCode, label: string) => void;
   onNeedMoreResults: () => void;
   onSearchUpdated: (userSearch: string) => void;
+  onFilterUpdated: (filter: Filter) => void;
   onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => void;
 }
 
@@ -176,7 +179,18 @@ export default class Table extends React.Component<TableProps, {columns: Column[
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {grid, locale, channel, onRedirectToRecord, onDeleteRecord, recordCount, cellViews, rights} = this.props;
+    const {
+      grid,
+      locale,
+      channel,
+      onRedirectToRecord,
+      onDeleteRecord,
+      onFilterUpdated,
+      recordCount,
+      cellViews,
+      rights,
+      filterViews,
+    } = this.props;
     const userSearch = getFilter(grid.filters, 'full_text').value;
     const completenessValue = getCompletenessFilter(grid.filters);
     const columnsToDisplay = this.getColumnsToDisplay(grid.columns, channel, locale);
@@ -190,6 +204,25 @@ export default class Table extends React.Component<TableProps, {columns: Column[
           <div className="AknFilterBox-list filter-box">
             <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
             <ItemsCounter matchesCount={grid.matchesCount} />
+            <div className="AknFilterBox-filterContainer AknFilterBox-filterContainer--inline">
+              {Object.keys(filterViews).map((attributeCode: NormalizedAttributeIdentifier) => {
+                const View = filterViews[attributeCode].view;
+                const attribute = filterViews[attributeCode].attribute;
+                const filter = grid.filters.find(
+                  (filter: Filter) => filter.field === attribute.getCode().stringValue()
+                );
+
+                return (
+                  <div
+                    key={attribute.getCode().stringValue()}
+                    className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin"
+                    data-attribute={attribute.getCode().stringValue()}
+                  >
+                    <View attribute={attribute} filter={filter} onFilterUpdated={onFilterUpdated} />
+                  </div>
+                );
+              })}
+            </div>
             <CompletenessFilter value={completenessValue} onChange={this.props.onCompletenessFilterUpdated} />
           </div>
         </div>

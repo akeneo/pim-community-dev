@@ -140,6 +140,11 @@ pim_reference_entity:
           all: ALL
           'yes': 'YES'
           'no': 'NO'
+        option:
+          all: all
+          no_value: Select an option to filter
+          operator:
+            in: In list
       column:
         code: Code
         image: Image

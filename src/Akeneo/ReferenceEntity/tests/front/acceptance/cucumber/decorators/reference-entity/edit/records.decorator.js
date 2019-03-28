@@ -51,6 +51,22 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     await search.type(searchInput);
   };
 
+  const filter = async (attributeCode, options) => {
+    const filterSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"] .AknFilterBox-filterLabel`;
+    await page.waitForSelector(filterSelector);
+    const filterButton = await nodeElement.$(filterSelector);
+    await filterButton.click();
+
+    const selectSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"] select.record-option-selector`;
+    await page.waitForSelector(selectSelector);
+    const optionSelect = await nodeElement.$(selectSelector);
+
+    for (const option of options) {
+      const optionElement = await optionSelect.$(`option[value="${option}"]`);
+      await optionElement.click();
+    }
+  };
+
   const hasErrorNotification = async () => {
     await page.waitForSelector('.AknFlash--error');
 
@@ -78,6 +94,7 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     hasErrorNotification,
     search,
     completeFilter,
+    filter,
   };
 };
 

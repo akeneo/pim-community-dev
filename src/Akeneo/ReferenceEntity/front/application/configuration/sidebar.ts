@@ -38,7 +38,7 @@ config:
             ${sidebarIdentifier}:
                 tabs:
                     tab-code:
-                        view: '@your_view_path_here'`;
+                        label: '@your_view_path_here'`;
 
       throw new SibebarMissConfigurationError(
         `Cannot get the tabs for "${sidebarIdentifier}". The configuration path should be ${confPath}
@@ -49,6 +49,7 @@ Actual conf: ${JSON.stringify(this.configuration)}`
 
     return Object.keys(this.configuration[sidebarIdentifier].tabs).map((code: string) => {
       const tabConf = this.configuration[sidebarIdentifier].tabs[code];
+
       if ('string' === typeof tabConf.label) {
         return {code, label: tabConf.label};
       }

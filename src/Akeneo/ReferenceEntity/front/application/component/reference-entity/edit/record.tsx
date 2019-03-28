@@ -17,6 +17,7 @@ import {
   searchUpdated,
   updateRecordResults,
   completenessFilterUpdated,
+  filterUpdated,
 } from 'akeneoreferenceentity/application/action/record/search';
 import {Column} from 'akeneoreferenceentity/application/reducer/grid';
 import ReferenceEntityIdentifier, {
@@ -25,13 +26,21 @@ import ReferenceEntityIdentifier, {
 import RecordCode, {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
-import {getDataCellView, CellView} from 'akeneoreferenceentity/application/configuration/value';
+import {
+  getDataCellView,
+  CellView,
+  getDataFilterView,
+  FilterView,
+  hasDataFilterView,
+} from 'akeneoreferenceentity/application/configuration/value';
 import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
 import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 import {canEditReferenceEntity} from 'akeneoreferenceentity/application/reducer/right';
+import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 
 const securityContext = require('pim/security-context');
 
@@ -50,6 +59,7 @@ interface StateProps {
     page: number;
     filters: Filter[];
   };
+  attributes: NormalizedAttribute[] | null;
   rights: {
     record: {
       create: boolean;
@@ -71,6 +81,7 @@ interface DispatchProps {
     onDeleteRecord: (referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode) => void;
     onNeedMoreResults: () => void;
     onSearchUpdated: (userSearch: string) => void;
+    onFilterUpdated: (filter: Filter) => void;
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (locale: Channel) => void;
     onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => void;
@@ -85,6 +96,13 @@ interface DispatchProps {
 
 export type CellViews = {
   [key: string]: CellView;
+};
+
+export type FilterViews = {
+  [key: string]: {
+    view: FilterView;
+    attribute: Attribute;
+  };
 };
 
 const SecondaryAction = ({onOpenDeleteAllRecordsModal}: {onOpenDeleteAllRecordsModal: () => void}) => {
@@ -103,20 +121,42 @@ const SecondaryAction = ({onOpenDeleteAllRecordsModal}: {onOpenDeleteAllRecordsM
   );
 };
 
-class Records extends React.Component<StateProps & DispatchProps, {cellViews: CellViews}> {
-  state = {cellViews: {}};
+class Records extends React.Component<StateProps & DispatchProps, {cellViews: CellViews; filterViews: FilterViews}> {
+  state = {cellViews: {}, filterViews: {}};
 
   componentDidMount() {
     this.props.events.onFirstLoad();
   }
 
-  static getDerivedStateFromProps(props: StateProps & DispatchProps, {cellViews}: {cellViews: CellViews}) {
+  static getDerivedStateFromProps(
+    props: StateProps & DispatchProps,
+    {cellViews, filterViews}: {cellViews: CellViews; filterViews: FilterViews}
+  ) {
     if (0 === Object.keys(cellViews).length && 0 !== props.grid.columns.length) {
       return {
         cellViews: props.grid.columns.reduce((cellViews: CellViews, column: Column): CellViews => {
           cellViews[column.key] = getDataCellView(column.type);
 
           return cellViews;
+        }, {}),
+        filterViews,
+      };
+    }
+
+    if (0 === Object.keys(filterViews).length && null !== props.attributes) {
+      return {
+        cellViews,
+        filterViews: props.attributes.reduce((filters: FilterViews, normalizedAttribute: NormalizedAttribute) => {
+          const attribute = denormalizeAttribute(normalizedAttribute);
+
+          if (hasDataFilterView(attribute.type)) {
+            filters[attribute.getCode().stringValue()] = {
+              view: getDataFilterView(attribute.type),
+              attribute,
+            };
+          }
+
+          return filters;
         }, {}),
       };
     }
@@ -163,12 +203,14 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
             onDeleteRecord={events.onOpenDeleteRecordModal}
             onNeedMoreResults={events.onNeedMoreResults}
             onSearchUpdated={events.onSearchUpdated}
+            onFilterUpdated={events.onFilterUpdated}
             onCompletenessFilterUpdated={events.onCompletenessFilterUpdated}
             recordCount={grid.matchesCount}
             locale={context.locale}
             channel={context.channel}
             grid={grid}
             cellViews={this.state.cellViews}
+            filterViews={this.state.filterViews}
             referenceEntity={referenceEntity}
             rights={rights}
           />
@@ -243,6 +285,7 @@ export default connect(
         page,
         filters,
       },
+      attributes: state.attributes.attributes,
       rights: {
         record: {
           create:
@@ -285,6 +328,9 @@ export default connect(
         },
         onSearchUpdated: (userSearch: string) => {
           dispatch(searchUpdated(userSearch));
+        },
+        onFilterUpdated: (filter: Filter) => {
+          dispatch(filterUpdated(filter));
         },
         onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => {
           dispatch(completenessFilterUpdated(completenessValue));
@@ -333,6 +379,7 @@ class RecordLabel extends React.Component<RecordLabelProps> {
     return (
       <React.Fragment>
         {__('pim_reference_entity.reference_entity.tab.records')}
+        <span>&nbsp;</span>
         <span className="AknColumn-span">({grid.totalCount})</span>
       </React.Fragment>
     );

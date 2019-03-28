@@ -2,7 +2,7 @@ import Value, {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {Column} from 'akeneoreferenceentity/application/reducer/grid';
+import {Column, Filter} from 'akeneoreferenceentity/application/reducer/grid';
 
 export class InvalidArgument extends Error {}
 
@@ -19,6 +19,13 @@ export type ViewGenerator = React.SFC<{
  * @api
  */
 export type CellView = React.SFC<{column: Column; value: NormalizedValue}>;
+export type FilterViewProps = {
+  attribute: Attribute;
+  filter: Filter | undefined;
+  onFilterUpdated: (filter: Filter) => void;
+};
+
+export type FilterView = React.SFC<FilterViewProps>;
 
 type ValueConfig = {
   [type: string]: {
@@ -31,11 +38,18 @@ type ValueConfig = {
     cell?: {
       cell: CellView;
     };
+    filter?: {
+      filter: FilterView;
+    };
   };
 };
 
 export const hasCellView = (config: ValueConfig) => (attributeType: string): boolean => {
   return undefined !== config[attributeType] && undefined !== config[attributeType].cell;
+};
+
+export const hasFilterView = (config: ValueConfig) => (attributeType: string): boolean => {
+  return undefined !== config[attributeType] && undefined !== config[attributeType].filter;
 };
 
 export const getDenormalizer = (config: ValueConfig) => (normalizedValue: NormalizedValue): Denormalizer => {
@@ -148,8 +162,43 @@ ${moduleExample}`
   return typeConfiguration.cell.cell;
 };
 
+export const getFilterView = (config: ValueConfig) => (attributeType: string): FilterView => {
+  const typeConfiguration = config[attributeType];
+
+  if (undefined === typeConfiguration || undefined === typeConfiguration.filter) {
+    const expectedConfiguration = `config:
+    config:
+        akeneoreferenceentity/application/configuration/value:
+            ${attributeType}:
+                filter: '@my_data_filter_view'`;
+
+    throw new InvalidArgument(
+      `Cannot get the data filter view generator for type "${attributeType}". The configuration should look like this:
+${expectedConfiguration}
+
+Actual conf: ${JSON.stringify(config)}`
+    );
+  }
+
+  if (undefined === typeConfiguration.filter.filter) {
+    const capitalizedAttributeType = attributeType.charAt(0).toUpperCase() + attributeType.slice(1);
+    const moduleExample = `
+export const filter = (value: Normalized${capitalizedAttributeType}Value) => {
+  return <span>{{value.getData()}}</span>;
+};`;
+
+    throw new InvalidArgument(
+      `The module you are exposing to provide a view for a data of type "${attributeType}" needs to
+export a "filter" property. Here is an example of a valid view es6 module for the "${attributeType}" type:
+${moduleExample}`
+    );
+  }
+
+  return typeConfiguration.filter.filter;
+};
+
 /**
- * Expanation about the __moduleConfig variable:
+ * Explanation about the __moduleConfig variable:
  * It is automatically added by a webpack loader that you can check here:
  * https://github.com/akeneo/pim-community-dev/blob/master/webpack/config-loader.js
  * This loader looks at the requirejs.yml file and find every configuration related to this module. It transform it
@@ -159,3 +208,5 @@ export const getDataDenormalizer = getDenormalizer(__moduleConfig as ValueConfig
 export const getDataFieldView = getFieldView(__moduleConfig as ValueConfig);
 export const getDataCellView = getCellView(__moduleConfig as ValueConfig);
 export const hasDataCellView = hasCellView(__moduleConfig as ValueConfig);
+export const getDataFilterView = getFilterView(__moduleConfig as ValueConfig);
+export const hasDataFilterView = hasFilterView(__moduleConfig as ValueConfig);

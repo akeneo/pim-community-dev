@@ -39,10 +39,41 @@ config:
             my_view:
                 tabs:
                     tab-code:
-                        view: '@your_view_path_here'
+                        label: '@your_view_path_here'
 
 Actual conf: {\"my_view\":{}}`;
       expect(error.message).toBe(`Cannot get the tabs for "my_view". The configuration path should be ${confPath}`);
+    }
+  });
+
+  test('I get a SibebarMissConfigurationError exception if the tabs are not well configured vith a dedicated label view', () => {
+    const tabProvider = TabsProvider.create(
+      {
+        my_view: {
+          tabs: {
+            first: {
+              label: {},
+            },
+          },
+        },
+      },
+      () => {}
+    );
+
+    try {
+      tabProvider.getTabs('my_view');
+    } catch (error) {
+      const confPath = `
+config:
+    config:
+        akeneoreferenceentity/application/configuration/sidebar:
+            my_view:
+                tabs:
+                    tab-code:
+                        label: '@your_view_path_here'`;
+      expect(error.message).toBe(
+        `The Component loaded to display the label needs to export the label property from the configuration ${confPath}`
+      );
     }
   });
 
@@ -59,6 +90,22 @@ Actual conf: {\"my_view\":{}}`;
     });
 
     expect(tabProvider.getView('my_view', 'first')).toEqual('view');
+  });
+
+  test('I can get a label view', () => {
+    const tabProvider = TabsProvider.create({
+      my_view: {
+        tabs: {
+          first: {
+            label: {
+              label: 'my_view',
+            },
+          },
+        },
+      },
+    });
+
+    expect(tabProvider.getTabs('my_view', 'first')).toEqual([{code: 'first', label: 'my_view'}]);
   });
 
   test('I get a SibebarMissConfigurationError exception if the view is not well configured', () => {

@@ -5,8 +5,10 @@ import LabelCollection, {
 } from 'akeneoreferenceentity/domain/model/label-collection';
 import OptionCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
 
+export type NormalizedOptionCode = string;
+
 export type NormalizedOption = {
-  code: string;
+  code: NormalizedOptionCode;
   labels: NormalizedLabelCollection;
 };
 

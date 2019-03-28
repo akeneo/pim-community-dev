@@ -13,11 +13,11 @@ config:
             image:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/file'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/file.tsx'
-                cell: '@akeneoreferenceentity/application/component/record/index/details/image.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/cell/image.tsx'
             text:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/text'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/text.tsx'
-                cell: '@akeneoreferenceentity/application/component/record/index/details/text.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/cell/text.tsx'
             record:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/record'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/record.tsx'
@@ -28,10 +28,12 @@ config:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/option'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/option.tsx'
                 cell: '@akeneoreferenceentity/application/component/record/index/cell/option.tsx'
+                filter: '@akeneoreferenceentity/application/component/record/index/filter/option.tsx'
             option_collection:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/option-collection'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/option-collection.tsx'
                 cell: '@akeneoreferenceentity/application/component/record/index/cell/option-collection.tsx'
+                filter: '@akeneoreferenceentity/application/component/record/index/filter/option.tsx'
 
         akeneoreferenceentity/application/configuration/attribute:
             image:

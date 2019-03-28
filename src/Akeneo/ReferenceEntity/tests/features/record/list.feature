@@ -61,6 +61,12 @@ Feature: Lists all records of a reference entity
     Then the list of records should be empty
 
   @acceptance-front
+  Scenario: Search records of a reference entity with red option
+    Given the user asks for a list of records
+    When the user searches for records with red color
+    Then the user should see a filtered list of red records
+
+  @acceptance-front
   Scenario: Filter only the complete records of a reference entity
     Given the user asks for a list of records
     When the user filters on the complete records
