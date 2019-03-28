@@ -1,5 +1,9 @@
 # 3.0.x
 
+# Bug fixes
+
+- PIM-8258: Fix missing translation for "copy none"
+
 # 3.0.10 (2019-03-28)
 
 # Bug fixes
