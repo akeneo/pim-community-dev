@@ -45,10 +45,7 @@ class AuthorDraftController
         $page = isset($options['page']) ? (int) $options['page'] : 0;
         $limit = isset($options['limit']) ? (int) $options['limit'] : SearchableRepositoryInterface::FETCH_LIMIT;
 
-        $identifiers = [];
-        if ($request->query->has('identifiers')) {
-            $identifiers = explode(',', $request->query->get('identifiers'));
-        }
+        $identifiers = isset($options['identifiers']) ? $options['identifiers'] : [];
 
         $authors = $this->draftAuthors->findAuthors($request->query->get('search'), $page, $limit, $identifiers);
 
@@ -58,7 +55,7 @@ class AuthorDraftController
                 'username' => $author['username'],
                 'code' => $author['username'],
                 'labels' => [
-                    $this->userContext->getUiLocaleCode() => $author['username']
+                    $this->userContext->getUiLocaleCode() => $author['label']
                 ]
             ];
         }
