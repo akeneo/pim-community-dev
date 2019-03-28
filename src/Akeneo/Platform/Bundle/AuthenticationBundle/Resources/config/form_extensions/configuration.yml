@@ -163,6 +163,7 @@ extensions:
         module: pim/common/simple-view
         parent: authentication-sso-configuration-service-provider-section
         targetZone: content
+        position: 10
         config:
             template: pim/template/common/form-container
 
@@ -197,9 +198,19 @@ extensions:
             fieldName: configuration.service_provider_entity_id
             label: authentication.sso.configuration.field.entity_id.label
 
+    authentication-sso-configuration-service-provider-section-content-large:
+        module: pim/common/simple-view
+        parent: authentication-sso-configuration-service-provider-section
+        targetZone: content
+        position: 20
+        config:
+            template: pim/template/common/form-container
+            templateParams:
+                large: true
+
     authentication-sso-configuration-service-provider-certificate-field:
         module: pim/authentication/sso/configuration/fields/sp-certificate
-        parent: authentication-sso-configuration-service-provider-section-content
+        parent: authentication-sso-configuration-service-provider-section-content-large
         targetZone: form-container
         position: 110
         config:
@@ -208,7 +219,7 @@ extensions:
 
     authentication-sso-configuration-service-provider-private-key-field:
         module: pim/authentication/sso/configuration/fields/textarea
-        parent: authentication-sso-configuration-service-provider-section-content
+        parent: authentication-sso-configuration-service-provider-section-content-large
         targetZone: form-container
         position: 120
         config:
