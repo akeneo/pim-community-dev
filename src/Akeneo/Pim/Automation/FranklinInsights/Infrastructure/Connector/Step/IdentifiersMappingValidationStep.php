@@ -30,7 +30,7 @@ class IdentifiersMappingValidationStep extends AbstractStep
     private $connectionStatusHandler;
 
     /**
-     * @param $name
+     * @param string $name
      * @param EventDispatcherInterface $eventDispatcher
      * @param JobRepositoryInterface $jobRepository
      * @param GetConnectionStatusHandler $connectionStatusHandler

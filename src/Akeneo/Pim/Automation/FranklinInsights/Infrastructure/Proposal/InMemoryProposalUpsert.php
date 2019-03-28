@@ -62,8 +62,8 @@ class InMemoryProposalUpsert implements ProposalUpsertInterface
     }
 
     /**
-     * @param $identifier
-     * @param $author
+     * @param string $identifier
+     * @param string $author
      *
      * @return bool
      */

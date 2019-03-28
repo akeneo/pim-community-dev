@@ -124,11 +124,11 @@ class GetAttributesMappingByFamilyHandler
 
     /**
      * @param AttributesMappingResponse $attributesMappingResponse
-     * @param $unknownAttributeCodes
+     * @param string[] $unknownAttributeCodes
      *
      * @return AttributesMappingResponse
      */
-    private function computeNewAttributesMapping(AttributesMappingResponse $attributesMappingResponse, $unknownAttributeCodes): AttributesMappingResponse
+    private function computeNewAttributesMapping(AttributesMappingResponse $attributesMappingResponse, array $unknownAttributeCodes): AttributesMappingResponse
     {
         $newMapping = new AttributesMappingResponse();
         foreach ($attributesMappingResponse as $attributeMapping) {

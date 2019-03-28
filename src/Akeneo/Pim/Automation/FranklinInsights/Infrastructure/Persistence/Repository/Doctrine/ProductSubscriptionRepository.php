@@ -62,7 +62,7 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
      */
     public function findOneByProductId(int $productId): ?ProductSubscription
     {
-        return $this->em->getRepository(ProductSubscription::class)->findOneByProductId($productId);
+        return $this->em->getRepository(ProductSubscription::class)->findOneBy(['productId' => $productId]);
     }
 
     /**

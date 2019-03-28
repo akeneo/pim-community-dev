@@ -49,7 +49,7 @@ interface SubscriptionProviderInterface
     public function bulkSubscribe(array $requests): ProductSubscriptionResponseCollection;
 
     /**
-     * @param \DateTime|null $updatedSince
+     * @param \DateTime $updatedSince
      *
      * @throws ProductSubscriptionException
      *

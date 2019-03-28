@@ -79,7 +79,7 @@ class IdentifiersMapping implements \IteratorAggregate
      * This method is used to mutate the entity.
      *
      * @param string $franklinIdentifierCode
-     * @param AttributeCode|null $attribute
+     * @param AttributeCode|null $attributeCode
      *
      * @return IdentifiersMapping
      */

@@ -68,7 +68,7 @@ final class ProductSubscriptionResponse
     }
 
     /**
-     * @return string
+     * @return SubscriptionId
      */
     public function getSubscriptionId(): SubscriptionId
     {

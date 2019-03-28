@@ -31,7 +31,6 @@ class AttributeOption
      * @param string $franklinOptionId
      * @param string $franklinOptionLabel
      * @param string|null $pimOptionId
-     * @param string|null $pimOptionLabel
      */
     public function __construct(
         string $franklinOptionId,

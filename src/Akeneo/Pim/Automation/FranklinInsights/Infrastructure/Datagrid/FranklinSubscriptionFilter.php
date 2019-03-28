@@ -26,7 +26,7 @@ class FranklinSubscriptionFilter implements FilterInterface
     /** @var FilterInterface */
     private $baseFilter;
 
-    /** @var FilterUtility */
+    /** @var ProductFilterUtility */
     private $filterUtility;
 
     /**
