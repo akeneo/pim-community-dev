@@ -5,6 +5,7 @@ namespace Pim\Bundle\VersioningBundle\Purger;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\Versioning\Model\VersionInterface;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 use Pim\Bundle\VersioningBundle\Event\PreAdvisementVersionEvent;
 use Pim\Bundle\VersioningBundle\Event\PrePurgeVersionEvent;
 use Pim\Bundle\VersioningBundle\Event\PurgeVersionEvents;
@@ -89,7 +90,9 @@ class VersionPurger implements VersionPurgerInterface
                     $this->versionRemover->removeAll($versionsToPurge);
                     $this->objectDetacher->detachAll($versionsToPurge);
                     $versionsToPurge = [];
-                    $this->versionRepository->clear();
+                    if ($this->versionRepository instanceof DocumentRepository) {
+                        $this->versionRepository->clear();
+                    }
                 }
             } else {
                 $this->objectDetacher->detach($version);
