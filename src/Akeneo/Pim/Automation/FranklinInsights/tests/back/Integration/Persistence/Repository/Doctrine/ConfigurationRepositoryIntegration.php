@@ -33,16 +33,11 @@ class ConfigurationRepositoryIntegration extends TestCase
         $this->getRepository()->save($configuration);
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
-        $statement = $entityManager->getConnection()->query(
-            'SELECT entity, name, value from oro_config INNER JOIN oro_config_value o on oro_config.id = o.config_id;'
-        );
-        $retrievedConfiguration = $statement->fetchAll();
+        $statement = $entityManager->getConnection()->query('SELECT * FROM pim_configuration WHERE code = "franklin_token";');
+        $retrievedConfiguration = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        $this->assertSame([[
-            'entity' => 'franklin',
-            'name' => 'token',
-            'value' => $tokenString,
-        ]], $retrievedConfiguration);
+        $this->assertSame('franklin_token', $retrievedConfiguration['code']);
+        $this->assertSame([$tokenString], json_decode($retrievedConfiguration['values'], true));
     }
 
     public function test_it_updates_a_franklin_insights_configuration(): void
@@ -57,16 +52,11 @@ class ConfigurationRepositoryIntegration extends TestCase
         $this->getRepository()->save($configuration);
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
-        $statement = $entityManager->getConnection()->query(
-            'SELECT entity, name, value from oro_config INNER JOIN oro_config_value o on oro_config.id = o.config_id;'
-        );
-        $retrievedConfiguration = $statement->fetchAll();
+        $statement = $entityManager->getConnection()->query('SELECT * FROM pim_configuration WHERE code = "franklin_token";');
+        $retrievedConfiguration = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        $this->assertSame([[
-            'entity' => 'franklin',
-            'name' => 'token',
-            'value' => 'a_new_token',
-        ]], $retrievedConfiguration);
+        $this->assertSame('franklin_token', $retrievedConfiguration['code']);
+        $this->assertSame(['a_new_token'], json_decode($retrievedConfiguration['values'], true));
     }
 
     public function test_it_finds_a_franklin_insights_configuration(): void

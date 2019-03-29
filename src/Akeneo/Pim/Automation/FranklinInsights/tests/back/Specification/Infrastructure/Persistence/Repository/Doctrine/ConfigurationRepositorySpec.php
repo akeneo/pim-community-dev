@@ -15,7 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Pe
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\ConfigurationRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -23,9 +23,9 @@ use PhpSpec\ObjectBehavior;
  */
 class ConfigurationRepositorySpec extends ObjectBehavior
 {
-    public function let(EntityManagerInterface $entityManager): void
+    public function let(Connection $connection): void
     {
-        $this->beConstructedWith($entityManager);
+        $this->beConstructedWith($connection);
     }
 
     public function it_is_configuration_repository(): void
