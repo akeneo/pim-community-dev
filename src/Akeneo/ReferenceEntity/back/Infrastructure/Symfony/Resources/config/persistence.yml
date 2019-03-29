@@ -163,6 +163,11 @@ services:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindIdentifiersByReferenceEntityAndCodes
+        arguments:
+            - '@database_connection'
+
     # Attributes query functions
     akeneo_referenceentity.infrastructure.persistence.query.attribute_exists:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeExists

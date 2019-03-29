@@ -208,6 +208,11 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysByAttributeType
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindIdentifiersByReferenceEntityAndCodes
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
         class: Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy
