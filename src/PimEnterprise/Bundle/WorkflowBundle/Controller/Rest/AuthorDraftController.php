@@ -42,7 +42,7 @@ class AuthorDraftController
     {
         $options = $request->query->get('options');
 
-        $page = isset($options['page']) ? (int) $options['page'] : 0;
+        $page = isset($options['page']) ? (int) $options['page'] : 1;
         $limit = isset($options['limit']) ? (int) $options['limit'] : SearchableRepositoryInterface::FETCH_LIMIT;
 
         $identifiers = isset($options['identifiers']) ? $options['identifiers'] : [];
