@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class LocalizableSubscriberSpec extends ObjectBehavior
 {
@@ -23,16 +22,6 @@ class LocalizableSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_postLoad()
     {
         $this->getSubscribedEvents()->shouldReturn(['postLoad']);
-    }
-
-    function it_configures_the_product_locale($context, LifecycleEventArgs $args, ProductInterface $product)
-    {
-        $args->getObject()->willReturn($product);
-        $context->hasLocaleCode()->willReturn(true);
-        $context->getLocaleCode()->willReturn('fr_FR');
-        $product->setLocale('fr_FR')->shouldBeCalled();
-
-        $this->postLoad($args);
     }
 
     function it_configures_the_attribute_option_locale($context, LifecycleEventArgs $args, AttributeOptionInterface $option)

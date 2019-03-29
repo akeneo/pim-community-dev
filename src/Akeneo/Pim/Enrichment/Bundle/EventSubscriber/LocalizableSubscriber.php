@@ -3,13 +3,12 @@
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**
- * Aims to inject selected locale into loaded product
+ * Aims to inject selected locale into loaded attribute option
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -49,7 +48,7 @@ class LocalizableSubscriber implements EventSubscriber
     {
         $object = $args->getObject();
 
-        if (!$object instanceof ProductInterface && !$object instanceof AttributeOptionInterface) {
+        if (!$object instanceof AttributeOptionInterface) {
             return;
         }
 

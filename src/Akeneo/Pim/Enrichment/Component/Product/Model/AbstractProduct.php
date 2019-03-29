@@ -34,20 +34,6 @@ abstract class AbstractProduct implements ProductInterface
     protected $updated;
 
     /**
-     * Not persisted but allow to force locale for values
-     *
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * Not persisted but allow to force scope for values
-     *
-     * @var string
-     */
-    protected $scope;
-
-    /**
      * Not persisted. Loaded on the fly via the $rawValues.
      *
      * @var ValueCollectionInterface
@@ -156,42 +142,6 @@ abstract class AbstractProduct implements ProductInterface
     public function setUpdated($updated)
     {
         $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getScope()
-    {
-        return $this->scope;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setScope($scope)
-    {
-        $this->scope = $scope;
 
         return $this;
     }
