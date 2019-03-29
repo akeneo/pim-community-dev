@@ -23,13 +23,13 @@ use Webmozart\Assert\Assert;
 class RecordData implements ValueDataInterface
 {
     /** @var string */
-    private $recordCode;
+    private $recordIdentifier;
 
-    private function __construct(string $recordCode)
+    private function __construct(string $recordIdentifier)
     {
-        Assert::notEmpty($recordCode, 'Record code should be a non empty string');
+        Assert::notEmpty($recordIdentifier, 'Record identifier should be a non empty string');
 
-        $this->recordCode = $recordCode;
+        $this->recordIdentifier = $recordIdentifier;
     }
 
     /**
@@ -37,7 +37,7 @@ class RecordData implements ValueDataInterface
      */
     public function normalize()
     {
-        return $this->recordCode;
+        return $this->recordIdentifier;
     }
 
     public static function createFromNormalize($normalizedData): ValueDataInterface
