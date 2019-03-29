@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\Integration\Persistence\Repository\Doctrine;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
@@ -32,7 +34,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $subscriptionId = 'a-random-string';
         $subscription = new ProductSubscription(
             $product->getId(),
-            $subscriptionId,
+            new SubscriptionId($subscriptionId),
             ['upc' => '72527273070', 'asin' => 'B00005N5PF', 'mpn' => 'AS4561AD142', 'brand' => 'intel']
         );
         $subscription->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
@@ -82,7 +84,8 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
 
         $subscription = $this->getRepository()->findOneByProductId($product->getId());
         Assert::assertInstanceOf(ProductSubscription::class, $subscription);
-        Assert::assertSame($subscriptionId, $subscription->getSubscriptionId());
+        Assert::assertInstanceOf(SubscriptionId::class, $subscription->getSubscriptionId());
+        Assert::assertSame($subscriptionId, (string) $subscription->getSubscriptionId());
         Assert::assertSame($suggestedData, $subscription->getSuggestedData()->getRawValues());
     }
 
@@ -101,15 +104,17 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
 
         $subscriptions = $this->getRepository()->findByProductIds([12, 56, 98, 40]);
         Assert::assertCount(1, $subscriptions);
+        Assert::assertInstanceOf(ProductSubscription::class, $subscriptions[0]);
         Assert::assertSame(56, $subscriptions[0]->getProductId());
-        Assert::assertSame('another-fake-subscription-id', $subscriptions[0]->getSubscriptionId());
+        Assert::assertInstanceOf(SubscriptionId::class, $subscriptions[0]->getSubscriptionId());
+        Assert::assertSame('another-fake-subscription-id', (string) $subscriptions[0]->getSubscriptionId());
     }
 
     public function test_it_saves_empty_suggested_data_as_null(): void
     {
         $subscription1 = new ProductSubscription(
             $this->createProduct('a_product')->getId(),
-            'subscription-1',
+            new SubscriptionId('subscription-1'),
             ['sku' => '72527273070']
         );
         $subscription1->setSuggestedData(new SuggestedData([]));
@@ -117,7 +122,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
 
         $subscription2 = new ProductSubscription(
             $this->createProduct('another_product')->getId(),
-            'subscription-2',
+            new SubscriptionId('subscription-2'),
             ['sku' => '72527273070']
         );
         $this->getRepository()->save($subscription2);
@@ -176,7 +181,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
 
             Assert::assertCount(count($expectedIds), $pendingSubscriptions);
             foreach ($pendingSubscriptions as $pendingSubscription) {
-                Assert::assertContains($pendingSubscription->getSubscriptionId(), $expectedIds);
+                Assert::assertContains((string) $pendingSubscription->getSubscriptionId(), $expectedIds);
             }
         }
     }
@@ -272,7 +277,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             [['pimAttributeCode' => 'bar', 'value' => 'baz']]
         );
 
-        $this->getRepository()->emptySuggestedDataAndMissingMappingByFamily('test_family');
+        $this->getRepository()->emptySuggestedDataAndMissingMappingByFamily(new FamilyCode('test_family'));
 
         $persistedProduct1 = $this->getRepository()->findOneByProductId($product1->getId());
         $persistedProduct2 = $this->getRepository()->findOneByProductId($product2->getId());

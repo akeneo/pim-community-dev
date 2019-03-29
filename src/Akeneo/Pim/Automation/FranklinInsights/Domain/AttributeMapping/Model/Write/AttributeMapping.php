@@ -15,8 +15,8 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\W
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -39,7 +39,7 @@ class AttributeMapping
     /** @var string */
     private $targetAttributeType;
 
-    /** @var AttributeInterface */
+    /** @var Attribute */
     private $attribute;
 
     /** @var string */
@@ -48,14 +48,14 @@ class AttributeMapping
     /**
      * @param string $targetAttributeCode
      * @param string $targetAttributeType
-     * @param AttributeInterface|null $attribute
+     * @param Attribute|null $attribute
      *
      * @throws AttributeMappingException
      */
     public function __construct(
         string $targetAttributeCode,
         string $targetAttributeType,
-        ?AttributeInterface $attribute = null
+        ?Attribute $attribute = null
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
 
@@ -101,9 +101,9 @@ class AttributeMapping
     }
 
     /**
-     * @return AttributeInterface|null
+     * @return Attribute|null
      */
-    public function getAttribute(): ?AttributeInterface
+    public function getAttribute(): ?Attribute
     {
         return $this->attribute;
     }
@@ -113,11 +113,11 @@ class AttributeMapping
      * - not be localizable, scopable nor locale specific
      * - be one of the authorized attribute types.
      *
-     * @param AttributeInterface $attribute
+     * @param Attribute $attribute
      *
      * @throws AttributeMappingException
      */
-    private function validateAttribute(AttributeInterface $attribute): void
+    private function validateAttribute(Attribute $attribute): void
     {
         if ($attribute->isLocalizable()) {
             throw AttributeMappingException::localizableAttributeNotAllowed();

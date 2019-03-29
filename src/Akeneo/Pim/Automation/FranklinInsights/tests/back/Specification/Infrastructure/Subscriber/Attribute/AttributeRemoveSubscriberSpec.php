@@ -113,8 +113,8 @@ class AttributeRemoveSubscriberSpec extends ObjectBehavior
         $familyCodesByAttributeQuery->execute('attribute_code')->shouldBeCalled();
 
         $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping([
-            'asin' => $asin->getWrappedObject(),
-            'upc' => $upc->getWrappedObject(),
+            'asin' => 'asin',
+            'upc' => 'attribute_code',
             'brand' => null,
             'mpn' => null,
         ]));

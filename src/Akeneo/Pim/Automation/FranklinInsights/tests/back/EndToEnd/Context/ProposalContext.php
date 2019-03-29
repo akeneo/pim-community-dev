@@ -41,10 +41,10 @@ class ProposalContext implements Context
     private $entityManager;
 
     /**
-     * @param ProductRepositoryInterface             $productRepository
-     * @param EntityWithValuesDraftRepository        $draftRepository
+     * @param ProductRepositoryInterface $productRepository
+     * @param EntityWithValuesDraftRepository $draftRepository
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
-     * @param EntityManager                          $entityManager
+     * @param EntityManager $entityManager
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,

@@ -206,13 +206,13 @@ class IdentifiersMappingContext extends PimContext
             }
 
             foreach ($expectedMappings as $expectedFranklinCode => $expectedPimCode) {
-                $mappedAttribute = $persistedMappings->getMappedAttribute($expectedFranklinCode);
-                if (null === $mappedAttribute) {
+                $mappedAttributeCode = $persistedMappings->getMappedAttributeCode($expectedFranklinCode);
+                if (null === $mappedAttributeCode) {
                     if (null !== $expectedPimCode) {
                         return false;
                     }
                 } else {
-                    if ($expectedPimCode !== $mappedAttribute->getCode()) {
+                    if ($expectedPimCode !== (string) $mappedAttributeCode) {
                         return false;
                     }
                 }

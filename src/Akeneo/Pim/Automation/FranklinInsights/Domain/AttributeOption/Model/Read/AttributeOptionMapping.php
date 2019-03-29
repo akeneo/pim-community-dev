@@ -38,7 +38,7 @@ final class AttributeOptionMapping
      * @param string $franklinAttributeOptionId
      * @param string $franklinAttributeOptionLabel
      * @param int $status
-     * @param null|string $catalogAttributeOptionCode
+     * @param string|null $catalogAttributeOptionCode
      */
     public function __construct(
         string $franklinAttributeOptionId,

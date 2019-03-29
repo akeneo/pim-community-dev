@@ -5,37 +5,27 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2019 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Test\Pim\Automation\FranklinInsights\Integration\Persistence\Repository\Doctrine;
+namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Repository\Doctrine;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\Family;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyCollection;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\FamilyRepository;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Types\Type;
-use PHPUnit\Framework\Assert;
 
-/**
- * @author Damien Carcel <damien.carcel@akeneo.com>
- */
-final class FamilyRepositoryIntegration extends TestCase
+class FamilyRepositoryIntegration extends TestCase
 {
     private const TEST_FAMILY_CODE = 'test_family';
     private const TEST_FAMILY_LABELS = ['en_US' => 'A family for testing purpose'];
 
     private const CONTROL_FAMILY_CODE = 'control_family';
     private const CONTROL_FAMILY_LABELS = ['en_US' => 'A control family'];
-
-    private const ONLY_CODE_FAMILY_CODE = 'only_code_family';
-
-    private const UNEXPECTED_FAMILY_CODE = 'unexpected_family';
 
     /**
      * {@inheritdoc}
@@ -58,100 +48,30 @@ final class FamilyRepositoryIntegration extends TestCase
         ]);
         $this->getFromTestContainer('validator')->validate($controlFamily);
 
-        $onlyCodeFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
-            'code' => self::ONLY_CODE_FAMILY_CODE,
-            'labels' => [],
-            'attributes' => ['sku'],
-        ]);
-        $this->getFromTestContainer('validator')->validate($onlyCodeFamily);
-
-        $unexpectedFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
-            'code' => self::UNEXPECTED_FAMILY_CODE,
-            'attributes' => ['sku'],
-        ]);
-        $this->getFromTestContainer('validator')->validate($controlFamily);
-
         $this
             ->getFromTestContainer('pim_catalog.saver.family')
-            ->saveAll([$testFamily, $controlFamily, $unexpectedFamily, $onlyCodeFamily]);
-
-        $controlProduct = $this->createProduct('control_product', self::CONTROL_FAMILY_CODE);
-        $this->insertSubscription($controlProduct->getId(), false);
+            ->saveAll([$testFamily, $controlFamily]);
     }
 
-    public function test_that_families_with_subscribed_products_are_found_and_paginated(): void
+    public function test_find_a_family_from_its_identifier()
     {
-        $product1 = $this->createProduct('product_1', self::TEST_FAMILY_CODE);
-        $this->insertSubscription($product1->getId(), false);
-        $product2 = $this->createProduct('product_2', self::TEST_FAMILY_CODE);
-        $this->insertSubscription($product2->getId(), true);
+        $familyCode = new FamilyCode(self::TEST_FAMILY_CODE);
+        $expectedFamily = new Family($familyCode, self::TEST_FAMILY_LABELS);
+        $family = $this->getRepository()->findOneByIdentifier($familyCode);
 
-        $familyCollection = $this->getRepository()->findBySearch(1, 20, null);
+        $this->assertEquals($expectedFamily, $family);
 
-        $this->assertFamilyCollection(
-            $familyCollection,
-            [
-                new Family(self::TEST_FAMILY_CODE, self::TEST_FAMILY_LABELS, Family::MAPPING_PENDING),
-                new Family(self::CONTROL_FAMILY_CODE, self::CONTROL_FAMILY_LABELS, Family::MAPPING_FULL),
-            ]
-        );
-
-        // Assert 1st page of 1 element
-        $familyCollection = $this->getRepository()->findBySearch(1, 1, null);
-        $this->assertFamilyCollection(
-            $familyCollection,
-            [new Family(self::TEST_FAMILY_CODE, self::TEST_FAMILY_LABELS, Family::MAPPING_PENDING)]
-        );
-
-        // Assert 2nd page of 1 element
-        $familyCollection = $this->getRepository()->findBySearch(2, 1, null);
-        $this->assertFamilyCollection(
-            $familyCollection,
-            [new Family(self::CONTROL_FAMILY_CODE, self::CONTROL_FAMILY_LABELS, Family::MAPPING_FULL)]
-        );
+        $unknownFamily = $this->getRepository()->findOneByIdentifier(new FamilyCode('foo'));
+        $this->assertNull($unknownFamily);
     }
 
-    public function test_that_families_without_translation_are_found(): void
+    public function test_check_that_a_family_exist()
     {
-        $product1 = $this->createProduct('product_1', self::ONLY_CODE_FAMILY_CODE);
-        $this->insertSubscription($product1->getId(), true);
+        $familyExist = $this->getRepository()->exist(new FamilyCode(self::TEST_FAMILY_CODE));
+        $this->assertTrue($familyExist);
 
-        $familyCollection = $this->getRepository()->findBySearch(1, 20, null);
-
-        $this->assertFamilyCollection(
-            $familyCollection,
-            [
-                new Family(self::CONTROL_FAMILY_CODE, self::CONTROL_FAMILY_LABELS, Family::MAPPING_FULL),
-                new Family(self::ONLY_CODE_FAMILY_CODE, [0 => null], Family::MAPPING_PENDING),
-            ]
-        );
-    }
-
-    public function test_that_only_families_with_subscribed_products_are_fetched(): void
-    {
-        $product = $this->createProduct('a_product', self::TEST_FAMILY_CODE);
-        $this->insertSubscription($product->getId(), false);
-
-        $familyCollection = $this->getRepository()->findBySearch(1, 20, 'control_');
-        $this->assertFamilyCollection(
-            $familyCollection,
-            [new Family(self::CONTROL_FAMILY_CODE, self::CONTROL_FAMILY_LABELS, Family::MAPPING_FULL)]
-        );
-
-        $familyCollection = $this->getRepository()->findBySearch(1, 20, 'testing');
-        $this->assertFamilyCollection(
-            $familyCollection,
-            [new Family(self::TEST_FAMILY_CODE, self::TEST_FAMILY_LABELS, Family::MAPPING_FULL)]
-        );
-
-        $familyCollection = $this->getRepository()->findBySearch(1, 20, 'family');
-        $this->assertFamilyCollection(
-            $familyCollection,
-            [
-                new Family(self::TEST_FAMILY_CODE, self::TEST_FAMILY_LABELS, Family::MAPPING_FULL),
-                new Family(self::CONTROL_FAMILY_CODE, self::CONTROL_FAMILY_LABELS, Family::MAPPING_FULL),
-            ]
-        );
+        $familyExist = $this->getRepository()->exist(new FamilyCode('foo'));
+        $this->assertFalse($familyExist);
     }
 
     /**
@@ -163,65 +83,10 @@ final class FamilyRepositoryIntegration extends TestCase
     }
 
     /**
-     * @param string $identifier
-     * @param string $familyCode
-     *
-     * @return ProductInterface
+     * @return FamilyRepositoryInterface
      */
-    private function createProduct(string $identifier, string $familyCode): ProductInterface
+    private function getRepository(): FamilyRepositoryInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
-        $this->get('validator')->validate($product);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        return $product;
-    }
-
-    /**
-     * @param int $productId
-     * @param bool $isMappingMissing
-     */
-    private function insertSubscription(int $productId, bool $isMappingMissing): void
-    {
-        $query = <<<SQL
-INSERT INTO pimee_franklin_insights_subscription (product_id, subscription_id, misses_mapping) 
-VALUES (:productId, :subscriptionId, :isMappingMissing)
-SQL;
-
-        $queryParameters = [
-            'productId' => $productId,
-            'subscriptionId' => uniqid(),
-            'isMappingMissing' => $isMappingMissing,
-        ];
-        $types = [
-            'productId' => Type::INTEGER,
-            'subscriptionId' => Type::STRING,
-            'isMappingMissing' => Type::BOOLEAN,
-        ];
-
-        $this->get('doctrine.orm.entity_manager')->getConnection()->executeUpdate($query, $queryParameters, $types);
-    }
-
-    /**
-     * @return FamilyRepository
-     */
-    private function getRepository(): FamilyRepository
-    {
-        return $this->get('akeneo.pim.automation.franklin_insights.repository.search_family');
-    }
-
-    /**
-     * @param FamilyCollection $familyCollection
-     * @param Family[] $expectedFamilies
-     */
-    private function assertFamilyCollection(FamilyCollection $familyCollection, array $expectedFamilies): void
-    {
-        Assert::assertCount(count($expectedFamilies), $familyCollection);
-        foreach ($familyCollection as $position => $family) {
-            Assert::assertInstanceOf(Family::class, $family);
-            Assert::assertEquals($expectedFamilies[$position]->getCode(), $family->getCode());
-            Assert::assertEquals($expectedFamilies[$position]->getLabels(), $family->getLabels());
-            Assert::assertEquals($expectedFamilies[$position]->getMappingStatus(), $family->getMappingStatus());
-        }
+        return $this->get('akeneo.pim.automation.franklin_insights.repository.family');
     }
 }

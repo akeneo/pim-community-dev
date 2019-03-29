@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -59,7 +60,7 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
         $familyCode = $this->getJobParameterValue('family_code');
 
         $attributesMapping = $this->getAttributesMappingHandler->handle(
-            new GetAttributesMappingByFamilyQuery($familyCode)
+            new GetAttributesMappingByFamilyQuery(new FamilyCode($familyCode))
         );
 
         $hasAtLeastOneAttribute = false;
@@ -75,7 +76,7 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
 
         $newMapping = $this->buildNewAttributesMapping($attributesMapping, $pimAttributeCodes);
 
-        $command = new SaveAttributesMappingByFamilyCommand($familyCode, $newMapping);
+        $command = new SaveAttributesMappingByFamilyCommand(new FamilyCode($familyCode), $newMapping);
         $this->saveAttributesMappingHandler->handle($command);
     }
 

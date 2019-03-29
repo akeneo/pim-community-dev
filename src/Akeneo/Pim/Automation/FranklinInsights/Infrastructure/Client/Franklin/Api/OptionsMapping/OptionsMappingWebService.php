@@ -107,16 +107,4 @@ class OptionsMappingWebService extends AbstractApi implements AuthenticatedApiIn
             ));
         }
     }
-
-    /**
-     * @param $responseData
-     *
-     * @throws FranklinServerException
-     */
-    private function validateResponseData($responseData): void
-    {
-        if (null === $responseData || !array_key_exists('mapping', $responseData)) {
-            throw new FranklinServerException('Response data incorrect');
-        }
-    }
 }

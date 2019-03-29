@@ -43,7 +43,7 @@ class AttributeMapping
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getTargetAttributeLabel(): ?string
     {
@@ -55,7 +55,7 @@ class AttributeMapping
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPimAttributeCode(): ?string
     {
@@ -67,7 +67,7 @@ class AttributeMapping
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getTargetAttributeType(): ?string
     {

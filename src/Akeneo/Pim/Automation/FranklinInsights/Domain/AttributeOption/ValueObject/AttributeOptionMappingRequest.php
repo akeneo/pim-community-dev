@@ -21,7 +21,7 @@ class AttributeOptionMappingRequest
     /** @var string */
     private $franklinAttributeOptionLabel;
 
-    /** @var null|string */
+    /** @var string|null */
     private $pimAttributeOptionCode;
 
     /** @var int */
@@ -29,7 +29,7 @@ class AttributeOptionMappingRequest
 
     /**
      * @param string $franklinAttributeOptionLabel
-     * @param null|string $pimAttributeOptionCode
+     * @param string|null $pimAttributeOptionCode
      * @param int $status
      */
     public function __construct(string $franklinAttributeOptionLabel, ?string $pimAttributeOptionCode, int $status)
@@ -48,7 +48,7 @@ class AttributeOptionMappingRequest
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPimAttributeOptionCode(): ?string
     {

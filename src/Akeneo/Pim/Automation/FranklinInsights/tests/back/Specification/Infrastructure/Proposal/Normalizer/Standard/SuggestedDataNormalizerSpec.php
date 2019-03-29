@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as EnterpriseAttributeTypes;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Specification\Builder\AttributeBuilder;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;
 
@@ -24,9 +26,15 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
     public function let(
         AttributeRepositoryInterface $attributeRepository,
         AttributeOptionRepositoryInterface $attributeOptionRepository,
-        MeasureConverter $measureConverter
+        MeasureConverter $measureConverter,
+        SelectAttributeOptionCodesByIdentifiersQueryInterface $selectAttributeOptionCodesByIdentifiersQuery
     ): void {
-        $this->beConstructedWith($attributeRepository, $attributeOptionRepository, $measureConverter);
+        $this->beConstructedWith(
+            $attributeRepository,
+            $attributeOptionRepository,
+            $measureConverter,
+            $selectAttributeOptionCodesByIdentifiersQuery
+        );
     }
 
     public function it_is_a_suggested_data_normalizer(): void
@@ -37,8 +45,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
     public function it_normalizes_suggested_data(
         $attributeRepository,
         $measureConverter,
-        $attributeOptionRepository,
-        AttributeInterface $attribute
+        $selectAttributeOptionCodesByIdentifiersQuery
     ): void {
         $suggestedData = [
             [
@@ -58,22 +65,21 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
                 'value' => '1 GIGAHERTZ',
             ],
         ];
-        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz', 'processor'])->willReturn(
+        $attributeRepository->findByCodes(['foo', 'bar', 'baz', 'processor'])->willReturn(
             [
-                'foo' => 'pim_catalog_text',
-                'bar' => 'pim_catalog_boolean',
-                'baz' => 'pim_catalog_multiselect',
-                'processor' => 'pim_catalog_metric',
+                (new AttributeBuilder())->withCode('foo')->withType(AttributeTypes::TEXT)->build(),
+                (new AttributeBuilder())->withCode('bar')->withType(AttributeTypes::BOOLEAN)->build(),
+                (new AttributeBuilder())->withCode('baz')->withType(AttributeTypes::OPTION_MULTI_SELECT)->build(),
+                (new AttributeBuilder())->withCode('processor')->withType(AttributeTypes::METRIC)->build(),
             ]
         );
 
-        $attributeOptionRepository
-            ->findCodesByIdentifiers('baz', ['option1', 'option2'])
+        $selectAttributeOptionCodesByIdentifiersQuery
+            ->execute('baz', ['option1', 'option2'])
             ->willReturn(['option1', 'option2']);
 
-        $attribute->getMetricFamily()->willReturn('Frequency');
-        $attribute->getDefaultMetricUnit()->willReturn('MEGAHERTZ');
-        $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute = (new AttributeBuilder())->withMetricFamily('Frequency')->withDefaultMetricUnit('MEGAHERTZ')->build();
+
         $attributeRepository->findOneByIdentifier('processor')->willReturn($attribute);
 
         $measureConverter->setFamily('Frequency')->shouldBeCalled();
@@ -124,10 +130,10 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
             ['pimAttributeCode' => 'bar', 'value' => 'No'],
             ['pimAttributeCode' => 'baz', 'value' => ['option1', 'option2']],
         ];
-        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
+        $attributeRepository->findByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
-                'foo' => 'pim_catalog_text',
-                'bar' => 'pim_catalog_boolean',
+                (new AttributeBuilder())->withCode('foo')->withType(AttributeTypes::TEXT)->build(),
+                (new AttributeBuilder())->withCode('bar')->withType(AttributeTypes::BOOLEAN)->build(),
             ]
         );
 
@@ -160,14 +166,14 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
             ['pimAttributeCode' => 'bar', 'value' => 'No'],
             ['pimAttributeCode' => 'baz', 'value' => 'option1'],
         ];
-        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
+        $attributeRepository->findByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
-                'foo' => 'pim_catalog_text',
-                'bar' => 'pim_catalog_boolean',
-                'baz' => 'pim_catalog_simpleselect',
+                (new AttributeBuilder())->withCode('foo')->withType(AttributeTypes::TEXT)->build(),
+                (new AttributeBuilder())->withCode('bar')->withType(AttributeTypes::BOOLEAN)->build(),
+                (new AttributeBuilder())->withCode('baz')->withType(AttributeTypes::OPTION_SIMPLE_SELECT)->build(),
             ]
         );
-        $attributeOptionRepository->findOneByIdentifier('baz.option1')->willReturn(null);
+        $attributeOptionRepository->findOneByIdentifier(new AttributeCode('baz'), 'option1')->willReturn(null);
 
         $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
             [
@@ -191,21 +197,21 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_suggested_data_ignoring_multi_select_if_no_option_at_all_exists(
         $attributeRepository,
-        $attributeOptionRepository
+        $selectAttributeOptionCodesByIdentifiersQuery
     ): void {
         $suggestedData = [
             ['pimAttributeCode' => 'foo', 'value' => 'bar'],
             ['pimAttributeCode' => 'bar', 'value' => 'No'],
             ['pimAttributeCode' => 'baz', 'value' => ['option1', 'option2']],
         ];
-        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
+        $attributeRepository->findByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
-                'foo' => 'pim_catalog_text',
-                'bar' => 'pim_catalog_boolean',
-                'baz' => 'pim_catalog_multiselect',
+                (new AttributeBuilder())->withCode('foo')->withType(AttributeTypes::TEXT)->build(),
+                (new AttributeBuilder())->withCode('bar')->withType(AttributeTypes::BOOLEAN)->build(),
+                (new AttributeBuilder())->withCode('baz')->withType(AttributeTypes::OPTION_MULTI_SELECT)->build(),
             ]
         );
-        $attributeOptionRepository->findCodesByIdentifiers('baz', ['option1', 'option2'])->willReturn([]);
+        $selectAttributeOptionCodesByIdentifiersQuery->execute('baz', ['option1', 'option2'])->willReturn([]);
 
         $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
             [
@@ -229,22 +235,22 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_suggested_data_ignoring_multi_select_options_that_do_not_exist(
         $attributeRepository,
-        $attributeOptionRepository
+        $selectAttributeOptionCodesByIdentifiersQuery
     ): void {
         $suggestedData = [
             ['pimAttributeCode' => 'foo', 'value' => 'bar'],
             ['pimAttributeCode' => 'bar', 'value' => 'No'],
             ['pimAttributeCode' => 'baz', 'value' => ['option1', 'option2', 'option3']],
         ];
-        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
+        $attributeRepository->findByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
-                'foo' => 'pim_catalog_text',
-                'bar' => 'pim_catalog_boolean',
-                'baz' => 'pim_catalog_multiselect',
+                (new AttributeBuilder())->withCode('foo')->withType(AttributeTypes::TEXT)->build(),
+                (new AttributeBuilder())->withCode('bar')->withType(AttributeTypes::BOOLEAN)->build(),
+                (new AttributeBuilder())->withCode('baz')->withType(AttributeTypes::OPTION_MULTI_SELECT)->build(),
             ]
         );
-        $attributeOptionRepository
-            ->findCodesByIdentifiers('baz', ['option1', 'option2', 'option3'])
+        $selectAttributeOptionCodesByIdentifiersQuery
+            ->execute('baz', ['option1', 'option2', 'option3'])
             ->willReturn(['option1', 'option3']);
 
         $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
@@ -288,7 +294,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
             ['pimAttributeCode' => 'a_simple_referenceentity', 'value' => 'philippestarck'],
             ['pimAttributeCode' => 'a_multi_referenceentity', 'value' => ['nantes', 'boston', 'telaviv', 'dusseldorf']],
         ];
-        $attributeRepository->getAttributeTypeByCodes(
+        $attributeRepository->findByCodes(
             [
                 'a_text',
                 'a_date',
@@ -303,16 +309,16 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
             ]
         )->willReturn(
             [
-                'a_text' => AttributeTypes::TEXT,
-                'a_date' => AttributeTypes::DATE,
-                'a_file' => AttributeTypes::FILE,
-                'an_image' => AttributeTypes::IMAGE,
-                'a_price' => AttributeTypes::PRICE_COLLECTION,
-                'a_simple_referencedata' => AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
-                'a_multi_referencedata' => AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
-                'an_asset_collection' => EnterpriseAttributeTypes::ASSETS_COLLECTION,
-                'a_simple_referenceentity' => ReferenceEntityType::REFERENCE_ENTITY,
-                'a_multi_referenceentity' => ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION,
+                (new AttributeBuilder())->withCode('a_text')->withType(AttributeTypes::TEXT)->build(),
+                (new AttributeBuilder())->withCode('a_date')->withType(AttributeTypes::DATE)->build(),
+                (new AttributeBuilder())->withCode('a_file')->withType(AttributeTypes::FILE)->build(),
+                (new AttributeBuilder())->withCode('an_image')->withType(AttributeTypes::IMAGE)->build(),
+                (new AttributeBuilder())->withCode('a_price')->withType(AttributeTypes::PRICE_COLLECTION)->build(),
+                (new AttributeBuilder())->withCode('a_simple_referencedata')->withType(AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT)->build(),
+                (new AttributeBuilder())->withCode('a_multi_referencedata')->withType(AttributeTypes::REFERENCE_DATA_MULTI_SELECT)->build(),
+                (new AttributeBuilder())->withCode('an_asset_collection')->withType(EnterpriseAttributeTypes::ASSETS_COLLECTION)->build(),
+                (new AttributeBuilder())->withCode('a_simple_referenceentity')->withType(ReferenceEntityType::REFERENCE_ENTITY)->build(),
+                (new AttributeBuilder())->withCode('a_multi_referenceentity')->withType(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION)->build(),
             ]
         );
 

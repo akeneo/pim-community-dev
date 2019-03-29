@@ -26,7 +26,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\Produc
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -60,8 +59,6 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $getConnectionStatusHandler,
         $productRepository,
         $identifiersMappingRepository,
-        AttributeInterface $mpn,
-        AttributeInterface $asin,
         ProductSubscription $productSubscription,
         ProductInterface $product,
         IdentifiersMapping $identifiersMapping
@@ -79,11 +76,9 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $identifiersMapping->getMapping()->willReturn([
             'brand' => new IdentifierMapping('brand', null),
             'ean' => new IdentifierMapping('ean', null),
-            'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
-            'asin' => new IdentifierMapping('asin', $asin->getWrappedObject()),
+            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
+            'asin' => new IdentifierMapping('asin', 'pim_asin'),
         ]);
-        $mpn->getCode()->willReturn('pim_mpn');
-        $asin->getCode()->willReturn('pim_asin');
         $product->getFamily()->willReturn(null);
         $product->isVariant()->willReturn(false);
         $product->getValue('pim_mpn')->willReturn(null);
@@ -98,8 +93,6 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $getConnectionStatusHandler,
         $productRepository,
         $identifiersMappingRepository,
-        AttributeInterface $mpn,
-        AttributeInterface $asin,
         ProductInterface $product,
         IdentifiersMapping $identifiersMapping
     ): void {
@@ -116,11 +109,9 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $identifiersMapping->getMapping()->willReturn([
             'brand' => new IdentifierMapping('brand', null),
             'ean' => new IdentifierMapping('ean', null),
-            'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
-            'asin' => new IdentifierMapping('asin', $asin->getWrappedObject()),
+            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
+            'asin' => new IdentifierMapping('asin', 'pim_asin'),
         ]);
-        $mpn->getCode()->willReturn('pim_mpn');
-        $asin->getCode()->willReturn('pim_asin');
         $product->getFamily()->willReturn(null);
         $product->isVariant()->willReturn(false);
         $product->getValue('pim_mpn')->willReturn(null);
@@ -135,8 +126,6 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $getConnectionStatusHandler,
         $productRepository,
         $identifiersMappingRepository,
-        AttributeInterface $mpn,
-        AttributeInterface $asin,
         ProductInterface $product,
         IdentifiersMapping $identifiersMapping
     ): void {
@@ -153,11 +142,9 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $identifiersMapping->getMapping()->willReturn([
             'brand' => new IdentifierMapping('brand', null),
             'ean' => new IdentifierMapping('ean', null),
-            'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
-            'asin' => new IdentifierMapping('asin', $asin->getWrappedObject()),
+            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
+            'asin' => new IdentifierMapping('asin', 'pim_asin'),
         ]);
-        $mpn->getCode()->willReturn('pim_mpn');
-        $asin->getCode()->willReturn('pim_asin');
         $product->getFamily()->willReturn(null);
         $product->isVariant()->willReturn(false);
         $product->getValue('pim_mpn')->willReturn(null);
@@ -172,8 +159,6 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $getConnectionStatusHandler,
         $productRepository,
         $identifiersMappingRepository,
-        AttributeInterface $mpn,
-        AttributeInterface $asin,
         ProductInterface $product,
         FamilyInterface $family,
         IdentifiersMapping $identifiersMapping
@@ -191,11 +176,9 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $identifiersMapping->getMapping()->willReturn([
             'brand' => new IdentifierMapping('brand', null),
             'ean' => new IdentifierMapping('ean', null),
-            'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
-            'asin' => new IdentifierMapping('asin', $asin->getWrappedObject()),
+            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
+            'asin' => new IdentifierMapping('asin', 'pim_asin'),
         ]);
-        $mpn->getCode()->willReturn('pim_mpn');
-        $asin->getCode()->willReturn('pim_asin');
         $product->getFamily()->willReturn($family);
         $product->isVariant()->willReturn(false);
         $product->getValue('pim_mpn')->willReturn(null);
@@ -238,10 +221,6 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $getConnectionStatusHandler,
         $productRepository,
         $identifiersMappingRepository,
-        AttributeInterface $mpn,
-        AttributeInterface $asin,
-        AttributeInterface $brand,
-        AttributeInterface $ean,
         ProductInterface $product,
         ValueInterface $mpnValue,
         ValueInterface $eanValue,
@@ -258,15 +237,11 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $identifiersMapping->getMapping()->willReturn([
-            'brand' => new IdentifierMapping('brand', $brand->getWrappedObject()),
-            'ean' => new IdentifierMapping('ean', $ean->getWrappedObject()),
-            'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
-            'asin' => new IdentifierMapping('asin', $asin->getWrappedObject()),
+            'brand' => new IdentifierMapping('brand', 'pim_brand'),
+            'ean' => new IdentifierMapping('ean', 'pim_ean'),
+            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
+            'asin' => new IdentifierMapping('asin', 'pim_asin'),
         ]);
-        $mpn->getCode()->willReturn('pim_mpn');
-        $asin->getCode()->willReturn('pim_asin');
-        $brand->getCode()->willReturn('pim_brand');
-        $ean->getCode()->willReturn('pim_ean');
         $product->getFamily()->willReturn(null);
         $product->isVariant()->willReturn(false);
         $product->getValue('pim_brand')->willReturn(null);
@@ -287,9 +262,6 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $getConnectionStatusHandler,
         $productRepository,
         $identifiersMappingRepository,
-        AttributeInterface $mpn,
-        AttributeInterface $brand,
-        AttributeInterface $ean,
         ProductInterface $product,
         ValueInterface $mpnValue,
         ValueInterface $eanValue,
@@ -306,14 +278,11 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $identifiersMapping->getMapping()->willReturn([
-            'brand' => new IdentifierMapping('brand', $brand->getWrappedObject()),
-            'ean' => new IdentifierMapping('ean', $ean->getWrappedObject()),
-            'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
+            'brand' => new IdentifierMapping('brand', 'pim_brand'),
+            'ean' => new IdentifierMapping('ean', 'pim_ean'),
+            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
             'asin' => new IdentifierMapping('mpn', null),
         ]);
-        $brand->getCode()->willReturn('pim_brand');
-        $mpn->getCode()->willReturn('pim_mpn');
-        $ean->getCode()->willReturn('pim_ean');
         $product->getFamily()->willReturn(null);
         $product->isVariant()->willReturn(false);
         $product->getValue('pim_brand')->willReturn(null);
@@ -333,8 +302,6 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $getConnectionStatusHandler,
         $productRepository,
         $identifiersMappingRepository,
-        AttributeInterface $mpn,
-        AttributeInterface $asin,
         ProductSubscription $productSubscription,
         ProductInterface $product,
         IdentifiersMapping $identifiersMapping
@@ -352,11 +319,9 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $identifiersMapping->getMapping()->willReturn([
             'brand' => new IdentifierMapping('brand', null),
             'ean' => new IdentifierMapping('ean', null),
-            'mpn' => new IdentifierMapping('mpn', $mpn->getWrappedObject()),
-            'asin' => new IdentifierMapping('asin', $asin->getWrappedObject()),
+            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
+            'asin' => new IdentifierMapping('asin', 'pim_asin'),
         ]);
-        $mpn->getCode()->willReturn('pim_mpn');
-        $asin->getCode()->willReturn('pim_asin');
         $product->getFamily()->willReturn(null);
         $product->isVariant()->willReturn(false);
         $product->getValue('pim_mpn')->willReturn(null);

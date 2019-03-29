@@ -15,10 +15,6 @@ Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscrip
             id: true
             generator:
                 strategy: AUTO
-        subscriptionId:
-            type: string
-            column: subscription_id
-            nullable: false
         productId:
             type: integer
             column: product_id
@@ -47,3 +43,7 @@ Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscrip
             type: string
             column: requested_mpn
             nullable: true
+    embedded:
+        subscriptionId:
+            class: Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId
+            columnPrefix: false

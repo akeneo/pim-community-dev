@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedValue;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException;
 
@@ -88,14 +88,14 @@ final class MetricNormalizer
     }
 
     /**
-     * @param AttributeInterface $attribute
+     * @param Attribute $attribute
      * @param array $normalizedMetric
      *
      * @throws MeasureException
      *
      * @return array
      */
-    private function convertToDefaultAttributeMetricUnit(AttributeInterface $attribute, array $normalizedMetric): array
+    private function convertToDefaultAttributeMetricUnit(Attribute $attribute, array $normalizedMetric): array
     {
         $this->measureConverter->setFamily($attribute->getMetricFamily());
 

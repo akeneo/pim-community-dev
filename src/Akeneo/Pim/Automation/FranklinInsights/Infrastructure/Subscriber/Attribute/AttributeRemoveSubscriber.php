@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdent
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -99,7 +100,7 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
         $this->familyCodes = $this->familyCodesByAttributeQuery->execute($attribute->getCode());
 
         $identifiersMapping = $this->identifiersMappingRepository->find();
-        if ($identifiersMapping->isMappedTo($attribute)) {
+        if ($identifiersMapping->isMappedTo(new AttributeCode($attribute->getCode()))) {
             $this->updateIdentifiersMapping($identifiersMapping, $attribute);
         }
     }
@@ -136,8 +137,8 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
         AttributeInterface $removedAttribute
     ): void {
         foreach ($identifiersMapping as $identifier => $identifierMapping) {
-            $attribute = $identifierMapping->getAttribute();
-            if (null !== $attribute && $removedAttribute->getCode() === $attribute->getCode()) {
+            $attributeCode = null !== $identifierMapping->getAttributeCode() ? (string) $identifierMapping->getAttributeCode() : null;
+            if (null !== $attributeCode && $removedAttribute->getCode() === (string) $attributeCode) {
                 $mapping = $this->computeNewMapping($identifiersMapping, $identifier);
 
                 $command = new SaveIdentifiersMappingCommand($mapping);
@@ -157,9 +158,9 @@ class AttributeRemoveSubscriber implements EventSubscriberInterface
     private function computeNewMapping(IdentifiersMapping $identifiersMapping, string $removedIdentifier): array
     {
         $mapping = array_map(function (IdentifierMapping $identifierMapping) {
-            $attribute = $identifierMapping->getAttribute();
+            $attributeCode = $identifierMapping->getAttributeCode();
 
-            return null !== $attribute ? $attribute->getCode() : null;
+            return null !== $attributeCode ? (string) $attributeCode : null;
         }, $identifiersMapping->getMapping());
 
         $mapping[$removedIdentifier] = null;

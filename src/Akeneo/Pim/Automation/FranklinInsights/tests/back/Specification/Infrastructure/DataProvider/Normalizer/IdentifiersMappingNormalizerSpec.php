@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface;
-use Doctrine\Common\Collections\ArrayCollection;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Specification\Builder\AttributeBuilder;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -25,46 +25,32 @@ use PhpSpec\ObjectBehavior;
  */
 class IdentifiersMappingNormalizerSpec extends ObjectBehavior
 {
+    public function let(AttributeRepositoryInterface $attributeRepository): void
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     public function it_is_subscription_collection(): void
     {
         $this->shouldHaveType(IdentifiersMappingNormalizer::class);
     }
 
     public function it_normalizes_identifiers_mapping(
-        AttributeInterface $attributeSku,
-        AttributeInterface $attributeBrand,
-        AttributeTranslationInterface $brandEN,
-        AttributeTranslationInterface $brandFR,
-        ArrayCollection $brandTranslations,
-        \ArrayIterator $brandTransIterator,
-        ArrayCollection $skuTranslations
+        $attributeRepository
     ): void {
-        $attributeSku->getCode()->willReturn('sku');
-        $attributeSku->getTranslations()->willReturn($skuTranslations);
 
-        $skuTranslations->isEmpty()->willReturn(true);
+        $attributeSku = (new AttributeBuilder())->withCode('sku')->withLabels([])->build();
+        $attributeBrand = (new AttributeBuilder())->withCode('brand_code')->withLabels([
+            'fr_FR' => 'Marque',
+            'en_US' => 'Brand',
+        ])->build();
 
-        $attributeBrand->getCode()->willReturn('brand_code');
-        $attributeBrand->getTranslations()->willReturn($brandTranslations);
-
-        $brandTranslations->isEmpty()->willReturn(false);
-        $brandTranslations->getIterator()->willReturn($brandTransIterator);
-        $brandTransIterator->valid()->willReturn(true, true, false);
-        $brandTransIterator->current()->willReturn($brandFR, $brandEN);
-
-        $brandFR->getLocale()->willReturn('fr_FR');
-        $brandFR->getLabel()->willReturn('Marque');
-
-        $brandEN->getLocale()->willReturn('en_US');
-        $brandEN->getLabel()->willReturn('Brand');
+        $attributeRepository->findByCodes(['brand_code', 'sku'])->willReturn([$attributeSku, $attributeBrand]);
 
         $mapping = new IdentifiersMapping([]);
         $mapping
-            ->map('mpn', $attributeSku->getWrappedObject())
-            ->map('brand', $attributeBrand->getWrappedObject());
-
-        $brandTransIterator->next()->shouldBeCalled();
-        $brandTransIterator->rewind()->shouldBeCalled();
+            ->map('mpn', new AttributeCode('sku'))
+            ->map('brand', new AttributeCode('brand_code'));
 
         $this->normalize($mapping)->shouldReturn(
             [

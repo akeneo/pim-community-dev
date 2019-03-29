@@ -20,7 +20,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\Sugge
  */
 interface SuggestedDataNormalizerInterface
 {
-
     /**
      * Returns suggested values in Akeneo PIM standard format.
      *

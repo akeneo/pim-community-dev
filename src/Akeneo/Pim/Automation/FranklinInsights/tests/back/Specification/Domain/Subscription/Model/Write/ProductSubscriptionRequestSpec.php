@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\Identi
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Specification\Builder\AttributeBuilder;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -38,16 +38,9 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
 
     public function it_does_not_take_missing_values_into_account(
         $product,
-        AttributeInterface $manufacturer,
-        AttributeInterface $model,
-        AttributeInterface $ean,
         ValueInterface $modelValue,
         ValueInterface $eanValue
     ): void {
-        $manufacturer->getCode()->willReturn('manufacturer');
-        $model->getCode()->willReturn('model');
-        $ean->getCode()->willReturn('ean');
-
         $modelValue->hasData()->willReturn(false);
         $eanValue->hasData()->willReturn(true);
         $eanValue->__toString()->willReturn('123456789123');
@@ -59,9 +52,9 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
 
         $identifiersMapping = new IdentifiersMapping(
             [
-                'upc' => $ean->getWrappedObject(),
-                'brand' => $manufacturer->getWrappedObject(),
-                'mpn' => $model->getWrappedObject(),
+                'upc' => 'ean',
+                'brand' => 'manufacturer',
+                'mpn' => 'model',
             ]
         );
 
@@ -73,10 +66,8 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
     public function it_handles_incomplete_mapping(
         $product,
         IdentifiersMapping $mapping,
-        AttributeInterface $ean,
         ValueInterface $eanValue
     ): void {
-        $ean->getCode()->willReturn('ean');
         $eanValue->hasData()->willReturn(true);
         $eanValue->__toString()->willReturn('123456789123');
 
@@ -84,7 +75,7 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
 
         $mapping->getIterator()->willReturn(
             new \ArrayIterator([
-                'upc' => new IdentifierMapping('upc', $ean->getWrappedObject()),
+                'upc' => new IdentifierMapping('upc', 'ean'),
                 'asin' => null,
                 'brand' => null,
                 'mpn' => null,
@@ -100,16 +91,12 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
 
     public function it_handles_mpn_and_brand_as_one_identifier(
         $product,
-        AttributeInterface $brand,
-        AttributeInterface $mpn,
         ValueInterface $brandValue,
         ValueInterface $mpnValue
     ): void {
-        $brand->getCode()->willReturn('brand');
         $brandValue->hasData()->willReturn(true);
         $brandValue->__toString()->willReturn('qwertee');
 
-        $mpn->getCode()->willReturn('mpn');
         $mpnValue->hasData()->willReturn(true);
         $mpnValue->__toString()->willReturn('tshirt-the-witcher');
 
@@ -120,8 +107,8 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
             [
                 'upc' => null,
                 'asin' => null,
-                'brand' => $brand->getWrappedObject(),
-                'mpn' => $mpn->getWrappedObject(),
+                'brand' => 'brand',
+                'mpn' => 'mpn',
             ]
         );
 
@@ -134,16 +121,12 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
     public function it_does_not_handle_mpn_data_without_brand_data(
         $product,
         IdentifiersMapping $mapping,
-        AttributeInterface $brand,
-        AttributeInterface $mpn,
         ValueInterface $brandValue,
         ValueInterface $mpnValue
     ): void {
-        $brand->getCode()->willReturn('brand');
         $brandValue->hasData()->willReturn(true);
         $brandValue->__toString()->willReturn('qwertee');
 
-        $mpn->getCode()->willReturn('mpn');
         $mpnValue->hasData()->willReturn(false);
 
         $product->getValue('brand')->willReturn($brandValue);
@@ -154,8 +137,8 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
                 [
                     'upc' => null,
                     'asin' => null,
-                    'brand' => $brand->getWrappedObject(),
-                    'mpn' => $mpn->getWrappedObject(),
+                    'brand' => AttributeBuilder::fromCode('brand'),
+                    'mpn' => AttributeBuilder::fromCode('mpn'),
                 ]
             )
         );
@@ -166,15 +149,11 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
     public function it_does_not_handle_brand_data_without_mpn_data(
         $product,
         IdentifiersMapping $mapping,
-        AttributeInterface $brand,
-        AttributeInterface $mpn,
         ValueInterface $brandValue,
         ValueInterface $mpnValue
     ): void {
-        $brand->getCode()->willReturn('brand');
         $brandValue->hasData()->willReturn(false);
 
-        $mpn->getCode()->willReturn('mpn');
         $mpnValue->hasData()->willReturn(true);
         $mpnValue->__toString()->willReturn('tshirt-the-witcher');
 
@@ -186,8 +165,8 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
                 [
                     'upc' => null,
                     'asin' => null,
-                    'brand' => $brand->getWrappedObject(),
-                    'mpn' => $mpn->getWrappedObject(),
+                    'brand' => AttributeBuilder::fromCode('brand'),
+                    'mpn' => AttributeBuilder::fromCode('mpn'),
                 ]
             )
         );
@@ -198,15 +177,10 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
     public function it_does_not_handle_mpn_value_without_brand_value(
         $product,
         IdentifiersMapping $mapping,
-        AttributeInterface $brand,
-        AttributeInterface $mpn,
         ValueInterface $brandValue
     ): void {
-        $brand->getCode()->willReturn('brand');
         $brandValue->hasData()->willReturn(true);
         $brandValue->__toString()->willReturn('qwertee');
-
-        $mpn->getCode()->willReturn('mpn');
 
         $product->getValue('brand')->willReturn($brandValue);
         $product->getValue('mpn')->willReturn(null);
@@ -216,8 +190,8 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
                 [
                     'upc' => null,
                     'asin' => null,
-                    'brand' => $brand->getWrappedObject(),
-                    'mpn' => $mpn->getWrappedObject(),
+                    'brand' => AttributeBuilder::fromCode('brand'),
+                    'mpn' => AttributeBuilder::fromCode('mpn'),
                 ]
             )
         );
@@ -228,13 +202,8 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
     public function it_does_not_handle_brand_value_without_mpn_value(
         $product,
         IdentifiersMapping $mapping,
-        AttributeInterface $brand,
-        AttributeInterface $mpn,
         ValueInterface $mpnValue
     ): void {
-        $brand->getCode()->willReturn('brand');
-
-        $mpn->getCode()->willReturn('mpn');
         $mpnValue->hasData()->willReturn(true);
         $mpnValue->__toString()->willReturn('tshirt-the-witcher');
 
@@ -246,8 +215,8 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
                 [
                     'upc' => null,
                     'asin' => null,
-                    'brand' => $brand->getWrappedObject(),
-                    'mpn' => $mpn->getWrappedObject(),
+                    'brand' => AttributeBuilder::fromCode('brand'),
+                    'mpn' => AttributeBuilder::fromCode('mpn'),
                 ]
             )
         );

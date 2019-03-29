@@ -17,10 +17,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributeOpt
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -46,7 +45,7 @@ class GetAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $franklinAttributeId = new FranklinAttributeId('bar');
         $query = new GetAttributeOptionsMappingQuery($familyCode, $franklinAttributeId);
 
-        $familyRepository->findOneByIdentifier($familyCode)->willReturn(null);
+        $familyRepository->exist($familyCode)->willReturn(false);
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
@@ -55,17 +54,17 @@ class GetAttributeOptionsMappingHandlerSpec extends ObjectBehavior
 
     public function it_returns_an_attribute_options_mapping(
         $familyRepository,
-        $attributeOptionsMappingProvider,
-        FamilyInterface $family
+        $attributeOptionsMappingProvider
     ): void {
         $familyCode = new FamilyCode('foo');
         $franklinAttributeId = new FranklinAttributeId('bar');
         $query = new GetAttributeOptionsMappingQuery($familyCode, $franklinAttributeId);
 
-        $familyRepository->findOneByIdentifier($familyCode)->willReturn($family);
+        $familyRepository->exist($familyCode)->willReturn(true);
 
-        $attributeOptionsMapping = new AttributeOptionsMapping('foo', 'bar', []);
-        $attributeOptionsMappingProvider->getAttributeOptionsMapping('foo', 'bar')->willReturn($attributeOptionsMapping);
+        $familyCode = new FamilyCode('foo');
+        $attributeOptionsMapping = new AttributeOptionsMapping($familyCode, 'bar', []);
+        $attributeOptionsMappingProvider->getAttributeOptionsMapping($familyCode, 'bar')->willReturn($attributeOptionsMapping);
 
         $this->handle($query)->shouldReturn($attributeOptionsMapping);
     }

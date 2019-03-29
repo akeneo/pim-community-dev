@@ -75,19 +75,21 @@ class RemoveOptionFromAttributeOptionsMappingTaskletSpec extends ObjectBehavior
         $saveAttributeOptionsMappingHandler
     ): void {
         $familyCodesByAttributeQuery->execute('pim_color')->willReturn(['router']);
+        $familyCode = new FamilyCode('router');
 
         $attributesMapping = new AttributesMappingResponse();
         $attributesMapping->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', 1, null));
 
-        $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery('router'))->willReturn($attributesMapping);
+        $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))
+            ->willReturn($attributesMapping);
 
-        $attributeOptionsMapping = new AttributeOptionsMapping('router', 'franklin_color', [
+        $attributeOptionsMapping = new AttributeOptionsMapping($familyCode, 'franklin_color', [
             new AttributeOptionMapping('franklin_red', 'red', 0, 'pim_red'),
             new AttributeOptionMapping('franklin_blue', 'blue', 0, 'pim_blue'),
         ]);
 
         $getAttributeOptionsMappingHandler->handle(
-            new GetAttributeOptionsMappingQuery(new FamilyCode('router'), new FranklinAttributeId('franklin_color'))
+            new GetAttributeOptionsMappingQuery($familyCode, new FranklinAttributeId('franklin_color'))
         )->willReturn($attributeOptionsMapping);
 
         $saveAttributeOptionsMappingHandler->handle(new SaveAttributeOptionsMappingCommand(
@@ -136,7 +138,8 @@ class RemoveOptionFromAttributeOptionsMappingTaskletSpec extends ObjectBehavior
     ): void {
         $familyCodesByAttributeQuery->execute('pim_color')->willReturn(['router']);
 
-        $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery('router'))->willReturn(new AttributesMappingResponse());
+        $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))
+            ->willReturn(new AttributesMappingResponse());
 
         $getAttributeOptionsMappingHandler->handle(Argument::any())->shouldNotBeCalled();
         $saveAttributeOptionsMappingHandler->handle(Argument::any())->shouldNotBeCalled();
@@ -149,15 +152,17 @@ class RemoveOptionFromAttributeOptionsMappingTaskletSpec extends ObjectBehavior
         $saveAttributeOptionsMappingHandler
     ): void {
         $familyCodesByAttributeQuery->execute('pim_color')->willReturn(['router']);
+        $familyCode = new FamilyCode('router');
 
         $attributesMapping = new AttributesMappingResponse();
         $attributesMapping->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', 1, null));
 
-        $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery('router'))->willReturn($attributesMapping);
+        $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery(new FamilyCode('router')))
+            ->willReturn($attributesMapping);
 
         $getAttributeOptionsMappingHandler->handle(
-            new GetAttributeOptionsMappingQuery(new FamilyCode('router'), new FranklinAttributeId('franklin_color'))
-        )->willReturn(new AttributeOptionsMapping('router', 'franklin_color', []));
+            new GetAttributeOptionsMappingQuery($familyCode, new FranklinAttributeId('franklin_color'))
+        )->willReturn(new AttributeOptionsMapping($familyCode, 'franklin_color', []));
 
         $saveAttributeOptionsMappingHandler->handle(Argument::any())->shouldNotBeCalled();
 

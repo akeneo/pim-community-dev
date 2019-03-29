@@ -31,9 +31,9 @@ class IdentifiersMappingNormalizer
 
         foreach ($identifiersMapping->getMapping() as $franklinIdentifierCode => $identifier) {
             $normalizedMapping[$franklinIdentifierCode] = null;
-            $attribute = $identifier->getAttribute();
-            if (null !== $attribute) {
-                $normalizedMapping[$franklinIdentifierCode] = $attribute->getCode();
+            $attributeCode = $identifier->getAttributeCode();
+            if (null !== $attributeCode) {
+                $normalizedMapping[$franklinIdentifierCode] = (string) $attributeCode;
             }
         }
 

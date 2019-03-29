@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedValue;
-use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 
 /**
  * Normalizes a suggested value to Akeneo standard format for simple-select attribute type.
@@ -67,10 +68,9 @@ final class SimpleSelectNormalizer
      */
     private function optionExistsForAttribute(string $attributeCode, string $optionCode): bool
     {
-        return null !== $this->attributeOptionRepository->findOneByIdentifier(sprintf(
-            '%s.%s',
-            $attributeCode,
+        return null !== $this->attributeOptionRepository->findOneByIdentifier(
+            new AttributeCode($attributeCode),
             $optionCode
-        ));
+        );
     }
 }

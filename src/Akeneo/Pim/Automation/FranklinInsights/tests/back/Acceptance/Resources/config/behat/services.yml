@@ -21,7 +21,7 @@ services:
             - '@akeneo.pim.automation.franklin_insights.handler.get_identifiers_mapping'
             - '@akeneo.pim.automation.franklin_insights.handler.update_identifiers_mapping'
             - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
-            - '@pim_catalog.repository.attribute'
+            - '@akeneo.pim.automation.franklin_insights.repository.attribute'
             - '@akeneo.pim.automation.franklin_insights.franklin_client.http_client'
             - '@akeneo.pim.automation.franklin_insights.application.mapping.service.identify_products_to_resubscribe'
         tags:

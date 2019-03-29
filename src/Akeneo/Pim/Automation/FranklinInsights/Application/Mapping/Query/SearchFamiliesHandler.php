@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyCollection;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\FamilyMappingStatusCollection;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Repository\FamilyMappingStatusRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class SearchFamiliesHandler
 {
-    /** @var FamilyRepositoryInterface */
+    /** @var FamilyMappingStatusRepositoryInterface */
     private $familyRepository;
 
     /**
-     * @param FamilyRepositoryInterface $familyRepository
+     * @param FamilyMappingStatusRepositoryInterface $familyRepository
      */
-    public function __construct(FamilyRepositoryInterface $familyRepository)
+    public function __construct(FamilyMappingStatusRepositoryInterface $familyRepository)
     {
         $this->familyRepository = $familyRepository;
     }
@@ -35,9 +35,9 @@ class SearchFamiliesHandler
     /**
      * @param SearchFamiliesQuery $getFamiliesQuery
      *
-     * @return FamilyCollection
+     * @return FamilyMappingStatusCollection
      */
-    public function handle(SearchFamiliesQuery $getFamiliesQuery): FamilyCollection
+    public function handle(SearchFamiliesQuery $getFamiliesQuery): FamilyMappingStatusCollection
     {
         return $this->familyRepository->findBySearch(
             $getFamiliesQuery->getPage(),

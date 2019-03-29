@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\Att
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Specification\Builder\AttributeBuilder;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -25,14 +25,9 @@ use PhpSpec\ObjectBehavior;
  */
 class AttributeMappingSpec extends ObjectBehavior
 {
-    public function it_is_initializable_with_an_attribute(AttributeInterface $attribute): void
+    public function it_is_initializable_with_an_attribute(): void
     {
-        $attribute->getType()->willReturn(AttributeTypes::TEXT);
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocaleSpecific()->willReturn(false);
-
-        $this->beConstructedWith('target', 'text', $attribute);
+        $this->beConstructedWith('target', 'text', AttributeBuilder::fromCode('code'));
         $this->shouldBeAnInstanceOf(AttributeMapping::class);
     }
 
@@ -42,47 +37,35 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(AttributeMapping::class);
     }
 
-    public function it_returns_an_active_status_when_attribute_is_mapped(AttributeInterface $attribute): void
+    public function it_returns_an_active_status_when_attribute_is_mapped(): void
     {
-        $attribute->getType()->willReturn(AttributeTypes::TEXT);
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocaleSpecific()->willReturn(false);
-
-        $this->beConstructedWith('target', 'multiselect', $attribute);
-
+        $this->beConstructedWith('target', 'multiselect', AttributeBuilder::fromCode('code'));
         $this->getStatus()->shouldReturn(AttributeMappingStatus::ATTRIBUTE_ACTIVE);
     }
 
     public function it_returns_a_pending_status_when_attribute_is_not_mapped(): void
     {
         $this->beConstructedWith('target', 'multiselect', null);
-
         $this->getStatus()->shouldReturn(AttributeMappingStatus::ATTRIBUTE_PENDING);
     }
 
     public function it_returns_the_target_attribute_code(): void
     {
         $this->beConstructedWith('target', 'multiselect', null);
-
         $this->getTargetAttributeCode()->shouldReturn('target');
     }
 
-    public function it_throws_an_exception_if_franklin_attribute_type_is_invalid(AttributeInterface $attribute): void
+    public function it_throws_an_exception_if_franklin_attribute_type_is_invalid(): void
     {
-        $this->beConstructedWith('target', 'invalid-type', $attribute);
+        $this->beConstructedWith('target', 'invalid-type', AttributeBuilder::fromCode('code'));
         $this
             ->shouldThrow(\InvalidArgumentException::class)
             ->duringInstantiation();
     }
 
-    public function it_throws_an_exception_if_pim_attribute_type_is_invalid(AttributeInterface $attribute): void
+    public function it_throws_an_exception_if_pim_attribute_type_is_invalid(): void
     {
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocaleSpecific()->willReturn(false);
-        $attribute->getType()->willReturn(AttributeTypes::DATE);
-
+        $attribute = (new AttributeBuilder())->withType(AttributeTypes::DATE)->build();
         $this->beConstructedWith('target', 'text', $attribute);
         $this
             ->shouldThrow(
@@ -91,12 +74,9 @@ class AttributeMappingSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_throws_an_exception_if_attribute_is_localizable(AttributeInterface $attribute): void
+    public function it_throws_an_exception_if_attribute_is_localizable(): void
     {
-        $attribute->isLocalizable()->willReturn(true);
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocaleSpecific()->willReturn(false);
-        $attribute->getType()->willReturn(AttributeTypes::TEXT);
+        $attribute = (new AttributeBuilder())->isLocalizable()->build();
 
         $this->beConstructedWith('target', 'text', $attribute);
         $this
@@ -104,12 +84,9 @@ class AttributeMappingSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_throws_an_exception_if_attribute_is_scopable(AttributeInterface $attribute): void
+    public function it_throws_an_exception_if_attribute_is_scopable(): void
     {
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocaleSpecific()->willReturn(false);
-        $attribute->getType()->willReturn(AttributeTypes::TEXT);
+        $attribute = (new AttributeBuilder())->isScopable()->build();
 
         $this->beConstructedWith('target', 'text', $attribute);
         $this
@@ -117,12 +94,9 @@ class AttributeMappingSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_throws_an_exception_if_attribute_is_locale_specific(AttributeInterface $attribute): void
+    public function it_throws_an_exception_if_attribute_is_locale_specific(): void
     {
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocaleSpecific()->willReturn(true);
-        $attribute->getType()->willReturn(AttributeTypes::TEXT);
+        $attribute = (new AttributeBuilder())->isLocaleSpecific()->build();
 
         $this->beConstructedWith('target', 'text', $attribute);
         $this

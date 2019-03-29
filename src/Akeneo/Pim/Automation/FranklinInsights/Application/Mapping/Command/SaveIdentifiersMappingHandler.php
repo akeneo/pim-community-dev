@@ -16,12 +16,12 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command;
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\IdentifiersMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Service\IdentifyProductsToResubscribeInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Model\Read\Attribute;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * Handles the saveIdentifiersMapping command.
@@ -90,7 +90,11 @@ class SaveIdentifiersMappingHandler
         $identifiersMapping = $this->identifiersMappingRepository->find();
 
         foreach ($identifiers as $franklinIdentifier => $pimAttribute) {
-            $identifiersMapping->map($franklinIdentifier, $pimAttribute);
+            $attributeCode = null;
+            if (null !== $pimAttribute) {
+                $attributeCode = $pimAttribute->getCode();
+            }
+            $identifiersMapping->map($franklinIdentifier, $attributeCode);
         }
 
         if ($identifiersMapping->isUpdated()) {
@@ -118,7 +122,7 @@ class SaveIdentifiersMappingHandler
             if (null !== $attributeCode) {
                 $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-                if (!$attribute instanceof AttributeInterface) {
+                if (!$attribute instanceof Attribute) {
                     throw new \InvalidArgumentException(
                         sprintf('Attribute "%s" does not exist', $attributeCode)
                     );
@@ -151,15 +155,15 @@ class SaveIdentifiersMappingHandler
             }
 
             if ($attribute->isLocalizable()) {
-                throw InvalidMappingException::localizableAttributeNotAllowed($attribute->getCode());
+                throw InvalidMappingException::localizableAttributeNotAllowed((string) $attribute->getCode());
             }
 
             if ($attribute->isScopable()) {
-                throw InvalidMappingException::scopableAttributeNotAllowed($attribute->getCode());
+                throw InvalidMappingException::scopableAttributeNotAllowed((string) $attribute->getCode());
             }
 
             if ($attribute->isLocaleSpecific()) {
-                throw InvalidMappingException::localeSpecificAttributeNotAllowed($attribute->getCode());
+                throw InvalidMappingException::localeSpecificAttributeNotAllowed((string) $attribute->getCode());
             }
         }
     }
@@ -171,8 +175,8 @@ class SaveIdentifiersMappingHandler
      */
     private function validateThatBrandAndMpnAreNotSavedAlone(array $identifiers): void
     {
-        $isBrandDefined = isset($identifiers['brand']) && $identifiers['brand'] instanceof AttributeInterface;
-        $isMpnDefined = isset($identifiers['mpn']) && $identifiers['mpn'] instanceof AttributeInterface;
+        $isBrandDefined = isset($identifiers['brand']) && $identifiers['brand'] instanceof Attribute;
+        $isMpnDefined = isset($identifiers['mpn']) && $identifiers['mpn'] instanceof Attribute;
 
         if ($isBrandDefined xor $isMpnDefined) {
             throw InvalidMappingException::mandatoryAttributeMapping(

@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Pe
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine\ProductSubscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
@@ -49,8 +50,8 @@ class ProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_bulk_save_subscriptions($em): void
     {
-        $subscription = new ProductSubscription(42, 'fake-id-42', ['asin' => 'ABC']);
-        $subscription2 = new ProductSubscription(43, 'fake-id-43', ['asin' => '123']);
+        $subscription = new ProductSubscription(42, new SubscriptionId('fake-id-42'), ['asin' => 'ABC']);
+        $subscription2 = new ProductSubscription(43, new SubscriptionId('fake-id-43'), ['asin' => '123']);
 
         $em->persist($subscription)->shouldBeCalled();
         $em->persist($subscription2)->shouldBeCalled();
@@ -61,8 +62,8 @@ class ProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_bulk_delete_subscriptions($em): void
     {
-        $subscription = new ProductSubscription(42, 'fake-id-42', ['asin' => 'ABC']);
-        $subscription2 = new ProductSubscription(43, 'fake-id-43', ['asin' => '123']);
+        $subscription = new ProductSubscription(42, new SubscriptionId('fake-id-42'), ['asin' => 'ABC']);
+        $subscription2 = new ProductSubscription(43, new SubscriptionId('fake-id-43'), ['asin' => '123']);
 
         $em->remove($subscription)->shouldBeCalled();
         $em->remove($subscription2)->shouldBeCalled();

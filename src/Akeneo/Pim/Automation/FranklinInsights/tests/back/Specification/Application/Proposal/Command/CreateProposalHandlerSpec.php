@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalA
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -51,7 +52,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $proposalUpsert,
         $subscriptionRepository
     ): void {
-        $productSubscription = new ProductSubscription(42, uniqid(), []);
+        $productSubscription = new ProductSubscription(42, new SubscriptionId(uniqid()), []);
 
         $suggestedData = new ProposalSuggestedData(42, []);
         $proposalSuggestedDataFactory->fromSubscription($productSubscription)->willReturn($suggestedData);
@@ -66,7 +67,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $proposalSuggestedDataFactory,
         $proposalUpsert
     ): void {
-        $productSubscription = new ProductSubscription(42, uniqid(), []);
+        $productSubscription = new ProductSubscription(42, new SubscriptionId(uniqid()), []);
 
         $proposalSuggestedDataFactory->fromSubscription($productSubscription)->willReturn(null);
 

@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
@@ -23,19 +24,19 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderE
 interface AttributesMappingProviderInterface
 {
     /**
-     * @param string $familyCode
+     * @param FamilyCode $familyCode
      *
      * @throws DataProviderException
      *
      * @return AttributesMappingResponse
      */
-    public function getAttributesMapping(string $familyCode): AttributesMappingResponse;
+    public function getAttributesMapping(FamilyCode $familyCode): AttributesMappingResponse;
 
     /**
-     * @param string $familyCode
+     * @param FamilyCode        $familyCode
      * @param AttributesMapping $attributesMapping
      *
      * @throws DataProviderException
      */
-    public function saveAttributesMapping(string $familyCode, AttributesMapping $attributesMapping): void;
+    public function saveAttributesMapping(FamilyCode $familyCode, AttributesMapping $attributesMapping): void;
 }

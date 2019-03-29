@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAttributeOptionCodesByIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedValue;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedValue\MultiSelectNormalizer;
-use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -23,9 +23,9 @@ use PhpSpec\ObjectBehavior;
  */
 class MultiSelectNormalizerSpec extends ObjectBehavior
 {
-    public function let(AttributeOptionRepositoryInterface $attributeOptionRepository): void
+    public function let(SelectAttributeOptionCodesByIdentifiersQueryInterface $selectAttributeOptionCodesByIdentifiersQuery): void
     {
-        $this->beConstructedWith($attributeOptionRepository);
+        $this->beConstructedWith($selectAttributeOptionCodesByIdentifiersQuery);
     }
 
     public function it_is_a_suggested_value_multi_select_normalizer(): void
@@ -33,12 +33,12 @@ class MultiSelectNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(MultiSelectNormalizer::class);
     }
 
-    public function it_normalizes_a_multi_select_suggested_value($attributeOptionRepository): void
+    public function it_normalizes_a_multi_select_suggested_value($selectAttributeOptionCodesByIdentifiersQuery): void
     {
         $suggestedValue = new SuggestedValue('attribute_code', ['attribute_option']);
 
-        $attributeOptionRepository
-            ->findCodesByIdentifiers('attribute_code', ['attribute_option'])
+        $selectAttributeOptionCodesByIdentifiersQuery
+            ->execute('attribute_code', ['attribute_option'])
             ->willReturn(['attribute_option']);
 
         $this->normalize($suggestedValue)->shouldReturn([
@@ -50,12 +50,12 @@ class MultiSelectNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_normalizes_a_string_multi_select_suggested_value($attributeOptionRepository): void
+    public function it_normalizes_a_string_multi_select_suggested_value($selectAttributeOptionCodesByIdentifiersQuery): void
     {
         $suggestedValue = new SuggestedValue('attribute_code', 'attribute_option');
 
-        $attributeOptionRepository
-            ->findCodesByIdentifiers('attribute_code', ['attribute_option'])
+        $selectAttributeOptionCodesByIdentifiersQuery
+            ->execute('attribute_code', ['attribute_option'])
             ->willReturn(['attribute_option']);
 
         $this->normalize($suggestedValue)->shouldReturn([
@@ -67,15 +67,15 @@ class MultiSelectNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_keeps_only_existing_options_of_a_multi_select_suggested_value($attributeOptionRepository): void
+    public function it_keeps_only_existing_options_of_a_multi_select_suggested_value($selectAttributeOptionCodesByIdentifiersQuery): void
     {
         $suggestedValue = new SuggestedValue('attribute_code', [
             'exiting_attribute_option',
             'non_existing_attribute_option',
         ]);
 
-        $attributeOptionRepository
-            ->findCodesByIdentifiers('attribute_code', ['exiting_attribute_option', 'non_existing_attribute_option'])
+        $selectAttributeOptionCodesByIdentifiersQuery
+            ->execute('attribute_code', ['exiting_attribute_option', 'non_existing_attribute_option'])
             ->willReturn(['exiting_attribute_option']);
 
         $this->normalize($suggestedValue)->shouldReturn([
@@ -87,15 +87,15 @@ class MultiSelectNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_returns_an_empty_array_if_no_options_exist($attributeOptionRepository): void
+    public function it_returns_an_empty_array_if_no_options_exist($selectAttributeOptionCodesByIdentifiersQuery): void
     {
         $suggestedValue = new SuggestedValue('attribute_code', [
             'an_non_exiting_attribute_option',
             'another_non_existing_attribute_option',
         ]);
 
-        $attributeOptionRepository
-            ->findCodesByIdentifiers('attribute_code', [
+        $selectAttributeOptionCodesByIdentifiersQuery
+            ->execute('attribute_code', [
                 'an_non_exiting_attribute_option',
                 'another_non_existing_attribute_option',
             ])

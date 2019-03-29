@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use PhpSpec\ObjectBehavior;
 
@@ -24,7 +25,7 @@ class ProductSubscriptionSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith(42, 'foobar', ['asin' => '72527273070']);
+        $this->beConstructedWith(42, new SubscriptionId('foobar'), ['asin' => '72527273070']);
     }
 
     public function it_is_a_product_subscription(): void
@@ -40,7 +41,8 @@ class ProductSubscriptionSpec extends ObjectBehavior
 
     public function it_gets_the_subscription_id(): void
     {
-        $this->getSubscriptionId()->shouldReturn('foobar');
+        $this->getSubscriptionId()->shouldReturnAnInstanceOf(SubscriptionId::class);
+        $this->getSubscriptionId()->__toString()->shouldReturn('foobar');
     }
 
     public function it_sets_the_suggested_data(): void

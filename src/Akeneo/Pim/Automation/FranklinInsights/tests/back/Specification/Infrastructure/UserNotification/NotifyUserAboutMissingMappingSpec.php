@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification;
 
 use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification\NotifyUserAboutMissingMapping;
-use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -39,10 +40,7 @@ class NotifyUserAboutMissingMappingSpec extends ObjectBehavior
 
     public function it_notify_a_user_about_missing_mapping_for_a_family($notificationFactory, $notifier): void
     {
-        $family = new Family();
-        $family->setCode('family_code');
-        $family->setLocale('en_US')->setLabel('Family label');
-
+        $family = new Family(new FamilyCode('family_code'), ['en_US' => 'Family label']);
         $user = new User();
         $user->setUsername('username');
         $user->setUiLocale((new Locale())->setCode('en_US'));

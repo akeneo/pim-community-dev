@@ -28,7 +28,7 @@ class OptionsMappingNormalizer
     public function normalize(AttributeOptionsMapping $attributeOptionsMapping): array
     {
         return [
-            'family' => $attributeOptionsMapping->familyCode(),
+            'family' => (string) $attributeOptionsMapping->familyCode(),
             'franklinAttributeCode' => $attributeOptionsMapping->franklinAttributeId(),
             'mapping' => $this->normalizeMapping($attributeOptionsMapping->mapping()),
         ];

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Holds a ProductInterface, and provides its values given a defined mapping.
@@ -59,12 +59,12 @@ final class ProductSubscriptionRequest
                 continue;
             }
 
-            $mappedAttribute = $identifierMapping->getAttribute();
-            if (!$mappedAttribute instanceof AttributeInterface) {
+            $mappedAttributeCode = $identifierMapping->getAttributeCode();
+            if (!$mappedAttributeCode instanceof AttributeCode) {
                 continue;
             }
 
-            $value = $this->product->getValue($mappedAttribute->getCode());
+            $value = $this->product->getValue((string) $mappedAttributeCode);
             if (null !== $value && $value->hasData()) {
                 $mapped[$franklinCode] = (string) $value;
             }

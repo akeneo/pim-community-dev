@@ -22,6 +22,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\Produc
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer\SubscriptionWriter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -94,8 +95,8 @@ class SubscriptionWriterSpec extends ObjectBehavior
         ];
 
         $collection = new ProductSubscriptionResponseCollection([]);
-        $collection->add(new ProductSubscriptionResponse(42, '123-465-789', [], false, false));
-        $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false, false));
+        $collection->add(new ProductSubscriptionResponse(42, new SubscriptionId('123-465-789'), [], false, false));
+        $collection->add(new ProductSubscriptionResponse(50, new SubscriptionId('abc-def-987'), [], false, false));
 
         $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
 
@@ -104,12 +105,12 @@ class SubscriptionWriterSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($productSubscribed) {
             return $productSubscribed instanceof ProductSubscribed &&
-                '123-465-789' === $productSubscribed->getProductSubscription()->getSubscriptionId();
+                '123-465-789' === (string) $productSubscribed->getProductSubscription()->getSubscriptionId();
         }))->shouldBeCalled();
 
         $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($productSubscribed) {
             return $productSubscribed instanceof ProductSubscribed &&
-                'abc-def-987' === $productSubscribed->getProductSubscription()->getSubscriptionId();
+                'abc-def-987' === (string) $productSubscribed->getProductSubscription()->getSubscriptionId();
         }))->shouldBeCalled();
 
         $this->write($items)->shouldReturn(null);
@@ -142,7 +143,7 @@ class SubscriptionWriterSpec extends ObjectBehavior
         $collection = new ProductSubscriptionResponseCollection([
             42 => 'Invalid UPC: \'123456\'',
         ]);
-        $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false, false));
+        $collection->add(new ProductSubscriptionResponse(50, new SubscriptionId('abc-def-987'), [], false, false));
 
         $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
 
@@ -158,7 +159,7 @@ class SubscriptionWriterSpec extends ObjectBehavior
         $productSubscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalledTimes(1);
         $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($productSubscribed) {
             return $productSubscribed instanceof ProductSubscribed &&
-                'abc-def-987' === $productSubscribed->getProductSubscription()->getSubscriptionId();
+                'abc-def-987' === (string) $productSubscribed->getProductSubscription()->getSubscriptionId();
         }))->shouldBeCalled();
 
         $this->write($items)->shouldReturn(null);

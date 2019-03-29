@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet;
 
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserAndFamilyIdsWithMissingMappingQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserIdsAndFamilyCodesWithMissingMappingQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification\NotifyUserAboutMissingMapping;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
@@ -25,8 +26,8 @@ use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
  */
 class NotifyPendingAttributesTasklet implements TaskletInterface
 {
-    /** @var SelectUserAndFamilyIdsWithMissingMappingQuery */
-    private $userAndFamilyIdsQuery;
+    /** @var SelectUserIdsAndFamilyCodesWithMissingMappingQuery */
+    private $userIdsAndFamilyCodesQuery;
 
     /** @var UserRepositoryInterface */
     private $userRepository;
@@ -41,18 +42,18 @@ class NotifyPendingAttributesTasklet implements TaskletInterface
     private $stepExecution;
 
     /**
-     * @param SelectUserAndFamilyIdsWithMissingMappingQuery $userAndFamilyIdsQuery
-     * @param UserRepositoryInterface $userRepository
-     * @param FamilyRepositoryInterface $familyRepository
-     * @param NotifyUserAboutMissingMapping $notifyUserAboutMissingMapping
+     * @param SelectUserIdsAndFamilyCodesWithMissingMappingQuery $userIdsAndFamilyCodesQuery
+     * @param UserRepositoryInterface                            $userRepository
+     * @param FamilyRepositoryInterface                          $familyRepository
+     * @param NotifyUserAboutMissingMapping                      $notifyUserAboutMissingMapping
      */
     public function __construct(
-        SelectUserAndFamilyIdsWithMissingMappingQuery $userAndFamilyIdsQuery,
+        SelectUserIdsAndFamilyCodesWithMissingMappingQuery $userIdsAndFamilyCodesQuery,
         UserRepositoryInterface $userRepository,
         FamilyRepositoryInterface $familyRepository,
         NotifyUserAboutMissingMapping $notifyUserAboutMissingMapping
     ) {
-        $this->userAndFamilyIdsQuery = $userAndFamilyIdsQuery;
+        $this->userIdsAndFamilyCodesQuery = $userIdsAndFamilyCodesQuery;
         $this->userRepository = $userRepository;
         $this->familyRepository = $familyRepository;
         $this->notifyUserAboutMissingMapping = $notifyUserAboutMissingMapping;
@@ -71,16 +72,17 @@ class NotifyPendingAttributesTasklet implements TaskletInterface
      */
     public function execute(): void
     {
-        $userIdsAndFamilyIds = $this->userAndFamilyIdsQuery->execute();
+        $userIdsAndFamilyCodes = $this->userIdsAndFamilyCodesQuery->execute();
 
-        foreach ($userIdsAndFamilyIds as $userId => $familyIds) {
+        foreach ($userIdsAndFamilyCodes as $userId => $familyCodes) {
             $user = $this->userRepository->find($userId);
             if (null === $user) {
                 continue;
             }
 
-            foreach ($familyIds as $familyId) {
-                $family = $this->familyRepository->find($familyId);
+            foreach ($familyCodes as $rawFamilyCode) {
+                $familyCode = new FamilyCode($rawFamilyCode);
+                $family = $this->familyRepository->findOneByIdentifier($familyCode);
                 if (null === $family) {
                     continue;
                 }

@@ -18,9 +18,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Attribu
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -68,13 +68,11 @@ class GetAttributesMappingByFamilyHandler
     }
 
     /**
-     * @param string $familyCode
+     * @param FamilyCode $familyCode
      */
-    private function ensureFamilyExists(string $familyCode): void
+    private function ensureFamilyExists(FamilyCode $familyCode): void
     {
-        $family = $this->familyRepository->findOneByIdentifier($familyCode);
-
-        if (!$family instanceof FamilyInterface) {
+        if (!$this->familyRepository->exist($familyCode)) {
             throw new \InvalidArgumentException(sprintf(
                 'The family with code "%s" does not exist',
                 $familyCode
@@ -117,8 +115,8 @@ class GetAttributesMappingByFamilyHandler
         }
 
         $attributesCodes = [];
-        foreach ($this->attributeRepository->findBy(['code' => $attributeCodesFromResponse]) as $attribute) {
-            $attributesCodes[] = $attribute->getCode();
+        foreach ($this->attributeRepository->findByCodes($attributeCodesFromResponse) as $attribute) {
+            $attributesCodes[] = (string) $attribute->getCode();
         }
 
         return array_diff($attributeCodesFromResponse, $attributesCodes);
@@ -126,11 +124,11 @@ class GetAttributesMappingByFamilyHandler
 
     /**
      * @param AttributesMappingResponse $attributesMappingResponse
-     * @param $unknownAttributeCodes
+     * @param string[] $unknownAttributeCodes
      *
      * @return AttributesMappingResponse
      */
-    private function computeNewAttributesMapping(AttributesMappingResponse $attributesMappingResponse, $unknownAttributeCodes): AttributesMappingResponse
+    private function computeNewAttributesMapping(AttributesMappingResponse $attributesMappingResponse, array $unknownAttributeCodes): AttributesMappingResponse
     {
         $newMapping = new AttributesMappingResponse();
         foreach ($attributesMappingResponse as $attributeMapping) {

@@ -78,7 +78,7 @@ class AttributeOptionsMappingProvider extends AbstractProvider implements Attrib
         $converter = new AttributeOptionsMappingConverter();
 
         return $converter->clientToApplication(
-            (string) $familyCode,
+            $familyCode,
             (string) $franklinAttributeId,
             $franklinOptionsMapping
         );

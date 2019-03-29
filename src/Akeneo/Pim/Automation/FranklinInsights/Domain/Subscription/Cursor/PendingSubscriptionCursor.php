@@ -61,7 +61,7 @@ class PendingSubscriptionCursor implements \Iterator
         if (false === next($this->pendingSubscriptions)) {
             $this->pendingSubscriptions = $this->subscriptionRepository->findPendingSubscriptions(
                 $this->limit,
-                end($this->pendingSubscriptions) ? end($this->pendingSubscriptions)->getSubscriptionId() : null
+                end($this->pendingSubscriptions) ? (string) end($this->pendingSubscriptions)->getSubscriptionId() : null
             );
             reset($this->pendingSubscriptions);
         }

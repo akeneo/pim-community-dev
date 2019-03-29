@@ -22,6 +22,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\I
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\ApiResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Subscription\Request;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\Subscription\RequestCollection;
@@ -35,10 +36,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueO
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\SubscriptionsCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyTranslation;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -50,7 +51,8 @@ class SubscriptionProviderSpec extends ObjectBehavior
     public function let(
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         SubscriptionWebService $subscriptionApi,
-        ConfigurationRepositoryInterface $configurationRepo
+        ConfigurationRepositoryInterface $configurationRepo,
+        FamilyRepositoryInterface $familyRepository
     ): void {
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
@@ -58,7 +60,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
         $subscriptionApi->setToken('valid-token')->shouldBeCalled();
 
-        $this->beConstructedWith($identifiersMappingRepository, $subscriptionApi, $configurationRepo);
+        $this->beConstructedWith($identifiersMappingRepository, $subscriptionApi, $configurationRepo, $familyRepository);
     }
 
     public function it_throws_an_exception_if_no_mapping_has_been_defined_for_subscription(
@@ -74,13 +76,11 @@ class SubscriptionProviderSpec extends ObjectBehavior
     public function it_throws_an_exception_if_product_has_no_mapped_value_on_subscription(
         $identifiersMappingRepository,
         ProductInterface $product,
-        AttributeInterface $ean,
         ValueInterface $eanValue
     ): void {
-        $identifiersMapping = new IdentifiersMapping(['upc' => $ean->getWrappedObject()]);
+        $identifiersMapping = new IdentifiersMapping(['upc' => 'ean']);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
-        $ean->getCode()->willReturn('ean');
         $eanValue->hasData()->willReturn(false);
         $product->getValue('ean')->willReturn($eanValue);
         $product->getId()->willReturn(42);
@@ -96,22 +96,18 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $identifiersMappingRepository,
         $subscriptionApi,
         ProductInterface $product,
-        AttributeInterface $ean,
-        AttributeInterface $sku,
         ValueInterface $eanValue,
         ValueInterface $skuValue,
-        FamilyInterface $family
+        FamilyInterface $family,
+        FamilyRepositoryInterface $familyRepository
     ): void {
         $identifiersMapping = new IdentifiersMapping(
             [
-                'upc' => $ean->getWrappedObject(),
-                'asin' => $sku->getWrappedObject(),
+                'upc' => 'ean',
+                'asin' => 'sku',
             ]
         );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-
-        $ean->getCode()->willReturn('ean');
-        $sku->getCode()->willReturn('sku');
 
         $product->getId()->willReturn(42);
         $product->getFamily()->willReturn($family);
@@ -126,8 +122,10 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
         $product->getId()->willReturn(42);
 
-        $family->getTranslations()->willReturn([]);
         $family->getCode()->willReturn('a_family');
+        $familyCode = new FamilyCode('a_family');
+        $family = new Family($familyCode, []);
+        $familyRepository->findOneByIdentifier($familyCode)->willReturn($family);
 
         $request = new RequestCollection();
         $request->add(new Request(
@@ -156,22 +154,18 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $identifiersMappingRepository,
         $subscriptionApi,
         ProductInterface $product,
-        AttributeInterface $ean,
-        AttributeInterface $sku,
         ValueInterface $eanValue,
         ValueInterface $skuValue,
-        FamilyInterface $family
+        FamilyInterface $family,
+        FamilyRepositoryInterface $familyRepository
     ): void {
         $identifiersMapping = new IdentifiersMapping(
             [
-                'upc' => $ean->getWrappedObject(),
-                'asin' => $sku->getWrappedObject(),
+                'upc' => 'ean',
+                'asin' => 'sku',
             ]
         );
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-
-        $ean->getCode()->willReturn('ean');
-        $sku->getCode()->willReturn('sku');
 
         $product->getId()->willReturn(42);
         $product->getFamily()->willReturn($family);
@@ -186,8 +180,10 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
         $product->getId()->willReturn(42);
 
-        $family->getTranslations()->willReturn([]);
         $family->getCode()->willReturn('a_family');
+        $familyCode = new FamilyCode('a_family');
+        $family = new Family($familyCode, []);
+        $familyRepository->findOneByIdentifier($familyCode)->willReturn($family);
 
         $request = new RequestCollection();
         $request->add(new Request(
@@ -243,38 +239,38 @@ class SubscriptionProviderSpec extends ObjectBehavior
     {
         $subscriptionApi->unsubscribeProduct('123456')->shouldBeCalled();
 
-        $this->unsubscribe('123456');
+        $this->unsubscribe(new SubscriptionId('123456'));
     }
 
     public function it_throws_a_data_provider_exception_when_server_is_down_on_unsubscription($subscriptionApi): void
     {
         $thrownException = new FranklinServerException();
-        $subscriptionApi->unsubscribeProduct(Argument::any())->willThrow($thrownException);
+        $subscriptionApi->unsubscribeProduct('fake-subscription-id')->willThrow($thrownException);
 
         $this
             ->shouldThrow(DataProviderException::serverIsDown($thrownException))
-            ->during('unsubscribe', [Argument::any()]);
+            ->during('unsubscribe', [new SubscriptionId('fake-subscription-id')]);
     }
 
     public function it_throws_a_data_provider_exception_when_token_is_invalid_on_unsubscription($subscriptionApi): void
     {
         $thrownException = new InvalidTokenException();
-        $subscriptionApi->unsubscribeProduct(Argument::any())->willThrow($thrownException);
+        $subscriptionApi->unsubscribeProduct('fake-subscription-id')->willThrow($thrownException);
 
         $this
             ->shouldThrow(DataProviderException::authenticationError($thrownException))
-            ->during('unsubscribe', [Argument::any()]);
+            ->during('unsubscribe', [new SubscriptionId('fake-subscription-id')]);
     }
 
     public function it_throws_a_data_provider_exception_when_bad_request_occurs_on_unsubscription(
         $subscriptionApi
     ): void {
         $thrownException = new BadRequestException();
-        $subscriptionApi->unsubscribeProduct(Argument::any())->willThrow($thrownException);
+        $subscriptionApi->unsubscribeProduct('fake-subscription-id')->willThrow($thrownException);
 
         $this
             ->shouldThrow(DataProviderException::badRequestError($thrownException))
-            ->during('unsubscribe', [Argument::any()]);
+            ->during('unsubscribe', [new SubscriptionId('fake-subscription-id')]);
     }
 
     public function it_updates_family_infos_for_a_subscription($subscriptionApi): void
@@ -289,68 +285,52 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $translation = new FamilyTranslation();
-        $translation->setLocale('en_US');
-        $translation->setLabel('My new family label');
-        $family = new Family();
-        $family->setCode('new_family_code');
-        $family->addTranslation($translation);
+        $family = new Family(
+            new FamilyCode('new_family_code'),
+            ['en_US' => 'My new family label']
+        );
 
-        $this->updateFamilyInfos('123456-987654', $family);
+        $this->updateFamilyInfos(new SubscriptionId('123456-987654'), $family);
     }
 
     public function it_throws_a_data_provider_exception_when_server_is_down_on_family_infos_update(
-        $subscriptionApi,
-        FamilyInterface $family
+        $subscriptionApi
     ): void {
-        $family->getCode()->willReturn('foo');
-        $family->getTranslations()->willReturn([]);
-
         $subscriptionId = '123456';
-        $familyInfos = Argument::any();
+        $family = new Family(new FamilyCode('new_family_code'), []);
 
         $thrownException = new FranklinServerException();
-        $subscriptionApi->updateFamilyInfos($subscriptionId, $familyInfos)->willThrow($thrownException);
+        $subscriptionApi->updateFamilyInfos($subscriptionId, Argument::any())->willThrow($thrownException);
 
         $this
             ->shouldThrow(DataProviderException::serverIsDown($thrownException))
-            ->during('updateFamilyInfos', [$subscriptionId, $family]);
+            ->during('updateFamilyInfos', [new SubscriptionId($subscriptionId), $family]);
     }
 
-    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_family_infos_update(
-        $subscriptionApi,
-        FamilyInterface $family
-    ): void {
-        $family->getCode()->willReturn('foo');
-        $family->getTranslations()->willReturn([]);
-
+    public function it_throws_a_data_provider_exception_when_token_is_invalid_on_family_infos_update($subscriptionApi): void
+    {
         $subscriptionId = '123456';
-        $familyInfos = Argument::any();
+        $family = new Family(new FamilyCode('new_family_code'), []);
 
         $thrownException = new InvalidTokenException();
-        $subscriptionApi->updateFamilyInfos($subscriptionId, $familyInfos)->willThrow($thrownException);
+        $subscriptionApi->updateFamilyInfos($subscriptionId, Argument::any())->willThrow($thrownException);
 
         $this
             ->shouldThrow(DataProviderException::authenticationError($thrownException))
-            ->during('updateFamilyInfos', [$subscriptionId, $family]);
+            ->during('updateFamilyInfos', [new SubscriptionId($subscriptionId), $family]);
     }
 
-    public function it_throws_a_data_provider_exception_when_bad_request_occurs_on_family_infos_update(
-        $subscriptionApi,
-        FamilyInterface $family
-    ): void {
-        $family->getCode()->willReturn('foo');
-        $family->getTranslations()->willReturn([]);
-
+    public function it_throws_a_data_provider_exception_when_bad_request_occurs_on_family_infos_update($subscriptionApi): void
+    {
         $subscriptionId = '123456';
-        $familyInfos = Argument::any();
+        $family = new Family(new FamilyCode('new_family_code'), []);
 
         $thrownException = new BadRequestException();
-        $subscriptionApi->updateFamilyInfos($subscriptionId, $familyInfos)->willThrow($thrownException);
+        $subscriptionApi->updateFamilyInfos($subscriptionId, Argument::any())->willThrow($thrownException);
 
         $this
             ->shouldThrow(DataProviderException::badRequestError($thrownException))
-            ->during('updateFamilyInfos', [$subscriptionId, $family]);
+            ->during('updateFamilyInfos', [new SubscriptionId($subscriptionId), $family]);
     }
 
     /**

@@ -35,16 +35,16 @@ class AttributeMapping
     /** @var string|null */
     private $targetAttributeType;
 
-    /** @var null|string[] */
+    /** @var string[]|null */
     private $summary;
 
     /**
      * @param string $targetAttributeCode
-     * @param null|string $targetAttributeLabel
-     * @param null|string $targetAttributeType
-     * @param null|string $pimAttributeCode
+     * @param string|null $targetAttributeLabel
+     * @param string|null $targetAttributeType
+     * @param string|null $pimAttributeCode
      * @param int $status
-     * @param null|string[] $summary
+     * @param string[]|null $summary
      */
     public function __construct(
         string $targetAttributeCode,
@@ -71,7 +71,7 @@ class AttributeMapping
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getTargetAttributeLabel(): ?string
     {
@@ -79,7 +79,7 @@ class AttributeMapping
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPimAttributeCode(): ?string
     {
@@ -107,7 +107,7 @@ class AttributeMapping
     }
 
     /**
-     * @return null|string[]
+     * @return string[]|null
      */
     public function getSummary(): ?array
     {

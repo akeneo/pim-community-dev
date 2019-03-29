@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -34,9 +35,9 @@ interface SubscriptionProviderInterface
     public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse;
 
     /**
-     * @param string $subscriptionId
+     * @param SubscriptionId $subscriptionId
      */
-    public function unsubscribe(string $subscriptionId): void;
+    public function unsubscribe(SubscriptionId $subscriptionId): void;
 
     /**
      * @param ProductSubscriptionRequest[] $requests
@@ -48,7 +49,7 @@ interface SubscriptionProviderInterface
     public function bulkSubscribe(array $requests): ProductSubscriptionResponseCollection;
 
     /**
-     * @param \DateTime|null $updatedSince
+     * @param \DateTime $updatedSince
      *
      * @throws ProductSubscriptionException
      *
@@ -57,10 +58,10 @@ interface SubscriptionProviderInterface
     public function fetch(\DateTime $updatedSince): \Iterator;
 
     /**
-     * @param string $subscriptionId
-     * @param FamilyInterface $family
+     * @param SubscriptionId $subscriptionId
+     * @param Family $family
      *
      * @throws ProductSubscriptionException
      */
-    public function updateFamilyInfos(string $subscriptionId, FamilyInterface $family): void;
+    public function updateFamilyInfos(SubscriptionId $subscriptionId, Family $family): void;
 }

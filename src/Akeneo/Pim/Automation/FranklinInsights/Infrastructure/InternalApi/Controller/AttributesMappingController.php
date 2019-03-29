@@ -19,8 +19,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesNormalizer;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesMappingStatusNormalizer;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -44,25 +45,25 @@ class AttributesMappingController
     /** @var SearchFamiliesHandler */
     private $searchFamiliesHandler;
 
-    /** @var FamiliesNormalizer */
+    /** @var FamiliesMappingStatusNormalizer */
     private $familiesNormalizer;
 
     /** @var AttributesMappingNormalizer */
     private $attributesMappingNormalizer;
 
     /**
-     * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
+     * @param GetAttributesMappingByFamilyHandler  $getAttributesMappingByFamilyHandler
      * @param SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
-     * @param SearchFamiliesHandler $searchFamiliesHandler
-     * @param FamiliesNormalizer $familiesNormalizer
-     * @param AttributesMappingNormalizer $attributesMappingNormalizer
-     * @param SecurityFacade $securityFacade
+     * @param SearchFamiliesHandler                $searchFamiliesHandler
+     * @param FamiliesMappingStatusNormalizer      $familiesNormalizer
+     * @param AttributesMappingNormalizer          $attributesMappingNormalizer
+     * @param SecurityFacade                       $securityFacade
      */
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
         SearchFamiliesHandler $searchFamiliesHandler,
-        FamiliesNormalizer $familiesNormalizer,
+        FamiliesMappingStatusNormalizer $familiesNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer,
         SecurityFacade $securityFacade
     ) {
@@ -111,7 +112,7 @@ class AttributesMappingController
     {
         $this->checkAccess('akeneo_franklin_insights_settings_mapping');
         $familyAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle(
-            new GetAttributesMappingByFamilyQuery($identifier)
+            new GetAttributesMappingByFamilyQuery(new FamilyCode($identifier))
         );
 
         return new JsonResponse([
@@ -141,7 +142,8 @@ class AttributesMappingController
             throw new BadRequestHttpException('No mapping have been sent');
         }
 
-        $command = new SaveAttributesMappingByFamilyCommand($identifier, $data['mapping']);
+        $familyCode = new FamilyCode($identifier);
+        $command = new SaveAttributesMappingByFamilyCommand($familyCode, $data['mapping']);
         $this->saveAttributesMappingByFamilyHandler->handle($command);
 
         return new JsonResponse($data);

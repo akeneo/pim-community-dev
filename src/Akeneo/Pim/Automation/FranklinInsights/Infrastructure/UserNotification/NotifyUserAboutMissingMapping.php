@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification;
 
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -44,17 +44,17 @@ class NotifyUserAboutMissingMapping
 
     /**
      * @param UserInterface $user
-     * @param FamilyInterface $family
+     * @param Family        $family
      */
-    public function forFamily(UserInterface $user, FamilyInterface $family): void
+    public function forFamily(UserInterface $user, Family $family): void
     {
-        $family->setLocale($user->getUiLocale()->getCode());
+        $locale = $user->getUiLocale()->getCode();
 
         $notification = $this->notificationFactory->create();
         $notification
             ->setType('success')
             ->setMessage('akeneo_franklin_insights.entity.attributes_mapping.notification.new_attributes_to_map')
-            ->setMessageParams(['%familyLabel%' => $family->getLabel()])
+            ->setMessageParams(['%familyLabel%' => $family->getLabel($locale)])
             ->setRoute('akeneo_franklin_insights_attributes_mapping_edit')
             ->setRouteParams(['familyCode' => $family->getCode()])
             ->setContext(['actionType' => 'robot']);

@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Da
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributesMapping as DomainAttributesMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
@@ -70,17 +71,17 @@ class AttributesMappingProviderSpec extends ObjectBehavior
         ]);
         $api->fetchByFamily('camcorders')->willReturn($response);
 
-        $attributesMappingResponse = $this->getAttributesMapping('camcorders');
+        $attributesMappingResponse = $this->getAttributesMapping(new FamilyCode('camcorders'));
         $attributesMappingResponse->shouldHaveCount(2);
     }
 
     public function it_updates_attributes_mapping($api): void
     {
-        $familyCode = 'foobar';
+        $familyCode = new FamilyCode('foobar');
         $attributesMapping = new DomainAttributesMapping($familyCode);
 
         $api->setToken('valid-token')->shouldBeCalled();
-        $api->save($familyCode, Argument::type('array'))->shouldBeCalled();
+        $api->save((string) $familyCode, Argument::type('array'))->shouldBeCalled();
 
         $this->saveAttributesMapping($familyCode, $attributesMapping);
     }

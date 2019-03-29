@@ -22,6 +22,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\Identi
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingWebService;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter\IdentifiersMappingProvider;
+use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -29,10 +30,12 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
 {
     public function let(
         IdentifiersMappingWebService $api,
-        ConfigurationRepositoryInterface $configurationRepo
+        ConfigurationRepositoryInterface $configurationRepo,
+        IdentifiersMappingNormalizer $normalizer
     ): void {
-        $this->beConstructedWith($api, $configurationRepo);
+        $this->beConstructedWith($api, $configurationRepo, $normalizer);
 
+        $normalizer->normalize(Argument::any())->willReturn([]);
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
         $configurationRepo->find()->willReturn($configuration);
@@ -44,7 +47,7 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
         $this->shouldImplement(IdentifiersMappingProviderInterface::class);
     }
 
-    public function it_updates_the_identifiers_mapping($api, IdentifiersMapping $mapping): void
+    public function it_updates_the_identifiers_mapping($api, IdentifiersMapping $mapping, $normalizer): void
     {
         $api->setToken(Argument::type('string'))->shouldBeCalled();
         $mapping->getMapping()->willReturn([]);

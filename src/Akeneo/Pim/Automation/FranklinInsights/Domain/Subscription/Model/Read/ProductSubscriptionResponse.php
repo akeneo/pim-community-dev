@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
+
 /**
  * Represents a standard response from a subscription request
  * Holds a subscription id and optional suggested data.
@@ -24,7 +26,7 @@ final class ProductSubscriptionResponse
     /** @var int */
     private $productId;
 
-    /** @var string */
+    /** @var SubscriptionId */
     private $subscriptionId;
 
     /** @var array */
@@ -38,20 +40,18 @@ final class ProductSubscriptionResponse
 
     /**
      * @param int $productId
-     * @param string $subscriptionId
+     * @param SubscriptionId $subscriptionId
      * @param array $suggestedData
      * @param bool $isMappingMissing
      * @param bool $isCancelled
      */
     public function __construct(
         int $productId,
-        string $subscriptionId,
+        SubscriptionId $subscriptionId,
         array $suggestedData,
         bool $isMappingMissing,
         bool $isCancelled
     ) {
-        $this->validate($subscriptionId, $suggestedData);
-
         $this->productId = $productId;
         $this->subscriptionId = $subscriptionId;
         $this->suggestedData = $suggestedData;
@@ -68,9 +68,9 @@ final class ProductSubscriptionResponse
     }
 
     /**
-     * @return string
+     * @return SubscriptionId
      */
-    public function getSubscriptionId(): string
+    public function getSubscriptionId(): SubscriptionId
     {
         return $this->subscriptionId;
     }
@@ -97,17 +97,5 @@ final class ProductSubscriptionResponse
     public function isCancelled(): bool
     {
         return $this->isCancelled;
-    }
-
-    /**
-     * @param string $subscriptionId
-     * @param array $suggestedData
-     */
-    private function validate(string $subscriptionId, array $suggestedData): void
-    {
-        if ('' === $subscriptionId) {
-            throw new \InvalidArgumentException('subscription id cannot be empty');
-        }
-        // TODO: validate suggested data format?
     }
 }

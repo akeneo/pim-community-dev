@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyCommand;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use PhpSpec\ObjectBehavior;
 
 class UpdateSubscriptionFamilyCommandSpec extends ObjectBehavior
 {
-    public function let(FamilyInterface $family): void
+    public function let(): void
     {
-        $this->beConstructedWith(42, $family);
+        $this->beConstructedWith(42, new FamilyCode('a_family'));
     }
 
     public function it_is_an_update_subscription_family_command(): void
@@ -25,8 +25,11 @@ class UpdateSubscriptionFamilyCommandSpec extends ObjectBehavior
         $this->productId()->shouldReturn(42);
     }
 
-    public function it_holds_a_family($family): void
+    public function it_holds_a_family_code(): void
     {
-        $this->family()->shouldReturn($family);
+        $familyCode = new FamilyCode('a_family');
+        $this->beConstructedWith(42, $familyCode);
+
+        $this->familyCode()->shouldReturn($familyCode);
     }
 }

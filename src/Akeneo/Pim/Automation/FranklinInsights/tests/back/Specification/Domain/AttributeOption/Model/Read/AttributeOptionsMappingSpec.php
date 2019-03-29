@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeO
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -24,7 +25,7 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith('router', 'color', [
+        $this->beConstructedWith(new FamilyCode('router'), 'color', [
             new AttributeOptionMapping('red', 'red', AttributeOptionMapping::STATUS_PENDING, 'pim_red'),
             new AttributeOptionMapping('blue', 'blue', AttributeOptionMapping::STATUS_PENDING, 'pim_blue'),
             new AttributeOptionMapping('black', 'black', AttributeOptionMapping::STATUS_PENDING, 'pim_black'),
@@ -49,7 +50,7 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
         $colorBlue = new AttributeOptionMapping('blue', 'blue', AttributeOptionMapping::STATUS_PENDING, 'pim_blue');
         $colorBlack = new AttributeOptionMapping('black', 'black', AttributeOptionMapping::STATUS_PENDING, 'pim_black');
 
-        $this->beConstructedWith('router', 'color', [$colorRed, $colorBlue, $colorBlack]);
+        $this->beConstructedWith(new FamilyCode('router'), 'color', [$colorRed, $colorBlue, $colorBlack]);
 
         $this->mapping()->shouldReturn([$colorBlack, $colorBlue, $colorRed]);
     }

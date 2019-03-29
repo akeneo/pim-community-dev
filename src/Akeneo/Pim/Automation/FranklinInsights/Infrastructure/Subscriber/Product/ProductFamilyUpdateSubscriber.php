@@ -19,10 +19,10 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Comma
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductFamilyIdQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -50,12 +50,6 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
     /** @var GetConnectionStatusHandler */
     private $connectionStatusHandler;
 
-    /**
-     * @param SelectProductFamilyIdQueryInterface $selectProductFamilyIdQuery
-     * @param UnsubscribeProductHandler $unsubscribeProductHandler
-     * @param UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler
-     * @param GetConnectionStatusHandler $connectionStatusHandler
-     */
     public function __construct(
         SelectProductFamilyIdQueryInterface $selectProductFamilyIdQuery,
         UnsubscribeProductHandler $unsubscribeProductHandler,
@@ -104,13 +98,13 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (null === $product->getFamily()) {
+        if (null === $product->getFamilyId()) {
             $this->productsToUnsubscribe[] = $product->getId();
 
             return;
         }
 
-        if ($product->getFamily()->getId() !== $originalFamilyId) {
+        if ($product->getFamilyId() !== $originalFamilyId) {
             $this->productsToUpdateSubscriptionFamily[] = $product->getId();
         }
     }
@@ -130,7 +124,9 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
             return;
         }
         if (in_array($product->getId(), $this->productsToUpdateSubscriptionFamily, true)) {
-            $this->updateSubscriptionFamily($product->getId(), $product->getFamily());
+            // TODO: The family code should be retrieved from a FranklinInsights Product read model
+            $familyCode = new FamilyCode($product->getFamily()->getCode());
+            $this->updateSubscriptionFamily($product->getId(), $familyCode);
         }
     }
 
@@ -152,13 +148,13 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param int $productId
-     * @param FamilyInterface $family
+     * @param int        $productId
+     * @param FamilyCode $familyCode
      */
-    private function updateSubscriptionFamily(int $productId, FamilyInterface $family): void
+    private function updateSubscriptionFamily(int $productId, FamilyCode $familyCode): void
     {
         try {
-            $command = new UpdateSubscriptionFamilyCommand($productId, $family);
+            $command = new UpdateSubscriptionFamilyCommand($productId, $familyCode);
             $this->updateSubscriptionFamilyHandler->handle($command);
         } catch (ProductNotSubscribedException $e) {
             // Silently catch exception if the product is not subscribed

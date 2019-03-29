@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AttributesMapping;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingWebService;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
@@ -48,7 +49,7 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
         $uriGenerator,
         $httpClient
     ): void {
-        $familyCode = 'router';
+        $familyCode = new FamilyCode('router');
         $route = sprintf('/api/mapping/%s/attributes', $familyCode);
         $uriGenerator->generate($route)->willReturn('/my_route');
 
@@ -57,7 +58,7 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
 
         $httpClient->request('GET', '/my_route')->willReturn($apiResponse);
 
-        $attributesMapping = $this->fetchByFamily($familyCode);
+        $attributesMapping = $this->fetchByFamily((string) $familyCode);
         $attributesMapping->getIterator()->count()->shouldReturn(2);
     }
 

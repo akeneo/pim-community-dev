@@ -93,10 +93,10 @@ class GetProductSubscriptionStatusHandler
     {
         $identifiersMapping = $this->identifiersMappingRepository->find();
         foreach ($identifiersMapping->getMapping() as $identifierMapping) {
-            $pimAttributeCode = $identifierMapping->getAttribute();
+            $pimAttributeCode = $identifierMapping->getAttributeCode();
             if (null !== $pimAttributeCode &&
-                null !== $product->getValue($pimAttributeCode->getCode()) &&
-                null !== $product->getValue($pimAttributeCode->getCode())->getData()
+                null !== $product->getValue((string) $pimAttributeCode) &&
+                null !== $product->getValue((string) $pimAttributeCode)->getData()
             ) {
                 return true;
             }

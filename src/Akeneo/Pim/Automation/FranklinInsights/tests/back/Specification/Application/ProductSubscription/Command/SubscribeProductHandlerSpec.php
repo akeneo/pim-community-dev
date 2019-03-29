@@ -21,11 +21,11 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\Produc
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -95,11 +95,10 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $createProposalHandler,
         $eventDispatcher,
         ProductInterface $product,
-        AttributeInterface $ean,
         ValueInterface $eanValue
     ): void {
         $productId = 42;
-        $subscriptionId = uniqid();
+        $subscriptionId = new SubscriptionId(uniqid());
         $suggestedValues = [[
             'pimAttributeCode' => 'foo',
             'value' => 'bar',
@@ -122,11 +121,10 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
             )
         );
 
-        $ean->getCode()->willReturn('ean');
         $eanValue->hasData()->willReturn(true);
         $eanValue->__toString()->willReturn('an_ean');
 
-        $identifiersMapping = new IdentifiersMapping(['upc' => $ean->getWrappedObject()]);
+        $identifiersMapping = new IdentifiersMapping(['upc' => 'ean']);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);

@@ -2,15 +2,16 @@ services:
     akeneo.pim.automation.franklin_insights.normalizers.suggested_data:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Normalizer\Standard\SuggestedDataNormalizer'
         arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.attribute_option'
+            - '@akeneo.pim.automation.franklin_insights.repository.attribute'
+            - '@akeneo.pim.automation.franklin_insights.repository.attribute_option'
             - '@akeneo_measure.measure_converter'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_attribute_option_codes_by_identifiers'
 
     akeneo.pim.automation.franklin_insights.normalizers.attributes_mapping:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer'
 
-    akeneo.pim.automation.franklin_insights.normalizers.families:
-        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesNormalizer'
+    akeneo.pim.automation.franklin_insights.normalizers.families_mapping_status:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesMappingStatusNormalizer'
 
     akeneo.pim.automation.franklin_insights.normalizer.connection_status:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\ConnectionStatusNormalizer'
@@ -21,11 +22,9 @@ services:
     akeneo.pim.automation.franklin_insights.normalizer.attribute_options:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer'
         arguments:
-            - '@pim_catalog.repository.attribute_option'
+            - '@akeneo.pim.automation.franklin_insights.repository.attribute_option'
 
-    akeneo.pim.automation.franklin_insights.normalizer.indexing.product_subscription:
-            class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Indexing\Normalizer\ProductSubscriptionNormalizer'
-            arguments:
-                - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product_subscriptions_exist'
-            tags:
-                - { name: 'pim_catalog.normalizer.indexing_product_and_product_model.product.additional_properties' }
+    akeneo.pim.automation.franklin_insights.normalizer.identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.repository.attribute'

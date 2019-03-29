@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -21,19 +21,16 @@ use PhpSpec\ObjectBehavior;
  */
 class IdentifierMappingSpec extends ObjectBehavior
 {
-    public function let(AttributeInterface $akeneoAttribute): void
-    {
-        $this->beConstructedWith('franklin_code', $akeneoAttribute);
-    }
-
     public function it_gets_franklin_attribute_code(): void
     {
+        $this->beConstructedWith('franklin_code', 'test');
         $this->getFranklinCode()->shouldReturn('franklin_code');
     }
 
-    public function it_gets_akeneo_attribute($akeneoAttribute): void
+    public function it_gets_akeneo_attribute(): void
     {
-        $this->getAttribute()->shouldReturn($akeneoAttribute);
+        $this->beConstructedWith('franklin_code', 'test');
+        $this->getAttributeCode()->shouldBeLike(new AttributeCode('test'));
     }
 
     public function it_build_an_identifier_mapping_object_without_akeneo_attribute(): void
@@ -41,6 +38,6 @@ class IdentifierMappingSpec extends ObjectBehavior
         $this->beConstructedWith('franklin_code', null);
 
         $this->getFranklinCode()->shouldReturn('franklin_code');
-        $this->getAttribute()->shouldReturn(null);
+        $this->getAttributeCode()->shouldReturn(null);
     }
 }

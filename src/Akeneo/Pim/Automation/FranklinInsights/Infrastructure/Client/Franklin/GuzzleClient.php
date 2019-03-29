@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class GuzzleClient implements ClientInterface
 {
-    /** @var ClientInterface */
+    /** @var Client */
     private $httpClient;
 
     /** @var string */
@@ -31,7 +31,7 @@ class GuzzleClient implements ClientInterface
     private $timeout;
 
     /**
-     * @param ClientInterface $httpClient
+     * @param Client $httpClient
      * @param int $timeout
      */
     public function __construct(Client $httpClient, int $timeout = 10)

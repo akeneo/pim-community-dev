@@ -14,7 +14,6 @@ $rules = [
     $builder->only(
         [
             // TODO remove all links by reference
-            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
 
             // Used for business events
@@ -31,15 +30,9 @@ $rules = [
 
             // TODO remove all links by reference
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
-            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
-            'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
 
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
@@ -63,7 +56,7 @@ $rules = [
             'Akeneo\Pim\Automation\FranklinInsights\Application',
 
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectLastCompletedFetchProductsExecutionDatetimeQuery',
-            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserAndFamilyIdsWithMissingMappingQuery',
+            'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectUserIdsAndFamilyCodesWithMissingMappingQuery',
 
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification\NotifyUserAboutMissingMapping',
 
@@ -80,7 +73,6 @@ $rules = [
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector'),
@@ -93,12 +85,6 @@ $rules = [
 
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
-
-            // TODO remove all links by reference
-            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
-
-            //Used to get all option translations to send to Franklin
-            'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider'),
 
@@ -124,7 +110,6 @@ $rules = [
             'Symfony\Component\Security\Core\Exception\AccessDeniedException',
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\HttpKernel\Exception',
-            'Symfony\Component\Translation',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi'),
@@ -144,7 +129,6 @@ $rules = [
             // TODO: link by ID instead of reference
             'Akeneo\Pim\Structure\Component\Model\Family',
             'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
 
             // Oro config is used
@@ -167,15 +151,12 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
 
-            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
             'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
             'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException',
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
-            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal'),
 
@@ -222,8 +203,6 @@ $rules = [
             'Symfony\Component',
 
             // TODO remove all links by reference
-            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
-            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
@@ -231,6 +210,51 @@ $rules = [
             'Akeneo\Pim\Structure\Component\AttributeTypes',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony'),
+
+    $builder->only(
+        [
+            'Akeneo\Pim\Automation\FranklinInsights\Domain',
+            'Akeneo\Pim\Automation\FranklinInsights\Application',
+
+            'Oro\Bundle\DataGridBundle',
+            'Oro\Bundle\FilterBundle',
+            'Oro\Bundle\PimFilterBundle',
+
+            // TODO relationship between bounded context
+            'Akeneo\Pim\Enrichment\Component\Product\Grid',
+        ]
+    )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Datagrid'),
+
+    $builder->only(
+        [
+            'Akeneo\Pim\Automation\FranklinInsights\Domain',
+
+            'Akeneo\Tool\Component\StorageUtils',
+
+            // External dependencies
+            'Elasticsearch\Client',
+            'Elasticsearch\ClientBuilder',
+            'Symfony\Component\Serializer\Normalizer',
+
+            // TODO relationship between bounded context
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\Filter',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
+        ]
+    )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch'),
+
+    $builder->only(
+        [
+            'Akeneo\Pim\Automation\FranklinInsights\Domain',
+
+            'Akeneo\Tool\Component\StorageUtils',
+
+            // TODO relationship between bounded context
+            'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
+        ]
+    )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\UserNotification'),
 ];
 
 $config = new Configuration($rules, $finder);

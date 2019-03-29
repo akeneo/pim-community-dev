@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Comma
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UpdateSubscriptionFamilyHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Product\SelectProductFamilyIdQuery;
@@ -71,14 +72,13 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
 
     public function it_is_only_applied_when_event_subject_is_a_product(
         $unsubscribeProductHandler,
-        $updateSubscriptionFamilyHandler,
-        FamilyInterface $family
+        $updateSubscriptionFamilyHandler
     ): void {
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
         $updateSubscriptionFamilyHandler->handle(Argument::any())->shouldNotBeCalled();
 
-        $this->onPreSave(new GenericEvent($family->getWrappedObject()));
-        $this->onPostSave(new GenericEvent($family->getWrappedObject()));
+        $this->onPreSave(new GenericEvent(new \stdClass()));
+        $this->onPostSave(new GenericEvent(new \stdClass()));
     }
 
     public function it_is_not_applied_on_product_creation(
@@ -128,7 +128,7 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(1);
-        $product->getFamily()->willReturn(null);
+        $product->getFamilyId()->willReturn(null);
         $selectProductFamilyIdQuery->execute(1)->willReturn(null);
 
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
@@ -144,7 +144,7 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(1);
-        $product->getFamily()->willReturn(null);
+        $product->getFamilyId()->willReturn(null);
         $selectProductFamilyIdQuery->execute(1)->willReturn(42);
 
         $unsubscribeProductHandler->handle(new UnsubscribeProductCommand(1))->shouldBeCalled();
@@ -159,7 +159,7 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(1);
-        $product->getFamily()->willReturn(null);
+        $product->getFamilyId()->willReturn(null);
         $selectProductFamilyIdQuery->execute(1)->willReturn(42);
 
         $unsubscribeProductHandler->handle(new UnsubscribeProductCommand(1))->willThrow(
@@ -174,12 +174,10 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         $selectProductFamilyIdQuery,
         $unsubscribeProductHandler,
         $updateSubscriptionFamilyHandler,
-        ProductInterface $product,
-        FamilyInterface $family
+        ProductInterface $product
     ): void {
         $product->getId()->willReturn(42);
-        $product->getFamily()->willReturn($family);
-        $family->getId()->willReturn(56);
+        $product->getFamilyId()->willReturn(56);
         $selectProductFamilyIdQuery->execute(42)->willReturn(56);
 
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
@@ -197,13 +195,14 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         FamilyInterface $family
     ): void {
         $product->getId()->willReturn(42);
+        $product->getFamilyId()->willReturn(144);
         $product->getFamily()->willReturn($family);
-        $family->getId()->willReturn(144);
+        $family->getCode()->willReturn('router');
         $selectProductFamilyIdQuery->execute(42)->willReturn(56);
 
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
         $updateSubscriptionFamilyHandler
-            ->handle(new UpdateSubscriptionFamilyCommand(42, $family->getWrappedObject()))
+            ->handle(new UpdateSubscriptionFamilyCommand(42, new FamilyCode('router')))
             ->shouldBeCalled();
 
         $this->onPreSave(new GenericEvent($product->getWrappedObject()));
@@ -218,13 +217,14 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         FamilyInterface $family
     ): void {
         $product->getId()->willReturn(42);
+        $product->getFamilyId()->willReturn(144);
         $product->getFamily()->willReturn($family);
-        $family->getId()->willReturn(144);
+        $family->getCode()->willReturn('router');
         $selectProductFamilyIdQuery->execute(42)->willReturn(56);
 
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
         $updateSubscriptionFamilyHandler
-            ->handle(new UpdateSubscriptionFamilyCommand(42, $family->getWrappedObject()))
+            ->handle(new UpdateSubscriptionFamilyCommand(42, new FamilyCode('router')))
             ->willThrow(ProductNotSubscribedException::class);
 
         $this->onPreSave(new GenericEvent($product->getWrappedObject()));

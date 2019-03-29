@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -32,10 +32,6 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /**
-     * @param EntityManagerInterface $em
-     * @param AttributeRepositoryInterface $attributeRepository
-     */
     public function __construct(EntityManagerInterface $em, AttributeRepositoryInterface $attributeRepository)
     {
         $this->em = $em;
@@ -69,7 +65,9 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
         $mappedAttributes = [];
 
         foreach ($identifierMappings as $identifierMapping) {
-            $mappedAttributes[$identifierMapping->getFranklinCode()] = $identifierMapping->getAttribute();
+            if (!empty($identifierMapping->getAttributeCode())) {
+                $mappedAttributes[$identifierMapping->getFranklinCode()] = (string) $identifierMapping->getAttributeCode();
+            }
         }
 
         return new IdentifiersMapping($mappedAttributes);
