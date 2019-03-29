@@ -4,68 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c83d457073558eba7ad389f13a7b447",
+    "content-hash": "32f3c47c7efcee11fbddac993acac034",
     "packages": [
-        {
-            "name": "ass/xmlsecurity",
-            "version": "v1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/aschamberger/XmlSecurity.git",
-                "reference": "c8976519ebbf6e4d953cd781d09df44b7f65fbb8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/aschamberger/XmlSecurity/zipball/c8976519ebbf6e4d953cd781d09df44b7f65fbb8",
-                "reference": "c8976519ebbf6e4d953cd781d09df44b7f65fbb8",
-                "shasum": ""
-            },
-            "require": {
-                "ext-openssl": "*",
-                "lib-openssl": ">=0.9.0",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "satooshi/php-coveralls": "dev-master"
-            },
-            "suggest": {
-                "ext-mcrypt": "*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "ass\\XmlSecurity": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Robert Richards",
-                    "email": "rrichards@cdatazone.org"
-                },
-                {
-                    "name": "Andreas Schamberger",
-                    "email": "mail@andreass.net"
-                }
-            ],
-            "description": "The XmlSecurity library is written in PHP for working with XML Encryption and Signatures",
-            "homepage": "https://github.com/aschamberger/XmlSecurity",
-            "keywords": [
-                "encryption",
-                "security",
-                "signature",
-                "xml"
-            ],
-            "time": "2015-05-31T10:10:35+00:00"
-        },
         {
             "name": "behat/transliterator",
             "version": "v1.2.0",
@@ -1770,7 +1710,7 @@
                     "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
                 },
                 {
-                    "name": "William DURAND",
+                    "name": "William Durand",
                     "email": "william.durand1@gmail.com"
                 }
             ],
