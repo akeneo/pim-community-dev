@@ -18,13 +18,17 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByReferenceEntityAndCodesInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -32,6 +36,11 @@ use PhpSpec\ObjectBehavior;
  */
 class RecordCollectionUpdaterSpec extends ObjectBehavior
 {
+    function let(FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes)
+    {
+        $this->beConstructedWith($findIdentifiersByReferenceEntityAndCodes);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(RecordCollectionUpdater::class);
@@ -45,7 +54,12 @@ class RecordCollectionUpdaterSpec extends ObjectBehavior
         $this->supports($editRecordCollectionValueCommand)->shouldReturn(true);
     }
 
-    function it_edits_the_record_collection_value_of_a_record(Record $record) {
+    function it_edits_the_record_collection_value_of_a_record(
+        FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes,
+        Record $record,
+        RecordIdentifier $cogipIdentifier,
+        RecordIdentifier $sbepIdentifier
+    ) {
         $recordAttribute = $this->getAttribute();
 
         $editRecordCollectionValueCommand = new EditRecordCollectionValueCommand(
@@ -58,8 +72,22 @@ class RecordCollectionUpdaterSpec extends ObjectBehavior
             $editRecordCollectionValueCommand->attribute->getIdentifier(),
             ChannelReference::createfromNormalized($editRecordCollectionValueCommand->channel),
             LocaleReference::createfromNormalized($editRecordCollectionValueCommand->locale),
-            RecordCollectionData::createFromNormalize($editRecordCollectionValueCommand->recordCodes)
+            RecordCollectionData::createFromNormalize([
+                'cogip_abcdef123456789',
+                'sbep_abcdef123456789',
+            ])
         );
+
+        $findIdentifiersByReferenceEntityAndCodes->find(
+            ReferenceEntityIdentifier::fromString('brand'),
+            Argument::any()
+        )->willReturn([
+            'cogip' => $cogipIdentifier,
+            'sbep' => $sbepIdentifier,
+        ]);
+
+        $cogipIdentifier->normalize()->willReturn('cogip_abcdef123456789');
+        $sbepIdentifier->normalize()->willReturn('sbep_abcdef123456789');
 
         $this->__invoke($record, $editRecordCollectionValueCommand);
         $record->setValue($value)->shouldBeCalled();

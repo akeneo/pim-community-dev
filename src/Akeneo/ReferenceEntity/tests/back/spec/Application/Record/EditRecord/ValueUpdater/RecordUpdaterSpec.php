@@ -16,12 +16,15 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByReferenceEntityAndCodesInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -29,6 +32,11 @@ use PhpSpec\ObjectBehavior;
  */
 class RecordUpdaterSpec extends ObjectBehavior
 {
+    function let(FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes)
+    {
+        $this->beConstructedWith($findIdentifiersByReferenceEntityAndCodes);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(RecordUpdater::class);
@@ -42,7 +50,11 @@ class RecordUpdaterSpec extends ObjectBehavior
         $this->supports($editRecordCollectionValueCommand)->shouldReturn(false);
     }
 
-    function it_edits_the_record_value_of_a_record(Record $record) {
+    function it_edits_the_record_value_of_a_record(
+        Record $record,
+        FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes,
+        RecordIdentifier $cogipIdentifier
+    ) {
         $recordAttribute = $this->getAttribute();
 
         $editRecordValueCommand = new EditRecordValueCommand(
@@ -55,8 +67,17 @@ class RecordUpdaterSpec extends ObjectBehavior
             $editRecordValueCommand->attribute->getIdentifier(),
             ChannelReference::createfromNormalized($editRecordValueCommand->channel),
             LocaleReference::createfromNormalized($editRecordValueCommand->locale),
-            RecordData::createFromNormalize($editRecordValueCommand->recordCode)
+            RecordData::createFromNormalize('cogip_abcdef123456789')
         );
+
+        $findIdentifiersByReferenceEntityAndCodes->find(
+            ReferenceEntityIdentifier::fromString('brand'),
+            Argument::any()
+        )->willReturn([
+            'cogip' => $cogipIdentifier,
+        ]);
+
+        $cogipIdentifier->normalize()->willReturn('cogip_abcdef123456789');
 
         $this->__invoke($record, $editRecordValueCommand);
         $record->setValue($value)->shouldBeCalled();

@@ -14,13 +14,16 @@ namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
 
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommand;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByReferenceEntityAndCodesInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -28,6 +31,14 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
  */
 class RecordUpdater implements ValueUpdaterInterface
 {
+    /** @var FindIdentifiersByReferenceEntityAndCodesInterface */
+    private $findIdentifiersByReferenceEntityAndCodes;
+
+    public function __construct(FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes)
+    {
+        $this->findIdentifiersByReferenceEntityAndCodes = $findIdentifiersByReferenceEntityAndCodes;
+    }
+
     public function supports(AbstractEditValueCommand $command): bool
     {
         return $command instanceof EditRecordValueCommand;
@@ -39,16 +50,24 @@ class RecordUpdater implements ValueUpdaterInterface
             throw new \RuntimeException('Impossible to update the value of the record with the given command.');
         }
 
-        $attribute = $command->attribute->getIdentifier();
+        /** @var RecordAttribute $attribute */
+        $attribute = $command->attribute;
         $channelReference = (null !== $command->channel) ?
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode($command->channel)) :
             ChannelReference::noReference();
         $localeReference = (null !== $command->locale) ?
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
             LocaleReference::noReference();
-        $linkedRecord = RecordData::createFromNormalize($command->recordCode);
 
-        $value = Value::create($attribute, $channelReference, $localeReference, $linkedRecord);
+        $linkedRecordCode = RecordCode::fromString($command->recordCode);
+        $linkedRecordIdentifier = current($this->findIdentifiersByReferenceEntityAndCodes->find(
+            $attribute->getRecordType(),
+            [$linkedRecordCode]
+        ));
+
+        $linkedRecordData = RecordData::createFromNormalize($linkedRecordIdentifier->normalize());
+
+        $value = Value::create($attribute->getIdentifier(), $channelReference, $localeReference, $linkedRecordData);
         $record->setValue($value);
     }
 }

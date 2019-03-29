@@ -81,11 +81,15 @@ services:
 
     akeneo_referenceentity.application.edit_record.record_value_updater.record_updater:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\RecordUpdater
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes'
         tags:
             - { name: akeneo_referenceentity.record_value_updater }
 
     akeneo_referenceentity.application.edit_record.record_value_updater.record_collection_updater:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\RecordCollectionUpdater
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes'
         tags:
             - { name: akeneo_referenceentity.record_value_updater }
 
