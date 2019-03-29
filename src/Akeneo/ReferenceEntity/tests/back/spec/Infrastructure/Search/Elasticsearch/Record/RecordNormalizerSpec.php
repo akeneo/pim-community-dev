@@ -158,4 +158,3 @@ class RecordNormalizerSpec extends ObjectBehavior
         $this->normalizeRecordsByReferenceEntity($referenceEntityIdentifier);
     }
 }
-

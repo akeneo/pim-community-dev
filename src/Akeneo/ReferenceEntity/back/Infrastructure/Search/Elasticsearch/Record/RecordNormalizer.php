@@ -164,6 +164,7 @@ class RecordNormalizer implements RecordNormalizerInterface
 
     private function generateFilterableValues(SearchableRecordItem $searchableRecordItem): array
     {
+        // TODO: maybe set up const for attribute types, or make existent ones public
         $valueKeys = $this->findValueKeysByAttributeType->find(
             ReferenceEntityIdentifier::fromString($searchableRecordItem->referenceEntityIdentifier),
             ['option', 'option_collection', 'record', 'record_collection']
