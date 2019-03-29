@@ -8,13 +8,13 @@ use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\FindValueKeysToFilterOnAttributeType;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -28,12 +28,12 @@ class RecordNormalizerSpec extends ObjectBehavior
     function let(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords,
-        FindValueKeysToFilterOnAttributeType $findValueKeysToFilterOnAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
     ) {
         $this->beConstructedWith(
             $findValueKeysToIndexForAllChannelsAndLocales,
             $findSearchableRecords,
-            $findValueKeysToFilterOnAttributeType
+            $findValueKeysByAttributeType
         );
     }
 
@@ -45,7 +45,7 @@ class RecordNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_searchable_record_by_record_identifier(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords,
-        FindValueKeysToFilterOnAttributeType $findValueKeysToFilterOnAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
     ) {
         $recordIdentifier = RecordIdentifier::fromString('stark');
         $stark = new SearchableRecordItem();
@@ -76,8 +76,11 @@ class RecordNormalizerSpec extends ObjectBehavior
                     ],
                 ]
             );
-        $findValueKeysToFilterOnAttributeType
-            ->fetch($stark->referenceEntityIdentifier)
+        $findValueKeysByAttributeType
+            ->find(
+                ReferenceEntityIdentifier::fromString($stark->referenceEntityIdentifier),
+                ['option', 'option_collection', 'record', 'record_collection']
+            )
             ->willReturn([$stark->referenceEntityIdentifier]);
 
         $normalizedRecord = $this->normalizeRecord($recordIdentifier);
