@@ -134,12 +134,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
         }
     }
 
-    /**
-     * @param $attributeCode
-     *
-     * @return AttributeInterface|null
-     */
-    protected function findAttribute($attributeCode)
+    protected function findAttribute(string $attributeCode): ?AttributeInterface
     {
         return $this->attributeRepository->findOneByIdentifier($attributeCode);
     }
