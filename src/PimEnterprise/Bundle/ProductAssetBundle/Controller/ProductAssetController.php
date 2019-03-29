@@ -35,6 +35,7 @@ use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CreateAssetType;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Component\ProductAsset\Builder\ReferenceBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;
+use PimEnterprise\Component\ProductAsset\Exception\MissingAssetTransformationForChannelException;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -669,6 +670,9 @@ class ProductAssetController extends Controller
                         $flash = 'pimee_product_asset.enrich_variation.flash.transformation.non_registered';
                         $flashParameters['%transformation%'] = $item->getException()->getTransformation();
                         $flashParameters['%mimeType%'] = $item->getException()->getMimeType();
+                        break;
+                    case $item->getException() instanceof MissingAssetTransformationForChannelException:
+                        $flash = 'pimee_product_asset.enrich_variation.flash.transformation.missing_asset_transformation_for_channel';
                         break;
                     default:
                         $flash = 'pimee_product_asset.enrich_variation.flash.transformation.error';

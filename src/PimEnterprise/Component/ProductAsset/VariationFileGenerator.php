@@ -20,6 +20,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
+use PimEnterprise\Component\ProductAsset\Exception\MissingAssetTransformationForChannelException;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
@@ -136,7 +137,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /**
      * @param ChannelInterface $channel
      *
-     * @throws \LogicException
+     * @throws MissingAssetTransformationForChannelException
      *
      * @return array
      */
@@ -144,9 +145,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     {
         $channelConfiguration = $this->configurationRepository->findOneBy(['channel' => $channel->getId()]);
         if (null === $channelConfiguration) {
-            throw new \LogicException(
-                sprintf('No variations configuration exists for the channel "%s".', $channel->getCode())
-            );
+            throw new MissingAssetTransformationForChannelException($channel->getCode());
         }
 
         return $channelConfiguration->getConfiguration();

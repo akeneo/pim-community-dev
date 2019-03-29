@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Developer Experience Improvement
+
+- PIM-8261: create a dedicated error message when variation not generated due to missing asset transformation on channel
+
 ## Bug fixes
 
 - PIM-8243: Fix error when a product draft with a modified reference data is sent for approval

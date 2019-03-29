@@ -14,6 +14,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
+use PimEnterprise\Component\ProductAsset\Exception\MissingAssetTransformationForChannelException;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
@@ -120,7 +121,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $channelConfigurationRepository->findOneBy(Argument::any())->willReturn(null);
 
         $this->shouldThrow(
-            new \LogicException('No variations configuration exists for the channel "ecommerce".')
+            new MissingAssetTransformationForChannelException('ecommerce')
         )->during('generate', [$variation]);
     }
 
