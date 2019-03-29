@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8251: display variant family code in sidebar if no translated label
+- PIM-8253: Fix unique attributes excluded in attributes search
 
 # 2.3.35 (2019-03-26)
 

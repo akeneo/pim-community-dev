@@ -44,7 +44,6 @@ define(
                     closeOnSelect: false
                 },
                 resultsPerPage: 10,
-                searchParameters: {options: {exclude_unique: true}},
                 mainFetcher: 'attribute',
                 events: {
                     disable: null,

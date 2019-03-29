@@ -196,9 +196,6 @@ extensions:
                 buttonTitle:      'pim_enrich.form.family.tab.attributes.toolbox.add'
                 emptyText:        'pim_enrich.form.family.tab.attributes.toolbox.no_attributes_available'
             className: 'AknButtonList-item add-attribute'
-            searchParameters:
-                options:
-                    exclude_unique: false
 
     pim-family-edit-form-attributes-attributes:
         module: pim/family-edit-form/attributes/attributes
