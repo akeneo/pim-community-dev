@@ -25,9 +25,8 @@ class WarningCollectionSpec extends ObjectBehavior
     {
         $this->beConstructedwith(
             [
-                '_embedded' => [
-                    'warnings' => [],
-                ],
+                '_embedded' => [],
+                'warnings' => [],
             ]
         );
         $this->shouldHaveType(WarningCollection::class);
@@ -37,19 +36,18 @@ class WarningCollectionSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             [
-                '_embedded' => [
-                    'warnings' => [
-                        [
-                            'message' => 'warning message 1',
-                            'entry' => [
-                                'tracker_id' => '44',
-                            ],
+                '_embedded' => [],
+                'warnings' => [
+                    [
+                        'message' => 'warning message 1',
+                        'entry' => [
+                            'tracker_id' => '44',
                         ],
-                        [
-                            'message' => 'warning message 2',
-                            'entry' => [
-                                'tracker_id' => '56',
-                            ],
+                    ],
+                    [
+                        'message' => 'warning message 2',
+                        'entry' => [
+                            'tracker_id' => '56',
                         ],
                     ],
                 ],

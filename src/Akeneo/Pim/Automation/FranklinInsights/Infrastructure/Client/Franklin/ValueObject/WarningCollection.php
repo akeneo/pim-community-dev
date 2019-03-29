@@ -51,7 +51,7 @@ final class WarningCollection
     private function buildCollection(array $rawApiResponse): array
     {
         $collection = [];
-        foreach ($rawApiResponse['_embedded']['warnings'] as $rawSubscription) {
+        foreach ($rawApiResponse['warnings'] as $rawSubscription) {
             $collection[] = new Warning($rawSubscription);
         }
 
@@ -65,10 +65,10 @@ final class WarningCollection
      */
     private function validateResponseFormat(array $rawApiResponse): void
     {
-        if (!isset($rawApiResponse['_embedded']['warnings'])
-            || !is_array($rawApiResponse['_embedded']['warnings'])
+        if (!isset($rawApiResponse['warnings'])
+            || !is_array($rawApiResponse['warnings'])
         ) {
-            throw new \InvalidArgumentException('Missing "_embeded" and/or "warnings" keys in API response');
+            throw new \InvalidArgumentException('Missing "warnings" key in API response');
         }
     }
 }
