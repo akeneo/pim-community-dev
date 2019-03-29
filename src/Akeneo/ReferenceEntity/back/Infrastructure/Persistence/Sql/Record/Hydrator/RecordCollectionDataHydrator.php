@@ -40,7 +40,7 @@ class RecordCollectionDataHydrator implements DataHydratorInterface
 
     public function hydrate($normalizedData, AbstractAttribute $attribute): ValueDataInterface
     {
-        $filteredRecords = $this->keepExistingRecordsOnly($normalizedData, $attribute);
+        $filteredRecords = $this->keepExistingRecordsOnly($normalizedData);
         if (empty($filteredRecords)) {
             return EmptyData::create();
         }
@@ -48,13 +48,8 @@ class RecordCollectionDataHydrator implements DataHydratorInterface
         return RecordCollectionData::createFromNormalize($filteredRecords);
     }
 
-    private function keepExistingRecordsOnly(
-        array $recordCodesFromDatabase,
-        RecordCollectionAttribute $recordCollectionAttribute
-    ): array {
-        return $this->recordsExists->withReferenceEntityAndCodes(
-            $recordCollectionAttribute->getRecordType(),
-            $recordCodesFromDatabase
-        );
+    private function keepExistingRecordsOnly(array $recordIdentifiers): array
+    {
+        return $this->recordsExists->withIdentifiers($recordIdentifiers);
     }
 }

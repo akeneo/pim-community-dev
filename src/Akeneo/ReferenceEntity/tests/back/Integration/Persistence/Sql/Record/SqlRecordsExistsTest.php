@@ -37,6 +37,9 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
     /** @var SqlRecordsExists */
     private $recordsExistsForReferenceEntity;
 
+    /** @var string */
+    private $recordIdentifier;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -57,6 +60,17 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
             ['starck', 'unknown']
         );
         $this->assertEquals(['starck'], $existingRecordCodes);
+    }
+
+    /**
+     * @test
+     */
+    public function it_tells_if_there_are_corresponding_records_identifiers_for_a_given_list()
+    {
+        $existingRecordIdentifiers = $this->recordsExistsForReferenceEntity->withIdentifiers(
+            [$this->recordIdentifier, 'unknown']
+        );
+        $this->assertEquals([$this->recordIdentifier], $existingRecordIdentifiers);
     }
 
     private function resetDB(): void
@@ -86,11 +100,11 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
 
         $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $recordCode = RecordCode::fromString('starck');
-        $recordIdentifier = RecordIdentifier::fromString('stark_designer_fingerprint');
+        $this->recordIdentifier = RecordIdentifier::fromString('stark_designer_fingerprint');
 
         $recordRepository->create(
             Record::create(
-                $recordIdentifier,
+                $this->recordIdentifier,
                 $referenceEntityIdentifier,
                 $recordCode,
                 ValueCollection::fromValues([

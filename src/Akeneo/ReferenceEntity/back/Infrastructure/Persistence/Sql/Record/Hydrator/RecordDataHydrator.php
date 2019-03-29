@@ -14,7 +14,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
@@ -41,18 +41,15 @@ class RecordDataHydrator implements DataHydratorInterface
 
     public function hydrate($normalizedData, AbstractAttribute $attribute): ValueDataInterface
     {
-        if (!$this->existsRecord($normalizedData, $attribute)) {
+        if (!$this->existsRecord($normalizedData)) {
             return EmptyData::create();
         }
 
         return RecordData::createFromNormalize($normalizedData);
     }
 
-    private function existsRecord(string $normalizedData, RecordAttribute $attribute): bool
+    private function existsRecord(string $normalizedData): bool
     {
-        return $this->recordExists->withReferenceEntityAndCode(
-            $attribute->getRecordType(),
-            RecordCode::fromString($normalizedData)
-        );
+        return $this->recordExists->withIdentifier(RecordIdentifier::fromString($normalizedData));
     }
 }

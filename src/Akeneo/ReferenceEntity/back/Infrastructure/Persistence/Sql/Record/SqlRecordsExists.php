@@ -15,8 +15,6 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\Types\Type;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -30,6 +28,28 @@ class SqlRecordsExists
     public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
+    }
+
+    /**
+     * @param string[] $identifiers
+     *
+     * @return array[]
+     */
+    public function withIdentifiers(array $identifiers): array
+    {
+        $query = <<<SQL
+        SELECT identifier
+        FROM akeneo_reference_entity_record
+        WHERE identifier IN (:identifiers)
+SQL;
+        $statement = $this->sqlConnection->executeQuery(
+            $query,
+            ['identifiers' => $identifiers],
+            ['identifiers' => Connection::PARAM_STR_ARRAY]
+        );
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        return array_values($result);
     }
 
     /**
