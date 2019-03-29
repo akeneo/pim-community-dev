@@ -2,13 +2,13 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Model;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use PhpSpec\ObjectBehavior;
 
 class PublishedProductSpec extends ObjectBehavior
 {
@@ -95,7 +95,6 @@ class PublishedProductSpec extends ObjectBehavior
         $this->setFamily($family);
         $this->setValues($values);
         $this->setIdentifier($identifier);
-        $this->setScope('mobile');
 
         $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petite pelle');
     }

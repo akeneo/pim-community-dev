@@ -88,7 +88,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $data
             );
             $product = $this->getProduct($data['product']);
-            $product->setLocale($data['locale']);
 
             $productDraft = $this->getProductDraftFactory()->createEntityWithValueDraft(
                 $product,

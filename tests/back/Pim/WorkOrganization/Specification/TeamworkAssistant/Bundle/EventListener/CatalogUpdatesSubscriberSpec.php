@@ -2,15 +2,16 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\CatalogUpdatesSubscriber;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\RefreshProjectCompletenessJobLauncher;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Remover\ChainedProjectRemover;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -23,9 +24,15 @@ class CatalogUpdatesSubscriberSpec extends ObjectBehavior
     function let(
         ChainedProjectRemover $chainedRemover,
         RefreshProjectCompletenessJobLauncher $attributeGroupCompletenessJobLauncher,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        CatalogContext $catalogContext
     ) {
-        $this->beConstructedWith($chainedRemover, $attributeGroupCompletenessJobLauncher, $requestStack);
+        $this->beConstructedWith(
+            $chainedRemover,
+            $attributeGroupCompletenessJobLauncher,
+            $requestStack,
+            $catalogContext
+        );
     }
 
     function it_is_catalog_updates_subscriber()
@@ -48,22 +55,22 @@ class CatalogUpdatesSubscriberSpec extends ObjectBehavior
     function it_updates_the_pre_processed_data_when_we_update_the_product_from_the_ui(
         $attributeGroupCompletenessJobLauncher,
         $requestStack,
+        $catalogContext,
         GenericEvent $event,
         ProductInterface $product,
         Request $request,
-        ParameterBag $parameterBag,
-        LocaleInterface $locale,
-        ChannelInterface $channel
+        ParameterBag $parameterBag
     ) {
         $parameterBag->get('_route')->willReturn('pim_enrich_product_rest_post');
         $requestStack->getMasterRequest()->willReturn($request);
         $request->attributes = $parameterBag;
 
         $event->getSubject()->willReturn($product);
-        $product->getLocale()->willReturn($locale);
-        $product->getScope()->willReturn($channel);
 
-        $attributeGroupCompletenessJobLauncher->launch($product, $channel, $locale);
+        $catalogContext->getScopeCode()->willReturn('mobile');
+        $catalogContext->getLocaleCode()->willReturn('en_US');
+
+        $attributeGroupCompletenessJobLauncher->launch($product, 'mobile', 'en_US');
 
         $this->updatePreProcessedData($event);
     }

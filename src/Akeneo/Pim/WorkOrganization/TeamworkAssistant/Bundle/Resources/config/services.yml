@@ -131,6 +131,7 @@ services:
             - '@pimee_teamwork_assistant.project_remover.chained'
             - '@pimee_teamwork_assistant.launcher.job.refresh_project_completeness_calculation'
             - '@request_stack'
+            - '@pim_catalog.context.catalog'
         tags:
             - { name: kernel.event_subscriber }
 

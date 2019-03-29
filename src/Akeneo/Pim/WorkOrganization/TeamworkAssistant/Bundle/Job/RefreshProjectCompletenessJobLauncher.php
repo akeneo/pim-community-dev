@@ -42,7 +42,7 @@ class RefreshProjectCompletenessJobLauncher
      * @param string                $jobName
      */
     public function __construct(
-        JobLauncherInterface $jobLauncher,
+        JobLauncherInterface  $jobLauncher,
         TokenStorageInterface $tokenStorage,
         JobInstanceRepository $jobInstanceRepository,
         string $jobName
