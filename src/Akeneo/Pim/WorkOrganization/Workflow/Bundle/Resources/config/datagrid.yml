@@ -308,3 +308,16 @@ services:
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.mass_action.parameters_parser'
+
+    pimee_workflow.datagrid.product.event_listener.add_draft_status_filter:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configuration\Product\AddDraftStatusFilterToProductGridListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
+
+    pimee_workflow.datagrid.product.filter.draft_status:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\DraftStatusFilter
+        arguments:
+            - '@oro_filter.choice_filter'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: draft_status }
