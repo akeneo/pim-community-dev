@@ -7,7 +7,7 @@ pim_user:
       password.title: Salasana
       business_unit.title: Liiketoimintayksiköt
       email_synchronization.title: Sähköpostin synkronoinnin asetukset
-      interfaces.title: Rajapinnat
+      interfaces.title: Käyttöliittymä
   group:
     tab:
       general.title: Yleinen
@@ -69,7 +69,7 @@ Ssl: SSL
 Last logged in: Viimeksi kirjautunut
 Login count: Kirjautumisien määrä
 Additional Information: Lisätiedot
-Interfaces: Rajapinnat
+Interfaces: Käyttöliittymä
 Basic Information: Perustiedot
 Contact Information: Yhteystiedot
 User name: Käyttäjänimi

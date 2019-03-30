@@ -40,6 +40,7 @@ oro.datagrid.nocolumns: No hay columnas configuradas para esta cuadrícula
 oro.datagrid.pagination.label: "Página"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registros"
+oro.datagrid.pagination.limit_warning: "La cuadrícula no puede mostrar más de {{ limit }} resultados, intente filtrar más criterios de búsqueda."
 oro.datagrid.action.reset: "Reiniciar"
 oro.datagrid.action.refresh: "Actualizar"
 oro_datagrid.select.all: "Todos"

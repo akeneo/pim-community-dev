@@ -41,6 +41,7 @@ job_execution.summary:
     skipped: omitido, extensión en lista blanca
   product_skipped_no_diff: producto omitido (ninguna diferencia)
   product_skipped_no_associations: Productos omitidos (asociaciones no detectadas)
+  product_model_skipped_no_associations: modelo de producto omitido (no se han detectado asociaciones)
   product_model_skipped_no_diff: modelo del producto omitido (no hay diferencias)
   item_position: líneas leídas
   skipped_in_root_product_model: modelo del producto con padres omitido
