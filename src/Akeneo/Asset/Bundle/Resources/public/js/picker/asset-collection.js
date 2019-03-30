@@ -17,10 +17,12 @@ define(
         'pimee/template/picker/asset-collection-preview',
         'pim/fetcher-registry',
         'pim/form-builder',
+        'oro/mediator',
         'routing',
         'bootstrap-modal',
         'pim/security-context'
-    ], (
+    ],
+    function (
         $,
         _,
         __,
@@ -30,15 +32,17 @@ define(
         previewModalTemplate,
         FetcherRegistry,
         FormBuilder,
+        mediator,
         Routing,
         BootstrapModal,
         SecurityContext
-    ) => {
+    ) {
         return Backbone.View.extend({
             className: 'AknAssetCollectionField',
             data: [],
             context: {},
             template: _.template(template),
+            modal: null,
             events: {
                 'click .add-asset': 'updateAssets',
                 'click .asset-thumbnail-item': 'updateAssetsFromPreview',
@@ -331,8 +335,16 @@ define(
                         deferred.resolve(assetCodes);
                     }.bind(this));
 
+                    this.modal = modal;
                     navigateToItem(modal.$('.asset-thumbnail-item[data-asset="' + currentAssetCode + '"]'));
                 }.bind(this));
+
+                mediator.once('route_complete', () => {
+                    if (null !== this.modal) {
+                        this.modal.close();
+                        this.modal.off();
+                    }
+                })
 
                 return deferred.promise();
             }

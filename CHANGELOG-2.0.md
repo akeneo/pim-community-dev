@@ -1,5 +1,17 @@
 # 2.0.x
 
+# 2.0.51 (2019-03-21)
+
+## Bug fixes
+
+- PIM-7577: Remove asset picker modal on page navigation
+
+# 2.0.50 (2019-03-01)
+
+## Improvements
+
+- PIM-8172: Better ES index configuration parameters.
+
 # 2.0.49 (2019-02-25)
 
 # 2.0.48 (2019-02-18)

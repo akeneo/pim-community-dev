@@ -126,7 +126,7 @@ class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, 
         foreach ($objects as $objectId) {
             $objectIds[]  = self::PRODUCT_IDENTIFIER_PREFIX . (string) $objectId;
         }
-        $this->productProposalClient->bulkDelete($this->indexType, $objects);
+        $this->productProposalClient->bulkDelete($this->indexType, $objectIds);
     }
 
     /**
