@@ -12,20 +12,6 @@ flash:
     reply:
       success: Ihre Antwort wurde erfolgreich erstellt.
       error: Bei der Erstellung Ihrer Antwort ist ein Fehler aufgetreten.
-pim_comment:
-  product:
-    panel:
-      comment:
-        post: Einen neuen Kommentar hinzufügen
-        reply: Antworten
-        title: Kommentare
-  index:
-    empty: Kein Kommentar vorhanden
-    header_comment: '{{ user }} kommentiert das Produkt'
-    header_reply: '{{ user }} antwortet auf den Kommentar'
-  placeholder:
-    new: Einen neuen Kommentar schreiben...
-    reply: Auf diesen Kommentar antworten...
 pim_enrich.entity.product:
   label: Produkt
   uppercase_label: Produkt
@@ -117,6 +103,14 @@ pim_enrich.entity.product:
       empty_basket: Der Warenkorb ist leer
     delete:
       confirm: Möchten Sie dieses Produkt wirklich löschen?
+    comment:
+      post: Einen neuen Kommentar hinzufügen
+      reply: Antworten
+      title: Kommentare
+      empty: Kein Kommentar vorhanden
+      header_comment: '{{ user }} kommentiert das Produkt'
+      header_reply: '{{ user }} antwortet auf den Kommentar'
+      delete_confirm: Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?
 pim_enrich.entity.product_model:
   plural_label: Produktmodelle
   flash:

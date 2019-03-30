@@ -5,6 +5,9 @@ batch_jobs:
     import_root_product_model: Rodprodukt import
     import_sub_product_model: Under produkt import
     compute_data_related_to_family_products: Beregn produkt model data
+    compute_product_models_descendants: Beregne underliggende produkt modeller
+    compute_family_variant_structure_changes: Beregner familie variant struktur ændringer
+    compute_completeness_of_products_family: Beregner fuldstændigheden af produkter familie
   csv_product_export:
     label: Produkt eksport til CSV
     export.label: Produkt eksport

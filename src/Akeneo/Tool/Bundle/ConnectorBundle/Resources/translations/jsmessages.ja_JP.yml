@@ -4,6 +4,7 @@ batch_jobs:
     import_associations: 関連付けのインポート
     import_root_product_model: ルート製品モデルのインポート
     import_sub_product_model: サブ製品モデルのインポート
+    compute_product_models_descendants: 製品モデルの子孫を計算します。
   csv_product_export:
     label: 商品をCSV形式でエクスポート
     export.label: 商品エクスポート

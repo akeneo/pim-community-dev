@@ -12,20 +12,6 @@ flash:
     reply:
       success: 返答が正常に作成されました。
       error: 返答の作成中にエラーが発生しました。
-pim_comment:
-  product:
-    panel:
-      comment:
-        post: コメントを追加
-        reply: 返答
-        title: コメント
-  index:
-    empty: 今のところコメントはありません。
-    header_comment: '{{ user }} 製品をコメントします。'
-    header_reply: '{{ user }} さんがコメントに返信'
-  placeholder:
-    new: コメントを書く
-    reply: コメントに返信
 pim_enrich.entity.product:
   label: 商品
   uppercase_label: 製品
@@ -113,6 +99,14 @@ pim_enrich.entity.product:
       empty_basket: カートが空です。
     delete:
       confirm: この製品を削除してもよろしいですか。
+    comment:
+      post: コメントを追加
+      reply: 返答
+      title: コメント
+      empty: 今のところコメントはありません。
+      header_comment: '{{ user }} 製品をコメントします。'
+      header_reply: '{{ user }} さんがコメントに返信'
+      delete_confirm: コメントを削除しますか？
 pim_enrich.entity.product_model:
   uppercase_label: 製品モデル
   plural_label: 製品モデル

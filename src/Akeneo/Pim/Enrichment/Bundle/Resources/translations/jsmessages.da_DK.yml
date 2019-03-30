@@ -12,20 +12,6 @@ flash:
     reply:
       success: Dit svar er blevet oprettet.
       error: Der opstod en fejl under oprettelsen af dit svar.
-pim_comment:
-  product:
-    panel:
-      comment:
-        post: Tilføj en ny kommentar
-        reply: Besvar
-        title: Kommentarer
-  index:
-    empty: Ingen kommentarer for nu
-    header_comment: '{{ user }} kommenterede produktet'
-    header_reply: '{{ user }} svar på kommentar'
-  placeholder:
-    new: Skriv en ny kommentar...
-    reply: Besvar denne kommentar...
 pim_enrich.entity.product:
   label: produkt
   uppercase_label: Produkt
@@ -119,6 +105,14 @@ pim_enrich.entity.product:
       empty_basket: Indkøbskurven er tom
     delete:
       confirm: Er du sikker på du vil slette dette produkt?
+    comment:
+      post: Tilføj en ny kommentar
+      reply: Besvar
+      title: Kommentarer
+      empty: Ingen kommentarer for nu
+      header_comment: '{{ user }} kommenterede produktet'
+      header_reply: '{{ user }} svar på kommentar'
+      delete_confirm: Er du sikker på du vil slette denne kommentar?
 pim_enrich.entity.product_model:
   uppercase_label: Produktmodel
   plural_label: Produktmodeller

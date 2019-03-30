@@ -50,7 +50,7 @@ pim_user:
       additional_data:
         title: Lisätiedot
       interfaces:
-        title: Rajapinnat
+        title: Käyttöliittymä
       group_and_role.title: Ryhmät ja roolit
       password.title: Salasana
       business_unit.title: Liiketoimintayksiköt

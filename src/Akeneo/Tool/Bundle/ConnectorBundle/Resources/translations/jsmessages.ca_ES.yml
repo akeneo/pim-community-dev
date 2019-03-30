@@ -7,6 +7,9 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: Calcular les dades dels models de producte de base
     compute_data_related_to_family_sub_product_models: Calcular les dades del model de subproducte
     compute_data_related_to_family_products: Calcular les dades de productes
+    compute_product_models_descendants: Calcular descendents dels models de producte
+    compute_family_variant_structure_changes: Calcular els canvis d'estructura de la variant familiar
+    compute_completeness_of_products_family: Calcular la completesa de la família de productes
   csv_product_export:
     label: Exportar productes a CSV
     export.label: Exportar productes

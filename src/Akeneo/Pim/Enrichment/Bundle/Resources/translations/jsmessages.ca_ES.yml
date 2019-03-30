@@ -12,20 +12,6 @@ flash:
     reply:
       success: La seva resposta s'ha creat amb èxit.
       error: S'ha produït un error durant la creació de la seva resposta.
-pim_comment:
-  product:
-    panel:
-      comment:
-        post: Afegir un nou comentari
-        reply: Respondre
-        title: Comentaris
-  index:
-    empty: Cap comentari de moment
-    header_comment: '{{ user }} comenta el producte'
-    header_reply: '{{ user }} contesta al comentari'
-  placeholder:
-    new: Escriure un comentari nou...
-    reply: Respondre a aquest comentari...
 pim_enrich.entity.product:
   label: producte
   uppercase_label: Producte
@@ -123,6 +109,14 @@ pim_enrich.entity.product:
       empty_basket: La cistella és buida
     delete:
       confirm: Esteu segur que voleu suprimir aquest producte?
+    comment:
+      post: Afegir un nou comentari
+      reply: Respondre
+      title: Comentaris
+      empty: Cap comentari de moment
+      header_comment: '{{ user }} comenta el producte'
+      header_reply: '{{ user }} contesta al comentari'
+      delete_confirm: Està segur que vol suprimir aquest comentari?
 pim_enrich.entity.product_model:
   label: model de producte
   uppercase_label: Model de producte

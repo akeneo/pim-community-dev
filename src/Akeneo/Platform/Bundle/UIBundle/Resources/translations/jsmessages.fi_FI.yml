@@ -153,6 +153,7 @@ pim_common:
   remove: Poista
   required_label: (vaadittu)
   save: Tallenna
+  search: Etsi
   select2:
     search: Hae...
     no_match: Vastaavuuksia ei löydy

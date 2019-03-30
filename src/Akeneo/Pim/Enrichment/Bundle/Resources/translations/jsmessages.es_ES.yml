@@ -12,20 +12,6 @@ flash:
     reply:
       success: Su respuesta ha sido creada exitosamente.
       error: Ocurrió un error durante la creación de su respuesta.
-pim_comment:
-  product:
-    panel:
-      comment:
-        post: Añadir nuevo comentario
-        reply: Responder
-        title: Comentarios
-  index:
-    empty: Ningún comentario por el momento
-    header_comment: '{{ user }} comenta el producto'
-    header_reply: '{{ user }} contesta al comentario'
-  placeholder:
-    new: Escribir un nuevo comentario...
-    reply: Responder a este comentario...
 pim_enrich.entity.product:
   label: producto
   uppercase_label: Producto
@@ -123,6 +109,14 @@ pim_enrich.entity.product:
       empty_basket: La cesta está vacía
     delete:
       confirm: '¿Está seguro que desea eliminar este producto?'
+    comment:
+      post: Añadir nuevo comentario
+      reply: Responder
+      title: Comentarios
+      empty: Ningún comentario por el momento
+      header_comment: '{{ user }} comenta el producto'
+      header_reply: '{{ user }} contesta al comentario'
+      delete_confirm: '¿Está seguro de que desea borrar este comentario?'
 pim_enrich.entity.product_model:
   label: modelo del producto
   uppercase_label: Modelo de producto
