@@ -1,20 +1,6 @@
 pim_dashboard:
   widget:
-    last_operations:
-      empty: 操作が見つかりません
-      date: 日付
-      profile_name: プロファイル名
-      details: 詳細
-      warning_count: 警告
-      job_type:
-        import: インポート
-        export: エクスポート
-        mass_edit: 一括編集
-        quick_export: クイック エクスポート
-        compute_product_models_descendants: 製品モデルの子孫を計算します。
     completeness:
       load_more: 'さらに読み込む...'
-    header:
-      view_all: 全て表示
 pim_title:
   pim_dashboard_index: ダッシュ ボード

@@ -124,6 +124,31 @@ pim_import_export:
           family_variant_column:
             title: Produktfamilie Varianten Spalte
       file_path: Dateipfad
+  widget:
+    last_operations:
+      empty: Keine Vorgänge gefunden
+      date: Datum
+      profile_name: Profilname
+      details: Details
+      warning_count: Warnungen
+      job_type:
+        import: Import
+        export: Export
+        mass_edit: Massenbearbeitung
+        quick_export: Schnellexport
+        compute_product_models_descendants: Vererbungen der Produktmodelle berechnen
+        compute_completeness_of_products_family: Vollständigkeit der Produktfamilie berechnen
+        mass_delete: Massenlöschung von Produkten
+      header.view_all: Alle anzeigen
+  batch_status:
+    1: Vollständig
+    2: Wird gestartet...
+    3: Gestartet
+    4: Beende...
+    5: Beendet
+    6: Fehlgeschlagen
+    7: Abgebrochen
+    8: Unbekannt
 confirmation:
   remove:
     import_profile: Möchten Sie dieses Importprofil wirklich löschen?

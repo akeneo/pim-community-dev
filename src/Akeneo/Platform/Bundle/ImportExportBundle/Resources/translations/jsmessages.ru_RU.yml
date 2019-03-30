@@ -108,6 +108,29 @@ pim_import_export:
             title: Обновление истории изменений в реальном времени
             help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
       file_path: Путь к файлу
+  widget:
+    last_operations:
+      empty: Операции не найдены
+      date: Дата
+      profile_name: Название профиля
+      details: Подробности
+      warning_count: Предупреждения
+      job_type:
+        import: Импорт
+        export: Экспорт
+        mass_edit: Массовое редактирование
+        quick_export: Быстрый экспорт
+        mass_delete: Массовое удаление продуктов
+      header.view_all: Просмотреть все
+  batch_status:
+    1: Completed
+    2: Starting
+    3: Started
+    4: Stopping
+    5: Stopped
+    6: Failed
+    7: Abandoned
+    8: Unknown
 confirmation:
   remove:
     import_profile: Вы действительно хотите удалить этот профиль импорта?

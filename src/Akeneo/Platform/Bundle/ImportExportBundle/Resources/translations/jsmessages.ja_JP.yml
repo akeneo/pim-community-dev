@@ -124,6 +124,29 @@ pim_import_export:
           family_variant_column:
             title: ファミリーバリアントの列
       file_path: ファイルのパス
+  widget:
+    last_operations:
+      empty: 操作が見つかりません
+      date: 日付
+      profile_name: プロファイル名
+      details: 詳細
+      warning_count: 警告
+      job_type:
+        import: インポート
+        export: エクスポート
+        mass_edit: 一括編集
+        quick_export: クイック エクスポート
+        compute_product_models_descendants: 製品モデルの子孫を計算します。
+      header.view_all: 全て表示
+  batch_status:
+    1: 完了
+    2: 開始中...
+    3: 開始
+    4: 停止中
+    5: 停止
+    6: 失敗
+    7: 破棄された
+    8: 不明
 confirmation:
   remove:
     import_profile: このインポートのプロファイルを削除してもよろしいですか。

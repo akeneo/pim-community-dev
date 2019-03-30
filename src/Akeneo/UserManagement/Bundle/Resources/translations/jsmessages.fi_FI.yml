@@ -75,7 +75,7 @@ pim_user_management:
           additional: Lisää
           groups_and_roles: Käyttäjäyhmät ja roolit
           password: Salasana
-          interfaces: Rajapinnat
+          interfaces: Käyttöliittymä
           notifications: Ilmoitukset
     role:
       plural_label: Roolit

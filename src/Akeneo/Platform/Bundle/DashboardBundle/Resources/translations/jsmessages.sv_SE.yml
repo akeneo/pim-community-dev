@@ -1,19 +1,6 @@
 pim_dashboard:
   widget:
-    last_operations:
-      empty: Inga händelser hittade
-      date: Datum
-      profile_name: Profilnamn
-      details: Detaljer
-      warning_count: Varningar
-      job_type:
-        import: Import
-        export: Export
-        mass_edit: Massredigera
-        quick_export: Snabbexport
     completeness:
       load_more: 'Ladda fler...'
-    header:
-      view_all: Visa alla
 pim_title:
   pim_dashboard_index: Instrumentpanel
