@@ -1,7 +1,0 @@
-authentication:
-  sso:
-    configuration:
-      section:
-        activation:
-          info:
-            title: '¡Advertencia!'

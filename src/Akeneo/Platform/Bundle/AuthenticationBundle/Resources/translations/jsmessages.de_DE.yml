@@ -4,10 +4,6 @@ authentication:
       info:
         update_successful: Die Konfiguration wurde gespeichert
         update_failed: Die Konfiguration konnte nicht gespeichert werden
-      section:
-        activation:
-          info:
-            title: Warnung
       field:
         certificate:
           label: Zertifikat
