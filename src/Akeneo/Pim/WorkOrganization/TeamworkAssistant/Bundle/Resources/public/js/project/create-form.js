@@ -240,10 +240,6 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if (!this.configured) {
-                    return this;
-                }
-
                 $.when(
                     this.getLocaleLabel(),
                     this.getChannelLabel()
