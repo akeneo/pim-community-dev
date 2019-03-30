@@ -19,3 +19,8 @@ akeneo_referenceentity:
     option:
       edit: Edita les opcions
       delete: Elimina una opció
+pim_analytics:
+  info_type:
+    nb_reference_entities: Nombre d'entitats de referència
+    max_number_of_records_per_reference_entity: Nombre màxim de registres per entitat de referència
+    max_number_of_attributes_per_reference_entity: Nombre màxim d'atributs per entitat de referència

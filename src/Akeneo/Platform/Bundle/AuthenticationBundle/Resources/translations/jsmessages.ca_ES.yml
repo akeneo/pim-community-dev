@@ -26,6 +26,7 @@ authentication:
           label: URL de desconnexió
         certificate:
           label: Certificat
+          expiration_warning: Aquest certificat caduca el {{date}}.
         private_key:
           label: Clau privada
         metadata_url:

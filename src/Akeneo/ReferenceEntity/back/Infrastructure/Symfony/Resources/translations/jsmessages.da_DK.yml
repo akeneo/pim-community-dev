@@ -47,6 +47,9 @@ pim_reference_entity:
       filter:
         completeness:
           label: Fuldført
+        option:
+          operator:
+            in: I listen
       column:
         code: Kode
         image: Billede

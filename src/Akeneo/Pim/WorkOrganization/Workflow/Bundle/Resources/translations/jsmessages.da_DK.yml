@@ -94,6 +94,7 @@ pimee_dashboard:
       product: Produkt
       review: Gennemgang
       empty: Ingen forslag til gennemgang
+    header.view_all: Vis alle
 pimee_enrich.entity.product:
   module:
     history:

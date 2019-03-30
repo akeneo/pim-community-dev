@@ -47,6 +47,9 @@ pim_reference_entity:
       filter:
         completeness:
           label: 網羅率
+        option:
+          operator:
+            in: リストに存在する
       column:
         code: コード
         image: イメージ
