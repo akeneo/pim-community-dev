@@ -55,6 +55,9 @@ pim_reference_entity:
         completeness:
           label: Vollständig
           all: ALLE
+        option:
+          operator:
+            in: In Liste
       column:
         code: Code
         image: Abbildung

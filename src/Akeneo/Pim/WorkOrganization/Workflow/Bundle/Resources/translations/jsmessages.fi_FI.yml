@@ -69,6 +69,7 @@ pimee_dashboard:
       product: Tuote
       review: Tarkastus
       empty: Ei ehdotuksia tarkastettavaksi
+    header.view_all: Näytä kaikki
 pimee_enrich.entity.product:
   module:
     history:

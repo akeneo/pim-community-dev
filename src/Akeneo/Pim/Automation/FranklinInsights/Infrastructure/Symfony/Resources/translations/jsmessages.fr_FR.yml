@@ -126,7 +126,7 @@ akeneo_franklin_insights:
         activation_code: 'Code d''activation'
         paste_activation_code: 'Coller le code d''activation'
         activated: 'Activé'
-        activate: 'Activater'
+        activate: 'Activer'
   settings:
     attributes_mapping_title: 'Mapping des attributs'
     identifiers_mapping_title: 'Mapping des identifiants'

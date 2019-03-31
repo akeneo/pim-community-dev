@@ -94,6 +94,7 @@ pimee_dashboard:
       product: 製品
       review: レビュー
       empty: レビューに対する提案はありません
+    header.view_all: 全て表示
 pimee_enrich.entity.product:
   module:
     history:

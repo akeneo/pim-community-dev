@@ -97,6 +97,7 @@ pimee_dashboard:
       product: Produit
       review: Relire
       empty: Il n'y a aucune proposition à examiner
+    header.view_all: Afficher tout
 pimee_enrich.entity.product:
   module:
     history:

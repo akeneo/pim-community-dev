@@ -60,6 +60,7 @@ pimee_product_asset:
       error: Error
       success: Éxito
     drag_and_drop: Arrastrar y soltar su fichero o haga clic aquí
+    tabsection_title: Recursos cargados
   datagrid:
     mass_action:
       delete:
@@ -217,7 +218,6 @@ pim_catalog_volume:
   section:
     assets:
       title: Ejes en los recursos
-      hint: Puede seguir el volumen respecto a los recursos aquí
   axis:
     count_assets: Recursos
     count_asset_categories: Categorías de recursos

@@ -131,6 +131,9 @@ pim_reference_entity:
           all: TOT
           'yes': 'SÍ'
           'no': 'NO'
+        option:
+          operator:
+            in: A la llista
       column:
         code: Codi
         image: Imatge
@@ -274,3 +277,6 @@ pim_enrich:
           default_label: Si us plau, selecciona una entitat de referència
 permission:
   mass_action: Aplicar {{ rightLevel }} regles en tots els grups
+pim_catalog_volume:
+  axis:
+    count_reference_entity: Entitats de referència

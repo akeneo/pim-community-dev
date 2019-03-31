@@ -94,6 +94,7 @@ pimee_dashboard:
       product: Produkt
       review: Überprüfung
       empty: Keine zu überprüfende Vorschläge
+    header.view_all: Alle anzeigen
 pimee_enrich.entity.product:
   module:
     history:
