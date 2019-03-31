@@ -9,8 +9,6 @@ authentication:
       section:
         activation:
           title: Activació SSO
-          info:
-            title: Avís
         identity_provider:
           title: Proveïdor d'identitat (IdP)
         service_provider:
