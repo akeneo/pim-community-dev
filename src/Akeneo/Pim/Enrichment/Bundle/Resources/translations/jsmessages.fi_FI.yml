@@ -12,20 +12,6 @@ flash:
     reply:
       success: Vastaus luotu.
       error: Virhe luotaessa vastausta.
-pim_comment:
-  product:
-    panel:
-      comment:
-        post: Lisää uusi kommentti
-        reply: Vastaa
-        title: Kommentit
-  index:
-    empty: Ei kommentteja tällä hetkellä
-    header_comment: '{{ user }} kommentoi tuotetta'
-    header_reply: '{{ user }} vastaa kommenttiin'
-  placeholder:
-    new: Kirjoita uusi kommentti...
-    reply: Vastaa tähän kommenttiin...
 pim_enrich.entity.product:
   label: tuote
   uppercase_label: Tuote
@@ -123,6 +109,14 @@ pim_enrich.entity.product:
       empty_basket: Kori on tyhjä
     delete:
       confirm: Oletko varma, että haluat poistaa tämän tuotteen?
+    comment:
+      post: Lisää uusi kommentti
+      reply: Vastaa
+      title: Kommentit
+      empty: Ei kommentteja tällä hetkellä
+      header_comment: '{{ user }} kommentoi tuotetta'
+      header_reply: '{{ user }} vastaa kommenttiin'
+      delete_confirm: Oletko varma että haluat poistaa tämän kommentin?
 pim_enrich.entity.product_model:
   label: tuotemalli
   uppercase_label: Tuotemalli

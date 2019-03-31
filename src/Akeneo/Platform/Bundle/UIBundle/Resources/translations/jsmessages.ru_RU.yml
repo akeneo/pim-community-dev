@@ -139,6 +139,7 @@ pim_common:
   remove: Удалить
   required_label: (требуется)
   save: Сохранить
+  search: Поиск
   select2:
     search: Поиск...
     no_match: Совпадений не найдено

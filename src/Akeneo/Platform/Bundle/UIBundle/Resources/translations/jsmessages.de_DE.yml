@@ -147,6 +147,7 @@ pim_common:
   remove: Entfernen
   required_label: (erforderlich)
   save: Speichern
+  search: Suche
   select2:
     search: Suche...
     no_match: Keine Treffer gefunden

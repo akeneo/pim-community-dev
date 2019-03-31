@@ -147,6 +147,7 @@ pim_common:
   remove: Fjern
   required_label: (Påkrævet)
   save: Gem
+  search: Søg
   select2:
     search: Søg...
     no_match: Ingen fundet
