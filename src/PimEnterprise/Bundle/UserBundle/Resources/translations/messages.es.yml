@@ -1,4 +1,6 @@
 user:
+  email:
+    notifications: Ser notificado cuando los activos expiren
   proposals:
     notifications:
       to_review: Si hay nuevas propuestas a revisar
