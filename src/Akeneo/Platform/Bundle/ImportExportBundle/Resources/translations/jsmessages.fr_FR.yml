@@ -129,6 +129,32 @@ pim_import_export:
           family_variant_column:
             title: Colonne variante de famille
       file_path: Chemin du fichier
+  widget:
+    last_operations:
+      empty: Aucune opération trouvée
+      date: Date
+      profile_name: Nom du profil
+      details: Détails
+      warning_count: Avertissements
+      job_type:
+        import: Import
+        export: Export
+        mass_edit: Edition en masse
+        quick_export: Export rapide
+        compute_product_models_descendants: Mise à jour des descendants des modèles de produit
+        compute_family_variant_structure_changes: Calcul des changements de structure des familles variantes
+        compute_completeness_of_products_family: Calcul de la complétude des familles variantes
+        mass_delete: Suppression massive de produits
+      header.view_all: Afficher tout
+  batch_status:
+    1: Terminé
+    2: Démarrage
+    3: Démarré
+    4: En cours d'arrêt
+    5: Arrêté
+    6: Echoué
+    7: Abandonné
+    8: Inconnu
 confirmation:
   remove:
     import_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?

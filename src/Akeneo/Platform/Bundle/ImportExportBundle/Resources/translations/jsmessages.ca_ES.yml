@@ -129,6 +129,32 @@ pim_import_export:
           family_variant_column:
             title: Columna de la variant familiar
       file_path: Ruta de l'arxiu
+  widget:
+    last_operations:
+      empty: No s'han trobat operacions
+      date: Data
+      profile_name: Nom del perfil
+      details: Detalls
+      warning_count: Avisos
+      job_type:
+        import: Importar
+        export: Exportar
+        mass_edit: Edició massiva
+        quick_export: Exportació ràpida
+        compute_product_models_descendants: Calcular descendents dels models de producte
+        compute_family_variant_structure_changes: Calcular els canvis d'estructura de la variant familiar
+        compute_completeness_of_products_family: Calcular la completesa de la família de productes
+        mass_delete: Esborrat massiu de productes
+      header.view_all: Veure tots
+  batch_status:
+    1: Acabat
+    2: Començant
+    3: Començat
+    4: Aturant
+    5: Aturat
+    6: Fallit
+    7: Abandonat
+    8: Desconegut
 confirmation:
   remove:
     import_profile: Esteu segur que voleu suprimir aquest perfil d'importació?

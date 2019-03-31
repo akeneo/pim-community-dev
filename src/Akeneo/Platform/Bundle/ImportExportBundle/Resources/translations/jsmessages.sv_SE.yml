@@ -122,6 +122,28 @@ pim_import_export:
             title: Realtidsuppdatering av historiken
             help: Innebär att produktens historik uppdateras i realtid, kan stängas av för att förbättra prestandarden
       file_path: Filsökväg
+  widget:
+    last_operations:
+      empty: Inga händelser hittade
+      date: Datum
+      profile_name: Profilnamn
+      details: Detaljer
+      warning_count: Varningar
+      job_type:
+        import: Import
+        export: Export
+        mass_edit: Massredigera
+        quick_export: Snabbexport
+      header.view_all: Visa alla
+  batch_status:
+    1: Slutförd
+    2: Startar
+    3: Startad
+    4: Stoppar
+    5: Stoppad
+    6: Misslyckad
+    7: Övergiven
+    8: Okänt
 confirmation:
   remove:
     import_profile: Är du säker på att du vill ta bort denna importprofil?

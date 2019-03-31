@@ -1,20 +1,6 @@
 pim_dashboard:
   widget:
-    last_operations:
-      empty: Операции не найдены
-      date: Дата
-      profile_name: Название профиля
-      details: Подробности
-      warning_count: Предупреждения
-      job_type:
-        import: Импорт
-        export: Экспорт
-        mass_edit: Массовое редактирование
-        quick_export: Быстрый экспорт
-        mass_delete: Массовое удаление продуктов
     completeness:
       load_more: 'Загрузить больше...'
-    header:
-      view_all: Просмотреть все
 pim_title:
   pim_dashboard_index: Панель управления

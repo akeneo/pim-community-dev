@@ -1,23 +1,6 @@
 pim_dashboard:
   widget:
-    last_operations:
-      empty: Ninguna operacione encontrada
-      date: Fecha
-      profile_name: Nombre del perfil
-      details: Detalles
-      warning_count: Advertencias
-      job_type:
-        import: Importar
-        export: Exportar
-        mass_edit: Edición en masa
-        quick_export: Exportación rápida
-        compute_product_models_descendants: Calcular modelos de productos descendientes
-        compute_family_variant_structure_changes: Calcular los cambios de estructura de las variantes de la familia
-        compute_completeness_of_products_family: Calcular la completitud de la familia de productos
-        mass_delete: Eliminación masiva de prodcutos
     completeness:
       load_more: 'Cargar más...'
-    header:
-      view_all: Ver todo
 pim_title:
   pim_dashboard_index: Cartelera

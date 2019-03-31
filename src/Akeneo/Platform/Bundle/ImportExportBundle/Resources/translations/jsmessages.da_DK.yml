@@ -124,6 +124,32 @@ pim_import_export:
           family_variant_column:
             title: Familie variant import
       file_path: Fil sti
+  widget:
+    last_operations:
+      empty: Ingen, handlinger fundet
+      date: Dato
+      profile_name: Profilnavn
+      details: Detaljer
+      warning_count: Advarsler
+      job_type:
+        import: Import
+        export: Eksport
+        mass_edit: Masse Rediger
+        quick_export: Hurtig eksport
+        compute_product_models_descendants: Beregne underliggende produkt modeller
+        compute_family_variant_structure_changes: Beregner familie variant struktur ændringer
+        compute_completeness_of_products_family: Beregner fuldstændigheden af produkter familie
+        mass_delete: Masse slet produkter
+      header.view_all: Vis alle
+  batch_status:
+    1: Afsluttet
+    2: Starter
+    3: Startet
+    4: Stopper
+    5: Stoppet
+    6: Mislykkedes
+    7: Opgivet
+    8: Ukendt
 confirmation:
   remove:
     import_profile: Er du sikker på du vil slette denne import profil?
