@@ -107,6 +107,7 @@ extensions:
         parent: pim-job-instance-xlsx-product-model-import-show
         targetZone: buttons
         position: 100
+        aclResourceId: pim_importexport_import_profile_edit
         config:
             label: pim_common.edit
             route: pim_importexport_import_profile_edit
