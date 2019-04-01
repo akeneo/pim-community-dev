@@ -22,7 +22,7 @@
     "lint": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet",
     "lint-fix": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet --fix",
     "tslint": "node ./node_modules/tslint/bin/tslint",
-    "unit": "jest --maxWorkers=4 --config $npm_package_config_source/tests/front/unit/jest/unit.jest.js",
+    "unit": "jest --maxWorkers=4 --coverage --config $npm_package_config_source/tests/front/unit/jest/unit.jest.js",
     "integration": "jest --maxWorkers=4 --config $npm_package_config_source/tests/front/integration/jest/integration.jest.js",
     "acceptance": "NODE_PATH=./node_modules cucumber-js --parallel ${NODE_NUMBER_OF_THREAD:-2} --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js",
     "acceptance-report": "NODE_PATH=./node_modules yarn run acceptance -- -f json:web/test_dist/acceptance-js.json && node $npm_package_config_source/frontend/test/acceptance/generate-html-report.js",
