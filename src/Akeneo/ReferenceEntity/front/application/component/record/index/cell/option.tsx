@@ -14,10 +14,6 @@ const OptionCellView: CellView = memo(({column, value}: {column: Column; value: 
   const selectedOption = normalizedOptionAttribute.options.filter(
     (option: NormalizedOption) => option.code === selectedOptionCode
   );
-  // const selectedOptionLabel =
-  //   selectedOption !== undefined && selectedOption.labels[column.locale]
-  //     ? selectedOption.labels[column.locale]
-  //     : `[${selectedOptionCode}]`;
   const selectedOptionLabel = getLabel(selectedOption[0].labels, column.locale, selectedOption[0].code);
 
   return (

@@ -8,6 +8,14 @@ import {
 } from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 
+type NormalizedContext = {
+  labels: {
+    [recordCode: string]: {
+      [localeCode: string]: string;
+    };
+  };
+};
+
 /**
  * @api
  */
@@ -16,6 +24,7 @@ export type NormalizedValue = {
   channel: NormalizedChannelReference;
   locale: NormalizedLocaleReference;
   data: any;
+  context?: NormalizedContext;
 };
 
 export type NormalizedMinimalValue = {
