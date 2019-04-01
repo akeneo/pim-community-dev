@@ -44,11 +44,15 @@ class DraftStatusFilter implements FilterInterface
      */
     public function apply(FilterDatasourceAdapterInterface $filterDatasource, $data)
     {
-        $filterValue = isset($data['value']) ? (bool) $data['value'] : null;
+        $filterValue = isset($data['value']) ? $data['value'] : null;
 
         if (null === $filterValue) {
             return false;
         }
+
+        // 0:
+        // 1:
+        // 2: Waiting for approval
 
         $this->filterUtility->applyFilter($filterDatasource, 'draft_status', '=', $filterValue);
 
