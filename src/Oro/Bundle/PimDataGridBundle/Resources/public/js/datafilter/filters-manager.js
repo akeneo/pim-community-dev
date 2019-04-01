@@ -480,7 +480,8 @@ define(
          */
         _getOffsetWidth() {
             const headerWidth = $('.AknHeader').width();
-            const mainColumnWidth = $('.AknDefault-contentWithColumn .AknColumn').width();
+            const mainColumn = $('.AknDefault-contentWithColumn .AknColumn');
+            const mainColumnWidth = 0 !== mainColumn.length ? mainColumn.width() : 0;
 
             return headerWidth + mainColumnWidth;
         },
@@ -502,6 +503,5 @@ define(
         _getLeftEndPosition() {
             return this._getOffsetWidth();
         }
-
     });
 });

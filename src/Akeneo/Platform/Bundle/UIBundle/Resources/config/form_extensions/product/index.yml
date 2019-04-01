@@ -121,6 +121,8 @@ extensions:
         module: oro/datafilter/filters-column
         parent: pim-product-index-column-inner
         targetZone: manage-filters-button
+        config:
+          attributeFiltersRoute: pim_datagrid_productgrid_attributes_filters
 
     pim-product-index-grid-filters-list:
         module: oro/datafilter/filters-selector
