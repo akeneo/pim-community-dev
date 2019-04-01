@@ -27,6 +27,7 @@ const unitConfig = {
       lines: 100,
     },
   },
+  coverageReporters: ['text-summary'],
   setupFiles: [`${__dirname}/enzyme.js`],
 };
 
