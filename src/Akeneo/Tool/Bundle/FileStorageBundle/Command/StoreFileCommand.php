@@ -51,6 +51,7 @@ class StoreFileCommand extends ContainerAwareCommand
 
         $rawFile = new \SplFileInfo($filePath);
         $storer = $this->getFileStorer();
+        $storageFsAlias = $this->toCamelCase($storageFsAlias);
         $file = $storer->store($rawFile, $storageFsAlias);
 
         $output->writeln(
@@ -87,5 +88,26 @@ class StoreFileCommand extends ContainerAwareCommand
         }
 
         return true;
+    }
+
+    /**
+     * @param $storageFsAlias
+     *
+     * @return string
+     */
+    protected function toCamelCase($storageFsAlias)
+    {
+        return lcfirst(
+            join(
+                explode(
+                    '_',
+                    ucwords(
+                        $storageFsAlias,
+                        '_'
+                    )
+                ),
+                ''
+            )
+        );
     }
 }
