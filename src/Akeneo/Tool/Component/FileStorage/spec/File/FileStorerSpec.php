@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\FileStorage\File;
 
-use Akeneo\Bundle\FileStorageBundle\Doctrine\ORM\Query\FindKeyByHashQuery;
+use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Query\FindKeyByHashQuery;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;

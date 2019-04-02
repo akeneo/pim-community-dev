@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\FileStorageBundle\Doctrine\ORM\Query;
+namespace Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Query;
 
 use Doctrine\DBAL\Connection;
 
