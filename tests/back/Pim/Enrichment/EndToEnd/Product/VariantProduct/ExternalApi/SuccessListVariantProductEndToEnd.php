@@ -667,7 +667,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $search = '{"categories":[{"operator":"IN", "value":["categoryA"]}], "a_simple_select":[{"operator":"IN","value":["optionA"]}]}';
+        $search = '{"categories":[{"operator":"IN","value":["categoryA"]}],"a_simple_select":[{"operator":"IN","value":["optionA"]}]}';
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
@@ -690,7 +690,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $search = '{"completeness":[{"operator":"GREATER THAN ON ALL LOCALES","value":50,"locales":["en_US"],"scope":"ecommerce"}],"categories":[{"operator":"IN", "value":["categoryA"]}], "a_simple_select":[{"operator":"IN","value":["optionA"]}]}';
+        $search = '{"completeness":[{"operator":"GREATER THAN ON ALL LOCALES","value":50,"locales":["en_US"],"scope":"ecommerce"}],"categories":[{"operator":"IN","value":["categoryA"]}],"a_simple_select":[{"operator":"IN","value":["optionA"]}]}';
         $client->request('GET', 'api/rest/v1/products?search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
@@ -721,8 +721,8 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=10"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=10"}
+        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=10"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=10"}
     },
     "_embedded" : {
         "items" : [
@@ -756,9 +756,9 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=3&search_after={$id['apollon_A_true']}"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=3"},
-        "next"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=3&search_after={$id['apollon_B_false']}"}
+        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3&search_after={$id['apollon_A_true']}"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3"},
+        "next"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3&search_after={$id['apollon_B_false']}"}
     },
     "_embedded"    : {
         "items" : [
@@ -784,8 +784,8 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=4&search_after={$encryptedId}"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=4"}
+        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=4&search_after={$encryptedId}"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=4"}
     },
     "_embedded"    : {
         "items" : [

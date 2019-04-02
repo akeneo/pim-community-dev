@@ -1111,7 +1111,7 @@ JSON;
         $currentDate = (new \DateTime('now'))->format('Y-m-d H:i:s');
         $currentDateMinusHalf = (new \DateTime('now'))->modify('- 30 minutes')->format('Y-m-d H:i:s');
 
-        $search = sprintf('{"updated":[{"operator":"BETWEEN","value":["%s", "%s"]}]}', $currentDateMinusHalf, $currentDate );
+        $search = sprintf('{"updated":[{"operator":"BETWEEN","value":["%s","%s"]}]}', $currentDateMinusHalf, $currentDate );
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&limit=10&search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
@@ -1207,7 +1207,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $search = '{"categories":[{"operator":"IN", "value":["categoryB"]}], "a_yes_no":[{"operator":"=","value":true}]}';
+        $search = '{"categories":[{"operator":"IN","value":["categoryB"]}],"a_yes_no":[{"operator":"=","value":true}]}';
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
@@ -1230,7 +1230,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $search = '{"completeness":[{"operator":"GREATER THAN ON ALL LOCALES","value":50,"locales":["fr_FR"],"scope":"ecommerce"}],"categories":[{"operator":"IN", "value":["categoryB"]}], "a_yes_no":[{"operator":"=","value":true}]}';
+        $search = '{"completeness":[{"operator":"GREATER THAN ON ALL LOCALES","value":50,"locales":["fr_FR"],"scope":"ecommerce"}],"categories":[{"operator":"IN","value":["categoryB"]}],"a_yes_no":[{"operator":"=","value":true}]}';
         $client->request('GET', 'api/rest/v1/products?search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
@@ -1263,8 +1263,8 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=10"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=10"}
+        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=10"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=10"}
     },
     "_embedded" : {
         "items" : [
@@ -1297,9 +1297,9 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=3&search_after={$id['simple']}"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=3"},
-        "next"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=3&search_after={$id['localizable_and_scopable']}"}
+        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3&search_after={$id['simple']}"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3"},
+        "next"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3&search_after={$id['localizable_and_scopable']}"}
     },
     "_embedded"    : {
         "items" : [
@@ -1325,8 +1325,8 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=4&search_after={$scopableEncryptedId}"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=4"}
+        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=4&search_after={$scopableEncryptedId}"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=4"}
     },
     "_embedded"    : {
         "items" : [
