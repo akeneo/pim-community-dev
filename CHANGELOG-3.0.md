@@ -6,6 +6,7 @@
 - PXD-98: Fix panel content size for filters selector column
 - PIM-8252: Add ACL on the edit import/export profile button and grid buttons
 - PIM-8267: Fix user's group delete translation
+- PIM-8271: Fix import/export delete translation
 
 # 3.0.10 (2019-03-28)
 

@@ -142,6 +142,17 @@ confirmation:
         export_profile: Are you sure you want to delete this export profile?
         job_instance: Are you sure you want to delete this job instance?
 
+pim_enrich:
+    entity:
+        import_profile:
+            module:
+                delete:
+                    confirm: Are you sure you want to delete this import profile?
+        export_profile:
+            module:
+                delete:
+                    confirm: Are you sure you want to delete this export profile?
+
 pim_title:
     pim_importexport_export_profile_index:   Export profiles management
     pim_importexport_export_profile_edit:    Export profile {{ job.label }} | Edit
