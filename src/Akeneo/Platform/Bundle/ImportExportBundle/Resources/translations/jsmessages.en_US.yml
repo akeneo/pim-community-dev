@@ -142,7 +142,6 @@ confirmation:
         export_profile: Are you sure you want to delete this export profile?
         job_instance: Are you sure you want to delete this job instance?
 
-
 pim_enrich:
     entity:
         import_profile:
