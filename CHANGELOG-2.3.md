@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.36 (2019-04-02)
+
 ## Bug fixes
 
 - PIM-8251: display variant family code in sidebar if no translated label
