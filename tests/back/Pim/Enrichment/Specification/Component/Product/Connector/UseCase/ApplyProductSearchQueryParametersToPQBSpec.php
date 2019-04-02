@@ -37,8 +37,8 @@ class ApplyProductSearchQueryParametersToPQBSpec extends ObjectBehavior
                 ],
             ],
         ];
-        $query->searchLocaleCode = 'en_US';
-        $query->searchChannelCode = 'ecommerce';
+        $query->searchLocale = 'en_US';
+        $query->searchScope = 'ecommerce';
 
         $pqb->addFilter('propertyCode', 'op', 'val', ['locale' => 'en_US', 'scope' => 'ecommerce'])->shouldBeCalled();
 
@@ -52,9 +52,9 @@ class ApplyProductSearchQueryParametersToPQBSpec extends ObjectBehavior
         CategoryInterface $category
     ) {
         $query = new ListProductsQuery();
-        $query->searchLocaleCode = 'en_US';
-        $query->searchChannelCode = 'ecommerce';
-        $query->channelCode = 'ecommerce';
+        $query->searchLocale = 'en_US';
+        $query->searchScope = 'ecommerce';
+        $query->channel = 'ecommerce';
 
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channel)->shouldBeCalled();
         $channel->getCategory()->willReturn($category)->shouldBeCalled();
@@ -83,7 +83,7 @@ class ApplyProductSearchQueryParametersToPQBSpec extends ObjectBehavior
                 ],
             ],
         ];
-        $query->searchLocaleCode = 'en_US';
+        $query->searchLocale = 'en_US';
 
         $pqb->addFilter('propertyCode', 'op', 'val', ['locale' => 'fr_FR', 'scope' => 'mobile'])->shouldBeCalled();
 
@@ -107,8 +107,8 @@ class ApplyProductSearchQueryParametersToPQBSpec extends ObjectBehavior
                 ],
             ],
         ];
-        $query->searchLocaleCode = 'en_US';
-        $query->searchChannelCode = 'ecommerce';
+        $query->searchLocale = 'en_US';
+        $query->searchScope = 'ecommerce';
 
         $pqb->addFilter('created', Operators::BETWEEN, Argument::any(), ['locale' => 'en_US', 'scope' => 'ecommerce'])
             ->shouldBeCalled();

@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationParametersValidator;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
