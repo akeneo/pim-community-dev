@@ -196,9 +196,6 @@ extensions:
                 buttonTitle:      'pim_common.add'
                 emptyText:        'pim_enrich.entity.attribute.module.add_attribute.no_available_attributes'
             className: 'AknButtonList-item add-attribute'
-            searchParameters:
-                options:
-                    exclude_unique: false
 
     pim-family-edit-form-attributes-attributes:
         module: pim/family-edit-form/attributes/attributes
