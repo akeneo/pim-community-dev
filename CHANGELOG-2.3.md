@@ -1,18 +1,27 @@
 # 2.3.x
 
+# 2.3.36 (2019-04-02)
+
+## Bug fixes
+
+- PIM-8251: display variant family code in sidebar if no translated label
+- PIM-8253: Fix unique attributes excluded in attributes search
+
 # 2.3.35 (2019-03-26)
 
 ## Bug fixes
 
 - PIM-8230: Show on hover information for a read-only text in product edit form
 - PIM-8245: Fix the save-buttons extension (js) incorrectly resetting its internal state between calls.
+- PIM-8176: `Nesting level too deep – recursive dependency?` for some custom reference_data attributes
 
 # 2.3.34 (2019-03-18)
 
 ## Bug fixes
 
-- PIM-8176: `Nesting level too deep – recursive dependency?` for some custom reference_data attributes
 - PIM-8222: Fix product model issues when code contains `/` (create variant through UI and get product models via API)
+- PIM-8187: Add the possibility to fetch descendant products and product models
+- PIM-8214: Be able to save and launch job even if filter values refer to deleted entities.
 
 # 2.3.33 (2019-03-13)
 
@@ -21,14 +30,12 @@
 - PIM-7966: Fix variant product order on variant product navigation in case of metric variations
 - PIM-8177: Remove pages not accessible in case of product number higher than maximum ES window limit (10.000 by default) and add warning message on the last page
 - PIM-8197: Use ZipArchive::addFile to avoid too much ram consumption
-- PIM-8214: Be able to save and launch job even if filter values refer to deleted entities.
 
 # 2.3.32 (2019-03-07)
 
 ## Improvement
 
 - PIM-8175: add the possibility to filter on one or several index names when resetting ES indexes
-- PIM-8187: Add the possibility to fetch descendant products and product models
 
 # 2.3.31 (2019-02-28)
 
