@@ -4,7 +4,7 @@
 
 - PIM-8258: Fix missing translation for "copy none"
 - PXD-98: Fix panel content size for filters selector column
-- PIM-8252: Add ACL on the edit import/export profile button
+- PIM-8252: Add ACL on the edit import/export profile button and grid buttons
 
 # 3.0.10 (2019-03-28)
 

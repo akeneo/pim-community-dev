@@ -31,27 +31,6 @@ datagrid:
                 type: url
                 params:
                     - code
-        actions:
-            view:
-                launcherOptions:
-                    className: AknIconButton AknIconButton--small AknIconButton--view
-                type:      navigate
-                label:     pim_datagrid.action.show.title
-                link:      show_link
-                rowAction: true
-            edit:
-                launcherOptions:
-                    className: AknIconButton AknIconButton--small AknIconButton--edit
-                type:  navigate
-                label: pim_common.edit
-                link:  edit_link
-            delete:
-                acl_resource:  pim_importexport_export_profile_remove
-                launcherOptions:
-                    className: AknIconButton AknIconButton--small AknIconButton--trash
-                type:  delete
-                label: pim_common.delete
-                link:  delete_link
         sorters:
             columns:
                 label:
