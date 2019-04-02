@@ -4,6 +4,10 @@
 
 - PIM-8239: Set latest doctrine migration during fresh install to be consistent with database state
 
+## Enhancements
+
+- PIM-8233: Extract attribute normalization in dedicated classes
+
 # 3.0.11 (2019-04-02)
 
 # Bug fixes
