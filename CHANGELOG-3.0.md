@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-8263: inject correct presenter for `ProjectDueDateReminderNotifier`
 - PIM-8252: Fix ACL not applied on some other actions menus
 
 # 3.0.10 (2019-03-28)
