@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.11 (2019-04-02)
+
 ## Bug fixes
 
 - PIM-8263: inject correct presenter for `ProjectDueDateReminderNotifier`
