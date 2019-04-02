@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.36 (2019-04-02)
+
 ## Developer Experience Improvement
 
 - PIM-8261: create a dedicated error message when variation not generated due to missing asset transformation on channel
