@@ -12,6 +12,7 @@
 namespace Akeneo\Asset\Component;
 
 use Akeneo\Asset\Component\Builder\MetadataBuilderRegistry;
+use Akeneo\Asset\Component\Exception\MissingAssetTransformationForChannelException;
 use Akeneo\Asset\Component\Model\FileMetadataInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
@@ -23,7 +24,6 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use PimEnterprise\Component\ProductAsset\Exception\MissingAssetTransformationForChannelException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**

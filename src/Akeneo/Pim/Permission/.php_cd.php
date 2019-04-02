@@ -187,6 +187,7 @@ $rules = [
 
         //TODO: Link by id instead of reference
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
+        'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface',
 
         // TODO: review the voters/filters implementation
         'Akeneo\UserManagement\Component\Model\GroupInterface',

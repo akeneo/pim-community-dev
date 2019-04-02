@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Asset\Component;
 
 use Akeneo\Asset\Component\Builder\MetadataBuilderInterface;
 use Akeneo\Asset\Component\Builder\MetadataBuilderRegistry;
+use Akeneo\Asset\Component\Exception\MissingAssetTransformationForChannelException;
 use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
 use Akeneo\Asset\Component\Model\FileMetadataInterface;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
@@ -21,7 +22,6 @@ use Akeneo\Tool\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Exception\MissingAssetTransformationForChannelException;
 use Prophecy\Argument;
 
 class VariationFileGeneratorSpec extends ObjectBehavior

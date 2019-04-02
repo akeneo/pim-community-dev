@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Security\Normalizer\Authorization;
+namespace Akeneo\Pim\Permission\Component\Normalizer\Authorization;
 
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductDraftNormalizer implements NormalizerInterface
