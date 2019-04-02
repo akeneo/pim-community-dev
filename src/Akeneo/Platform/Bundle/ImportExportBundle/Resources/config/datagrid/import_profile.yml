@@ -14,7 +14,7 @@ datagrid:
                 route: pim_importexport_import_profile_show
         actions:
             view:
-                acl_resource: pim_importexport_import_profile_content_show
+                acl_resource: pim_importexport_import_profile_show
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--view
                 type:      navigate
