@@ -87,6 +87,11 @@ services:
         tags:
             - { name: pimee_authorization_serializer.normalizer, priority: 110 }
 
+    pimee_security.normalizer.authorization.product_draft:
+        class: PimEnterprise\Component\Security\Normalizer\Authorization\ProductDraftNormalizer
+        tags:
+            - { name: pimee_authorization_serializer.normalizer, priority: 110 }
+
     pim_catalog.normalizer.standard.attribute:
         class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeNormalizer'
         arguments:

@@ -21,6 +21,7 @@ use Akeneo\Tool\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\ProductAsset\Exception\MissingAssetTransformationForChannelException;
 use Prophecy\Argument;
 
 class VariationFileGeneratorSpec extends ObjectBehavior
@@ -122,7 +123,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $channelConfigurationRepository->findOneBy(Argument::any())->willReturn(null);
 
         $this->shouldThrow(
-            new \LogicException('No variations configuration exists for the channel "ecommerce".')
+            new MissingAssetTransformationForChannelException('ecommerce')
         )->during('generate', [$variation]);
     }
 

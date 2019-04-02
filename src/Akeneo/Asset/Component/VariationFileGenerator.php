@@ -23,6 +23,7 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use PimEnterprise\Component\ProductAsset\Exception\MissingAssetTransformationForChannelException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -136,7 +137,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /**
      * @param ChannelInterface $channel
      *
-     * @throws \LogicException
+     * @throws MissingAssetTransformationForChannelException
      *
      * @return array
      */
@@ -144,9 +145,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     {
         $channelConfiguration = $this->configurationRepository->findOneBy(['channel' => $channel->getId()]);
         if (null === $channelConfiguration) {
-            throw new \LogicException(
-                sprintf('No variations configuration exists for the channel "%s".', $channel->getCode())
-            );
+            throw new MissingAssetTransformationForChannelException($channel->getCode());
         }
 
         return $channelConfiguration->getConfiguration();
