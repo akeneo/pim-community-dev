@@ -104,7 +104,7 @@ resource "google_monitoring_alert_policy" "alert_policy" {
     display_name = "Response time of successful requests on /user/login of ${local.pfid}"
     condition_threshold {
       filter          = "metric.type=\"logging.googleapis.com/user/${local.pfid}-login-response-time-distribution\" AND resource.type=k8s_container AND metric.label.response_code=200"
-      duration        = "900s"
+      duration        = "420s"
       comparison      = "COMPARISON_GT"
       threshold_value = 4000000
       aggregations {
@@ -118,7 +118,7 @@ resource "google_monitoring_alert_policy" "alert_policy" {
     display_name = "Uptime Health Check on /user/login of ${local.pfid}"
     condition_threshold {
       filter          = "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" AND resource.type=uptime_url AND resource.label.host=\"${replace(var.dns_external, "/\\.$/", "")}\""
-      duration        = "900s"
+      duration        = "420s"
       comparison      = "COMPARISON_GT"
       threshold_value = 0
       aggregations {
