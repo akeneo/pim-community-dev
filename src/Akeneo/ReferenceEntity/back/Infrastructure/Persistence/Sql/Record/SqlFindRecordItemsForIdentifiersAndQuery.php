@@ -121,7 +121,7 @@ SQL;
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['identifier'], $platform);
         $referenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['reference_entity_identifier'], $platform);
         $code = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['code'], $platform);
-        $valueCollection = ValuesDecoder::decode($normalizedRecordItem['value_collection']);
+        $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($normalizedRecordItem['value_collection'], $platform);
 
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($normalizedRecordItem['attribute_as_label'], $platform);
         $labels = $this->getLabels($valueCollection, $attributeAsLabel);

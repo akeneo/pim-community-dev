@@ -146,6 +146,8 @@ define(
                     this.currentView = view;
                     this.trigger('grid:view-selector:view-selected', view);
 
+                    ViewSelector.prototype.selectView.apply(this, [view]);
+
                     return this.reloadPageWithLocale(project.locale.code);
                 }
 

@@ -4,6 +4,7 @@
 
 - PIM-8263: inject correct presenter for `ProjectDueDateReminderNotifier`
 - PIM-8252: Fix ACL not applied on some other actions menus
+- PIM-8239: Display html tags in reference entity records grid
 
 # 3.0.10 (2019-03-28)
 
