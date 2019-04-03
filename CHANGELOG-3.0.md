@@ -1,5 +1,9 @@
 # 3.0.x
 
+# Bug fixes
+
+- PIM-8272: Fix "My account" product grid filter search on label
+
 # 3.0.11 (2019-04-02)
 
 # Bug fixes
