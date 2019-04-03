@@ -54,10 +54,10 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     protected $backendType;
 
-    /** @var \Datetime */
+    /** @var \DateTime */
     protected $created;
 
-    /** @var \Datetime */
+    /** @var \DateTime */
     protected $updated;
 
     /**
@@ -125,10 +125,10 @@ abstract class AbstractAttribute implements AttributeInterface
     /** @var bool */
     protected $negativeAllowed;
 
-    /** @var \Datetime */
+    /** @var \DateTime */
     protected $dateMin;
 
-    /** @var \Datetime */
+    /** @var \DateTime */
     protected $dateMax;
 
     /** @var string */

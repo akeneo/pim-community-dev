@@ -125,7 +125,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(\Datetime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -161,7 +161,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function setRepliedAt(\Datetime $repliedAt)
+    public function setRepliedAt(\DateTime $repliedAt)
     {
         $this->repliedAt = $repliedAt;
 

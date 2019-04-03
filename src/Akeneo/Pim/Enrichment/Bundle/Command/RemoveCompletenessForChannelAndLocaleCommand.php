@@ -67,7 +67,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
             sprintf(
                 '<info>[%s] Locales "%s" are removed from channel "%s". ' .
                 'Removing all related completenesses from products.</info>',
-                $this->getCurrentDatetime(),
+                $this->getCurrentDateTime(),
                 $input->getArgument('locales-identifier'),
                 $channelCode
             )
@@ -85,7 +85,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
         $output->writeln(
             sprintf(
                 '<info>[%s] User "%s" has been notified completenesses removal started.</info>',
-                $this->getCurrentDatetime(),
+                $this->getCurrentDateTime(),
                 $username
             )
         );
@@ -128,7 +128,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
             $this->getContainer()->get('pim_catalog.saver.locale')->saveAll($locales);
         }
         $output->writeln(
-            sprintf('<info>[%s] Related products completenesses removal done.</info>', $this->getCurrentDatetime())
+            sprintf('<info>[%s] Related products completenesses removal done.</info>', $this->getCurrentDateTime())
         );
 
         $doneNotif = $notificationFactory->create();
@@ -143,7 +143,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
         $output->writeln(
             sprintf(
                 '<info>[%s] User "%s" has been notified completenesses removal is finished.</info>',
-                $this->getCurrentDatetime(),
+                $this->getCurrentDateTime(),
                 $username
             )
         );
@@ -154,7 +154,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
      *
      * @return string
      */
-    private function getCurrentDatetime(): string
+    private function getCurrentDateTime(): string
     {
         $datetime = new \DateTime('now');
 
