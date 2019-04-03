@@ -18,8 +18,8 @@ define(
             inputValueSelector: 'input[name="value"]',
 
             events: {
-                'keydown input[name="value"]': 'runTimeout',
-                'keypress input[name="value"]': 'runTimeout'
+                'keydown input[name=value]': 'runTimeout',
+                'keypress input[name=value]': 'runTimeout'
             },
 
             emptyValue: {
@@ -45,6 +45,8 @@ define(
                         label: __('pim_datagrid.search', {label: this.label})
                     })
                 );
+
+                this.delegateEvents();
             },
 
             /**
@@ -95,12 +97,17 @@ define(
 
             /**
              * Appends filter to a grid
-            * */
+             * If .search-zone is not in the element that is to say it could be somewhere in the page.
+             */
             moveFilter: function(collection, element) {
-                if (element) {
+                if (element.$('.search-zone').length !== 0) {
                     element.$('.search-zone')
                     .empty()
                     .append(this.$el.get(0));
+                } else if ($('.edit-form .search-zone').length !== 0) {
+                    $('.edit-form .search-zone')
+                        .empty()
+                        .append(this.$el.get(0));
                 }
             }
         });

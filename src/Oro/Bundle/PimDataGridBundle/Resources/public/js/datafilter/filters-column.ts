@@ -2,12 +2,15 @@ import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 
 const __ = require('oro/translator');
+const filterColumnTemplate = require('pim/template/datagrid/filter-column');
+const filterGroupTemplate = require('pim/template/datagrid/filter-group');
 const mediator = require('oro/mediator');
 const Routing = require('routing');
 
 interface FiltersConfig {
   title: string;
   description: string;
+  attributeFiltersRoute: string;
 }
 
 interface GridFilter {
@@ -30,39 +33,8 @@ class FiltersColumn extends BaseView {
   public searchSelector: string;
 
   readonly config: FiltersConfig;
-  readonly template: string = `
-    <button type="button" class="AknFilterBox-addFilterButton" aria-haspopup="true" style="width: 280px" data-toggle>
-        <div><%- filtersLabel %></div>
-    </button>
-    <div class="filter-selector"><div>
-    <div class="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-addFilterButton AknFilterBox-column filter-list select-filter-widget pimmultiselect">
-        <div class="ui-multiselect-filter"><input placeholder="" type="search"></div>
-        <div class="AknLoadingMask loading-mask filter-loading" style="top: 50px"></div>
-        <div class="filters-column"></div>
-        <div class="AknColumn-bottomButtonContainer AknColumn-bottomButtonContainer--sticky"><div class="AknButton AknButton--apply close"><%- doneLabel %></div></div>    </div>
-  `;
-
-  readonly filterGroupTemplate: string = `
-    <ul class="ui-multiselect-checkboxes ui-helper-reset full">
-        <li class="ui-multiselect-optgroup-label">
-            <a><%- groupName %></a>
-        </li>
-        <% filters.forEach(filter => { %>
-          <li>
-              <label for="<%- filter.name %>" title="" class="ui-corner-all ui-state-hover">
-                  <input
-                  id="<%- filter.name %>"
-                  name="multiselect_add-filter-select"
-                  type="checkbox" value="<%- filter.name %>"
-                  title="<%- filter.label %>"
-                  <%- filter.enabled ? 'checked="checked"' : ''  %>
-                  <%- true === ignoredFilters.includes(filter.name) ? 'disabled="true"' : ''  %>
-                    aria-selected="true">
-                      <span><%- filter.label %></span>
-              </label>
-          </li>
-        <% }) %>
-    </ul>`;
+  readonly filterColumnTemplate = _.template(filterColumnTemplate);
+  readonly filterGroupTemplate = _.template(filterGroupTemplate);
 
   constructor(options: {config: FiltersConfig}) {
     super(options);
@@ -118,13 +90,13 @@ class FiltersColumn extends BaseView {
   getLocale(): string {
     const url = (<string>this.gridCollection.url).split('?')[1];
     const urlParams = this.gridCollection.decodeStateData(url);
-    const datagridParams = urlParams['product-grid'] || {};
+    const datagridParams = urlParams[this.gridCollection.inputName] || {};
     return urlParams['dataLocale'] || datagridParams['dataLocale'];
   }
 
   fetchFilters(search?: string | null, page: number = this.page) {
     const locale = this.getLocale();
-    const url = Routing.generate('pim_datagrid_productgrid_attributes_filters');
+    const url = Routing.generate(this.config.attributeFiltersRoute);
     return $.get(search ? `${url}?search=${search}&locale=${locale}` : `${url}?page=${page}&locale=${locale}`);
   }
 
@@ -274,19 +246,19 @@ class FiltersColumn extends BaseView {
     this.renderFilters();
   }
 
-  triggerFiltersUpdated() {
+  triggerFiltersUpdated(): void {
     mediator.trigger('filters-column:update-filters', this.loadedFilters, this.gridCollection);
   }
 
   renderFilterGroup(filters: GridFilter[], groupName: string): string {
-    return _.template(this.filterGroupTemplate)({
+    return this.filterGroupTemplate({
       filters,
       groupName,
       ignoredFilters: this.ignoredFilters,
     });
   }
 
-  groupFilters(filters: GridFilter[]) {
+  groupFilters(filters: GridFilter[]): any {
     return _.groupBy(filters, (filter: GridFilter) => filter.group || 'System');
   }
 
@@ -303,11 +275,11 @@ class FiltersColumn extends BaseView {
   render(): BaseView {
     $('.filter-list').remove();
 
-    this.$el.html(_.template(this.template)({
+    this.$el.html(this.filterColumnTemplate({
       filtersLabel: __('pim_datagrid.filters.label'),
       doneLabel: __('pim_common.done')
     }));
-    this.filterList = $('.filter-list').appendTo($('body'));
+    this.filterList = this.$el.find('.filter-list').appendTo($('body'));
 
     $(this.searchSelector, this.filterList).on('keyup search', this.searchFilters.bind(this));
     $('.filter-list', this.filterList).on('scroll', this.searchFilters.bind(this));
@@ -318,7 +290,7 @@ class FiltersColumn extends BaseView {
     return this;
   }
 
-  shutdown() {
+  shutdown(): void {
     $(this.filterList)
       .off()
       .remove();
@@ -326,11 +298,11 @@ class FiltersColumn extends BaseView {
     BaseView.prototype.shutdown.apply(this, arguments);
   }
 
-  showLoading() {
+  showLoading(): void {
     $('.filter-loading').show();
   }
 
-  hideLoading() {
+  hideLoading(): void {
     $('.filter-loading').hide();
   }
 }
