@@ -11,3 +11,8 @@
 ## Technical improvement
 
 ## BC breaks
+
+- DAPI-58: Add `Oro\Bundle\PimDataGridBundle\Query\ListAttributesUseableInProductGrid`,
+  `Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface` and
+  `Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension` to
+  `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductDraftController`

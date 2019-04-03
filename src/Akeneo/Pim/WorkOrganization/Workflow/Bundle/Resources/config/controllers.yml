@@ -63,6 +63,9 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.filter.chained'
             - '@pimee_enrich.repository.attribute.search'
+            - '@pimee_security.product_grid.query.list_attributes'
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
+            - '@pim_datagrid.extension.filter'
 
     pimee_workflow.controller.rest.product:
         class: '%pimee_workflow.controller.rest.product.class%'
