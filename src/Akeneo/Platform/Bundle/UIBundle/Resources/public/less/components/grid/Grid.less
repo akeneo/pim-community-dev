@@ -42,7 +42,6 @@
     line-height: 20px;
     padding: 12px 4px;
     transition: background 0.1s ease;
-    max-width: 100vh;
 
     &--tight {
       width: 1px;
@@ -87,6 +86,10 @@
 
   &-bodyCell {
     cursor: pointer;
+    white-space: nowrap;
+    max-width: 15vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &--flex {
       display: flex;
