@@ -104,11 +104,11 @@ services:
             - '%pim_catalog.model.category.interface%'
 
     pim_catalog.saver.channel:
-        class: '%pim_catalog.saver.base.class%'
+        class: 'Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ChannelSaver'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '%pim_catalog.model.channel.interface%'
+            - '@database_connection'
 
     pim_catalog.saver.locale:
         class: '%pim_catalog.saver.base.class%'

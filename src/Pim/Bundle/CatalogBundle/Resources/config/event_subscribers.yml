@@ -78,6 +78,13 @@ services:
         tags:
             - { name: kernel.event_subscriber}
 
+    pim_catalog.event_subscriber.clean_products_on_channel_locales_removal:
+        class: 'Pim\Bundle\CatalogBundle\EventSubscriber\Channel\CleanProductsOnChannelLocalesRemovalSubscriber'
+        arguments:
+            - 
+        tags:
+            - { name: kernel.event_subscriber }
+
     pim_catalog.event_subscriber.compute_product_raw_values:
         class: '%pim_catalog.event_subscriber.compute_product_raw_values.class%'
         arguments:
