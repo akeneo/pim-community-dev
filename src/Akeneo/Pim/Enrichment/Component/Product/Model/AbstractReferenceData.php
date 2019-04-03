@@ -52,12 +52,7 @@ abstract class AbstractReferenceData implements ReferenceDataInterface
         return $this->sortOrder;
     }
 
-    /**
-     * @param $sortOrder
-     *
-     * @return ReferenceDataInterface
-     */
-    public function setSortOrder($sortOrder)
+    public function setSortOrder(int $sortOrder): ReferenceDataInterface
     {
         $this->sortOrder = $sortOrder;
 

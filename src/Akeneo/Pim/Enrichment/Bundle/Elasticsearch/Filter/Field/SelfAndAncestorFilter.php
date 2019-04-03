@@ -113,7 +113,7 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
     /**
      * Checks the value we want to filter on is valid
      *
-     * @param $values
+     * @param mixed $values
      *
      * @throws ObjectNotFoundException
      */

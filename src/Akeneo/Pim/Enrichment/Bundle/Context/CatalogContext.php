@@ -34,7 +34,7 @@ class CatalogContext
     /**
      * @param string $code
      *
-     * @return catalogcontext
+     * @return CatalogContext
      */
     public function setLocaleCode($code)
     {
@@ -44,7 +44,7 @@ class CatalogContext
     /**
      * @param string $code
      *
-     * @return catalogcontext
+     * @return CatalogContext
      */
     public function setScopeCode($code)
     {

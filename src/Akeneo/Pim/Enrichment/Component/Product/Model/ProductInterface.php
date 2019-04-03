@@ -212,7 +212,7 @@ interface ProductInterface extends
     public function addUniqueData(ProductUniqueDataInterface $uniqueData);
 
     /**
-     * @param $data Collection
+     * @param Collection $data
      */
     public function setUniqueData(Collection $data): void;
 

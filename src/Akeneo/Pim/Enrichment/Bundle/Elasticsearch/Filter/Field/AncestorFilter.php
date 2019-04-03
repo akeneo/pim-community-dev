@@ -100,7 +100,7 @@ class AncestorFilter extends AbstractFieldFilter
     /**
      * Checks the value we want to filter on is valid
      *
-     * @param $values
+     * @param mixed $values
      *
      * @throws ObjectNotFoundException
      */
@@ -117,11 +117,6 @@ class AncestorFilter extends AbstractFieldFilter
         }
     }
 
-    /**
-     * @param string $value
-     *
-     * @return bool
-     */
     private function isValidId(string $value): bool
     {
         $id = str_replace('product_model_', '', $value);

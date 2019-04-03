@@ -44,7 +44,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
         AttributeInterface $attribute,
         $data,
         array $options = []
-    ) {
+    ): void {
         $options = $this->resolver->resolve($options);
         $this->checkData($attribute, $data);
 

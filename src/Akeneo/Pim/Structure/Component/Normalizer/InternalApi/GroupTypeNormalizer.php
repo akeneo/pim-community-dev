@@ -25,8 +25,8 @@ class GroupTypeNormalizer implements NormalizerInterface
     protected $structureVersionProvider;
 
     /**
-     * @param NormalizerInterface                $normalizer
-     * @param StructuredVersionProviderInterface $structureVersionProvider
+     * @param NormalizerInterface               $normalizer
+     * @param StructureVersionProviderInterface $structureVersionProvider
      */
     public function __construct(
         NormalizerInterface $normalizer,

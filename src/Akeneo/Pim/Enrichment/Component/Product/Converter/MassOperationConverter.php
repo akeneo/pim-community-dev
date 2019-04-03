@@ -114,11 +114,11 @@ class MassOperationConverter implements ConverterInterface
     /**
      * Return whether the current user has ACL to do the given modification $type on the product
      *
-     * @param $type
+     * @param string $type
      *
      * @return bool
      */
-    protected function checkAclForType($type)
+    protected function checkAclForType(string $type): bool
     {
         $acl = $this->getAclForType($type);
 
@@ -132,7 +132,7 @@ class MassOperationConverter implements ConverterInterface
      *
      * @return string|null
      */
-    protected function getAclForType($type)
+    protected function getAclForType(string $type): ?string
     {
         return isset($this->acls[$type]) ? $this->acls[$type] : null;
     }

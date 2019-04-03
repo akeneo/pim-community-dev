@@ -100,7 +100,7 @@ class ProductModelNormalizer implements NormalizerInterface
     /**
      * Get attribute codes of the given entity with family variant.
      *
-     * @param $entityWithFamilyVariant
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
      *
      * @return string[]
      */

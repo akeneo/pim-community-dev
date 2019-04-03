@@ -45,7 +45,6 @@ class ProductController extends AbstractListCategoryController
      * @param ProductRepositoryInterface            $productRepository
      * @param CategoryRepositoryInterface           $categoryRepository
      * @param SaverInterface                        $productSaver
-     * @param ProductBuilderInterface               $productBuilder
      * @param MissingAssociationAdder               $missingAssociationAdder
      * @param EntityWithFamilyValuesFillerInterface $valuesFiller
      * @param SecurityFacade                        $securityFacade

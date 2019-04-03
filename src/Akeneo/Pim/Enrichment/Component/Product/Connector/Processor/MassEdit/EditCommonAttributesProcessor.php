@@ -140,13 +140,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         return $product;
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param $attributeCode
-     *
-     * @return bool
-     */
-    protected function isAttributeEditable(ProductInterface $product, $attributeCode)
+    protected function isAttributeEditable(ProductInterface $product, string $attributeCode): bool
     {
         if (!$this->productRepository->hasAttributeInFamily($product->getId(), $attributeCode)) {
             return false;

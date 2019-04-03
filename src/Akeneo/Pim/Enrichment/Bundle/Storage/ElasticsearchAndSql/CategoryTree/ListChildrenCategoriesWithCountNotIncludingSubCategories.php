@@ -124,6 +124,8 @@ class ListChildrenCategoriesWithCountNotIncludingSubCategories implements Query\
      *         'label' => 'label'
      *     ]
      * ]
+     *
+     * @throws \Doctrine\DBAL\DBALException
      */
     private function fetchChildrenCategories(
         int $parentCategoryId,
@@ -165,8 +167,7 @@ SQL;
     }
 
     /**
-     * @param int array $categoriesWithoutCount
-     *
+     * @param array $categoriesWithoutCount
      * [
      *     [
      *         'child_id' => 1,
@@ -242,6 +243,8 @@ SQL;
      * @param int $toCategoryId
      *
      * @return string[]
+     *
+     * @throws \Doctrine\DBAL\DBALException
      */
     private function fetchCategoriesBetween(int $fromCategoryId, int $toCategoryId): array
     {

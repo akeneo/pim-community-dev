@@ -57,7 +57,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
         AttributeInterface $attribute,
         $data,
         array $options = []
-    ) {
+    ): void {
         $options = $this->resolver->resolve($options);
 
         if (!is_array($data)) {

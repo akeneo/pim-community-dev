@@ -109,11 +109,6 @@ class RequiredValueCollection implements \Countable, \IteratorAggregate
         return count($this->values);
     }
 
-    /**
-     * @param RequiredValue $value
-     *
-     * @return string
-     */
     private function buildInternalKey(RequiredValue $requiredValue): string
     {
         $channelCode = null !== $requiredValue->channel() ? $requiredValue->channel() : '<all_channels>';

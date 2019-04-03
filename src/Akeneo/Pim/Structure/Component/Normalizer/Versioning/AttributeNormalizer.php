@@ -43,10 +43,6 @@ class AttributeNormalizer implements NormalizerInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @param $attribute AttributeInterface
-     *
-     * @return array
      */
     public function normalize($attribute, $format = null, array $context = [])
     {
@@ -78,14 +74,7 @@ class AttributeNormalizer implements NormalizerInterface
         return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param AttributeInterface $object
-     *
-     * @return array
-     */
-    protected function normalizeOptions(AttributeInterface $attribute)
+    protected function normalizeOptions(AttributeInterface $attribute): array
     {
         $options = $attribute->getOptions();
 

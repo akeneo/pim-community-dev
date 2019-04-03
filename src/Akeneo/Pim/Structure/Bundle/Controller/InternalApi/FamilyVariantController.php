@@ -129,7 +129,6 @@ class FamilyVariantController
      * @param string $identifier
      *
      * @return JsonResponse
-     * @throws HttpExceptionInterface
      */
     public function getAction(string $identifier): JsonResponse
     {
@@ -165,7 +164,6 @@ class FamilyVariantController
      * @param string  $identifier
      *
      * @return Response
-     * @throws HttpExceptionInterface
      */
     public function putAction(Request $request, string $identifier): Response
     {
@@ -184,8 +182,6 @@ class FamilyVariantController
      * @param         $familyVariantCode
      *
      * @return JsonResponse
-     *
-     * @throws HttpExceptionInterface
      *
      * @AclAncestor("pim_enrich_family_variant_remove")
      */
@@ -217,8 +213,6 @@ class FamilyVariantController
      * Gets familyVariant using its code
      *
      * @param string $code
-     *
-     * @throws HttpExceptionInterface
      *
      * @return FamilyVariantInterface
      */

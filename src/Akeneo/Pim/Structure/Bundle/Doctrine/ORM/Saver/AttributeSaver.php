@@ -86,9 +86,6 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($attributes, $options));
     }
 
-    /**
-     * @param $attribute
-     */
     protected function validateAttribute($attribute)
     {
         if (!$attribute instanceof AttributeInterface) {

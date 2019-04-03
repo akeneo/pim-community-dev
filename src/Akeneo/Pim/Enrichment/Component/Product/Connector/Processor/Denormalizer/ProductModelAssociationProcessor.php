@@ -150,7 +150,7 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
      *
      * @return null|ProductModelInterface
      *
-     * @throws \Akeneo\Component\Batch\Item\InvalidItemException
+     * @throws \Akeneo\Tool\Component\Batch\Item\InvalidItemException
      */
     public function findEntity(string $identifier, array $item): ?ProductModelInterface
     {

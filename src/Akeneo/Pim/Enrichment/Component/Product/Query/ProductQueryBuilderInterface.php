@@ -61,7 +61,7 @@ interface ProductQueryBuilderInterface
     /**
      * Set query builder
      *
-     * @param SearchQueryBuilder
+     * @param mixed $queryBuilder
      *
      * @return ProductQueryBuilderInterface
      */

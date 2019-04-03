@@ -207,13 +207,13 @@ class AttributeUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param $attribute
-     * @param $field
-     * @param $data
+     * @param AttributeInterface $attribute
+     * @param string             $field
+     * @param mixed              $data
      *
      * @throws UnknownPropertyException
      */
-    protected function setValue($attribute, $field, $data)
+    protected function setValue(AttributeInterface $attribute, $field, $data)
     {
         try {
             $this->accessor->setValue($attribute, $field, $data);
@@ -274,12 +274,12 @@ class AttributeUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param $attribute
-     * @param $data
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
      *
      * @throws InvalidPropertyException
      */
-    protected function setType($attribute, $data)
+    protected function setType(AttributeInterface $attribute, $data)
     {
         if (('' === $data) || (null === $data)) {
             throw InvalidPropertyException::valueNotEmptyExpected('type', static::class);

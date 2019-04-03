@@ -21,6 +21,14 @@ interface ValueFactoryInterface
     /**
      * This method effectively creates a product value and directly set the data.
      * Channel and locale codes validity MUST HAVE BEEN checked BEFORE.
+     *
+     * @param AttributeInterface $attribute
+     * @param null|string        $channelCode
+     * @param null|string        $localeCode
+     * @param mixed              $data
+     * @param bool               $ignoreUnknownData
+     *
+     * @return ValueInterface
      */
     public function create(
         AttributeInterface $attribute,

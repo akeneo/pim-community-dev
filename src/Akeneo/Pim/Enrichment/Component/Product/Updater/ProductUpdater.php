@@ -144,13 +144,7 @@ class ProductUpdater implements ObjectUpdaterInterface
         return $this;
     }
 
-    /**
-     * @param                  $field
-     * @param                  $data
-     * @param array            $context
-     * @return array
-     */
-    protected function filterData($field, $data, array $context = [])
+    protected function filterData(string $field, $data, array $context = [])
     {
         switch ($field) {
             case 'associations':
@@ -164,13 +158,7 @@ class ProductUpdater implements ObjectUpdaterInterface
         return $data;
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param                  $field
-     * @param                  $data
-     * @param array            $options
-     */
-    protected function setData(ProductInterface $product, $field, $data, array $options = []): void
+    protected function setData(ProductInterface $product, string $field, $data, array $options = []): void
     {
         switch ($field) {
             case 'enabled':
@@ -198,13 +186,6 @@ class ProductUpdater implements ObjectUpdaterInterface
         }
     }
 
-    /**
-     * Validate association data
-     *
-     * @param $data
-     *
-     * @throws InvalidPropertyTypeException
-     */
     protected function validateAssociationsDataType($data): void
     {
         if (!is_array($data)) {
@@ -232,14 +213,6 @@ class ProductUpdater implements ObjectUpdaterInterface
         }
     }
 
-    /**
-     * Validate association data
-     *
-     * @param array $associations
-     * @param array $parentAssociations
-     *
-     * @return array
-     */
     protected function filterParentAssociations(array $associations, ?array $parentAssociations): array
     {
         if (null === $parentAssociations) {
@@ -254,30 +227,14 @@ class ProductUpdater implements ObjectUpdaterInterface
         return $associations;
     }
 
-    /**
-     * Validate that it is a scalar value.
-     *
-     * @param $field
-     * @param $data
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function validateScalar($field, $data): void
+    protected function validateScalar(string $field, $data): void
     {
         if (null !== $data && !is_scalar($data)) {
             throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
         }
     }
 
-    /**
-     * Validate that it is an array with scalar values.
-     *
-     * @param string $field
-     * @param mixed  $data
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function validateScalarArray($field, $data): void
+    protected function validateScalarArray(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
@@ -295,14 +252,7 @@ class ProductUpdater implements ObjectUpdaterInterface
         }
     }
 
-    /**
-     * Sets the field
-     *
-     * @param ProductInterface $product
-     * @param string           $field
-     * @param mixed            $value
-     */
-    protected function updateProductFields(ProductInterface $product, $field, $value): void
+    protected function updateProductFields(ProductInterface $product, string $field, $value): void
     {
         $this->propertySetter->setData($product, $field, $value);
     }

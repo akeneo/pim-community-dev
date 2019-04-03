@@ -175,13 +175,13 @@ class AssociationTypeController
     /**
      * Finds association type by code or throws not found exception
      *
-     * @param $code
+     * @param string $code
      *
      * @throws NotFoundHttpException
      *
      * @return AssociationTypeInterface
      */
-    protected function getAssociationTypeOr404($code)
+    protected function getAssociationTypeOr404(string $code)
     {
         $associationType = $this->associationTypeRepo->findOneByIdentifier($code);
         if (null === $associationType) {

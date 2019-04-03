@@ -90,7 +90,7 @@ class ProductPdfRenderer implements RendererInterface
             $context,
             [
                 'product'           => $object,
-                'groupedAttributes' => $this->getGroupedAttributes($object, $context['locale']),
+                'groupedAttributes' => $this->getGroupedAttributes($object),
                 'imagePaths'        => $imagePaths,
                 'customFont'        => $this->customFont
             ]
@@ -113,15 +113,7 @@ class ProductPdfRenderer implements RendererInterface
         return $object instanceof ProductInterface && $format === static::PDF_FORMAT;
     }
 
-    /**
-     * Get attributes codes to display
-     *
-     * @param ProductInterface $product
-     * @param string           $locale
-     *
-     * @return
-     */
-    protected function getAttributeCodes(ProductInterface $product, $locale)
+    protected function getAttributeCodes(ProductInterface $product): array
     {
         return $product->getUsedAttributeCodes();
     }
@@ -130,15 +122,14 @@ class ProductPdfRenderer implements RendererInterface
      * get attributes grouped by attribute group
      *
      * @param ProductInterface $product
-     * @param string           $locale
      *
      * @return AttributeInterface[]
      */
-    protected function getGroupedAttributes(ProductInterface $product, $locale)
+    protected function getGroupedAttributes(ProductInterface $product)
     {
         $groups = [];
 
-        foreach ($this->getAttributeCodes($product, $locale) as $attributeCode) {
+        foreach ($this->getAttributeCodes($product) as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             if (null !== $attribute) {
@@ -167,7 +158,7 @@ class ProductPdfRenderer implements RendererInterface
     {
         $imagePaths = [];
 
-        foreach ($this->getAttributeCodes($product, $locale) as $attributeCode) {
+        foreach ($this->getAttributeCodes($product) as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             if (null !== $attribute && AttributeTypes::IMAGE === $attribute->getType()) {
