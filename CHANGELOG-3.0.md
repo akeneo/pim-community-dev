@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8233: Display the label instead of the code for reference entity axes in the product edit form
+
 # 3.0.11 (2019-04-02)
 
 ## Bug fixes
