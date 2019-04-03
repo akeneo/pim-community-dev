@@ -80,6 +80,7 @@ Pim\Component\Catalog\Model\Product:
                 - detach
         completenesses:
             targetEntity: Pim\Component\Catalog\Model\CompletenessInterface
+            orphanRemoval: true
             mappedBy: product
             cascade:
                 - remove
