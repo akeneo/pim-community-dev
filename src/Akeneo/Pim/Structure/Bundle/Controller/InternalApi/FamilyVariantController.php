@@ -179,13 +179,13 @@ class FamilyVariantController
 
     /**
      * @param Request $request
-     * @param         $familyVariantCode
+     * @param string  $familyVariantCode
      *
      * @return JsonResponse
      *
      * @AclAncestor("pim_enrich_family_variant_remove")
      */
-    public function removeAction(Request $request, $familyVariantCode)
+    public function removeAction(Request $request, string $familyVariantCode)
     {
         if (!$request->isXmlHttpRequest()) {
             return new JsonResponse(['message' => 'An error occurred.', 'global' => true], Response::HTTP_BAD_REQUEST);
