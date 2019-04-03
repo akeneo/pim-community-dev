@@ -128,7 +128,7 @@ class MassOperationConverter implements ConverterInterface
     /**
      * Return which ACL should be used to filter data of specified type.
      *
-     * @param string
+     * @param string $type
      *
      * @return string|null
      */

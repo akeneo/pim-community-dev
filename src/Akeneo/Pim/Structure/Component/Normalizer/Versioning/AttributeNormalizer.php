@@ -54,7 +54,7 @@ class AttributeNormalizer implements NormalizerInterface
         $flatAttribute['locale_specific'] = $attribute->isLocaleSpecific();
 
         unset($flatAttribute['labels']);
-        $flatAttribute += $this->translationNormalizer->normalize($standardAttribute['labels'], 'flat', $context);
+        $flatAttribute += $this->normalizeTranslations($standardAttribute['labels'], $context);
 
         $flatAttribute['options'] = $this->normalizeOptions($attribute);
 
@@ -74,20 +74,24 @@ class AttributeNormalizer implements NormalizerInterface
         return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
     }
 
-    protected function normalizeOptions(AttributeInterface $attribute): array
+    protected function normalizeOptions(AttributeInterface $attribute): ?string
     {
         $options = $attribute->getOptions();
-
         if ($options->isEmpty()) {
-            $options = null;
-        } else {
-            $data = [];
-            foreach ($options as $option) {
-                $data[] = 'Code:' . $option->getCode();
-            }
-            $options = implode(self::GROUP_SEPARATOR, $data);
+            return null;
         }
 
+        $data = [];
+        foreach ($options as $option) {
+            $data[] = 'Code:' . $option->getCode();
+        }
+        $options = implode(self::GROUP_SEPARATOR, $data);
+
         return $options;
+    }
+
+    private function normalizeTranslations(array $labels, array $context): array
+    {
+        return $this->translationNormalizer->normalize($labels, 'flat', $context);
     }
 }

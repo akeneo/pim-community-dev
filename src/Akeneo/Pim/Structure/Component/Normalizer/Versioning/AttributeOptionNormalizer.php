@@ -36,18 +36,22 @@ class AttributeOptionNormalizer extends BaseNormalizer
             ];
         }
 
-        $attributeOption = parent::normalize($object, $format, $context);
-
+        $attributeOption = $this->normalizeAttributeOption($object, $format, $context);
         unset($attributeOption['labels']);
-        $attributeOption+= $this->normalizeLabels($object, $context);
+        $attributeOption += $this->normalizeLabels($object, $context);
 
         return $attributeOption;
+    }
+
+    private function normalizeAttributeOption($object, ?string $format, array $context): array
+    {
+        return parent::normalize($object, $format, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function normalizeLabels(AttributeOptionInterface $entity, $context)
+    protected function normalizeLabels(AttributeOptionInterface $entity, $context): array
     {
         $labels = [];
         $locales = isset($context['locales']) ? $context['locales'] : [];

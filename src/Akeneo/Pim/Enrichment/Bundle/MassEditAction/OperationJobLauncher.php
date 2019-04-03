@@ -3,9 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Bundle\MassEditAction;
 
 use Akeneo\Pim\Enrichment\Bundle\MassEditAction\Operation\BatchableOperationInterface;
-use Akeneo\Pim\Enrichment\Bundle\MassEditAction\Operation\ConfigurableOperationInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
@@ -59,11 +59,16 @@ class OperationJobLauncher
             throw new NotFoundResourceException(sprintf('No JobInstance found with code "%s"', $jobInstanceCode));
         }
 
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->retrieveUser();
 
         $configuration = $operation->getBatchConfig();
         $configuration['user_to_notify'] = $user->getUsername();
 
         $this->jobLauncher->launch($jobInstance, $user, $configuration);
+    }
+
+    private function retrieveUser(): UserInterface
+    {
+        return $this->tokenStorage->getToken()->getUser();
     }
 }

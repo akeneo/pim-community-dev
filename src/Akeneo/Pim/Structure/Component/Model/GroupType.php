@@ -108,7 +108,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation($locale = null)
+    public function getTranslation(?string $locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {
