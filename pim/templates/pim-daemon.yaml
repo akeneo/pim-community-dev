@@ -25,6 +25,7 @@ spec:
       labels:
         component: {{ template "pim.fullName" . }}
         role: pim-daemon
+        nfs-recovery: "true"
         {{ include "pim.extraLabels" . | indent 8 }}
     spec:
       affinity:
@@ -45,6 +46,18 @@ spec:
           command: ['sh', '-c', 'export HOME=/var/www/ && su -m -l www-data -s /bin/bash -c "php bin/console akeneo:batch:job-queue-consumer-daemon"']
           resources:
 {{ toYaml .Values.pim.resources | indent 12 }}
+          readinessProbe:
+            exec:
+              command:
+              - timeout
+              - "1"
+              - touch
+              - /data/readinessProbeNFS
+            failureThreshold: 1
+            initialDelaySeconds: 1
+            periodSeconds: 1
+            successThreshold: 1
+            timeoutSeconds: 1
           volumeMounts:
             - name: fpm-data
               mountPath: /data

@@ -1,9 +1,9 @@
 dependencies:
 - name: mysql
-  version: "1.1.2"
+  version: "1.1.3"
   repository: "gs://akeneo-charts/"
 - name: elasticsearch
-  version: "1.19.1"
+  version: "1.21.3"
   repository: "@stable"
 - name: nfs-server-provisioner
   version: "0.2.1"
@@ -12,4 +12,3 @@ dependencies:
 - name: memcached
   version: "2.6.0"
   repository: "@stable"
-  
