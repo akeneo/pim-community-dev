@@ -2,10 +2,11 @@
 
 namespace Akeneo\Tool\Component\FileStorage\File;
 
-use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Query\FindKeyByHashQuery;
+use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Query\FindKeyByHashAndNameQuery;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\MountManager;
@@ -32,35 +33,28 @@ class FileStorer implements FileStorerInterface
     /** @var FileInfoFactoryInterface */
     protected $factory;
 
-    /** @var FindKeyByHashQuery */
-    private $findKeyByHashQuery;
+    /** @var FindKeyByHashAndNameQuery */
+    private $findKeyByHashAndNameQuery;
 
-    // TODO on 3.1, remove the null default value
     public function __construct(
         MountManager $mountManager,
         SaverInterface $saver,
         FileInfoFactoryInterface $factory,
-        ?FindKeyByHashQuery $findKeyByHashQuery = null
+        FindKeyByHashAndNameQuery $findKeyByHashAndNameQuery
     ) {
         $this->mountManager = $mountManager;
         $this->saver = $saver;
         $this->factory = $factory;
-        $this->findKeyByHashQuery = $findKeyByHashQuery;
+        $this->findKeyByHashAndNameQuery = $findKeyByHashAndNameQuery;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false)
+    public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false): FileInfoInterface
     {
-        $filesystem = $this->mountManager->getFilesystem($destFsAlias);
         $file = $this->factory->createFromRawFile($localFile, $destFsAlias);
-
-        // TODO on 3.1, remove the null test
-        $existingFileKey = null;
-        if (null !== $this->findKeyByHashQuery) {
-            $existingFileKey = $this->findKeyByHashQuery->fetchKey($file->getHash());
-        }
+        $existingFileKey = $this->findKeyByHashAndNameQuery->fetchKey($file->getHash(), $file->getOriginalFilename());
 
         if (null === $existingFileKey) {
             $error = sprintf(
@@ -79,6 +73,7 @@ class FileStorer implements FileStorerInterface
                 if (null !== $mimeType) {
                     $options['ContentType'] = $mimeType;
                 }
+                $filesystem = $this->mountManager->getFilesystem($destFsAlias);
                 $isFileWritten = $filesystem->writeStream($file->getKey(), $resource, $options);
             } catch (FileExistsException $e) {
                 throw new FileTransferException($error, $e->getCode(), $e);

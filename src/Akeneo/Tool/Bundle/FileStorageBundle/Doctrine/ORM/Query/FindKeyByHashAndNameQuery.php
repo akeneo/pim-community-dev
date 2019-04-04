@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FindKeyByHashQuery
+class FindKeyByHashAndNameQuery
 {
     /** @var Connection */
     private $connection;
@@ -21,13 +21,15 @@ class FindKeyByHashQuery
         $this->connection = $connection;
     }
 
-    public function fetchKey(string $hash): ?string
+    public function fetchKey(string $hash, string $originalFilename): ?string
     {
         $qb = $this->connection->createQueryBuilder()
             ->select('file_key')
             ->from('akeneo_file_storage_file_info')
             ->where('hash = :hash')
-            ->setParameter(':hash', $hash, \PDO::PARAM_STR);
+            ->andWhere('original_filename = :filename')
+            ->setParameter(':hash', $hash, \PDO::PARAM_STR)
+            ->setParameter(':filename', $originalFilename, \PDO::PARAM_STR);
 
         $fileKey = $qb->execute()->fetchColumn();
 

@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\FileStorage\File;
 
-use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Query\FindKeyByHashQuery;
+use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Query\FindKeyByHashAndNameQuery;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
@@ -20,9 +20,9 @@ class FileStorerSpec extends ObjectBehavior
         MountManager $mountManager,
         SaverInterface $saver,
         FileInfoFactoryInterface $factory,
-        FindKeyByHashQuery $findKeyByHashQuery
+        FindKeyByHashAndNameQuery $findKeyByHashAndNameQuery
     ) {
-        $this->beConstructedWith($mountManager, $saver, $factory, $findKeyByHashQuery);
+        $this->beConstructedWith($mountManager, $saver, $factory, $findKeyByHashAndNameQuery);
     }
 
     function it_stores_a_raw_file(
@@ -32,12 +32,13 @@ class FileStorerSpec extends ObjectBehavior
         \SplFileInfo $rawFile,
         Filesystem $fs,
         FileInfoInterface $fileInfo,
-        FindKeyByHashQuery $findKeyByHashQuery
+        FindKeyByHashAndNameQuery $findKeyByHashQuery
     ) {
         $fileInfo->getHash()->willReturn('my_sha1');
         $fileInfo->getMimeType()->willReturn(null);
         $fileInfo->getKey()->willReturn('m/y/my_key');
-        $findKeyByHashQuery->fetchKey('my_sha1')->willReturn(null);
+        $fileInfo->getOriginalFilename()->willReturn('my file.php');
+        $findKeyByHashQuery->fetchKey('my_sha1', 'my file.php')->willReturn(null);
         $localPathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my file.php';
         touch($localPathname);
         $rawFile->getPathname()->willReturn($localPathname);
@@ -65,19 +66,20 @@ class FileStorerSpec extends ObjectBehavior
         \SplFileInfo $rawFile,
         Filesystem $fs,
         FileInfoInterface $fileInfo,
-        FindKeyByHashQuery $findKeyByHashQuery
+        FindKeyByHashAndNameQuery $findKeyByHashAndNameQuery
     ) {
         $fileInfo->getHash()->willReturn('my_sha1');
         $fileInfo->getMimeType()->willReturn(null);
         $fileInfo->getKey()->willReturn('m/y/my_key');
-
-        $findKeyByHashQuery->fetchKey('my_sha1')->willReturn('m/y/my_key');
-        $fileInfo->setKey('m/y/my_key')->shouldBeCalledOnce();
+        $fileInfo->getOriginalFilename()->willReturn('my_existing_file.txt');
 
         $localPathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my_existing_file.txt';
         touch($localPathname);
         $rawFile->getPathname()->willReturn($localPathname);
         $fs->has(Argument::any())->willReturn(false);
+
+        $findKeyByHashAndNameQuery->fetchKey('my_sha1', 'my_existing_file.txt')->willReturn('m/y/my_key');
+        $fileInfo->setKey('m/y/my_key')->shouldBeCalledOnce();
 
         $mountManager->getFilesystem('destination')->willReturn($fs);
         $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
@@ -97,12 +99,13 @@ class FileStorerSpec extends ObjectBehavior
         \SplFileInfo $rawFile,
         Filesystem $fs,
         FileInfoInterface $fileInfo,
-        FindKeyByHashQuery $findKeyByHashQuery
+        FindKeyByHashAndNameQuery $findKeyByHashQuery
     ) {
         $fileInfo->getHash()->willReturn('my_sha1');
         $fileInfo->getMimeType()->willReturn(null);
         $fileInfo->getKey()->willReturn('m/y/my_key');
-        $findKeyByHashQuery->fetchKey('my_sha1')->willReturn(null);
+        $fileInfo->getOriginalFilename()->willReturn('my file.php');
+        $findKeyByHashQuery->fetchKey('my_sha1', 'my file.php')->willReturn(null);
         $localPathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my file.php';
         touch($localPathname);
         $rawFile->getPathname()->willReturn($localPathname);
@@ -132,6 +135,7 @@ class FileStorerSpec extends ObjectBehavior
         $fileInfo->getHash()->willReturn('my_sha1');
         $fileInfo->getMimeType()->willReturn(null);
         $fileInfo->getKey()->willReturn('m/y/my_key');
+        $fileInfo->getOriginalFilename()->willReturn('my_file');
         $rawFile->getPathname()->willReturn(__FILE__);
         $mountManager->getFilesystem('destination')->willReturn($fs);
         $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
@@ -152,12 +156,13 @@ class FileStorerSpec extends ObjectBehavior
         \SplFileInfo $rawFile,
         Filesystem $fs,
         FileInfoInterface $fileInfo,
-        FindKeyByHashQuery $findKeyByHashQuery
+        FindKeyByHashAndNameQuery $findKeyByHashQuery
     ) {
         $fileInfo->getHash()->willReturn('my_sha1');
         $fileInfo->getMimeType()->willReturn(null);
         $fileInfo->getKey()->willReturn('m/y/my_key');
-        $findKeyByHashQuery->fetchKey('my_sha1')->willReturn(null);
+        $fileInfo->getOriginalFilename()->willReturn('my_file.txt');
+        $findKeyByHashQuery->fetchKey('my_sha1', 'my_file.txt')->willReturn(null);
         $rawFile->getPathname()->willReturn(__FILE__);
         $fs->has(Argument::any())->willReturn(true);
         $fs->writeStream(Argument::cetera())->willThrow(new FileExistsException('The file exists.'));

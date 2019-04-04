@@ -32,5 +32,5 @@ interface FileStorerInterface
      *
      * @return FileInfoInterface
      */
-    public function store(\SplFileInfo $rawFile, $destFsAlias, $deleteRawFile = false);
+    public function store(\SplFileInfo $rawFile, $destFsAlias, $deleteRawFile = false): FileInfoInterface;
 }

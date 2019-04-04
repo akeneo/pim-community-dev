@@ -48,7 +48,6 @@ abstract class TestCase extends KernelTestCase
         $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
         $authenticator->createSystemUser();
         $this->get('doctrine.orm.default_entity_manager')->clear();
-
     }
 
     /**
