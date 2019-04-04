@@ -69,7 +69,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
         $codeLabelFilter = ($query->hasFilter('code_label')) ? $query->getFilter('code_label') : null;
         $completeFilter = ($query->hasFilter('complete')) ? $query->getFilter('complete') : null;
         $updatedFilter = ($query->hasFilter('updated')) ? $query->getFilter('updated'): null;
-        $attributeFilter = ($query->hasFilter('values.*')) ? $query->getFilter('values.*') : null;
+        $attributeFilters = ($query->hasFilter('values.*')) ? $query->getValuesFilters('values.*') : null;
 
         $records = array_values(array_filter($this->records, function (Record $record) use ($referenceEntityFilter) {
             return '' === $referenceEntityFilter['value']
@@ -165,21 +165,23 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             return $recordDate >= $updatedSinceDate;
         }));
 
-        $records = array_values(array_filter($records, function (Record $record) use ($attributeFilter) {
-            if (null === $attributeFilter) {
+        $records = array_values(array_filter($records, function (Record $record) use ($attributeFilters) {
+            if (null === $attributeFilters) {
                 return true;
             }
 
-            $attributeIdentifier = substr($attributeFilter['field'], 7);
-            $value = $record->getValues()->findValue(ValueKey::createFromNormalized($attributeIdentifier));
+            foreach ($attributeFilters as $attributeFilter) {
+                $attributeIdentifier = substr($attributeFilter['field'], 7);
+                $value = $record->getValues()->findValue(ValueKey::createFromNormalized($attributeIdentifier));
 
-            if (null === $value) {
-                return false;
+                if (null === $value) {
+                    return false;
+                }
+
+                $data = (is_array($value->getData()->normalize())) ? $value->getData()->normalize() : [$value->getData()->normalize()];
+
+                return $attributeFilter['value'] === $data;
             }
-
-            $data = (is_array($value->getData()->normalize())) ? $value->getData()->normalize() : [$value->getData()->normalize()];
-
-            return $attributeFilter['value'] === $data;
         }));
 
         if ($query->isPaginatedUsingSearchAfter()) {
