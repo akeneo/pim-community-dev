@@ -1,6 +1,5 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Query;
 namespace Akeneo\Tool\Component\FileStorage\Query;
 
 /**
