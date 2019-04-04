@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\RefreshProjectCompletenessJobLauncher;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
@@ -37,19 +38,25 @@ class CatalogUpdatesSubscriber implements EventSubscriberInterface
     /** @var RefreshProjectCompletenessJobLauncher */
     protected $jobLauncher;
 
+    /** @var CatalogContext */
+    protected $catalogContext;
+
     /**
      * @param ChainedProjectRemover                 $chainedProjectRemover
      * @param RefreshProjectCompletenessJobLauncher $jobLauncher
      * @param RequestStack                          $requestStack
+     * @param CatalogContext                        $catalogContext
      */
     public function __construct(
         ChainedProjectRemover $chainedProjectRemover,
         RefreshProjectCompletenessJobLauncher $jobLauncher,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        CatalogContext $catalogContext
     ) {
         $this->chainedProjectRemover = $chainedProjectRemover;
         $this->requestStack = $requestStack;
         $this->jobLauncher = $jobLauncher;
+        $this->catalogContext = $catalogContext;
     }
 
     /**
@@ -88,8 +95,8 @@ class CatalogUpdatesSubscriber implements EventSubscriberInterface
 
         $this->jobLauncher->launch(
             $product,
-            $product->getScope(),
-            $product->getLocale()
+            $this->catalogContext->getScopeCode(),
+            $this->catalogContext->getLocaleCode()
         );
     }
 

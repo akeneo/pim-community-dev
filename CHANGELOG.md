@@ -16,3 +16,5 @@
   `Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface` and
   `Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension` to
   `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductDraftController`
+- methods `getScope()` `setScope()`, `getLocale()` and `setLocale()` were removed from `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct`
+- Change constructor of `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\CatalogUpdatesSubscriber`. Add argument `Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext`
