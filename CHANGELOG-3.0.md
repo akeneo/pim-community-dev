@@ -2,6 +2,12 @@
 
 # Bug fixes
 
+- PIM-8239: Set latest doctrine migration during fresh install to be consistent with database state
+
+# 3.0.11 (2019-04-02)
+
+# Bug fixes
+
 - PIM-8258: Fix missing translation for "copy none"
 - PXD-98: Fix panel content size for filters selector column
 - PIM-8252: Add ACL on the edit import/export profile button and grid buttons
@@ -9,7 +15,8 @@
 - PIM-8271: Fix import/export delete translation
 - PIM-8264: Fix multiselect style
 - PIM-8265: Fix blinking display selector on products page 
- 
+- PIM-8259: add a max width and a title attribute to the label field in the product grid
+
 # 3.0.10 (2019-03-28)
 
 # Bug fixes
