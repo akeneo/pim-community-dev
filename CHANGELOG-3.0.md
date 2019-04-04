@@ -1,5 +1,9 @@
 # 3.0.x
 
+# Bug fixes
+
+- PIM-8239: Set latest doctrine migration during fresh install to be consistent with database state
+
 # 3.0.11 (2019-04-02)
 
 # Bug fixes
