@@ -6,18 +6,23 @@ namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydr
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydratorInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
 class RecordDetailsHydratorSpec extends ObjectBehavior
 {
-    public function let(ValueHydratorInterface $valueHydrator, Connection $connection)
-    {
+    public function let(
+        Connection $connection,
+        FindCodesByIdentifiersInterface $findCodesByIdentifiers,
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+    ) {
         $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
-        $this->beConstructedWith($connection, $valueHydrator);
+        $this->beConstructedWith($connection, $findCodesByIdentifiers, $findValueKeysByAttributeType);
     }
 
     public function it_is_initializable()
@@ -25,8 +30,13 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
         $this->shouldHaveType(RecordDetailsHydratorInterface::class);
     }
 
-    public function it_hydrates_a_record_details()
+    public function it_hydrates_a_record_details(FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType)
     {
+        $findValueKeysByAttributeType->find(
+            ReferenceEntityIdentifier::fromString('game'),
+            ['record', 'record_collection']
+        )->willReturn([]);
+
         $recordDetails = $this->hydrate(
             [
                 'identifier'                  => 'wow_game_A8E76F8A76E87F6A',
@@ -95,9 +105,15 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
     }
 
     public function it_hydrates_a_record_details_with_values(
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
         TextAttribute $gameDescription,
         AttributeIdentifier $gameDescriptionIdentifier
     ) {
+        $findValueKeysByAttributeType->find(
+            ReferenceEntityIdentifier::fromString('game'),
+            ['record', 'record_collection']
+        )->willReturn([]);
+
         $gameDescriptionIdentifier->normalize()->willReturn('description_game_fingerprint');
         $gameDescription->getIdentifier()->willReturn($gameDescriptionIdentifier);
 
@@ -203,8 +219,13 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
         $recordDetails->normalize()['values']->shouldBe($expectedValues);
     }
 
-    public function it_does_not_keep_unexpected_values()
+    public function it_does_not_keep_unexpected_values(FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType)
     {
+        $findValueKeysByAttributeType->find(
+            ReferenceEntityIdentifier::fromString('game'),
+            ['record', 'record_collection']
+        )->willReturn([]);
+
         $rawValues = [
             'description_game_fingerprint-fr_FR' => [
                 'attribute' => [
@@ -286,5 +307,100 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
         );
 
         $record->normalize()['values']->shouldBe($expectedValues);
+    }
+
+    // it replaces record identifiers by code if there is any value
+    public function it_replaces_record_identifiers_by_code_if_there_is_any_value(
+        FindCodesByIdentifiersInterface $findCodesByIdentifiers,
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+    ) {
+        $emptyValues = [
+            'developers_fingerprint' => [
+                'attribute' => [
+                    'identifier' => 'developers_fingerprint',
+                ],
+                'channel' => null,
+                'locale' => null,
+                'data' => []
+            ],
+            'editor_fingerprint' => [
+                'attribute' => [
+                    'identifier' => 'editor_fingerprint',
+                ],
+                'channel' => null,
+                'locale' => null,
+                'data' => null
+            ]
+        ];
+
+        $rawValues = [
+            'developers_fingerprint' => [
+                'attribute' => [
+                    'identifier' => 'developers_fingerprint',
+                ],
+                'channel' => null,
+                'locale' => null,
+                'data' => ['super_studio_identifier', 'wizard_games_identifier']
+            ],
+            'editor_fingerprint' => [
+                'attribute' => [
+                    'identifier' => 'editor_fingerprint',
+                ],
+                'channel' => null,
+                'locale' => null,
+                'data' => 'runic_identifier'
+            ]
+        ];
+
+        $expectedValues = [
+            [
+                'attribute' => [
+                    'identifier' => 'developers_fingerprint',
+                ],
+                'channel' => null,
+                'locale' => null,
+                'data' => ['super_studio', 'wizard_games']
+            ],
+            [
+                'attribute' => [
+                    'identifier' => 'editor_fingerprint',
+                ],
+                'channel' => null,
+                'locale' => null,
+                'data' => 'runic'
+            ]
+        ];
+
+        $findValueKeysByAttributeType->find(
+            ReferenceEntityIdentifier::fromString('game'),
+            ['record', 'record_collection']
+        )->willReturn([
+            'developers_fingerprint',
+            'editor_fingerprint',
+        ]);
+
+        $findCodesByIdentifiers->find([
+            'super_studio_identifier',
+            'wizard_games_identifier',
+            'runic_identifier',
+        ])->willReturn([
+            'super_studio_identifier' => 'super_studio',
+            'wizard_games_identifier' => 'wizard_games',
+            'runic_identifier' => 'runic',
+        ]);
+
+        $recordDetails = $this->hydrate(
+            [
+                'identifier'                  => 'wow_game_A8E76F8A76E87F6A',
+                'code'                        => 'world_of_warcraft',
+                'reference_entity_identifier' => 'game',
+                'value_collection'            => json_encode($rawValues),
+                'attribute_as_label'          => 'another_attribute_game_fingerprint',
+                'attribute_as_image'          => 'another_game_fingerprint',
+            ],
+            $emptyValues
+        );
+
+        $recordDetails->normalize()['values']->shouldBe($expectedValues);
     }
 }
