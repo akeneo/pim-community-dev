@@ -77,7 +77,7 @@ class RecordQuerySpec extends ObjectBehavior
             ]
         ];
 
-        $this->getValuesFilters('values.*')->shouldReturn($filters);
+        $this->getValueFilters()->shouldReturn($filters);
     }
 
     function it_has_filter()

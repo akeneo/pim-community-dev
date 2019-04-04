@@ -80,7 +80,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
         $completeFilter = ($recordQuery->hasFilter('complete')) ? $recordQuery->getFilter('complete') : null;
         $updatedFilter = ($recordQuery->hasFilter('updated')) ? $recordQuery->getFilter('updated') : null;
-        $attributeFilters = ($recordQuery->hasFilter('values.*')) ? $recordQuery->getValuesFilters('values.*') : null;
+        $attributeFilters = ($recordQuery->hasFilter('values.*')) ? $recordQuery->getValueFilters() : [];
 
         $query = [
             '_source' => '_id',
@@ -159,7 +159,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             ];
         }
 
-        if (null !== $attributeFilters) {
+        if (!empty($attributeFilters)) {
             foreach ($attributeFilters as $attributeFilter) {
                 if (!empty($attributeFilter['value'] && 'IN' === $attributeFilter['operator'])) {
                     // As the attribute identifier filter will have all the time the same structure values.*. We could extract only the last part of the string with a substr from the dot.

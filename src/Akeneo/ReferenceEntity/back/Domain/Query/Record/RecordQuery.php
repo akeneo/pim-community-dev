@@ -156,16 +156,16 @@ class RecordQuery
         );
     }
 
-    public function getValuesFilters(string $field): array
+    public function getValueFilters(): array
     {
-        $filters =  array_values(array_filter($this->filters, function ($filter) use ($field) {
-            preg_match('/' . $field . '/', $filter['field'], $matches);
+        $filters =  array_values(array_filter($this->filters, function ($filter) {
+            preg_match('/values.*/', $filter['field'], $matches);
 
             return !empty($matches);
         }));
 
         if (empty($filters)) {
-            throw new \InvalidArgumentException(sprintf('The query needs to contains a value filter on the "%s" field', $field));
+            throw new \InvalidArgumentException(sprintf('No filter found on values'));
         }
 
         return $filters;

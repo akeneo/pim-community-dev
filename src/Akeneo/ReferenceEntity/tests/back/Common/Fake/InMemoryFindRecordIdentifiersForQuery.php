@@ -69,7 +69,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
         $codeLabelFilter = ($query->hasFilter('code_label')) ? $query->getFilter('code_label') : null;
         $completeFilter = ($query->hasFilter('complete')) ? $query->getFilter('complete') : null;
         $updatedFilter = ($query->hasFilter('updated')) ? $query->getFilter('updated'): null;
-        $attributeFilters = ($query->hasFilter('values.*')) ? $query->getValuesFilters('values.*') : null;
+        $attributeFilters = ($query->hasFilter('values.*')) ? $query->getValueFilters() : [];
 
         $records = array_values(array_filter($this->records, function (Record $record) use ($referenceEntityFilter) {
             return '' === $referenceEntityFilter['value']
@@ -166,7 +166,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
         }));
 
         $records = array_values(array_filter($records, function (Record $record) use ($attributeFilters) {
-            if (null === $attributeFilters) {
+            if (empty($attributeFilters)) {
                 return true;
             }
 
