@@ -105,6 +105,8 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
      */
     protected function buildRuleFromItemAndDefinition(array $item, RuleDefinitionInterface $definition = null)
     {
+        $rule = null;
+
         try {
             $item = $this->storeMedias($item);
             $rule = $this->denormalizer

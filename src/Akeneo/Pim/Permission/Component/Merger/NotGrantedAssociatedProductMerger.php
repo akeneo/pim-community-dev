@@ -116,9 +116,7 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
         $associationCodes = [];
         $hasAssociations = false;
 
-        if (null !== $this->tokenStorage) {
-            $user = $this->tokenStorage->getToken()->getUser();
-        }
+        $user = $this->tokenStorage->getToken()->getUser();
 
         foreach ($fullProduct->getAssociations() as $association) {
             $associationCodes[$association->getAssociationType()->getCode()]['products'] = [];
