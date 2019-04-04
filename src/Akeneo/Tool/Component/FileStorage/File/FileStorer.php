@@ -2,11 +2,11 @@
 
 namespace Akeneo\Tool\Component\FileStorage\File;
 
-use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Query\FindKeyByHashAndNameQuery;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Query\FindKeyByHashAndNameQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\MountManager;
@@ -33,14 +33,14 @@ class FileStorer implements FileStorerInterface
     /** @var FileInfoFactoryInterface */
     protected $factory;
 
-    /** @var FindKeyByHashAndNameQuery */
+    /** @var FindKeyByHashAndNameQueryInterface */
     private $findKeyByHashAndNameQuery;
 
     public function __construct(
         MountManager $mountManager,
         SaverInterface $saver,
         FileInfoFactoryInterface $factory,
-        FindKeyByHashAndNameQuery $findKeyByHashAndNameQuery
+        FindKeyByHashAndNameQueryInterface $findKeyByHashAndNameQuery
     ) {
         $this->mountManager = $mountManager;
         $this->saver = $saver;

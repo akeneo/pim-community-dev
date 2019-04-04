@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\Tool\Component\FileStorage\File;
 
-use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Query\FindKeyByHashAndNameQuery;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Query\FindKeyByHashAndNameQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\Filesystem;
@@ -20,7 +20,7 @@ class FileStorerSpec extends ObjectBehavior
         MountManager $mountManager,
         SaverInterface $saver,
         FileInfoFactoryInterface $factory,
-        FindKeyByHashAndNameQuery $findKeyByHashAndNameQuery
+        FindKeyByHashAndNameQueryInterface $findKeyByHashAndNameQuery
     ) {
         $this->beConstructedWith($mountManager, $saver, $factory, $findKeyByHashAndNameQuery);
     }
@@ -32,7 +32,7 @@ class FileStorerSpec extends ObjectBehavior
         \SplFileInfo $rawFile,
         Filesystem $fs,
         FileInfoInterface $fileInfo,
-        FindKeyByHashAndNameQuery $findKeyByHashQuery
+        FindKeyByHashAndNameQueryInterface $findKeyByHashQuery
     ) {
         $fileInfo->getHash()->willReturn('my_sha1');
         $fileInfo->getMimeType()->willReturn(null);
@@ -66,7 +66,7 @@ class FileStorerSpec extends ObjectBehavior
         \SplFileInfo $rawFile,
         Filesystem $fs,
         FileInfoInterface $fileInfo,
-        FindKeyByHashAndNameQuery $findKeyByHashAndNameQuery
+        FindKeyByHashAndNameQueryInterface $findKeyByHashAndNameQuery
     ) {
         $fileInfo->getHash()->willReturn('my_sha1');
         $fileInfo->getMimeType()->willReturn(null);
@@ -99,7 +99,7 @@ class FileStorerSpec extends ObjectBehavior
         \SplFileInfo $rawFile,
         Filesystem $fs,
         FileInfoInterface $fileInfo,
-        FindKeyByHashAndNameQuery $findKeyByHashQuery
+        FindKeyByHashAndNameQueryInterface $findKeyByHashQuery
     ) {
         $fileInfo->getHash()->willReturn('my_sha1');
         $fileInfo->getMimeType()->willReturn(null);
@@ -156,7 +156,7 @@ class FileStorerSpec extends ObjectBehavior
         \SplFileInfo $rawFile,
         Filesystem $fs,
         FileInfoInterface $fileInfo,
-        FindKeyByHashAndNameQuery $findKeyByHashQuery
+        FindKeyByHashAndNameQueryInterface $findKeyByHashQuery
     ) {
         $fileInfo->getHash()->willReturn('my_sha1');
         $fileInfo->getMimeType()->willReturn(null);
