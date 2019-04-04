@@ -2,7 +2,6 @@ parameters:
     pim_catalog.event_subscriber.product_category.class:             Pim\Bundle\CatalogBundle\EventSubscriber\ProductCategorySubscriber
     pim_catalog.event_subscriber.create_attribute_requirement.class: Akeneo\Pim\Structure\Bundle\EventSubscriber\CreateAttributeRequirementSubscriber
     pim_catalog.event_subscriber.localizable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LocalizableSubscriber
-    pim_catalog.event_subscriber.scopable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ScopableSubscriber
     pim_catalog.event_subscriber.timestampable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\TimestampableSubscriber
     pim_catalog.event_subscriber.category.check_channels.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
     pim_catalog.event_subscriber.reset_unique_validation.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ResetUniqueValidationSubscriber
@@ -26,13 +25,6 @@ services:
 
     pim_catalog.event_subscriber.localizable:
         class: '%pim_catalog.event_subscriber.localizable.class%'
-        arguments:
-            - '@pim_catalog.context.catalog'
-        tags:
-            - { name: doctrine.event_subscriber }
-
-    pim_catalog.event_subscriber.scopable:
-        class: '%pim_catalog.event_subscriber.scopable.class%'
         arguments:
             - '@pim_catalog.context.catalog'
         tags:

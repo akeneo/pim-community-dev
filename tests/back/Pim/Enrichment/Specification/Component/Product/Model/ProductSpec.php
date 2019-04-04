@@ -234,7 +234,6 @@ class ProductSpec extends ObjectBehavior
         $this->setFamily($family);
         $this->setValues($values);
         $this->setIdentifier($identifier);
-        $this->setScope('mobile');
 
         $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petite pelle');
     }

@@ -14,3 +14,6 @@
     Use `Akeneo\Platform\Bundle\ImportExportBundle\Query\GetLastOperations->execute()` instead.
 - `Akeneo\Platform\Bundle\ImportExportBundle\Manager\JobExecutionManager` removed.
     Use `Akeneo\Platform\Bundle\ImportExportBundle\Widget\LastOperationsFetcher` instead.
+- `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface` does not extend `Akeneo\Tool\Component\Localization\Model\LocalizableInterface` nor `Akeneo\Pim\Enrichment\Component\Product\Model\ScopableInterface` anymore
+- methods `getScope()`, `setScope()`, `getLocale()` and `setLocale()` were removed from `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct`
+- class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ScopableSubscriber` and its associated service definition `pim_catalog.event_subscriber.scopable` were removed 

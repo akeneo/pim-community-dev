@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentSubjectInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
-use Akeneo\Tool\Component\Localization\Model\LocalizableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
@@ -21,8 +20,6 @@ use Doctrine\Common\Collections\Collection;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface ProductInterface extends
-    LocalizableInterface,
-    ScopableInterface,
     TimestampableInterface,
     VersionableInterface,
     CommentSubjectInterface,
