@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\At
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -27,12 +28,17 @@ class AttributeOptionsMappingNormalizer
     /** @var AttributeOptionRepositoryInterface */
     private $attributeOptionRepository;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
     /**
      * @param AttributeOptionRepositoryInterface $attributeOptionRepository
+     * @param AttributeRepositoryInterface $attributeRepository
      */
-    public function __construct(AttributeOptionRepositoryInterface $attributeOptionRepository)
+    public function __construct(AttributeOptionRepositoryInterface $attributeOptionRepository, AttributeRepositoryInterface $attributeRepository)
     {
         $this->attributeOptionRepository = $attributeOptionRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -92,8 +98,9 @@ class AttributeOptionsMappingNormalizer
      */
     private function getAllOptionTranslations(AttributeCode $attributeCode, array $optionsCodes)
     {
+        $attribute = $this->attributeRepository->findOneByIdentifier((string) $attributeCode);
         $options = $this->attributeOptionRepository->findBy([
-            'attribute.code' => (string) $attributeCode,
+            'attribute' => $attribute,
             'code' => array_values($optionsCodes)
         ]);
 

@@ -22,3 +22,4 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer'
         arguments:
             - '@pim_catalog.repository.attribute_option'
+            - '@pim_catalog.repository.attribute'
