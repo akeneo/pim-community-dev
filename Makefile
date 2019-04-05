@@ -86,9 +86,6 @@ web/css/pim.css: $(LESS_FILES)
 web/js/require-paths.js: $(REQUIRE_JS_FILES)
 	$(PHP_EXEC) bin/console pim:installer:dump-require-paths
 
-web/js/extensions.json: $(FORM_EXTENSION_FILES)
-	$(PHP_EXEC) bin/console pim:installer:dump-extensions
-
 web/bundles: $(ASSET_FILES)
 	$(PHP_EXEC) bin/console assets:install --relative --symlink
 
@@ -97,13 +94,13 @@ web/js/translation:
 
 ## Instal the PIM asset: copy asset from src to web, generate require path, form extension and translation
 .PHONY: install-asset
-install-asset: vendor node_modules web/bundles web/css/pim.css web/js/require-paths.js web/js/extensions.json web/js/translation
+install-asset: vendor node_modules web/bundles web/css/pim.css web/js/require-paths.js  web/js/translation
 	for locale in $(LOCALE_TO_REFRESH) ; do \
 		$(PHP_EXEC) bin/console oro:translation:dump $$locale ; \
 	done
 	## Prevent translations update next time
 	touch web/js/translation
-	bin/console fos:js-routing:dump --target web/js/routes.js
+	$(PHP_EXEC) bin/console fos:js-routing:dump --target web/js/routes.js
 
 ## Initialize the PIM database depending on an environment
 .PHONY: install-database-test
@@ -115,12 +112,12 @@ install-database-prod: docker-compose.override.yml app/config/parameters.yml ven
 	$(PHP_EXEC) bin/console --env=prod pim:installer:db
 
 ## Initialize the PIM frontend depending on an environment
-.PHONY: build-front-dev
-build-front-dev: docker-compose.override.yml node_modules install-asset
+.PHONY: build-front-dev install-asset
+build-front-dev: docker-compose.override.yml node_modules
 	$(YARN_EXEC) run webpack-dev
 
-.PHONY: build-front-test
-build-front-test: docker-compose.override.yml node_modules install-asset
+.PHONY: build-front-test install-asset
+build-front-test: docker-compose.override.yml node_modules
 	$(YARN_EXEC) run webpack-test
 
 ## Initialize the PIM: install database (behat/prod) and run webpack
