@@ -3,6 +3,7 @@
 # Bug fixes
 
 - PIM-8239: Set latest doctrine migration during fresh install to be consistent with database state
+- PIM-8272: Fix "My account" product grid filter search on label
 - PIM-8274: Fix misplaced button on imports/exports
 
 ## Enhancements

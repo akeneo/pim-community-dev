@@ -74,6 +74,7 @@ class ProductGridFilterController
             ['limit' => SearchableRepositoryInterface::FETCH_LIMIT, 'locale' => null, 'page' => 1]
         );
 
+        $options['locale'] = $options['catalogLocale'];
         unset($options['catalogLocale']);
 
         if ($request->get('identifiers', null) !== null) {
