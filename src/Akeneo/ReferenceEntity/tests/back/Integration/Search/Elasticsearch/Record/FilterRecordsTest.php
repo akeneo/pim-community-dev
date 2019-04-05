@@ -77,13 +77,13 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', 'main_color_designers_fingerprint', ['red']
+            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red']]
         );
         $searchResultMobileFrFR = $this->searchRecords(
-            'mobile', 'fr_FR', 'main_color_designers_fingerprint', ['red']
+            'mobile', 'fr_FR', ['main_color_designers_fingerprint' => ['red']]
         );
         $emptySearchResult = $this->searchRecords(
-            'ecommerce', 'en_US', 'main_color_designers_fingerprint', ['blue']
+            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['blue']]
         );
 
         $this->assertContains('stark', $searchResultEcommerceEnUS->normalize()['identifiers']);
@@ -102,14 +102,14 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', 'main_color_designers_fingerprint', ['red']
+            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red']]
         );
         $identifiers = $searchResultEcommerceEnUS->normalize()['identifiers'];
         $this->assertContains('stark', $identifiers);
 
         $this->expectException('\LogicException');
         $this->searchRecords(
-            'mobile', 'fr_FR', 'main_color_designers_fingerprint', ['red']
+            'mobile', 'fr_FR', ['main_color_designers_fingerprint' => ['red']]
         );
     }
 
@@ -124,13 +124,13 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', 'main_color_designers_fingerprint', ['red', 'blue']
+            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red', 'blue']]
         );
         $searchResultMobileFrFR = $this->searchRecords(
-            'mobile', 'fr_FR', 'main_color_designers_fingerprint', ['blue', 'green']
+            'mobile', 'fr_FR', ['main_color_designers_fingerprint' => ['blue', 'green']]
         );
         $emptySearchResult = $this->searchRecords(
-            'ecommerce', 'en_US', 'main_color_designers_fingerprint', ['green']
+            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['green']]
         );
 
         $this->assertContains('stark', $searchResultEcommerceEnUS->normalize()['identifiers']);
@@ -149,14 +149,14 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', 'main_color_designers_fingerprint', ['red', 'blue']
+            'ecommerce', 'en_US', ['main_color_designers_fingerprint' => ['red', 'blue']]
         );
         $identifiers = $searchResultEcommerceEnUS->normalize()['identifiers'];
         $this->assertContains('stark', $identifiers);
 
         $this->expectException('\LogicException');
         $this->searchRecords(
-            'mobile', 'fr_FR', 'main_color_designers_fingerprint', ['red']
+            'mobile', 'fr_FR', ['main_color_designers_fingerprint' => ['red']]
         );
     }
 
@@ -171,13 +171,13 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', 'main_city_designers_fingerprint', ['paris']
+            'ecommerce', 'en_US', ['main_city_designers_fingerprint' => ['paris']]
         );
         $searchResultMobileFrFR = $this->searchRecords(
-            'mobile', 'fr_FR', 'main_city_designers_fingerprint', ['paris']
+            'mobile', 'fr_FR', ['main_city_designers_fingerprint' => ['paris']]
         );
         $emptySearchResult = $this->searchRecords(
-            'ecommerce', 'en_US', 'main_city_designers_fingerprint', ['london']
+            'ecommerce', 'en_US', ['main_city_designers_fingerprint' => ['london']]
         );
 
         $this->assertContains('stark', $searchResultEcommerceEnUS->normalize()['identifiers']);
@@ -196,14 +196,14 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', 'main_city_designers_fingerprint', ['paris']
+            'ecommerce', 'en_US', ['main_city_designers_fingerprint' => ['paris']]
         );
         $identifiers = $searchResultEcommerceEnUS->normalize()['identifiers'];
         $this->assertContains('stark', $identifiers);
 
         $this->expectException('\LogicException');
         $this->searchRecords(
-            'mobile', 'fr_FR', 'main_city_designers_fingerprint', ['paris']
+            'mobile', 'fr_FR', ['main_city_designers_fingerprint' => ['paris']]
         );
     }
 
@@ -213,18 +213,23 @@ class FilterRecordsTest extends SearchIntegrationTestCase
     public function it_searches_all_records_linked_to_multiple_records()
     {
         $this->loadReferenceEntity();
-        $this->loadLinkedRecordCollectionAttribute('main_cities_designers_fingerprint', 'city');
-        $this->loadRecordHavingLinkedRecordCollection('stark', ['paris', 'barcelona']);
+        $this->loadLinkedRecordCollectionAttribute('main_cities_designers_fingerprint', 3, 'city');
+        $this->loadRecordHavingLinkedRecordCollection(
+            'stark',
+            [
+                'main_cities_designers_fingerprint' => ['paris', 'barcelona'],
+            ]
+        );
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', 'main_cities_designers_fingerprint', ['paris', 'barcelona']
+            'ecommerce', 'en_US', ['main_cities_designers_fingerprint' => ['paris', 'barcelona']]
         );
         $searchResultMobileFrFR = $this->searchRecords(
-            'mobile', 'fr_FR', 'main_cities_designers_fingerprint', ['barcelona', 'london']
+            'mobile', 'fr_FR', ['main_cities_designers_fingerprint' => ['barcelona', 'london']]
         );
         $emptySearchResult = $this->searchRecords(
-            'ecommerce', 'en_US', 'main_cities_designers_fingerprint', ['london']
+            'ecommerce', 'en_US', ['main_cities_designers_fingerprint' => ['london']]
         );
 
         $this->assertContains('stark', $searchResultEcommerceEnUS->normalize()['identifiers']);
@@ -235,22 +240,66 @@ class FilterRecordsTest extends SearchIntegrationTestCase
     /**
      * @test
      */
-    public function it_searches_all_records_linked_to_multiple_records_on_a_specific_channel_and_locale()
+    public function it_searches_all_records_with_two_filters_on_values()
     {
         $this->loadReferenceEntity();
-        $this->loadLinkedRecordCollectionAttribute('main_cities_designers_fingerprint', 'city', true, true);
-        $this->loadRecordHavingLinkedRecordCollection('stark', ['paris', 'barcelona'], 'ecommerce', 'en_US');
+        $this->loadLinkedRecordCollectionAttribute('main_cities_designers_fingerprint', 3, 'city');
+        $this->loadLinkedRecordCollectionAttribute('main_countries_designers_fingerprint', 4, 'country');
+        $this->loadRecordHavingLinkedRecordCollection(
+            'stark',
+            [
+                'main_cities_designers_fingerprint' => ['paris', 'barcelona'],
+                'main_countries_designers_fingerprint' => ['france']
+            ]
+        );
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
         $searchResultEcommerceEnUS = $this->searchRecords(
-            'ecommerce', 'en_US', 'main_cities_designers_fingerprint', ['paris', 'barcelona']
+            'ecommerce',
+            'en_US',
+            [
+                'main_cities_designers_fingerprint' => ['paris', 'barcelona'],
+                'main_countries_designers_fingerprint' => ['france']
+            ]
+        );
+
+        $this->assertContains('stark', $searchResultEcommerceEnUS->normalize()['identifiers']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_searches_all_records_linked_to_multiple_records_on_a_specific_channel_and_locale()
+    {
+        $this->loadReferenceEntity();
+        $this->loadLinkedRecordCollectionAttribute('main_cities_designers_fingerprint', 3, 'city', true, true);
+        $this->loadRecordHavingLinkedRecordCollection(
+            'stark',
+            [
+                'main_cities_designers_fingerprint' => ['paris', 'barcelona'],
+            ],
+            'ecommerce',
+            'en_US'
+        );
+        $this->get('akeneo_referenceentity.client.record')->refreshIndex();
+
+        $searchResultEcommerceEnUS = $this->searchRecords(
+            'ecommerce',
+            'en_US',
+            [
+                'main_cities_designers_fingerprint' => ['paris', 'barcelona']
+            ]
         );
         $identifiers = $searchResultEcommerceEnUS->normalize()['identifiers'];
         $this->assertContains('stark', $identifiers);
 
         $this->expectException('\LogicException');
         $this->searchRecords(
-            'mobile', 'fr_FR', 'main_cities_designers_fingerprint', ['paris']
+            'mobile',
+            'fr_FR',
+            [
+                'main_cities_designers_fingerprint' => ['paris']
+            ]
         );
     }
 
@@ -339,15 +388,15 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $attributeRepository->create($recordAttribute);
     }
 
-    private function loadLinkedRecordCollectionAttribute(string $attributeIdentifier, string $recordType, bool $isScopable = false, bool $isLocalizable = false): void
+    private function loadLinkedRecordCollectionAttribute(string $attributeIdentifier, int $order, string $recordType, bool $isScopable = false, bool $isLocalizable = false): void
     {
         $this->attributeIdentifier = AttributeIdentifier::fromString($attributeIdentifier);
         $recordAttribute = RecordCollectionAttribute::create(
             $this->attributeIdentifier,
             $this->referenceEntityIdentifier,
-            AttributeCode::fromString('color'),
+            AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(3),
+            AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean($isScopable),
             AttributeValuePerLocale::fromBoolean($isLocalizable),
@@ -422,8 +471,18 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         );
     }
 
-    private function loadRecordHavingLinkedRecordCollection(string $recordCode, array $linkedRecords, string $channel = null, string $locale = null)
+    private function loadRecordHavingLinkedRecordCollection(string $recordCode, array $linkedRecordsByIdentifier, string $channel = null, string $locale = null)
     {
+        $values = [];
+        foreach ($linkedRecordsByIdentifier as $attributeIdentifier => $linkedRecords) {
+            $values[] = Value::create(
+                AttributeIdentifier::fromString($attributeIdentifier),
+                (null !== $channel) ? ChannelReference::createfromNormalized($channel) : ChannelReference::noReference(),
+                (null !== $locale) ? LocaleReference::createFromNormalized($locale) : LocaleReference::noReference(),
+                RecordCollectionData::createFromNormalize($linkedRecords)
+            );
+        }
+
         /** @var RecordRepositoryInterface $recordRepository */
         $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $recordRepository->create(
@@ -431,14 +490,7 @@ class FilterRecordsTest extends SearchIntegrationTestCase
                 RecordIdentifier::fromString($recordCode),
                 $this->referenceEntityIdentifier,
                 RecordCode::fromString($recordCode),
-                ValueCollection::fromValues([
-                    Value::create(
-                        $this->attributeIdentifier,
-                        (null !== $channel) ? ChannelReference::createfromNormalized($channel) : ChannelReference::noReference(),
-                        (null !== $locale) ? LocaleReference::createFromNormalized($locale) : LocaleReference::noReference(),
-                        RecordCollectionData::createFromNormalize($linkedRecords)
-                    ),
-                ])
+                ValueCollection::fromValues($values)
             )
         );
     }
@@ -458,28 +510,33 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         $referenceEntityRepository->create($referenceEntity);
     }
 
-    private function searchRecords(string $channel, string $locale, string $attributeIdentifier, array $options): IdentifiersForQueryResult
+    private function searchRecords(string $channel, string $locale, array $dataValues): IdentifiersForQueryResult
     {
+        $filters = [
+            [
+                'field'    => 'reference_entity',
+                'operator' => '=',
+                'value'    => $this->referenceEntityIdentifier->normalize(),
+                'context'  => [],
+            ]
+        ];
+
+        foreach ($dataValues as $attributeIdentifier => $options) {
+            $filters[] = [
+                'field' => sprintf('values.%s', $attributeIdentifier),
+                'operator'  => 'IN',
+                'value'     => $options,
+                'context'   => [],
+            ];
+        }
+
         $searchResult = ($this->findIdentifiersForQuery)(
             RecordQuery::createFromNormalized([
                 'locale'  => $locale,
                 'channel' => $channel,
                 'size'    => 20,
                 'page'    => 0,
-                'filters' => [
-                    [
-                        'field'    => 'reference_entity',
-                        'operator' => '=',
-                        'value'    => $this->referenceEntityIdentifier->normalize(),
-                        'context'  => [],
-                    ],
-                    [
-                        'field' => sprintf('values.%s', $attributeIdentifier),
-                        'operator'  => 'IN',
-                        'value'     => $options,
-                        'context'   => [],
-                    ],
-                ],
+                'filters' => $filters,
             ])
         );
 

@@ -108,6 +108,14 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_a_list_of_records_filtered_by_linked_record_and_option()
+    {
+        $this->webClientHelper->assertRequest($this->client, 'Record/Search/city_and_color_filtered.json');
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_an_empty_list()
     {
         $this->webClientHelper->assertRequest($this->client, 'Record/Search/no_result.json');

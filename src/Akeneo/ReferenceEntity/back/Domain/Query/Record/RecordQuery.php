@@ -156,15 +156,24 @@ class RecordQuery
         );
     }
 
+    public function getValueFilters(): array
+    {
+        $filters =  array_values(array_filter($this->filters, function ($filter) {
+            preg_match('/values.*/', $filter['field'], $matches);
+
+            return !empty($matches);
+        }));
+
+        if (empty($filters)) {
+            throw new \InvalidArgumentException(sprintf('No filter found on values'));
+        }
+
+        return $filters;
+    }
+
     public function getFilter(string $field): array
     {
         $filter = current(array_filter($this->filters, function ($filter) use ($field) {
-            if ('values.*' === $field) {
-                preg_match('/' . $field . '/', $filter['field'], $matches);
-
-                return !empty($matches);
-            }
-
             return $filter['field'] === $field;
         }));
 

@@ -17,11 +17,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
@@ -83,7 +80,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
         $completeFilter = ($recordQuery->hasFilter('complete')) ? $recordQuery->getFilter('complete') : null;
         $updatedFilter = ($recordQuery->hasFilter('updated')) ? $recordQuery->getFilter('updated') : null;
-        $attributeFilter = ($recordQuery->hasFilter('values.*')) ? $recordQuery->getFilter('values.*') : null;
+        $attributeFilters = ($recordQuery->hasFilter('values.*')) ? $recordQuery->getValueFilters() : [];
 
         $query = [
             '_source' => '_id',
@@ -162,21 +159,25 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             ];
         }
 
-        if (null !== $attributeFilter && !empty($attributeFilter['value'] && 'IN' === $attributeFilter['operator'])) {
-            // As the attribute identifier filter will have all the time the same structure values.*. We could extract only the last part of the string with a substr from the dot.
-            $attributeIdentifier = substr($attributeFilter['field'], strlen(self::ATTRIBUTE_FILTER_FIELD));
+        if (!empty($attributeFilters)) {
+            foreach ($attributeFilters as $attributeFilter) {
+                if (!empty($attributeFilter['value'] && 'IN' === $attributeFilter['operator'])) {
+                    // As the attribute identifier filter will have all the time the same structure values.*. We could extract only the last part of the string with a substr from the dot.
+                    $attributeIdentifier = substr($attributeFilter['field'], strlen(self::ATTRIBUTE_FILTER_FIELD));
 
-            $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(
-                AttributeIdentifier::fromString($attributeIdentifier),
-                ChannelIdentifier::fromCode($recordQuery->getchannel()),
-                LocaleIdentifier::fromCode($recordQuery->getLocale())
-            );
-            $path = sprintf('values.%s', (string) $valueKey);
-            $query['query']['constant_score']['filter']['bool']['filter'][] = [
-                'terms' => [
-                    $path => $attributeFilter['value']
-                ]
-            ];
+                    $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(
+                        AttributeIdentifier::fromString($attributeIdentifier),
+                        ChannelIdentifier::fromCode($recordQuery->getchannel()),
+                        LocaleIdentifier::fromCode($recordQuery->getLocale())
+                    );
+                    $path = sprintf('values.%s', (string) $valueKey);
+                    $query['query']['constant_score']['filter']['bool']['filter'][] = [
+                        'terms' => [
+                            $path => $attributeFilter['value']
+                        ]
+                    ];
+                }
+            }
         }
 
         if (null !== $completeFilter) {

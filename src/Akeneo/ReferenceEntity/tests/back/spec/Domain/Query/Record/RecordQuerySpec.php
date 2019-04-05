@@ -65,14 +65,19 @@ class RecordQuerySpec extends ObjectBehavior
         ];
 
         $this->getFilter('full_text')->shouldReturn($filter);
+    }
 
-        $filter = [
-            'field' => 'values.main_color_designers_fingerprint',
-            'operator' => '=',
-            'value' => 'blue'
+    function it_can_get_filter_values()
+    {
+        $filters = [
+            [
+                'field' => 'values.main_color_designers_fingerprint',
+                'operator' => '=',
+                'value' => 'blue'
+            ]
         ];
 
-        $this->getFilter('values.*')->shouldReturn($filter);
+        $this->getValueFilters()->shouldReturn($filters);
     }
 
     function it_has_filter()
