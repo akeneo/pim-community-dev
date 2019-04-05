@@ -2,6 +2,10 @@
 
 # 1.7.41 (2019-04-04)
 
+## Bug fixes
+
+- PIM-8255: Fix version entity detached when trying to remove it during the purge
+
 # 1.7.40 (2019-03-19)
 
 ## Bug fixes
