@@ -3,6 +3,7 @@
 # Bug fixes
 
 - PIM-8239: Set latest doctrine migration during fresh install to be consistent with database state
+- PIM-8274: Fix misplaced button on imports/exports
 
 # 3.0.11 (2019-04-02)
 
