@@ -42,7 +42,6 @@
     line-height: 20px;
     padding: 12px 4px;
     transition: background 0.1s ease;
-    max-width: 100vh;
 
     &--tight {
       width: 1px;
@@ -55,8 +54,8 @@
     &:first-child&--checkbox {
       background: white;
       text-align: center;
-      width: 40px;
-      max-width: 40px;
+      width: @AknCheckboxCellWidth;
+      max-width: @AknCheckboxCellWidth;
     }
   }
 
@@ -68,7 +67,7 @@
     transform: scale(0);
   }
 
-  &-bodyRow:hover,
+  &-body &-bodyRow:not(&-bodyRow--thumbnail):hover,
   &-bodyRow--highlight {
     background: @AknDefaultHoverBackground;
   }
@@ -108,6 +107,7 @@
 
     &--actions {
       width: 1px;
+      padding-right: 20px;
     }
 
     &--credentials {
@@ -119,6 +119,9 @@
       font-style: italic;
       font-size: @AknFontSizeBig;
       white-space: nowrap;
+      max-width: 15vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     &--big {
@@ -168,6 +171,20 @@
     }
   }
 
+  &--withCheckbox &-bodyRow &-bodyCell:nth-child(2),
+  &:not(&--withCheckbox) &-bodyRow &-bodyCell:first-child,
+  &--withCheckbox &-bodyRow &-headerCell:nth-child(2),
+  &:not(&--withCheckbox) &-bodyRow &-headerCell:first-child {
+    padding-left: 20px;
+  }
+
+  & &--withCheckbox &-bodyRow &-bodyCell:nth-child(2),
+  & &:not(&--withCheckbox) &-bodyRow &-bodyCell:first-child,
+  & &--withCheckbox &-bodyRow &-headerCell:nth-child(2),
+  & &:not(&--withCheckbox) &-bodyRow &-headerCell:first-child {
+    padding-left: 4px;
+  }
+
   &-headerCell {
     &--sticky {
       position: sticky;
@@ -211,28 +228,25 @@
   }
 
   &--gallery &-body {
-    margin-top: 20px;
     display: grid;
     grid-gap: 20px;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    margin-left: 20px;
-    margin-right: -20px;
   }
 
   &--gallery &-body--small {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
-  &--inner &-body {
-    margin-left: -20px;
-    margin-top: 0;
+  &--gallery &--withCheckbox &-body {
+    margin-left: @AknCheckboxCellWidth;
   }
 
   & &-bodyRow:first-child &-bodyCell {
     border-top: none;
   }
 
-  &--unclickable &-bodyRow &-bodyCell {
+  &--unclickable &-bodyRow &-bodyCell,
+  &--unclickable &-bodyRow &-headerCell {
     cursor: default;
   }
 
@@ -415,6 +429,7 @@
       margin-top: 4px;
       display: grid;
       justify-content: center;
+      width: 100%;
     }
   }
 
@@ -434,7 +449,6 @@
   }
 
   &-bodyRow--thumbnail:hover &-bodyCell--actions {
-    width: 100%;
     display: grid;
   }
 

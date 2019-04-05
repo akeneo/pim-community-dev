@@ -47,7 +47,7 @@ class CommentType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $placeholder = (true === $options['is_reply']) ? 'pim_comment.placeholder.reply' : 'pim_comment.placeholder.new';
+        $placeholder = (true === $options['is_reply']) ? 'pim_enrich.entity.product.module.comment.reply' : 'pim_enrich.entity.product.module.comment.post';
         $placeholder = $this->translator->trans($placeholder);
 
         $builder

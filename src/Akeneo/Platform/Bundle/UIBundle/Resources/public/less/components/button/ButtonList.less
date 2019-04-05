@@ -2,6 +2,7 @@
 
 .AknButtonList {
   @marginSpace: 10px;
+  @bigMarginSpace: 20px;
 
   display: flex;
   align-items: center;
@@ -67,5 +68,23 @@
 
   &--vertical &-item:not(:first-child) {
     margin-top: 10px;
+  }
+
+  &--expanded {
+    margin-right: -@bigMarginSpace;
+  }
+
+  &--expanded &-item {
+    margin-right: @bigMarginSpace;
+  }
+
+  &--expanded&--right {
+    margin-right: 0;
+    margin-left: -@bigMarginSpace;
+  }
+
+  &--expanded&--right &-item {
+    margin-right: 0;
+    margin-left: @bigMarginSpace;
   }
 }

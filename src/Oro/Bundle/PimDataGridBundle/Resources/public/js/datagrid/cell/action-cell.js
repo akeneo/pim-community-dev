@@ -90,7 +90,7 @@ define(
              */
             render: function () {
                 this.$el.empty();
-                var iconsList = $('<div>').addClass('AknButtonList AknButtonList--right');
+                var iconsList = $('<div>').addClass('AknButtonList AknButtonList--right AknButtonList--expanded');
                 if (!_.isEmpty(this.launchers)) {
                     _.each(this.launchers, function(launcher) {
                         iconsList.append(launcher.render().$el);

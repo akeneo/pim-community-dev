@@ -7,7 +7,7 @@ extensions:
         parent: pim-job-instance-csv-product-model-import-show
         targetZone: main-image
         config:
-            path: bundles/pimui/images/illustration-import-csv.svg
+            path: bundles/pimui/images/illustrations/ImportCSV.svg
 
     pim-job-instance-csv-product-model-import-show-user-navigation:
         module: pim/menu/user-navigation
@@ -109,6 +109,7 @@ extensions:
         parent: pim-job-instance-csv-product-model-import-show
         targetZone: buttons
         position: 100
+        aclResourceId: pim_importexport_import_profile_edit
         config:
             label: pim_common.edit
             route: pim_importexport_import_profile_edit

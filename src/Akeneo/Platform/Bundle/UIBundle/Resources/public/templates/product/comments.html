@@ -2,10 +2,10 @@
     <ol>
         <li class="comment-create">
             <form>
-                <textarea class="AknTextareaField AknTextareaField--small new-comment-value" placeholder="<%- _.__('pim_comment.placeholder.new') %>"></textarea>
+                <textarea class="AknTextareaField AknTextareaField--small new-comment-value" placeholder="<%- _.__('pim_enrich.entity.product.module.comment.post') %>"></textarea>
                 <span class="AknButtonList AknButtonList--hide AknButtonList--right comment-buttons">
                     <input class="AknButtonList-item AknButton AknButton--small AknButton--important cancel-comment" type="reset" value="<%- _.__('pim_common.cancel') %>">
-                    <button class="AknButtonList-item AknButton AknButton--small AknButton--apply send-comment"><%- _.__('pim_comment.product.panel.comment.post') %></button>
+                    <button class="AknButtonList-item AknButton AknButton--small AknButton--apply send-comment"><%- _.__('pim_enrich.entity.product.module.comment.post') %></button>
                 </span>
             </form>
         </li>
@@ -17,7 +17,7 @@
                             <div class="AknCommentPanel-header">
                                 <img class="AknCommentPanel-avatar" src="/<%- !_.isEmpty(comment.author.avatar) ? comment.author.avatar : 'bundles/pimui/images/info-user.png' %>" alt="<%- comment.author.username %>"/>
                                 <span class="AknCommentPanel-title">
-                                    <%= __('pim_comment.index.header_comment', { user: '<span class="AknCommentPanel-author author">' + comment.author.fullName + '</span>' }) %>
+                                    <%= __('pim_enrich.entity.product.module.comment.header_comment', { user: '<span class="AknCommentPanel-author author">' + comment.author.fullName + '</span>' }) %>
                                     <% if (comment.author.username === username) { %>
                                         <span class="AknCommentPanel-icon AknIconButton remove-comment" title="Delete" data-comment-id="<%- comment.id %>">
                                             <i class="icon-trash"></i>
@@ -29,10 +29,10 @@
                             <div class="AknCommentPanel-message">
                                 <span class="message"><%- comment.body %></span>
                                 <div class="AknCommentPanel-replyContainer reply-to-comment">
-                                    <textarea class="AknTextareaField AknTextareaField--small" name="body" required="required" placeholder="<%- _.__('pim_comment.placeholder.reply') %>"></textarea>
+                                    <textarea class="AknTextareaField AknTextareaField--small" name="body" required="required" placeholder="<%- _.__('pim_enrich.entity.product.module.comment.reply') %>"></textarea>
                                     <span class="AknButtonList AknButtonList--hide AknButtonList--right comment-buttons">
                                        <button class="AknButtonList-item AknButton AknButton--important AknButton--small cancel-comment" type="reset"><%- _.__('pim_common.cancel') %></button>
-                                       <button class="AknButtonList-item AknButton AknButton--apply AknButton--small send-comment"><%- _.__('pim_comment.product.panel.comment.reply') %></button>
+                                       <button class="AknButtonList-item AknButton AknButton--apply AknButton--small send-comment"><%- _.__('pim_enrich.entity.product.module.comment.reply') %></button>
                                     </span>
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                                 <div class="AknCommentPanel-header">
                                     <img class="AknCommentPanel-avatar" src="/<%- !_.isEmpty(reply.author.avatar) ? reply.author.avatar : 'bundles/pimui/images/info-user.png' %>" alt="<%- reply.author.username %>"/>
                                     <span class="AknCommentPanel-title">
-                                        <%= __('pim_comment.index.header_reply', { user: '<span class="AknCommentPanel-author author">' + reply.author.fullName + '</span>' }) %>
+                                        <%= __('pim_enrich.entity.product.module.comment.header_reply', { user: '<span class="AknCommentPanel-author author">' + reply.author.fullName + '</span>' }) %>
                                         <% if (reply.author.username === username) { %>
                                             <span class="AknCommentPanel-icon AknIconButton remove-comment" title="Delete" data-comment-id="<%- reply.id %>">
                                                 <i class="icon-trash"></i>

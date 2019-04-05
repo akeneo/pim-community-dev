@@ -26,7 +26,6 @@
     justify-content: flex-end;
     padding: 0 0 1px 0;
     background: none;
-    margin: 0 0 10px 0;
     flex-wrap: wrap;
     background: white;
   }
@@ -67,7 +66,7 @@
 
   &-searchContainer {
     order: -1;
-    flex-grow: 1;
+    flex-grow: 10;
     display: flex;
     margin-top: -20px;
     min-width: 300px;
@@ -88,7 +87,7 @@
   }
 
   &-filter {
-    margin: 0 0 @AknPaddingLeftColumn 0;
+    margin: 0 5px @AknPaddingLeftColumn 0;
 
     &--relative {
       position: relative;
@@ -97,7 +96,7 @@
 
   &-disableFilter {
     position: absolute;
-    right: -30px;
+    right: -16px;
     top: 6px;
     opacity: 0;
     transition: opacity 0.2s ease-in;
@@ -113,6 +112,7 @@
     text-transform: uppercase;
     font-size: @AknFontSizeSmall;
     white-space: nowrap;
+    margin-bottom: 3px;
   }
 
   &-filterCriteria {

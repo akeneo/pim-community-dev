@@ -16,6 +16,8 @@ pim_enrich_product_model_rest_get_by_code:
     path: /rest-code/{identifier}
     defaults: { _controller: pim_enrich.controller.rest.product_model:getByCodeAction }
     methods: [GET]
+    requirements:
+        identifier: .+
 
 pim_enrich_product_model_rest_index:
     path: /rest/

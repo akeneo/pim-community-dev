@@ -145,13 +145,17 @@ class AttributeController
      */
     public function indexAction(Request $request)
     {
-        $options = $request->request->get(
-            'options',
-            ['limit' => SearchableRepositoryInterface::FETCH_LIMIT, 'locale' => null]
-        );
+        $options = $request->get('options', []);
+        $options['locale'] = $options['locale'] ?? null;
+        $options['limit'] = $options['limit'] ?? SearchableRepositoryInterface::FETCH_LIMIT;
+        $options['identifiers'] = $options['identifiers'] ?? [];
 
+        // If 'identifiers=' is used, any 'options[identifiers][]=' passed will be overwritten.
         if ($request->get('identifiers', null) !== null) {
             $options['identifiers'] = array_unique(explode(',', $request->get('identifiers')));
+        }
+
+        if (count($options['identifiers']) > 0) {
             $options['limit'] = count($options['identifiers']);
         }
 
@@ -161,8 +165,8 @@ class AttributeController
                 explode(',', $request->get('types'));
         }
 
-        if ($request->request->has('attribute_groups')) {
-            $options['attribute_groups'] = explode(',', $request->request->get('attribute_groups'));
+        if ($request->get('attribute_groups', null) !== null) {
+            $options['attribute_groups'] = array_unique(explode(',', $request->get('attribute_groups')));
         }
 
         if ($request->get('localizable', null) !== null) {
@@ -185,14 +189,8 @@ class AttributeController
             $options['families'] = $request->get('families');
         }
 
-        if (empty($options)) {
-            $options = $request->get(
-                'options',
-                ['limit' => SearchableRepositoryInterface::FETCH_LIMIT, 'locale' => null]
-            );
-        }
-        if ($request->request->has('rights')) {
-            $options['rights'] = (bool) $request->request->get('rights');
+        if ($request->get('rights', null) !== null) {
+            $options['rights'] = (bool) $request->get('rights');
         }
 
         $token = $this->tokenStorage->getToken();

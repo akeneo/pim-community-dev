@@ -22,7 +22,8 @@ define(
         'pim/security-context',
         'pim/user-context',
         'pim/template/app',
-        'pim/template/common/flash'
+        'pim/template/common/flash',
+        'jquery.select2.placeholder'
     ], function (
         $,
         _,

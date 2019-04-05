@@ -5,7 +5,7 @@ extensions:
             labels:
                 title: pim_common.create
                 subTitle: pim_menu.item.export_profile
-            picture: illustration-attribute.svg
+            picture: illustrations/Attribute.svg
             successMessage: pim_import_export.entity.export_profile.flash.create.success
             editRoute: pim_importexport_export_profile_edit
             postUrl: pim_enrich_job_instance_rest_export_create

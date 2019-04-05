@@ -102,7 +102,6 @@ define(
             moveFilter: function(collection, element) {
                 if (element.$('.search-zone').length !== 0) {
                     element.$('.search-zone')
-                    .empty()
                     .append(this.$el.get(0));
                 } else if ($('.edit-form .search-zone').length !== 0) {
                     $('.edit-form .search-zone')

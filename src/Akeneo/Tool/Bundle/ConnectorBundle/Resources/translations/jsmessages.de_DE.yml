@@ -4,6 +4,8 @@ batch_jobs:
     import_associations: Produktverbindungen-Import
     import_root_product_model: Produktmodell-Import Hauptebene
     import_sub_product_model: Produktmodell-Import Subebene
+    compute_product_models_descendants: Vererbungen der Produktmodelle berechnen
+    compute_completeness_of_products_family: Vollständigkeit der Produktfamilie berechnen
   csv_product_export:
     label: Produkt-Export als CSV-Datei
     export.label: Produkt export

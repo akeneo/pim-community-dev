@@ -63,12 +63,12 @@ pim_enrich.entity.attribute_option:
   short_uppercase_label: Vaihtoehdot
   flash:
     create:
-      success: Määritteen asetuksen luominen onnistui
-      fail: Virhe yritettäessä luoda määritteen asetusta
+      success: Attribuutin vaihtoehdon luominen onnistui
+      fail: Virhe yritettäessä luoda attribuutin vaihtoehtoa
     update:
-      fail: Määriteasennusta ei voi tallentaa
+      fail: Attribuutin vaihtoehtoa ei voi tallentaa
     delete:
-      fail: Määriteasetuksen poistossa virhe
+      fail: Virhe attribuutin vaihtoehdon poistossa
   module:
     edit:
       cancel_title: Peruuta muokkaukset
@@ -189,10 +189,10 @@ pim_enrich.entity.attribute:
       type_specific: Tyyppikohtaiset parametrit
       validation: Validaatioparametrit
     delete:
-      confirm: Oletko varma, että haluat poistaa tämän määritteen?
+      confirm: Oletko varma, että haluat poistaa tämän attribuutin?
       confirm_from_family: Oletko varma, että haluat poistaa tämän attribuutin attribuuttiperheeltä?
       confirm_from_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?
-      confirm_from_product: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
+      confirm_from_product: Oletko varma, että haluat poistaa tämän attribuutin tuotteesta?
 pim_enrich.entity.attribute_group:
   label: attribuuttiryhmä
   uppercase_label: Attribuuttiryhmä

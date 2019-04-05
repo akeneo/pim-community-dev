@@ -15,7 +15,7 @@ pim_import_export:
     7: Abandonado
     8: Desconhecido
   download_archive:
-    archive: transferir ficheiro gerado | transferir ficheiros gerados
+    archive: baixar arquivo gerado|baixar arquivos gerados
     output: baixar arquivo gerado | baixar arquivos gerados
     input: baixar arquivo de leitura|baixar arquivos de leitura
     invalid_xlsx: baixar dados inválidos
@@ -36,9 +36,13 @@ pim_import_export:
       history.title: Histórico
       job_content.title: Conteúdo
 pim_title.export_profile.index: Gerenciamento dos perfis de exportação
+pim_title.export_profile.edit: Exportar perfil %job.label% | Editar
+pim_title.export_profile.show: Exportar perfil %job.label% | Mostrar
 pim_title.export_execution.index: Histórico de execuções de exportação
 pim_title.export_execution.show: Execuções de exportação | Detalhes
 pim_title.import_profile.index: Gerenciamento dos perfis de importação
+pim_title.import_profile.edit: Importar perfil %job.label% | Editar
+pim_title.import_profile.show: Importar perfil %job.label% | Mostrar
 pim_title.import_execution.index: Histórico de execuções de importação
 pim_title.import_execution.show: Execuções de importação | Detalhes
 export profile:
@@ -56,7 +60,11 @@ pim_importexport:
       edit: Editar um perfil de exportação
       remove: Remover um perfil de exportação
       launch: Iniciar um perfil de exportação
+      property_edit: Editar propriedades gerais de um perfil de exportação
+      property_show: Mostrar propriedades gerais de um perfil de exportação
       history: Visualizar histórico de exportação de perfil
+      content_edit: Editar o conteúdo de um perfil de exportação
+      content_show: Mostrar o conteúdo de um perfil de exportação
     import_profile:
       index: Exibir a lista de perfis de importação
       create: Criar um perfil de importação
@@ -134,6 +142,7 @@ Warnings: Avisos
 Summary: Resumo
 Start: Iniciar
 End: Fim
+set_attribute_requirements: Definir requisitos de atributos
 COMPLETED: Concluído
 STARTING: Iniciando
 STARTED: Iniciado

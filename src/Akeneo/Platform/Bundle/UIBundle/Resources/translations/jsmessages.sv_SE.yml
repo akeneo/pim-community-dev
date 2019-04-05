@@ -145,6 +145,7 @@ pim_common:
   remove: Ta bort
   required_label: (obligatorisk)
   save: Spara
+  search: Sök
   select2:
     search: Sök...
     no_match: Inga träffar hittades

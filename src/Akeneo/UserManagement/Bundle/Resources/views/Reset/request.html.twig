@@ -13,10 +13,14 @@
         <fieldset>
             <div class="AknLogin-form">
                 <input class="AknTextField" type="text" name="username" required="required" placeholder="{{ 'pim_user.user.login.username_or_email'|trans }}" autofocus="autofocus"/>
-                <button type="submit" class="AknButton AknButton--apply AknButton--big">{{ 'pim_user.user.login.request'|trans }}</button>
             </div>
             <div class="AknLogin-form">
-                <a href="{{ path('pim_user_security_login') }}" class="AknLogin-link cancel">{{ 'pim_common.cancel'|trans }}</a>
+                <div class="AknLogin-formCell">
+                    <a href="{{ path('pim_user_security_login') }}" class="AknLogin-link cancel">{{ 'pim_common.cancel'|trans }}</a>
+                </div>
+                <div class="AknLogin-formCell AknLogin-formCell--small">
+                    <button type="submit" class="AknButton AknButton--apply AknButton--big">{{ 'pim_user.user.login.request'|trans }}</button>
+                </div>
             </div>
         </fieldset>
     </form>
