@@ -33,9 +33,9 @@ pimee_workflow_published_product_rest_unpublish:
 
 pimee_workflow_published_product_mass_edit_action:
     path: /mass_action
-    methods: [GET]
+    methods: [POST]
 
 pimee_workflow_mass_edit_rest_get_filter:
     path: /mass_edit
     defaults: { _controller: pimee_workflow.controller.rest.mass_edit:getFilterAction }
-    methods: [GET]
+    methods: [POST]

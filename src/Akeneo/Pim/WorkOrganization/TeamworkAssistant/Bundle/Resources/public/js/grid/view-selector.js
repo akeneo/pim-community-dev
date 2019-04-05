@@ -14,7 +14,8 @@ define(
         'oro/translator',
         'pimcommunity/grid/view-selector/selector',
         'pim/datagrid/state',
-        'pim/fetcher-registry'
+        'pim/fetcher-registry',
+        'backbone'
     ],
     function (
         $,
@@ -22,7 +23,8 @@ define(
         __,
         ViewSelector,
         DatagridState,
-        FetcherRegistry
+        FetcherRegistry,
+        Backbone
     ) {
         return ViewSelector.extend({
             hasNoProject: false,
@@ -133,10 +135,34 @@ define(
                 if ('project' === this.currentViewType) {
                     var project = view;
                     view = project.datagridView;
-                    DatagridState.set('product-grid', 'scope', project.channel.code);
+
+                    DatagridState.set(this.gridAlias, {
+                        view: view.id,
+                        filters: view.filters,
+                        columns: view.columns.join(','),
+                        scope: project.channel.code
+                    });
+
+                    this.currentView = view;
+                    this.trigger('grid:view-selector:view-selected', view);
+
+                    ViewSelector.prototype.selectView.apply(this, [view]);
+
+                    return this.reloadPageWithLocale(project.locale.code);
                 }
 
                 ViewSelector.prototype.selectView.apply(this, [view]);
+            },
+
+            /**
+             * Set the project locale in the URL and reload the page on project selection
+             *
+             * @param {string} locale
+             */
+            reloadPageWithLocale(locale) {
+                const url = `${window.location.hash.split('?')[0]}?dataLocale=${locale}`;
+                Backbone.history.fragment = new Date().getTime();
+                Backbone.history.navigate(url, true);
             },
 
             /**

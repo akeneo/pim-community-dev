@@ -97,6 +97,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException',
         'Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductIdsQueryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface',
 
         // TIP-949: Assets should not be Reference Data
         // TIP-963: Define the Products public API

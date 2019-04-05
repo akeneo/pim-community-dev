@@ -13,7 +13,6 @@ authentication:
         activation:
           title: Activation SSO
           info:
-            title: Attention
             description: Lorsque vous allez activer l'authentification SSO, votre session courante va être terminée. Vous allez être déconnecté, puis redirigé vers votre Identity Provider après la sauvegarde de la configuration.
         identity_provider:
           title: Identity Provider (IdP)

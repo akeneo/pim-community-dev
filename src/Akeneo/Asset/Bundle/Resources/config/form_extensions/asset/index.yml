@@ -25,6 +25,7 @@ extensions:
         module: pim/common/redirect
         parent: pimee-asset-index-secondary-actions
         targetZone: secondary-actions
+        aclResourceId: pimee_product_asset_mass_upload
         config:
             buttonClass: 'AknDropdown-menuLink'
             route: pimee_product_asset_mass_upload
@@ -138,8 +139,8 @@ extensions:
 
     pimee-asset-index-display-selector:
         module: pim/datagrid/display-selector
-        parent: pimee-asset-index-grid-container
-        targetZone: toolbar
+        parent: pimee-asset-index
+        targetZone: search
         position: 20
         config:
             gridName: asset-grid

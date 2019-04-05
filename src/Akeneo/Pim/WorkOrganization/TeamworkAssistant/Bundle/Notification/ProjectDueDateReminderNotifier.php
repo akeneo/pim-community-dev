@@ -14,8 +14,8 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectCompleteness;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\ProjectNotifierInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
+use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

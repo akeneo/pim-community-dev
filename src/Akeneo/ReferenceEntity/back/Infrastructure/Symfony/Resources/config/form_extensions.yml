@@ -71,9 +71,8 @@ extensions:
             label: pim_enrich.entity.attribute.property.reference_entity.identifier
 
     pimee-catalog-volume-reference-entity-section:
-        module: pim/catalog-volume/section
+        module: pim/form/common/section
         parent: pim-catalog-volume-index
-        template: pim/template/catalog-volume/section
         targetZone: content
         position: 60
         config:
@@ -81,6 +80,12 @@ extensions:
             hint:
                 code: hint-reference-entities-axes
                 title: pim_catalog_volume.section.reference_entity.hint
+
+    pimee-catalog-volume-reference-entity-section-content:
+        module: pim/catalog-volume/section
+        parent: pimee-catalog-volume-reference-entity-section
+        targetZone: content
+        config:
             axes: [count_reference_entity, average_max_records_per_reference_entity, average_max_attributes_per_reference_entity]
 
 attribute_fields:

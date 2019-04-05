@@ -1,10 +1,6 @@
 authentication:
   sso:
     configuration:
-      section:
-        activation:
-          info:
-            title: Varoitus
       field:
         certificate:
           label: Sertifikaatti

@@ -29,9 +29,9 @@
     <testsuites>
         <testsuite name="PIM_Integration_Test">
             <directory suffix="Integration.php">../src</directory>
-            <directory suffix="Integration.php">../tests</directory>
+            <directory suffix="Integration.php">../tests/back</directory>
             <directory suffix="Integration.php">../vendor/akeneo/pim-community-dev/src</directory>
-            <directory suffix="Integration.php">../vendor/akeneo/pim-community-dev/tests</directory>
+            <directory suffix="Integration.php">../vendor/akeneo/pim-community-dev/tests/back</directory>
         </testsuite>
         <testsuite name="Franklin_Insights">
             <directory suffix="Integration.php">../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Integration</directory>
@@ -39,7 +39,7 @@
         <testsuite name="End_to_End">
             <directory suffix="EndToEnd.php">../tests/back</directory>
             <directory suffix="EndToEnd.php">../vendor/akeneo/pim-community-dev/src</directory>
-            <directory suffix="EndToEnd.php">../vendor/akeneo/pim-community-dev/tests</directory>
+            <directory suffix="EndToEnd.php">../vendor/akeneo/pim-community-dev/tests/back</directory>
         </testsuite>
     </testsuites>
 </phpunit>

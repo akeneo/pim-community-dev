@@ -18,8 +18,9 @@
                         (not isAttributeLocalizable or is_locale_granted(constant('Akeneo\\Pim\\Permission\\Component\\Attributes::EDIT_ITEMS'), change.locale))
                     )
                 %}
+                <div class="AknGridContainer AknGridContainer--box">
                 <table
-                    class="AknGrid AknGrid--condensed proposal-changes{% if not canReview %} readonly{% endif %}"
+                    class="AknGrid AknGrid--unclickable proposal-changes{% if not canReview %} readonly{% endif %}"
                     data-product="{{ record.getValue('search_id') }}"
                     data-document-type="{{ record.getValue('document_type') }}"
                     data-scope="{{ change.scope }}"
@@ -29,7 +30,7 @@
                     data-draft="{{ record.getValue('proposal_id') }}"
                 >
                     <thead>
-                        <tr>
+                        <tr class="AknGrid-bodyRow">
                             <th class="AknGrid-headerCell label-cell">{{ get_attribute_label_from_code(code) }}</th>
                             <th class="AknGrid-headerCell">
                                 {{ change.locale|pretty_locale_name }}
@@ -42,7 +43,7 @@
                                 {% if canReview %}
                                     <div class="AknButtonList AknButtonList--right">
                                         <button
-                                            class="AknButtonList-item AknIconButton AknIconButton--apply AknIconButton--small partial-approve-link"
+                                            class="AknButtonList-item AknIconButton AknIconButton--ok AknIconButton--apply AknIconButton--round partial-approve-link"
                                             data-product="{{ record.getValue('search_id') }}"
                                             data-document-type="{{ record.getValue('document_type') }}"
                                             data-scope="{{ change.scope }}"
@@ -52,10 +53,9 @@
                                             data-draft="{{ record.getValue('proposal_id') }}"
                                             data-action="approve"
                                             title="{{ 'pimee_workflow.product_draft.action.partial_approve'|trans({'%attribute%': code, '%product%': record.getValue('product').id}) }}">
-                                            <i class="icon-ok"></i>
                                         </button>
                                         <button
-                                            class="AknButtonList-item AknIconButton AknIconButton--important AknIconButton--small partial-reject-link"
+                                            class="AknButtonList-item AknIconButton AknIconButton--removeWhite AknIconButton--important AknIconButton--round partial-reject-link"
                                             data-product="{{ record.getValue('search_id') }}"
                                             data-document-type="{{ record.getValue('document_type') }}"
                                             data-scope="{{ change.scope }}"
@@ -65,7 +65,6 @@
                                             data-draft="{{ record.getValue('proposal_id') }}"
                                             data-action="reject"
                                             title="{{ 'pimee_workflow.product_draft.action.partial_reject'|trans({'%attribute%': code, '%product%': record.getValue('product').id}) }}">
-                                            <i class="icon-remove"></i>
                                         </button>
                                     </div>
                                 {% endif %}
@@ -75,19 +74,15 @@
                     <tbody>
                         {% if product_draft_change.before != product_draft_change.after %}
                             <tr class="AknGrid-bodyRow">
-                                <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
+                                <td class="AknGrid-bodyCell AknGrid-bodyCell--tight AknDiff--remove">{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
                                 <td class="AknGrid-bodyCell original-value" colspan="2">
-                                    <span class="AknDiff AknDiff--remove">
-                                        {{ product_draft_change.before|raw }}
-                                    </span>
+                                    {{ product_draft_change.before|raw }}
                                 </td>
                             </tr>
                             <tr class="AknGrid-bodyRow">
-                                <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
+                                <td class="AknGrid-bodyCell AknGrid-bodyCell--tight AknDiff--add">{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
                                 <td class="AknGrid-bodyCell new-value" colspan="2">
-                                    <span class="AknDiff AknDiff--add">
-                                        {{ product_draft_change.after|raw }}
-                                    </span>
+                                    {{ product_draft_change.after|raw }}
                                 </td>
                             </tr>
                         {% else %}
@@ -97,6 +92,7 @@
                         {% endif %}
                     </tbody>
                 </table>
+                </div>
             {% endif %}
         {% endfor %}
     {% endfor %}

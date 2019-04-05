@@ -155,6 +155,9 @@ $rules = [
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
 
+        // TIP-883 Fixes services to use attribute code from value
+        'Akeneo\Asset\Component\Repository\AssetRepositoryInterface',
+
         //TODO: just because we override ProductController
         'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
     ])->in('Akeneo\Pim\Permission\Bundle'),
@@ -184,6 +187,7 @@ $rules = [
 
         //TODO: Link by id instead of reference
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
+        'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface',
 
         // TODO: review the voters/filters implementation
         'Akeneo\UserManagement\Component\Model\GroupInterface',

@@ -39,17 +39,19 @@ class AttributeOptionsMappingNormalizerSpec extends ObjectBehavior
     public function it_normalizes_attribute_options_mapping(
         $attributeOptionRepository
     ): void {
-        $mapping = new Write\AttributeOptionsMapping();
+        $attributeCode = new AttributeCode('attribute_code_1');
+
+        $mapping = new Write\AttributeOptionsMapping($attributeCode);
         $mapping
             ->addAttributeOption(new Write\AttributeOption('color1', 'red', 'color_1'))
             ->addAttributeOption(new Write\AttributeOption('color2', 'blue', null))
             ->addAttributeOption(new Write\AttributeOption('color3', 'yellow', 'color_3'));
 
-        $option1 = new Read\AttributeOption('color_1', new AttributeCode('attribute_code_1'), [
+        $option1 = new Read\AttributeOption('color_1', $attributeCode, [
             'en_US' => 'red',
             'fr_FR' => 'rouge'
         ]);
-        $option2 = new Read\AttributeOption('color_3', new AttributeCode('attribute_code_2'), [
+        $option2 = new Read\AttributeOption('color_3', $attributeCode, [
             'en_US' => 'yellow'
         ]);
 

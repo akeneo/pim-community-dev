@@ -49,7 +49,7 @@ export default ({
       <span className="AknGrid-subTitle">{referenceEntity.getIdentifier().stringValue()}</span>
       <span className="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--checkbox" />
       <span className="AknGrid-bodyCell AknGrid-bodyCell--actions">
-        <div className="AknButtonList AknButtonList--right" />
+        <div className="AknButtonList AknButtonList--right AknButtonList--expanded" />
       </span>
     </a>
   );

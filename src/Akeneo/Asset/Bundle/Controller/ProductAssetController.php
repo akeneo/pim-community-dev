@@ -690,6 +690,9 @@ class ProductAssetController extends Controller
                         $flashParameters['%transformation%'] = $item->getException()->getTransformation();
                         $flashParameters['%mimeType%'] = $item->getException()->getMimeType();
                         break;
+                    case $item->getException() instanceof MissingAssetTransformationForChannelException:
+                        $flash = 'pimee_product_asset.enrich_variation.flash.transformation.missing_asset_transformation_for_channel';
+                        break;
                     default:
                         $flash = 'pimee_product_asset.enrich_variation.flash.transformation.error';
                         break;

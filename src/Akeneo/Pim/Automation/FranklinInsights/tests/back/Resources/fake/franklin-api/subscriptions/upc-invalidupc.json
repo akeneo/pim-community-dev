@@ -3,23 +3,23 @@
     "subscription": []
   },
   "_embedded": {
-    "subscription": [],
-    "warnings": [
-      {
-        "message": "invalid UPC: 'invalidupc'",
-        "_embedded": [],
-        "key": "0",
-        "entry": {
-          "upc": "invalidupc",
-          "tracker_id": "70",
-          "family": {
-            "code": "router",
-            "label": {
-              "en_US": "Router"
-            }
+    "subscription": []
+  },
+  "warnings": [
+    {
+      "message": "invalid UPC: 'invalidupc'",
+      "_embedded": [],
+      "key": "0",
+      "entry": {
+        "upc": "invalidupc",
+        "tracker_id": "70",
+        "family": {
+          "code": "router",
+          "label": {
+            "en_US": "Router"
           }
         }
       }
-    ]
-  }
+    }
+  ]
 }

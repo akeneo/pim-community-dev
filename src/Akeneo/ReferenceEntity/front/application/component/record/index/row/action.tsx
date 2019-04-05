@@ -59,7 +59,7 @@ const ActionRow = memo(
         data-identifier={record.identifier}
       >
         <td className="AknGrid-bodyCell AknGrid-bodyCell--action">
-          <div className="AknButtonList AknButtonList--right">
+          <div className="AknButtonList AknButtonList--right AknButtonList--expanded">
             {rights.record.delete ? (
               <span
                 tabIndex={0}

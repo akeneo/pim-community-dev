@@ -29,7 +29,7 @@ define(
         FormModal
     ) {
         return BaseForm.extend({
-            className: 'btn-group',
+            className: 'AknButtonList-item',
             submitTemplate: _.template(submitTemplate),
             confirmationMessage: __('pimee_enrich.entity.product_draft.module.edit.discard_changes'),
             confirmationTitle: __('pimee_enrich.entity.product_draft.module.edit.discard_changes_title'),
@@ -112,7 +112,7 @@ define(
                     {
                         title: __('pimee_enrich.entity.product.module.approval.send'),
                         subtitle: __('pim_enrich.entity.product.plural_label'),
-                        picture: 'illustration-attribute.svg',
+                        picture: 'illustrations/Attribute.svg',
                         okText: __('pimee_enrich.entity.product_draft.module.proposal.confirm'),
                         cancelText: __('pim_common.cancel'),
                         content: '',

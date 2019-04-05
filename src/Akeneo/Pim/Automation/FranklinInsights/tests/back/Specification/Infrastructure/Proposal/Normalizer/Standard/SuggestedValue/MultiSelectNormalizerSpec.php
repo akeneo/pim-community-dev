@@ -20,6 +20,8 @@ use PhpSpec\ObjectBehavior;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
+ *
+ * @TODO These tests should break when pulling-up to 3.1, ask <paul.chasle@akeneo.com> for information.
  */
 class MultiSelectNormalizerSpec extends ObjectBehavior
 {
@@ -70,19 +72,19 @@ class MultiSelectNormalizerSpec extends ObjectBehavior
     public function it_keeps_only_existing_options_of_a_multi_select_suggested_value($selectAttributeOptionCodesByIdentifiersQuery): void
     {
         $suggestedValue = new SuggestedValue('attribute_code', [
-            'exiting_attribute_option',
+            'existing_attribute_option',
             'non_existing_attribute_option',
         ]);
 
         $selectAttributeOptionCodesByIdentifiersQuery
-            ->execute('attribute_code', ['exiting_attribute_option', 'non_existing_attribute_option'])
-            ->willReturn(['exiting_attribute_option']);
+            ->execute('attribute_code', ['existing_attribute_option', 'non_existing_attribute_option'])
+            ->willReturn(['existing_attribute_option']);
 
         $this->normalize($suggestedValue)->shouldReturn([
             'attribute_code' => [[
                 'scope' => null,
                 'locale' => null,
-                'data' => ['exiting_attribute_option'],
+                'data' => ['existing_attribute_option'],
             ]],
         ]);
     }
@@ -90,13 +92,13 @@ class MultiSelectNormalizerSpec extends ObjectBehavior
     public function it_returns_an_empty_array_if_no_options_exist($selectAttributeOptionCodesByIdentifiersQuery): void
     {
         $suggestedValue = new SuggestedValue('attribute_code', [
-            'an_non_exiting_attribute_option',
+            'an_non_existing_attribute_option',
             'another_non_existing_attribute_option',
         ]);
 
         $selectAttributeOptionCodesByIdentifiersQuery
             ->execute('attribute_code', [
-                'an_non_exiting_attribute_option',
+                'an_non_existing_attribute_option',
                 'another_non_existing_attribute_option',
             ])
             ->willReturn([]);

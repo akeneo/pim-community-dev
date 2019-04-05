@@ -64,7 +64,7 @@ class RecordItemHydrator implements RecordItemHydratorInterface
         $code = Type::getType(Type::STRING)->convertToPHPValue($row['code'], $this->platform);
 
         $indexedAttributes = ($this->findAttributesIndexedByIdentifier)(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
-        $valueCollection = ValuesDecoder::decode($row['value_collection']);
+        $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
         $valueCollection = $this->hydrateValues($valueCollection, $indexedAttributes);
 
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);

@@ -124,8 +124,8 @@ extensions:
 
     pimee-published-product-index-display-selector:
         module: pim/datagrid/display-selector
-        parent: pimee-published-product-index-grid-container
-        targetZone: toolbar
+        parent: pimee-published-product-index
+        targetZone: search
         position: 20
         config:
             gridName: published-product-grid

@@ -13,17 +13,28 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class AttributeOptionsMapping implements \IteratorAggregate
 {
+    /** @var AttributeCode */
+    private $attributeCode;
+
     /** @var array */
     private $attributeOptions;
 
-    public function __construct()
+    public function __construct(AttributeCode $attributeCode)
     {
+        $this->attributeCode = $attributeCode;
         $this->attributeOptions = [];
+    }
+
+    public function getAttributeCode(): AttributeCode
+    {
+        return $this->attributeCode;
     }
 
     /**

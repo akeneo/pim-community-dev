@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router;
 
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -22,6 +22,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * When a product is saved, we send the URI of the product in the headers.
  * This proxy checks if a draft exists for a user and redirect him to product draft route instead of product route.
+ *
+ * TODO MERGE MASTER 3.1 Should be renamed ProxyRouter during merge.
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
@@ -34,33 +36,26 @@ class ProxyProductRouter implements UrlGeneratorInterface
     private $tokenStorage;
 
     /** @var EntityWithValuesDraftRepositoryInterface */
-    private $productDraftRepository;
+    private $draftRepository;
 
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $identifiableObjectRepository;
 
     /** @var string */
-    private $productDraftRoute;
+    private $newRoute;
 
-    /**
-     * @param UrlGeneratorInterface           $router
-     * @param TokenStorageInterface           $tokenStorage
-     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
-     * @param ProductRepositoryInterface      $productRepository
-     * @param string                          $productDraftRoute
-     */
     public function __construct(
         UrlGeneratorInterface $router,
         TokenStorageInterface $tokenStorage,
-        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
-        ProductRepositoryInterface $productRepository,
-        string $productDraftRoute
+        EntityWithValuesDraftRepositoryInterface $draftRepository,
+        IdentifiableObjectRepositoryInterface $identifiableObjectRepository,
+        string $newRoute
     ) {
         $this->router = $router;
         $this->tokenStorage = $tokenStorage;
-        $this->productDraftRepository = $productDraftRepository;
-        $this->productRepository = $productRepository;
-        $this->productDraftRoute = $productDraftRoute;
+        $this->draftRepository = $draftRepository;
+        $this->identifiableObjectRepository = $identifiableObjectRepository;
+        $this->newRoute = $newRoute;
     }
 
     /**
@@ -72,14 +67,14 @@ class ProxyProductRouter implements UrlGeneratorInterface
             throw new MissingMandatoryParametersException('Parameter "code" is missing in the parameters');
         }
 
-        $product = $this->productRepository->findOneByIdentifier($parameters['code']);
-        if (null === $product) {
-            throw new NotFoundHttpException(sprintf('Product "%s" does not exist', $parameters['code']));
+        $entity = $this->identifiableObjectRepository->findOneByIdentifier($parameters['code']);
+        if (null === $entity) {
+            throw new NotFoundHttpException(sprintf('Entity "%s" does not exist', $parameters['code']));
         }
 
         $username = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $name = null === $this->productDraftRepository->findUserEntityWithValuesDraft($product, $username)
-            ? $name : $this->productDraftRoute;
+        $name = null === $this->draftRepository->findUserEntityWithValuesDraft($entity, $username)
+            ? $name : $this->newRoute;
 
         return $this->router->generate($name, $parameters, $referenceType);
     }
