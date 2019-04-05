@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle;
 
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\ConfigureAxisValueLabelsNormalizerPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterPresentersPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
@@ -61,6 +62,7 @@ class AkeneoPimEnrichmentBundle extends Bundle
             ->addCompilerPass(new RegisterRendererPass())
             ->addCompilerPass(new RegisterCategoryItemCounterPass())
             ->addCompilerPass(new RegisterProductQueryFilterPass('product_and_product_model'))
+            ->addCompilerPass(new ConfigureAxisValueLabelsNormalizerPass())
         ;
 
         $mappings = [
