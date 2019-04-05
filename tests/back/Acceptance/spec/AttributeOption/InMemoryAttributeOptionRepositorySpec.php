@@ -87,18 +87,20 @@ class InMemoryAttributeOptionRepositorySpec extends ObjectBehavior
         );
 
         $this->findBy(['code' => 'brown'])->shouldReturn([$brownHairColor, $brownEyeColor]);
-        $this->findBy(['attribute.code' => 'eye_color'])->shouldReturn([$blueEyeColor, $brownEyeColor]);
-        $this->findBy(['attribute.code' => 'eye_color', 'code' => 'brown'])->shouldReturn([$brownEyeColor]);
+        $this->findBy(['attribute' => $eyeColor])->shouldReturn([$blueEyeColor, $brownEyeColor]);
+        $this->findBy(['attribute' => $eyeColor, 'code' => 'brown'])->shouldReturn([$brownEyeColor]);
     }
 
     function it_does_not_find_attribute_options_by_criteria()
     {
-        $brownHairColor = $this->createAttributeOption('brown', (new Attribute())->setCode('hair_color'));
+        $eyeColor = (new Attribute())->setCode('eye_color');
+        $hairColor = (new Attribute())->setCode('hair_color');
+        $brownHairColor = $this->createAttributeOption('brown', $hairColor);
 
         $this->beConstructedWith([$brownHairColor]);
 
-        $this->findBy(['attribute.code' => 'eye_color', 'code' => 'brown'])->shouldReturn([]);
-        $this->findBy(['attribute.code' => 'hair_color', 'code' => 'white'])->shouldReturn([]);
+        $this->findBy(['attribute' => $eyeColor, 'code' => 'brown'])->shouldReturn([]);
+        $this->findBy(['attribute' => $hairColor, 'code' => 'white'])->shouldReturn([]);
     }
 
     function it_throws_an_exception_if_saved_object_is_not_an_attribute_option(\StdClass $object)

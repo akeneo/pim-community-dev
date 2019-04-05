@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\AttributeOption;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
@@ -92,17 +93,11 @@ class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInte
             $keepThisAttributeOption = true;
 
             foreach ($criteria as $searchedFieldName => $searchedValue) {
-                $value = \array_reduce(
-                    \explode('.', $searchedFieldName),
-                    function ($entity, $fieldName) {
-                        $getter = \sprintf('get%s', ucfirst($fieldName));
+                $getter = \sprintf('get%s', ucfirst($searchedFieldName));
 
-                        return $entity->$getter();
-                    },
-                    $attributeOption
-                );
-
-                if ($value !== $searchedValue) {
+                if ($attributeOption->$getter() !== $searchedValue
+                    || ($searchedValue instanceof AttributeInterface
+                        && $attributeOption->$getter()->getCode() !== $searchedValue->getCode())) {
                     $keepThisAttributeOption = false;
                 }
             }

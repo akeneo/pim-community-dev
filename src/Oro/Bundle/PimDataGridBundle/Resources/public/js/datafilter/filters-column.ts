@@ -31,7 +31,7 @@ class FiltersColumn extends BaseView {
 
   readonly config: FiltersConfig;
   readonly template: string = `
-    <button type="button" class="AknFilterBox-addFilterButton" aria-haspopup="true" style="width: 280px" data-toggle>
+    <button type="button" class="AknFilterBox-addFilterButton AknFilterBox-addFilterButton--asPanel" aria-haspopup="true" style="width: 280px" data-toggle>
         <div><%- filtersLabel %></div>
     </button>
     <div class="filter-selector"><div>

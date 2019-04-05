@@ -59,6 +59,14 @@ services:
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.repository.cached_attribute_option'
 
+    pim_enrich.normalizer.entity_with_family_variant.simple_select.label.normalizer:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\SimpleSelectOptionNormalizer'
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+
+    pim_enrich.normalizer.entity_with_family_variant.metric.label.normalizer:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\MetricNormalizer'
+
     pim_enrich.normalizer.completeness:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessNormalizer'
         tags:
