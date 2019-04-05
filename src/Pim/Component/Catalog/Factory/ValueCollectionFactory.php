@@ -48,7 +48,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     /**
      * {@inheritdoc}
      *
-     * Raw values that correspond to an non existing attribute (that was deleted
+     * Raw values that correspond to a non existing attribute (that was deleted
      * for instance) are NOT loaded.
      *
      * @see \Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer.php
@@ -76,7 +76,17 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
                         }
 
                         try {
-                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data, true);
+                            $value = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data, true);
+                            $productData = $value->getData();
+                            $isEmpty = (
+                                null === $productData ||
+                                (is_string($productData) && '' === trim($productData))  ||
+                                (is_array($productData) && 0 === count($productData))
+                            );
+
+                            if (!$isEmpty) {
+                                $values[] = $value;
+                            }
                         } catch (InvalidOptionException $e) {
                             $this->logger->warning(
                                 sprintf(
