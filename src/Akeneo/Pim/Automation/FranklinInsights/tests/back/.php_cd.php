@@ -97,6 +97,7 @@ $rules = [
 
             //Used to get all option translations to send to Franklin
             'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider'),
 

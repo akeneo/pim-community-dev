@@ -17,9 +17,11 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\At
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 
@@ -28,9 +30,11 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCo
  */
 class AttributeOptionsMappingNormalizerSpec extends ObjectBehavior
 {
-    public function let(AttributeOptionRepositoryInterface $attributeOptionRepository): void
-    {
-        $this->beConstructedWith($attributeOptionRepository);
+    public function let(
+        AttributeOptionRepositoryInterface $attributeOptionRepository,
+        AttributeRepositoryInterface $attributeRepository
+    ): void {
+        $this->beConstructedWith($attributeOptionRepository, $attributeRepository);
     }
 
     public function it_is_initializable(): void
@@ -40,6 +44,8 @@ class AttributeOptionsMappingNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_attribute_options_mapping(
         $attributeOptionRepository,
+        $attributeRepository,
+        AttributeInterface $attribute,
         AttributeOptionInterface $option1,
         AttributeOptionInterface $option2,
         AttributeOptionValueInterface $optionValue1,
@@ -51,6 +57,10 @@ class AttributeOptionsMappingNormalizerSpec extends ObjectBehavior
             ->addAttributeOption(new AttributeOption('color1', 'red', 'color_1'))
             ->addAttributeOption(new AttributeOption('color2', 'blue', null))
             ->addAttributeOption(new AttributeOption('color3', 'yellow', 'color_3'));
+
+        $attributeRepository
+            ->findOneByIdentifier('color')
+            ->willReturn($attribute);
 
         $optionValue1->getValue()->willReturn('red');
         $optionValue1->getLocale()->willReturn('en_US');
@@ -67,7 +77,7 @@ class AttributeOptionsMappingNormalizerSpec extends ObjectBehavior
 
         $attributeOptionRepository
             ->findBy([
-                'attribute.code' => 'color',
+                'attribute' => $attribute,
                 'code' => ['color_1', 'color_3']
             ])
             ->willReturn([$option1, $option2])
