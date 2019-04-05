@@ -125,6 +125,12 @@ services:
         - { name: pim_storage_serializer.normalizer, priority: 90 }
         - { name: pim_versioning.serializer.normalizer, priority: 100 }
 
+    akeneo_referenceentity.infrastructure.catalog.normalizer.reference_entity_axis_label_normalizer:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityAxisLabelNormalizer
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_details'
+
     pimee_datagrid.normalizer.product.reference_entity_value:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Normalizer\ReferenceEntityValueNormalizer
         arguments:
