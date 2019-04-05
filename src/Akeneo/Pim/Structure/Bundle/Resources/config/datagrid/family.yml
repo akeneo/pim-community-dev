@@ -51,7 +51,7 @@ datagrid:
             columns:
                 code:
                     type:      string
-                    label:     Code # TODO for pull up: replace this by pim_common.code
+                    label:     pim_common.code
                     data_name: f.code
                 label:
                     type: search
