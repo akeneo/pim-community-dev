@@ -1,0 +1,237 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Enriquecer mídia
+      create: Criar uma mídia
+      remove: Remover mídia
+      categories_view: Consultar as categorias de uma mídia
+      mass_upload: Envio em massa de mídias
+      remove_from_collection: Remover a mídia de produto de uma coleção de mídia
+    category_asset_picker:
+      list: Listar categorias de mídias no seletor de mídia
+    category:
+      create: Criar uma categoria de mídias
+      edit: Editar uma categoria de mídias
+      list: Listar categorias de mídias
+      remove: Remover uma categoria de mídias
+      manage: Gerenciar permissões de categoria de mídias
+      history: Ver histórico de categorias de mídias
+  acl_group:
+    asset: Mídias de produto
+    category: Categorias de mídias
+  enrich_asset:
+    button:
+      upload: Enviar
+      delete: Excluir
+      download: Baixar
+      generate_from_reference: Gerar a partir da referência
+      reset_variations: Resetar variações
+    confirmation.remove: Tem certeza que deseja remover a mídia "%asset%" ?
+    confirmation.subTitle: Mídias
+    grid:
+      edit: Editar propriedades da mídia
+    view:
+      title: Mídia de produto
+      code: Código
+      description: Descrição
+      end_of_use: Fim da utilização em
+      reference: Referencia
+      filename: Nome do arquivo
+      width: Largura
+      height: Altura
+      resolution: Resolução
+      colors: Espaço de cor
+      filesize: Tamanho do arquivo
+      filetype: Tipo do arquivo
+      actions: Ações
+      download: Baixar
+      tag: Etiquetas
+      no_reference: Nenhum arquivo de referência foi enviado ainda.
+      no_variation: Nenhum arquivo de variação foi gerado ainda.
+    flash:
+      update:
+        success: A mídia foi atualizada.
+        error: A mídia não foi atualizada. Ocorreu um erro.
+      create:
+        success: A mídia foi criada.
+        error: A mídia não foi criada. Ocorreu um erro.
+      remove:
+        success: A mídia foi removida.
+  enrich_reference:
+    flash:
+      delete:
+        success: O arquivo de referência foi excluído.
+        error: O arquivo de referência não foi excluído. Ocorreu um erro.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: Impossível gerar a variação %channel% devido a opções inválidas.
+        image_width_error: Impossível gerar a variação %channel%, porque a imagem carregada tem uma largura menor que a necessária pela transformação.
+        image_height_error: Impossível gerar a variação %channel%, porque a imagem carregada tem uma altura menor que a necessária pela transformação.
+        not_applicable: Impossível gerar a variação %channel%.
+        non_registered: Não há a transformação %transformation% registrada para o tipo %mimeType%. Impossível gerar a variação %channel%.
+        missing_asset_transformation_for_channel: Impossível gerar a variação %channel%, por favor, defina uma transformação de mídia para este canal.
+        error: Impossível gerar a variação %channel%.
+        success: Arquivos de variação foram gerados com sucesso.
+      update:
+        success: Arquivo de variação foi atualizado.
+        error: O arquivo de variação não foi atualizado. Ocorreu um erro.
+      delete:
+        success: O arquivo de variação foi excluído.
+        error: O arquivo de variação não foi excluído. Ocorreu um erro.
+  popin.create:
+    title: Criar uma nova mídia
+    is_localized: Localizável
+  menu: Mídias
+  page_tab:
+    title:
+      view: Mídia do produto %asset.code% | Ver
+      edit: Mídia do produto %asset.code% | Editar
+      index: Mídias de produto
+  code:
+    label: Código
+  thumbnail:
+    label: Miniatura
+  status:
+    label: Status
+  description:
+    label: Descrição
+  endOfUse:
+    label: Fim da utilização em
+  createdAt:
+    label: Criado em
+  updatedAt:
+    label: Última atualização em
+  tags:
+    label: Etiquetas
+  tabs:
+    properties.title: Propriedades
+    variations.title: Variações
+    categories.title: Categorias
+  validation:
+    code:
+      not_empty: Código é necessário. Não pode estar vazio.
+      unique: O código deve ser único.
+      new_generation: Nós criamos um novo para você.
+  notAvailable:
+    label: não disponível
+  asset:
+    title: Mídia
+  mass_upload:
+    menu: Enviar mídias
+    new: Uma nova mídia será criada
+    add_files: adicionar arquivos
+    start: Iniciar envio
+    cancel: Cancelar envio
+    import: Importar
+    executed: Envio em massa executado
+    error:
+      upload: Ocorreu um erro ao enviar
+      code: Formato de código inválido para a mídia
+      localizable: Uma mídia existe mas não é localizável
+      invalid_locale: A localidade está desativada ou inválida
+  category:
+    menu: Categorias de mídia
+    permissions:
+      view.label: Permitir visualizar mídias
+      view.help: Permitir visualizar os produtos nessa categoria
+      edit.label: Permitido editar mídias
+      edit.help: Permitir editar as mídias nesta categoria (reflete na permissão da visualização)
+      no_access_to_products: Você não tem acesso às mídias em nenhuma árvore, por favor, entre em contato com seu administrador
+      apply_on_children.label: Aplicar mudanças nos filhos
+      apply_on_children.help: Copiar as alterações de permissões em todas as crianças, permissões existentes nos filhos serão mantidas
+  mass_edit_action:
+    asset:
+      page_title: Mídias
+      page_subtitle: Edição em massa (1 mídia)|Edição em massa (%count% mídias)
+      confirm: Você está prestes a atualizar uma mídia com a seguinte informação, por favor confirme.|Você está prestes a atualizar %count% mídias com a seguinte informação, por favor confirme.
+      steps:
+        first: Escolher as mídias
+        second: Configurar
+        third: Confirmar
+  not_editable: Você não tem permissão para editar a mídia "%code%".
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Mover mídias para categorias
+      description: As mídias serão posicionados nas seguintes categorias, a posição existente será perdida
+      success_flash: A(s) mídia(s) foram movidas para as categorias selecionadas
+      launched_flash: A ação em massa "mover para categorias" foi iniciada. Você será notificado quando for finalizada.
+    add-tags-to-assets:
+      label: Adicionar etiquetas às mídias
+      description: Etiquetas serão adicionadas às mídias. Se algumas etiquetas não existirem, elas serão criadas.
+      success_flash: Etiqueta(s) foram adicionados à(s) mídia(s)
+      launched_flash: A ação em massa "Adicionar etiquetas às mídias" foi iniciada. Você será notificado quando for finalizada.
+      message.error: A etiqueta fornecida não existe
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Classificar
+      add_tags_to_assets: Adicionar etiquetas
+      delete_assets: Excluir mídias
+btn.create.asset: Criar uma mídia
+btn.drag_or_upload: Arraste e solte um arquivo ou clique aqui
+job_execution.summary:
+  variations_not_generated: Variações não geradas
+  pimee_product_asset.mass_upload.new: Mídia criada a partir do arquivo
+  pimee_product_asset.mass_upload.updated: Mídia atualizada
+  error: Erro no processo de arquivo de mídia
+  skipped_assets: Mídias ignoradas
+assets_mass_upload.steps:
+  asset_mass_upload.title: Envio em massa de mídias
+import_asset.steps.channel_configuration_processor.title: Configurações de canal de processo
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: Envio em massa de mídia
+pim_analytics:
+  info_type:
+    nb_assets: Número de mídias
+pim_assets_collection: Coleção de mídias
+akeneo_reference_entity: Vínculo único da entidade de referência
+akeneo_reference_entity_collection: Vínculos múltiplos da entidade de referência
+pim_api:
+  acl:
+    asset_category:
+      edit: Criar e atualizar categorias de mídia
+      list: Listar categorias de mídias
+    asset:
+      edit: Editar mídias e enviar seus arquivos de referência e variação
+      list: Lista mídias, e listar e baixar seus arquivos de referência e variação
+  acl_group:
+    asset_category: Categorias de mídias
+    asset: Mídias
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Transformações de mídia
+  asset_transformation:
+    not_found: Nenhuma transformação encontrada
+    title:
+      transformation: Transformação
+      options: Opções
+    colorspace:
+      title: Espaço de cor
+      options:
+        colorspace: 'Espaço de cor %value%'
+    resize:
+      title: Redimensionar
+      options:
+        width: 'Largura de %value%px'
+        height: 'Altura de %value%px'
+    resolution:
+      title: Resolução
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Escala
+      options:
+        width: 'Largura de %value%px'
+        height: 'Altura de %value%px'
+        ratio: 'Taxa de %value%%'
+    thumbnail:
+      title: Miniatura
+      options:
+        width: 'Largura de %value%px'
+        height: 'Altura de %value%px'

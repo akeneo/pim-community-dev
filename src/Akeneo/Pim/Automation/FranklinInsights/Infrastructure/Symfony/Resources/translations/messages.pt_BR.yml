@@ -1,0 +1,35 @@
+akeneo_franklin_insights:
+  acl:
+    franklin_insights:
+      index: Inscrição das Intuições do Franklin para produtos
+    franklin:
+      title: Gerenciar a conexão das Intuições do Franklin
+    settings:
+      mapping: Gerenciar as configurações das Intuições do Franklin
+  acl_group:
+    franklin_insights: Configurações das Intuições do Franklin
+  mapping_identifier:
+    success: O mapeamento foi salvo com sucesso
+    error: Ocorreu um erro ao salvar o mapeamento
+  entity:
+    product_subscription:
+      constraint:
+        family_required: 'É necessária uma família de produtos para inscrever o produto nas Intuições do Franklin.'
+        no_identifiers_mapping: 'Por favor, mapeie os identificadores de produto do seu catálogo em Configurações > Intuições do Franklin antes de inscrever produtos.'
+        insufficient_credits: "Não foi possível inscrever o produto nas Intuições do Franklin. Você não tem crédito suficiente."
+        invalid_mapped_values: 'Não foi possível inscrever o produto nas Intuições do Franklin. Por favor, inscreva o produto com uma combinação válida de identificadores.'
+        already_subscribed_product: 'O produto já está inscrito.'
+        variant_product: 'As variantes de produtos não podem ser inscritas nas Intuições do Franklin.'
+        inactive_connection: 'Não foi possível inscrever o produto nas Intuições do Franklin. Por favor, configure sua conexão com as Intuições do Franklin.'
+    attributes_mapping:
+      notification:
+        new_attributes_to_map: 'Você tem novos atributos para mapear da família "%familyLabel%"'
+job_execution.summary:
+  configuration_validation: Configuração das Intuições do Franklin
+  subscribed: inscrito
+  unsubscribed: inscrição cancelada
+  unsubscription_skipped_not_subscribed: ignorado (não inscrito)
+pim_datagrid:
+  cells:
+    type:
+      franklin_insights_fetch_products: Intuições do Franklin

@@ -1,0 +1,297 @@
+pim_title:
+  akeneo_reference_entities_reference_entity_index: Criar um novo entidade
+  akeneo_reference_entities_reference_entity_edit: Editar uma entidade de referência
+  akeneo_reference_entities_record_edit: Editar um registro
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        remove: Remover a imagem
+        download: Baixar a imagem
+        upload: Arraste e solte para fazer o envio ou clique aqui
+      small:
+        remove: Remover
+        download: Baixar
+        upload: Arraste e solte para carregar
+  reference_entity:
+    validation:
+      code:
+        pattern: 'Este campo só pode conter letras, números e sublinhados.'
+        should_be_unique: 'Este código já existe para esta entidade.'
+        limit_reached: 'Você não pode criar a entidade de referência "{{ %reference_entity_label% }}", porque você chegou ao limite de {{ %limit% }} referências de entidade'
+    button:
+      save: Salvar
+      save_permission: Salvar
+      create: Criar
+    permission:
+      title: Permissões de entidade
+    title: Entidades
+    breadcrumb: Referências de Entidades
+    img: A imagem principal da entidade de referência nomeada "{{ label }}"
+    tab:
+      records: Registros
+      attribute: Atributos
+      properties: Propriedades
+      permission: Permissões
+    properties:
+      title: Propriedades da entidade
+      identifier: Código
+      label: Rótulo
+      image: Imagem
+    attribute:
+      title: Atributos do registro
+      attribute:
+        error:
+          render_list: 'Um erro ocorreu durante a renderização do atributo "{{ %attribute_code% }}"'
+          render_edit: 'Um erro ocorreu durante a renderização dos campos de propriedades adicionais do atributo "{{ %attribute_code% }}"'
+    module:
+      delete:
+        button: Apagar o entidade
+        confirm: Você tem certeza que deseja excluir esta entidade?
+    index:
+      grid:
+        count: '{0} Não existe entidade de referência|{1} {{ count }} Entidade de referência|]1,Inf] {{ count }} Entidades de referência'
+        help:
+          title: 'Bem-vindo(a) às Entidades de Referência!'
+          description_part_one: Enriquecer informações relacionada aos produtos (como marcas, fabricantes, cores, materiais, ingredientes...).
+          description_part_two: Isso permitirá que você ofereça uma melhor Experiência de Produto aos seus clientes.
+          description_part_three: Clique no botão "Criar" para criar sua 1ª entidade de referência, definir seus atributos e registros.
+          description_part_four: Então, para vincular aos produtos, crie um tipo de atributo de produto relacionado a esta entidade de referência.
+          description_part_five: Para mais detalhes, convidamos você a ler esse artigo.
+    create:
+      header:
+        title: Criar
+      subtitle: Entidades de referência
+      title: Criar um novo entidade
+      input:
+        label: Rótulo
+        code: Código (obrigatório)
+      confirm: Salvar
+    delete:
+      message: Tem certeza que deseja excluir a entidade "{{ referenceEntityLabel }}"?
+      title: Atributo
+    notification:
+      save:
+        success: Entidade de referência atualizada com sucesso.
+        fail: Ocorreu um erro ao salvar a entidade de referência
+      create:
+        success: Entidade de referência criada com sucesso.
+        fail: Ocorreu um erro durante a criação da entidade de referência
+      delete:
+        success: Entidade de referência excluída com sucesso.
+        fail: Ocorreu um erro durante a exclusão da entidade de referência
+  permission:
+    notification:
+      save:
+        success: Permissões de entidade de referência atualizadas com sucesso.
+        fail: Pelo menos um grupo de usuários deve ter permissão de edição para esta entidade
+    no_data:
+      title: Você não tem grupo de usuários
+      subtitle: Para gerenciar a permissão na entidade de referência, você precisa ter pelo menos um grupo de usuário.
+      link: Clique aqui para adicionar seu primeiro grupo de usuários
+  record:
+    validation:
+      limit_reached: 'Você não pode criar o registro "{{ %record_label% }}", porque atingiu o limite de {{ %limit% }} registros para esta entidade de referência'
+      code:
+        pattern: 'Este campo só pode conter letras, números e sublinhados.'
+        should_be_unique: 'Este código já existe para esta entidade.'
+    no_data:
+      title: Não há registro para {{ entityLabel }}
+      subtitle: Clique no botão "Adicionar novo" para criar o primeiro registro
+    no_result:
+      title: Não há resultados para sua pesquisa
+      subtitle: Tente novamente com novos critérios de pesquisa.
+    selector:
+      no_value: Clique aqui para selecionar um registro.
+    error:
+      value: Parece que a renderização do campo "{{ fieldName }}" falhou. Veja o console de desenvolvimento para mais detalhes.
+    button:
+      save: Salvar
+      create: Adicionar novo
+      delete: Excluir
+      delete_all: Excluir todos os registros
+      back: Voltar à lista
+    enrich:
+      title: Atributos do registro
+      code: Código
+      label: Rótulo
+    title: Registros
+    create:
+      header:
+        title: Criar
+      subtitle: Entidades de referência
+      title: Adicionar novo {{ entityLabel }}
+      input:
+        label: Rótulo
+        code: Código (obrigatório)
+        create_another: Criar outro registro
+      confirm: Salvar
+    delete:
+      message: Tem certeza que deseja excluir o registro "{{ recordLabel }}"? Se ele estiver ligado a produtos ou registros, os links serão removidos.
+      title: Registro
+    delete_all:
+      confirm: Tem certeza que deseja excluir todos os registros "{{ entityIdentifier }}"? Se eles estiverem ligados a produtos, os links para os produtos serão removidos.
+    grid:
+      search: Pesquisar nos rótulos, código e atributos de texto
+      filter:
+        counter: '{{ matchesCount }} resultado|{{ matchesCount }} resultados'
+        completeness:
+          label: Completo
+          all: TODOS
+          'yes': 'SIM'
+          'no': 'NÃO'
+      column:
+        code: Código
+        image: Imagem
+        label: Rótulo
+        complete: Completo
+        action: Ações
+      more_result:
+        title: Não é isso!
+        description: Você acabou de visualizar os primeiros 500 resultados de {{ total }} registros. Para ver mais, tente com critérios de pesquisa mais específicos.
+      completeness:
+        title_no_required: Nenhum atributo obrigatório
+        title_non_complete: 0 de {{ required }} atributos concluídos
+        title_ongoing: '{{ complete }} de {{ required }} atributos concluídos'
+        title_complete: Todos os atributos {{ required }} foram concluídos
+    tab:
+      enrich: Atualizar
+    notification:
+      save:
+        success: Registro atualizado com sucesso.
+        fail: Ocorreu um erro ao salvar o registro
+        validation_error: O registro não pôde ser atualizado
+      create:
+        success: Registro criado com sucesso.
+        fail: Ocorreu um erro ao criar o registro
+      delete:
+        success: Registro "{{ code }}" excluído com sucesso.
+        fail: Ocorreu um erro ao excluir o registro
+      delete_all:
+        success: Todos os "{{ entityIdentifier }}" registros foram excluídos com sucesso.
+        fail: Ocorreu um erro ao excluir todos os registros desta entidade de referência
+    completeness:
+      label: Completo
+  attribute:
+    validation:
+      limit_reached: 'Você não pode criar o atributo "{{ %attribute_label% }}" porque atingiu o limite de {{ %limit% }} atributos para esta entidade de referência'
+    default:
+      code: Código
+      label: Rótulo
+      image: Imagem
+    type:
+      text: Texto
+      image: Imagem
+      record: Vínculo único da entidade de referência
+      record_collection: Vínculos múltiplos da entidade de referência
+      option: Opção única
+      option_collection: Múltiplas opções
+    is_required: necessário para completar
+    no_data:
+      title: Não há atributos personalizados para {{ entityLabel }}
+      subtitle: Clique no botão "Adicionar um atributo" para configurar seu primeiro atributo personalizado
+    button:
+      add: Adicionar um atributo
+    create:
+      header:
+        title: Criar
+      subtitle: Entidades de referência
+      title: Adicionar novo atributo de registro
+      description: Os seguintes parâmetros, exceto o rótulo, não podem ser atualizados após a criação de atributo
+      input:
+        code: Código (obrigatório)
+        label: Rótulo
+        type: Tipo de atributo
+        record_type: Entidade de referência para vincular (obrigatório)
+        value_per_locale: Valor por localidade
+        value_per_channel: Valor por canal
+      placeholder:
+        record_type: Selecione a entidade de referência vinculada
+      confirm: Salvar
+    edit:
+      delete: Excluir o atributo
+      title: Editar atributo {{ code }}
+      save: Salvar
+      cancel: Cancelar
+      input:
+        code: Código (obrigatório)
+        label: Rótulo
+        type: Tipo de atributo
+        record_type: Entidade de referência relacionada (obrigatório)
+        value_per_locale: Valor por localidade
+        value_per_channel: Valor por canal
+        is_required: Necessário para completar
+        max_length: Limite máximo de caracteres
+        textarea: Área de texto
+        is_rich_text_editor: Editor de Texto Rico
+        max_file_size: Tamanho máximo do arquivo (MB)
+        allowed_extensions: Extensões permitidas
+        validation_rule: Regra de validação
+        regular_expression: Expressão Regular
+        manage_options:
+          confirmation:
+            discard_changes: Você perderá as alterações feitas na lista de opções se você sair da página
+          quick_edit:
+            label: Gerenciar opções
+          option:
+            label:
+              placeholder: Escreva a nova opção de rótulo aqui
+        options:
+          validation_rule:
+            none: Nenhum
+            email: E-mail
+            regular_expression: Expressão Regular
+            url: URL
+    delete:
+      message: Tem certeza que deseja excluir o atributo "{{ attributeLabel }}"?
+      title: Atributo
+    notification:
+      list:
+        fail: Ocorreu um erro ao atualizar a lista de atributos
+      save:
+        success: Atributo atualizado com sucesso.
+        fail: Ocorreu um erro ao salvar o atributo
+        validation_error: O atributo não pôde ser atualizado
+      create:
+        success: Atributo criado com sucesso.
+        fail: Ocorreu um erro ao criar o atributo
+        validation_error: O atributo não pôde ser criado
+      delete:
+        success: Atributo excluído com sucesso.
+        fail: Ocorreu um erro ao excluir o atributo
+    options:
+      no_value: Clique aqui para selecionar uma opção.
+      sub_title: Entidades de referência
+      helper:
+        title: Traduções do rótulo
+  modal:
+    delete:
+      subtitle: Confirmar exclusão
+      button:
+        cancel: Cancelar
+        confirm: Excluir
+pim_enrich:
+  confirmation:
+    discard_changes: 'Você perderá as alterações desta entidade "{{ entity }}" se você sair da página.'
+  entity:
+    attribute:
+      property:
+        type:
+          akeneo_reference_entity_collection: Vínculos múltiplos da entidade de referência
+          akeneo_reference_entity: Vínculo único da entidade de referência
+        section:
+          type_specific: Digite parâmetros específicos
+        reference_entity:
+          identifier: Entidade de referência relacionada (obrigatório)
+          default_label: Por favor, selecione uma entidade de referência
+permission:
+  mass_action: Aplicar a permissão {{ rightLevel }} em todos os grupos
+pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Eixos nas entidades de referência
+      hint: Se você está usando as entidades de referência, aqui estão os eixos para ajudar a monitorar seu volume.
+  axis:
+    count_reference_entity: Entidades de referência
+    average_max_records_per_reference_entity: Registros por entidade de referência
+    average_max_attributes_per_reference_entity: Atributos por entidade de referência
