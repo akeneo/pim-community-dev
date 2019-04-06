@@ -134,6 +134,16 @@ confirmation:
     import_profile: Tem certeza de que deseja excluir este perfil de importação?
     export_profile: Tem certeza de que deseja excluir este perfil de exportação?
     job_instance: Tem certeza que deseja excluir esta instância de job?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Tem certeza de que deseja excluir este perfil de importação?
+    export_profile:
+      module:
+        delete:
+          confirm: Tem certeza de que deseja excluir este perfil de exportação?
 pim_title:
   pim_importexport_export_profile_index: Gerenciamento dos perfis de exportação
   pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar

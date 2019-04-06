@@ -134,7 +134,6 @@ confirmation:
     import_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
     export_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
     job_instance: Êtes-vous sûr(e) de vouloir supprimer cette opération ?
-
 pim_enrich:
   entity:
     import_profile:
@@ -145,7 +144,6 @@ pim_enrich:
       module:
         delete:
           confirm: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
-
 pim_title:
   pim_importexport_export_profile_index: Gestion des profils d'export
   pim_importexport_export_profile_edit: Profil d'export {{ job.label }} | Édition

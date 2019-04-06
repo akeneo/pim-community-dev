@@ -129,6 +129,16 @@ confirmation:
     import_profile: このインポートのプロファイルを削除してもよろしいですか。
     export_profile: このエクスポートプロファイルを削除してもよろしいですか。
     job_instance: 本当にこのジョブインスタンスを削除しますか？
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: このインポートのプロファイルを削除してもよろしいですか。
+    export_profile:
+      module:
+        delete:
+          confirm: このエクスポートプロファイルを削除してもよろしいですか。
 pim_title:
   pim_importexport_export_profile_index: エクスポート プロファイルの管理
   pim_importexport_export_profile_edit: '{{ job.label }}のエクスポートプロファイル |編集'
