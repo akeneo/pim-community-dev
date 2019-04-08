@@ -7,6 +7,12 @@ pim_localization_locale_index:
     defaults: { _controller: pim_localization.controller.locale:indexAction }
     methods: [GET]
 
+
+pim_system_edition:
+    path: /system/edition
+    defaults: { _controller: Akeneo\Platform\Bundle\UIBundle\Controller\IsCloudEdition }
+    methods: [GET]
+
 measures:
     resource: '@PimUIBundle/Resources/config/routing/internal_api/measures.yml'
     prefix: /configuration/measures

@@ -13,3 +13,7 @@ services:
         arguments:
             - '@pim_localization.provider.ui_locale'
             - '@pim_internal_api_serializer'
+
+    Akeneo\Platform\Bundle\UIBundle\Controller\IsCloudEdition:
+        arguments:
+            - '%env(resolve:IS_CLOUD_EDITION)%'
