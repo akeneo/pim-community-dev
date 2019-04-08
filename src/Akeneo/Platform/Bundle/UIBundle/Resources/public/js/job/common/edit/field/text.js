@@ -29,6 +29,10 @@ define([
          */
         getFieldValue: function () {
             return this.$('input').val();
+        },
+
+        render: function() {
+            this.$el.hide();
         }
     });
 });
