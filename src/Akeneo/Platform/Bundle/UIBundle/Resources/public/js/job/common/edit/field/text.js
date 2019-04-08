@@ -10,11 +10,13 @@
 define([
     'underscore',
     'pim/job/common/edit/field/field',
-    'pim/template/export/common/edit/field/text'
+    'pim/template/export/common/edit/field/text',
+    'edition/provider'
 ], function (
     _,
     BaseField,
-    fieldTemplate
+    fieldTemplate,
+    EditionProvider
 ) {
     return BaseField.extend({
         fieldTemplate: _.template(fieldTemplate),
@@ -32,7 +34,9 @@ define([
         },
 
         render: function() {
-            this.$el.hide();
+            if (EditionProvider.isCloud()) {
+                this.$el.hide();
+            }
         }
     });
 });

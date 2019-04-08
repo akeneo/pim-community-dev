@@ -1245,3 +1245,6 @@ config:
     pim/template/catalog-volume/section:      pimui/templates/catalog-volume/section.html
     pim/template/catalog-volume/number:       pimui/templates/catalog-volume/number.html
     pim/template/catalog-volume/average-max:     pimui/templates/catalog-volume/average-max.html
+
+
+    edition/provider: pimui/js/job/common/edit/field/edition-provider.ts
