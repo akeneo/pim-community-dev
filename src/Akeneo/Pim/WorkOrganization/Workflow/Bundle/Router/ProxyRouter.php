@@ -23,11 +23,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * When a product is saved, we send the URI of the product in the headers.
  * This proxy checks if a draft exists for a user and redirect him to product draft route instead of product route.
  *
- * TODO MERGE MASTER 3.1 Should be renamed ProxyRouter during merge.
- *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ProxyProductRouter implements UrlGeneratorInterface
+class ProxyRouter implements UrlGeneratorInterface
 {
     /** @var UrlGeneratorInterface */
     private $router;

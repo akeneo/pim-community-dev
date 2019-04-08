@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyProductRouter;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyRouter;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ProxyProductRouterSpec extends ObjectBehavior
+class ProxyRouterSpec extends ObjectBehavior
 {
     function let(
         UrlGeneratorInterface $router,
@@ -34,7 +34,7 @@ class ProxyProductRouterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProxyProductRouter::class);
+        $this->shouldHaveType(ProxyRouter::class);
     }
 
     function it_should_be_a_query_param_checker()

@@ -4,7 +4,7 @@ parameters:
     pimee_workflow_controller.external_api.publish_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\PublishedProductController
     pimee_api.controller.product_model_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductModelDraftController
     pimee_api.controller.product_model_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductModelProposalController
-    pimee_workflow.router.proxy_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyProductRouter
+    pimee_workflow.router.proxy_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyRouter
     pimee_workflow.normalizer.external_api.product.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\ProductNormalizer
     pimee_workflow.normalizer.external_api.published_product.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\PublishedProductNormalizer
 
@@ -76,7 +76,7 @@ services:
             - 'pimee_api_product_draft_get'
 
     pimee_api.router.proxy_product_model:
-        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyProductRouter
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyRouter
         arguments:
             - '@router'
             - '@security.token_storage'

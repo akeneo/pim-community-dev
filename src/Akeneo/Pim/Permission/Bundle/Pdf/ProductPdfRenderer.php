@@ -43,10 +43,10 @@ class ProductPdfRenderer extends PimProductPdfRenderer
 
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
-    /** @var AssetRepositoryInterface|null */
+
+    /** @var AssetRepositoryInterface */
     private $assetRepository;
 
-    // TODO on 3.1: remove null values for arguments
     public function __construct(
         EngineInterface $templating,
         PdfBuilderInterface $pdfBuilder,
@@ -57,10 +57,10 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         IdentifiableObjectRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
+        AssetRepositoryInterface $assetRepository,
         string $template,
         string $uploadDirectory,
-        ?string $customFont = null,
-        ?AssetRepositoryInterface $assetRepository = null
+        ?string $customFont = null
     ) {
         parent::__construct(
             $templating,
@@ -106,11 +106,6 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     protected function getImagePaths(ProductInterface $product, $localeCode, $scope)
     {
         $imagePaths = parent::getImagePaths($product, $localeCode, $scope);
-
-        // TODO on 3.1: remove this test
-        if (null === $this->assetRepository) {
-            return $imagePaths;
-        }
 
         $channel = $this->channelRepository->findOneByIdentifier($scope);
         $locale = $this->localeRepository->findOneByIdentifier($localeCode);

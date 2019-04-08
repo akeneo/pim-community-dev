@@ -20,8 +20,6 @@ use PhpSpec\ObjectBehavior;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
- *
- * @TODO These tests should break when pulling-up to 3.1, ask <paul.chasle@akeneo.com> for information.
  */
 class MultiSelectNormalizerSpec extends ObjectBehavior
 {

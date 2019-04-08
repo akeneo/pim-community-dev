@@ -14,9 +14,9 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
+            - '@pimee_product_asset.repository.asset'
             - 'AkeneoPimEnrichmentBundle:Product:renderPdf.html.twig'
             - '%upload_dir%'
             - '%pim_pdf_generator_font%'
-            - '@pimee_product_asset.repository.asset'
         tags:
             - { name: pim_pdf_generator.renderer, priority: 100 }

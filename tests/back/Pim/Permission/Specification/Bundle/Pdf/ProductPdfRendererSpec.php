@@ -51,10 +51,10 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $attributeRepository,
             $channelRepository,
             $localeRepository,
+            $assetRepository,
             self::TEMPLATE_NAME,
             $uploadDirectory,
-            null,
-            $assetRepository
+            null
         );
     }
 
