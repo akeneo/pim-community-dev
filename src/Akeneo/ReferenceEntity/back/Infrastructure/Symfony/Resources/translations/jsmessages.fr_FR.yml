@@ -141,6 +141,7 @@ pim_reference_entity:
           'yes': 'OUI'
           'no': 'NON'
         option:
+          no_value: Vous devez choisir une option à filtrer
           operator:
             in: Dans la liste
       column:
