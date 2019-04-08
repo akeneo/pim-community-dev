@@ -12,12 +12,6 @@
             "page": 0,
             "filters": [
                 {
-                    "field": "full_text",
-                    "operator": "=",
-                    "value": "",
-                    "context": {}
-                },
-                {
                     "field": "reference_entity",
                     "operator": "=",
                     "value": "designer",

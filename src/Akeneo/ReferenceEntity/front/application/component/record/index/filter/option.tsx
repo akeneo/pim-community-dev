@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import Select2 from 'akeneoreferenceentity/application/component/app/select2';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {ConcreteOptionCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option-collection';
+import {getAttributeFilterKey} from 'akeneoreferenceentity/tools/filter';
 
 const memo = (React as any).memo;
 const useState = (React as any).useState;
@@ -51,7 +52,7 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
         className="AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited"
         onClick={() => setIsOpen(true)}
       >
-        <span className="filter-criteria-hint">
+        <span className="AknFilterBox-filterCriteriaHint">
           {0 === labels.length ? __('pim_reference_entity.record.grid.filter.option.all') : labels.join(', ')}
         </span>
         <span className="AknFilterBox-filterCaret" />
@@ -78,7 +79,7 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
                   }}
                   onChange={(optionCodes: string[]) => {
                     onFilterUpdated({
-                      field: `values.${attribute.getCode().stringValue()}`,
+                      field: getAttributeFilterKey(attribute),
                       operator: DEFAULT_OPERATOR,
                       value: optionCodes,
                       context: {},

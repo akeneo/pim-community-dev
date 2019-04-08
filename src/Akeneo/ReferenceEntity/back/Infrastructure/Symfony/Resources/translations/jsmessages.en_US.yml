@@ -137,11 +137,11 @@ pim_reference_entity:
         counter: '{{ matchesCount }} result|{{ matchesCount }} results'
         completeness:
           label: Complete
-          all: ALL
-          'yes': 'YES'
-          'no': 'NO'
+          all: All
+          'yes': 'Yes'
+          'no': 'No'
         option:
-          all: all
+          all: All
           no_value: Select an option to filter
           operator:
             in: In list

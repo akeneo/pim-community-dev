@@ -51,7 +51,11 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     await search.type(searchInput);
   };
 
-  const filter = async (attributeCode, options) => {
+  const filterOption = async (attributeCode, options) => {
+    const containerSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"]`;
+    await page.waitForSelector(containerSelector);
+    const container = await nodeElement.$(containerSelector);
+
     const filterSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"] .AknFilterBox-filterLabel`;
     await page.waitForSelector(filterSelector);
     const filterButton = await nodeElement.$(filterSelector);
@@ -65,6 +69,22 @@ const Records = async (nodeElement, createElementDecorator, page) => {
       const optionElement = await optionSelect.$(`option[value="${option}"]`);
       await optionElement.click();
     }
+  };
+
+  const filterLink = async (attributeCode, recordCode) => {
+    const containerSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"]`;
+    await page.waitForSelector(containerSelector);
+    const container = await nodeElement.$(containerSelector);
+
+    const filterSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"] .AknFilterBox-filterLabel`;
+    await page.waitForSelector(filterSelector);
+    const filterButton = await nodeElement.$(filterSelector);
+    await filterButton.click();
+
+    const recordSelectorInput = `.AknFilterBox-filter[data-attribute="${attributeCode}"] .record-selector`;
+    await page.waitForSelector(recordSelectorInput);
+    const recordInput = await container.$(recordSelectorInput);
+    await recordInput.type(recordCode);
   };
 
   const hasErrorNotification = async () => {
@@ -94,7 +114,8 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     hasErrorNotification,
     search,
     completeFilter,
-    filter,
+    filterOption,
+    filterLink,
   };
 };
 

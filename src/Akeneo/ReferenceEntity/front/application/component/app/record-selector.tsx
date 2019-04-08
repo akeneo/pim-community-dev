@@ -37,6 +37,7 @@ export type RecordSelectorProps = {
   referenceEntityIdentifier: ReferenceEntityIdentifier;
   multiple?: boolean;
   readOnly?: boolean;
+  compact?: boolean;
   locale: LocaleReference;
   channel: ChannelReference;
   placeholder: string;
@@ -50,6 +51,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
   static defaultProps = {
     multiple: false,
     readOnly: false,
+    compact: false,
   };
   private DOMel: React.RefObject<HTMLInputElement>;
   private el: any;
@@ -84,12 +86,20 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
     this.el = $(this.DOMel.current);
 
     if (undefined !== this.el.select2) {
+      const containerCssClass = `record-selector ${this.props.readOnly ? 'record-selector--disabled' : ''} ${
+        this.props.compact ? 'record-selector--compact' : ''
+      }`;
+      const dropdownCssClass = `${
+        this.props.multiple ? 'record-selector-multi-dropdown' : 'record-selector-dropdown'
+      } ${this.props.compact ? 'record-selector-dropdown--compact' : ''}`;
+
       this.el.select2({
         allowClear: true,
         placeholder: this.props.placeholder,
         placeholderOption: '',
         multiple: this.props.multiple,
-        dropdownCssClass: this.props.multiple ? 'record-selector-multi-dropdown' : 'record-selector-dropdown',
+        dropdownCssClass,
+        containerCssClass,
         ajax: {
           url: routing.generate('akeneo_reference_entities_record_index_rest', {
             referenceEntityIdentifier: this.props.referenceEntityIdentifier.stringValue(),
@@ -137,29 +147,18 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
         },
         initSelection: async (element: any, callback: (item: Select2Item | Select2Item[]) => void) => {
           if (this.props.multiple) {
-            const initialValues = element.val().split(',');
-            const initQuery = {
-              channel: this.props.channel.stringValue(),
-              locale: this.props.locale.stringValue(),
-              size: 200,
-              page: 0,
-              filters: [
-                {
-                  field: 'reference_entity',
-                  operator: '=',
-                  value: this.props.referenceEntityIdentifier.stringValue(),
-                },
-                {
-                  field: 'code',
-                  operator: 'IN',
-                  value: initialValues,
-                },
-              ],
-            };
+            const initialRecordCodes = element
+              .val()
+              .split(',')
+              .map((recordCode: string) => RecordCode.create(recordCode));
+            const result = await recordFetcher.fetchByCodes(
+              this.props.referenceEntityIdentifier,
+              initialRecordCodes,
+              {channel: this.props.channel.stringValue(), locale: this.props.locale.stringValue()},
+              true
+            );
 
-            const result = await recordFetcher.search(initQuery);
-
-            callback(result.items.map(this.formatItem.bind(this)));
+            callback(result.map(this.formatItem.bind(this)));
           } else {
             const initialValue = element.val();
             recordFetcher
@@ -225,8 +224,10 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {referenceEntityIdentifier, ...props} = this.props;
-    const className = `record-selector ${this.props.readOnly ? 'record-selector--disabled' : ''}`;
+    const {referenceEntityIdentifier, compact, ...props} = this.props;
+    const className = `record-selector ${this.props.readOnly ? 'record-selector--disabled' : ''} ${
+      compact ? 'record-selector--compact' : ''
+    }`;
 
     const valueList = props.multiple
       ? (this.props.value as RecordCode[])
@@ -252,20 +253,22 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
             this.props.onChange(newValue);
           }}
         />
-        <div className="record-selector-link-container">
-          {valueList.map((value: RecordCode) => (
-            <a
-              className="AknFieldContainer-inputLink AknIconButton AknIconButton--small AknIconButton--link"
-              href={`#${routing.generate('akeneo_reference_entities_record_edit', {
-                referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
-                recordCode: value.stringValue(),
-                tab: 'enrich',
-              })}`}
-              target="_blank"
-            />
-          ))}
-          {this.props.multiple ? <span className="AknFieldContainer-inputLink" /> : null}
-        </div>
+        {!compact ? (
+          <div className="record-selector-link-container">
+            {valueList.map((value: RecordCode) => (
+              <a
+                className="AknFieldContainer-inputLink AknIconButton AknIconButton--compact AknIconButton--link"
+                href={`#${routing.generate('akeneo_reference_entities_record_edit', {
+                  referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
+                  recordCode: value.stringValue(),
+                  tab: 'enrich',
+                })}`}
+                target="_blank"
+              />
+            ))}
+            {this.props.multiple ? <span className="AknFieldContainer-inputLink" /> : null}
+          </div>
+        ) : null}
       </div>
     );
   }

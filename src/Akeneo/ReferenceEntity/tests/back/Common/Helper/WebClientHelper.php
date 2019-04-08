@@ -58,8 +58,8 @@ class WebClientHelper
         );
         Assert::assertSame($statusCode, $response->getStatusCode(), $errorMessage);
         if ($expectedContent !== '') {
-            Assert::assertEquals($expectedContent, $response->getContent(), 'Expected response content is not the same as the actual.');
             Assert::assertJsonStringEqualsJsonString($expectedContent, $response->getContent(), 'Expected response content is not the same as the actual.');
+            Assert::assertEquals($expectedContent, $response->getContent(), 'Expected response content is not the same as the actual.');
         }
     }
 

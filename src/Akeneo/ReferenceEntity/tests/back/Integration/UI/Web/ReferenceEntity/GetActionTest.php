@@ -186,12 +186,27 @@ class GetActionTest extends ControllerIntegrationTestCase
             ],
         ];
 
+        $city = new AttributeDetails();
+        $city->identifier = 'city_designer_79eb100099b9a8bf52609e00b7ee307e';
+        $city->referenceEntityIdentifier = 'designer';
+        $city->code = 'city';
+        $city->isRequired = false;
+        $city->order = 5;
+        $city->valuePerChannel = false;
+        $city->valuePerLocale = false;
+        $city->type = 'record';
+        $city->labels = ['en_US' => 'City'];
+        $city->additionalProperties = [
+            'record_type' => 'city'
+        ];
+
         $entityItem->attributes = [
             $name,
             $bio,
             $portrait,
             $favoriteColor,
             $colors,
+            $city
         ];
         $queryHandler->save($entityItem);
 

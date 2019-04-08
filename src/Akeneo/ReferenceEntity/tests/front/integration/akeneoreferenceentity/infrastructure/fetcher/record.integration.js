@@ -192,17 +192,17 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               data: 'Dyson',
               locale: 'fr_FR',
             },
-            "cities": {
-              "attribute": "cities",
-              "channel": null,
-              "data": "paris",
-              "locale": null,
+            city_designer_79eb100099b9a8bf52609e00b7ee307e: {
+              attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
+              channel: null,
+              data: 'paris',
+              locale: null,
             },
-            "colors": {
-              "attribute": "colors",
-              "channel": null,
-              "data": "red",
-              "locale": null,
+            colors_designer_52609e00b7ee307e79eb100099b9a8bf: {
+              attribute: 'colors_designer_52609e00b7ee307e79eb100099b9a8bf',
+              channel: null,
+              data: 'red',
+              locale: null,
             },
           },
           completeness: {
@@ -229,17 +229,17 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               data: 'Starck',
               locale: 'en_US',
             },
-            "cities": {
-              "attribute": "cities",
-              "channel": null,
-              "data": "paris",
-              "locale": null,
+            city_designer_79eb100099b9a8bf52609e00b7ee307e: {
+              attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
+              channel: null,
+              data: 'paris',
+              locale: null,
             },
-            "colors": {
-              "attribute": "colors",
-              "channel": null,
-              "data": "red",
-              "locale": null,
+            colors_designer_52609e00b7ee307e79eb100099b9a8bf: {
+              attribute: 'colors_designer_52609e00b7ee307e79eb100099b9a8bf',
+              channel: null,
+              data: 'red',
+              locale: null,
             },
           },
           completeness: {

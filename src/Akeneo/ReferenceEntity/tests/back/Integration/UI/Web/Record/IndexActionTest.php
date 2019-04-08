@@ -189,7 +189,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         );
         $attributeRepository->create(
             OptionAttribute::create(
-                AttributeIdentifier::fromString('colors'),
+                AttributeIdentifier::create('designer', 'colors', '52609e00b7ee307e79eb100099b9a8bf'),
                 ReferenceEntityIdentifier::fromString('designer'),
                 AttributeCode::fromString('colors'),
                 LabelCollection::fromArray(['en_US' => 'Color']),
@@ -201,10 +201,10 @@ class IndexActionTest extends ControllerIntegrationTestCase
         );
         $attributeRepository->create(
             RecordAttribute::create(
-                AttributeIdentifier::fromString('cities'),
+                AttributeIdentifier::create('designer', 'city', '79eb100099b9a8bf52609e00b7ee307e'),
                 ReferenceEntityIdentifier::fromString('designer'),
-                AttributeCode::fromString('cities'),
-                LabelCollection::fromArray(['en_US' => 'Cities']),
+                AttributeCode::fromString('city'),
+                LabelCollection::fromArray(['en_US' => 'City']),
                 AttributeOrder::fromInteger(6),
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
@@ -243,13 +243,13 @@ class IndexActionTest extends ControllerIntegrationTestCase
             TextData::fromString('an awesome designer!')
         );
         $starkColorValue = Value::create(
-            AttributeIdentifier::fromString('colors'),
+            AttributeIdentifier::create('designer', 'colors', '52609e00b7ee307e79eb100099b9a8bf'),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
             OptionData::createFromNormalize('red')
         );
         $starkCityValue = Value::create(
-            AttributeIdentifier::fromString('cities'),
+            AttributeIdentifier::fromString('city_designer_79eb100099b9a8bf52609e00b7ee307e'),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
             RecordData::createFromNormalize('paris')
@@ -317,13 +317,13 @@ class IndexActionTest extends ControllerIntegrationTestCase
             TextData::fromString('Dyson')
         );
         $dysonColorValue = Value::create(
-            AttributeIdentifier::fromString('colors'),
+            AttributeIdentifier::create('designer', 'colors', '52609e00b7ee307e79eb100099b9a8bf'),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
             OptionData::createFromNormalize('red')
         );
         $dysonCityValue = Value::create(
-            AttributeIdentifier::fromString('cities'),
+            AttributeIdentifier::fromString('city_designer_79eb100099b9a8bf52609e00b7ee307e'),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
             OptionData::createFromNormalize('paris')

@@ -18,6 +18,10 @@ export type RecordResult = {
 };
 
 export class RecordFetcherImplementation implements RecordFetcher {
+  private recordsByCodesCache: {
+    [key: string]: Promise<SearchResult<NormalizedRecord>>;
+  } = {};
+
   async fetch(referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode): Promise<RecordResult> {
     const backendRecord = await getJSON(
       routing.generate('akeneo_reference_entities_record_get_rest', {
@@ -53,6 +57,42 @@ export class RecordFetcherImplementation implements RecordFetcher {
       matchesCount: backendRecords.matches_count,
       totalCount: backendRecords.total_count,
     };
+  }
+
+  async fetchByCodes(
+    referenceEntityIdentifier: ReferenceEntityIdentifier,
+    recordCodes: RecordCode[],
+    context: {
+      channel: string;
+      locale: string;
+    },
+    cached: boolean = false
+  ): Promise<NormalizedRecord[]> {
+    const query = {
+      channel: context.channel,
+      locale: context.locale,
+      size: 200,
+      page: 0,
+      filters: [
+        {
+          field: 'reference_entity',
+          operator: '=',
+          value: referenceEntityIdentifier.stringValue(),
+        },
+        {
+          field: 'code',
+          operator: 'IN',
+          value: recordCodes.map((recordCode: RecordCode) => recordCode.stringValue()),
+        },
+      ],
+    };
+
+    const queryHash = JSON.stringify(query);
+    if (!cached || undefined === this.recordsByCodesCache[queryHash]) {
+      this.recordsByCodesCache[queryHash] = this.search(query);
+    }
+
+    return (await this.recordsByCodesCache[queryHash]).items;
   }
 }
 

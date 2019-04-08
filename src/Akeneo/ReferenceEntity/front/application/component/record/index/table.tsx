@@ -12,13 +12,13 @@ import {MAX_DISPLAYED_RECORDS} from 'akeneoreferenceentity/application/action/re
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import {getLabel} from 'pimui/js/i18n';
 import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
-import {getFilter, getCompletenessFilter} from 'akeneoreferenceentity/tools/filter';
+import {getFilter, getCompletenessFilter, getAttributeFilterKey} from 'akeneoreferenceentity/tools/filter';
 import SearchField from 'akeneoreferenceentity/application/component/record/index/search-field';
 import CompletenessFilter, {
   CompletenessValue,
 } from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
-import {NormalizedAttributeIdentifier} from 'web/bundles/akeneoreferenceentity/domain/model/attribute/identifier';
+import {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 
 interface TableState {
   locale: string;
@@ -191,7 +191,8 @@ export default class Table extends React.Component<TableProps, {columns: Column[
       rights,
       filterViews,
     } = this.props;
-    const userSearch = getFilter(grid.filters, 'full_text').value;
+    const fullTextFilter = getFilter(grid.filters, 'full_text');
+    const userSearch = undefined !== fullTextFilter ? fullTextFilter.value : '';
     const completenessValue = getCompletenessFilter(grid.filters);
     const columnsToDisplay = this.getColumnsToDisplay(grid.columns, channel, locale);
 
@@ -208,15 +209,14 @@ export default class Table extends React.Component<TableProps, {columns: Column[
               {Object.keys(filterViews).map((attributeCode: NormalizedAttributeIdentifier) => {
                 const View = filterViews[attributeCode].view;
                 const attribute = filterViews[attributeCode].attribute;
-                const filter = grid.filters.find(
-                  (filter: Filter) => filter.field === attribute.getCode().stringValue()
-                );
+                const filter = grid.filters.find((filter: Filter) => filter.field === getAttributeFilterKey(attribute));
 
                 return (
                   <div
                     key={attribute.getCode().stringValue()}
                     className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin"
                     data-attribute={attribute.getCode().stringValue()}
+                    data-type={attribute.getType()}
                   >
                     <View attribute={attribute} filter={filter} onFilterUpdated={onFilterUpdated} />
                   </div>

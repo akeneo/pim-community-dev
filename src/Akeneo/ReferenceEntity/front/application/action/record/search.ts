@@ -49,6 +49,10 @@ export const filterUpdated = (updatedFilter: Filter) => (dispatch: any) => {
   dispatch(gridStateUpdated());
 };
 
+export const restoreFilters = (filters: Filter[]) => (dispatch: any) => {
+  filters.forEach((filter: Filter) => dispatch(updateFilter(filter.field, filter.operator, filter.value)));
+};
+
 export const completenessFilterUpdated = (completenessValue: CompletenessValue) => (dispatch: any) => {
   switch (completenessValue) {
     case CompletenessValue.All:

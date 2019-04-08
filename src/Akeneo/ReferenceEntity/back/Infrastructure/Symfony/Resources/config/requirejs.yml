@@ -21,9 +21,11 @@ config:
             record:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/record'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/record.tsx'
+                filter: '@akeneoreferenceentity/application/component/record/index/filter/record.tsx'
             record_collection:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/record-collection'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/record-collection.tsx'
+                filter: '@akeneoreferenceentity/application/component/record/index/filter/record.tsx'
             option:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/option'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/option.tsx'

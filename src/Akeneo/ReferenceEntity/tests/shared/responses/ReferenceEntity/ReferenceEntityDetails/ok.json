@@ -131,6 +131,20 @@
                             }
                         }
                     ]
+                },
+                {
+                    "type": "record",
+                    "identifier": "city_designer_79eb100099b9a8bf52609e00b7ee307e",
+                    "reference_entity_identifier": "designer",
+                    "code": "city",
+                    "labels": {
+                        "en_US": "City"
+                    },
+                    "is_required": false,
+                    "order": 5,
+                    "value_per_locale": false,
+                    "value_per_channel": false,
+                    "record_type": "city"
                 }
             ],
             "permission": {

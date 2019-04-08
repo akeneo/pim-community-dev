@@ -12,12 +12,6 @@
       "page": 0,
       "filters": [
         {
-          "field": "full_text",
-          "operator": "=",
-          "value": "",
-          "context": {}
-        },
-        {
           "field": "complete",
           "operator": "=",
           "value": false,
@@ -58,14 +52,14 @@
               "locale":"fr_FR",
               "data":"Dyson"
             },
-            "colors":{
-              "attribute":"colors",
+            "colors_designer_52609e00b7ee307e79eb100099b9a8bf":{
+              "attribute":"colors_designer_52609e00b7ee307e79eb100099b9a8bf",
               "channel":null,
               "locale":null,
               "data":"red"
             },
-            "cities":{
-              "attribute":"cities",
+            "city_designer_79eb100099b9a8bf52609e00b7ee307e":{
+              "attribute":"city_designer_79eb100099b9a8bf52609e00b7ee307e",
               "channel":null,
               "locale":null,
               "data":"paris"
@@ -97,14 +91,14 @@
               "locale":"en_US",
               "data":"an awesome designer!"
             },
-            "colors":{
-              "attribute":"colors",
+            "colors_designer_52609e00b7ee307e79eb100099b9a8bf":{
+              "attribute":"colors_designer_52609e00b7ee307e79eb100099b9a8bf",
               "channel":null,
               "locale":null,
               "data":"red"
             },
-            "cities":{
-              "attribute":"cities",
+            "city_designer_79eb100099b9a8bf52609e00b7ee307e":{
+              "attribute":"city_designer_79eb100099b9a8bf52609e00b7ee307e",
               "channel":null,
               "locale":null,
               "data":"paris"

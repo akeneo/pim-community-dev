@@ -132,36 +132,45 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
     props: StateProps & DispatchProps,
     {cellViews, filterViews}: {cellViews: CellViews; filterViews: FilterViews}
   ) {
-    if (0 === Object.keys(cellViews).length && 0 !== props.grid.columns.length) {
-      return {
-        cellViews: props.grid.columns.reduce((cellViews: CellViews, column: Column): CellViews => {
-          cellViews[column.key] = getDataCellView(column.type);
+    let needToUpdateState = false;
+    let newCellViews = cellViews;
+    let newFilterViews = filterViews;
 
-          return cellViews;
-        }, {}),
-        filterViews,
-      };
+    if (0 === Object.keys(cellViews).length && 0 !== props.grid.columns.length) {
+      newCellViews = props.grid.columns.reduce((cellViews: CellViews, column: Column): CellViews => {
+        cellViews[column.key] = getDataCellView(column.type);
+
+        return cellViews;
+      }, {});
+
+      needToUpdateState = true;
     }
 
     if (0 === Object.keys(filterViews).length && null !== props.attributes) {
-      return {
-        cellViews,
-        filterViews: props.attributes.reduce((filters: FilterViews, normalizedAttribute: NormalizedAttribute) => {
-          const attribute = denormalizeAttribute(normalizedAttribute);
+      newFilterViews = props.attributes.reduce((filters: FilterViews, normalizedAttribute: NormalizedAttribute) => {
+        const attribute = denormalizeAttribute(normalizedAttribute);
 
-          if (hasDataFilterView(attribute.type)) {
-            filters[attribute.getCode().stringValue()] = {
-              view: getDataFilterView(attribute.type),
-              attribute,
-            };
-          }
+        if (hasDataFilterView(attribute.type)) {
+          filters[attribute.getCode().stringValue()] = {
+            view: getDataFilterView(attribute.type),
+            attribute,
+          };
+        }
 
-          return filters;
-        }, {}),
-      };
+        return filters;
+      }, {});
+
+      needToUpdateState = true;
     }
 
-    return null;
+    if (!needToUpdateState) {
+      return null;
+    }
+
+    return {
+      cellViews: newCellViews,
+      filterViews: newFilterViews,
+    };
   }
 
   render() {

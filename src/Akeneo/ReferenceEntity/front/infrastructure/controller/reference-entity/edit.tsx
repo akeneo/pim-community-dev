@@ -28,13 +28,13 @@ import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/l
 import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {updateChannels} from 'akeneoreferenceentity/application/action/channel';
-import {updateFilter, removeFilter} from 'akeneoreferenceentity/application/event/search';
-import {getFilter, getCompletenessFilter} from 'akeneoreferenceentity/tools/filter';
 import {attributeListGotUpdated} from 'akeneoreferenceentity/application/action/attribute/list';
-import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 import {PermissionCollection} from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 import {permissionEditionReceived} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
 import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
+import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
+import {restoreFilters} from 'akeneoreferenceentity/application/action/record/search';
+import {gridStateStoragePath} from 'akeneoreferenceentity/infrastructure/middleware/grid';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -60,8 +60,7 @@ class ReferenceEntityEditController extends BaseController {
       .then(async (referenceEntityResult: ReferenceEntityResult) => {
         this.store = createStore(true)(referenceEntityReducer);
         const referenceEntityIdentifier = referenceEntityResult.referenceEntity.getIdentifier().stringValue();
-        const userSearch = this.getUserSearch(referenceEntityIdentifier);
-        const completenessFilter = this.getCompletenessFilter(referenceEntityIdentifier);
+        const filters = this.getFilters(referenceEntityIdentifier);
 
         permissionFetcher
           .fetch(referenceEntityResult.referenceEntity.getIdentifier())
@@ -80,12 +79,11 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         this.store.dispatch(setUpSidebar('akeneo_reference_entities_reference_entity_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
-        this.store.dispatch(updateFilter('full_text', '=', userSearch));
+        this.store.dispatch(restoreFilters(filters) as any);
         this.store.dispatch(attributeListGotUpdated(referenceEntityResult.attributes) as any);
         this.store.dispatch(referenceEntityPermissionChanged(referenceEntityResult.permission));
 
         document.addEventListener('keydown', shortcutDispatcher(this.store));
-        this.updateCompletenessFilter(completenessFilter);
 
         fetcherRegistry
           .getFetcher('locale-permission')
@@ -114,39 +112,10 @@ class ReferenceEntityEditController extends BaseController {
     return promise.promise();
   }
 
-  getUserSearch = (referenceEntityIdentifier: string): string => {
-    return null !== sessionStorage.getItem(`pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`)
-      ? getFilter(
-          JSON.parse(sessionStorage.getItem(
-            `pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`
-          ) as string),
-          'full_text'
-        ).value
-      : '';
-  };
-
-  getCompletenessFilter = (referenceEntityIdentifier: string): CompletenessValue => {
-    return null !== sessionStorage.getItem(`pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`)
-      ? getCompletenessFilter(
-          JSON.parse(sessionStorage.getItem(
-            `pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`
-          ) as string)
-        )
-      : CompletenessValue.All;
-  };
-
-  updateCompletenessFilter = (completenessFilter: CompletenessValue) => {
-    switch (completenessFilter) {
-      case CompletenessValue.All:
-        this.store.dispatch(removeFilter('complete'));
-        break;
-      case CompletenessValue.Yes:
-        this.store.dispatch(updateFilter('complete', '=', true));
-        break;
-      case CompletenessValue.No:
-        this.store.dispatch(updateFilter('complete', '=', false));
-        break;
-    }
+  getFilters = (referenceEntityIdentifier: string): Filter[] => {
+    return null !== sessionStorage.getItem(`${gridStateStoragePath}.${referenceEntityIdentifier}`)
+      ? JSON.parse(sessionStorage.getItem(`${gridStateStoragePath}.${referenceEntityIdentifier}`) as string)
+      : [];
   };
 
   beforeUnload = () => {

@@ -207,7 +207,16 @@ module.exports = async function(cucumber) {
     await listenRequest(this.page, requestContract);
 
     const recordList = await await getElement(this.page, 'Records');
-    await recordList.filter('colors', ['red']);
+    await recordList.filterOption('colors', ['red']);
+  });
+
+  When('the user searches for records with linked to paris', async function() {
+    const requestContract = getRequestContract('Record/Search/city_filtered.json');
+
+    await listenRequest(this.page, requestContract);
+
+    const recordList = await await getElement(this.page, 'Records');
+    await recordList.filterLink('city', 'paris');
   });
 
   When('the user filters on the complete records', async function() {
@@ -240,6 +249,17 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user should see a filtered list of red records', async function() {
+    const recordList = await await getElement(this.page, 'Records');
+    const isValid = await [
+      'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
+      'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
+    ].reduce(async (isValid, expectedRecord) => {
+      return (await isValid) && (await recordList.hasRecord(expectedRecord));
+    }, true);
+    assert.strictEqual(isValid, true);
+  });
+
+  Then('the user should see a filtered list of records linked to paris', async function() {
     const recordList = await await getElement(this.page, 'Records');
     const isValid = await [
       'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
