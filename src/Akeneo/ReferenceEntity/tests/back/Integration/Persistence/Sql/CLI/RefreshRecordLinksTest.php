@@ -38,9 +38,6 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
     /** @var AttributeIdentifier */
     private $currentAttributeIdentifier;
 
-    /** @var RecordIdentifier */
-    private $currentRecordIdentifier;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -61,7 +58,6 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         $this->assertTrue($this->IsRecordHavingValue('kartell', 'stark'));
 
         $this->runRefreshRecordsCommand();
-
         $this->assertFalse($this->IsRecordHavingValue('kartell', 'stark'));
     }
 
@@ -120,7 +116,6 @@ class RefreshRecordLinksTest extends SqlIntegrationTestCase
         foreach ($recordCodes as $recordCode) {
             /** @var RecordRepositoryInterface $recordRepository */
             $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-            $this->currentRecordIdentifier = RecordIdentifier::fromString('a_record');
             $recordRepository->create(
                 Record::create(
                     RecordIdentifier::fromString($recordCode),

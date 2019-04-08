@@ -333,14 +333,14 @@ services:
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_data:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDataHydrator
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers'
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_collection_data:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordCollectionDataHydrator
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.records_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers'
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
 

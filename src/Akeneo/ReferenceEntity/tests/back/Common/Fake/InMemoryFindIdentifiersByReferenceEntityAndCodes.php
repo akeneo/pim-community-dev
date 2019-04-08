@@ -24,7 +24,7 @@ class InMemoryFindIdentifiersByReferenceEntityAndCodes implements FindIdentifier
     {
         $identifiers = [];
 
-        foreach($this->recordRepository->all() as $record) {
+        foreach ($this->recordRepository->all() as $record) {
             if (
                 $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)
                 && in_array($record->getCode(), $recordCodes)

@@ -29,7 +29,7 @@ class InMemoryFindCodesByIdentifiers implements FindCodesByIdentifiersInterface
             $recordIdentifier = $record->getIdentifier()->normalize();
             $recordCode = $record->getCode()->normalize();
 
-            if(in_array($recordIdentifier, $identifiers)) {
+            if (in_array($recordIdentifier, $identifiers)) {
                 $indexedCodes[$recordIdentifier] = $recordCode;
             }
         }

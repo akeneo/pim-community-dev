@@ -18,9 +18,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -37,22 +35,10 @@ class RecordHydrator implements RecordHydratorInterface
     /** @var AbstractPlatform */
     private $platform;
 
-    /** @var FindCodesByIdentifiersInterface */
-    private $findCodesByIdentifiers;
-
-    /** @var FindValueKeysByAttributeTypeInterface */
-    private $findValueKeysByAttributeType;
-
-    public function __construct(
-        Connection $connection,
-        ValueHydratorInterface $valueHydrator,
-        FindCodesByIdentifiersInterface $findCodesByIdentifiers,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
-    ) {
+    public function __construct(Connection $connection, ValueHydratorInterface $valueHydrator)
+    {
         $this->valueHydrator = $valueHydrator;
         $this->platform = $connection->getDatabasePlatform();
-        $this->findCodesByIdentifiers = $findCodesByIdentifiers;
-        $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
     }
 
     public function hydrate(
@@ -67,7 +53,6 @@ class RecordHydrator implements RecordHydratorInterface
         $recordCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
         $valueCollection = json_decode($row['value_collection'], true);
-        $valueCollection = $this->replaceIdentifiersByCodes($valueCollection, $referenceEntityIdentifier);
 
         $record = Record::create(
             RecordIdentifier::fromString($recordIdentifier),
@@ -98,50 +83,5 @@ class RecordHydrator implements RecordHydratorInterface
         }
 
         return $hydratedValues;
-    }
-
-    /**
-     * TODO: If the front directly handles record identifier as data, then we can drop this method and its call
-     */
-    private function replaceIdentifiersByCodes(array $valueCollection, string $referenceEntityIdentifier): array
-    {
-        // Values keys for record/record collection values
-        $recordsValueKeys = $this->findValueKeysByAttributeType->find(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            ['record', 'record_collection']
-        );
-
-        $onlyRecordsValues = array_intersect_key($valueCollection, array_flip($recordsValueKeys));
-
-        if (empty($onlyRecordsValues)) {
-            return $valueCollection;
-        }
-
-        // Get identifiers for which we have to retrieve the code
-        $identifiers = [];
-        foreach ($onlyRecordsValues as $value) {
-            $data = is_array($value['data']) ? $value['data'] : [$value['data']];
-            $identifiers = array_merge($identifiers, $data);
-        }
-
-        $identifiers = array_unique($identifiers);
-
-        // Retrieve the codes
-        $indexedCodes = $this->findCodesByIdentifiers->find($identifiers);
-
-        // Replace identifiers by code in the value collection
-        foreach ($onlyRecordsValues as $valueKey => $value) {
-            if (is_array($value['data'])) {
-                $value['data'] = array_map(function ($identifier) use ($indexedCodes) {
-                    return $indexedCodes[$identifier];
-                }, $value['data']);
-            } else {
-                $value['data'] = $indexedCodes[$value['data']];
-            }
-
-            $valueCollection[$valueKey] = $value;
-        }
-
-        return $valueCollection;
     }
 }

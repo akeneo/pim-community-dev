@@ -45,7 +45,6 @@ class SqlFindCodesByIdentifiersTest extends SqlIntegrationTestCase
      */
     public function it_finds_record_codes_given_their_identifiers()
     {
-
     }
 
     private function loadReferenceEntityDesigner(): void
