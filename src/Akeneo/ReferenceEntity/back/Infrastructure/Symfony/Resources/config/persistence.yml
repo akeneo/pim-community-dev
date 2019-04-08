@@ -282,6 +282,8 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.value'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type'
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_details:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydrator
