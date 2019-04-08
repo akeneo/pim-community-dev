@@ -129,6 +129,16 @@ confirmation:
     import_profile: Möchten Sie dieses Importprofil wirklich löschen?
     export_profile: Möchten Sie dieses Exportprofil wirklich löschen?
     job_instance: Möchten Sie diesen Auftrag wirklich löschen?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Möchten Sie dieses Importprofil wirklich löschen?
+    export_profile:
+      module:
+        delete:
+          confirm: Möchten Sie dieses Exportprofil wirklich löschen?
 pim_title:
   pim_importexport_export_profile_index: Verwaltung der Export-Profile
   pim_importexport_export_execution_index: Historie der ausgeführten Exporte
