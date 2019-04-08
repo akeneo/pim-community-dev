@@ -168,6 +168,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindCodesByIdentifiers
+        arguments:
+            - '@database_connection'
+
     # Attributes query functions
     akeneo_referenceentity.infrastructure.persistence.query.attribute_exists:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeExists
