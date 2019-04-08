@@ -1,5 +1,7 @@
-export default class EditionProvider {
-    isCloud() {
-        return true;
+const editionProvider = {
+    isCloud: () => {
+        return true
     }
-}
+};
+
+export= editionProvider;

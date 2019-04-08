@@ -16,7 +16,7 @@ define([
     _,
     BaseField,
     fieldTemplate,
-    EditionProvider
+    editionProvider
 ) {
     return BaseField.extend({
         fieldTemplate: _.template(fieldTemplate),
@@ -34,9 +34,11 @@ define([
         },
 
         render: function() {
-            if (EditionProvider.isCloud()) {
-                this.$el.hide();
+            if (!editionProvider.isCloud()) {
+                BaseField.prototype.render.apply(this, arguments); // on pourra faire super
             }
+
+            return this;
         }
     });
 });
