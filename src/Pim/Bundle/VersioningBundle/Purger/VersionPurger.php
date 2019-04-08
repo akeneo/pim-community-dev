@@ -89,7 +89,6 @@ class VersionPurger implements VersionPurgerInterface
                     $this->versionRemover->removeAll($versionsToPurge);
                     $this->objectDetacher->detachAll($versionsToPurge);
                     $versionsToPurge = [];
-                    $this->versionRepository->clear();
                 }
             } else {
                 $this->objectDetacher->detach($version);
