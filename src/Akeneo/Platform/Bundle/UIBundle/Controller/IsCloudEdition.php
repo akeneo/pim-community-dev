@@ -21,7 +21,7 @@ class IsCloudEdition
     public function __invoke(): JsonResponse
     {
         return new JsonResponse([
-            'isCloudEdition' => $this->isCloud
+            'isCloudEdition' => false
         ]);
     }
 }
