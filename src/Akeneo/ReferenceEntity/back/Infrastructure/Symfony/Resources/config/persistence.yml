@@ -21,6 +21,8 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
             - '@event_dispatcher'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type'
 
     akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlReferenceEntityPermissionRepository
