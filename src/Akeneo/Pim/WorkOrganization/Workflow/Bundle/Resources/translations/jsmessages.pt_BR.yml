@@ -1,0 +1,201 @@
+View the product: Visualizar produto
+Unpublish the product: Despublicar produto
+Approve: Aprovar
+Refuse: Rejeitar
+Approve selected: Aprovar selecionados
+Refuse selected: Rejeitar selecionados
+pim_datagrid:
+  no_entities:
+    proposal: Não há propostas para revisar.
+    product_draft: Não há nenhum rascunho de produto para revisar.
+  no_results:
+    proposal: Não há proposta para revisar. Tente mudar seu critério de pesquisa.
+    product_draft: Não há rascunho de produto para revisar.Tente mudar seu critério de pesquisa. 
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Expandir
+      collapse_text: Esconder
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Editar versão atual
+    proposal:
+      modal.title: Deixe um comentário (opcional - máximo de 255 caracteres)
+  proposal:
+    overview: "]-Inf, 1]{{ count }} proposta|]1, Inf[{{ count }} propostas"
+    selected: Proposta selecionada
+    mass_action_group:
+      review:
+        label: Ação em massa
+    partial_accept:
+      modal.title: Aprovar parte da informação
+      modal.label: Deixe um comentário (opcional)
+      modal.error: Um erro ocorreu, a proposta não foi parcialmente aprovada
+      modal.success: A proposta foi parcialmente validada com sucesso
+    partial_approve:
+      modal:
+        title: Aprovar parcialmente as mudanças
+        label: Deixe um comentário (opcional)
+        error: Um erro ocorreu, a proposta não foi parcialmente aprovada
+        success: As mudanças foram aprovadas com sucesso
+    partial_reject:
+      modal:
+        title: Rejeitar parcialmente as mudanças
+        label: Deixe um comentário (opcional)
+        error: Um erro ocorreu, a proposta não foi parcialmente rejeitada
+        success: As mudanças foram rejeitadas com sucesso
+batch_jobs:
+  csv_published_product_export:
+    label: Exportar produto publicado em CSV
+    export.label: Exportar Produto Publicado
+  csv_product_proposal_import:
+    label: Importação de proposta de produto em CSV
+    import.label: Importação de proposta de produto
+  approve_product_draft:
+    label: Aprovar proposta
+    perform.label: Aprovar proposta
+  refuse_product_draft:
+    label: Recusar propostas
+    perform.label: Recusar propostas
+  xlsx_published_product_export:
+    label: Exportação de produto publicado em XLSX
+    export.label: Exportar Produto Publicado
+  xlsx_product_proposal_import:
+    label: Importação de proposta de produto em XLSX
+    import.label: Importação de proposta de produto em XLSX
+  csv_published_product_quick_export:
+    export.label: Exportação rápida de produtos publicados em CSV
+    perform.label: Exportação rápida de produtos publicados em CSV
+  csv_published_product_grid_context_quick_export:
+    export.label: Exportação rápida da grade de produtos em CSV
+    perform.label: Exportação rápida da grade de produtos publicados em CSV
+  xlsx_published_product_quick_export:
+    export.label: Exportação rápida de produtos publicados em XLSX
+    perform.label: Exportação rápida de produtos publicados em XLSX
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Exportação rápida da grade de produtos publicados em XLSX
+    perform.label: Exportação rápida da grade de produtos em XLSX
+  publish_product:
+    perform.label: Publicar produtos
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Nova proposta
+    pimee_workflow_import_notification_new_proposals: Novas propostas da importação
+    pimee_workflow_product_draft_notification_partial_approve: Proposta parcialmente aprovada
+    pimee_workflow_product_draft_notification_partial_reject: Proposta parcialmente rejeitada
+    pimee_workflow_product_draft_notification_partial_remove: Proposta parcialmente excluída
+    pimee_workflow_product_draft_notification_approve: Proposta aprovada
+    pimee_workflow_product_draft_notification_refuse: Proposta rejeitada
+    pimee_workflow_product_draft_notification_remove: Proposta excluída
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Data
+      author: Autor
+      product: Produto
+      review: Rever
+      empty: Não há propostas de Revisão
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Publicado
+      revert: Restaurar
+    attribute:
+      can_be_updated_by_a_rule: "Este atributo pode ser atualizado pela regra: {{ rule }}"
+      value_updated: Este valor é atualizado pelo rascunho atual
+    meta:
+      published_version: Versão Publicada
+      owner_groups: Grupos de proprietários
+      draft_status: Status do rascunho
+      draft:
+        in_progress: Em Progresso
+        sent_for_approval: Aguardando aprovação
+        working_copy: Cópia de Trabalho
+    revert:
+      title: Confirmação de restauração
+      content: Tem certeza que deseja restaurar o produto para esta versão?
+    publish:
+      title: Publicar esse produto
+      content: Tem certeza que deseja publicar este produto?
+    unpublish:
+      title: Despublicar esse produto
+      content: Tem certeza que deseja cancelar a publicação deste produto?
+    copy:
+      working_copy: Cópia de Trabalho
+      draft: Meu Rascunho
+      draft_of: "rascunho de {{ author }}"
+    approval:
+      send: Enviar para aprovação
+      sent: Enviado para aprovação
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Produto publicado com sucesso
+      fail: Falha ao publicar este produto
+    unpublish:
+      success: Produto teve sua publicação cancelada com sucesso
+      fail: Falha ao cancelar a publicação deste produto
+    revert:
+      success: Produto restaurado com sucesso
+  page_title:
+    index: "]-Inf, 1]{{ count }} produto publicado|]1, Inf[{{ count }} produtos publicados"
+  module:
+    publish:
+      label: Publicar
+      publish_this_version: Publicar esta versão
+    unpublish:
+      label: Despublicar
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: A proposta foi aplicada com sucesso.
+      fail: "A proposta não pode ser aplicada devido ao seguinte erro: {{ error }}"
+    reject:
+      success: A proposta foi rejeitada.
+    remove:
+      success: A proposta foi removida.
+    update:
+      success: O rascunho do produto foi salvo com sucesso
+      fail: O rascunho do produto não pôde ser atualizado
+    create:
+      success: Rascunho do produto foi enviado para aprovação
+      fail: Você não pode enviar este rascunho para aprovação
+  module:
+    create:
+      label: Salvar rascunho
+    proposal:
+      accept: Aceitar proposta
+      accept_selected: Aceitar proposta(s) selecionada(s)
+      reject: Rejeitar proposta
+      reject_selected: Rejeitar proposta(s) selecionada(s)
+      remove: Remover proposta
+      comment_title: Comente sua proposta (opcional - 255 caracteres max.)
+      comment_chars: caracteres.
+      confirm: Enviar
+    edit:
+      discard_changes: As alterações não salvas serão perdidas. Tem certeza que deseja enviar seu rascunho para aprovação sem as alterações não salvas?
+      discard_changes_title: Tem certeza que deseja enviar este rascunho?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Publicar
+      label_count: "{1}Publicar <span class=\"AknFullPage-title--highlight\">produto</span>|]1, Inf[Publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span>"
+      description: Os produtos serão publicados
+      warning: Os {{ itemsCount }} produtos selecionados serão publicados.
+    unpublish:
+      label: Despublicar
+      label_count: "{1}Cancelar publicação do <span class=\"AknFullPage-title--highlight\">produto</span>|]1, Inf[Cancelar publicação de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span>"
+      description: Os produtos terão suas publicações canceladas
+      warning: Os {{ itemsCount }} produtos selecionados terão sua publicações canceladas.
+pim_menu:
+  navigation:
+    published_products: Produtos Publicados
+  item:
+    proposal: Propostas
+    published_product: Produtos Publicados
+pim_title:
+  pimee_workflow_proposal_index: Propostas
+  pimee_workflow_published_product_index: Produtos Publicados
+  pimee_workflow_published_product_view: Produto {{ product.label }} publicado | Ver

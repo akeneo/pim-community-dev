@@ -1,0 +1,234 @@
+user:
+  asset_delay_reminder: Lembrete de atraso de ativo (em dias)
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Gerenciar ativos
+        manage_asset:
+          title: Gerenciar ativos
+          cancel: Cancelar
+          confirm: Confirmar
+        title: Gerenciar ativos
+        description: Selecione os arquivos que você deseja anexar ao seu produto
+        preview_title: Prévia da coleção de mídia
+        download: Baixar
+        remove: Remover
+        upload: Enviar
+        yes: true
+        no: false
+        assetRemoveConfirmationLabel: Tem certeza que deseja remover esta mídia?
+    asset:
+      not_empty: Código é necessário. Não pode estar vazio.
+      alpha_numeric_plus_underscore: O código pode ser somente alfanumérico ou sublinhado.
+      unique: O código deve ser único. Nós criamos um novo para você.
+  enrich_asset:
+    grid:
+      edit: Editar propriedades da mídia
+  enrich_variation:
+    popin:
+      reset:
+        title: Resetar variações
+        message: Tem certeza que deseja redefinir todas as variações?
+  mass_upload:
+    menu: Enviar mídias
+    btn:
+      remove_all_files: Remover todos os arquivos
+      import: Importar
+      upload: Enviar mídias
+    success:
+      new: Uma nova mídia será criada
+      imported: Arquivos importados para processamento de mídia
+      canceled: Envio cancelado com sucesso
+      deleted: Arquivo enviado excluído com sucesso
+      need_refresh: <b>A importação de mídia foi iniciada</b><br> Para ver as mídias importadas no formulário de produto, por favor, atualize a página do produto assim que receber a notificação de importação.
+    error:
+      list: Não é possível ler arquivos já enviados
+      upload: Ocorreu um erro ao enviar
+      delete: Não é possível excluir o arquivo do servidor
+      import: Ocorreu um erro ao importar
+      filename: Nome de arquivo inválido para a mídia
+      code: Formato de código inválido para a mídia
+      locale: Uma mídia existe mas não é localizável
+      invalid_locale: A localidade está desativada ou inválida
+      exists: Um arquivo com o mesmo nome já foi importado
+      conflicts: Conflito de nomes de arquivos
+    status:
+      added: Adicionado
+      queued: Na fila
+      uploading: Enviando
+      error: Erro
+      success: Sucesso
+    drag_and_drop: Arraste e solte suas mídias ou clique aqui
+    tabsection_title: Mídias enviadas
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Tem certeza que deseja excluir as mídias selecionadas?
+        success: As mídias selecionadas foram excluídas com sucesso.
+        error: Ocorreu um erro ao tentar excluir as mídias selecionadas, por favor, tente novamente.
+        empty_selection: Nenhuma mídia selecionada
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Coleção de mídias
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Envio em massa
+pim_title:
+  pimee_product_asset_mass_upload: Enviar mídias
+  pimee_product_asset_index: Mídias
+  pimee_product_asset_edit: Mídia {{ asset.label }} | Editar
+  pimee_asset_categorytree_index: Categorias
+  pimee_asset_categorytree_edit: Categoria {{ category.label }} | Editar
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Envio em massa de mídias
+    perform.label: Envio em massa
+  apply_assets_mass_upload_into_asset_collection:
+    label: Envio em massa de mídias e adicionar ao produto
+    perform.label: Envio em massa de mídias e adicionar ao produto
+  yml_asset_channel_configuration_import:
+    import.label: Importação de configuração do canal de mídia
+    label: Importação de configuração do canal de mídia em YAML
+    import_asset.label: Importação de configuração do canal de mídia em YAML
+  yml_asset_channel_configuration_export:
+    label: Exportação configuração do canal de mídia em YAML
+    export.label: Exportação configuração do canal de mídia em YAML
+  csv_asset_import:
+    label: Importação de mídia em CSV
+    import_tags.label: Importação de etiquetas em CSV
+    import_asset.label: Importação de mídia em CSV
+  csv_asset_export:
+    label: Exportação de mídias em CSV
+    export.label: Exportação de mídias em CSV
+  csv_asset_variation_export:
+    label: Exportação de variações de mídias em CSV
+    export.label: Exportação de variações de mídias em CSV
+  csv_tag_import:
+    label: Importação de etiquetas em CSV
+    import.label: Importação de etiquetas em CSV
+  csv_asset_category_import:
+    label: Importação de categoria de mídias em CSV
+    import_asset_category.label: Importação de categoria de mídias em CSV
+  csv_asset_configuration_import:
+    label: Importação de configuração do canal de mídia em CSV
+    import_asset.label: Importação de configuração do canal de mídia em CSV
+  csv_asset_category_export:
+    label: Exportação de categoria de mídias em CSV
+    export.label: Exportação de categoria de mídias em CSV
+  xlsx_tag_import:
+    label: Importação de etiquetas em XLSX
+    import.label: Importação de etiquetas em XLSX
+  xlsx_asset_import:
+    label: Importação de mídias em XLSX
+    import_tags.label: Importação de etiquetas em XLSX
+    import_asset.label: Importação de mídias em XLSX
+  xlsx_asset_category_import:
+    label: Importação de categoria de mídias em XLSX
+    import_asset_category.label: Importação de categoria de mídias em XLSX
+  xlsx_asset_export:
+    label: Exportação de mídias em XLSX
+    export.label: Exportação de mídias em XLSX
+  xlsx_asset_category_export:
+    label: Exportação de categoria de mídias em XLSX
+    export.label: Exportação de categoria de mídias em XLSX
+  xlsx_asset_variation_export:
+    label: Exportação de variações de mídia em XLSX
+    export.label: Exportação de variações de mídia em XLSX
+  classify_assets:
+    perform.label: Mover mídias para categorias
+  add_tags_to_assets:
+    perform.label: Adicionar etiquetas às mídias
+jstree:
+  asset:
+    all: Todas as mídias
+    unclassified: Mídias não classificadas
+asset_grid:
+  title: "]-Inf, 1]{{ count }} Mídia de produto|]1, Inf[{{ count }} Mídias de produtos"
+  selected: mídias selecionadas
+  label: Mídias de produto
+create_asset:
+  title: Criar uma mídia
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Editar em massa de mídias
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Transformações de mídia
+      not_found: Nenhuma transformação encontrada
+      transformation: Transformação
+      options: Opções
+      colorspace:
+        title: Espaço de cor
+        options:
+          colorspace: 'Espaço de cor %value%'
+      resize:
+        title: Redimensionar
+        options:
+          width: 'Largura de %value%px'
+          height: 'Altura de %value%px'
+      resolution:
+        title: Resolução
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Escala
+        options:
+          width: 'Largura de %value%px'
+          height: 'Altura de %value%px'
+          ratio: 'Taxa de %value%%'
+      thumbnail:
+        title: Miniatura
+        options:
+          width: 'Largura de %value%px'
+          height: 'Altura de %value%px'
+pimee_enrich.mass_edit.asset:
+  title: Ação em massa de mídias
+  confirm: "{1}Você está prestes a atualizar uma mídia com as seguintes informações, por favor confirme.|]1, Inf[Você está prestes a atualizar {{ itemsCount }} mídias com as seguintes informações, por favor confirme."
+  step:
+    select:
+      label: Escolher as mídias
+    choose:
+      title: Ações em massa de mídias
+      label_count: "]0, Inf[Selecione sua ação"
+    configure:
+      label: Configurar
+    confirm:
+      label: Confirmar
+  operation:
+    add_tag:
+      label: Adicionar etiquetas às mídias
+      description: Etiquetas serão adicionadas às mídias.
+      label_count: "{1}Adicionar etiquetas para <span class=\"AknFullPage-title--highlight\">1 mídia</span>|]1, Inf[Adicionar etiquetas para <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} mídias</span>"
+      field: Etiquetas
+      empty_selection: Por favor, escolha as tags
+    add_to_category:
+      label: Classificar as mídias nas categorias
+      description: As mídias serão posicionados nas seguintes categorias, a posição existente será perdida.
+      label_count: "{1}Classificar <span class=\"AknFullPage-title--highlight\">1 mídia</span> das categorias|]1, Inf[Classificar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} mídias</span> das categorias"
+pim_catalog_volume:
+  section:
+    assets:
+      title: Eixos nas mídias
+      hint: Você pode seguir o volume das mídias aqui.
+  axis:
+    count_assets: Mídias
+    count_asset_categories: Categorias de mídias
+    count_asset_category_trees: Árvores de categoria de mídias
+pim_menu:
+  tab:
+    asset: Mídias
+  item:
+    asset_category: Categorias de mídias
+    upload_asset: Enviar mídias
+pim_notification:
+  types:
+    mass_upload: Envio em massa

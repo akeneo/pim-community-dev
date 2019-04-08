@@ -1,0 +1,183 @@
+pim_title:
+  akeneo_franklin_insights_connection_edit: 'Conexão de Intuições do Franklin'
+  akeneo_franklin_insights_identifiers_mapping_edit: 'Configurações de Intuições do Franklin'
+  akeneo_franklin_insights_attributes_mapping_edit: 'Configurações de Intuições do Franklin'
+pim_menu:
+  item:
+    franklin: Intuições do Franklin
+akeneo_franklin_insights:
+  entity:
+    data_provider:
+      ask_franklin_down: "Desculpe, algo deu errado. Por favor, tente novamente mais tarde."
+      authentication_error: "Desculpe, falha ao autenticar às Intuições do Franklin, seu token é inválido. Por favor, insira um token válido ou entre em contato conosco para ajuda."
+      bad_request_error: "Desculpe, ocorreu um problema ao comunicar com as Intuições do Franklin. Por favor, contate o administrador."
+    identifier_mapping:
+      plural_label: Identificadores
+      flash:
+        update:
+          first: 'Obrigado por mapear seus identificadores de produto do catálogo. Agora você pode inscrever produtos para enriquecimento com as Intuições do Franklin.'
+          success: 'Mapeamento de identificadores foi salvo com sucesso.'
+          fail: 'Mapeamento de identificadores não salvo devido a um erro.'
+      fields:
+        identifier_label:
+          label: Identificador do Franklin
+          values:
+            brand: Marca
+            asin: ASIN
+            mpn: MPN
+            upc: UPC
+        catalog_attribute: Atributo do catálogo
+        franklin_insights: Status do identificador do Franklin
+        status:
+          active: Ativo
+          inactive: Inativo
+      constraint:
+        duplicate_attribute_code: "Um mapeamento permitido por atributo de catálogo"
+        missing_or_invalid_identifiers: "Alguns identificadores de mapeamento de chaves estão faltando ou inválidos. Esperados: \"{{ expected }}\", atual: \"{{ given }}\"."
+        mandatory_identifier_mapping: "Mapeamento de Marca e MPN necessário"
+        attribute_type: "O tipo deste atributo não pode ser definido como identificador"
+        localizable_not_allowed: "Atributos localizáveis não são permitidos como identificador"
+        scopable_not_allowed: "Atributos acessíveis não são permitidos como identificador"
+        locale_specific_not_allowed: "Atributos específico por localidade não são permitidos como identificador"
+    attributes_mapping:
+      label: Mapeamento de atributos
+      fields:
+        franklin_attribute: 'Atributo do Franklin'
+        franklin_insights:
+          label: Status de atributo do Franklin
+          pending: Pendente
+          active: Ativo
+          inactive: Inativo
+        values_summary: "Resumo de valores: {{ label }}"
+      module:
+        subscribe:
+          subscribe: 'Inscrever família no Franklin'
+          subscribed: 'Inscrito no Franklin'
+        index:
+          error: "Você precisa criar uma família em seu catálogo para acessar esta página."
+          family_status:
+            pending: 'Novos atributos do Franklin para revisar'
+            full: 'Todos os atributos do Franklin foram mapeados'
+          types_mismatch_warning: 'Aviso: os tipos de atributos não são compatíveis.'
+      constraint:
+        missing_target_key: 'Faltando a chave destino para mapeamento'
+        missing_attribute_key: 'A chave {{ expectedKey }} está faltando para mapear com a chave de destino "{{ targetKey }}"'
+        invalid_attribute_type_mapping: 'Os atributos do Franklin não podem ser mapeados para o tipo de atributo "{{ pimType }}" do PIM'
+        empty_mapping: 'Os atributos do Franklin não podem ser mapeados com um mapeamento vazio'
+        localizable_not_allowed: 'Os atributos do Franklin não podem ser mapeados para um atributo localizável do PIM'
+        scopable_not_allowed: 'Os atributos do Franklin não podem ser mapeados para um atributo acessível do PIM'
+        locale_specific_not_allowed: 'Os atributos do Franklin não podem ser mapeados para um atributo específico por localidade do PIM'
+        duplicated_pim_attribute: 'Um atributo do PIM não pode ser usado duas ou mais vezes no mapeamento de atributos'
+        attribute_not_in_family_not_allowed: 'O atributo do PIM tem que estar na família selecionada.'
+        only_unknown_mapped_attributes: 'Nenhum atributo no mapeamento de atributos pode ser encontrado'
+    product_subscription:
+      flash:
+        create:
+          success: 'Produto inscrito com sucesso no Franklin'
+          fail: 'Impossível inscrever um produto no Franklin'
+        delete:
+          success: 'Inscrição do produto foi cancelada com sucesso no Franklin'
+          fail: 'Impossível de cancelar a inscrição do produto no Franklin'
+      constraint:
+        family_required: 'Desculpe, é necessária uma família de produtos para inscrever o produto nas Intuições do Franklin.'
+        no_identifiers_mapping: 'Por favor, mapeie os identificadores de produto do seu catálogo em Configurações > Intuições do Franklin antes de inscrever produtos.'
+        insufficient_credits: "Não foi possível inscrever o produto nas Intuições do Franklin. Você não tem crédito suficiente."
+        invalid_mapped_values: 'Não foi possível inscrever o produto nas Intuições do Franklin. Por favor, inscreva o produto utilizando uma combinação válida de identificadores.'
+        data_provider_error: 'O Franklin retornou um erro ao tentar inscrever o produto'
+        not_subscribed: 'O produto não está inscrito'
+        already_subscribed_product: 'O produto já está inscrito.'
+        variant_product: 'As variantes de produtos não podem ser inscritas nas Intuições do Franklin.'
+        inactive_connection: 'Não foi possível inscrever o produto nas Intuições do Franklin. Por favor, configure sua conexão com as Intuições do Franklin.'
+      module:
+        product_edit_form:
+          family_required: 'A família de produtos é obrigatória.'
+          no_identifier_filled: 'Os identificadores de produto são obrigatórios.'
+          invalid_mapping: "O mapeamento de identificadores é obrigatório."
+    attribute_options_mapping:
+      constraint:
+        no_attribute_options_mapped: 'As opções de atributo do Franklin não podem ser mapeadas com um mapeamento vazio'
+      fields:
+        franklin_attribute_option: Opção de atributo do Franklin
+        catalog_attribute_option: Opção de atributo do catálogo
+        attribute_option_status: Status de opção do Franklin
+      module:
+        edit:
+          title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opções de atributo'
+          sub_title: 'Conheça o Franklin, seu <span class="AknDescriptionHeader-title--highlight">assistente de informações de produtos com inteligência artificial</span>!'
+          description: 'Para ajudar a enriquecer seu catálogo, o Franklin precisa saber as opções de atributo do seu catálogo que correspondem às dele. <a href="#" target="_blank" class="AknDescriptionHeader-link">Leia mais</a>'
+  product:
+    edit:
+      btn.push: Sugerir dados
+      subscription_status_title: 'Inscrição do Franklin'
+  connection:
+    page_title: 'Conexão das Intuições do Franklin'
+    flash:
+      success: Código de ativação das Intuições do Franklin foi salvo com sucesso.
+      invalid: O código de ativação é inválido. Por favor, tente novamente com um código válido.
+      error: Desculpe, ocorreu um erro.
+    module:
+      title:
+        sub_title: 'Bem-vindo ao <span class="AknDescriptionHeader-title--highlight">assistente de informações de produtos com inteligência artificial</span>!'
+        description:
+          first_step: 'O primeiro passo para conectar o assistente é configurar o token de API.'
+          second_step: 'O próximo passo no processo de conexão é combinar os seus <a href="#" class="AknDescriptionHeader-link link">identificadores de produto do catálogo</a> com os identificadores do assistente.'
+      activation:
+        label: 'Conector do Franklin'
+        activation_code: 'Código de ativação'
+        paste_activation_code: 'Colar código de ativação'
+        activated: 'Ativado'
+        activate: 'Ativar'
+  settings:
+    page_title: 'Configurações das Intuições do Franklin'
+    module:
+      title:
+        sub_title: 'Conheça o Franklin, seu <span class="AknDescriptionHeader-title--highlight">assistente de informações de produtos com inteligência artificial</span>!'
+        description:
+          first_step: 'Para ajudar a enriquecer seu catálogo, o Franklin precisará saber os identificadores do seu catálogo.'
+          second_step: 'Enquanto mapeia seus identificadores, por favor, tenha em mente que a Marca e o MPN funcionam juntos. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html" class="AknDescriptionHeader-link" target="_blank">Leia mais</a>'
+      inactive_connection:
+        title: 'Desculpe, nada para mostrar aqui ainda'
+        sub_title: 'Por favor ative sua conta em Sistema > Conexão do Franklin e volte.'
+      no_active_english_locale:
+        title: 'As Intuições do Franklin só estão disponíveis para as localidades em inglês.'
+        sub_title: 'Fique atento, novas localidades estão chegando.'
+      save:
+        warning: '{1}Alterar o mapeamento pode ter impacto em 1 inscrição. Tem certeza?|]1,+Inf[Alterar o mapeamento pode ter impacto em {{ count }} inscrições. Tem certeza?'
+        title: 'Aviso!'
+  mass_edit:
+    product:
+      operation:
+        franklin_insights:
+          label: 'Inscrição das Intuições do Franklin'
+          label_count: "{1}Gerenciar as inscrições das Intuições de Franklin para <span class=\"AknFullPage-title--highlight\">1 produto</span>|]1, Inf[Inscrever nas Inscrições do Franklin para <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span>"
+          description: Por favor, selecione a ação que você deseja aplicar aos produtos selecionados na grade
+          subscribe_label: Inscrever
+          unsubscribe_label: Cancelar inscrição
+          constraint:
+            franklin_activation: "Por favor, <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">ative</a> as Intuições do Franklin antes de inscrever os produtos."
+            invalid_mapping: "Por favor, mapeie os identificadores do produto em Configurações > Intuições do Franklin antes de inscrever os produtos."
+batch_jobs:
+  default_steps:
+    fetch_products: Obter dados do produto
+    create_proposals: Criar propostas
+  franklin_insights_subscribe_products:
+    label: Inscrição em massa das Intuições do Franklin
+    validate_configuration.label: Validar a configuração das Intuições do Franklin
+    validate_identifiers_mapping.label: Validar mapeamento de identificadores
+    subscribe_products.label: Inscrever produtos
+  franklin_insights_unsubscribe_products:
+    label: Cancelamento de inscrição em massa das Intuições do Franklin
+    validate_configuration.label: Validar a configuração das Intuições do Franklin
+    unsubscribe_products.label: Cancelar inscrição de produtos
+  franklin_insights_fetch_products:
+    label: Obter dados do produto das Intuições do Franklin
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        franklin_insights_fetch_products: Intuições do Franklin
+pim_enrich.entity.attribute:
+  module:
+    save:
+      title: 'Aviso!'
+      warning: '{1}Excluir um atributo pode afetar 1 inscrição no Franklin. Tem certeza?|] 1, + Inf [Excluir um atributo pode impactar {{ count }} inscrições no Franklin. Tem certeza?'

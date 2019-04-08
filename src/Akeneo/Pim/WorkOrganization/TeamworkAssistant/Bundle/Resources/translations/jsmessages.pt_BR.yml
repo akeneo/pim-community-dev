@@ -1,0 +1,66 @@
+teamwork_assistant:
+  common:
+    required: Obrigatório
+    warning: Não se preocupe, o cálculo do projeto pode demorar um pouco, então seu projeto pode não estar visível imediatamente.
+  grid:
+    view_selector:
+      create: Criar projeto
+      edit: Editar projeto
+      remove: Excluir projeto
+      create_from_view: Criar um projeto a partir desta visualização
+      start_new_project: Iniciar um novo projeto
+      confirmation:
+        remove: Tem certeza que deseja excluir este projeto?
+      projects: Projetos
+  project:
+    label: Nome
+    locale: Localidade
+    label_maxlength: Este valor é muito longo. Ele deve ter {{ max }} caracteres ou menos.
+    description: Descrição
+    due_date: Data Limite
+    due_date_past: Você não pode selecionar uma data do passado.
+    leaving_scope: Você está deixando o escopo do projeto.
+  edit_project_modal:
+    saved: O projeto foi salvo.
+    title: Editar projeto
+  create_project_modal:
+    saved: O projeto foi salvo, você será notificado quando o cálculo for feito.
+    title: Projeto
+  widget:
+    no_project: Você não tem um projeto atualmente
+    no_project_create: criar um novo projeto
+    description: Descrição
+    due_date: Data Limite
+    todo: TAREFAS
+    in_progress: EM ANDAMENTO
+    done: CONCLUÍDO
+    all_contributors: Todos os contribuidores
+    display_products: Exibir produtos
+    placeholder:
+      contributor_selector: Pesquisar contribuidor
+      project_selector: Pesquisar projeto
+    completeness:
+      to_start: PRODUTOS A INICIAR
+      in_progress: PRODUTOS EM ANDAMENTO
+      done: PRODUTOS CONCLUÍDOS
+pim_datagrid:
+  view_selector:
+    project: Projetos
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Assistente de trabalho em equipe
+        project_calculation: Assistente de trabalho em equipe
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Cálculo do projeto
+    prepare_project_calculation.label: Preparar o cálculo do projeto
+    clean_contributor_group.label: Verificar permissão de usuários na localidade do projeto
+  refresh_project_completeness_calculation:
+    label: Atualizar a completude do projeto
+    refresh_project_completeness_calculation.label: Atualizar a completude do projeto
+pim_notification:
+  types:
+    project_created: Um novo projeto para você
+    project_finished: Projeto finalizado

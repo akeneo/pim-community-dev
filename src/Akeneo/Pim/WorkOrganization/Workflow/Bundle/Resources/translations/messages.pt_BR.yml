@@ -1,0 +1,165 @@
+pimee_workflow:
+  product_draft:
+    author: Autor
+    created: Proposto em
+    changes: Alterações
+    locale: Contexto da localidade
+    product:
+      label: Rótulo do Produto
+    attribute:
+      label: Atributo
+    status:
+      label: Status
+      working_copy: Cópia de Trabalho
+      in_progress: Em Progresso
+      ready: Aguardando aprovação
+      can_be_partially_reviewed: Pode ser parcialmente revisado
+      can_not_be_approved: Não pode ser revisado
+      can_not_be_deleted: Não pode ser excluído
+    status_message:
+      can_be_partially_reviewed: Você só pode rever esta proposta parcialmente porque algumas alterações se aplicam em valores que você não pode editar. Por favor, contate o administrador para alterar suas permissões.
+      can_not_be_approved: Você não pode rever esta proposta porque todas as alterações se aplicam em valores que você não pode editar. Por favor, contate o administrador para alterar duas permissões.
+      can_not_be_deleted: Você não pode excluir esta proposta porque todas as alterações se aplicam em valores que você não pode editar. Por favor, contate o administrador para alterar suas permissões.
+      in_progress: Esta proposta está atualmente em andamento e ainda não foi enviada.
+    action:
+      approve: Aprovar tudo
+      refuse: Rejeitar tudo
+      remove: Remover
+      partial_approve: Aprovar as alterações no atributo  %attribute% do produto %product%
+      partial_reject: Rejeitar as alterações no atributo %attribute% do produto %product% 
+    notification:
+      partial_approve: '%owner% aceitou valor(es) dos atributos %attributes% para o produto %product%'
+      partial_approve_number: '%owner% aceitou valores de %attributes_count% atributos para o produto %product%'
+      partial_reject: '%owner% rejeitou valor(es) dos atributos %attributes% para o produto %product%'
+      partial_reject_number: '%owner% rejeitou valores para %attributes_count% atributos para o produto %product%'
+      partial_remove: '%owner% excluiu o(s) valor(es) dos atributos %attributes% para o produto %product%'
+      partial_remove_number: '%owner% excluiu valores de %attributes_count% atributos para o produto %product%'
+      approve: '%owner% aceitou sua proposta para o produto %product%'
+      refuse: '%owner% rejeitou sua proposta para o produto %product%'
+      remove: '%owner% excluiu sua proposta para o produto %product%'
+    mass_review_action:
+      approve: Aprovar todos os selecionados
+      refuse: Rejeitar todos os selecionados
+      error:
+        draft_not_ready: Esta proposta não está pronta para ser aprovada
+        not_product_owner: Você não possui o produto relacionado a esta proposta
+        cannot_edit_attributes: Você não pode editar os atributos modificados para esta proposta
+        invalid_draft: Esta proposta não pode ser aplicada devido ao seguinte erro. %error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% enviou uma proposta para revisão do produto %product.label%'
+    individual_import: '%author.firstname% %author.lastname% enviou propostas para revisão da tarefa de importação'
+    generic_import: Você tem propostas para revisar da tarefa de importação
+    original_value: Original
+    new_value: Novo
+    no_diff: O valor "%value%" é o mesmo entre a proposta e a versão atual.
+    draft_in_progress: Um rascunho de %author% está em andamento para este produto.
+  published_product:
+    index: Produtos Publicados
+    title: Produtos publicados
+  acl.published_product:
+    index: Gerenciar produtos publicados
+  product:
+    permission:
+      own: Rever / Publicar
+      edit: Editar
+      view: Visão
+  steps:
+    product_draft_processor.title: Processador de proposta
+    approve.title: Aprovar proposta
+    refuse.title: Recusar proposta
+  mass_edit_action:
+    published:
+      page_title: Produtos Publicados
+      page_subtitle: Edição em massa (1 produto publicado)|Edição em massa (%count% produtos publicados)
+      title: Escolher Operação
+      subtitle: Escolha a operação que deseja executar no produto publicado selecionado|Escolha a operação que deseja executar nos %count% produtos publicados selecionados
+      confirm: Você está prestes a atualizar um produto publicado com as seguintes informações, por favor confirme.|Você está prestes a atualizar %count% produtos publicados com as seguintes informações, por favor confirme.
+      steps:
+        first: Escolher produtos publicados
+        second: Escolher Operação
+        third: Configurar
+        fourth: Confirmar
+btn:
+  publish: Publicar
+  unpublish: Despublicar
+  save working copy: Salvar a cópia do trabalho
+  save draft: Salvar rascunho
+  save working copy and next: Salvar versão atual e próximo
+  save draft and next: Salvar rascunho e avançar
+  save working copy and finish: Salvar versão atual e finalizar
+  save draft and finish: Salvar rascunho e finalizar
+  send for approval: Enviar para aprovação
+  sent for approval: Enviado para aprovação
+  editworkingcopy: Editar versão atual
+flash:
+  product:
+    updated: A versão atual do produto foi atualizada
+    published: O produto foi publicado com sucesso.
+    unpublished: O produto teve sua publicação cancelada com sucesso.
+  product_draft:
+    updated: Rascunho salvo com sucesso
+    approve:
+      success: A proposta foi aplicada com sucesso.
+      error: A proposta não pode ser aplicada devido ao seguinte erro. %error%
+    refuse:
+      success: A proposta foi rejeitada.
+    remove:
+      success: A proposta foi removida.
+pim_menu:
+  item:
+    published_product: Produtos Publicados
+    proposal: Propostas
+confirmation:
+  product:
+    publish: Tem certeza que deseja publicar este produto?
+    unpublish: Tem certeza que deseja cancelar a publicação deste produto?
+Attributes.title: Atributos
+Completeness.title: Completude
+publish_product.steps.publish_product_tasklet.title: Publicar produto
+unpublish_product.steps.unpublish_product_tasklet.title: Cancelar publicação do produto
+approve_product_draft.steps.approve.title: Aprovar proposta
+approve_product_draft.steps.refuse.title: Rejeitar proposta
+job_execution.summary:
+  approved: aprovado
+  refused: rejeitado
+  mass_published: Produto publicado
+  mass_unpublished: Publicação do produto cancelada
+  proposal: Proposta criada
+  proposal_deleted: proposta excluída
+  proposal_updated: proposta atualizada
+  proposal_created: proposta criada
+  proposal_skipped: proposta ignorada (sem diferenças)
+published products: Produtos Publicados
+pim_analytics:
+  info_type:
+    nb_published_products: Número de produtos publicados
+    nb_product_drafts: Número de rascunhos de produtos
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Propostas para rever
+      date: Data
+      author: Autor
+      product: Produto
+      review: Rever
+      empty: Não há rascunhos de produtos para rever
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Publicar
+      description: Publicar os produtos selecionados, os dados atuais serão substituídos pela nova versão.
+      success_flash: Os produtos selecionados foram publicados com sucesso.
+      launched_flash: A tarefa de publicação de produto(s) está atualmente em execução.
+      message:
+        info: Os %nbProducts% produtos selecionados serão publicados.
+    unpublish:
+      label: Despublicar
+      description: Cancelar a publicação dos produtos selecionados, os dados atuais serão apagados.
+      success_flash: Os produtos selecionados tiveram sua publicação cancelada com sucesso.
+      launched_flash: A tarefa de cancelamento de publicação de produto(s) está atualmente em execução.
+      message:
+        info: Os %nbProducts% produtos selecionados terão sua publicação cancelada.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Propostas

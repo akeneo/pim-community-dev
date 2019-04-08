@@ -1,0 +1,100 @@
+pimee_enrich.acl.locale.edit_permissions: Gerenciar permissões de local
+pimee_enrich.acl.category.edit_permissions: Gerenciar permissões de categoria
+pimee_enrich.acl.attribute_group.edit_permissions: Gerenciar permissões de grupo de atributos
+pimee_importexport.acl.export_profile.edit_permissions: Gerenciar permissões de perfil de exportação
+pimee_importexport.acl.import_profile.edit_permissions: Gerenciar permissões de perfil de importação
+pimee_enrich.groups.label: Grupos de proprietários
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Editar atributos
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Adicionar valor de produto com permissão
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Atualizar valor de produto com permissão
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Remover valor de produto com permissão
+edit_common_attributes_with_permission: Editar atributos com permissão
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Editar atributos com permissão
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Número de acessos de localidades personalizados
+    nb_custom_category_accesses: Número de acessos de categoria personalizada
+    nb_custom_attribute_group_accesses: Número de acessos de grupo de atributos personalizados
+job_profile.permissions:
+  execute.label: Permissão para executar perfil de tarefa
+  edit.label: Permissão para editar perfil de tarefa
+pim_title.locale:
+  edit: "Localidade %locale.code% | Editar"
+attribute group.permissions:
+  view.label: Permissão para ver os atributos
+  view.help: Permitir visualizar os produtos deste grupo de atributos
+  edit.label: Autorizado a editar atributos
+  edit.help: Permitir editar os produtos deste grupo de atributos
+  no_access_to_attributes: Você não tem acesso a nenhum atributo deste produto. Por favor, contate o administrador.
+category.permissions:
+  view.label: Permissão para ver os produtos
+  view.help: Permite visualizar os produtos nesta categoria
+  edit.label: Permitido editar produtos
+  edit.help: Permite editar os produtos nesta categoria (reflete na permissão da visualização)
+  own.label: Permitido ser dono de produtos
+  own.help: Permitido rever, publicar, cancelar publicação, classificar e associar produtos nessa categoria (reflete na permissão da edição)
+  no_access_to_products: Você não tem acesso a produtos de qualquer árvore, por favor, entre em contato com seu administrador
+  apply_on_children.label: Aplicar mudanças nos filhos
+  apply_on_children.help: Copiar as alterações nas permissões para todos os filhos, as permissões existentes nos filhos serão mantidas
+locale.permissions:
+  view.label: Permitido visualizar as informações
+  view.help: Permite ver as informações nesta localidade
+  edit.label: Permitido editar as informações
+  edit.help: Permite editar as informações nesta localidade (reflete na permissão da visualização)
+  no_access_to_products: Você não pode acessar os dados de produto em qualquer localidade ativa, por favor, entre em contato com seu administrador
+flash.locale.updated: A localidade e as permissões foram atualizadas
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Você não tem permissão para editar os produtos %identifiers%.
+      page_title: Produtos
+      page_subtitle: Editar em massa (1 produto)|Editar em massa (%count% produtos)
+      title: Escolher Operação
+      subtitle: Selecione a operação que deseja realizar no produto escolhido|Selecione a operação que deseja realizar nos %count% produtos
+      confirm: Você está prestes a atualizar um produto com as seguintes informações, por favor confirme.|que você está prestes a atualizar %count% produtos com as seguintes informações, por favor confirme.
+      steps:
+        first: Escolha os produtos
+        second: Escolher Operação
+        third: Configurar
+        fourth: Confirmar
+    publish:
+      message:
+        error: Você não é o proprietário do produto, você não pode publicá-lo.
+        warning: Você não é o proprietário de todos os produtos selecionados. Você não pode publicar os produtos "%notGranted%".
+      not_editable: Você não tem permissão para editar os produtos "%identifiers%".
+    unpublish:
+      message:
+        error: Você não é o proprietário do produto, você não pode remover a publicação.
+        warning: Você não é o proprietário de todos os produtos selecionados. Você não pode remover a publicação dos produtos "%notGranted%".
+        info: Os %nbProducts% produtos selecionados terão suas publicações removidas.
+      not_editable: Você não tem permissão para editar os produtos "%identifiers%".
+    classify:
+      message:
+        error: Você não é o proprietário do produto, você não pode classificá-lo.
+        warning: Você não é o proprietário de todos os produtos selecionados. Você não pode classificar os produtos "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Você não é o proprietário do produto, você não pode editá-lo.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Permissões
+  acl.product_ownership.title: Propriedade
+  attributes:
+    empty: nenhum
+  category:
+    tab:
+      permission:
+        title: Permissões
+  groups:
+    label: grupos de proprietários
+    empty: nenhum
+add_product_value_with_permission_and_rules:
+  steps.perform: Adicionar valor do produto
+update_product_value_with_permission_and_rules:
+  steps.perform: Atualizar valor do produto
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Editar atributos
+  steps.edit_common_attributes_processor.title: Editar atributos
+pim_enrich_attribute_form:
+  isReadOnly: Somente leitura
