@@ -48,7 +48,6 @@ services:
     pim_api.controller.product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController'
         arguments:
-            - '@pim_catalog.query.product_query_builder_search_after_size_factory'
             - '@pim_external_api_serializer'
             - '@pim_api.repository.channel'
             - '@pimee_api.checker.query_parameters_product'
@@ -70,7 +69,9 @@ services:
             - '@pim_catalog.builder.product'
             - '@pimee_security.filter.granted_product_attribute_filter'
             - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
+            - '@pim_enrich.connector.use_cases.validator.list_products'
             - '%pim_api.configuration%'
+            - '@pim_enrich.connector.use_cases.handler.list_products'
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
@@ -94,3 +95,33 @@ services:
             - '@pimee_workflow.repository.delegating_product_model'
             - '@pim_api.stream.product_model_partial_update_stream'
             - '%pim_api.configuration%'
+
+    akeneo.pim.enrichment.use_cases.validator.validate_granted_search_locale:
+        class: Akeneo\Pim\Permission\Component\Api\UseCase\Validator\ValidateGrantedSearchLocale
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+            - '@pimee_security.cached_authorization_checker'
+
+    akeneo.pim.enrichment.use_cases.validator.validate_granted_locales:
+        class: Akeneo\Pim\Permission\Component\Api\UseCase\Validator\ValidateGrantedLocales
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+            - '@pimee_security.cached_authorization_checker'
+
+    akeneo.pim.enrichment.use_cases.validator.validate_granted_categories:
+        class: Akeneo\Pim\Permission\Component\Api\UseCase\Validator\ValidateGrantedCategories
+        arguments:
+            - '@pim_catalog.repository.cached_category'
+            - '@pimee_security.cached_authorization_checker'
+            -
+    akeneo.pim.enrichment.use_cases.validator.validate_granted_properties:
+        class: Akeneo\Pim\Permission\Component\Api\UseCase\Validator\ValidateGrantedProperties
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pimee_security.cached_authorization_checker'
+
+    akeneo.pim.enrichment.use_cases.validator.validate_granted_attributes:
+        class: Akeneo\Pim\Permission\Component\Api\UseCase\Validator\ValidateGrantedAttributes
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pimee_security.cached_authorization_checker'

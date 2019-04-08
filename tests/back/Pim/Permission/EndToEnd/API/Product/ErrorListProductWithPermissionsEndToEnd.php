@@ -79,14 +79,6 @@ class ErrorListProductWithPermissionsEndToEnd extends AbstractProductTestCase
         $this->assert($client, 'Locale "de_DE" does not exist or is not activated.');
     }
 
-    public function testProductSearchOneLocaleNotViewableByRedactor()
-    {
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $client->request('GET', '/api/rest/v1/products?search_locale=de_DE,fr_FR&search={"a_localized_and_scopable_text_area":[{"operator":"CONTAINS", "value":"text"}]}');
-        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.');
-    }
-
     public function testProductSearchOneLocalesNotViewableByRedactor()
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
