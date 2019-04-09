@@ -4,16 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -35,16 +29,32 @@ class SqlFindCodesByIdentifiersTest extends SqlIntegrationTestCase
         $this->loadRecords();
     }
 
-    private function resetDB(): void
-    {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
-    }
-
     /**
      * @test
      */
     public function it_finds_record_codes_given_their_identifiers()
     {
+        $codes = $this->query->find(['designer_stark_fingerprint', 'designer_jacobs_fingerprint']);
+
+        $this->assertEquals([
+            'designer_stark_fingerprint' => 'starck',
+            'designer_jacobs_fingerprint' => 'jacobs',
+        ], $codes);
+
+        $codes = $this->query->find(['unknown', 'designer_jacobs_fingerprint']);
+
+        $this->assertEquals([
+            'designer_jacobs_fingerprint' => 'jacobs',
+        ], $codes);
+
+        $codes = $this->query->find(['unknown']);
+
+        $this->assertEmpty($codes);
+    }
+
+    private function resetDB(): void
+    {
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadReferenceEntityDesigner(): void
