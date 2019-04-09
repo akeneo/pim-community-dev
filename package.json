@@ -10,7 +10,7 @@
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
     "before-commit": "yarn prettier && yarn lint && yarn test",
     "test": "yarn unit && yarn webpack-test --env=prod && yarn integration && yarn acceptance tests/features",
-    "webpack-test": "webpack --config webpack-test.config.js",
+    "webpack-test": "webpack --config webpack.config.js --env=test",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
     "unit": "jest --no-cache --config tests/front/unit/jest/unit.jest.js",

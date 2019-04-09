@@ -9,8 +9,11 @@ const _ = require('lodash');
 
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
+const isTest = process.argv && process.argv.indexOf('--env=test') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
@@ -19,7 +22,7 @@ createModuleRegistry(Object.keys(aliases), rootDir);
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
 module.exports = env => {
-  return {
+  const webPackConf = {
     stats: {
       hash: false,
       maxModules: 5,
@@ -227,9 +230,36 @@ module.exports = env => {
 
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
-        'process.env.IS_CLOUD_EDITION': undefined === env.IS_CLOUD_EDITION ? false : env.IS_CLOUD_EDITION,
+        'process.env.EDITION': undefined === env || !Object.prototype.hasOwnProperty.call(env, 'EDITION') ? JSON.stringify('') : JSON.stringify(env.EDITION),
       }),
     ],
+  };
+
+  if (isTest) {
+    const webPackTestConf = Object.assign({}, webPackConf, {
+      entry: ['babel-polyfill', path.resolve(__dirname, './tests/front/common/templates/index.js')],
+      output: {
+        path: path.resolve('./web/test_dist/'),
+        publicPath: '/dist/',
+        filename: '[name].min.js',
+        chunkFilename: '[name].bundle.js',
+      },
+    });
+
+    webPackTestConf.plugins.push(
+      new HtmlWebpackPlugin({
+        inject: 'head',
+        template: path.resolve(__dirname, './tests/front/common/templates/index.html'),
+        minify: {},
+        inlineSource: '.(js)$',
+      })
+    );
+
+    webPackTestConf.plugins.push(new HtmlWebpackInlineSourcePlugin());
+
+    return webPackTestConf;
   }
+
+  return webPackConf;
 };
 
