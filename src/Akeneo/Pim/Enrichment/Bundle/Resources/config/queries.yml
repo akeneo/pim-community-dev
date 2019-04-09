@@ -120,3 +120,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetDescendentCategoryCodes'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.category.get_viewable_category_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetViewableCategoryCodes'
+        arguments:
+            - '@database_connection'
