@@ -7,7 +7,7 @@ extensions:
         parent: pim-job-instance-xlsx-base-import-edit
         targetZone: main-image
         config:
-            path: bundles/pimui/images/illustration-import-xlsx.svg
+            path: bundles/pimui/images/illustrations/ImportXLSX.svg
 
     pim-job-instance-xlsx-base-import-edit-user-navigation:
         module: pim/menu/user-navigation

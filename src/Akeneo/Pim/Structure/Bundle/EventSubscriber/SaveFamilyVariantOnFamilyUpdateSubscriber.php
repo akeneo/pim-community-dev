@@ -29,9 +29,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     /** @var BulkSaverInterface */
     private $familyVariantSaver;
 
-    /** @var BulkObjectDetacherInterface */
-    private $objectDetacher;
-
     /** @var BulkSaverInterface */
     private $bulkfamilyVariantSaver;
 
@@ -39,19 +36,14 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
      * @param ValidatorInterface          $validator
      * @param SaverInterface              $familyVariantSaver
      * @param BulkSaverInterface          $bulkFamilyVariantSaver
-     * @param BulkObjectDetacherInterface $objectDetacher
-     *
-     * @todo merge master: remove $objectDetacher
      */
     public function __construct(
         ValidatorInterface $validator,
         SaverInterface $familyVariantSaver,
-        BulkSaverInterface $bulkFamilyVariantSaver,
-        BulkObjectDetacherInterface $objectDetacher
+        BulkSaverInterface $bulkFamilyVariantSaver
     ) {
         $this->validator = $validator;
         $this->familyVariantSaver = $familyVariantSaver;
-        $this->objectDetacher = $objectDetacher;
         $this->bulkfamilyVariantSaver = $bulkFamilyVariantSaver;
     }
 

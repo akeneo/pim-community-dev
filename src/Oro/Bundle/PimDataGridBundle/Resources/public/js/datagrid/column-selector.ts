@@ -473,7 +473,7 @@ class ColumnSelector extends BaseView {
     this.setColumnSortOrder();
 
     const columns = this.getColumnsBySelected();
-    const selected = Object.values(_.mapObject(columns, 'code'))
+    const selected = Object.keys(columns)
       .sort((a, b) => {
         return columns[a].sortOrder - columns[b].sortOrder;
       })

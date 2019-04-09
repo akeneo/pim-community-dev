@@ -6,12 +6,16 @@ use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Doctrine\Bundle\MigrationsBundle\Command\DoctrineCommand;
+use Doctrine\Bundle\MigrationsBundle\Command\Helper\DoctrineCommandHelper;
 use Doctrine\DBAL\Exception\ConnectionException;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Process\Process;
 
 /**
  * Database preparing command
@@ -142,6 +146,8 @@ class DatabaseCommand extends ContainerAwareCommand
         // TODO: Should be in an event subscriber
         $this->launchCommands();
 
+        $this->setLatestKnownMigration($input);
+
         return $this;
     }
 
@@ -242,10 +248,46 @@ class DatabaseCommand extends ContainerAwareCommand
         }
         $output->writeln('');
 
+
         $output->writeln('<info>Delete jobs for fixtures.</info>');
         $this->getFixtureJobLoader()->deleteJobInstances();
 
         return $this;
+    }
+
+    private function setLatestKnownMigration(InputInterface $input): void
+    {
+        $latestMigration = $this->getLatestMigration($input);
+        
+        $this->commandExecutor->runCommand(
+            'doctrine:migrations:version',
+            ['version' => $latestMigration, '--add' => true, '--all' => true, '-q' => true]
+        );
+    }
+
+    private function getLatestMigration(InputInterface $input): string
+    {
+        $params = ['bin/console', 'doctrine:migrations:latest'];
+
+        $params[] = '--no-debug';
+
+        if ($input->hasOption('env')) {
+            $params[] = '--env';
+            $params[] = $input->getOption('env');
+        }
+
+        if ($input->hasOption('verbose') && $input->getOption('verbose') === true) {
+            $params[] = '--verbose';
+        }
+
+        $latestMigrationProcess = new Process($params);
+        $latestMigrationProcess->run();
+
+        if ($latestMigrationProcess->getExitCode() !== 0) {
+            throw new \RuntimeException("Impossible to get the latest migration {$latestMigrationProcess->getErrorOutput()}");
+        }
+
+        return $latestMigrationProcess->getOutput();
     }
 
     /**

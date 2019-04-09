@@ -1,17 +1,16 @@
 @import '../base/variables';
 
 .AknBadge {
-  @mediumBadge: 20px;
-
-  line-height: @AknDefaultFontSize + 4px;
-  height: @AknDefaultFontSize + 4px;
+  line-height: 22px;
+  height: 22px;
+  min-width: 22px;
   font-size: @AknDefaultFontSize;
   background: @AknMediumGrey;
   color: @AknDefaultFontColor;
   display: inline-block;
   border-radius: 100px;
   padding: 0 8px;
-  transition: background 0.1s ease-in, opacity 0.4s ease-in;
+  transition: background 0.15s ease-in, opacity 0.4s ease-in;
   white-space: nowrap;
   margin: 2px 0 -2px 0;
   text-transform: uppercase;
@@ -114,14 +113,6 @@
     }
   }
 
-  &--medium {
-    height: @mediumBadge;
-    min-width: @mediumBadge;
-    line-height: @mediumBadge;
-    font-size: @AknDefaultFontSize;
-    padding: 0 8px;
-  }
-
   &--big {
     height: 28px;
     min-width: 28px;
@@ -143,6 +134,7 @@
     height: 8px;
     padding: 0 4px;
     margin-bottom: 0;
+    min-width: 8px;
   }
 
   &--floating {
@@ -158,6 +150,12 @@
     right: 0;
     margin-right: 10px;
     margin-top: 10px;
-    z-index: 2;
+    z-index: 1;
+  }
+
+  &--round {
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
   }
 }

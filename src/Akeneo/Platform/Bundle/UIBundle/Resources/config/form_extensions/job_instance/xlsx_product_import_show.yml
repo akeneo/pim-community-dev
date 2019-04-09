@@ -7,7 +7,7 @@ extensions:
         parent: pim-job-instance-xlsx-product-import-show
         targetZone: main-image
         config:
-            path: bundles/pimui/images/illustration-import-xlsx.svg
+            path: bundles/pimui/images/illustrations/ImportXLSX.svg
 
     pim-job-instance-xlsx-product-import-show-user-navigation:
         module: pim/menu/user-navigation
@@ -67,6 +67,7 @@ extensions:
     pim-job-instance-xlsx-product-import-show-upload:
         module: pim/job/common/edit/upload
         parent: pim-job-instance-xlsx-product-import-show-upload-switcher-item
+        position: 50
         config:
             type: xlsx
 
@@ -109,6 +110,7 @@ extensions:
         parent: pim-job-instance-xlsx-product-import-show
         targetZone: buttons
         position: 100
+        aclResourceId: pim_importexport_import_profile_edit
         config:
             label: pim_common.edit
             route: pim_importexport_import_profile_edit

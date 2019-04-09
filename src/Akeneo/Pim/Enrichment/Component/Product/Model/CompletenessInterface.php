@@ -34,6 +34,8 @@ interface CompletenessInterface
      */
     public function getRatio();
 
+    public function setRatio(int $ratio): void;
+
     /**
      * Getter locale
      *
@@ -54,6 +56,10 @@ interface CompletenessInterface
      * @return int
      */
     public function getMissingCount();
+
+    public function setMissingCount(int $missingCount): void;
+
+    public function setRequiredCount(int $requiredCount): void;
 
     /**
      * Getter product

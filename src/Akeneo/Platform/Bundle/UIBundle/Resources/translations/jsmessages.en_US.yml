@@ -195,6 +195,7 @@ pim_common:
     remove: Remove
     required_label: (required)
     save: Save
+    search: Search
     select2:
         search: Search...
         no_match: No matches found

@@ -26,89 +26,114 @@ class InMemoryAttributeOptionRepositorySpec extends ObjectBehavior
 
     function it_returns_an_identifier_property()
     {
-        $this->getIdentifierProperties()->shouldReturn(['code']);
+        $this->getIdentifierProperties()->shouldReturn(['attribute', 'code']);
     }
 
     function it_finds_one_attribute_option_by_identifier()
     {
-        $attribute = new Attribute();
-        $attributeOption = $this->createAttributeOption('attribute_option_1', $attribute);
-        $this->beConstructedWith([$attributeOption->getCode() => $attributeOption]);
+        $hairColor = (new Attribute())->setCode('hair_color');
+        $brownHairColor = $this->createAttributeOption('brown', $hairColor);
+        $whiteHairColor = $this->createAttributeOption('white', $hairColor);
 
-        $this->findOneByIdentifier('attribute_option_1')->shouldReturn($attributeOption);
+        $eyeColor = (new Attribute())->setCode('eye_color');
+        $brownEyeColor = $this->createAttributeOption('brown', $eyeColor);
+
+        $this->beConstructedWith(
+            [
+                $brownHairColor,
+                $whiteHairColor,
+                $brownEyeColor,
+            ]
+        );
+
+        $this->findOneByIdentifier('hair_color.brown')->shouldReturn($brownHairColor);
     }
 
     function it_does_not_find_an_attribute_option_by_identifier()
     {
-        $attribute = new Attribute();
-        $attributeOption = $this->createAttributeOption('attribute_option_1', $attribute);
-        $this->beConstructedWith([$attributeOption->getCode() => $attributeOption]);
+        $brownHairColor = $this->createAttributeOption('brown', (new Attribute())->setCode('hair_color'));
 
-        $this->findOneByIdentifier('attribute_option_2')->shouldReturn(null);
+        $this->beConstructedWith([$brownHairColor]);
+
+        $this->findOneByIdentifier('hair_color.white')->shouldReturn(null);
+        $this->findOneByIdentifier('eye_color.brown')->shouldReturn(null);
+        $this->findOneByIdentifier('eye_color.blue')->shouldReturn(null);
     }
 
     function it_saves_an_attribute_option()
     {
-        $attribute = new Attribute();
-        $attributeOption = $this->createAttributeOption('attribute_option_1', $attribute);
-        $this->save($attributeOption);
+        $brownHairColor = $this->createAttributeOption('brown', (new Attribute())->setCode('hair_color'));
 
-        $this->findOneByIdentifier('attribute_option_1')->shouldReturn($attributeOption);
+        $this->save($brownHairColor);
+
+        $this->findOneByIdentifier('hair_color.brown')->shouldReturn($brownHairColor);
     }
 
     function it_finds_attribute_options_by_criteria()
     {
-        $attribute = new Attribute();
-        $attributeOption = $this->createAttributeOption('attribute_option_1', $attribute);
-        $this->beConstructedWith([$attributeOption->getCode() => $attributeOption]);
+        $hairColor = (new Attribute())->setCode('hair_color');
+        $brownHairColor = $this->createAttributeOption('brown', $hairColor);
 
-        $this->findBy(['code' => 'attribute_option_1'])->shouldReturn([$attributeOption]);
+        $eyeColor = (new Attribute())->setCode('eye_color');
+        $blueEyeColor = $this->createAttributeOption('blue', $eyeColor);
+        $brownEyeColor = $this->createAttributeOption('brown', $eyeColor);
+
+        $this->beConstructedWith(
+            [
+                $brownHairColor,
+                $blueEyeColor,
+                $brownEyeColor,
+            ]
+        );
+
+        $this->findBy(['code' => 'brown'])->shouldReturn([$brownHairColor, $brownEyeColor]);
+        $this->findBy(['attribute' => $eyeColor])->shouldReturn([$blueEyeColor, $brownEyeColor]);
+        $this->findBy(['attribute' => $eyeColor, 'code' => 'brown'])->shouldReturn([$brownEyeColor]);
     }
 
     function it_does_not_find_attribute_options_by_criteria()
     {
-        $attribute = new Attribute();
-        $attributeOption = $this->createAttributeOption('attribute_option_1', $attribute);
-        $this->beConstructedWith([$attributeOption->getCode() => $attributeOption]);
+        $eyeColor = (new Attribute())->setCode('eye_color');
+        $hairColor = (new Attribute())->setCode('hair_color');
+        $brownHairColor = $this->createAttributeOption('brown', $hairColor);
 
-        $this->findBy(['code' => 'attribute_option_2'])->shouldReturn([]);
+        $this->beConstructedWith([$brownHairColor]);
+
+        $this->findBy(['attribute' => $eyeColor, 'code' => 'brown'])->shouldReturn([]);
+        $this->findBy(['attribute' => $hairColor, 'code' => 'white'])->shouldReturn([]);
     }
 
     function it_throws_an_exception_if_saved_object_is_not_an_attribute_option(\StdClass $object)
     {
         $this
-            ->shouldThrow(new \InvalidArgumentException('The object argument should be a attribute option'))
+            ->shouldThrow(\InvalidArgumentException::class)
             ->during('save', [$object]);
     }
 
     function it_finds_attribute_options_by_attribute_and_codes()
     {
-        $attribute = new Attribute();
-        $attributeOption1 = $this->createAttributeOption('attribute_option_1', $attribute);
-        $attributeOption2 = $this->createAttributeOption('attribute_option_2', $attribute);
-        $attributeOption3 = $this->createAttributeOption('attribute_option_3', $attribute);
+        $eyeColor = (new Attribute())->setCode('eye_color');
+        $blueEyeColor = $this->createAttributeOption('blue', $eyeColor);
+        $brownEyeColor = $this->createAttributeOption('brown', $eyeColor);
 
-        $attribute2 = (new Attribute())->setCode('test');
-        $attributeOption4 = $this->createAttributeOption('attribute_option_4', $attribute2);
-
-        $this->beConstructedWith([
-            $attributeOption1->getCode() => $attributeOption1,
-            $attributeOption2->getCode() => $attributeOption2,
-            $attributeOption3->getCode() => $attributeOption3,
-            $attributeOption4->getCode() => $attributeOption4,
-        ]);
+        $this->beConstructedWith(
+            [
+                $blueEyeColor,
+                $brownEyeColor,
+            ]
+        );
 
         $this
-            ->findCodesByIdentifiers($attribute->getCode(), ['attribute_option_1', 'attribute_option_2'])
-            ->shouldReturn([['code' => $attributeOption1->getCode()], ['code' => $attributeOption2->getCode()]]);
-
-        $this
-            ->findCodesByIdentifiers($attribute2->getCode(), ['attribute_option_1'])
+            ->findCodesByIdentifiers('eye_color', ['green'])
             ->shouldReturn([]);
 
         $this
-            ->findCodesByIdentifiers($attribute2->getCode(), ['attribute_option_4'])
-            ->shouldReturn([['code' => $attributeOption4->getCode()]]);
+            ->findCodesByIdentifiers('eye_color', ['blue'])
+            ->shouldReturn([['code' => 'blue']]);
+
+        $this
+            ->findCodesByIdentifiers('eye_color', ['blue', 'brown'])
+            ->shouldReturn([['code' => 'blue'], ['code' => 'brown']]);
     }
 
     private function createAttributeOption(string $code, AttributeInterface $attribute): AttributeOptionInterface

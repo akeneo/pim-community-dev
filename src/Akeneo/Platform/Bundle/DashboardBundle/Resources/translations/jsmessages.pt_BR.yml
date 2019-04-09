@@ -2,9 +2,7 @@ pim_dashboard:
   widget:
     last_operations:
       empty: Nenhuma Operação Encontrada
-      status: Status
       date: Data
-      type: Tipo
       profile_name: Nome do Profile
       details: Detalhes
       warning_count: Avisos
@@ -13,9 +11,13 @@ pim_dashboard:
         export: Exportar
         mass_edit: Edição em Massa
         quick_export: Exportação Rápida
+        compute_product_models_descendants: Calcular os modelos de produto descendentes
+        compute_family_variant_structure_changes: Calcular mudanças na estrutura da variante da família
+        compute_completeness_of_products_family: Calcular a completude da família de produtos
+        mass_delete: Exclusão em massa de produtos
     completeness:
       load_more: 'Carregar mais...'
     header:
       view_all: Visualizar tudo
-page_title:
+pim_title:
   pim_dashboard_index: Painel de controle

@@ -7,6 +7,8 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: Käsittele ylätason tuotemallin tiedot
     compute_data_related_to_family_sub_product_models: Käsittele alatuotemallin tiedot
     compute_data_related_to_family_products: Tuotteiden käsittely
+    compute_product_models_descendants: Lasketaan tuotemallin rakenne
+    compute_family_variant_structure_changes: Laske varianttiperheen rakenteen muutokset
   csv_product_export:
     label: Tuotteiden vienti CSV-muodossa
     export.label: Tuotteiden vienti
@@ -20,8 +22,8 @@ batch_jobs:
     label: Attribuuttien vienti CSV-muodossa
     export.label: Attribuuttien vienti
   csv_attribute_option_export:
-    label: Attribuuttien määritteiden vienti CSV-muodossa
-    export.label: Attribuuttien määritteiden vienti
+    label: Attribuuttien vaihtoehtojen vienti CSV-muodossa
+    export.label: Attribuuttien vaihtoehtojen vienti
   csv_association_type_export:
     label: Liitännäistyyppien vienti CSV-muodossa
     export.label: Liitännäistyyppien vienti
@@ -47,8 +49,8 @@ batch_jobs:
     label: Attribuuttien tuonti CSV-muodossa
     import.label: Attribuuttien tuonti
   csv_attribute_option_import:
-    label: Attribuuttien määritteiden tuonti CSV-muodossa
-    import.label: Attribuuttien määritteiden tuonti
+    label: Attribuuttien vaihtoehtojen tuonti CSV-muodossa
+    import.label: Attribuuttien vaihtoehtojen tuonti
   csv_association_type_import:
     label: Liitännäistyyppien tuonti CSV-muodossa
     import.label: Liitännäistyyppien tuonti
@@ -84,8 +86,8 @@ batch_jobs:
     label: Attribuuttien tuonti XLSX-muodossa
     import.label: Attribuuttien tuonti
   xlsx_attribute_option_import:
-    label: Attribuuttien määritteiden tuonti XLSX-muodossa
-    import.label: Attribuuttien määritteiden tuonti
+    label: Attribuuttien vaihtoehtojen tuonti XLSX-muodossa
+    import.label: Attribuutin vaihtoehdon tuonti
   xlsx_family_import:
     label: Perheiden tuonti XLSX-muodossa
     import.label: Ryhmätuonti
@@ -123,7 +125,7 @@ batch_jobs:
     label: Attribuuttivienti XLSX-muodossa
     export.label: Attribuuttivienti XLSX-muodossa
   xlsx_attribute_option_export:
-    label: Attribuuttien määritteiden vienti XLSX-muodossa
+    label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
     export.label: Attribuuttien määritteiden vienti XLSX-muodossa
   xlsx_association_type_export:
     label: Liitännäistyyppien vienti XLSX-muodossa

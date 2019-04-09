@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\AttributeOption;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>
@@ -19,66 +18,96 @@ use Doctrine\Common\Collections\Collection;
  */
 class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInterface, SaverInterface
 {
-    /** @var Collection */
-    private $attributeOptions;
+    /** @var AttributeOptionInterface[] */
+    private $attributeOptions = [];
 
     /**
      * @param AttributeOptionInterface[] $attributeOptions
      */
     public function __construct(array $attributeOptions = [])
     {
-        $this->attributeOptions = new ArrayCollection($attributeOptions);
+        foreach ($attributeOptions as $attributeOption) {
+            $this->save($attributeOption);
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
-        return ['code'];
+        return ['attribute', 'code'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier($identifier): ?AttributeOptionInterface
     {
-        return $this->attributeOptions->get($identifier);
-    }
+        [$attributeCode, $attributeOptionCode] = \explode('.', $identifier);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function save($attributeOption, array $options = [])
-    {
-        if (!$attributeOption instanceof AttributeOptionInterface) {
-            throw new \InvalidArgumentException('The object argument should be a attribute option');
+        foreach ($this->attributeOptions as $attributeOption) {
+            if ($attributeOption->getCode() === $attributeOptionCode
+                && $attributeOption->getAttribute()->getCode() === $attributeCode) {
+                return $attributeOption;
+            }
         }
 
-        $this->attributeOptions->set($attributeOption->getCode(), $attributeOption);
+        return null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function save($attributeOption, array $options = []): void
     {
-        $attributeOptions = [];
+        if (false === $attributeOption instanceof AttributeOptionInterface) {
+            throw new \InvalidArgumentException(sprintf(
+                'The "object" argument should be an instance of "%s"',
+                AttributeOptionInterface::class
+            ));
+        }
+
+        if (null === $attributeOption->getAttribute()) {
+            throw new \InvalidArgumentException(
+                sprintf('AttributeOption "%s" should have an Attribute.', $attributeOption->getCode())
+            );
+        }
+
+        $this->attributeOptions[] = $attributeOption;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
+    {
+        if ($orderBy !== null || $limit !== null || $offset !== null) {
+            throw new \InvalidArgumentException(
+                sprintf('Argument "orderBy", "limit" and "offset" are not implemented yet')
+            );
+        }
+
+        $result = [];
         foreach ($this->attributeOptions as $attributeOption) {
             $keepThisAttributeOption = true;
-            foreach ($criteria as $key => $value) {
-                $getter = sprintf('get%s', ucfirst($key));
-                if ($attributeOption->$getter() !== $value) {
+
+            foreach ($criteria as $searchedFieldName => $searchedValue) {
+                $getter = \sprintf('get%s', ucfirst($searchedFieldName));
+
+                if ($attributeOption->$getter() !== $searchedValue
+                    || ($searchedValue instanceof AttributeInterface
+                        && $attributeOption->$getter()->getCode() !== $searchedValue->getCode())) {
                     $keepThisAttributeOption = false;
                 }
             }
 
-            if ($keepThisAttributeOption) {
-                $attributeOptions[] = $attributeOption;
+            if (true === $keepThisAttributeOption) {
+                $result[] = $attributeOption;
             }
         }
 
-        return $attributeOptions;
+        return $result;
     }
 
     /**
@@ -92,16 +121,18 @@ class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function findCodesByIdentifiers($code, array $optionCodes)
+    public function findCodesByIdentifiers($attributeCode, array $attributeOptionCodes): array
     {
-        $attributeOptions = [];
+        $result = [];
+
         foreach ($this->attributeOptions as $attributeOption) {
-            if ($code === $attributeOption->getAttribute()->getCode() && in_array($attributeOption->getCode(), $optionCodes)) {
-                $attributeOptions[] = ['code' => $attributeOption->getCode()];
+            if ($attributeCode === $attributeOption->getAttribute()->getCode()
+                && \in_array($attributeOption->getCode(), $attributeOptionCodes)) {
+                $result[] = ['code' => $attributeOption->getCode()];
             }
         }
 
-        return $attributeOptions;
+        return $result;
     }
 
     /**

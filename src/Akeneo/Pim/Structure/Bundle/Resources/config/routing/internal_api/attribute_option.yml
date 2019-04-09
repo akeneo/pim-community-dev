@@ -40,4 +40,4 @@ pim_enrich_attributeoption_get:
     defaults: { _controller: pim_enrich.controller.attribute_option:getAction, _format: json }
     requirements:
         identifier: '[a-zA-Z0-9_]+'
-    methods: [GET]
+    methods: [GET, POST]

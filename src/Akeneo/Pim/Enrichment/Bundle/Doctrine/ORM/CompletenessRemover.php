@@ -50,15 +50,13 @@ class CompletenessRemover implements CompletenessRemoverInterface
      * @param ProductIndexer                      $indexer
      * @param string                              $completenessTable
      * @param BulkObjectDetacherInterface         $bulkDetacher
-     *
-     * TODO: Pull-up day. Refactor before merge in master.
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         EntityManagerInterface $entityManager,
         ProductIndexer $indexer,
         $completenessTable,
-        BulkObjectDetacherInterface $bulkDetacher = null
+        BulkObjectDetacherInterface $bulkDetacher
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->entityManager = $entityManager;

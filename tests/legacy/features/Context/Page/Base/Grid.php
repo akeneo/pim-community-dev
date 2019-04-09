@@ -753,50 +753,72 @@ class Grid extends Index
      */
     protected function clickOnFilterToManage($filterName)
     {
-        $this->spin(function () {
-            return !$this->isLoadingMaskVisible();
-        }, 'Loading mask is still visible');
+        $this->spin(
+            function () {
+                return !$this->isLoadingMaskVisible();
+            },
+            'Loading mask is still visible'
+        );
 
         $manageFilters = $this->getElement('Manage filters');
-        if (!$manageFilters->isVisible()) {
-            $this->clickFiltersList();
-        }
+        $this->spin(
+            function () use ($manageFilters) {
+                if (!$manageFilters->isVisible()) {
+                    $this->clickFiltersList();
 
-        $this->spin(function () use ($manageFilters, $filterName) {
-            $searchField = $manageFilters->find('css', 'input[type="search"]');
-            if (null !== $searchField) {
-                $searchField->setValue($filterName);
+                    return false;
+                }
 
                 return true;
-            }
+            },
+            'Could not open Manage filters'
+        );
 
-            return false;
-        }, 'Impossible to search in filters.');
 
-        $this->spin(function () use ($manageFilters, $filterName) {
-            if ($this->isLoadingMaskVisible()) {
+        $this->spin(
+            function () use ($manageFilters, $filterName) {
+                $searchField = $manageFilters->find('css', 'input[type="search"]');
+                if (null !== $searchField) {
+                    $searchField->setValue($filterName);
+
+                    return true;
+                }
+
                 return false;
-            }
+            },
+            'Impossible to search in filters.'
+        );
 
-            $filterElement = $manageFilters->find('css', sprintf('input[value="%s"]', $filterName));
-            if (null !== $filterElement && $filterElement->isVisible()) {
-                $filterElement->click();
-                $manageFilters->find('css', '.close')->click();
+        $this->spin(
+            function () use ($manageFilters, $filterName) {
+                if ($this->isLoadingMaskVisible()) {
+                    return false;
+                }
 
-                return true;
-            }
+                $filterElement = $manageFilters->find('css', sprintf('input[value="%s"]', $filterName));
+                if (null !== $filterElement && $filterElement->isVisible()) {
+                    $filterElement->click();
+                    $manageFilters->find('css', '.close')->click();
 
-            return false;
-        }, sprintf('Impossible to activate filter "%s"', $filterName));
+                    return true;
+                }
 
-        $this->spin(function () use ($manageFilters) {
-            $manageClosed = !$manageFilters->isVisible();
-            if (!$manageClosed) {
-                $this->clickFiltersList();
-            }
+                return false;
+            },
+            sprintf('Impossible to activate filter "%s"', $filterName)
+        );
 
-            return $manageClosed;
-        }, 'Could not close Manage filters');
+        $this->spin(
+            function () use ($manageFilters) {
+                $manageClosed = !$manageFilters->isVisible();
+                if (!$manageClosed) {
+                    $this->clickFiltersList();
+                }
+
+                return $manageClosed;
+            },
+            'Could not close Manage filters'
+        );
     }
 
     /**

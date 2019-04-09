@@ -98,9 +98,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
     }
 
     /**
-     * @todo merge master: Add this method to CompletenessInterface and declare it as a BC break.
-     *
-     * @param int $ratio
+     * {@inheritdoc}
      */
     public function setRatio(int $ratio): void
     {
@@ -116,9 +114,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
     }
 
     /**
-     * @todo merge master: Add this method to CompletenessInterface and declare it as a BC break.
-     *
-     * @param int $missingCount
+     * {@inheritdoc}
      */
     public function setMissingCount(int $missingCount): void
     {
@@ -126,9 +122,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
     }
 
     /**
-     * @todo merge master: Add this method to CompletenessInterface and declare it as a BC break.
-     *
-     * @param int $requiredCount
+     * {@inheritdoc}
      */
     public function setRequiredCount(int $requiredCount): void
     {

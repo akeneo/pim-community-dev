@@ -12,6 +12,7 @@ interface FilterModule extends Backbone.View<any> {
   disable: () => FilterModule;
   isEmpty: () => boolean;
   getValue: () => FilterValue;
+  reset: () => FilterModule;
   setValue: (value: FilterValue | number) => FilterModule;
   extend: (filterDefinition: FilterDefinition) => any;
   moveFilter?: (collection: any, element: any) => void;
@@ -146,6 +147,7 @@ class FiltersSelector extends BaseView {
 
       if (filterValue) {
         try {
+          filterModule.reset()
           filterModule.setValue(filterValue);
           filterModule.enabled = true;
         } catch (e) {

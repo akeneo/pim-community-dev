@@ -7,7 +7,7 @@ extensions:
         parent: pim-job-instance-xlsx-base-export-show
         targetZone: main-image
         config:
-            path: bundles/pimui/images/illustration-export-xlsx.svg
+            path: bundles/pimui/images/illustrations/ExportXLSX.svg
 
     pim-job-instance-xlsx-base-export-show-user-navigation:
         module: pim/menu/user-navigation
@@ -47,6 +47,7 @@ extensions:
         parent: pim-job-instance-xlsx-base-export-show
         targetZone: buttons
         position: 100
+        aclResourceId: pim_importexport_export_profile_edit
         config:
             label: pim_common.edit
             route: pim_importexport_export_profile_edit

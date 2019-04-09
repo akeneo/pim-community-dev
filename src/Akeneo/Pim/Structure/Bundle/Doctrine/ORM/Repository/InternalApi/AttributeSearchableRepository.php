@@ -59,7 +59,6 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                 'limit'                  => null,
                 'page'                   => null,
                 'locale'                 => null,
-                'exclude_unique'         => false,
                 'user_groups_ids'        => null,
                 'types'                  => null,
                 'attribute_groups'       => [],
@@ -77,7 +76,6 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver->setAllowedTypes('limit', ['int', 'string', 'null']);
         $resolver->setAllowedTypes('page', ['int', 'string', 'null']);
         $resolver->setAllowedTypes('locale', ['string', 'null']);
-        $resolver->setAllowedTypes('exclude_unique', ['string', 'bool']);
         $resolver->setAllowedTypes('user_groups_ids', ['array', 'null']);
         $resolver->setAllowedTypes('types', ['array', 'null']);
         $resolver->setAllowedTypes('attribute_groups', ['array']);
@@ -96,9 +94,6 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         }
         if (null !== $options['limit']) {
             $options['limit'] = (int) $options['limit'];
-        }
-        if (null !== $options['exclude_unique']) {
-            $options['exclude_unique'] = in_array($options['exclude_unique'], ['true', true], true);
         }
         if (null === $options['user_groups_ids']) {
             $options['user_groups_ids'] = [];
@@ -169,11 +164,6 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         if (null !== $options['useable_as_grid_filter']) {
             $qb->andWhere('a.useableAsGridFilter = :useable_as_grid_filter');
             $qb->setParameter('useable_as_grid_filter', $options['useable_as_grid_filter']);
-        }
-
-        //TODO: this part is specific to attributes
-        if ($options['exclude_unique']) {
-            $qb->andWhere('a.unique = 0');
         }
 
         if (null !== $options['types']) {

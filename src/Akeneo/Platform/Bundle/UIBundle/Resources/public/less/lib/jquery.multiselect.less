@@ -39,6 +39,7 @@
 
     ul {
       max-height: 200px;
+      margin-bottom: 20px;
     }
 
     ul.full {
@@ -88,9 +89,10 @@
     }
 
     li {
-      line-height: @AknSelectLineHeight;
+      line-height: @AknSelectLineHeight - 3px;
       height: @AknSelectLineHeight;
       padding-right: 0;
+      margin-bottom: 3px;
     }
 
     &.ui-helper-reset li {
@@ -246,6 +248,14 @@
       border-right: 1px solid @AknBorderColor;
       z-index: 750;
       transition: left @AknColumnTiming @AknColumnTransition;
+
+      &.select-filter-widget ul {
+        max-height: ~"calc(100vh - 140px)";
+
+        &.full {
+          max-height: none;
+        }
+      }
     }
 
     &.AknFilterBox-addFilterButton--asPanel {
@@ -253,6 +263,10 @@
       border: 1px solid @AknBorderColor;
       max-height: 300px;
       overflow: auto;
+
+      .AknColumn-bottomButtonContainer {
+        display: none;
+      }
     }
 
     .ui-multiselect-filter {
@@ -290,9 +304,11 @@
       li.ui-multiselect-optgroup-label {
         border-bottom: 1px solid @AknBorderColor;
         height: @AknSelectLineHeight;
+        line-height: @AknSelectLineHeight + 7px;
         font-weight: normal;
         font-size: @AknFontSizeBig;
         color: @AknDarkBlue !important;
+        margin-bottom: 7px;
       }
 
       .ui-helper-reset li {

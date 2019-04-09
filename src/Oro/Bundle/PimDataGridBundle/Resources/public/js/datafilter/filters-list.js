@@ -114,7 +114,7 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
                     }
                     if (filter.$el.length > 0) {
                         if (filter.isSearch && (this.options.displayedAsColumn === true)) {
-                            this.getRoot().$('.search-zone').empty().append(filter.$el.get(0));
+                            this.getRoot().$('.search-zone').append(filter.$el.get(0));
                         } else {
                             this.$el.append(filter.$el.get(0));
                         }

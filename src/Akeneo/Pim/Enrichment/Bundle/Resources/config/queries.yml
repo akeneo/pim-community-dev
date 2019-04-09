@@ -120,3 +120,13 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetDescendentCategoryCodes'
         arguments:
             - '@database_connection'
+
+    pim_catalog.query.descendant_product_ids:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\DescendantProductIdsQuery
+        arguments:
+            - '@database_connection'
+
+    pim_catalog.query.descendant_product_model_ids:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\DescendantProductModelIdsQuery
+        arguments:
+            - '@database_connection'
