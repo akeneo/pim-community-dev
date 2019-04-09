@@ -56,7 +56,12 @@ Feature: Validate editing common image attributes of multiple products
     And I display the Side view attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the file "side_view" of products boots, sandals and sneakers should be ""
+    And the product "boots" should not have the following values:
+      | side_view |
+    And the product "sandals" should not have the following values:
+      | side_view |
+    And the product "sneakers" should not have the following values:
+      | side_view |
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
@@ -65,4 +70,9 @@ Feature: Validate editing common image attributes of multiple products
     And I attach file "akeneo.txt" to "Side view"
     And I move on to the next step
     Then I should see validation tooltip "The file extension is not allowed (allowed extensions: gif, png, jpeg, jpg)."
-    And the file "side_view" of products boots, sandals and sneakers should be ""
+    And the product "boots" should not have the following values:
+      | side_view |
+    And the product "sandals" should not have the following values:
+      | side_view |
+    And the product "sneakers" should not have the following values:
+      | side_view |
