@@ -15,6 +15,8 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\GenerateEmptyValuesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
@@ -37,14 +39,24 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
     /** @var GenerateEmptyValuesInterface */
     private $generateEmptyValues;
 
+    /** @var FindValueKeyCollectionInterface */
+    private $findValueKeyCollection;
+
+    /** @var FindAttributesIndexedByIdentifierInterface */
+    private $findAttributesIndexedByIdentifier;
+
     public function __construct(
         Connection $sqlConnection,
         RecordDetailsHydratorInterface $recordDetailsHydrator,
-        GenerateEmptyValuesInterface $generateEmptyValues
+        GenerateEmptyValuesInterface $generateEmptyValues,
+        FindValueKeyCollectionInterface $findValueKeyCollection,
+        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->recordDetailsHydrator = $recordDetailsHydrator;
         $this->generateEmptyValues = $generateEmptyValues;
+        $this->findValueKeyCollection = $findValueKeyCollection;
+        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
     }
 
     /**
@@ -104,8 +116,15 @@ SQL;
     private function hydrateRecordDetails($result): RecordDetails
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($result);
+        $valueKeyCollection = ($this->findValueKeyCollection)($referenceEntityIdentifier);
+        $attributesIndexedByIdentifier = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
         $emptyValues = ($this->generateEmptyValues)($referenceEntityIdentifier);
 
-        return $this->recordDetailsHydrator->hydrate($result, $emptyValues);
+        return $this->recordDetailsHydrator->hydrate(
+            $result,
+            $emptyValues,
+            $valueKeyCollection,
+            $attributesIndexedByIdentifier
+        );
     }
 }

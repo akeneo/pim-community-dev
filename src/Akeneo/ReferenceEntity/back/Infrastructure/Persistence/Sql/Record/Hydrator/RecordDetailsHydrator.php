@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -35,24 +36,28 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
     /** @var AbstractPlatform */
     private $platform;
 
-    /** @var FindCodesByIdentifiersInterface */
-    private $findCodesByIdentifiers;
-
     /** @var FindValueKeysByAttributeTypeInterface */
     private $findValueKeysByAttributeType;
 
+    /** @var ValueHydratorInterface */
+    private $valueHydrator;
+
     public function __construct(
         Connection $connection,
-        FindCodesByIdentifiersInterface $findCodesByIdentifiers,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        ValueHydratorInterface $valueHydrator
     ) {
         $this->platform = $connection->getDatabasePlatform();
-        $this->findCodesByIdentifiers = $findCodesByIdentifiers;
         $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
+        $this->valueHydrator = $valueHydrator;
     }
 
-    public function hydrate(array $row, array $emptyValues): RecordDetails
-    {
+    public function hydrate(
+        array $row,
+        array $emptyValues,
+        ValueKeyCollection $valueKeyCollection,
+        array $attributes
+    ): RecordDetails {
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
         $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
@@ -63,8 +68,13 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         $recordCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
 
-        $valueCollection = $this->replaceIdentifiersByCodes($valueCollection, $referenceEntityIdentifier);
-        $allValues = $this->createEmptyValues($emptyValues, $valueCollection);
+        $values = $this->hydrateValues($valueKeyCollection, $attributes, $valueCollection);
+        $normalizedValues = [];
+        foreach ($values as $key => $value) {
+            $normalizedValues[$key] = $value->normalize();
+        }
+
+        $allValues = $this->createEmptyValues($emptyValues, $normalizedValues);
 
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
         $recordImage = $this->getImage($valueCollection, $attributeAsImage);
@@ -75,7 +85,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
             RecordCode::fromString($recordCode),
             LabelCollection::fromArray($labels),
             $recordImage,
-            array_values($allValues),
+            $allValues,
             true
         );
 
@@ -134,48 +144,24 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         return $result;
     }
 
-    /**
-     * TODO: If the front directly handles record identifier as data, then we can drop this method and its call
-     */
-    private function replaceIdentifiersByCodes(array $valueCollection, string $referenceEntityIdentifier): array
+    private function hydrateValues(ValueKeyCollection $valueKeyCollection, array $attributes, $valueCollection): array
     {
-        // Values keys for record/record collection values
-        $recordsValueKeys = $this->findValueKeysByAttributeType->find(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            ['record', 'record_collection']
-        );
-
-        $onlyRecordsValues = array_intersect_key($valueCollection, array_flip($recordsValueKeys));
-
-        if (empty($onlyRecordsValues)) {
-            return $valueCollection;
-        }
-
-        // Get identifiers for which we have to retrieve the code
-        $identifiers = [];
-        foreach ($onlyRecordsValues as $value) {
-            $data = is_array($value['data']) ? $value['data'] : [$value['data']];
-            $identifiers = array_merge($identifiers, $data);
-        }
-
-        $identifiers = array_unique($identifiers);
-
-        // Retrieve the codes
-        $indexedCodes = $this->findCodesByIdentifiers->find($identifiers);
-
-        // Replace identifiers by code in the value collection
-        foreach ($onlyRecordsValues as $valueKey => $value) {
-            if (is_array($value['data'])) {
-                $value['data'] = array_map(function ($identifier) use ($indexedCodes) {
-                    return $indexedCodes[$identifier];
-                }, $value['data']);
-            } else {
-                $value['data'] = $indexedCodes[$value['data']];
+        $hydratedValues = [];
+        foreach ($valueKeyCollection as $valueKey) {
+            $key = (string) $valueKey;
+            if (!array_key_exists($key, $valueCollection)) {
+                continue;
             }
 
-            $valueCollection[$valueKey] = $value;
+            $value = $valueCollection[$key];
+            $attributeIdentifier = $value['attribute'];
+            $value = $this->valueHydrator->hydrate($value, $attributes[$attributeIdentifier]);
+            if ($value->isEmpty()) {
+                continue;
+            }
+            $hydratedValues[$key] = $value;
         }
 
-        return $valueCollection;
+        return $hydratedValues;
     }
 }
