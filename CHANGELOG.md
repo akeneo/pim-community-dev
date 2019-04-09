@@ -19,3 +19,4 @@
 - class `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ScopableSubscriber` and its associated service definition `pim_catalog.event_subscriber.scopable` were removed 
 - Interface `Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface` added methods `setRatio()` , `setMissingCount()` and `setRequiredCount()`
 - Class `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\CompletenessRemover` `bulkDetacher` parameter is now mandatory.
+- Removed `objectDetacher` parameter from `Akeneo\Pim\Structure\Component\Model\FamilyInterface\SaveFamilyVariantOnFamilyUpdateSubscriber` constructor.
