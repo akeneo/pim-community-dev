@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\In
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use PhpSpec\ObjectBehavior;
 
@@ -43,12 +44,20 @@ class OptionsMappingNormalizerSpec extends ObjectBehavior
                     'catalogAttributeOptionCode' => 'color1',
                     'status' => 1,
                 ],
+                'color_3' => [
+                    'franklinAttributeOptionCode' => [
+                        'label' => 'yellow',
+                    ],
+                    'catalogAttributeOptionCode' => '',
+                    'status' => 0,
+                ],
             ],
         ];
 
         $mapping = [
-            new AttributeOptionMapping('color_1', 'red', 1, 'color1'),
-            new AttributeOptionMapping('color_2', 'blue', 0, 'color2'),
+            new AttributeOptionMapping('color_1', 'red', 1, new AttributeOptionCode('color1')),
+            new AttributeOptionMapping('color_2', 'blue', 0, new AttributeOptionCode('color2')),
+            new AttributeOptionMapping('color_3', 'yellow', 0, null),
         ];
         $attributeOptionsMapping = new AttributeOptionsMapping(new FamilyCode('router'), 'color', $mapping);
 

@@ -33,6 +33,11 @@ class AttributeOptionCode
         $this->code = $code;
     }
 
+    public function equals(AttributeOptionCode $attributeOptionCode): bool
+    {
+        return $this->code === (string) $attributeOptionCode;
+    }
+
     /**
      * @return string
      */

@@ -26,6 +26,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\Att
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject\AttributeOptions;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Tasklet\RemoveOptionFromAttributeOptionsMappingTasklet;
@@ -84,8 +85,8 @@ class RemoveOptionFromAttributeOptionsMappingTaskletSpec extends ObjectBehavior
             ->willReturn($attributesMapping);
 
         $attributeOptionsMapping = new AttributeOptionsMapping($familyCode, 'franklin_color', [
-            new AttributeOptionMapping('franklin_red', 'red', 0, 'pim_red'),
-            new AttributeOptionMapping('franklin_blue', 'blue', 0, 'pim_blue'),
+            new AttributeOptionMapping('franklin_red', 'red', 0, new AttributeOptionCode('pim_red')),
+            new AttributeOptionMapping('franklin_blue', 'blue', 0, new AttributeOptionCode('pim_blue')),
         ]);
 
         $getAttributeOptionsMappingHandler->handle(

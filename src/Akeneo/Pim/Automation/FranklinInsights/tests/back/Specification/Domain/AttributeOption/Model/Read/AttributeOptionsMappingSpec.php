@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeO
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use PhpSpec\ObjectBehavior;
 
@@ -26,9 +27,10 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
     public function let(): void
     {
         $this->beConstructedWith(new FamilyCode('router'), 'color', [
-            new AttributeOptionMapping('red', 'red', AttributeOptionMapping::STATUS_PENDING, 'pim_red'),
-            new AttributeOptionMapping('blue', 'blue', AttributeOptionMapping::STATUS_PENDING, 'pim_blue'),
-            new AttributeOptionMapping('black', 'black', AttributeOptionMapping::STATUS_PENDING, 'pim_black'),
+            new AttributeOptionMapping('red', 'red', AttributeOptionMapping::STATUS_PENDING, new AttributeOptionCode('pim_red')),
+            new AttributeOptionMapping('blue', 'blue', AttributeOptionMapping::STATUS_PENDING, new AttributeOptionCode('pim_blue')),
+            new AttributeOptionMapping('black', 'black', AttributeOptionMapping::STATUS_PENDING, new AttributeOptionCode('pim_black')),
+            new AttributeOptionMapping('yellow', 'yellow', AttributeOptionMapping::STATUS_PENDING, null),
         ]);
     }
 
@@ -39,16 +41,17 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
 
     public function it_can_check_if_attribute_exists(): void
     {
-        $this->hasPimAttributeOption('pim_blue')->shouldReturn(true);
-        $this->hasPimAttributeOption('unknown')->shouldReturn(false);
-        $this->hasPimAttributeOption('pim_red')->shouldReturn(true);
+        $this->hasPimAttributeOption(new AttributeOptionCode('pim_blue'))->shouldReturn(true);
+        $this->hasPimAttributeOption(new AttributeOptionCode('unknown'))->shouldReturn(false);
+        $this->hasPimAttributeOption(new AttributeOptionCode('pim_red'))->shouldReturn(true);
+        $this->hasPimAttributeOption(new AttributeOptionCode('yellow'))->shouldReturn(false);
     }
 
     public function it_sorts_alphabetically(): void
     {
-        $colorRed = new AttributeOptionMapping('red', 'red', AttributeOptionMapping::STATUS_PENDING, 'pim_red');
-        $colorBlue = new AttributeOptionMapping('blue', 'blue', AttributeOptionMapping::STATUS_PENDING, 'pim_blue');
-        $colorBlack = new AttributeOptionMapping('black', 'black', AttributeOptionMapping::STATUS_PENDING, 'pim_black');
+        $colorRed = new AttributeOptionMapping('red', 'red', AttributeOptionMapping::STATUS_PENDING, new AttributeOptionCode('pim_red'));
+        $colorBlue = new AttributeOptionMapping('blue', 'blue', AttributeOptionMapping::STATUS_PENDING, new AttributeOptionCode('pim_blue'));
+        $colorBlack = new AttributeOptionMapping('black', 'black', AttributeOptionMapping::STATUS_PENDING, new AttributeOptionCode('pim_black'));
 
         $this->beConstructedWith(new FamilyCode('router'), 'color', [$colorRed, $colorBlue, $colorBlack]);
 

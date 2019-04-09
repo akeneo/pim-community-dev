@@ -33,6 +33,17 @@ class AttributeOptionCodeSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
+    public function it_can_test_if_2_attribute_option_codes_are_equal(): void
+    {
+        $this->beConstructedWith('foo');
+
+        $attributeCodeOption2 = new AttributeOptionCode('foo');
+        $this->equals($attributeCodeOption2)->shouldReturn(true);
+
+        $attributeOptionCode3 = new AttributeOptionCode('bar');
+        $this->equals($attributeOptionCode3)->shouldReturn(false);
+    }
+
     public function it_returns_the_attribute_option_code(): void
     {
         $this->beConstructedWith('foo');
