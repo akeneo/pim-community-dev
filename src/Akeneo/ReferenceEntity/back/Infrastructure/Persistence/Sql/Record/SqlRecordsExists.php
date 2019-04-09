@@ -31,28 +31,6 @@ class SqlRecordsExists
     }
 
     /**
-     * @param string[] $identifiers
-     *
-     * @return array[]
-     */
-    public function withIdentifiers(array $identifiers): array
-    {
-        $query = <<<SQL
-        SELECT identifier
-        FROM akeneo_reference_entity_record
-        WHERE identifier IN (:identifiers)
-SQL;
-        $statement = $this->sqlConnection->executeQuery(
-            $query,
-            ['identifiers' => $identifiers],
-            ['identifiers' => Connection::PARAM_STR_ARRAY]
-        );
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
-
-        return array_values($result);
-    }
-
-    /**
      * @param string[] $codes
      *
      * @return string[]

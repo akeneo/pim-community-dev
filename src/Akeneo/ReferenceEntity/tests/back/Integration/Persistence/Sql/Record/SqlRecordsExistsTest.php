@@ -62,17 +62,6 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
         $this->assertEquals(['starck'], $existingRecordCodes);
     }
 
-    /**
-     * @test
-     */
-    public function it_tells_if_there_are_corresponding_records_identifiers_for_a_given_list()
-    {
-        $existingRecordIdentifiers = $this->recordsExistsForReferenceEntity->withIdentifiers(
-            [$this->recordIdentifier, 'unknown']
-        );
-        $this->assertEquals([$this->recordIdentifier], $existingRecordIdentifiers);
-    }
-
     private function resetDB(): void
     {
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
