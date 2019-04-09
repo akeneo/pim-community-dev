@@ -130,3 +130,8 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\DescendantProductModelIdsQuery
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.category.category_codes_by_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Category\Query\Sql\GetCategoryCodesByProductIdentifiers'
+        arguments:
+            - '@database_connection'
