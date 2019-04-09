@@ -98,3 +98,8 @@ services:
         class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\IsValueViewableByUserForLocale'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.category.get_viewable_category_codes:
+        class: 'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetViewableCategoryCodes'
+        arguments:
+            - '@database_connection'
