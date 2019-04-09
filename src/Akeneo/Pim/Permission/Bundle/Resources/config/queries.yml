@@ -88,3 +88,8 @@ services:
         decoration_inner_name: pim_import_export.query.get_last_operations.without_permission
         arguments:
             - '@pim_import_export.query.get_last_operations.without_permission'
+
+    pimee_security.query.get_viewable_attribute_codes_for_user:
+        class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\GetViewableAttributeCodesForUser'
+        arguments:
+            - '@database_connection'
