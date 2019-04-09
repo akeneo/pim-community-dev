@@ -36,14 +36,8 @@ define([
             return this.$('input').val();
         },
 
-        configure: () => {
-            return $.when(editionProvider.isCloud().then((res) => {
-                this.isCloud = res;
-            }));
-        },
-
         render: () => {
-            if (this.isCloud === false) {
+            if (editionProvider.isCloud() === false) {
                 BaseField.prototype.render.apply(this, arguments); // on pourra faire super
             }
 

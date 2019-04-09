@@ -1,8 +1,7 @@
-import * as JQuery from 'jquery';
-const Routing = require('routing');
+const editionProvider = {
+    isCloud: () => {
+        return process.env.IS_CLOUD_EDITION
+    }
+};
 
-export function isCloud(): JQueryPromise<any> {
-    return JQuery.get(Routing.generate('pim_system_edition')).then((response: any) => {
-        return response.isCloudEdition;
-    });
-}
+export=editionProvider;
