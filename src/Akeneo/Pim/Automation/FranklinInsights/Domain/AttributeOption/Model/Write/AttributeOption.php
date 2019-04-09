@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
+
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -24,18 +26,13 @@ class AttributeOption
     /** @var string */
     private $franklinOptionLabel;
 
-    /** @var string|null */
+    /** @var AttributeOptionCode|null */
     private $pimOptionId;
 
-    /**
-     * @param string $franklinOptionId
-     * @param string $franklinOptionLabel
-     * @param string|null $pimOptionId
-     */
     public function __construct(
         string $franklinOptionId,
         string $franklinOptionLabel,
-        ?string $pimOptionId = null
+        ?AttributeOptionCode $pimOptionId = null
     ) {
         $this->franklinOptionId = $franklinOptionId;
         $this->franklinOptionLabel = $franklinOptionLabel;
@@ -59,9 +56,9 @@ class AttributeOption
     }
 
     /**
-     * @return string|null
+     * @return AttributeOptionCode|null
      */
-    public function getPimOptionId(): ?string
+    public function getPimOptionId(): ?AttributeOptionCode
     {
         return $this->pimOptionId;
     }

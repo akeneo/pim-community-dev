@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Query\SelectAt
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject\AttributeOptions;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\FamilyAttribute\Repository\AttributeRepositoryInterface;
@@ -71,8 +72,8 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
             ->willReturn(['color1', 'color2']);
 
         $writeOptionsMapping = new AttributeOptionsMapping($attributeCode);
-        $writeOptionsMapping->addAttributeOption(new AttributeOption('color_1', 'Color 1', 'color1'));
-        $writeOptionsMapping->addAttributeOption(new AttributeOption('color_2', 'Color 2', 'color2'));
+        $writeOptionsMapping->addAttributeOption(new AttributeOption('color_1', 'Color 1', new AttributeOptionCode('color1')));
+        $writeOptionsMapping->addAttributeOption(new AttributeOption('color_2', 'Color 2', new AttributeOptionCode('color2')));
         $mappingProvider
             ->saveAttributeOptionsMapping($familyCode, $franklinAttributeId, $writeOptionsMapping)
             ->shouldBeCalled();
@@ -104,7 +105,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
             ->willReturn(['color1']);
 
         $writeOptionsMapping = new AttributeOptionsMapping($attributeCode);
-        $writeOptionsMapping->addAttributeOption(new AttributeOption('color_1', 'Color 1', 'color1'));
+        $writeOptionsMapping->addAttributeOption(new AttributeOption('color_1', 'Color 1', new AttributeOptionCode('color1')));
         $writeOptionsMapping->addAttributeOption(new AttributeOption('color_2', 'Color 2', null));
         $mappingProvider
             ->saveAttributeOptionsMapping($familyCode, $franklinAttributeId, $writeOptionsMapping)
