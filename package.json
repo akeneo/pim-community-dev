@@ -6,7 +6,6 @@
     "requirements": "node frontend/build/check-requirements.js",
     "webpack": "yarn requirements && webpack --config webpack.config.js --env=prod",
     "webpack-dev": "yarn requirements && webpack --config webpack.config.js",
-    "webpack-test-cloud": "yarn requirements && webpack --env.IS_CLOUD_EDITION false --config webpack.config.js",
     "webpack-watch": "yarn requirements && webpack --progress --config webpack.config.js --watch",
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
     "before-commit": "yarn prettier && yarn lint && yarn test",
