@@ -130,9 +130,6 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\Family',
             'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-
-            // Oro config is used
-            'Oro\Bundle\ConfigBundle\Entity\Config',
         ]
     )->in('Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence'),
 
