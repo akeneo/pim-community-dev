@@ -2,7 +2,7 @@ nameOverride: ""
 global:
   extraLabels:
     type: srnt
-    instance_name: nil # Generated with terraform template
+    instanceName: nil # Generated with terraform template
     pfid: nil # Generated with terraform template
   monitoring:
     enabled: false
