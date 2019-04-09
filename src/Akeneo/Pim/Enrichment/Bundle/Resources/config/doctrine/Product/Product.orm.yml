@@ -80,6 +80,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
                 - detach
         completenesses:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface
+            orphanRemoval: true
             mappedBy: product
             cascade:
                 - remove
