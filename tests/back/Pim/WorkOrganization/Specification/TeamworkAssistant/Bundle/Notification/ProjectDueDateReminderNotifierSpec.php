@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter;
+use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;

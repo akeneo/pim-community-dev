@@ -16,12 +16,18 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeO
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
 use PhpSpec\ObjectBehavior;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class AttributeOptionsMappingSpec extends ObjectBehavior
 {
+    public function let(): void
+    {
+        $this->beConstructedWith(new AttributeCode('color'));
+    }
+
     public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(AttributeOptionsMapping::class);

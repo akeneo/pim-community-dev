@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Asset\Component;
 
 use Akeneo\Asset\Component\Builder\MetadataBuilderInterface;
 use Akeneo\Asset\Component\Builder\MetadataBuilderRegistry;
+use Akeneo\Asset\Component\Exception\MissingAssetTransformationForChannelException;
 use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
 use Akeneo\Asset\Component\Model\FileMetadataInterface;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
@@ -122,7 +123,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $channelConfigurationRepository->findOneBy(Argument::any())->willReturn(null);
 
         $this->shouldThrow(
-            new \LogicException('No variations configuration exists for the channel "ecommerce".')
+            new MissingAssetTransformationForChannelException('ecommerce')
         )->during('generate', [$variation]);
     }
 

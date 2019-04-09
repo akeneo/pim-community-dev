@@ -1,8 +1,9 @@
 <% if (hasId) { %>
 <div class="AknFormContainer AknFormContainer--withPadding">
-    <table class="AknGrid AknGrid--unclickable AknGrid--condensed grid-asset-transformations">
+    <div class="AknGridContainer AknGridContainer--box">
+    <table class="AknGrid AknGrid--unclickable grid-asset-transformations">
         <thead>
-        <tr>
+        <tr class="AknGrid-bodyRow">
             <th class="AknGrid-headerCell"><%- transformationLabel %></th>
             <th class="AknGrid-headerCell"><%- optionsLabel %></th>
         </tr>
@@ -27,6 +28,7 @@
         <% } %>
         </tbody>
     </table>
+    </div>
 </div>
 <% } else { %>
 <div class="no-data AknMessageBox AknMessageBox--centered">

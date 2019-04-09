@@ -41,6 +41,7 @@ Feature: List proposals
     And I reload the page
     Then the grid should contain 3 elements
     And the rows should be sorted descending by proposed at
+    And I collapse the column
     And I should be able to sort the rows by author and proposed at
 
   Scenario Outline: Successfully filter proposals in the grid

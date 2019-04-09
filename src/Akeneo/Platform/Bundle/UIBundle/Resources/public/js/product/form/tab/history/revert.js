@@ -93,7 +93,11 @@ define(
                                 messenger.notify('error', message);
                             }
                         );
-                    }.bind(this)
+                    }.bind(this),
+                    null,
+                    'AknButton--apply',
+                    null,
+                    'products'
                 );
             }
         });

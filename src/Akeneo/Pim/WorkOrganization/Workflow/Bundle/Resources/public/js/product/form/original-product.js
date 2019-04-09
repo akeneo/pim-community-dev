@@ -22,7 +22,7 @@ define(
         UserContext
     ) {
         return BaseForm.extend({
-            className: 'btn-group',
+            className: 'AknButtonList-item',
             template: _.template(template),
             events: {
                 'click .got-to-original': 'goToOriginalProduct'

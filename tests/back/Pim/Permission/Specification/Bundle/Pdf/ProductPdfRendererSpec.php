@@ -2,25 +2,26 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\Pdf;
 
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper;
-use Akeneo\Asset\Component\Model\AssetInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior
@@ -36,7 +37,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $attributeRepository,
         FilterProductValuesHelper $filterHelper,
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        AssetRepositoryInterface $assetRepository
     ) {
         $uploadDirectory = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
         $this->beConstructedWith(
@@ -49,8 +51,10 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $attributeRepository,
             $channelRepository,
             $localeRepository,
+            $assetRepository,
             self::TEMPLATE_NAME,
-            $uploadDirectory
+            $uploadDirectory,
+            null
         );
     }
 
@@ -82,14 +86,14 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $renderingDate = new \DateTime();
 
         $templating->render(self::TEMPLATE_NAME, [
-            'product'           => $blender,
-            'locale'            => 'en_US',
-            'scope'             => 'ecommerce',
+            'product' => $blender,
+            'locale' => 'en_US',
+            'scope' => 'ecommerce',
             'groupedAttributes' => ['Design' => ['color' => $color]],
-            'imagePaths'        => [],
-            'customFont'        => null,
-            'filter'            => 'pdf_thumbnail',
-            'renderingDate'     => $renderingDate,
+            'imagePaths' => [],
+            'customFont' => null,
+            'filter' => 'pdf_thumbnail',
+            'renderingDate' => $renderingDate,
         ])->shouldBeCalled();
 
         $this->render(
@@ -140,14 +144,14 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $renderingDate = new \DateTime();
 
         $templating->render(self::TEMPLATE_NAME, [
-            'product'           => $blender,
-            'locale'            => 'en_US',
-            'scope'             => 'ecommerce',
+            'product' => $blender,
+            'locale' => 'en_US',
+            'scope' => 'ecommerce',
             'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
-            'imagePaths'        => ['fookey'],
-            'customFont'        => null,
-            'filter'            => 'pdf_thumbnail',
-            'renderingDate'     => $renderingDate,
+            'imagePaths' => ['fookey'],
+            'customFont' => null,
+            'filter' => 'pdf_thumbnail',
+            'renderingDate' => $renderingDate,
         ])->shouldBeCalled();
 
         $this->render(
@@ -178,7 +182,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ChannelInterface $channelMobile,
         BinaryInterface $srcFile,
         BinaryInterface $thumbnailFile,
-        $attributeRepository
+        $attributeRepository,
+        AssetRepositoryInterface $assetRepository
     ) {
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channelMobile);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($localeFr);
@@ -202,7 +207,10 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $assetCollectionAttr->getGroup()->willReturn($media);
         $media->getLabel()->willReturn('Media');
 
-        $productValue->getData()->willReturn([$assetA, $assetB]);
+        $productValue->getData()->willReturn(['assetA', 'assetB']);
+        $assetRepository->findOneByIdentifier('assetA')->willReturn($assetA);
+        $assetRepository->findOneByIdentifier('assetB')->willReturn($assetB);
+
         $assetA->getFileForContext($channelMobile, $localeFr)->willReturn($fileInfoA);
         $assetB->getFileForContext($channelMobile, $localeFr)->willReturn($fileInfoB);
 
@@ -222,14 +230,14 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $renderingDate = new \DateTime();
 
         $templating->render(self::TEMPLATE_NAME, [
-            'product'           => $blender,
-            'locale'            => 'fr_FR',
-            'scope'             => 'mobile',
+            'product' => $blender,
+            'locale' => 'fr_FR',
+            'scope' => 'mobile',
             'groupedAttributes' => ['Media' => ['front_view' => $assetCollectionAttr]],
-            'imagePaths'        => ['fileA', 'fileB'],
-            'customFont'        => null,
-            'filter'            => 'pdf_thumbnail',
-            'renderingDate'     => $renderingDate,
+            'imagePaths' => ['fileA', 'fileB'],
+            'customFont' => null,
+            'filter' => 'pdf_thumbnail',
+            'renderingDate' => $renderingDate,
         ])->shouldBeCalled();
 
         $this->render(
@@ -260,7 +268,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ChannelInterface $channelMobile,
         BinaryInterface $srcFile,
         BinaryInterface $thumbnailFile,
-        $attributeRepository
+        $attributeRepository,
+        AssetRepositoryInterface $assetRepository
     ) {
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channelMobile);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($localeFr);
@@ -284,7 +293,10 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $assetCollectionAttr->getGroup()->willReturn($media);
         $media->getLabel()->willReturn('Media');
 
-        $productValue->getData()->willReturn([$assetA, $assetB]);
+        $productValue->getData()->willReturn(['assetA', 'assetB']);
+        $assetRepository->findOneByIdentifier('assetA')->willReturn($assetA);
+        $assetRepository->findOneByIdentifier('assetB')->willReturn($assetB);
+
         $assetA->getFileForContext($channelMobile, $localeFr)->willReturn($fileInfoImage);
         $assetB->getFileForContext($channelMobile, $localeFr)->willReturn($fileInfoPdf);
 
@@ -304,14 +316,14 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $renderingDate = new \DateTime();
 
         $templating->render(self::TEMPLATE_NAME, [
-            'product'           => $blender,
-            'locale'            => 'fr_FR',
-            'scope'             => 'mobile',
+            'product' => $blender,
+            'locale' => 'fr_FR',
+            'scope' => 'mobile',
             'groupedAttributes' => ['Media' => ['front_view' => $assetCollectionAttr]],
-            'imagePaths'        => ['image_file'],
-            'customFont'        => null,
-            'filter'            => 'pdf_thumbnail',
-            'renderingDate'     => $renderingDate,
+            'imagePaths' => ['image_file'],
+            'customFont' => null,
+            'filter' => 'pdf_thumbnail',
+            'renderingDate' => $renderingDate,
         ])->shouldBeCalled();
 
         $this->render(

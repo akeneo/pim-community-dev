@@ -15,7 +15,6 @@ authentication:
                 activation:
                     title: SSO activation
                     info:
-                        title: Warning
                         description: If you're going to enable the SSO authentication your current session will be invalid. You will be logged out and redirected to your Identity Provider after saving the configuration.
                 identity_provider:
                     title: Identity provider (IdP)

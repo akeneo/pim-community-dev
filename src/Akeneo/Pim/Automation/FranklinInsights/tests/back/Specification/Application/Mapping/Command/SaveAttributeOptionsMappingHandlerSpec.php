@@ -70,7 +70,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
             ->execute((string) $attributeCode, ['color1', 'color2'])
             ->willReturn(['color1', 'color2']);
 
-        $writeOptionsMapping = new AttributeOptionsMapping();
+        $writeOptionsMapping = new AttributeOptionsMapping($attributeCode);
         $writeOptionsMapping->addAttributeOption(new AttributeOption('color_1', 'Color 1', 'color1'));
         $writeOptionsMapping->addAttributeOption(new AttributeOption('color_2', 'Color 2', 'color2'));
         $mappingProvider
@@ -103,7 +103,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
             ->execute((string) $attributeCode, ['color1', 'color2'])
             ->willReturn(['color1']);
 
-        $writeOptionsMapping = new AttributeOptionsMapping();
+        $writeOptionsMapping = new AttributeOptionsMapping($attributeCode);
         $writeOptionsMapping->addAttributeOption(new AttributeOption('color_1', 'Color 1', 'color1'));
         $writeOptionsMapping->addAttributeOption(new AttributeOption('color_2', 'Color 2', null));
         $mappingProvider

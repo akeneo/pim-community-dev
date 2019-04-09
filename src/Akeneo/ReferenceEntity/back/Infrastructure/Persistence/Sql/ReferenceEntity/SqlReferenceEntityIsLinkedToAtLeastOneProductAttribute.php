@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
 use Doctrine\DBAL\Connection;
@@ -43,11 +44,20 @@ class SqlReferenceEntityIsLinkedToAtLeastOneProductAttribute implements Referenc
         $query = <<<SQL
         SELECT properties
         FROM pim_catalog_attribute
-        WHERE attribute_type = :attribute_type;
+        WHERE attribute_type IN (:attribute_types)
 SQL;
-        $statement = $this->sqlConnection->executeQuery($query, [
-            'attribute_type' => ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION,
-        ]);
+        $statement = $this->sqlConnection->executeQuery(
+            $query,
+            [
+                'attribute_types' => [
+                    ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION,
+                    ReferenceEntityType::REFERENCE_ENTITY,
+                ]
+            ],
+            [
+                'attribute_types' => Connection::PARAM_STR_ARRAY
+            ]
+        );
 
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $statement->closeCursor();

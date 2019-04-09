@@ -371,8 +371,8 @@ class SubscriptionProviderSpec extends ObjectBehavior
                         'misses_mapping' => false,
                     ],
                 ],
-                'warnings' => $errors,
             ],
+            'warnings' => $errors,
         ];
     }
 }

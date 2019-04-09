@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Nor
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
 
 /**
@@ -43,7 +44,10 @@ class AttributeOptionsMappingNormalizer
     {
         $result = [];
 
-        $optionTranslations = $this->getAllOptionTranslations($attributeOptionsMapping->getOptionCodes());
+        $optionTranslations = $this->getAllOptionTranslations(
+            $attributeOptionsMapping->getAttributeCode(),
+            $attributeOptionsMapping->getOptionCodes()
+        );
 
         foreach ($attributeOptionsMapping as $optionMapping) {
             /* @var AttributeOption $optionMapping */
@@ -86,7 +90,7 @@ class AttributeOptionsMappingNormalizer
      *
      * @return array
      */
-    private function getAllOptionTranslations(array $optionsCodes)
+    private function getAllOptionTranslations(AttributeCode $attributeCode, array $optionsCodes)
     {
         $options = $this->attributeOptionRepository->findByCodes(array_values($optionsCodes));
 

@@ -18,6 +18,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 
 /**
  * Present changes on date data
+ * TODO on 3.1: check if this presenter is still used and remove it if not
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */

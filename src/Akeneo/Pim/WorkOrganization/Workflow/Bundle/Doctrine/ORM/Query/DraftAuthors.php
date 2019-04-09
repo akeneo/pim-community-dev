@@ -34,8 +34,18 @@ class DraftAuthors implements DraftAuthorsInterface
 
     public function findAuthors(?string $search, int $page = 1, int $limit = 20, array $identifiers = []): array
     {
-        $sqlPmd = 'SELECT u.username FROM oro_user u INNER JOIN pimee_workflow_product_model_draft pmd ON u.username = pmd.author WHERE 1=1';
-        $sqlPd = 'SELECT u.username FROM oro_user u INNER JOIN pimee_workflow_product_draft pd ON u.username = pd.author WHERE 1=1';
+        $sqlPmd = <<<SQL
+SELECT u.username, u.username AS label
+FROM oro_user u
+INNER JOIN pimee_workflow_product_model_draft pmd ON u.username = pmd.author
+WHERE 1=1
+SQL;
+        $sqlPd = <<<SQL
+SELECT u.username, u.username AS label
+FROM oro_user u
+INNER JOIN pimee_workflow_product_draft pd ON u.username = pd.author
+WHERE 1=1
+SQL;
 
         if (null !== $search && '' !== $search) {
             $sqlPmd .= ' AND pmd.author LIKE :search';

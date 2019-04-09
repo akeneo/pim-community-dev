@@ -75,11 +75,11 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
                     </div>
                     <div className="AknTitleContainer-buttonsContainer">
                       <PimView
-                        className="AknTitleContainer-userMenu"
+                        className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
                         viewName="pim-reference-entity-index-user-navigation"
                       />
                       {acls.create ? (
-                        <div className="AknButtonList">
+                        <div className="AknTitleContainer-actionsContainer AknButtonList">
                           <button
                             type="button"
                             ref={(button: HTMLButtonElement) => {
@@ -148,7 +148,7 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
               </div>
             </header>
             <div className="AknGrid--gallery">
-              <div className="AknGridContainer AknGridContainer--withCheckbox">
+              <div className="AknGridContainer">
                 <Table
                   onRedirectToReferenceEntity={events.onRedirectToReferenceEntity}
                   locale={context.locale}

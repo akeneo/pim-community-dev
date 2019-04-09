@@ -13,7 +13,6 @@ authentication:
         activation:
           title: Attivazione SSO
           info:
-            title: Attenzione
             description: Se attivi l'autenticazione SSO ora la tua sessione corrente sarà invalidata. Dopo aver salvato la configurazione sarà effettuato il log out e sarai rediretto alla pagina del tuo Identity Provider.
         identity_provider:
           title: Identity provider (IdP)

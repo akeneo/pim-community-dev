@@ -26,9 +26,8 @@ class ApiResponseSpec extends ObjectBehavior
     public function let(SubscriptionCollection $subscriptionCollection): void
     {
         $warnings = new WarningCollection([
-            '_embedded' => [
-                'warnings' => [],
-            ],
+            '_embedded' => [],
+            'warnings' => [],
         ]);
         $this->beConstructedWith($subscriptionCollection, $warnings);
     }
@@ -46,13 +45,12 @@ class ApiResponseSpec extends ObjectBehavior
     public function it_can_check_if_there_are_warnings(SubscriptionCollection $subscriptionCollection, $warnings): void
     {
         $warnings = new WarningCollection([
-            '_embedded' => [
-                'warnings' => [
-                    [
-                        'message' => 'warning message 1',
-                        'entry' => [
-                            'tracker_id' => '44',
-                        ],
+            '_embedded' => [],
+            'warnings' => [
+                [
+                    'message' => 'warning message 1',
+                    'entry' => [
+                        'tracker_id' => '44',
                     ],
                 ],
             ],

@@ -12,6 +12,7 @@
 namespace Akeneo\Asset\Component;
 
 use Akeneo\Asset\Component\Builder\MetadataBuilderRegistry;
+use Akeneo\Asset\Component\Exception\MissingAssetTransformationForChannelException;
 use Akeneo\Asset\Component\Model\FileMetadataInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
@@ -136,7 +137,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /**
      * @param ChannelInterface $channel
      *
-     * @throws \LogicException
+     * @throws MissingAssetTransformationForChannelException
      *
      * @return array
      */
@@ -144,9 +145,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     {
         $channelConfiguration = $this->configurationRepository->findOneBy(['channel' => $channel->getId()]);
         if (null === $channelConfiguration) {
-            throw new \LogicException(
-                sprintf('No variations configuration exists for the channel "%s".', $channel->getCode())
-            );
+            throw new MissingAssetTransformationForChannelException($channel->getCode());
         }
 
         return $channelConfiguration->getConfiguration();
