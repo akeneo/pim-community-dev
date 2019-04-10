@@ -93,3 +93,8 @@ services:
         class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\GetViewableAttributeCodesForUser'
         arguments:
             - '@database_connection'
+
+    pimee_security.query.is_value_viewable_by_user_for_locale:
+        class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\IsValueViewableByUserForLocale'
+        arguments:
+            - '@database_connection'
