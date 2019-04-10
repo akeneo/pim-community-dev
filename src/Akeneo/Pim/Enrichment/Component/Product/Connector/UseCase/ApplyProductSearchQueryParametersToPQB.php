@@ -32,18 +32,24 @@ final class ApplyProductSearchQueryParametersToPQB
      * If a scope is requested, add a filter to return only products linked to its category tree
      *
      * @param ProductQueryBuilderInterface $pqb
-     * @param ListProductsQuery $query
+     * @param array $search
+     * @param string|null $channelCode
+     * @param string|null $searchLocaleCode
+     * @param string|null $searchChannelCode
      *
      * @throws UnprocessableEntityHttpException
      */
     public function apply(
         ProductQueryBuilderInterface $pqb,
-        ListProductsQuery $query
+        array $search,
+        ?string $channelCode,
+        ?string $searchLocaleCode,
+        ?string $searchChannelCode
     ): void {
-        $searchParameters = $query->search;
+        $searchParameters = $search;
 
         if (!isset($searchParameters['categories'])) {
-            $channel = $this->channelRepository->findOneByIdentifier($query->channelCode);
+            $channel = $this->channelRepository->findOneByIdentifier($channelCode);
             if (null !== $channel) {
                 $searchParameters['categories'] = [
                     [
@@ -56,14 +62,13 @@ final class ApplyProductSearchQueryParametersToPQB
 
         foreach ($searchParameters as $propertyCode => $filters) {
             foreach ($filters as $filter) {
-                $searchLocale = $query->searchLocaleCode;
-                $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $searchLocale;
+                $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $searchLocaleCode;
 
                 if (isset($filter['locales']) && '' !== $filter['locales']) {
                     $context['locales'] = $filter['locales'];
                 }
 
-                $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $query->searchChannelCode;
+                $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $searchChannelCode;
 
                 $value = isset($filter['value']) ? $filter['value'] : null;
 

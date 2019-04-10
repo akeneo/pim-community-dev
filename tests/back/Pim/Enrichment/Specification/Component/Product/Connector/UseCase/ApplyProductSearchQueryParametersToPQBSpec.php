@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCas
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -23,13 +22,12 @@ class ApplyProductSearchQueryParametersToPQBSpec extends ObjectBehavior
     {
         $pqb->addFilter(Argument::cetera())->shouldNotBeCalled();
 
-        $this->apply($pqb, new ListProductsQuery());
+        $this->apply($pqb, [], null, null, null);
     }
 
     function it_adds_search_filter(ProductQueryBuilderInterface $pqb)
     {
-        $query = new ListProductsQuery();
-        $query->search = [
+        $search = [
             'propertyCode' => [
                 [
                     'operator' => 'op',
@@ -37,12 +35,10 @@ class ApplyProductSearchQueryParametersToPQBSpec extends ObjectBehavior
                 ],
             ],
         ];
-        $query->searchLocale = 'en_US';
-        $query->searchScope = 'ecommerce';
 
         $pqb->addFilter('propertyCode', 'op', 'val', ['locale' => 'en_US', 'scope' => 'ecommerce'])->shouldBeCalled();
 
-        $this->apply($pqb, $query);
+        $this->apply($pqb, $search, null, 'en_US', 'ecommerce');
     }
 
     function it_adds_default_category_from_scope(
@@ -51,11 +47,6 @@ class ApplyProductSearchQueryParametersToPQBSpec extends ObjectBehavior
         ChannelInterface $channel,
         CategoryInterface $category
     ) {
-        $query = new ListProductsQuery();
-        $query->searchLocale = 'en_US';
-        $query->searchScope = 'ecommerce';
-        $query->channel = 'ecommerce';
-
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channel)->shouldBeCalled();
         $channel->getCategory()->willReturn($category)->shouldBeCalled();
         $category->getCode()->willReturn('categoryCode')->shouldBeCalled();
@@ -67,13 +58,12 @@ class ApplyProductSearchQueryParametersToPQBSpec extends ObjectBehavior
             ['locale' => 'en_US', 'scope' => 'ecommerce']
         )->shouldBeCalled();
 
-        $this->apply($pqb, $query);
+        $this->apply($pqb, [], 'ecommerce', 'en_US', 'ecommerce');
     }
 
     function it_adds_search_filter_specifying_scope_and_locale(ProductQueryBuilderInterface $pqb)
     {
-        $query = new ListProductsQuery();
-        $query->search = [
+        $search = [
             'propertyCode' => [
                 [
                     'operator' => 'op',
@@ -83,17 +73,15 @@ class ApplyProductSearchQueryParametersToPQBSpec extends ObjectBehavior
                 ],
             ],
         ];
-        $query->searchLocale = 'en_US';
 
         $pqb->addFilter('propertyCode', 'op', 'val', ['locale' => 'fr_FR', 'scope' => 'mobile'])->shouldBeCalled();
 
-        $this->apply($pqb, $query);
+        $this->apply($pqb, $search, null, 'en_US', null);
     }
 
     function it_adds_search_filter_for_datetimes(ProductQueryBuilderInterface $pqb)
     {
-        $query = new ListProductsQuery();
-        $query->search = [
+        $search = [
             'created' => [
                 [
                     'operator' => Operators::BETWEEN,
@@ -107,8 +95,6 @@ class ApplyProductSearchQueryParametersToPQBSpec extends ObjectBehavior
                 ],
             ],
         ];
-        $query->searchLocale = 'en_US';
-        $query->searchScope = 'ecommerce';
 
         $pqb->addFilter('created', Operators::BETWEEN, Argument::any(), ['locale' => 'en_US', 'scope' => 'ecommerce'])
             ->shouldBeCalled();
@@ -119,6 +105,6 @@ class ApplyProductSearchQueryParametersToPQBSpec extends ObjectBehavior
             ['locale' => 'en_US', 'scope' => 'ecommerce']
         )->shouldBeCalled();
 
-        $this->apply($pqb, $query);
+        $this->apply($pqb, $search, null, 'en_US', 'ecommerce');
     }
 }

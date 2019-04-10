@@ -15,16 +15,11 @@ use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
- * @author    Pierre Allard <pierre.allard@akeneo.com>
- * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
- * @author    Mathias Métayer <mathias.metayer@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-final class ListProductsQueryHandler
+class ListProductModelsQueryHandler
 {
     /** @var ApplyProductSearchQueryParametersToPQB */
     private $applyProductSearchQueryParametersToPQB;
@@ -50,14 +45,7 @@ final class ListProductsQueryHandler
         $this->primaryKeyEncrypter = $primaryKeyEncrypter;
     }
 
-    /**
-     * @param ListProductsQuery $query
-     *
-     * @return CursorInterface
-     *
-     * @throws UnprocessableEntityHttpException
-     */
-    public function handle(ListProductsQuery $query): CursorInterface
+    public function handle(ListProductModelsQuery $query): CursorInterface
     {
         $pqb = $this->getSearchPQB($query);
 
@@ -67,7 +55,7 @@ final class ListProductsQueryHandler
                 $query->search,
                 $query->channelCode,
                 $query->searchLocaleCode,
-                $query->searchChannelCode
+                $query->searchChannelScope
             );
         } catch (
         UnsupportedFilterException
@@ -84,7 +72,7 @@ final class ListProductsQueryHandler
         return $pqb->execute();
     }
 
-    private function getSearchPQB(ListProductsQuery $query): ProductQueryBuilderInterface
+    private function getSearchPQB(ListProductModelsQuery $query): ProductQueryBuilderInterface
     {
         if (PaginationTypes::OFFSET === $query->paginationType) {
             return $this->fromSizePqbFactory->create([
@@ -92,6 +80,7 @@ final class ListProductsQueryHandler
                 'from' => ($query->page - 1) * $query->limit
             ]);
         }
+
         $pqbOptions = ['limit' => (int) $query->limit];
 
         if (null !== $query->searchAfter) {

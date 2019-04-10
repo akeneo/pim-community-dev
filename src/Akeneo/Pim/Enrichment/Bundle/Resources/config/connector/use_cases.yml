@@ -24,6 +24,31 @@ services:
             - '@pim_catalog.query.product_query_builder_search_after_size_factory'
             - '@pim_api.security.primary_key_encrypter'
 
+    pim_enrich.connector.use_cases.handler.list_product_models:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb'
+            - '@pim_catalog.query.product_model_query_builder_from_size_factory'
+            - '@pim_catalog.query.product_model_query_builder_search_after_size_factory'
+            - '@pim_api.security.primary_key_encrypter'
+
+    pim_enrich.connector.use_cases.validator.list_product_models:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductModelsQueryValidator
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.validator.attributes'
+            - '@akeneo.pim.enrichment.use_cases.validator.channel'
+            - '@akeneo.pim.enrichment.use_cases.validator.locales'
+            - '@akeneo.pim.enrichment.use_cases.validator.pagination'
+            - '@akeneo.pim.enrichment.use_cases.validator.criterion'
+            - '@akeneo.pim.enrichment.use_cases.validator.categories'
+            - '@akeneo.pim.enrichment.use_cases.validator.properties'
+            - '@akeneo.pim.enrichment.use_cases.validator.search_locale'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_search_locale'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_categories'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_properties'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_attributes'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_locales'
+
     akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB'
         arguments:
