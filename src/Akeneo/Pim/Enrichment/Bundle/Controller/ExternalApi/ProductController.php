@@ -198,7 +198,7 @@ class ProductController
         if ($request->query->has('search')) {
             $query->search = json_decode($request->query->get('search'), true);
             if (!is_array($query->search)) {
-                throw new UnprocessableEntityHttpException('Search query parameter should be valid JSON.');
+                throw new BadRequestHttpException('Search query parameter should be valid JSON.');
             }
         }
         $query->channelCode = $request->query->get('scope', null);

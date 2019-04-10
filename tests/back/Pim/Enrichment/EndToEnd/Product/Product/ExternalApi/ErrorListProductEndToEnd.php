@@ -260,14 +260,6 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
     }
 
-    public function testSearchIsNotAnArray()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', '/api/rest/v1/products?search="not_an_array"');
-        $this->assert($client, 'Search query parameter should be valid JSON.', Response::HTTP_UNPROCESSABLE_ENTITY);
-    }
-
     /**
      * @param Client $client
      * @param string $message
