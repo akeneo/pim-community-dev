@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProductIdsByUserAndDraftStatusQueryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\SelectProductModelIdsByUserAndDraftStatusQueryInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterInterface;
@@ -23,20 +27,28 @@ use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
  */
 class DraftStatusFilter implements FilterInterface
 {
-    /** @var ChoiceFilter */
     private $choiceFilter;
 
-    /** @var ProductFilterUtility */
     private $filterUtility;
 
-    /**
-     * @param ChoiceFilter $choiceFilter
-     * @param ProductFilterUtility $filterUtility
-     */
-    public function __construct(ChoiceFilter $choiceFilter, ProductFilterUtility $filterUtility)
-    {
+    private $selectProductIdsByUserAndDraftStatusQuery;
+
+    private $selectProductModelIdsByUserAndDraftStatusQuery;
+
+    private $userContext;
+
+    public function __construct(
+        ChoiceFilter $choiceFilter,
+        ProductFilterUtility $filterUtility,
+        SelectProductIdsByUserAndDraftStatusQueryInterface $selectProductIdsByUserAndDraftStatusQuery,
+        SelectProductModelIdsByUserAndDraftStatusQueryInterface $selectProductModelIdsByUserAndDraftStatusQuery,
+        UserContext $userContext
+    ) {
         $this->choiceFilter = $choiceFilter;
         $this->filterUtility = $filterUtility;
+        $this->selectProductIdsByUserAndDraftStatusQuery = $selectProductIdsByUserAndDraftStatusQuery;
+        $this->selectProductModelIdsByUserAndDraftStatusQuery = $selectProductModelIdsByUserAndDraftStatusQuery;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -50,11 +62,22 @@ class DraftStatusFilter implements FilterInterface
             return false;
         }
 
+        $user = $this->userContext->getUser();
+        if (!$user instanceof UserInterface) {
+            throw new \Exception('Draft filter is only useable when user is authenticated');
+        }
+
         // 0:
         // 1:
         // 2: Waiting for approval
+        // Calculate draft statuses
+        $draftStatuses = [0];
 
-        $this->filterUtility->applyFilter($filterDatasource, 'draft_status', '=', $filterValue);
+        $productIds = $this->selectProductIdsByUserAndDraftStatusQuery->execute($user->getUsername(), $draftStatuses);
+        $productModelIds = $this->selectProductModelIdsByUserAndDraftStatusQuery->execute($user->getUsername(), $draftStatuses);
+
+        $this->filterUtility->applyFilter($filterDatasource, 'product_id', 'IN', $productIds);
+        $this->filterUtility->applyFilter($filterDatasource, 'product_model_id', 'IN', $productModelIds);
 
         return true;
     }
