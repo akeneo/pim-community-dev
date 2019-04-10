@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - PIM-8255: Fix version entity detached when trying to remove it during the purge
+- PIM-6252: Change channel's error message when deleting the last one
 
 # 1.7.40 (2019-03-19)
 
