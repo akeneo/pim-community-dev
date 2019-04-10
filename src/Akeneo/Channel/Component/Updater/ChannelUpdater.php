@@ -61,17 +61,17 @@ class ChannelUpdater implements ObjectUpdaterInterface
      * {@inheritdoc}
      *
      * Expected input format :
-     * {
-     *     'code': 'ecommerce',
-     *     "labels": {
-     *         "en_US": "Tablet",
-     *         "fr_FR": "Tablette"
-     *     },
-     *     'locales': ['en_US'],
-     *     'currencies': ['EUR', 'USD'],
-     *     'conversion_units': ["weight" => "GRAM", "display_diagonal" => "METER"],
-     *     'category_tree': 'master'
-     * }
+     * [
+     *     'code' => 'ecommerce',
+     *     'labels' => [
+     *         'en_US' => 'Tablet',
+     *         'fr_FR' => 'Tablette'
+     *     ],
+     *     'locales' => ['en_US'],
+     *     'currencies' => ['EUR', 'USD'],
+     *     'conversion_units' => [ 'weight' => 'GRAM', 'display_diagonal' => 'METER' ],
+     *     'category_tree' => 'master'
+     * ]
      */
     public function update($channel, array $data, array $options = [])
     {

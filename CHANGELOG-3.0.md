@@ -1,5 +1,13 @@
 # 3.0.x
 
+## Bug Fixes
+
+- PIM-8270: Update export jobs after a change on a channel category
+
+## BC breaks
+
+- Service `pim_catalog.saver.channel` class has been changed to `Akeneo\Channel\Bundle\Doctrine\Saver\ChannelSaver`.
+
 # 3.0.15 (2019-04-30)
 
 # Bug fixes
@@ -41,7 +49,7 @@
 - PIM-8267: Fix user's group delete translation
 - PIM-8271: Fix import/export delete translation
 - PIM-8264: Fix multiselect style
-- PIM-8265: Fix blinking display selector on products page
+- PIM-8265: Fix blinking display selector on products page 
 - PIM-8259: add a max width and a title attribute to the label field in the product grid
 
 # 3.0.10 (2019-03-28)
