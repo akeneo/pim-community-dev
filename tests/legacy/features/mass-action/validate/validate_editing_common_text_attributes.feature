@@ -57,9 +57,12 @@ Feature: Validate editing common text attributes of multiple products
     And I display the Info attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then attribute Info of "boots" should be ""
-    And attribute Info of "sandals" should be ""
-    And attribute Info of "sneakers" should be ""
+    And the product "boots" should not have the following values:
+      | Info |
+    And the product "sandals" should not have the following values:
+      | Info |
+    And the product "sneakers" should not have the following values:
+      | Info |
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
@@ -68,9 +71,12 @@ Feature: Validate editing common text attributes of multiple products
     And I change the "Info" to "Extremely useful information"
     And I move on to the next step
     Then I should see validation tooltip "This value is too long. It should have 25 characters or less."
-    And attribute Info of "boots" should be ""
-    And attribute Info of "sandals" should be ""
-    And attribute Info of "sneakers" should be ""
+    And the product "boots" should not have the following values:
+      | Info |
+    And the product "sandals" should not have the following values:
+      | Info |
+    And the product "sneakers" should not have the following values:
+      | Info |
 
   Scenario: Successfully mass edit a text attribute
     Given I select rows boots and sneakers
@@ -89,9 +95,12 @@ Feature: Validate editing common text attributes of multiple products
     And I display the Comment attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then attribute Comment of "boots" should be ""
-    And attribute Comment of "sandals" should be ""
-    And attribute Comment of "sneakers" should be ""
+    And the product "boots" should not have the following values:
+      | Comment |
+    And the product "sandals" should not have the following values:
+      | Comment |
+    And the product "sneakers" should not have the following values:
+      | Comment |
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
@@ -100,6 +109,9 @@ Feature: Validate editing common text attributes of multiple products
     And I change the Comment to an invalid value
     And I move on to the next step
     Then I should see validation tooltip "This value is too long. It should have 255 characters or less."
-    And attribute Comment of "boots" should be ""
-    And attribute Comment of "sandals" should be ""
-    And attribute Comment of "sneakers" should be ""
+    And the product "boots" should not have the following values:
+      | Comment |
+    And the product "sandals" should not have the following values:
+      | Comment |
+    And the product "sneakers" should not have the following values:
+      | Comment |

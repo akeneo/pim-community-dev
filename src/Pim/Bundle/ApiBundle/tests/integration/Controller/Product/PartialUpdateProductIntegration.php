@@ -908,7 +908,6 @@ JSON;
                     ['locale' => null, 'scope' => null, 'data' => 'localizable'],
                 ],
                 'a_localizable_image' => [
-                    ['locale' => 'en_US', 'scope' => null, 'data' => null],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => '4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_akeneo.txt'],
                 ]
             ],
