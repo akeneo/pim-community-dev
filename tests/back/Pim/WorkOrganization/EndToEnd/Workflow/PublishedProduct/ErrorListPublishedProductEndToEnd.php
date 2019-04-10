@@ -206,7 +206,7 @@ class ErrorListPublishedProductEndToEnd extends AbstractPublishedProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/published-products?search="not_an_array"');
-        $this->assert($client, 'Search query parameter has to be an array, "string" given.', Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->assert($client, 'Search query parameter should be valid JSON.', Response::HTTP_BAD_REQUEST);
     }
 
     public function testOperatorIsAnArray()
