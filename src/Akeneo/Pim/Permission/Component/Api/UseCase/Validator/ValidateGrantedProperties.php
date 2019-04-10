@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 final class ValidateGrantedProperties implements ValidateGrantedPropertiesInterface
 {
-    private static $PRODUCT_FIELDS = [
+    private const PRODUCT_FIELDS = [
         'family',
         'categories',
         'completeness',
@@ -56,7 +56,7 @@ final class ValidateGrantedProperties implements ValidateGrantedPropertiesInterf
     {
         foreach ($search as $propertyCode => $filters) {
             $property = trim($propertyCode);
-            if (in_array($property, self::$PRODUCT_FIELDS)) {
+            if (in_array($property, self::PRODUCT_FIELDS)) {
                 continue;
             }
 
