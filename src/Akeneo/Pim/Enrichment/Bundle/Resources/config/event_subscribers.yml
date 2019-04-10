@@ -129,3 +129,15 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.update_exports_on_channel_update:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTree'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.updater.job_instance'
+            - '@akeneo_batch.saver.job_instance'
+            -
+                - 'csv_product_export'
+                - 'xlsx_product_export'
+        tags:
+            - { name: kernel.event_subscriber }
