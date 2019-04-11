@@ -42,7 +42,7 @@ spec:
         - name: init-fpm
           image:  "{{ .Values.image.pim.repository }}:{{ required "Value .image.pim.tag is required!" .Values.image.pim.tag }}"
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www/ && su -m -l www-data -s /bin/bash -c "php bin/console pim:installer:dump-require-paths && yarn run webpack" && cp -p -r -f /var/www/html/web/* /var/www/html/web/.htaccess /web-src/. ']
+          command: ['sh', '-c', 'export HOME=/var/www/ && cp -p -r -f /var/www/html/web/* /var/www/html/web/.htaccess /web-src/. ']
           volumeMounts:
             - name: web-src
               mountPath: web-src
