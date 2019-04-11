@@ -150,3 +150,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetGroupAssociationsByProductIdentifiers'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.get_product_models_association_by_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductModelAssociationsByProductIdentifiers'
+        arguments:
+            - '@database_connection'
