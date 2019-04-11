@@ -72,12 +72,10 @@ class DraftStatusFilter implements FilterInterface
             case self::WORKING_COPY:
                 $draftStatuses = [EntityWithValuesDraftInterface::IN_PROGRESS, EntityWithValuesDraftInterface::READY];
                 $operator = 'NOT IN';
-
                 break;
             case self::IN_PROGRESS:
                 $draftStatuses = [EntityWithValuesDraftInterface::IN_PROGRESS];
                 $operator = 'IN';
-
                 break;
             case self::WAITING_FOR_APPROVAL:
                 $draftStatuses = [EntityWithValuesDraftInterface::READY];
@@ -96,8 +94,9 @@ class DraftStatusFilter implements FilterInterface
         $productModelIds = $this->selectProductModelIdsByUserAndDraftStatusQuery->execute($user->getUsername(), $draftStatuses);
         $esIds = $this->prepareIdsForEsFilter($productIds, $productModelIds);
 
-        $this->filterUtility->applyFilter($filterDatasource, 'id', $operator, $esIds);
-
+        if (!empty($esIds)) {
+            $this->filterUtility->applyFilter($filterDatasource, 'id', $operator, $esIds);
+        }
 
         return true;
     }
