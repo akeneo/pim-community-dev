@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 
 /**
@@ -26,7 +29,7 @@ final class ConnectorProduct
     /** @var bool */
     private $enabled;
 
-    /** @var string */
+    /** @var null|string */
     private $familyCode;
 
     /** @var array */
@@ -52,7 +55,7 @@ final class ConnectorProduct
         \DateTimeImmutable $createdDate,
         \DateTimeImmutable $updatedDate,
         bool $enabled,
-        string $familyCode,
+        ?string $familyCode,
         array $categoryCodes,
         array $groups,
         ?string $parentProductModelCode,
@@ -126,5 +129,41 @@ final class ConnectorProduct
     public function values(): ValueCollectionInterface
     {
         return $this->values;
+    }
+
+    public static function fromProductWriteModel(ProductInterface $product) {
+        return new self(
+            $product->getIdentifier(),
+            \DateTimeImmutable::createFromMutable($product->getCreated()),
+            \DateTimeImmutable::createFromMutable($product->getUpdated()),
+            $product->isEnabled(),
+            $product->getFamily()->getCode(),
+            $product->getCategoryCodes(),
+            $product->getGroupCodes(),
+            $product->getParent()->getCode(),
+            self::productAssociationsAsArray($product),
+            [],
+            $product->getValues()
+        );
+    }
+
+    public static function productAssociationsAsArray(ProductInterface $product): array
+    {
+        $association = [];
+        foreach ($product->getAllAssociations() as $association) {
+            $association[$association->getAssociationType()->getCode()] = [
+                'products' => array_map(function(ProductInterface $product) {
+                    return $product->getIdentifier();
+                }, $association->getProducts()->toArray()),
+                'product_models' => array_map(function (ProductModelInterface $productModel) {
+                    return $productModel->getCode();
+                }, $association->getProductModels()->toArray()),
+                'groups' => array_map(function (GroupInterface $group) {
+
+                }, $association->getGroups()->toArray())
+            ];
+        }
+
+        return $association;
     }
 }
