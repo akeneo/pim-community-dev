@@ -59,7 +59,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
             ? $this->findAssetsWithMissingVariations()
             : [$input->getOption('asset')];
         try {
-            $this->buildAssets($assetsWithMissingVariations);
+            $this->buildAssets($assetsWithMissingVariations, $output);
         } catch (\LogicException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
@@ -280,7 +280,7 @@ SQL;
     /**
      * @param string[] $assetCodes
      */
-    protected function buildAssets(array $assetCodes): void
+    protected function buildAssets(array $assetCodes, OutputInterface $output): void
     {
         $eventDispatcher = $this->getContainer()->get('event_dispatcher');
 
@@ -288,8 +288,9 @@ SQL;
         foreach ($chunks as $assetCodesToBuild) {
             $assets = $this->fetchAssetsByCode($assetCodesToBuild);
             $builtAssets = array_map(
-                function (AssetInterface $asset) {
+                function (AssetInterface $asset) use ($output) {
                     $this->buildAsset($asset);
+                    $output->writeln(sprintf('<info>The asset %s is built</info>', $asset));
 
                     return $asset;
                 },
