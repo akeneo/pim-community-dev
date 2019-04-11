@@ -62,15 +62,15 @@ final class ApplyProductSearchQueryParametersToPQB
 
         foreach ($searchParameters as $propertyCode => $filters) {
             foreach ($filters as $filter) {
-                $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $searchLocaleCode;
+                $context['locale'] = $filter['locale'] ?? $searchLocaleCode;
 
                 if (isset($filter['locales']) && '' !== $filter['locales']) {
                     $context['locales'] = $filter['locales'];
                 }
 
-                $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $searchChannelCode;
+                $context['scope'] = $filter['scope'] ?? $searchChannelCode;
 
-                $value = isset($filter['value']) ? $filter['value'] : null;
+                $value = $filter['value'] ?? null;
 
                 if (in_array($propertyCode, ['created', 'updated'])) {
                     if (Operators::BETWEEN === $filter['operator'] && is_array($value)) {
