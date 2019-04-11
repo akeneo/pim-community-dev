@@ -16,8 +16,8 @@ class ListSearchAfterProductModelEndToEnd extends AbstractProductModelTestCase
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/product-models?pagination_type=search_after&limit=10"},
-        "first" : {"href": "http://localhost/api/rest/v1/product-models?pagination_type=search_after&limit=10"}
+        "self"  : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=10"},
+        "first" : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=10"}
     },
     "_embedded" : {
         "items" : [
@@ -54,9 +54,9 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/product-models?pagination_type=search_after&limit=3&search_after={$id['sweat']}"},
-        "first" : {"href": "http://localhost/api/rest/v1/product-models?pagination_type=search_after&limit=3"},
-        "next"  : {"href": "http://localhost/api/rest/v1/product-models?pagination_type=search_after&limit=3&search_after={$id['trousers']}"}
+        "self"  : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=3&search_after={$id['sweat']}"},
+        "first" : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=3"},
+        "next"  : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=3&search_after={$id['trousers']}"}
     },
     "_embedded"    : {
         "items" : [
@@ -85,8 +85,8 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/product-models?pagination_type=search_after&limit=4&search_after={$tshirtEncryptedId}"},
-        "first" : {"href": "http://localhost/api/rest/v1/product-models?pagination_type=search_after&limit=4"}
+        "self"  : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=4&search_after={$tshirtEncryptedId}"},
+        "first" : {"href": "http://localhost/api/rest/v1/product-models?with_count=false&pagination_type=search_after&limit=4"}
     },
     "_embedded"    : {
         "items" : [
