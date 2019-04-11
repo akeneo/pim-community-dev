@@ -44,7 +44,10 @@ class ListProductModelsQuery
     public $attributeCodes;
 
     /** @var string */
-    public $searchChannelScope;
+    public $searchChannelCode;
+
+    /** @var int */
+    public $userId;
 
     /**
      * Returns the parameter 'with_count' typed as a boolean

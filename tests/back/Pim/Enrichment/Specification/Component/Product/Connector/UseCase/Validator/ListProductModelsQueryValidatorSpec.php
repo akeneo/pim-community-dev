@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCas
 
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAlwaysGrantedAttributes;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAlwaysGrantedCategories;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAlwaysGrantedLocales;
@@ -25,7 +25,7 @@ use Akeneo\Tool\Component\Api\Pagination\PaginationParametersValidator;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
-class ListProductsQueryValidatorSpec extends ObjectBehavior
+class ListProductModelsQueryValidatorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $attributeRepository,
@@ -67,7 +67,7 @@ class ListProductsQueryValidatorSpec extends ObjectBehavior
 
     function it_validates_the_command_query()
     {
-        $query = new ListProductsQuery();
+        $query = new ListProductModelsQuery();
         $query->localeCodes = ['en_US', 'fr_FR'];
         $query->searchLocaleCode = 'fr_FR';
         $query->channelCode = 'tablet';

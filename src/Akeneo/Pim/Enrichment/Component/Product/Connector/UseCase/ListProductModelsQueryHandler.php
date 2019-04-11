@@ -55,7 +55,7 @@ class ListProductModelsQueryHandler
                 $query->search,
                 $query->channelCode,
                 $query->searchLocaleCode,
-                $query->searchChannelScope
+                $query->searchChannelCode
             );
         } catch (
         UnsupportedFilterException
