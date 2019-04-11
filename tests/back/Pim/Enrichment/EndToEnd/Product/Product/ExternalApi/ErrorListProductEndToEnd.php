@@ -141,7 +141,7 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100, "locales":"fr_FR"}]}');
-        $this->assert($client, 'Property "completeness" expects an array of arrays as data.', Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->assert($client, 'Property "completeness" expects an array with the key "locales".', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithEmptyLocales()
@@ -149,14 +149,6 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100, "locales":""}]}');
-        $this->assert($client, 'Property "completeness" expects an array with the key "locales".', Response::HTTP_UNPROCESSABLE_ENTITY);
-    }
-
-    public function testSearchWithEmptyLocaleAsArray()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100, "locale":["fr_FR"]}]}');
         $this->assert($client, 'Property "completeness" expects an array with the key "locales".', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
@@ -218,14 +210,6 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
 
         $client->request('GET', '/api/rest/v1/products?search={"categories":[{"operator":"IN","value":["not_found"]}]}');
         $this->assert($client, 'Category "not_found" does not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
-    }
-
-    public function testSearchIsNotAnArray()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', '/api/rest/v1/products?search="not_an_array"');
-        $this->assert($client, 'Search query parameter has to be an array, "string" given.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testOperatorIsAnArray()

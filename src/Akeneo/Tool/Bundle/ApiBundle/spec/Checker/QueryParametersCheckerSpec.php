@@ -197,14 +197,6 @@ class QueryParametersCheckerSpec extends ObjectBehavior
             ->during('checkCriterionParameters', ['']);
     }
 
-    function it_should_throw_an_exception_if_it_is_not_an_array()
-    {
-        $this->shouldThrow(
-            new UnprocessableEntityHttpException('Search query parameter has to be an array, "string" given.')
-        )
-            ->during('checkCriterionParameters', ['"string"']);
-    }
-
     function it_should_throw_an_exception_if_it_is_not_correctly_structured()
     {
         $this->shouldThrow(

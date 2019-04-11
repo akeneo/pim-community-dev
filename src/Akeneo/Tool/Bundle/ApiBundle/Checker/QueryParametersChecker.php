@@ -142,12 +142,6 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
             throw new BadRequestHttpException('Search query parameter should be valid JSON.');
         }
 
-        if (!is_array($searchParameters)) {
-            throw new UnprocessableEntityHttpException(
-                sprintf('Search query parameter has to be an array, "%s" given.', gettype($searchParameters))
-            );
-        }
-
         foreach ($searchParameters as $searchKey => $searchParameter) {
             if (!is_array($searchParameters) || !isset($searchParameter[0])) {
                 throw new UnprocessableEntityHttpException(
