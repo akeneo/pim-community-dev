@@ -319,5 +319,8 @@ services:
         arguments:
             - '@oro_filter.choice_filter'
             - '@pim_filter.product_utility'
+            - '@pimee_workflow.query.select_product_ids_by_user_and_draft_status'
+            - '@pimee_workflow.query.select_product_model_ids_by_user_and_draft_status'
+            - '@pim_user.context.user'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: draft_status }

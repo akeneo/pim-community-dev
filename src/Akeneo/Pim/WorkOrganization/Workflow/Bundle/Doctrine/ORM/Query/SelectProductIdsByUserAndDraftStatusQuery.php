@@ -36,7 +36,11 @@ class SelectProductIdsByUserAndDraftStatusQuery implements SelectProductIdsByUse
     AND status IN (:statuses)
 SQL;
 
-        $stmt = $this->connection->executeQuery($querySql);
+        $stmt = $this->connection->executeQuery(
+            $querySql,
+            ['author' => $username, 'statuses' => $draftStatuses],
+            ['author' => \PDO::PARAM_STR, 'statuses' => Connection::PARAM_INT_ARRAY]
+        );
         $resultRows = $stmt->fetchAll();
 
         $productIds = [];

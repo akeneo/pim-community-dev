@@ -48,3 +48,13 @@ services:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SelectModelProposalIdsFromProductModelIdsQuery
         arguments:
             - '@database_connection'
+
+    pimee_workflow.query.select_product_ids_by_user_and_draft_status:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\SelectProductIdsByUserAndDraftStatusQuery
+        arguments:
+            - '@database_connection'
+
+    pimee_workflow.query.select_product_model_ids_by_user_and_draft_status:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\SelectProductModelIdsByUserAndDraftStatusQuery
+        arguments:
+            - '@database_connection'
