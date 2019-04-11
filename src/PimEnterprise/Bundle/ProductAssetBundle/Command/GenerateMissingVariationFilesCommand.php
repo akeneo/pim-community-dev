@@ -54,6 +54,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // First step : Get the assets that have missing variations in DB and build only those ones to create their missing variations in DB (can be done also for the asset passed in option).
         $assetsWithMissingVariations = $this->isGenerateForAllAssets($input)
             ? $this->findAssetsWithMissingVariations()
             : [$input->getOption('asset')];
@@ -65,9 +66,10 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
             return 1;
         }
 
+        // Second step : Generate missing files for the variations (variation lines in DB with null in the file_info_id field).
         $variationIdsWithMissingFile = $this->findVariationIdsWithMissingFile($input);
         if (empty($variationIdsWithMissingFile)) {
-            $output->writeln('<info>No missing variation</info>');
+            $output->writeln('<info>No missing variation files</info>');
 
             return 0;
         }
