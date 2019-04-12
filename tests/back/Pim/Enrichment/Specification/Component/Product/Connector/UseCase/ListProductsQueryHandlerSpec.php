@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -13,6 +18,7 @@ use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -22,13 +28,15 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $channelRepository,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        PrimaryKeyEncrypter $primaryKeyEncrypter
+        PrimaryKeyEncrypter $primaryKeyEncrypter,
+        GetConnectorProducts $getConnectorProducts
     ) {
         $this->beConstructedWith(
             new ApplyProductSearchQueryParametersToPQB($channelRepository->getWrappedObject()),
             $fromSizePqbFactory,
             $searchAfterPqbFactory,
-            $primaryKeyEncrypter
+            $primaryKeyEncrypter,
+            $getConnectorProducts
         );
     }
 
@@ -36,7 +44,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
-        CursorInterface $cursor
+        GetConnectorProducts $getConnectorProducts
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::OFFSET;
@@ -49,11 +57,60 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
-        $pqb->execute()->shouldBeCalled()->willReturn($cursor);
+        $pqb->execute()->willReturn(new class implements CursorInterface {
+            private $identifierResults;
+
+            public function __construct()
+            {
+                $identifierResultsArrayCOllection = new ArrayCollection([
+                    new IdentifierResult('identifier_1', ProductInterface::class),
+                    new IdentifierResult('identifier_2', ProductInterface::class)
+                ]);
+                $this->identifierResults = $identifierResultsArrayCOllection->getIterator();
+            }
+            public function current() { return $this->identifierResults->current(); }
+            public function next() { $this->identifierResults->next(); }
+            public function key() { return $this->identifierResults->key(); }
+            public function count() { return 2; }
+            public function valid() { return $this->identifierResults->valid(); }
+            public function rewind() { $this->identifierResults->rewind(); }
+        });
+
+        $connectorProduct1 = new ConnectorProduct(
+            'identifier_1',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            'family_code',
+            ['category_code_1', 'category_code_2'],
+            ['group_code_1', 'group_code_2'],
+            'parent_product_model_code',
+            [],
+            [],
+            new ValueCollection()
+        );
+
+        $connectorProduct2 = new ConnectorProduct(
+            'identifier_2',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            'family_code',
+            ['category_code_3', 'category_code_2'],
+            ['group_code_1', 'group_code_2'],
+            'parent_product_model_code',
+            [],
+            [],
+            new ValueCollection()
+        );
+
+        $getConnectorProducts
+            ->fromProductIdentifiers(['identifier_1', 'identifier_2'])
+            ->willReturn([$connectorProduct1, $connectorProduct2]);
 
         $searchAfterPqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
-        $this->handle($query);
+        $this->handle($query)->shouldReturn([$connectorProduct1, $connectorProduct2]);
     }
 
     function it_creates_a_pqb_for_search_after(
@@ -61,7 +118,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         ProductQueryBuilderInterface $pqb,
-        CursorInterface $cursor
+        GetConnectorProducts $getConnectorProducts
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -77,10 +134,59 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
-        $pqb->execute()->shouldBeCalled()->willReturn($cursor);
+        $pqb->execute()->willReturn(new class implements CursorInterface {
+            private $identifierResults;
+
+            public function __construct()
+            {
+                $identifierResultsArrayCOllection = new ArrayCollection([
+                    new IdentifierResult('identifier_1', ProductInterface::class),
+                    new IdentifierResult('identifier_2', ProductInterface::class)
+                ]);
+                $this->identifierResults = $identifierResultsArrayCOllection->getIterator();
+            }
+            public function current() { return $this->identifierResults->current(); }
+            public function next() { $this->identifierResults->next(); }
+            public function key() { return $this->identifierResults->key(); }
+            public function count() { return 2; }
+            public function valid() { return $this->identifierResults->valid(); }
+            public function rewind() { $this->identifierResults->rewind(); }
+        });
+
+        $connectorProduct1 = new ConnectorProduct(
+            'identifier_1',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            'family_code',
+            ['category_code_1', 'category_code_2'],
+            ['group_code_1', 'group_code_2'],
+            'parent_product_model_code',
+            [],
+            [],
+            new ValueCollection()
+        );
+
+        $connectorProduct2 = new ConnectorProduct(
+            'identifier_2',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            'family_code',
+            ['category_code_3', 'category_code_2'],
+            ['group_code_1', 'group_code_2'],
+            'parent_product_model_code',
+            [],
+            [],
+            new ValueCollection()
+        );
+
+        $getConnectorProducts
+            ->fromProductIdentifiers(['identifier_1', 'identifier_2'])
+            ->willReturn([$connectorProduct1, $connectorProduct2]);
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
-        $this->handle($query);
+        $this->handle($query)->shouldReturn([$connectorProduct1, $connectorProduct2]);
     }
 }

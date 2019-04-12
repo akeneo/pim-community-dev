@@ -131,7 +131,8 @@ final class ConnectorProduct
         return $this->values;
     }
 
-    public static function fromProductWriteModel(ProductInterface $product) {
+    public static function fromProductWriteModel(ProductInterface $product)
+    {
         return new self(
             $product->getIdentifier(),
             \DateTimeImmutable::createFromMutable($product->getCreated()),
@@ -152,14 +153,13 @@ final class ConnectorProduct
         $association = [];
         foreach ($product->getAllAssociations() as $association) {
             $association[$association->getAssociationType()->getCode()] = [
-                'products' => array_map(function(ProductInterface $product) {
+                'products' => array_map(function (ProductInterface $product) {
                     return $product->getIdentifier();
                 }, $association->getProducts()->toArray()),
                 'product_models' => array_map(function (ProductModelInterface $productModel) {
                     return $productModel->getCode();
                 }, $association->getProductModels()->toArray()),
                 'groups' => array_map(function (GroupInterface $group) {
-
                 }, $association->getGroups()->toArray())
             ];
         }

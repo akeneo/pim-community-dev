@@ -64,7 +64,7 @@ final class ListProductsQueryHandler
      *
      * @throws UnprocessableEntityHttpException
      */
-    public function handle(ListProductsQuery $query): CursorInterface
+    public function handle(ListProductsQuery $query): array
     {
         $pqb = $this->getSearchPQB($query);
 
@@ -88,8 +88,9 @@ final class ListProductsQueryHandler
 
         $pqb->addSorter('id', Directions::ASCENDING);
 
-        $identifierResults = iterator_to_array($pqb->execute());
-        $identifiers = array_map(function(IdentifierResult $identifier) {
+        $result = $pqb->execute();
+        $identifierResults = iterator_to_array($result);
+        $identifiers = array_map(function (IdentifierResult $identifier) {
             return $identifier->getIdentifier();
         }, $identifierResults);
 
