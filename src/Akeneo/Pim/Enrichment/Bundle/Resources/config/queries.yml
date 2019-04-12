@@ -135,3 +135,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Category\Query\Sql\GetCategoryCodesByProductIdentifiers'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product.connector.get_product_from_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductsFromWriteModel'
+        arguments:
+            - '@pim_api.repository.product'
