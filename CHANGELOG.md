@@ -20,3 +20,6 @@
 - Change constructor of `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\CatalogUpdatesSubscriber`. Add argument `Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext`
 - Renamed class `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyProductRouter` to `ProxyRouter`.
 - Changed the order of the parameters for class constructor `Akeneo\Pim\Permission\Bundle\Pdf\ProductPdfRenderer` and the parameter `assetRepository` is now mandatory.
+- TIP-1084: The service `pimee_security.product_grid.query.fetch_user_rights_on_product` has been renamed into `akeneo.pim.permission.product.query.fetch_user_rights_on_product`
+- TIP-1084: The class `UserRightsOnProduct` is constructed with a new arguments `numberOfViewableCategories`
+- TIP-1084: The class `FetchUserRightsOnProduct` has been moved from `Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight` to `Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product`

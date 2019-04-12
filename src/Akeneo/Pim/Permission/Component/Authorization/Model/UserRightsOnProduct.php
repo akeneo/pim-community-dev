@@ -28,26 +28,32 @@ final class UserRightsOnProduct
     private $numberOfOwnableCategories;
 
     /** @var int */
+    private $numberOfViewableCategories;
+
+    /** @var int */
     private $numberOfCategories;
 
     /**
      * @param string $productIdentifier
-     * @param int    $userId
-     * @param int    $numberOfEditableCategories
-     * @param int    $numberOfOwnableCategories
-     * @param int    $numberOfCategories
+     * @param int $userId
+     * @param int $numberOfEditableCategories
+     * @param int $numberOfOwnableCategories
+     * @param int $numberOfViewableCategories
+     * @param int $numberOfCategories
      */
     public function __construct(
         string $productIdentifier,
         int $userId,
         int $numberOfEditableCategories,
         int $numberOfOwnableCategories,
+        int $numberOfViewableCategories,
         int $numberOfCategories
     ) {
         $this->productIdentifier = $productIdentifier;
         $this->userId = $userId;
         $this->numberOfEditableCategories = $numberOfEditableCategories;
         $this->numberOfOwnableCategories = $numberOfOwnableCategories;
+        $this->numberOfViewableCategories = $numberOfViewableCategories;
         $this->numberOfCategories = $numberOfCategories;
     }
 
@@ -59,6 +65,11 @@ final class UserRightsOnProduct
     public function isProductEditable(): bool
     {
         return $this->numberOfOwnableCategories > 0 || 0 === $this->numberOfCategories;
+    }
+
+    public function isProductViewable(): bool
+    {
+        return $this->numberOfViewableCategories > 0 || 0 === $this->numberOfCategories;
     }
 
     public function productIdentifier(): string
