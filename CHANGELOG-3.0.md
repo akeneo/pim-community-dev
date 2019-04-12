@@ -1,5 +1,9 @@
 # 3.0.x
 
+# Bug fixes
+
+- PIM-8291: Use the UI locale in Completeness dashboard widget
+
 # 3.0.13 (2019-04-15)
 
 # Bug fixes
@@ -28,7 +32,7 @@
 - PIM-8267: Fix user's group delete translation
 - PIM-8271: Fix import/export delete translation
 - PIM-8264: Fix multiselect style
-- PIM-8265: Fix blinking display selector on products page 
+- PIM-8265: Fix blinking display selector on products page
 - PIM-8259: add a max width and a title attribute to the label field in the product grid
 
 # 3.0.10 (2019-03-28)
