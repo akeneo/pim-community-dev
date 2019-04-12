@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCas
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -110,7 +111,12 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
 
         $searchAfterPqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
-        $this->handle($query)->shouldReturn([$connectorProduct1, $connectorProduct2]);
+        $this->handle($query)->shouldBeLike(
+            new ConnectorProductList(
+                2,
+                [$connectorProduct1, $connectorProduct2]
+            )
+        );
     }
 
     function it_creates_a_pqb_for_search_after(
@@ -187,6 +193,11 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
-        $this->handle($query)->shouldReturn([$connectorProduct1, $connectorProduct2]);
+        $this->handle($query)->shouldBeLike(
+            new ConnectorProductList(
+                2,
+                [$connectorProduct1, $connectorProduct2]
+            )
+        );
     }
 }

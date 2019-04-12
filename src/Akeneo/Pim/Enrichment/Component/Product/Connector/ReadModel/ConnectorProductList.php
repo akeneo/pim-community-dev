@@ -11,20 +11,30 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 class ConnectorProductList
 {
     /** @var int total number of products returned by the search without the pagination */
-    private $count;
+    private $totalNumberOfProducts;
 
     /** @var ConnectorProduct[] paginated list of products for the connectors */
     private $connectorProducts;
 
     /**
-     * @param int                $count
+     * @param int                $totalNumberOfProducts
      * @param ConnectorProduct[] $connectorProducts
      */
-    public function __construct(int $count, array $connectorProducts)
+    public function __construct(int $totalNumberOfProducts, array $connectorProducts)
     {
-        $this->count = $count;
+        $this->totalNumberOfProducts = $totalNumberOfProducts;
         $this->connectorProducts = (function(...$connectorProducts) {
             return $connectorProducts;
         })(...$connectorProducts);
+    }
+
+    public function totalNumberOfProducts(): int
+    {
+        return $this->totalNumberOfProducts;
+    }
+
+    public function connectorProducts(): array
+    {
+        return $this->connectorProducts;
     }
 }
