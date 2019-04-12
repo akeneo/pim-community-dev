@@ -27,3 +27,8 @@ services:
         class: 'PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql\FindFamilyCodesWhereAttributesAreRequired'
         arguments:
             - '@database_connection'
+
+    pimee_product_asset.query.find_asset_codes_with_missing_variation_with_file:
+        class: 'PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql\FindAssetCodesWithMissingVariationWithFile'
+        arguments:
+            - '@database_connection'

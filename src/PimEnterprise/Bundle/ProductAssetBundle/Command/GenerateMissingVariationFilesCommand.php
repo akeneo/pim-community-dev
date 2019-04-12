@@ -54,23 +54,27 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $assetCodes = $this->isGenerateForAllAssets($input) ? $this->getAllAssetsCodes() : [$input->getOption('asset')];
+        // First step : Get the assets that have missing variations in DB and build only those ones to create their missing variations in DB (can be done also for the asset passed in option).
+        $assetsWithMissingVariations = $this->isGenerateForAllAssets($input)
+            ? $this->findAssetsWithMissingVariations()
+            : [$input->getOption('asset')];
         try {
-            $this->buildAssets($assetCodes);
+            $this->buildAssets($assetsWithMissingVariations, $output);
         } catch (\LogicException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
             return 1;
         }
 
-        $missingVariationIds = $this->findMissingVariationIds($input);
-        if (empty($missingVariationIds)) {
-            $output->writeln('<info>No missing variation</info>');
+        // Second step : Generate missing files for the variations (variation lines in DB with null in the file_info_id field).
+        $variationIdsWithMissingFile = $this->findVariationIdsWithMissingFile($input);
+        if (empty($variationIdsWithMissingFile)) {
+            $output->writeln('<info>No missing variation files</info>');
 
             return 0;
         }
 
-        $this->generateMissingVariations($output, $missingVariationIds);
+        $this->generateMissingVariationFiles($output, $variationIdsWithMissingFile);
 
         return 0;
     }
@@ -133,18 +137,13 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     }
 
     /**
-     * @return string[]
+     * @return string[] Assets codes
      */
-    protected function getAllAssetsCodes()
+    private function findAssetsWithMissingVariations(): array
     {
-        $connection = $this->getContainer()->get('database_connection');
-        $sql = <<<SQL
-            SELECT code
-            FROM pimee_product_asset_asset
-SQL;
-        $statement = $connection->query($sql);
+        $query = $this->getContainer()->get('pimee_product_asset.query.find_asset_codes_with_missing_variation_with_file');
 
-        return array_column($statement->fetchAll(), 'code');
+        return $query->execute();
     }
 
     protected function clearCache()
@@ -157,7 +156,7 @@ SQL;
      *
      * @return int[]
      */
-    protected function findMissingVariationIds(InputInterface $input): array
+    private function findVariationIdsWithMissingFile(InputInterface $input): array
     {
         $asset = null;
         if (!$this->isGenerateForAllAssets($input)) {
@@ -196,14 +195,14 @@ SQL;
      * @param OutputInterface $output
      * @param int[]           $missingVariationIds
      */
-    protected function generateMissingVariations(OutputInterface $output, array $missingVariationIds): void
+    private function generateMissingVariationFiles(OutputInterface $output, array $missingVariationIds): void
     {
         $chunks = array_chunk($missingVariationIds, static::BATCH_SIZE);
 
         foreach ($chunks as $missingVariationIdsToProcess) {
             $missingVariations = $this->getVariationRepository()->findBy(['id' => $missingVariationIdsToProcess]);
 
-            $processedAssets = $this->generateVariation($output, $missingVariations);
+            $processedAssets = $this->generateVariationFiles($output, $missingVariations);
             $this->scheduleCompleteness($output, $processedAssets);
 
             $this->clearCache();
@@ -218,7 +217,7 @@ SQL;
      *
      * @return array
      */
-    protected function generateVariation(OutputInterface $output, array $missingVariations): array
+    private function generateVariationFiles(OutputInterface $output, array $missingVariations): array
     {
         $generator = $this->getVariationsCollectionFileGenerator();
         $processedList = $generator->generate($missingVariations, true);
@@ -281,7 +280,7 @@ SQL;
     /**
      * @param string[] $assetCodes
      */
-    protected function buildAssets(array $assetCodes): void
+    protected function buildAssets(array $assetCodes, OutputInterface $output): void
     {
         $eventDispatcher = $this->getContainer()->get('event_dispatcher');
 
@@ -289,8 +288,9 @@ SQL;
         foreach ($chunks as $assetCodesToBuild) {
             $assets = $this->fetchAssetsByCode($assetCodesToBuild);
             $builtAssets = array_map(
-                function (AssetInterface $asset) {
+                function (AssetInterface $asset) use ($output) {
                     $this->buildAsset($asset);
+                    $output->writeln(sprintf('<info>The asset %s is built</info>', $asset));
 
                     return $asset;
                 },
