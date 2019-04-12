@@ -9,6 +9,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
 use Webmozart\Assert\Assert;
 
 /**
@@ -84,13 +85,14 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
 
     public function testSingleProductProperties()
     {
+        $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
             'productA' => [
                 'identifier' => 'productA',
                 'is_enabled' => true,
                 'product_model_code' => null,
-                'created' => \DateTime::createFromFormat('Y-m-d H:i:s', self::CREATED),
-                'updated' => \DateTime::createFromFormat('Y-m-d H:i:s', self::UPDATED),
+                'created' => Type::getType(Type::DATETIME)->convertToPhpValue(self::CREATED, $platform),
+                'updated' => Type::getType(Type::DATETIME)->convertToPhpValue(self::UPDATED, $platform),
                 'family_code' => 'family',
                 'group_codes' => [],
                 'raw_values' => [
@@ -113,13 +115,14 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
 
     public function testVariantProductValues()
     {
+        $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
             'VariantProductA' => [
                 'identifier' => 'VariantProductA',
                 'is_enabled' => true,
                 'product_model_code' => 'SubProductModel',
-                'created' => \DateTime::createFromFormat('Y-m-d H:i:s', self::CREATED),
-                'updated' => \DateTime::createFromFormat('Y-m-d H:i:s', self::UPDATED),
+                'created' => Type::getType(Type::DATETIME)->convertToPhpValue(self::CREATED, $platform),
+                'updated' => Type::getType(Type::DATETIME)->convertToPhpValue(self::UPDATED, $platform),
                 'family_code' => 'FamilyWithVariant',
                 'group_codes' => [],
                 'raw_values' => [
