@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -38,16 +40,21 @@ final class ListProductsQueryHandler
     /** @var PrimaryKeyEncrypter */
     private $primaryKeyEncrypter;
 
+    /** @var GetConnectorProducts */
+    private $getConnectorProductsQuery;
+
     public function __construct(
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        PrimaryKeyEncrypter $primaryKeyEncrypter
+        PrimaryKeyEncrypter $primaryKeyEncrypter,
+        GetConnectorProducts $getConnectorProductsQuery
     ) {
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
         $this->fromSizePqbFactory = $fromSizePqbFactory;
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
         $this->primaryKeyEncrypter = $primaryKeyEncrypter;
+        $this->getConnectorProductsQuery = $getConnectorProductsQuery;
     }
 
     /**
@@ -81,7 +88,12 @@ final class ListProductsQueryHandler
 
         $pqb->addSorter('id', Directions::ASCENDING);
 
-        return $pqb->execute();
+        $identifierResults = iterator_to_array($pqb->execute());
+        $identifiers = array_map(function(IdentifierResult $identifier) {
+            return $identifier->getIdentifier();
+        }, $identifierResults);
+
+        return $this->getConnectorProductsQuery->fromProductIdentifiers($identifiers);
     }
 
     private function getSearchPQB(ListProductsQuery $query): ProductQueryBuilderInterface

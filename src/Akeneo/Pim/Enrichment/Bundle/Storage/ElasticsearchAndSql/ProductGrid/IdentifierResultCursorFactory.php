@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAndProductModelIdentifierCursorFactory implements CursorFactoryInterface
+class IdentifierResultCursorFactory implements CursorFactoryInterface
 {
     /** @var Client */
     private $esClient;
@@ -52,7 +52,7 @@ class ProductAndProductModelIdentifierCursorFactory implements CursorFactoryInte
             $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $hit['_source']['document_type']);
         }
 
-        return new ProductAndProductModelIdentifierCursor($identifiers, $totalCount);
+        return new IdentifierResultCursor($identifiers, $totalCount);
     }
 
     /**

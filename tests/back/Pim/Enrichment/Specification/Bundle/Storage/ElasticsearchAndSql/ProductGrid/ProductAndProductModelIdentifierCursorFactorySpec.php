@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
-use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\ProductAndProductModelIdentifierCursor;
+use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\IdentifierResultCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -52,7 +52,7 @@ class ProductAndProductModelIdentifierCursorFactorySpec extends ObjectBehavior
             ]
         ]]);
 
-        $this->createCursor($esQuery, $options)->shouldBeLike(new ProductAndProductModelIdentifierCursor(
+        $this->createCursor($esQuery, $options)->shouldBeLike(new IdentifierResultCursor(
             [
                 new IdentifierResult('product_1', ProductInterface::class),
                 new IdentifierResult('product_model_2', ProductModelInterface::class),
