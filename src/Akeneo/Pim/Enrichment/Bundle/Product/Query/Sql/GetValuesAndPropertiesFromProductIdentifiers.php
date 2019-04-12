@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * SQL Query to get the properties and the values from a set of product identifiers:
@@ -14,7 +15,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class GetValuesAndPropertiesFromProductIdentifiers
+final class GetValuesAndPropertiesFromProductIdentifiers
 {
     /** @var Connection */
     private $connection;
@@ -52,18 +53,17 @@ SQL;
             [Connection::PARAM_STR_ARRAY]
         );
 
+        $platform = $this->connection->getDatabasePlatform();
         $results = [];
         foreach ($rows as $row) {
             $results[$row['identifier']] = [
-                'identifier' => $row['identifier'],
-                'is_enabled' => $row['is_enabled'] === '1',
-                'product_model_code' => $row['product_model_code'],
-                'created' => \DateTime::createFromFormat('Y-m-d H:i:s', $row['created']),
-                'updated' => \DateTime::createFromFormat('Y-m-d H:i:s', $row['updated']),
-                'family_code' => $row['family_code'],
-                'group_codes' => array_filter(json_decode($row['group_codes']), function ($groupCode) {
-                    return null !== $groupCode;
-                }),
+                'identifier' => Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $platform),
+                'is_enabled' => Type::getType(Type::BOOLEAN)->convertToPHPValue($row['is_enabled'], $platform),
+                'product_model_code' => Type::getType(Type::STRING)->convertToPHPValue($row['product_model_code'], $platform),
+                'created' => Type::getType(Type::DATETIME)->convertToPhpValue($row['created'], $platform),
+                'updated' => Type::getType(Type::DATETIME)->convertToPhpValue($row['updated'], $platform),
+                'family_code' => Type::getType(Type::STRING)->convertToPHPValue($row['family_code'], $platform),
+                'group_codes' => array_filter(json_decode($row['group_codes'])),
                 'raw_values' => json_decode($row['raw_values'], true)
             ];
         }
