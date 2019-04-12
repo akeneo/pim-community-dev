@@ -6,14 +6,14 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 
-class ProductAndProductModelIdentifierCursorSpec extends ObjectBehavior
+class IdentifierResultCursorSpec extends ObjectBehavior
 {
     function let(IdentifierResult $identifierResult1, IdentifierResult $identifierResult2)
     {
         $this->beConstructedWith([$identifierResult1, $identifierResult2], 42);
     }
 
-    function it_is_a_Cursor()
+    function it_is_a_cursor()
     {
         $this->shouldImplement(CursorInterface::class);
     }
