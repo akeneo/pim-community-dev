@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8277: Fix Reference Entities- Localisable attributes not refreshed in the record after changing the locale
+- PIM-8293: Fix image normalization for assets with missing references
 
 # 3.0.12 (2019-04-09)
 
