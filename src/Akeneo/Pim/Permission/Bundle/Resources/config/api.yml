@@ -50,12 +50,10 @@ services:
         arguments:
             - '@pim_external_api_serializer'
             - '@pim_api.repository.channel'
-            - '@pimee_api.checker.query_parameters_product'
             - '@pim_api.repository.attribute'
             - '@pimee_workflow.repository.delegating_product'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.search_after_hal_paginator'
-            - '@pim_api.pagination.parameter_validator'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.remover.product'
@@ -77,12 +75,9 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
         arguments:
             - '@pim_catalog.query.product_model_query_builder_factory'
-            - '@pim_catalog.query.product_model_query_builder_from_size_factory'
             - '@pim_catalog.query.product_model_query_builder_search_after_size_factory'
             - '@pim_external_api_serializer'
             - '@pim_api.repository.channel'
-            - '@pimee_api.checker.query_parameters_product_model'
-            - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@pim_api.security.primary_key_encrypter'
@@ -94,6 +89,8 @@ services:
             - '@pimee_security.filter.granted_product_model_attribute_filter'
             - '@pimee_workflow.repository.delegating_product_model'
             - '@pim_api.stream.product_model_partial_update_stream'
+            - '@pim_enrich.connector.use_cases.validator.list_product_models'
+            - '@pim_enrich.connector.use_cases.handler.list_product_models'
             - '%pim_api.configuration%'
 
     akeneo.pim.enrichment.use_cases.validator.validate_granted_search_locale:
