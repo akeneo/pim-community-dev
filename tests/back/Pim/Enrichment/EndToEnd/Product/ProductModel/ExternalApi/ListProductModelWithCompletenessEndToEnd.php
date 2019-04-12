@@ -27,14 +27,14 @@ class ListProductModelWithCompletenessEndToEnd extends AbstractProductModelTestC
     {
         $client = $this->createAuthenticatedClient();
 
-        $search = '{"completeness":[{"operator":"ALL COMPLETE","scope":"ecommerce", "locales":["en_US"]}]}';
+        $search = '{"completeness":[{"operator":"ALL COMPLETE","scope":"ecommerce","locales":["en_US"]}]}';
         $client->request('GET', 'api/rest/v1/product-models?locales=en_US&limit=2&search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
 {
     "_links": {
-        "self": {"href": "http://localhost/api/rest/v1/product-models?page=1&with_count=false&pagination_type=page&limit=2&locales=en_US&search=${searchEncoded}"},
-        "first": {"href": "http://localhost/api/rest/v1/product-models?page=1&with_count=false&pagination_type=page&limit=2&locales=en_US&search=${searchEncoded}"}
+        "self": {"href": "http://localhost/api/rest/v1/product-models?page=1&with_count=false&pagination_type=page&limit=2&search=${searchEncoded}&locales=en_US"},
+        "first": {"href": "http://localhost/api/rest/v1/product-models?page=1&with_count=false&pagination_type=page&limit=2&search=${searchEncoded}&locales=en_US"}
     },
     "current_page" : 1,
     "_embedded"    : {

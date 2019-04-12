@@ -5,26 +5,24 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductModelsQueryValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
-use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
+use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
-use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -55,9 +53,6 @@ class ProductModelController
     protected $pqbFactory;
 
     /** @var ProductQueryBuilderFactoryInterface */
-    protected $pqbFromSizeFactory;
-
-    /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbSearchAfterFactory;
 
     /** @var NormalizerInterface */
@@ -65,9 +60,6 @@ class ProductModelController
 
     /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
-
-    /** @var ParameterValidatorInterface */
-    protected $parameterValidator;
 
     /** @var PaginatorInterface */
     protected $offsetPaginator;
@@ -94,7 +86,7 @@ class ProductModelController
     protected $router;
 
     /** @var ValidatorInterface */
-    protected $productValidator;
+    protected $productModelValidator;
 
     /** @var AttributeFilterInterface */
     protected $productModelAttributeFilter;
@@ -108,14 +100,17 @@ class ProductModelController
     /** @var QueryParametersCheckerInterface */
     protected $queryParametersChecker;
 
+    /** @var ListProductModelsQueryValidator */
+    private $listProductModelsQueryValidator;
+
+    /** @var ListProductModelsQueryHandler */
+    private $listProductModelsQueryHandler;
+
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        ProductQueryBuilderFactoryInterface $pqbFromSizeFactory,
         ProductQueryBuilderFactoryInterface $pqbSearchAfterFactory,
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
-        QueryParametersCheckerInterface $queryParametersChecker,
-        ParameterValidatorInterface $parameterValidator,
         PaginatorInterface $offsetPaginator,
         PaginatorInterface $searchAfterPaginator,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
@@ -123,31 +118,32 @@ class ProductModelController
         SimpleFactoryInterface $factory,
         SaverInterface $saver,
         UrlGeneratorInterface $router,
-        ValidatorInterface $productValidator,
+        ValidatorInterface $productModelValidator,
         AttributeFilterInterface $productModelAttributeFilter,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         StreamResourceResponse $partialUpdateStreamResource,
+        ListProductModelsQueryValidator $listProductModelsQueryValidator,
+        ListProductModelsQueryHandler $listProductModelsQueryHandler,
         array $apiConfiguration
     ) {
-        $this->pqbFactory                  = $pqbFactory;
-        $this->pqbFromSizeFactory          = $pqbFromSizeFactory;
-        $this->pqbSearchAfterFactory       = $pqbSearchAfterFactory;
-        $this->normalizer                  = $normalizer;
-        $this->channelRepository           = $channelRepository;
-        $this->queryParametersChecker      = $queryParametersChecker;
-        $this->parameterValidator          = $parameterValidator;
-        $this->offsetPaginator             = $offsetPaginator;
-        $this->searchAfterPaginator        = $searchAfterPaginator;
-        $this->primaryKeyEncrypter         = $primaryKeyEncrypter;
-        $this->updater                     = $updater;
-        $this->factory                     = $factory;
-        $this->saver                       = $saver;
-        $this->router                      = $router;
-        $this->productValidator            = $productValidator;
+        $this->pqbFactory = $pqbFactory;
+        $this->pqbSearchAfterFactory = $pqbSearchAfterFactory;
+        $this->normalizer = $normalizer;
+        $this->channelRepository = $channelRepository;
+        $this->offsetPaginator = $offsetPaginator;
+        $this->searchAfterPaginator = $searchAfterPaginator;
+        $this->primaryKeyEncrypter = $primaryKeyEncrypter;
+        $this->updater = $updater;
+        $this->factory = $factory;
+        $this->saver = $saver;
+        $this->router = $router;
+        $this->productModelValidator = $productModelValidator;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
         $this->productModelRepository = $productModelRepository;
         $this->partialUpdateStreamResource = $partialUpdateStreamResource;
-        $this->apiConfiguration            = $apiConfiguration;
+        $this->listProductModelsQueryValidator = $listProductModelsQueryValidator;
+        $this->listProductModelsQueryHandler = $listProductModelsQueryHandler;
+        $this->apiConfiguration = $apiConfiguration;
     }
 
     /**
@@ -234,36 +230,37 @@ class ProductModelController
      */
     public function listAction(Request $request): JsonResponse
     {
+        $query = new ListProductModelsQuery();
+
+        if ($request->query->has('attributes')) {
+            $query->attributeCodes = explode(',', $request->query->get('attributes'));
+        }
+        if ($request->query->has('locales')) {
+            $query->localeCodes = explode(',', $request->query->get('locales'));
+        }
+        if ($request->query->has('search')) {
+            $query->search = json_decode($request->query->get('search'), true);
+            if (!is_array($query->search)) {
+                throw new UnprocessableEntityHttpException('Search query parameter should be valid JSON.');
+            }
+        }
+        $query->channelCode = $request->query->get('scope', null);
+        $query->limit = $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default']);
+        $query->paginationType = $request->query->get('pagination_type', PaginationTypes::OFFSET);
+        $query->searchLocaleCode = $request->query->get('search_locale', null);
+        $query->withCount = $request->query->get('with_count', 'false');
+        $query->page = $request->query->get('page', 1);
+        $query->searchChannelCode = $request->query->get('search_scope', null);
+        $query->searchAfter = $request->query->get('search_after', null);
+
         try {
-            $this->parameterValidator->validate($request->query->all(), ['support_search_after' => true]);
-        } catch (PaginationParametersException $e) {
+            $this->listProductModelsQueryValidator->validate($query);
+            $productModels = $this->listProductModelsQueryHandler->handle($query); // in try block as PQB is doing validation also
+        } catch (InvalidQueryException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
-        $channel = null;
-        if ($request->query->has('scope')) {
-            $channel = $this->channelRepository->findOneByIdentifier($request->query->get('scope'));
-            if (null === $channel) {
-                throw new UnprocessableEntityHttpException(
-                    sprintf('Scope "%s" does not exist.', $request->query->get('scope'))
-                );
-            }
-        }
-
-        $normalizerOptions = $this->getNormalizerOptions($request, $channel);
-        $queryParameters = array_merge(
-            [
-                'pagination_type' => PaginationTypes::OFFSET,
-                'limit' => $this->apiConfiguration['pagination']['limit_by_default'],
-            ],
-            $request->query->all()
-        );
-
-        $paginatedProductModels = PaginationTypes::OFFSET === $queryParameters['pagination_type'] ?
-            $this->listOffset($request, $channel, $queryParameters, $normalizerOptions) :
-            $this->listSearchAfter($request, $channel, $queryParameters, $normalizerOptions);
-
-        return new JsonResponse($paginatedProductModels);
+        return new JsonResponse($this->normalizeProductModelsList($productModels, $query));
     }
 
     /**
@@ -287,99 +284,26 @@ class ProductModelController
      *
      * @return array
      */
-    protected function getNormalizerOptions(Request $request, ?ChannelInterface $channel): array
+    protected function getNormalizerOptions(ListProductModelsQuery $query): array
     {
         $normalizerOptions = [];
 
-        if ($request->query->has('scope')) {
+        if (null !== $query->channelCode) {
+            $channel = $this->channelRepository->findOneByIdentifier($query->channelCode);
+
             $normalizerOptions['channels'] = [$channel->getCode()];
             $normalizerOptions['locales'] = $channel->getLocaleCodes();
         }
 
-        if ($request->query->has('locales')) {
-            $locales = explode(',', $request->query->get('locales'));
-            $this->queryParametersChecker->checkLocalesParameters($locales, $channel);
-
-            $normalizerOptions['locales'] = $locales;
+        if (null !== $query->localeCodes) {
+            $normalizerOptions['locales'] = $query->localeCodes;
         }
 
-        if ($request->query->has('attributes')) {
-            $attributes = explode(',', $request->query->get('attributes'));
-            $this->queryParametersChecker->checkAttributesParameters($attributes);
-
-            $normalizerOptions['attributes'] = $attributes;
+        if (null !== $query->attributeCodes) {
+            $normalizerOptions['attributes'] = $query->attributeCodes;
         }
 
         return $normalizerOptions;
-    }
-
-    /**
-     * Get list of product models using 'offset' pagination mode.
-     *
-     * @param Request $request
-     * @param null|ChannelInterface $channel
-     * @param array $queryParameters
-     * @param array $normalizerOptions
-     * @return array
-     *
-     * @throws DocumentedHttpException
-     * @throws ServerErrorResponseException
-     */
-    protected function listOffset(
-        Request $request,
-        ?ChannelInterface $channel,
-        array $queryParameters,
-        array $normalizerOptions
-    ) {
-        $from = isset($queryParameters['page']) ? ($queryParameters['page'] - 1) * $queryParameters['limit'] : 0;
-
-        $pqb = $this->pqbFromSizeFactory->create(['limit' => (int) $queryParameters['limit'], 'from' => (int) $from]);
-
-        try {
-            $this->setPQBFilters($pqb, $request, $channel);
-        } catch (
-        UnsupportedFilterException
-        | PropertyException
-        | InvalidOperatorException
-        | ObjectNotFoundException
-        $e
-        ) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        }
-
-        $queryParameters = array_merge(['page' => 1, 'with_count' => 'false'], $queryParameters);
-        $pqb->addSorter('id', Directions::ASCENDING);
-        $productModels = $pqb->execute();
-
-        $paginationParameters = [
-            'query_parameters'    => $queryParameters,
-            'list_route_name'     => 'pim_api_product_model_list',
-            'item_route_name'     => 'pim_api_product_model_get',
-            'item_identifier_key' => 'code',
-        ];
-
-        try {
-            $count = 'true' === $queryParameters['with_count'] ? $productModels->count() : null;
-            $paginatedProductModels = $this->offsetPaginator->paginate(
-                $this->normalizer->normalize($productModels, 'external_api', $normalizerOptions),
-                $paginationParameters,
-                $count
-            );
-        } catch (ServerErrorResponseException $e) {
-            $message = json_decode($e->getMessage(), true);
-            if (null !== $message && isset($message['error']['root_cause'][0]['type'])
-                && 'query_phase_execution_exception' === $message['error']['root_cause'][0]['type']) {
-                throw new DocumentedHttpException(
-                    Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
-                    'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
-                    $e
-                );
-            }
-
-            throw new ServerErrorResponseException($e->getMessage(), $e->getCode(), $e);
-        }
-
-        return $paginatedProductModels;
     }
 
     /**
@@ -485,159 +409,87 @@ class ProductModelController
      */
     protected function validateProductModel(ProductModelInterface $productModel): void
     {
-        $violations = $this->productValidator->validate($productModel, null, ['Default', 'api']);
+        $violations = $this->productModelValidator->validate($productModel, null, ['Default', 'api']);
         if (0 !== $violations->count()) {
             throw new ViolationHttpException($violations);
         }
     }
 
-    /**
-     * Get list of product models using 'search after' pagination mode.
-     *
-     * @param Request $request
-     * @param null|ChannelInterface $channel
-     * @param array $queryParameters
-     * @param array $normalizerOptions
-     *
-     * @return array
-     */
-    protected function listSearchAfter(
-        Request $request,
-        ?ChannelInterface $channel,
-        array $queryParameters,
-        array $normalizerOptions
-    ) {
-        $pqbOptions = ['limit' => (int) $queryParameters['limit']];
-        $searchParameterCrypted = null;
-        if (isset($queryParameters['search_after'])) {
-            $searchParameterCrypted = $queryParameters['search_after'];
-            $searchParameterDecrypted = $this->primaryKeyEncrypter->decrypt($queryParameters['search_after']);
-            $pqbOptions['search_after_unique_key'] = $searchParameterDecrypted;
-            $pqbOptions['search_after'] = [$searchParameterDecrypted];
-        }
-        $pqb = $this->pqbSearchAfterFactory->create($pqbOptions);
+    private function normalizeProductModelsList(CursorInterface $productModels, ListProductModelsQuery $query): array
+    {
+        $normalizerOptions = $this->getNormalizerOptions($query);
 
-        try {
-            $this->setPQBFilters($pqb, $request, $channel);
-        } catch (
-        UnsupportedFilterException
-        | PropertyException
-        | InvalidOperatorException
-        | ObjectNotFoundException
-        $e
-        ) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        }
-
-        $pqb->addSorter('id', Directions::ASCENDING);
-        $productModelCursor = $pqb->execute();
-
-        $productModels = [];
-        foreach ($productModelCursor as $productModel) {
-            $productModels[] = $productModel;
-        }
-
-        $lastProductModel = end($productModels);
-        reset($productModels);
-
-        $nextSearchAfter = false !== $lastProductModel ?
-            $this->primaryKeyEncrypter->encrypt($lastProductModel->getId()) :
-            null;
-
-        $parameters = [
-            'query_parameters'    => $queryParameters,
-            'search_after'        => [
-                'next' => $nextSearchAfter,
-                'self' => $searchParameterCrypted,
-            ],
-            'list_route_name'     => 'pim_api_product_model_list',
-            'item_route_name'     => 'pim_api_product_model_get',
-            'item_identifier_key' => 'code',
+        $queryParameters = [
+            'with_count' => $query->withCount,
+            'pagination_type' => $query->paginationType,
+            'limit' => $query->limit
         ];
 
-        $paginatedProductModels = $this->searchAfterPaginator->paginate(
-            $this->normalizer->normalize($productModels, 'external_api', $normalizerOptions),
-            $parameters,
-            null
-        );
-
-        return $paginatedProductModels;
-    }
-
-    /**
-     * Set the PQB filters.
-     * If a scope is requested, add a filter to return only product models linked to its category tree
-     *
-     * @param ProductQueryBuilderInterface $pqb
-     * @param Request                      $request
-     * @param ChannelInterface|null        $channel
-     *
-     * @throws UnprocessableEntityHttpException
-     */
-    protected function setPQBFilters(
-        ProductQueryBuilderInterface $pqb,
-        Request $request,
-        ?ChannelInterface $channel
-    ): void {
-        $searchParameters = [];
-
-        if ($request->query->has('search')) {
-            $searchString = $request->query->get('search', '');
-            $searchParameters = $this->queryParametersChecker->checkCriterionParameters($searchString);
-
-            if (isset($searchParameters['categories'])) {
-                $this->queryParametersChecker->checkCategoriesParameters($searchParameters['categories']);
-            }
+        if ($query->search !== []) {
+            $queryParameters['search'] = json_encode($query->search);
+        }
+        if (null !== $query->channelCode) {
+            $queryParameters['scope'] = $query->channelCode;
+        }
+        if (null !== $query->localeCodes) {
+            $queryParameters['locales'] = join(',', $query->localeCodes);
+        }
+        if (null !== $query->attributeCodes) {
+            $queryParameters['attributes'] = join(',', $query->attributeCodes);
         }
 
-        if (null !== $channel && !isset($searchParameters['categories'])) {
-            $searchParameters['categories'] = [
-                [
-                    'operator' => Operators::IN_CHILDREN_LIST,
-                    'value'    => [$channel->getCategory()->getCode()]
-                ]
+        if (PaginationTypes::OFFSET === $query->paginationType) {
+            $queryParameters = ['page' => $query->page] + $queryParameters;
+
+            $paginationParameters = [
+                'query_parameters'    => $queryParameters,
+                'list_route_name'     => 'pim_api_product_model_list',
+                'item_route_name'     => 'pim_api_product_model_get',
+                'item_identifier_key' => 'code',
             ];
-        }
 
-        foreach ($searchParameters as $propertyCode => $filters) {
-            foreach ($filters as $filter) {
-                $searchLocale = $request->query->get('search_locale');
-                $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $searchLocale;
+            try {
+                $count = $query->withCountAsBoolean() ? $productModels->count() : null;
 
-                if (null !== $context['locale'] && is_string($context['locale'])) {
-                    $locales = explode(',', $context['locale']);
-                    $this->queryParametersChecker->checkLocalesParameters($locales);
-                }
-
-                $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
-
-                if (isset($filter['locales']) && '' !== $filter['locales']) {
-                    $context['locales'] = $filter['locales'];
-
-                    $this->queryParametersChecker->checkLocalesParameters(
-                        !is_array($context['locales']) ? [$context['locales']] : $context['locales']
+                return $this->offsetPaginator->paginate(
+                    $this->normalizer->normalize($productModels, 'external_api', $normalizerOptions),
+                    $paginationParameters,
+                    $count
+                );
+            } catch (ServerErrorResponseException $e) {
+                $message = json_decode($e->getMessage(), true);
+                if (null !== $message && isset($message['error']['root_cause'][0]['type'])
+                    && 'query_phase_execution_exception' === $message['error']['root_cause'][0]['type']) {
+                    throw new DocumentedHttpException(
+                        Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
+                        'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
+                        $e
                     );
                 }
 
-                $value = isset($filter['value']) ? $filter['value'] : null;
-
-                if (in_array($propertyCode, ['created', 'updated'])) {
-                    if (Operators::BETWEEN === $filter['operator'] && is_array($value)) {
-                        $values = [];
-                        foreach ($value as $date) {
-                            $values[] = \DateTime::createFromFormat('Y-m-d H:i:s', $date);
-                        }
-                        $value = $values;
-                    } else {
-                        //PIM-7541 Create the date with the server timezone configuration. Do not force it to UTC timezone.
-                        $value = \DateTime::createFromFormat('Y-m-d H:i:s', $value);
-                    }
-                }
-
-                $this->queryParametersChecker->checkPropertyParameters($propertyCode, $filter['operator']);
-
-                $pqb->addFilter($propertyCode, $filter['operator'], $value, $context);
+                throw new ServerErrorResponseException($e->getMessage(), $e->getCode(), $e);
             }
+        } else {
+            $productModels = iterator_to_array($productModels);
+
+            $lastProductModel = end($productModels);
+
+            $parameters = [
+                'query_parameters'    => $queryParameters,
+                'search_after'        => [
+                    'next' => false !== $lastProductModel ? $this->primaryKeyEncrypter->encrypt($lastProductModel->getId()) : null,
+                    'self' => $query->searchAfter,
+                ],
+                'list_route_name'     => 'pim_api_product_model_list',
+                'item_route_name'     => 'pim_api_product_model_get',
+                'item_identifier_key' => 'code',
+            ];
+
+            return $this->searchAfterPaginator->paginate(
+                $this->normalizer->normalize($productModels, 'external_api', $normalizerOptions),
+                $parameters,
+                null
+            );
         }
     }
 }

@@ -15,7 +15,6 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterI
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
-use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -71,9 +70,6 @@ class ProductController
     /** @var PaginatorInterface */
     protected $searchAfterPaginator;
 
-    /** @var ParameterValidatorInterface */
-    protected $parameterValidator;
-
     /** @var  ValidatorInterface */
     protected $productValidator;
 
@@ -104,9 +100,6 @@ class ProductController
     /** @var array */
     protected $apiConfiguration;
 
-    /** @var QueryParametersCheckerInterface */
-    protected $queryParametersChecker;
-
     /** @var ProductQueryBuilderFactoryInterface */
     protected $fromSizePqbFactory;
 
@@ -128,12 +121,10 @@ class ProductController
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
-        QueryParametersCheckerInterface $queryParametersChecker,
         AttributeRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $productRepository,
         PaginatorInterface $offsetPaginator,
         PaginatorInterface $searchAfterPaginator,
-        ParameterValidatorInterface $parameterValidator,
         ValidatorInterface $productValidator,
         ProductBuilderInterface $productBuilder,
         RemoverInterface $remover,
@@ -153,12 +144,10 @@ class ProductController
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
-        $this->queryParametersChecker = $queryParametersChecker;
         $this->attributeRepository = $attributeRepository;
         $this->productRepository = $productRepository;
         $this->offsetPaginator = $offsetPaginator;
         $this->searchAfterPaginator = $searchAfterPaginator;
-        $this->parameterValidator = $parameterValidator;
         $this->productValidator = $productValidator;
         $this->productBuilder = $productBuilder;
         $this->remover = $remover;
@@ -216,7 +205,6 @@ class ProductController
         } catch (InvalidQueryException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
-
 
         return new JsonResponse($this->normalizeProductsList($products, $query));
     }
