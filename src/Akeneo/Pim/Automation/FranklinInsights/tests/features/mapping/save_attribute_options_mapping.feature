@@ -1,7 +1,7 @@
 @acceptance-back
 Feature: Map some attribute options with Franklin attribute options
 
-  @critical @end-to-end @javascript @skip @info SHOULD BE FIXED ABSOLUTELY
+  @critical @end-to-end @javascript
   Scenario: Successfully map an attribute option for the first time
     Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
