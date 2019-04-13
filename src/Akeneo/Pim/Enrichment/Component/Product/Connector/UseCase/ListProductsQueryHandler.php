@@ -16,9 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -86,12 +84,17 @@ final class ListProductsQueryHandler
         $pqb->addSorter('id', Directions::ASCENDING);
 
         $result = $pqb->execute();
-        $identifierResults = iterator_to_array($result);
         $identifiers = array_map(function (IdentifierResult $identifier) {
             return $identifier->getIdentifier();
-        }, $identifierResults);
+        }, iterator_to_array($result));
 
-        $products = $this->getConnectorProductsQuery->fromProductIdentifiers($identifiers);
+        // TODO: inject activated locales is channel is provided (handler responsibility)
+        $products = $this->getConnectorProductsQuery->fromProductIdentifiers(
+            $identifiers,
+            $query->attributeCodes,
+            $query->channelCode,
+            $query->localeCodes
+        );
 
         return new ConnectorProductList($result->count(), $products);
     }

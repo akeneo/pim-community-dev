@@ -140,3 +140,4 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductsFromWriteModel'
         arguments:
             - '@pim_api.repository.product'
+            - '@pim_catalog.repository.attribute'

@@ -10,5 +10,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Query;
  */
 interface GetConnectorProducts
 {
-    public function fromProductIdentifiers(array $identifiers);
+    public function fromProductIdentifiers(
+        array $identifiers,
+        ?array $attributesToFilterOn,
+        ?string $channelToFilterOn,
+        ?array $localesToFilterOn
+    );
 }

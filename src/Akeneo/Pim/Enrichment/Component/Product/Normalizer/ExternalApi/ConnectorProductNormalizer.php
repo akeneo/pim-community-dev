@@ -27,7 +27,7 @@ class ConnectorProductNormalizer
 
     public function normalizeConnectorProductList(ConnectorProductList $connectorProducts): array
     {
-        $normalizedProducts =[];
+        $normalizedProducts = [];
         foreach ($connectorProducts->connectorProducts() as $connectorProduct) {
             $normalizedProducts[] = $this->normalizeConnectorProduct($connectorProduct);
         }
@@ -37,6 +37,8 @@ class ConnectorProductNormalizer
 
     private function normalizeConnectorProduct(ConnectorProduct $connectorProduct)
     {
+        $values = $this->valuesNormalizer->normalize($connectorProduct->values(), 'standard');
+
         return  [
             'identifier' => $connectorProduct->identifier(),
             'created' => $this->dateTimeNormalizer->normalize($connectorProduct->createdDate()),
@@ -46,8 +48,8 @@ class ConnectorProductNormalizer
             'categories' => $connectorProduct->categoryCodes(),
             'groups' => $connectorProduct->groupCodes(),
             'parent' => $connectorProduct->parentProductModelCode(),
-            'values' => $this->valuesNormalizer->normalize($connectorProduct->values(), 'standard'),
-            'associations' => $connectorProduct->associations()
+            'values' => empty($values) ? (object) [] : $values,
+            'associations' => empty($connectorProduct->associations()) ? (object) [] : $connectorProduct->associations()
         ];
     }
 }
