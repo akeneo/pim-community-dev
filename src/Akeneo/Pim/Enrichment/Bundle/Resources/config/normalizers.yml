@@ -13,6 +13,12 @@ services:
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
 
+    pim_api.normalizer.connector_products:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.product_values'
+            - '@pim_catalog.normalizer.standard.datetime'
+
     pim_api.normalizer.product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductModelNormalizer'
         arguments:

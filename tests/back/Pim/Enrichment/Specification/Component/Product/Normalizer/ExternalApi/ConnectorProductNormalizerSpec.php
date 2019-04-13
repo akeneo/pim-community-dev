@@ -18,7 +18,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
     function let(ProductValuesNormalizer $valuesNormalizer)
     {
         $this->beConstructedWith($valuesNormalizer, new DateTimeNormalizer());
-        $valuesNormalizer->normalize(Argument::type(ValueCollection::class))->willReturn([]);
+        $valuesNormalizer->normalize(Argument::type(ValueCollection::class), 'standard')->willReturn([]);
 
     }
 

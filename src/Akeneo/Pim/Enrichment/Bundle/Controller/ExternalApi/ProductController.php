@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQueryH
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductsQueryValidator;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -119,6 +120,9 @@ class ProductController
     /** @var ListProductsQueryHandler */
     private $listProductsQueryHandler;
 
+    /** @var ConnectorProductNormalizer */
+    private $connectorProductNormalizer;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -141,7 +145,8 @@ class ProductController
         AddParent $addParent,
         ListProductsQueryValidator $listProductsQueryValidator,
         array $apiConfiguration,
-        ListProductsQueryHandler $listProductsQueryHandler
+        ListProductsQueryHandler $listProductsQueryHandler,
+        ConnectorProductNormalizer $connectorProductNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -165,6 +170,7 @@ class ProductController
         $this->addParent = $addParent;
         $this->listProductsQueryValidator = $listProductsQueryValidator;
         $this->listProductsQueryHandler = $listProductsQueryHandler;
+        $this->connectorProductNormalizer = $connectorProductNormalizer;
     }
 
     /**
@@ -627,7 +633,7 @@ class ProductController
             try {
                 $count = $query->withCountAsBoolean() ? $connectorProductList->totalNumberOfProducts() : null;
                 $paginatedProducts = $this->offsetPaginator->paginate(
-                    $this->normalizer->normalize($connectorProductList, 'external_api', $normalizerOptions),
+                    $this->connectorProductNormalizer->normalizeConnectorProductList($connectorProductList),
                     $paginationParameters,
                     $count
                 );

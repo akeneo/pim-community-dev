@@ -54,6 +54,7 @@ services:
             - '@pim_enrich.connector.use_cases.validator.list_products'
             - '%pim_api.configuration%'
             - '@pim_enrich.connector.use_cases.handler.list_products'
+            - '@pim_api.normalizer.connector_products'
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'

@@ -35,7 +35,7 @@ class ConnectorProductNormalizer
         return $normalizedProducts;
     }
 
-    public function normalizeConnectorProduct(ConnectorProduct $connectorProduct)
+    private function normalizeConnectorProduct(ConnectorProduct $connectorProduct)
     {
         return  [
             'identifier' => $connectorProduct->identifier(),
@@ -46,7 +46,7 @@ class ConnectorProductNormalizer
             'categories' => $connectorProduct->categoryCodes(),
             'groups' => $connectorProduct->groupCodes(),
             'parent' => $connectorProduct->parentProductModelCode(),
-            'values' => $this->valuesNormalizer->normalize($connectorProduct->values()),
+            'values' => $this->valuesNormalizer->normalize($connectorProduct->values(), 'standard'),
             'associations' => $connectorProduct->associations()
         ];
     }

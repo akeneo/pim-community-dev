@@ -141,7 +141,7 @@ final class ConnectorProduct
             $product->getFamily()->getCode(),
             $product->getCategoryCodes(),
             $product->getGroupCodes(),
-            $product->getParent()->getCode(),
+            $product->isVariant() ? $product->getParent()->getCode() : null,
             self::productAssociationsAsArray($product),
             [],
             $product->getValues()
