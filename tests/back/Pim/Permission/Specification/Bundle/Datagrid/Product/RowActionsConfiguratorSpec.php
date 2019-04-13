@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Permission\Bundle\Datagrid\Product;
 
 use Akeneo\Pim\Permission\Bundle\Datagrid\Product\RowActionsConfigurator;
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\FetchUserRightsOnProduct;
-use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProductModel;
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel\FetchUserRightsOnProductModel;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductModel;
@@ -135,8 +135,8 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_is_possible_for_the_user_to_view_the_product_model($productModelRow, $fetchUserRightsOnProductModel)
     {
-        $fetchUserRightsOnProductModel->fetch('product_model_identifier', 1)->willReturn(
-            new UserRightsOnProductModel('product_model_identifier', 1, 0, 0, 1)
+        $fetchUserRightsOnProductModel->fetchByIdentifier('product_model_identifier', 1)->willReturn(
+            new UserRightsOnProductModel('product_model_identifier', 1, 0, 0, 1, 1)
         );
         $closure = $this->getActionConfigurationClosure();
         $closure($productModelRow)->shouldReturn(
@@ -152,8 +152,8 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_is_possible_for_the_user_to_apply_a_draft_on_product_model_or_to_enrich_the_product_model($productModelRow, $fetchUserRightsOnProductModel)
     {
-        $fetchUserRightsOnProductModel->fetch('product_model_identifier', 1)->willReturn(
-            new UserRightsOnProductModel('product_model_identifier', 1, 1, 0, 1)
+        $fetchUserRightsOnProductModel->fetchByIdentifier('product_model_identifier', 1)->willReturn(
+            new UserRightsOnProductModel('product_model_identifier', 1, 1, 0, 1, 1)
         );
         $closure = $this->getActionConfigurationClosure();
         $closure($productModelRow)->shouldReturn(
@@ -169,8 +169,8 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_is_possible_for_the_user_to_categorize_the_product_model($productModelRow, $fetchUserRightsOnProductModel)
     {
-        $fetchUserRightsOnProductModel->fetch('product_model_identifier', 1)->willReturn(
-            new UserRightsOnProductModel('product_model_identifier', 1, 1, 1, 1)
+        $fetchUserRightsOnProductModel->fetchByIdentifier('product_model_identifier', 1)->willReturn(
+            new UserRightsOnProductModel('product_model_identifier', 1, 1, 1, 1, 1)
         );
         $closure = $this->getActionConfigurationClosure();
         $closure($productModelRow)->shouldReturn(
@@ -186,8 +186,8 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_is_possible_for_the_user_to_delete_the_product_model($productModelRow, $fetchUserRightsOnProductModel)
     {
-        $fetchUserRightsOnProductModel->fetch('product_model_identifier', 1)->willReturn(
-            new UserRightsOnProductModel('product_model_identifier', 1, 1, 1, 1)
+        $fetchUserRightsOnProductModel->fetchByIdentifier('product_model_identifier', 1)->willReturn(
+            new UserRightsOnProductModel('product_model_identifier', 1, 1, 1, 1, 1)
         );
         $closure = $this->getActionConfigurationClosure();
         $closure($productModelRow)->shouldReturn(
@@ -203,8 +203,8 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_is_possible_for_the_user_to_enable_or_disable_the_product_model($productModelRow, $fetchUserRightsOnProductModel)
     {
-        $fetchUserRightsOnProductModel->fetch('product_model_identifier', 1)->willReturn(
-            new UserRightsOnProductModel('product_model_identifier', 1, 1, 1, 1)
+        $fetchUserRightsOnProductModel->fetchByIdentifier('product_model_identifier', 1)->willReturn(
+            new UserRightsOnProductModel('product_model_identifier', 1, 1, 1, 1, 1)
         );
         $closure = $this->getActionConfigurationClosure();
         $closure($productModelRow)->shouldReturn(
