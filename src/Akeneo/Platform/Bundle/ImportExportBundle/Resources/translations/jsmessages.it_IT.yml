@@ -160,6 +160,16 @@ confirmation:
     import_profile: Sei sicuro di voler eliminare questo profilo di importazione?
     export_profile: Sei sicuro di voler eliminare questo profilo di esportazione?
     job_instance: È sicuro di che volere cancellare questa istanza di lavoro?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Sei sicuro di voler eliminare questo profilo di importazione?
+    export_profile:
+      module:
+        delete:
+          confirm: Sei sicuro di voler eliminare questo profilo di esportazione?
 pim_title:
   pim_importexport_export_profile_index: Gestione profili di esportazione
   pim_importexport_export_profile_edit: Profilo di esportazione {{ job.label }} | Modifica

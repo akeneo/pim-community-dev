@@ -149,6 +149,16 @@ confirmation:
     import_profile: Är du säker på att du vill ta bort denna importprofil?
     export_profile: Är du säker på att du vill ta bort denna exportprofil?
     job_instance: Är du säker på att du vill ta bort den här jobbinstansen?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Är du säker på att du vill ta bort denna importprofil?
+    export_profile:
+      module:
+        delete:
+          confirm: Är du säker på att du vill ta bort denna exportprofil?
 pim_title:
   pim_importexport_export_profile_index: Hantera exportprofiler
   pim_importexport_export_execution_index: Exporthistorik

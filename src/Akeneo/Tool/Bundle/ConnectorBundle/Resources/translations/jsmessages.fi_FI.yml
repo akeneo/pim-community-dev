@@ -22,8 +22,8 @@ batch_jobs:
     label: Attribuuttien vienti CSV-muodossa
     export.label: Attribuuttien vienti
   csv_attribute_option_export:
-    label: Attribuuttien vaihtoehtojen vienti CSV-muodossa
-    export.label: Attribuuttien vaihtoehtojen vienti
+    label: Attribuuttien määritteiden vienti CSV-muodossa
+    export.label: Attribuuttien määritteiden vienti
   csv_association_type_export:
     label: Liitännäistyyppien vienti CSV-muodossa
     export.label: Liitännäistyyppien vienti
@@ -49,8 +49,8 @@ batch_jobs:
     label: Attribuuttien tuonti CSV-muodossa
     import.label: Attribuuttien tuonti
   csv_attribute_option_import:
-    label: Attribuuttien vaihtoehtojen tuonti CSV-muodossa
-    import.label: Attribuuttien vaihtoehtojen tuonti
+    label: Attribuuttien määritteiden tuonti CSV-muodossa
+    import.label: Attribuuttien määritteiden tuonti
   csv_association_type_import:
     label: Liitännäistyyppien tuonti CSV-muodossa
     import.label: Liitännäistyyppien tuonti
@@ -86,8 +86,8 @@ batch_jobs:
     label: Attribuuttien tuonti XLSX-muodossa
     import.label: Attribuuttien tuonti
   xlsx_attribute_option_import:
-    label: Attribuuttien vaihtoehtojen tuonti XLSX-muodossa
-    import.label: Attribuutin vaihtoehdon tuonti
+    label: Attribuuttien määritteiden tuonti XLSX-muodossa
+    import.label: Attribuuttien määritteiden tuonti
   xlsx_family_import:
     label: Perheiden tuonti XLSX-muodossa
     import.label: Ryhmätuonti
@@ -125,7 +125,7 @@ batch_jobs:
     label: Attribuuttivienti XLSX-muodossa
     export.label: Attribuuttivienti XLSX-muodossa
   xlsx_attribute_option_export:
-    label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
+    label: Attribuuttien määritteiden vienti XLSX-muodossa
     export.label: Attribuuttien määritteiden vienti XLSX-muodossa
   xlsx_association_type_export:
     label: Liitännäistyyppien vienti XLSX-muodossa

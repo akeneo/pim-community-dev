@@ -155,6 +155,16 @@ confirmation:
     import_profile: Er du sikker på du vil slette denne import profil?
     export_profile: Er du sikker på du vil slette denne eksportprofil?
     job_instance: Er du sikker på du vil slette dette job?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Er du sikker på du vil slette denne import profil?
+    export_profile:
+      module:
+        delete:
+          confirm: Er du sikker på du vil slette denne eksportprofil?
 pim_title:
   pim_importexport_export_profile_index: Eksporter profil håndtering
   pim_importexport_export_profile_edit: Eksportere profiler {{ job.label }} | Rediger

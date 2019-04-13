@@ -72,8 +72,8 @@ pim_enrich:
       create: Luo tuote
       edit_attributes: Muokkaa tuotteen ominaisuuksia
       remove: Poista tuote
-      add_attribute: Lisää attribuutti tuotteelle
-      remove_attribute: Poista attribuutti tuotteelta
+      add_attribute: Lisää määrite tuotteeseen
+      remove_attribute: Poista määrite tuotteesta
       categories_view: Katso tuotteen kategorioita
       associations_view: Näytä tuotteen assosiaatiot
       associations_edit: Lisää tuotteelle assosiaatioita
@@ -109,18 +109,18 @@ pim_enrich:
       index: Listaa tuoteperheet
       create: Luo tuoteperhe
       edit_properties: Muokkaa tuoteperheen ominaisuuksia
-      edit_attributes: Muokkaa perheen attribuutteja
+      edit_attributes: Muokkaa tuoteperheen määritteitä
       edit_variants: Muokkaa varianttiperhettä
       remove: Poista tuoteperhe
       history: Tarkastele tuoteperheen historiaa
     family_variant:
       remove: Poista varianttiperhe
     attribute_group:
-      index: Listaa attribuuttiryhmät
-      create: Luo attribuuttiryhmä
+      index: Listaa määriteryhmät
+      create: Luo määriteryhmä
       edit: Muokkaa attribuuttiryhmää
-      remove: Poista attribuuttiryhmä
-      sort: Järjestä attribuuttiryhmiä
+      remove: Poista määriteryhmä
+      sort: Lajittele attribuuttiryhmiä
       add_attribute: Lisää attribuutti ryhmään
       remove_attribute: Poista attribuutti ryhmästä
       history: Näytä attribuuttiryhmien historia
@@ -143,11 +143,11 @@ pim_enrich:
       edit: Editoi ryhmätyyppiä
       remove: Poista ryhmätyyppi
     association_type:
-      index: Listaa assosiaatiotyypit
-      create: Luo assosiaatiotyyppi
-      edit: Muokkaa assosiaatiotyyppiä
-      remove: Poista assosiaatiotyyppi
-      history: Näytä assosiaatiotyypin historia
+      index: Listaa määritetyypit
+      create: Luo määritetyyppi
+      edit: Muokkaa määritetyyppiä
+      remove: Poista määritetyyppi
+      history: Näytä määritetyypin historia
     association:
       remove: Poista tuotteen assosiaatiot
     job_tracker:
@@ -388,7 +388,7 @@ pane.accordion:
   options: Vaihtoehdot
   group_values: Ryhmän arvot
 popin.create:
-  association_type.title: Luo uusi assosiaatiotyyppi
+  association_type.title: Luo uusi määritetyyppi
   group.title: Luo uusi ryhmä
   product.title: Luo uusi tuote
   option.title: Luo uusi vaihtoehto
