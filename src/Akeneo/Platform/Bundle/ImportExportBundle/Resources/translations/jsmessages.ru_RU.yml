@@ -135,6 +135,16 @@ confirmation:
   remove:
     import_profile: Вы действительно хотите удалить этот профиль импорта?
     export_profile: Вы действительно хотите удалить этот профиль экспорта?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Вы действительно хотите удалить этот профиль импорта?
+    export_profile:
+      module:
+        delete:
+          confirm: Вы действительно хотите удалить этот профиль экспорта?
 pim_title:
   pim_importexport_export_profile_index: Управление профилями экспорта
   pim_importexport_export_execution_index: История запусков экспорта

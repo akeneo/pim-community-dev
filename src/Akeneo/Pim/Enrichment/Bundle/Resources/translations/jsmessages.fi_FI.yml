@@ -21,7 +21,7 @@ pim_enrich.entity.product:
       success: Tuote päivitetty.
       fail: Tuotetta ei voitu päivittää.
       fields_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
-      already_in_upload: Tiedosto on jo ladattu attribuutin lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
+      already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       file_upload: Virhe tiedoston lataamisessa
     delete:
       success: Tuote poistettiin.
@@ -74,8 +74,8 @@ pim_enrich.entity.product:
     completeness:
       title: Valmistumisaste
       complete: Valmis
-      no_family: Perhettä ei ole määritelty. Määritä perhe, jotta voit laskea tuotteen valmiusasteen.
-      no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden perheen valmiusasteen.
+      no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
+      no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
       missing_values: "{1}1 puuttuva arvo|]1, Inf[{{ count }} puuttuvaa arvoa"
     sequential_edit:
       item_limit: Vain 1000 ensimmäistä näytetään peräkkäisessä muokkauksessa ({{ count }} valittuna)
@@ -127,7 +127,7 @@ pim_enrich.entity.product_model:
       product_model_added: Varianttituote lisätty onnistuneesti tuotemalliin
       variant_product_added: Varianttituote lisätty onnistuneesti tuotemalliin
     update:
-      success: Tuotemallin päivittäminen onnistui. Tuotevarianttien valmiusaste lasketaan uudelleen.
+      success: Tuotemallin päivittäminen onnistui. Tuotevarianttien täyttöaste lasketaan uudelleen.
       fail: Tuotemallia ei voitu päivittää.
       fields_not_ready: "Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
     delete:
@@ -183,9 +183,9 @@ pim_enrich.export.product:
     title: Suodata arvot
   filter:
     channel:
-      help: Kanava määrittää tuotetietojen julkaisukanavan, käytetyt lokaatiot ja tuotteiden valinnan kategoriapuusta.
+      help: Kanava määrittää tuotearvojen laajuuden, arvojen lokaation ja tuotepuun, jolla rajataan mukaan otettavat tuotteet.
     locales:
-      help: "Lokaatiot määrittävät minkä kieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot."
+      help: "Lokaatiot määrittävät minkäkieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot."
     attributes:
       label: "{0}Kaikki attribuutit|{1}Yksi attribuutti valittu|]1,Inf[ {{ count }} attribuuttia valittu"
       help: "Valitse vietävä attribuuttiryhmä. Esim: vain tekniset attribuutit."
@@ -333,7 +333,7 @@ pim_datagrid:
       success: Valitut tuotteet poistettiin.
       error: Virhe yritettäessä poistaa valitut tuotteet, yritä uudelleen.
     quick_export:
-      csv_all: CSV (kaikki attribuutit)
+      csv_all: CSV (kaikki määritteet)
       csv_grid_context: CSV (Ruudukon konteksti)
       xlsx_all: Excel (Kaikki attribuutit)
       xlsx_grid_context: Excel (Ruudukon konteksti)

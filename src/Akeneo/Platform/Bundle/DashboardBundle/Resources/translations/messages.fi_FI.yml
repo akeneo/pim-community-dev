@@ -3,7 +3,7 @@ pim_dashboard:
   version: Versio
   widget:
     completeness:
-      title: Kanavien ja lokaatioiden valmiusaste
+      title: Kanavien ja lokaatioiden täyttöaste
     last_operations:
       title: Viimeiset toiminnot
       status: Status

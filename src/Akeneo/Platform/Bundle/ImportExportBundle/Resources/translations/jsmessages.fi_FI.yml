@@ -159,6 +159,16 @@ confirmation:
     import_profile: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
     export_profile: Oletko varma, että haluat poistaa tämän vientiprofiilin?
     job_instance: Oletko varma, että haluat poistaa tämän tehtävän?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
+    export_profile:
+      module:
+        delete:
+          confirm: Oletko varma, että haluat poistaa tämän vientiprofiilin?
 pim_title:
   pim_importexport_export_profile_index: Vientiprofiilien hallinta
   pim_importexport_export_profile_edit: Vientiprofiili {{ job.label }} | Muokkaa
