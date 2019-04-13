@@ -135,3 +135,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Category\Query\Sql\GetCategoryCodesByProductIdentifiers'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.get_values_and_properties_from_product_identifiers:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductIdentifiers
+        arguments:
+            - '@database_connection'
