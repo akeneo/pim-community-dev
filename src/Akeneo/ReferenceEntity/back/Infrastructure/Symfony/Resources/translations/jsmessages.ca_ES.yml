@@ -128,10 +128,11 @@ pim_reference_entity:
         counter: '{{ matchesCount }} resultat|{{ matchesCount }} resultats'
         completeness:
           label: Complet
-          all: TOT
-          'yes': 'SÍ'
-          'no': 'NO'
+          all: Tots
+          'yes': 'Sí'
+          'no': 'No'
         option:
+          all: Tots
           operator:
             in: A la llista
       column:
