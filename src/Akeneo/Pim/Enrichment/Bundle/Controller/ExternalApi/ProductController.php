@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductsQueryValidator;
@@ -590,7 +591,7 @@ class ProductController
             isset($data['parent']) && '' !== $data['parent'];
     }
 
-    private function normalizeProductsList(CursorInterface $products, ListProductsQuery $query): array
+    private function normalizeProductsList(ConnectorProductList $products, ListProductsQuery $query): array
     {
         $normalizerOptions = $this->getNormalizerOptions($query);
 

@@ -96,7 +96,7 @@ final class ConnectorProduct
         return $this->enabled;
     }
 
-    public function familyCode(): string
+    public function familyCode(): ?string
     {
         return $this->familyCode;
     }
