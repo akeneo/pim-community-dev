@@ -16,8 +16,14 @@ services:
     pim_api.normalizer.connector_products:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer'
         arguments:
-            - '@pim_catalog.normalizer.standard.product.product_values'
+            - '@pim_api.normalizer.values'
             - '@pim_catalog.normalizer.standard.datetime'
+
+    pim_api.normalizer.values:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.product_value'
+            - '@router'
 
     pim_api.normalizer.product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductModelNormalizer'

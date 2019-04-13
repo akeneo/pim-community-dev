@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValuesNormalizer;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -13,13 +12,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductV
  */
 class ConnectorProductNormalizer
 {
-    /** @var ProductValuesNormalizer */
+    /** @var ValuesNormalizer */
     private $valuesNormalizer;
 
     /** @var DateTimeNormalizer */
     private $dateTimeNormalizer;
 
-    public function __construct(ProductValuesNormalizer $valuesNormalizer, DateTimeNormalizer $dateTimeNormalizer)
+    public function __construct(ValuesNormalizer $valuesNormalizer, DateTimeNormalizer $dateTimeNormalizer)
     {
         $this->valuesNormalizer = $valuesNormalizer;
         $this->dateTimeNormalizer = $dateTimeNormalizer;
