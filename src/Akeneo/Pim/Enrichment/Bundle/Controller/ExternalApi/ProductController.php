@@ -591,7 +591,7 @@ class ProductController
             isset($data['parent']) && '' !== $data['parent'];
     }
 
-    private function normalizeProductsList(ConnectorProductList $products, ListProductsQuery $query): array
+    private function normalizeProductsList(ConnectorProductList $connectorProductList, ListProductsQuery $query): array
     {
         $normalizerOptions = $this->getNormalizerOptions($query);
 
@@ -625,9 +625,9 @@ class ProductController
             ];
 
             try {
-                $count = $query->withCountAsBoolean() ? $products->count() : null;
+                $count = $query->withCountAsBoolean() ? $connectorProductList->totalNumberOfProducts() : null;
                 $paginatedProducts = $this->offsetPaginator->paginate(
-                    $this->normalizer->normalize($products, 'external_api', $normalizerOptions),
+                    $this->normalizer->normalize($connectorProductList, 'external_api', $normalizerOptions),
                     $paginationParameters,
                     $count
                 );
@@ -647,9 +647,7 @@ class ProductController
 
             return $paginatedProducts;
         } else {
-            $products = iterator_to_array($products);
-
-            $lastProduct = end($products);
+            $lastProduct = end($connectorProductList->connectorProducts());
 
             $parameters = [
                 'query_parameters'    => $queryParameters,
@@ -663,7 +661,7 @@ class ProductController
             ];
 
             $paginatedProducts = $this->searchAfterPaginator->paginate(
-                $this->normalizer->normalize($products, 'external_api', $normalizerOptions),
+                $this->normalizer->normalize($connectorProductList, 'external_api', $normalizerOptions),
                 $parameters,
                 null
             );
