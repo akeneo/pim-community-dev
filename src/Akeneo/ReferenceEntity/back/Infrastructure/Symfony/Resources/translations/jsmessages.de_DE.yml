@@ -54,8 +54,11 @@ pim_reference_entity:
       filter:
         completeness:
           label: Vollständig
-          all: ALLE
+          all: Alle
+          'yes': 'Ja'
+          'no': 'Nein'
         option:
+          all: Alle
           operator:
             in: In Liste
       column:

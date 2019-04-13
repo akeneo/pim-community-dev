@@ -127,10 +127,11 @@ pim_reference_entity:
       filter:
         completeness:
           label: Valmis
-          all: KAIKKI
-          'yes': 'KYLLÄ'
-          'no': 'EI'
+          all: Kaikki
+          'yes': 'Kyllä'
+          'no': 'Ei'
         option:
+          all: Kaikki
           operator:
             in: Luettelossa
       column:
