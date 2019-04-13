@@ -33,7 +33,7 @@ final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProd
     {
         $products = [];
         foreach ($identifiers as $identifier) {
-            $product = $this->productRepository->findOneByIdentifier($identifier->getIdentifier());
+            $product = $this->productRepository->findOneByIdentifier($identifier);
             $products[] = ConnectorProduct::fromProductWriteModel($product);
         }
 
