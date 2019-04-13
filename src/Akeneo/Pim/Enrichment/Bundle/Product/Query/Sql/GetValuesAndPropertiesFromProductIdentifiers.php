@@ -25,7 +25,7 @@ final class GetValuesAndPropertiesFromProductIdentifiers
         $this->connection = $connection;
     }
 
-    public function fetchByProductIdentifiers(array $productIdentifiers)
+    public function fetchByProductIdentifiers(array $productIdentifiers): array
     {
         $query = <<<SQL
 SELECT
