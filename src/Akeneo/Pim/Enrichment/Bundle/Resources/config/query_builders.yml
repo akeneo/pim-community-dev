@@ -92,7 +92,7 @@ services:
         arguments:
             - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
             - '@pim_catalog.query.sorter.registry'
             - '@akeneo.pim.enrichment.factory.product_identifier_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'

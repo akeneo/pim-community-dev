@@ -138,7 +138,7 @@ final class ConnectorProduct
             \DateTimeImmutable::createFromMutable($product->getCreated()),
             \DateTimeImmutable::createFromMutable($product->getUpdated()),
             $product->isEnabled(),
-            $product->getFamily()->getCode(),
+            $product->getFamily() !== null ? $product->getFamily()->getCode() : null,
             $product->getCategoryCodes(),
             $product->getGroupCodes(),
             $product->isVariant() ? $product->getParent()->getCode() : null,

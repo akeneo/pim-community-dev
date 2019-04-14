@@ -55,7 +55,7 @@ final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProd
             $product = $this->getProduct($identifier);
             $product->getValues()->filter(function(ValueInterface $value) use ($attributesToFilterOn, $channelToFilterOn, $localesToFilterOn) {
                 $isAttributeToKeep = null === $attributesToFilterOn || in_array($value->getAttributeCode(), $attributesToFilterOn);
-                $isChannelToKeep = null === $channelToFilterOn || !$value->isScopable() || in_array($value->getScopeCode(), $channelToFilterOn);
+                $isChannelToKeep = null === $channelToFilterOn || !$value->isScopable() || $value->getScopeCode() === $channelToFilterOn;
                 $isLocaleToKeep = null === $localesToFilterOn || !$value->isLocalizable() || in_array($value->getLocaleCode(), $localesToFilterOn);
 
                 return  $isAttributeToKeep && $isChannelToKeep && $isLocaleToKeep;
