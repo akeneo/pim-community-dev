@@ -10,7 +10,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use PhpSpec\ObjectBehavior;
 
-class IdentifierResultCursorFactorySpec extends ObjectBehavior
+class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
 {
     function let(Client $esClient)
     {
