@@ -21,7 +21,7 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb'
             - '@pim_catalog.query.product_query_builder_from_size_factory_external_api'
-            - '@pim_catalog.query.product_query_builder_search_after_size_factory'
+            - '@pim_catalog.query.product_query_builder_search_after_size_factory_external_api'
             - '@pim_api.security.primary_key_encrypter'
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
 

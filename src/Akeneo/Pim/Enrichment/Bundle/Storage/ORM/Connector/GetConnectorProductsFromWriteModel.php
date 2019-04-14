@@ -53,14 +53,15 @@ final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProd
         $products = [];
         foreach ($identifiers as $identifier) {
             $product = $this->getProduct($identifier);
-            $product->getValues()->filter(function(ValueInterface $value) use ($attributesToFilterOn, $channelToFilterOn, $localesToFilterOn) {
+            $values = $product->getValues()->filter(function(ValueInterface $value) use ($attributesToFilterOn, $channelToFilterOn, $localesToFilterOn) {
                 $isAttributeToKeep = null === $attributesToFilterOn || in_array($value->getAttributeCode(), $attributesToFilterOn);
                 $isChannelToKeep = null === $channelToFilterOn || !$value->isScopable() || $value->getScopeCode() === $channelToFilterOn;
                 $isLocaleToKeep = null === $localesToFilterOn || !$value->isLocalizable() || in_array($value->getLocaleCode(), $localesToFilterOn);
 
                 return  $isAttributeToKeep && $isChannelToKeep && $isLocaleToKeep;
             });
-            $product->getValues()->removeByAttributeCode($identifierAttributeCode);
+            $values->removeByAttributeCode($identifierAttributeCode);
+            $product->setValues($values);
 
             $products[] = ConnectorProduct::fromProductWriteModel($product);
         }

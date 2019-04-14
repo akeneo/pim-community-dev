@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -49,7 +50,9 @@ class IdentifierResultCursorFactory implements CursorFactoryInterface
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {
-            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $hit['_source']['document_type']);
+            // TODO: add TODO with TIP card to merge index as we will use only one index instead of 3, removing coalesce
+            $documentType = $hit['_source']['document_type'] ?? ProductInterface::class;
+            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType);
         }
 
         return new IdentifierResultCursor($identifiers, $totalCount);

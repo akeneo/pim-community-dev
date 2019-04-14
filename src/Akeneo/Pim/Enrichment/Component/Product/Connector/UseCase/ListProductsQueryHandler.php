@@ -83,7 +83,7 @@ final class ListProductsQueryHandler
             throw new InvalidQueryException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
+        //$pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
         $pqb->addSorter('id', Directions::ASCENDING);
 
         $result = $pqb->execute();
@@ -91,7 +91,7 @@ final class ListProductsQueryHandler
             return $identifier->getIdentifier();
         }, iterator_to_array($result));
 
-        // TODO: inject activated locales is channel is provided (handler responsibility)
+        // TODO: inject activated locales if channel is provided (handler responsibility)
         $products = $this->getConnectorProductsQuery->fromProductIdentifiers(
             $identifiers,
             $query->attributeCodes,
