@@ -140,3 +140,8 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductIdentifiers
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductAssociationsByProductIdentifiers'
+        arguments:
+            - '@database_connection'
