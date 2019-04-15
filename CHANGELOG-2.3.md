@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.37 (2019-04-15)
+
 ## Bug fixes
 
 - PIM-8269: Do not create empty product values if it relies on an attribute which has been removed from family 
