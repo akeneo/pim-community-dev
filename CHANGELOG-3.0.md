@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.13 (2019-04-15)
+
 # Bug fixes
 
 - PIM-8286: Allow users to edit their own account even if they're not granted the `pim_user_user_edit` permission
