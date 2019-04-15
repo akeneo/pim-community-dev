@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.37 (2019-04-15)
+
 ## Bug fixes
 
 - PIM-8234: Fix performance issue on the command that generates missing asset variation files
