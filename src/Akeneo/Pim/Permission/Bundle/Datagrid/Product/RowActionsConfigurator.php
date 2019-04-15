@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\Product;
 
-use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProduct;
+use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\FetchUserRightsOnProduct;
 use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProductModel;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
@@ -104,7 +104,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     protected function getProductRights(ResultRecordInterface $record): array
     {
         $user = $this->userContext->getUser();
-        $userRight = $this->fetchUserRightsOnProduct->fetch($record->getValue('identifier'), $user->getId());
+        $userRight = $this->fetchUserRightsOnProduct->fetchByIdentifier($record->getValue('identifier'), $user->getId());
 
         return [
             'show'            => !($userRight->canApplyDraftOnProduct() || $userRight->isProductEditable()),

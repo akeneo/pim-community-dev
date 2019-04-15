@@ -47,9 +47,9 @@ services:
         arguments:
             - '@database_connection'
             - '@oro_datagrid.configuration.provider.chain'
-            -
-    pimee_security.product_grid.query.fetch_user_rights_on_product:
-        class: Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProduct
+
+    akeneo.pim.permission.product.query.fetch_user_rights_on_product:
+        class: Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\FetchUserRightsOnProduct
         arguments:
             - '@database_connection'
 
