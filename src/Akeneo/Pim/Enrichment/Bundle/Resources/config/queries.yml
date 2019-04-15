@@ -131,8 +131,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.enrichment.category.category_codes_by_product_identifiers:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Category\Query\Sql\GetCategoryCodesByProductIdentifiers'
+    akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetCategoryCodesByProductIdentifiers'
         arguments:
             - '@database_connection'
 

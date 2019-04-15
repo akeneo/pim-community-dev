@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Category\Query\Sql;
+namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql;
 
 use Doctrine\DBAL\Connection;
 
@@ -24,9 +24,6 @@ final class GetCategoryCodesByProductIdentifiers
     }
 
     /**
-     * @param string $identifier
-     * @param string ...$identifiers
-     *
      * @return array ['identifier1' => ['category1'], 'identifier2' => ['category2']]
      */
     public function fetchCategoryCodes(array $identifiers): array
