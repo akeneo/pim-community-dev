@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.13 (2019-04-15)
+
 ## Bug fixes
 
 - PIM-8277: Fix Reference Entities- Localisable attributes not refreshed in the record after changing the locale
