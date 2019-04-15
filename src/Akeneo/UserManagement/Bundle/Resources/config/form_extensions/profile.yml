@@ -1,0 +1,398 @@
+extensions:
+    pim-user-profile-form:
+        module: pim/form/common/edit-form
+    
+    pim-user-profile-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-user-profile-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-menu-system-user-user
+    
+    pim-user-profile-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-user-profile-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+    
+    pim-user-profile-form-main-image:
+        module: pim/form/common/main-image
+        parent: pim-user-profile-form
+        targetZone: main-image
+        config:
+            fallbackPath: '/bundles/pimui/images/info-user.png'
+    
+    pim-user-profile-form-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-user-profile-form
+        position: 1000
+    
+    pim-user-profile-form-label:
+        module: pim/form/common/label
+        parent: pim-user-profile-form
+        targetZone: title
+        position: 110
+        config:
+            field: username
+    
+    pim-user-profile-form-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pim-user-profile-form
+        targetZone: buttons
+        position: 110
+    
+    pim-user-profile-form-save:
+        module: pim/form/common/save-form
+        parent: pim-user-profile-form
+        targetZone: buttons
+        position: 0
+        config:
+            updateSuccessMessage: pim_user_management.entity.user.flash.update.success
+            updateFailureMessage: pim_user_management.entity.user.flash.update.fail
+            notReadyMessage: pim_user_management.entity.user.flash.update.fields_not_ready
+            url: pim_user_user_rest_profile
+            identifierParamName: identifier
+            entityIdentifierParamName: meta.id
+            excludedProperties: ['last_login', 'login_count', 'password']
+    
+    pim-user-profile-form-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pim-user-profile-form
+        targetZone: buttons
+        position: 50
+    
+    pim-user-profile-form-state:
+        module: pim/form/common/state
+        parent: pim-user-profile-form
+        targetZone: state
+        position: 900
+        config:
+            entity: pim_user_management.entity.user.label
+    
+    pim-user-profile-form-form-tabs:
+        module: pim/form/common/form-tabs
+        parent: pim-user-profile-form
+        targetZone: content
+        position: 90
+    
+    # General tab
+    pim-user-profile-form-general-tab:
+        module: pim/common/tab
+        parent: pim-user-profile-form-form-tabs
+        targetZone: container
+        position: 10
+        config:
+            label: pim_common.general_properties
+    
+    pim-user-profile-form-general-tab-content:
+        module: pim/common/simple-view
+        parent: pim-user-profile-form-general-tab
+        position: 10
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: ''
+                dropZone: content
+
+    pim-user-profile-form-enabled:
+        module: pim/form/common/fields/boolean
+        parent: pim-user-profile-form-general-tab-content
+        position: 10
+        targetZone: content
+        config:
+            fieldName: enabled
+            label: pim_common.status
+            required: true
+            readOnly: true
+
+    pim-user-profile-form-username:
+        module: pim/form/common/fields/text
+        parent: pim-user-profile-form-general-tab-content
+        position: 20
+        targetZone: content
+        config:
+            fieldName: username
+            label: pim_user_management.entity.user.properties.username
+            required: true
+    
+    pim-user-profile-form-name-prefix:
+        module: pim/form/common/fields/text
+        parent: pim-user-profile-form-general-tab-content
+        position: 30
+        targetZone: content
+        config:
+            fieldName: name_prefix
+            label: pim_user_management.entity.user.properties.name_prefix
+    
+    pim-user-profile-form-first-name:
+        module: pim/form/common/fields/text
+        parent: pim-user-profile-form-general-tab-content
+        position: 40
+        targetZone: content
+        config:
+            fieldName: first_name
+            label: pim_user_management.entity.user.properties.first_name
+            required: true
+    
+    pim-user-profile-form-middle-name:
+        module: pim/form/common/fields/text
+        parent: pim-user-profile-form-general-tab-content
+        position: 50
+        targetZone: content
+        config:
+            fieldName: middle_name
+            label: pim_user_management.entity.user.properties.middle_name
+    
+    pim-user-profile-form-last-name:
+        module: pim/form/common/fields/text
+        parent: pim-user-profile-form-general-tab-content
+        position: 60
+        targetZone: content
+        config:
+            fieldName: last_name
+            label: pim_user_management.entity.user.properties.last_name
+            required: true
+    
+    pim-user-profile-form-name-suffix:
+        module: pim/form/common/fields/text
+        parent: pim-user-profile-form-general-tab-content
+        position: 70
+        targetZone: content
+        config:
+            fieldName: name_suffix
+            label: pim_user_management.entity.user.properties.name_suffix
+    
+    pim-user-profile-form-phone:
+        module: pim/form/common/fields/text
+        parent: pim-user-profile-form-general-tab-content
+        position: 80
+        targetZone: content
+        config:
+            fieldName: phone
+            label: pim_user_management.entity.user.properties.phone
+    
+    pim-user-profile-form-avatar:
+        module: pim/form/common/fields/media
+        parent: pim-user-profile-form-general-tab-content
+        position: 100
+        targetZone: content
+        config:
+            fieldName: avatar
+            label: pim_user_management.entity.user.properties.avatar
+    
+    pim-user-profile-form-email:
+        module: pim/form/common/fields/text
+        parent: pim-user-profile-form-general-tab-content
+        position: 110
+        targetZone: content
+        config:
+            fieldName: email
+            label: pim_user_management.entity.user.properties.email
+            required: true
+    
+    # Additional tab
+    pim-user-profile-form-additional-tab:
+        module: pim/common/tab
+        parent: pim-user-profile-form-form-tabs
+        targetZone: container
+        position: 20
+        config:
+            label: pim_user_management.entity.user.module.update.additional
+    
+    pim-user-profile-form-additional-tab-content:
+        module: pim/common/simple-view
+        parent: pim-user-profile-form-additional-tab
+        position: 10
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: ''
+                dropZone: content
+    
+    pim-user-profile-form-catalog-locale:
+        module: pim/form/common/fields/available-locales
+        parent: pim-user-profile-form-additional-tab-content
+        position: 10
+        targetZone: content
+        config:
+            fieldName: catalog_default_locale
+            label: pim_user_management.entity.user.properties.catalog_locale
+            required: true
+            isMultiple: false
+            allowClear: false
+    
+    pim-user-profile-form-catalog-channel:
+        module: pim/user/fields/channel
+        parent: pim-user-profile-form-additional-tab-content
+        position: 20
+        targetZone: content
+        config:
+            fieldName: catalog_default_scope
+            label: pim_user_management.entity.user.properties.catalog_scope
+            required: true
+            isMultiple: false
+            allowClear: false
+    
+    pim-user-profile-form-default-tree:
+        module: pim/user/fields/category-tree
+        parent: pim-user-profile-form-additional-tab-content
+        targetZone: content
+        position: 30
+        config:
+            fieldName: default_category_tree
+            label: pim_user_management.entity.user.properties.default_tree
+            required: true
+            isMultiple: false
+            allowClear: false
+    
+    pim-user-profile-form-product-grid-filters:
+        module: pim/user/fields/product-grid-filters
+        parent: pim-user-profile-form-additional-tab-content
+        position: 40
+        targetZone: content
+        config:
+            fieldName: product_grid_filters
+            label: pim_user_management.entity.user.properties.product_grid_filters
+            choiceRoute: pim_enrich_product_grid_filters
+    
+    pim-user-profile-form-default-grid-views:
+        module: pim/user/fields/default-grid-views
+        parent: pim-user-profile-form-additional-tab-content
+        position: 40
+        targetZone: content
+    
+    # Groups and Roles tab
+    pim-user-profile-form-groups-and-roles-tab:
+        module: pim/common/tab
+        parent: pim-user-profile-form-form-tabs
+        targetZone: container
+        position: 30
+        config:
+            label: pim_user_management.entity.user.module.update.groups_and_roles
+    
+    pim-user-profile-form-groups-and-roles-tab-content:
+        module: pim/common/simple-view
+        parent: pim-user-profile-form-groups-and-roles-tab
+        position: 10
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: ''
+                dropZone: content
+    
+    pim-user-profile-form-groups:
+        module: pim/user/fields/user-group
+        parent: pim-user-profile-form-groups-and-roles-tab-content
+        targetZone: content
+        position: 10
+        config:
+            fieldName: groups
+            label: pim_user_management.entity.group.plural_label
+            isMultiple: true
+            allowClear: true
+            readOnly: true
+    
+    pim-user-profile-form-roles:
+        module: pim/user/fields/user-role
+        parent: pim-user-profile-form-groups-and-roles-tab-content
+        targetZone: content
+        position: 20
+        config:
+            fieldName: roles
+            required: true
+            label: pim_user_management.entity.role.plural_label
+            isMultiple: true
+            allowClear: true
+            readOnly: true
+    
+    # Password tab
+    pim-user-profile-form-password-tab:
+        module: pim/common/tab
+        parent: pim-user-profile-form-form-tabs
+        targetZone: container
+        position: 40
+        config:
+            label: pim_user_management.entity.user.module.update.password
+    
+    pim-user-profile-form-password-tab-content:
+        module: pim/common/simple-view
+        parent: pim-user-profile-form-password-tab
+        position: 10
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: ''
+                dropZone: content
+    
+    pim-user-profile-form-current-password:
+        module: pim/form/common/fields/password
+        parent: pim-user-profile-form-password-tab-content
+        position: 10
+        targetZone: content
+        config:
+            fieldName: current_password
+            label: pim_user_management.entity.user.properties.current_password
+    
+    pim-user-profile-form-new-password:
+        module: pim/form/common/fields/password
+        parent: pim-user-profile-form-password-tab-content
+        position: 20
+        targetZone: content
+        config:
+            fieldName: new_password
+            label: pim_user_management.entity.user.properties.new_password
+    
+    pim-user-profile-form-new-password-repeat:
+        module: pim/form/common/fields/password
+        parent: pim-user-profile-form-password-tab-content
+        position: 30
+        targetZone: content
+        config:
+            fieldName: new_password_repeat
+            label: pim_user_management.entity.user.properties.new_password_repeat
+    
+    # Interfaces tab
+    pim-user-profile-form-interfaces-tab:
+        module: pim/common/tab
+        parent: pim-user-profile-form-form-tabs
+        targetZone: container
+        position: 50
+        config:
+            label: pim_user_management.entity.user.module.update.interfaces
+    
+    pim-user-profile-form-interfaces-tab-content:
+        module: pim/common/simple-view
+        parent: pim-user-profile-form-interfaces-tab
+        position: 10
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: ''
+                dropZone: content
+    
+    pim-user-profile-form-ui-locale:
+        module: pim/user/fields/ui-locale
+        parent: pim-user-profile-form-interfaces-tab-content
+        position: 10
+        targetZone: content
+        config:
+            fieldName: user_default_locale
+            label: pim_user_management.entity.user.properties.ui_locale
+            required: true
+            isMultiple: false
+            allowClear: false
+    
+    pim-user-profile-form-timezone:
+        module: pim/user/fields/timezone
+        parent: pim-user-profile-form-interfaces-tab-content
+        position: 20
+        targetZone: content
+        config:
+            fieldName: timezone
+            label: pim_user_management.entity.user.properties.timezone
+            required: true
+            isMultiple: false
+            allowClear: false

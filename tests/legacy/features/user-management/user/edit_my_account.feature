@@ -15,14 +15,21 @@ Feature: Change my profile
     Then I should see the flash message "User saved"
     And I should not see the default avatar
 
-  @jira https://akeneo.atlassian.net/browse/PIM-8025
-  Scenario: I can't edit my own profile if I don't have the permission to edit users
+  @jira https://akeneo.atlassian.net/browse/PIM-8286
+  Scenario: I can edit my own profile even if I don't have the permission to edit users
     Given I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resources Edit users
     And I save the role
     When I edit the "Peter" user
-    Then I should not see the text "Save"
+    And I visit the "Groups and roles" tab
+    Then the fields User groups and Roles should be disabled
+    And I visit the "General" tab
+    And I fill in the following information:
+      | Middle name | James |
+    And I save the user
+    Then I should not see the text "There are unsaved changes"
+    And the "Middle name" field should contain "James"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6894
   Scenario: Successfully update my password with any characters
