@@ -208,36 +208,21 @@ class AttributeMapping extends BaseView {
     });
     attributeSelector.configure().then(() => {
       attributeSelector.setParent(this);
-
-      this.deferredRender(attributeSelector).then(() => {
-        if (isAttributeOptionsButtonVisible) {
-          attributeSelector.$el.find('.icons-container').append(
-            $('<div>')
-              .addClass('AknIconButton AknIconButton--small AknIconButton--edit AknGrid-onHoverElement option-mapping')
-              .attr('data-franklin-attribute-code', franklinAttributeCode)
-              .attr('title', __('pim_common.edit')),
-          );
-        }
-        $dom.prepend(attributeSelector.$el);
-      });
+      attributeSelector.render();
     });
-  }
 
-  /**
-   * Async call is done during the render but it does not return promise. So we create one because if we have to append
-   * the attribute options mapping button, we need the template to be rendered.
-   *
-   * @param attributeSelector
-   *
-   * @returns {JQueryPromise<any>}
-   */
-  private deferredRender(attributeSelector: SimpleSelectAttributeWithWarning): JQueryPromise<any> {
+    attributeSelector.on('post_render', () => {
+      if (isAttributeOptionsButtonVisible) {
+        attributeSelector.$el.find('.icons-container').append(
+          $('<div>')
+            .addClass('AknIconButton AknIconButton--small AknIconButton--edit AknGrid-onHoverElement option-mapping')
+            .attr('data-franklin-attribute-code', franklinAttributeCode)
+            .attr('title', __('pim_common.edit')),
+        );
+      }
 
-    return $.Deferred()
-      .resolve(
-        attributeSelector.render()
-      )
-      .promise();
+      $dom.prepend(attributeSelector.$el);
+    });
   }
 
   /**

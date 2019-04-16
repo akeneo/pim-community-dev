@@ -54,6 +54,15 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
   /**
    * {@inheritdoc}
    */
+  public postRender(templateContext: any) {
+    super.postRender(templateContext);
+
+    this.trigger('post_render');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public getSelect2Options(): any {
     const parent = BaseSimpleSelect.prototype.getSelect2Options.apply(this, arguments);
     parent.allowClear = true;
