@@ -38,7 +38,7 @@ class MetricConverter extends AbstractValueConverter
             if (1 === count($tokens)) {
                 /* PIM-8290: If there is only one word in the value field, this can be the unit either the amount.
                  * There can be 3 cases:
-                 * 1) this is a valid unit (e.g. 12 or 12.3456)
+                 * 1) this is a valid amount (e.g. 12 or 12.3456)
                  * 2) this is a valid metric (e.g. 'GRAM')
                  * 3) this is an invalid string (e.g. 'foo')
                  *
