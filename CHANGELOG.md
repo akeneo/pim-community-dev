@@ -23,3 +23,6 @@
 - TIP-1084: The service `pimee_security.product_grid.query.fetch_user_rights_on_product` has been renamed into `akeneo.pim.permission.product.query.fetch_user_rights_on_product`
 - TIP-1084: The class `UserRightsOnProduct` is constructed with a new arguments `numberOfViewableCategories`
 - TIP-1084: The class `FetchUserRightsOnProduct` has been moved from `Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight` to `Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product`
+- TIP-1085: The service `pimee_security.product_grid.query.fetch_user_rights_on_product_model` has been renamed into `akeneo.pim.permission.product.query.fetch_user_rights_on_product_model`
+- TIP-1085: The class `UserRightsOnProductModel` is constructed with a new argument `numberOfViewableCategories`
+- TIP-1085: The class `FetchUserRightsOnProductModel` has been moved from `Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight` to `Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel`

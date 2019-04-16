@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTestEnterprise\Pim\Permission\Integration\Persistence\Sql;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\Sql\ProductModel;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use AkeneoTestEnterprise\Pim\Permission\Integration\Persistence\Sql\UserRightsFixturesLoader;
 use PHPUnit\Framework\Assert;
 
 class FetchUserRightsOnProductModelIntegration extends TestCase
@@ -27,19 +28,21 @@ class FetchUserRightsOnProductModelIntegration extends TestCase
         $fixtureLoader = new UserRightsFixturesLoader(static::$kernel->getContainer());
         $fixtureLoader->loadProductAndProductModels();
 
-        $fetchUserRightOnProductModel = $this->get('pimee_security.product_grid.query.fetch_user_rights_on_product_model');
+        $fetchUserRightOnProductModel = $this->get('akeneo.pim.permission.product.query.fetch_user_rights_on_product_model');
 
         $userId = (int) $this
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
-        $rootProductModelRights = $fetchUserRightOnProductModel->fetch('not_categorized_root_product_model', $userId);
+        $rootProductModelRights = $fetchUserRightOnProductModel->fetchByIdentifier('not_categorized_root_product_model', $userId);
         Assert::assertFalse($rootProductModelRights->canApplyDraftOnProductModel());
         Assert::assertTrue($rootProductModelRights->isProductModelEditable());
+        Assert::assertTrue($rootProductModelRights->isProductModelViewable());
 
-        $subProductModelRights = $fetchUserRightOnProductModel->fetch('not_categorized_sub_product_model', $userId);
+        $subProductModelRights = $fetchUserRightOnProductModel->fetchByIdentifier('not_categorized_sub_product_model', $userId);
         Assert::assertFalse($subProductModelRights->canApplyDraftOnProductModel());
         Assert::assertTrue($subProductModelRights->isProductModelEditable());
+        Assert::assertTrue($subProductModelRights->isProductModelViewable());
     }
 
     /**
@@ -50,19 +53,21 @@ class FetchUserRightsOnProductModelIntegration extends TestCase
         $fixtureLoader = new UserRightsFixturesLoader(static::$kernel->getContainer());
         $fixtureLoader->loadProductAndProductModels();
 
-        $fetchUserRightOnProductModel = $this->get('pimee_security.product_grid.query.fetch_user_rights_on_product_model');
+        $fetchUserRightOnProductModel = $this->get('akeneo.pim.permission.product.query.fetch_user_rights_on_product_model');
 
         $userId = (int) $this
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
-        $ownedRootProductModel = $fetchUserRightOnProductModel->fetch('owned_categorized_root_product_model', $userId);
+        $ownedRootProductModel = $fetchUserRightOnProductModel->fetchByIdentifier('owned_categorized_root_product_model', $userId);
         Assert::assertFalse($ownedRootProductModel->canApplyDraftOnProductModel());
         Assert::assertTrue($ownedRootProductModel->isProductModelEditable());
+        Assert::assertTrue($ownedRootProductModel->isProductModelViewable());
 
-        $ownedSubProductModel = $fetchUserRightOnProductModel->fetch('owned_categorized_sub_product_model', $userId);
+        $ownedSubProductModel = $fetchUserRightOnProductModel->fetchByIdentifier('owned_categorized_sub_product_model', $userId);
         Assert::assertFalse($ownedSubProductModel->canApplyDraftOnProductModel());
         Assert::assertTrue($ownedSubProductModel->isProductModelEditable());
+        Assert::assertTrue($ownedSubProductModel->isProductModelViewable());
     }
 
     /**
@@ -73,15 +78,16 @@ class FetchUserRightsOnProductModelIntegration extends TestCase
         $fixtureLoader = new UserRightsFixturesLoader(static::$kernel->getContainer());
         $fixtureLoader->loadProductAndProductModels();
 
-        $fetchUserRightOnProductModel = $this->get('pimee_security.product_grid.query.fetch_user_rights_on_product_model');
+        $fetchUserRightOnProductModel = $this->get('akeneo.pim.permission.product.query.fetch_user_rights_on_product_model');
 
         $userId = (int) $this
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
-        $editableProductModel = $fetchUserRightOnProductModel->fetch('editable_categorized_root_product_model', $userId);
+        $editableProductModel = $fetchUserRightOnProductModel->fetchByIdentifier('editable_categorized_root_product_model', $userId);
         Assert::assertTrue($editableProductModel->canApplyDraftOnProductModel());
         Assert::assertFalse($editableProductModel->isProductModelEditable());
+        Assert::assertTrue($editableProductModel->isProductModelViewable());
     }
 
     /**
@@ -92,15 +98,37 @@ class FetchUserRightsOnProductModelIntegration extends TestCase
         $fixtureLoader = new UserRightsFixturesLoader(static::$kernel->getContainer());
         $fixtureLoader->loadProductAndProductModels();
 
-        $fetchUserRightOnProductModel = $this->get('pimee_security.product_grid.query.fetch_user_rights_on_product_model');
+        $fetchUserRightOnProductModel = $this->get('akeneo.pim.permission.product.query.fetch_user_rights_on_product_model');
 
         $userId = (int) $this
             ->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
-        $nonViewableProductModel = $fetchUserRightOnProductModel->fetch('not_viewable_root_product_model', $userId);
+        $nonViewableProductModel = $fetchUserRightOnProductModel->fetchByIdentifier('not_viewable_root_product_model', $userId);
         Assert::assertFalse($nonViewableProductModel->canApplyDraftOnProductModel());
         Assert::assertFalse($nonViewableProductModel->isProductModelEditable());
+        Assert::assertFalse($nonViewableProductModel->isProductModelViewable());
+    }
+
+    /**
+     * @test
+     */
+    public function it_fetches_multiple_product_models_at_the_same_time()
+    {
+        $fixtureLoader = new UserRightsFixturesLoader(static::$kernel->getContainer());
+        $fixtureLoader->loadProductAndProductModels();
+        $fetchUserRightOnProductModels = $this->get('akeneo.pim.permission.product.query.fetch_user_rights_on_product_model');
+
+        $userId = (int) $this
+            ->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
+
+        $productModelRights = $fetchUserRightOnProductModels->fetchByIdentifiers(
+            ['not_viewable_root_product_model', 'editable_categorized_root_product_model'],
+            $userId
+        );
+
+        Assert::assertCount(2, $productModelRights);
     }
 
     /**

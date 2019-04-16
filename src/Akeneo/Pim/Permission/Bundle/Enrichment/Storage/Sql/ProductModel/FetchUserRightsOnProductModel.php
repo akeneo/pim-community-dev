@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight;
+namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel;
 
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductModel;
 use Doctrine\DBAL\Connection;
@@ -29,13 +29,19 @@ class FetchUserRightsOnProductModel
         $this->connection = $connection;
     }
 
-    public function fetch(string $productModelCode, int $userId): UserRightsOnProductModel
+    public function fetchByIdentifier(string $productModelCode, int $userId): UserRightsOnProductModel
+    {
+        return $this->fetchByIdentifiers([$productModelCode], $userId)[0];
+    }
+
+    public function fetchByIdentifiers(array $productModelCodes, int $userId): array
     {
         $sql = <<<SQL
             SELECT 
-                product_model_categories.product_model_code, 
+                product_model_categories.product_model_code as product_model_code, 
                 COALESCE(SUM(access.edit_items), 0) as count_editable_categories, 
                 COALESCE(SUM(access.own_items), 0) as count_ownable_categories,
+                COALESCE(SUM(access.view_items), 0) as count_viewable_categories,
                 COUNT(product_model_categories.category_id) as number_categories
             FROM
                 (
@@ -44,7 +50,7 @@ class FetchUserRightsOnProductModel
                     FROM 
                         pim_catalog_product_model pm
                         LEFT JOIN pim_catalog_category_product_model cp ON cp.product_model_id = pm.id
-                        WHERE pm.code = :code
+                        WHERE pm.code IN (:productModelCodes)
                     UNION
                     SELECT
                         pm1.code as product_model_code, cp.category_id
@@ -52,14 +58,15 @@ class FetchUserRightsOnProductModel
                         pim_catalog_product_model pm1
                         JOIN pim_catalog_product_model pm2 on pm2.id = pm1.parent_id
                         JOIN pim_catalog_category_product_model cp ON cp.product_model_id = pm2.id
-                    WHERE pm1.code = :code
+                    WHERE pm1.code IN (:productModelCodes)
                 ) as product_model_categories
                 LEFT JOIN 
                  (
                     SELECT
                         pca.category_id,
                         pca.edit_items, 
-                        pca.own_items
+                        pca.own_items,
+                        pca.view_items
                     FROM pimee_security_product_category_access pca 
                     JOIN oro_access_group ag ON pca.user_group_id = ag.id
                     JOIN oro_user_access_group uag ON uag.group_id = ag.id AND uag.user_id = :user_id
@@ -70,17 +77,19 @@ SQL;
 
         $result = $this->connection->executeQuery(
             $sql,
-            ['code' => $productModelCode, 'user_id' =>$userId]
-        )->fetch();
+            ['productModelCodes' => $productModelCodes, 'user_id' =>$userId],
+            ['productModelCodes' => Connection::PARAM_STR_ARRAY]
+        )->fetchAll();
 
-        $userRightsOnProduct = new UserRightsOnProductModel(
-            $productModelCode,
-            $userId,
-            (int) $result['count_editable_categories'],
-            (int) $result['count_ownable_categories'],
-            (int) $result['number_categories']
-        );
-
-        return $userRightsOnProduct;
+        return array_map(function (array $data) use ($userId) {
+            return new UserRightsOnProductModel(
+                $data['product_model_code'],
+                $userId,
+                (int) $data['count_editable_categories'],
+                (int) $data['count_ownable_categories'],
+                (int) $data['count_viewable_categories'],
+                (int) $data['number_categories']
+            );
+        }, $result);
     }
 }
