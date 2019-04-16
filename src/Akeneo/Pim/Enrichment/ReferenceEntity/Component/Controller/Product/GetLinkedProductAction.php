@@ -1,0 +1,85 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\Pim\Enrichment\ReferenceEntity\Component\Controller\Product;
+
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
+/**
+ * Get the first 16 products linked to a record on an attribute
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
+ */
+class GetLinkedProductAction
+{
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $pqbFactory;
+
+    /** @var NormalizerInterface */
+    private $normalizer;
+
+    public function __construct(
+      ProductQueryBuilderFactoryInterface $pqbFactory,
+      NormalizerInterface $normalizer
+    ) {
+        $this->pqbFactory = $pqbFactory;
+        $this->normalizer = $normalizer;
+    }
+
+    public function __invoke(string $referenceEntityIdentifier, string $recordCode, string $attributeCode): JsonResponse
+    {
+        $recordCode = $this->getRecordCodeOr404($recordCode);
+        // $queryBuilder = $this->pqbFactory->create(['limit' => 16]);
+        $queryBuilder = $this->pqbFactory->create();
+
+        $queryBuilder->addFilter($attributeCode, Operators::IN_LIST, [(string) $recordCode]);
+        $products = $queryBuilder->execute();
+
+        $normalizedProducts = [];
+        foreach ($products as $product) {
+          $normalizedProducts[] = $this->normalizer->normalize($product, 'internal_api', []);
+        }
+
+        return new JsonResponse($normalizedProducts);
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     */
+    private function getRecordCodeOr404(string $recordCode): RecordCode
+    {
+        try {
+            return RecordCode::fromString($recordCode);
+        } catch (\Exception $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        }
+    }
+
+    private function hydratePermissions(RecordDetails $recordDetails): RecordDetails
+    {
+        $canEditQuery = new CanEditReferenceEntityQuery(
+            (string) $recordDetails->referenceEntityIdentifier,
+            $this->tokenStorage->getToken()->getUser()->getUsername()
+        );
+        $recordDetails->isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($canEditQuery);
+
+        return $recordDetails;
+    }
+}

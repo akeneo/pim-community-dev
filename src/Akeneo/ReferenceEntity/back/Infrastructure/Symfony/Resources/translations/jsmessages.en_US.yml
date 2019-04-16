@@ -111,6 +111,9 @@ pim_reference_entity:
       delete: Delete
       delete_all: Delete all records
       back: Back to list
+    product:
+      attribute: Linked attribute
+      title: Products
     enrich:
       title: Record attributes
       code: Code

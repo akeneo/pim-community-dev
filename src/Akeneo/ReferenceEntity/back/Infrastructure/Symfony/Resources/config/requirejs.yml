@@ -91,6 +91,9 @@ config:
                     enrich:
                         label: pim_reference_entity.record.tab.enrich
                         view: '@akeneoreferenceentity/application/component/record/edit/enrich'
+                    product:
+                        label: pim_reference_entity.record.tab.product
+                        view: '@akeneoreferenceentity/application/component/record/edit/product'
 
         pim/attribute-edit-form/type-specific-form-registry:
             formNames:
