@@ -17,6 +17,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
  */
 final class ConnectorProduct
 {
+    /** @var int */
+    private $id;
+
     /** @var string */
     private $identifier;
 
@@ -51,6 +54,7 @@ final class ConnectorProduct
     private $values;
 
     public function __construct(
+        int $id,
         string $identifier,
         \DateTimeImmutable $createdDate,
         \DateTimeImmutable $updatedDate,
@@ -63,6 +67,7 @@ final class ConnectorProduct
         array $metadata,
         ValueCollectionInterface $values
     ) {
+        $this->id = $id;
         $this->identifier = $identifier;
         $this->createdDate = $createdDate;
         $this->updatedDate = $updatedDate;
@@ -74,6 +79,11 @@ final class ConnectorProduct
         $this->values = $values;
         $this->associations = $associations;
         $this->metadata = $metadata;
+    }
+
+    public function id(): int
+    {
+        return $this->id;
     }
 
     public function identifier(): string
@@ -134,6 +144,7 @@ final class ConnectorProduct
     public static function fromProductWriteModel(ProductInterface $product)
     {
         return new self(
+            $product->getId(),
             $product->getIdentifier(),
             \DateTimeImmutable::createFromMutable($product->getCreated()),
             \DateTimeImmutable::createFromMutable($product->getUpdated()),

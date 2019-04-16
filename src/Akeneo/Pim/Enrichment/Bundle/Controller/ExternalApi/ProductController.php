@@ -653,12 +653,13 @@ class ProductController
 
             return $paginatedProducts;
         } else {
-            $lastProduct = end($connectorProductList->connectorProducts());
+            $connectorProducts = $connectorProductList->connectorProducts();
+            $lastProduct = end($connectorProducts);
 
             $parameters = [
                 'query_parameters'    => $queryParameters,
                 'search_after'        => [
-                    'next' => false !== $lastProduct ? $this->primaryKeyEncrypter->encrypt($lastProduct->getId()) : null,
+                    'next' => false !== $lastProduct ? $this->primaryKeyEncrypter->encrypt($lastProduct->id()) : null,
                     'self' => $query->searchAfter,
                 ],
                 'list_route_name'     => 'pim_api_product_list',
@@ -667,7 +668,7 @@ class ProductController
             ];
 
             $paginatedProducts = $this->searchAfterPaginator->paginate(
-                $this->normalizer->normalize($connectorProductList, 'external_api', $normalizerOptions),
+                $this->connectorProductNormalizer->normalizeConnectorProductList($connectorProductList),
                 $parameters,
                 null
             );
