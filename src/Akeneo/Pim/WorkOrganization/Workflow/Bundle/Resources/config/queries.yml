@@ -48,3 +48,8 @@ services:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SelectModelProposalIdsFromProductModelIdsQuery
         arguments:
             - '@database_connection'
+
+    pimee_workflow.query.get_workflow_status_from_product_model_codes:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\GetWorkflowStatusFromProductModelCodes
+        arguments:
+            - '@database_connection'
