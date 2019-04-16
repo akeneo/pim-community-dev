@@ -9,8 +9,12 @@ Feature: Join a document to a product
     And the following attribute:
       | label-en_US | type             | allowed_extensions | group | code        |
       | Description | pim_catalog_file | txt                | other | description |
-    And a "Car" product
-    And the "Car" product has the "Description" attribute
+    And the following family:
+      | code     | attributes      |
+      | vehicles | sku,description |
+    And the following product:
+      | sku | family   |
+      | Car | vehicles |
     And I am logged in as "Julia"
     And I am on the "Car" product page
 

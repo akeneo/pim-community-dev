@@ -2,18 +2,19 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionsException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
@@ -50,16 +51,19 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $value1->getLocaleCode()->willReturn(null);
         $value1->getScopeCode()->willReturn(null);
         $value1->getAttributeCode()->willReturn('sku');
-
+        $value1->getData()->willReturn('1234');
         $value2->getScopeCode()->willReturn('ecommerce');
         $value2->getLocaleCode()->willReturn('en_US');
         $value2->getAttributeCode()->willReturn('description');
+        $value2->getData()->willReturn('a description');
         $value3->getScopeCode()->willReturn('tablet');
         $value3->getLocaleCode()->willReturn('en_US');
         $value3->getAttributeCode()->willReturn('description');
+        $value3->getData()->willReturn('a tablet description');
         $value4->getScopeCode()->willReturn('tablet');
         $value4->getLocaleCode()->willReturn('fr_FR');
         $value4->getAttributeCode()->willReturn('description');
+        $value4->getData()->willReturn('une description');
 
         $attributeRepository->findOneByIdentifier('sku')->willReturn($sku);
         $attributeRepository->findOneByIdentifier('description')->willReturn($description);
@@ -88,7 +92,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
                 'tablet' => [
                     'en_US' => 'a text area for tablets in English',
                     'fr_FR' => 'une zone de texte pour les tablettes en français',
-
                 ],
             ],
         ]);
@@ -100,7 +103,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $actualIterator->shouldHaveKeyWithValue('sku-<all_channels>-<all_locales>', $value1);
         $actualIterator->shouldHaveKeyWithValue('description-ecommerce-en_US', $value2);
         $actualIterator->shouldHaveKeyWithValue('description-tablet-en_US', $value3);
-        $actualIterator->shouldHaveKeyWithValue('description-tablet-fr_FR', $value4);
     }
 
     function it_skips_unknown_attributes_when_creating_a_values_collection_from_the_storage_format(
@@ -260,6 +262,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $value1->getLocaleCode()->willReturn(null);
         $value1->getScopeCode()->willReturn(null);
         $value1->getAttributeCode()->willReturn('image');
+        $value1->getData()->willReturn('my_image');
 
         $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
         $valueFactory->create($referenceData, null, null, 'my_image', true)->willThrow(
@@ -281,5 +284,147 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(1);
+    }
+
+    function it_does_not_return_null_or_empty_string_values(
+        $valueFactory,
+        $attributeRepository,
+        ValueInterface $descriptionValueUS,
+        ValueInterface $descriptionValueFR
+    ) {
+        $description = new Attribute();
+        $description->setCode('description');
+        $description->setUnique(false);
+        $description->setScopable(true);
+        $description->setLocalizable(true);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($description);
+
+        $valueFactory
+            ->create($description, 'ecommerce', 'en_US', '', true)
+            ->willReturn($descriptionValueUS);
+        $valueFactory
+            ->create($description, 'ecommerce', 'fr_FR', null, true)
+            ->willReturn($descriptionValueFR);
+
+        $actualValues = $this->createFromStorageFormat([
+            'description' => [
+                'ecommerce' => [
+                    'en_US' => '',
+                    'fr_FR' => null,
+                ],
+            ],
+        ]);
+
+        $actualValues->shouldBeAnInstanceOf(ValueCollection::class);
+        $actualValues->shouldHaveCount(0);
+    }
+
+    function it_does_not_return_empty_array_values(
+        $valueFactory,
+        $attributeRepository,
+        ValueInterface $optionsValue
+    ) {
+        $colors = new Attribute();
+        $colors->setCode('colors');
+        $colors->setUnique(false);
+        $colors->setScopable(false);
+        $colors->setLocalizable(false);
+        $attributeRepository->findOneByIdentifier('colors')->willReturn($colors);
+
+        $valueFactory
+            ->create($colors, null, null, [], true)
+            ->willReturn($optionsValue);
+
+        $actualValues = $this->createFromStorageFormat(
+            [
+                'colors' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => [],
+                    ],
+                ],
+            ]
+        );
+
+        $actualValues->shouldBeAnInstanceOf(ValueCollection::class);
+        $actualValues->shouldHaveCount(0);
+    }
+
+    function it_does_not_filter_falsy_values(
+        $valueFactory,
+        $attributeRepository,
+        ValueInterface $numberValue,
+        ValueInterface $textValue,
+        ValueInterface $yesnoValue
+    ) {
+        $number = new Attribute();
+        $number->setCode('number');
+        $number->setUnique(false);
+        $number->setScopable(false);
+        $number->setLocalizable(false);
+        $attributeRepository->findOneByIdentifier('number')->willReturn($number);
+
+        $text = new Attribute();
+        $text->setCode('text');
+        $text->setUnique(false);
+        $text->setScopable(false);
+        $text->setLocalizable(false);
+        $attributeRepository->findOneByIdentifier('text')->willReturn($text);
+
+        $yesNo = new Attribute();
+        $yesNo->setCode('yes_no');
+        $yesNo->setUnique(false);
+        $yesNo->setScopable(false);
+        $yesNo->setLocalizable(false);
+        $attributeRepository->findOneByIdentifier('yes_no')->willReturn($yesNo);
+
+        $numberValue->getData()->willReturn(0.0);
+        $numberValue->getAttributeCode()->willReturn($number->getCode());
+        $numberValue->getScopeCode()->willReturn(null);
+        $numberValue->getLocaleCode()->willReturn(null);
+        $valueFactory
+            ->create($number, null, null, 0.0, true)
+            ->willReturn($numberValue);
+
+        $textValue->getData()->willReturn('0');
+        $textValue->getAttributeCode()->willReturn($text->getCode());
+        $textValue->getScopeCode()->willReturn(null);
+        $textValue->getLocaleCode()->willReturn(null);
+        $valueFactory
+            ->create($text, null, null, '0', true)
+            ->willReturn($textValue);
+
+        $yesnoValue->getData()->willReturn(false);
+        $yesnoValue->getAttributeCode()->willReturn($yesNo->getCode());
+        $yesnoValue->getScopeCode()->willReturn(null);
+        $yesnoValue->getLocaleCode()->willReturn(null);
+        $valueFactory
+            ->create($yesNo, null, null, false, true)
+            ->willReturn($yesnoValue);
+
+        $actualValues = $this->createFromStorageFormat(
+            [
+                'number' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 0.0,
+                    ],
+                ],
+                'text' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => '0',
+                    ],
+                ],
+                'yes_no' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => false,
+                    ],
+                ],
+            ]
+        );
+
+        $actualValues->shouldBeAnInstanceOf(ValueCollection::class);
+        $actualValues->shouldHaveCount(3);
+        $actualValues->getIterator()->shouldHaveKey('number-<all_channels>-<all_locales>');
+        $actualValues->getIterator()->shouldHaveKey('text-<all_channels>-<all_locales>');
+        $actualValues->getIterator()->shouldHaveKey('yes_no-<all_channels>-<all_locales>');
     }
 }

@@ -56,7 +56,12 @@ Feature: Validate editing common file attributes of multiple products
     And I display the File attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the file "file" of products boots, sandals and sneakers should be ""
+    And the product "boots" should not have the following values:
+      | file |
+    And the product "sandals" should not have the following values:
+      | file |
+    And the product "sneakers" should not have the following values:
+      | file |
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
@@ -65,4 +70,9 @@ Feature: Validate editing common file attributes of multiple products
     And I attach file "bic-core-148.gif" to "File"
     And I move on to the next step
     Then I should see validation tooltip "The file extension is not allowed (allowed extensions: txt)."
-    And the file "file" of products boots, sandals and sneakers should be ""
+    And the product "boots" should not have the following values:
+      | file |
+    And the product "sandals" should not have the following values:
+      | file |
+    And the product "sneakers" should not have the following values:
+      | file |
