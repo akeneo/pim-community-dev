@@ -95,6 +95,9 @@ abstract class AbstractMetric implements MetricInterface
      */
     public function __toString()
     {
-        return ($this->data !== null) ? sprintf('%.4F %s', $this->data, $this->unit) : '';
+        return join(' ', array_filter([
+            $this->data !== null ? sprintf('%.4F', $this->data) : null,
+            $this->unit
+        ]));
     }
 }

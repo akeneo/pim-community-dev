@@ -85,6 +85,25 @@ class MetricConverterSpec extends ObjectBehavior
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
     }
 
+    function it_returns_no_amount_if_only_unit_provided($fieldSplitter, AttributeInterface $attribute)
+    {
+        $attribute->getCode()->willReturn('attribute_code');
+        $attribute->isDecimalsAllowed()->willReturn(true);
+        $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
+
+        $value = 'GRAM';
+
+        $fieldSplitter->splitUnitValue($value)->willReturn(['GRAM']);
+
+        $expectedResult = ['attribute_code' => [[
+            'locale' => 'en_US',
+            'scope'  => 'mobile',
+            'data'   => ['amount' => null, 'unit' => 'GRAM'],
+        ]]];
+
+        $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
+    }
+
     function it_converts_integer_value($fieldSplitter, AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attribute_code');
