@@ -13,6 +13,7 @@ class ConnectorProductSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith(
+            1,
             'identifier',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),

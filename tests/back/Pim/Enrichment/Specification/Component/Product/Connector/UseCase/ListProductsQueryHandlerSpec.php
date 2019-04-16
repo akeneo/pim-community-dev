@@ -41,7 +41,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
     }
 
-    function it_creates_a_pqb_for_offset(
+    function it_gets_connector_products_with_offset_method(
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
@@ -51,6 +51,9 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->paginationType = PaginationTypes::OFFSET;
         $query->limit = 42;
         $query->page = 69;
+        $query->channelCode = 'tablet';
+        $query->localeCodes = ['en_US'];
+        $query->attributeCodes = ['name'];
 
         $fromSizePqbFactory->create([
             'limit' => 42,
@@ -78,6 +81,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         });
 
         $connectorProduct1 = new ConnectorProduct(
+            1,
             'identifier_1',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -92,6 +96,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $connectorProduct2 = new ConnectorProduct(
+            2,
             'identifier_2',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -106,7 +111,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $getConnectorProducts
-            ->fromProductIdentifiers(['identifier_1', 'identifier_2'])
+            ->fromProductIdentifiers(['identifier_1', 'identifier_2'], ['name'], 'tablet', ['en_US'])
             ->willReturn([$connectorProduct1, $connectorProduct2]);
 
         $searchAfterPqbFactory->create(Argument::cetera())->shouldNotBeCalled();
@@ -119,7 +124,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
     }
 
-    function it_creates_a_pqb_for_search_after(
+    function it_gets_connector_products_with_search_after_method(
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
@@ -160,6 +165,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         });
 
         $connectorProduct1 = new ConnectorProduct(
+            1,
             'identifier_1',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -174,6 +180,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $connectorProduct2 = new ConnectorProduct(
+            2,
             'identifier_2',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -188,7 +195,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $getConnectorProducts
-            ->fromProductIdentifiers(['identifier_1', 'identifier_2'])
+            ->fromProductIdentifiers(['identifier_1', 'identifier_2'], null, null, null)
             ->willReturn([$connectorProduct1, $connectorProduct2]);
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
