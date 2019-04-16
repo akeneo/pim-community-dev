@@ -55,18 +55,26 @@ class GenerateMissingVariationFilesCommandIntegration extends TestCase
      */
     public function it_generates_the_variations_for_all_assets()
     {
-        $this->createStructure(['ecommerce' => ['en_US']]);
-        $this->createAssetWithoutVariations('shoe');
-        $this->createAssetWithoutVariations('mugs');
-        $this->assertVariationsFor('shoe', 0);
+        $this->createStructure([
+            'ecommerce' => ['en_US', 'fr_FR'],
+            'mobile' => ['en_US']
+        ]);
+        $this->createAssetWithOneVariation('shoe', 'ecommerce');
+        $this->createLocalizableAssetWithoutVariations('mugs', ['en_US', 'fr_FR']);
+        $this->createAssetWithoutFiles('scanners');
+        $this->assertVariationsFor('shoe', 1);
         $this->assertVariationsFor('mugs', 0);
+        $this->assertVariationsFor('scanners', 0);
 
         $this->executeGenerateMissingVariationForAssetAllAssets();
 
-        $this->assertVariationsFor('shoe', 1);
-        $this->assertVariationsForChannel('shoe', 'ecommerce');
-        $this->assertVariationsFor('mugs', 1);
-        $this->assertVariationsForChannel('mugs', 'ecommerce');
+        $this->assertVariationsFor('shoe', 2);
+        $this->assertVariationsForChannel('shoe', 'mobile');
+        $this->assertVariationsFor('mugs', 3);
+        $this->assertVariationsForChannelAndLocale('mugs', 'ecommerce', 'en_US');
+        $this->assertVariationsForChannelAndLocale('mugs', 'ecommerce', 'fr_FR');
+        $this->assertVariationsForChannelAndLocale('mugs', 'mobile', 'en_US');
+        $this->assertVariationsFor('scanners', 0);
     }
 
     /**
@@ -186,6 +194,19 @@ class GenerateMissingVariationFilesCommandIntegration extends TestCase
         }
 
         $asset->setReferences($references);
+        $this->get('pimee_product_asset.saver.asset')->save($asset);
+    }
+
+    private function createAssetWithoutFiles(string $assetCode): void
+    {
+        $asset = new Asset();
+        $asset->setCode($assetCode);
+
+        $reference = new Reference();
+        $reference->setAsset($asset);
+        $this->get('pimee_product_asset.saver.reference')->save($reference);
+
+        $asset->setReferences(new ArrayCollection([$reference]));
         $this->get('pimee_product_asset.saver.asset')->save($asset);
     }
 
