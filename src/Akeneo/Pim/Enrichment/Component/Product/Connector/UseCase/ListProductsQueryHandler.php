@@ -17,6 +17,7 @@ use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -42,13 +43,18 @@ final class ListProductsQueryHandler
     /** @var GetConnectorProducts */
     private $getConnectorProductsQuery;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $channelRepository;
+
     public function __construct(
+        IdentifiableObjectRepositoryInterface $channelRepository,
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         GetConnectorProducts $getConnectorProductsQuery
     ) {
+        $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
         $this->fromSizePqbFactory = $fromSizePqbFactory;
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
@@ -93,7 +99,7 @@ final class ListProductsQueryHandler
             $identifiers,
             $query->attributeCodes,
             $query->channelCode,
-            $query->localeCodes
+            $this->getLocales($query->channelCode, $query->localeCodes)
         );
 
         return new ConnectorProductList($result->count(), $products);
@@ -116,5 +122,20 @@ final class ListProductsQueryHandler
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);
+    }
+
+    private function getLocales(?string $channelCodeToFilterValuesOn, ?array $localeCodesToFilterValuesOn): ?array
+    {
+        if (null === $channelCodeToFilterValuesOn) {
+            return $localeCodesToFilterValuesOn;
+        } else {
+            if (null === $localeCodesToFilterValuesOn) {
+                $channel = $this->channelRepository->findOneByIdentifier($channelCodeToFilterValuesOn);
+
+                return $channel->getLocaleCodes();
+            } else {
+                return $localeCodesToFilterValuesOn;
+            }
+        }
     }
 }

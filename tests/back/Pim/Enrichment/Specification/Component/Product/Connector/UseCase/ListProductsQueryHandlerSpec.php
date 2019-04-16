@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
@@ -33,6 +37,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         GetConnectorProducts $getConnectorProducts
     ) {
         $this->beConstructedWith(
+            $channelRepository,
             new ApplyProductSearchQueryParametersToPQB($channelRepository->getWrappedObject()),
             $fromSizePqbFactory,
             $searchAfterPqbFactory,
@@ -66,11 +71,11 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
 
             public function __construct()
             {
-                $identifierResultsArrayCOllection = new ArrayCollection([
+                $identifierResultsArrayCollection = new ArrayCollection([
                     new IdentifierResult('identifier_1', ProductInterface::class),
                     new IdentifierResult('identifier_2', ProductInterface::class)
                 ]);
-                $this->identifierResults = $identifierResultsArrayCOllection->getIterator();
+                $this->identifierResults = $identifierResultsArrayCollection->getIterator();
             }
             public function current() { return $this->identifierResults->current(); }
             public function next() { $this->identifierResults->next(); }
@@ -150,11 +155,11 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
 
             public function __construct()
             {
-                $identifierResultsArrayCOllection = new ArrayCollection([
+                $identifierResultsArrayCollection = new ArrayCollection([
                     new IdentifierResult('identifier_1', ProductInterface::class),
                     new IdentifierResult('identifier_2', ProductInterface::class)
                 ]);
-                $this->identifierResults = $identifierResultsArrayCOllection->getIterator();
+                $this->identifierResults = $identifierResultsArrayCollection->getIterator();
             }
             public function current() { return $this->identifierResults->current(); }
             public function next() { $this->identifierResults->next(); }
@@ -204,6 +209,157 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             new ConnectorProductList(
                 2,
                 [$connectorProduct1, $connectorProduct2]
+            )
+        );
+    }
+
+    function it_filters_with_activated_locales_of_the_provided_channel_filter_of_the_query_when_no_locales_filter_provided(
+        ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
+        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
+        ProductQueryBuilderInterface $pqb,
+        GetConnectorProducts $getConnectorProducts,
+        IdentifiableObjectRepositoryInterface $channelRepository,
+        ChannelInterface $channel,
+        Category $category
+    ) {
+        $query = new ListProductsQuery();
+        $query->paginationType = PaginationTypes::SEARCH_AFTER;
+        $query->limit = 42;
+        $query->channelCode = 'tablet';
+
+        $channel->getLocaleCodes()->willReturn(['en_US']);
+        $channel->getCategory()->willReturn($category);
+        $category->getCode()->willReturn('master');
+        $channelRepository->findOneByIdentifier('tablet')->willReturn($channel);
+
+        $searchAfterPqbFactory->create([
+            'limit' => 42
+        ])->shouldBeCalled()->willReturn($pqb);
+
+        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addFilter('categories', 'IN CHILDREN', ['master'], ['locale' => null, 'scope' => null])->shouldBeCalled();
+        $pqb->execute()->willReturn(new class implements CursorInterface {
+            private $identifierResults;
+
+            public function __construct()
+            {
+                $identifierResultsArrayCollection = new ArrayCollection([]);
+                $this->identifierResults = $identifierResultsArrayCollection->getIterator();
+            }
+            public function current() { return $this->identifierResults->current(); }
+            public function next() { $this->identifierResults->next(); }
+            public function key() { return $this->identifierResults->key(); }
+            public function count() { return 2; }
+            public function valid() { return $this->identifierResults->valid(); }
+            public function rewind() { $this->identifierResults->rewind(); }
+        });
+
+        $getConnectorProducts
+            ->fromProductIdentifiers([], null, 'tablet', ['en_US'])
+            ->willReturn([]);
+
+        $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
+
+        $this->handle($query)->shouldBeLike(
+            new ConnectorProductList(
+                2,
+                []
+            )
+        );
+    }
+
+    function it_filters_with_provided_locales_filter_of_the_query_when_no_channel_filter_is_provided(
+        ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
+        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
+        ProductQueryBuilderInterface $pqb,
+        GetConnectorProducts $getConnectorProducts
+    ) {
+        $query = new ListProductsQuery();
+        $query->paginationType = PaginationTypes::SEARCH_AFTER;
+        $query->limit = 42;
+        $query->searchAfter = null;
+        $query->channelCode = null;
+        $query->localeCodes = ['en_US', 'fr_FR'];
+
+        $searchAfterPqbFactory->create([
+            'limit' => 42
+        ])->shouldBeCalled()->willReturn($pqb);
+
+        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->execute()->willReturn(new class implements CursorInterface {
+            private $identifierResults;
+
+            public function __construct()
+            {
+                $identifierResultsArrayCollection = new ArrayCollection([]);
+                $this->identifierResults = $identifierResultsArrayCollection->getIterator();
+            }
+            public function current() { return $this->identifierResults->current(); }
+            public function next() { $this->identifierResults->next(); }
+            public function key() { return $this->identifierResults->key(); }
+            public function count() { return 2; }
+            public function valid() { return $this->identifierResults->valid(); }
+            public function rewind() { $this->identifierResults->rewind(); }
+        });
+
+        $getConnectorProducts
+            ->fromProductIdentifiers([], null, null, ['en_US', 'fr_FR'])
+            ->willReturn([]);
+
+        $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
+
+        $this->handle($query)->shouldBeLike(
+            new ConnectorProductList(
+                2,
+                []
+            )
+        );
+    }
+
+    function it_filters_with_provided_locales_filter_of_the_query_when_channel_filter_is_provided_as_locales_are_already_validated_as_activated_for_this_channel(
+        ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
+        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
+        ProductQueryBuilderInterface $pqb,
+        GetConnectorProducts $getConnectorProducts
+    ) {
+        $query = new ListProductsQuery();
+        $query->paginationType = PaginationTypes::SEARCH_AFTER;
+        $query->limit = 42;
+        $query->searchAfter = null;
+        $query->channelCode = 'tablet';
+        $query->localeCodes = ['en_US', 'fr_FR'];
+
+        $searchAfterPqbFactory->create([
+            'limit' => 42
+        ])->shouldBeCalled()->willReturn($pqb);
+
+        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->execute()->willReturn(new class implements CursorInterface {
+            private $identifierResults;
+
+            public function __construct()
+            {
+                $identifierResultsArrayCollection = new ArrayCollection([]);
+                $this->identifierResults = $identifierResultsArrayCollection->getIterator();
+            }
+            public function current() { return $this->identifierResults->current(); }
+            public function next() { $this->identifierResults->next(); }
+            public function key() { return $this->identifierResults->key(); }
+            public function count() { return 2; }
+            public function valid() { return $this->identifierResults->valid(); }
+            public function rewind() { $this->identifierResults->rewind(); }
+        });
+
+        $getConnectorProducts
+            ->fromProductIdentifiers([], null, 'tablet', ['en_US', 'fr_FR'])
+            ->willReturn([]);
+
+        $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
+
+        $this->handle($query)->shouldBeLike(
+            new ConnectorProductList(
+                2,
+                []
             )
         );
     }

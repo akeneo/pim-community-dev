@@ -18,19 +18,19 @@ final class ListProductsQuery
     /** @var array */
     public $search = [];
 
-    /** @var string */
+    /** @var null|string */
     public $channelCode;
 
-    /** @var string[] */
+    /** @var null|string[] */
     public $localeCodes;
 
-    /** @var string */
+    /** @var null|string */
     public $searchLocaleCode;
 
-    /** @var string */
+    /** @var null|string */
     public $searchChannelCode;
 
-    /** @var string[] */
+    /** @var null|string[] */
     public $attributeCodes;
 
     /** @var string */
@@ -39,7 +39,7 @@ final class ListProductsQuery
     /** @var int */
     public $page = 1;
 
-    /** @var string */
+    /** @var null|string */
     public $searchAfter;
 
     /** @var int */
