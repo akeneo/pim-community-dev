@@ -38,11 +38,19 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
      */
     public function createCursor($esQuery, array $options = [])
     {
+        $options = $this->resolveOptions($options);
         $sort = ['_uid' => 'asc'];
 
         $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type']);
         $esQuery['sort'] = isset($esQuery['sort']) ? array_merge($esQuery['sort'], $sort) : $sort;
         $esQuery['size'] = $options['limit'];
+
+        if (null !== $options['search_after_unique_key']) {
+            array_push($options['search_after'], $this->indexType . '#' . $options['search_after_unique_key']);
+        }
+        if(!empty($options['search_after'])) {
+            $esQuery['search_after'] = $options['search_after'];
+        }
 
         $response = $this->esClient->search($this->indexType, $esQuery);
         $totalCount = (int) $response['hits']['total'];
@@ -55,5 +63,30 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
         }
 
         return new IdentifierResultCursor($identifiers, $totalCount);
+    }
+
+    protected function resolveOptions(array $options): array
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefined(
+            [
+                'search_after',
+                'search_after_unique_key',
+                'limit'
+            ]
+        );
+        $resolver->setDefaults(
+            [
+                'search_after' => [],
+                'search_after_unique_key' => null
+            ]
+        );
+        $resolver->setAllowedTypes('search_after', 'array');
+        $resolver->setAllowedTypes('search_after_unique_key', ['string', 'null']);
+        $resolver->setAllowedTypes('limit', 'int');
+
+        $options = $resolver->resolve($options);
+
+        return $options;
     }
 }
