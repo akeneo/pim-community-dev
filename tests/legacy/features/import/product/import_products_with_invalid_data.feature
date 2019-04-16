@@ -362,11 +362,13 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "skipped 2"
-    And there should be 2 product
+    Then I should see the text "skipped 1"
+    And there should be 3 product
     And the product "renault-kangoo" should have the following value:
       | length | 2500.0000 CENTIMETER |
     And the product "fiat-500" should have the following value:
+      | length |  |
+    And the product "fiat-panda" should have the following value:
       | length |  |
 
   Scenario: Skip new products with invalid price during an import

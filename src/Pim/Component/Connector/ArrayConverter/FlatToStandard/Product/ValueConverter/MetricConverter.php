@@ -42,7 +42,7 @@ class MetricConverter extends AbstractValueConverter
                  * 2) this is a valid metric (e.g. 'GRAM')
                  * 3) this is an invalid string (e.g. 'foo')
                  *
-                 * The case 1 is valid and will not be catch by this next regexp, and update a metric without unit.
+                 * The case 1 is valid and won't be caught by this next regexp, and update a metric without unit.
                  * The case 2 is valid but will not imply a value update as there is no amount
                  * The case 3 will raise an invalid unit value from ValidMetric validator.
                  */
