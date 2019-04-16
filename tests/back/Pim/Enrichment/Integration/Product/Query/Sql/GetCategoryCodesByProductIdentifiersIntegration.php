@@ -1,8 +1,8 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Category\Query\Sql;
+namespace AkeneoTest\Pim\Enrichment\Integration\Product\Query\Sql;
 
-use Akeneo\Pim\Enrichment\Bundle\Category\Query\Sql\GetCategoryCodesByProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetCategoryCodesByProductIdentifiers;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
@@ -63,7 +63,6 @@ class GetCategoryCodesByProductIdentifiersIntegration extends TestCase
         $subProductModel1 = $this->entityBuilder->createProductModel('sub_product_model_1', 'familyVariantWithTwoLevels', $rootProductModel, ['categories' => ['watch', 'famous']]);
         $this->entityBuilder->createVariantProduct('variant_product_1', 'aFamily', 'familyVariantWithTwoLevels', $subProductModel1, ['categories' => ['trending']]);
         $this->entityBuilder->createVariantProduct('variant_product_2', 'aFamily', 'familyVariantWithTwoLevels', $subProductModel1, ['categories' => []]);
-
     }
 
     public function testGetCategoryCodesForASimpleProduct(): void
@@ -104,7 +103,7 @@ class GetCategoryCodesByProductIdentifiersIntegration extends TestCase
 
     private function getQuery(): GetCategoryCodesByProductIdentifiers
     {
-        return $this->get('akeneo.pim.enrichment.category.category_codes_by_product_identifiers');
+        return $this->get('akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers');
     }
 
     private function givenBooleanAttributes(array $codes): void
