@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8290: Fix flat to standard conversion of metrics, with unit filled and empty amount 
+
 # 2.3.37 (2019-04-15)
 
 ## Bug fixes

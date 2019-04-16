@@ -46,7 +46,7 @@ class MetricFactorySpec extends ObjectBehavior
         $metric = $this->createMetric('Weight', 'GRAM', null);
 
         $metric->shouldReturnAnInstanceOf(self::METRIC_CLASS);
-        $metric->__toString()->shouldBeEqualTo('');
+        $metric->__toString()->shouldBeEqualTo('GRAM');
         $metric->getFamily()->shouldBeEqualTo('Weight');
         $metric->getUnit()->shouldBeEqualTo('GRAM');
         $metric->getData()->shouldBeNull();
