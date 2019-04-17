@@ -54,15 +54,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.enrichment.product.connector.get_product_from_identifiers:
-        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\ORM\Connector\GetConnectorProductsFromWriteModel'
-        arguments:
-            - '@pimee_workflow.query.get_worklow_status_for_product'
-            - '@pim_api.repository.attribute'
-            - '@pim_api.repository.product'
-
-    pimee_workflow.query.get_worklow_status_for_product:
-        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\ORM\Connector\GetWorkflowStatusForProduct'
+    pimee_workflow.query.get_metadata_for_product:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\ORM\Connector\GetMetadata'
         arguments:
             - '@security.authorization_checker'
             - '@security.token_storage'
