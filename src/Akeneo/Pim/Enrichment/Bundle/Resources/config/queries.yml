@@ -175,4 +175,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes'
         arguments:
             - '@database_connection'
-            -
+
+    akeneo.pim.enrichment.product_model.query.get_product_associations_by_product_model_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductAssociationsByProductModelCodes'
+        arguments:
+            - '@database_connection'
