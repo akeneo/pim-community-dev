@@ -58,7 +58,7 @@ final class ConnectorProductNormalizer
             'associations' => empty($connectorProduct->associations()) ? (object) [] : $connectorProduct->associations()
         ];
 
-        if ($connectorProduct->metadata() !== []) {
+        if (!empty($connectorProduct->metadata())) {
             $normalizedProduct['metadata'] = $connectorProduct->metadata();
         }
 
