@@ -209,6 +209,9 @@ class AttributeMapping extends BaseView {
     attributeSelector.configure().then(() => {
       attributeSelector.setParent(this);
       attributeSelector.render();
+    });
+
+    attributeSelector.on('post_render', () => {
       if (isAttributeOptionsButtonVisible) {
         attributeSelector.$el.find('.icons-container').append(
           $('<div>')
@@ -217,6 +220,7 @@ class AttributeMapping extends BaseView {
             .attr('title', __('pim_common.edit')),
         );
       }
+
       $dom.prepend(attributeSelector.$el);
     });
   }
