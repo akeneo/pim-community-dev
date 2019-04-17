@@ -4,7 +4,6 @@ set -eu
 
 command -v jq >/dev/null 2>&1 || { echo >&2 "I require jq but it's not installed.  Aborting."; exit 1; }
 
-
 START=$(date +%s)
 SCRIPT_DIR=$(dirname $0)
 DOCKER_BRIDGE_IP=$(ip address show | grep "global docker" | cut -c10- | cut -d '/' -f1)
@@ -35,7 +34,7 @@ boot_and_install_pim()
 {
     message "Boot and install PIM in test environment"
     cd $PIM_PATH
-    export ES_JAVA_OPTS='-Xms1g -Xmx1g'
+    export ES_JAVA_OPTS='-Xms2g -Xmx2g'
     docker-compose up -d --remove-orphans
     PUBLIC_PIM_HTTP_PORT=$(docker-compose port httpd-behat 80 | cut -d ':' -f 2)
     rm -rf var/cache/*
