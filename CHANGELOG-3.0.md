@@ -1,5 +1,9 @@
 # 3.0.x
 
+# Bug fixes
+
+- PIM-8297: remove wrong typehint
+
 # 3.0.13 (2019-04-15)
 
 # Bug fixes

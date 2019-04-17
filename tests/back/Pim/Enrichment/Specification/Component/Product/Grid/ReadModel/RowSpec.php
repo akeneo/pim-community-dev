@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
 
@@ -94,6 +95,27 @@ class RowSpec extends ObjectBehavior
         $this->parentCode()->shouldReturn('parent_code');
         $this->values()->shouldBeLike(new ValueCollection([ScalarValue::value('scalar_attribute', 'data')]));
         $this->additionalProperties()->shouldBeLike(new AdditionalProperties([]));
+    }
+
+    function it_creates_a_row_with_image_as_ReferenceDataCollectionValue(ReferenceDataCollectionValue $image)
+    {
+        $this->beConstructedThrough(
+            'fromProductModel',
+            [
+                'identifier',
+                'family label',
+                new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
+                new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
+                'data',
+                $image,
+                1,
+                [],
+                'parent_code',
+                new ValueCollection([ScalarValue::value('scalar_attribute', 'data')])
+            ]
+        );
+
+        $this->image()->shouldBeLike($image);
     }
 
     function it_adds_an_additional_property()

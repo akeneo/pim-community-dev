@@ -94,7 +94,7 @@ final class Row
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
         ?string $label,
-        ?object $image,
+        $image,
         ?int $completeness,
         string $documentType,
         int $technicalId,
@@ -132,7 +132,7 @@ final class Row
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
         string $label,
-        ?object $image,
+        $image,
         ?int $completeness,
         int $technicalId,
         ?string $parentCode,
@@ -165,7 +165,7 @@ final class Row
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
         string $label,
-        ?object $image,
+        $image,
         int $technicalId,
         array $childrenCompleteness,
         ?string $parent,
@@ -279,7 +279,7 @@ final class Row
      *
      * @return null|object
      */
-    public function image(): ?object
+    public function image()
     {
         return $this->image;
     }
