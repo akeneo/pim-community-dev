@@ -63,6 +63,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct',
 
         // TODO: permission
         'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
@@ -210,7 +211,11 @@ $rules = [
         // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface',
-
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer',
+        
         // TIP-1032: Workflow should not depend on PIM/Enrichment normalizers
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer',

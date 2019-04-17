@@ -98,3 +98,9 @@ services:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\UserNormalizer'
         arguments:
             $categoryAccessRepository: '@pimee_security.repository.category_access'
+
+    pim_api.normalizer.connector_products:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\ConnectorProductNormalizer'
+        arguments:
+            - '@pim_api.normalizer.values'
+            - '@pim_catalog.normalizer.standard.datetime'
