@@ -37,7 +37,7 @@ final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProd
     }
 
     /**
-     * TODO: inject activated locales is channel is provided (handler responsibility)
+     * TODO: inject activated locales if channel is provided (handler responsibility)
      * TODO: to test
      *
      * {@inheritdoc}
