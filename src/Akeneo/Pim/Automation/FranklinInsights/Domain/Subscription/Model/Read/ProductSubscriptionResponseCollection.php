@@ -37,7 +37,7 @@ final class ProductSubscriptionResponseCollection
      */
     public function add(ProductSubscriptionResponse $response): void
     {
-        $this->responses[$response->getProductId()] = $response;
+        $this->responses[$response->getProductId()->toInt()] = $response;
     }
 
     /**

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Context;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
@@ -245,7 +246,7 @@ class DataFixturesContext implements Context
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
-        $subscription = new ProductSubscription($product->getId(), new SubscriptionId(uniqid()), ['sku' => '72527273070']);
+        $subscription = new ProductSubscription(new ProductId($product->getId()), new SubscriptionId(uniqid()), ['sku' => '72527273070']);
         $this->subscriptionRepository->save($subscription);
     }
 
@@ -258,7 +259,7 @@ class DataFixturesContext implements Context
     {
         $this->theProductIsSubscribedToFranklin($identifier);
         $product = $this->productRepository->findOneByIdentifier($identifier);
-        $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
+        $subscription = $this->subscriptionRepository->findOneByProductId(new ProductId($product->getId()));
 
         $suggestedData = $this->loadJsonFileAsArray(sprintf('suggested-data/suggested_data-%s.json', $identifier));
         $subscription->setSuggestedData(new SuggestedData($suggestedData));

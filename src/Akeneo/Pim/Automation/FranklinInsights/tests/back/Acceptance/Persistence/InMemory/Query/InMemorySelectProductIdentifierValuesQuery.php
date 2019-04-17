@@ -57,7 +57,7 @@ class InMemorySelectProductIdentifierValuesQuery implements SelectProductIdentif
         }
 
         foreach ($productIds as $productId) {
-            $product = $this->productRepository->find($productId);
+            $product = $this->productRepository->find($productId->toInt());
             if (null === $product) {
                 continue;
             }

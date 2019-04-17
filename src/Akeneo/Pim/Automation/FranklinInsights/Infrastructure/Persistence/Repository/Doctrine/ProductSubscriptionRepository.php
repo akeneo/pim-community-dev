@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Repository\Doctrine;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -60,9 +61,9 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function findOneByProductId(int $productId): ?ProductSubscription
+    public function findOneByProductId(ProductId $productId): ?ProductSubscription
     {
-        return $this->em->getRepository(ProductSubscription::class)->findOneBy(['productId' => $productId]);
+        return $this->em->getRepository(ProductSubscription::class)->findOneBy(['productId.productId' => $productId->toInt()]);
     }
 
     /**
@@ -70,7 +71,11 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
      */
     public function findByProductIds(array $productIds): array
     {
-        return $this->em->getRepository(ProductSubscription::class)->findBy(['productId' => $productIds]);
+        $productIds = array_map(function (ProductId $productId) {
+            return $productId->toInt();
+        }, $productIds);
+
+        return $this->em->getRepository(ProductSubscription::class)->findBy(['productId.productId' => $productIds]);
     }
 
     /**
@@ -136,6 +141,10 @@ SQL;
         if (empty($productIds)) {
             return;
         }
+
+        $productIds = array_map(function (ProductId $productId) {
+            return $productId->toInt();
+        }, $productIds);
 
         $query = <<<SQL
 UPDATE pimee_franklin_insights_subscription

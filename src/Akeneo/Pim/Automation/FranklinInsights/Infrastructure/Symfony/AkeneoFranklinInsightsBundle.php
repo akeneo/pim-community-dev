@@ -33,6 +33,7 @@ class AkeneoFranklinInsightsBundle extends Bundle
             realpath(__DIR__ . '/Resources/config/doctrine/subscription') => 'Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model',
             realpath(__DIR__ . '/Resources/config/doctrine/identifier_mapping') => 'Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model',
             realpath(__DIR__ . '/Resources/config/doctrine/subscription_id') => 'Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject',
+            realpath(__DIR__ . '/Resources/config/doctrine/common') => 'Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject',
         ];
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(

@@ -1,0 +1,7 @@
+Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId:
+    type: embeddable
+    fields:
+        productId:
+            type: integer
+            column: product_id
+            nullable: false

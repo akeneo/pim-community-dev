@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreatePr
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Factory\ProposalSuggestedDataFactory;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
@@ -52,13 +53,14 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $proposalUpsert,
         $subscriptionRepository
     ): void {
-        $productSubscription = new ProductSubscription(42, new SubscriptionId(uniqid()), []);
+        $productId = new ProductId(42);
+        $productSubscription = new ProductSubscription($productId, new SubscriptionId(uniqid()), []);
 
-        $suggestedData = new ProposalSuggestedData(42, []);
+        $suggestedData = new ProposalSuggestedData($productId, []);
         $proposalSuggestedDataFactory->fromSubscription($productSubscription)->willReturn($suggestedData);
 
         $proposalUpsert->process([$suggestedData], ProposalAuthor::USERNAME)->shouldBeCalled();
-        $subscriptionRepository->emptySuggestedDataByProducts([42])->shouldBeCalled();
+        $subscriptionRepository->emptySuggestedDataByProducts([$productId])->shouldBeCalled();
 
         $this->handle(new CreateProposalCommand($productSubscription));
     }
@@ -67,7 +69,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $proposalSuggestedDataFactory,
         $proposalUpsert
     ): void {
-        $productSubscription = new ProductSubscription(42, new SubscriptionId(uniqid()), []);
+        $productSubscription = new ProductSubscription(new ProductId(42), new SubscriptionId(uniqid()), []);
 
         $proposalSuggestedDataFactory->fromSubscription($productSubscription)->willReturn(null);
 

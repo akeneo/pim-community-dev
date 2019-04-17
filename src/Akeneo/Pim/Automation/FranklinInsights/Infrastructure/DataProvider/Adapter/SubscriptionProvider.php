@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderE
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -236,7 +237,7 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
         );
 
         return new ProductSubscriptionResponse(
-            $subscription->getTrackerId(),
+            new ProductId($subscription->getTrackerId()),
             new SubscriptionId($subscription->getSubscriptionId()),
             $suggestedValues,
             $subscription->isMappingMissing(),

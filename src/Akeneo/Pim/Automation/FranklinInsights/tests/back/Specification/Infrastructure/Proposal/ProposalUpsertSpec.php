@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\ProposalUpsert;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -102,8 +103,8 @@ class ProposalUpsertSpec extends ObjectBehavior
 
         $this->process(
             [
-                new ProposalSuggestedData(42, $suggestedData),
-                new ProposalSuggestedData(56, $otherSuggestedData),
+                new ProposalSuggestedData(new ProductId(42), $suggestedData),
+                new ProposalSuggestedData(new ProductId(56), $otherSuggestedData),
             ],
             'Franklin'
         )->shouldReturn(2);
@@ -134,8 +135,8 @@ class ProposalUpsertSpec extends ObjectBehavior
 
         $this->process(
             [
-                new ProposalSuggestedData(42, $suggestedData),
-                new ProposalSuggestedData(56, $otherSuggestedData),
+                new ProposalSuggestedData(new ProductId(42), $suggestedData),
+                new ProposalSuggestedData(new ProductId(56), $otherSuggestedData),
             ],
             'Franklin'
         )->shouldReturn(0);
@@ -155,7 +156,7 @@ class ProposalUpsertSpec extends ObjectBehavior
 
         $this->process(
             [
-                new ProposalSuggestedData(42, $suggestedData),
+                new ProposalSuggestedData(new ProductId(42), $suggestedData),
             ],
             'Franklin'
         )->shouldReturn(0);

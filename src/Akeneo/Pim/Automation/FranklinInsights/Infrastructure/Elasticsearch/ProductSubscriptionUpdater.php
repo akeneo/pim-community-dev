@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Elasticsearch;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 
@@ -43,27 +44,17 @@ class ProductSubscriptionUpdater
         $this->esClient = $clientBuilder->build();
     }
 
-    /**
-     * @param int $productId
-     */
-    public function updateSubscribedProduct(int $productId): void
+    public function updateSubscribedProduct(ProductId $productId): void
     {
         $this->updateProduct($productId, true);
     }
 
-    /**
-     * @param int $productId
-     */
-    public function updateUnsubscribedProduct(int $productId): void
+    public function updateUnsubscribedProduct(ProductId $productId): void
     {
         $this->updateProduct($productId, false);
     }
 
-    /**
-     * @param int $productId
-     * @param bool $isSubscribed
-     */
-    private function updateProduct(int $productId, bool $isSubscribed): void
+    private function updateProduct(ProductId $productId, bool $isSubscribed): void
     {
         $this->esClient->updateByQuery(
             [
@@ -75,7 +66,7 @@ class ProductSubscriptionUpdater
                     ],
                     'query' => [
                         'term' => [
-                            'id' => sprintf('product_%d', $productId),
+                            'id' => sprintf('product_%d', $productId->toInt()),
                         ],
                     ],
                 ],

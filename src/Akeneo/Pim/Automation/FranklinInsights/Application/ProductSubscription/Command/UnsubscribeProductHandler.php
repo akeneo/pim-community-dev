@@ -61,7 +61,7 @@ class UnsubscribeProductHandler
     {
         $subscription = $this->subscriptionRepository->findOneByProductId($command->getProductId());
         if (null === $subscription) {
-            throw ProductNotSubscribedException::notSubscribed($command->getProductId());
+            throw ProductNotSubscribedException::notSubscribed();
         }
 
         $this->subscriptionProvider->unsubscribe($subscription->getSubscriptionId());

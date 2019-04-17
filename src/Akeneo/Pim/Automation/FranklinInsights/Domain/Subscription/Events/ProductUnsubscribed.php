@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -24,15 +25,15 @@ class ProductUnsubscribed extends Event
 {
     public const EVENT_NAME = 'franklin_insights.products_unsubscribed';
 
-    /** @var int */
+    /** @var ProductId */
     private $unsubscribedProductId;
 
-    public function __construct(int $unsubscribedProductId)
+    public function __construct(ProductId $unsubscribedProductId)
     {
         $this->unsubscribedProductId = $unsubscribedProductId;
     }
 
-    public function getUnsubscribedProductId(): int
+    public function getUnsubscribedProductId(): ProductId
     {
         return $this->unsubscribedProductId;
     }

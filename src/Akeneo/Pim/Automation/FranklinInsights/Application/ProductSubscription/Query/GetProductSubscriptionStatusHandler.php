@@ -68,7 +68,7 @@ class GetProductSubscriptionStatusHandler
      */
     public function handle(GetProductSubscriptionStatusQuery $query): ProductSubscriptionStatus
     {
-        $product = $this->productRepository->find($query->getProductId());
+        $product = $this->productRepository->find($query->getProductId()->toInt());
         if (null === $product) {
             throw new \InvalidArgumentException(sprintf('There is no product with id "%s"', $query->getProductId()));
         }

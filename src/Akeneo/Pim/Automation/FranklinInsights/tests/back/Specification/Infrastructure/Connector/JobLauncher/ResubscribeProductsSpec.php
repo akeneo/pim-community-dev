@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ResubscribeProductsInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobInstanceNames;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher\ResubscribeProducts;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
@@ -45,7 +46,7 @@ class ResubscribeProductsSpec extends ObjectBehavior
         $jobInstanceRepository->findOneByIdentifier(JobInstanceNames::RESUBSCRIBE_PRODUCTS)->willReturn(null);
         $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
 
-        $this->process([42, 44, 56]);
+        $this->process([new ProductId(42), new ProductId(44), new ProductId(56)]);
     }
 
     public function it_launches_the_resubscription_job_for_provided_product_ids(
@@ -79,6 +80,6 @@ class ResubscribeProductsSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->process([42, 44, 999]);
+        $this->process([new ProductId(42), new ProductId(44), new ProductId(999)]);
     }
 }

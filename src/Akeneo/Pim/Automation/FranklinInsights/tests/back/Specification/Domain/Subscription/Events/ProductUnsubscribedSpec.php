@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductUnsubscribed;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\Event;
@@ -21,7 +22,7 @@ class ProductUnsubscribedSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith(42);
+        $this->beConstructedWith(new ProductId(42));
     }
 
     public function it_is_an_event(): void
@@ -36,6 +37,8 @@ class ProductUnsubscribedSpec extends ObjectBehavior
 
     public function it_returns_the_unsubscribed_product(): void
     {
-        $this->getUnsubscribedProductId()->shouldReturn(42);
+        $productId = new ProductId(42);
+        $this->beConstructedWith($productId);
+        $this->getUnsubscribedProductId()->shouldReturn($productId);
     }
 }

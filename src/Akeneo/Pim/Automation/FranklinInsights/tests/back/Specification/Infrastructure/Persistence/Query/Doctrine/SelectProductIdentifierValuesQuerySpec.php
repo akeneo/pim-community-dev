@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
@@ -48,9 +49,10 @@ class SelectProductIdentifierValuesQuerySpec extends ObjectBehavior
             ['product_ids' => Connection::PARAM_INT_ARRAY]
         )->willReturn($statement);
 
-        $result = $this->execute([42]);
+        $productId = new ProductId(42);
+        $result = $this->execute([$productId]);
         $result->shouldHaveType(ProductIdentifierValuesCollection::class);
-        $values = $result->get(42);
+        $values = $result->get($productId);
         $values->shouldHaveType(ProductIdentifierValues::class);
 
         $values->getValue('asin')->shouldReturn('ABC456789');

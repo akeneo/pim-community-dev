@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
+
 /**
  * Fetches current product family id directly from the DB.
  *
@@ -21,9 +23,9 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Produ
 interface SelectProductFamilyIdQueryInterface
 {
     /**
-     * @param int $productId
+     * @param ProductId $productId
      *
      * @return int|null
      */
-    public function execute(int $productId): ?int;
+    public function execute(ProductId $productId): ?int;
 }

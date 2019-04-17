@@ -14,35 +14,30 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 final class UpdateSubscriptionFamilyCommand
 {
-    /** @var int */
+    /** @var ProductId */
     private $productId;
 
     /** @var FamilyCode */
     private $familyCode;
 
-    public function __construct(int $productId, FamilyCode $familyCode)
+    public function __construct(ProductId $productId, FamilyCode $familyCode)
     {
         $this->productId = $productId;
         $this->familyCode = $familyCode;
     }
 
-    /**
-     * @return int
-     */
-    public function productId(): int
+    public function productId(): ProductId
     {
         return $this->productId;
     }
 
-    /**
-     * @return FamilyCode
-     */
     public function familyCode(): FamilyCode
     {
         return $this->familyCode;

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Factory\ProposalSuggestedDataFactory;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
@@ -44,8 +45,9 @@ class PendingSubscriptionProcessorSpec extends ObjectBehavior
 
     public function it_processes_a_subscription_in_proposal_suggested_data($suggestedDataFactory): void
     {
-        $subscription = new ProductSubscription(42, new SubscriptionId('subscription-42'), ['asin' => 'asin-42']);
-        $suggestedData = new ProposalSuggestedData(42, ['asin' => 'asin-42']);
+        $productId = new ProductId(42);
+        $subscription = new ProductSubscription($productId, new SubscriptionId('subscription-42'), ['asin' => 'asin-42']);
+        $suggestedData = new ProposalSuggestedData($productId, ['asin' => 'asin-42']);
 
         $suggestedDataFactory->fromSubscription($subscription)->willReturn($suggestedData);
 
@@ -54,7 +56,7 @@ class PendingSubscriptionProcessorSpec extends ObjectBehavior
 
     public function it_throws_an_invalid_item_exception_when_the_suggested_data_is_empty($suggestedDataFactory): void
     {
-        $subscription = new ProductSubscription(42, new SubscriptionId('subscription-42'), []);
+        $subscription = new ProductSubscription(new ProductId(42), new SubscriptionId('subscription-42'), []);
         $suggestedDataFactory->fromSubscription($subscription)->willReturn(null);
 
         $this->shouldThrow(InvalidItemException::class)->during('process', [$subscription]);

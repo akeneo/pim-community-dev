@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
+
 /**
  * @author Mathias Métayer <mathias.metayer@akeneo.com>
  */
 interface ResubscribeProductsInterface
 {
     /**
-     * @param array $productIds
+     * @param ProductId[] $productIds
      */
     public function process(array $productIds): void;
 }

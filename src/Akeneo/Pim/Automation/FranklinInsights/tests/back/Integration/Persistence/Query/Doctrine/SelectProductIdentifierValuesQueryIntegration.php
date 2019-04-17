@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Persistence\Query\Doctrine;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
@@ -66,7 +67,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
         );
 
         $this->assertIdentifierValues(
-            $this->getIdentifierValues([$product->getId(), $otherProduct->getId()]),
+            $this->getIdentifierValues([new ProductId($product->getId()), new ProductId($otherProduct->getId())]),
             [
                 $product->getId() => [
                     'asin' => 'ABC123',
@@ -117,7 +118,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
         );
 
         $this->assertIdentifierValues(
-            $this->getIdentifierValues([$product->getId()]),
+            $this->getIdentifierValues([new ProductId($product->getId())]),
             [
                 $product->getId() => [
                     'asin' => 'ABC123',
@@ -147,10 +148,10 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
 
         $nonExistingProductId = $product->getId() + 10;
 
-        $result = $this->getIdentifierValues([$product->getId(), $nonExistingProductId]);
+        $result = $this->getIdentifierValues([new ProductId($product->getId()), new ProductId($nonExistingProductId)]);
 
-        Assert::assertInstanceOf(ProductIdentifierValues::class, $result->get($product->getId()));
-        Assert::assertNull($result->get($nonExistingProductId));
+        Assert::assertInstanceOf(ProductIdentifierValues::class, $result->get(new ProductId($product->getId())));
+        Assert::assertNull($result->get(new ProductId($nonExistingProductId)));
     }
 
     public function test_that_it_returns_an_empty_collection_if_there_is_no_identifier_mapping(): void
@@ -165,7 +166,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
             ]
         );
 
-        Assert::assertSame(0, $this->getIdentifierValues([$product->getId()])->count());
+        Assert::assertSame(0, $this->getIdentifierValues([new ProductId($product->getId())])->count());
     }
 
     public function test_that_it_completes_unmapped_identifiers_with_null(): void
@@ -186,7 +187,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
         );
 
         $this->assertIdentifierValues(
-            $this->getIdentifierValues([$product->getId()]),
+            $this->getIdentifierValues([new ProductId($product->getId())]),
             [
                 $product->getId() => [
                     'asin' => null,
@@ -212,7 +213,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
         $product = $this->createProduct('some_sku', []);
 
         $this->assertIdentifierValues(
-            $this->getIdentifierValues([$product->getId()]),
+            $this->getIdentifierValues([new ProductId($product->getId())]),
             [
                 $product->getId() => [
                     'asin' => null,
@@ -255,7 +256,7 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
     private function assertIdentifierValues(ProductIdentifierValuesCollection $actual, array $expected): void
     {
         foreach ($expected as $productId => $expectedValues) {
-            $actualValues = $actual->get($productId);
+            $actualValues = $actual->get(new ProductId($productId));
             Assert::assertInstanceOf(ProductIdentifierValues::class, $actualValues);
             foreach ($expectedValues as $franklinCode => $expectedValue) {
                 Assert::assertSame($expectedValue, $actualValues->getValue($franklinCode));

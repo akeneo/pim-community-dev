@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
@@ -95,8 +96,8 @@ class SubscriptionWriterSpec extends ObjectBehavior
         ];
 
         $collection = new ProductSubscriptionResponseCollection([]);
-        $collection->add(new ProductSubscriptionResponse(42, new SubscriptionId('123-465-789'), [], false, false));
-        $collection->add(new ProductSubscriptionResponse(50, new SubscriptionId('abc-def-987'), [], false, false));
+        $collection->add(new ProductSubscriptionResponse(new ProductId(42), new SubscriptionId('123-465-789'), [], false, false));
+        $collection->add(new ProductSubscriptionResponse(new ProductId(50), new SubscriptionId('abc-def-987'), [], false, false));
 
         $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
 
@@ -143,7 +144,7 @@ class SubscriptionWriterSpec extends ObjectBehavior
         $collection = new ProductSubscriptionResponseCollection([
             42 => 'Invalid UPC: \'123456\'',
         ]);
-        $collection->add(new ProductSubscriptionResponse(50, new SubscriptionId('abc-def-987'), [], false, false));
+        $collection->add(new ProductSubscriptionResponse(new ProductId(50), new SubscriptionId('abc-def-987'), [], false, false));
 
         $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Service\ProposalUpsertInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
@@ -56,13 +57,15 @@ class ProposalWriterSpec extends ObjectBehavior
         $proposalUpsert,
         $subscriptionRepository
     ): void {
-        $proposalSuggestedData1 = new ProposalSuggestedData(44, ['asin' => 'my-asin']);
-        $proposalSuggestedData2 = new ProposalSuggestedData(31, ['upc' => 'my-upc']);
+        $productId1 = new ProductId(44);
+        $productId2 = new ProductId(31);
+        $proposalSuggestedData1 = new ProposalSuggestedData($productId1, ['asin' => 'my-asin']);
+        $proposalSuggestedData2 = new ProposalSuggestedData($productId2, ['upc' => 'my-upc']);
 
         $proposalUpsert
             ->process([$proposalSuggestedData1, $proposalSuggestedData2], ProposalAuthor::USERNAME)
             ->willReturn(2);
-        $subscriptionRepository->emptySuggestedDataByProducts([44, 31])->shouldBeCalled();
+        $subscriptionRepository->emptySuggestedDataByProducts([$productId1, $productId2])->shouldBeCalled();
 
         $this->write([$proposalSuggestedData1, $proposalSuggestedData2]);
     }
@@ -72,13 +75,15 @@ class ProposalWriterSpec extends ObjectBehavior
         $subscriptionRepository,
         $stepExecution
     ): void {
-        $proposalSuggestedData1 = new ProposalSuggestedData(44, ['asin' => 'my-asin']);
-        $proposalSuggestedData2 = new ProposalSuggestedData(31, ['upc' => 'my-upc']);
+        $productId1 = new ProductId(44);
+        $productId2 = new ProductId(31);
+        $proposalSuggestedData1 = new ProposalSuggestedData($productId1, ['asin' => 'my-asin']);
+        $proposalSuggestedData2 = new ProposalSuggestedData($productId2, ['upc' => 'my-upc']);
 
         $proposalUpsert
             ->process([$proposalSuggestedData1, $proposalSuggestedData2], ProposalAuthor::USERNAME)
             ->willReturn(2);
-        $subscriptionRepository->emptySuggestedDataByProducts([44, 31])->shouldBeCalled();
+        $subscriptionRepository->emptySuggestedDataByProducts([$productId1, $productId2])->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('processed', 2)->shouldBeCalled();
 

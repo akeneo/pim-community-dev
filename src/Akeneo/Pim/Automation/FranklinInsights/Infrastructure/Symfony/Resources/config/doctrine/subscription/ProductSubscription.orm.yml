@@ -15,10 +15,6 @@ Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscrip
             id: true
             generator:
                 strategy: AUTO
-        productId:
-            type: integer
-            column: product_id
-            nullable: false
         rawSuggestedData:
             type: native_json
             column: raw_suggested_data
@@ -46,4 +42,7 @@ Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscrip
     embedded:
         subscriptionId:
             class: Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId
+            columnPrefix: false
+        productId:
+            class: Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId
             columnPrefix: false

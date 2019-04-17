@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Produ
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ResubscribeProductsInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValuesCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
@@ -88,7 +89,7 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->computeImpactedSubscriptions([$product->getId()]);
+        $this->computeImpactedSubscriptions([new ProductId($product->getId())]);
     }
 
     /**
@@ -104,7 +105,7 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
         $productIds = [];
         foreach ($products as $product) {
             if ($product instanceof ProductInterface) {
-                $productIds[] = $product->getId();
+                $productIds[] = new ProductId($product->getId());
             }
         }
         if (empty($productIds)) {
@@ -119,7 +120,7 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param array $productIds
+     * @param ProductId[] $productIds
      */
     private function computeImpactedSubscriptions(array $productIds): void
     {

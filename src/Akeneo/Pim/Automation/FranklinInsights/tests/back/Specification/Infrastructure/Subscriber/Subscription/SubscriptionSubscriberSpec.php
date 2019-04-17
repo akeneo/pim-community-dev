@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Subscription;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductUnsubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
@@ -50,8 +51,9 @@ class SubscriptionSubscriberSpec extends ObjectBehavior
         ProductSubscription $productSubscription
     ): void {
         $event->getProductSubscription()->willReturn($productSubscription);
-        $productSubscription->getProductId()->willReturn(42);
-        $productSubscriptionUpdater->updateSubscribedProduct(42)->shouldBeCalled();
+        $productId = new ProductId(42);
+        $productSubscription->getProductId()->willReturn($productId);
+        $productSubscriptionUpdater->updateSubscribedProduct($productId)->shouldBeCalled();
 
         $this->updateSubscribedProduct($event);
     }
@@ -60,8 +62,9 @@ class SubscriptionSubscriberSpec extends ObjectBehavior
         ProductSubscriptionUpdater $productSubscriptionUpdater,
         ProductUnsubscribed $event
     ): void {
-        $event->getUnsubscribedProductId()->willReturn(42);
-        $productSubscriptionUpdater->updateUnsubscribedProduct(42)->shouldBeCalled();
+        $productId = new ProductId(42);
+        $event->getUnsubscribedProductId()->willReturn($productId);
+        $productSubscriptionUpdater->updateUnsubscribedProduct($productId)->shouldBeCalled();
 
         $this->updateUnsubscribedProduct($event);
     }

@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Produ
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductUnsubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
@@ -38,7 +39,7 @@ class UnsubscribeProductHandlerSpec extends ObjectBehavior
     public function it_throws_an_exception_if_the_product_is_not_subscribed(
         $subscriptionRepository
     ): void {
-        $productId = 42;
+        $productId = new ProductId(42);
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
         $command = new UnsubscribeProductCommand($productId);
@@ -53,7 +54,7 @@ class UnsubscribeProductHandlerSpec extends ObjectBehavior
         $subscriptionProvider,
         ProductSubscription $subscription
     ): void {
-        $productId = 42;
+        $productId = new ProductId(42);
         $subscriptionId = new SubscriptionId('foo-bar');
 
         $subscriptionRepository->findOneByProductId($productId)->willReturn($subscription);
@@ -64,7 +65,7 @@ class UnsubscribeProductHandlerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(ProductUnsubscribed::EVENT_NAME, Argument::that(function ($event) use ($productId) {
             return $event instanceof ProductUnsubscribed &&
-                $event->getUnsubscribedProductId() === $productId;
+                $event->getUnsubscribedProductId()->equals($productId);
         }))->shouldBeCalled();
 
         $command = new UnsubscribeProductCommand($productId);

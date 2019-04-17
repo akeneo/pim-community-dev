@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Co
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionStatus;
@@ -57,7 +58,7 @@ class SubscriptionProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
         $product->getIdentifier()->willReturn('foobar');
 
-        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(42))->willReturn(
+        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(new ProductId(42)))->willReturn(
             new ProductSubscriptionStatus(
                 new ConnectionStatus(true, false, true, 0),
                 false,
@@ -88,7 +89,7 @@ class SubscriptionProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
         $product->getIdentifier()->willReturn('foobar');
 
-        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(42))->willReturn(
+        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(new ProductId(42)))->willReturn(
             new ProductSubscriptionStatus(
                 new ConnectionStatus(true, false, true, 0),
                 false,
@@ -119,7 +120,7 @@ class SubscriptionProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
         $product->getIdentifier()->willReturn('foobar');
 
-        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(42))->willReturn(
+        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(new ProductId(42)))->willReturn(
             new ProductSubscriptionStatus(
                 new ConnectionStatus(true, false, true, 0),
                 true,
@@ -150,7 +151,7 @@ class SubscriptionProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
         $product->getIdentifier()->willReturn('foobar');
 
-        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(42))->willReturn(
+        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(new ProductId(42)))->willReturn(
             new ProductSubscriptionStatus(
                 new ConnectionStatus(true, false, true, 0),
                 false,
@@ -180,7 +181,7 @@ class SubscriptionProcessorSpec extends ObjectBehavior
     ): void {
         $product->getId()->willReturn(42);
 
-        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(42))->willReturn(
+        $getProductSubscriptionStatusHandler->handle(new GetProductSubscriptionStatusQuery(new ProductId(42)))->willReturn(
             new ProductSubscriptionStatus(
                 new ConnectionStatus(true, false, true, 0),
                 false,

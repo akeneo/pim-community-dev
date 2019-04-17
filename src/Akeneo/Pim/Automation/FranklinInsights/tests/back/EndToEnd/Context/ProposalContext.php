@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -91,7 +92,7 @@ class ProposalContext implements Context
      */
     private function assertSuggestedDataHaveBeenEmptied(ProductInterface $product): void
     {
-        $subscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+        $subscription = $this->productSubscriptionRepository->findOneByProductId(new ProductId($product->getId()));
         Assert::true($subscription->getSuggestedData()->isEmpty());
     }
 }

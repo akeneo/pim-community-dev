@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Proces
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -51,7 +52,7 @@ class SubscriptionProcessor implements ItemProcessorInterface
     public function process($product): ProductSubscriptionRequest
     {
         $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle(
-            new GetProductSubscriptionStatusQuery($product->getId())
+            new GetProductSubscriptionStatusQuery(new ProductId($product->getId()))
         );
 
         try {

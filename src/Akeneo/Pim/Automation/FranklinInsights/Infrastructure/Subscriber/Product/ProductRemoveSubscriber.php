@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetCo
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
@@ -72,10 +73,10 @@ class ProductRemoveSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $productId = $event->getSubjectId();
+        $productId = new ProductId($event->getSubjectId());
+        $command = new UnsubscribeProductCommand($productId);
 
         try {
-            $command = new UnsubscribeProductCommand($productId);
             $this->unsubscribeProductHandler->handle($command);
         } catch (ProductNotSubscribedException $e) {
             // Silently catch exception if the product is not subscribed

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
+
 /**
  * This is a DTO holding the id of a product which is being subscribed.
  *
@@ -20,24 +22,15 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription
  */
 class SubscribeProductCommand
 {
-    /** @var int */
+    /** @var ProductId */
     private $productId;
 
-    /**
-     * @param int $productId
-     */
-    public function __construct(int $productId)
+    public function __construct(ProductId $productId)
     {
-        if ($productId <= 0) {
-            throw new \InvalidArgumentException('Product id should be a positive integer');
-        }
         $this->productId = $productId;
     }
 
-    /**
-     * @return int
-     */
-    public function getProductId(): int
+    public function getProductId(): ProductId
     {
         return $this->productId;
     }

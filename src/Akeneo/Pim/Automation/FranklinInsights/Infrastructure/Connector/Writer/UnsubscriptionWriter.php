@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
@@ -61,7 +62,8 @@ class UnsubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInt
     {
         foreach ($items as $item) {
             try {
-                $this->unsubscribeHandler->handle(new UnsubscribeProductCommand($item->getId()));
+                $productId = new ProductId($item->getId());
+                $this->unsubscribeHandler->handle(new UnsubscribeProductCommand($productId));
                 $this->stepExecution->incrementSummaryInfo('unsubscribed');
             } catch (ProductNotSubscribedException $e) {
                 $this->stepExecution->incrementSummaryInfo('unsubscription_skipped_not_subscribed');

@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetCo
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Subscriber\Product\ProductToVariantProductSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -103,7 +104,7 @@ class ProductToVariantProductSubscriberSpec extends ObjectBehavior
         $product->getId()->willReturn(1);
         $product->isVariant()->willReturn(true);
 
-        $unsubscribeProductHandler->handle(new UnsubscribeProductCommand(1))->shouldBeCalled();
+        $unsubscribeProductHandler->handle(new UnsubscribeProductCommand(new ProductId(1)))->shouldBeCalled();
 
         $this->onPostSave($event);
     }

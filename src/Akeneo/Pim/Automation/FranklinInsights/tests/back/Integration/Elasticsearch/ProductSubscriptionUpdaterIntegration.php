@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\tests\back\Integration\Elasticsearch;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\TestCase;
@@ -30,8 +31,8 @@ class ProductSubscriptionUpdaterIntegration extends TestCase
 
         $this->insertSubscription($subscribedProduct->getId());
         $productSubscriptionUpdater = $this->get('akeneo.pim.automation.franklin_insights.elasticsearch.updater.product_subscription');
-        $productSubscriptionUpdater->updateSubscribedProduct($subscribedProduct->getId());
-        $productSubscriptionUpdater->updateUnsubscribedProduct($unsubscribedProduct->getId());
+        $productSubscriptionUpdater->updateSubscribedProduct(new ProductId($subscribedProduct->getId()));
+        $productSubscriptionUpdater->updateUnsubscribedProduct(new ProductId($unsubscribedProduct->getId()));
 
         $this->assertProductIndexHasBeenUpdated($subscribedProduct, true);
         $this->assertProductIndexHasBeenUpdated($unsubscribedProduct, false);

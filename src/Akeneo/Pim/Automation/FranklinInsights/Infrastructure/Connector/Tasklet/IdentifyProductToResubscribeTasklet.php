@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Taskle
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ResubscribeProductsInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Query\SelectNonNullRequestedIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -132,13 +133,14 @@ final class IdentifyProductToResubscribeTasklet implements TaskletInterface
     private function getProductIdsWithUpdatedIdentifiers(array $requestedIdentifierValues): array
     {
         $updatedProductIds = [];
+        $requestedProductIds = array_map(function (int $id) {
+            return new ProductId($id);
+        }, array_keys($requestedIdentifierValues));
 
-        $newIdentifierValuesCollection = $this->selectProductIdentifierValuesQuery->execute(
-            array_keys($requestedIdentifierValues)
-        );
+        $newIdentifierValuesCollection = $this->selectProductIdentifierValuesQuery->execute($requestedProductIds);
 
         foreach ($requestedIdentifierValues as $productId => $requestedIdentifierValuesForProduct) {
-            $newIdentifierValues = $newIdentifierValuesCollection->get($productId);
+            $newIdentifierValues = $newIdentifierValuesCollection->get(new ProductId($productId));
             if (null === $newIdentifierValues) {
                 continue;
             }
@@ -159,7 +161,11 @@ final class IdentifyProductToResubscribeTasklet implements TaskletInterface
      */
     private function launchResubscriptionJob(): void
     {
-        $this->resubscribeProducts->process($this->productIdsToResubscribe);
+        $productsIdsToResubscribe = array_map(function ($productId) {
+            return new ProductId($productId);
+        }, $this->productIdsToResubscribe);
+
+        $this->resubscribeProducts->process($productsIdsToResubscribe);
         $this->productIdsToResubscribe = [];
     }
 }

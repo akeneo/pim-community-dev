@@ -11,6 +11,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -67,7 +68,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $productId = 42;
         $productRepository->find($productId)->willReturn($product);
 
-        $query = new GetProductSubscriptionStatusQuery($productId);
+        $query = new GetProductSubscriptionStatusQuery(new ProductId($productId));
         $getProductSubscriptionStatusHandler->handle($query)->willReturn(
             new ProductSubscriptionStatus(
                 new ConnectionStatus(true, true, true, 42),
@@ -78,7 +79,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
             )
         );
 
-        $command = new SubscribeProductCommand($productId);
+        $command = new SubscribeProductCommand(new ProductId($productId));
         $this->shouldThrow(
             ProductSubscriptionException::familyRequired()
         )->during('handle', [$command]);
@@ -97,7 +98,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         ProductInterface $product,
         ValueInterface $eanValue
     ): void {
-        $productId = 42;
+        $productId = new ProductId(42);
         $subscriptionId = new SubscriptionId(uniqid());
         $suggestedValues = [[
             'pimAttributeCode' => 'foo',
@@ -105,10 +106,10 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         ]];
         $suggestedData = new SuggestedData($suggestedValues);
 
-        $product->getId()->willReturn($productId);
+        $product->getId()->willReturn(42);
         $product->getFamily()->willReturn(new Family());
         $product->getValue('ean')->willReturn($eanValue);
-        $productRepository->find($productId)->willReturn($product);
+        $productRepository->find(42)->willReturn($product);
 
         $query = new GetProductSubscriptionStatusQuery($productId);
         $getProductSubscriptionStatusHandler->handle($query)->willReturn(

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 
 /**
@@ -22,17 +23,13 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\Identi
  */
 final class ProductIdentifierValues
 {
-    /** @var int */
+    /** @var ProductId */
     private $productId;
 
     /** @var array */
     private $identifierValues;
 
-    /**
-     * @param int $productId
-     * @param array $identifierValues
-     */
-    public function __construct(int $productId, array $identifierValues)
+    public function __construct(ProductId $productId, array $identifierValues)
     {
         $this->productId = $productId;
         foreach (IdentifiersMapping::FRANKLIN_IDENTIFIERS as $franklinCode) {
@@ -40,10 +37,7 @@ final class ProductIdentifierValues
         }
     }
 
-    /**
-     * @return int
-     */
-    public function productId(): int
+    public function productId(): ProductId
     {
         return $this->productId;
     }

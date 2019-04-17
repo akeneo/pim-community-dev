@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobLauncher;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Service\ResubscribeProductsInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobInstanceNames;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -65,8 +66,8 @@ class ResubscribeProducts implements ResubscribeProductsInterface
         }
 
         $ids = array_map(
-            function ($id) {
-                return sprintf('product_%d', $id);
+            function (ProductId $productId) {
+                return sprintf('product_%d', $productId->toInt());
             },
             $productIds
         );

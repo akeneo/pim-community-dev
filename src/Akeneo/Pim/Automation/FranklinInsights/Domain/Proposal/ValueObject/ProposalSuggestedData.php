@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
+
 /**
  * Holds the data necessary to create a proposal on a product:
  *  - product id
@@ -22,26 +24,19 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Proposal\ValueObject;
  */
 final class ProposalSuggestedData
 {
-    /** @var int */
+    /** @var ProductId */
     private $productId;
 
     /** @var array */
     private $suggestedValues;
 
-    /**
-     * @param int $productId
-     * @param array $suggestedValues
-     */
-    public function __construct(int $productId, array $suggestedValues)
+    public function __construct(ProductId $productId, array $suggestedValues)
     {
         $this->productId = $productId;
         $this->suggestedValues = $suggestedValues;
     }
 
-    /**
-     * @return int
-     */
-    public function getProductId(): int
+    public function getProductId(): ProductId
     {
         return $this->productId;
     }

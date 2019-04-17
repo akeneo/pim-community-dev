@@ -71,9 +71,9 @@ final class ProposalUpsert implements ProposalUpsertInterface
      */
     public function process(array $suggestedData, string $author): int
     {
-        $processed = [];
+        $processed = 0;
         foreach ($suggestedData as $data) {
-            $product = $this->productRepository->find($data->getproductId());
+            $product = $this->productRepository->find($data->getproductId()->toInt());
             if (null === $product) {
                 continue;
             }
@@ -85,14 +85,14 @@ final class ProposalUpsert implements ProposalUpsertInterface
                     $author
                 );
                 if (true === $wasProposalCreated) {
-                    $processed[] = $data->getProductId();
+                    $processed++;
                 }
             } catch (\LogicException $e) {
                 continue;
             }
         }
 
-        return count($processed);
+        return $processed;
     }
 
     /**

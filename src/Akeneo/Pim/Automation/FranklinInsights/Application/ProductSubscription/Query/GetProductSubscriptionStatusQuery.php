@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
+
 /**
  * DTO used to query the status of a product subscription to Franklin using the product ID.
  *
@@ -20,21 +22,15 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription
  */
 class GetProductSubscriptionStatusQuery
 {
-    /** @var int */
+    /** @var ProductId */
     private $productId;
 
-    /**
-     * @param int $productId
-     */
-    public function __construct(int $productId)
+    public function __construct(ProductId $productId)
     {
         $this->productId = $productId;
     }
 
-    /**
-     * @return int
-     */
-    public function getProductId(): int
+    public function getProductId(): ProductId
     {
         return $this->productId;
     }

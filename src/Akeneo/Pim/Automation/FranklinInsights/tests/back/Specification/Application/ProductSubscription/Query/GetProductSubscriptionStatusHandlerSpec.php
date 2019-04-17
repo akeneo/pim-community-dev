@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Produ
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
@@ -63,9 +64,10 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         ProductInterface $product,
         IdentifiersMapping $identifiersMapping
     ): void {
-        $query = new GetProductSubscriptionStatusQuery(42);
+        $productId = new ProductId(42);
+        $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn($productSubscription);
+        $productSubscriptionRepository->findOneByProductId($productId)->willReturn($productSubscription);
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
@@ -96,9 +98,10 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         ProductInterface $product,
         IdentifiersMapping $identifiersMapping
     ): void {
-        $query = new GetProductSubscriptionStatusQuery(42);
+        $productId = new ProductId(42);
+        $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
@@ -129,9 +132,10 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         ProductInterface $product,
         IdentifiersMapping $identifiersMapping
     ): void {
-        $query = new GetProductSubscriptionStatusQuery(42);
+        $productId = new ProductId(42);
+        $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
@@ -163,9 +167,10 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         FamilyInterface $family,
         IdentifiersMapping $identifiersMapping
     ): void {
-        $query = new GetProductSubscriptionStatusQuery(42);
+        $productId = new ProductId(42);
+        $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
@@ -196,9 +201,10 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         ProductInterface $product,
         IdentifiersMapping $identifiersMapping
     ): void {
-        $query = new GetProductSubscriptionStatusQuery(42);
+        $productId = new ProductId(42);
+        $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
         $connectionStatus = new ConnectionStatus(true, false, false, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
@@ -226,9 +232,10 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         ValueInterface $eanValue,
         IdentifiersMapping $identifiersMapping
     ): void {
-        $query = new GetProductSubscriptionStatusQuery(42);
+        $productId = new ProductId(42);
+        $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
@@ -267,9 +274,10 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         ValueInterface $eanValue,
         IdentifiersMapping $identifiersMapping
     ): void {
-        $query = new GetProductSubscriptionStatusQuery(42);
+        $productId = new ProductId(42);
+        $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
@@ -306,9 +314,10 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         ProductInterface $product,
         IdentifiersMapping $identifiersMapping
     ): void {
-        $query = new GetProductSubscriptionStatusQuery(42);
+        $productId = new ProductId(42);
+        $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn($productSubscription);
+        $productSubscriptionRepository->findOneByProductId($productId)->willReturn($productSubscription);
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);

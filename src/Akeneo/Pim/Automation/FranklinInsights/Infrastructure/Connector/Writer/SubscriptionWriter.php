@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
@@ -130,7 +131,7 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
         ProductSubscriptionResponse $response
     ): ProductSubscription {
         $subscription = new ProductSubscription(
-            $request->getProduct()->getId(),
+            new ProductId($request->getProduct()->getId()),
             $response->getSubscriptionId(),
             $request->getMappedValues($this->identifiersMapping)
         );

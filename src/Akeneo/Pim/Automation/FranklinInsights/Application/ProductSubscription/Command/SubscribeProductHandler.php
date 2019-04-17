@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
@@ -114,7 +115,7 @@ class SubscribeProductHandler
 
         $subscriptionResponse = $this->subscriptionProvider->subscribe($subscriptionRequest);
         $subscription = new ProductSubscription(
-            $product->getId(),
+            new ProductId($product->getId()),
             $subscriptionResponse->getSubscriptionId(),
             $subscriptionRequest->getMappedValues($identifiersMapping)
         );
@@ -130,20 +131,20 @@ class SubscribeProductHandler
     }
 
     /**
-     * @param int $productId
+     * @param ProductId $productId
      *
      * @throws \InvalidArgumentException
      * @throws ProductSubscriptionException
      *
      * @return ProductInterface
      */
-    private function validateProduct(int $productId): ProductInterface
+    private function validateProduct(ProductId $productId): ProductInterface
     {
         $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle(
             new GetProductSubscriptionStatusQuery($productId)
         );
         $productSubscriptionStatus->validate();
 
-        return $this->productRepository->find($productId);
+        return $this->productRepository->find($productId->toInt());
     }
 }
