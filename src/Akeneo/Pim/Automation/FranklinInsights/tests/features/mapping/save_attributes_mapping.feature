@@ -11,8 +11,8 @@ Feature: Map the PIM attributes with Franklin attributes
     And the product "B00EYZY6AC" is subscribed to Franklin
     When the attributes are mapped for the family "router" as follows:
       | target_attribute_code | pim_attribute_code |
-      | product_weight        | weight             |
       | color                 |                    |
+      | product_weight        | weight             |
     Then Franklin's attribute product_weight should be mapped to weight
     But Franklin's attribute color should not be mapped
 
