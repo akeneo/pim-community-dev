@@ -160,3 +160,19 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetCategoryCodesByProductModelCodes'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductModelsAssociationsByProductModelCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetGroupAssociationsByProductModelCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product_model.query.get_values_and_properties_from_product_model_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes'
+        arguments:
+            - '@database_connection'
+            -
