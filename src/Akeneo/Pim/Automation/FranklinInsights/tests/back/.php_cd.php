@@ -198,6 +198,7 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Pim\Automation\FranklinInsights\Domain',
+            'Akeneo\Pim\Automation\FranklinInsights\Application',
             'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\JobInstanceNames',
 
             // Akeneo external bounded contexts
