@@ -47,6 +47,7 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->getPimAttributeCode()->shouldReturn('pim_series');
         $this->getStatus()->shouldReturn(AttributeMappingStatus::ATTRIBUTE_ACTIVE);
         $this->getSummary()->shouldReturn(['Hair care']);
+        $this->isMapped()->shouldReturn(true);
     }
 
     public function it_can_have_null_target_label_and_summary(): void
@@ -61,5 +62,44 @@ class AttributeMappingSpec extends ObjectBehavior
         );
         $this->getTargetAttributeLabel()->shouldReturn(null);
         $this->getSummary()->shouldReturn(null);
+    }
+
+    public function it_is_mapped_when_the_attribute_is_active(): void
+    {
+        $this->beConstructedWith(
+            'series',
+            null,
+            'text',
+            'pim_series',
+            AttributeMappingStatus::ATTRIBUTE_ACTIVE,
+            null
+        );
+        $this->isMapped()->shouldReturn(true);
+    }
+
+    public function it_is_not_mapped_when_the_attribute_is_inactive(): void
+    {
+        $this->beConstructedWith(
+            'series',
+            null,
+            'text',
+            'pim_series',
+            AttributeMappingStatus::ATTRIBUTE_INACTIVE,
+            null
+        );
+        $this->isMapped()->shouldReturn(false);
+    }
+
+    public function it_is_not_mapped_when_the_attribute_is_pending(): void
+    {
+        $this->beConstructedWith(
+            'series',
+            null,
+            'text',
+            'pim_series',
+            AttributeMappingStatus::ATTRIBUTE_PENDING,
+            null
+        );
+        $this->isMapped()->shouldReturn(false);
     }
 }

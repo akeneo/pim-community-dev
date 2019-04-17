@@ -36,7 +36,12 @@ class AttributesMappingResponse implements \IteratorAggregate
     public function addAttribute(AttributeMapping $attribute): self
     {
         $this->attributes[] = $attribute;
-        usort($this->attributes, function ($a, $b) {
+
+        usort($this->attributes, function (AttributeMapping $a, AttributeMapping $b) {
+            $mapped = $a->isMapped() <=> $b->isMapped();
+            if ($mapped !== 0) {
+                return $mapped;
+            }
             return $a->getTargetAttributeLabel() <=> $b->getTargetAttributeLabel();
         });
 

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus;
+
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -112,5 +114,10 @@ class AttributeMapping
     public function getSummary(): ?array
     {
         return $this->summary;
+    }
+
+    public function isMapped(): bool
+    {
+        return $this->status === AttributeMappingStatus::ATTRIBUTE_ACTIVE;
     }
 }
