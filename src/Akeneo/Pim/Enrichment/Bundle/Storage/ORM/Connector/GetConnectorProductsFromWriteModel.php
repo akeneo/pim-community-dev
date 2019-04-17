@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use \Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @author    Anael Chardan <anael.chardan@akeneo.com>
+ * @author    Mathias Métayer <mathias.metayer@akeneo.com>
+ * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
+ *
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProducts
@@ -25,15 +29,20 @@ final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProd
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
 
+    /** @var GetMetadataInterface */
+    private $getMetadata;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
-        AttributeRepository $attributeRepository
+        AttributeRepository $attributeRepository,
+        GetMetadataInterface $getMetadata
     ) {
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->getMetadata = $getMetadata;
     }
 
     /**
@@ -64,7 +73,7 @@ final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProd
             $values->removeByAttributeCode($identifierAttributeCode);
             $product->setValues($values);
 
-            $products[] = ConnectorProduct::fromProductWriteModel($product);
+            $products[] = ConnectorProduct::fromProductWriteModel($product, $this->getMetadata->forProduct($product));
         }
 
         return $products;

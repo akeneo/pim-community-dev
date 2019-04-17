@@ -67,7 +67,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             [],
             null,
             [],
-            [],
+            ['a_metadata' => 'viande'],
             new ValueCollection()
         );
 
@@ -105,7 +105,8 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'groups' => [],
                 'parent' => null,
                 'values' => (object) [],
-                'associations' => (object) []
+                'associations' => (object) [],
+                'metadata' => ['a_metadata' => 'viande'],
             ],
         ]);
     }

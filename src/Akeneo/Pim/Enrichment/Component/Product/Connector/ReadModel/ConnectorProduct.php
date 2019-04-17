@@ -161,9 +161,9 @@ final class ConnectorProduct
 
     public static function productAssociationsAsArray(ProductInterface $product): array
     {
-        $association = [];
+        $associations = [];
         foreach ($product->getAllAssociations() as $association) {
-            $association[$association->getAssociationType()->getCode()] = [
+            $associations[$association->getAssociationType()->getCode()] = [
                 'products' => array_map(function (ProductInterface $product) {
                     return $product->getIdentifier();
                 }, $association->getProducts()->toArray()),
@@ -175,6 +175,6 @@ final class ConnectorProduct
             ];
         }
 
-        return $association;
+        return $associations;
     }
 }
