@@ -86,7 +86,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@akeneo_channel.query.get_channel_category_code'
+            - '@akeneo_channel.infrastructure.persistence.query.find_channel_category_code'
 
     pim_catalog.repository.channel:
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository'
@@ -166,11 +166,6 @@ services:
             - '@pim_catalog.normalizer.standard.channel'
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
-
-    akeneo_channel.query.get_channel_category_code:
-        class: 'Akeneo\Channel\Bundle\Doctrine\Query\GetChannelCategoryCode'
-        arguments:
-            - '@database_connection'
 
     ### Currency
     pim_enrich.form.currency:
