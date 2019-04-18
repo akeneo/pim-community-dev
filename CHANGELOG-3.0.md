@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8294: Allow for empty-looking strings like '0' in TextData
+- PIM-8295: fetch all records that exist in SqlRecordsExists
 
 # 3.0.13 (2019-04-15)
 
