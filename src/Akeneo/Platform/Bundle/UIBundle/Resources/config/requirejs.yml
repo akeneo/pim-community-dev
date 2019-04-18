@@ -1248,4 +1248,4 @@ config:
 
 
     pim/edition: pimui/js/pim-edition.ts
-    pim/common/edit/field/file-path: pimui/js/job/common/edit/field/file-path.ts
+    pim/job/common/edit/field/file-path: pimui/js/job/common/edit/field/file-path.ts
