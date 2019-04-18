@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use \Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -56,14 +56,13 @@ final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProd
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
-    ): array
-    {
+    ): array {
         $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
 
         $products = [];
         foreach ($identifiers as $identifier) {
             $product = $this->getProduct($identifier);
-            $values = $product->getValues()->filter(function(ValueInterface $value) use ($attributesToFilterOn, $channelToFilterOn, $localesToFilterOn) {
+            $values = $product->getValues()->filter(function (ValueInterface $value) use ($attributesToFilterOn, $channelToFilterOn, $localesToFilterOn) {
                 $isAttributeToKeep = null === $attributesToFilterOn || in_array($value->getAttributeCode(), $attributesToFilterOn);
                 $isChannelToKeep = null === $channelToFilterOn || !$value->isScopable() || $value->getScopeCode() === $channelToFilterOn;
                 $isLocaleToKeep = null === $localesToFilterOn || !$value->isLocalizable() || in_array($value->getLocaleCode(), $localesToFilterOn);

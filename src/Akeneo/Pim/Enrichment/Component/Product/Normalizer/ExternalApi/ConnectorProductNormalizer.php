@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 
-
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @author    Mathias Métayer <mathias.metayer@akeneo.com>

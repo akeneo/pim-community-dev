@@ -48,7 +48,7 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
         if (null !== $options['search_after_unique_key']) {
             array_push($options['search_after'], $this->indexType . '#' . $options['search_after_unique_key']);
         }
-        if(!empty($options['search_after'])) {
+        if (!empty($options['search_after'])) {
             $esQuery['search_after'] = $options['search_after'];
         }
 
