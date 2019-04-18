@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write;
 
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Product;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Test\Pim\Automation\FranklinInsights\Specification\Builder\AttributeBuilder;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -26,201 +26,125 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionRequestSpec extends ObjectBehavior
 {
-    public function let(ProductInterface $product): void
-    {
-        $this->beConstructedWith($product);
-    }
-
     public function it_is_a_product_subscription_request(): void
     {
+        $productId = new ProductId(42);
+        $this->beConstructedWith($productId, $this->buildFamily(), new ProductIdentifierValues($productId, []), 'a_product');
         $this->shouldHaveType(ProductSubscriptionRequest::class);
     }
 
-    public function it_does_not_take_missing_values_into_account(
-        $product,
-        ValueInterface $modelValue,
-        ValueInterface $eanValue
-    ): void {
-        $modelValue->hasData()->willReturn(false);
-        $eanValue->hasData()->willReturn(true);
-        $eanValue->__toString()->willReturn('123456789123');
+    public function it_returns_the_product_id()
+    {
+        $productId = new ProductId(42);
+        $this->beConstructedWith($productId, $this->buildFamily(), new ProductIdentifierValues($productId, []), 'a_product');
 
-        $product->getValue('manufacturer')->willReturn(null);
-        $product->getValue('model')->willReturn($modelValue);
-        $product->getValue('ean')->willReturn($eanValue);
-        $product->getId()->willReturn(42);
+        $this->getProductId()->shouldReturn($productId);
+    }
 
-        $identifiersMapping = new IdentifiersMapping(
-            [
-                'upc' => 'ean',
-                'brand' => 'manufacturer',
-                'mpn' => 'model',
-            ]
-        );
+    public function it_returns_the_product_identifier()
+    {
+        $productId = new ProductId(42);
+        $this->beConstructedWith($productId, $this->buildFamily(), new ProductIdentifierValues($productId, []), 'a_product');
 
-        $this->getMappedValues($identifiersMapping)->shouldReturn([
+        $this->getProductIdentifier()->shouldReturn('a_product');
+    }
+
+    public function it_returns_the_family()
+    {
+        $productId = new ProductId(42);
+        $family = $this->buildFamily();
+        $this->beConstructedWith($productId, $family, new ProductIdentifierValues($productId, []), 'a_product');
+
+        $this->getFamily()->shouldReturn($family);
+    }
+
+    public function it_returns_the_mapped_values()
+    {
+        $productId = new ProductId(42);
+        $productIdentifierValues = new ProductIdentifierValues($productId, [
             'upc' => '123456789123',
+            'asin' => '987654',
+        ]);
+
+        $this->beConstructedWith($productId, $this->buildFamily(), $productIdentifierValues, 'a_product');
+
+        $this->getMappedValues()->shouldReturn([
+            'upc' => '123456789123',
+            'asin' => '987654',
         ]);
     }
 
-    public function it_handles_incomplete_mapping(
-        $product,
-        IdentifiersMapping $mapping,
-        ValueInterface $eanValue
-    ): void {
-        $eanValue->hasData()->willReturn(true);
-        $eanValue->__toString()->willReturn('123456789123');
+    public function it_does_not_take_missing_values_into_account(): void
+    {
+        $productId = new ProductId(42);
+        $productIdentifierValues = new ProductIdentifierValues($productId, [
+            'upc' => '123456789123',
+            'asin' => '987654',
+            'brand' => null,
+            'mpn' => null,
+        ]);
 
-        $product->getValue('ean')->willReturn($eanValue);
+        $this->beConstructedWith($productId, $this->buildFamily(), $productIdentifierValues, 'a_product');
 
-        $mapping->getIterator()->willReturn(
-            new \ArrayIterator([
-                'upc' => new IdentifierMapping('upc', 'ean'),
-                'asin' => null,
-                'brand' => null,
-                'mpn' => null,
-            ])
-        );
-
-        $this->getMappedValues($mapping)->shouldReturn(
-            [
-                'upc' => '123456789123',
-            ]
-        );
+        $this->getMappedValues()->shouldReturn([
+            'upc' => '123456789123',
+            'asin' => '987654',
+        ]);
     }
 
-    public function it_handles_mpn_and_brand_as_one_identifier(
-        $product,
-        ValueInterface $brandValue,
-        ValueInterface $mpnValue
-    ): void {
-        $brandValue->hasData()->willReturn(true);
-        $brandValue->__toString()->willReturn('qwertee');
+    public function it_handles_mpn_and_brand_as_one_identifier(): void
+    {
+        $productId = new ProductId(42);
+        $productIdentifierValues = new ProductIdentifierValues($productId, [
+            'upc' => null,
+            'asin' => null,
+            'brand' => 'qwertee',
+            'mpn' => 'tshirt-the-witcher',
+        ]);
 
-        $mpnValue->hasData()->willReturn(true);
-        $mpnValue->__toString()->willReturn('tshirt-the-witcher');
+        $this->beConstructedWith($productId, $this->buildFamily(), $productIdentifierValues, 'a_product');
 
-        $product->getValue('brand')->willReturn($brandValue);
-        $product->getValue('mpn')->willReturn($mpnValue);
-
-        $mapping = new IdentifiersMapping(
-            [
-                'upc' => null,
-                'asin' => null,
-                'brand' => 'brand',
-                'mpn' => 'mpn',
-            ]
-        );
-
-        $this->getMappedValues($mapping)->shouldReturn([
+        $this->getMappedValues()->shouldReturn([
             'brand' => 'qwertee',
             'mpn' => 'tshirt-the-witcher',
         ]);
     }
 
-    public function it_does_not_handle_mpn_data_without_brand_data(
-        $product,
-        IdentifiersMapping $mapping,
-        ValueInterface $brandValue,
-        ValueInterface $mpnValue
-    ): void {
-        $brandValue->hasData()->willReturn(true);
-        $brandValue->__toString()->willReturn('qwertee');
+    public function it_does_not_handle_brand_value_without_mpn_value(): void
+    {
+        $productId = new ProductId(42);
+        $productIdentifierValues = new ProductIdentifierValues($productId, [
+            'upc' => '123456789123',
+            'asin' => null,
+            'brand' => 'qwertee',
+            'mpn' => null,
+        ]);
 
-        $mpnValue->hasData()->willReturn(false);
+        $this->beConstructedWith($productId, $this->buildFamily(), $productIdentifierValues, 'a_product');
 
-        $product->getValue('brand')->willReturn($brandValue);
-        $product->getValue('mpn')->willReturn($mpnValue);
-
-        $mapping->getIterator()->willReturn(
-            new \ArrayIterator(
-                [
-                    'upc' => null,
-                    'asin' => null,
-                    'brand' => AttributeBuilder::fromCode('brand'),
-                    'mpn' => AttributeBuilder::fromCode('mpn'),
-                ]
-            )
-        );
-
-        $this->getMappedValues($mapping)->shouldReturn([]);
+        $this->getMappedValues()->shouldReturn(['upc' => '123456789123']);
     }
 
-    public function it_does_not_handle_brand_data_without_mpn_data(
-        $product,
-        IdentifiersMapping $mapping,
-        ValueInterface $brandValue,
-        ValueInterface $mpnValue
-    ): void {
-        $brandValue->hasData()->willReturn(false);
+    public function it_does_not_handle_mpn_value_without_brand_value(): void
+    {
+        $productId = new ProductId(42);
+        $productIdentifierValues = new ProductIdentifierValues($productId, [
+            'upc' => '123456789123',
+            'asin' => null,
+            'brand' => null,
+            'mpn' => 'tshirt-the-witcher',
+        ]);
 
-        $mpnValue->hasData()->willReturn(true);
-        $mpnValue->__toString()->willReturn('tshirt-the-witcher');
+        $this->beConstructedWith($productId, $this->buildFamily(), $productIdentifierValues, 'a_product');
 
-        $product->getValue('brand')->willReturn($brandValue);
-        $product->getValue('mpn')->willReturn($mpnValue);
-
-        $mapping->getIterator()->willReturn(
-            new \ArrayIterator(
-                [
-                    'upc' => null,
-                    'asin' => null,
-                    'brand' => AttributeBuilder::fromCode('brand'),
-                    'mpn' => AttributeBuilder::fromCode('mpn'),
-                ]
-            )
-        );
-
-        $this->getMappedValues($mapping)->shouldReturn([]);
+        $this->getMappedValues()->shouldReturn(['upc' => '123456789123']);
     }
 
-    public function it_does_not_handle_mpn_value_without_brand_value(
-        $product,
-        IdentifiersMapping $mapping,
-        ValueInterface $brandValue
-    ): void {
-        $brandValue->hasData()->willReturn(true);
-        $brandValue->__toString()->willReturn('qwertee');
-
-        $product->getValue('brand')->willReturn($brandValue);
-        $product->getValue('mpn')->willReturn(null);
-
-        $mapping->getIterator()->willReturn(
-            new \ArrayIterator(
-                [
-                    'upc' => null,
-                    'asin' => null,
-                    'brand' => AttributeBuilder::fromCode('brand'),
-                    'mpn' => AttributeBuilder::fromCode('mpn'),
-                ]
-            )
+    private function buildFamily(): Family
+    {
+        return new Family(
+            new FamilyCode('a_family'),
+            ['en_US' => 'a family']
         );
-
-        $this->getMappedValues($mapping)->shouldReturn([]);
-    }
-
-    public function it_does_not_handle_brand_value_without_mpn_value(
-        $product,
-        IdentifiersMapping $mapping,
-        ValueInterface $mpnValue
-    ): void {
-        $mpnValue->hasData()->willReturn(true);
-        $mpnValue->__toString()->willReturn('tshirt-the-witcher');
-
-        $product->getValue('brand')->willReturn(null);
-        $product->getValue('mpn')->willReturn($mpnValue);
-
-        $mapping->getIterator()->willReturn(
-            new \ArrayIterator(
-                [
-                    'upc' => null,
-                    'asin' => null,
-                    'brand' => AttributeBuilder::fromCode('brand'),
-                    'mpn' => AttributeBuilder::fromCode('mpn'),
-                ]
-            )
-        );
-
-        $this->getMappedValues($mapping)->shouldReturn([]);
     }
 }

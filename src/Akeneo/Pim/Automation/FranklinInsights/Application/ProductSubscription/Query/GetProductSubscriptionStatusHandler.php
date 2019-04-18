@@ -15,12 +15,9 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductInfosForSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionStatus;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductInfosForSubscriptionQueryInterface;
 
 /**
  * Handles a GetProductSubscriptionStatus query and returns a ProductSubscriptionStatus read model.
@@ -29,34 +26,18 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
  */
 class GetProductSubscriptionStatusHandler
 {
-    /** @var ProductSubscriptionRepositoryInterface */
-    private $productSubscriptionRepository;
-
     /** @var GetConnectionStatusHandler */
     private $getConnectionStatusHandler;
 
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
+    /** @var SelectProductInfosForSubscriptionQueryInterface */
+    private $selectProductInfosForSubscriptionQuery;
 
-    /** @var IdentifiersMappingRepositoryInterface */
-    private $identifiersMappingRepository;
-
-    /**
-     * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
-     * @param GetConnectionStatusHandler $getConnectionStatusHandler
-     * @param ProductRepositoryInterface $productRepository
-     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     */
     public function __construct(
-        ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         GetConnectionStatusHandler $getConnectionStatusHandler,
-        ProductRepositoryInterface $productRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery
     ) {
-        $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->getConnectionStatusHandler = $getConnectionStatusHandler;
-        $this->productRepository = $productRepository;
-        $this->identifiersMappingRepository = $identifiersMappingRepository;
+        $this->selectProductInfosForSubscriptionQuery = $selectProductInfosForSubscriptionQuery;
     }
 
     /**
@@ -68,40 +49,21 @@ class GetProductSubscriptionStatusHandler
      */
     public function handle(GetProductSubscriptionStatusQuery $query): ProductSubscriptionStatus
     {
-        $product = $this->productRepository->find($query->getProductId()->toInt());
-        if (null === $product) {
-            throw new \InvalidArgumentException(sprintf('There is no product with id "%s"', $query->getProductId()));
+        $productId = $query->getProductId();
+        $productInfos = $this->selectProductInfosForSubscriptionQuery->execute($productId);
+
+        if (!$productInfos instanceof ProductInfosForSubscription) {
+            throw new \InvalidArgumentException(sprintf('There is no product with id "%s"', $productId->toInt()));
         }
-        $productSubscription = $this->productSubscriptionRepository->findOneByProductId($query->getProductId());
+
         $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery(false));
 
         return new ProductSubscriptionStatus(
             $connectionStatus,
-            $productSubscription instanceof ProductSubscription,
-            null !== $product->getFamily(),
-            $this->isMappingFilled($product),
-            $product->isVariant()
+            $productInfos->isSubscribed(),
+            $productInfos->hasFamily(),
+            $productInfos->getProductIdentifierValues()->hasAtLeastOneValue(),
+            $productInfos->isVariant()
         );
-    }
-
-    /**
-     * @param ProductInterface $product
-     *
-     * @return bool
-     */
-    private function isMappingFilled(ProductInterface $product): bool
-    {
-        $identifiersMapping = $this->identifiersMappingRepository->find();
-        foreach ($identifiersMapping->getMapping() as $identifierMapping) {
-            $pimAttributeCode = $identifierMapping->getAttributeCode();
-            if (null !== $pimAttributeCode &&
-                null !== $product->getValue((string) $pimAttributeCode) &&
-                null !== $product->getValue((string) $pimAttributeCode)->getData()
-            ) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

@@ -24,11 +24,10 @@ services:
     akeneo.pim.automation.franklin_insights.handler.subscribe_product:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Command\SubscribeProductHandler'
         arguments:
-            - '@pim_catalog.repository.product_without_permission'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_infos_for_subscription'
             - '@akeneo.pim.automation.franklin_insights.handler.get_product_subscription_status'
             - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
             - '@akeneo.pim.automation.franklin_insights.data_provider.product_subscription'
-            - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
             - '@akeneo.pim.automation.franklin_insights.handler.create_proposal'
             - '@event_dispatcher'
 
@@ -74,10 +73,8 @@ services:
     akeneo.pim.automation.franklin_insights.handler.get_product_subscription_status:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler'
         arguments:
-            - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
             - '@akeneo.pim.automation.franklin_insights.application.configuration.query.get_connection_status_handler'
-            - '@pim_catalog.repository.product_without_permission'
-            - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_infos_for_subscription'
 
     akeneo.pim.automation.franklin_insights.handler.get_attributes_mapping_by_family:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler'

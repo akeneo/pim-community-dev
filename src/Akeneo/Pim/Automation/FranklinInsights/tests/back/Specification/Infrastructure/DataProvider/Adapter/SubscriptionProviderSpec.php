@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
@@ -34,12 +34,9 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\Except
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\WarningCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\SubscriptionsCursor;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -49,7 +46,6 @@ use Prophecy\Argument;
 class SubscriptionProviderSpec extends ObjectBehavior
 {
     public function let(
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         SubscriptionWebService $subscriptionApi,
         ConfigurationRepositoryInterface $configurationRepo,
         FamilyRepositoryInterface $familyRepository
@@ -60,72 +56,32 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
         $subscriptionApi->setToken('valid-token')->shouldBeCalled();
 
-        $this->beConstructedWith($identifiersMappingRepository, $subscriptionApi, $configurationRepo, $familyRepository);
+        $this->beConstructedWith($subscriptionApi, $configurationRepo, $familyRepository);
     }
 
-    public function it_throws_an_exception_if_no_mapping_has_been_defined_for_subscription(
-        ProductInterface $product,
-        $identifiersMappingRepository
-    ): void {
-        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping([]));
-        $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
-
-        $this->shouldThrow(ProductSubscriptionException::class)->during('subscribe', [$productSubscriptionRequest]);
-    }
-
-    public function it_throws_an_exception_if_product_has_no_mapped_value_on_subscription(
-        $identifiersMappingRepository,
-        ProductInterface $product,
-        ValueInterface $eanValue
-    ): void {
-        $identifiersMapping = new IdentifiersMapping(['upc' => 'ean']);
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-
-        $eanValue->hasData()->willReturn(false);
-        $product->getValue('ean')->willReturn($eanValue);
-        $product->getId()->willReturn(42);
-        $product->getIdentifier()->willReturn(123456);
-
-        $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
+    public function it_throws_an_exception_if_product_has_no_mapped_value_on_subscription(): void
+    {
+        $productId = new ProductId(42);
+        $productSubscriptionRequest = new ProductSubscriptionRequest(
+            $productId,
+            new Family(new FamilyCode('a_family'), []),
+            new ProductIdentifierValues($productId, []),
+            'a_product'
+        );
 
         $this->shouldThrow(ProductSubscriptionException::invalidMappedValues())
             ->during('subscribe', [$productSubscriptionRequest]);
     }
 
-    public function it_throws_an_exception_if_data_provider_response_has_warnings(
-        $identifiersMappingRepository,
-        $subscriptionApi,
-        ProductInterface $product,
-        ValueInterface $eanValue,
-        ValueInterface $skuValue,
-        FamilyInterface $family,
-        FamilyRepositoryInterface $familyRepository
-    ): void {
-        $identifiersMapping = new IdentifiersMapping(
-            [
-                'upc' => 'ean',
-                'asin' => 'sku',
-            ]
+    public function it_throws_an_exception_if_data_provider_response_has_warnings(SubscriptionWebService $subscriptionApi): void
+    {
+        $productId = new ProductId(42);
+        $productSubscriptionRequest = new ProductSubscriptionRequest(
+            $productId,
+            new Family(new FamilyCode('a_family'), []),
+            new ProductIdentifierValues($productId, ['upc' => '123456789', 'asin' => '987654321']),
+            'a_product'
         );
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-
-        $product->getId()->willReturn(42);
-        $product->getFamily()->willReturn($family);
-        $product->getValue('ean')->willReturn($eanValue);
-        $product->getValue('sku')->willReturn($skuValue);
-
-        $eanValue->hasData()->willReturn(true);
-        $skuValue->hasData()->willReturn(true);
-        $eanValue->__toString()->willReturn('123456789');
-        $skuValue->__toString()->willReturn('987654321');
-
-        $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
-        $product->getId()->willReturn(42);
-
-        $family->getCode()->willReturn('a_family');
-        $familyCode = new FamilyCode('a_family');
-        $family = new Family($familyCode, []);
-        $familyRepository->findOneByIdentifier($familyCode)->willReturn($family);
 
         $request = new RequestCollection();
         $request->add(new Request(
@@ -150,40 +106,14 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ->during('subscribe', [$productSubscriptionRequest]);
     }
 
-    public function it_bulk_subscribes_product_to_franklin(
-        $identifiersMappingRepository,
-        $subscriptionApi,
-        ProductInterface $product,
-        ValueInterface $eanValue,
-        ValueInterface $skuValue,
-        FamilyInterface $family,
-        FamilyRepositoryInterface $familyRepository
-    ): void {
-        $identifiersMapping = new IdentifiersMapping(
-            [
-                'upc' => 'ean',
-                'asin' => 'sku',
-            ]
+    public function it_bulk_subscribes_product_to_franklin(SubscriptionWebService $subscriptionApi): void {
+        $productId = new ProductId(42);
+        $productSubscriptionRequest = new ProductSubscriptionRequest(
+            $productId,
+            new Family(new FamilyCode('a_family'), []),
+            new ProductIdentifierValues($productId, ['upc' => '123456789', 'asin' => '987654321']),
+            'a_product'
         );
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-
-        $product->getId()->willReturn(42);
-        $product->getFamily()->willReturn($family);
-        $product->getValue('ean')->willReturn($eanValue);
-        $product->getValue('sku')->willReturn($skuValue);
-
-        $eanValue->hasData()->willReturn(true);
-        $skuValue->hasData()->willReturn(true);
-        $eanValue->__toString()->willReturn('123456789');
-        $skuValue->__toString()->willReturn('987654321');
-
-        $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
-        $product->getId()->willReturn(42);
-
-        $family->getCode()->willReturn('a_family');
-        $familyCode = new FamilyCode('a_family');
-        $family = new Family($familyCode, []);
-        $familyRepository->findOneByIdentifier($familyCode)->willReturn($family);
 
         $request = new RequestCollection();
         $request->add(new Request(

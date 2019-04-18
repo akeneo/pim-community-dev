@@ -16,18 +16,15 @@ namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Application\Produ
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifierMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductInfosForSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionStatus;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductInfosForSubscriptionQueryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -37,17 +34,10 @@ use Prophecy\Argument;
 class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 {
     public function let(
-        ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         GetConnectionStatusHandler $getConnectionStatusHandler,
-        ProductRepositoryInterface $productRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery
     ): void {
-        $this->beConstructedWith(
-            $productSubscriptionRepository,
-            $getConnectionStatusHandler,
-            $productRepository,
-            $identifiersMappingRepository
-        );
+        $this->beConstructedWith($getConnectionStatusHandler, $selectProductInfosForSubscriptionQuery);
     }
 
     public function it_is_a_product_subscription_query_handler(): void
@@ -56,285 +46,163 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
     }
 
     public function it_returns_a_product_subscription_status_for_a_subscribed_product(
-        $productSubscriptionRepository,
-        $getConnectionStatusHandler,
-        $productRepository,
-        $identifiersMappingRepository,
-        ProductSubscription $productSubscription,
-        ProductInterface $product,
-        IdentifiersMapping $identifiersMapping
+        GetConnectionStatusHandler $getConnectionStatusHandler,
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery
     ): void {
         $productId = new ProductId(42);
         $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId($productId)->willReturn($productSubscription);
+        $selectProductInfosForSubscriptionQuery->execute($productId)->willReturn(new ProductInfosForSubscription(
+            $productId,
+            new ProductIdentifierValues($productId, ['mpn' => '123456']),
+            new Family(new FamilyCode('a_family'), []),
+            'a_product',
+            false,
+            true
+        ));
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
-
-        $productRepository->find(42)->willReturn($product);
-
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getMapping()->willReturn([
-            'brand' => new IdentifierMapping('brand', null),
-            'ean' => new IdentifierMapping('ean', null),
-            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
-            'asin' => new IdentifierMapping('asin', 'pim_asin'),
-        ]);
-        $product->getFamily()->willReturn(null);
-        $product->isVariant()->willReturn(false);
-        $product->getValue('pim_mpn')->willReturn(null);
-        $product->getValue('pim_asin')->willReturn(null);
 
         $productSubscriptionStatus = $this->handle($query);
         $productSubscriptionStatus->shouldIndicateAnActiveSubscription();
     }
 
     public function it_returns_a_product_subscription_status_for_a_not_subscribed_product(
-        $productSubscriptionRepository,
-        $getConnectionStatusHandler,
-        $productRepository,
-        $identifiersMappingRepository,
-        ProductInterface $product,
-        IdentifiersMapping $identifiersMapping
+        GetConnectionStatusHandler $getConnectionStatusHandler,
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery
     ): void {
         $productId = new ProductId(42);
         $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
+        $selectProductInfosForSubscriptionQuery->execute($productId)->willReturn(new ProductInfosForSubscription(
+            $productId,
+            new ProductIdentifierValues($productId, ['mpn' => '123456']),
+            new Family(new FamilyCode('a_family'), []),
+            'a_product',
+            false,
+            false
+        ));
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
-
-        $productRepository->find(42)->willReturn($product);
-
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getMapping()->willReturn([
-            'brand' => new IdentifierMapping('brand', null),
-            'ean' => new IdentifierMapping('ean', null),
-            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
-            'asin' => new IdentifierMapping('asin', 'pim_asin'),
-        ]);
-        $product->getFamily()->willReturn(null);
-        $product->isVariant()->willReturn(false);
-        $product->getValue('pim_mpn')->willReturn(null);
-        $product->getValue('pim_asin')->willReturn(null);
 
         $productSubscriptionStatus = $this->handle($query);
         $productSubscriptionStatus->shouldIndicateAnInactiveSubscription();
     }
 
     public function it_returns_a_product_subscription_status_for_a_product_without_family(
-        $productSubscriptionRepository,
-        $getConnectionStatusHandler,
-        $productRepository,
-        $identifiersMappingRepository,
-        ProductInterface $product,
-        IdentifiersMapping $identifiersMapping
+        GetConnectionStatusHandler $getConnectionStatusHandler,
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery
     ): void {
         $productId = new ProductId(42);
         $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
+        $selectProductInfosForSubscriptionQuery->execute($productId)->willReturn(new ProductInfosForSubscription(
+            $productId,
+            new ProductIdentifierValues($productId, ['mpn' => '123456']),
+            null,
+            'a_product',
+            false,
+            false
+        ));
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
-
-        $productRepository->find(42)->willReturn($product);
-
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getMapping()->willReturn([
-            'brand' => new IdentifierMapping('brand', null),
-            'ean' => new IdentifierMapping('ean', null),
-            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
-            'asin' => new IdentifierMapping('asin', 'pim_asin'),
-        ]);
-        $product->getFamily()->willReturn(null);
-        $product->isVariant()->willReturn(false);
-        $product->getValue('pim_mpn')->willReturn(null);
-        $product->getValue('pim_asin')->willReturn(null);
 
         $productSubscriptionStatus = $this->handle($query);
         $productSubscriptionStatus->shouldIndicateThatProductDoesNotHaveFamily();
     }
 
     public function it_returns_a_product_subscription_status_for_a_product_with_family(
-        $productSubscriptionRepository,
-        $getConnectionStatusHandler,
-        $productRepository,
-        $identifiersMappingRepository,
-        ProductInterface $product,
-        FamilyInterface $family,
-        IdentifiersMapping $identifiersMapping
+        GetConnectionStatusHandler $getConnectionStatusHandler,
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery
     ): void {
         $productId = new ProductId(42);
         $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
+        $selectProductInfosForSubscriptionQuery->execute($productId)->willReturn(new ProductInfosForSubscription(
+            $productId,
+            new ProductIdentifierValues($productId, ['mpn' => '123456']),
+            new Family(new FamilyCode('a_family'), []),
+            'a_product',
+            false,
+            false
+        ));
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
-        $productRepository->find(42)->willReturn($product);
-
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getMapping()->willReturn([
-            'brand' => new IdentifierMapping('brand', null),
-            'ean' => new IdentifierMapping('ean', null),
-            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
-            'asin' => new IdentifierMapping('asin', 'pim_asin'),
-        ]);
-        $product->getFamily()->willReturn($family);
-        $product->isVariant()->willReturn(false);
-        $product->getValue('pim_mpn')->willReturn(null);
-        $product->getValue('pim_asin')->willReturn(null);
 
         $productSubscriptionStatus = $this->handle($query);
         $productSubscriptionStatus->shouldIndicateThatProductHasFamily();
     }
 
-    public function it_returns_a_product_subscription_status_when_identifiers_mapping_is_not_filled(
-        $productSubscriptionRepository,
-        $getConnectionStatusHandler,
-        $productRepository,
-        $identifiersMappingRepository,
-        ProductInterface $product,
-        IdentifiersMapping $identifiersMapping
-    ): void {
-        $productId = new ProductId(42);
-        $query = new GetProductSubscriptionStatusQuery($productId);
-
-        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
-
-        $connectionStatus = new ConnectionStatus(true, false, false, 0);
-        $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
-
-        $productRepository->find(42)->willReturn($product);
-
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getMapping()->willReturn([]);
-
-        $product->getFamily()->willReturn(null);
-        $product->isVariant()->willReturn(false);
-
-        $productSubscriptionStatus = $this->handle($query);
-        $productSubscriptionStatus->shouldIndicateThatIdentifiersMappingIsNotFilled();
-        $productSubscriptionStatus->shouldIndicateThatProductDoesNotFillIdentifiersMapping();
-    }
-
     public function it_returns_a_product_subscription_status_for_a_product_with_identifiers_mapping_filled(
-        $productSubscriptionRepository,
-        $getConnectionStatusHandler,
-        $productRepository,
-        $identifiersMappingRepository,
-        ProductInterface $product,
-        ValueInterface $mpnValue,
-        ValueInterface $eanValue,
-        IdentifiersMapping $identifiersMapping
+        GetConnectionStatusHandler $getConnectionStatusHandler,
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery
     ): void {
         $productId = new ProductId(42);
         $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
+        $selectProductInfosForSubscriptionQuery->execute($productId)->willReturn(new ProductInfosForSubscription(
+            $productId,
+            new ProductIdentifierValues($productId, ['mpn' => '123456']),
+            new Family(new FamilyCode('a_family'), []),
+            'a_product',
+            false,
+            false
+        ));
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
-        $productRepository->find(42)->willReturn($product);
-
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getMapping()->willReturn([
-            'brand' => new IdentifierMapping('brand', 'pim_brand'),
-            'ean' => new IdentifierMapping('ean', 'pim_ean'),
-            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
-            'asin' => new IdentifierMapping('asin', 'pim_asin'),
-        ]);
-        $product->getFamily()->willReturn(null);
-        $product->isVariant()->willReturn(false);
-        $product->getValue('pim_brand')->willReturn(null);
-        $product->getValue('pim_mpn')->willReturn($mpnValue);
-        $product->getValue('pim_ean')->willReturn($eanValue);
-        $product->getValue('pim_asin')->willReturn(null);
-
-        $mpnValue->getData()->willReturn(null);
-        $eanValue->getData()->willReturn(12345);
-
         $productSubscriptionStatus = $this->handle($query);
-        $productSubscriptionStatus->shouldIndicateThatIdentifiersMappingIsFilled();
         $productSubscriptionStatus->shouldIndicateThatProductFillsIdentifiersMapping();
     }
 
     public function it_returns_a_product_subscription_status_for_a_product_with_identifiers_mapping_not_filled(
-        $productSubscriptionRepository,
-        $getConnectionStatusHandler,
-        $productRepository,
-        $identifiersMappingRepository,
-        ProductInterface $product,
-        ValueInterface $mpnValue,
-        ValueInterface $eanValue,
-        IdentifiersMapping $identifiersMapping
+        GetConnectionStatusHandler $getConnectionStatusHandler,
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery
     ): void {
         $productId = new ProductId(42);
         $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId($productId)->willReturn(null);
+        $selectProductInfosForSubscriptionQuery->execute($productId)->willReturn(new ProductInfosForSubscription(
+            $productId,
+            new ProductIdentifierValues($productId, []),
+            new Family(new FamilyCode('a_family'), []),
+            'a_product',
+            false,
+            false
+        ));
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
 
-        $productRepository->find(42)->willReturn($product);
-
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getMapping()->willReturn([
-            'brand' => new IdentifierMapping('brand', 'pim_brand'),
-            'ean' => new IdentifierMapping('ean', 'pim_ean'),
-            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
-            'asin' => new IdentifierMapping('mpn', null),
-        ]);
-        $product->getFamily()->willReturn(null);
-        $product->isVariant()->willReturn(false);
-        $product->getValue('pim_brand')->willReturn(null);
-        $product->getValue('pim_mpn')->willReturn($mpnValue);
-        $product->getValue('pim_ean')->willReturn($eanValue);
-
-        $mpnValue->getData()->willReturn(null);
-        $eanValue->getData()->willReturn(null);
-
         $productSubscriptionStatus = $this->handle($query);
-        $productSubscriptionStatus->shouldIndicateThatIdentifiersMappingIsFilled();
         $productSubscriptionStatus->shouldIndicateThatProductDoesNotFillIdentifiersMapping();
     }
 
     public function it_returns_product_subscription_status_with_a_connection_status(
-        $productSubscriptionRepository,
-        $getConnectionStatusHandler,
-        $productRepository,
-        $identifiersMappingRepository,
-        ProductSubscription $productSubscription,
-        ProductInterface $product,
-        IdentifiersMapping $identifiersMapping
+        GetConnectionStatusHandler $getConnectionStatusHandler,
+        SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery,
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery
     ): void {
         $productId = new ProductId(42);
         $query = new GetProductSubscriptionStatusQuery($productId);
 
-        $productSubscriptionRepository->findOneByProductId($productId)->willReturn($productSubscription);
+        $selectProductInfosForSubscriptionQuery->execute($productId)->willReturn(new ProductInfosForSubscription(
+            $productId,
+            new ProductIdentifierValues($productId, ['mpn' => '123456']),
+            new Family(new FamilyCode('a_family'), []),
+            'a_product',
+            false,
+            false
+        ));
 
         $connectionStatus = new ConnectionStatus(true, false, true, 0);
         $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
-
-        $productRepository->find(42)->willReturn($product);
-
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->getMapping()->willReturn([
-            'brand' => new IdentifierMapping('brand', null),
-            'ean' => new IdentifierMapping('ean', null),
-            'mpn' => new IdentifierMapping('mpn', 'pim_mpn'),
-            'asin' => new IdentifierMapping('asin', 'pim_asin'),
-        ]);
-        $product->getFamily()->willReturn(null);
-        $product->isVariant()->willReturn(false);
-        $product->getValue('pim_mpn')->willReturn(null);
-        $product->getValue('pim_asin')->willReturn(null);
 
         $productSubscriptionStatus = $this->handle($query);
         $productSubscriptionStatus->shouldHaveAConnectionStatus();
@@ -360,16 +228,6 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
             },
             'indicateThatProductDoesNotHaveFamily' => function (ProductSubscriptionStatus $productSubscriptionStatus) {
                 return !$productSubscriptionStatus->hasFamily();
-            },
-            'indicateThatIdentifiersMappingIsFilled' => function (
-                ProductSubscriptionStatus $productSubscriptionStatus
-            ) {
-                return $productSubscriptionStatus->getConnectionStatus()->isIdentifiersMappingValid();
-            },
-            'indicateThatIdentifiersMappingIsNotFilled' => function (
-                ProductSubscriptionStatus $productSubscriptionStatus
-            ) {
-                return !$productSubscriptionStatus->getConnectionStatus()->isIdentifiersMappingValid();
             },
             'indicateThatProductFillsIdentifiersMapping' => function (
                 ProductSubscriptionStatus $productSubscriptionStatus

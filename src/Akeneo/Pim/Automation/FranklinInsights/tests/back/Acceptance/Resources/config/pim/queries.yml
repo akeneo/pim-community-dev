@@ -8,3 +8,17 @@ services:
         class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Query\InMemorySelectFamilyAttributeCodesQuery'
         arguments:
             - '@pim_catalog.repository.family'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_identifier_values_query:
+        class: 'Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Query\InMemorySelectProductIdentifierValuesQuery'
+        arguments:
+            - '@pim_catalog.repository.product_without_permission'
+            - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_infos_for_subscription:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\tests\back\Acceptance\Persistence\InMemory\Query\InMemorySelectProductInfosForSubscriptionQuery'
+        arguments:
+            - '@pim_catalog.repository.product_without_permission'
+            - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
+            - '@akeneo.pim.automation.franklin_insights.repository.family'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_identifier_values_query'

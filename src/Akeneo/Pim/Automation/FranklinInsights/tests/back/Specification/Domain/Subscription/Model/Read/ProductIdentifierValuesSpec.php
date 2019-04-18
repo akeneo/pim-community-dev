@@ -44,4 +44,17 @@ class ProductIdentifierValuesSpec extends ObjectBehavior
         $this->beConstructedWith(new ProductId(42), ['upc' => '987654321987']);
         $this->getValue('non_existing_franklin_identifier')->shouldReturn(null);
     }
+
+    public function it_returns_true_if_there_is_at_least_one_value()
+    {
+        $this->beConstructedWith(new ProductId(42), ['upc' => '987654321987']);
+
+        $this->hasAtLeastOneValue()->shouldReturn(true);
+    }
+
+    public function it_returns_false_if_there_is_no_value()
+    {
+        $this->beConstructedWith(new ProductId(42), ['upc' => null]);
+        $this->hasAtLeastOneValue()->shouldReturn(false);
+    }
 }

@@ -51,4 +51,16 @@ final class ProductIdentifierValues
     {
         return $this->identifierValues[$identifier] ?? null;
     }
+
+    public function hasAtLeastOneValue(): bool
+    {
+        return count(array_filter($this->identifierValues, function ($value) {
+            return null !== $value;
+        })) > 0;
+    }
+
+    public function toArray(): array
+    {
+        return $this->identifierValues;
+    }
 }

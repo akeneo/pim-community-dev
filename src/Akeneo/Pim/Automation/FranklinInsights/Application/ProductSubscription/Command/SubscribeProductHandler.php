@@ -19,15 +19,13 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductInfosForSubscriptionQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -39,8 +37,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SubscribeProductHandler
 {
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
+    /** @var SelectProductInfosForSubscriptionQueryInterface */
+    private $selectProductInfosForSubscriptionQuery;
 
     /** @var GetProductSubscriptionStatusHandler */
     private $getProductSubscriptionStatusHandler;
@@ -51,38 +49,24 @@ class SubscribeProductHandler
     /** @var SubscriptionProviderInterface */
     private $subscriptionProvider;
 
-    /** @var IdentifiersMappingRepositoryInterface */
-    private $identifiersMappingRepository;
-
     /** @var CreateProposalHandler */
     private $createProposalHandler;
 
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    /**
-     * @param ProductRepositoryInterface $productRepository
-     * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
-     * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
-     * @param SubscriptionProviderInterface $subscriptionProvider
-     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param CreateProposalHandler $createProposalHandler
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
-        ProductRepositoryInterface $productRepository,
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         SubscriptionProviderInterface $subscriptionProvider,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         CreateProposalHandler $createProposalHandler,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->productRepository = $productRepository;
+        $this->selectProductInfosForSubscriptionQuery = $selectProductInfosForSubscriptionQuery;
         $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->subscriptionProvider = $subscriptionProvider;
-        $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->createProposalHandler = $createProposalHandler;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -95,29 +79,35 @@ class SubscribeProductHandler
      */
     public function handle(SubscribeProductCommand $command): void
     {
-        $product = $this->validateProduct($command->getProductId());
+        $this->validateProduct($command->getProductId());
 
-        $this->subscribe($product);
+        $this->subscribe($command->getProductId());
     }
 
     /**
      * Creates a subscription request, sends it to the data provider and saves the resulting subscription.
      *
-     * @param ProductInterface $product
+     * @param ProductId $productId
      *
      * @throws ProductSubscriptionException
      */
-    private function subscribe(ProductInterface $product): void
+    private function subscribe(ProductId $productId): void
     {
-        $subscriptionRequest = new ProductSubscriptionRequest($product);
+        $productInfos = $this->selectProductInfosForSubscriptionQuery->execute($productId);
 
-        $identifiersMapping = $this->identifiersMappingRepository->find();
+        $subscriptionRequest = new ProductSubscriptionRequest(
+            $productInfos->getProductId(),
+            $productInfos->getFamily(),
+            $productInfos->getProductIdentifierValues(),
+            $productInfos->getIdentifier()
+        );
 
         $subscriptionResponse = $this->subscriptionProvider->subscribe($subscriptionRequest);
+
         $subscription = new ProductSubscription(
-            new ProductId($product->getId()),
+            $productInfos->getProductId(),
             $subscriptionResponse->getSubscriptionId(),
-            $subscriptionRequest->getMappedValues($identifiersMapping)
+            $subscriptionRequest->getMappedValues()
         );
         $suggestedData = new SuggestedData($subscriptionResponse->getSuggestedData());
         $subscription->setSuggestedData($suggestedData);
@@ -130,21 +120,12 @@ class SubscribeProductHandler
         $this->eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, new ProductSubscribed($subscription));
     }
 
-    /**
-     * @param ProductId $productId
-     *
-     * @throws \InvalidArgumentException
-     * @throws ProductSubscriptionException
-     *
-     * @return ProductInterface
-     */
-    private function validateProduct(ProductId $productId): ProductInterface
+    private function validateProduct(ProductId $productId): void
     {
         $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle(
             new GetProductSubscriptionStatusQuery($productId)
         );
-        $productSubscriptionStatus->validate();
 
-        return $this->productRepository->find($productId->toInt());
+        $productSubscriptionStatus->validate();
     }
 }

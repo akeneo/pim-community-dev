@@ -48,3 +48,10 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectFamilyAttributeCodesQuery'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_infos_for_subscription:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectProductInfosForSubscriptionQuery'
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.automation.franklin_insights.repository.family'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_identifier_values_query'

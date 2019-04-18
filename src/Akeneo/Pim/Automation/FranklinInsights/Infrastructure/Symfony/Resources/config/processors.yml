@@ -3,7 +3,7 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Processor\SubscriptionProcessor'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.handler.get_product_subscription_status'
-            - '@pim_catalog.repository.product_without_permission'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_infos_for_subscription'
 
     akeneo.pim.automation.franklin_insights.connector.processor.unsubscription:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Processor\UnsubscriptionProcessor'

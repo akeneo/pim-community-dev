@@ -14,11 +14,14 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
@@ -43,20 +46,15 @@ class SubscriptionWriterSpec extends ObjectBehavior
     public function let(
         SubscriptionProviderInterface $subscriptionProvider,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         StepExecution $stepExecution,
-        IdentifiersMapping $identifiersMapping,
         EventDispatcherInterface $eventDispatcher
     ): void {
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $this->beConstructedWith(
             $subscriptionProvider,
             $productSubscriptionRepository,
-            $identifiersMappingRepository,
             $eventDispatcher
         );
         $this->setStepExecution($stepExecution);
-        $this->initialize();
     }
 
     public function it_is_an_item_writer(): void
@@ -77,27 +75,31 @@ class SubscriptionWriterSpec extends ObjectBehavior
     public function it_subscribes_items(
         $subscriptionProvider,
         $productSubscriptionRepository,
-        $identifiersMapping,
         $stepExecution,
-        $eventDispatcher,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        AttributeInterface $asin
+        $eventDispatcher
     ): void {
-        $asin->getCode()->willReturn('asin');
-        $identifiersMapping->getIterator()->willReturn(new \ArrayIterator(['asin' => $asin]));
-
-        $product1->getId()->willReturn(42);
-        $product2->getId()->willReturn(50);
+        $family = new Family(new FamilyCode('a_family'), []);
+        $productId1 = new ProductId(42);
+        $productId2 = new ProductId(50);
 
         $items = [
-            new ProductSubscriptionRequest($product1->getWrappedObject()),
-            new ProductSubscriptionRequest($product2->getWrappedObject()),
+            new ProductSubscriptionRequest(
+                $productId1,
+                $family,
+                new ProductIdentifierValues($productId1, ['asin' => '123456']),
+                'product_1'
+            ),
+            new ProductSubscriptionRequest(
+                $productId2,
+                $family,
+                new ProductIdentifierValues($productId2, ['asin' => '654321']),
+                'product_2'
+            ),
         ];
 
         $collection = new ProductSubscriptionResponseCollection([]);
-        $collection->add(new ProductSubscriptionResponse(new ProductId(42), new SubscriptionId('123-465-789'), [], false, false));
-        $collection->add(new ProductSubscriptionResponse(new ProductId(50), new SubscriptionId('abc-def-987'), [], false, false));
+        $collection->add(new ProductSubscriptionResponse($productId1, new SubscriptionId('123-465-789'), [], false, false));
+        $collection->add(new ProductSubscriptionResponse($productId2, new SubscriptionId('abc-def-987'), [], false, false));
 
         $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
 
@@ -120,31 +122,32 @@ class SubscriptionWriterSpec extends ObjectBehavior
     public function it_handles_warnings_returned_during_subscription(
         $subscriptionProvider,
         $productSubscriptionRepository,
-        $identifiersMapping,
         $stepExecution,
-        $eventDispatcher,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        AttributeInterface $upc
+        $eventDispatcher
     ): void {
-        $upc->getCode()->willReturn('pim_upc');
-
-        $identifiersMapping->getIterator()->willReturn(new \ArrayIterator(['pim_upc' => $upc]));
-
-        $product1->getId()->willReturn(42);
-        $product1->getIdentifier()->willReturn('sku_for_my_invalid_upc');
-
-        $product2->getId()->willReturn(50);
+        $family = new Family(new FamilyCode('a_family'), []);
+        $productId1 = new ProductId(42);
+        $productId2 = new ProductId(50);
 
         $items = [
-            new ProductSubscriptionRequest($product1->getWrappedObject()),
-            new ProductSubscriptionRequest($product2->getWrappedObject()),
+            new ProductSubscriptionRequest(
+                $productId1,
+                $family,
+                new ProductIdentifierValues($productId1, ['upc' => '123456']),
+                'sku_for_my_invalid_upc'
+            ),
+            new ProductSubscriptionRequest(
+                $productId2,
+                $family,
+                new ProductIdentifierValues($productId2, ['asin' => '654321']),
+                'product_2'
+            ),
         ];
 
         $collection = new ProductSubscriptionResponseCollection([
             42 => 'Invalid UPC: \'123456\'',
         ]);
-        $collection->add(new ProductSubscriptionResponse(new ProductId(50), new SubscriptionId('abc-def-987'), [], false, false));
+        $collection->add(new ProductSubscriptionResponse($productId2, new SubscriptionId('abc-def-987'), [], false, false));
 
         $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
 

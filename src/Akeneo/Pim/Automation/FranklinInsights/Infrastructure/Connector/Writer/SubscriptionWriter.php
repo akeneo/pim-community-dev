@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\SubscriptionProviderInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
@@ -24,7 +21,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\Produ
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -33,7 +29,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInterface, InitializableInterface
+class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -41,14 +37,8 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
 
-    /** @var IdentifiersMappingRepositoryInterface */
-    private $identifiersMappingRepository;
-
     /** @var SubscriptionProviderInterface */
     private $subscriptionProvider;
-
-    /** @var IdentifiersMapping */
-    private $identifiersMapping;
 
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
@@ -56,27 +46,16 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
     /**
      * @param SubscriptionProviderInterface $subscriptionProvider
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
-     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         SubscriptionProviderInterface $subscriptionProvider,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->subscriptionProvider = $subscriptionProvider;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
-        $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function initialize(): void
-    {
-        $this->identifiersMapping = $this->identifiersMappingRepository->find();
     }
 
     /**
@@ -88,6 +67,8 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
     }
 
     /**
+     * @param ProductSubscriptionRequest[] $items
+     *
      * {@inheritdoc}
      */
     public function write(array $items): void
@@ -95,8 +76,8 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
         $collection = $this->subscriptionProvider->bulkSubscribe($items);
         $warnings = $collection->warnings();
 
-        foreach ($items as $item) {
-            $productId = $item->getProduct()->getId();
+        foreach ($items as $request) {
+            $productId = $request->getProductId()->toInt();
             $response = $collection->get($productId);
             if (null === $response) {
                 if (isset($warnings[$productId])) {
@@ -105,14 +86,14 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
                         'akeneo_franklin_insights.entity.product_subscription.constraint.invalid_mapped_values',
                         [],
                         new DataInvalidItem(
-                            ['identifier' => $item->getProduct()->getIdentifier()]
+                            ['identifier' => $request->getProductIdentifier()]
                         )
                     );
                 }
                 continue;
             }
 
-            $subscription = $this->buildSubscription($item, $response);
+            $subscription = $this->buildSubscription($request, $response);
             $this->productSubscriptionRepository->save($subscription);
             $this->stepExecution->incrementSummaryInfo('subscribed');
 
@@ -131,9 +112,9 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
         ProductSubscriptionResponse $response
     ): ProductSubscription {
         $subscription = new ProductSubscription(
-            new ProductId($request->getProduct()->getId()),
+            $request->getProductId(),
             $response->getSubscriptionId(),
-            $request->getMappedValues($this->identifiersMapping)
+            $request->getMappedValues()
         );
         $suggestedData = new SuggestedData($response->getSuggestedData());
         $subscription->setSuggestedData($suggestedData);

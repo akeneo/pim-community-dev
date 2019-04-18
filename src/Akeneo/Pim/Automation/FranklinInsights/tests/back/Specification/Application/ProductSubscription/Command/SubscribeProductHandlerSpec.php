@@ -11,23 +11,21 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query
 use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalCommand;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Proposal\Command\CreateProposalHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Events\ProductSubscribed;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductIdentifierValues;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductInfosForSubscription;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductInfosForSubscriptionQueryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SuggestedData;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\Family;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -35,20 +33,18 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class SubscribeProductHandlerSpec extends ObjectBehavior
 {
     public function let(
-        ProductRepositoryInterface $productRepository,
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
-        ProductSubscriptionRepositoryInterface $subscriptionRepository,
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         SubscriptionProviderInterface $subscriptionProvider,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         CreateProposalHandler $createProposalHandler,
         EventDispatcherInterface $eventDispatcher
     ): void {
         $this->beConstructedWith(
-            $productRepository,
+            $selectProductInfosForSubscriptionQuery,
             $getProductSubscriptionStatusHandler,
-            $subscriptionRepository,
+            $productSubscriptionRepository,
             $subscriptionProvider,
-            $identifiersMappingRepository,
             $createProposalHandler,
             $eventDispatcher
         );
@@ -59,46 +55,17 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(SubscribeProductHandler::class);
     }
 
-    public function it_throws_an_exception_if_the_product_cannot_be_subscribed(
-        $productRepository,
-        $getProductSubscriptionStatusHandler,
-        $createProposalHandler,
-        ProductInterface $product
-    ): void {
-        $productId = 42;
-        $productRepository->find($productId)->willReturn($product);
-
-        $query = new GetProductSubscriptionStatusQuery(new ProductId($productId));
-        $getProductSubscriptionStatusHandler->handle($query)->willReturn(
-            new ProductSubscriptionStatus(
-                new ConnectionStatus(true, true, true, 42),
-                false,
-                false,
-                true,
-                false
-            )
-        );
-
-        $command = new SubscribeProductCommand(new ProductId($productId));
-        $this->shouldThrow(
-            ProductSubscriptionException::familyRequired()
-        )->during('handle', [$command]);
-
-        $createProposalHandler->handle(Argument::cetera())->shouldNotHaveBeenCalled();
-    }
-
     public function it_subscribes_a_product_to_the_data_provider(
-        $productRepository,
-        $getProductSubscriptionStatusHandler,
-        $subscriptionProvider,
-        $subscriptionRepository,
-        $identifiersMappingRepository,
-        $createProposalHandler,
-        $eventDispatcher,
-        ProductInterface $product,
-        ValueInterface $eanValue
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery,
+        GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
+        SubscriptionProviderInterface $subscriptionProvider,
+        CreateProposalHandler $createProposalHandler,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $productId = new ProductId(42);
+        $productIdentifierValues = new ProductIdentifierValues($productId, ['upc' => 'an_ean']);
+        $family = new Family(new FamilyCode('a_family'), []);
         $subscriptionId = new SubscriptionId(uniqid());
         $suggestedValues = [[
             'pimAttributeCode' => 'foo',
@@ -106,10 +73,9 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         ]];
         $suggestedData = new SuggestedData($suggestedValues);
 
-        $product->getId()->willReturn(42);
-        $product->getFamily()->willReturn(new Family());
-        $product->getValue('ean')->willReturn($eanValue);
-        $productRepository->find(42)->willReturn($product);
+        $selectProductInfosForSubscriptionQuery->execute($productId)->willReturn(new ProductInfosForSubscription(
+            $productId, $productIdentifierValues, $family, 'a_product', false, false
+        ));
 
         $query = new GetProductSubscriptionStatusQuery($productId);
         $getProductSubscriptionStatusHandler->handle($query)->willReturn(
@@ -122,14 +88,6 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
             )
         );
 
-        $eanValue->hasData()->willReturn(true);
-        $eanValue->__toString()->willReturn('an_ean');
-
-        $identifiersMapping = new IdentifiersMapping(['upc' => 'ean']);
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-
-        $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
-
         $response = new ProductSubscriptionResponse($productId, $subscriptionId, $suggestedValues, false, false);
         $subscriptionProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willReturn($response);
 
@@ -140,7 +98,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         ))->setSuggestedData($suggestedData);
         $createProposalHandler->handle(new CreateProposalCommand($productSubscription))->shouldBeCalled();
 
-        $subscriptionRepository->save($productSubscription)->shouldBeCalled();
+        $productSubscriptionRepository->save($productSubscription)->shouldBeCalled();
 
         $eventDispatcher->dispatch(ProductSubscribed::EVENT_NAME, Argument::that(function ($event) use ($productSubscription) {
             return $event instanceof ProductSubscribed &&

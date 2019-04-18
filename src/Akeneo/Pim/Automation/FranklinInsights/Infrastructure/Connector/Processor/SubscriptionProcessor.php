@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\ProductSubscription\Query
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Query\Product\SelectProductInfosForSubscriptionQueryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -31,19 +31,15 @@ class SubscriptionProcessor implements ItemProcessorInterface
     /** @var GetProductSubscriptionStatusHandler */
     private $getProductSubscriptionStatusHandler;
 
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
+    /** @var SelectProductInfosForSubscriptionQueryInterface */
+    private $selectProductInfosForSubscriptionQuery;
 
-    /**
-     * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
-     * @param ProductRepositoryInterface $productRepository
-     */
     public function __construct(
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
-        ProductRepositoryInterface $productRepository
+        SelectProductInfosForSubscriptionQueryInterface $selectProductInfosForSubscriptionQuery
     ) {
         $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
-        $this->productRepository = $productRepository;
+        $this->selectProductInfosForSubscriptionQuery = $selectProductInfosForSubscriptionQuery;
     }
 
     /**
@@ -51,8 +47,9 @@ class SubscriptionProcessor implements ItemProcessorInterface
      */
     public function process($product): ProductSubscriptionRequest
     {
+        $productId = new ProductId($product->getId());
         $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle(
-            new GetProductSubscriptionStatusQuery(new ProductId($product->getId()))
+            new GetProductSubscriptionStatusQuery($productId)
         );
 
         try {
@@ -64,8 +61,13 @@ class SubscriptionProcessor implements ItemProcessorInterface
             );
         }
 
-        $fullProduct = $this->productRepository->find($product->getId());
+        $productInfos = $this->selectProductInfosForSubscriptionQuery->execute($productId);
 
-        return new ProductSubscriptionRequest($fullProduct);
+        return new ProductSubscriptionRequest(
+            $productInfos->getProductId(),
+            $productInfos->getFamily(),
+            $productInfos->getProductIdentifierValues(),
+            $productInfos->getIdentifier()
+        );
     }
 }

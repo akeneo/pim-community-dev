@@ -17,11 +17,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\DataProvider\Subscription
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Model\Read\Family;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Repository\FamilyRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\ProductId;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
@@ -44,9 +41,6 @@ use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Subscript
  */
 class SubscriptionProvider extends AbstractProvider implements SubscriptionProviderInterface
 {
-    /** @var IdentifiersMappingRepositoryInterface */
-    private $identifiersMappingRepository;
-
     /** @var SubscriptionWebService */
     private $api;
 
@@ -54,14 +48,12 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     private $familyRepository;
 
     public function __construct(
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         SubscriptionWebService $api,
         ConfigurationRepositoryInterface $configurationRepository,
         FamilyRepositoryInterface $familyRepository
     ) {
         parent::__construct($configurationRepository);
 
-        $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->api = $api;
         $this->familyRepository = $familyRepository;
     }
@@ -77,13 +69,9 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     public function subscribe(ProductSubscriptionRequest $subscriptionRequest): ProductSubscriptionResponse
     {
         $this->api->setToken($this->getToken());
-        $identifiersMapping = $this->identifiersMappingRepository->find();
-        if ($identifiersMapping->isEmpty()) {
-            throw ProductSubscriptionException::invalidIdentifiersMapping();
-        }
 
         $clientRequest = new RequestCollection();
-        $clientRequest->add($this->buildClientRequest($subscriptionRequest, $identifiersMapping));
+        $clientRequest->add($this->buildClientRequest($subscriptionRequest));
 
         $apiResponse = $this->doSubscribe($clientRequest);
         if ($apiResponse->hasWarnings()) {
@@ -110,14 +98,10 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     public function bulkSubscribe(array $subscriptionRequests): ProductSubscriptionResponseCollection
     {
         $this->api->setToken($this->getToken());
-        $identifiersMapping = $this->identifiersMappingRepository->find();
-        if ($identifiersMapping->isEmpty()) {
-            throw ProductSubscriptionException::invalidIdentifiersMapping();
-        }
 
         $clientRequests = new RequestCollection();
         foreach ($subscriptionRequests as $subscriptionRequest) {
-            $clientRequests->add($this->buildClientRequest($subscriptionRequest, $identifiersMapping));
+            $clientRequests->add($this->buildClientRequest($subscriptionRequest));
         }
 
         $response = $this->doSubscribe($clientRequests);
@@ -194,29 +178,23 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
 
     /**
      * @param ProductSubscriptionRequest $subscriptionRequest
-     * @param IdentifiersMapping $identifiersMapping
      *
      * @throws ProductSubscriptionException
      *
      * @return Request
      */
-    private function buildClientRequest(
-        ProductSubscriptionRequest $subscriptionRequest,
-        IdentifiersMapping $identifiersMapping
-    ): Request {
-        $product = $subscriptionRequest->getProduct();
-        $mapped = $subscriptionRequest->getMappedValues($identifiersMapping);
-        if (empty($mapped)) {
+    private function buildClientRequest(ProductSubscriptionRequest $subscriptionRequest): Request
+    {
+        $identifiers = $subscriptionRequest->getMappedValues();
+        if (empty($identifiers)) {
             throw ProductSubscriptionException::invalidMappedValues();
         }
-        $normalizer = new FamilyNormalizer();
 
-        // TODO: The family code should be retrieve from a FranklinInsights product read model
-        $familyCode = new FamilyCode($product->getFamily()->getCode());
-        $family = $this->familyRepository->findOneByIdentifier($familyCode);
-        $familyInfos = $normalizer->normalize($family);
+        $familyNormalizer = new FamilyNormalizer();
+        $familyInfos = $familyNormalizer->normalize($subscriptionRequest->getFamily());
+        $trackerId = $subscriptionRequest->getProductId()->toInt();
 
-        return new Request($mapped, $product->getId(), $familyInfos);
+        return new Request($identifiers, $trackerId, $familyInfos);
     }
 
     /**

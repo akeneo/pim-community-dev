@@ -13,9 +13,6 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
-            // TODO remove all links by reference
-            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-
             // Used for business events
             'Symfony\Component\EventDispatcher\Event',
 
@@ -27,12 +24,6 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Pim\Automation\FranklinInsights\Domain',
-
-            // TODO remove all links by reference
-            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-
-            // TODO relationship between bounded context (query data though repository)
-            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
 
             // TIP-1017: Do not use public constants of AttributeTypes
             'Akeneo\Pim\Structure\Component\AttributeTypes',
