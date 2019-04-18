@@ -98,7 +98,7 @@ extensions:
             tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-xlsx-product-import-edit-properties-file-upload:
-        module: pim/job/common/edit/field/switch
+        module: pim/job/common/edit/field/allow-file-upload
         parent: pim-job-instance-xlsx-product-import-edit-global
         position: 130
         targetZone: properties
