@@ -42,7 +42,7 @@ class InMemoryRoleRepositorySpec extends ObjectBehavior
         $role = new Role();
         $role->setRole('role');
         $this->save($role);
-        $this->findOneByIdentifier('role')->shouldReturn($role);
+        $this->findOneByIdentifier('ROLE_ROLE')->shouldReturn($role);
     }
 
     function it_returns_null_if_the_role_does_not_exist()

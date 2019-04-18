@@ -32,7 +32,6 @@ class InMemoryRoleRepository implements RoleRepositoryInterface, SaverInterface,
             throw new \InvalidArgumentException('Only user role objects are supported.');
         }
         $index = $role->getRole();
-        $index = strtolower(str_replace('ROLE_', '', $index));
         $this->roles->set($index, $role);
     }
 
