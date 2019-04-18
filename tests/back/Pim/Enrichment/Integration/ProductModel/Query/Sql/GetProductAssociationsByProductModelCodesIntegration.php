@@ -95,7 +95,6 @@ class GetProductAssociationsByProductModelCodesIntegration extends TestCase
 
         $entityBuilder->createProductModel('product_model_with_one_association', 'familyVariant', null, $this->getAssociationsFormatted(['productA']));
         $entityBuilder->createProductModel('product_model_with_multiple_associations', 'familyVariant', null, $this->getAssociationsFormatted(['productB'], ['productA', 'productF']));
-
         $rootProductModel = $entityBuilder->createProductModel('root_product_model', 'familyVariant', null, $this->getAssociationsFormatted(['productF'], ['productA', 'productC']));
         $entityBuilder->createProductModel('sub_product_model', 'familyVariant', $rootProductModel, $this->getAssociationsFormatted(['productD'], [], ['productB']));
     }
