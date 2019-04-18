@@ -1,16 +1,16 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
-use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\IdentifierResultCursor;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use PhpSpec\ObjectBehavior;
 
-class SearchAfterSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
+class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
 {
     function let(Client $esClient)
     {
@@ -32,8 +32,7 @@ class SearchAfterSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
 
         $options = [
             'limit' => 25,
-            'search_after'  => ['123'],
-            'search_after_unique_key' => '123'
+            'from'  => 0,
         ];
 
         $esClient->search(
@@ -43,7 +42,7 @@ class SearchAfterSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
                 'query'   => [],
                 '_source' => ['identifier', 'document_type'],
                 'size'    => 25,
-                'search_after'    => ['123', 'pim_catalog_product#123']
+                'from'    => 0
             ]
         )->willReturn(['hits' => [
             'total' => 42,
@@ -53,7 +52,7 @@ class SearchAfterSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
             ]
         ]]);
 
-        $this->createCursor($esQuery, $options)->shouldBeLike(new IdentifierResultCursor(
+        $this->createCursor($esQuery, $options)->shouldBeLike(new \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor(
             [
                 new IdentifierResult('product_1', ProductInterface::class),
                 new IdentifierResult('product_model_2', ProductModelInterface::class),

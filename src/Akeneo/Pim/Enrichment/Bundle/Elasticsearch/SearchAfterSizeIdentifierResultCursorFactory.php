@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Cursor;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
-use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\IdentifierResultCursor;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
+class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInterface
 {
     /** @var Client */
     private $esClient;
@@ -44,14 +44,20 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
         $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type']);
         $esQuery['sort'] = isset($esQuery['sort']) ? array_merge($esQuery['sort'], $sort) : $sort;
         $esQuery['size'] = $options['limit'];
-        $esQuery['from'] = $options['from'];
+
+        if (null !== $options['search_after_unique_key']) {
+            array_push($options['search_after'], $this->indexType . '#' . $options['search_after_unique_key']);
+        }
+        if (!empty($options['search_after'])) {
+            $esQuery['search_after'] = $options['search_after'];
+        }
 
         $response = $this->esClient->search($this->indexType, $esQuery);
         $totalCount = (int) $response['hits']['total'];
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {
-            // TODO: remove default type when TIP-1151 and TIP 1150 are done, as the document type will always exist
+            // TODO: add TODO with TIP card to merge index as we will use only one index instead of 3, removing coalesce
             $documentType = $hit['_source']['document_type'] ?? ProductInterface::class;
             $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType);
         }
@@ -59,27 +65,25 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
         return new IdentifierResultCursor($identifiers, $totalCount);
     }
 
-    /**
-     * @param array $options
-     *
-     * @return array
-     */
-    protected function resolveOptions(array $options)
+    protected function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefined(
             [
-                'limit',
-                'from',
+                'search_after',
+                'search_after_unique_key',
+                'limit'
             ]
         );
         $resolver->setDefaults(
             [
-                'from' => 0
+                'search_after' => [],
+                'search_after_unique_key' => null
             ]
         );
+        $resolver->setAllowedTypes('search_after', 'array');
+        $resolver->setAllowedTypes('search_after_unique_key', ['string', 'null']);
         $resolver->setAllowedTypes('limit', 'int');
-        $resolver->setAllowedTypes('from', 'int');
 
         $options = $resolver->resolve($options);
 

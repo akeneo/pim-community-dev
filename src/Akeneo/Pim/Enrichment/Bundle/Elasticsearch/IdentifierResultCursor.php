@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
