@@ -94,7 +94,6 @@ final class ListProductsQueryHandler
             return $identifier->getIdentifier();
         }, iterator_to_array($result));
 
-        // TODO: inject activated locales if channel is provided (handler responsibility)
         $products = $this->getConnectorProductsQuery->fromProductIdentifiers(
             $identifiers,
             $query->attributeCodes,
