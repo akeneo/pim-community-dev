@@ -63,7 +63,7 @@ class CompletenessWidget implements WidgetInterface
      */
     public function getData(): array
     {
-        $translationLocaleCode = $this->userContext->getCurrentLocaleCode();
+        $translationLocaleCode = $this->userContext->getUiLocaleCode();
         $result = $this->completenessWidgetQuery->fetch($translationLocaleCode);
 
         return $result->toArray();

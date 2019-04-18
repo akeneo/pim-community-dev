@@ -39,7 +39,7 @@ class CompletenessWidgetSpec extends ObjectBehavior
 
     function it_exposes_the_completeness_data($completenessWidgetQuery, $userContext)
     {
-        $userContext->getCurrentLocaleCode()->willReturn('en_US');
+        $userContext->getUiLocaleCode()->willReturn('en_US');
         $mobileCompleteness = new ChannelCompleteness('Mobile', 10, 40, [
             'English (United States)' => new LocaleCompleteness('English (United States)', 10),
             'French (France)' => new LocaleCompleteness('French (France)', 0)
