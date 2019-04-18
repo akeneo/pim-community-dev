@@ -17,3 +17,11 @@ services:
             - '%akeneo_elasticsearch.cursor.cursor.class%'
             - '%pim_job_product_batch_size%'
             - 'pim_catalog_product'
+
+    pimee_catalog.query.product_and_product_model_query_builder_factory_with_permissions:
+        class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        decorates: pim_catalog.query.product_and_product_model_query_builder_factory
+        decoration_inner_name: pim_catalog.query.product_and_product_model_query_builder_factory.without_permission
+        arguments:
+            - '%pim_catalog.query.product_and_product_model_query_builder.class%'
+            - '@pimee_catalog.query.product_and_product_model_query_builder_factory.product_and_product_model_cursor_with_permissions'
