@@ -50,7 +50,7 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {
-            // TODO: add TODO with TIP card to merge index as we will use only one index instead of 3, removing coalesce
+            // TODO: remove default type when TIP-1151 and TIP 1150 are done, as the document type will always exist
             $documentType = $hit['_source']['document_type'] ?? ProductInterface::class;
             $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType);
         }
