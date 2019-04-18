@@ -10,6 +10,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 use Webmozart\Assert\Assert;
+use PHPUnit\Framework\Assert as PHPUnitAssert;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
@@ -26,7 +27,7 @@ class GetProductAssociationsByProductModelCodesIntegration extends TestCase
     {
         $result = $this->getQuery()->fetchByProductModelCodes(['product_model_with_no_associations']);
 
-        $this->assertEqualsCanonicalizing([
+        PHPUnitAssert::assertEqualsCanonicalizing([
             'product_model_with_no_associations' => $this->getAssociationsFormattedAfterFetch()
         ], $result);
     }
@@ -41,7 +42,7 @@ class GetProductAssociationsByProductModelCodesIntegration extends TestCase
             'product_model_with_multiple_associations'
         ]);
 
-        $this->assertEqualsCanonicalizing([
+        PHPUnitAssert::assertEqualsCanonicalizing([
             'product_model_with_one_association' => $this->getAssociationsFormattedAfterFetch(['productA']),
             'product_model_with_multiple_associations' => $this->getAssociationsFormattedAfterFetch(['productB'], ['productA', 'productF'])
         ], $result);
@@ -57,10 +58,15 @@ class GetProductAssociationsByProductModelCodesIntegration extends TestCase
             'sub_product_model'
         ]);
 
-        $this->assertEqualsCanonicalizing([
+        $expected = [
             'root_product_model' => $this->getAssociationsFormattedAfterFetch(['productF'], ['productA', 'productC']),
             'sub_product_model' => $this->getAssociationsFormattedAfterFetch(['productD', 'productF'], ['productC', 'productA'], ['productB'])
-        ], $result);
+        ];
+
+        PHPUnitAssert::assertEqualsCanonicalizing(
+            $this->recursiveSort($expected),
+            $this->recursiveSort($result)
+        );
     }
 
     public function setUp(): void
@@ -68,7 +74,7 @@ class GetProductAssociationsByProductModelCodesIntegration extends TestCase
         parent::setUp();
 
         $entityBuilder = new EntityBuilder($this->testKernel->getContainer());
-        $this->givenBooleanAttributes(['first_yes_no', 'second_yes_no']);
+        $this->givenBooleanAttributes(['first_yes_no']);
         $this->givenFamilies([['code' => 'aFamily', 'attribute_codes' => ['first_yes_no']]]);
         $entityBuilder->createFamilyVariant(
             [
@@ -154,6 +160,16 @@ class GetProductAssociationsByProductModelCodesIntegration extends TestCase
             'SUBSTITUTION' => ['products' => $substitutions],
             'UPSELL' => ['products' => $upsell],
         ]];
+    }
+
+
+    private function recursiveSort(&$array): bool
+    {
+        foreach ($array as &$value) {
+            if (is_array($value)) $this->recursiveSort($value);
+        }
+
+        return sort($array);
     }
 
     private function getAssociationsFormattedAfterFetch(array $crossSell = [], array $pack = [], array $substitutions = [], array $upsell = []): array

@@ -27,6 +27,10 @@ final class GetProductAssociationsByProductModelCodes
             return [];
         }
 
+        $productModelCodes = (function (string ...$codes) {
+            return $codes;
+        })(... $productModelCodes);
+
         $query = <<<SQL
 SELECT
     product_model_code,
