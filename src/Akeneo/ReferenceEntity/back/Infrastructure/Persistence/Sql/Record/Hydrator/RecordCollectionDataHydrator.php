@@ -45,7 +45,7 @@ class RecordCollectionDataHydrator implements DataHydratorInterface
             return EmptyData::create();
         }
 
-        return RecordCollectionData::createFromNormalize($filteredRecordCodes);
+        return RecordCollectionData::createFromNormalize(array_values($filteredRecordCodes));
     }
 
     /**

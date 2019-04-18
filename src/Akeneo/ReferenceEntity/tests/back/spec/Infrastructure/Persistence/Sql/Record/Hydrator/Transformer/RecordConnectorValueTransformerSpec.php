@@ -15,17 +15,16 @@ namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydr
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerInterface;
 use PhpSpec\ObjectBehavior;
 
 class RecordConnectorValueTransformerSpec extends ObjectBehavior
 {
-    function let(RecordExistsInterface $recordExists)
+    function let(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
     {
-        $this->beConstructedWith($recordExists);
+        $this->beConstructedWith($findCodesByIdentifiers);
     }
 
     function it_is_a_connector_value_transformer()
@@ -42,14 +41,14 @@ class RecordConnectorValueTransformerSpec extends ObjectBehavior
     }
 
     function it_transforms_a_normalized_value_to_a_normalized_connector_value(
-        $recordExists,
+        $findCodesByIdentifiers,
         RecordAttribute $attribute,
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ) {
         $attribute->getRecordType()->willReturn($referenceEntityIdentifier);
-        $recordExists
-            ->withReferenceEntityAndCode($referenceEntityIdentifier, RecordCode::fromString('france'))
-            ->willReturn(true);
+        $findCodesByIdentifiers
+            ->find(['france'])
+            ->willReturn(['france']);
         $this->transform([
             'data'      => 'france',
             'locale'    => 'en_us',
@@ -63,14 +62,14 @@ class RecordConnectorValueTransformerSpec extends ObjectBehavior
     }
 
     function it_returns_null_if_the_record_does_not_exists(
-        $recordExists,
+        $findCodesByIdentifiers,
         RecordAttribute $attribute,
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ) {
         $attribute->getRecordType()->willReturn($referenceEntityIdentifier);
-        $recordExists
-            ->withReferenceEntityAndCode($referenceEntityIdentifier, RecordCode::fromString('foo'))
-            ->willReturn(false);
+        $findCodesByIdentifiers
+            ->find(['foo'])
+            ->willReturn([]);
 
         $this->transform([
             'data'      => 'foo',

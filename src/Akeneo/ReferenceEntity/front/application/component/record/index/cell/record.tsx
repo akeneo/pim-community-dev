@@ -9,7 +9,15 @@ const memo = (React as any).memo;
 const RecordCellView: CellView = memo(({column, value}: {column: Column; value: NormalizedValue}) => {
   const context = (value as any).context;
 
-  const selectedRecordLabel = getLabel(context.labels[value.data], column.locale, value.data);
+  if (0 === context.labels.length) {
+    return null;
+  }
+
+  const selectedRecordLabel = getLabel(
+    context.labels[value.data].labels,
+    column.locale,
+    context.labels[value.data].code
+  );
 
   return (
     <div className="AknGrid-bodyCellContainer" title={selectedRecordLabel}>

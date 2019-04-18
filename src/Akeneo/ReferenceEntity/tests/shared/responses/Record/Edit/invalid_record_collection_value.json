@@ -58,191 +58,270 @@
     "status": 400,
     "body": [
       {
-        "messageTemplate": "The records \"unknow_city,wrong_city\" were not found.",
-        "parameters": {
-          "%record_codes%": "unknow_city,wrong_city"
+        "messageTemplate":"The records \u0022unknow_city,wrong_city\u0022 were not found.",
+        "parameters":{
+          "%record_codes%":"unknow_city,wrong_city"
         },
-        "plural": null,
-        "message": "The records \"unknow_city,wrong_city\" were not found.",
-        "root": {
-          "referenceEntityIdentifier": "designer",
-          "code": "starck",
-          "labels": [],
-          "image": null,
-          "editRecordValueCommands": [
+        "plural":null,
+        "message":"The records \u0022unknow_city,wrong_city\u0022 were not found.",
+        "root":{
+          "referenceEntityIdentifier":"designer",
+          "code":"starck",
+          "labels":[
+
+          ],
+          "image":null,
+          "editRecordValueCommands":[
             {
-              "text": "Philippe Starck",
-              "attribute": {
-                "regularExpression": {
-                  "empty": true
+              "text":"Philippe Starck",
+              "attribute":{
+                "regularExpression":{
+                  "empty":true
                 },
-                "maxLength": [],
-                "textarea": false,
-                "validationRuleSetToRegularExpression": false,
-                "validationRuleSetToEmail": false,
-                "validationRuleSetToUrl": false,
-                "validationRule": true,
-                "identifier": [],
-                "referenceEntityIdentifier": [],
-                "code": [],
-                "labelCodes": [
+                "maxLength":[
+
+                ],
+                "textarea":false,
+                "validationRuleSetToRegularExpression":false,
+                "validationRuleSetToEmail":false,
+                "validationRuleSetToUrl":false,
+                "validationRule":true,
+                "type":"text",
+                "identifier":[
+
+                ],
+                "referenceEntityIdentifier":[
+
+                ],
+                "code":[
+
+                ],
+                "labelCodes":[
                   "fr_FR"
                 ],
-                "order": [],
-                "valuePerChannel": false,
-                "valuePerLocale": false
+                "order":[
+
+                ],
+                "valuePerChannel":false,
+                "valuePerLocale":false
               },
-              "channel": null,
-              "locale": null
+              "channel":null,
+              "locale":null
             },
             {
-              "attribute": {
-                "regularExpression": {
-                  "empty": true
+              "attribute":{
+                "regularExpression":{
+                  "empty":true
                 },
-                "maxLength": [],
-                "textarea": true,
-                "validationRuleSetToRegularExpression": false,
-                "validationRuleSetToEmail": false,
-                "validationRuleSetToUrl": false,
-                "validationRule": true,
-                "identifier": [],
-                "referenceEntityIdentifier": [],
-                "code": [],
-                "labelCodes": [
+                "maxLength":[
+
+                ],
+                "textarea":true,
+                "validationRuleSetToRegularExpression":false,
+                "validationRuleSetToEmail":false,
+                "validationRuleSetToUrl":false,
+                "validationRule":true,
+                "type":"text",
+                "identifier":[
+
+                ],
+                "referenceEntityIdentifier":[
+
+                ],
+                "code":[
+
+                ],
+                "labelCodes":[
                   "fr_FR"
                 ],
-                "order": [],
-                "valuePerChannel": false,
-                "valuePerLocale": true
+                "order":[
+
+                ],
+                "valuePerChannel":false,
+                "valuePerLocale":true
               },
-              "channel": null,
-              "locale": "en_US"
+              "channel":null,
+              "locale":"en_US"
             },
             {
-              "attribute": {
-                "regularExpression": {
-                  "empty": true
+              "attribute":{
+                "regularExpression":{
+                  "empty":true
                 },
-                "maxLength": [],
-                "textarea": true,
-                "validationRuleSetToRegularExpression": false,
-                "validationRuleSetToEmail": false,
-                "validationRuleSetToUrl": false,
-                "validationRule": true,
-                "identifier": [],
-                "referenceEntityIdentifier": [],
-                "code": [],
-                "labelCodes": [
+                "maxLength":[
+
+                ],
+                "textarea":true,
+                "validationRuleSetToRegularExpression":false,
+                "validationRuleSetToEmail":false,
+                "validationRuleSetToUrl":false,
+                "validationRule":true,
+                "type":"text",
+                "identifier":[
+
+                ],
+                "referenceEntityIdentifier":[
+
+                ],
+                "code":[
+
+                ],
+                "labelCodes":[
                   "fr_FR"
                 ],
-                "order": [],
-                "valuePerChannel": false,
-                "valuePerLocale": true
+                "order":[
+
+                ],
+                "valuePerChannel":false,
+                "valuePerLocale":true
               },
-              "channel": null,
-              "locale": "fr_FR"
+              "channel":null,
+              "locale":"fr_FR"
             },
             {
-              "attribute": {
-                "regularExpression": {
-                  "empty": true
+              "attribute":{
+                "regularExpression":{
+                  "empty":true
                 },
-                "maxLength": [],
-                "textarea": false,
-                "validationRuleSetToRegularExpression": false,
-                "validationRuleSetToEmail": false,
-                "validationRuleSetToUrl": true,
-                "validationRule": false,
-                "identifier": [],
-                "referenceEntityIdentifier": [],
-                "code": [],
-                "labelCodes": [
+                "maxLength":[
+
+                ],
+                "textarea":false,
+                "validationRuleSetToRegularExpression":false,
+                "validationRuleSetToEmail":false,
+                "validationRuleSetToUrl":true,
+                "validationRule":false,
+                "type":"text",
+                "identifier":[
+
+                ],
+                "referenceEntityIdentifier":[
+
+                ],
+                "code":[
+
+                ],
+                "labelCodes":[
                   "fr_FR"
                 ],
-                "order": [],
-                "valuePerChannel": false,
-                "valuePerLocale": false
+                "order":[
+
+                ],
+                "valuePerChannel":false,
+                "valuePerLocale":false
               },
-              "channel": null,
-              "locale": null
+              "channel":null,
+              "locale":null
             },
             {
-              "attribute": {
-                "maxFileSizeLimit": false,
-                "maxFileSize": {
-                  "limit": false
+              "attribute":{
+                "maxFileSizeLimit":false,
+                "type":"image",
+                "maxFileSize":{
+                  "limit":false
                 },
-                "allowedExtensions": {
-                  "allAllowed": false
+                "allowedExtensions":{
+                  "allAllowed":false
                 },
-                "identifier": [],
-                "referenceEntityIdentifier": [],
-                "code": [],
-                "labelCodes": [
+                "identifier":[
+
+                ],
+                "referenceEntityIdentifier":[
+
+                ],
+                "code":[
+
+                ],
+                "labelCodes":[
                   "fr_FR",
                   "en_US"
                 ],
-                "order": [],
-                "valuePerChannel": false,
-                "valuePerLocale": false
+                "order":[
+
+                ],
+                "valuePerChannel":false,
+                "valuePerLocale":false
               },
-              "channel": null,
-              "locale": null
+              "channel":null,
+              "locale":null
             },
             {
-              "recordCodes": [
+              "recordCodes":[
                 "unknow_city",
                 "wrong_city"
               ],
-              "attribute": {
-                "recordType": [],
-                "identifier": [],
-                "referenceEntityIdentifier": [],
-                "code": [],
-                "labelCodes": [
+              "attribute":{
+                "recordType":[
+
+                ],
+                "type":"record_collection",
+                "identifier":[
+
+                ],
+                "referenceEntityIdentifier":[
+
+                ],
+                "code":[
+
+                ],
+                "labelCodes":[
                   "fr_FR",
                   "en_US"
                 ],
-                "order": [],
-                "valuePerChannel": false,
-                "valuePerLocale": true
+                "order":[
+
+                ],
+                "valuePerChannel":false,
+                "valuePerLocale":true
               },
-              "channel": null,
-              "locale": "en_US"
+              "channel":null,
+              "locale":"en_US"
             }
           ]
         },
-        "propertyPath": "values.linked_cities",
-        "invalidValue": {
-          "recordCodes": [
+        "propertyPath":"values.linked_cities",
+        "invalidValue":{
+          "recordCodes":[
             "unknow_city",
             "wrong_city"
           ],
-          "attribute": {
-            "recordType": [],
-            "identifier": [],
-            "referenceEntityIdentifier": [],
-            "code": [],
-            "labelCodes": [
+          "attribute":{
+            "recordType":[
+
+            ],
+            "type":"record_collection",
+            "identifier":[
+
+            ],
+            "referenceEntityIdentifier":[
+
+            ],
+            "code":[
+
+            ],
+            "labelCodes":[
               "fr_FR",
               "en_US"
             ],
-            "order": [],
-            "valuePerChannel": false,
-            "valuePerLocale": true
+            "order":[
+
+            ],
+            "valuePerChannel":false,
+            "valuePerLocale":true
           },
-          "channel": null,
-          "locale": "en_US"
+          "channel":null,
+          "locale":"en_US"
         },
-        "constraint": {
-          "targets": "class",
-          "defaultOption": null,
-          "requiredOptions": [],
-          "payload": null
+        "constraint":{
+          "targets":"class",
+          "defaultOption":null,
+          "requiredOptions":[
+
+          ],
+          "payload":null
         },
-        "cause": null,
-        "code": null
+        "cause":null,
+        "code":null
       }
     ]
   }

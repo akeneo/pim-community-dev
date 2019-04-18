@@ -56,7 +56,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordItemsForIdentifiersAndQuery
         arguments:
             - '@database_connection'
-            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_item'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.bulk_record_item'
 
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_has_records:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityHasRecords
@@ -89,7 +89,6 @@ services:
         arguments:
             - '@database_connection'
 
-    # Record query functions
     akeneo_referenceentity.infrastructure.persistence.query.records_exists:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordsExists
         arguments:
@@ -167,6 +166,12 @@ services:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordLabelsByIdentifiers
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+
     akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindIdentifiersByReferenceEntityAndCodes
         arguments:
@@ -176,6 +181,11 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindCodesByIdentifiers
         arguments:
             - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_codes:
+            class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindIdentifiersByCodes
+            arguments:
+                - '@database_connection'
 
     # Attributes query functions
     akeneo_referenceentity.infrastructure.persistence.query.attribute_exists:
@@ -296,6 +306,13 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type'
             - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.value'
 
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.bulk_record_item:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\BulkRecordItemHydrator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_item'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_identifiers'
+
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_item:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItemHydrator
         arguments:
@@ -317,6 +334,13 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator
         arguments:
             - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.record_item.hydrator.record_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\RecordValueHydrator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_codes'
+        tags:
+            - { name: akeneo_referenceentity.record_item_value_hydrator }
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.value:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydrator
@@ -377,14 +401,14 @@ services:
     akeneo_referenceentity.infrastructure.persistence.record.transformer.record_connector_value:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordConnectorValueTransformer
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers'
         tags:
             - { name: akeneo_referenceentity.connector_value_transformer }
 
     akeneo_referenceentity.infrastructure.persistence.record.transformer.record_collection_connector_value:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordCollectionConnectorValueTransformer
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_existing_record_codes'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_codes_by_identifiers'
         tags:
             - { name: akeneo_referenceentity.connector_value_transformer }
 

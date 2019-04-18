@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersAndQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\BulkRecordItemHydrator;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItemHydrator;
 use Doctrine\DBAL\Connection;
 
@@ -31,21 +32,21 @@ class SqlFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsForIden
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var RecordItemHydrator */
-    private $recordItemHydrator;
+    /** @var BulkRecordItemHydrator */
+    private $bulkRecordItemHydrator;
 
     public function __construct(
         Connection $sqlConnection,
-        RecordItemHydrator $recordItemHydrator
+        BulkRecordItemHydrator $bulkRecordItemHydrator
     ) {
         $this->sqlConnection = $sqlConnection;
-        $this->recordItemHydrator = $recordItemHydrator;
+        $this->bulkRecordItemHydrator = $bulkRecordItemHydrator;
     }
 
     public function __invoke(array $identifiers, RecordQuery $query): array
     {
         $normalizedRecordItems = $this->fetchAll($identifiers);
-        $recordItems = $this->hydrateRecordItems($normalizedRecordItems, $query);
+        $recordItems = $this->bulkRecordItemHydrator->hydrateAll($normalizedRecordItems, $query);
 
         return $recordItems;
     }
@@ -73,15 +74,5 @@ SQL;
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
         return $results;
-    }
-
-    private function hydrateRecordItems(array $results, RecordQuery $query): array
-    {
-        $recordItems = [];
-        foreach ($results as $result) {
-            $recordItems[] = $this->recordItemHydrator->hydrate($result, $query);
-        }
-
-        return $recordItems;
     }
 }

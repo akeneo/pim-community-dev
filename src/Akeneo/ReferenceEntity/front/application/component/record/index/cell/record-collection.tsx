@@ -9,8 +9,14 @@ const memo = (React as any).memo;
 const RecordCollectionCellView: CellView = memo(({column, value}: {column: Column; value: NormalizedValue}) => {
   const context = (value as any).context;
 
+  if (0 === context.labels.length) {
+    return null;
+  }
+
   const selectedRecordCollectionLabels = value.data
-    .map((recordCode: string) => getLabel(context.labels[recordCode], column.locale, recordCode))
+    .map((recordIdentifier: string) =>
+      getLabel(context.labels[recordIdentifier].labels, column.locale, context.labels[recordIdentifier].code)
+    )
     .join(', ');
 
   return (

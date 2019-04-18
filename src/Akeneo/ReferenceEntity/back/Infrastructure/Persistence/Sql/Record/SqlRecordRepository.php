@@ -16,6 +16,8 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
@@ -88,6 +90,11 @@ class SqlRecordRepository implements RecordRepositoryInterface
 
     public function create(Record $record): void
     {
+        $valueCollection = $this->replaceCodesByIdentifiers(
+            $record->getValues()->normalize(),
+            $record->getReferenceEntityIdentifier()
+        );
+
         $insert = <<<SQL
         INSERT INTO akeneo_reference_entity_record
             (identifier, code, reference_entity_identifier, value_collection)
@@ -99,7 +106,7 @@ SQL;
                 'identifier' => (string) $record->getIdentifier(),
                 'code' => (string) $record->getCode(),
                 'reference_entity_identifier' => (string) $record->getReferenceEntityIdentifier(),
-                'value_collection' => $record->getValues()->normalize(),
+                'value_collection' => $valueCollection,
             ],
             [
                 'value_collection' => Type::JSON_ARRAY,
@@ -313,29 +320,24 @@ SQL;
             return $valueCollection;
         }
 
-        // Get identifiers for which we have to retrieve the code
-        $codes = [];
-        foreach ($onlyRecordsValues as $value) {
-            $data = is_array($value['data']) ? $value['data'] : [$value['data']];
-            $codes = array_merge($codes, $data);
-        }
-
-        $codes = array_unique($codes);
-
-        // Retrieve the identifiers
-        $indexedIdentifiers = $this->findIdentifiersByReferenceEntityAndCodes->find(
-            $referenceEntityIdentifier,
-            $codes
-        );
+        $attributesIndexedByIdentifier = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
 
         // Replace codes by identifiers in the value collection
         foreach ($onlyRecordsValues as $valueKey => $value) {
+            /** @var RecordAttribute|RecordCollectionAttribute $attribute */
+            $attribute = $attributesIndexedByIdentifier[$value['attribute']];
+
+            $indexedIdentifiers = $this->findIdentifiersByReferenceEntityAndCodes->find(
+                $attribute->getRecordType(),
+                is_array($value['data']) ? $value['data'] : [$value['data']]
+            );
+
             if (is_array($value['data'])) {
                 $value['data'] = array_map(function ($code) use ($indexedIdentifiers) {
-                    return isset($indexedIdentifiers[$code]) ? $indexedIdentifiers[$code] : $code;
+                    return (string) $indexedIdentifiers[$code];
                 }, $value['data']);
             } else {
-                $value['data'] = isset($indexedIdentifiers[$value['data']]) ? $indexedIdentifiers[$value['data']] : $value['data'];
+                $value['data'] = (string) $indexedIdentifiers[$value['data']];
             }
 
             $valueCollection[$valueKey] = $value;

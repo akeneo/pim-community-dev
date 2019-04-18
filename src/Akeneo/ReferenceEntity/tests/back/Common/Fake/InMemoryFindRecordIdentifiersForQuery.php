@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @author    Julien Sanchez <julienakeneo.com>
@@ -27,207 +27,115 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
  */
 class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryInterface
 {
-    /** @var Record[] */
-    private $records = [];
+    private const API_REST_PREFIX_URL = '/api/rest/';
 
-    /** @var InMemoryReferenceEntityRepository  */
-    private $referenceEntityRepository;
+    /** @var string[] */
+    private $requestContracts = [
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/city_and_color_filtered.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/code_filtered.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/code_filtered_with_not_in_operator.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/color_filtered.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/desynchronized_reference_entity_identifier.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/no_result.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/not_filtered.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/uncomplete_filtered.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/city_filtered.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/code_label_and_code_filtered.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/complete_filtered.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/no_result_fr.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Search/ok.json',
+    ];
 
-    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
-    private $findRequiredValueKeyCollectionForChannelAndLocale;
+    /** @var string[] */
+    private $requestContractsApi = [
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_for_ecommerce_channel.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_complete_brand_records.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_page_1.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_page_2.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_page_3.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/successful_brand_records_page_4.json',
+        'src/Akeneo/ReferenceEntity/tests/shared/responses/Record/Connector/Distribute/updated_since_brand_records_page_1.json',
+    ];
 
-    /** @var \DateTime[] */
-    private $updatedDateByRecord = [];
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
 
-    /** @var InMemoryDateRepository */
-    private $dateRepository;
-
-    public function __construct(
-        InMemoryReferenceEntityRepository $referenceEntityRepository,
-        InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocale,
-        InMemoryDateRepository $dateRepository
-    ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
-        $this->dateRepository = $dateRepository;
-    }
-
-    public function add(Record $record): void
+    public function __construct(RequestStack $requestStack)
     {
-        $this->records[] = $record;
-        $this->updatedDateByRecord[(string) $record->getIdentifier()] = $this->dateRepository->getCurrentDate();
+        $this->requestStack = $requestStack;
     }
-
     /**
      * {@inheritdoc}
      */
     public function __invoke(RecordQuery $query): IdentifiersForQueryResult
     {
-        $referenceEntityFilter = $query->getFilter('reference_entity');
-        $fullTextFilter = ($query->hasFilter('full_text')) ? $query->getFilter('full_text') : null;
-        $codeFilter = ($query->hasFilter('code')) ? $query->getFilter('code') : null;
-        $codeLabelFilter = ($query->hasFilter('code_label')) ? $query->getFilter('code_label') : null;
-        $completeFilter = ($query->hasFilter('complete')) ? $query->getFilter('complete') : null;
-        $updatedFilter = ($query->hasFilter('updated')) ? $query->getFilter('updated'): null;
-        $attributeFilters = ($query->hasFilter('values.*')) ? $query->getValueFilters() : [];
-
-        $records = array_values(array_filter($this->records, function (Record $record) use ($referenceEntityFilter) {
-            return '' === $referenceEntityFilter['value']
-                || (string) $record->getReferenceEntityIdentifier() === $referenceEntityFilter['value'];
-        }));
-
-        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($records[0]->getReferenceEntityIdentifier());
-        $attributeAsLabel = $referenceEntity->getAttributeAsLabelReference()->normalize();
-
-        $records = array_values(array_filter($records, function (Record $record) use ($fullTextFilter, $query, $attributeAsLabel) {
-            $labels = $this->getLabelsFromValues($record->getValues()->normalize(), $attributeAsLabel);
-
-            return null === $fullTextFilter
-                || '' === $fullTextFilter['value']
-                || false !== strpos((string) $record->getCode(), $fullTextFilter['value'])
-                || (array_key_exists($query->getLocale(), $labels) && false !== strpos($labels[$query->getLocale()], $fullTextFilter['value']));
-        }));
-
-        $records = array_values(array_filter($records, function (Record $record) use ($codeFilter): bool {
-            if (null === $codeFilter) {
-                return true;
-            }
-
-            $codes = explode(',', $codeFilter['value']);
-
-            if ('NOT IN' === $codeFilter['operator']) {
-                return !in_array($record->getCode(), $codes);
-            }
-
-            if ('IN' === $codeFilter['operator']) {
-                return in_array($record->getCode(), $codes);
-            }
-
-            throw new \LogicException(
-                sprintf('Unknown operator %s for code filter', $codeFilter['operator'])
-            );
-        }));
-
-        $records = array_values(array_filter($records, function (Record $record) use ($completeFilter, $query): bool {
-            if (null === $completeFilter) {
-                return true;
-            }
-
-            $channel = isset($completeFilter['context']['channel']) ? $completeFilter['context']['channel'] : $query->getChannel();
-            $locales = isset($completeFilter['context']['locales']) ? $completeFilter['context']['locales'] : [$query->getLocale()];
-
-            $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
-                $record->getReferenceEntityIdentifier(),
-                ChannelIdentifier::fromCode($channel),
-                LocaleIdentifierCollection::fromNormalized($locales)
-            );
-
-            $recordValues = $record->getValues();
-            $requiredValuesComplete = 0;
-            $requiredValues = 0;
-
-            foreach ($requiredValueKeyCollection as $requiredValueKey) {
-                $requiredValues++;
-                if (null !== $recordValues->findValue($requiredValueKey)) {
-                    $requiredValuesComplete++;
-                }
-            }
-
-            if ($requiredValues > 0) {
-                $completeness['complete'] = $requiredValuesComplete;
-                $completeness['required'] = $requiredValues;
-            }
-
-            $isComplete = ($requiredValuesComplete === $requiredValues);
-
-            return $completeFilter['value'] ? $isComplete : !$isComplete;
-        }));
-
-        $records = array_values(array_filter($records, function (Record $record) use ($codeLabelFilter, $attributeAsLabel) {
-            if (null === $codeLabelFilter) {
-                return true;
-            }
-
-            $labelsFromValues = $this->getLabelsFromValues($record->getValues()->normalize(), $attributeAsLabel);
-            $field = sprintf('%s %s', $record->getCode()->normalize(), implode(' ', $labelsFromValues));
-
-            return false !== strpos($field, $codeLabelFilter['value']);
-        }));
-
-        $records = array_values(array_filter($records, function (Record $record) use ($updatedFilter) {
-            if (null === $updatedFilter) {
-                return true;
-            }
-
-            $updatedSinceDate = (new \DateTime($updatedFilter['value']))->getTimestamp();
-            $recordDate = ($this->updatedDateByRecord[(string) $record->getIdentifier()])->getTimestamp();
-
-            return $recordDate >= $updatedSinceDate;
-        }));
-
-        $records = array_values(array_filter($records, function (Record $record) use ($attributeFilters) {
-            if (empty($attributeFilters)) {
-                return true;
-            }
-
-            foreach ($attributeFilters as $attributeFilter) {
-                $attributeIdentifier = substr($attributeFilter['field'], 7);
-                $value = $record->getValues()->findValue(ValueKey::createFromNormalized($attributeIdentifier));
-
-                if (null === $value) {
-                    return false;
-                }
-
-                $data = (is_array($value->getData()->normalize())) ? $value->getData()->normalize() : [$value->getData()->normalize()];
-
-                return $attributeFilter['value'] === $data;
-            }
-        }));
-
-        if ($query->isPaginatedUsingSearchAfter()) {
-            $searchAfterCode = $query->getSearchAfterCode();
-            $records = array_values(array_filter($records, function (Record $record) use ($searchAfterCode): bool {
-                return null === $searchAfterCode
-                    || strcasecmp((string) $record->getCode(), $searchAfterCode) > 0;
-            }));
-
-            usort($records, function ($firstRecord, $secondRecord) {
-                return strcasecmp((string) $firstRecord->getCode(), (string) $secondRecord->getCode());
-            });
-
-            $records = array_slice($records, 0, $query->getSize());
+        $currentRequest = $this->requestStack->getCurrentRequest();
+        if (null !== $currentRequest && self::API_REST_PREFIX_URL === substr($currentRequest->getPathInfo(), 0, 10)) {
+            $queryParameters = $this->getQueryParametersFromRequest($currentRequest);
+            $items = $this->getItemsForQueryParameters($queryParameters);
+            $identifiers = array_map(function ($item) {
+                return RecordIdentifier::fromString(sprintf('%s_fingerprint', $item['code']))->normalize();
+            }, $items);
+        } else {
+            $items = $this->getItemsForFilters($query->getFilters());
+            $identifiers = array_map(function ($item) {
+                return $item['identifier'];
+            }, $items);
         }
 
-        $identifiers = array_map(function (Record $record): string {
-            return (string) $record->getIdentifier();
-        }, $records);
-        $result = new IdentifiersForQueryResult($identifiers, count($records));
-
-        return $result;
+        return new IdentifiersForQueryResult($identifiers, count($identifiers));
     }
 
-    private function getLabelsFromValues(array $valueCollection, string $attributeAsLabel): array
+    private function getItemsForFilters(array $filters): array
     {
-        return array_reduce(
-            $valueCollection,
-            function (array $labels, array $value) use ($attributeAsLabel) {
-                if ($value['attribute'] === $attributeAsLabel) {
-                    $localeCode = $value['locale'];
-                    $label = (string) $value['data'];
-                    $labels[$localeCode] = $label;
-                }
+        foreach ($this->requestContracts as $requestContract) {
+            $requestContractData = json_decode(file_get_contents($requestContract), true);
 
-                return $labels;
-            },
-            []
-        );
+            if ($requestContractData['request']['body']['filters'] === $filters) {
+                return $requestContractData['response']['body']['items'];
+            }
+        }
+
+        throw new InvalidArgumentException(sprintf('Cannot find items for filters %s', json_encode($filters)));
     }
 
-    /**
-     * @return Record[]
-     */
-    public function getRecords(): array
+    private function getItemsForQueryParameters(array $queryParameters): array
     {
-        return $this->records;
+        foreach ($this->requestContractsApi as $requestContract) {
+            $requestContractData = json_decode(file_get_contents($requestContract), true);
+
+            if ($requestContractData['request']['query'] === $queryParameters) {
+                return $requestContractData['response']['body']['_embedded']['items'];
+            }
+        }
+
+        throw new InvalidArgumentException(sprintf('Cannot find items for query parameters %s', json_encode($queryParameters)));
+    }
+
+    private function getQueryParametersFromRequest(Request $request): array
+    {
+        $queryParameters = [];
+        $queryParameters['referenceEntityIdentifier'] = $request->get('referenceEntityIdentifier');
+        $search = $request->get('search', null);
+        if (null !== $search) {
+            $queryParameters['search'] = $search;
+        }
+        $searchAfter = $request->get('search_after', null);
+        if (null !== $searchAfter) {
+            $queryParameters['search_after'] = $searchAfter;
+        }
+        $channel = $request->get('channel', null);
+        if (null !== $channel) {
+            $queryParameters['channel'] = $channel;
+        }
+        $locale = $request->get('locale', null);
+        if (null !== $locale) {
+            $queryParameters['locale'] = $locale;
+        }
+
+
+        return $queryParameters;
     }
 }

@@ -96,7 +96,7 @@ class RecordCollectionAttribute extends AbstractAttribute
         $this->recordType = $recordType;
     }
 
-    protected function getType(): string
+    public function getType(): string
     {
         return self::ATTRIBUTE_TYPE;
     }

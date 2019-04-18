@@ -271,6 +271,9 @@ module.exports = async function(cucumber) {
   });
 
   Then('I switch to another locale in the record grid', async function() {
+    const recordList = await await getElement(this.page, 'Records');
+    await recordList.search('other_s');
+
     const requestContract = getRequestContract('Record/Search/no_result_fr.json');
 
     await listenRequest(this.page, requestContract);

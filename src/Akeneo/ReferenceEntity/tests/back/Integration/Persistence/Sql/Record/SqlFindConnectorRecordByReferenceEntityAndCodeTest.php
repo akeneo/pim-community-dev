@@ -373,7 +373,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
         $currentRecord = $currentRecord->normalize();
         $currentRecord['values'] = $this->sortRecordValues($currentRecord['values']);
 
-        $this->assertSame($expectedRecord, $currentRecord);
+        $this->assertEquals($expectedRecord, $currentRecord);
     }
 
     private function sortRecordValues(array $recordValues): array

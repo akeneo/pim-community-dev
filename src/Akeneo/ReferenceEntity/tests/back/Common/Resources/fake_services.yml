@@ -133,18 +133,15 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.bulk_record_item'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.date'
+            - '@request_stack'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.count_records:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryCountRecords
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
 
     akeneo_referenceentity.infrastructure.persistence.query.channel_exists:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists
@@ -206,7 +203,9 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryGetValueKeyForAttributeChannelAndLocale
 
     akeneo_referenceentity.infrastructure.persistence.query.find_value_keys_by_attribute_type:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysByAttributeType
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindValueKeysByAttributeType
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindIdentifiersByReferenceEntityAndCodes
@@ -217,6 +216,12 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindCodesByIdentifiers
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_identifiers:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordLabelsByIdentifiers
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
 
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:

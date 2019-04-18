@@ -34,85 +34,107 @@
     "status": 400,
     "body": [
       {
-        "messageTemplate": "The file \"/a/b/c/philou.gif\" was not found.",
-        "parameters": {
-          "%file_path%": "/a/b/c/philou.gif"
+        "messageTemplate":"The file \u0022\/a\/b\/c\/philou.gif\u0022 was not found.",
+        "parameters":{
+          "%file_path%":"\/a\/b\/c\/philou.gif"
         },
-        "plural": null,
-        "message": "The file \"/a/b/c/philou.gif\" was not found.",
-        "root": {
-          "referenceEntityIdentifier": "designer",
-          "code": "starck",
-          "labels": [],
-          "image": null,
-          "editRecordValueCommands": [
+        "plural":null,
+        "message":"The file \u0022\/a\/b\/c\/philou.gif\u0022 was not found.",
+        "root":{
+          "referenceEntityIdentifier":"designer",
+          "code":"starck",
+          "labels":[
+
+          ],
+          "image":null,
+          "editRecordValueCommands":[
             {
-              "filePath": "/a/b/c/philou.gif",
-              "originalFilename": null,
-              "size": null,
-              "mimeType": null,
-              "extension": null,
-              "attribute": {
-                "maxFileSizeLimit": false,
-                "maxFileSize": {
-                  "limit": false
+              "filePath":"\/a\/b\/c\/philou.gif",
+              "originalFilename":null,
+              "size":null,
+              "mimeType":null,
+              "extension":null,
+              "attribute":{
+                "maxFileSizeLimit":false,
+                "type":"image",
+                "maxFileSize":{
+                  "limit":false
                 },
-                "allowedExtensions": {
-                  "allAllowed": false
+                "allowedExtensions":{
+                  "allAllowed":false
                 },
-                "identifier": [],
-                "referenceEntityIdentifier": [],
-                "code": [],
-                "labelCodes": [
+                "identifier":[
+
+                ],
+                "referenceEntityIdentifier":[
+
+                ],
+                "code":[
+
+                ],
+                "labelCodes":[
                   "fr_FR",
                   "en_US"
                 ],
-                "order": [],
-                "valuePerChannel": false,
-                "valuePerLocale": false
+                "order":[
+
+                ],
+                "valuePerChannel":false,
+                "valuePerLocale":false
               },
-              "channel": null,
-              "locale": null
+              "channel":null,
+              "locale":null
             }
           ]
         },
-        "propertyPath": "values.portrait",
-        "invalidValue": {
-          "filePath": "/a/b/c/philou.gif",
-          "originalFilename": null,
-          "size": null,
-          "mimeType": null,
-          "extension": null,
-          "attribute": {
-            "maxFileSizeLimit": false,
-            "maxFileSize": {
-              "limit": false
+        "propertyPath":"values.portrait",
+        "invalidValue":{
+          "filePath":"\/a\/b\/c\/philou.gif",
+          "originalFilename":null,
+          "size":null,
+          "mimeType":null,
+          "extension":null,
+          "attribute":{
+            "maxFileSizeLimit":false,
+            "type":"image",
+            "maxFileSize":{
+              "limit":false
             },
-            "allowedExtensions": {
-              "allAllowed": false
+            "allowedExtensions":{
+              "allAllowed":false
             },
-            "identifier": [],
-            "referenceEntityIdentifier": [],
-            "code": [],
-            "labelCodes": [
+            "identifier":[
+
+            ],
+            "referenceEntityIdentifier":[
+
+            ],
+            "code":[
+
+            ],
+            "labelCodes":[
               "fr_FR",
               "en_US"
             ],
-            "order": [],
-            "valuePerChannel": false,
-            "valuePerLocale": false
+            "order":[
+
+            ],
+            "valuePerChannel":false,
+            "valuePerLocale":false
           },
-          "channel": null,
-          "locale": null
+          "channel":null,
+          "locale":null
         },
-        "constraint": {
-          "targets": "class",
-          "defaultOption": null,
-          "requiredOptions": [],
-          "payload": null
+        "constraint":{
+          "targets":"class",
+          "defaultOption":null,
+          "requiredOptions":[
+
+          ],
+          "payload":null
         },
-        "cause": null,
-        "code": null
+        "cause":null,
+        "code":null
       }
     ]
   }

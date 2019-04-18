@@ -64,12 +64,15 @@
                             "attribute": "city_designer_79eb100099b9a8bf52609e00b7ee307e",
                             "channel": null,
                             "locale": null,
-                            "data": "paris"
+                            "data": "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717",
+                            "context": {
+                                "labels": []
+                            }
                         }
                     },
                     "completeness": {
                         "complete": 0,
-                        "required": 2
+                        "required": 1
                     }
                 },
                 {
@@ -103,12 +106,15 @@
                             "attribute": "city_designer_79eb100099b9a8bf52609e00b7ee307e",
                             "channel": null,
                             "locale": null,
-                            "data": "paris"
+                            "data": "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717",
+                            "context": {
+                                "labels": []
+                            }
                         }
                     },
                     "completeness": {
-                        "complete": 1,
-                        "required": 2
+                        "complete": 0,
+                        "required": 1
                     }
                 }
             ],
