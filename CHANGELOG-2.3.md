@@ -1,5 +1,11 @@
 # 2.3.x
 
+# 2.3.37 (2019-04-15)
+
+## Bug fixes
+
+- PIM-8234: Fix performance issue on the command that generates missing asset variation files
+
 # 2.3.36 (2019-04-02)
 
 ## Developer Experience Improvement
@@ -25,6 +31,7 @@
 
 - PIM-8187: When delete a product model / product the proposals linked in ES where not deleted
 - PIM-8225: Show reference image on assets grid when there is no variation file info for the channel
+- PIM-8041: Use project locale when switching between projects
 
 # 2.3.33 (2019-03-13)
 

@@ -31,6 +31,6 @@ Feature: Revert product attributes to a previous version
     And the history of the product "t-shirt" has been built
     When I visit the "History" column tab
     Then I should see 3 versions in the history
-    When I revert the product version number 2
+    When I revert the product version number 2 and then see 4 total versions
     Then the product "t-shirt" should have the following values:
       | datasheet | bic-core-148.txt |
