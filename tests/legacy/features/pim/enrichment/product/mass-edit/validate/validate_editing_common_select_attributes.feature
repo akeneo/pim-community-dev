@@ -59,9 +59,12 @@ Feature: Validate editing common select attributes of multiple products
     And I display the Weather conditions attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the options "weather_conditions" of products boots and sneakers should be:
-      | value |
-      |       |
+    And the product "boots" should not have the following values:
+      | weather_conditions |
+    And the product "sandals" should not have the following values:
+      | weather_conditions |
+    And the product "sneakers" should not have the following values:
+      | weather_conditions |
 
   Scenario: Successfully mass edit a simple select attribute
     Given I select rows boots and sneakers
@@ -79,4 +82,9 @@ Feature: Validate editing common select attributes of multiple products
     And I display the Manufacturer attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the option "manufacturer" of products boots, sandals and sneakers should be ""
+    And the product "boots" should not have the following values:
+      | Manufacturer |
+    And the product "sandals" should not have the following values:
+      | Manufacturer |
+    And the product "sneakers" should not have the following values:
+      | Manufacturer |

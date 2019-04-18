@@ -38,7 +38,7 @@ class ComparisonPanelDecorator extends ElementDecorator
             }
             $selector->click();
 
-            return true;
+            return 0 !== $this->selectedItemsCount();
         }, sprintf('Can not select "%s" elements', $mode));
     }
 
@@ -76,19 +76,18 @@ class ComparisonPanelDecorator extends ElementDecorator
             return $dropdown;
         }, 'Copy source dropdown was not found');
 
-        $this->spin(function () use ($dropdown) {
+        $toggle = $this->spin(function () use ($dropdown) {
             $toggle = $dropdown->find('css', '.AknActionButton');
             if (null === $toggle) {
                 return false;
             }
 
-            $toggle->click();
-
-            return true;
+            return $toggle;
         }, 'Dropdown action menu was not found');
 
 
-        $this->spin(function () use ($source, $dropdown) {
+        $this->spin(function () use ($source, $dropdown, $toggle) {
+            $toggle->click();
             $option = $dropdown->find('css', sprintf('.AknDropdown-menuLink[data-source="%s"]', $source));
             if (null === $option) {
                 return false;

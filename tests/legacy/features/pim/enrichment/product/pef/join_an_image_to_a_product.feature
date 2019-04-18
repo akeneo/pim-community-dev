@@ -6,11 +6,15 @@ Feature: Join an image to a product
 
   Background:
     Given the "default" catalog configuration
-    And a "Car" product
     And the following attribute:
       | label-en_US | type              | allowed_extensions | group | code   |
       | Visual      | pim_catalog_image | jpg,gif            | other | visual |
-    And the "Car" product has the "visual" attribute
+    And the following family:
+      | code     | attributes |
+      | vehicles | sku,visual |
+    And the following product:
+      | sku | family   |
+      | Car | vehicles |
     And I am logged in as "Mary"
     And I am on the "Car" product page
 
@@ -56,16 +60,17 @@ Feature: Join an image to a product
     And I remove the "Visual" file
     And I save the product
     Then I should not see the text "akeneo.jpg"
-    When I remove the "Visual" attribute
-    And I confirm the deletion
-    And I save the product
-    Then The file with original filename "akeneo.jpg" should exists in database
+    When I change the family of the product to ""
+    Then I should not see the text "Visual"
+    But The file with original filename "akeneo.jpg" should exists in database
 
   @jira https://akeneo.atlassian.net/browse/PIM-5712
   Scenario: Successfully remove an image field containing an image and keep a reference to the file in database
     When I attach file "akeneo.jpg" to "Visual"
     And I save the product
+    And I change the family of the product to ""
     And I remove the "Visual" attribute
     And I confirm the deletion
     And I save the product
-    Then The file with original filename "akeneo.jpg" should exists in database
+    Then I should not see the text "Visual"
+    But The file with original filename "akeneo.jpg" should exists in database
