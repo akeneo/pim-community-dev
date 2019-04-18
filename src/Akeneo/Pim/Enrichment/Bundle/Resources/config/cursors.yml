@@ -80,3 +80,16 @@ services:
             - '@akeneo_elasticsearch.client.product'
             - 'pim_catalog_product'
 
+    akeneo.pim.enrichment.factory.product_model_identifier_cursor_from_size_cursor:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeIdentifierResultCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_model'
+            - 'pim_catalog_product'
+
+    akeneo.pim.enrichment.factory.product_model_identifier_cursor_search_after_size_cursor:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchAfterSizeIdentifierResultCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_model'
+            - 'pim_catalog_product'
