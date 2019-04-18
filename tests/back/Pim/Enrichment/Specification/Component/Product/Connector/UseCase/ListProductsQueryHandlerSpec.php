@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
-use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -21,9 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -66,24 +60,6 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
-        $pqb->execute()->willReturn(new class implements CursorInterface {
-            private $identifierResults;
-
-            public function __construct()
-            {
-                $identifierResultsArrayCollection = new ArrayCollection([
-                    new IdentifierResult('identifier_1', ProductInterface::class),
-                    new IdentifierResult('identifier_2', ProductInterface::class)
-                ]);
-                $this->identifierResults = $identifierResultsArrayCollection->getIterator();
-            }
-            public function current() { return $this->identifierResults->current(); }
-            public function next() { $this->identifierResults->next(); }
-            public function key() { return $this->identifierResults->key(); }
-            public function count() { return 2; }
-            public function valid() { return $this->identifierResults->valid(); }
-            public function rewind() { $this->identifierResults->rewind(); }
-        });
 
         $connectorProduct1 = new ConnectorProduct(
             1,
@@ -116,17 +92,12 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $getConnectorProducts
-            ->fromProductIdentifiers(['identifier_1', 'identifier_2'], ['name'], 'tablet', ['en_US'])
-            ->willReturn([$connectorProduct1, $connectorProduct2]);
+            ->fromProductQueryBuilder($pqb, ['name'], 'tablet', ['en_US'])
+            ->willReturn(new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]));
 
         $searchAfterPqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
-        $this->handle($query)->shouldBeLike(
-            new ConnectorProductList(
-                2,
-                [$connectorProduct1, $connectorProduct2]
-            )
-        );
+        $this->handle($query)->shouldBeLike(new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]));
     }
 
     function it_gets_connector_products_with_search_after_method(
@@ -150,24 +121,6 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
-        $pqb->execute()->willReturn(new class implements CursorInterface {
-            private $identifierResults;
-
-            public function __construct()
-            {
-                $identifierResultsArrayCollection = new ArrayCollection([
-                    new IdentifierResult('identifier_1', ProductInterface::class),
-                    new IdentifierResult('identifier_2', ProductInterface::class)
-                ]);
-                $this->identifierResults = $identifierResultsArrayCollection->getIterator();
-            }
-            public function current() { return $this->identifierResults->current(); }
-            public function next() { $this->identifierResults->next(); }
-            public function key() { return $this->identifierResults->key(); }
-            public function count() { return 2; }
-            public function valid() { return $this->identifierResults->valid(); }
-            public function rewind() { $this->identifierResults->rewind(); }
-        });
 
         $connectorProduct1 = new ConnectorProduct(
             1,
@@ -200,17 +153,12 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $getConnectorProducts
-            ->fromProductIdentifiers(['identifier_1', 'identifier_2'], null, null, null)
-            ->willReturn([$connectorProduct1, $connectorProduct2]);
+            ->fromProductQueryBuilder($pqb, null, null, null)
+            ->willReturn(new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
-        $this->handle($query)->shouldBeLike(
-            new ConnectorProductList(
-                2,
-                [$connectorProduct1, $connectorProduct2]
-            )
-        );
+        $this->handle($query)->shouldBeLike(new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]));
     }
 
     function it_filters_with_activated_locales_of_the_provided_channel_filter_of_the_query_when_no_locales_filter_provided(
@@ -238,34 +186,14 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
 
         $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
         $pqb->addFilter('categories', 'IN CHILDREN', ['master'], ['locale' => null, 'scope' => null])->shouldBeCalled();
-        $pqb->execute()->willReturn(new class implements CursorInterface {
-            private $identifierResults;
-
-            public function __construct()
-            {
-                $identifierResultsArrayCollection = new ArrayCollection([]);
-                $this->identifierResults = $identifierResultsArrayCollection->getIterator();
-            }
-            public function current() { return $this->identifierResults->current(); }
-            public function next() { $this->identifierResults->next(); }
-            public function key() { return $this->identifierResults->key(); }
-            public function count() { return 2; }
-            public function valid() { return $this->identifierResults->valid(); }
-            public function rewind() { $this->identifierResults->rewind(); }
-        });
 
         $getConnectorProducts
-            ->fromProductIdentifiers([], null, 'tablet', ['en_US'])
-            ->willReturn([]);
+            ->fromProductQueryBuilder($pqb, null, 'tablet', ['en_US'])
+            ->willReturn(new ConnectorProductList(0, []));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
-        $this->handle($query)->shouldBeLike(
-            new ConnectorProductList(
-                2,
-                []
-            )
-        );
+        $this->handle($query)->shouldBeLike(new ConnectorProductList(0, []));
     }
 
     function it_filters_with_provided_locales_filter_of_the_query_when_no_channel_filter_is_provided(
@@ -286,34 +214,14 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
-        $pqb->execute()->willReturn(new class implements CursorInterface {
-            private $identifierResults;
-
-            public function __construct()
-            {
-                $identifierResultsArrayCollection = new ArrayCollection([]);
-                $this->identifierResults = $identifierResultsArrayCollection->getIterator();
-            }
-            public function current() { return $this->identifierResults->current(); }
-            public function next() { $this->identifierResults->next(); }
-            public function key() { return $this->identifierResults->key(); }
-            public function count() { return 2; }
-            public function valid() { return $this->identifierResults->valid(); }
-            public function rewind() { $this->identifierResults->rewind(); }
-        });
 
         $getConnectorProducts
-            ->fromProductIdentifiers([], null, null, ['en_US', 'fr_FR'])
-            ->willReturn([]);
+            ->fromProductQueryBuilder($pqb, null, null, ['en_US', 'fr_FR'])
+            ->willReturn(new ConnectorProductList(0, []));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
-        $this->handle($query)->shouldBeLike(
-            new ConnectorProductList(
-                2,
-                []
-            )
-        );
+        $this->handle($query)->shouldBeLike(new ConnectorProductList(0, []));
     }
 
     function it_filters_with_provided_locales_filter_of_the_query_when_channel_filter_is_provided_as_locales_are_already_validated_as_activated_for_this_channel(
@@ -334,33 +242,14 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
-        $pqb->execute()->willReturn(new class implements CursorInterface {
-            private $identifierResults;
 
-            public function __construct()
-            {
-                $identifierResultsArrayCollection = new ArrayCollection([]);
-                $this->identifierResults = $identifierResultsArrayCollection->getIterator();
-            }
-            public function current() { return $this->identifierResults->current(); }
-            public function next() { $this->identifierResults->next(); }
-            public function key() { return $this->identifierResults->key(); }
-            public function count() { return 2; }
-            public function valid() { return $this->identifierResults->valid(); }
-            public function rewind() { $this->identifierResults->rewind(); }
-        });
 
         $getConnectorProducts
-            ->fromProductIdentifiers([], null, 'tablet', ['en_US', 'fr_FR'])
-            ->willReturn([]);
+            ->fromProductQueryBuilder($pqb, null, 'tablet', ['en_US', 'fr_FR'])
+            ->willReturn(new ConnectorProductList(0, []));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
-        $this->handle($query)->shouldBeLike(
-            new ConnectorProductList(
-                2,
-                []
-            )
-        );
+        $this->handle($query)->shouldBeLike(new ConnectorProductList(0, []));
     }
 }

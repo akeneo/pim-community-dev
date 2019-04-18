@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
@@ -89,19 +88,14 @@ final class ListProductsQueryHandler
 
         $pqb->addSorter('id', Directions::ASCENDING);
 
-        $result = $pqb->execute();
-        $identifiers = array_map(function (IdentifierResult $identifier) {
-            return $identifier->getIdentifier();
-        }, iterator_to_array($result));
-
-        $products = $this->getConnectorProductsQuery->fromProductIdentifiers(
-            $identifiers,
+        $connectorProductList = $this->getConnectorProductsQuery->fromProductQueryBuilder(
+            $pqb,
             $query->attributeCodes,
             $query->channelCode,
             $this->getLocales($query->channelCode, $query->localeCodes)
         );
 
-        return new ConnectorProductList($result->count(), $products);
+        return $connectorProductList;
     }
 
     private function getSearchPQB(ListProductsQuery $query): ProductQueryBuilderInterface

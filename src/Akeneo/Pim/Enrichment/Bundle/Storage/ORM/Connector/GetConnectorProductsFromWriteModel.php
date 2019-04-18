@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use \Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
@@ -48,12 +50,16 @@ final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProd
     /**
      * {@inheritdoc}
      */
-    public function fromProductIdentifiers(
-        array $identifiers,
+    public function fromProductQueryBuilder(
+        Query\ProductQueryBuilderInterface $pqb,
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
-    ): array {
+    ): ConnectorProductList {
+        $result = $pqb->execute();
+        $identifiers = array_map(function (IdentifierResult $identifier) {
+            return $identifier->getIdentifier();
+        }, iterator_to_array($result));
         $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
 
         $products = [];
@@ -72,7 +78,7 @@ final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProd
             $products[] = ConnectorProduct::fromProductWriteModel($product, $this->getMetadata->forProduct($product));
         }
 
-        return $products;
+        return new ConnectorProductList($result->count(), $products);
     }
 
     private function getProduct(string $identifier): ProductInterface
