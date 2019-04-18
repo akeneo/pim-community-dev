@@ -87,7 +87,7 @@ extensions:
             readOnly: false
 
     pim-job-instance-yml-base-export-edit-properties-file-path:
-        module: pim/job/common/edit/field/text
+        module: pim/job/common/edit/field/file-path
         parent: pim-job-instance-yml-base-export-edit-global
         position: 100
         targetZone: properties

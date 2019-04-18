@@ -97,7 +97,7 @@ extensions:
             readOnly: false
 
     pim-job-instance-csv-product-export-edit-properties-file-path:
-        module: pim/job/common/edit/field/text
+        module: pim/job/common/edit/field/file-path
         parent: pim-job-instance-csv-product-export-edit-global
         position: 120
         targetZone: properties
