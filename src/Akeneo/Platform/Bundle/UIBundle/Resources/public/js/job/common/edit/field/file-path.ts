@@ -3,7 +3,7 @@ const editionProvider = require('pim/edition');
 
 class FilePath extends BaseField {
     render() {
-        if (editionProvider.isCloudEdition() === false) {
+        if (false === editionProvider.isCloudEdition()) {
             super.render();
         }
 

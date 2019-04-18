@@ -1,7 +1,7 @@
 const pimEdition = {
-    isCloudEdition: () => {
+    isCloudEdition: (): boolean => {
         return 'cloud' === process.env.EDITION
     }
 };
 
-export=pimEdition;
+export = pimEdition;

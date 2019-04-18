@@ -87,7 +87,7 @@ extensions:
             readOnly: false
 
     pim-job-instance-csv-base-import-edit-properties-file-path:
-        module: pim/common/edit/field/file-path
+        module: pim/job/common/edit/field/file-path
         parent: pim-job-instance-csv-base-import-edit-global
         position: 120
         targetZone: properties
