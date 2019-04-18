@@ -4,7 +4,7 @@
   "homepage": "http://www.akeneo.com",
   "scripts": {
     "requirements": "node frontend/build/check-requirements.js",
-    "webpack": "yarn requirements && EDITION=cloud webpack --config webpack.config.js --env=prod",
+    "webpack": "yarn requirements && webpack --config webpack.config.js --env=prod",
     "webpack-dev": "yarn requirements && webpack --config webpack.config.js",
     "webpack-watch": "yarn requirements && webpack --progress --config webpack.config.js --watch",
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
