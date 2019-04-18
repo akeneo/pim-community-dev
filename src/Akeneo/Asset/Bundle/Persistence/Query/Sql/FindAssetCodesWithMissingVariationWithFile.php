@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql;
+namespace Akeneo\Asset\Bundle\Persistence\Query\Sql;
 
+use Akeneo\Asset\Component\Persistence\Query\Sql\FindAssetCodesWithMissingVariationWithFileInterface;
 use Doctrine\DBAL\Connection;
-use PimEnterprise\Component\ProductAsset\Persistence\Query\FindAssetCodesWithMissingVariationWithFileInterface;
 
 class FindAssetCodesWithMissingVariationWithFile implements FindAssetCodesWithMissingVariationWithFileInterface
 {

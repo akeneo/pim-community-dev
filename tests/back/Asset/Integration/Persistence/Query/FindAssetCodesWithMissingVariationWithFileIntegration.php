@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\tests\Integration\Persistence\Query;
+namespace AkeneoTestEnterprise\Asset\Integration\Persistence\Query;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Asset\Component\Model\Asset;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\Reference;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\Variation;
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Component\ProductAsset\Model\Asset;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\Reference;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\Variation;
 
 class FindAssetCodesWithMissingVariationWithFileIntegration extends TestCase
 {

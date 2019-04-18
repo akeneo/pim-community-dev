@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Persistence\Query;
+namespace Akeneo\Asset\Component\Persistence\Query\Sql;
 
 /**
  * Find the codes of the assets that have at least one missing variation that should have a file.
