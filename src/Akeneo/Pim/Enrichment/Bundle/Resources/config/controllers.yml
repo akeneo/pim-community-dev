@@ -76,6 +76,7 @@ services:
             - '@pim_api.stream.product_model_partial_update_stream'
             - '@pim_enrich.connector.use_cases.validator.list_product_models'
             - '@pim_enrich.connector.use_cases.handler.list_product_models'
+            - '@pim_api.normalizer.connector_product_models'
             - '%pim_api.configuration%'
 
     pim_api.controller.category:

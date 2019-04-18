@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
@@ -33,19 +36,29 @@ class ListProductModelsQueryHandler
     /** @var PrimaryKeyEncrypter */
     private $primaryKeyEncrypter;
 
+    /** @var GetConnectorProductModels */
+    private $getConnectorProductModelsQuery;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $channelRepository;
+
     public function __construct(
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        PrimaryKeyEncrypter $primaryKeyEncrypter
+        PrimaryKeyEncrypter $primaryKeyEncrypter,
+        GetConnectorProductModels $getConnectorProductModelsQuery,
+        IdentifiableObjectRepositoryInterface $channelRepository
     ) {
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
         $this->fromSizePqbFactory = $fromSizePqbFactory;
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
         $this->primaryKeyEncrypter = $primaryKeyEncrypter;
+        $this->getConnectorProductModelsQuery = $getConnectorProductModelsQuery;
+        $this->channelRepository = $channelRepository;
     }
 
-    public function handle(ListProductModelsQuery $query): CursorInterface
+    public function handle(ListProductModelsQuery $query): ConnectorProductModelList
     {
         $pqb = $this->getSearchPQB($query);
 
@@ -69,7 +82,19 @@ class ListProductModelsQueryHandler
 
         $pqb->addSorter('id', Directions::ASCENDING);
 
-        return $pqb->execute();
+        $results = $pqb->execute();
+        $codes = array_map(function (IdentifierResult $identifier) {
+            return $identifier->getIdentifier();
+        }, iterator_to_array($results));
+        
+        $productModels = $this->getConnectorProductModelsQuery->fromProductModelCodes(
+            $codes,
+            $query->attributeCodes,
+            $query->channelCode,
+            $this->getLocales($query->channelCode, $query->localeCodes)
+        );
+
+        return new ConnectorProductModelList($results->count(), $productModels);
     }
 
     private function getSearchPQB(ListProductModelsQuery $query): ProductQueryBuilderInterface
@@ -90,5 +115,18 @@ class ListProductModelsQueryHandler
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);
+    }
+
+    private function getLocales(?string $channelCodeToFilterValuesOn, ?array $localeCodesToFilterValuesOn): ?array
+    {
+        if (null === $channelCodeToFilterValuesOn) {
+            return $localeCodesToFilterValuesOn;
+        }
+
+        if (null === $localeCodesToFilterValuesOn) {
+            return $this->channelRepository->findOneByIdentifier($channelCodeToFilterValuesOn)->getLocaleCodes();
+        }
+
+        return $localeCodesToFilterValuesOn;
     }
 }

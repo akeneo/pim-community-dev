@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductModelsQueryValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -106,6 +108,9 @@ class ProductModelController
     /** @var ListProductModelsQueryHandler */
     private $listProductModelsQueryHandler;
 
+    /** @var ConnectorProductModelNormalizer */
+    private $connectorProductModelNormalizer;
+
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ProductQueryBuilderFactoryInterface $pqbSearchAfterFactory,
@@ -124,6 +129,7 @@ class ProductModelController
         StreamResourceResponse $partialUpdateStreamResource,
         ListProductModelsQueryValidator $listProductModelsQueryValidator,
         ListProductModelsQueryHandler $listProductModelsQueryHandler,
+        ConnectorProductModelNormalizer $connectorProductModelNormalizer,
         array $apiConfiguration
     ) {
         $this->pqbFactory = $pqbFactory;
@@ -143,6 +149,7 @@ class ProductModelController
         $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->listProductModelsQueryValidator = $listProductModelsQueryValidator;
         $this->listProductModelsQueryHandler = $listProductModelsQueryHandler;
+        $this->connectorProductModelNormalizer = $connectorProductModelNormalizer;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -415,7 +422,7 @@ class ProductModelController
         }
     }
 
-    private function normalizeProductModelsList(CursorInterface $productModels, ListProductModelsQuery $query): array
+    private function normalizeProductModelsList(ConnectorProductModelList $connectorProductModels, ListProductModelsQuery $query): array
     {
         $normalizerOptions = $this->getNormalizerOptions($query);
 
@@ -449,10 +456,10 @@ class ProductModelController
             ];
 
             try {
-                $count = $query->withCountAsBoolean() ? $productModels->count() : null;
+                $count = $query->withCountAsBoolean() ? $connectorProductModels->count() : null;
 
                 return $this->offsetPaginator->paginate(
-                    $this->normalizer->normalize($productModels, 'external_api', $normalizerOptions),
+                    $this->connectorProductModelNormalizer->normalizeConnectorProductModelList($connectorProductModels),
                     $paginationParameters,
                     $count
                 );
@@ -470,14 +477,13 @@ class ProductModelController
                 throw new ServerErrorResponseException($e->getMessage(), $e->getCode(), $e);
             }
         } else {
-            $productModels = iterator_to_array($productModels);
-
+            $productModels = $connectorProductModels->connectorProductModels();
             $lastProductModel = end($productModels);
 
             $parameters = [
                 'query_parameters'    => $queryParameters,
                 'search_after'        => [
-                    'next' => false !== $lastProductModel ? $this->primaryKeyEncrypter->encrypt($lastProductModel->getId()) : null,
+                    'next' => false !== $lastProductModel ? $this->primaryKeyEncrypter->encrypt($lastProductModel->id()) : null,
                     'self' => $query->searchAfter,
                 ],
                 'list_route_name'     => 'pim_api_product_model_list',
@@ -486,7 +492,7 @@ class ProductModelController
             ];
 
             return $this->searchAfterPaginator->paginate(
-                $this->normalizer->normalize($productModels, 'external_api', $normalizerOptions),
+                $this->connectorProductModelNormalizer->normalizeConnectorProductModelList($connectorProductModels),
                 $parameters,
                 null
             );
