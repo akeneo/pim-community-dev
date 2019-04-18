@@ -61,7 +61,7 @@ services:
 
     akeneo.pim.enrichment.factory.product_identifier_cursor_from_size_cursor:
         public: false
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FromSizeIdentifierResultCursorFactory'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Cursor\FromSizeIdentifierResultCursorFactory'
         arguments:
         - '@akeneo_elasticsearch.client.product'
         - 'pim_catalog_product'
