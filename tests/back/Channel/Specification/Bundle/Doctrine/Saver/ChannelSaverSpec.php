@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Channel\Bundle\Doctrine\Saver;
 
 use Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Query\GetChannelCategoryCodeInterface;
+use Akeneo\Channel\Component\Query\Channel\FindChannelCategoryCodeInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -27,9 +27,9 @@ class ChannelSaverSpec extends ObjectBehavior
     public function let(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        GetChannelCategoryCodeInterface $getChannelCategoryCode
+        FindChannelCategoryCodeInterface $findChannelCategoryCode
     ): void {
-        $this->beConstructedWith($objectManager, $eventDispatcher, $getChannelCategoryCode);
+        $this->beConstructedWith($objectManager, $eventDispatcher, $findChannelCategoryCode);
     }
 
     public function it_is_a_saver(): void
@@ -45,7 +45,7 @@ class ChannelSaverSpec extends ObjectBehavior
     public function it_saves_a_channel(
         $objectManager,
         $eventDispatcher,
-        $getChannelCategoryCode,
+        $findChannelCategoryCode,
         ChannelInterface $channel,
         CategoryInterface $category
     ): void {
@@ -55,7 +55,7 @@ class ChannelSaverSpec extends ObjectBehavior
 
         $category->getCode()->willReturn('category-code');
 
-        $getChannelCategoryCode->execute(
+        $findChannelCategoryCode->__invoke(
             Argument::exact('channel-code')
         )->shouldBeCalled()->willReturn('category-code');
 
@@ -93,7 +93,7 @@ class ChannelSaverSpec extends ObjectBehavior
     public function it_saves_multiple_channels(
         $objectManager,
         $eventDispatcher,
-        $getChannelCategoryCode,
+        $findChannelCategoryCode,
         ChannelInterface $channel1,
         ChannelInterface $channel2,
         CategoryInterface $category
@@ -108,11 +108,11 @@ class ChannelSaverSpec extends ObjectBehavior
 
         $category->getCode()->willReturn('category-code');
 
-        $getChannelCategoryCode->execute(
+        $findChannelCategoryCode->__invoke(
             Argument::exact('channel-1-code')
         )->shouldBeCalled()->willReturn('category-code');
 
-        $getChannelCategoryCode->execute(
+        $findChannelCategoryCode->__invoke(
             Argument::exact('channel-2-code')
         )->shouldBeCalled()->willReturn('category-code');
 
@@ -170,6 +170,7 @@ class ChannelSaverSpec extends ObjectBehavior
 
     public function it_adds_the_option_is_new_when_a_channel_is_created(
         $eventDispatcher,
+        $findChannelCategoryCode,
         ChannelInterface $channel,
         CategoryInterface $category
     ): void {
@@ -178,6 +179,10 @@ class ChannelSaverSpec extends ObjectBehavior
         $channel->getCategory()->willReturn($category);
 
         $category->getCode()->willReturn('category-code');
+
+        $findChannelCategoryCode->__invoke(
+            Argument::exact('channel-code')
+        )->shouldBeCalled()->willReturn(null);
 
         $eventDispatcher->dispatch(
             Argument::exact(StorageEvents::PRE_SAVE),
@@ -204,6 +209,7 @@ class ChannelSaverSpec extends ObjectBehavior
 
     public function it_doesnt_add_the_option_is_new_when_a_channel_is_updated(
         $eventDispatcher,
+        $findChannelCategoryCode,
         ChannelInterface $channel,
         CategoryInterface $category
     ): void {
@@ -212,6 +218,10 @@ class ChannelSaverSpec extends ObjectBehavior
         $channel->getCategory()->willReturn($category);
 
         $category->getCode()->willReturn('category-code');
+
+        $findChannelCategoryCode->__invoke(
+            Argument::exact('channel-code')
+        )->shouldBeCalled()->willReturn('category-code');
 
         $eventDispatcher->dispatch(
             Argument::exact(StorageEvents::PRE_SAVE),
@@ -238,7 +248,7 @@ class ChannelSaverSpec extends ObjectBehavior
 
     public function it_triggers_a_specific_event_when_a_channel_category_is_updated(
         $eventDispatcher,
-        $getChannelCategoryCode,
+        $findChannelCategoryCode,
         ChannelInterface $channel,
         CategoryInterface $category
     ): void {
@@ -248,7 +258,7 @@ class ChannelSaverSpec extends ObjectBehavior
 
         $category->getCode()->willReturn('new-category-code');
 
-        $getChannelCategoryCode->execute(
+        $findChannelCategoryCode->__invoke(
             Argument::exact('channel-code')
         )->shouldBeCalled()->willReturn('old-category-code');
 

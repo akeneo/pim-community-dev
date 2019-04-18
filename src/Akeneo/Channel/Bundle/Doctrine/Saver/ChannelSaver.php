@@ -6,14 +6,13 @@ namespace Akeneo\Channel\Bundle\Doctrine\Saver;
 
 use Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Query\GetChannelCategoryCodeInterface;
+use Akeneo\Channel\Component\Query\Channel\FindChannelCategoryCodeInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Webmozart\Assert\Assert;
 
 /**
  * @author Paul Chasle <paul.chasle@akeneo.com>
@@ -28,17 +27,17 @@ final class ChannelSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    /** @var GetChannelCategoryCodeInterface */
-    private $getChannelCategoryCode;
+    /** @var FindChannelCategoryCodeInterface */
+    private $findChannelCategoryCode;
 
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        GetChannelCategoryCodeInterface $getChannelCategoryCode
+        FindChannelCategoryCodeInterface $findChannelCategoryCode
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->getChannelCategoryCode = $getChannelCategoryCode;
+        $this->findChannelCategoryCode = $findChannelCategoryCode;
     }
 
     /**
@@ -128,8 +127,10 @@ final class ChannelSaver implements SaverInterface, BulkSaverInterface
 
     private function isChannelCategoryUpdated(string $channelCode, string $newCategoryCode): bool
     {
-        $currentCategoryCode = $this->getChannelCategoryCode->execute($channelCode);
-        Assert::notNull($currentCategoryCode);
+        $currentCategoryCode = ($this->findChannelCategoryCode)($channelCode);
+        if (null === $currentCategoryCode) {
+            return false;
+        }
 
         return $currentCategoryCode !== $newCategoryCode;
     }

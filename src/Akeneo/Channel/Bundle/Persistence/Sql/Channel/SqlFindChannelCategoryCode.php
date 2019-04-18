@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Channel\Bundle\Doctrine\Query;
+namespace Akeneo\Channel\Bundle\Persistence\Sql\Channel;
 
-use Akeneo\Channel\Component\Query\GetChannelCategoryCodeInterface;
+use Akeneo\Channel\Component\Query\Channel\FindChannelCategoryCodeInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class GetChannelCategoryCode implements GetChannelCategoryCodeInterface
+final class SqlFindChannelCategoryCode implements FindChannelCategoryCodeInterface
 {
     /** @var Connection */
     private $connection;
@@ -22,7 +22,7 @@ final class GetChannelCategoryCode implements GetChannelCategoryCodeInterface
         $this->connection = $connection;
     }
 
-    public function execute(string $channelCode): ?string
+    public function __invoke(string $channelCode): ?string
     {
         $sql = <<<'SQL'
             SELECT category.code
