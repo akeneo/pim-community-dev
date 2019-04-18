@@ -235,7 +235,7 @@ class ColumnSelector extends BaseView {
     _.each(Object.assign(columns, metadataColumns), (column: Column) => {
       const columnNames = metadataColumns.map((column: Column) => column.name);
       const label = column.name || column.code;
-      const data = {selected: columnNames.includes(label), sortOrder: columnNames.indexOf(label), removable: true};
+      const data = {code: label, selected: columnNames.includes(label), sortOrder: columnNames.indexOf(label), removable: true};
       datagridColumns[label] = Object.assign(column, data);
     });
 
