@@ -56,6 +56,7 @@ export default class EditForm extends React.Component<FormProps> {
   render() {
     const referenceEntity = denormalizeReferenceEntity(this.props.data);
     const canEditLabel = this.props.rights.referenceEntity.edit && this.props.rights.locale.edit;
+    const canEditImage = this.props.rights.referenceEntity.edit;
 
     return (
       <div>
@@ -131,6 +132,7 @@ export default class EditForm extends React.Component<FormProps> {
               image={referenceEntity.getImage()}
               wide={true}
               onImageChange={this.props.onImageUpdated}
+              readOnly={!canEditImage}
             />
           </div>
           {getErrorsView(this.props.errors, 'image')}

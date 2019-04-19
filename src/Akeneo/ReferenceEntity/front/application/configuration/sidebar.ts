@@ -5,7 +5,7 @@ class SibebarMissConfigurationError extends Error {}
 
 interface TabConfiguration {
   [code: string]: {
-    label: string | { label: typeof React.Component};
+    label: string | {label: typeof React.Component};
     view: {default: typeof React.Component};
   };
 }
