@@ -11,11 +11,13 @@ define(
     [
         'underscore',
         'pim/form',
+        'pim/edition',
         'pim/template/import/switcher'
     ],
     function (
         _,
         BaseForm,
+        pimEdition,
         template
     ) {
         return BaseForm.extend({
@@ -50,10 +52,13 @@ define(
                     this.setCurrentActionCode(_.first(this.actions).code);
                 }
 
-                this.$el.empty().append(this.template({
-                    actions: this.actions,
-                    current: this.currentActionCode
-                }));
+
+                if (this.actions.length > 1) {
+                    this.$el.empty().append(this.template({
+                        actions: this.actions,
+                        current: this.currentActionCode
+                    }));
+                }
 
                 return BaseForm.prototype.render.apply(this, arguments);
             },
@@ -66,6 +71,10 @@ define(
              * @param {String} action.code  The extension code to display on click
              */
             registerAction: function (action) {
+                if (pimEdition.isCloudEdition() && action.hideForCloudEdition) {
+                    return;
+                }
+
                 this.actions.push(action);
                 this.render();
             },
