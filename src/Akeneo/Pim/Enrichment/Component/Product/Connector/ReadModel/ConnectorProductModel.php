@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
-use Akeneo\DataGenerator\Domain\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
-use \DateTimeImmutable;
-use \DateTimeInterface;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -76,6 +73,7 @@ final class ConnectorProductModel
 
     public static function fromWriteModel(ProductModelInterface $productModel, array $metadata = []): ConnectorProductModel {
         return new self(
+            $productModel->getId(),
             $productModel->getCode(),
             \DateTimeImmutable::createFromMutable($productModel->getCreated()),
             \DateTimeImmutable::createFromMutable($productModel->getUpdated()),
@@ -116,12 +114,12 @@ final class ConnectorProductModel
         return $this->code;
     }
 
-    public function createdDate(): DateTimeInterface
+    public function createdDate(): \DateTimeInterface
     {
         return $this->createdDate;
     }
 
-    public function updatedDate(): DateTimeInterface
+    public function updatedDate(): \DateTimeInterface
     {
         return $this->updatedDate;
     }

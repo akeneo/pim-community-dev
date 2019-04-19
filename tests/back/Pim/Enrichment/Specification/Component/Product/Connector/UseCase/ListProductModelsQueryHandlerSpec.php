@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -22,13 +24,16 @@ class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $channelRepository,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        PrimaryKeyEncrypter $primaryKeyEncrypter
+        PrimaryKeyEncrypter $primaryKeyEncrypter,
+        GetConnectorProductModels $connectorProductModels
     ) {
         $this->beConstructedWith(
             new ApplyProductSearchQueryParametersToPQB($channelRepository->getWrappedObject()),
             $fromSizePqbFactory,
             $searchAfterPqbFactory,
-            $primaryKeyEncrypter
+            $primaryKeyEncrypter,
+            $connectorProductModels,
+            $channelRepository
         );
     }
 
@@ -61,7 +66,8 @@ class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         ProductQueryBuilderInterface $pqb,
-        CursorInterface $cursor
+        CursorInterface $cursor,
+        GetConnectorProductModels $getConnectorProductModels
     ) {
         $query = new ListProductModelsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -78,9 +84,14 @@ class ListProductModelsQueryHandlerSpec extends ObjectBehavior
 
         $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
         $pqb->execute()->shouldBeCalled()->willReturn($cursor);
+        $cursor->count()->willReturn(0);
+        $cursor->rewind()->shouldBeCalled();
+
+        $getConnectorProductModels->fromProductModelCodes(Argument::cetera(), null, null, null)->willReturn([]);
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
-        $this->handle($query);
+        $this->handle($query)->shouldBeLike(new ConnectorProductModelList(0, []));
+
     }
 }
