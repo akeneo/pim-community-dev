@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
-use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;

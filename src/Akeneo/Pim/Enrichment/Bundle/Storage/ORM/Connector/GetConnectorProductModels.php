@@ -7,10 +7,10 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetMetadataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -42,28 +42,17 @@ final class GetConnectorProductModels implements Query\GetConnectorProductModels
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
-    ): ConnectorProductModelList
-    {
+    ): ConnectorProductModelList {
         $result = $productQueryBuilder->execute();
+
         $codes = array_map(function (IdentifierResult $identifier) {
             return $identifier->getIdentifier();
         }, iterator_to_array($result));
 
-        $productModels = $this->productModelsFromCode($codes, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
-
-        foreach ($codes as $code) {
-            $productModel = $this->productModelRepository->findOneByIdentifier($code);
-            $values = $productModel->getValues()->filter(function (ValueInterface $value) use ($attributesToFilterOn, $channelToFilterOn, $localesToFilterOn) {
-                $isAttributeToKeep = null === $attributesToFilterOn || in_array($value->getAttributeCode(), $attributesToFilterOn);
-                $isChannelToKeep = null === $channelToFilterOn || !$value->isScopable() || $value->getScopeCode() === $channelToFilterOn;
-                $isLocaleToKeep = null === $localesToFilterOn || !$value->isLocalizable() || in_array($value->getLocaleCode(), $localesToFilterOn);
-                return $isAttributeToKeep && $isChannelToKeep && $isLocaleToKeep;
-            });
-            $productModel->setValues($values);
-            $productModels[] = ConnectorProductModel::fromWriteModel($productModel, $this->getMetadata->forProductModel($productModel));
-        }
-
-        return new ConnectorProductModelList($result->count(), $productModels);
+        return new ConnectorProductModelList(
+            $result->count(),
+            $this->productModelsFromCode($codes, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn)
+        );
     }
 
     /**
@@ -83,6 +72,7 @@ final class GetConnectorProductModels implements Query\GetConnectorProductModels
                 $isAttributeToKeep = null === $attributesToFilterOn || in_array($value->getAttributeCode(), $attributesToFilterOn);
                 $isChannelToKeep = null === $channelToFilterOn || !$value->isScopable() || $value->getScopeCode() === $channelToFilterOn;
                 $isLocaleToKeep = null === $localesToFilterOn || !$value->isLocalizable() || in_array($value->getLocaleCode(), $localesToFilterOn);
+
                 return $isAttributeToKeep && $isChannelToKeep && $isLocaleToKeep;
             });
             $productModel->setValues($values);

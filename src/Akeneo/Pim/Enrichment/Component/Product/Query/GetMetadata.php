@@ -15,7 +15,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  */
 final class GetMetadata implements GetMetadataInterface
 {
-
     public function forProduct(ProductInterface $product): array
     {
         return [];

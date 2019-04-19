@@ -71,7 +71,8 @@ final class ConnectorProductModel
         $this->values = $values;
     }
 
-    public static function fromWriteModel(ProductModelInterface $productModel, array $metadata = []): ConnectorProductModel {
+    public static function fromWriteModel(ProductModelInterface $productModel, array $metadata = []): ConnectorProductModel
+    {
         return new self(
             $productModel->getId(),
             $productModel->getCode(),
