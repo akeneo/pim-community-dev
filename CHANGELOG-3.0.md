@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.14 (2019-04-19)
+
 # Bug fixes
 
 - PIM-8291: Use the UI locale in Completeness dashboard widget
