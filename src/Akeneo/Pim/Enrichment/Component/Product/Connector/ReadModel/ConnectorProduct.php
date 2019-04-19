@@ -141,7 +141,7 @@ final class ConnectorProduct
         return $this->values;
     }
 
-    public static function fromProductWriteModel(ProductInterface $product, array $metadata = []): ConnectorProduct
+    public static function fromProductWriteModel(ProductInterface $product, ValueCollectionInterface $values, array $metadata = []): ConnectorProduct
     {
         return new self(
             $product->getId(),
@@ -155,7 +155,7 @@ final class ConnectorProduct
             $product->isVariant() ? $product->getParent()->getCode() : null,
             self::productAssociationsAsArray($product),
             $metadata,
-            $product->getValues()
+            $values
         );
     }
 

@@ -73,9 +73,8 @@ final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProd
                 return  $isAttributeToKeep && $isChannelToKeep && $isLocaleToKeep;
             });
             $values->removeByAttributeCode($identifierAttributeCode);
-            $product->setValues($values);
 
-            $products[] = ConnectorProduct::fromProductWriteModel($product, $this->getMetadata->forProduct($product));
+            $products[] = ConnectorProduct::fromProductWriteModel($product, $values, $this->getMetadata->forProduct($product));
         }
 
         return new ConnectorProductList($result->count(), $products);
