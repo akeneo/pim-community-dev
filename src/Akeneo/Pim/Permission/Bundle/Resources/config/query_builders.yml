@@ -25,4 +25,3 @@ services:
         arguments:
             - '%pim_catalog.query.product_and_product_model_query_builder.class%'
             - '@pimee_catalog.query.product_and_product_model_query_builder_factory.product_and_product_model_cursor_with_permissions'
-

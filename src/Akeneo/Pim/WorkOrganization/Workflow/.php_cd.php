@@ -63,6 +63,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface',
 
         // TODO: permission
         'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
