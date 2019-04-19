@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.14 (2019-04-19)
+
 ## Bug fixes
 
 - PIM-8294: Allow for empty-looking strings like '0' in TextData
