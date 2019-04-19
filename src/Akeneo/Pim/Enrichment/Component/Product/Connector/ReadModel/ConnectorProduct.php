@@ -171,6 +171,7 @@ final class ConnectorProduct
                     return $productModel->getCode();
                 }, $association->getProductModels()->toArray()),
                 'groups' => array_map(function (GroupInterface $group) {
+                    return $group->getCode();
                 }, $association->getGroups()->toArray())
             ];
         }
