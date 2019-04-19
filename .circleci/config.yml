@@ -92,7 +92,7 @@ jobs:
                 when: always
           - run:
                 name: PHPStan
-                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
+                command: docker-compose exec -T fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
                 when: always
           - run:
                 name: Check Pullup
