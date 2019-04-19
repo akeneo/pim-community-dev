@@ -80,7 +80,7 @@ class LaunchFetchProductsJobInstanceCommand extends ContainerAwareCommand
         );
     }
 
-    private function getUser(): ?UserInterface
+    private function getUser(): UserInterface
     {
         if (null === $token = $this->tokenStorage->getToken()) {
             throw new \LogicException();
