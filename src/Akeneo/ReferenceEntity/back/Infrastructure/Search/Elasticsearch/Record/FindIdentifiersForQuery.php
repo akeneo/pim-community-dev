@@ -17,11 +17,11 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByCodesInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByReferenceEntityAndCodesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
@@ -47,32 +47,25 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 
     /** @var SqlGetValueKeyForAttributeChannelAndLocale */
     private $getValueKeyForAttributeChannelAndLocale;
-    /**
-     * @var AttributeRepositoryInterface
-     */
+
+    /** @var AttributeRepositoryInterface  */
     private $attributeRepository;
-    /**
-     * @var FindIdentifiersByCodesInterface
-     */
-    private $findIdentifiersByCodes;
 
+    /** @var FindIdentifiersByReferenceEntityAndCodesInterface  */
+    private $findIdentifiersByReferenceEntityAndCodes;
 
-    /**
-     * @param Client                                                      $recordClient
-     * @param FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale
-     */
     public function __construct(
         Client $recordClient,
         FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
         SqlGetValueKeyForAttributeChannelAndLocale $getValueKeyForAttributeChannelAndLocale,
         AttributeRepositoryInterface $attributeRepository,
-        FindIdentifiersByCodesInterface $findIdentifiersByCodes
+        FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes
     ) {
         $this->recordClient = $recordClient;
         $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
         $this->getValueKeyForAttributeChannelAndLocale = $getValueKeyForAttributeChannelAndLocale;
         $this->attributeRepository = $attributeRepository;
-        $this->findIdentifiersByCodes = $findIdentifiersByCodes;
+        $this->findIdentifiersByReferenceEntityAndCodes = $findIdentifiersByReferenceEntityAndCodes;
     }
 
     /**
@@ -184,7 +177,14 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 
                     $value = $attributeFilter['value'];
                     if (in_array($attribute->getType(), ['record', 'record_collection'])) {
-                        $value = $this->findIdentifiersByCodes->find((string) $attribute->getRecordType(), $attributeFilter['value']);
+                        $recordIdentifiers = $this->findIdentifiersByReferenceEntityAndCodes->find(
+                            $attribute->getRecordType(),
+                            $attributeFilter['value']
+                        );
+
+                        $value = array_values(array_map(function (RecordIdentifier $recordIdentifier) {
+                            return (string) $recordIdentifier;
+                        }, $recordIdentifiers));
                     }
 
                     $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(

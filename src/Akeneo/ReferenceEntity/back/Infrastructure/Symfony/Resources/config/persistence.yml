@@ -182,11 +182,6 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_codes:
-            class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindIdentifiersByCodes
-            arguments:
-                - '@database_connection'
-
     # Attributes query functions
     akeneo_referenceentity.infrastructure.persistence.query.attribute_exists:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeExists
