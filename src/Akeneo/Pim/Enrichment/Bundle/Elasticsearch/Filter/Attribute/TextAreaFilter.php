@@ -53,13 +53,13 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
+            $escapedValue = QueryString::escapeValue($value);
         }
 
         $attributePath = $this->getAttributePath($attribute, $locale, $channel);
 
         switch ($operator) {
             case Operators::STARTS_WITH:
-                $escapedValue = QueryString::escapeValue($value);
                 $attributePath .= '.preprocessed';
                 $clause = [
                     'query_string' => [
@@ -71,7 +71,6 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
                 break;
 
             case Operators::CONTAINS:
-                $escapedValue = QueryString::escapeValue($value);
                 $attributePath .= '.preprocessed';
                 $clause = [
                     'query_string' => [
@@ -83,7 +82,6 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
                 break;
 
             case Operators::DOES_NOT_CONTAIN:
-                $escapedValue = QueryString::escapeValue($value);
                 $attributePath .= '.preprocessed';
                 $mustNotClause = [
                     'query_string' => [

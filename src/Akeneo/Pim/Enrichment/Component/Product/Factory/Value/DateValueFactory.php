@@ -27,17 +27,22 @@ class DateValueFactory extends AbstractValueFactory
         }
 
         if (!is_string($data)) {
-            throw InvalidPropertyTypeException::stringExpected($attribute->getCode(), static::class, $data);
+            throw InvalidPropertyTypeException::stringExpected(
+                $attribute->getCode(),
+                static::class,
+                $data
+            );
         }
 
-        if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-            throw $this->createInvalidDateException($attribute, $data);
-        }
 
         try {
             $date = new \DateTime($data);
+
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
+                $this->throwsInvalidDateException($attribute, $data);
+            }
         } catch (\Exception $e) {
-            throw $this->createInvalidDateException($attribute, $data);
+            $this->throwsInvalidDateException($attribute, $data);
         }
 
         return $date;
@@ -47,11 +52,11 @@ class DateValueFactory extends AbstractValueFactory
      * @param AttributeInterface $attribute
      * @param string             $data
      *
-     * @return InvalidPropertyException
+     * @throws InvalidPropertyException
      */
-    protected function createInvalidDateException(AttributeInterface $attribute, $data): InvalidPropertyException
+    protected function throwsInvalidDateException(AttributeInterface $attribute, $data)
     {
-        return InvalidPropertyException::dateExpected(
+        throw InvalidPropertyException::dateExpected(
             $attribute->getCode(),
             'yyyy-mm-dd',
             static::class,
