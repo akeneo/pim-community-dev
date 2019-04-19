@@ -63,12 +63,7 @@ class FamilyRemover implements RemoverInterface
 
         $this->sendEvent($family, StorageEvents::POST_REMOVE);
     }
-
-    /**
-     * @param $family
-     *
-     * @return void
-     */
+    
     private function ensureIsFamily($family): void
     {
         if (! $family instanceof FamilyInterface) {

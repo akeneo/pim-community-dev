@@ -51,7 +51,7 @@ class Attribute implements ArrayConverterInterface
     /**
      * @param string $field
      * @param array  $booleanFields
-     * @param array  $data
+     * @param mixed  $data
      * @param array  $convertedItem
      *
      * @return array

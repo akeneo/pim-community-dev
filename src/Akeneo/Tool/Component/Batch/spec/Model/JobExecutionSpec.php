@@ -23,7 +23,7 @@ class JobExecutionSpec extends ObjectBehavior
         $this->getExecutionContext()->shouldBeAnInstanceOf(ExecutionContext::class);
         $this->getStepExecutions()->shouldBeAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
         $this->getStepExecutions()->shouldBeEmpty();
-        $this->getCreateTime()->shouldBeAnInstanceOf('\Datetime');
+        $this->getCreateTime()->shouldBeAnInstanceOf('\DateTime');
         $this->getFailureExceptions()->shouldHaveCount(0);
         $this->getRawParameters()->shouldHaveCount(0);
         $this->getJobParameters()->shouldBeNull();

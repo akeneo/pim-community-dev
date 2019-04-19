@@ -54,10 +54,10 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     protected $backendType;
 
-    /** @var \Datetime */
+    /** @var \DateTime */
     protected $created;
 
-    /** @var \Datetime */
+    /** @var \DateTime */
     protected $updated;
 
     /**
@@ -125,10 +125,10 @@ abstract class AbstractAttribute implements AttributeInterface
     /** @var bool */
     protected $negativeAllowed;
 
-    /** @var \Datetime */
+    /** @var \DateTime */
     protected $dateMin;
 
-    /** @var \Datetime */
+    /** @var \DateTime */
     protected $dateMax;
 
     /** @var string */
@@ -921,7 +921,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation($locale = null)
+    public function getTranslation(?string $locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {

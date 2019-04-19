@@ -22,7 +22,6 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
 
     /**
      * @param array $supportedFields
-     * @param array $supportedAttributeTypes
      * @param array $supportedOperators
      */
     public function __construct(
@@ -69,8 +68,9 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
     /**
      * Apply the filtering conditions to the search query builder
      *
-     * @param $operator
-     * @param $value
+     * @param string $field
+     * @param string $operator
+     * @param mixed  $value
      */
     protected function applyFilter($field, $operator, $value)
     {

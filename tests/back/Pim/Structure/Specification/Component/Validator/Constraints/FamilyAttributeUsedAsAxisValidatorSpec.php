@@ -11,6 +11,7 @@ use Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAx
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class FamilyAttributeUsedAsAxisValidatorSpec extends ObjectBehavior
@@ -45,9 +46,7 @@ class FamilyAttributeUsedAsAxisValidatorSpec extends ObjectBehavior
         Constraint $otherConstraint,
         FamilyInterface $family
     ) {
-        $family->getFamilyVariants()->shouldNotBeCalled();
-
-        $this->validate($family, $otherConstraint);
+        $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [$family, $otherConstraint]);
     }
 
     function it_builds_violation_for_an_attribute_used_as_axis_in_one_family_variant(

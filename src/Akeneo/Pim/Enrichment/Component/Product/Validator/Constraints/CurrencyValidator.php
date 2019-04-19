@@ -6,6 +6,7 @@ use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Price attribute validator
@@ -39,6 +40,10 @@ class CurrencyValidator extends ConstraintValidator
      */
     public function validate($object, Constraint $constraint)
     {
+        if (!$constraint instanceof Currency) {
+            throw new UnexpectedTypeException($constraint, Currency::class);
+        }
+
         if ($object instanceof ProductPriceInterface) {
             if (!in_array($object->getCurrency(), $this->getCurrencyCodes())) {
                 $this->context->buildViolation($constraint->unitMessage)

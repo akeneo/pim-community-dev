@@ -25,7 +25,7 @@ abstract class AbstractValueFactory implements ValueFactoryInterface
     }
 
     /**
-     * Create the ProductValue from the provided parameters
+     * {@inheritdoc}
      */
     public function create(
         AttributeInterface $attribute,
@@ -62,7 +62,11 @@ abstract class AbstractValueFactory implements ValueFactoryInterface
     /**
      * Prepare the data and check if everything is correct
      *
-     * @throws Exception
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     * @param bool               $ignoreUnknownData
+     *
+     * @return mixed
      */
     abstract protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData);
 }

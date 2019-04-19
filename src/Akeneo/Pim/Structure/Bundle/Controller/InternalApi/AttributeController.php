@@ -330,7 +330,8 @@ class AttributeController
     }
 
     /**
-     * @param $code
+     * @param Request $request
+     * @param string  $code
      *
      * @return JsonResponse
      *
@@ -382,13 +383,13 @@ class AttributeController
     }
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
      * @throws NotFoundHttpException
      *
      * @return AttributeInterface
      */
-    protected function getAttributeOr404($identifier)
+    protected function getAttributeOr404(string $identifier): AttributeInterface
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($identifier);
         if (null === $attribute) {
@@ -400,12 +401,7 @@ class AttributeController
         return $attribute;
     }
 
-    /**
-     * @param $data
-     *
-     * @return ConstraintViolationList
-     */
-    protected function validateLocalizedData($data)
+    protected function validateLocalizedData(array $data): ConstraintViolationList
     {
         $allViolations = new ConstraintViolationList();
 
@@ -432,11 +428,7 @@ class AttributeController
         return $allViolations;
     }
 
-    /**
-     * @param AttributeInterface $attribute
-     * @param array                                                    $data
-     */
-    protected function updateAttribute(AttributeInterface $attribute, array $data)
+    protected function updateAttribute(AttributeInterface $attribute, array $data): void
     {
         if (isset($data['number_min'])) {
             $data['number_min'] = $this->numberLocalizer->delocalize($data['number_min'], [

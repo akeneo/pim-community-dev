@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Validator for unique value constraint
@@ -57,6 +58,10 @@ class UniqueValueValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof UniqueValue) {
+            throw new UnexpectedTypeException($constraint, UniqueValue::class);
+        }
+
         if (empty($value) || !$value instanceof ValueInterface) {
             return;
         }

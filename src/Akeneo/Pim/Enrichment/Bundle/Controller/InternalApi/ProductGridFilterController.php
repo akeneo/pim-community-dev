@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -81,10 +82,10 @@ class ProductGridFilterController
         }
 
         $options['useable_as_grid_filter'] = true;
-        $options['user_groups_ids'] = $this->tokenStorage->getToken()->getUser()->getGroupsIds();
+        $options['user_groups_ids'] = $this->retrieveUser()->getGroupsIds();
 
         $systemFilters = $this->getSystemFilters(
-            $this->tokenStorage->getToken()->getUser()->getUiLocale(),
+            $this->retrieveUser()->getUiLocale(),
             $request->get('search'),
             $options['limit'],
             $options['page']
@@ -100,7 +101,7 @@ class ProductGridFilterController
             return $this->lightAttributeNormalizer->normalize(
                 $attribute,
                 'internal_api',
-                ['locale' => $this->userContext->getUiLocale()->getCode()]
+                ['locale' => $this->userContext->getUiLocaleCode()]
             );
         }, $attributes);
 
@@ -145,5 +146,10 @@ class ProductGridFilterController
         }
 
         return array_slice($formattedSystemFilters, ($page - 1) * $limit, $limit);
+    }
+
+    private function retrieveUser(): UserInterface
+    {
+        return $this->tokenStorage->getToken()->getUser();
     }
 }

@@ -107,9 +107,6 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
     }
 
-    /**
-     * @param $product
-     */
     protected function validateProduct($product)
     {
         if (!$product instanceof ProductInterface) {

@@ -23,9 +23,11 @@ interface TranslatableInterface
     /**
      * Get translation for current locale
      *
+     * @param string|null $locale
+     *
      * @return AbstractTranslation
      */
-    public function getTranslation();
+    public function getTranslation(?string $locale = null);
 
     /**
      * Add translation

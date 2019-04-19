@@ -109,8 +109,9 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
         string $rootDir
     ): void {
         $progressBar->start();
-
+        $productIds = [];
         $productToCleanCount = 0;
+
         foreach ($products as $product) {
             $productIds[] = IdEncoder::encode($product instanceof ProductModel ? 'product_model' : 'product', $product->getId());
             $productToCleanCount++;

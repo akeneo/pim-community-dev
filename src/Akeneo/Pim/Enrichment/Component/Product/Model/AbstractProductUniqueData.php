@@ -41,7 +41,7 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /**
      * {@inheritdoc}
      */
-    public function getProduct(): Productinterface
+    public function getProduct(): ProductInterface
     {
         return $this->product;
     }

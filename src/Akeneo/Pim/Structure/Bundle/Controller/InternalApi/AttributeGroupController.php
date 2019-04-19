@@ -192,7 +192,7 @@ class AttributeGroupController
      *
      * @return JsonResponse
      */
-    public function getAction($identifier)
+    public function getAction(string $identifier)
     {
         $attributeGroup = $this->attributeGroupRepo->findOneByIdentifier($identifier);
 
@@ -250,7 +250,7 @@ class AttributeGroupController
 
     /**
      * @param Request $request
-     * @param string $identifier
+     * @param string  $identifier
      *
      * @return Response
      *
@@ -382,12 +382,7 @@ class AttributeGroupController
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Array
-     */
-    protected function parseOptions(Request $request)
+    protected function parseOptions(Request $request): array
     {
         $options = $request->get('options', []);
 
@@ -420,13 +415,13 @@ class AttributeGroupController
     /**
      * Finds attribute group type by identifier or throws not found exception
      *
-     * @param $identifier
+     * @param string $identifier
      *
      * @throws NotFoundHttpException
      *
      * @return AttributeGroupInterface
      */
-    protected function getAttributeGroupOr404($identifier)
+    protected function getAttributeGroupOr404(string $identifier): AttributeGroupInterface
     {
         $attributeGroup = $this->attributeGroupRepo->findOneByIdentifier($identifier);
         if (null === $attributeGroup) {
@@ -446,7 +441,7 @@ class AttributeGroupController
      *
      * @throws AccessDeniedHttpException
      */
-    protected function ensureAttributeCollectionRights($attributeCodesBefore, $attributeCodesAfter)
+    protected function ensureAttributeCollectionRights(array $attributeCodesBefore, array $attributeCodesAfter)
     {
         if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_remove_attribute') &&
             count($attributeCodesBefore) > 0 &&

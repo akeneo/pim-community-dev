@@ -90,13 +90,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         return $this;
     }
 
-    /**
-     * @param                  $field
-     * @param                  $data
-     * @param array            $context
-     * @return array
-     */
-    protected function filterData($field, $data, array $context = [])
+    protected function filterData(string $field, $data, array $context = [])
     {
         switch ($field) {
             case 'associations':
@@ -106,16 +100,11 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                 }
                 break;
         }
+
         return $data;
     }
 
-    /**
-     * @param ProductModelInterface $productModel
-     * @param                       $field
-     * @param                       $data
-     * @param array                 $options
-     */
-    protected function setData(ProductModelInterface $productModel, $field, $data, $options = [])
+    protected function setData(ProductModelInterface $productModel, string $field, $data, array $options = []): void
     {
         switch ($field) {
             case 'values':
@@ -144,14 +133,6 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
     }
 
-    /**
-     * Validate association data
-     *
-     * @param array $associations
-     * @param array $parentAssociations
-     *
-     * @return array
-     */
     protected function filterParentAssociations(array $associations, ?array $parentAssociations): array
     {
         if (null === $parentAssociations) {
@@ -166,30 +147,14 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         return $associations;
     }
 
-    /**
-     * Validate that it is a scalar value.
-     *
-     * @param $field
-     * @param $data
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    private function validateScalar($field, $data)
+    private function validateScalar(string $field, $data)
     {
         if (null !== $data && !is_scalar($data)) {
             throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
         }
     }
 
-    /**
-     * Validate that it is an array with scalar values.
-     *
-     * @param string $field
-     * @param mixed $data
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    private function validateScalarArray($field, $data)
+    private function validateScalarArray(string $field, $data)
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
@@ -236,7 +201,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
      * exception will be thrown.
      *
      * @param ProductModelInterface $productModel
-     * @param string|null                $parentCode
+     * @param string|null           $parentCode
      *
      * @throws ImmutablePropertyException
      * @throws InvalidPropertyException
@@ -277,7 +242,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
 
         if ($productModel->getFamilyVariant() !== null &&
-           $productModel->getFamilyVariant()->getCode() !== $newParentModel->getFamilyVariant()->getCode()
+            $productModel->getFamilyVariant()->getCode() !== $newParentModel->getFamilyVariant()->getCode()
         ) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 'parent',
@@ -344,7 +309,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
     /**
      * Validate association data
      *
-     * @param $data
+     * @param mixed $data
      *
      * @throws InvalidPropertyTypeException
      */
@@ -382,7 +347,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
      * @param string                $field
      * @param mixed                 $value
      */
-    protected function updateProductModelFields(ProductModelInterface $productModel, $field, $value): void
+    protected function updateProductModelFields(ProductModelInterface $productModel, string $field, $value): void
     {
         $this->propertySetter->setData($productModel, $field, $value);
     }

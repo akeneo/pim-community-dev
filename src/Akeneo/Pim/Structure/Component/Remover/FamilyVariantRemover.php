@@ -73,11 +73,6 @@ class FamilyVariantRemover implements RemoverInterface
         return $this;
     }
 
-    /**
-     * @param $familyVariant
-     *
-     * @return bool
-     */
     private function hasEntityWithFamilyVariant(FamilyVariantInterface $familyVariant): bool
     {
         return 0 !== $this->counter->belongingToFamilyVariant($familyVariant);

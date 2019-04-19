@@ -250,11 +250,9 @@ class FamilyController
      *
      * @param string $code
      *
-     * @throws HttpExceptionInterface
-     *
-     * @return FamilyInterface|object
+     * @return FamilyInterface
      */
-    protected function getFamily($code)
+    protected function getFamily(string $code): FamilyInterface
     {
         $family = $this->familyRepository->findOneBy(['code' => $code]);
 
@@ -273,9 +271,9 @@ class FamilyController
      * @param Request         $request
      * @param FamilyInterface $family
      *
-     * @return Response
+     * @return JsonResponse
      */
-    protected function saveFamily(Request $request, FamilyInterface $family)
+    protected function saveFamily(Request $request, FamilyInterface $family): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');

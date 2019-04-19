@@ -211,16 +211,16 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param $attribute
-     * @param $field
-     * @param $data
+     * @param FamilyInterface $family
+     * @param string          $field
+     * @param mixed           $data
      *
      * @throws UnknownPropertyException
      */
-    protected function setValue($attribute, $field, $data)
+    protected function setValue(FamilyInterface $family, string $field, $data)
     {
         try {
-            $this->accessor->setValue($attribute, $field, $data);
+            $this->accessor->setValue($family, $field, $data);
         } catch (NoSuchPropertyException $e) {
             throw UnknownPropertyException::unknownProperty($field, $e);
         }

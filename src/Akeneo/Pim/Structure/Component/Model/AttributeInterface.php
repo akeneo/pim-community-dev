@@ -364,7 +364,7 @@ interface AttributeInterface extends
     /**
      * Set dateMin
      *
-     * @param \Datetime $dateMin
+     * @param \DateTime $dateMin
      *
      * @return AttributeInterface
      */
@@ -395,7 +395,7 @@ interface AttributeInterface extends
     /**
      * Set dateMax
      *
-     * @param \Datetime $dateMax
+     * @param \DateTime $dateMax
      *
      * @return AttributeInterface
      */
@@ -513,7 +513,7 @@ interface AttributeInterface extends
     /**
      * Get dateMin
      *
-     * @return \Datetime $dateMin
+     * @return \DateTime $dateMin
      */
     public function getDateMin();
 
@@ -547,7 +547,7 @@ interface AttributeInterface extends
     /**
      * Get dateMax
      *
-     * @return \Datetime $dateMax
+     * @return \DateTime $dateMax
      */
     public function getDateMax();
 

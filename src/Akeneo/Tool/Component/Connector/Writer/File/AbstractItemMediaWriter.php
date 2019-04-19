@@ -58,7 +58,7 @@ abstract class AbstractItemMediaWriter implements
     /** @var FlatItemBuffer */
     protected $flatRowBuffer;
 
-    /** @var string Datetime format for the file path placeholder */
+    /** @var string DateTime format for the file path placeholder */
     protected $datetimeFormat = 'Y-m-d_H-i-s';
 
     /** @var String */

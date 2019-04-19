@@ -9,6 +9,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Metric attribute validator
@@ -41,10 +42,16 @@ class ValidMetricValidator extends ConstraintValidator
      * Validate metric type and default metric unit
      *
      * @param AttributeInterface|MetricInterface|ValueInterface $object
-     * @param Constraint $constraint
+     * @param Constraint                                        $constraint
+     *
+     * @throws \Exception
      */
     public function validate($object, Constraint $constraint)
     {
+        if (!$constraint instanceof ValidMetric) {
+            throw new UnexpectedTypeException($constraint, ValidMetric::class);
+        }
+
         if ($object instanceof AttributeInterface) {
             $familyProperty = 'metricFamily';
             $unitProperty = 'defaultMetricUnit';

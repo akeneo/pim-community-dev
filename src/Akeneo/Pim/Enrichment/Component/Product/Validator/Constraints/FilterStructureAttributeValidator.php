@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Validator for the product export builder structure filter about attributes.
@@ -34,6 +35,10 @@ class FilterStructureAttributeValidator extends ConstraintValidator
      */
     public function validate($attributes, Constraint $constraint)
     {
+        if (!$constraint instanceof FilterStructureAttribute) {
+            throw new UnexpectedTypeException($constraint, FilterStructureAttribute::class);
+        }
+
         if (null === $attributes || !count($attributes)) {
             return;
         }

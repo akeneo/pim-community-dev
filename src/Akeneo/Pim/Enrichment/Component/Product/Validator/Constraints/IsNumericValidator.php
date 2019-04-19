@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Constraint
@@ -21,6 +22,10 @@ class IsNumericValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof IsNumeric) {
+            throw new UnexpectedTypeException($constraint, IsNumeric::class);
+        }
+
         if ($value instanceof MetricInterface || $value instanceof ProductPriceInterface) {
             $propertyPath = 'data';
             $value = $value->getData();

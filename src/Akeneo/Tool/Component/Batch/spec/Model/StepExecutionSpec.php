@@ -27,7 +27,7 @@ class StepExecutionSpec extends ObjectBehavior
         $this->getExecutionContext()->shouldBeAnInstanceOf(ExecutionContext::class);
         $this->getWarnings()->shouldBeAnInstanceOf(ArrayCollection::class);
         $this->getWarnings()->shouldBeEmpty();
-        $this->getStartTime()->shouldBeAnInstanceOf('\Datetime');
+        $this->getStartTime()->shouldBeAnInstanceOf('\DateTime');
         $this->getFailureExceptions()->shouldHaveCount(0);
     }
 

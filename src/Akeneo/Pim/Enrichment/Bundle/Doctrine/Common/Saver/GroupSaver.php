@@ -90,7 +90,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group, $options));
 
-        $this->persistGroupAndSaveAssociatedProducts($group, $options);
+        $this->persistGroupAndSaveAssociatedProducts($group);
 
         $this->objectManager->flush();
 
@@ -115,7 +115,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group, $options));
 
-            $this->persistGroupAndSaveAssociatedProducts($group, $options);
+            $this->persistGroupAndSaveAssociatedProducts($group);
         }
 
         $this->objectManager->flush();
@@ -158,9 +158,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         }
     }
 
-    /**
-     * @param $group
-     */
     protected function validateGroup($group)
     {
         if (!$group instanceof GroupInterface) {
@@ -173,11 +170,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         }
     }
 
-    /**
-     * @param       $group
-     * @param array $options
-     */
-    protected function persistGroupAndSaveAssociatedProducts($group, array $options)
+    protected function persistGroupAndSaveAssociatedProducts(GroupInterface $group)
     {
         $context = $this->productClassName;
         $this->versionContext->addContextInfo(

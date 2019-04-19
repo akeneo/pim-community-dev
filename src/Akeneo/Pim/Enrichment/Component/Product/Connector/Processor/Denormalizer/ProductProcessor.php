@@ -6,6 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
+use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
@@ -101,17 +103,15 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         }
 
         $parentProductModelCode = $item['parent'] ?? '';
+        $familyCode = $this->getFamilyCode($item);
+        $item['family'] = $familyCode;
+        $item = $this->productAttributeFilter->filter($item);
+        $filteredItem = $this->filterItemData($item);
 
         try {
-            $familyCode = $this->getFamilyCode($item);
-            $item['family'] = $familyCode;
-
-            $item = $this->productAttributeFilter->filter($item);
-            $filteredItem = $this->filterItemData($item);
-
             $product = $this->findProductToImport->fromFlatData($identifier, $familyCode);
         } catch (AccessDeniedException $e) {
-            $this->skipItemWithMessage($item, $e->getMessage(), $e);
+            throw $this->skipItemAndReturnException($item, $e->getMessage(), $e);
         }
 
         if (false === $itemHasStatus && null !== $product->getId()) {
@@ -256,5 +256,18 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     protected function detachProduct(ProductInterface $product)
     {
         $this->detacher->detach($product);
+    }
+
+    private function skipItemAndReturnException(array $item, $message, \Exception $previousException = null): InvalidItemException
+    {
+        if ($this->stepExecution) {
+            $this->stepExecution->incrementSummaryInfo('skip');
+        }
+
+        $itemPosition = null !== $this->stepExecution ? $this->stepExecution->getSummaryInfo('item_position') : 0;
+
+        $invalidItem = new FileInvalidItem($item, $itemPosition);
+
+        return new InvalidItemException($message, $invalidItem, [], 0, $previousException);
     }
 }

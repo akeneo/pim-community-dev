@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\MassEditAction\Operation\BatchableOperationInte
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -27,10 +28,12 @@ class OperationJobLauncherSpec extends ObjectBehavior
         $jobInstanceRepo,
         $tokenStorage,
         TokenInterface $token,
-        UserInterface $user,
         BatchableOperationInterface $operation,
         JobInstance $jobInstance
     ) {
+        $user = new User();
+        $user->setUsername('julia');
+
         $operation->getJobInstanceCode()->willReturn('mass_classify');
         $jobInstanceRepo->findOneByIdentifier('mass_classify')->willReturn($jobInstance);
 
@@ -41,7 +44,6 @@ class OperationJobLauncherSpec extends ObjectBehavior
 
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
-        $user->getUsername()->willReturn('julia');
 
         $jobLauncher->launch(
             $jobInstance,

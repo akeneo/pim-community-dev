@@ -8,7 +8,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttribute;
 use Prophecy\Argument;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
@@ -28,7 +27,7 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
     function it_does_nothing_if_attribute_type_is_not_identifier(
         $context,
         AttributeInterface $attribute,
-        Constraint $constraint
+        SingleIdentifierAttribute $constraint
     ) {
         $attribute->getType()->willReturn('pim_catalog_text');
 
@@ -44,7 +43,7 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         $attributeRepository,
         AttributeInterface $attribute,
         AttributeInterface $identifier,
-        Constraint $constraint
+        SingleIdentifierAttribute $constraint
     ) {
         $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getId()->willReturn(1);

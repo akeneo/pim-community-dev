@@ -121,7 +121,6 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $builder,
         AttributeInterface $attribute,
         ProductInterface $product,
-        ValueInterface $value,
         FileInfoInterface $fileInfo
     ) {
         $attribute->getCode()->willReturn('attributeCode');

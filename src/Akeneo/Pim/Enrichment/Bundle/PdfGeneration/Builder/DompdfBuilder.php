@@ -60,7 +60,7 @@ class DompdfBuilder implements PdfBuilderInterface
         }
 
         $this->dompdf = new \DOMPDF();
-        $this->dompdf->set_paper(DOMPDF_DEFAULT_PAPER_SIZE);
+        $this->dompdf->set_paper(constant('DOMPDF_DEFAULT_PAPER_SIZE'));
         $this->dompdf->load_html($html);
         $this->dompdf->render();
     }

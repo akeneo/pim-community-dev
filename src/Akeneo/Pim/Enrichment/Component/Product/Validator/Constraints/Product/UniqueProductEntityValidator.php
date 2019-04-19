@@ -88,11 +88,6 @@ class UniqueProductEntityValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param EntityWithValuesInterface $entity
-     *
-     * @return mixed
-     */
     private function getIdentifierValue(EntityWithValuesInterface $entity): ?ValueInterface
     {
         $identifier = $this->attributeRepository->getIdentifier();

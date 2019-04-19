@@ -47,7 +47,7 @@ class ChangeParentProcessor extends AbstractProcessor
     }
 
     /**
-     * @param $product
+     * @param mixed $product
      *
      * @return null|EntityWithFamilyVariantInterface
      */
@@ -74,7 +74,7 @@ class ChangeParentProcessor extends AbstractProcessor
     /**
      * Validate the given object is the expected product type
      *
-     * @param $product
+     * @param mixed $product
      *
      * @throws InvalidObjectException
      */

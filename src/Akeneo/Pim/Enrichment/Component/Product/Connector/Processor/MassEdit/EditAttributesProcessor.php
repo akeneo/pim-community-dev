@@ -44,7 +44,6 @@ class EditAttributesProcessor extends AbstractProcessor
      * @param ValidatorInterface                    $productModelValidator
      * @param ObjectUpdaterInterface                $productUpdater
      * @param ObjectUpdaterInterface                $productModelUpdater
-     * @param ObjectDetacherInterface               $detacher
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param CheckAttributeEditable                $checkAttributeEditable
      */

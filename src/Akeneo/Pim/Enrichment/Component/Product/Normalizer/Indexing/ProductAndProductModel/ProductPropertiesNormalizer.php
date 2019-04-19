@@ -172,11 +172,11 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
      * Normalizes all the values of a product model and its parents.
      *
      * @param null|ProductModelInterface $productModel
-     * @param array                 $context
+     * @param array                      $context
      *
-     * @return mixed
+     * @return array
      */
-    private function getAllParentsValues($productModel, array $context) : array
+    private function getAllParentsValues(?ProductModelInterface $productModel, array $context) : array
     {
         if (null === $productModel || $productModel->getValues()->isEmpty()) {
             return [];

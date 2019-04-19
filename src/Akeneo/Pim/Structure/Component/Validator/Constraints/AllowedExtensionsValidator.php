@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
@@ -28,6 +29,13 @@ class AllowedExtensionsValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof FileAllowedExtensions && !$constraint instanceof ImageAllowedExtensions) {
+            throw new UnexpectedTypeException(
+                $constraint,
+                FileAllowedExtensions::class . " or " . ImageAllowedExtensions::class
+            );
+        }
+
         if ('' === $value || null === $value) {
             return;
         }

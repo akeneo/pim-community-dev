@@ -9,6 +9,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Family attribute_used_as_axis constraint.
@@ -26,6 +27,10 @@ class FamilyAttributeUsedAsAxisValidator extends ConstraintValidator
      */
     public function validate($family, Constraint $constraint): void
     {
+        if (!$constraint instanceof FamilyAttributeUsedAsAxis) {
+            throw new UnexpectedTypeException($constraint, FamilyAttributeUsedAsAxis::class);
+        }
+
         if (!$family instanceof FamilyInterface) {
             return;
         }
@@ -66,12 +71,12 @@ class FamilyAttributeUsedAsAxisValidator extends ConstraintValidator
     }
 
     /**
-     * @param Constraint             $constraint
-     * @param FamilyVariantInterface $familyVariant
-     * @param AttributeInterface[]   $missingAttributeCodesUsedAsAxis
+     * @param FamilyAttributeUsedAsAxis $constraint
+     * @param FamilyVariantInterface    $familyVariant
+     * @param AttributeInterface[]      $missingAttributeCodesUsedAsAxis
      */
     private function buildViolationsForMissingAttributesUsedAsAxis(
-        Constraint $constraint,
+        FamilyAttributeUsedAsAxis $constraint,
         FamilyVariantInterface $familyVariant,
         array $missingAttributeCodesUsedAsAxis
     ): void {

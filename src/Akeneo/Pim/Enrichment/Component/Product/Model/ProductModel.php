@@ -32,10 +32,10 @@ class ProductModel implements ProductModelInterface
      */
     protected $values;
 
-    /** @var \Datetime $created */
+    /** @var \DateTime $created */
     protected $created;
 
-    /** @var \Datetime $updated */
+    /** @var \DateTime $updated */
     protected $updated;
 
     /** @var int */

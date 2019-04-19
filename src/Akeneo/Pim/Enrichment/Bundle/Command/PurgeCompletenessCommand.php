@@ -89,8 +89,9 @@ class PurgeCompletenessCommand extends ContainerAwareCommand
         string $rootDir
     ): void {
         $progressBar->start();
-
+        $productIds = [];
         $productToCleanCount = 0;
+
         foreach ($products as $product) {
             $productIds[] = $product->getId();
             $productToCleanCount++;

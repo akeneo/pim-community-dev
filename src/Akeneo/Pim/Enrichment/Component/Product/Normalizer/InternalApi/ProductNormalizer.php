@@ -128,7 +128,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param VariantNavigationNormalizer               $navigationNormalizer
-     * @param AscendantCategoriesInterface|null         $ascendantCategoriesQuery
+     * @param AscendantCategoriesInterface              $ascendantCategoriesQuery
      * @param NormalizerInterface                       $incompleteValuesNormalizer
      * @param MissingAssociationAdder                   $missingAssociationAdder
      * @param NormalizerInterface                       $parentAssociationsNormalizer

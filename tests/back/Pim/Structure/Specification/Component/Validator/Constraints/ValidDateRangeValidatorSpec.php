@@ -26,7 +26,7 @@ class ValidDateRangeValidatorSpec extends ObjectBehavior
     function it_does_nothing_if_dates_and_date_range_are_valid(
         $context,
         AttributeInterface $attribute,
-        Constraint $constraint
+        ValidDateRange $constraint
     ) {
         $date1 = new \DateTime();
         $date1->setDate(2012, 12, 21);
@@ -46,7 +46,7 @@ class ValidDateRangeValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_dates_are_valid_but_date_max_is_before_date_min(
         $context,
         AttributeInterface $attribute,
-        \Akeneo\Pim\Structure\Component\Validator\Constraints\ValidDateRange $constraint,
+        ValidDateRange $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
         $date1 = new \DateTime();
@@ -71,7 +71,7 @@ class ValidDateRangeValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_date_max_is_not_valid(
         $context,
         AttributeInterface $attribute,
-        \Akeneo\Pim\Structure\Component\Validator\Constraints\ValidDateRange $constraint,
+        ValidDateRange $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
         $date = new \DateTime();

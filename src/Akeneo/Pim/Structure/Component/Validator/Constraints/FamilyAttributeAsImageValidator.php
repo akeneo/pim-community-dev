@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Family attribute_as_image validator
@@ -35,6 +36,10 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
      */
     public function validate($family, Constraint $constraint): void
     {
+        if (!$constraint instanceof FamilyAttributeAsImage) {
+            throw new UnexpectedTypeException($constraint, FamilyAttributeAsImage::class);
+        }
+
         if (!$family instanceof FamilyInterface) {
             return;
         }

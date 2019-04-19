@@ -327,8 +327,8 @@ class ProductController
      * Remove an optional attribute from a product
      *
      * @param Request $request
-     * @param $id
-     * @param $attributeId
+     * @param string  $id
+     * @param string  $attributeId
      * @return JsonResponse|RedirectResponse
      *
      * @AclAncestor("pim_enrich_product_remove_attribute")

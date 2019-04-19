@@ -62,7 +62,7 @@ class EntityTypeFilter extends AbstractFieldFilter implements FieldFilterInterfa
             throw InvalidOperatorException::notSupported($operator, static::class);
         }
 
-        $this->checkValue($field, $value);
+        $this->assertIsString($field, $value);
 
         $value = str_replace('\\', '\\\\', $value);
 
@@ -76,13 +76,7 @@ class EntityTypeFilter extends AbstractFieldFilter implements FieldFilterInterfa
         );
     }
 
-    /**
-     * Checks the given value is a string.
-     *
-     * @param $field
-     * @param $value
-     */
-    private function checkValue($field, $value): void
+    private function assertIsString($field, $value): void
     {
         FieldFilterHelper::checkString($field, $value, static::class);
     }

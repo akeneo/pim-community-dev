@@ -22,8 +22,6 @@ class ProductModelPositionInTheVariantTreeValidator extends ConstraintValidator
 {
     /**
      * {@inheritdoc}
-     *
-     * @param $productModel ProductModelInterface
      */
     public function validate($productModel, Constraint $constraint): void
     {

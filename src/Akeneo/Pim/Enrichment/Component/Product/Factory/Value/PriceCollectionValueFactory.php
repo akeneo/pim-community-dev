@@ -94,7 +94,11 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
     /**
      * Prepare the data and check if everything is correct
      *
-     * @throws Exception
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     * @param null|string        $channelCode
+     *
+     * @return PriceCollection
      */
     protected function prepareData(AttributeInterface $attribute, $data, ?string $channelCode)
     {

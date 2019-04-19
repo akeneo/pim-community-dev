@@ -40,9 +40,7 @@ class PriceCollectionValue extends AbstractValue implements PriceCollectionValue
     }
 
     /**
-     * @param string $currency
-     *
-     * @return PriceCollectionInterface|null
+     * {@inheritdoc}
      */
     public function getPrice(string $currency): ?ProductPriceInterface
     {

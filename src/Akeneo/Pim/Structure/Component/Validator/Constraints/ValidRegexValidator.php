@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Valid regex validator
@@ -19,9 +20,15 @@ class ValidRegexValidator extends ConstraintValidator
      *
      * @param mixed      $value
      * @param Constraint $constraint
+     *
+     * @throws \Exception
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof ValidRegex) {
+            throw new UnexpectedTypeException($constraint, ValidRegex::class);
+        }
+
         if ($value) {
             if (false === @preg_match($value, null)) {
                 $this->context->buildViolation($constraint->message)

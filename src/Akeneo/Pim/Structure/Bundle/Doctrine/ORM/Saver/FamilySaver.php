@@ -87,9 +87,6 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($families, $options));
     }
 
-    /**
-     * @param $family
-     */
     protected function validateFamily($family)
     {
         if (!$family instanceof FamilyInterface) {

@@ -27,10 +27,10 @@ abstract class AbstractProduct implements ProductInterface
     /** @var array */
     protected $rawValues;
 
-    /** @var \Datetime $created */
+    /** @var \DateTime $created */
     protected $created;
 
-    /** @var \Datetime $updated */
+    /** @var \DateTime $updated */
     protected $updated;
 
     /**

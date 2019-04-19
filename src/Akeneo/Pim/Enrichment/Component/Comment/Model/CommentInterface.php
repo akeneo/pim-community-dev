@@ -73,7 +73,7 @@ interface CommentInterface
      *
      * @return CommentInterface
      */
-    public function setCreatedAt(\Datetime $createdAt);
+    public function setCreatedAt(\DateTime $createdAt);
 
     /**
      * @return \DateTime

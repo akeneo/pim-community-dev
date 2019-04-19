@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Validator to check that all specified properties are not set or set to null.
@@ -19,6 +20,10 @@ class NullPropertiesValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof NullProperties) {
+            throw new UnexpectedTypeException($constraint, NullProperties::class);
+        }
+
         $values = $value->getProperties();
 
         foreach ($constraint->properties as $propertyCode) {

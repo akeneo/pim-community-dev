@@ -6,6 +6,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Validate files linked to product (need to validate extension and size).
@@ -40,6 +41,10 @@ class FileValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof File) {
+            throw new UnexpectedTypeException($constraint, File::class);
+        }
+
         if ($value instanceof FileInfoInterface && (null !== $value->getId() || null !== $value->getUploadedFile())) {
             $this->validateFileSize($value, $constraint);
             $this->validateFileExtension($value, $constraint);
@@ -51,9 +56,9 @@ class FileValidator extends ConstraintValidator
      * Validate if extension is allowed.
      *
      * @param FileInfoInterface $fileInfo   The file that should be validated
-     * @param Constraint        $constraint The constraint for the validation
+     * @param File              $constraint The constraint for the validation
      */
-    protected function validateFileExtension(FileInfoInterface $fileInfo, Constraint $constraint)
+    protected function validateFileExtension(FileInfoInterface $fileInfo, File $constraint)
     {
         if (empty($constraint->allowedExtensions)) {
             return;
@@ -71,9 +76,9 @@ class FileValidator extends ConstraintValidator
      * Validate if file size is allowed.
      *
      * @param FileInfoInterface $fileInfo
-     * @param Constraint        $constraint
+     * @param File              $constraint
      */
-    protected function validateFileSize(FileInfoInterface $fileInfo, Constraint $constraint)
+    protected function validateFileSize(FileInfoInterface $fileInfo, File $constraint)
     {
         // comes from Symfony\Component\Validator\Constraints\FileValidator
         if ($constraint->maxSize) {
@@ -146,9 +151,9 @@ class FileValidator extends ConstraintValidator
 
     /**
      * @param FileInfoInterface $fileInfo
-     * @param Constraint $constraint
+     * @param File              $constraint
      */
-    private function validateMimeType(FileInfoInterface $fileInfo, Constraint $constraint)
+    private function validateMimeType(FileInfoInterface $fileInfo, File $constraint)
     {
         if (empty($constraint->allowedExtensions)) {
             return;
@@ -176,12 +181,7 @@ class FileValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param FileInfoInterface $fileInfo
-     *
-     * @return string
-     */
-    private function getExtension(FileInfoInterface $fileInfo)
+    private function getExtension(FileInfoInterface $fileInfo): string
     {
         return null !== $fileInfo->getUploadedFile() ?
             strtolower($fileInfo->getUploadedFile()->getClientOriginalExtension()) :
