@@ -21,8 +21,6 @@ else
     REFERENCE_CATALOG_FILE="$CONFIG_PATH/$1"
 fi;
 
-PUBLIC_PIM_HTTP_PORT="8081"
-
 message()
 {
     echo ""
@@ -82,6 +80,8 @@ PRODUCT_SIZE=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pi
 PRODUCT_COUNT=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT COUNT(*) FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
 message "Start bench products with 120 attributes"
 
+sleep 10
+
 GET=$(launch_bench "get_many_products")
 CREATE=$(launch_bench "create_many_products")
 UPDATE=$(launch_bench "update_many_products")
@@ -91,7 +91,7 @@ echo "- GET: $GET products/second"
 echo "- CREATE: $CREATE products/second"
 echo "- UPDATE: $UPDATE products/second"
 echo ""
-echo "You can see the detailed results under the folder $WORKING_DIRECTORY/raw_results and the at the name of results.json"
+echo "You can see the detailed results under the folder $WORKING_DIRECTORY/raw_results and the JSON at the name of results.json"
 echo ""
 
 JSON_STRING=$(

@@ -31,7 +31,7 @@ catalog:
             percentage_of_scopable: 3
             percentage_of_localizable_and_scopable: 6
         families:
-            count: 100
+            count: 125
             attributes_count: 120
         products:
             count: 150
