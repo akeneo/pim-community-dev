@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
 /**
- * This cursor does not iterate through pages in Elasticsearch, because it's not needed for the datagrid.
+ * This cursor does not iterate through pages in Elasticsearch, because it's not needed for the datagrid or the API for example.
  *
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAndProductModelIdentifierCursor implements CursorInterface
+class IdentifierResultCursor implements CursorInterface
 {
     /** @var \ArrayIterator */
     private $identifiers;

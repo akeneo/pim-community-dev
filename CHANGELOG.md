@@ -20,3 +20,6 @@
 - Interface `Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface` added methods `setRatio()` , `setMissingCount()` and `setRequiredCount()`
 - Class `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\CompletenessRemover` `bulkDetacher` parameter is now mandatory.
 - Removed `objectDetacher` parameter from `Akeneo\Pim\Structure\Component\Model\FamilyInterface\SaveFamilyVariantOnFamilyUpdateSubscriber` constructor.
+- Move `Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FromSizeIdentifierResultCursorFactory` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeIdentifierResultCursorFactory`
+- Move `Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\IdentifierResultCursor` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor`
+- Move `Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\SearchAfterSizeIdentifierResultCursorFactory` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchAfterSizeIdentifierResultCursorFactory`

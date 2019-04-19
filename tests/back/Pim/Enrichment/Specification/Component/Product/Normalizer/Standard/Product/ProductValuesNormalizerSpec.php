@@ -15,10 +15,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValuesNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer)
+    function let(NormalizerInterface $normalizer)
     {
-        $serializer->implement(NormalizerInterface::class);
-        $this->setSerializer($serializer);
+        $this->beConstructedWith($normalizer);
     }
 
     function it_is_initializable()
@@ -29,7 +28,6 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
     function it_is_a_normalizer()
     {
         $this->shouldImplement(NormalizerInterface::class);
-        $this->shouldBeAnInstanceOf(SerializerAwareInterface::class);
     }
 
     function it_supports_standard_format_and_collection_values()
@@ -53,7 +51,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_collection_of_product_values_in_standard_format(
-        $serializer,
+        NormalizerInterface $normalizer,
         ValueInterface $textValue,
         ValueInterface $priceValue,
         ValueCollectionInterface $values,
@@ -68,12 +66,12 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $textValue->getAttributeCode()->willReturn('text');
         $priceValue->getAttributeCode()->willReturn('price');
 
-        $serializer
+        $normalizer
             ->normalize($textValue, 'standard', [])
             ->shouldBeCalled()
             ->willReturn(['locale' => null, 'scope' => null, 'value' => 'foo']);
 
-        $serializer
+        $normalizer
             ->normalize($priceValue, 'standard', [])
             ->shouldBeCalled()
             ->willReturn(['locale' => 'en_US', 'scope' => 'ecommerce', 'value' => [

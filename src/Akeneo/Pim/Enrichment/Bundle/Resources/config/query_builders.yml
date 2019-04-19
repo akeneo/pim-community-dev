@@ -14,7 +14,6 @@ parameters:
     pim_catalog.query.sorter.registry.class:                      Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistry
     pim_catalog.query.filter.field_dumper.class:                  Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\FieldFilterDumper
     pim_catalog.query.filter.attribute_dumper.class:              Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\AttributeFilterDumper
-    pim_catalog.doctrine.query.filter.object_id_resolver.class:   Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolver
     pim_catalog.doctrine.query.filter.object_code_resolver.class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectCodeResolver
 
     pim_catalog.query.elasticsearch.filter.label_or_identifier.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
@@ -77,6 +76,16 @@ services:
             - '@pim_catalog.factory.product_search_after_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
 
+    pim_catalog.query.product_query_builder_search_after_size_factory_external_api:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_identifier_cursor_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+            -
     pim_catalog.query.product_query_builder_from_size_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
@@ -85,6 +94,16 @@ services:
             - '@pim_catalog.query.filter.product_registry'
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_catalog.query.product_query_builder_from_size_factory_external_api:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_identifier_cursor_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
 
     pim_catalog.query.product_model_query_builder_factory:
@@ -674,7 +693,7 @@ services:
         - '@pim_catalog.repository.attribute'
         - '@pim_catalog.query.filter.product_and_product_model_registry'
         - '@pim_catalog.query.sorter.registry'
-        - '@akeneo.pim.enrichment.factory.product_identifier_cursor'
+        - '@akeneo.pim.enrichment.factory.product_and_product_model_identifier_cursor_from_size_cursor'
         - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
 
     akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor:

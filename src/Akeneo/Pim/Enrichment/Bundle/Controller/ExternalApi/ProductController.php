@@ -6,11 +6,13 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductsQueryValidator;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -118,6 +120,9 @@ class ProductController
     /** @var ListProductsQueryHandler */
     private $listProductsQueryHandler;
 
+    /** @var ConnectorProductNormalizer */
+    private $connectorProductNormalizer;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -140,7 +145,8 @@ class ProductController
         AddParent $addParent,
         ListProductsQueryValidator $listProductsQueryValidator,
         array $apiConfiguration,
-        ListProductsQueryHandler $listProductsQueryHandler
+        ListProductsQueryHandler $listProductsQueryHandler,
+        ConnectorProductNormalizer $connectorProductNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -164,6 +170,7 @@ class ProductController
         $this->addParent = $addParent;
         $this->listProductsQueryValidator = $listProductsQueryValidator;
         $this->listProductsQueryHandler = $listProductsQueryHandler;
+        $this->connectorProductNormalizer = $connectorProductNormalizer;
     }
 
     /**
@@ -204,6 +211,18 @@ class ProductController
             $products = $this->listProductsQueryHandler->handle($query); // in try block as PQB is doing validation also
         } catch (InvalidQueryException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        } catch (ServerErrorResponseException $e) {
+            $message = json_decode($e->getMessage(), true);
+            if (null !== $message && isset($message['error']['root_cause'][0]['type'])
+                && 'query_phase_execution_exception' === $message['error']['root_cause'][0]['type']) {
+                throw new DocumentedHttpException(
+                    Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
+                    'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
+                    $e
+                );
+            }
+
+            throw new ServerErrorResponseException($e->getMessage(), $e->getCode(), $e);
         }
 
         return new JsonResponse($this->normalizeProductsList($products, $query));
@@ -590,7 +609,7 @@ class ProductController
             isset($data['parent']) && '' !== $data['parent'];
     }
 
-    private function normalizeProductsList(CursorInterface $products, ListProductsQuery $query): array
+    private function normalizeProductsList(ConnectorProductList $connectorProductList, ListProductsQuery $query): array
     {
         $normalizerOptions = $this->getNormalizerOptions($query);
 
@@ -623,37 +642,22 @@ class ProductController
                 'item_identifier_key' => 'identifier',
             ];
 
-            try {
-                $count = $query->withCountAsBoolean() ? $products->count() : null;
-                $paginatedProducts = $this->offsetPaginator->paginate(
-                    $this->normalizer->normalize($products, 'external_api', $normalizerOptions),
-                    $paginationParameters,
-                    $count
-                );
-            } catch (ServerErrorResponseException $e) {
-                $message = json_decode($e->getMessage(), true);
-                if (null !== $message && isset($message['error']['root_cause'][0]['type'])
-                    && 'query_phase_execution_exception' === $message['error']['root_cause'][0]['type']) {
-                    throw new DocumentedHttpException(
-                        Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
-                        'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
-                        $e
-                    );
-                }
-
-                throw new ServerErrorResponseException($e->getMessage(), $e->getCode(), $e);
-            }
+            $count = $query->withCountAsBoolean() ? $connectorProductList->totalNumberOfProducts() : null;
+            $paginatedProducts = $this->offsetPaginator->paginate(
+                $this->connectorProductNormalizer->normalizeConnectorProductList($connectorProductList),
+                $paginationParameters,
+                $count
+            );
 
             return $paginatedProducts;
         } else {
-            $products = iterator_to_array($products);
-
-            $lastProduct = end($products);
+            $connectorProducts = $connectorProductList->connectorProducts();
+            $lastProduct = end($connectorProducts);
 
             $parameters = [
                 'query_parameters'    => $queryParameters,
                 'search_after'        => [
-                    'next' => false !== $lastProduct ? $this->primaryKeyEncrypter->encrypt($lastProduct->getId()) : null,
+                    'next' => false !== $lastProduct ? $this->primaryKeyEncrypter->encrypt($lastProduct->id()) : null,
                     'self' => $query->searchAfter,
                 ],
                 'list_route_name'     => 'pim_api_product_list',
@@ -662,7 +666,7 @@ class ProductController
             ];
 
             $paginatedProducts = $this->searchAfterPaginator->paginate(
-                $this->normalizer->normalize($products, 'external_api', $normalizerOptions),
+                $this->connectorProductNormalizer->normalizeConnectorProductList($connectorProductList),
                 $parameters,
                 null
             );

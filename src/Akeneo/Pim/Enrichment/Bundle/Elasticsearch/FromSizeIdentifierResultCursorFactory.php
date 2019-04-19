@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAndProductModelIdentifierCursorFactory implements CursorFactoryInterface
+class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
 {
     /** @var Client */
     private $esClient;
@@ -49,10 +51,12 @@ class ProductAndProductModelIdentifierCursorFactory implements CursorFactoryInte
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {
-            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $hit['_source']['document_type']);
+            // TODO: remove default type when TIP-1151 and TIP 1150 are done, as the document type will always exist
+            $documentType = $hit['_source']['document_type'] ?? ProductInterface::class;
+            $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType);
         }
 
-        return new ProductAndProductModelIdentifierCursor($identifiers, $totalCount);
+        return new IdentifierResultCursor($identifiers, $totalCount);
     }
 
     /**

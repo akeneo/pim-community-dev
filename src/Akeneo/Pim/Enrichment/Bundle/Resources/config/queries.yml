@@ -180,3 +180,13 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductAssociationsByProductModelCodes'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product.connector.get_product_from_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductsFromWriteModel'
+        arguments:
+            $productRepository: '@pim_api.repository.product'
+            $attributeRepository: '@pim_catalog.repository.attribute'
+            $getMetadata: '@akeneo.pim.enrichment.query.get_metadata_for_product'
+
+    akeneo.pim.enrichment.query.get_metadata_for_product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadata'
