@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @author    Mathias Métayer <mathias.metayer@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-class RegisterGetMetadataServicePass implements CompilerPassInterface
+class RegisterGetMetadataServicesPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
@@ -34,7 +34,16 @@ class RegisterGetMetadataServicePass implements CompilerPassInterface
 
         $definition = $container->getDefinition('akeneo.pim.enrichment.product.connector.get_product_from_identifiers');
         $metadata = $container->getDefinition('pimee_workflow.query.get_metadata_for_product');
-        
+
+        $definition->replaceArgument('$getMetadata', $metadata);
+
+        if (!$container->hasDefinition('akeneo.pim.enrichment.product.connector.get_product_models_from_codes')) {
+            return;
+        }
+
+        $definition = $container->getDefinition('akeneo.pim.enrichment.product.connector.get_product_models_from_codes');
+        $metadata = $container->getDefinition('pimee_workflow.query.get_metadata_for_product_model');
+
         $definition->replaceArgument('$getMetadata', $metadata);
     }
 }

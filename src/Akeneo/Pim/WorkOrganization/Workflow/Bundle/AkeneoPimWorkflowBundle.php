@@ -48,6 +48,6 @@ class AkeneoPimWorkflowBundle extends Bundle
             ->addCompilerPass(new Compiler\RegisterProductDraftPresentersPass())
             ->addCompilerPass(new Compiler\RegisterPublishersPass())
             ->addCompilerPass(new DependencyInjection\Compiler\ConfigureUserServicePass())
-            ->addCompilerPass(new DependencyInjection\Compiler\RegisterGetMetadataServicePass());
+            ->addCompilerPass(new DependencyInjection\Compiler\RegisterGetMetadataServicesPass());
     }
 }

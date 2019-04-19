@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\ORM\Connector;
+namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\ORM\Connector\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\ORM\Connector\GetMetadata;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\ORM\Connector\Product\GetMetadata;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use PhpSpec\ObjectBehavior;
