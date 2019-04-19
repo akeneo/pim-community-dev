@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @author    Mathias Métayer <mathias.metayer@akeneo.com>
@@ -11,10 +14,14 @@ namespace Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query;
  */
 interface GetConnectorProductModels
 {
-    public function fromProductModelCodes(
-        array $codes,
+    /**
+     * Ideally, we should not pass the PQB but a Product Query agnostic of the storage.
+     * It would be much easier fake it.
+     */
+    public function fromProductQueryBuilder(
+        ProductQueryBuilderInterface $productQueryBuilder,
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
-    ): array;
+    ): ConnectorProductModelList;
 }

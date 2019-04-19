@@ -82,19 +82,13 @@ class ListProductModelsQueryHandler
 
         $pqb->addSorter('id', Directions::ASCENDING);
 
-        $results = $pqb->execute();
-        $codes = array_map(function (IdentifierResult $identifier) {
-            return $identifier->getIdentifier();
-        }, iterator_to_array($results));
         
-        $productModels = $this->getConnectorProductModelsQuery->fromProductModelCodes(
-            $codes,
+        return $this->getConnectorProductModelsQuery->fromProductQueryBuilder(
+            $pqb,
             $query->attributeCodes,
             $query->channelCode,
             $this->getLocales($query->channelCode, $query->localeCodes)
         );
-
-        return new ConnectorProductModelList($results->count(), $productModels);
     }
 
     private function getSearchPQB(ListProductModelsQuery $query): ProductQueryBuilderInterface
