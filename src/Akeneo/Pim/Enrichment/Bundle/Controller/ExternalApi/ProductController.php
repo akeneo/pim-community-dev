@@ -211,6 +211,18 @@ class ProductController
             $products = $this->listProductsQueryHandler->handle($query); // in try block as PQB is doing validation also
         } catch (InvalidQueryException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        } catch (ServerErrorResponseException $e) {
+            $message = json_decode($e->getMessage(), true);
+            if (null !== $message && isset($message['error']['root_cause'][0]['type'])
+                && 'query_phase_execution_exception' === $message['error']['root_cause'][0]['type']) {
+                throw new DocumentedHttpException(
+                    Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
+                    'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
+                    $e
+                );
+            }
+
+            throw new ServerErrorResponseException($e->getMessage(), $e->getCode(), $e);
         }
 
         return new JsonResponse($this->normalizeProductsList($products, $query));
@@ -630,26 +642,12 @@ class ProductController
                 'item_identifier_key' => 'identifier',
             ];
 
-            try {
-                $count = $query->withCountAsBoolean() ? $connectorProductList->totalNumberOfProducts() : null;
-                $paginatedProducts = $this->offsetPaginator->paginate(
-                    $this->connectorProductNormalizer->normalizeConnectorProductList($connectorProductList),
-                    $paginationParameters,
-                    $count
-                );
-            } catch (ServerErrorResponseException $e) {
-                $message = json_decode($e->getMessage(), true);
-                if (null !== $message && isset($message['error']['root_cause'][0]['type'])
-                    && 'query_phase_execution_exception' === $message['error']['root_cause'][0]['type']) {
-                    throw new DocumentedHttpException(
-                        Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
-                        'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
-                        $e
-                    );
-                }
-
-                throw new ServerErrorResponseException($e->getMessage(), $e->getCode(), $e);
-            }
+            $count = $query->withCountAsBoolean() ? $connectorProductList->totalNumberOfProducts() : null;
+            $paginatedProducts = $this->offsetPaginator->paginate(
+                $this->connectorProductNormalizer->normalizeConnectorProductList($connectorProductList),
+                $paginationParameters,
+                $count
+            );
 
             return $paginatedProducts;
         } else {

@@ -52,7 +52,7 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
             ]
         ]]);
 
-        $this->createCursor($esQuery, $options)->shouldBeLike(new \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor(
+        $this->createCursor($esQuery, $options)->shouldBeLike(new IdentifierResultCursor(
             [
                 new IdentifierResult('product_1', ProductInterface::class),
                 new IdentifierResult('product_model_2', ProductModelInterface::class),
