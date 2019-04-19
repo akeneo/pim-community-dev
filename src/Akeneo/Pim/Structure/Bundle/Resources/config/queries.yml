@@ -1,0 +1,5 @@
+services:
+    akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\GetExistingAttributeOptionCodes'
+        arguments:
+            $connection: '@database_connection'
