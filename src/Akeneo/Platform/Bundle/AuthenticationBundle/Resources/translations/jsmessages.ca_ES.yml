@@ -1,3 +1,6 @@
+pim_menu.item.sso: SAML-basat en l'inici de sessió únic
+pim_title:
+  authentication_sso_configuration_edit: Configuració SAML-basat en l'inici de sessió únic
 authentication:
   sso:
     configuration:
