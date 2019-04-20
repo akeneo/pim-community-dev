@@ -27,7 +27,7 @@ pim_import_export:
       uppercase_label: Profil d'import
       flash:
         create:
-          success: Le profil d'export a bien été créé
+          success: Le profil d'import a bien été créé
       page_title:
         index: "]-Inf, 1]{{ count }} profil d'import|]1, Inf[{{ count }} profils d'import"
       module:
