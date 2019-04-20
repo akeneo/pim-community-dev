@@ -268,8 +268,10 @@ category:
   edit: editar categoria
   suggest selection: Seleccioneu una categoria a l'esquerra
   or: o
+  create new: Crear un nou arbre de categoria
 tree:
   title: arbre
+  create: crear arbre de categories
   edit: editar arbre
 channel:
   title: canal
@@ -308,6 +310,7 @@ btn:
     attribute: crear atribut
     attribute group: crear grup d'atributs
     category: crear categoria
+    tree: crear arbre de categories
     channel: crear canal
     currency: crear moneda
     family: crear família
