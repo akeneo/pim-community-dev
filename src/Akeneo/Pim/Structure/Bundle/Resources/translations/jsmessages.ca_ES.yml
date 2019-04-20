@@ -60,6 +60,8 @@ pim_enrich.entity.family_variant:
       axis_level: "Nivell de variant d'eixos {{ level }}"
     update_translations:
       title: Actualitzar traduccions
+    delete:
+      confirm: Esteu segur que voleu suprimir aquesta variant de família?
 pim_enrich.entity.attribute_option:
   short_uppercase_label: Opcions
   flash:
