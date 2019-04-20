@@ -60,6 +60,7 @@ akeneo_franklin_insights:
         missing_target_key: 'Falta l''objectiu clau pel mapatge'
         missing_attribute_key: 'Falta {{ expectedKey }} clau pel mapatge amb l''objectiu clau "{{ targetKey }}"'
         attribute_not_in_family_not_allowed: 'L''atribut PIM ha de ser de la família seleccionada.'
+        only_unknown_mapped_attributes: 'No s''han trobat atributs en el mapatge d''atributs'
     product_subscription:
       flash:
         create:
