@@ -35,6 +35,7 @@ teamwork_assistant:
     in_progress: En progrés
     done: Fet
     all_contributors: Tots els col·laboradors
+    you: Tú
     display_products: Mostrar productes
     placeholder:
       contributor_selector: Buscar col·laborador
