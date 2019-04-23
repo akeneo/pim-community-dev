@@ -35,9 +35,13 @@ class InMemoryFindRecordLabelsByIdentifiers implements FindRecordLabelsByIdentif
             $record = $this->recordRepository->getByIdentifier($recordIdentifier);
             $referenceEntity = $this->referenceEntityRepository->getByIdentifier($record->getReferenceEntityIdentifier());
 
-            $valueKey = ValueKey::createFromNormalized($referenceEntity->getAttributeAsLabelReference()->normalize());
+            $valueKey = ValueKey::createFromNormalized(sprintf('%s_en_US', $referenceEntity->getAttributeAsLabelReference()->normalize()));
             $value = $record->findValue($valueKey);
-            $recordLabels[$recordIdentifier->normalize()] = $value->getData()->normalize();
+            $labels[$value->getLocaleReference()->normalize()] = $value->getData()->normalize();
+            $recordLabels[$recordIdentifier->normalize()] = [
+                'labels' => $labels,
+                'code' => $record->getCode()->normalize()
+            ];
         }
 
         return $recordLabels;

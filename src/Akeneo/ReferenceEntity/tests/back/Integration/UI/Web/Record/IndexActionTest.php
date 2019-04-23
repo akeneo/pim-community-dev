@@ -356,7 +356,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $labelValueEnUS = Value::create(
             $attributeAsLabelIdentifier,
             ChannelReference::noReference(),
-            LocaleReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString('Paris')
         );
         $recordParis = Record::create(
