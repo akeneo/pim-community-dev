@@ -100,7 +100,14 @@ SQL;
             );
         }
 
-        $this->eventDispatcher->dispatch(RecordUpdatedEvent::class, new RecordUpdatedEvent($record->getIdentifier()));
+        $this->eventDispatcher->dispatch(
+            RecordUpdatedEvent::class,
+            new RecordUpdatedEvent(
+                $record->getIdentifier(),
+                $record->getCode(),
+                $record->getReferenceEntityIdentifier()
+            )
+        );
     }
 
     public function update(Record $record): void
@@ -127,7 +134,14 @@ SQL;
             );
         }
 
-        $this->eventDispatcher->dispatch(RecordUpdatedEvent::class, new RecordUpdatedEvent($record->getIdentifier()));
+        $this->eventDispatcher->dispatch(
+            RecordUpdatedEvent::class,
+            new RecordUpdatedEvent(
+                $record->getIdentifier(),
+                $record->getCode(),
+                $record->getReferenceEntityIdentifier()
+            )
+        );
     }
 
     public function getByReferenceEntityAndCode(
