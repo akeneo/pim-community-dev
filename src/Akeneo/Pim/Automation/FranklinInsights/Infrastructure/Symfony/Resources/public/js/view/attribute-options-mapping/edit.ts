@@ -73,53 +73,51 @@ class AttributeOptionsMapping extends BaseForm {
   }
 
   /**
-   * {@inheritdoc}
+   * @param familyCode
+   * @param catalogAttributeCode
+   * @param franklinAttributeCode
+   *
+   * @returns {any|JQuery.Promise<any, any, never>}
    */
-  public render(): BaseForm {
-    if (Object.keys(this.getFormData()).length === 0) {
+  public initializeMapping(
+    familyCode: string,
+    catalogAttributeCode: string,
+    franklinAttributeCode: string
+  ): JQueryPromise<any> {
+    this.familyCode = familyCode;
+    this.catalogAttributeCode = catalogAttributeCode;
+    this.franklinAttributeCode = franklinAttributeCode;
+
+    return $.when(
       this.fetchMapping().then((attributeOptionsMapping: NormalizedAttributeOptionsMapping) => {
         attributeOptionsMapping.catalogAttributeCode = this.catalogAttributeCode;
         this.setData(attributeOptionsMapping);
-        this.innerRender();
-      });
-    } else {
-      this.innerRender();
-    }
-    return this;
+      })
+    );
   }
 
   /**
-   * Sets the Catalog family code (for the current attribute options fetching)
-   *
-   * @param {string} familyCode
-   * @return AttributeOptionsMapping
+   * {@inheritdoc}
    */
-  public setFamilyCode(familyCode: string): AttributeOptionsMapping {
-    this.familyCode = familyCode;
+  public render(): BaseForm {
+    const mapping = this.getFormData().mapping as NormalizedAttributeOptionsMapping;
+    this.$el.html(this.template({
+      mapping,
+      franklinAttributeOption: __(this.config.labels.franklinAttributeOption),
+      catalogAttributeOption: __(this.config.labels.catalogAttributeOption),
+      attributeOptionStatus: __(this.config.labels.attributeOptionStatus),
+      statuses: this.getMappingStatuses(),
+    }));
 
-    return this;
-  }
+    $.when(
+      Object.keys(mapping).forEach((franklinAttributeOptionCode: string) => {
+        this.appendAttributeOptionSelector(franklinAttributeOptionCode);
+      })
+    ).then(() => {
+      Filterable.afterRender(this, __(this.config.labels.franklinAttributeOption));
 
-  /**
-   * Sets the Catalog attribute code (for the current attribute options fetching)
-   *
-   * @param {string} catalogAttributeCode
-   * @return AttributeOptionsMapping
-   */
-  public setCatalogAttributeCode(catalogAttributeCode: string): AttributeOptionsMapping {
-    this.catalogAttributeCode = catalogAttributeCode;
-
-    return this;
-  }
-
-  /**
-   * Sets the Franklin attribute code
-   *
-   * @param {string} franklinAttributeCode
-   * @return AttributeOptionsMapping
-   */
-  public setFranklinAttributeCode(franklinAttributeCode: string): AttributeOptionsMapping {
-    this.franklinAttributeCode = franklinAttributeCode;
+      this.renderExtensions();
+    });
 
     return this;
   }
@@ -150,32 +148,6 @@ class AttributeOptionsMapping extends BaseForm {
           return attributeOptionMapping;
         }),
     );
-  }
-
-  /**
-   * Renders the full modal
-   */
-  private innerRender(): void {
-    const mapping = this.getFormData().mapping as NormalizedAttributeOptionsMapping;
-    this.$el.html(this.template({
-      mapping,
-      franklinAttributeOption: __(this.config.labels.franklinAttributeOption),
-      catalogAttributeOption: __(this.config.labels.catalogAttributeOption),
-      attributeOptionStatus: __(this.config.labels.attributeOptionStatus),
-      statuses: this.getMappingStatuses(),
-    }));
-
-    Object.keys(mapping).forEach((franklinAttributeOptionCode: string) => {
-      this.appendAttributeOptionSelector(franklinAttributeOptionCode);
-    });
-
-    Filterable.afterRender(this, __(this.config.labels.franklinAttributeOption));
-
-    this.renderExtensions();
-
-    // Not optimal solution, but we didn't find a better one; this code will move the save button in the modal element.
-    $('.modal .modal-footer *[data-drop-zone="buttons"]').remove();
-    $('.modal .modal-footer').append(this.getRoot().$el.find('*[data-drop-zone="buttons"]'));
   }
 
   /**
