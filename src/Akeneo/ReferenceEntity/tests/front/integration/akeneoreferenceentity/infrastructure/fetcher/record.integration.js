@@ -196,7 +196,14 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
               channel: null,
               context: {
-                labels: []
+                labels: {
+                  "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717": {
+                    "labels": {
+                      "en_US": "Paris"
+                    },
+                    "code": "paris"
+                  }
+                }
               },
               data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
               locale: null,
@@ -236,7 +243,14 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
               channel: null,
               context: {
-                labels: []
+                labels: {
+                  "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717": {
+                    "labels": {
+                      "en_US": "Paris"
+                    },
+                    "code": "paris"
+                  }
+                }
               },
               data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
               locale: null,

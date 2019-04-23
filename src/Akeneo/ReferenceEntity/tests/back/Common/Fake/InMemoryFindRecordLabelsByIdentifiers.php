@@ -29,15 +29,20 @@ class InMemoryFindRecordLabelsByIdentifiers implements FindRecordLabelsByIdentif
      */
     public function find(array $recordIdentifiers): array
     {
-        $recordLabels = array_map(function (string $identifier) {
+        $recordLabels = [];
+        foreach ($recordIdentifiers as $identifier) {
             $recordIdentifier = RecordIdentifier::fromString($identifier);
             $record = $this->recordRepository->getByIdentifier($recordIdentifier);
             $referenceEntity = $this->referenceEntityRepository->getByIdentifier($record->getReferenceEntityIdentifier());
 
-            $valueKey = ValueKey::createFromNormalized($referenceEntity->getAttributeAsLabelReference()->normalize());
-
-            return $record->findValue($valueKey);
-        }, $recordIdentifiers);
+            $valueKey = ValueKey::createFromNormalized(sprintf('%s_en_US', $referenceEntity->getAttributeAsLabelReference()->normalize()));
+            $value = $record->findValue($valueKey);
+            $labels[$value->getLocaleReference()->normalize()] = $value->getData()->normalize();
+            $recordLabels[$recordIdentifier->normalize()] = [
+                'labels' => $labels,
+                'code' => $record->getCode()->normalize()
+            ];
+        }
 
         return $recordLabels;
     }

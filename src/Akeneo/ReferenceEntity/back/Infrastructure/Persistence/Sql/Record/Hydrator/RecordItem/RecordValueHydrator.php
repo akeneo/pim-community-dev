@@ -43,7 +43,16 @@ class RecordValueHydrator implements ValueHydratorInterface
     public function hydrate($normalizedValue, AbstractAttribute $attribute, array $context = []): array
     {
         $recordIdentifiers = is_array($normalizedValue['data']) ? $normalizedValue['data'] : [$normalizedValue['data']];
+        $data = array_values(array_intersect(array_keys($context['labels']), $recordIdentifiers));
         $labels = array_intersect_key($context['labels'], array_flip($recordIdentifiers));
+        if ('record' === $attribute->getType()) {
+            if (empty($data)) {
+                $normalizedValue['data'] = null;
+            }
+            $normalizedValue['data'] = $data[0];
+        } else {
+            $normalizedValue['data'] = $data;
+        }
         $normalizedValue['context']['labels'] = $labels;
 
         return $normalizedValue;
