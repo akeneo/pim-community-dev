@@ -338,4 +338,19 @@ class ValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple-fr_FR-mobile' => '12']);
     }
 
+    function it_keeps_non_localizable_and_locale_specific_values(ValueInterface $value, AttributeInterface $simpleAttribute)
+    {
+        $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
+
+        $value->getData()->willReturn('12');
+        $value->getAttribute()->willReturn($simpleAttribute);
+        $value->getLocale()->willReturn(null);
+        $value->getScope()->willReturn(null);
+        $simpleAttribute->isLocaleSpecific()->willReturn(true);
+        $simpleAttribute->getBackendType()->willReturn('text');
+        $simpleAttribute->isLocalizable()->willReturn(false);
+        $simpleAttribute->isScopable()->willReturn(false);
+
+        $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12']);
+    }
 }

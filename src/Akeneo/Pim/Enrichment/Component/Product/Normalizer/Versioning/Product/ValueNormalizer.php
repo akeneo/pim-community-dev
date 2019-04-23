@@ -160,7 +160,7 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     protected function filterLocaleSpecific(ValueInterface $value, AttributeInterface $attribute): bool
     {
-        if ($attribute->isLocaleSpecific()) {
+        if ($attribute->isLocaleSpecific() && $attribute->isLocalizable()) {
             $currentLocale = $value->getLocaleCode();
             $availableLocales = $attribute->getLocaleSpecificCodes();
             if (!in_array($currentLocale, $availableLocales)) {
