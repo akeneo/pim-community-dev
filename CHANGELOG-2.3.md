@@ -1,18 +1,16 @@
 # 2.3.x
 
-# 2.3.39 (2019-04-23)
-
 # 2.3.38 (2019-04-23)
 
 ## Bug fixes
 
 - PIM-8290: Fix flat to standard conversion of metrics, with unit filled and empty amount 
+- PIM-8288: keep locale-specific but non-localizable attribute values in the flat normalization to make them appear in the product changeset
 
 # 2.3.37 (2019-04-15)
 
 ## Bug fixes
 
-- PIM-8288: keep locale-specific but non-localizable attribute values in the flat normalization to make them appear in the product changeset
 - PIM-8269: Do not create empty product values if it relies on an attribute which has been removed from family 
 
 # 2.3.36 (2019-04-02)
