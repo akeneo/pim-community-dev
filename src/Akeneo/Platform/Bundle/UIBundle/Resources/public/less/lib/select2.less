@@ -681,16 +681,31 @@
       overflow: hidden;
       text-overflow: ellipsis;
       color: @AknGrey;
-      flex: 1;
       text-align: right;
     }
 
     .select2-result-label-main {
-      max-width: 200px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .select2-result-label-top {
+        max-width: 280px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 13px;
+        font-size: 11px;
+        color: @AknGrey;
+      }
+
+      .select2-result-label-bottom {
+        max-width: 280px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 19px;
+      }
     }
 
     .select2-result-label-link {
@@ -718,10 +733,6 @@
 .record-selector-multi-dropdown {
   width: @recordSelectorWidth !important; // No real choice here: select2 forces it by javascript...
   margin-left: 5px;
-}
-
-.record-selector-dropdown--compact {
-  width: 280px !important; // No real choice here: select2 forces it by javascript...
 }
 
 .record-selector-container {
@@ -852,8 +863,13 @@
       width: 285px;
 
       .select2-choices {
+        .select2-result-label-main .select2-result-label-top, .select2-result-label-main .select2-result-label-bottom {
+          max-width: 140px !important; // No real choice here: select2 forces it by javascript...
+        }
+
         .select2-search-field {
           width: 280px;
+          background: none;
         }
 
         .select2-search-choice {
@@ -864,10 +880,18 @@
   }
 }
 
+.record-selector-dropdown--compact {
+  width: 280px !important; // No real choice here: select2 forces it by javascript...
+
+  .select2-result-label-main .select2-result-label-top, .select2-result-label-main .select2-result-label-bottom {
+    max-width: 140px !important; // No real choice here: select2 forces it by javascript...
+  }
+}
+
 .record-option-selector {
   width: 200px;
 
-  .select2-input {
+  .select2-choices .select2-search-field .select2-input {
     background: white !important;
   }
 }
