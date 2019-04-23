@@ -348,13 +348,22 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
         // Paris
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('city');
+        /** @var ReferenceEntity $referenceEntity */
+        $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
+        $attributeAsLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
         $recordCode = RecordCode::fromString('paris');
         $identifier = RecordIdentifier::fromString('city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717');
+        $labelValueEnUS = Value::create(
+            $attributeAsLabelIdentifier,
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            TextData::fromString('Paris')
+        );
         $recordParis = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([$labelValueEnUS])
         );
         $recordRepository->create($recordParis);
 

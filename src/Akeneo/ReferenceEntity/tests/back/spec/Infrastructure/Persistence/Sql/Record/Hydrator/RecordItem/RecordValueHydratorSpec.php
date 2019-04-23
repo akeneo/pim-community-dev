@@ -36,11 +36,9 @@ class RecordValueHydratorSpec extends ObjectBehavior
     }
 
     public function it_fills_labels_linked_record_into_a_value_context(
-        RecordAttribute $recordAttribute,
-        ReferenceEntityIdentifier $designerIdentifier,
-        LabelCollection $dysonLabels,
-        FindRecordLabelsByCodesInterface $findRecordLabelsByCodes
+        RecordAttribute $recordAttribute
     ) {
+        $recordAttribute->getType()->willReturn('record_collection');
         $normalizedValue = [
             'attribute' => 'brands',
             'locale' => null,
