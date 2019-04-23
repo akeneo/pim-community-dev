@@ -37,7 +37,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'AknDefault-horizontalScroller panel-pane history-panel',
+            className: 'panel-pane history-panel',
             loading: false,
             expandedVersions: [],
             actions: {},
