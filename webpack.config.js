@@ -183,7 +183,12 @@ const webpackConfig = {
           },
         ],
         include: /(web\/bundles)/,
-        exclude: /lib|node_modules|vendor|tests|src|packages/,
+        exclude: [
+          path.resolve(rootDir, 'node_modules'),
+          path.resolve(rootDir, 'vendor'),
+          path.resolve(rootDir, 'tests'),
+          path.resolve(rootDir, 'src')
+        ],
       },
     ],
   },
