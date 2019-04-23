@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AttributeOptionCode
+final class AttributeOptionCode
 {
     /** @var string */
     private $code;
