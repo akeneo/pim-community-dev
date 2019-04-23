@@ -218,6 +218,24 @@ SQL;
         RecordCode $code
     ): void {
         $sql = <<<SQL
+        SELECT identifier
+        FROM akeneo_reference_entity_record
+        WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier; 
+SQL;
+        $statement = $this->sqlConnection->executeQuery(
+            $sql,
+            [
+                'code' => (string) $code,
+                'reference_entity_identifier' => (string) $referenceEntityIdentifier,
+            ]
+        );
+        $identifier = $statement->fetch(\PDO::FETCH_COLUMN);
+
+        if (!$identifier) {
+            throw new RecordNotFoundException();
+        }
+
+        $sql = <<<SQL
         DELETE FROM akeneo_reference_entity_record
         WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
 SQL;
@@ -235,7 +253,11 @@ SQL;
 
         $this->eventDispatcher->dispatch(
             RecordDeletedEvent::class,
-            new RecordDeletedEvent($code, $referenceEntityIdentifier)
+            new RecordDeletedEvent(
+                RecordIdentifier::fromString($identifier),
+                $code,
+                $referenceEntityIdentifier
+            )
         );
     }
 
