@@ -166,6 +166,7 @@ class FilterRecordsTest extends SearchIntegrationTestCase
     public function it_searches_all_records_linked_to_another_record()
     {
         $this->loadReferenceEntity();
+        $this->loadLinkedRecords('city', ['paris']);
         $this->loadLinkedRecordAttribute('main_city_designers_fingerprint', 'city');
         $this->loadRecordHavingLinkedRecord('stark', 'paris');
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
@@ -191,6 +192,7 @@ class FilterRecordsTest extends SearchIntegrationTestCase
     public function it_searches_all_records_linked_to_another_record_on_a_specific_channel_and_locale()
     {
         $this->loadReferenceEntity();
+        $this->loadLinkedRecords('city', ['paris']);
         $this->loadLinkedRecordAttribute('main_city_designers_fingerprint', 'city', true, true);
         $this->loadRecordHavingLinkedRecord('stark', 'paris', 'ecommerce', 'en_US');
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
@@ -213,6 +215,7 @@ class FilterRecordsTest extends SearchIntegrationTestCase
     public function it_searches_all_records_linked_to_multiple_records()
     {
         $this->loadReferenceEntity();
+        $this->loadLinkedRecords('city', ['paris', 'barcelona']);
         $this->loadLinkedRecordCollectionAttribute('main_cities_designers_fingerprint', 3, 'city');
         $this->loadRecordHavingLinkedRecordCollection(
             'stark',
@@ -243,6 +246,8 @@ class FilterRecordsTest extends SearchIntegrationTestCase
     public function it_searches_all_records_with_two_filters_on_values()
     {
         $this->loadReferenceEntity();
+        $this->loadLinkedRecords('city', ['paris', 'barcelona']);
+        $this->loadLinkedRecords('country', ['france']);
         $this->loadLinkedRecordCollectionAttribute('main_cities_designers_fingerprint', 3, 'city');
         $this->loadLinkedRecordCollectionAttribute('main_countries_designers_fingerprint', 4, 'country');
         $this->loadRecordHavingLinkedRecordCollection(
@@ -272,6 +277,7 @@ class FilterRecordsTest extends SearchIntegrationTestCase
     public function it_searches_all_records_linked_to_multiple_records_on_a_specific_channel_and_locale()
     {
         $this->loadReferenceEntity();
+        $this->loadLinkedRecords('city', ['paris', 'barcelona']);
         $this->loadLinkedRecordCollectionAttribute('main_cities_designers_fingerprint', 3, 'city', true, true);
         $this->loadRecordHavingLinkedRecordCollection(
             'stark',
@@ -541,5 +547,33 @@ class FilterRecordsTest extends SearchIntegrationTestCase
         );
 
         return $searchResult;
+    }
+
+    private function loadLinkedRecords(string $referenceEntityIdentifier, array $recordCodes): void
+    {
+        $referenceEntityRepository = $this->get(
+            'akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+        );
+        $linkedReferenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+        $referenceEntity = ReferenceEntity::create(
+            $linkedReferenceEntityIdentifier,
+            [
+                'en_US' => ucfirst($referenceEntityIdentifier),
+            ],
+            Image::createEmpty()
+        );
+        $referenceEntityRepository->create($referenceEntity);
+        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+
+        foreach ($recordCodes as $recordCode) {
+            $recordRepository->create(
+                Record::create(
+                    RecordIdentifier::fromString($recordCode),
+                    $linkedReferenceEntityIdentifier,
+                    RecordCode::fromString($recordCode),
+                    ValueCollection::fromValues([])
+                )
+            );
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -24,12 +24,12 @@ use Webmozart\Assert\Assert;
  */
 class RecordCollectionConnectorValueTransformer implements ConnectorValueTransformerInterface
 {
-    /** @var FindExistingRecordCodesInterface */
-    private $findExistingRecordCodes;
+    /** @var FindCodesByIdentifiersInterface */
+    private $findCodesByIdentifiers;
 
-    public function __construct(FindExistingRecordCodesInterface $findExistingRecordCodes)
+    public function __construct(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
     {
-        $this->findExistingRecordCodes = $findExistingRecordCodes;
+        $this->findCodesByIdentifiers = $findCodesByIdentifiers;
     }
 
     public function supports(AbstractAttribute $attribute): bool
@@ -41,8 +41,7 @@ class RecordCollectionConnectorValueTransformer implements ConnectorValueTransfo
     {
         Assert::true($this->supports($attribute));
 
-        $referenceEntityIdentifier = $attribute->getRecordType();
-        $existingRecordCodes = ($this->findExistingRecordCodes)($referenceEntityIdentifier, $normalizedValue['data']);
+        $existingRecordCodes = $this->findCodesByIdentifiers->find($normalizedValue['data']);
 
         if (empty($existingRecordCodes)) {
             return null;

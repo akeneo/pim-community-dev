@@ -146,5 +146,5 @@ abstract class AbstractAttribute
         return $this->valuePerLocale->isTrue();
     }
 
-    abstract protected function getType(): string;
+    abstract public function getType(): string;
 }

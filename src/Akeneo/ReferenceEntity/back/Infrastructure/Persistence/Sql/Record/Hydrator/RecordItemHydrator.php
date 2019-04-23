@@ -57,15 +57,15 @@ class RecordItemHydrator implements RecordItemHydratorInterface
         $this->valueHydrator = $valueHydrator;
     }
 
-    public function hydrate(array $row, RecordQuery $query): RecordItem
+    public function hydrate(array $row, RecordQuery $query, $context = []): RecordItem
     {
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $this->platform);
         $referenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['reference_entity_identifier'], $this->platform);
         $code = Type::getType(Type::STRING)->convertToPHPValue($row['code'], $this->platform);
 
         $indexedAttributes = ($this->findAttributesIndexedByIdentifier)(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
-        $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
-        $valueCollection = $this->hydrateValues($valueCollection, $indexedAttributes);
+        $valueCollection = ValuesDecoder::decode($row['value_collection']);
+        $valueCollection = $this->hydrateValues($valueCollection, $indexedAttributes, $context);
 
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $labels = $this->getLabels($valueCollection, $attributeAsLabel);
@@ -154,7 +154,7 @@ class RecordItemHydrator implements RecordItemHydratorInterface
      * Hydrate given $valueCollection according to given $indexedAttributes
      * using the value hydrator registry.
      */
-    private function hydrateValues(array $valueCollection, array $indexedAttributes): array
+    private function hydrateValues(array $valueCollection, array $indexedAttributes, array $context): array
     {
         $hydratedValueCollection = [];
 
@@ -165,7 +165,7 @@ class RecordItemHydrator implements RecordItemHydratorInterface
             }
 
             $attribute = $indexedAttributes[$attributeIdentifier];
-            $hydratedValueCollection[$valueKey] = $this->valueHydrator->hydrate($normalizedValue, $attribute, []);
+            $hydratedValueCollection[$valueKey] = $this->valueHydrator->hydrate($normalizedValue, $attribute, $context);
         }
 
         return $hydratedValueCollection;

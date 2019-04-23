@@ -2,21 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Doctrine\DBAL\Driver\Connection;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
+use Doctrine\DBAL\Connection;
 
 /**
- * Query Function to get the value keys on the attribute type option, option_collection, record and record_collection.
+ * Find value keys for a given list of attribute types
  *
- * @author    Samir Boulil <samir.boulil@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class FindValueKeysToFilterOnAttributeType
+class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -29,16 +36,20 @@ class FindValueKeysToFilterOnAttributeType
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function fetch(string $referenceEntityIdentifier): array
+    /**
+     * {@inheritdoc}
+     */
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributeTypes): array
     {
-        if (!isset($this->cachedResult[$referenceEntityIdentifier])) {
-            $this->cachedResult[$referenceEntityIdentifier] = $this->fetchValueKeys($referenceEntityIdentifier);
+        $cacheKey = $this->getCacheKey($referenceEntityIdentifier, $attributeTypes);
+        if (!isset($this->cachedResult[$cacheKey])) {
+            $this->cachedResult[$cacheKey] = $this->fetch($referenceEntityIdentifier, $attributeTypes);
         }
 
-        return $this->cachedResult[$referenceEntityIdentifier];
+        return $this->cachedResult[$cacheKey];
     }
 
-    private function fetchValueKeys(string $referenceEntityIdentifier): array
+    private function fetch(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributeTypes): array
     {
         $query = <<<SQL
             SELECT
@@ -71,11 +82,30 @@ class FindValueKeysToFilterOnAttributeType
                     ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
                 WHERE
                     a.reference_entity_identifier = :reference_entity_identifier
-                    AND a.attribute_type IN ('option', 'option_collection', 'record', 'record_collection')
+                    AND a.attribute_type IN (:types)
                 ) as mask;
 SQL;
-        $statement = $this->sqlConnection->executeQuery($query, ['reference_entity_identifier' => $referenceEntityIdentifier]);
+
+        $statement = $this->sqlConnection->executeQuery(
+            $query,
+            [
+                'reference_entity_identifier' => $referenceEntityIdentifier,
+                'types' => $attributeTypes,
+            ],
+            [
+                'types' => Connection::PARAM_STR_ARRAY
+            ]
+        );
 
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    private function getCacheKey(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributeTypes): string
+    {
+        return sprintf(
+            '%s_%s',
+            (string) $referenceEntityIdentifier,
+            implode('_', $attributeTypes)
+        );
     }
 }

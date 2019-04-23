@@ -17,7 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordsExists;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -25,12 +25,12 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordsExist
  */
 class RecordCollectionDataHydrator implements DataHydratorInterface
 {
-    /** @var SqlRecordsExists */
-    private $recordsExists;
+    /** @var FindCodesByIdentifiersInterface */
+    private $findCodesByIdentifiers;
 
-    public function __construct(SqlRecordsExists $recordsExists)
+    public function __construct(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
     {
-        $this->recordsExists = $recordsExists;
+        $this->findCodesByIdentifiers = $findCodesByIdentifiers;
     }
 
     public function supports(AbstractAttribute $attribute): bool
@@ -40,21 +40,19 @@ class RecordCollectionDataHydrator implements DataHydratorInterface
 
     public function hydrate($normalizedData, AbstractAttribute $attribute): ValueDataInterface
     {
-        $filteredRecords = $this->keepExistingRecordsOnly($normalizedData, $attribute);
-        if (empty($filteredRecords)) {
+        $filteredRecordCodes = $this->findCodes($normalizedData);
+        if (empty($filteredRecordCodes)) {
             return EmptyData::create();
         }
 
-        return RecordCollectionData::createFromNormalize($filteredRecords);
+        return RecordCollectionData::createFromNormalize(array_values($filteredRecordCodes));
     }
 
-    private function keepExistingRecordsOnly(
-        array $recordCodesFromDatabase,
-        RecordCollectionAttribute $recordCollectionAttribute
-    ): array {
-        return $this->recordsExists->withReferenceEntityAndCodes(
-            $recordCollectionAttribute->getRecordType(),
-            $recordCodesFromDatabase
-        );
+    /**
+     * This method also cleans missing records (returns only existing ones)
+     */
+    private function findCodes(array $identifiers): array
+    {
+        return $this->findCodesByIdentifiers->find($identifiers);
     }
 }

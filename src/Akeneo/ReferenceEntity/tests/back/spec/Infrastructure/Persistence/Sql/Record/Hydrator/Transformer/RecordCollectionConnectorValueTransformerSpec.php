@@ -16,15 +16,15 @@ namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydr
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerInterface;
 use PhpSpec\ObjectBehavior;
 
 class RecordCollectionConnectorValueTransformerSpec extends ObjectBehavior
 {
-    function let(FindExistingRecordCodesInterface $findExistingRecordCodes)
+    function let(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
     {
-        $this->beConstructedWith($findExistingRecordCodes);
+        $this->beConstructedWith($findCodesByIdentifiers);
     }
 
     function it_is_a_connector_value_transformer()
@@ -41,13 +41,13 @@ class RecordCollectionConnectorValueTransformerSpec extends ObjectBehavior
     }
 
     function it_transforms_a_normalized_value_to_a_normalized_connector_value(
-        $findExistingRecordCodes,
+        $findCodesByIdentifiers,
         RecordCollectionAttribute $attribute,
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ) {
         $attribute->getRecordType()->willReturn($referenceEntityIdentifier);
-        $findExistingRecordCodes
-            ->__invoke($referenceEntityIdentifier, ['kartell', 'lexon', 'cogip'])
+        $findCodesByIdentifiers
+            ->find(['kartell', 'lexon', 'cogip'])
             ->willReturn(['cogip', 'kartell', 'lexon']);
 
         $this->transform([
@@ -63,13 +63,13 @@ class RecordCollectionConnectorValueTransformerSpec extends ObjectBehavior
     }
 
     function it_removes_records_that_do_not_exist_in_a_value_containing_records(
-        $findExistingRecordCodes,
+        $findCodesByIdentifiers,
         RecordCollectionAttribute $attribute,
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ) {
         $attribute->getRecordType()->willReturn($referenceEntityIdentifier);
-        $findExistingRecordCodes
-            ->__invoke($referenceEntityIdentifier, ['kartell', 'lexon', 'cogip'])
+        $findCodesByIdentifiers
+            ->find(['kartell', 'lexon', 'cogip'])
             ->willReturn(['lexon']);
 
         $this->transform([
@@ -85,12 +85,12 @@ class RecordCollectionConnectorValueTransformerSpec extends ObjectBehavior
     }
 
     function it_returns_null_if_no_records_exist(
-        $findExistingRecordCodes,
+        $findCodesByIdentifiers,
         RecordCollectionAttribute $attribute,
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ) {
         $attribute->getRecordType()->willReturn($referenceEntityIdentifier);
-        $findExistingRecordCodes->__invoke($referenceEntityIdentifier, ['cogip'])->willReturn([]);
+        $findCodesByIdentifiers->find(['cogip'])->willReturn([]);
 
         $this->transform([
             'data'      => ['cogip'],

@@ -1,0 +1,123 @@
+{
+    "request": {
+        "method": "PUT",
+        "route": "akeneo_reference_entities_record_index_rest",
+        "query": {
+            "referenceEntityIdentifier": "designer"
+        },
+        "body": {
+            "locale": "en_US",
+            "channel": "ecommerce",
+            "size": 200,
+            "page": 0,
+            "filters": [
+                {
+                    "field": "code",
+                    "operator": "NOT IN",
+                    "value": "coco",
+                    "context": {}
+                },
+                {
+                    "field": "reference_entity",
+                    "operator": "=",
+                    "value": "designer",
+                    "context": {}
+                }
+            ]
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "items": [
+                {
+                    "identifier": "designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
+                    "reference_entity_identifier": "designer",
+                    "code": "dyson",
+                    "labels": {
+                        "en_US": "Dyson",
+                        "fr_FR": "Dyson"
+                    },
+                    "image": null,
+                    "values": {
+                        "label_designer_d00de54460082b239164135175588647_en_US": {
+                            "attribute": "label_designer_d00de54460082b239164135175588647",
+                            "channel": null,
+                            "locale": "en_US",
+                            "data": "Dyson"
+                        },
+                        "label_designer_d00de54460082b239164135175588647_fr_FR": {
+                            "attribute": "label_designer_d00de54460082b239164135175588647",
+                            "channel": null,
+                            "locale": "fr_FR",
+                            "data": "Dyson"
+                        },
+                        "colors_designer_52609e00b7ee307e79eb100099b9a8bf": {
+                            "attribute": "colors_designer_52609e00b7ee307e79eb100099b9a8bf",
+                            "channel": null,
+                            "locale": null,
+                            "data": "red"
+                        },
+                        "city_designer_79eb100099b9a8bf52609e00b7ee307e": {
+                            "attribute": "city_designer_79eb100099b9a8bf52609e00b7ee307e",
+                            "channel": null,
+                            "locale": null,
+                            "data": "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717",
+                            "context": {
+                                "labels": []
+                            }
+                        }
+                    },
+                    "completeness": {
+                        "complete": 0,
+                        "required": 1
+                    }
+                },
+                {
+                    "identifier": "designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2",
+                    "reference_entity_identifier": "designer",
+                    "code": "starck",
+                    "labels": {
+                        "en_US": "Starck"
+                    },
+                    "image": null,
+                    "values": {
+                        "label_designer_d00de54460082b239164135175588647_en_US": {
+                            "attribute": "label_designer_d00de54460082b239164135175588647",
+                            "channel": null,
+                            "locale": "en_US",
+                            "data": "Starck"
+                        },
+                        "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US": {
+                            "attribute": "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
+                            "channel": "ecommerce",
+                            "locale": "en_US",
+                            "data": "an awesome designer!"
+                        },
+                        "colors_designer_52609e00b7ee307e79eb100099b9a8bf": {
+                            "attribute": "colors_designer_52609e00b7ee307e79eb100099b9a8bf",
+                            "channel": null,
+                            "locale": null,
+                            "data": "red"
+                        },
+                        "city_designer_79eb100099b9a8bf52609e00b7ee307e": {
+                            "attribute": "city_designer_79eb100099b9a8bf52609e00b7ee307e",
+                            "channel": null,
+                            "locale": null,
+                            "data": "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717",
+                            "context": {
+                                "labels": []
+                            }
+                        }
+                    },
+                    "completeness": {
+                        "complete": 0,
+                        "required": 1
+                    }
+                }
+            ],
+            "matches_count": 1,
+            "total_count": 3
+        }
+    }
+}

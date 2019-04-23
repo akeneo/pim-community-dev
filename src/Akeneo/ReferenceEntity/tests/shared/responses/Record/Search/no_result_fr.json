@@ -14,7 +14,7 @@
               {
                   "field": "full_text",
                   "operator": "=",
-                  "value": "s",
+                  "value": "other_s",
                   "context": {}
               },
               {

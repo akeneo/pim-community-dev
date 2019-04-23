@@ -195,7 +195,10 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
             city_designer_79eb100099b9a8bf52609e00b7ee307e: {
               attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
               channel: null,
-              data: 'paris',
+              context: {
+                labels: []
+              },
+              data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
               locale: null,
             },
             colors_designer_52609e00b7ee307e79eb100099b9a8bf: {
@@ -207,7 +210,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
           },
           completeness: {
             complete: 0,
-            required: 2,
+            required: 1,
           },
         },
         {
@@ -232,7 +235,10 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
             city_designer_79eb100099b9a8bf52609e00b7ee307e: {
               attribute: 'city_designer_79eb100099b9a8bf52609e00b7ee307e',
               channel: null,
-              data: 'paris',
+              context: {
+                labels: []
+              },
+              data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
               locale: null,
             },
             colors_designer_52609e00b7ee307e79eb100099b9a8bf: {
@@ -243,8 +249,8 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
             },
           },
           completeness: {
-            complete: 1,
-            required: 2,
+            complete: 0,
+            required: 1,
           },
         },
       ],

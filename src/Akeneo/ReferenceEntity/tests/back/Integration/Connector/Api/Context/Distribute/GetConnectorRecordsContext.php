@@ -163,7 +163,7 @@ class GetConnectorRecordsContext implements Context
                 ->setKey(sprintf('test/%s_image.jpg', $rawRecordCode));
             $mainImage = Image::fromFileInfo($mainImageInfo);
 
-            $record = Record::create(
+            Record::create(
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
                 $recordCode,
@@ -182,8 +182,6 @@ class GetConnectorRecordsContext implements Context
                     ),
                 ])
             );
-
-            $this->findRecordIdentifiersForQuery->add($record);
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
@@ -293,7 +291,7 @@ class GetConnectorRecordsContext implements Context
                 ->setKey(sprintf('test/%s_image.jpg', $rawRecordCode));
             $mainImage = Image::fromFileInfo($mainImageInfo);
 
-            $record = Record::create(
+            Record::create(
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
                 $recordCode,
@@ -312,8 +310,6 @@ class GetConnectorRecordsContext implements Context
                     ),
                 ])
             );
-
-            $this->findRecordIdentifiersForQuery->add($record);
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
@@ -436,14 +432,12 @@ class GetConnectorRecordsContext implements Context
             $recordCode = RecordCode::fromString($rawRecordCode);
             $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
 
-            $record = Record::create(
+            Record::create(
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString('brand'),
                 $recordCode,
                 ValueCollection::fromValues([])
             );
-
-            $this->findRecordIdentifiersForQuery->add($record);
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
@@ -571,7 +565,7 @@ class GetConnectorRecordsContext implements Context
                 'en_US' => sprintf('Incomplete french Brand record number %d', $i)
             ];
 
-            $record = Record::create(
+            Record::create(
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString('brand'),
                 $recordCode,
@@ -602,8 +596,6 @@ class GetConnectorRecordsContext implements Context
                     )
                 ])
             );
-
-            $this->findRecordIdentifiersForQuery->add($record);
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
@@ -654,7 +646,7 @@ class GetConnectorRecordsContext implements Context
                 'en_US' => sprintf('Incomplete english Brand record number %d', $i)
             ];
 
-            $record = Record::create(
+            Record::create(
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString('brand'),
                 $recordCode,
@@ -685,8 +677,6 @@ class GetConnectorRecordsContext implements Context
                     )
                 ])
             );
-
-            $this->findRecordIdentifiersForQuery->add($record);
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
@@ -740,7 +730,7 @@ class GetConnectorRecordsContext implements Context
                 'en_US' => sprintf('Complete Brand record number %d', $i)
             ];
 
-            $record = Record::create(
+            Record::create(
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString('brand'),
                 $recordCode,
@@ -777,8 +767,6 @@ class GetConnectorRecordsContext implements Context
                     )
                 ])
             );
-
-            $this->findRecordIdentifiersForQuery->add($record);
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
@@ -933,9 +921,9 @@ class GetConnectorRecordsContext implements Context
         for ($i = 4; $i >= 2; $i--) {
             $rawRecordCode = sprintf('brand_%d', $i);
             $recordCode = RecordCode::fromString($rawRecordCode);
-            $recordIdentifier = RecordIdentifier::fromString($rawRecordCode);
+            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
 
-            $record = Record::create(
+            Record::create(
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString('brand_test'),
                 $recordCode,
@@ -948,8 +936,6 @@ class GetConnectorRecordsContext implements Context
                     ),
                 ])
             );
-
-            $this->findRecordIdentifiersForQuery->add($record);
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
@@ -979,9 +965,9 @@ class GetConnectorRecordsContext implements Context
         for ($i = 2; $i >= 0; $i--) {
             $rawRecordCode = sprintf('brand_%d', $i);
             $recordCode = RecordCode::fromString($rawRecordCode);
-            $recordIdentifier = RecordIdentifier::fromString($rawRecordCode);
+            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
 
-            $record = Record::create(
+            Record::create(
                 $recordIdentifier,
                 ReferenceEntityIdentifier::fromString('brand_test'),
                 $recordCode,
@@ -994,8 +980,6 @@ class GetConnectorRecordsContext implements Context
                     ),
                 ])
             );
-
-            $this->findRecordIdentifiersForQuery->add($record);
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,

@@ -261,7 +261,7 @@ class TextAttribute extends AbstractAttribute
         return $this->validationRule->isNone();
     }
 
-    protected function getType(): string
+    public function getType(): string
     {
         return self::ATTRIBUTE_TYPE;
     }

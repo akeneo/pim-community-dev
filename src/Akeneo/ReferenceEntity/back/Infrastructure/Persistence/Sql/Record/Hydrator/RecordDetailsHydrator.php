@@ -18,6 +18,9 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
@@ -33,13 +36,28 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
     /** @var AbstractPlatform */
     private $platform;
 
-    public function __construct(Connection $connection)
-    {
+    /** @var FindValueKeysByAttributeTypeInterface */
+    private $findValueKeysByAttributeType;
+
+    /** @var ValueHydratorInterface */
+    private $valueHydrator;
+
+    public function __construct(
+        Connection $connection,
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        ValueHydratorInterface $valueHydrator
+    ) {
         $this->platform = $connection->getDatabasePlatform();
+        $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
+        $this->valueHydrator = $valueHydrator;
     }
 
-    public function hydrate(array $row, array $emptyValues): RecordDetails
-    {
+    public function hydrate(
+        array $row,
+        array $emptyValues,
+        ValueKeyCollection $valueKeyCollection,
+        array $attributes
+    ): RecordDetails {
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
         $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
@@ -50,7 +68,14 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         $recordCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
 
-        $allValues = $this->createEmptyValues($emptyValues, $valueCollection);
+        $values = $this->hydrateValues($valueKeyCollection, $attributes, $valueCollection);
+        $normalizedValues = [];
+        foreach ($values as $key => $value) {
+            $normalizedValues[$key] = $value->normalize();
+        }
+
+        $allValues = $this->createEmptyValues($emptyValues, $normalizedValues);
+
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
         $recordImage = $this->getImage($valueCollection, $attributeAsImage);
 
@@ -60,7 +85,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
             RecordCode::fromString($recordCode),
             LabelCollection::fromArray($labels),
             $recordImage,
-            array_values($allValues),
+            $allValues,
             true
         );
 
@@ -117,5 +142,26 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         }
 
         return $result;
+    }
+
+    private function hydrateValues(ValueKeyCollection $valueKeyCollection, array $attributes, $valueCollection): array
+    {
+        $hydratedValues = [];
+        foreach ($valueKeyCollection as $valueKey) {
+            $key = (string) $valueKey;
+            if (!array_key_exists($key, $valueCollection)) {
+                continue;
+            }
+
+            $value = $valueCollection[$key];
+            $attributeIdentifier = $value['attribute'];
+            $value = $this->valueHydrator->hydrate($value, $attributes[$attributeIdentifier]);
+            if ($value->isEmpty()) {
+                continue;
+            }
+            $hydratedValues[$key] = $value;
+        }
+
+        return $hydratedValues;
     }
 }

@@ -151,6 +151,14 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         return false;
     }
 
+    /**
+     * @return Record[]
+     */
+    public function all(): array
+    {
+        return $this->records;
+    }
+
     public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
     {
         $count = 0;

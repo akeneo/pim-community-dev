@@ -6,8 +6,8 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
@@ -35,17 +35,17 @@ class RecordNormalizer implements RecordNormalizerInterface
     /** @var SqlFindSearchableRecords */
     private $findSearchableRecords;
 
-    /** @var FindValueKeysToFilterOnAttributeType */
-    private $findValueKeysToFilterOnAttributeType;
+    /** @var FindValueKeysByAttributeTypeInterface */
+    private $findValueKeysByAttributeType;
 
     public function __construct(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords,
-        FindValueKeysToFilterOnAttributeType $findValueKeysToFilterOnAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
     ) {
         $this->findValueKeysToIndexForAllChannelsAndLocales = $findValueKeysToIndexForAllChannelsAndLocales;
         $this->findSearchableRecords = $findSearchableRecords;
-        $this->findValueKeysToFilterOnAttributeType = $findValueKeysToFilterOnAttributeType;
+        $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
     }
 
     public function normalizeRecord(RecordIdentifier $recordIdentifier): array
@@ -164,7 +164,11 @@ class RecordNormalizer implements RecordNormalizerInterface
 
     private function generateFilterableValues(SearchableRecordItem $searchableRecordItem): array
     {
-        $valueKeys = $this->findValueKeysToFilterOnAttributeType->fetch($searchableRecordItem->referenceEntityIdentifier);
+        // TODO: maybe set up const for attribute types, or make existent ones public
+        $valueKeys = $this->findValueKeysByAttributeType->find(
+            ReferenceEntityIdentifier::fromString($searchableRecordItem->referenceEntityIdentifier),
+            ['option', 'option_collection', 'record', 'record_collection']
+        );
         $result = [];
         foreach ($valueKeys as $valueKey) {
             if (isset($searchableRecordItem->values[$valueKey])) {

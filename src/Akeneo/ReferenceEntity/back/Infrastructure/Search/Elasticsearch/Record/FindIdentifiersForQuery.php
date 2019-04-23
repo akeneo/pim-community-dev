@@ -17,12 +17,15 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByReferenceEntityAndCodesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ValueKey\SqlGetValueKeyForAttributeChannelAndLocale;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Elasticsearch\QueryString;
@@ -45,18 +48,24 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     /** @var SqlGetValueKeyForAttributeChannelAndLocale */
     private $getValueKeyForAttributeChannelAndLocale;
 
-    /**
-     * @param Client                                                      $recordClient
-     * @param FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale
-     */
+    /** @var AttributeRepositoryInterface  */
+    private $attributeRepository;
+
+    /** @var FindIdentifiersByReferenceEntityAndCodesInterface  */
+    private $findIdentifiersByReferenceEntityAndCodes;
+
     public function __construct(
         Client $recordClient,
         FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
-        SqlGetValueKeyForAttributeChannelAndLocale $getValueKeyForAttributeChannelAndLocale
+        SqlGetValueKeyForAttributeChannelAndLocale $getValueKeyForAttributeChannelAndLocale,
+        AttributeRepositoryInterface $attributeRepository,
+        FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes
     ) {
         $this->recordClient = $recordClient;
         $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
         $this->getValueKeyForAttributeChannelAndLocale = $getValueKeyForAttributeChannelAndLocale;
+        $this->attributeRepository = $attributeRepository;
+        $this->findIdentifiersByReferenceEntityAndCodes = $findIdentifiersByReferenceEntityAndCodes;
     }
 
     /**
@@ -164,6 +173,19 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                 if (!empty($attributeFilter['value'] && 'IN' === $attributeFilter['operator'])) {
                     // As the attribute identifier filter will have all the time the same structure values.*. We could extract only the last part of the string with a substr from the dot.
                     $attributeIdentifier = substr($attributeFilter['field'], strlen(self::ATTRIBUTE_FILTER_FIELD));
+                    $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::fromString($attributeIdentifier));
+
+                    $value = $attributeFilter['value'];
+                    if (in_array($attribute->getType(), ['record', 'record_collection'])) {
+                        $recordIdentifiers = $this->findIdentifiersByReferenceEntityAndCodes->find(
+                            $attribute->getRecordType(),
+                            $attributeFilter['value']
+                        );
+
+                        $value = array_values(array_map(function (RecordIdentifier $recordIdentifier) {
+                            return (string) $recordIdentifier;
+                        }, $recordIdentifiers));
+                    }
 
                     $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(
                         AttributeIdentifier::fromString($attributeIdentifier),
@@ -171,9 +193,10 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                         LocaleIdentifier::fromCode($recordQuery->getLocale())
                     );
                     $path = sprintf('values.%s', (string) $valueKey);
+
                     $query['query']['constant_score']['filter']['bool']['filter'][] = [
                         'terms' => [
-                            $path => $attributeFilter['value']
+                            $path => $value
                         ]
                     ];
                 }

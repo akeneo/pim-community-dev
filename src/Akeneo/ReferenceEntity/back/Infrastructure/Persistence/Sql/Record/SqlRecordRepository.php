@@ -16,13 +16,16 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByReferenceEntityAndCodesInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
@@ -52,18 +55,28 @@ class SqlRecordRepository implements RecordRepositoryInterface
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
+    /** @var FindIdentifiersByReferenceEntityAndCodesInterface */
+    private $findIdentifiersByReferenceEntityAndCodes;
+
+    /** @var FindValueKeysByAttributeTypeInterface */
+    private $findValueKeysByAttributeType;
+
     public function __construct(
         Connection $sqlConnection,
         RecordHydratorInterface $recordHydrator,
         FindValueKeyCollectionInterface $findValueKeyCollection,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes,
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->recordHydrator = $recordHydrator;
         $this->findValueKeyCollection = $findValueKeyCollection;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
         $this->eventDispatcher = $eventDispatcher;
+        $this->findIdentifiersByReferenceEntityAndCodes = $findIdentifiersByReferenceEntityAndCodes;
+        $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
     }
 
     public function count(): int
@@ -77,6 +90,11 @@ class SqlRecordRepository implements RecordRepositoryInterface
 
     public function create(Record $record): void
     {
+        $valueCollection = $this->replaceCodesByIdentifiers(
+            $record->getValues()->normalize(),
+            $record->getReferenceEntityIdentifier()
+        );
+
         $insert = <<<SQL
         INSERT INTO akeneo_reference_entity_record
             (identifier, code, reference_entity_identifier, value_collection)
@@ -88,7 +106,7 @@ SQL;
                 'identifier' => (string) $record->getIdentifier(),
                 'code' => (string) $record->getCode(),
                 'reference_entity_identifier' => (string) $record->getReferenceEntityIdentifier(),
-                'value_collection' => $record->getValues()->normalize(),
+                'value_collection' => $valueCollection,
             ],
             [
                 'value_collection' => Type::JSON_ARRAY,
@@ -105,6 +123,11 @@ SQL;
 
     public function update(Record $record): void
     {
+        $valueCollection = $this->replaceCodesByIdentifiers(
+            $record->getValues()->normalize(),
+            $record->getReferenceEntityIdentifier()
+        );
+
         $update = <<<SQL
         UPDATE akeneo_reference_entity_record
         SET value_collection = :value_collection
@@ -114,7 +137,7 @@ SQL;
             $update,
             [
                 'identifier' => $record->getIdentifier(),
-                'value_collection' => $record->getValues()->normalize(),
+                'value_collection' => $valueCollection,
             ],
             [
                 'value_collection' => Type::JSON_ARRAY,
@@ -276,5 +299,50 @@ SQL;
             $valueKeyCollection,
             $attributesIndexedByIdentifier
         );
+    }
+
+    private function replaceCodesByIdentifiers(
+        array $valueCollection,
+        ReferenceEntityIdentifier $referenceEntityIdentifier
+    ): array {
+        $recordsValueKeys = $this->findValueKeysByAttributeType->find(
+            $referenceEntityIdentifier,
+            ['record', 'record_collection']
+        );
+
+        if (empty($recordsValueKeys)) {
+            return $valueCollection;
+        }
+
+        $onlyRecordsValues = array_intersect_key($valueCollection, array_flip($recordsValueKeys));
+
+        if (empty($onlyRecordsValues)) {
+            return $valueCollection;
+        }
+
+        $attributesIndexedByIdentifier = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
+
+        // Replace codes by identifiers in the value collection
+        foreach ($onlyRecordsValues as $valueKey => $value) {
+            /** @var RecordAttribute|RecordCollectionAttribute $attribute */
+            $attribute = $attributesIndexedByIdentifier[$value['attribute']];
+
+            $indexedIdentifiers = $this->findIdentifiersByReferenceEntityAndCodes->find(
+                $attribute->getRecordType(),
+                is_array($value['data']) ? $value['data'] : [$value['data']]
+            );
+
+            if (is_array($value['data'])) {
+                $value['data'] = array_map(function ($code) use ($indexedIdentifiers) {
+                    return (string) $indexedIdentifiers[$code];
+                }, $value['data']);
+            } else {
+                $value['data'] = (string) $indexedIdentifiers[$value['data']];
+            }
+
+            $valueCollection[$valueKey] = $value;
+        }
+
+        return $valueCollection;
     }
 }

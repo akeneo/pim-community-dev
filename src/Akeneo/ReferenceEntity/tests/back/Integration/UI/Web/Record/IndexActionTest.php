@@ -222,6 +222,16 @@ class IndexActionTest extends ControllerIntegrationTestCase
                Image::createEmpty()
             )
         );
+
+        $cityReferenceEntityIdentifier = ReferenceEntityIdentifier::fromString('city');
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntityRepository->create(
+            ReferenceEntity::create(
+               $cityReferenceEntityIdentifier,
+               [],
+               Image::createEmpty()
+            )
+        );
         /** @var ReferenceEntity $referenceEntity */
         $referenceEntity = $referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
         $attributeAsLabelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier();
@@ -252,7 +262,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
             AttributeIdentifier::fromString('city_designer_79eb100099b9a8bf52609e00b7ee307e'),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
-            RecordData::createFromNormalize('paris')
+            RecordData::createFromNormalize('city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717')
         );
 
         $recordStarck = Record::create(
@@ -326,7 +336,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
             AttributeIdentifier::fromString('city_designer_79eb100099b9a8bf52609e00b7ee307e'),
             ChannelReference::noReference(),
             LocaleReference::noReference(),
-            OptionData::createFromNormalize('paris')
+            RecordData::createFromNormalize('city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717')
         );
         $recordDyson = Record::create(
             $identifier,
@@ -336,14 +346,21 @@ class IndexActionTest extends ControllerIntegrationTestCase
         );
         $recordRepository->create($recordDyson);
 
+        // Paris
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('city');
+        $recordCode = RecordCode::fromString('paris');
+        $identifier = RecordIdentifier::fromString('city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717');
+        $recordParis = Record::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            $recordCode,
+            ValueCollection::fromValues([])
+        );
+        $recordRepository->create($recordParis);
+
         /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredKeyCollectionQuery */
         $findRequiredKeyCollectionQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locales');
         $findRequiredKeyCollectionQuery->setActivatedLocales(['en_US', 'fr_FR']);
         $findRequiredKeyCollectionQuery->setActivatedChannels(['ecommerce']);
-        $findIdentifiersForQuery = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query');
-
-        $findIdentifiersForQuery->add($recordDyson);
-        $findIdentifiersForQuery->add($recordStarck);
-        $findIdentifiersForQuery->add($recordCoco);
     }
 }
