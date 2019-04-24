@@ -84,9 +84,12 @@ Feature: Validate editing common numeric attributes of multiple products
     And I display the Number in stock attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then attribute number_in_stock of "boots" should be ""
-    And attribute number_in_stock of "sandals" should be ""
-    And attribute number_in_stock of "sneakers" should be ""
+    And the product "boots" should not have the following values:
+      | number_in_stock |
+    And the product "sandals" should not have the following values:
+      | number_in_stock |
+    And the product "sneakers" should not have the following values:
+      | number_in_stock |
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
@@ -95,9 +98,12 @@ Feature: Validate editing common numeric attributes of multiple products
     And I change the "Number in stock" to "-10"
     And I move on to the next step
     Then I should see validation tooltip "This value should be 0 or more."
-    And attribute number_in_stock of "boots" should be ""
-    And attribute number_in_stock of "sandals" should be ""
-    And attribute number_in_stock of "sneakers" should be ""
+    And the product "boots" should not have the following values:
+      | number_in_stock |
+    And the product "sandals" should not have the following values:
+      | number_in_stock |
+    And the product "sneakers" should not have the following values:
+      | number_in_stock |
 
   Scenario: Successfully mass edit a price attribute
     Given I select rows boots and sneakers

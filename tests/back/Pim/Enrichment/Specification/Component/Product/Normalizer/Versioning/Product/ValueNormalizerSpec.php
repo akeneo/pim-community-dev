@@ -2,14 +2,14 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
-use Akeneo\Tool\Component\Localization\Localizer\NumberLocalizer;
-use Doctrine\Common\Collections\ArrayCollection;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Tool\Component\Localization\Localizer\NumberLocalizer;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -338,4 +338,25 @@ class ValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple-fr_FR-mobile' => '12']);
     }
 
+    function it_keeps_non_localizable_and_locale_specific_values(
+        ValueInterface $value,
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
+    ) {
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
+
+        $value->getData()->willReturn('12');
+        $value->getAttributeCode()->willReturn('simple');
+        $value->getLocaleCode()->willReturn(null);
+        $value->getScopeCode()->willReturn(null);
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+        $simpleAttribute->isLocaleSpecific()->willReturn(true);
+        $simpleAttribute->getBackendType()->willReturn('text');
+        $simpleAttribute->isLocalizable()->willReturn(false);
+        $simpleAttribute->isScopable()->willReturn(false);
+
+        $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12']);
+    }
 }

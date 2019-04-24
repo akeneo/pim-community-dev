@@ -105,7 +105,7 @@ class UserNormalizer implements NormalizerInterface
             ] : $this->fileNormalizer->normalize($user->getAvatar()),
             'meta'                      => [
                 'id'    => $user->getId(),
-                'form'  => $this->securityFacade->isGranted('pim_user_user_edit') ? 'pim-user-edit-form' : 'pim-user-show',
+                'form'  => $this->getFormName($user),
                 'image' => [
                     'filePath' => null === $user->getAvatar() ?
                         null :
@@ -153,5 +153,26 @@ class UserNormalizer implements NormalizerInterface
         return $user->getRolesCollection()->map(function (Role $role) {
             return $role->getRole();
         })->toArray();
+    }
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return string
+     */
+    private function getFormName($user): string
+    {
+        if ($this->securityFacade->isGranted('pim_user_user_edit')) {
+            return 'pim-user-edit-form';
+        }
+
+        $token = $this->tokenStorage->getToken();
+        $currentUser = $token ? $token->getUser() : null;
+
+        if ($user->getId() && is_object($currentUser) && $currentUser->getId() == $user->getId()) {
+            return 'pim-user-profile-form';
+        }
+
+        return 'pim-user-show';
     }
 }

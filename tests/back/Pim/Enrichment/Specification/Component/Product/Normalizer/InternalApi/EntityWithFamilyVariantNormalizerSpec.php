@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\AxisValueLabelsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
@@ -22,6 +23,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantProducts;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
@@ -35,7 +37,9 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
         CatalogContext $catalogContext,
-        IdentifiableObjectRepositoryInterface $attributeOptionRepository
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository,
+        AxisValueLabelsNormalizer $simpleSelectOptionNormalizer,
+        AxisValueLabelsNormalizer $metricNormalizer
     ) {
         $this->beConstructedWith(
             $imageNormalizer,
@@ -46,7 +50,9 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             $variantProductRatioQuery,
             $imageAsLabel,
             $catalogContext,
-            $attributeOptionRepository
+            $attributeOptionRepository,
+            $simpleSelectOptionNormalizer,
+            $metricNormalizer
         );
     }
 
@@ -76,7 +82,9 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         CompletenessInterface $completeness1,
         CompletenessInterface $completeness2,
         Collection $productCompletenesses,
-        $attributeOptionRepository
+        $attributeOptionRepository,
+        $simpleSelectOptionNormalizer,
+        $metricNormalizer
     ) {
         $context = [
             'locale' => 'en_US'
@@ -116,13 +124,13 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
 
         $attributeOptionRepository->findOneByIdentifier('color.white')->willReturn($colorAttributeOption);
 
-        $colorAttributeOption->setLocale('fr_FR')->shouldBeCalled();
-        $colorAttributeOption->setLocale('en_US')->shouldBeCalled();
         $colorAttributeOption->getSortOrder()->willReturn(2);
         $colorAttributeOption->getCode()->willReturn('white');
         $colorAttributeOption->getTranslation()->willReturn($colorAttributeOptionValue);
         $colorAttributeOptionValue->getLabel()->willReturn('Blanc', 'White');
         $sizeValue->__toString()->willReturn('S');
+        $colorValue->__toString()->willReturn('Blanc default', 'White default');
+        $weightValue->__toString()->willReturn('10 KILOGRAM default');
 
         $variantProduct->getImage()->willReturn(null);
 
@@ -133,6 +141,16 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
 
         $completenessCollectionNormalizer->normalize($productCompletenesses, 'internal_api')
             ->willReturn(['NORMALIZED_COMPLETENESS']);
+
+        $simpleSelectOptionNormalizer->supports(Argument::any())->willReturn(false);
+        $simpleSelectOptionNormalizer->supports('pim_catalog_simpleselect')->willReturn(true);
+        $simpleSelectOptionNormalizer->normalize($colorValue, 'fr_FR')->willReturn('Blanc');
+        $simpleSelectOptionNormalizer->normalize($colorValue, 'en_US')->willReturn('White');
+
+        $metricNormalizer->supports(Argument::any())->willReturn(false);
+        $metricNormalizer->supports('pim_catalog_metric')->willReturn(true);
+        $metricNormalizer->normalize($weightValue, 'fr_FR')->willReturn('10 KILOGRAM');
+        $metricNormalizer->normalize($weightValue, 'en_US')->willReturn('10 KILOGRAM');
 
         $this->normalize($variantProduct, 'internal_api', $context)->shouldReturn([
             'id'                 => 42,
@@ -162,7 +180,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         AttributeOptionInterface $colorAttributeOption,
         AttributeOptionValueInterface $colorAttributeOptionValue,
         CompleteVariantProducts $completeVariantProducts,
-        $attributeOptionRepository
+        $attributeOptionRepository,
+        $simpleSelectOptionNormalizer
     ) {
         $context = [
             'locale' => 'en_US'
@@ -183,17 +202,20 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
 
         $colorValue->getData()->willReturn('white');
         $colorValue->getAttributeCode()->willReturn('color');
+        $colorValue->__toString()->willReturn('Blanc', 'White');
 
         $attributeOptionRepository->findOneByIdentifier('color.white')->willReturn($colorAttributeOption);
-        $colorAttributeOption->setLocale('fr_FR')->shouldBeCalled();
-        $colorAttributeOption->setLocale('en_US')->shouldBeCalled();
         $colorAttributeOption->getSortOrder()->willReturn(2);
         $colorAttributeOption->getCode()->willReturn('white');
         $colorAttributeOption->getTranslation()->willReturn($colorAttributeOptionValue);
-        $colorAttributeOptionValue->getLabel()->willReturn('Blanc', 'White');
+        $colorAttributeOptionValue->getLabel()->willReturn('Blanc default', 'White default');
 
         $variantProductRatioQuery->findComplete($productModel)->willReturn($completeVariantProducts);
         $completeVariantProducts->values()->willReturn(['NORMALIZED COMPLETENESS']);
+
+        $simpleSelectOptionNormalizer->supports('pim_catalog_simpleselect')->willReturn(true);
+        $simpleSelectOptionNormalizer->normalize($colorValue, 'fr_FR')->willReturn('Blanc');
+        $simpleSelectOptionNormalizer->normalize($colorValue, 'en_US')->willReturn('White');
 
         $this->normalize($productModel, 'internal_api', $context)->shouldReturn([
             'id'                 => 5,

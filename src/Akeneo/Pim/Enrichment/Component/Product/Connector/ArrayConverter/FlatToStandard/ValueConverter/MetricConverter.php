@@ -32,9 +32,31 @@ class MetricConverter extends AbstractValueConverter
         if ('' === $value) {
             $value = null;
         } else {
+            $data = null;
+            $unit = null;
             $tokens = $this->fieldSplitter->splitUnitValue($value);
-            $data = isset($tokens[0]) ? $tokens[0] : null;
-            $unit = isset($tokens[1]) ? $tokens[1] : null;
+            if (1 === count($tokens)) {
+                /* PIM-8290: If there is only one word in the value field, this can be the unit either the amount.
+                 * There can be 3 cases:
+                 * 1) this is a valid amount (e.g. 12 or 12.3456)
+                 * 2) this is a valid metric (e.g. 'GRAM')
+                 * 3) this is an invalid string (e.g. 'foo')
+                 *
+                 * The case 1 is valid and won't be caught by this next regexp, and update a metric without unit.
+                 * The case 2 is valid but will not imply a value update as there is no amount
+                 * The case 3 will raise an invalid unit value from ValidMetric validator.
+                 */
+                if (preg_match('/^[A-Za-z_]+$/', $tokens[0])) {
+                    $data = null;
+                    $unit = $tokens[0];
+                } else {
+                    $data = $tokens[0];
+                    $unit = null;
+                }
+            } else {
+                $data = $tokens[0];
+                $unit = $tokens[1];
+            }
 
             if (null !== $data) {
                 $data = !$attributeFieldInfo['attribute']->isDecimalsAllowed() && preg_match('|^\d+$|', $data) ?
