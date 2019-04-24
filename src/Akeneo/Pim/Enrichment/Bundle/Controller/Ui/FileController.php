@@ -42,14 +42,6 @@ class FileController
     /** @var array */
     protected $filesystemAliases;
 
-    /**
-     * @param ImagineController             $imagineController
-     * @param FilesystemProvider            $filesystemProvider
-     * @param FileInfoRepositoryInterface   $fileInfoRepository
-     * @param FileTypeGuesserInterface      $fileTypeGuesser
-     * @param DefaultImageProviderInterface $defaultImageProvider
-     * @param array                         $filesystemAliases
-     */
     public function __construct(
         ImagineController $imagineController,
         FilesystemProvider $filesystemProvider,
@@ -177,12 +169,8 @@ class FileController
     /**
      * Returns the Mime type of a file.
      * If the file is linked to a FileInfo, returns its Mime type.
-     *
-     * @param string $filename
-     *
-     * @return string
      */
-    protected function getMimeType($filename)
+    protected function getMimeType(string $filename): ?string
     {
         $mimeType = null;
 
@@ -190,8 +178,19 @@ class FileController
         if (null !== $file) {
             $mimeType = $file->getMimeType();
         }
+
         if (null === $mimeType && file_exists($filename)) {
             $mimeType = MimeTypeGuesser::getInstance()->guess($filename);
+        }
+
+        foreach ($this->filesystemAliases as $alias) {
+            $filesystem = $this->filesystemProvider->getFilesystem($alias);
+            if ($filesystem->has($filename)) {
+                $metadata = $filesystem->getMetadata($filename);
+                if (isset($metadata['mimetype'])) {
+                    return $metadata['mimetype'];
+                }
+            }
         }
 
         return $mimeType;

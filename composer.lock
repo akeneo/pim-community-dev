@@ -1770,7 +1770,7 @@
                     "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
                 },
                 {
-                    "name": "William Durand",
+                    "name": "William DURAND",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -3754,7 +3754,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",

@@ -223,6 +223,7 @@ services:
         arguments:
             - '@validator'
             - '@akeneo_file_storage.file_storage.path_generator'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '%tmp_storage_dir%'
 
     pim_enrich.controller.rest.versioning:
@@ -255,7 +256,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
-            - ['catalogStorage']
+            - ['catalogStorage', 'pefTmpStorage']
 
     pim_enrich.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController'

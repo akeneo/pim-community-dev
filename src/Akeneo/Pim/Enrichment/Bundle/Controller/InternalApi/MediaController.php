@@ -2,8 +2,12 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Path;
 use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use League\Flysystem\FileExistsException;
+use League\Flysystem\FilesystemInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,32 +32,32 @@ class MediaController
     /** @var string */
     protected $uploadDir;
 
-    /**
-     * @param ValidatorInterface     $validator
-     * @param PathGeneratorInterface $pathGenerator
-     * @param string                 $uploadDir
-     */
-    public function __construct(ValidatorInterface $validator, PathGeneratorInterface $pathGenerator, $uploadDir)
+    /** @var FilesystemProvider */
+    protected $filesystemProvider;
+
+    public function __construct(
+        ValidatorInterface $validator,
+        PathGeneratorInterface $pathGenerator,
+        FilesystemProvider $filesystemProvider,
+        $uploadDir
+    )
     {
         $this->validator = $validator;
         $this->pathGenerator = $pathGenerator;
+        $this->filesystemProvider = $filesystemProvider;
         $this->uploadDir = $uploadDir;
     }
 
     /**
      * Post a new media and return it's temporary identifier
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
-    public function postAction(Request $request)
+    public function postAction(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+        /** @var UploadedFile $file */
         $file = $request->files->get('file');
         $violations = $this->validator->validate($file);
 
@@ -61,8 +65,8 @@ class MediaController
             $errors = [];
             foreach ($violations as $violation) {
                 $errors[$violation->getPropertyPath()] = [
-                    'message'       => $violation->getMessage(),
-                    'invalid_value' => $violation->getInvalidValue()
+                    'message' => $violation->getMessage(),
+                    'invalid_value' => $violation->getInvalidValue(),
                 ];
             }
 
@@ -72,20 +76,25 @@ class MediaController
         $pathData = $this->pathGenerator->generate($file);
 
         try {
-            $movedFile = $file->move(
-                $this->uploadDir . DIRECTORY_SEPARATOR . $pathData['path'] . DIRECTORY_SEPARATOR . $pathData['uuid'],
-                $file->getClientOriginalName()
+            $fileSystem = $this->filesystemProvider->getFilesystem('pefTmpStorage');
+
+            $stream = fopen($file->getPathname(), 'r+');
+            $pathname = new Path($pathData['path'], $pathData['uuid'], $file->getClientOriginalName());
+            $fileSystem->writeStream(
+                (string)$pathname,
+                $stream
             );
-        } catch (FileException $e) {
-            //TODO: more specific message if debug mode is on?
+
+            if (is_resource($stream)) {
+                fclose($stream);
+            }
+        } catch (FileExistsException | \InvalidArgumentException $e) {
             return new JsonResponse("Unable to create target-directory, or moving file.", 400);
         }
 
-        return new JsonResponse(
-            [
-                'originalFilename' => $file->getClientOriginalName(),
-                'filePath'         => $movedFile->getPathname()
-            ]
-        );
+        return new JsonResponse([
+            'originalFilename' => $file->getClientOriginalName(),
+            'filePath' => (string)$pathname,
+        ]);
     }
 }

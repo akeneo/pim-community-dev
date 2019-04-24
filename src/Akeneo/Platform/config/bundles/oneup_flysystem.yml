@@ -9,7 +9,13 @@ oneup_flysystem:
         archivist_adapter:
             local:
                 directory: '%archive_dir%'
+        pef_tmp_storage_adapter:
+            local:
+                directory: '%tmp_storage_dir%'
     filesystems:
+        pef_tmp_storage:
+            adapter: pef_tmp_storage_adapter
+            mount: pefTmpStorage
         catalog_storage:
             adapter: catalog_storage_adapter
             mount: catalogStorage

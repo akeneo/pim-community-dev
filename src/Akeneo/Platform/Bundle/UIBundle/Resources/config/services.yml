@@ -6,7 +6,7 @@ services:
         class: 'Akeneo\Platform\Bundle\UIBundle\Imagine\FlysystemLoader'
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - ['catalogStorage']
+            - ['catalogStorage', 'pefTmpStorage']
         tags:
             - { name: liip_imagine.binary.loader, loader: flysystem_data_loader }
 
