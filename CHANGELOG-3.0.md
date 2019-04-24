@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- DAPI-225: Fix attribute search in Franklin-Insights settings
+
 # 3.0.14 (2019-04-19)
 
 ## Bug fixes
