@@ -29,6 +29,7 @@ final class GetValuesAndPropertiesFromProductIdentifiers
     {
         $query = <<<SQL
 SELECT
+    p.id,
     p.identifier,
     p.is_enabled,
     pm1.code AS product_model_code,
@@ -57,6 +58,7 @@ SQL;
         $results = [];
         foreach ($rows as $row) {
             $results[$row['identifier']] = [
+                'id' => Type::getType(Type::INTEGER)->convertToPHPValue($row['id'], $platform),
                 'identifier' => Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $platform),
                 'is_enabled' => Type::getType(Type::BOOLEAN)->convertToPHPValue($row['is_enabled'], $platform),
                 'product_model_code' => Type::getType(Type::STRING)->convertToPHPValue($row['product_model_code'], $platform),
