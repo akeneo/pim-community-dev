@@ -103,8 +103,11 @@ pim:
   persistence:
     diskSize: 150Gi
   resources:
+    limits:
+      memory: "2048Mi"
     requests:
-      cpu: 200m
+      cpu: "200m"
+      memory: "512Mi"
   defaultCatalog: minimal
   users:
     admin:
