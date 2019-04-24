@@ -4,7 +4,12 @@
 
 - DAPI-19: Add filter on subscribed/unsubscribed products to Franklin Insights in the product grid
 - DAPI-20: Display Franklin Insights subscription as a column of the product grid
-- PIM-8181: As Julia, I would like to display the options in the records grid
+- PIM-8181: Reference entities - As Julia, I would like to display the options in the records grid
+- PIM-8182: Reference entities - As Julia, I would like to filter the options in the records grid
+- PIM-8183: Reference entities - As Julia, I would like to display the reference entity links in the records grid
+- PIM-8184: Reference entities - As Julia, I would like to filter the reference entity links in the records grid
+- PIM-8281: Reference entities - As Julia, I would like to easily empty a filter in the records grid
+- PIM-8292: Reference entities - As Julia, I would like to view the completeness of a record in the records selector
 - TIP-1149: Update the warning limits in the Catalog volume monitoring screen
 
 ## Bug fixes
