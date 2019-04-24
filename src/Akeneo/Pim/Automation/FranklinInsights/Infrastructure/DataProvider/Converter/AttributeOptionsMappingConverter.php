@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\FranklinInsights\Infrastructure\DataProvider\Con
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\ValueObject\OptionMapping
     as FranklinAttributeOptionMapping;
@@ -44,11 +45,16 @@ final class AttributeOptionsMappingConverter
         foreach ($franklinAttrOptionsMapping as $franklinOptionMapping) {
             $pimStatus = $this->convertClientStatusToApplicationStatus($franklinOptionMapping->getStatus());
 
+            $pimOption = null;
+            if ($franklinOptionMapping->getPimOption()) {
+                $pimOption = new AttributeOptionCode($franklinOptionMapping->getPimOption());
+            }
+
             $pimOptionsMapping[] = new AttributeOptionMapping(
                 $franklinOptionMapping->getFranklinOptionId(),
                 $franklinOptionMapping->getFranklinOptionLabel(),
                 $pimStatus,
-                $franklinOptionMapping->getPimOption()
+                $pimOption
             );
         }
 

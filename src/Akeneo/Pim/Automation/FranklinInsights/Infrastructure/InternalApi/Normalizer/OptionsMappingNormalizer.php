@@ -47,7 +47,7 @@ class OptionsMappingNormalizer
                 'franklinAttributeOptionCode' => [
                     'label' => $attributeOptionMapping->franklinAttributeOptionLabel(),
                 ],
-                'catalogAttributeOptionCode' => $attributeOptionMapping->catalogAttributeOptionCode(),
+                'catalogAttributeOptionCode' => (string) $attributeOptionMapping->catalogAttributeOptionCode(),
                 'status' => $attributeOptionMapping->status(),
             ];
         }

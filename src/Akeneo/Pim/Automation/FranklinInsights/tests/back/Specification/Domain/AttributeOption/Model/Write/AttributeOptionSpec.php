@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write;
 
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\Model\Write\AttributeOption;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -23,7 +24,7 @@ class AttributeOptionSpec extends ObjectBehavior
 {
     public function it_is_initializable(): void
     {
-        $this->beConstructedWith('color1', 'red', 'color_1');
+        $this->beConstructedWith('color1', 'red', new AttributeOptionCode('color_1'));
         $this->shouldBeAnInstanceOf(AttributeOption::class);
     }
 }

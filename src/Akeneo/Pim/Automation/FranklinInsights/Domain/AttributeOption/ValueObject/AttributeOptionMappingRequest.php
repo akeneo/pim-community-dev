@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeOption\ValueObject;
 
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\AttributeOptionCode;
+
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -21,18 +23,13 @@ class AttributeOptionMappingRequest
     /** @var string */
     private $franklinAttributeOptionLabel;
 
-    /** @var string|null */
+    /** @var AttributeOptionCode|null */
     private $pimAttributeOptionCode;
 
     /** @var int */
     private $status;
 
-    /**
-     * @param string $franklinAttributeOptionLabel
-     * @param string|null $pimAttributeOptionCode
-     * @param int $status
-     */
-    public function __construct(string $franklinAttributeOptionLabel, ?string $pimAttributeOptionCode, int $status)
+    public function __construct(string $franklinAttributeOptionLabel, ?AttributeOptionCode $pimAttributeOptionCode, int $status)
     {
         $this->franklinAttributeOptionLabel = $franklinAttributeOptionLabel;
         $this->pimAttributeOptionCode = $pimAttributeOptionCode;
@@ -50,7 +47,7 @@ class AttributeOptionMappingRequest
     /**
      * @return string|null
      */
-    public function getPimAttributeOptionCode(): ?string
+    public function getPimAttributeOptionCode(): ?AttributeOptionCode
     {
         return $this->pimAttributeOptionCode;
     }
