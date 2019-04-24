@@ -48,8 +48,9 @@ class RecordValueHydrator implements ValueHydratorInterface
         if ('record' === $attribute->getType()) {
             if (empty($data)) {
                 $normalizedValue['data'] = null;
+            } else {
+                $normalizedValue['data'] = $data[0];
             }
-            $normalizedValue['data'] = $data[0];
         } else {
             $normalizedValue['data'] = $data;
         }
