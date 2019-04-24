@@ -20,6 +20,7 @@ export default ({
     '' !== referenceEntity.getIdentifier().stringValue()
       ? `#${router.generate('akeneo_reference_entities_reference_entity_edit', {
           identifier: referenceEntity.getIdentifier().stringValue(),
+          tab: 'record',
         })}`
       : '';
 

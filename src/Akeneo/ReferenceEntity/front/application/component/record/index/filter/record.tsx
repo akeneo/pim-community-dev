@@ -51,6 +51,16 @@ const RecordFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
     }
   };
 
+  const emptyFilter = () => {
+    setIsOpen(false);
+    onFilterUpdated({
+      field: getAttributeFilterKey(attribute),
+      operator: DEFAULT_OPERATOR,
+      value: [],
+      context: {},
+    });
+  };
+
   useEffect(() => {
     updateHydratedRecords();
   });
@@ -83,7 +93,7 @@ const RecordFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
             <div className="AknFilterChoice">
               <div className="AknFilterChoice-header">
                 <div className="AknFilterChoice-title">{attribute.getLabel(context.locale)}</div>
-                <div className="AknIconButton AknIconButton--delete" onClick={() => setIsOpen(false)} />
+                <div className="AknIconButton AknIconButton--erase" onClick={emptyFilter} />
               </div>
               <RecordSelector
                 value={value}
