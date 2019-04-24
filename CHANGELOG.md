@@ -5,6 +5,7 @@
 ## Technical improvement
 
 - DAPI-19: Update `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer` to accept optional normalizers
+- TIP-1149: Update the warning limits in the Catalog volume monitoring screen
 
 ## BC breaks
 

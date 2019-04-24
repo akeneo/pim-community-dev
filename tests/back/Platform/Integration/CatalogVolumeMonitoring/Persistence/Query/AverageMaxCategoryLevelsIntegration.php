@@ -20,6 +20,5 @@ class AverageMaxCategoryLevelsIntegration extends QueryTestCase
         Assert::assertEquals(6, $volume->getMaxVolume());
         Assert::assertEquals(3, $volume->getAverageVolume());
         Assert::assertEquals('average_max_category_levels', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 }
