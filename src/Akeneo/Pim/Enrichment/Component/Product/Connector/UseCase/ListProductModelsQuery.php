@@ -25,25 +25,25 @@ class ListProductModelsQuery
     /** @var string */
     public $withCount = 'false';
 
-    /** @var string */
+    /** @var null|string */
     public $channelCode;
 
-    /** @var string */
+    /** @var null|string */
     public $searchAfter;
 
-    /** @var string[] */
+    /** @var null|string[] */
     public $localeCodes;
 
     /** @var array */
     public $search = [];
 
-    /** @var string */
+    /** @var null|string */
     public $searchLocaleCode;
 
-    /** @var string[] */
+    /** @var null|string[] */
     public $attributeCodes;
 
-    /** @var string */
+    /** @var null|string */
     public $searchChannelCode;
 
     /** @var int */

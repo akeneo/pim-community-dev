@@ -85,7 +85,17 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@akeneo.pim.enrichment.factory.product_identifier_cursor_search_after_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
-            -
+
+    pim_catalog.query.product_model_query_builder_search_after_size_factory_external_api:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_model_identifier_cursor_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+
     pim_catalog.query.product_query_builder_from_size_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
@@ -104,6 +114,16 @@ services:
             - '@pim_catalog.query.filter.product_registry'
             - '@pim_catalog.query.sorter.registry'
             - '@akeneo.pim.enrichment.factory.product_identifier_cursor_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_catalog.query.product_model_query_builder_from_size_factory_external_api:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_model_identifier_cursor_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
 
     pim_catalog.query.product_model_query_builder_factory:
