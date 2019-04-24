@@ -4,12 +4,17 @@ terraform {
   }
 }
 
+provider "google" {
+  project = "${var.google_project_id}"
+  version = "~> 2.4.0"
+}
+
 locals {
   pfid = "srnt-${var.instance_name}"
 }
 
 data "template_file" "mailgun_login" {
-  template = "${format ("%s-%s", local.pfid, var.google_project_name)}"
+  template = "${format ("%s-%s", local.pfid, var.google_project_id)}"
 }
 
 resource "random_string" "mailgun_password" {
@@ -22,11 +27,10 @@ locals {
 }
 
 resource "null_resource" "mailgun_credential" {
-
   triggers {
-    mailgun_password = "${random_string.mailgun_password.result}",
+    mailgun_password    = "${random_string.mailgun_password.result}"
     mailgun_login_email = "${local.mailgun_login_email}"
-    mailgun_domain = "${var.mailgun_domain}"
+    mailgun_domain      = "${var.mailgun_domain}"
   }
 
   provisioner "local-exec" {
@@ -34,8 +38,7 @@ resource "null_resource" "mailgun_credential" {
 curl -s --user 'api:${var.mailgun_api_key}' \
 		https://api.mailgun.net/v3/domains/${var.mailgun_domain}/credentials \
 		-F login='${local.mailgun_login_email}' \
-		-F password='${random_string.mailgun_password.result}' ; \
- \
+		-F password='${random_string.mailgun_password.result}'
 EOF
   }
 

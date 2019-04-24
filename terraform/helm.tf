@@ -4,7 +4,7 @@ data "template_file" "helm_pim_config" {
   vars {
     instanceName        = "${var.instance_name}"
     pfid                = "${local.pfid}"
-    projectId           = "${var.google_project_name}"
+    projectId           = "${var.google_project_id}"
     googleZone          = "${var.google_project_zone}"
     pimmaster_dns_name  = "${replace(google_dns_record_set.main.name, "/\\.$/", "")}"
     mailgun_login_email = "${data.template_file.mailgun_login.rendered}@${var.mailgun_domain}"
