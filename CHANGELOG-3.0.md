@@ -5,6 +5,7 @@
 - PIM-8316: Fix product-grid filter on reference entity attributes
 - DAPI-235: Franklin Insights - Display a better error message when a PIM attribute is mapped multiple times
 - DAPI-239: Franklin Insights - Display backoffice error messages when identifiers mapping fails
+- DAPI-224: Franklin Insights - Fix mapping of Franklin attribute codes with dot character inside
 
 ## Improvements
 

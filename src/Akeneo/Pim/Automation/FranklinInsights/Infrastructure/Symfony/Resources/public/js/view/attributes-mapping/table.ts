@@ -27,6 +27,7 @@ const template = require('akeneo/franklin-insights/template/settings/attributes-
 const modalTemplate = require('pim/template/common/modal-centered');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
+const Property = require('pim/common/property');
 
 interface Config {
   labels: {
@@ -197,7 +198,7 @@ class AttributeMapping extends BaseView {
     );
     const attributeSelector = new SimpleSelectAttributeWithWarning({
       config: {
-        fieldName: 'mapping.' + franklinAttributeCode + '.attribute',
+        fieldName: Property.propertyPath(['mapping', franklinAttributeCode, 'attribute']),
         label: '',
         choiceRoute: 'pim_enrich_attribute_rest_index',
         types: AttributeMapping.ALLOWED_CATALOG_TYPES,
@@ -243,7 +244,7 @@ class AttributeMapping extends BaseView {
     const franklinAttributeLabel = $line.data('franklin-attribute') as string;
     const franklinAttributeCode = $line.find('.attribute-selector').data('franklin-attribute-code');
     const catalogAttributeCode =
-        $line.find('input[name="mapping.' + franklinAttributeCode + '.attribute"]').val() as string;
+        $line.find('input[name="' + Property.propertyPath(['mapping', franklinAttributeCode, 'attribute']) + '"]').val() as string;
     const familyCode = AttributeMapping.getFamilyCode();
 
     $.when(
