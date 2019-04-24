@@ -55,7 +55,7 @@ services:
             - '@database_connection'
 
     pimee_workflow.query.get_metadata_for_product:
-        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\ORM\Connector\GetMetadata'
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\ORM\Connector\Product\GetMetadata'
         arguments:
             - '@security.authorization_checker'
             - '@security.token_storage'
@@ -65,3 +65,10 @@ services:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\GetWorkflowStatusFromProductIdentifiers
         arguments:
             - '@database_connection'
+
+    pimee_workflow.query.get_metadata_for_product_model:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\ORM\Connector\ProductModel\GetMetadata'
+        arguments:
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+            - '@pimee_workflow.repository.product_model_draft'

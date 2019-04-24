@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\ORM\Connector;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\ORM\Connector\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface;
@@ -53,7 +53,7 @@ final class GetMetadata implements GetMetadataInterface
     }
 
     /**
-     * @throws \LogicException If the user has not even the "view" permission on the product.
+     * {@inheritdoc}
      */
     public function forProduct(ProductInterface $product): array
     {

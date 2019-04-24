@@ -92,3 +92,25 @@ services:
             - '@security.token_storage'
             - '@pimee_security.repository.category_access'
             - 'VIEW_ITEMS'
+
+    pimee_catalog.query.product_model_query_builder_search_after_size_factory_external_api_with_permissions:
+        public: false
+        class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        decorates: pim_catalog.query.product_model_query_builder_search_after_size_factory_external_api
+        decoration_inner_name: pim_catalog.query.product_model_query_builder_search_after_size_factory_external_api.without_permission
+        arguments:
+            - '@pim_catalog.query.product_model_query_builder_search_after_size_factory_external_api.without_permission'
+            - '@security.token_storage'
+            - '@pimee_security.repository.category_access'
+            - 'VIEW_ITEMS'
+    
+    pimee_catalog.query.product_model_query_builder_from_size_factory_external_api_with_permissions:
+        public: false
+        class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        decorates: pim_catalog.query.product_model_query_builder_from_size_factory_external_api
+        decoration_inner_name: pim_catalog.query.product_model_query_builder_from_size_factory_external_api.without_permission
+        arguments:
+            - '@pim_catalog.query.product_model_query_builder_from_size_factory_external_api.without_permission'
+            - '@security.token_storage'
+            - '@pimee_security.repository.category_access'
+            - 'VIEW_ITEMS'
