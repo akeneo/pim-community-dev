@@ -35,7 +35,7 @@ class RecordValueHydratorSpec extends ObjectBehavior
         $this->supports($otherAttribute)->shouldReturn(false);
     }
 
-    public function it_fills_labels_linked_record_into_a_value_context(
+    public function it_fills_labels_linked_record_collection_into_a_value_context(
         RecordAttribute $recordAttribute
     ) {
         $recordAttribute->getType()->willReturn('record_collection');
@@ -67,5 +67,60 @@ class RecordValueHydratorSpec extends ObjectBehavior
                 ]
             ]
         ]);
+    }
+
+    public function it_fills_labels_linked_record_into_a_value_context(
+        RecordAttribute $recordAttribute
+    ) {
+        $recordAttribute->getType()->willReturn('record');
+        $normalizedValue = [
+            'attribute' => 'brands',
+            'locale' => null,
+            'channel' => null,
+            'data' => 'ikea_id',
+        ];
+
+        $context = [
+            'labels' => [
+                'ikea_id' => ['en_US' => 'Ikea', 'fr_FR' => 'Ikea'],
+            ]
+        ];
+
+        $this->hydrate($normalizedValue, $recordAttribute, $context)->shouldReturn([
+           'attribute' => 'brands',
+           'locale' => null,
+           'channel' => null,
+           'data' => 'ikea_id',
+           'context' => [
+               'labels' => [
+                   'ikea_id' => ['en_US' => 'Ikea', 'fr_FR' => 'Ikea'],
+               ]
+           ]
+       ]);
+    }
+
+    public function it_erase_removed_linked_record_from_the_data(RecordAttribute $recordAttribute)
+    {
+        $recordAttribute->getType()->willReturn('record');
+        $normalizedValue = [
+            'attribute' => 'brands',
+            'locale' => null,
+            'channel' => null,
+            'data' => 'ikea_id',
+        ];
+
+        $context = [
+            'labels' => []
+        ];
+
+        $this->hydrate($normalizedValue, $recordAttribute, $context)->shouldReturn([
+           'attribute' => 'brands',
+           'locale' => null,
+           'channel' => null,
+           'data' => null,
+           'context' => [
+               'labels' => []
+           ]
+       ]);
     }
 }
