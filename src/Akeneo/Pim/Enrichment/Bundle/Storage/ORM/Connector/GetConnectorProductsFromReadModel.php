@@ -10,9 +10,10 @@ use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductAssociationsByProdu
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class GetConnectorProductsFromReadModel implements GetConnectorProducts
 {
@@ -25,14 +26,24 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
     /** @var GetCategoryCodesByProductIdentifiers */
     private $getCategoryCodesByProductIdentifiers;
 
+    /** @var ValueCollectionFactoryInterface */
+    private $valueCollectionFactory;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $attributeRepository;
+
     public function __construct(
         GetValuesAndPropertiesFromProductIdentifiers $getValuesAndPropertiesFromProductIdentifiers,
         GetProductAssociationsByProductIdentifiers $getProductAssociationsByProductIdentifiers,
-        GetCategoryCodesByProductIdentifiers $getCategoryCodesByProductIdentifiers
+        GetCategoryCodesByProductIdentifiers $getCategoryCodesByProductIdentifiers,
+        ValueCollectionFactoryInterface $valueCollectionFactory,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->getValuesAndPropertiesFromProductIdentifiers = $getValuesAndPropertiesFromProductIdentifiers;
         $this->getProductAssociationsByProductIdentifiers = $getProductAssociationsByProductIdentifiers;
         $this->getCategoryCodesByProductIdentifiers = $getCategoryCodesByProductIdentifiers;
+        $this->valueCollectionFactory = $valueCollectionFactory;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -49,6 +60,8 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
             return $identifier->getIdentifier();
         }, iterator_to_array($result));
 
+        $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
+
         $associations = [];
         foreach ($this->getProductAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers)
                  as $productIdentifier => $productAssociations) {
@@ -58,7 +71,7 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
         $categoryCodes = [];
         foreach ($this->getCategoryCodesByProductIdentifiers->fetchCategoryCodes($identifiers)
                  as $productIdentifier => $productCategoryCodes) {
-            $categoryCodes[$productIdentifier] = ['category_codes'] = $productCategoryCodes;
+            $categoryCodes[$productIdentifier] = ['category_codes' => $productCategoryCodes];
         }
 
         $rows = array_replace_recursive(
@@ -68,7 +81,24 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
         );
 
         $products = [];
-        foreach ($rows as $row) {
+        foreach ($identifiers as $identifier) {
+            if (!isset($rows[$identifier])) {
+                continue;
+            }
+            $row = $rows[$identifier];
+            $raw_values = $row['raw_values'];
+
+            $raw_values = $this->removeAttribute($raw_values, $identifierAttributeCode);
+            if (null !== $attributesToFilterOn) {
+                $raw_values = $this->filterWithAttributes($raw_values, $attributesToFilterOn);
+            }
+            if (null !== $channelToFilterOn) {
+                $raw_values = $this->filterWithScope($raw_values, $channelToFilterOn);
+            }
+            if (null !== $localesToFilterOn) {
+                $raw_values = $this->filterWithLocales($raw_values, $localesToFilterOn);
+            }
+
             $products[] = new ConnectorProduct(
                 $row['id'],
                 $row['identifier'],
@@ -81,10 +111,59 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
                 $row['product_model_code'],
                 $row['associations'],
                 [],
-                new ValueCollection()//$row['raw_values']
+                $this->valueCollectionFactory->createFromStorageFormat($raw_values)
             );
         }
 
         return new ConnectorProductList($result->count(), $products);
+    }
+
+    private function removeAttribute($raw_values, $identifierAttributeCode)
+    {
+        unset($raw_values[$identifierAttributeCode]);
+
+        return $raw_values;
+    }
+
+    private function filterWithAttributes(array $raw_values, array $attributeCodes)
+    {
+        $result = [];
+        foreach ($raw_values as $attributeCode => $attributeValues) {
+            if (in_array($attributeCode, $attributeCodes)) {
+                $result[$attributeCode] = $attributeValues;
+            }
+        }
+
+        return $result;
+    }
+
+    private function filterWithScope(array $raw_values, $filterScope)
+    {
+        $result = [];
+        foreach ($raw_values as $attributeCode => $attributeValues) {
+            foreach ($attributeValues as $scope => $scopedValue) {
+                if ($scope === '<all_channels>' || $scope === $filterScope) {
+                    $result[$attributeCode][$scope] = $scopedValue;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    private function filterWithLocales(array $raw_values, ?array $localesToFilterOn)
+    {
+        $result = [];
+        foreach ($raw_values as $attributeCode => $attributeValues) {
+            foreach ($attributeValues as $scope => $scopedValue) {
+                foreach ($scopedValue as $locale => $value) {
+                    if ($locale === '<all_locales>' || in_array($locale, $localesToFilterOn)) {
+                        $result[$attributeCode][$scope][$locale] = $value;
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 }

@@ -27,6 +27,7 @@ class NormalizedProductCleaner
         self::sanitizeMediaAttributeData($productNormalized);
         self::sortValues($productNormalized['values']);
         self::sortAssociations($productNormalized['associations']);
+        self::sortCategories($productNormalized['categories']);
     }
 
     /**
@@ -55,6 +56,16 @@ class NormalizedProductCleaner
             sort($association['groups']);
             sort($association['products']);
         }
+    }
+
+    /**
+     * Sorts the category codes by alphanumerical order.
+     *
+     * @param array $categoryCodes
+     */
+    private static function sortCategories(&$categoryCodes): void
+    {
+        sort($categoryCodes);
     }
 
     /**
