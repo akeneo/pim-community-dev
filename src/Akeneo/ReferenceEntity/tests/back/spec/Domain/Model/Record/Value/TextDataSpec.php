@@ -47,6 +47,15 @@ class TextDataSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 
+    /**
+     * @see https://akeneo.atlassian.net/browse/PIM-8294
+     */
+    public function it_can_contain_the_zero_string()
+    {
+        $this->beConstructedThrough('fromString', ['0']);
+        $this->normalize()->shouldReturn('0');
+    }
+
     public function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn('This is a text');

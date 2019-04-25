@@ -1,7 +1,7 @@
 extensions:
-    pimee-user-edit-form-email-notifications:
+    pimee-user-profile-form-email-notifications:
         module: pim/form/common/fields/boolean
-        parent: pim-user-edit-form-additional-tab-content
+        parent: pim-user-profile-form-additional-tab-content
         targetZone: content
         position: 39
         config:

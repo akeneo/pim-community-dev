@@ -57,9 +57,9 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
     {
         $existingRecordCodes = $this->recordsExistsForReferenceEntity->withReferenceEntityAndCodes(
             ReferenceEntityIdentifier::fromString('designer'),
-            ['starck', 'unknown']
+            ['starck', 'coco', 'unknown']
         );
-        $this->assertEquals(['starck'], $existingRecordCodes);
+        $this->assertEquals(['coco', 'starck'], $existingRecordCodes);
     }
 
     private function resetDB(): void
@@ -104,6 +104,15 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
                         TextData::fromString('Philippe Starck')
                     ),
                 ])
+            )
+        );
+
+        $recordRepository->create(
+            Record::create(
+                RecordIdentifier::fromString('coco_designer_fingerprint'),
+                $referenceEntityIdentifier,
+                RecordCode::fromString('coco'),
+                ValueCollection::fromValues([])
             )
         );
     }

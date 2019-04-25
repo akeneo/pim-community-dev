@@ -55,7 +55,7 @@ const ActionRow = memo(
 
     return (
       <tr
-        className={`AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder ${placeholder ? 'AknLoadingPlaceHolder' : ''}`}
+        className={`AknGrid-bodyRow ${placeholder ? 'AknLoadingPlaceHolder' : ''}`}
         data-identifier={record.identifier}
       >
         <td className="AknGrid-bodyCell AknGrid-bodyCell--action">

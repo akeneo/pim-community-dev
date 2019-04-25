@@ -53,8 +53,8 @@ SQL;
                 'codes' => Connection::PARAM_STR_ARRAY
             ]
         );
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $results = $statement->fetchAll(\PDO::FETCH_COLUMN);
 
-        return array_values($result);
+        return $results;
     }
 }
