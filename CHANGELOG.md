@@ -2,8 +2,17 @@
 
 ## Improvements
 
-- DAPI-19: Add filter on subscribed/unsubscribed products to Franklin Insights in the product grid
-- DAPI-20: Display Franklin Insights subscription as a column of the product grid
+- DAPI-19: Franklin Insights - Add filter on subscribed/unsubscribed products to Franklin Insights in the product grid
+- DAPI-20: Franklin Insights - Display Franklin Insights subscription as a column of the product grid
+- DAPI-37: Franklin Insights - As Julia, I don't want to see the "refresh project completeness" in the process tracker
+- DAPI-215: Franklin Insights - As Julia, I'd like unmapped attributes to be displayed first in attribute mapping screen
+- DAPI-21: Franklin Insights - As Julia, I'd like the family label to be displayed in the attributes mapping screen
+- DAPI-22: Franklin Insights - As Julia, I'd like the family to be always displayed in the attribute mapping screen
+- DAPI-36: Franklin Insights - As Julia, it seems weird to see my name in the widget dropdown
+- DAPI-136: Proposals - As Julia, I'd like proposal comment popin to be removed for Franklin proposal
+- DAPI-58: Proposals - As Julia, I’d like proposal filter to be displayed in one panel
+- DAPI-61: Proposals - As Julia, I'd like the proposals grid to load faster
+- DAPI-29: Teamwork assistant - As Julia, I'd like to know that the number displayed in the widget is not the final one
 - PIM-8181: Reference entities - As Julia, I would like to display the options in the records grid
 - PIM-8182: Reference entities - As Julia, I would like to filter the options in the records grid
 - PIM-8183: Reference entities - As Julia, I would like to display the reference entity links in the records grid
@@ -13,6 +22,9 @@
 - TIP-1149: Update the warning limits in the Catalog volume monitoring screen
 
 ## Bug fixes
+
+- DAPI-206: Franklin Insights - Fix the link of the attribute option mapping modal
+- DAPI-135: Teamwork assistant - Fix project creation if there is no filter on scope in datagrid context
 
 ## Technical improvement
 
