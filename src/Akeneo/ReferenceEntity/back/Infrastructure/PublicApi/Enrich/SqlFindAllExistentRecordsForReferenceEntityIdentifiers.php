@@ -35,6 +35,11 @@ final class SqlFindAllExistentRecordsForReferenceEntityIdentifiers
             return [];
         }
 
+        /**
+         * We have to build the query by hand because Doctrine does not support tuple for IN (:myParameter) things
+         * https://www.doctrine-project.org/projects/doctrine-dbal/en/2.9/reference/data-retrieval-and-manipulation.html#list-of-parameters-conversion
+         */
+
         $queryParams = [];
         $queryStringParams = [];
 
@@ -58,10 +63,10 @@ SQL;
             $queryParams
         )->fetchAll();
 
-        return array_reduce($rawResults, function (array $carry, array $item) {
-            $carry[$item['reference_entity_identifier']] = json_decode($item['record_code'], true);
+        return array_reduce($rawResults, function (array $results, array $item) {
+            $results[$item['reference_entity_identifier']] = json_decode($item['record_code'], true);
 
-            return $carry;
+            return $results;
         }, []);
     }
 }
