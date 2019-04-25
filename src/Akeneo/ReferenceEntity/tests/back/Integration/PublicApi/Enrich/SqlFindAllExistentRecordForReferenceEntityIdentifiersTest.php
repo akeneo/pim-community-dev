@@ -88,7 +88,7 @@ final class SqlFindAllExistentRecordForReferenceEntityIdentifiersTest extends Sq
         }
 
         foreach ($referenceEntityIdentifiers as $referenceEntityIdentifier) {
-            foreach(range('a', 'e') as $recordCode) {
+            foreach (range('a', 'e') as $recordCode) {
                 $recordRepository->create(
                     Record::create(
                         RecordIdentifier::fromString(sprintf('record_%s_%s', $recordCode, $referenceEntityIdentifier->normalize())),
@@ -100,13 +100,12 @@ final class SqlFindAllExistentRecordForReferenceEntityIdentifiersTest extends Sq
             }
             $recordRepository->create(
                 Record::create(
-                    RecordIdentifier::fromString(sprintf('toto_record_%s_%s', $recordCode, $referenceEntityIdentifier->normalize())),
+                    RecordIdentifier::fromString(sprintf('toto_record_%s', $referenceEntityIdentifier->normalize())),
                     $referenceEntityIdentifier,
                     RecordCode::fromString(sprintf('%s_record_unique', $referenceEntityIdentifier->normalize())),
                     ValueCollection::fromValues([])
                 )
             );
         }
-
     }
 }

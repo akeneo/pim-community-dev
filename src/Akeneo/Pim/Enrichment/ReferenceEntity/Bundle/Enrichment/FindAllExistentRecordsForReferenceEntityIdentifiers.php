@@ -33,6 +33,8 @@ final class FindAllExistentRecordsForReferenceEntityIdentifiers implements Query
 
     public function forReferenceEntityIdentifiersAndRecordCodes(array $referenceEntityIdentifiersToCodes): array
     {
-        return $this->allExistentRecordForReferenceEntityIdentifiers($referenceEntityIdentifiersToCodes);
+        return $this
+            ->allExistentRecordForReferenceEntityIdentifiers
+            ->forReferenceEntityIdentifiersAndRecordCodes($referenceEntityIdentifiersToCodes);
     }
 }
