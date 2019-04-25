@@ -339,7 +339,7 @@ class RecordLabel extends React.Component<RecordLabelProps> {
   }
 }
 
-export const label =  connect(
+export const label = connect(
   (state: EditState): RecordLabelProps => {
     return {
       grid: {

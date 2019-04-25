@@ -188,7 +188,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
       <React.Fragment>
         <div className="AknFilterBox AknFilterBox--search">
           <div className="AknFilterBox-list filter-box">
-            <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250}/>
+            <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
             <ItemsCounter matchesCount={grid.matchesCount} />
             <CompletenessFilter value={completenessValue} onChange={this.props.onCompletenessFilterUpdated} />
           </div>
