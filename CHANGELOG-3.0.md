@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - DAPI-225: Fix attribute search in Franklin-Insights settings
+- PIM-8300: Display description in record grid without HTML tags
 
 # 3.0.14 (2019-04-19)
 
