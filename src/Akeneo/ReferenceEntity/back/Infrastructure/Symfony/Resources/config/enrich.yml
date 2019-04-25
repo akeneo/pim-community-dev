@@ -3,3 +3,8 @@ services:
         class: 'Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\SqlFindAllExistentRecordsForReferenceEntityIdentifiers'
         arguments:
             $connection: '@database_connection'
+
+    pimee.reference_entity.enrichment.find_all_existent_records_for_record_identifiers:
+        class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\FindAllExistentRecordsForReferenceEntityIdentifiers'
+        arguments:
+            $allExistentRecordForReferenceEntityIdentifiers: '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_all_existent_records_for_reference_entity_identifiers_public_api'
