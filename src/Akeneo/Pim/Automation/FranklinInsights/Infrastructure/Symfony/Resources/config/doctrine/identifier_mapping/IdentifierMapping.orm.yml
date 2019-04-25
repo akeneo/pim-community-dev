@@ -6,6 +6,10 @@ Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\Identifier
         franklin_code_idx:
             columns:
                 - franklin_code
+    uniqueConstraints:
+        UNIQ_attribute_code:
+            columns:
+                - attribute_code
     fields:
         id:
             type: integer
@@ -18,5 +22,4 @@ Akeneo\Pim\Automation\FranklinInsights\Domain\IdentifierMapping\Model\Identifier
         attributeCode:
             column: attribute_code
             type: string
-            unique: true
             nullable: true
