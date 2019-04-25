@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Improvements
+
+- PIM-8307: Create public API services/events for records synchronisation with Onboarder
+
 # 3.0.17 (2019-05-10)
 
 ## Bug fixes
@@ -31,6 +35,7 @@
 ## BC Breaks
 
 - Changed constructor of `Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydrator`. Added `Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordsExists` and `Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRecordLinkValueKeys` as last arguments.
+
 
 ## BC breaks
 
