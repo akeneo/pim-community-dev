@@ -70,7 +70,7 @@ final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProd
                 $isChannelToKeep = null === $channelToFilterOn || !$value->isScopable() || $value->getScopeCode() === $channelToFilterOn;
                 $isLocaleToKeep = null === $localesToFilterOn || !$value->isLocalizable() || in_array($value->getLocaleCode(), $localesToFilterOn);
 
-                return  $isAttributeToKeep && $isChannelToKeep && $isLocaleToKeep;
+                return $isAttributeToKeep && $isChannelToKeep && $isLocaleToKeep;
             });
             $values->removeByAttributeCode($identifierAttributeCode);
 
