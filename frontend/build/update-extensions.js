@@ -71,7 +71,9 @@ function getExtensionsFromRequiredBundles() {
  * @param {string} paths
  */
 function mergeExtensions(paths) {
-    const config = paths.map(path => getFileContents(path))
+    const config = paths.map(path => {
+        return getFileContents(path) || {}
+    })
     const merged = deepmerge.all(config)
     const mergedExtensions = Object.entries(merged.extensions).map(([code, extension]) => {
         return extensionConfig = {
