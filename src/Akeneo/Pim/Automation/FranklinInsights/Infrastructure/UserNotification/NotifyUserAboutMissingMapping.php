@@ -57,7 +57,7 @@ class NotifyUserAboutMissingMapping
             ->setMessageParams(['%familyLabel%' => $family->getLabel()])
             ->setRoute('akeneo_franklin_insights_attributes_mapping_edit')
             ->setRouteParams(['familyCode' => $family->getCode()])
-            ->setContext(['actionType' => 'robot']);
+            ->setContext(['actionType' => 'franklin_insights']);
 
         $this->notifier->notify($notification, [$user->getUsername()]);
     }

@@ -16,8 +16,8 @@
  */
 export enum AttributeOptionStatus {
   Pending = 0,
-  Mapped = 1,
-  Unmapped = 2,
+  Active = 1,
+  Inactive = 2,
 }
 
 export interface NormalizedAttributeOptionsMapping {

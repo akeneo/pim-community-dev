@@ -11,6 +11,7 @@
 
 - PIM-8294: Allow for empty-looking strings like '0' in TextData
 - PIM-8295: fetch all records that exist in SqlRecordsExists
+- DAPI-213: Fix missing translation keys
 
 ## Improvements
 

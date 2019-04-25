@@ -190,3 +190,7 @@ pim_enrich.entity.attribute:
         save:
             title: 'Warning!'
             warning: '{1}Deleting an attribute may impact 1 Franklin subscription. Are you sure?|]1,+Inf[Deleting an attribute may impact {{ count }} Franklin subscriptions. Are you sure?'
+
+pim_notification:
+    types:
+        franklin_insights: Franklin Insights

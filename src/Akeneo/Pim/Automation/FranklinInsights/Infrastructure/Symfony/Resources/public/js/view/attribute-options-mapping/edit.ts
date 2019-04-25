@@ -25,8 +25,8 @@ const template = require('akeneo/franklin-insights/template/settings/attribute-o
 interface Config {
   labels: {
     pending: string;
-    mapped: string;
-    unmapped: string;
+    active: string;
+    inactive: string;
     franklinAttributeOption: string;
     catalogAttributeOption: string;
     attributeOptionStatus: string;
@@ -43,8 +43,8 @@ class AttributeOptionsMapping extends BaseForm {
   public readonly config: Config = {
     labels: {
       pending: '',
-      mapped: '',
-      unmapped: '',
+      active: '',
+      inactive: '',
       franklinAttributeOption: '',
       catalogAttributeOption: '',
       attributeOptionStatus: '',
@@ -130,8 +130,8 @@ class AttributeOptionsMapping extends BaseForm {
   private getMappingStatuses() {
     const statuses: { [status: number]: string } = {};
     statuses[AttributeOptionStatus.Pending] = __(this.config.labels.pending);
-    statuses[AttributeOptionStatus.Mapped] = __(this.config.labels.mapped);
-    statuses[AttributeOptionStatus.Unmapped] = __(this.config.labels.unmapped);
+    statuses[AttributeOptionStatus.Active] = __(this.config.labels.active);
+    statuses[AttributeOptionStatus.Inactive] = __(this.config.labels.inactive);
 
     return statuses;
   }
