@@ -15,7 +15,6 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder;
 
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByIdentifiersInterface;
 use Doctrine\DBAL\Connection;
-use PDO;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
