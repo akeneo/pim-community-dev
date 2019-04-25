@@ -5,3 +5,10 @@ export const redirectToRoute = (
 ) => {
   return {type: 'REDIRECT_TO_ROUTE', route, params, options};
 };
+
+export const redirectToProductGrid = (
+  selectedAttribute: string,
+  recordCode: string
+) => {
+  return {type: 'REDIRECT_TO_PRODUCT_GRID', selectedAttribute, recordCode};
+};
