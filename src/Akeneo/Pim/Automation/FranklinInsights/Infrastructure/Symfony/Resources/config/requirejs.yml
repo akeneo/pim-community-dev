@@ -6,15 +6,29 @@ config:
                 akeneo_franklin_insights_connection_edit:
                     module: akeneo/franklin-insights/controller/connection
                     aclResourceId: akeneo_franklin_insights_connection
+                akeneo_franklin_insights_mapping_index:
+                    module: akeneo/franklin-insights/controller/mapping
+                    aclResourceId: akeneo_franklin_insights_settings_mapping
+                    config:
+                        lastMappingVisitedKey: 'franklin-insight-mapping:last-visited-mapping'
+                        lastFamilyVisitedKey: 'franklin-insight-mapping:last-family-visited'
                 akeneo_franklin_insights_identifiers_mapping_edit:
                     module: akeneo/franklin-insights/controller/identifiers-mapping
                     aclResourceId: akeneo_franklin_insights_settings_mapping
+                    config:
+                        lastMappingVisitedKey: 'franklin-insight-mapping:last-visited-mapping'
                 akeneo_franklin_insights_attributes_mapping_index:
                     module: akeneo/franklin-insights/controller/attributes-mapping-index
                     aclResourceId: akeneo_franklin_insights_settings_mapping
+                    config:
+                        lastMappingVisitedKey: 'franklin-insight-mapping:last-mapping-visited'
+                        lastFamilyVisitedKey: 'franklin-insight-mapping:last-family-visited'
                 akeneo_franklin_insights_attributes_mapping_edit:
                     module: akeneo/franklin-insights/controller/attributes-mapping-edit
                     aclResourceId: akeneo_franklin_insights_settings_mapping
+                    config:
+                        lastMappingVisitedKey: 'franklin-insight-mapping:last-visited-mapping'
+                        lastFamilyVisitedKey: 'franklin-insight-mapping:last-family-visited'
 
         # Savers configuration
         akeneo/franklin-insights/saver/franklin-connection:
@@ -49,6 +63,7 @@ config:
 
         # Controller
         akeneo/franklin-insights/controller/connection: akeneofranklininsights/js/controller/connection.ts
+        akeneo/franklin-insights/controller/mapping: akeneofranklininsights/js/controller/mapping.ts
         akeneo/franklin-insights/controller/identifiers-mapping: akeneofranklininsights/js/controller/identifiers-mapping.ts
         akeneo/franklin-insights/controller/attributes-mapping-index: akeneofranklininsights/js/controller/attributes-mapping-index.ts
         akeneo/franklin-insights/controller/attributes-mapping-edit: akeneofranklininsights/js/controller/attributes-mapping-edit.ts

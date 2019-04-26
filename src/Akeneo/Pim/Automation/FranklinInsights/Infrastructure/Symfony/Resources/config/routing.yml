@@ -6,6 +6,10 @@ akeneo_franklin_insights_connection:
     resource: '@AkeneoFranklinInsightsBundle/Resources/config/routing/connection.yml'
     prefix: '/franklin-insights/connection'
 
+akeneo_franklin_insights_mapping:
+    resource: '@AkeneoFranklinInsightsBundle/Resources/config/routing/mapping.yml'
+    prefix: '/franklin-insights/mapping'
+
 akeneo_franklin_insights_identifiers_mapping:
     resource: '@AkeneoFranklinInsightsBundle/Resources/config/routing/identifiers_mapping.yml'
     prefix: '/franklin-insights/mapping/identifiers'
