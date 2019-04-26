@@ -12,10 +12,12 @@ import Completeness, {NormalizedCompleteness} from 'akeneoreferenceentity/domain
 interface CommonNormalizedRecord {
   identifier: NormalizedRecordIdentifier;
   reference_entity_identifier: string;
-  code: string;
+  code: NormalizedRecordCode;
   labels: NormalizedLabelCollection;
   image: NormalizedFile;
 }
+
+export type NormalizedRecordCode = string;
 
 export interface NormalizedRecord extends CommonNormalizedRecord {
   values: NormalizedValue[];
