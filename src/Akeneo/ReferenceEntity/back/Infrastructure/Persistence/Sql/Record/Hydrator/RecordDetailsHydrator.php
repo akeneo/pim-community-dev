@@ -135,12 +135,6 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         return $result;
     }
 
-    /**
-     * @param $value
-     *
-     * @return array
-     *
-     */
     private function getRecordCodes($value): array
     {
         if (is_array($value['data'])) {
