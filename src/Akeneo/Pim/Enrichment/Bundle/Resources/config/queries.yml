@@ -156,8 +156,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.enrichment.product.query.filter_existing_reference_data:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\FilterExistingReferenceData'
+    akeneo.pim.enrichment.product.query.get_existing_reference_data_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetExistingReferenceDataCodes'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_reference_data.repository_resolver'
