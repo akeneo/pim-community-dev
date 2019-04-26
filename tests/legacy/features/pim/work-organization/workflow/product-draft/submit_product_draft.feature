@@ -98,7 +98,8 @@ Feature: Submit a modification on a product draft
     When I visit the "Media" group
     And I attach file "akeneo.txt" to "Datasheet"
     And I save the product
-    Then the file "Datasheet" of product my-jacket should be ""
+    Then the product "my-jacket" should not have the following values:
+      | datasheet |
     But the product Datasheet should be "akeneo.txt"
     And I should see that Datasheet is a modified value
 
@@ -107,7 +108,8 @@ Feature: Submit a modification on a product draft
     When I visit the "Media" group
     And I attach file "akeneo.jpg" to "Side view"
     And I save the product
-    Then the file "side_view" of product my-jacket should be ""
+    Then the product "my-jacket" should not have the following values:
+      | side_view |
     But the product Side view should be "akeneo.jpg"
     And I should see that Side view is a modified value
 

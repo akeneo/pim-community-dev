@@ -108,6 +108,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
       options: {
         limit: this.resultsPerPage,
         page,
+        locale: UserContext.get('catalogLocale'),
       },
     };
 

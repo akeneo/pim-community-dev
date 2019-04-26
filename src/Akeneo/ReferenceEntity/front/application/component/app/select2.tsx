@@ -36,6 +36,17 @@ export default class Select2 extends React.Component<Select2Props & any> {
     }
   }
 
+  componentDidUpdate() {
+    if (null === this.select.current) {
+      return;
+    }
+    const $el = $(this.select.current) as any;
+
+    if (undefined !== $el.select2) {
+      $el.val(this.props.value).select2(this.props.configuration);
+    }
+  }
+
   componentWillUnmount() {
     if (null === this.select.current) {
       return;
