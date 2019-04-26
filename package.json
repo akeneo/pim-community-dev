@@ -12,7 +12,7 @@
   "scripts": {
     "requirements": "node $npm_package_config_source/frontend/build/check-requirements.js",
     "sync": "NODE_PATH=node_modules node $npm_package_config_sync --source=$npm_package_config_source",
-    "webpack": "yarn requirements && NODE_PATH=node_modules EDITION=cloud webpack --config $npm_package_config_source/webpack.config.js --env=prod",
+    "webpack": "yarn requirements && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
     "webpack-dev": "yarn requirements && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
     "webpack-watch": "yarn requirements && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch",
     "prettier": "prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./{src,tests}/Akeneo/ReferenceEntity/**/*.ts\"; prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./{src,tests}/Akeneo/ReferenceEntity/**/*.tsx\"; prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./tests/front/**/*.js\";",
