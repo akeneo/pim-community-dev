@@ -87,7 +87,7 @@ class SaveAttributesMappingByFamilyCommandSpec extends ObjectBehavior
                 'attribute' => 'pim_color',
             ],
             'secondary_color' => [
-                'franklinAttribute' => ['type' => 'multiselect'],
+                'franklinAttribute' => ['type' => 'simpleselect'],
                 'attribute' => 'pim_color',
             ],
             'test' => [

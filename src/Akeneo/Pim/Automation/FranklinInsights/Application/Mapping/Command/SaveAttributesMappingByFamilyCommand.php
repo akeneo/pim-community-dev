@@ -111,7 +111,11 @@ class SaveAttributesMappingByFamilyCommand
             return null !== $value['attribute'];
         });
 
-        if (count($mapping) !== count(array_unique($mapping, SORT_REGULAR))) {
+        $pimAttributeCodes = array_map(function ($mapping) {
+            return $mapping['attribute'];
+        }, $mapping);
+
+        if (count($pimAttributeCodes) !== count(array_unique($pimAttributeCodes))) {
             throw AttributeMappingException::duplicatedPimAttribute();
         }
     }
