@@ -285,6 +285,7 @@ workflows:
                     branches:
                         only:
                             - master
+                            - 3.2-tmp
       jobs:
           - setup:
                 is_pull_request: false
