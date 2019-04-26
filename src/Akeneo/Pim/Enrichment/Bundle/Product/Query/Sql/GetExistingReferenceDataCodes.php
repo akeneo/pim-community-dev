@@ -5,20 +5,18 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 use Doctrine\ORM\EntityManager;
 
-
 /**
- * Query to fetch category codes by a given list of product identifiers.
+ * Query to fetch only the existing reference data
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilterExistingReferenceData
+final class GetExistingReferenceDataCodes
 {
     /** @var EntityManager */
     private $entityManager;
@@ -34,13 +32,13 @@ class FilterExistingReferenceData
         $this->repositoryResolver = $repositoryResolver;
     }
     
-    public function filter(AttributeInterface $attribute, array $codes): array
+    public function fromReferenceDataNameAndCodes(string $referenceDataName, array $codes): array
     {
         if (empty($codes)) {
             return [];
         }
 
-        $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
+        $repository = $this->repositoryResolver->resolve($referenceDataName);
         $tableName = $this->entityManager->getClassMetadata($repository->getClassName())->getTableName();
 
         $sql = sprintf('SELECT code FROM %s WHERE code IN (?)', $tableName);
