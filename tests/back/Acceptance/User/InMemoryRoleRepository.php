@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Test\Acceptance\User;
 
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectRepository;
 
@@ -16,7 +16,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InMemoryRoleRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, ObjectRepository
+class InMemoryRoleRepository implements RoleRepositoryInterface, SaverInterface, ObjectRepository
 {
     /** @var RoleInterface[] */
     private $roles;
@@ -32,7 +32,6 @@ class InMemoryRoleRepository implements IdentifiableObjectRepositoryInterface, S
             throw new \InvalidArgumentException('Only user role objects are supported.');
         }
         $index = $role->getRole();
-        $index = strtolower(str_replace('ROLE_', '', $index));
         $this->roles->set($index, $role);
     }
 

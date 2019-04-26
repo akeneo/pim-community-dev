@@ -28,8 +28,11 @@ Feature: Import product information with optional values
     Then there should be 4 products
     And attribute opt_att_global of "caterpillar-pam" should be "Pam"
     And the tablet scopable value opt_att_scope of "caterpillar-pam" should be "PamTablet"
-    And attribute opt_att_global of "caterpillar-poum" should be ""
     And attribute opt_att_global of "caterpillar-pum" should be "PimPamPoum"
+    And the product "caterpillar-poum" should not have the following values:
+      | opt_att_global       |
+      | opt_att_local-en_US  |
+      | opt_att_scope-tablet |
     And the product "caterpillar-pim" should not have the following values:
       | opt_att_global |
 

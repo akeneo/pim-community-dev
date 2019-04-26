@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -159,37 +160,38 @@ class UserController
 
         //code is useful to reach the route, cannot forget it in the query
         unset($data['code']);
-        $previousUserName = $data['username'];
-        $passwordViolations = $this->validatePassword($user, $data);
-        if ($this->isPasswordUpdating($data) && $passwordViolations->count() === 0) {
-            $data['password'] = $data['new_password'];
-        }
-        unset($data['current_password'], $data['new_password'], $data['new_password_repeat']);
 
-        $this->updater->update($user, $data);
+        return $this->updateUser($user, $data);
+    }
 
-        $violations = $this->validator->validate($user);
-        if (0 < $violations->count() || 0 < $passwordViolations->count()) {
-            $normalizedViolations = [];
-            foreach ($violations as $violation) {
-                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                    $violation,
-                    'internal_api'
-                );
-            }
-            foreach ($passwordViolations as $violation) {
-                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                    $violation,
-                    'internal_api'
-                );
-            }
-
-            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+    /**
+     * @param Request $request
+     * @param int $identifier
+     *
+     * @throws \HttpException
+     *
+     * @return JsonResponse|RedirectResponse
+     */
+    public function updateProfileAction(Request $request, int $identifier): Response
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
         }
 
-        $this->saver->save($user);
+        $user = $this->getUserOr404($identifier);
+        $data = json_decode($request->getContent(), true);
 
-        return new JsonResponse($this->normalizer->normalize($this->update($user, $previousUserName), 'internal_api'));
+        $token = $this->tokenStorage->getToken();
+        $currentUser = null !== $token ? $token->getUser() : null;
+        if (null === $currentUser || $user->getId() !== $user->getId()) {
+            throw new AccessDeniedHttpException();
+        }
+
+        unset($data['code']);
+        unset($data['roles']);
+        unset($data['groups']);
+
+        return $this->updateUser($user, $data);
     }
 
     protected function update(UserInterface $user, ?string $previousUsername = null)
@@ -286,6 +288,47 @@ class UserController
         }
 
         return $user;
+    }
+
+    /**
+     * @param UserInterface $user
+     * @param array $data
+     *
+     * @return JsonResponse
+     */
+    private function updateUser(UserInterface $user, array $data): JsonResponse
+    {
+        $previousUserName = $data['username'];
+        $passwordViolations = $this->validatePassword($user, $data);
+        if ($this->isPasswordUpdating($data) && $passwordViolations->count() === 0) {
+            $data['password'] = $data['new_password'];
+        }
+        unset($data['current_password'], $data['new_password'], $data['new_password_repeat']);
+
+        $this->updater->update($user, $data);
+
+        $violations = $this->validator->validate($user);
+        if (0 < $violations->count() || 0 < $passwordViolations->count()) {
+            $normalizedViolations = [];
+            foreach ($violations as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api'
+                );
+            }
+            foreach ($passwordViolations as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api'
+                );
+            }
+
+            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->saver->save($user);
+
+        return new JsonResponse($this->normalizer->normalize($this->update($user, $previousUserName), 'internal_api'));
     }
 
     /**

@@ -12,9 +12,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\AxisValueLabelsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -59,6 +61,9 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeOptionRepository;
 
+    /** @var AxisValueLabelsNormalizer[] */
+    private $normalizers;
+
     /** @var CatalogContext */
     private $catalogContext;
 
@@ -71,7 +76,8 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
         CatalogContext $catalogContext,
-        IdentifiableObjectRepositoryInterface $attributeOptionRepository
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository,
+        AxisValueLabelsNormalizer ...$normalizers
     ) {
         $this->imageNormalizer                  = $imageNormalizer;
         $this->localeRepository                 = $localeRepository;
@@ -82,6 +88,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         $this->imageAsLabel                     = $imageAsLabel;
         $this->catalogContext                   = $catalogContext;
         $this->attributeOptionRepository        = $attributeOptionRepository;
+        $this->normalizers = $normalizers;
     }
 
     /**
@@ -169,34 +176,31 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
             foreach ($this->attributesProvider->getAxes($entity) as $axisAttribute) {
                 $value = $entity->getValue($axisAttribute->getCode());
 
-                switch ($axisAttribute->getType()) {
-                    case AttributeTypes::OPTION_SIMPLE_SELECT:
-                        $optionCode = $value->getData();
-                        $option = $this->attributeOptionRepository->findOneByIdentifier($value->getAttributeCode().'.'.$optionCode);
-                        $option->setLocale($localeCode);
-                        $label = $option->getTranslation()->getLabel();
-                        $valuesForLocale[] = empty($label) ? '[' . $option->getCode() . ']' : $label;
+                $normalizedValue = (string) $value;
 
-                        break;
-                    case AttributeTypes::METRIC:
-                        $valuesForLocale[] = sprintf(
-                            '%s %s',
-                            $value->getAmount(),
-                            $value->getUnit()
-                        );
-
-                        break;
-                    default:
-                        $valuesForLocale[] = (string) $value;
-
-                        break;
+                $attributeNormalizer = $this->getAttributeLabelsNormalizer($axisAttribute);
+                if ($attributeNormalizer instanceof AxisValueLabelsNormalizer) {
+                    $normalizedValue = $attributeNormalizer->normalize($value, $localeCode);
                 }
+
+                $valuesForLocale[] = $normalizedValue;
             }
 
             $axesValuesLabels[$localeCode] = implode(', ', $valuesForLocale);
         }
 
         return $axesValuesLabels;
+    }
+
+    private function getAttributeLabelsNormalizer(AttributeInterface $attribute): ?AxisValueLabelsNormalizer
+    {
+        foreach ($this->normalizers as $normalizer) {
+            if ($normalizer->supports($attribute->getType())) {
+                return $normalizer;
+            }
+        }
+
+        return null;
     }
 
     /**
