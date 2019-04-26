@@ -54,7 +54,7 @@ class ProductsSaverSpec extends ObjectBehavior
     ) {
         $translator->trans(Argument::cetera())->willReturn('Applied rule "rule_one"');
 
-        $versionManager->isRealTimeVersioning()->willReturn(false);
+        $versionManager->isRealTimeVersioning()->willReturn(true);
         $versionContext->addContextInfo('Applied rule "rule_one"', 'default')->shouldBeCalled();
 
         $productSaver->saveAll([0 => $productA, 1 => $productB])->shouldBeCalled();
@@ -63,7 +63,7 @@ class ProductsSaverSpec extends ObjectBehavior
         $productModelDescendantsSaver->save($productModelB)->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalledTimes(2);
 
-        $versionManager->setRealTimeVersioning(false)->shouldBeCalled();
+        $versionManager->setRealTimeVersioning(true)->shouldBeCalled();
         $versionContext->unsetContextInfo('default')->shouldBeCalled();
 
         $this->save($rule, [$productA, $productB, $productModelA, $productModelB]);
