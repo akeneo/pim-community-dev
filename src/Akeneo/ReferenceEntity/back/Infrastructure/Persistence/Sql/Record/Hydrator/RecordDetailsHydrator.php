@@ -19,8 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeyCollectionForAttributeType;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlGetRecordTypeForRecordLinkAttribute;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRecordLinkValueKeys;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordsExists;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
@@ -36,26 +35,20 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
     /** @var AbstractPlatform */
     private $platform;
 
-    /** @var SqlFindValueKeyCollectionForAttributeType */
-    private $findValueKeyCollectionForAttributeType;
-
-    /** @var SqlGetRecordTypeForRecordLinkAttribute */
-    private $getRecordTypeForRecordLinkAttribute;
-
     /** @var SqlRecordsExists */
     private $recordsExists;
 
+    /** @var SqlFindRecordLinkValueKeys */
+    private $findRecordLinkValueKeys;
+
     public function __construct(
         Connection $connection,
-        SqlFindValueKeyCollectionForAttributeType $findValueKeyCollectionForAttributeType,
-        SqlGetRecordTypeForRecordLinkAttribute $getRecordTypeForRecordLinkAttribute,
-        SqlRecordsExists $recordsExists
+        SqlRecordsExists $recordsExists,
+        SqlFindRecordLinkValueKeys $findRecordLinkValueKeys
     ) {
         $this->platform = $connection->getDatabasePlatform();
-        $this->findValueKeyCollectionForAttributeType = $findValueKeyCollectionForAttributeType;
-        $this->connection = $connection;
-        $this->getRecordTypeForRecordLinkAttribute = $getRecordTypeForRecordLinkAttribute;
         $this->recordsExists = $recordsExists;
+        $this->findRecordLinkValueKeys = $findRecordLinkValueKeys;
     }
 
     public function hydrate(array $row, array $emptyValues): RecordDetails
@@ -71,9 +64,9 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         $recordCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
 
-        $allValues = $this->filterBrokenRecordSimpleLinks($referenceEntityIdentifier, $valueCollection);
-        $allValues = $this->filterBrokenRecordMultipleLinks($referenceEntityIdentifier, $allValues);
+        $allValues = $this->filterBrokenRecordLinks($referenceEntityIdentifier, $valueCollection);
         $allValues = $this->allValues($emptyValues, $allValues);
+
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
         $recordImage = $this->getImage($valueCollection, $attributeAsImage);
 
@@ -142,56 +135,6 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         return $result;
     }
 
-    private function filterBrokenRecordSimpleLinks(string $referenceEntityIdentifier, array $allValues): array
-    {
-        $simpleRecordLinkAttributeValueKeys = $this->findValueKeyCollectionForAttributeType->fetch(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            'record'
-        );
-        $valueKeys = $simpleRecordLinkAttributeValueKeys->normalize();
-        foreach ($valueKeys as $valueKey) {
-            $value = $allValues[$valueKey] ?? null;
-            if (null === $value) {
-                continue;
-            }
-
-            $recordType = $this->getRecordTypeForRecordLinkAttribute->fetch($value['attribute']);
-            $recordLinks = $this->getRecordCodes($value);
-            $existingRecordLinks = $this->recordsExists->withReferenceEntityAndCodes(
-                ReferenceEntityIdentifier::fromString($recordType),
-                $recordLinks
-            );
-            $allValues = $this->updateValuesWithExistingRecordsOnly($allValues, current($existingRecordLinks), $valueKey);
-        }
-
-        return $allValues;
-    }
-
-    private function filterBrokenRecordMultipleLinks(string $referenceEntityIdentifier, array $allValues): array
-    {
-        $multipleRecordLinkAttributeValueKeys = $this->findValueKeyCollectionForAttributeType->fetch(
-            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            'record_collection'
-        );
-        $valueKeys = $multipleRecordLinkAttributeValueKeys->normalize();
-        foreach ($valueKeys as $valueKey) {
-            $value = $allValues[$valueKey] ?? null;
-            if (null === $value) {
-                continue;
-            }
-
-            $recordType = $this->getRecordTypeForRecordLinkAttribute->fetch($value['attribute']);
-            $recordLinks = $this->getRecordCodes($value);
-            $existingRecordLinks = $this->recordsExists->withReferenceEntityAndCodes(
-                ReferenceEntityIdentifier::fromString($recordType),
-                $recordLinks
-            );
-            $allValues = $this->updateValuesWithExistingRecordsOnly($allValues, $existingRecordLinks, $valueKey);
-        }
-
-        return $allValues;
-    }
-
     /**
      * @param $value
      *
@@ -201,12 +144,12 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
     private function getRecordCodes($value): array
     {
         if (is_array($value['data'])) {
-            $recordLinks = $value['data'];
+            $recordCodes = $value['data'];
         } else {
-            $recordLinks = [$value['data']];
+            $recordCodes = [$value['data']];
         }
 
-        return $recordLinks;
+        return $recordCodes;
     }
 
     /**
@@ -226,5 +169,48 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         }
 
         return $allValues;
+    }
+
+    /**
+     * When we hydrate a RecordDetails model, we need to remove from values every deleted records that are
+     * linked through attribute of type "record" or "record_collection".
+     *
+     * @merge When merging on master (> 3.0), we should change this as we don't store code anymore on 3.1+. If any
+     *        doubt, please ping me directly (Adrien Pétremann).
+     */
+    private function filterBrokenRecordLinks(
+        string $referenceEntityIdentifier,
+        array $valueCollection
+    ): array {
+        $valueKeysAndMetadata = $this->findRecordLinkValueKeys->fetch(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier)
+        );
+
+        foreach ($valueKeysAndMetadata as $valueKeyAndMetadata) {
+            $valueKey = $valueKeyAndMetadata['value_key'];
+
+            $value = $valueCollection[$valueKey] ?? null;
+            if (null === $value) {
+                continue;
+            }
+
+            $recordCodes = $this->getRecordCodes($value);
+            $existingRecordCodes = $this->recordsExists->withReferenceEntityAndCodes(
+                ReferenceEntityIdentifier::fromString($valueKeyAndMetadata['record_type']),
+                $recordCodes
+            );
+
+            if ('record' === $valueKeyAndMetadata['attribute_type']) {
+                $existingRecordCodes = current($existingRecordCodes);
+            }
+
+            $valueCollection = $this->updateValuesWithExistingRecordsOnly(
+                $valueCollection,
+                $existingRecordCodes,
+                $valueKey
+            );
+        }
+
+        return $valueCollection;
     }
 }

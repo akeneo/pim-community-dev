@@ -190,13 +190,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection_for_attribute_type:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeyCollectionForAttributeType
-        arguments:
-            - '@database_connection'
-
-    akeneo_referenceentity.infrastructure.persistence.query.get_record_type_for_record_link_attribute:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlGetRecordTypeForRecordLinkAttribute
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_link_value_keys:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRecordLinkValueKeys
         arguments:
             - '@database_connection'
 
@@ -271,9 +266,8 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydrator
         arguments:
             - '@database_connection'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection_for_attribute_type'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.get_record_type_for_record_link_attribute'
             - '@akeneo_referenceentity.infrastructure.persistence.query.records_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_link_value_keys'
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.connector_record:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator
