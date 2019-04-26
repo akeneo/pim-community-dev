@@ -146,14 +146,6 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         return $recordCodes;
     }
 
-    /**
-     * @param array $allValues
-     * @param       $existingRecord
-     * @param       $valueKey
-     *
-     * @return array
-     *
-     */
     private function updateValuesWithExistingRecordsOnly(array $allValues, $existingRecord, $valueKey): array
     {
         if (empty($existingRecord)) {

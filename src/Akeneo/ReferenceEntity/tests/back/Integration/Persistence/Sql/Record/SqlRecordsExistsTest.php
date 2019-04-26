@@ -35,13 +35,13 @@ use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 class SqlRecordsExistsTest extends SqlIntegrationTestCase
 {
     /** @var SqlRecordsExists */
-    private $recordsExistsForReferenceEntity;
+    private $query;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->recordsExistsForReferenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.query.records_exists');
+        $this->query = $this->get('akeneo_referenceentity.infrastructure.persistence.query.records_exists');
         $this->resetDB();
     }
 
@@ -52,7 +52,7 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
     {
         $this->loadReferenceEntityDesigner();
         $this->loadRecordStarck();
-        $existingRecordCodes = $this->recordsExistsForReferenceEntity->withReferenceEntityAndCodes(
+        $existingRecordCodes = $this->query->withReferenceEntityAndCodes(
             ReferenceEntityIdentifier::fromString('designer'),
             ['starck', 'coco', 'unknown']
         );
@@ -64,7 +64,7 @@ class SqlRecordsExistsTest extends SqlIntegrationTestCase
      */
     public function it_returns_an_empty_list_if_none_of_the_records_exists()
     {
-        $existingRecordCodes = $this->recordsExistsForReferenceEntity->withReferenceEntityAndCodes(
+        $existingRecordCodes = $this->query->withReferenceEntityAndCodes(
             ReferenceEntityIdentifier::fromString('designer'),
             ['unknown']
         );
