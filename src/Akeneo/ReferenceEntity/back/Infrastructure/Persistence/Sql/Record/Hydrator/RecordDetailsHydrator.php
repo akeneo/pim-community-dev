@@ -32,6 +32,8 @@ use Doctrine\DBAL\Types\Type;
  */
 class RecordDetailsHydrator implements RecordDetailsHydratorInterface
 {
+    private const RECORD_ATTRIBUTE_TYPE = 'record';
+
     /** @var AbstractPlatform */
     private $platform;
 
@@ -64,8 +66,8 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         $recordCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
 
-        $allValues = $this->filterBrokenRecordLinks($referenceEntityIdentifier, $valueCollection);
-        $allValues = $this->allValues($emptyValues, $allValues);
+        $cleanValues = $this->removeBrokenRecordLinks($referenceEntityIdentifier, $valueCollection);
+        $allValues = $this->allValues($emptyValues, $cleanValues);
 
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
         $recordImage = $this->getImage($valueCollection, $attributeAsImage);
@@ -137,24 +139,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
 
     private function getRecordCodes($value): array
     {
-        if (is_array($value['data'])) {
-            $recordCodes = $value['data'];
-        } else {
-            $recordCodes = [$value['data']];
-        }
-
-        return $recordCodes;
-    }
-
-    private function updateValuesWithExistingRecordsOnly(array $allValues, $existingRecord, $valueKey): array
-    {
-        if (empty($existingRecord)) {
-            unset($allValues[$valueKey]);
-        } else {
-            $allValues[$valueKey]['data'] = $existingRecord;
-        }
-
-        return $allValues;
+        return is_array($value['data']) ? $recordCodes = $value['data'] : $recordCodes = [$value['data']];
     }
 
     /**
@@ -164,7 +149,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
      * @merge When merging on master (> 3.0), we should change this as we don't store code anymore on 3.1+. If any
      *        doubt, please ping me directly (Adrien Pétremann).
      */
-    private function filterBrokenRecordLinks(
+    private function removeBrokenRecordLinks(
         string $referenceEntityIdentifier,
         array $valueCollection
     ): array {
@@ -186,7 +171,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
                 $recordCodes
             );
 
-            if ('record' === $valueKeyAndMetadata['attribute_type']) {
+            if (self::RECORD_ATTRIBUTE_TYPE === $valueKeyAndMetadata['attribute_type']) {
                 $existingRecordCodes = current($existingRecordCodes);
             }
 
@@ -198,5 +183,16 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         }
 
         return $valueCollection;
+    }
+
+    private function updateValuesWithExistingRecordsOnly(array $allValues, $existingRecord, $valueKey): array
+    {
+        if (empty($existingRecord)) {
+            unset($allValues[$valueKey]);
+        } else {
+            $allValues[$valueKey]['data'] = $existingRecord;
+        }
+
+        return $allValues;
     }
 }
