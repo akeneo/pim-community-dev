@@ -27,10 +27,6 @@ jobs:
       - run:
           name: Start containers
           command: docker-compose up -d
-      - restore_cache:
-          name: Restore cache - vendor
-          keys:
-            - vendor-v1-{{ checksum "composer.lock" }}
       - run:
           name: Change owner on project dir after restoring cache
           command: sudo chown -R 1000:1000 ../project
@@ -49,10 +45,6 @@ jobs:
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project
-      - save_cache:
-          paths:
-            - ./vendor
-          key: vendor-v7-{{ checksum "composer.lock" }}
       - persist_to_workspace:
           root: ~/
           paths:
