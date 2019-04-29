@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class LaunchFetchProductsJobInstanceCommand extends ContainerAwareCommand
 {
-    public const NAME = 'pimee:franklin-insights:launch-fetch-products-job-instance';
+    public const NAME = 'pimee:franklin-insights:fetch-products';
 
     /** @var JobInstanceRepository */
     private $jobInstanceRepository;
@@ -44,12 +44,7 @@ class LaunchFetchProductsJobInstanceCommand extends ContainerAwareCommand
     {
         $this
             ->setName(self::NAME)
-            ->setDescription(
-                sprintf(
-                    'Launch the job "%s" if the AskFranklin connection is active.',
-                    JobInstanceNames::FETCH_PRODUCTS
-                )
-            );
+            ->setDescription('Fetch products from Ask Franklin');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
@@ -71,7 +66,12 @@ class LaunchFetchProductsJobInstanceCommand extends ContainerAwareCommand
 
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(JobInstanceNames::FETCH_PRODUCTS);
         if (null === $jobInstance) {
-            throw new \LogicException();
+            throw new \LogicException(
+                sprintf(
+                    'The job instance "%s" does not exist. Please contact your administrator.',
+                    JobInstanceNames::FETCH_PRODUCTS
+                )
+            );
         }
 
         $this->jobLauncher->launch(
