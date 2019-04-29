@@ -14,13 +14,12 @@ export default (router: any) => () => (next: any) => (action: any) => {
     }
   }
   if ('REDIRECT_TO_PRODUCT_GRID' === action.type) {
-    const filters = DatagridState.get('product-grid', 'filters');
-    const extraFilters = `&f[${action.selectedAttribute}][value][]=${action.recordCode}&f[${
+    const filters = `f[${action.selectedAttribute}][value][]=${action.recordCode}&f[${
       action.selectedAttribute
     }][type]=in`;
 
     DatagridState.set('product-grid', {
-      filters: filters + encodeURI(extraFilters),
+      filters: filters,
     });
 
     router.redirectToRoute('pim_enrich_product_index');
