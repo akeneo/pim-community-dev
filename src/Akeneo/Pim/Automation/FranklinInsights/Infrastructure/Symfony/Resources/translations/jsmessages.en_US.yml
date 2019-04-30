@@ -7,7 +7,7 @@ akeneo_franklin_insights:
         data_provider:
             ask_franklin_down: "Sorry, something went wrong. Please try again later."
             authentication_error: "Sorry, failed to authenticate to Franklin Insights, your token is invalid. Please enter a valid token or contact us for help."
-            bad_request_error: "Sorry, an problem occured communicating with Franklin Insights. Please contact your administrator."
+            bad_request_error: "Sorry, a problem occured communicating with Franklin Insights. Please contact your administrator."
         identifier_mapping:
             plural_label: Identifiers
             flash:
@@ -91,6 +91,7 @@ akeneo_franklin_insights:
                     no_identifier_filled: 'Product identifiers required.'
                     invalid_mapping: "Identifiers mapping required."
         attribute_options_mapping:
+            label: 'Attribute options mapping'
             constraint:
                 no_attribute_options_mapped: 'Franklin attribute options cannot be mapped with an empty mapping'
             fields:

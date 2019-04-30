@@ -4,6 +4,14 @@ extensions:
         config:
             template: akeneo/franklin-insights/template/settings/attribute-options-mapping/modal
 
+    akeneo-franklin-insights-settings-attribute-options-mapping-state:
+        module: pim/form/common/state
+        parent: akeneo-franklin-insights-settings-attribute-options-mapping-edit
+        targetZone: state
+        position: 900
+        config:
+            entity: akeneo_franklin_insights.entity.attribute_options_mapping.label
+
     akeneo-franklin-insights-settings-attribute-options-mapping-index-save-buttons:
         module: pim/form/common/save-buttons
         parent: akeneo-franklin-insights-settings-attribute-options-mapping-edit
