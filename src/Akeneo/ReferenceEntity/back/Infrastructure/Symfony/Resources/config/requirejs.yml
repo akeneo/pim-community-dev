@@ -70,6 +70,11 @@ config:
                 denormalize: '@akeneoreferenceentity/domain/model/attribute/type/option-collection'
                 reducer: '@akeneoreferenceentity/application/reducer/attribute/type/option'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/option.tsx'
+            number:
+                icon: bundles/pimui/images/attribute/icon-number.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/number'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/number'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/number.tsx'
 
         akeneoreferenceentity/application/configuration/sidebar:
             akeneo_reference_entities_reference_entity_edit:
