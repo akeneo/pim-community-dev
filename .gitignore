@@ -42,6 +42,15 @@ npm-debug.log
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
 !/docker/sso_authsources.php
+!/docker/object_storage
+/docker/object_storage/*
+!/docker/object_storage/.gitkeep
+/docker/object_storage/catalog/*
+/docker/object_storage/asset/*
+!/docker/object_storage/catalog
+!/docker/object_storage/asset
+!/docker/object_storage/catalog/.gitkeep
+!/docker/object_storage/asset/.gitkeep
 .env
 docker-compose.override.yml
 composer.lock
