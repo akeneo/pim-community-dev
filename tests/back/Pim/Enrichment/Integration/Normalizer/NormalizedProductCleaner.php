@@ -27,7 +27,9 @@ class NormalizedProductCleaner
         self::sanitizeMediaAttributeData($productNormalized);
         self::sortValues($productNormalized['values']);
         self::sortAssociations($productNormalized['associations']);
-        self::sortCategories($productNormalized['categories']);
+        if (isset($productNormalized['categories'])) {
+            self::sortCategories($productNormalized['categories']);
+        }
     }
 
     /**
