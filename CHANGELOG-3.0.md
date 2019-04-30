@@ -6,6 +6,7 @@
 
 - DAPI-225: Fix attribute search in Franklin-Insights settings
 - PIM-8300: Display description in record grid without HTML tags
+- DAPI-213: Fix missing translation keys
 
 # 3.0.14 (2019-04-19)
 
@@ -13,7 +14,6 @@
 
 - PIM-8294: Allow for empty-looking strings like '0' in TextData
 - PIM-8295: fetch all records that exist in SqlRecordsExists
-- DAPI-213: Fix missing translation keys
 
 ## Improvements
 
