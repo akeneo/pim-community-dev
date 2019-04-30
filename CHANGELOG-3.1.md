@@ -1,3 +1,9 @@
+# 3.1.x
+
+# 3.1.0
+
+Release of the 3.1.0
+
 # 3.1.0-BETA1
 
 ## Improvements
