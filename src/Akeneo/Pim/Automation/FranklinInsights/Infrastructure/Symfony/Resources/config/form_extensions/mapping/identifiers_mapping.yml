@@ -1,54 +1,54 @@
 extensions:
-    akeneo-franklin-insights-settings-identifiers-mapping-index:
+    akeneo-franklin-insights-settings-identifiers-mapping-edit:
         module: pim/form/common/edit-form
 
-    akeneo-franklin-insights-settings-identifiers-mapping-index-breadcrumb:
+    akeneo-franklin-insights-settings-identifiers-mapping-edit-breadcrumb:
         module: pim/common/breadcrumbs
-        parent: akeneo-franklin-insights-settings-identifiers-mapping-index
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-edit
         targetZone: breadcrumbs
         config:
             tab: pim-menu-settings
             item: akeneo-franklin-insights-menu-settings-mapping
 
-    akeneo-franklin-insights-settings-identifiers-mapping-index-user-navigation:
+    akeneo-franklin-insights-settings-identifiers-mapping-edit-user-navigation:
         module: pim/menu/user-navigation
-        parent: akeneo-franklin-insights-settings-identifiers-mapping-index
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-edit
         targetZone: user-menu
         config:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
-    akeneo-franklin-insights-settings-identifiers-mapping-index-title:
+    akeneo-franklin-insights-settings-identifiers-mapping-edit-title:
         module: pim/common/grid-title
-        parent: akeneo-franklin-insights-settings-identifiers-mapping-index
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-edit
         targetZone: title
         config:
             countable: false
             title: akeneo_franklin_insights.settings.identifiers_mapping_title
 
-    akeneo-franklin-insights-settings-identifiers-mapping-index-save-buttons:
+    akeneo-franklin-insights-settings-identifiers-mapping-edit-save-buttons:
         module: pim/form/common/save-buttons
-        parent: akeneo-franklin-insights-settings-identifiers-mapping-index
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-edit
         targetZone: buttons
         position: 120
 
-    akeneo-franklin-insights-settings-identifiers-mapping-index-save:
+    akeneo-franklin-insights-settings-identifiers-mapping-edit-save:
         module: akeneo/franklin-insights/saver/identifiers-mapping-form
-        parent: akeneo-franklin-insights-settings-identifiers-mapping-index
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-edit
         targetZone: buttons
         position: 0
 
-    akeneo-franklin-insights-settings-identifiers-mapping-index-state:
+    akeneo-franklin-insights-settings-identifiers-mapping-edit-state:
         module: akeneo/franklin-insights/view/settings/attributes-mapping/state
-        parent: akeneo-franklin-insights-settings-identifiers-mapping-index
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-edit
         targetZone: state
         position: 900
         config:
             entity: akeneo_franklin_insights.entity.identifier_mapping.plural_label
 
-    akeneo-franklin-insights-settings-identifiers-mapping-index-description-header:
+    akeneo-franklin-insights-settings-identifiers-mapping-edit-description-header:
         module: pim/common/simple-view
-        parent: akeneo-franklin-insights-settings-identifiers-mapping-index
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-edit
         targetZone: content
         position: 10
         config:
@@ -60,9 +60,9 @@ extensions:
                     - akeneo_franklin_insights.settings.module.title.description.first_step
                     - akeneo_franklin_insights.settings.module.title.description.second_step
 
-    akeneo-franklin-insights-settings-identifiers-mapping-index-tabs:
+    akeneo-franklin-insights-settings-identifiers-mapping-edit-tabs:
         module: akeneo/franklin-insights/view/settings/mapping/common/tabs
-        parent: akeneo-franklin-insights-settings-identifiers-mapping-index
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-edit
         targetZone: content
         position: 90
         config:
@@ -71,7 +71,7 @@ extensions:
                 - { label: pim_enrich.entity.attribute.plural_label, route: akeneo_franklin_insights_attributes_mapping_index, checkAllowed: true }
             selected: 0
 
-    akeneo-franklin-insights-settings-identifiers-mapping-index-edit-mapping-identifier:
+    akeneo-franklin-insights-settings-identifiers-mapping-edit-edit-mapping-identifier:
         module: akeneo/franklin-insights/view/settings/identifiers-mapping/table
-        parent: akeneo-franklin-insights-settings-identifiers-mapping-index-tabs
+        parent: akeneo-franklin-insights-settings-identifiers-mapping-edit-tabs
         targetZone: content

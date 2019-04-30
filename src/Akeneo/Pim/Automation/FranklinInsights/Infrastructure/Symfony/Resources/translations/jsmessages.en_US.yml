@@ -188,3 +188,9 @@ pim_enrich.entity.attribute:
         save:
             title: 'Warning!'
             warning: '{1}Deleting an attribute may impact 1 Franklin subscription. Are you sure?|]1,+Inf[Deleting an attribute may impact {{ count }} Franklin subscriptions. Are you sure?'
+
+pim_title:
+    akeneo_franklin_insights_connection_edit: Franklin Insights Connection
+    akeneo_franklin_insights_mapping_index: Franklin Insights Mapping
+    akeneo_franklin_insights_identifiers_mapping_edit: Franklin Insights Edit Identifiers Mapping
+    akeneo_franklin_insights_attributes_mapping_edit: Franklin Insights Edit Attributes Mapping
