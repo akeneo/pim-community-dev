@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd4cdeef35b34fe2856801311cc1b7c8",
+    "content-hash": "c88a31753353ec66188ecdd829084f50",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -4801,16 +4801,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.4.25",
+            "version": "v3.4.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "24454234816e061b4b9c5787eaa2bb6326ead1da"
+                "reference": "1b89e7baec9891c323bbf1ec81af77d901fc60c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/24454234816e061b4b9c5787eaa2bb6326ead1da",
-                "reference": "24454234816e061b4b9c5787eaa2bb6326ead1da",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/1b89e7baec9891c323bbf1ec81af77d901fc60c9",
+                "reference": "1b89e7baec9891c323bbf1ec81af77d901fc60c9",
                 "shasum": ""
             },
             "require": {
@@ -4952,7 +4952,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2019-04-16T06:02:31+00:00"
+            "time": "2019-04-17T15:57:27+00:00"
         },
         {
             "name": "symfony/thanks",
@@ -5051,16 +5051,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.40.0",
+            "version": "v1.40.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "2ba4eaf6b0649760a2cdbc0ada19486f9c1b4125"
+                "reference": "35889516bbd6bbe46a600c2c33b03515df4a076e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/2ba4eaf6b0649760a2cdbc0ada19486f9c1b4125",
-                "reference": "2ba4eaf6b0649760a2cdbc0ada19486f9c1b4125",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/35889516bbd6bbe46a600c2c33b03515df4a076e",
+                "reference": "35889516bbd6bbe46a600c2c33b03515df4a076e",
                 "shasum": ""
             },
             "require": {
@@ -5113,7 +5113,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-04-28T06:54:53+00:00"
+            "time": "2019-04-29T14:12:28+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
