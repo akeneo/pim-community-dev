@@ -141,7 +141,6 @@ final class ConnectorProduct
         return $this->values;
     }
 
-    /*
     public static function fromProductWriteModel(ProductInterface $product, ValueCollectionInterface $values, array $metadata = []): ConnectorProduct
     {
         return new self(
@@ -178,5 +177,5 @@ final class ConnectorProduct
         }
 
         return $associations;
-    }*/
+    }
 }
