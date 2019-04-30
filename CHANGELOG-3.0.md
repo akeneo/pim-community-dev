@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Improvements
+
+- PIM-8215: Displaying a record won't display "dead links" to any deleted records in its values
+
 # 3.0.15 (2019-04-30)
 
 ## Bug fixes
@@ -7,6 +11,10 @@
 - DAPI-225: Fix attribute search in Franklin-Insights settings
 - PIM-8300: Display description in record grid without HTML tags
 - DAPI-213: Fix missing translation keys
+
+## BC Breaks
+
+- Changed constructor of `Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydrator`. Added `Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordsExists` and `Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRecordLinkValueKeys` as last arguments.
 
 # 3.0.14 (2019-04-19)
 

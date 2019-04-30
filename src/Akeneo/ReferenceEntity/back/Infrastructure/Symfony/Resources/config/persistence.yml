@@ -190,6 +190,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_link_value_keys:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRecordLinkValueKeys
+        arguments:
+            - '@database_connection'
+
     akeneo_referenceentity.infrastructure.persistence.query.generate_empty_values:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlGenerateEmptyValues
         arguments:
@@ -261,6 +266,8 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydrator
         arguments:
             - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.records_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_link_value_keys'
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.connector_record:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator

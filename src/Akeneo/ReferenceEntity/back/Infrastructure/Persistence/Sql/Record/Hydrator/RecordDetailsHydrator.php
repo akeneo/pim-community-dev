@@ -19,6 +19,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRecordLinkValueKeys;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordsExists;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -30,19 +32,33 @@ use Doctrine\DBAL\Types\Type;
  */
 class RecordDetailsHydrator implements RecordDetailsHydratorInterface
 {
+    private const RECORD_ATTRIBUTE_TYPE = 'record';
+
     /** @var AbstractPlatform */
     private $platform;
 
-    public function __construct(Connection $connection)
-    {
+    /** @var SqlRecordsExists */
+    private $recordsExists;
+
+    /** @var SqlFindRecordLinkValueKeys */
+    private $findRecordLinkValueKeys;
+
+    public function __construct(
+        Connection $connection,
+        SqlRecordsExists $recordsExists,
+        SqlFindRecordLinkValueKeys $findRecordLinkValueKeys
+    ) {
         $this->platform = $connection->getDatabasePlatform();
+        $this->recordsExists = $recordsExists;
+        $this->findRecordLinkValueKeys = $findRecordLinkValueKeys;
     }
 
     public function hydrate(array $row, array $emptyValues): RecordDetails
     {
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $attributeAsImage = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_image'], $this->platform);
-        $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
+        $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'],
+            $this->platform);
         $recordIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
         $referenceEntityIdentifier = Type::getType(Type::STRING)
@@ -50,7 +66,9 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         $recordCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
 
-        $allValues = $this->createEmptyValues($emptyValues, $valueCollection);
+        $cleanValues = $this->removeBrokenRecordLinks($referenceEntityIdentifier, $valueCollection);
+        $allValues = $this->allValues($emptyValues, $cleanValues);
+
         $labels = $this->getLabelsFromValues($valueCollection, $attributeAsLabel);
         $recordImage = $this->getImage($valueCollection, $attributeAsImage);
 
@@ -67,7 +85,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         return $recordDetails;
     }
 
-    private function createEmptyValues(array $emptyValues, array $valueCollection): array
+    private function allValues(array $emptyValues, array $valueCollection): array
     {
         $result = [];
         foreach ($emptyValues as $key => $value) {
@@ -117,5 +135,64 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         }
 
         return $result;
+    }
+
+    private function getRecordCodes($value): array
+    {
+        return is_array($value['data']) ? $recordCodes = $value['data'] : $recordCodes = [$value['data']];
+    }
+
+    /**
+     * When we hydrate a RecordDetails model, we need to remove from values every deleted records that are
+     * linked through attribute of type "record" or "record_collection".
+     *
+     * @merge When merging on master (> 3.0), we should change this as we don't store code anymore on 3.1+. If any
+     *        doubt, please ping me directly (Adrien Pétremann).
+     */
+    private function removeBrokenRecordLinks(
+        string $referenceEntityIdentifier,
+        array $valueCollection
+    ): array {
+        $valueKeysAndMetadata = $this->findRecordLinkValueKeys->fetch(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier)
+        );
+
+        foreach ($valueKeysAndMetadata as $valueKeyAndMetadata) {
+            $valueKey = $valueKeyAndMetadata['value_key'];
+
+            $value = $valueCollection[$valueKey] ?? null;
+            if (null === $value) {
+                continue;
+            }
+
+            $recordCodes = $this->getRecordCodes($value);
+            $existingRecordCodes = $this->recordsExists->withReferenceEntityAndCodes(
+                ReferenceEntityIdentifier::fromString($valueKeyAndMetadata['record_type']),
+                $recordCodes
+            );
+
+            if (self::RECORD_ATTRIBUTE_TYPE === $valueKeyAndMetadata['attribute_type']) {
+                $existingRecordCodes = current($existingRecordCodes);
+            }
+
+            $valueCollection = $this->updateValuesWithExistingRecordsOnly(
+                $valueCollection,
+                $existingRecordCodes,
+                $valueKey
+            );
+        }
+
+        return $valueCollection;
+    }
+
+    private function updateValuesWithExistingRecordsOnly(array $allValues, $existingRecord, $valueKey): array
+    {
+        if (empty($existingRecord)) {
+            unset($allValues[$valueKey]);
+        } else {
+            $allValues[$valueKey]['data'] = $existingRecord;
+        }
+
+        return $allValues;
     }
 }
