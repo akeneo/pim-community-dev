@@ -1,7 +1,7 @@
 import CommonRows from 'akeneoreferenceentity/application/component/record/index/row/common';
 import ActionViews from 'akeneoreferenceentity/application/component/record/index/row/action';
 import DetailsView from 'akeneoreferenceentity/application/component/record/index/row/detail';
-import NoResult from 'akeneoreferenceentity/application/component/record/index/no-result';
+import NoResult from 'akeneoreferenceentity/application/component/app/no-result';
 import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';

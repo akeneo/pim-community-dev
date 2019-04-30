@@ -114,6 +114,13 @@ pim_reference_entity:
     product:
       attribute: Linked attribute
       title: Products
+      no_attribute:
+        title: There is no product attribute linked to the reference entity "{{ entityLabel }}"
+        subtitle: "To start linking products to this reference entity you can create a new one: "
+        link: Create a new product attribute
+      no_product:
+        title: There is no record linked to the product attribute "{{ entityLabel }}" for now
+        subtitle: "Start linking products to this attribute to see them here"
     enrich:
       title: Record attributes
       code: Code
@@ -164,6 +171,7 @@ pim_reference_entity:
         title_complete: All {{ required }} attributes complete
     tab:
       enrich: Enrich
+      product: Products
     notification:
       save:
         success: Record successfully updated.

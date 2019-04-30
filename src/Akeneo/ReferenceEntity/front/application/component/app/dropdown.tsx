@@ -193,7 +193,9 @@ class Dropdown extends React.Component<Props, State> {
           this.props.readOnly
         )}
         {!this.props.readOnly ? (
-          <div className={`AknDropdown-menu AknDropdown-menu--heightLimited ${openClass} ${dropdownTopClass} ${dropdownLeftClass}`}>
+          <div
+            className={`AknDropdown-menu AknDropdown-menu--heightLimited ${openClass} ${dropdownTopClass} ${dropdownLeftClass}`}
+          >
             <div className="AknDropdown-menuTitle">{this.props.label}</div>
             {ElementViews}
           </div>

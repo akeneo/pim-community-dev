@@ -54,7 +54,6 @@ class RecordEditController extends BaseController {
         createCode(route.params.recordCode)
       )
       .then(async (recordResult: RecordResult) => {
-
         this.store = createStore(true)(recordReducer);
         await this.store.dispatch(updateChannels() as any);
         this.store.dispatch(recordEditionReceived(recordResult.record));

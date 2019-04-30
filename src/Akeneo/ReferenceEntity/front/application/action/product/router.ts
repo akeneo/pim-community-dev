@@ -6,3 +6,7 @@ export const redirectToProduct = (product: Product) => {
     id: product.getId().stringValue(),
   });
 };
+
+export const redirectToAttributeCreation = () => {
+  return redirectToRoute(`pim_enrich_attribute_create`, {attribute_type: 'akeneo_reference_entity'});
+};

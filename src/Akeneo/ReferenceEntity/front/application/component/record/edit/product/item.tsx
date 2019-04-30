@@ -25,12 +25,11 @@ export default ({
   return (
     <a
       href={path}
+      target="_blank"
       title={product.getLabel(locale)}
       className={`AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder ${
         isLoading ? 'AknLoadingPlaceHolder' : ''
-      } ${
-        product.getType() === 'product_model' ? 'AknGrid-bodyRow--withLayer' : ''
-      }`}
+      } ${product.getType() === 'product_model' ? 'AknGrid-bodyRow--withLayer' : ''}`}
       data-identifier={product.getIdentifier().stringValue()}
       onClick={event => {
         event.preventDefault();

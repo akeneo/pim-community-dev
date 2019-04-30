@@ -11,12 +11,14 @@ import ReferenceEntityIdentifier, {
 } from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
 import Product from 'akeneoreferenceentity/domain/model/product/product';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
+import hydrate from 'akeneoreferenceentity/application/hydrator/product/attribute';
+import AttributeCode from 'akeneoreferenceentity/domain/model/product/attribute/code';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 
 export const updateAttributeList = (referenceEntityIdentifier: ReferenceEntityIdentifier) => async (
-  dispatch: any,
-  getState: () => EditState
+  dispatch: any
 ): Promise<void> => {
   const attributes = await promisify(
     fetcherRegistry
@@ -24,17 +26,19 @@ export const updateAttributeList = (referenceEntityIdentifier: ReferenceEntityId
       .fetchByTypes(['akeneo_reference_entity_collection', 'akeneo_reference_entity'])
   );
 
-  const linkedAttributes = attributes.filter(
-    (attribute: any) => referenceEntityIdentifier.stringValue() === attribute.reference_data_name
-  );
+  const linkedAttributes = attributes
+    .filter(
+      (attribute: NormalizedAttribute) => referenceEntityIdentifier.stringValue() === attribute.reference_data_name
+    )
+    .map(hydrate);
 
   dispatch(productListAttributeListUpdated(linkedAttributes));
   if (linkedAttributes.length > 0) {
-    dispatch(attributeSelected(linkedAttributes[0].code));
+    dispatch(attributeSelected(linkedAttributes[0].getCode()));
   }
 };
 
-export const attributeSelected = (attributeCode: string) => async (
+export const attributeSelected = (attributeCode: AttributeCode) => async (
   dispatch: any,
   getState: () => EditState
 ): Promise<void> => {
