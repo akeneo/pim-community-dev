@@ -204,6 +204,7 @@ pim_reference_entity:
       record_collection: Reference entity multiple links
       option: Single option
       option_collection: Multiple options
+      number: Number
     is_required: required for completeness
     no_data:
       title: There are no custom attributes for {{ entityLabel }}
