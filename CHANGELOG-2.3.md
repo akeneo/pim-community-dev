@@ -1,5 +1,13 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8289: Fix search products on label or identifier for product variants ancestors
+
+## Elasticsearch
+
+- Please re-index the products and product models by launching the commands `console akeneo:elasticsearch:reset-indexes -e prod`, `pim:product:index --all -e prod` and `bin/console pim:product-model:index --all`.
+
 ## Improvement
 
 - PIM-8318: Bump Symfony version to 3.4.26 to fix Intl issues.
