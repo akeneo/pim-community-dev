@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Improvement
+
+- PIM-8318: Bump Symfony version to 3.4.26 to fix Intl issues.
+
 # 2.3.40 (2019-04-30)
 
 # 2.3.39 (2019-04-23)
