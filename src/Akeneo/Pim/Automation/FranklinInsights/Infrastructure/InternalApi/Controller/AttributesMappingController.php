@@ -19,6 +19,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesNormalizer;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -141,8 +143,12 @@ class AttributesMappingController
             throw new BadRequestHttpException('No mapping have been sent');
         }
 
-        $command = new SaveAttributesMappingByFamilyCommand($identifier, $data['mapping']);
-        $this->saveAttributesMappingByFamilyHandler->handle($command);
+        try {
+            $command = new SaveAttributesMappingByFamilyCommand($identifier, $data['mapping']);
+            $this->saveAttributesMappingByFamilyHandler->handle($command);
+        } catch (AttributeMappingException | DataProviderException $e) {
+            return new JsonResponse([[$e->getMessage()]], Response::HTTP_BAD_REQUEST);
+        }
 
         return new JsonResponse($data);
     }

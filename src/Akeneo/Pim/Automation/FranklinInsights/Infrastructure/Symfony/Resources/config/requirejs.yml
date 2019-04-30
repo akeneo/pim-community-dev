@@ -58,6 +58,7 @@ config:
         akeneo/franklin-insights/saver/identifiers-mapping-form: akeneofranklininsights/js/saver/identifiers-mapping-form.ts
         akeneo/franklin-insights/saver/attribute-options-mapping: akeneofranklininsights/js/saver/attribute-options-mapping.ts
         akeneo/franklin-insights/saver/attribute-options-mapping-form: akeneofranklininsights/js/saver/attribute-options-mapping-form.ts
+        akeneo/franklin-insights/saver/attributes-mapping: akeneofranklininsights/js/saver/attribute-mapping-saver.ts
 
         # Deletes
         akeneo/franklin-insights/delete/attribute: akeneofranklininsights/js/delete/attribute.ts

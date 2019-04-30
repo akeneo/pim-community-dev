@@ -33,7 +33,7 @@ extensions:
         position: 120
 
     akeneo-franklin-insights-settings-attributes-mapping-index-save-form:
-        module: pim/form/common/save-form
+        module: akeneo/franklin-insights/saver/attributes-mapping
         parent: akeneo-franklin-insights-settings-attributes-mapping-edit
         targetZone: buttons
         position: 0

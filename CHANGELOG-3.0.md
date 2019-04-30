@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8316: Fix product-grid filter on reference entity attributes
+- DAPI-235: Franklin Insights - Display a better error message when a PIM attribute is mapped multiple times
 
 ## Improvements
 
