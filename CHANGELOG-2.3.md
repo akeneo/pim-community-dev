@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.40 (2019-04-30)
+
 ## Bug fixes
 
 - PIM-8298: Fix issue with rules' versioning and history display
