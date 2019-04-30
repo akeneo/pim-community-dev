@@ -205,7 +205,7 @@ const webpackConfig = {
 
   plugins: [
     new WebpackShellPlugin({
-      onBuildStart: ['yarn update-extensions'],
+      onBuildStart: ['yarn run less', 'yarn update-extensions'],
       dev: false
     }),
 
