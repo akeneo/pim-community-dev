@@ -33,6 +33,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.create_attribute_command_factory }
 
+    akeneo_referenceentity.application.factory.create_number_attribute_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateNumberAttributeCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.create_attribute_command_factory }
+
     # Edit attribute command factory
     akeneo_referenceentity.application.registry.edit_attribute_command_factory_registry:
         class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryRegistry
