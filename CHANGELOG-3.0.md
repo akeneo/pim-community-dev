@@ -1,5 +1,9 @@
 # 3.0.x
 
+# Improvements
+
+- AOB-472: Add missing check template bootstrap modal
+
 # 3.0.15 (2019-04-30)
 
 # Bug fixes
