@@ -184,19 +184,26 @@ SQL;
         )->fetchAll();
 
         $productModels = [];
+        $productModelsInfo = [];
+
         foreach ($rows as $row) {
             $rawValues = json_decode($row['raw_values'], true);
             $filteredRawValues = array_intersect_key($rawValues, [$row['attribute_code'] => true]);
             $productModels[$row['code']] = $filteredRawValues;
+            $productModelsInfo[$row['code']]['is_scopable'] = $row['is_scopable'] ? $channelCode : null;
+            $productModelsInfo[$row['code']]['is_localizable'] = $row['is_localizable'] ? $channelCode : null;
+            $productModelsInfo[$row['code']]['attribute_code'] = $row['attribute_code'];
         }
 
         $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($productModels);
 
         foreach ($valueCollections as $productModelCode => $valueCollection) {
+            $productModelInfo = $productModelsInfo[$productModelCode];
+
             $images[$productModelCode]['image'] = $valueCollection->getByCodes(
-                $row['attribute_code'],
-                $row['is_scopable'] ? $channelCode : null,
-                $row['is_localizable'] ? $localeCode : null
+                $productModelInfo['attribute_code'],
+                $productModelInfo['is_scopable'],
+                $productModelInfo['is_localizable']
             );
         }
 
@@ -250,6 +257,7 @@ SQL;
 SQL;
 
         $productModels = [];
+        $productModelsInfo = [];
         foreach ($codes as $code) {
             $row = $this->connection->executeQuery(
                 $sql,
@@ -263,15 +271,20 @@ SQL;
             $filteredRawValues = array_intersect_key($rawValues, [$row['attribute_code'] => true]);
 
             $productModels[$row['code']] = $filteredRawValues;
+            $productModelsInfo[$row['code']]['is_scopable'] = $row['is_scopable'] ? $channelCode : null;
+            $productModelsInfo[$row['code']]['is_localizable'] = $row['is_localizable'] ? $channelCode : null;
+            $productModelsInfo[$row['code']]['attribute_code'] = $row['attribute_code'];
         }
 
         $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($productModels);
 
         foreach ($valueCollections as $productModelCode => $valueCollection) {
+            $productModelInfo = $productModelsInfo[$productModelCode];
+
             $images[$productModelCode]['image'] = $valueCollection->getByCodes(
-                $row['attribute_code'],
-                $row['is_scopable'] ? $channelCode : null,
-                $row['is_localizable'] ? $localeCode : null
+                $productModelInfo['attribute_code'],
+                $productModelInfo['is_scopable'],
+                $productModelInfo['is_localizable']
             );
         }
 
@@ -326,6 +339,7 @@ SQL;
 SQL;
 
         $productModels = [];
+        $productModelsInfo = [];
 
         foreach ($codes as $code) {
             $row = $this->connection->executeQuery(
@@ -340,15 +354,20 @@ SQL;
             $rawValues = json_decode($row['raw_values'], true);
             $filteredRawValues = array_intersect_key($rawValues, [$row['attribute_code'] => true]);
             $productModels[$row['code']] = $filteredRawValues;
+            $productModelsInfo[$row['code']]['is_scopable'] = $row['is_scopable'] ? $channelCode : null;
+            $productModelsInfo[$row['code']]['is_localizable'] = $row['is_localizable'] ? $channelCode : null;
+            $productModelsInfo[$row['code']]['attribute_code'] = $row['attribute_code'];
         }
 
         $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($productModels);
 
         foreach ($valueCollections as $productModelCode => $valueCollection) {
+            $productModelInfo = $productModelsInfo[$productModelCode];
+
             $images[$productModelCode]['image'] = $valueCollection->getByCodes(
-                $row['attribute_code'],
-                $row['is_scopable'] ? $channelCode : null,
-                $row['is_localizable'] ? $localeCode : null
+                $productModelInfo['attribute_code'],
+                $productModelInfo['is_scopable'],
+                $productModelInfo['is_localizable']
             );
         }
 
