@@ -170,7 +170,17 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
                         }
 
                         try {
-                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data, true);
+                            //TODO: Embed that responsability inside the cleaner
+                            $value = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data, true);
+                            $productData = $value->getData();
+                            $isEmpty = (
+                                null === $productData ||
+                                (is_string($productData) && '' === trim($productData))  ||
+                                (is_array($productData) && 0 === count($productData))
+                            );
+                            if (!$isEmpty) {
+                                $values[] = $value;
+                            }
                         } catch (InvalidAttributeException $e) {
                             $this->logger->warning(
                                 sprintf(
