@@ -156,6 +156,12 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.product.query.get_existing_reference_data_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetExistingReferenceDataCodes'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_reference_data.repository_resolver'
+
     akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes:
         class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetCategoryCodesByProductModelCodes'
         arguments:
