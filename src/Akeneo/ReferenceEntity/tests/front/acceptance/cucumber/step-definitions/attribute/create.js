@@ -211,4 +211,23 @@ module.exports = async function(cucumber) {
     const header = await await getElement(this.page, 'Header');
     await header.hasNoCreateButton();
   });
+
+  When('the user creates a valid number attribute', async function() {
+    await answerChannelList.apply(this);
+    await startCreate(this.page);
+
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
+    await modal.select('.AknFieldContainer[data-code="type"]', 'number');
+  });
+
+  Then('the user saves the valid number attribute', async function() {
+    const requestContract = getRequestContract('Attribute/Create/attribute_number_ok.json');
+
+    await listenRequest(this.page, requestContract);
+
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.save();
+  });
 };

@@ -73,67 +73,6 @@ Feature: Create an attribute linked to a reference entity
     Then there should be a validation error on the property 'reference_entity_code' with message 'The reference entity "foo" was not found.'
     And there is no exception thrown
 
-  @acceptance-front
-  Scenario: Create a simple valid text attribute
-    Given the user has the following rights:
-      | akeneo_referenceentity_attribute_create | true |
-    When the user creates a valid attribute
-    And the user saves the valid attribute
-    Then the user should not see any validation error
-
-  @acceptance-front
-  Scenario: Create an invalid text attribute
-    Given the user has the following rights:
-      | akeneo_referenceentity_attribute_create | true |
-    When the user creates an attribute with an invalid code
-    And the user saves the attribute with an invalid code
-    Then the user should see the validation error "This field may only contain letters, numbers and underscores."
-
-  @acceptance-front
-  Scenario: Create a simple valid record attribute
-    Given the user has the following rights:
-      | akeneo_referenceentity_attribute_create | true |
-    When the user creates a valid record attribute
-    And the user saves the valid record attribute
-    Then the user should not see any validation error
-
-  @acceptance-front
-  Scenario: Create a simple valid record collection attribute
-    Given the user has the following rights:
-      | akeneo_referenceentity_attribute_create | true |
-    When the user creates a valid record collection attribute
-    And the user saves the valid record collection attribute
-    Then the user should not see any validation error
-
-  @acceptance-front
-  Scenario: Create a simple valid image attribute
-    Given the user has the following rights:
-      | akeneo_referenceentity_attribute_create | true |
-    When the user creates a valid image attribute
-    And the user saves the valid image attribute
-    Then the user should not see any validation error
-
-  @acceptance-front
-  Scenario: Create a simple valid option attribute
-    Given the user has the following rights:
-      | akeneo_referenceentity_attribute_create | true |
-    When the user creates a valid option attribute
-    And the user saves the valid option attribute
-    Then the user should not see any validation error
-
-  @acceptance-front
-  Scenario: Create a simple valid option collection attribute
-    Given the user has the following rights:
-      | akeneo_referenceentity_attribute_create | true |
-    When the user creates a valid option collection attribute
-    And the user saves the valid option collection attribute
-    Then the user should not see any validation error
-
-  @acceptance-front
-  Scenario: User can't create an attribute without the good rights
-    Given the user does not have any rights
-    Then the user should not see the add attribute button
-
   @acceptance-back
   Scenario: Cannot create more text attributes than the limit
     Given 100 random attributes for a reference entity
@@ -199,3 +138,81 @@ Feature: Create an attribute linked to a reference entity
       | labels                                  | is_required | order | value_per_channel | value_per_locale | record_type |
       | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 0     | false             | false            | brand       |
     Then there should be a validation error with message 'You cannot create the attribute "Brands" because you have reached the limit of 100 attributes for this reference entity'
+
+  @acceptance-back
+  Scenario: Create a number attribute to a reference entity
+    When the user creates a number attribute "area" to the reference entity "city" with:
+      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale |
+      | area   | {"en_US": "Area", "fr_FR": "Superficie"}| true        | 2     | false             | false            |
+    Then there is a number attribute "area" in the reference entity "city" with:
+      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | type              |
+      | area   | {"en_US": "Area", "fr_FR": "Superficie"}| true        | 2     | false             | false            | number            |
+
+  @acceptance-front
+  Scenario: Create a simple valid text attribute
+    Given the user has the following rights:
+      | akeneo_referenceentity_attribute_create | true |
+    When the user creates a valid attribute
+    And the user saves the valid attribute
+    Then the user should not see any validation error
+
+  @acceptance-front
+  Scenario: Create an invalid text attribute
+    Given the user has the following rights:
+      | akeneo_referenceentity_attribute_create | true |
+    When the user creates an attribute with an invalid code
+    And the user saves the attribute with an invalid code
+    Then the user should see the validation error "This field may only contain letters, numbers and underscores."
+
+  @acceptance-front
+  Scenario: Create a simple valid record attribute
+    Given the user has the following rights:
+      | akeneo_referenceentity_attribute_create | true |
+    When the user creates a valid record attribute
+    And the user saves the valid record attribute
+    Then the user should not see any validation error
+
+  @acceptance-front
+  Scenario: Create a simple valid record collection attribute
+    Given the user has the following rights:
+      | akeneo_referenceentity_attribute_create | true |
+    When the user creates a valid record collection attribute
+    And the user saves the valid record collection attribute
+    Then the user should not see any validation error
+
+  @acceptance-front
+  Scenario: Create a simple valid image attribute
+    Given the user has the following rights:
+      | akeneo_referenceentity_attribute_create | true |
+    When the user creates a valid image attribute
+    And the user saves the valid image attribute
+    Then the user should not see any validation error
+
+  @acceptance-front
+  Scenario: Create a simple valid option attribute
+    Given the user has the following rights:
+      | akeneo_referenceentity_attribute_create | true |
+    When the user creates a valid option attribute
+    And the user saves the valid option attribute
+    Then the user should not see any validation error
+
+  @acceptance-front
+  Scenario: Create a simple valid option collection attribute
+    Given the user has the following rights:
+      | akeneo_referenceentity_attribute_create | true |
+    When the user creates a valid option collection attribute
+    And the user saves the valid option collection attribute
+    Then the user should not see any validation error
+
+  @acceptance-front
+  Scenario: Create a number attribute
+    Given the user has the following rights:
+      | akeneo_referenceentity_attribute_create | true |
+    When the user creates a valid number attribute
+    And the user saves the valid number attribute
+    Then the user should not see any validation error
+
+  @acceptance-front
+  Scenario: User can't create an attribute without the good rights
+    Given the user does not have any rights
+    Then the user should not see the add attribute button
