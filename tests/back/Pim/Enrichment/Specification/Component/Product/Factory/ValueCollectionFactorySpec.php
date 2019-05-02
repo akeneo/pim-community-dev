@@ -2,19 +2,25 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionException;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionsException;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner\ChainedEmptyValuesCleanerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner\OnGoingCleanedRawValues;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentValuesFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributeByCodes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionException;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
@@ -23,9 +29,19 @@ class ValueCollectionFactorySpec extends ObjectBehavior
     function let(
         ValueFactory $valueFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        GetAttributeByCodes $getAttributeByCodes,
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
+        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
     ) {
-        $this->beConstructedWith($valueFactory, $attributeRepository, $logger);
+        $this->beConstructedWith(
+            $valueFactory,
+            $attributeRepository,
+            $logger,
+            $getAttributeByCodes,
+            $chainedObsoleteValueFilter,
+            $chainedEmptyValuesCleaner
+        );
     }
 
     function it_is_initializable()
@@ -33,16 +49,82 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $this->shouldHaveType(ValueCollectionFactory::class);
     }
 
-    function it_creates_a_values_collection_from_the_storage_format(
-        $valueFactory,
-        $attributeRepository,
+    function it_creates_a_values_collection_from_the_storage_format_from_single(
+        ValueFactory $valueFactory,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         AttributeInterface $sku,
         AttributeInterface $description,
         ValueInterface $value1,
         ValueInterface $value2,
         ValueInterface $value3,
-        ValueInterface $value4
+        ValueInterface $value4,
+        GetAttributeByCodes $getAttributeByCodes,
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
+        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
     ) {
+        $rawValues = [
+            'sku' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'foo'
+                ],
+            ],
+            'description' => [
+                'ecommerce' => [
+                    'en_US' => 'a text area for ecommerce in English',
+                ],
+                'tablet' => [
+                    'en_US' => 'a text area for tablets in English',
+                    'fr_FR' => 'une zone de texte pour les tablettes en français',
+
+                ],
+            ],
+        ];
+
+        $getAttributeByCodes->forCodes(['sku', 'description'])->willReturn([
+            new Attribute('sku', AttributeTypes::IDENTIFIER),
+            new Attribute('description', AttributeTypes::TEXTAREA)
+        ]);
+
+        $valuesIndexedByType = [
+            AttributeTypes::IDENTIFIER => [
+                'sku' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 'foo'
+                            ],
+                        ],
+                    ]
+                ]
+            ],
+            AttributeTypes::TEXTAREA => [
+                'description' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            'ecommerce' => [
+                                'en_US' => 'a text area for ecommerce in English',
+                            ],
+                            'tablet' => [
+                                'en_US' => 'a text area for tablets in English',
+                                'fr_FR' => 'une zone de texte pour les tablettes en français',
+
+                            ],
+                        ],
+                    ]
+                ]
+            ]
+        ];
+
+        $ongoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($valuesIndexedByType);
+        $ongoingFilteredRawValues = new OnGoingFilteredRawValues($valuesIndexedByType, []);
+        $chainedObsoleteValueFilter->filterAll($ongoingNonFilteredRawValues)->willReturn($ongoingFilteredRawValues);
+
+        $ongoingNonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($valuesIndexedByType);
+        $ongoingCleanedRawValues = new OnGoingCleanedRawValues($valuesIndexedByType, []);
+        $chainedEmptyValuesCleaner->cleanAll($ongoingNonCleanedRawValues)->willReturn($ongoingCleanedRawValues);
+
         $sku->getCode()->willReturn('sku');
         $sku->isUnique()->willReturn(false);
         $description->getCode()->willReturn('description');
@@ -79,22 +161,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             ->create($description, 'tablet', 'fr_FR', 'une zone de texte pour les tablettes en français', true)
             ->willReturn($value4);
 
-        $actualValues = $this->createFromStorageFormat([
-            'sku' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'foo'
-                ],
-            ],
-            'description' => [
-                'ecommerce' => [
-                    'en_US' => 'a text area for ecommerce in English',
-                ],
-                'tablet' => [
-                    'en_US' => 'a text area for tablets in English',
-                    'fr_FR' => 'une zone de texte pour les tablettes en français',
-                ],
-            ],
-        ]);
+        $actualValues = $this->createFromStorageFormat($rawValues, 'productA');
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(4);
@@ -106,103 +173,159 @@ class ValueCollectionFactorySpec extends ObjectBehavior
     }
 
     function it_skips_unknown_attributes_when_creating_a_values_collection_from_the_storage_format(
-        $valueFactory,
-        $attributeRepository,
-        $logger
+        GetAttributeByCodes $getAttributeByCodes
     ) {
-        $attributeRepository->findOneByIdentifier('attribute_that_does_not_exists')->willReturn(null);
-
-        $valueFactory->create(Argument::cetera())->shouldNotBeCalled();
-        $logger->warning('Tried to load a product value with the attribute "attribute_that_does_not_exists" that does not exist.');
-
-        $actualValues = $this->createFromStorageFormat([
+        $rawValues = [
             'attribute_that_does_not_exists' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'bar'
                 ]
             ]
+        ];
+
+        $getAttributeByCodes->forCodes(['attribute_that_does_not_exists'])->willReturn([]);
+
+        $this->createFromStorageFormat($rawValues, 'productA')->shouldBeLike(new ValueCollection([]));
+    }
+
+    function it_skips_unknown_attributes_when_there_are_multiple_product(
+        ValueFactory $valueFactory,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        AttributeInterface $color,
+        ValueInterface $value,
+        GetAttributeByCodes $getAttributeByCodes,
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
+        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
+    ) {
+        $rawValueCollection = [
+            'productA' => [
+                'unknown_attribute' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'random'
+                    ]
+                ]
+            ],
+            'productB' => [
+                'color' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'red'
+                    ]
+                ]
+            ]
+        ];
+
+        $getAttributeByCodes->forCodes(['unknown_attribute', 'color'])->willReturn([
+            new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT),
         ]);
 
-        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
-        $actualValues->shouldHaveCount(0);
+        $typesToCode = [
+            AttributeTypes::OPTION_SIMPLE_SELECT => [
+                'color' => [
+                    [
+                        'identifier' => 'productB',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 'red'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $onGoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
+        $onGoingFilteredRawValues = new OnGoingFilteredRawValues($typesToCode, []);
+        $nonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($typesToCode);
+        $cleanedRawValues = new OnGoingCleanedRawValues($typesToCode, []);
+
+        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
+        $valueFactory->create($color, null, null, 'red', true)->willReturn($value);
+        $value->getAttributeCode()->willReturn('color');
+        $value->getScopeCode()->willReturn('<all_channels>');
+        $value->getLocaleCode()->willReturn('<all_locales>');
+        $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
+        $chainedEmptyValuesCleaner->cleanAll($nonCleanedRawValues)->willReturn($cleanedRawValues);
+
+        $this->createMultipleFromStorageFormat($rawValueCollection)->shouldBeLike([
+            'productB' => new ValueCollection([$value->getWrappedObject()]),
+            'productA' => new ValueCollection([]),
+        ]);
     }
 
     function it_skips_unknown_option_when_creating_a_values_collection_from_the_storage_format(
-        $valueFactory,
-        $attributeRepository,
-        $logger,
-        AttributeInterface $color
+        GetAttributeByCodes $getAttributeByCodes,
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
+        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
     ) {
-        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
-        $valueFactory->create($color, null, null, 'red', true)->willThrow(
-            InvalidOptionException::validEntityCodeExpected(
-                'color',
-                'code',
-                'The option does not exist',
-                static::class,
-                'red'
-            )
-        );
-
-        $logger->warning('Tried to load a product value with the option "color.red" that does not exist.');
-
-        $actualValues = $this->createFromStorageFormat([
+        $rawValues = [
             'color' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'red'
                 ],
             ],
+        ];
+
+        $getAttributeByCodes->forCodes(['color'])->willReturn([
+            new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT),
         ]);
 
-        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
-        $actualValues->shouldHaveCount(0);
-    }
+        $rawValueCollectionIndexedByType = [
+            AttributeTypes::OPTION_SIMPLE_SELECT => [
+                'color' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 'red'
+                            ],
+                        ],
+                    ]
+                ]
+            ]
+        ];
 
-    function it_skips_unknown_options_when_creating_a_values_collection_from_the_storage_format(
-        $valueFactory,
-        $attributeRepository,
-        $logger,
-        AttributeInterface $color,
-        ValueInterface $purpleColor
-    ) {
-        $color->getCode()->willReturn('code');
-        $color->isUnique()->willReturn(false);
-        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
-        $valueFactory->create($color, null, null, ['red', 'purple', 'yellow'], true)->willThrow(
-            InvalidOptionsException::validEntityListCodesExpected(
-                'color',
-                'codes',
-                'The options do not exist',
-                static::class,
-                ['red', 'yellow']
-            )
+        $onGoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($rawValueCollectionIndexedByType);
+
+        $filteredRawValues = [
+            AttributeTypes::OPTION_SIMPLE_SELECT => [
+                'color' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => ''
+                            ],
+                        ],
+                    ]
+                ]
+            ]
+        ];
+        $chainedObsoleteValueFilter->filterAll($onGoingFilteredRawValues)->willReturn(
+            new OnGoingFilteredRawValues($filteredRawValues, [])
         );
 
-        $purpleColor->getAttributeCode()->willReturn('color');
-        $purpleColor->getLocaleCode()->willReturn(null);
-        $purpleColor->getScopeCode()->willReturn(null);
-        $purpleColor->getData()->willReturn('purple');
-        $valueFactory->create($color, null, null, [1 => 'purple'])->willReturn($purpleColor);
-        $logger->warning('Tried to load a product value with the options "red, yellow" that do not exist.')->shouldBeCalled();
+        $nonCleanedValueFilter = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($filteredRawValues);
+        $cleanedRawValues = new OnGoingCleanedRawValues([], []);
 
-        $actualValues = $this->createFromStorageFormat([
-            'color' => [
-                '<all_channels>' => [
-                    '<all_locales>' => ['red', 'purple', 'yellow']
-                ],
-            ],
-        ]);
+        $chainedEmptyValuesCleaner->cleanAll($nonCleanedValueFilter)->willReturn($cleanedRawValues);
 
-        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
-        $actualValues->shouldHaveCount(1);
+        $this->createFromStorageFormat($rawValues, 'productA')->shouldBeLike(new ValueCollection([]));
     }
 
-    function it_skips_invalid_attributes_when_creating_a_values_collection_from_the_storage_format(
-        $valueFactory,
-        $attributeRepository,
-        $logger,
+    function it_skips_invalid_attributes_when_creating_a_values_collection_from_the_storage_format_single(
+        ValueFactory $valueFactory,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        LoggerInterface $logger,
         AttributeInterface $color
     ) {
+        $rawValues = [
+            'color' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'red'
+                ],
+            ],
+        ];
+
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
         $valueFactory->create($color, null, null, 'red', true)->willThrow(
             new InvalidAttributeException('attribute', 'color', static::class)
@@ -210,24 +333,26 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $logger->warning(Argument::containingString('Tried to load a product value with an invalid attribute "color".'));
 
-        $actualValues = $this->createFromStorageFormat([
-            'color' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'red'
-                ],
-            ],
-        ]);
+        $actualValues = $this->createFromStorageFormat($rawValues);
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(0);
     }
 
     function it_skips_unknown_property_when_creating_a_values_collection_from_the_storage_format(
-        $valueFactory,
-        $attributeRepository,
-        $logger,
+        ValueFactory $valueFactory,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        LoggerInterface $logger,
         AttributeInterface $referenceData
     ) {
+        $rawValues = [
+            'image' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'my_image'
+                ],
+            ],
+        ];
+
         $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
         $valueFactory->create($referenceData, null, null, 'my_image', true)->willThrow(
             new InvalidPropertyException('attribute', 'image', static::class)
@@ -237,26 +362,30 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             Argument::containingString('Tried to load a product value with the property "image" that does not exist.')
         );
 
-        $actualValues = $this->createFromStorageFormat([
-            'image' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'my_image'
-                ],
-            ],
-        ]);
+        $actualValues = $this->createFromStorageFormat($rawValues);
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(0);
     }
 
     function it_create_empty_value_is_wrong_format_when_creating_a_values_collection_from_the_storage_format(
-        $valueFactory,
-        $attributeRepository,
-        $logger,
+        ValueFactory $valueFactory,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        LoggerInterface $logger,
+        GetAttributeByCodes $getAttributeByCodes,
+        NonExistentValuesFilter $obsoleteValuesFilter,
         AttributeInterface $image,
         ValueInterface $value1,
         AttributeInterface $referenceData
     ) {
+        $rawValues = [
+            'image' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'empty_image'
+                ],
+            ],
+        ];
+
         $image->getCode()->willReturn('image');
         $image->isUnique()->willReturn(false);
         $value1->getLocaleCode()->willReturn(null);
@@ -274,13 +403,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             Argument::containingString('Tried to load a product value for attribute "image" that does not have the good type.')
         );
 
-        $actualValues = $this->createFromStorageFormat([
-            'image' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'empty_image'
-                ],
-            ],
-        ]);
+        $actualValues = $this->createFromStorageFormat($rawValues);
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(1);

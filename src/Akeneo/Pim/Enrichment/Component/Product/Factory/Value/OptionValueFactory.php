@@ -2,10 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Factory that creates option (simple-select) product values.
@@ -18,17 +16,11 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 class OptionValueFactory extends AbstractValueFactory
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attrOptionRepository;
-
     public function __construct(
-        IdentifiableObjectRepositoryInterface $attrOptionRepository,
         $productValueClass,
         $supportedAttributeType
     ) {
         parent::__construct($productValueClass, $supportedAttributeType);
-
-        $this->attrOptionRepository = $attrOptionRepository;
     }
 
     /**
@@ -48,19 +40,6 @@ class OptionValueFactory extends AbstractValueFactory
             );
         }
 
-        $identifier = $attribute->getCode() . '.' . $data;
-        $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
-
-        if (null === $option) {
-            throw InvalidOptionException::validEntityCodeExpected(
-                $attribute->getCode(),
-                'code',
-                'The option does not exist',
-                static::class,
-                $data
-            );
-        }
-
-        return $option->getCode();
+        return $data;
     }
 }

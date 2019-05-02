@@ -85,6 +85,9 @@ services:
             - '@pim_catalog.factory.value'
             - '@pim_catalog.repository.cached_attribute'
             - '@logger'
+            - '@akeneo.pim.structure.query.get_attribute_by_codes'
+            - '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
+            - '@akeneo.pim.enrichment.factory.empty_values_cleaner.chained'
 
     pim_catalog.factory.value:
         class: '%pim_catalog.factory.value.class%'
@@ -161,7 +164,6 @@ services:
         class: '%pim_catalog.factory.value.option.class%'
         public: false
         arguments:
-            - '@pim_catalog.repository.cached_attribute_option'
             - '%pim_catalog.entity.value.option.class%'
             - 'pim_catalog_simpleselect'
         tags:
@@ -171,7 +173,6 @@ services:
         class: '%pim_catalog.factory.value.options.class%'
         public: false
         arguments:
-            - '@pim_catalog.repository.cached_attribute_option'
             - '%pim_catalog.entity.value.options.class%'
             - 'pim_catalog_multiselect'
         tags:
@@ -225,3 +226,27 @@ services:
             - 'pim_reference_data_multiselect'
         tags:
             - { name: pim_catalog.factory.value }
+
+    #### DATA FILTERS
+    akeneo.pim.enrichment.factory.non_existent_values_filter.chained:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilter'
+        arguments:
+            - !tagged akeneo.pim.enrichment.factory.non_existent_values_filter
+
+    akeneo.pim.enrichment.factory.non_existent_values_filter.select:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentSelectValuesFilter'
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    ### DATA CLEANER
+    akeneo.pim.enrichment.factory.empty_values_cleaner.chained:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner\ChainedEmptyValuesCleaner'
+        arguments:
+            - !tagged akeneo.pim.enrichment.factory.empty_values_cleaner
+
+    akeneo.pim.enrichment.factory.empty_values_cleaner.select:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner\EmptySelectValuesCleaner'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.empty_values_cleaner }
