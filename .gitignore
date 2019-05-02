@@ -28,6 +28,7 @@ vendor
 !/bin/docker/pim-front.sh
 !/bin/docker/pim-initialize.sh
 !/bin/docker/pim-setup.sh
+!/bin/docker/pim-local-object-storage-for-test.sh
 !/bin/console
 !/bin/pim-front.sh
 behat.yml
