@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.41 (2019-05-02)
+
 ## Bug fixes
 
 - PIM-8289: Fix search products on label or identifier for product variants ancestors
