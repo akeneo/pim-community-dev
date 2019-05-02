@@ -3,6 +3,7 @@
 ## Improvements
 
 - PIM-8215: Displaying a record won't display "dead links" to any deleted records in its values
+- DAPI-212: Change command name to fetch products from Franklin Insights
 
 # 3.0.15 (2019-04-30)
 
