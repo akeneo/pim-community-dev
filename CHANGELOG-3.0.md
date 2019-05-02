@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8316: Fix product-grid filter on reference entity attributes
+
 ## Improvements
 
 - PIM-8215: Displaying a record won't display "dead links" to any deleted records in its values
