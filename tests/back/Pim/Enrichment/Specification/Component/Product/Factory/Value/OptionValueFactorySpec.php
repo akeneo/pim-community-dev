@@ -3,14 +3,11 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
-use Prophecy\Argument;
 
 class OptionValueFactorySpec extends ObjectBehavior
 {
@@ -150,29 +147,6 @@ class OptionValueFactorySpec extends ObjectBehavior
         $this
             ->shouldThrow($arrayException)
             ->during('create', [$attribute, 'ecommerce', 'en_US', []]);
-    }
-
-    //TODO: WHAT TO DO WITH THIS KIND OF MAGIC ? I'VE PUT IT LIKE THAT TEMPORARY
-    function it_creates_a_simple_select_product_value_even_if_provided_codes_have_different_case(AttributeInterface $attribute) {
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->getCode()->willReturn('simple_select_attribute');
-        $attribute->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
-        $attribute->getBackendType()->willReturn('option');
-        $attribute->isBackendTypeReferenceData()->willReturn(false);
-
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            'foobar'
-        );
-
-        $productValue->shouldReturnAnInstanceOf(OptionValue::class);
-        $productValue->shouldHaveAttribute('simple_select_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldHaveTheOptionCode('foobar');
     }
 
     public function getMatchers(): array

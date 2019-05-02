@@ -55,7 +55,7 @@ final class NonExistentSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => ['michel', 'sardou'],
+                                    'en_US' => ['MiChel', 'sardou'],
                                 ],
                                 'tablet' => [
                                     'en_US' => ['jean', 'claude', 'van', 'damm'],
@@ -87,7 +87,7 @@ final class NonExistentSelectValuesFilterSpec extends ObjectBehavior
                 'option_tata',
             ],
             'a_multi_select' => [
-                'michel',
+                'MiChel',
                 'sardou',
                 'jean',
                 'claude',
@@ -139,7 +139,7 @@ final class NonExistentSelectValuesFilterSpec extends ObjectBehavior
                                 ],
                                 'tablet' => [
                                     'en_US' => [],
-                                    'fr_FR' => [1 => 'fraises'],
+                                    'fr_FR' => ['fraises'],
 
                                 ],
                             ]

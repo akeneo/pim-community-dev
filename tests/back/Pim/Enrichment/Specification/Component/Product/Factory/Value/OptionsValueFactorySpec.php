@@ -5,12 +5,9 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionsException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionsValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
-use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Prophecy\Argument;
 
 class OptionsValueFactorySpec extends ObjectBehavior
@@ -162,29 +159,6 @@ class OptionsValueFactorySpec extends ObjectBehavior
         $this
             ->shouldThrow($exception)
             ->during('create', [$attribute, 'ecommerce', 'en_US', 'foobar']);
-    }
-
-    //TODO: WHAT TO DO WITH THIS KIND OF MAGIC ? I'VE PUT IT LIKE THAT TEMPORARY
-    function it_creates_a_multi_select_product_value_even_if_provided_code_has_a_different_case(AttributeInterface $attribute) {
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->getCode()->willReturn('multi_select_attribute');
-        $attribute->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
-        $attribute->getBackendType()->willReturn('options');
-        $attribute->isBackendTypeReferenceData()->willReturn(false);
-
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            ['foo', 'bar']
-        );
-
-        $productValue->shouldReturnAnInstanceOf(OptionsValue::class);
-        $productValue->shouldHaveAttribute('multi_select_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldHaveTheOptionCodes(['foo', 'bar']);
     }
 
     function it_throws_an_exception_if_provided_data_is_not_an_array_of_strings(AttributeInterface $attribute

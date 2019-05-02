@@ -56,6 +56,12 @@ class NonExistentSelectValuesFilter implements NonExistentValuesFilter
         }
 
         $existingOptionCodes = $this->getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($uniqueOptionCodes);
+        $caseUnsensitiveOptionsCodes = [];
+        foreach ($existingOptionCodes as $attributeCode => $optionCodesForThisAttribute) {
+            foreach ($optionCodesForThisAttribute as $optionCodeForThisAttribute) {
+                $caseUnsensitiveOptionsCodes[$attributeCode][strtolower($optionCodeForThisAttribute)] = $optionCodeForThisAttribute;
+            }
+        }
 
         $filteredValues = [];
 
@@ -67,10 +73,10 @@ class NonExistentSelectValuesFilter implements NonExistentValuesFilter
                     foreach ($channelValues as $locale => $value) {
                         // MULTI_SELECT ATTRIBUTE
                         if (is_array($value)) {
-                            $multiSelectValues[$channel][$locale] = array_intersect($value, $existingOptionCodes[$attributeCode] ?? []);
+                            $multiSelectValues[$channel][$locale] = $this->arrayIntersectCaseInsensitive($value, $caseUnsensitiveOptionsCodes[$attributeCode] ?? []);
                         // SIMPLE SELECT ATTRIBUTE
                         } else {
-                            $simpleSelectValues[$channel][$locale] = in_array($value, $existingOptionCodes[$attributeCode] ?? []) ? $value : '';
+                            $simpleSelectValues[$channel][$locale] = ($caseUnsensitiveOptionsCodes[$attributeCode] ?? [])[strtolower($value)] ?? '';
                         }
                     }
                 }
@@ -91,5 +97,22 @@ class NonExistentSelectValuesFilter implements NonExistentValuesFilter
         }
 
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
+    }
+
+    private function arrayIntersectCaseInsensitive(array $givenOptionCodes, array $existentOptionCodesIndexedUnsensitive): array
+    {
+        $result = [];
+
+        if (empty($existentOptionCodesIndexedUnsensitive)) {
+            return [];
+        }
+
+        foreach ($givenOptionCodes as $optionCode) {
+            if (isset($existentOptionCodesIndexedUnsensitive[strtolower($optionCode)])) {
+                $result[] = $existentOptionCodesIndexedUnsensitive[strtolower($optionCode)];
+            }
+        }
+
+        return $result;
     }
 }
