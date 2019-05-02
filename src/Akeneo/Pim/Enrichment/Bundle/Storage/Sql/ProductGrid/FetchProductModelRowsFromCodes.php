@@ -266,6 +266,8 @@ SQL;
         )->fetchAll();
 
         $result = [];
+        $productModels = [];
+
         foreach ($rows as $row) {
             $values = json_decode($row['raw_values'], true);
             // filter attributes directly on raw_values for performance reason
@@ -277,10 +279,13 @@ SQL;
             );
 
             $filteredValues = array_intersect_key($values, array_flip($attributeCodesToKeep));
+            $productModels[$row['code']] = $filteredValues;
+        }
 
-            $valueCollection = $this->valueCollectionFactory->createFromStorageFormat($filteredValues);
+        $valueCollections = $this->valueCollectionFactory->createMultipleFromStorageFormat($productModels);
 
-            $result[$row['code']]['value_collection'] = $valueCollection->filter(
+        foreach ($valueCollections as $productModelCode => $valueCollection) {
+            $result[$productModelCode]['value_collection'] = $valueCollection->filter(
                 function (ValueInterface $value) use ($channelCode, $localeCode) {
                     return ($value->getScopeCode() === $channelCode || $value->getScopeCode() === null)
                         && ($value->getLocaleCode() === $localeCode || $value->getLocaleCode() === null);
