@@ -13,5 +13,5 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption;
  */
 interface GetExistingAttributeOptionCodes
 {
-    public function fromOptionCodes(array $optionCodes): array;
+    public function fromOptionCodesByAttributeCode(array $attributeCodesToOptionCodes): array;
 }
