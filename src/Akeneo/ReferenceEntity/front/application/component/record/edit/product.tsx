@@ -21,7 +21,7 @@ interface StateProps {
     channel: string;
   };
   products: ProductModel[];
-  attributes: NormalizedAttribute[];
+  attributes: DropdownElement[];
   selectedAttribute: NormalizedAttributeCode | null;
   recordCode: NormalizedCode
   referenceEntityIdentifier: NormalizedIdentifier
@@ -40,6 +40,7 @@ class Product extends React.Component<StateProps & DispatchProps> {
 
   render() {
     const createAttributePath = `#${router.generate(`pim_enrich_attribute_create`)}`;
+    const selectedAttribute = this.props.attributes.find((attribute: DropdownElement) => attribute.identifier === this.props.selectedAttribute);
 
     return (
       <React.Fragment>
@@ -80,9 +81,9 @@ class Product extends React.Component<StateProps & DispatchProps> {
               </div>
             ) : (
               <React.Fragment>
-                {null !== this.props.selectedAttribute ? (
+                {null !== this.props.selectedAttribute && undefined !== selectedAttribute? (
                   <NoResult
-                    entityLabel={this.props.attributes.find((attribute: NormalizedAttribute) => attribute.code === this.props.selectedAttribute).label}
+                    entityLabel={selectedAttribute.label}
                     title="pim_reference_entity.record.product.no_product.title"
                     subtitle="pim_reference_entity.record.product.no_product.subtitle"
                     type="product"
@@ -134,7 +135,7 @@ export default connect(
       products: state.products.products.map((normalizedProduct: NormalizedProduct) =>
         denormalizeProduct(normalizedProduct)
       ),
-      attributes: state.products.attributes.map((attribute: any) => ({
+      attributes: state.products.attributes.map((attribute: NormalizedAttribute) => ({
         identifier: attribute.code,
         label: getLabel(attribute.labels, state.user.catalogLocale, attribute.code),
         original: attribute,
