@@ -384,6 +384,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
 
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.number_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\NumberDataHydrator
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
     # Record value transformers
     akeneo_referenceentity.infrastructure.persistence.record.transformer.connector_value_registry:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry
