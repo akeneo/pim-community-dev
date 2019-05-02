@@ -548,6 +548,7 @@ class CreateAttributeContext implements Context
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
+        $attributeData['is_decimal'] = json_decode($attributeData['is_decimal']);
 
         $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));
@@ -575,6 +576,7 @@ class CreateAttributeContext implements Context
         $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
+        $attributeData['is_decimal'] = json_decode($attributeData['is_decimal']);
 
         $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));

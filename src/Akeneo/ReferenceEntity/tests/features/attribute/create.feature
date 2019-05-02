@@ -140,13 +140,13 @@ Feature: Create an attribute linked to a reference entity
     Then there should be a validation error with message 'You cannot create the attribute "Brands" because you have reached the limit of 100 attributes for this reference entity'
 
   @acceptance-back
-  Scenario: Create a number attribute to a reference entity
+  Scenario: Create a non decimal number attribute to a reference entity
     When the user creates a number attribute "area" to the reference entity "city" with:
-      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale |
-      | area   | {"en_US": "Area", "fr_FR": "Superficie"}| true        | 2     | false             | false            |
+      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | is_decimal |
+      | area   | {"en_US": "Area", "fr_FR": "Superficie"}| true        | 2     | false             | false            | false      |
     Then there is a number attribute "area" in the reference entity "city" with:
-      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | type              |
-      | area   | {"en_US": "Area", "fr_FR": "Superficie"}| true        | 2     | false             | false            | number            |
+      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | type              | is_decimal |
+      | area   | {"en_US": "Area", "fr_FR": "Superficie"}| true        | 2     | false             | false            | number            | false      |
 
   @acceptance-front
   Scenario: Create a simple valid text attribute

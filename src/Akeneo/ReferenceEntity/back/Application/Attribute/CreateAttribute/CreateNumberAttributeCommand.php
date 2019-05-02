@@ -19,4 +19,27 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
  */
 class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
 {
+    /** @var bool */
+    public $isDecimal;
+
+    public function __construct(
+        string $referenceEntityIdentifier,
+        string $code,
+        array $labels,
+        bool $isRequired,
+        bool $valuePerChannel,
+        bool $valuePerLocale,
+        bool $isDecimal
+    ) {
+        parent::__construct(
+            $referenceEntityIdentifier,
+            $code,
+            $labels,
+            $isRequired,
+            $valuePerChannel,
+            $valuePerLocale
+        );
+
+        $this->isDecimal = $isDecimal;
+    }
 }

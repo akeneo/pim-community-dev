@@ -7,6 +7,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrat
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
@@ -35,6 +36,8 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array
     {
+        $row['is_decimal'] = Type::getType(Type::BOOLEAN)->convertToPhpValue($row['additional_properties']['is_decimal'], $platform);
+
         return $row;
     }
 
@@ -48,7 +51,8 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
             AttributeOrder::fromInteger($row['attribute_order']),
             AttributeIsRequired::fromBoolean($row['is_required']),
             AttributeValuePerChannel::fromBoolean($row['value_per_channel']),
-            AttributeValuePerLocale::fromBoolean($row['value_per_locale'])
+            AttributeValuePerLocale::fromBoolean($row['value_per_locale']),
+            AttributeIsDecimal::fromBoolean($row['is_decimal'])
         );
     }
 
@@ -63,7 +67,8 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
             'is_required',
             'value_per_locale',
             'value_per_channel',
-            'attribute_type'
+            'attribute_type',
+            'is_decimal'
         ];
     }
 }
