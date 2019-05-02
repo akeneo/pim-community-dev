@@ -6,7 +6,6 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Path;
 use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
 use League\Flysystem\FileExistsException;
-use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -79,7 +78,7 @@ class MediaController
             $fileSystem = $this->filesystemProvider->getFilesystem('pefTmpStorage');
 
             $stream = fopen($file->getPathname(), 'r+');
-            $pathname = new Path($pathData['path'], $pathData['uuid'], $file->getClientOriginalName());
+            $pathname = Path::withoutStorage($pathData['path'], $pathData['uuid'], $file->getClientOriginalName());
             $fileSystem->writeStream(
                 (string)$pathname,
                 $stream

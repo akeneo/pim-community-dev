@@ -7,15 +7,24 @@ final class Path
     /** @var array */
     private $directories;
 
-    public function __construct(string ...$directories)
+    /**  @var string */
+    private $storage;
+
+    public function __construct(string $storage, string ...$directories)
     {
         $this->directories = $directories;
+        $this->storage = $storage;
+    }
+
+    public static function withoutStorage(string ...$directories): self
+    {
+        return new self('', ...$directories);
     }
 
     public function __toString(): string
     {
-        return array_reduce($this->directories, function ($path, $directory) {
-            $directory = basename($directory);
+        $path = array_reduce($this->directories, function ($path, $directory) {
+            $directory = trim($directory, "/");
 
             if ('' === $path) {
                 return $directory;
@@ -23,5 +32,11 @@ final class Path
 
             return $path.DIRECTORY_SEPARATOR.$directory;
         }, '');
+
+        if ('' !== $this->storage) {
+            return $this->storage.'://'.$path;
+        }
+
+        return $path;
     }
 }
