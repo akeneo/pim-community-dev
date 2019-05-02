@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\FileStorage;
 
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -20,20 +21,23 @@ class FileInfoFactory implements FileInfoFactoryInterface
     /** @var string */
     protected $fileClass;
 
-    /**
-     * @param PathGeneratorInterface $pathGenerator
-     * @param string                 $fileClass
-     */
-    public function __construct(PathGeneratorInterface $pathGenerator, $fileClass)
-    {
+    /** @var FilesystemProvider */
+    private $filesystemProvider;
+
+    public function __construct(
+        PathGeneratorInterface $pathGenerator,
+        FilesystemProvider $filesystemProvider,
+        $fileClass
+    ) {
         $this->pathGenerator = $pathGenerator;
         $this->fileClass = $fileClass;
+        $this->filesystemProvider = $filesystemProvider;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createFromRawFile(\SplFileInfo $rawFile, $destFsAlias)
+    public function createFromRawFile(\SplFileInfo $rawFile, $destFsAlias): FileInfoInterface
     {
         $pathInfo = $this->pathGenerator->generate($rawFile);
         $sha1 = sha1_file($rawFile->getPathname());
@@ -46,11 +50,13 @@ class FileInfoFactory implements FileInfoFactoryInterface
             $extension = $rawFile->getExtension();
         }
 
-        $size = filesize($rawFile->getPathname());
-        $mimeType = MimeTypeGuesser::getInstance()->guess($rawFile->getPathname());
+        $filesystem = $this->filesystemProvider->getFilesystem('pefTmpStorage');
+        $metadata = $filesystem->getMetadata($rawFile->getPathname());
+        $mimeType = $metadata['mimetype'];
+        $size = $metadata['size'];
 
         $file = new $this->fileClass();
-        $file->setKey($pathInfo['path'].$pathInfo['file_name']);
+        $file->setKey($pathInfo['path'] . $pathInfo['file_name']);
         $file->setMimeType($mimeType);
         $file->setOriginalFilename($originalFilename);
         $file->setSize($size);

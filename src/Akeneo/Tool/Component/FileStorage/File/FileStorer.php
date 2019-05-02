@@ -2,14 +2,13 @@
 
 namespace Akeneo\Tool\Component\FileStorage\File;
 
-use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
+use Akeneo\Tool\Component\FileStorage\Path;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use League\Flysystem\FileExistsException;
+use InvalidArgumentException;
+use League\Flysystem\FilesystemNotFoundException;
 use League\Flysystem\MountManager;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Move a raw file to the storage destination filesystem
@@ -51,7 +50,6 @@ class FileStorer implements FileStorerInterface
      */
     public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false)
     {
-        $filesystem = $this->mountManager->getFilesystem($destFsAlias);
         $file = $this->factory->createFromRawFile($localFile, $destFsAlias);
 
         $error = sprintf(
@@ -60,18 +58,12 @@ class FileStorer implements FileStorerInterface
             $destFsAlias
         );
 
-        if (false === $resource = fopen($localFile->getPathname(), 'r')) {
-            throw new FileTransferException($error);
-        }
-
         try {
-            $options = [];
-            $mimeType = $file->getMimeType();
-            if (null !== $mimeType) {
-                $options['ContentType'] = $mimeType;
-            }
-            $isFileWritten = $filesystem->writeStream($file->getKey(), $resource, $options);
-        } catch (FileExistsException $e) {
+            $isFileWritten = $this->mountManager->move(
+                (string) new Path('pefTmpStorage', $localFile->getPathname()),
+                (string) new Path($destFsAlias, $file->getKey())
+            );
+        } catch (InvalidArgumentException | FilesystemNotFoundException $e) {
             throw new FileTransferException($error, $e->getCode(), $e);
         }
 
@@ -81,30 +73,6 @@ class FileStorer implements FileStorerInterface
 
         $this->saver->save($file);
 
-        if (true === $deleteRawFile) {
-            $this->deleteRawFile($localFile);
-        }
-
         return $file;
-    }
-
-    /**
-     * @param \SplFileInfo $file
-     *
-     * @throws FileRemovalException
-     */
-    protected function deleteRawFile(\SplFileInfo $file)
-    {
-        $filesystem = new Filesystem();
-
-        try {
-            $filesystem->remove($file->getPathname());
-        } catch (IOException $e) {
-            throw new FileRemovalException(
-                sprintf('Unable to delete the file "%s".', $file->getPathname()),
-                $e->getCode(),
-                $e
-            );
-        }
     }
 }

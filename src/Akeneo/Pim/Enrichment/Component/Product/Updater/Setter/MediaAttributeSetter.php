@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInter
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -27,22 +28,21 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     /** @var FileInfoRepositoryInterface */
     protected $repository;
 
-    /**
-     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
-     * @param FileStorerInterface              $storer
-     * @param FileInfoRepositoryInterface      $repository
-     * @param string[]                         $supportedTypes
-     */
+    /** @var FilesystemProvider */
+    private $filesystemProvider;
+
     public function __construct(
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         FileStorerInterface $storer,
         FileInfoRepositoryInterface $repository,
+        FilesystemProvider $filesystemProvider,
         array $supportedTypes
     ) {
         parent::__construct($entityWithValuesBuilder);
 
         $this->storer = $storer;
         $this->repository = $repository;
+        $this->filesystemProvider = $filesystemProvider;
         $this->supportedTypes = $supportedTypes;
     }
 
@@ -97,7 +97,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
      * @throws InvalidPropertyException If an invalid filePath is provided
      * @return FileInfoInterface|null
      */
-    protected function storeFile(AttributeInterface $attribute, $data)
+    protected function storeFile(AttributeInterface $attribute, $data): FileInfoInterface
     {
         if (null === $data) {
             return null;
@@ -105,7 +105,8 @@ class MediaAttributeSetter extends AbstractAttributeSetter
 
         $rawFile = new \SplFileInfo($data);
 
-        if (!$rawFile->isFile()) {
+        $filesystem = $this->filesystemProvider->getFilesystem('pefTmpStorage');
+        if (!$filesystem->has($data)) {
             throw InvalidPropertyException::validPathExpected(
                 $attribute->getCode(),
                 static::class,

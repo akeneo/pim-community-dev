@@ -247,6 +247,7 @@ services:
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
         tags:
             - { name: 'pim_catalog.updater.setter' }

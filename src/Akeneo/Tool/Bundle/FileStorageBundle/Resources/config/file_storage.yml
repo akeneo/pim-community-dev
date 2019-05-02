@@ -30,6 +30,7 @@ services:
         class: '%akeneo_file_storage.file_storage.file_info_factory.class%'
         arguments:
             - '@akeneo_file_storage.file_storage.path_generator'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '%akeneo_file_storage.model.file_info.class%'
 
     akeneo_file_storage.file_storage.path_generator:
