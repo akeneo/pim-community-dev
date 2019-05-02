@@ -90,6 +90,7 @@ final class ListProductsQueryHandler
 
         $connectorProductList = $this->getConnectorProductsQuery->fromProductQueryBuilder(
             $pqb,
+            $query->userId,
             $query->attributeCodes,
             $query->channelCode,
             $this->getLocales($query->channelCode, $query->localeCodes)

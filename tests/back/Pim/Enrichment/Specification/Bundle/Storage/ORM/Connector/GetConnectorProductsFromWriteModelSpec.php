@@ -91,7 +91,7 @@ class GetConnectorProductsFromWriteModelSpec extends ObjectBehavior
 
         $valueCollectionProductA->removeByAttributeCode('sku')->shouldBeCalled();
 
-        $getMetadata->forProduct($productA)->willReturn(['workflow_status' => 'working_copy']);
+        $getMetadata->fromProductIdentifiers($productA)->willReturn(['workflow_status' => 'working_copy']);
 
         $this->fromProductQueryBuilder($pqb, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn)->shouldBeLike(
             new ConnectorProductList(1, [

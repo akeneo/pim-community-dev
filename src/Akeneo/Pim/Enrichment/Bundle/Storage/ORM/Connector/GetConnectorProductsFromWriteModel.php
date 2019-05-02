@@ -74,7 +74,7 @@ final class GetConnectorProductsFromWriteModel implements Query\GetConnectorProd
             });
             $values->removeByAttributeCode($identifierAttributeCode);
 
-            $products[] = ConnectorProduct::fromProductWriteModel($product, $values, $this->getMetadata->forProduct($product));
+            $products[] = ConnectorProduct::fromProductWriteModel($product, $values, $this->getMetadata->fromProductIdentifiers($product));
         }
 
         return new ConnectorProductList($result->count(), $products);

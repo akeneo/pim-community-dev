@@ -135,7 +135,7 @@ class NormalizedProductCleaner
                 $locale = null === $value['locale'] ? 'locale' : $value['locale'];
                 $attributeIndexedValues[$channel . '-' . $locale] = $value;
             }
-            ksort($attributeIndexedValues);
+            self::ksortRecursive($attributeIndexedValues);
             $sortedValues[$attributeCode] = array_values($attributeIndexedValues);
         }
 

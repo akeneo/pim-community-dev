@@ -7,7 +7,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * This read model is dedicated to export product data for the connector, such as the API.
@@ -178,4 +180,59 @@ final class ConnectorProduct
 
         return $associations;
     }
+
+    public function filterCategoryCodes(array $filteredProductCategoryCodes): array
+    {
+        return array_intersect($this->categoryCodes, $filteredProductCategoryCodes);
+    }
+
+    public function attributeCodes()
+    {
+        $attributeCodes = [];
+        foreach ($this->values as $value) {
+            /** @var $value ValueInterface */
+            $attributeCodes[] = $value->getAttributeCode();
+        }
+
+        return array_unique($attributeCodes);
+    }
+
+    public function filterAttributeCodes($filteredProductAttributeCodes)
+    {
+        $values = new ValueCollection();
+        foreach ($this->values as $value) {
+            /** @var $value ValueInterface */
+            if (in_array($value->getAttributeCode(), $filteredProductAttributeCodes)) {
+                $values->add($value);
+            }
+        }
+
+        return $values;
+    }
+
+    public function associatedProducts()
+    {
+        $products = [];
+        foreach ($this->associations as $associationType => $associations) {
+            $products = array_merge($products, $associations['products']);
+        }
+
+        return array_unique($products);
+    }
+
+    public function filterAssociatedProducts($filteredAssociatedProducts)
+    {
+        $result = [];
+        foreach ($this->associations as $associationType => $association) {
+            $result[$associationType]['groups'] = $association['groups'];
+            $result[$associationType]['product_models'] = $association['product_models'];
+            $result[$associationType]['products'] = array_intersect(
+                $association['products'],
+                $filteredAssociatedProducts
+            );
+        }
+
+        return $result;
+    }
+
 }

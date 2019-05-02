@@ -5,8 +5,6 @@ declare(strict_types=1);
 // TODO: move into Bundle
 namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @author    Mathias Métayer <mathias.metayer@akeneo.com>
@@ -15,7 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  */
 final class GetMetadata implements GetMetadataInterface
 {
-    public function forProduct(ProductInterface $product): array
+    public function fromProductIdentifiers(int $userId, array $productIdentifiers): array
     {
         return [];
     }

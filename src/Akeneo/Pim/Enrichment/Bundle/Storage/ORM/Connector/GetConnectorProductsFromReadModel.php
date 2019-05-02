@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
@@ -32,18 +33,23 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
 
+    /** @var GetMetadataInterface */
+    private $getMetadata;
+
     public function __construct(
         GetValuesAndPropertiesFromProductIdentifiers $getValuesAndPropertiesFromProductIdentifiers,
         GetProductAssociationsByProductIdentifiers $getProductAssociationsByProductIdentifiers,
         GetCategoryCodesByProductIdentifiers $getCategoryCodesByProductIdentifiers,
         ValueCollectionFactoryInterface $valueCollectionFactory,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        GetMetadataInterface $getMetadata
     ) {
         $this->getValuesAndPropertiesFromProductIdentifiers = $getValuesAndPropertiesFromProductIdentifiers;
         $this->getProductAssociationsByProductIdentifiers = $getProductAssociationsByProductIdentifiers;
         $this->getCategoryCodesByProductIdentifiers = $getCategoryCodesByProductIdentifiers;
         $this->valueCollectionFactory = $valueCollectionFactory;
         $this->attributeRepository = $attributeRepository;
+        $this->getMetadata = $getMetadata;
     }
 
     /**
@@ -51,6 +57,7 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
      */
     public function fromProductQueryBuilder(
         ProductQueryBuilderInterface $pqb,
+        int $userId,
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
@@ -74,8 +81,15 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
             $categoryCodes[$productIdentifier] = ['category_codes' => $productCategoryCodes];
         }
 
+        $metadata = [];
+        foreach ($this->getMetadata->fromProductIdentifiers($userId, $identifiers)
+                 as $productIdentifier => $workflowStatus) {
+            $metadata[$productIdentifier] = ['metadata' => ['workflow_status' => $workflowStatus]];
+        }
+
         $rows = array_replace_recursive(
             $this->getValuesAndPropertiesFromProductIdentifiers->fetchByProductIdentifiers($identifiers),
+            $metadata,
             $associations,
             $categoryCodes
         );
@@ -110,7 +124,7 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
                 $row['group_codes'],
                 $row['product_model_code'],
                 $row['associations'],
-                [],
+                $row['metadata'],
                 $this->valueCollectionFactory->createFromStorageFormat($raw_values)
             );
         }
