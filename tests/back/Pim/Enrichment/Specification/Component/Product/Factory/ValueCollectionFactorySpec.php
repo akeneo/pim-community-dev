@@ -243,6 +243,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $value->getAttributeCode()->willReturn('color');
         $value->getScopeCode()->willReturn('<all_channels>');
         $value->getLocaleCode()->willReturn('<all_locales>');
+        $value->getData()->willReturn('red');
         $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
         $chainedEmptyValuesCleaner->cleanAll($nonCleanedRawValues)->willReturn($cleanedRawValues);
 
@@ -316,7 +317,10 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         ValueFactory $valueFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger,
-        AttributeInterface $color
+        AttributeInterface $color,
+        GetAttributeByCodes $getAttributeByCodes,
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
+        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
     ) {
         $rawValues = [
             'color' => [
@@ -326,6 +330,32 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             ],
         ];
 
+        $getAttributeByCodes->forCodes(['color'])->willReturn([
+           new Attribute('color', AttributeTypes::OPTION_MULTI_SELECT),
+        ]);
+
+        $typesToCode = [
+            AttributeTypes::OPTION_MULTI_SELECT => [
+                'color' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 'red'
+                            ],
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $onGoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
+        $onGoingFilteredRawValues = new OnGoingFilteredRawValues($typesToCode, []);
+        $onGoingNonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($typesToCode);
+        $onGoingCleanedRawValues = new OnGoingCleanedRawValues($typesToCode, []);
+        $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
+        $chainedEmptyValuesCleaner->cleanAll($onGoingNonCleanedRawValues)->willReturn($onGoingCleanedRawValues);
+
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
         $valueFactory->create($color, null, null, 'red', true)->willThrow(
             new InvalidAttributeException('attribute', 'color', static::class)
@@ -333,7 +363,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $logger->warning(Argument::containingString('Tried to load a product value with an invalid attribute "color".'));
 
-        $actualValues = $this->createFromStorageFormat($rawValues);
+        $actualValues = $this->createFromStorageFormat($rawValues, 'productA');
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(0);
@@ -343,7 +373,10 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         ValueFactory $valueFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger,
-        AttributeInterface $referenceData
+        AttributeInterface $referenceData,
+        GetAttributeByCodes $getAttributeByCodes,
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
+        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
     ) {
         $rawValues = [
             'image' => [
@@ -352,6 +385,32 @@ class ValueCollectionFactorySpec extends ObjectBehavior
                 ],
             ],
         ];
+
+        $getAttributeByCodes->forCodes(['image'])->willReturn([
+            new Attribute('image', AttributeTypes::IMAGE),
+        ]);
+
+        $typesToCode = [
+            AttributeTypes::IMAGE => [
+                'image' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 'my_image'
+                            ],
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $onGoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
+        $onGoingFilteredRawValues = new OnGoingFilteredRawValues($typesToCode, []);
+        $onGoingNonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($typesToCode);
+        $onGoingCleanedRawValues = new OnGoingCleanedRawValues($typesToCode, []);
+        $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
+        $chainedEmptyValuesCleaner->cleanAll($onGoingNonCleanedRawValues)->willReturn($onGoingCleanedRawValues);
 
         $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
         $valueFactory->create($referenceData, null, null, 'my_image', true)->willThrow(
@@ -362,21 +421,22 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             Argument::containingString('Tried to load a product value with the property "image" that does not exist.')
         );
 
-        $actualValues = $this->createFromStorageFormat($rawValues);
+        $actualValues = $this->createFromStorageFormat($rawValues, 'productA');
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(0);
     }
 
-    function it_create_empty_value_is_wrong_format_when_creating_a_values_collection_from_the_storage_format(
+    function it_creates_empty_value_if_wrong_format_when_creating_a_values_collection_from_the_storage_format(
         ValueFactory $valueFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger,
-        GetAttributeByCodes $getAttributeByCodes,
-        NonExistentValuesFilter $obsoleteValuesFilter,
         AttributeInterface $image,
         ValueInterface $value1,
-        AttributeInterface $referenceData
+        AttributeInterface $referenceData,
+        GetAttributeByCodes $getAttributeByCodes,
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
+        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
     ) {
         $rawValues = [
             'image' => [
@@ -386,15 +446,41 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             ],
         ];
 
+        $getAttributeByCodes->forCodes(['image'])->willReturn([
+            new Attribute('image', AttributeTypes::IMAGE),
+        ]);
+
+        $typesToCode = [
+            AttributeTypes::IMAGE => [
+                'image' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 'empty_image'
+                            ],
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $onGoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
+        $onGoingFilteredRawValues = new OnGoingFilteredRawValues($typesToCode, []);
+        $onGoingNonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($typesToCode);
+        $onGoingCleanedRawValues = new OnGoingCleanedRawValues($typesToCode, []);
+        $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
+        $chainedEmptyValuesCleaner->cleanAll($onGoingNonCleanedRawValues)->willReturn($onGoingCleanedRawValues);
+
         $image->getCode()->willReturn('image');
         $image->isUnique()->willReturn(false);
         $value1->getLocaleCode()->willReturn(null);
         $value1->getScopeCode()->willReturn(null);
         $value1->getAttributeCode()->willReturn('image');
-        $value1->getData()->willReturn('my_image');
+        $value1->getData()->willReturn('empty_image');
 
         $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
-        $valueFactory->create($referenceData, null, null, 'my_image', true)->willThrow(
+        $valueFactory->create($referenceData, null, null, 'empty_image', true)->willThrow(
             new InvalidPropertyTypeException('attribute', 'image', static::class)
         );
         $valueFactory->create($referenceData, null, null, 'empty_image', true)->willReturn($value1);
@@ -403,7 +489,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             Argument::containingString('Tried to load a product value for attribute "image" that does not have the good type.')
         );
 
-        $actualValues = $this->createFromStorageFormat($rawValues);
+        $actualValues = $this->createFromStorageFormat($rawValues, 'productA');
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(1);
@@ -413,9 +499,48 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $valueFactory,
         $attributeRepository,
         ValueInterface $descriptionValueUS,
-        ValueInterface $descriptionValueFR
+        ValueInterface $descriptionValueFR,
+        AttributeInterface $description,
+        GetAttributeByCodes $getAttributeByCodes,
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
+        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
     ) {
-        $description = new Attribute();
+        $rawValues = [
+            'description' => [
+                'ecommerce' => [
+                    'en_US' => '',
+                    'fr_FR' => null,
+                ],
+            ],
+        ];
+
+        $getAttributeByCodes->forCodes(['description'])->willReturn([
+            new Attribute('description', AttributeTypes::TEXTAREA),
+        ]);
+
+        $typesToCode = [
+            AttributeTypes::TEXTAREA => [
+                'description' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            'ecommerce' => [
+                                'en_US' => '',
+                                'fr_FR' => null,
+                            ],
+                        ],
+                    ]
+                ]
+            ]
+        ];
+
+        $onGoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
+        $onGoingFilteredRawValues = new OnGoingFilteredRawValues($typesToCode, []);
+        $onGoingNonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($typesToCode);
+        $onGoingCleanedRawValues = new OnGoingCleanedRawValues($typesToCode, []);
+        $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
+        $chainedEmptyValuesCleaner->cleanAll($onGoingNonCleanedRawValues)->willReturn($onGoingCleanedRawValues);
+
         $description->setCode('description');
         $description->setUnique(false);
         $description->setScopable(true);
@@ -429,44 +554,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             ->create($description, 'ecommerce', 'fr_FR', null, true)
             ->willReturn($descriptionValueFR);
 
-        $actualValues = $this->createFromStorageFormat([
-            'description' => [
-                'ecommerce' => [
-                    'en_US' => '',
-                    'fr_FR' => null,
-                ],
-            ],
-        ]);
-
-        $actualValues->shouldBeAnInstanceOf(ValueCollection::class);
-        $actualValues->shouldHaveCount(0);
-    }
-
-    function it_does_not_return_empty_array_values(
-        $valueFactory,
-        $attributeRepository,
-        ValueInterface $optionsValue
-    ) {
-        $colors = new Attribute();
-        $colors->setCode('colors');
-        $colors->setUnique(false);
-        $colors->setScopable(false);
-        $colors->setLocalizable(false);
-        $attributeRepository->findOneByIdentifier('colors')->willReturn($colors);
-
-        $valueFactory
-            ->create($colors, null, null, [], true)
-            ->willReturn($optionsValue);
-
-        $actualValues = $this->createFromStorageFormat(
-            [
-                'colors' => [
-                    '<all_channels>' => [
-                        '<all_locales>' => [],
-                    ],
-                ],
-            ]
-        );
+        $actualValues = $this->createFromStorageFormat($rawValues, 'productA');
 
         $actualValues->shouldBeAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(0);
@@ -475,33 +563,106 @@ class ValueCollectionFactorySpec extends ObjectBehavior
     function it_does_not_filter_falsy_values(
         $valueFactory,
         $attributeRepository,
+        AttributeInterface $number,
+        AttributeInterface $text,
+        AttributeInterface $yesNo,
         ValueInterface $numberValue,
         ValueInterface $textValue,
-        ValueInterface $yesnoValue
+        ValueInterface $yesnoValue,
+        GetAttributeByCodes $getAttributeByCodes,
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
+        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
     ) {
-        $number = new Attribute();
-        $number->setCode('number');
-        $number->setUnique(false);
-        $number->setScopable(false);
-        $number->setLocalizable(false);
+        $rawValues = [
+            'number' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 0.0,
+                ],
+            ],
+            'text' => [
+                '<all_channels>' => [
+                    '<all_locales>' => '0',
+                ],
+            ],
+            'yes_no' => [
+                '<all_channels>' => [
+                    '<all_locales>' => false,
+                ],
+            ],
+        ];
+
+        $getAttributeByCodes->forCodes(['number', 'text', 'yes_no'])->willReturn([
+            new Attribute('number', AttributeTypes::NUMBER),
+            new Attribute('text', AttributeTypes::TEXTAREA),
+            new Attribute('yes_no', AttributeTypes::BOOLEAN),
+        ]);
+
+        $typesToCode = [
+            AttributeTypes::NUMBER => [
+                'number' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 0.0,
+                            ],
+                        ]
+                    ]
+                ]
+            ],
+            AttributeTypes::TEXTAREA => [
+                'text' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => '0',
+                            ],
+                        ]
+                    ]
+                ]
+            ],
+            AttributeTypes::BOOLEAN => [
+                'yes_no' => [
+                    [
+                        'identifier' => 'productA',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => false,
+                            ],
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $onGoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
+        $onGoingFilteredRawValues = new OnGoingFilteredRawValues($typesToCode, []);
+        $onGoingNonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($typesToCode);
+        $onGoingCleanedRawValues = new OnGoingCleanedRawValues($typesToCode, []);
+        $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
+        $chainedEmptyValuesCleaner->cleanAll($onGoingNonCleanedRawValues)->willReturn($onGoingCleanedRawValues);
+
+        $number->getCode()->willReturn('number');
+        $number->isUnique()->willReturn(false);
+        $number->isScopable()->willReturn(false);
+        $number->isLocalizable()->willReturn(false);
         $attributeRepository->findOneByIdentifier('number')->willReturn($number);
 
-        $text = new Attribute();
-        $text->setCode('text');
-        $text->setUnique(false);
-        $text->setScopable(false);
-        $text->setLocalizable(false);
+        $text->getCode()->willReturn('text');
+        $text->isUnique()->willReturn(false);
+        $text->isScopable()->willReturn(false);
+        $text->isLocalizable()->willReturn(false);
         $attributeRepository->findOneByIdentifier('text')->willReturn($text);
 
-        $yesNo = new Attribute();
-        $yesNo->setCode('yes_no');
-        $yesNo->setUnique(false);
-        $yesNo->setScopable(false);
-        $yesNo->setLocalizable(false);
+        $yesNo->getCode()->willReturn('yes_no');
+        $yesNo->isUnique()->willReturn(false);
+        $yesNo->isScopable()->willReturn(false);
+        $yesNo->isLocalizable()->willReturn(false);
         $attributeRepository->findOneByIdentifier('yes_no')->willReturn($yesNo);
 
         $numberValue->getData()->willReturn(0.0);
-        $numberValue->getAttributeCode()->willReturn($number->getCode());
+        $numberValue->getAttributeCode()->willReturn('number');
         $numberValue->getScopeCode()->willReturn(null);
         $numberValue->getLocaleCode()->willReturn(null);
         $valueFactory
@@ -509,7 +670,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             ->willReturn($numberValue);
 
         $textValue->getData()->willReturn('0');
-        $textValue->getAttributeCode()->willReturn($text->getCode());
+        $textValue->getAttributeCode()->willReturn('text');
         $textValue->getScopeCode()->willReturn(null);
         $textValue->getLocaleCode()->willReturn(null);
         $valueFactory
@@ -517,32 +678,14 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             ->willReturn($textValue);
 
         $yesnoValue->getData()->willReturn(false);
-        $yesnoValue->getAttributeCode()->willReturn($yesNo->getCode());
+        $yesnoValue->getAttributeCode()->willReturn('yes_no');
         $yesnoValue->getScopeCode()->willReturn(null);
         $yesnoValue->getLocaleCode()->willReturn(null);
         $valueFactory
             ->create($yesNo, null, null, false, true)
             ->willReturn($yesnoValue);
 
-        $actualValues = $this->createFromStorageFormat(
-            [
-                'number' => [
-                    '<all_channels>' => [
-                        '<all_locales>' => 0.0,
-                    ],
-                ],
-                'text' => [
-                    '<all_channels>' => [
-                        '<all_locales>' => '0',
-                    ],
-                ],
-                'yes_no' => [
-                    '<all_channels>' => [
-                        '<all_locales>' => false,
-                    ],
-                ],
-            ]
-        );
+        $actualValues = $this->createFromStorageFormat($rawValues, 'productA');
 
         $actualValues->shouldBeAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(3);
