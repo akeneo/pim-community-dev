@@ -5,6 +5,7 @@ namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
@@ -31,7 +32,8 @@ class NumberAttributeSpec extends ObjectBehavior
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true)
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeIsDecimal::fromBoolean(false)
         ]);
     }
 
@@ -46,6 +48,36 @@ class NumberAttributeSpec extends ObjectBehavior
         $this->hasOrder(AttributeOrder::fromInteger(1))->shouldReturn(false);
     }
 
+    function it_creates_a_decimal_number()
+    {
+        $this->beConstructedThrough('create', [
+            AttributeIdentifier::create('city', 'area', 'test'),
+            ReferenceEntityIdentifier::fromString('city'),
+            AttributeCode::fromString('area'),
+            LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeIsDecimal::fromBoolean(true)
+        ]);
+    }
+
+    function it_creates_a_non_decimal_number()
+    {
+        $this->beConstructedThrough('create', [
+            AttributeIdentifier::create('city', 'area', 'test'),
+            ReferenceEntityIdentifier::fromString('city'),
+            AttributeCode::fromString('area'),
+            LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeIsDecimal::fromBoolean(false)
+        ]);
+    }
+
     function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn([
@@ -58,7 +90,8 @@ class NumberAttributeSpec extends ObjectBehavior
              'value_per_channel'          => true,
              'value_per_locale'           => true,
              'type'                       => 'number',
-         ]
+             'is_decimal'                 => false
+          ]
         );
     }
 }

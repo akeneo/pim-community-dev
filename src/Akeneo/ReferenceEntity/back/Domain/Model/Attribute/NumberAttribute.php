@@ -13,7 +13,12 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 class NumberAttribute extends AbstractAttribute
 {
-    public static function create(
+    private const ATTRIBUTE_TYPE = 'number';
+
+    /** @var AttributeIsDecimal */
+    private $isDecimal;
+
+    protected function __construct(
         AttributeIdentifier $identifier,
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $code,
@@ -21,9 +26,10 @@ class NumberAttribute extends AbstractAttribute
         AttributeOrder $order,
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
-        AttributeValuePerLocale $valuePerLocale
+        AttributeValuePerLocale $valuePerLocale,
+        AttributeIsDecimal $isDecimal
     ) {
-        return new self(
+        parent::__construct(
             $identifier,
             $referenceEntityIdentifier,
             $code,
@@ -33,10 +39,46 @@ class NumberAttribute extends AbstractAttribute
             $valuePerChannel,
             $valuePerLocale
         );
+
+        $this->isDecimal = $isDecimal;
+    }
+
+    public static function create(
+        AttributeIdentifier $identifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        AttributeCode $code,
+        LabelCollection $labelCollection,
+        AttributeOrder $order,
+        AttributeIsRequired $isRequired,
+        AttributeValuePerChannel $valuePerChannel,
+        AttributeValuePerLocale $valuePerLocale,
+        AttributeIsDecimal $isDecimal
+    ) {
+        return new self(
+            $identifier,
+            $referenceEntityIdentifier,
+            $code,
+            $labelCollection,
+            $order,
+            $isRequired,
+            $valuePerChannel,
+            $valuePerLocale,
+            $isDecimal
+        );
+    }
+
+    public function normalize(): array
+    {
+        return array_merge(
+            parent::normalize(),
+            [
+                'is_decimal' => $this->isDecimal->normalize(),
+            ]
+        );
     }
 
     public function getType(): string
     {
-        return 'number';
+        return self::ATTRIBUTE_TYPE;
     }
 }

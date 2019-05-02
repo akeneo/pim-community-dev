@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateNumberAtt
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
@@ -61,7 +62,8 @@ class NumberAttributeFactory implements AttributeFactoryInterface
             $order,
             AttributeIsRequired::fromBoolean($command->isRequired),
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
-            AttributeValuePerLocale::fromBoolean($command->valuePerLocale)
+            AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
+            AttributeIsDecimal::fromBoolean($command->isDecimal)
         );
     }
 }
