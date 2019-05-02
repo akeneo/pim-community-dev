@@ -51,6 +51,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.edit_record_value_command_factory }
 
+    akeneo_referenceentity.application.factory.record.edit_number_value_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditNumberValueCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_number_value_command_factory }
+
     akeneo_referenceentity.application.factory.record.connector.edit_record_command_factory:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector\EditRecordCommandFactory
         arguments:
