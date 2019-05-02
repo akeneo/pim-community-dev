@@ -530,4 +530,59 @@ class CreateAttributeContext implements Context
 
         Assert::assertEquals($expected, $actual);
     }
+
+    /**
+     * @When /^the user creates a number attribute "([^"]*)" to the reference entity "([^"]*)" with:$/
+     */
+    public function theUserCreatesANumberAttributeToTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
+    {
+        $attributeData = current($attributeData->getHash());
+
+        $attributeData['type'] = 'number';
+        $attributeData['identifier']['identifier'] = $attributeCode;
+        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['code'] = $attributeCode;
+        $attributeData['order'] = (int) $attributeData['order'];
+        $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
+        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
+        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+
+        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+
+        try {
+            ($this->handler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
+     * @Then /^there is a number attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
+     */
+    public function thereIsANumberAttributeInTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
+    {
+        $attributeData = current($attributeData->getHash());
+
+        $attributeData['identifier']['identifier'] = $attributeCode;
+        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['code'] = $attributeCode;
+        $attributeData['order'] = (int) $attributeData['order'];
+        $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
+        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
+        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+
+        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+
+        try {
+            ($this->handler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
 }
