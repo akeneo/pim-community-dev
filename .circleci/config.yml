@@ -19,6 +19,9 @@ jobs:
           name: Setup the parameters.yml files
           command: ./bin/docker/pim-setup.sh
       - run:
+          name: Set the local object storage for tests
+          command: ./.circleci/local-object-storage-setup.sh
+      - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: sudo chown -R 1000:1000 ../project
       - run:

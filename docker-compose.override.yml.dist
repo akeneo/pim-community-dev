@@ -47,3 +47,8 @@ services:
   elasticsearch:
     ports:
       - '9210:9200'
+
+
+  object-storage:
+    ports:
+      - '9090:9000'
