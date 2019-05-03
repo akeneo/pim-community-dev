@@ -9,6 +9,7 @@ use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUplo
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\NumberUpdater;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
@@ -68,7 +69,8 @@ class NumberUpdaterSpec extends ObjectBehavior
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true)
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeIsDecimal::fromBoolean(false)
         );
 
         return $textAttribute;
