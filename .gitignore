@@ -51,6 +51,12 @@ npm-debug.log
 !/docker/akeneo.conf
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
+!/docker/object_storage
+/docker/object_storage/*
+!/docker/object_storage/.gitkeep
+/docker/object_storage/catalog/*
+!/docker/object_storage/catalog
+!/docker/object_storage/catalog/.gitkeep
 .env
 docker-compose.override.yml
 .web-server-pid

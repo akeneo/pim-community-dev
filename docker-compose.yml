@@ -83,6 +83,17 @@ services:
       - 'akeneo'
       - 'behat'
 
+  object-storage:
+    image: 'minio/minio'
+    command: 'server /data'
+    volumes:
+      - './docker/object_storage:/data'
+    environment:
+      MINIO_ACCESS_KEY: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
+      MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
+    networks:
+      - akeneo
+
 networks:
   akeneo:
   behat:
