@@ -69,7 +69,7 @@ akeneo_franklin_insights:
                 localizable_not_allowed: 'Franklin attributes cannot be mapped to a PIM localizable attribute'
                 scopable_not_allowed: 'Franklin attributes cannot be mapped to a PIM scopable attribute'
                 locale_specific_not_allowed: 'Franklin attributes cannot be mapped to a PIM locale specific attribute'
-                duplicated_pim_attribute: 'A pim attribute cannot be used twice or more in the attributes mapping'
+                duplicated_pim_attribute: "Mapping can't be saved as you mapped several Franklin attributes to the same PIM attribute"
                 attribute_not_in_family_not_allowed: 'PIM attribute must be in the selected family.'
                 only_unknown_mapped_attributes: 'No attribute in the attributes mapping can be found'
         product_subscription:
