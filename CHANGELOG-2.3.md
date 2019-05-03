@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8323: Fix issue on attribute option removing
+
 # 2.3.41 (2019-05-02)
 
 ## Bug fixes

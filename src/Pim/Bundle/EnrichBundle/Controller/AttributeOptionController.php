@@ -187,6 +187,12 @@ class AttributeOptionController
         $attributeOption = $this->findAttributeOptionOr404($attributeOptionId);
 
         try {
+            /*
+             * Removing the option is not enough in some cases.
+             * As the option can be loaded from the attribute, we have to delete it from the collection of the attribute too.
+             * Otherwise, the option could be considered as a new one when flushing, as the option is still in the collection of the attribute.
+             */
+            $attributeOption->getAttribute()->removeOption($attributeOption);
             $this->optionRemover->remove($attributeOption);
         } catch (\Exception $e) {
             return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
