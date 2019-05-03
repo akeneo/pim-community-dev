@@ -14,6 +14,7 @@ const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const BaseSave = require('pim/form/common/save');
 const MappingSaver = require('akeneo/franklin-insights/saver/identifiers-mapping');
+const Messenger = require('oro/messenger');
 const Dialog = require('pim/dialog');
 
 interface Mapping {
@@ -74,6 +75,35 @@ class MappingSave extends BaseSave {
         this.executeSave();
       }
     });
+  }
+
+  protected fail(response: any): void {
+    let errorFlashMessage = __(this.updateFailureMessage);
+
+    switch (response.status) {
+      case 400:
+        this.getRoot().trigger(
+          'pim_enrich:form:entity:bad_request',
+          {'sentData': this.getFormData(), 'response': response.responseJSON}
+        );
+
+        errorFlashMessage = response.responseJSON
+          .map((message:any) => __(message.message))
+          .join('. ');
+        break;
+      case 500:
+        const message = response.responseJSON ? response.responseJSON : response;
+
+        console.error('Errors:', message);
+        this.getRoot().trigger('pim_enrich:form:entity:error:save', message);
+        break;
+      default:
+    }
+
+    Messenger.notify(
+      'error',
+      errorFlashMessage
+    );
   }
 
   /**
