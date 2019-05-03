@@ -276,6 +276,29 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionCollect
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
+Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateNumberAttributeCommand:
+    group_sequence:
+        - CreateNumberAttributeCommand
+        - other_constraints
+    properties:
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        code:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+        labels:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+        isRequired:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+        valuePerChannel:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+        valuePerLocale:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+        isDecimal:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsDecimal: ~
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+
 Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand:
     group_sequence:
         - EditAttributeCommand
@@ -331,6 +354,11 @@ Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIs
     properties:
         isRichTextEditor:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRichTextEditor: ~
+
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsDecimalCommand:
+    properties:
+        isDecimal:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsDecimal: ~
 
 Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand:
     properties:
