@@ -38,6 +38,10 @@ config:
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/option-collection.tsx'
                 cell: '@akeneoreferenceentity/application/component/record/index/cell/option-collection.tsx'
                 filter: '@akeneoreferenceentity/application/component/record/index/filter/option.tsx'
+            number:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/number'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/number.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/cell/number.tsx'
 
         akeneoreferenceentity/application/configuration/attribute:
             image:
