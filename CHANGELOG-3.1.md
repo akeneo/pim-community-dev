@@ -1,5 +1,7 @@
 # 3.1.x
 
+# 3.1.2 (2019-05-03)
+
 ## Bug fixes
 
 - Fix the migration script `Version_3_1_20190305152628_change_attribute_column_in_franklin_mapping` to correctly remove the foreign key and unique constraints on `pimee_franklin_insights_identifier_mapping` 
