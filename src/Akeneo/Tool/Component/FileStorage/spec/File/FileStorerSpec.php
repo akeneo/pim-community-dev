@@ -32,7 +32,7 @@ class FileStorerSpec extends ObjectBehavior
         $fileToStore = new \SplFileInfo('path/to/file.png');
         $newFileInfo = new FileInfo();
         $newFileInfo->setKey('path/to/file.png');
-        $factory->createFromRawFile($fileToStore, 'destinationStorage')->willReturn($newFileInfo);
+        $factory->createFromRawFile($fileToStore, 'pefTmpStorage')->willReturn($newFileInfo);
 
         $mountManager->move(
             'pefTmpStorage://path/to/file.png',
@@ -52,7 +52,7 @@ class FileStorerSpec extends ObjectBehavior
         $fileToStore = new \SplFileInfo('path/to/file.png');
         $newFileInfo = new FileInfo();
         $newFileInfo->setKey('path/to/file.png');
-        $factory->createFromRawFile($fileToStore, 'destinationStorage')->willReturn($newFileInfo);
+        $factory->createFromRawFile($fileToStore, 'pefTmpStorage')->willReturn($newFileInfo);
 
         $mountManager->move(
             'pefTmpStorage://path/to/file.png',
@@ -73,7 +73,7 @@ class FileStorerSpec extends ObjectBehavior
         $fileToStore = new \SplFileInfo('path/to/file.png');
         $newFileInfo = new FileInfo();
         $newFileInfo->setKey('path/to/file.png');
-        $factory->createFromRawFile($fileToStore, 'destinationStorage')->willReturn($newFileInfo);
+        $factory->createFromRawFile($fileToStore, 'pefTmpStorage')->willReturn($newFileInfo);
 
         $mountManager->move(
             'pefTmpStorage://path/to/file.png',

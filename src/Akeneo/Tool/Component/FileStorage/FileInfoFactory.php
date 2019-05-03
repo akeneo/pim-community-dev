@@ -40,7 +40,6 @@ class FileInfoFactory implements FileInfoFactoryInterface
     public function createFromRawFile(\SplFileInfo $rawFile, $destFsAlias): FileInfoInterface
     {
         $pathInfo = $this->pathGenerator->generate($rawFile);
-        $sha1 = sha1_file($rawFile->getPathname());
 
         if ($rawFile instanceof UploadedFile) {
             $originalFilename = $rawFile->getClientOriginalName();
@@ -50,10 +49,11 @@ class FileInfoFactory implements FileInfoFactoryInterface
             $extension = $rawFile->getExtension();
         }
 
-        $filesystem = $this->filesystemProvider->getFilesystem('pefTmpStorage');
+        $filesystem = $this->filesystemProvider->getFilesystem($destFsAlias);
         $metadata = $filesystem->getMetadata($rawFile->getPathname());
         $mimeType = $metadata['mimetype'];
         $size = $metadata['size'];
+        $sha1 = sha1($filesystem->read($rawFile->getPathname()));
 
         $file = new $this->fileClass();
         $file->setKey($pathInfo['path'] . $pathInfo['file_name']);

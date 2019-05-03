@@ -30,11 +30,13 @@ class FileInfoFactorySpec extends ObjectBehavior
             'path_name' => '1/2/3/4/12345_my_file.php',
         ]);
 
-        $filesystemProvider->getFilesystem('pefTmpStorage')->willReturn($filesystem);
+        $filesystemProvider->getFilesystem('destination')->willReturn($filesystem);
         $filesystem->getMetadata(__FILE__)->willReturn([
             'mimetype' => 'text/x-php',
             'size' => filesize(__FILE__),
         ]);
+        $filesystem->read(__FILE__)->willReturn('content');
+
         $file = $this->createFromRawFile($rawFile, 'destination');
         $file->shouldBeValidFile();
     }
@@ -53,11 +55,12 @@ class FileInfoFactorySpec extends ObjectBehavior
             'path_name' => '1/2/3/4/12345_my_file.php',
         ]);
 
-        $filesystemProvider->getFilesystem('pefTmpStorage')->willReturn($filesystem);
+        $filesystemProvider->getFilesystem('destination')->willReturn($filesystem);
         $filesystem->getMetadata(__FILE__)->willReturn([
             'mimetype' => 'text/x-php',
             'size' => filesize(__FILE__),
         ]);
+        $filesystem->read(__FILE__)->willReturn('content');
         $file = $this->createFromRawFile($rawFile, 'destination');
         $file->shouldBeValidFile();
     }
@@ -73,7 +76,7 @@ class FileInfoFactorySpec extends ObjectBehavior
                     $subject->getSize() === filesize(__FILE__) &&
                     $subject->getExtension() === 'php' &&
                     $subject->getStorage() === 'destination' &&
-                    $subject->getHash() === sha1_file(__FILE__);
+                    $subject->getHash() === sha1('content');
             }
         ];
     }

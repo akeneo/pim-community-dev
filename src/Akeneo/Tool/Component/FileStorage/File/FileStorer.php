@@ -51,7 +51,7 @@ class FileStorer implements FileStorerInterface
      */
     public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false)
     {
-        $file = $this->factory->createFromRawFile($localFile, $destFsAlias);
+        $file = $this->factory->createFromRawFile($localFile, 'pefTmpStorage');
 
         $error = sprintf(
             'Unable to move the file "%s" to the "%s" filesystem.',
