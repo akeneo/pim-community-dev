@@ -131,6 +131,9 @@ spec:
           ports:
             - containerPort: 80
               name: httpd
+          env:
+            - name: FPM_HOST
+              value: localhost
           volumeMounts:
             - name: web-src
               mountPath: /var/www/html/web

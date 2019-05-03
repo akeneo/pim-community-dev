@@ -89,7 +89,7 @@ image:
 pim:
   hook:
     upgradePim:
-      enabled: false # Set me to true when upgrading to a minor version
+      enabled: true # Set me to true when upgrading to a minor version
       hook: "pre-upgrade"
     upgradeES:
       enabled: true
