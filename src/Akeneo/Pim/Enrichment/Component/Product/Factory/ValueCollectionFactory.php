@@ -3,8 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner\ChainedEmptyValuesCleanerInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner\OnGoingCleanedRawValues;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
@@ -39,8 +37,8 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     /** @var ChainedNonExistentValuesFilterInterface */
     private $chainedObsoleteValueFilter;
 
-    /** @var ChainedEmptyValuesCleanerInterface */
-    private $chainedEmptyValuesCleaner;
+    /** @var EmptyValuesCleaner */
+    private $emptyValuesCleaner;
 
     public function __construct(
         ValueFactory $valueFactory,
@@ -48,14 +46,14 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
         LoggerInterface $logger,
         GetAttributeByCodes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
-        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
+        EmptyValuesCleaner $emptyValuesCleaner
     ) {
         $this->valueFactory = $valueFactory;
         $this->attributeRepository = $attributeRepository;
         $this->logger = $logger;
         $this->getAttributeByCodes = $getAttributeByCodes;
         $this->chainedObsoleteValueFilter = $chainedObsoleteValueFilter;
-        $this->chainedEmptyValuesCleaner = $chainedEmptyValuesCleaner;
+        $this->emptyValuesCleaner = $emptyValuesCleaner;
     }
 
     /**
@@ -72,41 +70,41 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
      */
     public function createFromStorageFormat(array $rawValues, ?string $identifier = null)
     {
-        $id = $identifier ?? uniqid();
+        $notUsedIdentifier = $identifier ?? uniqid();
 
-        return $this->createMultipleFromStorageFormat([$id => $rawValues])[$id];
+        return $this->createMultipleFromStorageFormat([$notUsedIdentifier => $rawValues])[$notUsedIdentifier];
     }
 
     public function createMultipleFromStorageFormat(array $rawValueCollections): array
     {
         $rawValueCollectionsIndexedByType = $this->sortRawValueCollectionsToValueCollectionsIndexedByType($rawValueCollections);
-        $entities = [];
+        $valueCollections = [];
 
         if (empty($rawValueCollectionsIndexedByType)) {
             foreach (array_keys($rawValueCollections) as $identifier) {
-                $entities[$identifier] = new ValueCollection([]);
+                $valueCollections[$identifier] = new ValueCollection([]);
             }
 
-            return $entities;
+            return $valueCollections;
         }
 
         $filtered = $this->chainedObsoleteValueFilter->filterAll(
             OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($rawValueCollectionsIndexedByType)
         );
 
-        $cleaned = $this->chainedEmptyValuesCleaner->cleanAll(
-            OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($filtered->filteredRawValuesCollectionIndexedByType())
-        );
+        $rawValueCollection = $filtered->toRawValueCollection();
 
-        $entities = $this->createValues($cleaned->toRawValueCollection());
+        $cleanRawValueCollection = $this->emptyValuesCleaner->cleanAllValues($rawValueCollection);
 
-        $identifiersWithOnlyUnknownAttributes = array_diff(array_keys($rawValueCollections), array_keys($entities));
+        $valueCollections = $this->createValues($cleanRawValueCollection);
+
+        $identifiersWithOnlyUnknownAttributes = array_diff(array_keys($rawValueCollections), array_keys($valueCollections));
 
         foreach ($identifiersWithOnlyUnknownAttributes as $identifier) {
-            $entities[$identifier] = new ValueCollection([]);
+            $valueCollections[$identifier] = new ValueCollection([]);
         }
 
-        return $entities;
+        return $valueCollections;
     }
 
     private function sortRawValueCollectionsToValueCollectionsIndexedByType(array $rawValueCollections): array
@@ -170,17 +168,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
                         }
 
                         try {
-                            //TODO: Embed that responsability inside the cleaner
-                            $value = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data, true);
-                            $productData = $value->getData();
-                            $isEmpty = (
-                                null === $productData ||
-                                (is_string($productData) && '' === trim($productData))  ||
-                                (is_array($productData) && 0 === count($productData))
-                            );
-                            if (!$isEmpty) {
-                                $values[] = $value;
-                            }
+                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data, true);
                         } catch (InvalidAttributeException $e) {
                             $this->logger->warning(
                                 sprintf(

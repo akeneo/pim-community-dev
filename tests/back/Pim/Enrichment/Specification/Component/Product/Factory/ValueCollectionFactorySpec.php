@@ -2,10 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner\ChainedEmptyValuesCleanerInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner\OnGoingCleanedRawValues;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentValuesFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -15,7 +13,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
@@ -31,8 +28,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger,
         GetAttributeByCodes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
-        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $this->beConstructedWith(
             $valueFactory,
@@ -40,7 +36,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             $logger,
             $getAttributeByCodes,
             $chainedObsoleteValueFilter,
-            $chainedEmptyValuesCleaner
+            new EmptyValuesCleaner()
         );
     }
 
@@ -59,8 +55,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         ValueInterface $value3,
         ValueInterface $value4,
         GetAttributeByCodes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
-        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValues = [
             'sku' => [
@@ -120,10 +115,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $ongoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($valuesIndexedByType);
         $ongoingFilteredRawValues = new OnGoingFilteredRawValues($valuesIndexedByType, []);
         $chainedObsoleteValueFilter->filterAll($ongoingNonFilteredRawValues)->willReturn($ongoingFilteredRawValues);
-
-        $ongoingNonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($valuesIndexedByType);
-        $ongoingCleanedRawValues = new OnGoingCleanedRawValues($valuesIndexedByType, []);
-        $chainedEmptyValuesCleaner->cleanAll($ongoingNonCleanedRawValues)->willReturn($ongoingCleanedRawValues);
 
         $sku->getCode()->willReturn('sku');
         $sku->isUnique()->willReturn(false);
@@ -194,8 +185,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         AttributeInterface $color,
         ValueInterface $value,
         GetAttributeByCodes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
-        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValueCollection = [
             'productA' => [
@@ -235,8 +225,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $onGoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
         $onGoingFilteredRawValues = new OnGoingFilteredRawValues($typesToCode, []);
-        $nonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($typesToCode);
-        $cleanedRawValues = new OnGoingCleanedRawValues($typesToCode, []);
 
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
         $valueFactory->create($color, null, null, 'red', true)->willReturn($value);
@@ -245,7 +233,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $value->getLocaleCode()->willReturn('<all_locales>');
         $value->getData()->willReturn('red');
         $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
-        $chainedEmptyValuesCleaner->cleanAll($nonCleanedRawValues)->willReturn($cleanedRawValues);
 
         $this->createMultipleFromStorageFormat($rawValueCollection)->shouldBeLike([
             'productB' => new ValueCollection([$value->getWrappedObject()]),
@@ -255,8 +242,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
     function it_skips_unknown_option_when_creating_a_values_collection_from_the_storage_format(
         GetAttributeByCodes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
-        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValues = [
             'color' => [
@@ -305,11 +291,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             new OnGoingFilteredRawValues($filteredRawValues, [])
         );
 
-        $nonCleanedValueFilter = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($filteredRawValues);
-        $cleanedRawValues = new OnGoingCleanedRawValues([], []);
-
-        $chainedEmptyValuesCleaner->cleanAll($nonCleanedValueFilter)->willReturn($cleanedRawValues);
-
         $this->createFromStorageFormat($rawValues, 'productA')->shouldBeLike(new ValueCollection([]));
     }
 
@@ -319,8 +300,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         LoggerInterface $logger,
         AttributeInterface $color,
         GetAttributeByCodes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
-        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValues = [
             'color' => [
@@ -351,10 +331,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $onGoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
         $onGoingFilteredRawValues = new OnGoingFilteredRawValues($typesToCode, []);
-        $onGoingNonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($typesToCode);
-        $onGoingCleanedRawValues = new OnGoingCleanedRawValues($typesToCode, []);
         $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
-        $chainedEmptyValuesCleaner->cleanAll($onGoingNonCleanedRawValues)->willReturn($onGoingCleanedRawValues);
 
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
         $valueFactory->create($color, null, null, 'red', true)->willThrow(
@@ -375,8 +352,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         LoggerInterface $logger,
         AttributeInterface $referenceData,
         GetAttributeByCodes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
-        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValues = [
             'image' => [
@@ -407,10 +383,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $onGoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
         $onGoingFilteredRawValues = new OnGoingFilteredRawValues($typesToCode, []);
-        $onGoingNonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($typesToCode);
-        $onGoingCleanedRawValues = new OnGoingCleanedRawValues($typesToCode, []);
         $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
-        $chainedEmptyValuesCleaner->cleanAll($onGoingNonCleanedRawValues)->willReturn($onGoingCleanedRawValues);
 
         $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
         $valueFactory->create($referenceData, null, null, 'my_image', true)->willThrow(
@@ -435,8 +408,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         ValueInterface $value1,
         AttributeInterface $referenceData,
         GetAttributeByCodes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
-        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValues = [
             'image' => [
@@ -467,10 +439,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $onGoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
         $onGoingFilteredRawValues = new OnGoingFilteredRawValues($typesToCode, []);
-        $onGoingNonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($typesToCode);
-        $onGoingCleanedRawValues = new OnGoingCleanedRawValues($typesToCode, []);
         $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
-        $chainedEmptyValuesCleaner->cleanAll($onGoingNonCleanedRawValues)->willReturn($onGoingCleanedRawValues);
 
         $image->getCode()->willReturn('image');
         $image->isUnique()->willReturn(false);
@@ -495,71 +464,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $actualValues->shouldHaveCount(1);
     }
 
-    function it_does_not_return_null_or_empty_string_values(
-        $valueFactory,
-        $attributeRepository,
-        ValueInterface $descriptionValueUS,
-        ValueInterface $descriptionValueFR,
-        AttributeInterface $description,
-        GetAttributeByCodes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
-        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
-    ) {
-        $rawValues = [
-            'description' => [
-                'ecommerce' => [
-                    'en_US' => '',
-                    'fr_FR' => null,
-                ],
-            ],
-        ];
-
-        $getAttributeByCodes->forCodes(['description'])->willReturn([
-            new Attribute('description', AttributeTypes::TEXTAREA),
-        ]);
-
-        $typesToCode = [
-            AttributeTypes::TEXTAREA => [
-                'description' => [
-                    [
-                        'identifier' => 'productA',
-                        'values' => [
-                            'ecommerce' => [
-                                'en_US' => '',
-                                'fr_FR' => null,
-                            ],
-                        ],
-                    ]
-                ]
-            ]
-        ];
-
-        $onGoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
-        $onGoingFilteredRawValues = new OnGoingFilteredRawValues($typesToCode, []);
-        $onGoingNonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($typesToCode);
-        $onGoingCleanedRawValues = new OnGoingCleanedRawValues($typesToCode, []);
-        $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
-        $chainedEmptyValuesCleaner->cleanAll($onGoingNonCleanedRawValues)->willReturn($onGoingCleanedRawValues);
-
-        $description->setCode('description');
-        $description->setUnique(false);
-        $description->setScopable(true);
-        $description->setLocalizable(true);
-        $attributeRepository->findOneByIdentifier('description')->willReturn($description);
-
-        $valueFactory
-            ->create($description, 'ecommerce', 'en_US', '', true)
-            ->willReturn($descriptionValueUS);
-        $valueFactory
-            ->create($description, 'ecommerce', 'fr_FR', null, true)
-            ->willReturn($descriptionValueFR);
-
-        $actualValues = $this->createFromStorageFormat($rawValues, 'productA');
-
-        $actualValues->shouldBeAnInstanceOf(ValueCollection::class);
-        $actualValues->shouldHaveCount(0);
-    }
-
     function it_does_not_filter_falsy_values(
         $valueFactory,
         $attributeRepository,
@@ -570,8 +474,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         ValueInterface $textValue,
         ValueInterface $yesnoValue,
         GetAttributeByCodes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
-        ChainedEmptyValuesCleanerInterface $chainedEmptyValuesCleaner
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValues = [
             'number' => [
@@ -638,10 +541,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $onGoingNonFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($typesToCode);
         $onGoingFilteredRawValues = new OnGoingFilteredRawValues($typesToCode, []);
-        $onGoingNonCleanedRawValues = OnGoingCleanedRawValues::fromNonCleanedValuesCollectionIndexedByType($typesToCode);
-        $onGoingCleanedRawValues = new OnGoingCleanedRawValues($typesToCode, []);
         $chainedObsoleteValueFilter->filterAll($onGoingNonFilteredRawValues)->willReturn($onGoingFilteredRawValues);
-        $chainedEmptyValuesCleaner->cleanAll($onGoingNonCleanedRawValues)->willReturn($onGoingCleanedRawValues);
 
         $number->getCode()->willReturn('number');
         $number->isUnique()->willReturn(false);

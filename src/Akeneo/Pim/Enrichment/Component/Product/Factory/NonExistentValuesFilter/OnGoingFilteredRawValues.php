@@ -80,6 +80,21 @@ final class OnGoingFilteredRawValues
         return new self($newFilteredRawValues, $nonFilteredRawValues);
     }
 
+    public function toRawValueCollection(): array
+    {
+        $products = [];
+
+        foreach ($this->filteredRawValuesCollectionIndexedByType as $type => $attributeCodes) {
+            foreach ($attributeCodes as $attributeCode => $values) {
+                foreach ($values as $value) {
+                    $products[$value['identifier']][$attributeCode] = $value['values'];
+                }
+            }
+        }
+
+        return $products;
+    }
+
     public function filteredRawValuesCollectionIndexedByType(): array
     {
         return $this->filteredRawValuesCollectionIndexedByType;

@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentSelectValuesFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentMultiSelectValuesFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentSimpleSelectValuesFilter;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionCodes;
@@ -14,7 +15,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class NonExistentSelectValuesFilterSpec extends ObjectBehavior
+final class NonExistentSimpleSelectValuesFilterSpec extends ObjectBehavior
 {
     public function let(GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes) {
         $this->beConstructedWith($getExistingAttributeOptionCodes);
@@ -22,7 +23,7 @@ final class NonExistentSelectValuesFilterSpec extends ObjectBehavior
 
     public function it_has_a_type()
     {
-        $this->shouldHaveType(NonExistentSelectValuesFilter::class);
+        $this->shouldHaveType(NonExistentSimpleSelectValuesFilter::class);
     }
 
     public function it_filters_select_values(GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes)
@@ -35,7 +36,7 @@ final class NonExistentSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 '<all_channels>' => [
-                                    '<all_locales>' => 'option_toto'
+                                    '<all_locales>' => 'option_ToTo'
                                 ],
                             ]
                         ],
@@ -44,23 +45,6 @@ final class NonExistentSelectValuesFilterSpec extends ObjectBehavior
                             'values' => [
                                 'ecommerce' => [
                                     'en_US' => 'option_tata'
-                                ],
-                            ]
-                        ]
-                    ]
-                ],
-                AttributeTypes::OPTION_MULTI_SELECT => [
-                    'a_multi_select' => [
-                        [
-                            'identifier' => 'product_A',
-                            'values' => [
-                                'ecommerce' => [
-                                    'en_US' => ['MiChel', 'sardou'],
-                                ],
-                                'tablet' => [
-                                    'en_US' => ['jean', 'claude', 'van', 'damm'],
-                                    'fr_FR' => ['des', 'fraises'],
-
                                 ],
                             ]
                         ]
@@ -83,25 +67,14 @@ final class NonExistentSelectValuesFilterSpec extends ObjectBehavior
 
         $optionCodes = [
             'a_select' => [
-                'option_toto',
+                'option_ToTo',
                 'option_tata',
-            ],
-            'a_multi_select' => [
-                'MiChel',
-                'sardou',
-                'jean',
-                'claude',
-                'van',
-                'damm',
-                'des',
-                'fraises'
             ]
         ];
 
         $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes)->willReturn(
             [
                 'a_select' => ['option_toto'],
-                'a_multi_select' => ['michel', 'fraises']
             ]
         );
 
@@ -124,23 +97,6 @@ final class NonExistentSelectValuesFilterSpec extends ObjectBehavior
                             'values' => [
                                 'ecommerce' => [
                                     'en_US' => ''
-                                ],
-                            ]
-                        ]
-                    ]
-                ],
-                AttributeTypes::OPTION_MULTI_SELECT => [
-                    'a_multi_select' => [
-                        [
-                            'identifier' => 'product_A',
-                            'values' => [
-                                'ecommerce' => [
-                                    'en_US' => ['michel'],
-                                ],
-                                'tablet' => [
-                                    'en_US' => [],
-                                    'fr_FR' => ['fraises'],
-
                                 ],
                             ]
                         ]

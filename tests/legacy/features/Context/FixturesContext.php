@@ -107,7 +107,7 @@ class FixturesContext extends BaseFixturesContext
 
         if (is_array($data)) {
             foreach ($data as $key => $value) {
-                if (!empty($value)){
+                if (!empty($value)) {
                     $nonEmptyData[$key] = $value;
                 }
             }

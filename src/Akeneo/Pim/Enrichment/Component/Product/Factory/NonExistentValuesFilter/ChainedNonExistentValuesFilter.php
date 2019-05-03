@@ -12,19 +12,18 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilte
 final class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterInterface
 {
     /** @var iterable */
-    private $obsoleteValueFilters;
+    private $nonExistentValueFilters;
 
-    public function __construct(iterable $obsoleteValueFilters)
+    public function __construct(iterable $nonExistentValueFilters)
     {
-        $this->obsoleteValueFilters = $obsoleteValueFilters;
+        $this->nonExistentValueFilters = $nonExistentValueFilters;
     }
 
     public function filterAll(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
     {
-        /** @var OnGoingFilteredRawValues $result */
         $result = array_reduce(
-            $this->iterableToArray($this->obsoleteValueFilters),
-            function (OnGoingFilteredRawValues $onGoingFilteredRawValues, NonExistentValuesFilter $obsoleteValuesFilter) {
+            $this->iterableToArray($this->nonExistentValueFilters),
+            function (OnGoingFilteredRawValues $onGoingFilteredRawValues, NonExistentValuesFilter $obsoleteValuesFilter): OnGoingFilteredRawValues {
                 return $obsoleteValuesFilter->filter($onGoingFilteredRawValues);
             },
             $onGoingFilteredRawValues
