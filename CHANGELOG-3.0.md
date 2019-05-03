@@ -9,6 +9,7 @@
 # Bug fixes
 
 - PIM-8287: Fix horizontal scroll on history panel
+- PIM-8312: Delete unique value row in `pim_catalog_product_unique_data` table when deleting unique value in product
 
 # 3.0.14 (2019-04-19)
 
