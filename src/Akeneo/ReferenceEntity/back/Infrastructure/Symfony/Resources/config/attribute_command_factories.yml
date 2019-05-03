@@ -96,3 +96,8 @@ services:
         class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommandFactory
         tags:
             - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 100 }
+
+    akeneo_referenceentity.application.factory.edit_is_decimal_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsDecimalCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }

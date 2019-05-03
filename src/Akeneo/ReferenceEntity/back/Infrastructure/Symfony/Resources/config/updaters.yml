@@ -53,6 +53,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.attribute_updater, priority: 110 }
 
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.is_decimal:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsDecimalUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
+
     # Records
     akeneo_referenceentity.application.registry.edit_record.record_value_updater.record_value_updater_registry:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistry

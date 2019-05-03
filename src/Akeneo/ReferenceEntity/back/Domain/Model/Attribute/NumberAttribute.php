@@ -81,4 +81,9 @@ class NumberAttribute extends AbstractAttribute
     {
         return self::ATTRIBUTE_TYPE;
     }
+
+    public function setIsDecimal(AttributeIsDecimal $isDecimal): void
+    {
+        $this->isDecimal = $isDecimal;
+    }
 }

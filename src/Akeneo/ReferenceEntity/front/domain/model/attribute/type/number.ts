@@ -9,12 +9,18 @@ import {
   Attribute,
   ConcreteAttribute,
 } from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {IsDecimal, NormalizedIsDecimal} from 'akeneoreferenceentity/domain/model/attribute/type/number/is-decimal';
+
+export type NumberAdditionalProperty = IsDecimal;
+export type NormalizedNumberAdditionalProperty = NormalizedIsDecimal;
 
 export interface NormalizedNumberAttribute extends NormalizedAttribute {
   type: 'number';
+  is_decimal: NormalizedIsDecimal;
 }
 
 export interface NumberAttribute extends Attribute {
+  isDecimal: IsDecimal;
   normalize(): NormalizedNumberAttribute;
 }
 
@@ -29,7 +35,8 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
     valuePerLocale: boolean,
     valuePerChannel: boolean,
     order: number,
-    is_required: boolean
+    is_required: boolean,
+    readonly isDecimal: IsDecimal
   ) {
     super(
       identifier,
@@ -43,19 +50,24 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       is_required
     );
 
+    if (!(isDecimal instanceof IsDecimal)) {
+      throw new Error('Attribute expect a IsDecimal as isDecimal');
+    }
+
     Object.freeze(this);
   }
 
-  public static createFromNormalized(normalizedTextAttribute: NormalizedNumberAttribute) {
+  public static createFromNormalized(normalizedNumberAttribute: NormalizedNumberAttribute) {
     return new ConcreteNumberAttribute(
-      createIdentifier(normalizedTextAttribute.identifier),
-      createReferenceEntityIdentifier(normalizedTextAttribute.reference_entity_identifier),
-      createCode(normalizedTextAttribute.code),
-      createLabelCollection(normalizedTextAttribute.labels),
-      normalizedTextAttribute.value_per_locale,
-      normalizedTextAttribute.value_per_channel,
-      normalizedTextAttribute.order,
-      normalizedTextAttribute.is_required
+      createIdentifier(normalizedNumberAttribute.identifier),
+      createReferenceEntityIdentifier(normalizedNumberAttribute.reference_entity_identifier),
+      createCode(normalizedNumberAttribute.code),
+      createLabelCollection(normalizedNumberAttribute.labels),
+      normalizedNumberAttribute.value_per_locale,
+      normalizedNumberAttribute.value_per_channel,
+      normalizedNumberAttribute.order,
+      normalizedNumberAttribute.is_required,
+      new IsDecimal(normalizedNumberAttribute.is_decimal)
     );
   }
 
@@ -63,6 +75,7 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
     return {
       ...super.normalize(),
       type: 'number',
+      is_decimal: this.isDecimal.normalize()
     };
   }
 }
