@@ -19,6 +19,7 @@ import {
 const __ = require('oro/translator');
 const SimpleSelectAsync = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
+const Property = require('pim/common/property');
 const Routing = require('routing');
 const template = require('akeneo/franklin-insights/template/settings/attribute-options-mapping/edit');
 
@@ -187,7 +188,7 @@ class AttributeOptionsMapping extends BaseForm {
     );
     const attributeSelector = new SimpleSelectAsync({
       config: {
-        fieldName: 'mapping.' + franklinAttributeOptionCode + '.catalogAttributeOptionCode',
+        fieldName: Property.propertyPath(['mapping', franklinAttributeOptionCode, 'catalogAttributeOptionCode']),
         label: '',
       },
       className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
