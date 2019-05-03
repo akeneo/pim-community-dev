@@ -10,6 +10,7 @@ use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
@@ -22,6 +23,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
@@ -1334,5 +1336,78 @@ class EditAttributeContext implements Context
             AttributeOption::create(OptionCode::fromString('green'), LabelCollection::fromArray(['en_US' => 'Green']))
         ]);
         $this->attributeRepository->create($optionAttribute);
+    }
+
+    /**
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     */
+    public function aReferenceEntityWithANumberAttributeAndTheLabelEqualTo(
+        string $attributeCode,
+        string $localeCode,
+        string $label
+    ) : void {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode($localeCode));
+
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(NumberAttribute::create(
+            $identifier,
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([$localeCode => $label]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeIsDecimal::fromBoolean(false)
+        ));
+    }
+
+    /**
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' non decimal$/
+     */
+    public function aReferenceEntityWithANumberAttributeNonDecimal(string $attributeCode): void
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(NumberAttribute::create(
+            $identifier,
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeIsDecimal::fromBoolean(false)
+        ));
+    }
+
+    /**
+     * @When /^the user sets the \'([^\']*)\' attribute to have decimal values$/
+     */
+    public function theUserSetsTheAttributeToHaveDecimalValues(string $attributeCode): void
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateIsDecimal = [
+            'identifier' => (string) $identifier,
+            'is_decimal' => true,
+        ];
+        $this->updateAttribute($updateIsDecimal);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' could have decimal values$/
+     */
+    public function couldHaveDecimalValues(string $attributeCode): void
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertEquals(true, $attribute->normalize()['is_decimal']);
     }
 }

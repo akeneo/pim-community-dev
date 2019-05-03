@@ -161,6 +161,25 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
+  const setIsDecimal = async value => {
+    const isDecimal = await nodeElement.$('.AknFieldContainer[data-code="isDecimal"] .AknCheckbox');
+    const currentValue = await isDecimal.getProperty('data-checked');
+
+    if (value != currentValue._remoteObject.value) {
+      await isDecimal.click();
+    }
+  };
+
+  const disabledIsDecimal = async () => {
+    try {
+      await page.waitForSelector('.AknFieldContainer[data-code="isDecimal"] .AknCheckbox--disabled');
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  };
+
   const showManageOptionModal = async () => {
     page.waitForSelector('.AknButton[data-code="manageOption"]');
     await page.evaluate(edit => {
@@ -210,6 +229,8 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     isLoaded,
     showManageOptionModal,
     hasSuccessNotification,
+    setIsDecimal,
+    disabledIsDecimal
   };
 };
 
