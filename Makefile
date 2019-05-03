@@ -156,6 +156,14 @@ xdebug-off: docker-compose.override.yml
 ## Run tests suite
 ##
 
+.PHONY: cs
+cs: vendor
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
+
+.PHONY: fix-cs
+fix-cs: vendor
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --config=.php_cs.php
+
 .PHONY: coupling ## Run the coupling-detector on Everything
 coupling: structure-coupling user-management-coupling channel-coupling enrichment-coupling
 

@@ -39,8 +39,7 @@ class MediaController
         PathGeneratorInterface $pathGenerator,
         FilesystemProvider $filesystemProvider,
         $uploadDir
-    )
-    {
+    ) {
         $this->validator = $validator;
         $this->pathGenerator = $pathGenerator;
         $this->filesystemProvider = $filesystemProvider;
