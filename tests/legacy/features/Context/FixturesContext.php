@@ -103,6 +103,18 @@ class FixturesContext extends BaseFixturesContext
             $data['enabled'] = ($data['enabled'] === 'yes');
         }
 
+        $nonEmptyData = [];
+
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                if (!empty($value)){
+                    $nonEmptyData[$key] = $value;
+                }
+            }
+        }
+
+        $data = $nonEmptyData;
+
         if (isset($data['parent'])) {
             if (empty($data['parent'])) {
                 unset($data['parent']);

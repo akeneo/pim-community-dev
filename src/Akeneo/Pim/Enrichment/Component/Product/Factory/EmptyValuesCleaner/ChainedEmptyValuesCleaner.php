@@ -21,10 +21,9 @@ final class ChainedEmptyValuesCleaner implements ChainedEmptyValuesCleanerInterf
 
     public function cleanAll(OnGoingCleanedRawValues $onGoingCleanedRawValues): OnGoingCleanedRawValues
     {
-        /** @var OnGoingCleanedRawValues $result */
         $result = array_reduce(
             $this->iterableToArray($this->emptyValuesCleaners),
-            function (OnGoingCleanedRawValues $onGoingFilteredRawValues, EmptyValuesCleaner $emptyValuesCleaner) {
+            function (OnGoingCleanedRawValues $onGoingFilteredRawValues, EmptyValuesCleaner $emptyValuesCleaner): OnGoingCleanedRawValues {
                 return $emptyValuesCleaner->clean($onGoingFilteredRawValues);
             },
             $onGoingCleanedRawValues
@@ -34,6 +33,9 @@ final class ChainedEmptyValuesCleaner implements ChainedEmptyValuesCleanerInterf
         return $result->addCleanedValuesIndexedByType($result->nonCleanedRawValuesCollectionIndexedByType());
     }
 
+    /**
+     * There is no PHP native method to do that kind of transformation
+     */
     private function iterableToArray(iterable $iterable): array
     {
         $array = [];

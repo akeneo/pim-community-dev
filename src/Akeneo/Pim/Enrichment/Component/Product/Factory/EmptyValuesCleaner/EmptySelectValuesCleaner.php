@@ -57,8 +57,6 @@ final class EmptySelectValuesCleaner implements EmptyValuesCleaner
             }
         }
 
-
-
         return $onGoingCleanedRawValues->addCleanedValuesIndexedByType($cleanedValues);
     }
 }

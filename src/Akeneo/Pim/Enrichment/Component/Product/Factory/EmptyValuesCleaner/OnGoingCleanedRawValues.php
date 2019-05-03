@@ -30,6 +30,13 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
  *     ]
  * ];
  *
+ * This class is here to handle the process of cleaning values step by step
+ * It will reduce the non filter part (mentioned as NF) onto the filtered one (mentioned as F), like:
+ * Step 1 -> NF = [****] F = []
+ * Step 2 -> NF = [***]  F = [*]
+ * Step 3 -> NF = [*]    F = [***]
+ * ...
+ *
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
