@@ -4,6 +4,7 @@ namespace spec\Akeneo\Tool\Component\FileStorage\File;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
@@ -26,106 +27,63 @@ class FileStorerSpec extends ObjectBehavior
     function it_stores_a_raw_file(
         $mountManager,
         $factory,
-        $saver,
-        \SplFileInfo $rawFile,
-        Filesystem $fs,
-        FileInfoInterface $fileInfo
+        $saver
     ) {
-        $localPathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my file.php';
-        touch($localPathname);
-        $rawFile->getPathname()->willReturn($localPathname);
-        $fs->has(Argument::any())->willReturn(false);
+        $fileToStore = new \SplFileInfo('path/to/file.png');
+        $newFileInfo = new FileInfo();
+        $newFileInfo->setKey('path/to/file.png');
+        $factory->createFromRawFile($fileToStore, 'destinationStorage')->willReturn($newFileInfo);
 
-        $mountManager->getFilesystem('destination')->willReturn($fs);
-        $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
+        $mountManager->move(
+            'pefTmpStorage://path/to/file.png',
+            'destinationStorage://path/to/file.png'
+        )->willReturn(true);
 
-        $fs->writeStream(Argument::cetera())->shouldBeCalled();
+        $saver->save($newFileInfo)->shouldBeCalled();
 
-        $saver->save($fileInfo)->shouldBeCalled();
-        $this->store($rawFile, 'destination');
-
-        if (!file_exists($localPathname)) {
-            throw new FailedPredictionException(sprintf('File "%s" should not have been deleted.', $localPathname));
-        }
-
-        unlink($localPathname);
-    }
-
-    function it_stores_a_raw_file_and_deletes_it_locally(
-        $mountManager,
-        $factory,
-        $saver,
-        \SplFileInfo $rawFile,
-        Filesystem $fs,
-        FileInfoInterface $fileInfo
-    ) {
-        $localPathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my file.php';
-        touch($localPathname);
-        $rawFile->getPathname()->willReturn($localPathname);
-        $fs->has(Argument::any())->willReturn(false);
-
-        $mountManager->getFilesystem('destination')->willReturn($fs);
-        $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
-
-        $fs->writeStream(Argument::cetera())->shouldBeCalled();
-
-        $saver->save($fileInfo)->shouldBeCalled();
-        $this->store($rawFile, 'destination', true);
-
-        if (file_exists($localPathname)) {
-            throw new FailedPredictionException(sprintf('File "%s" should have been deleted.', $localPathname));
-        }
+        $this->store($fileToStore, 'destinationStorage');
     }
 
     function it_throws_an_exception_if_the_file_can_not_be_writen_on_the_filesystem(
         $mountManager,
         $factory,
-        $saver,
-        \SplFileInfo $rawFile,
-        Filesystem $fs,
-        FileInfoInterface $fileInfo
+        $saver
     ) {
-        $rawFile->getPathname()->willReturn(__FILE__);
-        $mountManager->getFilesystem('destination')->willReturn($fs);
-        $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
-        $fs->writeStream(Argument::cetera())->willReturn(false);
+        $fileToStore = new \SplFileInfo('path/to/file.png');
+        $newFileInfo = new FileInfo();
+        $newFileInfo->setKey('path/to/file.png');
+        $factory->createFromRawFile($fileToStore, 'destinationStorage')->willReturn($newFileInfo);
+
+        $mountManager->move(
+            'pefTmpStorage://path/to/file.png',
+            'destinationStorage://path/to/file.png'
+        )->willReturn(false);
 
         $saver->save(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow(
-            new FileTransferException(
-                sprintf('Unable to move the file "%s" to the "destination" filesystem.', __FILE__)
-            )
-        )->during('store', [$rawFile, 'destination']);
+        $this->shouldThrow(FileTransferException::class)
+            ->during('store', [$fileToStore, 'destinationStorage']);
     }
 
     function it_throws_an_exception_if_the_file_already_exists_on_the_filesystem(
         $mountManager,
         $factory,
-        \SplFileInfo $rawFile,
-        Filesystem $fs,
-        FileInfoInterface $fileInfo
+        $saver
     ) {
-        $rawFile->getPathname()->willReturn(__FILE__);
-        $fs->has(Argument::any())->willReturn(true);
-        $fs->writeStream(Argument::cetera())->willThrow(new FileExistsException('The file exists.'));
-        $mountManager->getFilesystem('destination')->willReturn($fs);
-        $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
-        $fileInfo->getKey()->willReturn('key-file');
-        $fileInfo->getMimeType()->willReturn('mime-type');
+        $fileToStore = new \SplFileInfo('path/to/file.png');
+        $newFileInfo = new FileInfo();
+        $newFileInfo->setKey('path/to/file.png');
+        $factory->createFromRawFile($fileToStore, 'destinationStorage')->willReturn($newFileInfo);
 
-        $this->shouldThrow(
-            new FileTransferException(
-                sprintf('Unable to move the file "%s" to the "destination" filesystem.', __FILE__)
-            )
-        )->during('store', [$rawFile, 'destination']);
+        $mountManager->move(
+            'pefTmpStorage://path/to/file.png',
+            'destinationStorage://path/to/file.png'
+        )->willThrow(FileExistsException::class);
+
+        $saver->save(Argument::any())->shouldNotBeCalled();
+
+        $this->shouldThrow(FileTransferException::class)
+            ->during('store', [$fileToStore, 'destinationStorage']);
     }
 }
 
-class CustomFileInfo extends \SplFileInfo
-{
-    public function __construct()
-    {
-        parent::__construct(__FILE__);
-    }
-}

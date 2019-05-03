@@ -6,9 +6,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AttributeSetterInterf
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\MediaAttributeSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -21,12 +23,14 @@ class MediaAttributeSetterSpec extends ObjectBehavior
     function let(
         EntityWithValuesBuilderInterface $builder,
         FileStorerInterface $storer,
+        FilesystemProvider $filesystemProvider,
         FileInfoRepositoryInterface $repository
     ) {
         $this->beConstructedWith(
             $builder,
             $storer,
             $repository,
+            $filesystemProvider,
             ['pim_catalog_file', 'pim_catalog_image']
         );
     }
@@ -59,11 +63,16 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
     function it_throws_an_error_if_attribute_data_is_not_a_valid_path(
         AttributeInterface $attribute,
-        ProductInterface $product
+        ProductInterface $product,
+        $filesystemProvider,
+        FilesystemInterface $filesystem
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = 'path/to/unknown/file';
+
+        $filesystemProvider->getFilesystem('pefTmpStorage')->willReturn($filesystem);
+        $filesystem->has($data)->willReturn(false);
 
         $this->shouldThrow(
             InvalidPropertyException::validPathExpected(
@@ -99,12 +108,17 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $repository,
         $storer,
         $builder,
+        $filesystemProvider,
+        FilesystemInterface $filesystem,
         AttributeInterface $attribute,
         ProductInterface $product,
         FileInfoInterface $fileInfo
     ) {
         $data = realpath(__DIR__ . '/../../../../../../../../../tests/legacy/features/Context/fixtures/akeneo.jpg');
         $attribute->getCode()->willReturn('attributeCode');
+
+        $filesystemProvider->getFilesystem('pefTmpStorage')->willReturn($filesystem);
+        $filesystem->has($data)->willReturn(true);
 
         $repository->findOneByIdentifier(Argument::any())->willReturn(null);
         $storer->store(Argument::cetera())->willReturn($fileInfo);
@@ -119,6 +133,8 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $storer,
         $repository,
         $builder,
+        $filesystemProvider,
+        FilesystemInterface $filesystem,
         AttributeInterface $attribute,
         ProductInterface $product,
         FileInfoInterface $fileInfo
@@ -127,6 +143,9 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $product->getValue('attributeCode', Argument::cetera())->willReturn(null);
 
         $data = realpath(__DIR__.'/../../../../../../../../../tests/legacy/features/Context/fixtures/akeneo.jpg');
+
+        $filesystemProvider->getFilesystem('pefTmpStorage')->willReturn($filesystem);
+        $filesystem->has($data)->willReturn(true);
 
         $repository->findOneByIdentifier(Argument::any())->willReturn(null);
         $storer->store(Argument::cetera())->willReturn($fileInfo);

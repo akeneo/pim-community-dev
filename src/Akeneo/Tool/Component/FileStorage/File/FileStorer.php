@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Tool\Component\FileStorage\Path;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use InvalidArgumentException;
+use League\Flysystem\FileExistsException;
 use League\Flysystem\FilesystemNotFoundException;
 use League\Flysystem\MountManager;
 
@@ -63,7 +64,7 @@ class FileStorer implements FileStorerInterface
                 (string) new Path('pefTmpStorage', $localFile->getPathname()),
                 (string) new Path($destFsAlias, $file->getKey())
             );
-        } catch (InvalidArgumentException | FilesystemNotFoundException $e) {
+        } catch (InvalidArgumentException | FilesystemNotFoundException | FileExistsException $e) {
             throw new FileTransferException($error, $e->getCode(), $e);
         }
 
