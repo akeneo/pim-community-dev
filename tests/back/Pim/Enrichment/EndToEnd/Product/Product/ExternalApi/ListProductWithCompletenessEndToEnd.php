@@ -111,22 +111,22 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
 		                "products": [],
 		                "product_models": [],
 		                "groups": []
-                    },
-                    "SUBSTITUTION": {
+		            },
+		            "SUBSTITUTION": {
 		                "products": [],
 		                "product_models": [],
 		                "groups": []
-                    },
-                    "UPSELL": {
+		            },
+		            "UPSELL": {
 		                "products": [],
 		                "product_models": [],
 		                "groups": []
-                    },
-                    "X_SELL": {
+		            },
+		            "X_SELL": {
 		                "products": [],
 		                "product_models": [],
 		                "groups": []
-                    }
+		            }
 		        }
 		    },
 		    {
@@ -171,25 +171,25 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
                 "created": "2017-03-17T16:11:46+01:00",
                 "updated": "2017-03-17T16:11:46+01:00",
                 "associations": {
-		            "PACK": {
-		                "products": [],
-		                "product_models": [],
-		                "groups": []
+                    "PACK": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
                     },
                     "SUBSTITUTION": {
-		                "products": [],
-		                "product_models": [],
-		                "groups": []
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
                     },
                     "UPSELL": {
-		                "products": [],
-		                "product_models": [],
-		                "groups": []
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
                     },
                     "X_SELL": {
-		                "products": [],
-		                "product_models": [],
-		                "groups": []
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
                     }
 		        }
 		    }
@@ -223,41 +223,3 @@ JSON;
         return $encrypter->encrypt($product->getId());
     }
 }
-
-
-
-/**
- *
- *
- *
- *
- *
-
- TODO DROP
-
-
-
-'PACK' => [
-'products' => [],
-'product_models' => [],
-'groups' => []
-],
-'SUBSTITUTION' => [
-'products' => [],
-'product_models' => [],
-'groups' => []
-],
-'UPSELL' => [
-'products' => [],
-'product_models' => [],
-'groups' => []
-],
-'X_SELL' => [
-'products' => [],
-'product_models' => [],
-'groups' => []
-]
-
- *
- *
- */

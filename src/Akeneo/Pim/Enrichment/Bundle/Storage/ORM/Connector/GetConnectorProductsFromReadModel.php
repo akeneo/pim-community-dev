@@ -16,6 +16,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
+/**
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class GetConnectorProductsFromReadModel implements GetConnectorProducts
 {
     /** @var GetValuesAndPropertiesFromProductIdentifiers */

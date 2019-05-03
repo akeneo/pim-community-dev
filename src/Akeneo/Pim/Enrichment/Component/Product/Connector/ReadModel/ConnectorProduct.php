@@ -181,28 +181,44 @@ final class ConnectorProduct
         return $associations;
     }
 
-    public function filterCategoryCodes(array $filteredProductCategoryCodes): array
+    /**
+     * Returns the list of category codes of this product belonging the the set in parameter
+     *
+     * @param string[] $categoryCodesToFilter
+     *
+     * @return string[]
+     */
+    public function filteredCategoryCodes(array $categoryCodesToFilter): array
     {
-        return array_intersect($this->categoryCodes, $filteredProductCategoryCodes);
+        return array_intersect($this->categoryCodes, $categoryCodesToFilter);
     }
 
-    public function attributeCodes()
+    /**
+     * Returns the list of attribute codes used in values of this product
+     *
+     * @return string[]
+     */
+    public function attributeCodes(): array
     {
-        $attributeCodes = [];
-        foreach ($this->values as $value) {
-            /** @var $value ValueInterface */
-            $attributeCodes[] = $value->getAttributeCode();
-        }
-
-        return array_unique($attributeCodes);
+        return array_unique(
+            array_map(function (ValueInterface $value) {
+                return $value->getAttributeCode();
+            }, $this->values->toArray())
+        );
     }
 
-    public function filterAttributeCodes($filteredProductAttributeCodes)
+    /**
+     * Returns the value list with an attribute belonging to the set in parameter
+     *
+     * @param string[] $attributeCodesToFilter
+     *
+     * @return ValueCollection
+     */
+    public function valuesWithFilteredAttributeCodes(array $attributeCodesToFilter): ValueCollectionInterface
     {
         $values = new ValueCollection();
         foreach ($this->values as $value) {
-            /** @var $value ValueInterface */
-            if (in_array($value->getAttributeCode(), $filteredProductAttributeCodes)) {
+            if (in_array($value->getAttributeCode(), $attributeCodesToFilter)) {
                 $values->add($value);
             }
         }
@@ -210,7 +226,12 @@ final class ConnectorProduct
         return $values;
     }
 
-    public function associatedProducts()
+    /**
+     * Returns the associated product codes
+     *
+     * @return string[]
+     */
+    public function associatedProducts(): array
     {
         $products = [];
         foreach ($this->associations as $associationType => $associations) {
@@ -220,7 +241,14 @@ final class ConnectorProduct
         return array_unique($products);
     }
 
-    public function filterAssociatedProducts($filteredAssociatedProducts)
+    /**
+     * Returns the associations property, with only the product codes as parameter
+     *
+     * @param string[] $productCodesToFilter
+     *
+     * @return array
+     */
+    public function associationsWithFilteredProductCodes($productCodesToFilter)
     {
         $result = [];
         foreach ($this->associations as $associationType => $association) {
@@ -228,7 +256,7 @@ final class ConnectorProduct
             $result[$associationType]['product_models'] = $association['product_models'];
             $result[$associationType]['products'] = array_intersect(
                 $association['products'],
-                $filteredAssociatedProducts
+                $productCodesToFilter
             );
         }
 
