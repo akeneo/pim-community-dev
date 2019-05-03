@@ -20,15 +20,16 @@ define([], function () {
          */
         accessProperty: function (data, path, defaultValue) {
             defaultValue = defaultValue || null;
-            var pathPart = path.split('.');
+            const pathPart = path.split('.');
 
-            if (undefined === data[pathPart[0]]) {
+            const part = pathPart[0].replace(/__DOT__/g, '.');
+            if (undefined === data[part]) {
                 return defaultValue;
             }
 
             return 1 === pathPart.length ?
-                data[pathPart[0]] :
-                this.accessProperty(data[pathPart[0]], pathPart.slice(1).join('.'), defaultValue);
+                data[part] :
+                this.accessProperty(data[part], pathPart.slice(1).join('.'), defaultValue);
         },
 
         /**
@@ -43,11 +44,23 @@ define([], function () {
         updateProperty: function (data, path, value) {
             var pathPart = path.split('.');
 
-            data[pathPart[0]] = 1 === pathPart.length ?
+            const part = pathPart[0].replace(/__DOT__/g, '.');
+            data[part] = 1 === pathPart.length ?
                 value :
-                this.updateProperty(data[pathPart[0]], pathPart.slice(1).join('.'), value);
+                this.updateProperty(data[part], pathPart.slice(1).join('.'), value);
 
             return data;
+        },
+
+        /**
+         * Create a safe path by concatenating escaped path segments to avoid dots of being incorrectly interpreted
+         *
+         * @param Array path
+         *
+         * @returns String
+         */
+        propertyPath: function(path) {
+            return path.map(e => e.replace(/\./g, '__DOT__')).join('.');
         }
     };
 });
