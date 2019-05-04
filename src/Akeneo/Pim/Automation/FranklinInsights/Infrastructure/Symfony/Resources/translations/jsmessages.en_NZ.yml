@@ -135,3 +135,6 @@ pim_dashboard:
     last_operations:
       job_type:
         franklin_insights_fetch_products: Franklin Insights
+pim_notification:
+  types:
+    franklin_insights: Franklin Insights

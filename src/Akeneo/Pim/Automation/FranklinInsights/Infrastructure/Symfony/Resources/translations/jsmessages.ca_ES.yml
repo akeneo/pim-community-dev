@@ -166,3 +166,6 @@ pim_enrich.entity.attribute:
     save:
       title: 'Atenció!'
       warning: '{1}Suprimir un atribut pot afectar 1 subscripció de Franklin. Esteu segur? |]1,+Inf[Suprimir un atribut pot afectar {{ count }} subscripcions de Franklin. Esteu segur?'
+pim_notification:
+  types:
+    franklin_insights: Estadístiques de Franklin

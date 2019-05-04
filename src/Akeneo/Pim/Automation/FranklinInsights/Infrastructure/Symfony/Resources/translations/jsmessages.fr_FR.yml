@@ -181,3 +181,6 @@ pim_enrich.entity.attribute:
     save:
       title: 'Attention !'
       warning: '{1}Supprimer un attribut peut impacter 1 abonnement Franklin. Êtes vous sûr(e) ?|]1,+Inf[Supprimer un attribut peut impacter {{ count }} abonnements Franklin. Êtes vous sûr(e) ?'
+pim_notification:
+  types:
+    franklin_insights: Franklin Insights

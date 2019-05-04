@@ -63,3 +63,4 @@ pim_notification:
   types:
     project_created: Et nyt projekt til dig
     project_finished: Projekt færdig
+    project_calculation: Projekt beregning

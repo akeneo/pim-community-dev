@@ -63,3 +63,4 @@ pim_notification:
   types:
     project_created: あなたのための新しいプロジェクト
     project_finished: プロジェクト完成
+    project_calculation: プロジェクトの計算
