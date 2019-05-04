@@ -176,3 +176,6 @@ pim_enrich.entity.attribute:
   module:
     save:
       title: 'Attenzione!'
+pim_notification:
+  types:
+    franklin_insights: Franklin Insights

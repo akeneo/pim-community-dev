@@ -181,3 +181,6 @@ pim_enrich.entity.attribute:
     save:
       title: 'Aviso!'
       warning: '{1}Excluir um atributo pode afetar 1 inscrição no Franklin. Tem certeza?|] 1, + Inf [Excluir um atributo pode impactar {{ count }} inscrições no Franklin. Tem certeza?'
+pim_notification:
+  types:
+    franklin_insights: Intuições do Franklin

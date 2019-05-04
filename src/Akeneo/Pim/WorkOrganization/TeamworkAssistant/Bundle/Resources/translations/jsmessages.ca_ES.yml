@@ -64,3 +64,4 @@ pim_notification:
   types:
     project_created: Un nou projecte per a vostè
     project_finished: Projecte acabat
+    project_calculation: Càlcul de projecte
