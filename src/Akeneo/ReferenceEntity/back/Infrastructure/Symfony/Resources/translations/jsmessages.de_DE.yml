@@ -1,56 +1,137 @@
+pim_title:
+  akeneo_reference_entities_reference_entity_index: Erstellen einer neuen Entität
+  akeneo_reference_entities_reference_entity_edit: Referenzdaten bearbeiten
+  akeneo_reference_entities_record_edit: Datensatz bearbeiten
 pim_reference_entity:
   app:
     image:
       wide:
+        remove: Bild entfernen
+        download: Bild herunterladen
         upload: Upload per Drag & Drop oder hier klicken
       small:
         remove: Entfernen
         download: Herunterladen
+        upload: Drag & Drop zum hochladen
   reference_entity:
+    validation:
+      code:
+        pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
+        should_be_unique: 'Dieser Code existiert bereits für diese Entität.'
+        limit_reached: 'Sie können die Referenz-Entität "{{ %reference_entity_label% }}" nicht anlegen, da Sie die Grenze von {{ %limit% }} Referenz-Entitäten erreicht haben'
     button:
       save: Speichern
       save_permission: Speichern
       create: Anlegen
+    permission:
+      title: Berechtigungen für Entitäten
     title: Entitäten
+    breadcrumb: Referenzentitäten
+    img: Das Hauptbild der Referenz-Entität mit dem Namen "{{ label }}"
     tab:
       records: Aufzeichnungen
       attribute: Attribute
       properties: Eigenschaften
       permission: Berechtigungen
     properties:
+      title: Eigenschaften der Entität
       identifier: Code
       label: Bezeichnung
       image: Abbildung
+    attribute:
+      title: Attribute erfassen
+      attribute:
+        error:
+          render_list: 'Bei der Darstellung des Attributs "{{ %attribute_code% }}}" ist ein Fehler aufgetreten.'
+          render_edit: 'Beim Rendern des Attributs "{{ %attribute_code% }}" ist ein Fehler aufgetreten'
     module:
       delete:
         button: Entität löschen
+        confirm: Sind Sie sicher, dass Sie diese Entität löschen möchten?
+    index:
+      grid:
+        count: '{0} Keine Refrenzentität|{1} {{ count }} Refrenzentität|]1,Inf] {{ count }} Refrenzentitäten'
+        help:
+          title: 'Willkommen bei den Referenzentitäten!'
+          description_part_one: Anreicherung relevanter Informationen zu Produkten (z.B. Marken, Hersteller, Farben, Materialien, Inhaltsstoffe....).
+          description_part_two: Es ermöglicht Ihnen, Ihren Kunden ein besseres Produkterlebnis zu bieten.
+          description_part_three: Klicken Sie auf die Schaltfläche "Erstellen", um Ihre erste Referenzentität zu erstellen sowie deren Attribute und Datensätze festzulegen.
+          description_part_four: Um dann mit Produkten zu verknüpfen, legen Sie einen Produktattributtyp an, der sich auf diese Refrenzentität bezieht.
+          description_part_five: Für weitere Details empfehlen wir Ihnen, diesen Artikel zu lesen.
     create:
       header:
         title: Anlegen
+      subtitle: Referenzentitäten
+      title: Erstellen einer neuen Entität
       input:
         label: Bezeichnung
+        code: Code (erforderlich)
       confirm: Speichern
     delete:
+      message: Sind Sie sicher, dass Sie die Entität "{{ referenceEntityLabel }}" löschen möchten?
       title: Attribut
+    notification:
+      save:
+        success: Referenzentität erfolgreich aktualisiert.
+        fail: Beim Speichern der Referenzentität ist ein Fehler aufgetreten.
+      create:
+        success: Referenzobjekt erfolgreich angelegt.
+        fail: Beim Speichern der Referenzentität ist ein Fehler aufgetreten.
+      delete:
+        success: Referenzobjekt erfolgreich gelöscht.
+        fail: Beim Löschen der Referenzentität ist ein Fehler aufgetreten.
+  permission:
+    notification:
+      save:
+        success: Zugriffsrechte der Referenzentität erfolgreich aktualisiert.
+        fail: Mindestens eine Benutzergruppe sollte die Bearbeitungsberechtigung für diese Entität haben.
+    no_data:
+      title: Sie haben keine Benutzergruppe
+      subtitle: Um die Berechtigung für die Referenzentität zu verwalten, müssen Sie mindestens eine Benutzergruppe haben.
+      link: Klicken Sie hier, um Ihre erste Benutzergruppe hinzuzufügen.
   record:
+    validation:
+      limit_reached: 'Sie können den Datensatz "{{ %record_label% }}}" nicht erstellen, da Sie die Grenze von {{ %limit% }}} Datensätzen für diese Referenzentität erreicht haben.'
+      code:
+        pattern: 'Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.'
+        should_be_unique: 'Dieser Code existiert bereits für diese Entität.'
+    no_data:
+      title: Es existiert kein Datensatz für {{ entityLabel }}}
+      subtitle: Klicken Sie auf den Button "Add new", um den ersten Datensatz zu erstellen.
     no_result:
+      title: Es gibt kein Ergebnis für Ihre Suche.
       subtitle: Wiederholen Sie Ihre Suche mit anderen Suchkriterien.
+    selector:
+      no_value: Klicken Sie hier, um einen Datensatz auszuwählen.
+    error:
+      value: Upsala, es scheint, dass das Rendern des Feldes "{{{ fieldName }}}" fehlgeschlagen ist. Weitere Informationen finden Sie in der Entwicklerkonsole.
     button:
       save: Speichern
       delete: Löschen
       delete_all: Alle Einträge löschen
       back: Zurück zur Liste
     enrich:
+      title: Attribute erfassen
       code: Code
       label: Bezeichnung
     title: Aufzeichnungen
     create:
       header:
         title: Anlegen
+      subtitle: Referenzentitäten
+      title: Neu hinzufügen {{ entityLabel }}}} 
       input:
         label: Bezeichnung
+        code: Code (erforderlich)
+        create_another: Einen weiteren Datensatz anlegen
       confirm: Speichern
+    delete:
+      message: Sind Sie sicher, dass Sie den Datensatz "{{ recordLabel }}}" löschen möchten? Wenn dieser mit Produkten oder Datensätzen verlinkt ist, werden die Links entfernt.
+      title: Datensatz
+    delete_all:
+      confirm: Sind Sie sicher, dass Sie alle "{{ entityIdentifier }}}" Datensätze löschen möchten? Wenn diese mit Produkten verlinkt sind, werden die Links zu den Produkten entfernt.
     grid:
+      search: Suche nach Label-, Code- und Textattributen
       filter:
         completeness:
           label: Vollständig
@@ -67,11 +148,35 @@ pim_reference_entity:
         label: Bezeichnung
         complete: Vollständig
         action: Aktionen
+      more_result:
+        title: Das ist es nicht!
+        description: Sie haben gerade die ersten 500 Ergebnisse aus {{{ total }}} Datensätzen durchblättert. Um mehr zu sehen, versuchen Sie es mit genaueren Suchkriterien.
+      completeness:
+        title_no_required: Kein Attribut erforderlich
+        title_non_complete: 0 von {{notwendigen }}} Attributen sind vollständig ausgefüllt
+        title_ongoing: '{{ complete }}} aus {{ required }} Attributen vollständig'
+        title_complete: Alle {{{ erforderlichen }}} Attribute sind vollständig
     tab:
       enrich: Anreichern
+    notification:
+      save:
+        success: Datensatz erfolgreich aktualisiert
+        fail: Beim Speichern des Datensatzes ist ein Fehler aufgetreten.
+        validation_error: Der Datensatz konnte nicht aktualisiert werden.
+      create:
+        success: Datensatz erfolgreich erstellt.
+        fail: Bei der Erstellung des Datensatzes ist ein Fehler aufgetreten.
+      delete:
+        success: Datensatz "{{ code }}}" wurde erfolgreich gelöscht.
+        fail: Beim Löschen des Datensatzes ist ein Fehler aufgetreten.
+      delete_all:
+        success: Alle "{{ entityIdentifier }}}" Datensätze wurden erfolgreich gelöscht.
+        fail: Beim Löschen aller Datensätze dieser Referenz-Entität ist ein Fehler aufgetreten.
     completeness:
       label: Vollständig
   attribute:
+    validation:
+      limit_reached: 'Sie können das Attribut "{{ %attribute_label% }}}" nicht anlegen, da Sie die Grenze von {{ %limit% }}} Attributen für diese Referenzentität erreicht haben.'
     default:
       code: Code
       label: Bezeichnung
@@ -79,34 +184,60 @@ pim_reference_entity:
     type:
       text: Text
       image: Abbildung
+      record: Referenz-Entität Einzelverknüpfung
+      record_collection: Referenz-Entität Mehrfachverknüpfungen
+      option: Einzelfunktion
+      option_collection: Mehrfachfunktion
+    is_required: zur Vollständigkeit erforderlich
+    no_data:
+      title: Es gibt keine benutzerdefinierten Attribute für {{ entityLabel }}}
+      subtitle: Klicken Sie auf den Button " Attribut hinzufügen ", um Ihr erstes benutzerdefiniertes Attribut zu konfigurieren.
     button:
       add: Ein Attribut hinzufügen
     create:
       header:
         title: Anlegen
+      subtitle: Referenzentitäten
+      title: Neues Datensatzattribut hinzufügen
+      description: Die folgenden Parameter, mit Ausnahme des Labels, können nach der Attributerstellung nicht mehr aktualisiert werden.
       input:
+        code: Code (erforderlich)
         label: Bezeichnung
         type: Attributtyp
+        record_type: Referenz-Entität zum Verknüpfen (erforderlich)
         value_per_locale: Wert je Gebietsschema
         value_per_channel: Wert je Ausgabekanal
+      placeholder:
+        record_type: Wählen Sie Ihre verknüpfte Referenz-Entität aus
       confirm: Speichern
     edit:
+      delete: Attribut löschen
+      title: Attribut bearbeiten {{ code }}
       save: Speichern
       cancel: Abbrechen
       input:
+        code: Code (erforderlich)
         label: Bezeichnung
         type: Attributtyp
+        record_type: Zugehörige Referenzentität (erforderlich)
         value_per_locale: Wert je Gebietsschema
         value_per_channel: Wert je Ausgabekanal
+        is_required: Erforderlich für die Vollständigkeit
         max_length: Max. Zeichen
         textarea: Textbereich
+        is_rich_text_editor: Rich Text Editor
         max_file_size: Maximale Dateigröße (MB)
         allowed_extensions: Zulässige Dateiendungen
         validation_rule: Validierungsregel
         regular_expression: Regulärer Ausdruck
         manage_options:
+          confirmation:
+            discard_changes: Sie verlieren alle Änderungen an der Optionsliste, wenn Sie die Seite verlassen.
           quick_edit:
             label: Optionen verwalten
+          option:
+            label:
+              placeholder: Schreiben Sie sich hier eine neue Optionsbezeichnung.
         options:
           validation_rule:
             none: Keine
@@ -114,15 +245,25 @@ pim_reference_entity:
             regular_expression: Regulärer Ausdruck
             url: URL
     delete:
+      message: Sind Sie sicher, dass Sie das Attribut "{{ attributeLabel }}}" löschen wollen?
       title: Attribut
     notification:
+      list:
+        fail: Bei der Aktualisierung der Attributliste ist ein Fehler aufgetreten.
       save:
         success: Attribut erfolgreich aktualisiert.
+        fail: Beim Speichern des Attributs ist ein Fehler aufgetreten.
+        validation_error: Das Attribut konnte nicht aktualisiert werden.
       create:
         success: Attribut erfolgreich erstellt.
+        fail: Bei der Erstellung des Attributs ist ein Fehler aufgetreten.
+        validation_error: Das Attribut konnte nicht erstellt werden
       delete:
         success: Attribut erfolgreich gelöscht.
+        fail: Beim Löschen des Attributs ist ein Fehler aufgetreten
     options:
+      no_value: Klicken Sie hier, um eine Option auszuwählen.
+      sub_title: Referenzentitäten
       helper:
         title: Feldbezeichner-Übersetzungen
   modal:
@@ -132,8 +273,27 @@ pim_reference_entity:
         cancel: Abbrechen
         confirm: Löschen
 pim_enrich:
+  confirmation:
+    discard_changes: 'Sie verlieren Änderungen an der Entität "{{ entity }}", wenn Sie die Seite verlassen.'
   entity:
     attribute:
       property:
+        type:
+          akeneo_reference_entity_collection: Referenz-Entität Mehrfachverknüpfungen
+          akeneo_reference_entity: Referenz-Entität Einzelverknüpfung
         section:
           type_specific: Spezifische Parameter
+        reference_entity:
+          identifier: Zugehörige Referenzentität (erforderlich)
+          default_label: Bitte wählen Sie eine Referenzentität aus
+permission:
+  mass_action: Wenden Sie {{ rightLevel }}} Rechte auf alle Gruppen an.
+pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Achsen an Referenzobjekten
+      hint: Wenn Sie die Referenzobjekte verwenden, finden Sie hier die Achsen, die Ihnen helfen, Ihr Volumen zu überwachen.
+  axis:
+    count_reference_entity: Referenzentitäten
+    average_max_records_per_reference_entity: Datensätze pro Referenzobjekt
+    average_max_attributes_per_reference_entity: Attribute pro Referenzobjekt
