@@ -1,11 +1,32 @@
 akeneo_referenceentity:
+  acl_group:
+    reference_entity: Referenzentitäten
   acl:
     reference_entity:
       create: Entität erstellen
+      edit: Bearbeiten der Entitätseigenschaften
       delete: Entität löschen
+      manage_permission: Verwaltung der Zugriffsrechte von Referenzentitäten
     record:
       create: Einen Datensatz erstellen
       edit: Datensatz bearbeiten
       delete: "Datensatz löschen\n"
+      delete_all: Alle Entitätsdatensätze löschen
+    attribute:
+      create: Hinzufügen eines Attributs zu einer Referenzentität
+      edit: Bearbeiten eines Attributs einer Referenzentität
+      delete: Löschen eines Attributs einer Referenzentität
     option:
       edit: Bearbeitungsoptionen
+      delete: Entfernen einer Option
+pim_analytics:
+  info_type:
+    nb_reference_entities: Anzahl der Referenzobjekte
+    max_number_of_records_per_reference_entity: Maximale Anzahl von Datensätzen pro Referenzobjekt
+    average_number_of_values_per_records: Durchschnittliche Anzahl der Werte pro Datensatz auf allen Referenzobjekten
+    average_number_of_records_per_reference_entity: Durchschnittliche Anzahl der Datensätze pro Referenzobjekt
+    max_number_of_attributes_per_reference_entity: Maximale Anzahl von Datensätzen pro Referenzobjekt
+    average_number_of_attributes_per_reference_entity: Durchschnittliche Anzahl der Attribute pro Referenz-Entität
+    average_percentage_localizable_only_attributes: Durchschnittlicher Prozentsatz der gebietsschemaspezifischen Attribute pro Referenzentität
+    average_percentage_scopable_only_attributes: Durchschnittlicher Prozentsatz der kanalspezifischen Attribute pro Referenzentität
+    average_percentage_scopable_and_localizable_attributes: Durchschnittlicher Prozentsatz der gebietsschemaspezifischen und kanalspezifischen Attribute pro Referenzentität
