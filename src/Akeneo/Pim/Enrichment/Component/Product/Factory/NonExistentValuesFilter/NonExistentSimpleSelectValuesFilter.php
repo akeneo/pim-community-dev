@@ -39,7 +39,7 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (!is_array($value)) {
-                            $simpleSelectValues[$channel][$locale] = ($optionCodes[$attributeCode] ?? [])[strtolower($value)] ?? '';
+                            $simpleSelectValues[$channel][$locale] = ($optionCodes[$attributeCode] ?? [])[strtolower($value ?? '')] ?? '';
                         }
                     }
                 }
