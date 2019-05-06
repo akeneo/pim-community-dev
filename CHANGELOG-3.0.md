@@ -1,5 +1,9 @@
 # 3.0.x
 
+# Bug fixes
+
+- PIM-8329: Add Serbian flag for CS region
+
 # 3.0.16 (2019-05-06)
 
 # Bug fixes
