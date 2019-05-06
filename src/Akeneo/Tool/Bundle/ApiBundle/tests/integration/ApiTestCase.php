@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration;
 
+use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
@@ -213,7 +214,7 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @return string
      */
-    protected function getFixturePath($name)
+    protected function getFixturePath(string $name): string
     {
         $configuration = $this->getConfiguration();
         foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
@@ -224,6 +225,18 @@ abstract class ApiTestCase extends WebTestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+    }
+
+    protected function getFileInfoKey(string $path): string
+    {
+        if (!is_file($path)) {
+            throw new \Exception(sprintf('The path "%s" does not exist.', $path));
+        }
+
+        $fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
+        $fileInfo = $fileStorer->store(new \SplFileInfo($path), FileStorage::CATALOG_STORAGE_ALIAS);
+
+        return $fileInfo->getKey();
     }
 
     /**

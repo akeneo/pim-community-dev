@@ -31,7 +31,7 @@ class ImageAttributeTypeCompletenessIntegration extends AbstractCompletenessPerA
                         [
                             'locale' => null,
                             'scope'  => null,
-                            'data'   => $this->getFixturePath('akeneo.jpg'),
+                            'data'   => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
                         ],
                     ],
                 ],

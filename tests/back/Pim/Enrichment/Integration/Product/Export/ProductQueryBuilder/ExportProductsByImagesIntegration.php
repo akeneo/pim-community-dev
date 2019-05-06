@@ -14,7 +14,7 @@ class ExportProductsByImagesIntegration extends AbstractExportTestCase
         $this->createProduct('product_1', [
             'values'     => [
                 'an_image' => [
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => null, 'scope' => null]
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => null, 'scope' => null]
                 ]
             ]
         ]);
@@ -22,7 +22,7 @@ class ExportProductsByImagesIntegration extends AbstractExportTestCase
         $this->createProduct('product_2', [
             'values'     => [
                 'an_image' => [
-                    ['data' => $this->getFixturePath('ziggy.png'), 'locale' => null, 'scope' => null]
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => null, 'scope' => null]
                 ]
             ]
         ]);

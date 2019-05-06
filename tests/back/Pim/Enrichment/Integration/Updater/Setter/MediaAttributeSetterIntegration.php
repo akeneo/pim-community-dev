@@ -28,7 +28,7 @@ class MediaAttributeSetterIntegration extends TestCase
             'values' => [
                 $attributeName => [
                     [
-                        'data'   => $this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png',
+                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
                         'locale' => 'fr_FR',
                         'scope'  => null,
                     ],
@@ -55,7 +55,7 @@ class MediaAttributeSetterIntegration extends TestCase
             'values' => [
                 $attributeName => [
                     [
-                        'data'   => $this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1C-t.png',
+                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1C-t.png'),
                         'locale' => null,
                         'scope'  => 'tablet',
                     ],
@@ -82,7 +82,7 @@ class MediaAttributeSetterIntegration extends TestCase
             'values' => [
                 $attributeName => [
                     [
-                        'data'   => $this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png',
+                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
                         'locale' => 'fr_FR',
                         'scope'  => 'tablet',
                     ],
@@ -109,14 +109,14 @@ class MediaAttributeSetterIntegration extends TestCase
             'values' => [
                 $attributeName => [
                     [
-                        'data'   => $this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png',
+                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
                         'locale' => 'fr_FR',
                         'scope'  => 'tablet',
                     ],
                 ],
                 $attributeName => [
                     [
-                        'data'   => $this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png',
+                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
                         'locale' => 'fr_FR',
                         'scope'  => 'tablet',
                     ],

@@ -1,5 +1,15 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8415: back-port #10002 to handle uploads on a multi-frontend saas instance
+
+## BC breaks
+
+ - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductProcessor` to add `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer`
+ - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelProcessor` to add `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer`
+ - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\MediaAttributeSetter` to remove `Akeneo\Tool\Component\FileStorage\File\FileStorerInterface`
+
 # 3.1.5 (2019-05-28)
 
 # 3.1.4 (2019-05-27)
