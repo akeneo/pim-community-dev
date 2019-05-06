@@ -218,6 +218,7 @@ memcached:
       memory: "64Mi"
   memcached:
     maxItemMemory: 64
+  pdbMinAvailable: 0
 
 elasticsearch:
   appVersion: 6.5.4
