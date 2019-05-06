@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.16 (2019-05-06)
+
 ## Bug fixes
 
 - PIM-8316: Fix product-grid filter on reference entity attributes
