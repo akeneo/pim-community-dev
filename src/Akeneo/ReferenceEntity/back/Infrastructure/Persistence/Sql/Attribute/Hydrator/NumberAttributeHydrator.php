@@ -39,8 +39,8 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array
     {
         $row['is_decimal'] = $row['additional_properties']['is_decimal'];
-        $row['min'] = $row['additional_properties']['min'];
-        $row['max'] = $row['additional_properties']['max'];
+        $row['min_value'] = $row['additional_properties']['min_value'];
+        $row['max_value'] = $row['additional_properties']['max_value'];
 
         return $row;
     }
@@ -75,21 +75,21 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
             'value_per_channel',
             'attribute_type',
             'is_decimal',
-            'min',
-            'max'
+            'min_value',
+            'max_value'
         ];
     }
 
     private function minValue(array $row): AttributeMinValue
     {
-        $min = $row['min'];
+        $min = $row['min_value'];
 
         return null !== $min ? AttributeMinValue::fromString($min) : AttributeMinValue::noMinimum();
     }
 
     private function maxValue(array $row): AttributeMaxValue
     {
-        $max = $row['max'];
+        $max = $row['max_value'];
 
         return null !== $max ? AttributeMaxValue::fromString($max) : AttributeMaxValue::noMaximum();
     }

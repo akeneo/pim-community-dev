@@ -14,3 +14,27 @@ Feature: Edit a number attribute of a reference entity
     Given a reference entity with a number attribute 'area' non decimal
     When the user sets the 'area' attribute to have decimal values
     Then 'area' could have decimal values
+
+  @acceptance-back
+  Scenario: Updating the min value property
+    Given a reference entity with a number attribute 'area' no min value
+    When the user sets the min value of 'area' to 10
+    Then 'area' min value should be 10
+
+  @acceptance-back
+  Scenario: Unsetting the min value
+    Given a reference entity with a number attribute 'area' with a min value
+    When the user unsets the min value of 'area'
+    Then 'area' should not have a min value
+
+  @acceptance-back
+  Scenario: Updating the max value property
+    Given a reference entity with a number attribute 'area' no max value
+    When the user sets the max value of 'area' to 10
+    Then 'area' max value should be 10
+
+  @acceptance-back
+  Scenario: Unsetting the max value
+    Given a reference entity with a number attribute 'area' with a max value
+    When the user unsets the max value of 'area'
+    Then 'area' should not have a max value

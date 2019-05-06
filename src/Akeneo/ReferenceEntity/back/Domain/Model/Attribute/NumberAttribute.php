@@ -96,8 +96,8 @@ class NumberAttribute extends AbstractAttribute
             parent::normalize(),
             [
                 'is_decimal' => $this->isDecimal->normalize(),
-                'min' => $this->minValue->normalize(),
-                'max' => $this->maxValue->normalize(),
+                'min_value' => $this->minValue->normalize(),
+                'max_value' => $this->maxValue->normalize(),
             ]
         );
     }
@@ -110,5 +110,15 @@ class NumberAttribute extends AbstractAttribute
     public function setIsDecimal(AttributeIsDecimal $isDecimal): void
     {
         $this->isDecimal = $isDecimal;
+    }
+
+    public function setMinValue(AttributeMinValue $attributeMinValue): void
+    {
+        $this->minValue = $attributeMinValue;
+    }
+
+    public function setMaxValue(AttributeMaxValue $attributeMaxValue): void
+    {
+        $this->maxValue = $attributeMaxValue;
     }
 }

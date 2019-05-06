@@ -2,7 +2,6 @@
 
 namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\NumberAttributeHydrator;
 use Doctrine\DBAL\Connection;
@@ -48,8 +47,8 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
             'value_per_locale'           => '1',
             'additional_properties'      => json_encode([
                 'is_decimal' => true,
-                'min' => '0',
-                'max' => '10'
+                'min_value' => '0',
+                'max_value' => '10'
             ])
         ]);
         $number->shouldBeAnInstanceOf(NumberAttribute::class);
@@ -64,8 +63,8 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
                 'value_per_locale'            => true,
                 'type'                        => 'number',
                 'is_decimal'                  => true,
-                'min'                         => '0',
-                'max'                         => '10'
+                'min_value'                         => '0',
+                'max_value'                         => '10'
             ]
         );
     }
@@ -86,8 +85,8 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
                 'additional_properties'       => json_encode(
                     [
                         'is_decimal' => false,
-                        'min'        => null,
-                        'max'        => null,
+                        'min_value'  => null,
+                        'max_value'  => null,
                     ]
                 )
             ]
@@ -105,8 +104,8 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
                 'value_per_locale'            => true,
                 'type'                        => 'number',
                 'is_decimal'                  => false,
-                'min'                         => null,
-                'max'                         => null
+                'min_value'                   => null,
+                'max_value'                   => null
             ]
         );
     }
