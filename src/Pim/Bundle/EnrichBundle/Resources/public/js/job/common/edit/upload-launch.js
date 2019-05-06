@@ -13,16 +13,10 @@ define(
         'oro/translator',
         'pim/job/common/edit/launch',
         'pim/router',
-        'oro/messenger'
+        'oro/messenger',
+        'oro/loading-mask'
     ],
-    function (
-        $,
-        _,
-        __,
-        BaseLaunch,
-        router,
-        messenger
-    ) {
+    function ($, _, __, BaseLaunch, router, messenger, LoadingMask) {
         return BaseLaunch.extend({
             /**
              * {@inherit}
@@ -37,11 +31,12 @@ define(
              * {@inherit}
              */
             launch: function () {
+                var loadingMask = new LoadingMask();
+                loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+
                 if (this.getFormData().file) {
                     var formData = new FormData();
                     formData.append('file', this.getFormData().file);
-
-                    router.showLoadingMask();
 
                     $.ajax({
                         url: this.getUrl(),
@@ -57,7 +52,11 @@ define(
                     .fail(() => {
                         messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'));
                     })
-                    .always(router.hideLoadingMask());
+                    .always(() => {
+                        loadingMask.hide().$el.remove();
+                    });
+                } else {
+                    loadingMask.hide().$el.remove();
                 }
             },
 
