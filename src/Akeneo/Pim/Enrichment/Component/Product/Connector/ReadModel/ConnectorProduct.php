@@ -204,6 +204,34 @@ final class ConnectorProduct
         return $result;
     }
 
+    public function filterAssociatedProductModelsByProductModelCodes($productModelCodesToFilter): ConnectorProduct
+    {
+        $filteredAssociations = [];
+        foreach ($this->associations as $associationType => $association) {
+            $filteredAssociations[$associationType]['products'] = $association['products'];
+            $filteredAssociations[$associationType]['product_models'] = array_intersect(
+                $association['product_models'],
+                $productModelCodesToFilter
+            );
+            $filteredAssociations[$associationType]['groups'] = $association['groups'];
+        }
+
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $filteredAssociations,
+            $this->metadata,
+            $this->values
+        );
+    }
+
     public function filterAssociatedProductsByProductIdentifiers($productIdentifiersToFilter): ConnectorProduct
     {
         $filteredAssociations = [];
@@ -212,8 +240,8 @@ final class ConnectorProduct
                 $association['products'],
                 $productIdentifiersToFilter
             );
-            $filteredAssociations[$associationType]['groups'] = $association['groups'];
             $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
+            $filteredAssociations[$associationType]['groups'] = $association['groups'];
 
         }
 

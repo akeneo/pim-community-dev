@@ -31,7 +31,7 @@ class ConnectorProductSpec extends ObjectBehavior
                 ],
                 'UPSELL' => [
                     'products' => ['product_code_4'],
-                    'product_models' => ['product_model_5'],
+                    'product_models' => ['product_model_5', 'product_model_6'],
                     'groups' => ['group_code_3']
                 ]
             ],
@@ -64,9 +64,9 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct->categoryCodes()->shouldReturn([]);
     }
 
-    function it_filters_associated_products_by_product_identifiers_()
+    function it_filters_associated_products_by_product_identifiers()
     {
-        $connectorProduct = $this->filterAssociatedProductsByProductIdentifiers(['product_code_1']);
+        $connectorProduct = $this->filterAssociatedProductsByProductIdentifiers(['product_code_1', 'product_code_7']);
 
         $connectorProduct->associations()->shouldBeLike(
             [
@@ -77,6 +77,26 @@ class ConnectorProductSpec extends ObjectBehavior
                 ],
                 'UPSELL' => [
                     'products' => [],
+                    'product_models' => ['product_model_5', 'product_model_6'],
+                    'groups' => ['group_code_3']
+                ]
+            ]
+        );
+    }
+
+    function it_filters_associated_product_model_by_product_model_codes()
+    {
+        $connectorProduct = $this->filterAssociatedProductModelsByProductModelCodes(['product_model_5', 'product_model_8']);
+
+        $connectorProduct->associations()->shouldBeLike(
+            [
+                'X_SELL' => [
+                    'products' => ['product_code_1', 'product_code_2'],
+                    'product_models' => [],
+                    'groups' => ['group_code_2']
+                ],
+                'UPSELL' => [
+                    'products' => ['product_code_4'],
                     'product_models' => ['product_model_5'],
                     'groups' => ['group_code_3']
                 ]
