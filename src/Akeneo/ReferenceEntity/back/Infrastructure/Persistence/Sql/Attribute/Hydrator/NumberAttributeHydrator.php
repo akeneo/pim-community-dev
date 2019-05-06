@@ -38,7 +38,9 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array
     {
-        $row['is_decimal'] = Type::getType(Type::BOOLEAN)->convertToPhpValue($row['additional_properties']['is_decimal'], $platform);
+        $row['is_decimal'] = $row['additional_properties']['is_decimal'];
+        $row['min'] = $row['additional_properties']['min'];
+        $row['max'] = $row['additional_properties']['max'];
 
         return $row;
     }
@@ -55,8 +57,8 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
             AttributeValuePerChannel::fromBoolean($row['value_per_channel']),
             AttributeValuePerLocale::fromBoolean($row['value_per_locale']),
             AttributeIsDecimal::fromBoolean($row['is_decimal']),
-            AttributeMinValue::noMinimum(),
-            AttributeMaxValue::noMaximum()
+            $this->minValue($row),
+            $this->maxValue($row)
         );
     }
 
@@ -72,7 +74,23 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
             'value_per_locale',
             'value_per_channel',
             'attribute_type',
-            'is_decimal'
+            'is_decimal',
+            'min',
+            'max'
         ];
+    }
+
+    private function minValue(array $row): AttributeMinValue
+    {
+        $min = $row['min'];
+
+        return null !== $min ? AttributeMinValue::fromString($min) : AttributeMinValue::noMinimum();
+    }
+
+    private function maxValue(array $row): AttributeMaxValue
+    {
+        $max = $row['max'];
+
+        return null !== $max ? AttributeMaxValue::fromString($max) : AttributeMaxValue::noMaximum();
     }
 }

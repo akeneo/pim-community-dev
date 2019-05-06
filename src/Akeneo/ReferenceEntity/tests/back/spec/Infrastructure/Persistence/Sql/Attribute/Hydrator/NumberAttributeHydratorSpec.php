@@ -34,7 +34,7 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
         $this->shouldThrow(\RuntimeException::class)->during('hydrate', [['wrong_key' => 'wrong_value']]);
     }
 
-    function it_hydrates_a_decimal_number_attribute()
+    function it_hydrates_a_decimal_number_attribute_with_min_and_max_value()
     {
         $number = $this->hydrate([
             'identifier'                 => 'area_city_fingerprint',
@@ -48,51 +48,66 @@ class NumberAttributeHydratorSpec extends ObjectBehavior
             'value_per_locale'           => '1',
             'additional_properties'      => json_encode([
                 'is_decimal' => true,
+                'min' => '0',
+                'max' => '10'
             ])
         ]);
         $number->shouldBeAnInstanceOf(NumberAttribute::class);
         $number->normalize()->shouldBe([
-            'identifier'                 => 'area_city_fingerprint',
-            'reference_entity_identifier' => 'city',
-            'code'                       => 'area',
-            'labels'                     => ['fr_FR' => 'Superficie'],
-            'order'                      => 0,
-            'is_required'                => true,
-            'value_per_channel'          => false,
-            'value_per_locale'           => true,
-            'type'                       => 'number',
-            'is_decimal'                 => true
-        ]);
+                'identifier'                  => 'area_city_fingerprint',
+                'reference_entity_identifier' => 'city',
+                'code'                        => 'area',
+                'labels'                      => ['fr_FR' => 'Superficie'],
+                'order'                       => 0,
+                'is_required'                 => true,
+                'value_per_channel'           => false,
+                'value_per_locale'            => true,
+                'type'                        => 'number',
+                'is_decimal'                  => true,
+                'min'                         => '0',
+                'max'                         => '10'
+            ]
+        );
     }
 
-    function it_hydrates_a_non_decimal_number_attribute()
+    function it_hydrates_a_non_decimal_number_attribute_without_min_and_max_value()
     {
-        $number = $this->hydrate([
-            'identifier'                 => 'area_city_fingerprint',
-            'code'                       => 'area',
-            'reference_entity_identifier' => 'city',
-            'labels'                     => json_encode(['fr_FR' => 'Superficie']),
-            'attribute_type'             => 'number',
-            'attribute_order'            => '0',
-            'is_required'                => '1',
-            'value_per_channel'          => '0',
-            'value_per_locale'           => '1',
-            'additional_properties'      => json_encode([
-                'is_decimal' => false,
-            ])
-        ]);
+        $number = $this->hydrate(
+            [
+                'identifier'                  => 'area_city_fingerprint',
+                'code'                        => 'area',
+                'reference_entity_identifier' => 'city',
+                'labels'                      => json_encode(['fr_FR' => 'Superficie']),
+                'attribute_type'              => 'number',
+                'attribute_order'             => '0',
+                'is_required'                 => '1',
+                'value_per_channel'           => '0',
+                'value_per_locale'            => '1',
+                'additional_properties'       => json_encode(
+                    [
+                        'is_decimal' => false,
+                        'min'        => null,
+                        'max'        => null,
+                    ]
+                )
+            ]
+        );
         $number->shouldBeAnInstanceOf(NumberAttribute::class);
-        $number->normalize()->shouldBe([
-            'identifier'                 => 'area_city_fingerprint',
-            'reference_entity_identifier' => 'city',
-            'code'                       => 'area',
-            'labels'                     => ['fr_FR' => 'Superficie'],
-            'order'                      => 0,
-            'is_required'                => true,
-            'value_per_channel'          => false,
-            'value_per_locale'           => true,
-            'type'                       => 'number',
-            'is_decimal'                 => false
-        ]);
+        $number->normalize()->shouldBe(
+            [
+                'identifier'                  => 'area_city_fingerprint',
+                'reference_entity_identifier' => 'city',
+                'code'                        => 'area',
+                'labels'                      => ['fr_FR' => 'Superficie'],
+                'order'                       => 0,
+                'is_required'                 => true,
+                'value_per_channel'           => false,
+                'value_per_locale'            => true,
+                'type'                        => 'number',
+                'is_decimal'                  => false,
+                'min'                         => null,
+                'max'                         => null
+            ]
+        );
     }
 }
