@@ -2,13 +2,16 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
+use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -53,6 +56,12 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var AttributeFilterInterface */
     private $productAttributeFilter;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var FileStorer */
+    private $fileStorer;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param FindProductToImport                   $findProductToImport
@@ -62,6 +71,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      * @param ObjectDetacherInterface               $detacher
      * @param FilterInterface                       $productFilter
      * @param AttributeFilterInterface              $productAttributeFilter
+     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param FileStorer                            $fileStorer
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -71,7 +82,9 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
         FilterInterface $productFilter,
-        AttributeFilterInterface $productAttributeFilter
+        AttributeFilterInterface $productAttributeFilter,
+        AttributeRepositoryInterface $attributeRepository,
+        FileStorer $fileStorer
     ) {
         parent::__construct($repository);
 
@@ -82,6 +95,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $this->detacher = $detacher;
         $this->productFilter = $productFilter;
         $this->productAttributeFilter = $productAttributeFilter;
+        $this->attributeRepository = $attributeRepository;
+        $this->fileStorer = $fileStorer;
     }
 
     /**
@@ -138,6 +153,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
                 $this->skipItemWithMessage($item, $e->getMessage(), $e);
             }
         }
+
+        $this->storeMedias($filteredItem['values']);
 
         try {
             $this->updateProduct($product, $filteredItem);
@@ -256,5 +273,25 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     protected function detachProduct(ProductInterface $product)
     {
         $this->detacher->detach($product);
+    }
+
+    private function storeMedias(array $productValues)
+    {
+        $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
+
+        foreach ($productValues as $attributeCode => $values) {
+            if (in_array($attributeCode, $mediaAttributes)) {
+                foreach ($values as $index => $value) {
+                    if (empty($value['data'])) {
+                        continue;
+                    }
+                    var_dump($value['data']);
+                    $file = $this->fileStorer->store(new \SplFileInfo($value['data']), FileStorage::CATALOG_STORAGE_ALIAS);
+                    var_dump($file->getKey());
+
+                //    $productValues[$attributeCode][$index]["data"] =
+                }
+            }
+        }
     }
 }
