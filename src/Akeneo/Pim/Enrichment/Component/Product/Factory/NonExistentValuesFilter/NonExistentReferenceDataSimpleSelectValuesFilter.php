@@ -1,30 +1,25 @@
 <?php
-declare(strict_types=1);
+
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
+
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetExistingReferenceDataCodes;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionCodes;
 
-/**
- * @author    Anael Chardan <anael.chardan@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
+class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentValuesFilter
 {
-    /** @var GetExistingAttributeOptionCodes */
-    private $getExistingAttributeOptionCodes;
+    /** @var GetExistingReferenceDataCodes */
+    private $getExistingReferenceDataCodes;
 
-    public function __construct(GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes)
+    public function __construct(GetExistingReferenceDataCodes $getExistingReferenceDataCodes)
     {
-
-        $this->getExistingAttributeOptionCodes = $getExistingAttributeOptionCodes;
+        $this->getExistingReferenceDataCodes = $getExistingReferenceDataCodes;
     }
 
-    public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
-    {
-        $selectValues = $onGoingFilteredRawValues->notFilteredValuesOfTypes(AttributeTypes::OPTION_SIMPLE_SELECT);
+    public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues {
+
+        $selectValues = $onGoingFilteredRawValues->notFilteredValuesOfTypes(AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT);
 
         if (empty($selectValues)) {
             return $onGoingFilteredRawValues;
@@ -35,8 +30,9 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
         $filteredValues = [];
 
         foreach ($selectValues as $attributeCode => $productValueCollection) {
-            foreach ($productValueCollection as $productValues) {
+            foreach($productValueCollection as $productValues) {
                 $simpleSelectValues = [];
+
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (!is_array($value)) {
@@ -46,9 +42,9 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
                 }
 
                 if ($simpleSelectValues !== []) {
-                    $filteredValues[AttributeTypes::OPTION_SIMPLE_SELECT][$attributeCode][] = [
+                    $filteredValues[AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT][$attributeCode][] = [
                         'identifier' => $productValues['identifier'],
-                        'values' => $simpleSelectValues,
+                        'values' => $simpleSelectValues
                     ];
                 }
             }
@@ -59,10 +55,19 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
 
     private function getExistingCaseInsensitiveOptionCodes(array $selectValues): array
     {
-        $optionCodes = $this->getOptionCodes($selectValues);
-        $existingOptionCodes = $this->getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes);
+        $options = $this->getOptions($selectValues);
+
+        $existingOptionCodes = [];
+
+        foreach($options as $attributeCode => $option) {
+            $existingOptionCodes[$attributeCode] = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes(
+                $option['reference_data_name'],
+                [$option['value']]
+            );
+        }
 
         $caseInsensitiveOptionsCodes = [];
+
         foreach ($existingOptionCodes as $attributeCode => $optionCodesForThisAttribute) {
             foreach ($optionCodesForThisAttribute as $optionCodeForThisAttribute) {
                 $caseInsensitiveOptionsCodes[$attributeCode][strtolower($optionCodeForThisAttribute)] = $optionCodeForThisAttribute;
@@ -72,16 +77,17 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
         return $caseInsensitiveOptionsCodes;
     }
 
-    private function getOptionCodes(array $selectValues): array
+    private function getOptions(array $selectValues): array
     {
         $optionCodes = [];
 
         foreach ($selectValues as $attributeCode => $valueCollection) {
             foreach ($valueCollection as $values) {
+                $optionCodes[$attributeCode]['reference_data_name'] = $values['properties']['reference_data_name'];
                 foreach ($values['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (!is_array($value)) {
-                            $optionCodes[$attributeCode][] = $value;
+                            $optionCodes[$attributeCode]['value'] = $value;
                         }
                     }
                 }
@@ -89,6 +95,7 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
         }
 
         $uniqueOptionCodes = [];
+        
         foreach ($optionCodes as $attributeCode => $optionCodeForThisAttribute) {
             $uniqueOptionCodes[$attributeCode] = array_unique($optionCodeForThisAttribute);
         }

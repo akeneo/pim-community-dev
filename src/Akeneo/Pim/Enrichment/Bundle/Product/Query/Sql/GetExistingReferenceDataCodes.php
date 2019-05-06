@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryRe
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 use Doctrine\ORM\EntityManager;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetExistingReferenceDataCodes as GetExistingReferenceDataCodesInterface;
 
 /**
  * Query to fetch only the existing reference data
@@ -16,7 +17,7 @@ use Doctrine\ORM\EntityManager;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetExistingReferenceDataCodes
+final class GetExistingReferenceDataCodes implements GetExistingReferenceDataCodesInterface
 {
     /** @var EntityManager */
     private $entityManager;
@@ -31,7 +32,7 @@ final class GetExistingReferenceDataCodes
         $this->entityManager = $entityManager;
         $this->repositoryResolver = $repositoryResolver;
     }
-    
+
     public function fromReferenceDataNameAndCodes(string $referenceDataName, array $codes): array
     {
         if (empty($codes)) {
