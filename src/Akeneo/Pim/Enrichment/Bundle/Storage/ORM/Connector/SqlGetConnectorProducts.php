@@ -6,13 +6,14 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetCategoryCodesByProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetGroupAssociationsByProductIdentifiers;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductAssociationsByProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductModelAssociationsByProductIdentifiers;
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
@@ -21,13 +22,19 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetConnectorProductsFromReadModel implements GetConnectorProducts
+class SqlGetConnectorProducts implements Query\GetConnectorProducts
 {
     /** @var GetValuesAndPropertiesFromProductIdentifiers */
     private $getValuesAndPropertiesFromProductIdentifiers;
 
     /** @var GetProductAssociationsByProductIdentifiers */
     private $getProductAssociationsByProductIdentifiers;
+
+    /** @var GetProductModelAssociationsByProductIdentifiers */
+    private $getProductModelAssociationsByProductIdentifiers;
+
+    /** @var GetGroupAssociationsByProductIdentifiers */
+    private $getGroupAssociationsByProductIdentifiers;
 
     /** @var GetCategoryCodesByProductIdentifiers */
     private $getCategoryCodesByProductIdentifiers;
@@ -38,23 +45,22 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
 
-    /** @var GetMetadataInterface */
-    private $getMetadata;
-
     public function __construct(
         GetValuesAndPropertiesFromProductIdentifiers $getValuesAndPropertiesFromProductIdentifiers,
         GetProductAssociationsByProductIdentifiers $getProductAssociationsByProductIdentifiers,
+        GetProductModelAssociationsByProductIdentifiers $getProductModelAssociationsByProductIdentifiers,
+        GetGroupAssociationsByProductIdentifiers $getGroupAssociationsByProductIdentifiers,
         GetCategoryCodesByProductIdentifiers $getCategoryCodesByProductIdentifiers,
         ValueCollectionFactoryInterface $valueCollectionFactory,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        GetMetadataInterface $getMetadata
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->getValuesAndPropertiesFromProductIdentifiers = $getValuesAndPropertiesFromProductIdentifiers;
         $this->getProductAssociationsByProductIdentifiers = $getProductAssociationsByProductIdentifiers;
+        $this->getProductModelAssociationsByProductIdentifiers = $getProductModelAssociationsByProductIdentifiers;
+        $this->getGroupAssociationsByProductIdentifiers = $getGroupAssociationsByProductIdentifiers;
         $this->getCategoryCodesByProductIdentifiers = $getCategoryCodesByProductIdentifiers;
         $this->valueCollectionFactory = $valueCollectionFactory;
         $this->attributeRepository = $attributeRepository;
-        $this->getMetadata = $getMetadata;
     }
 
     /**
@@ -177,14 +183,14 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
 
         return $categoryCodes;
     }
-    
+
     private function fetchAssociationsIndexedByProductIdentifier(array $identifiers): array
     {
-        $associations = [];
-        foreach ($this->getProductAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers)
-                 as $productIdentifier => $productAssociations) {
-            $associations[$productIdentifier] = ['associations' => $productAssociations];
-        }
+        $associations = array_replace_recursive(
+            $this->getProductAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers);
+            $this->getProductModelAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers);
+            $this->getGroupAssociationsByProductIdentifiers->fetchByProductIdentifier($identifiers);
+        );
 
         return $associations;
     }
