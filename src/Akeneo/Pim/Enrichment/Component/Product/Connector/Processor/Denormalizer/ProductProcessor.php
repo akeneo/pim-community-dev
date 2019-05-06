@@ -154,7 +154,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             }
         }
 
-        $this->storeMedias($filteredItem['values']);
+        $filteredItem['values'] = $this->storeMedias($filteredItem['values']);
 
         try {
             $this->updateProduct($product, $filteredItem);
@@ -285,13 +285,12 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
                     if (empty($value['data'])) {
                         continue;
                     }
-                    var_dump($value['data']);
                     $file = $this->fileStorer->store(new \SplFileInfo($value['data']), FileStorage::CATALOG_STORAGE_ALIAS);
-                    var_dump($file->getKey());
-
-                //    $productValues[$attributeCode][$index]["data"] =
+                    $productValues[$attributeCode][$index]["data"] = $file->getKey();
                 }
             }
         }
+
+        return $productValues;
     }
 }

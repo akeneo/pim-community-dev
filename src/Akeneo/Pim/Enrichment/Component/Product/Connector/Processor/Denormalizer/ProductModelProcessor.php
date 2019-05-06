@@ -2,12 +2,15 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
+use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -56,6 +59,12 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     /** @var string */
     private $importType;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var FileStorer */
+    private $fileStorer;
+
     /**
      * @param SimpleFactoryInterface                $productModelFactory
      * @param ObjectUpdaterInterface                $productModelUpdater
@@ -74,7 +83,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         FilterInterface $productModelFilter,
         ObjectDetacherInterface $objectDetacher,
         AttributeFilterInterface $productModelAttributeFilter,
-        string $importType
+        string $importType,
+        AttributeRepositoryInterface $attributeRepository,
+        FileStorer $fileStorer
     ) {
         parent::__construct($productModelRepository);
 
@@ -86,6 +97,8 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         $this->objectDetacher = $objectDetacher;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
         $this->importType = $importType;
+        $this->attributeRepository = $attributeRepository;
+        $this->fileStorer = $fileStorer;
     }
 
     /**
@@ -126,6 +139,8 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
                 return null;
             }
         }
+
+        $standardProductModel['values'] = $this->storeMedias($standardProductModel['values']);
 
         try {
             $this->productModelUpdater->update($productModel, $standardProductModel);
@@ -173,5 +188,24 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         unset($item['associations']);
 
         return $item;
+    }
+
+    private function storeMedias(array $productValues)
+    {
+        $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
+
+        foreach ($productValues as $attributeCode => $values) {
+            if (in_array($attributeCode, $mediaAttributes)) {
+                foreach ($values as $index => $value) {
+                    if (empty($value['data'])) {
+                        continue;
+                    }
+                    $file = $this->fileStorer->store(new \SplFileInfo($value['data']), FileStorage::CATALOG_STORAGE_ALIAS);
+                    $productValues[$attributeCode][$index]["data"] = $file->getKey();
+                }
+            }
+        }
+
+        return $productValues;
     }
 }

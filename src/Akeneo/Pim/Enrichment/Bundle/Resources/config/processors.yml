@@ -31,6 +31,8 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.attribute_filter.product_model'
             - 'root_product_model'
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
 
     pim_connector.processor.denormalization.sub_product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelProcessor'
@@ -43,6 +45,8 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.attribute_filter.product_model'
             - 'sub_product_model'
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
 
     pim_connector.processor.denormalization.product_model_loader:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelLoaderProcessor'
