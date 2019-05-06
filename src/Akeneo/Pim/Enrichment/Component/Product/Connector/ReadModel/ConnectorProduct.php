@@ -143,68 +143,9 @@ final class ConnectorProduct
         return $this->values;
     }
 
-    public static function fromProductWriteModel(ProductInterface $product, ValueCollectionInterface $values, array $metadata = []): ConnectorProduct
+    public function attributeCodesInValues(): array
     {
-        return new self(
-            $product->getId(),
-            $product->getIdentifier(),
-            \DateTimeImmutable::createFromMutable($product->getCreated()),
-            \DateTimeImmutable::createFromMutable($product->getUpdated()),
-            $product->isEnabled(),
-            $product->getFamily() !== null ? $product->getFamily()->getCode() : null,
-            $product->getCategoryCodes(),
-            $product->getGroupCodes(),
-            $product->isVariant() ? $product->getParent()->getCode() : null,
-            self::productAssociationsAsArray($product),
-            $metadata,
-            $values
-        );
-    }
-
-    public static function productAssociationsAsArray(ProductInterface $product): array
-    {
-        $associations = [];
-        foreach ($product->getAllAssociations() as $association) {
-            $associations[$association->getAssociationType()->getCode()] = [
-                'products' => array_map(function (ProductInterface $product) {
-                    return $product->getIdentifier();
-                }, $association->getProducts()->toArray()),
-                'product_models' => array_map(function (ProductModelInterface $productModel) {
-                    return $productModel->getCode();
-                }, $association->getProductModels()->toArray()),
-                'groups' => array_map(function (GroupInterface $group) {
-                    return $group->getCode();
-                }, $association->getGroups()->toArray())
-            ];
-        }
-
-        return $associations;
-    }
-
-    /**
-     * Returns the list of category codes of this product belonging the the set in parameter
-     *
-     * @param string[] $categoryCodesToFilter
-     *
-     * @return string[]
-     */
-    public function filteredCategoryCodes(array $categoryCodesToFilter): array
-    {
-        return array_intersect($this->categoryCodes, $categoryCodesToFilter);
-    }
-
-    /**
-     * Returns the list of attribute codes used in values of this product
-     *
-     * @return string[]
-     */
-    public function attributeCodes(): array
-    {
-        return array_unique(
-            array_map(function (ValueInterface $value) {
-                return $value->getAttributeCode();
-            }, $this->values->toArray())
-        );
+        return $this->values->getAttributeCodes();
     }
 
     /**
@@ -261,6 +202,26 @@ final class ConnectorProduct
         }
 
         return $result;
+    }
+
+    public function filterByCategoryCodes(array $categoryCodesToFilter): ConnectorProduct
+    {
+        $categoryCodes =  array_intersect($this->categoryCodes, $categoryCodesToFilter);
+
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $this->associations,
+            $this->metadata,
+            $this->values
+        );
     }
 
 }

@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ReadMo
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
 
 class ConnectorProductSpec extends ObjectBehavior
@@ -35,7 +36,7 @@ class ConnectorProductSpec extends ObjectBehavior
                 ]
             ],
             [],
-            new ValueCollection()
+            new ValueCollection([ScalarValue::value('attribute_code_1', 'data')])
         );
     }
 
@@ -43,4 +44,24 @@ class ConnectorProductSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf(ConnectorProduct::class);
     }
+
+    function it_gets_attribute_codes_in_values()
+    {
+        $this->attributeCodesInValues()->shouldReturn(['attribute_code_1']);
+    }
+    
+    function it_filters_by_category_codes()
+    {
+        $connectorProduct = $this->filterByCategoryCodes(['category_code_1', 'category_code_3']);
+
+        $connectorProduct->categoryCodes()->shouldReturn(['category_code_1']);
+    }
+
+    function it_filters_with_empty_array_of_category_codes()
+    {
+        $connectorProduct = $this->filterByCategoryCodes([]);
+
+        $connectorProduct->categoryCodes()->shouldReturn([]);
+    }
+
 }
