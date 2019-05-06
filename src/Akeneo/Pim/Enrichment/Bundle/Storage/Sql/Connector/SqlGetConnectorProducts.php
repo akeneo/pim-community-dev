@@ -131,7 +131,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         return $raw_values;
     }
 
-    private function filterByAttributeCodes(array $rawValues, array $attributeCodes)
+    private function filterByAttributeCodes(array $rawValues, array $attributeCodes): array
     {
         $result = [];
         foreach ($rawValues as $attributeCode => $attributeValues) {
@@ -143,7 +143,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         return $result;
     }
 
-    private function filterByChannelCode(array $rawValues, $filterScope)
+    private function filterByChannelCode(array $rawValues, string $filterScope): array
     {
         $result = [];
         foreach ($rawValues as $attributeCode => $attributeValues) {
@@ -157,7 +157,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         return $result;
     }
 
-    private function filterByLocaleCodes(array $rawValues, ?array $localesToFilterOn)
+    private function filterByLocaleCodes(array $rawValues, array $localesToFilterOn): array
     {
         $result = [];
         foreach ($rawValues as $attributeCode => $attributeValues) {
