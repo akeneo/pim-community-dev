@@ -4,7 +4,7 @@ import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator'
 export const hydrator = (denormalize: (denormalizeProduct: NormalizedProduct) => Product) => (
   normalizedProduct: any
 ): Product => {
-  const expectedKeys = ['family'];
+  const expectedKeys = ['meta'];
   validateKeys(normalizedProduct, expectedKeys, 'The provided raw attribute seems to be malformed.');
 
   return denormalize({

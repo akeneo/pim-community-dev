@@ -1,8 +1,10 @@
 import {NormalizedProduct} from 'akeneoreferenceentity/domain/model/product/product';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
+import {NormalizedCode as NormalizedAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
 
 export interface ProductsState {
-  selectedAttribute: string | null;
-  attributes: any[];
+  selectedAttribute: NormalizedAttributeCode | null;
+  attributes: NormalizedAttribute[];
   products: NormalizedProduct[];
 }
 

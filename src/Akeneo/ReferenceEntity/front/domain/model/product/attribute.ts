@@ -39,14 +39,14 @@ class AttributeImplementation implements Attribute {
     if (!(code instanceof Code)) {
       throw new InvalidArgumentError('Attribute expects an AttributeCode as code argument');
     }
-    if (typeof type === 'string') {
-      throw new InvalidArgumentError('Attribute expects an string as type argument');
+    if (typeof type !== 'string') {
+      throw new InvalidArgumentError('Attribute expects a string as type argument');
     }
     if (!(labelCollection instanceof LabelCollection)) {
       throw new InvalidArgumentError('Attribute expects a LabelCollection as labelCollection argument');
     }
-    if (typeof referenceDataName === 'string') {
-      throw new InvalidArgumentError('Attribute expects a LabelCollection as labelCollection argument');
+    if (typeof referenceDataName !== 'string') {
+      throw new InvalidArgumentError('Attribute expects a string as referenceDataName argument');
     }
 
     Object.freeze(this);
@@ -62,11 +62,12 @@ class AttributeImplementation implements Attribute {
   }
 
   public static createFromNormalized(normalizedAttribute: NormalizedAttribute): Attribute {
-    const type = normalizedAttribute.type;
     const code = createCode(normalizedAttribute.code);
+    const type = normalizedAttribute.type;
+    const referenceDataName = normalizedAttribute.reference_data_name;
     const labelCollection = createLabelCollection(normalizedAttribute.labels);
 
-    return AttributeImplementation.create(code, type, labelCollection, normalizedAttribute.reference_data_name);
+    return AttributeImplementation.create(code, type, labelCollection, referenceDataName);
   }
 
   public getCode(): Code {

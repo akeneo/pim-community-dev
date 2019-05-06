@@ -13,7 +13,7 @@ import {NormalizedCode} from 'akeneoreferenceentity/domain/model/record/code';
 import {createCode, NormalizedCode as NormalizedAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
 import {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
-const router = require('pim/router');
+import NoAttribute from 'akeneoreferenceentity/application/component/record/edit/product/no-attribute';
 
 interface StateProps {
   context: {
@@ -39,7 +39,6 @@ class Product extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
   render() {
-    const createAttributePath = `#${router.generate(`pim_enrich_attribute_create`)}`;
     const selectedAttribute = this.props.attributes.find((attribute: DropdownElement) => attribute.identifier === this.props.selectedAttribute);
 
     return (
@@ -60,7 +59,7 @@ class Product extends React.Component<StateProps & DispatchProps> {
                   />
                   ) : null}
             </header>
-            {0 < this.props.products.length && null !==  this.props.selectedAttribute ? (
+            {0 < this.props.products.length && null !== this.props.selectedAttribute ? (
               <div className="AknSubsection">
                 <div className="AknGrid--gallery">
                   <div className="AknGridContainer">
@@ -93,30 +92,10 @@ class Product extends React.Component<StateProps & DispatchProps> {
             )}
           </React.Fragment>
         ) : (
-          <div className="AknGridContainer-noData">
-            <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--reference-entity" />
-            <div className="AknGridContainer-noDataTitle">
-              {__('pim_reference_entity.record.product.no_attribute.title', {
-                entityLabel: this.props.referenceEntityIdentifier,
-              })}
-            </div>
-            <div className="AknGridContainer-noDataSubtitle">
-              {__('pim_reference_entity.record.product.no_attribute.subtitle')}
-              <a
-                href={createAttributePath}
-                title={__('pim_reference_entity.record.product.no_attribute.link')}
-                onClick={event => {
-                  event.preventDefault();
-
-                  this.props.events.onRedirectAttributeCreation();
-
-                  return false;
-                }}
-              >
-                {__('pim_reference_entity.record.product.no_attribute.link')}
-              </a>
-            </div>
-          </div>
+          <NoAttribute
+            referenceEntityLabel={this.props.referenceEntityIdentifier}
+            onRedirectAttributeCreation={this.props.events.onRedirectAttributeCreation}
+          />
         ) }
       </React.Fragment>
     );

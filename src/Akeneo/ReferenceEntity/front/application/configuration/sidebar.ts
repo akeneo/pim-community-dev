@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
+const securityContext = require('pim/security-context');
 
 class SibebarMissConfigurationError extends Error {}
 
@@ -7,6 +8,7 @@ interface TabConfiguration {
   [code: string]: {
     label: string | {label: typeof React.Component};
     view: {default: typeof React.Component};
+    acl?: string;
   };
 }
 
@@ -47,15 +49,21 @@ Actual conf: ${JSON.stringify(this.configuration)}`
       );
     }
 
-    return Object.keys(this.configuration[sidebarIdentifier].tabs).map((code: string) => {
-      const tabConf = this.configuration[sidebarIdentifier].tabs[code];
+    return Object.keys(this.configuration[sidebarIdentifier].tabs)
+      .filter((code: string) => {
+        const tabConf = this.configuration[sidebarIdentifier].tabs[code];
 
-      if ('string' === typeof tabConf.label) {
-        return {code, label: tabConf.label};
-      }
+        return undefined === tabConf.acl || securityContext.isGranted(tabConf.acl);
+      })
+      .map((code: string) => {
+        const tabConf = this.configuration[sidebarIdentifier].tabs[code];
 
-      if (undefined === tabConf.label.label) {
-        const confPath = `
+        if ('string' === typeof tabConf.label) {
+          return {code, label: tabConf.label};
+        }
+
+        if (undefined === tabConf.label.label) {
+          const confPath = `
 config:
     config:
         akeneoreferenceentity/application/configuration/sidebar:
@@ -63,13 +71,13 @@ config:
                 tabs:
                     tab-code:
                         label: '@your_view_path_here'`;
-        throw new SibebarMissConfigurationError(
-          `The Component loaded to display the label needs to export the label property from the configuration ${confPath}`
-        );
-      }
+          throw new SibebarMissConfigurationError(
+            `The Component loaded to display the label needs to export the label property from the configuration ${confPath}`
+          );
+        }
 
-      return {code, label: tabConf.label.label};
-    });
+        return {code, label: tabConf.label.label};
+      });
   }
 
   public getView(sidebarIdentifier: string, code: string): typeof React.Component {
