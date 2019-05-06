@@ -74,29 +74,10 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
 
         $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
 
-        $associations = [];
-        foreach ($this->getProductAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers)
-                 as $productIdentifier => $productAssociations) {
-            $associations[$productIdentifier] = ['associations' => $productAssociations];
-        }
-
-        $categoryCodes = [];
-        foreach ($this->getCategoryCodesByProductIdentifiers->fetchCategoryCodes($identifiers)
-                 as $productIdentifier => $productCategoryCodes) {
-            $categoryCodes[$productIdentifier] = ['category_codes' => $productCategoryCodes];
-        }
-
-        $metadata = [];
-        foreach ($this->getMetadata->fromProductIdentifiers($userId, $identifiers)
-                 as $productIdentifier => $workflowStatus) {
-            $metadata[$productIdentifier] = ['metadata' => ['workflow_status' => $workflowStatus]];
-        }
-
         $rows = array_replace_recursive(
             $this->getValuesAndPropertiesFromProductIdentifiers->fetchByProductIdentifiers($identifiers),
-            $metadata,
-            $associations,
-            $categoryCodes
+            $this->fetchAssociationsIndexedByProductIdentifier($identifiers),
+            $this->fetchCategoryCodesIndexedByProductIdentifier($identifiers)
         );
 
         $products = [];
@@ -105,17 +86,17 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
                 continue;
             }
             $row = $rows[$identifier];
-            $raw_values = $row['raw_values'];
+            $rawValues = $row['raw_values'];
 
-            $raw_values = $this->removeAttribute($raw_values, $identifierAttributeCode);
+            $rawValues = $this->removeIdentifierValue($rawValues, $identifierAttributeCode);
             if (null !== $attributesToFilterOn) {
-                $raw_values = $this->filterWithAttributes($raw_values, $attributesToFilterOn);
+                $rawValues = $this->filterByAttributeCodes($rawValues, $attributesToFilterOn);
             }
             if (null !== $channelToFilterOn) {
-                $raw_values = $this->filterWithScope($raw_values, $channelToFilterOn);
+                $rawValues = $this->filterByChannelCode($rawValues, $channelToFilterOn);
             }
             if (null !== $localesToFilterOn) {
-                $raw_values = $this->filterWithLocales($raw_values, $localesToFilterOn);
+                $rawValues = $this->filterByLocaleCodes($rawValues, $localesToFilterOn);
             }
 
             $products[] = new ConnectorProduct(
@@ -129,25 +110,25 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
                 $row['group_codes'],
                 $row['product_model_code'],
                 $row['associations'],
-                $row['metadata'],
-                $this->valueCollectionFactory->createFromStorageFormat($raw_values)
+                [],
+                $this->valueCollectionFactory->createFromStorageFormat($rawValues)
             );
         }
 
         return new ConnectorProductList($result->count(), $products);
     }
 
-    private function removeAttribute($raw_values, $identifierAttributeCode)
+    private function removeIdentifierValue($raw_values, $identifierAttributeCode)
     {
         unset($raw_values[$identifierAttributeCode]);
 
         return $raw_values;
     }
 
-    private function filterWithAttributes(array $raw_values, array $attributeCodes)
+    private function filterByAttributeCodes(array $rawValues, array $attributeCodes)
     {
         $result = [];
-        foreach ($raw_values as $attributeCode => $attributeValues) {
+        foreach ($rawValues as $attributeCode => $attributeValues) {
             if (in_array($attributeCode, $attributeCodes)) {
                 $result[$attributeCode] = $attributeValues;
             }
@@ -156,10 +137,10 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
         return $result;
     }
 
-    private function filterWithScope(array $raw_values, $filterScope)
+    private function filterByChannelCode(array $rawValues, $filterScope)
     {
         $result = [];
-        foreach ($raw_values as $attributeCode => $attributeValues) {
+        foreach ($rawValues as $attributeCode => $attributeValues) {
             foreach ($attributeValues as $scope => $scopedValue) {
                 if ($scope === '<all_channels>' || $scope === $filterScope) {
                     $result[$attributeCode][$scope] = $scopedValue;
@@ -170,10 +151,10 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
         return $result;
     }
 
-    private function filterWithLocales(array $raw_values, ?array $localesToFilterOn)
+    private function filterByLocaleCodes(array $rawValues, ?array $localesToFilterOn)
     {
         $result = [];
-        foreach ($raw_values as $attributeCode => $attributeValues) {
+        foreach ($rawValues as $attributeCode => $attributeValues) {
             foreach ($attributeValues as $scope => $scopedValue) {
                 foreach ($scopedValue as $locale => $value) {
                     if ($locale === '<all_locales>' || in_array($locale, $localesToFilterOn)) {
@@ -184,5 +165,27 @@ class GetConnectorProductsFromReadModel implements GetConnectorProducts
         }
 
         return $result;
+    }
+
+    private function fetchCategoryCodesIndexedByProductIdentifier(array $identifiers): array
+    {
+        $categoryCodes = [];
+        foreach ($this->getCategoryCodesByProductIdentifiers->fetchCategoryCodes($identifiers)
+                 as $productIdentifier => $productCategoryCodes) {
+            $categoryCodes[$productIdentifier] = ['category_codes' => $productCategoryCodes];
+        }
+
+        return $categoryCodes;
+    }
+    
+    private function fetchAssociationsIndexedByProductIdentifier(array $identifiers): array
+    {
+        $associations = [];
+        foreach ($this->getProductAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers)
+                 as $productIdentifier => $productAssociations) {
+            $associations[$productIdentifier] = ['associations' => $productAssociations];
+        }
+
+        return $associations;
     }
 }
