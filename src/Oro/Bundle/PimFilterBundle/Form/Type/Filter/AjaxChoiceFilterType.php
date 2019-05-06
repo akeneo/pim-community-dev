@@ -4,6 +4,7 @@ namespace Oro\Bundle\PimFilterBundle\Form\Type\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
+use Pim\Bundle\FilterBundle\Form\Type\UnstructuredType;
 use Oro\Bundle\PimFilterBundle\Form\Type\UnstructuredType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

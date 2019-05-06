@@ -98,7 +98,8 @@ Feature: Edit a product
       | Currencies              | EUR               |
       | Locales                 | French            |
     And I press the "Save" button
-    Then I should be redirected to the "channel_code" channel page
+    Then I should not see the text "There are unsaved changes."
+    And I should be redirected to the "channel_code" channel page
     And I am on the "sandal" product page
     Then I switch the scope to "channel_code"
     And I should see the text "The channel label"
