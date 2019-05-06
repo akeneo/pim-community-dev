@@ -76,15 +76,15 @@ Those bounded contexts are related to two main topics which are **Automation** a
 
 > Automatically enrich product information inside the PIM to increase users' productivity.
 
-- **Rule engine**: Todo
-- **Franklin Insight**: Todo
+- **Rule engine**: Enrich products by automating repetitive tasks based on business rules in order to increase users' productivity.
+- **Franklin Insight**: A virtual contributor who suggests technical product information in order to save users’ time.
 
 #### Work Organization
 
 > Set of features that allows self-organization and collaboration with teammates in order to increase users' productivity.
 
-- **Teamwork assistant** : Todo
-- **Workflow**: Todo
+- **Teamwork assistant** : Organize the teamwork around projects to follow the enrichment of a set of products in order to increase users productivity.
+- **Workflow**: Allow category managers to validate contributions from internal or external contributors.
 
 ### Context map
 
