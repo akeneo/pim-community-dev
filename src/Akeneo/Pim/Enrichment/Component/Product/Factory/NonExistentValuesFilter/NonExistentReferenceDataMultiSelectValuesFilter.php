@@ -11,7 +11,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentValuesFilter
+class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValuesFilter
 {
     /** @var GetExistingReferenceDataCodes */
     private $getExistingReferenceDataCodes;
@@ -23,7 +23,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
 
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
     {
-        $selectValues = $onGoingFilteredRawValues->notFilteredValuesOfTypes(AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT);
+        $selectValues = $onGoingFilteredRawValues->notFilteredValuesOfTypes(AttributeTypes::REFERENCE_DATA_MULTI_SELECT);
 
         if (empty($selectValues)) {
             return $onGoingFilteredRawValues;
@@ -35,20 +35,20 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
 
         foreach ($selectValues as $attributeCode => $productValueCollection) {
             foreach ($productValueCollection as $productValues) {
-                $simpleSelectValues = [];
+                $multiSelectValues = [];
 
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
-                        if (!is_array($value)) {
-                            $simpleSelectValues[$channel][$locale] = ($optionCodes[$attributeCode] ?? [])[strtolower($value ?? '')] ?? '';
+                        if (is_array($value)) {
+                            $multiSelectValues[$channel][$locale] = $this->arrayIntersectCaseInsensitive($value, $optionCodes[$attributeCode] ?? []);
                         }
                     }
                 }
 
-                if ($simpleSelectValues !== []) {
-                    $filteredValues[AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT][$attributeCode][] = [
+                if ($multiSelectValues !== []) {
+                    $filteredValues[AttributeTypes::REFERENCE_DATA_MULTI_SELECT][$attributeCode][] = [
                         'identifier' => $productValues['identifier'],
-                        'values' => $simpleSelectValues
+                        'values' => $multiSelectValues
                     ];
                 }
             }
@@ -66,7 +66,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
         foreach ($options as $attributeCode => $option) {
             $existingOptionCodes[$attributeCode] = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes(
                 $option['reference_data_name'],
-                [$option['value']]
+                $option['values']
             );
         }
 
@@ -90,20 +90,31 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
                 $optionCodes[$attributeCode]['reference_data_name'] = $values['properties']['reference_data_name'];
                 foreach ($values['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
-                        if (!is_array($value)) {
-                            $optionCodes[$attributeCode]['value'] = $value;
+                        if (is_array($value)) {
+                            $optionCodes[$attributeCode]['values'] = array_unique($value);
                         }
                     }
                 }
             }
         }
 
-        $uniqueOptionCodes = [];
+        return $optionCodes;
+    }
 
-        foreach ($optionCodes as $attributeCode => $optionCodeForThisAttribute) {
-            $uniqueOptionCodes[$attributeCode] = array_unique($optionCodeForThisAttribute);
+    private function arrayIntersectCaseInsensitive(array $givenOptionCodes, array $existentOptionCodesIndexedInsensitive): array
+    {
+        $result = [];
+
+        if (empty($existentOptionCodesIndexedInsensitive)) {
+            return [];
         }
 
-        return $uniqueOptionCodes;
+        foreach ($givenOptionCodes as $optionCode) {
+            if (isset($existentOptionCodesIndexedInsensitive[strtolower($optionCode ?? '')])) {
+                $result[] = $existentOptionCodesIndexedInsensitive[strtolower($optionCode)];
+            }
+        }
+
+        return $result;
     }
 }

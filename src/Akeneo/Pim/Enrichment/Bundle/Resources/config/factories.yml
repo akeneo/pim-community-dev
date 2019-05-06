@@ -253,6 +253,12 @@ services:
         tags:
             - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
 
+    akeneo.pim.enrichment.factory.non_existent_values_filter.reference_data_multi_select:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentReferenceDataMultiSelectValuesFilter'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_existing_reference_data_codes'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
 
     akeneo.pim.enrichment.factory.empty_values_cleaner:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner'

@@ -18,7 +18,6 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
 
     public function __construct(GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes)
     {
-
         $this->getExistingAttributeOptionCodes = $getExistingAttributeOptionCodes;
     }
 
