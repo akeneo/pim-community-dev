@@ -96,7 +96,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
                 $optionCodes[$attributeCode]['reference_data_name'] = $values['properties']['reference_data_name'];
                 foreach ($values['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $values) {
-                        foreach($values as $value) {
+                        foreach ($values as $value) {
                             $optionCodes[$attributeCode]['values'][] = $value;
                         }
                     }
