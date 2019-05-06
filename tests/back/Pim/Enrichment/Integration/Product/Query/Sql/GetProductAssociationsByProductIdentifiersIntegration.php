@@ -166,21 +166,21 @@ class GetProductAssociationsByProductIdentifiersIntegration extends TestCase
     private function getAssociationsFormatted(array $crossSell = [], array $pack = [], array $substitutions = [], array $upsell = [], array $aNewType = [])
     {
         return ['associations' => [
-            'X_SELL' => ['products' => $crossSell, 'product_models' => [], 'groups' => []],
-            'PACK' => ['products' => $pack, 'product_models' => [], 'groups' => []],
-            'SUBSTITUTION' => ['products' => $substitutions, 'product_models' => [], 'groups' => []],
-            'UPSELL' => ['products' => $upsell, 'product_models' => [], 'groups' => []],
+            'X_SELL' => ['products' => $crossSell],
+            'PACK' => ['products' => $pack],
+            'SUBSTITUTION' => ['products' => $substitutions],
+            'UPSELL' => ['products' => $upsell],
         ]];
     }
 
     private function getAssociationsFormattedAfterFetch(array $crossSell = [], array $pack = [], array $substitutions = [], array $upsell = [], array $aNewType = []): array
     {
         return [
-            'X_SELL' => ['products' => $crossSell, 'product_models' => [], 'groups' => []],
-            'PACK' => ['products' => $pack, 'product_models' => [], 'groups' => []],
-            'SUBSTITUTION' => ['products' => $substitutions, 'product_models' => [], 'groups' => []],
-            'UPSELL' => ['products' => $upsell, 'product_models' => [], 'groups' => []],
-            'A_NEW_TYPE' => ['products' => $aNewType, 'product_models' => [], 'groups' => []]
+            'X_SELL' => ['products' => $crossSell],
+            'PACK' => ['products' => $pack],
+            'SUBSTITUTION' => ['products' => $substitutions],
+            'UPSELL' => ['products' => $upsell],
+            'A_NEW_TYPE' => ['products' => $aNewType]
         ];
     }
 

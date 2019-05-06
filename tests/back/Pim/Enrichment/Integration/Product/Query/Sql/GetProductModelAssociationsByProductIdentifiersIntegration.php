@@ -207,11 +207,11 @@ class GetProductModelAssociationsByProductIdentifiersIntegration extends TestCas
     private function getAssociationsFormattedAfterFetch(array $crossSell = [], array $pack = [], array $substitutions = [], array $upsell = [], array $aNewType = []): array
     {
         return [
-            'X_SELL' => $crossSell,
-            'PACK' => $pack,
-            'SUBSTITUTION' => $substitutions,
-            'UPSELL' => $upsell,
-            'A_NEW_TYPE' => $aNewType
+            'X_SELL' => ['product_models' => $crossSell],
+            'PACK' => ['product_models' => $pack],
+            'SUBSTITUTION' => ['product_models' => $substitutions],
+            'UPSELL' => ['product_models' => $upsell],
+            'A_NEW_TYPE' => ['product_models' => $aNewType]
         ];
     }
 

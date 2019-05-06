@@ -93,7 +93,14 @@ SQL;
         $results = [];
 
         foreach ($rows as $row) {
-            $results[$row['product_identifier']] = array_map('array_filter', json_decode($row['associations'], true));
+            $associations = json_decode($row['associations'], true);
+
+            $filteredAssociations = [];
+            foreach ($associations as $associationType => $productAssociations) {
+                $filteredAssociations[$associationType]['product_models'] = array_filter($productAssociations);
+            }
+
+            $results[$row['product_identifier']] = $filteredAssociations;
         }
 
         return $results;

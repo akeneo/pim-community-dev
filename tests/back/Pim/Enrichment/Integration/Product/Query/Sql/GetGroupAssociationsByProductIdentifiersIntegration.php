@@ -22,9 +22,9 @@ class GetGroupAssociationsByProductIdentifiersIntegration extends TestCase
         parent::setUp();
 
         $entityBuilder = new EntityBuilder($this->testKernel->getContainer());
-        
+
         $this->givenGroup(['groupA', 'groupB', 'groupC', 'groupD', 'groupE', 'groupF', 'groupG']);
-        
+
         $this->givenBooleanAttributes(['first_yes_no', 'second_yes_no']);
         $this->givenFamilies([['code' => 'aFamily', 'attribute_codes' => ['first_yes_no', 'second_yes_no']]]);
         $entityBuilder->createFamilyVariant(
@@ -101,11 +101,11 @@ class GetGroupAssociationsByProductIdentifiersIntegration extends TestCase
     private function getAssociationsFormattedAfterFetch(array $crossSell = [], array $pack = [], array $substitutions = [], array $upsell = [], array $aNewType = []): array
     {
         return [
-            'X_SELL' => $crossSell,
-            'PACK' => $pack,
-            'SUBSTITUTION' => $substitutions,
-            'UPSELL' => $upsell,
-            'A_NEW_TYPE' => $aNewType
+            'X_SELL' => ['groups' => $crossSell],
+            'PACK' => ['groups' => $pack],
+            'SUBSTITUTION' => ['groups' => $substitutions],
+            'UPSELL' => ['groups' => $upsell],
+            'A_NEW_TYPE' => ['groups' => $aNewType]
         ];
     }
 
@@ -134,12 +134,12 @@ class GetGroupAssociationsByProductIdentifiersIntegration extends TestCase
             ]);
 
             $errors = $this->get('validator')->validate($group);
-            
+
             Assert::count($errors, 0);
-            
+
             return $group;
         }, $codes);
-        
+
         $this->get('pim_catalog.saver.group')->saveAll($groups);
     }
 
