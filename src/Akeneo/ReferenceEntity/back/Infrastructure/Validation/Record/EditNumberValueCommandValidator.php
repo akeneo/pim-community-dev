@@ -97,8 +97,7 @@ class EditNumberValueCommandValidator extends ConstraintValidator
     {
         $validator = Validation::createValidator();
 
-        if (!$command->attribute->allowsDecimalValues())
-        {
+        if (!$command->attribute->allowsDecimalValues()) {
             $violations = $validator->validate($command->number, [
                 new Constraints\Type([
                     'type' => 'digit',
