@@ -3,6 +3,9 @@ oneup_flysystem:
         catalog_storage_adapter:
             local:
                 directory: '%catalog_storage_dir%'
+        jobs_storage_adapter:
+            local:
+                directory: '%tmp_storage_dir%'
         tmp_storage_adapter:
             local:
                 directory: '%tmp_storage_dir%'
@@ -23,3 +26,6 @@ oneup_flysystem:
             mount: archivist
             plugins:
                 - oneup_flysystem.plugin.list_files
+        jobs_storage:
+            adapter: jobs_storage_adapter
+            mount: jobsStorage

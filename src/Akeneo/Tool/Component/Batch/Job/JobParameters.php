@@ -7,8 +7,6 @@ namespace Akeneo\Tool\Component\Batch\Job;
  * outside of the JobParameters they are contained within, it is a value object rather than an entity. Furthermore,
  * because these parameters will need to be persisted, it is vital that the types added are restricted.
  *
- * This class is immutable.
- *
  * Inspired by Spring Batch  org.springframework.batch.core.JobParameters;
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
@@ -56,6 +54,17 @@ class JobParameters implements \IteratorAggregate, \Countable
         }
 
         return $this->parameters[$key];
+    }
+
+    /**
+     * Set the job parameter. This should never be used for a connector.
+     * This is only for internal usage.
+     *
+     * @internal
+     */
+    public function set(string $key, $value):void
+    {
+        $this->parameters[$key] = $value;
     }
 
     /**
