@@ -13,6 +13,9 @@ jobs:
             name: Copy docker-compose.override.yml.dist
             command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
       - run:
+            name: Pull the latest Docker images
+            command: docker-compose pull
+      - run:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots
       - run:
@@ -27,6 +30,10 @@ jobs:
       - run:
           name: Start containers
           command: docker-compose up -d
+      - restore_cache:
+          name: Restore cache - vendor
+          keys:
+            - vendor-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
       - run:
           name: Change owner on project dir after restoring cache
           command: sudo chown -R 1000:1000 ../project
@@ -43,8 +50,12 @@ jobs:
             name: Pim yarn test installation
             command: docker-compose run --rm node yarn run webpack-test
       - run:
-            name: Change owner on project dir after installing when there is no cache
+            name: Change owner on project dir after install
             command: sudo chmod -R 777 ../project
+      - save_cache:
+          paths:
+            - ./vendor
+          key: vendor-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
       - persist_to_workspace:
           root: ~/
           paths:
