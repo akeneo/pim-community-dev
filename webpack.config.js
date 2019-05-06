@@ -180,7 +180,13 @@ module.exports = {
                     }
                 ],
                 include: /(web\/bundles)/,
-                exclude: /lib|node_modules|vendor/
+                exclude: [
+                    path.resolve(rootDir, 'node_modules'),
+                    path.resolve(rootDir, 'vendor'),
+                    path.resolve(rootDir, 'tests'),
+                    path.resolve(__dirname, 'tests'),
+                    path.resolve(rootDir, 'src')
+                ],
             }
         ]
     },
