@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8323: Fix issue on attribute option removing
+- PIM-8330: Backport : Allow installation folder to contain src | tests ... for webpack
 
 # 2.3.41 (2019-05-02)
 
