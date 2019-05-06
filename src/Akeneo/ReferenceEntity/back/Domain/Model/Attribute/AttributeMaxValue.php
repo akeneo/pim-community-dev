@@ -19,35 +19,35 @@ use Webmozart\Assert\Assert;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class AttributeMinValue
+class AttributeMaxValue
 {
-    private const NO_MINIMUM = null;
+    private const NO_MAXIMUM = null;
 
     /** @var ?string */
-    private $minValue;
+    private $maxValue;
 
-    private function __construct(?string $minValue)
+    private function __construct(?string $maxValue)
     {
-        Assert::nullOrStringNotEmpty($minValue, 'The min value cannot be empty');
-        if (self::NO_MINIMUM !== $minValue) {
-            Assert::numeric($minValue);
+        Assert::nullOrStringNotEmpty($maxValue, 'The max value cannot be empty');
+        if (self::NO_MAXIMUM !== $maxValue) {
+            Assert::numeric($maxValue);
         }
 
-        $this->minValue = $minValue;
+        $this->maxValue = $maxValue;
     }
 
-    public static function fromString(string $minValue): self
+    public static function fromString(string $maxValue): self
     {
-        return new self($minValue);
+        return new self($maxValue);
     }
 
-    public static function noMinimum(): self
+    public static function noMaximum(): self
     {
-        return new self(self::NO_MINIMUM);
+        return new self(self::NO_MAXIMUM);
     }
 
     public function normalize(): ?string
     {
-        return $this->minValue;
+        return $this->maxValue;
     }
 }
