@@ -187,11 +187,16 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
     private function fetchAssociationsIndexedByProductIdentifier(array $identifiers): array
     {
         $associations = array_replace_recursive(
-            $this->getProductAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers);
-            $this->getProductModelAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers);
-            $this->getGroupAssociationsByProductIdentifiers->fetchByProductIdentifier($identifiers);
+            $this->getProductAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers),
+            $this->getProductModelAssociationsByProductIdentifiers->fetchByProductIdentifiers($identifiers),
+            $this->getGroupAssociationsByProductIdentifiers->fetchByProductIdentifier($identifiers)
         );
 
-        return $associations;
+        $associationsIndexedByIdentifier = [];
+        foreach ($associations as $identifier => $association) {
+            $associationsIndexedByIdentifier[$identifier]['associations'] = $association;
+        }
+
+        return $associationsIndexedByIdentifier;
     }
 }
