@@ -7,6 +7,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxValue;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMinValue;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -24,17 +26,22 @@ class NumberAttributeSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedThrough('create', [
-            AttributeIdentifier::create('city', 'area', 'test'),
-            ReferenceEntityIdentifier::fromString('city'),
-            AttributeCode::fromString('area'),
-            LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeIsDecimal::fromBoolean(false)
-        ]);
+        $this->beConstructedThrough(
+            'create',
+            [
+                AttributeIdentifier::create('city', 'area', 'test'),
+                ReferenceEntityIdentifier::fromString('city'),
+                AttributeCode::fromString('area'),
+                LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeIsDecimal::fromBoolean(false),
+                AttributeMinValue::fromString('10'),
+                AttributeMaxValue::fromString('20')
+            ]
+        );
     }
 
     function it_is_initializable()
@@ -50,48 +57,63 @@ class NumberAttributeSpec extends ObjectBehavior
 
     function it_creates_a_decimal_number()
     {
-        $this->beConstructedThrough('create', [
-            AttributeIdentifier::create('city', 'area', 'test'),
-            ReferenceEntityIdentifier::fromString('city'),
-            AttributeCode::fromString('area'),
-            LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeIsDecimal::fromBoolean(true)
-        ]);
+        $this->beConstructedThrough(
+            'create',
+            [
+                AttributeIdentifier::create('city', 'area', 'test'),
+                ReferenceEntityIdentifier::fromString('city'),
+                AttributeCode::fromString('area'),
+                LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeIsDecimal::fromBoolean(true),
+                AttributeMinValue::fromString('10'),
+                AttributeMaxValue::fromString('20')
+            ]
+        );
+
+        $this->normalize()['is_decimal']->shouldReturn(true);
     }
 
     function it_creates_a_non_decimal_number()
     {
-        $this->beConstructedThrough('create', [
-            AttributeIdentifier::create('city', 'area', 'test'),
-            ReferenceEntityIdentifier::fromString('city'),
-            AttributeCode::fromString('area'),
-            LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeIsDecimal::fromBoolean(false)
-        ]);
+        $this->beConstructedThrough(
+            'create',
+            [
+                AttributeIdentifier::create('city', 'area', 'test'),
+                ReferenceEntityIdentifier::fromString('city'),
+                AttributeCode::fromString('area'),
+                LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeIsDecimal::fromBoolean(false),
+                AttributeMinValue::fromString('10'),
+                AttributeMaxValue::fromString('20')
+            ]
+        );
     }
 
     function it_normalizes_itself()
     {
-        $this->normalize()->shouldReturn([
-             'identifier'                 => 'area_city_test',
-             'reference_entity_identifier' => 'city',
-             'code'                       => 'area',
-             'labels'                     => ['fr_FR' => 'Superficie', 'en_US' => 'Area'],
-             'order'                      => 0,
-             'is_required'                => true,
-             'value_per_channel'          => true,
-             'value_per_locale'           => true,
-             'type'                       => 'number',
-             'is_decimal'                 => false
-          ]
+        $this->normalize()->shouldReturn(
+            [
+                'identifier'                  => 'area_city_test',
+                'reference_entity_identifier' => 'city',
+                'code'                        => 'area',
+                'labels'                      => ['fr_FR' => 'Superficie', 'en_US' => 'Area'],
+                'order'                       => 0,
+                'is_required'                 => true,
+                'value_per_channel'           => true,
+                'value_per_locale'            => true,
+                'type'                        => 'number',
+                'is_decimal'                  => false,
+                'min'                         => '10',
+                'max'                         => '20'
+            ]
         );
     }
 }
