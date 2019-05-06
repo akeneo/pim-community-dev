@@ -111,9 +111,30 @@ class NumberAttributeSpec extends ObjectBehavior
                 'value_per_locale'            => true,
                 'type'                        => 'number',
                 'is_decimal'                  => false,
-                'min'                         => '10',
-                'max'                         => '20'
+                'min_value'                         => '10',
+                'max_value'                         => '20'
             ]
         );
+    }
+
+    function it_can_have_its_is_decimal_flag_updated()
+    {
+        $this->setIsDecimal(AttributeIsDecimal::fromBoolean(true));
+
+        $this->normalize()['is_decimal']->shouldBe(true);
+    }
+
+    function it_can_have_its_min_value_updated()
+    {
+        $this->setMinValue(AttributeMinValue::fromString('99'));
+
+        $this->normalize()['min_value']->shouldBe('99');
+    }
+
+    function it_can_have_its_max_value_updated()
+    {
+        $this->setMaxValue(AttributeMaxValue::fromString('99'));
+
+        $this->normalize()['max_value']->shouldBe('99');
     }
 }

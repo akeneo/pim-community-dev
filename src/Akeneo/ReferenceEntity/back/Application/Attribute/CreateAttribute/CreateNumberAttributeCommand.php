@@ -22,6 +22,12 @@ class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
     /** @var bool */
     public $isDecimal;
 
+    /** @var string|null */
+    public $minValue;
+
+    /** @var string|null */
+    public $maxValue;
+
     public function __construct(
         string $referenceEntityIdentifier,
         string $code,
@@ -29,7 +35,9 @@ class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
         bool $isRequired,
         bool $valuePerChannel,
         bool $valuePerLocale,
-        bool $isDecimal
+        bool $isDecimal,
+        ?string $minValue,
+        ?string $maxValue
     ) {
         parent::__construct(
             $referenceEntityIdentifier,
@@ -41,5 +49,7 @@ class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
         );
 
         $this->isDecimal = $isDecimal;
+        $this->minValue = $minValue;
+        $this->maxValue = $maxValue;
     }
 }

@@ -20,6 +20,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxValue;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMinValue;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -55,7 +57,29 @@ class NumberAttributeFactory implements AttributeFactoryInterface
         }
 
         return NumberAttribute::create(
-            $identifier, ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier), AttributeCode::fromString($command->code), LabelCollection::fromArray($command->labels), $order, AttributeIsRequired::fromBoolean($command->isRequired), AttributeValuePerChannel::fromBoolean($command->valuePerChannel), AttributeValuePerLocale::fromBoolean($command->valuePerLocale), AttributeIsDecimal::fromBoolean($command->isDecimal), AttributeMinValue::noMinimum(), AttributeMaxValue::noMaximum()
+            $identifier,
+            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
+            AttributeCode::fromString($command->code),
+            LabelCollection::fromArray($command->labels),
+            $order,
+            AttributeIsRequired::fromBoolean($command->isRequired),
+            AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
+            AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
+            AttributeIsDecimal::fromBoolean($command->isDecimal),
+            $this->minValue($command),
+            $this->maxValue($command)
         );
+    }
+
+    private function minValue(CreateNumberAttributeCommand $command): AttributeMinValue
+    {
+       return null !== $command->minValue
+           ? AttributeMinValue::fromString($command->minValue) : AttributeMinValue::noMinimum();
+    }
+
+    private function maxValue(CreateNumberAttributeCommand $command): AttributeMaxValue
+    {
+        return null !== $command->maxValue
+            ? AttributeMaxValue::fromString($command->maxValue) : AttributeMaxValue::noMaximum();
     }
 }

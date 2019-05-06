@@ -1450,6 +1450,8 @@ class EditAttributeContext implements Context
 
     /**
      * @Given /^a reference entity with a number attribute \'([^\']*)\' non decimal$/
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' no min value$/
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' no max value$/
      */
     public function aReferenceEntityWithANumberAttributeNonDecimal(string $attributeCode): void
     {
@@ -1497,5 +1499,147 @@ class EditAttributeContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
         Assert::assertEquals(true, $attribute->normalize()['is_decimal']);
+    }
+
+    /**
+     * @When /^the user sets the min value of \'([^\']*)\' to (\d+)$/
+     */
+    public function theUserSetsTheMinValueOfTo(string $attributeCode, string $minValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateMinValue = ['identifier' => (string) $identifier, 'min_value' => $minValue];
+        $this->updateAttribute($updateMinValue);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' min value should be (\d+)$/
+     */
+    public function minValueShouldBe(string $attributeCode, string $expectedMinValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertEquals($expectedMinValue, $attribute->normalize()['min_value']);
+    }
+
+    /**
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' with a min value$/
+     */
+    public function aReferenceEntityWithANumberAttributeWithAMinValue(string $attributeCode)
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(
+            NumberAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeIsDecimal::fromBoolean(false),
+                AttributeMinValue::fromString('150'),
+                AttributeMaxValue::noMaximum()
+            )
+        );
+    }
+
+    /**
+     * @When /^the user unsets the min value of \'([^\']*)\'$/
+     */
+    public function theUserUnsetsTheMinValueOf(string $attributeCode)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateMinValue = ['identifier' => (string) $identifier, 'min_value' => null];
+        $this->updateAttribute($updateMinValue);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' should not have a min value$/
+     */
+    public function shouldNotHaveAMinValue(string $attributeCode)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertNull($attribute->normalize()['min_value']);
+    }
+
+    /**
+     * @When /^the user sets the max value of \'([^\']*)\' to (\d+)$/
+     */
+    public function theUserSetsTheMaxValueOfTo(string $attributeCode, string $maxValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateMaxValue = ['identifier' => (string) $identifier, 'max_value' => $maxValue];
+        $this->updateAttribute($updateMaxValue);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' max value should be (\d+)$/
+     */
+    public function maxValueShouldBe(string $attributeCode, string $expectedMaxValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertEquals($expectedMaxValue, $attribute->normalize()['max_value']);
+    }
+
+    /**
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' with a max value$/
+     */
+    public function aReferenceEntityWithANumberAttributeWithAMaxValue(string $attributeCode)
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(
+            NumberAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString('dummy_identifier'),
+                AttributeCode::fromString($attributeCode),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeIsDecimal::fromBoolean(false),
+                AttributeMinValue::noMinimum(),
+                AttributeMaxValue::fromString('200')
+            )
+        );
+    }
+
+    /**
+     * @When /^the user unsets the max value of \'([^\']*)\'$/
+     */
+    public function theUserUnsetsTheMaxValueOf(string $attributeCode)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateMaxValue = ['identifier' => (string) $identifier, 'max_value' => null];
+        $this->updateAttribute($updateMaxValue);
+    }
+
+    /**
+     * @Then /^\'([^\']*)\' should not have a max value$/
+     */
+    public function shouldNotHaveAMaxValue(string $attributeCode)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertNull($attribute->normalize()['max_value']);
     }
 }
