@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.16 (2019-05-06)
+
 # Bug fixes
 
 - PIM-8312: Delete unique value row in `pim_catalog_product_unique_data` table when deleting unique value in product
