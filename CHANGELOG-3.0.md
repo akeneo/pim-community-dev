@@ -7,6 +7,7 @@
 # Improvements
 
 - AOB-472: Add missing check template bootstrap modal
+- PIM-8325: Apply permissions on quick export
 
 # 3.0.15 (2019-04-30)
 
