@@ -27,7 +27,13 @@ class NumberAttribute extends AbstractAttribute
     /** @var AttributeIsDecimal */
     private $isDecimal;
 
-    protected function __construct(
+    /** @var AttributeMinValue */
+    private $minValue;
+
+    /** @var AttributeMaxValue */
+    private $maxValue;
+
+    private function __construct(
         AttributeIdentifier $identifier,
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $code,
@@ -36,7 +42,9 @@ class NumberAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeIsDecimal $isDecimal
+        AttributeIsDecimal $isDecimal,
+        AttributeMinValue $minValue,
+        AttributeMaxValue $maxValue
     ) {
         parent::__construct(
             $identifier,
@@ -50,6 +58,8 @@ class NumberAttribute extends AbstractAttribute
         );
 
         $this->isDecimal = $isDecimal;
+        $this->minValue = $minValue;
+        $this->maxValue = $maxValue;
     }
 
     public static function create(
@@ -61,7 +71,9 @@ class NumberAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeIsDecimal $isDecimal
+        AttributeIsDecimal $isDecimal,
+        AttributeMinValue $minValue,
+        AttributeMaxValue $maxValue
     ) {
         return new self(
             $identifier,
@@ -72,7 +84,9 @@ class NumberAttribute extends AbstractAttribute
             $isRequired,
             $valuePerChannel,
             $valuePerLocale,
-            $isDecimal
+            $isDecimal,
+            $minValue,
+            $maxValue
         );
     }
 
@@ -82,6 +96,8 @@ class NumberAttribute extends AbstractAttribute
             parent::normalize(),
             [
                 'is_decimal' => $this->isDecimal->normalize(),
+                'min' => $this->minValue->normalize(),
+                'max' => $this->maxValue->normalize(),
             ]
         );
     }

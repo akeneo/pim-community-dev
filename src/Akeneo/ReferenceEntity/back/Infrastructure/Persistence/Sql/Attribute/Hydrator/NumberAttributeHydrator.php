@@ -11,6 +11,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxValue;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMinValue;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
@@ -52,7 +54,9 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
             AttributeIsRequired::fromBoolean($row['is_required']),
             AttributeValuePerChannel::fromBoolean($row['value_per_channel']),
             AttributeValuePerLocale::fromBoolean($row['value_per_locale']),
-            AttributeIsDecimal::fromBoolean($row['is_decimal'])
+            AttributeIsDecimal::fromBoolean($row['is_decimal']),
+            AttributeMinValue::noMinimum(),
+            AttributeMaxValue::noMaximum()
         );
     }
 

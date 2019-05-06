@@ -55,15 +55,7 @@ class NumberAttributeFactory implements AttributeFactoryInterface
         }
 
         return NumberAttribute::create(
-            $identifier,
-            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
-            AttributeCode::fromString($command->code),
-            LabelCollection::fromArray($command->labels),
-            $order,
-            AttributeIsRequired::fromBoolean($command->isRequired),
-            AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
-            AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
-            AttributeIsDecimal::fromBoolean($command->isDecimal)
+            $identifier, ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier), AttributeCode::fromString($command->code), LabelCollection::fromArray($command->labels), $order, AttributeIsRequired::fromBoolean($command->isRequired), AttributeValuePerChannel::fromBoolean($command->valuePerChannel), AttributeValuePerLocale::fromBoolean($command->valuePerLocale), AttributeIsDecimal::fromBoolean($command->isDecimal), AttributeMinValue::noMinimum(), AttributeMaxValue::noMaximum()
         );
     }
 }
