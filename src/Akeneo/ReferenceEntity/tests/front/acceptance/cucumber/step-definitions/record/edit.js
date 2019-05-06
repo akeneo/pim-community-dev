@@ -247,6 +247,15 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
+  When('the user saves the valid record with a number value', async function() {
+    await loadEditRecord.apply(this, ['Record/Edit/number_value_ok.json']);
+
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.fillField('pim_reference_entity.record.enrich.age', '39');
+    await editPage.save();
+  });
+
   When('the user updates the valid record with an image value', async function() {
     await loadEditRecord.apply(this, ['Record/Edit/image_value_ok.json']);
     await answerMedia.apply(this);

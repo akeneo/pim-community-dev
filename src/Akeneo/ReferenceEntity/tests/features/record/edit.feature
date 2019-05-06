@@ -523,6 +523,15 @@ Feature: Edit an record
       | akeneo_referenceentity_record_edit | false |
     Then the user cannot update the multiple record linked value
 
+  @acceptance-front
+  Scenario: Updating a record with a number value
+    Given a valid record
+    And the user has the locale permission to edit the record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
+    When the user saves the valid record with a number value
+    Then the user should see a success message on the edit page
+
 #  Todo : Fix random call for the preview image
 #  @acceptance-front
 #  Scenario: Updating a record with an image value
