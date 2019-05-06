@@ -31,9 +31,12 @@ use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxValue;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMinValue;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
@@ -42,6 +45,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
@@ -56,6 +60,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\NumberData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionCollectionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
@@ -104,6 +109,8 @@ final class EditRecordContext implements Context
     private const OPTION_ATTRIBUTE_IDENTIFIER = 'favorite_color_designer_fingerprint';
     private const OPTION_COLLECTION_ATTRIBUTE_CODE = 'favorite_drinks';
     private const OPTION_COLLECTION_ATTRIBUTE_IDENTIFIER = 'favorite_drinks_designer_fingerprint';
+    private const NUMBER_ATTRIBUTE_CODE = 'age';
+    private const NUMBER_ATTRIBUTE_IDENTIFIER = 'age_designer_fingerprint';
     private const DUMMY_ORIGINAL_VALUE = 'Une valeur naïve';
     private const DUMMY_UPDATED_VALUE = 'An updated dummy data';
 
@@ -2537,5 +2544,135 @@ final class EditRecordContext implements Context
         }
 
         return $value['data'];
+    }
+
+    /**
+     * @Given /^a reference entity with a number attribute$/
+     */
+    public function aReferenceEntityWithANumberAttribute()
+    {
+        $this->createReferenceEntity();
+        $this->attributeRepository->create(
+            NumberAttribute::create(
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::NUMBER_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::NUMBER_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(2),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeIsDecimal::fromBoolean(true),
+                AttributeMinValue::noMinimum(),
+                AttributeMaxValue::noMaximum()
+            )
+        );
+    }
+
+    /**
+     * @Given /^a record belonging to this reference entity with values of "([^"]*)" for the number attribute$/
+     */
+    public function aRecordBelongingToThisReferenceEntityWithValuesOfForTheNumberAttribute($numberValue)
+    {
+        $recordValue = Value::create(
+            AttributeIdentifier::create(
+                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::NUMBER_ATTRIBUTE_CODE,
+                self::FINGERPRINT
+            ),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            NumberData::createFromNormalize($numberValue)
+        );
+        $this->createRecord($recordValue);
+    }
+
+    /**
+     * @When /^the user updates the number attribute of the record to "([^"]*)"$/
+     */
+    public function theUserUpdatesTheNumberAttributeOfTheRecordTo($newData)
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::NUMBER_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => $newData,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^the record should have the number value "([^"]*)" for this attribute$/
+     */
+    public function theRecordShouldHaveTheNumberValueForThisAttribute($expectedValue)
+    {
+        $record = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+        $value = $record->findValue(
+            ValueKey::create(
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::NUMBER_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                ChannelReference::noReference(),
+                LocaleReference::noReference()
+            )
+        );
+
+        Assert::notNull($value);
+        Assert::same($expectedValue, $value->getData()->normalize());
+    }
+
+    /**
+     * @Given /^a reference entity with a number attribute with no decimal value$/
+     */
+    public function aReferenceEntityWithANumberAttributeWithNoDecimalValue()
+    {
+        $this->createReferenceEntity();
+        $this->attributeRepository->create(
+            NumberAttribute::create(
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::NUMBER_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::NUMBER_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(2),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeIsDecimal::fromBoolean(false),
+                AttributeMinValue::noMinimum(),
+                AttributeMaxValue::noMaximum()
+            )
+        );
+    }
+
+    /**
+     * @Then /^there should be a validation error on the property is decimal attribute with message "([^\']*)"$/
+     */
+    public function thereShouldBeAValidationErrorOnThePropertyIsDecimalAttributeWithMessage($expectedMessage)
+    {
+        $this->violationsContext->assertThereShouldBeViolations(1);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage(
+            'values.' . self::NUMBER_ATTRIBUTE_CODE,
+            $expectedMessage
+        );
     }
 }

@@ -142,11 +142,11 @@ Feature: Create an attribute linked to a reference entity
   @acceptance-back
   Scenario: Create a non decimal number attribute to a reference entity
     When the user creates a number attribute "area" to the reference entity "city" with:
-      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | is_decimal |
-      | area   | {"en_US": "Area", "fr_FR": "Superficie"}| true        | 2     | false             | false            | false      |
+      | code | labels                                   | is_required | order | value_per_channel | value_per_locale | is_decimal | min | max |
+      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 2     | false             | false            | false      |     |     |
     Then there is a number attribute "area" in the reference entity "city" with:
-      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | type              | is_decimal |
-      | area   | {"en_US": "Area", "fr_FR": "Superficie"}| true        | 2     | false             | false            | number            | false      |
+      | code | labels                                   | is_required | order | value_per_channel | value_per_locale | type   | is_decimal | min | max |
+      | area | {"en_US": "Area", "fr_FR": "Superficie"} | true        | 2     | false             | false            | number | false      |     |     |
 
   @acceptance-front
   Scenario: Create a simple valid text attribute

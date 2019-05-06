@@ -372,6 +372,42 @@ Feature: Edit an record
     Then there should be a validation error on the property option collection attribute with message "The following option codes don't exist for this attribute : "water""
     And the record should have the option collection value "vodka, whisky" for this attribute
 
+  # Number value
+  @acceptance-back
+  Scenario: Updating the number value of a record
+    Given a reference entity with a number attribute
+    And a record belonging to this reference entity with values of "33" for the number attribute
+    When the user updates the number attribute of the record to "59"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the number value "59" for this attribute
+
+  @acceptance-back
+  Scenario: Updating the number value of a record with a decimal value
+    Given a reference entity with a number attribute
+    And a record belonging to this reference entity with values of "10" for the number attribute
+    When the user updates the number attribute of the record to "9.99"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the number value "9.99" for this attribute
+
+  @acceptance-back
+  Scenario: Updating the number value of a record with zero value
+    Given a reference entity with a number attribute
+    And a record belonging to this reference entity with values of "10" for the number attribute
+    When the user updates the number attribute of the record to "0"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the number value "0" for this attribute
+
+  @acceptance-back
+  Scenario: Updating the number value of a record with a forbidden decimal value
+    Given a reference entity with a number attribute with no decimal value
+    And a record belonging to this reference entity with values of "10" for the number attribute
+    When the user updates the number attribute of the record to "9.99"
+    Then there should be a validation error on the property is decimal attribute with message "This field accepts only non-decimal number"
+    And the record should have the number value "10" for this attribute
+
   @acceptance-front
   Scenario: Updating a record details
     Given a valid record
