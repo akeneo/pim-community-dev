@@ -167,19 +167,14 @@ final class ConnectorProduct
         return $values;
     }
 
-    /**
-     * Returns the associated product codes
-     *
-     * @return string[]
-     */
-    public function associatedProducts(): array
+    public function associatedProductIdentifiers(): array
     {
-        $products = [];
+        $associatedProducts = [];
         foreach ($this->associations as $associationType => $associations) {
-            $products = array_merge($products, $associations['products']);
+            $associatedProducts[] = $associations['products'];
         }
 
-        return array_unique($products);
+        return array_unique(array_merge(...$associatedProducts));
     }
 
     /**
