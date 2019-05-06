@@ -17,6 +17,9 @@ jobs:
                   name: Copy docker-compose.override.yml.dist
                   command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
             - run:
+                  name: Pull the latest Docker images
+                  command: docker-compose pull
+            - run:
                   name: Setup tests results folder and log folder
                   command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots
             - run:
@@ -142,6 +145,9 @@ jobs:
             - run:
                   name: Change owner on project dir in order to archive the project into the workspace
                   command: sudo chown -R 1000:1000 ../project
+            - run:
+                  name: Pull the latest Docker images
+                  command: docker-compose pull
             - run:
                   name: Start containers
                   command: docker-compose up -d
