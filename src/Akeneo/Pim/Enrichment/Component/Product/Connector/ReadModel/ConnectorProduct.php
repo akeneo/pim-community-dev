@@ -148,23 +148,30 @@ final class ConnectorProduct
         return $this->values->getAttributeCodes();
     }
 
-    /**
-     * Returns the value list with an attribute belonging to the set in parameter
-     *
-     * @param string[] $attributeCodesToFilter
-     *
-     * @return ValueCollection
-     */
-    public function valuesWithFilteredAttributeCodes(array $attributeCodesToFilter): ValueCollectionInterface
+    public function filterValuesByAttributeCodes(array $attributeCodesToFilter): ConnectorProduct
     {
+        $attributeCodes = array_flip($attributeCodesToFilter);
         $values = new ValueCollection();
         foreach ($this->values as $value) {
-            if (in_array($value->getAttributeCode(), $attributeCodesToFilter)) {
+            if (isset($attributeCodes[$value->getAttributeCode()])) {
                 $values->add($value);
             }
         }
 
-        return $values;
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $this->associations,
+            $this->metadata,
+            $values
+        );
     }
 
     public function associatedProductIdentifiers(): array
@@ -247,7 +254,6 @@ final class ConnectorProduct
             );
             $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
-
         }
 
         return new self(
@@ -285,5 +291,4 @@ final class ConnectorProduct
             $this->values
         );
     }
-
 }

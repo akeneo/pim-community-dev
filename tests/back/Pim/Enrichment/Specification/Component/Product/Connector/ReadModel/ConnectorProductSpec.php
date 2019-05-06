@@ -104,6 +104,24 @@ class ConnectorProductSpec extends ObjectBehavior
         );
     }
 
+    function it_filters_values_by_attribute_codes()
+    {
+        $connectorProduct = $this->filterValuesByAttributeCodes(['attribute_code_1', 'attribute_code_2']);
+
+        $connectorProduct->values()->shouldBeLike(
+            new ValueCollection([ScalarValue::value('attribute_code_1', 'data')])
+        );
+    }
+
+    function it_filters_values_by_emtpty_list_of_attribute_codes()
+    {
+        $connectorProduct = $this->filterValuesByAttributeCodes([]);
+
+        $connectorProduct->values()->shouldBeLike(
+            new ValueCollection([])
+        );
+    }
+
     function it_gets_associated_product_identifiers()
     {
         $this->associatedProductModelCodes()->shouldReturn(['product_model_5', 'product_model_6']);
