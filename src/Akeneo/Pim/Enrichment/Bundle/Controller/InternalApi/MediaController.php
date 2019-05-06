@@ -2,8 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,16 +30,20 @@ class MediaController
     /** @var string */
     protected $uploadDir;
 
+    /** @var FileStorer */
+    private $fileStorer;
+
     /**
      * @param ValidatorInterface     $validator
      * @param PathGeneratorInterface $pathGenerator
      * @param string                 $uploadDir
      */
-    public function __construct(ValidatorInterface $validator, PathGeneratorInterface $pathGenerator, $uploadDir)
+    public function __construct(ValidatorInterface $validator, PathGeneratorInterface $pathGenerator, $uploadDir, FileStorer $fileStorer)
     {
         $this->validator = $validator;
         $this->pathGenerator = $pathGenerator;
         $this->uploadDir = $uploadDir;
+        $this->fileStorer = $fileStorer;
     }
 
     /**
@@ -53,9 +59,9 @@ class MediaController
             return new RedirectResponse('/');
         }
 
-        /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
-        $file = $request->files->get('file');
-        $violations = $this->validator->validate($file);
+        /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $uploadedFile */
+        $uploadedFile = $request->files->get('file');
+        $violations = $this->validator->validate($uploadedFile);
 
         if (count($violations) > 0) {
             $errors = [];
@@ -69,23 +75,18 @@ class MediaController
             return new JsonResponse($errors, 400);
         }
 
-        $pathData = $this->pathGenerator->generate($file);
-
-        try {
-            $movedFile = $file->move(
-                $this->uploadDir . DIRECTORY_SEPARATOR . $pathData['path'] . DIRECTORY_SEPARATOR . $pathData['uuid'],
-                $file->getClientOriginalName()
-            );
-        } catch (FileException $e) {
-            //TODO: more specific message if debug mode is on?
-            return new JsonResponse("Unable to create target-directory, or moving file.", 400);
-        }
+        $file = $this->storeFile($uploadedFile);
 
         return new JsonResponse(
             [
-                'originalFilename' => $file->getClientOriginalName(),
-                'filePath'         => $movedFile->getPathname()
+                'originalFilename' => $uploadedFile->getClientOriginalName(),
+                'filePath'         => $file->getKey()
             ]
         );
+    }
+
+    protected function storeFile(UploadedFile $uploadedFile)
+    {
+        return $this->fileStorer->store($uploadedFile, FileStorage::CATALOG_STORAGE_ALIAS);
     }
 }

@@ -21,27 +21,22 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class MediaAttributeSetter extends AbstractAttributeSetter
 {
-    /** @var FileStorerInterface */
-    protected $storer;
 
     /** @var FileInfoRepositoryInterface */
     protected $repository;
 
     /**
      * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
-     * @param FileStorerInterface              $storer
      * @param FileInfoRepositoryInterface      $repository
      * @param string[]                         $supportedTypes
      */
     public function __construct(
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
-        FileStorerInterface $storer,
         FileInfoRepositoryInterface $repository,
         array $supportedTypes
     ) {
         parent::__construct($entityWithValuesBuilder);
 
-        $this->storer = $storer;
         $this->repository = $repository;
         $this->supportedTypes = $supportedTypes;
     }
@@ -63,7 +58,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         if (null === $data) {
             $file = null;
         } elseif (null === $file = $this->repository->findOneByIdentifier($data)) {
-            $file = $this->storeFile($attribute, $data);
+            throw new \Exception("file info should exist.");
         }
 
         $this->entityWithValuesBuilder->addOrReplaceValue(
@@ -86,35 +81,5 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         if (null !== $data && !is_string($data)) {
             throw InvalidPropertyTypeException::stringExpected($attribute->getCode(), static::class, $data);
         }
-    }
-
-    /**
-     * TODO: inform the user that this could take some time.
-     *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     *
-     * @throws InvalidPropertyException If an invalid filePath is provided
-     * @return FileInfoInterface|null
-     */
-    protected function storeFile(AttributeInterface $attribute, $data)
-    {
-        if (null === $data) {
-            return null;
-        }
-
-        $rawFile = new \SplFileInfo($data);
-
-        if (!$rawFile->isFile()) {
-            throw InvalidPropertyException::validPathExpected(
-                $attribute->getCode(),
-                static::class,
-                $data
-            );
-        }
-
-        $file = $this->storer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
-
-        return $file;
     }
 }
