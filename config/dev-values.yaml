@@ -9,6 +9,8 @@ nfs:
   persistence:
     storageClass: standard
     size: 11Gi
+  storageClass:  
+    reclaimPolicy: Delete
 
 pim:
   defaultCatalog: icecat

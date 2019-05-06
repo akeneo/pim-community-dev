@@ -189,7 +189,8 @@ nfs:
     size: 155Gi # Add +3% based on pim.persistence.diskSize
   storageClass:
     name: nfs
-
+    reclaimPolicy: Retain
+    
 mysql:
   common:
     class: ssd-retain
