@@ -25,7 +25,7 @@ class ConnectorProductSpec extends ObjectBehavior
             'parent_product_model_code',
             [
                 'X_SELL' => [
-                    'products' => ['product_code_1'],
+                    'products' => ['product_code_1', 'product_code_2'],
                     'product_models' => [],
                     'groups' => ['group_code_2']
                 ],
@@ -49,7 +49,7 @@ class ConnectorProductSpec extends ObjectBehavior
     {
         $this->attributeCodesInValues()->shouldReturn(['attribute_code_1']);
     }
-    
+
     function it_filters_by_category_codes()
     {
         $connectorProduct = $this->filterByCategoryCodes(['category_code_1', 'category_code_3']);
@@ -64,4 +64,23 @@ class ConnectorProductSpec extends ObjectBehavior
         $connectorProduct->categoryCodes()->shouldReturn([]);
     }
 
+    function it_filters_associated_products_by_product_identifiers_()
+    {
+        $connectorProduct = $this->filterAssociatedProductsByProductIdentifiers(['product_code_1']);
+
+        $connectorProduct->associations()->shouldBeLike(
+            [
+                'X_SELL' => [
+                    'products' => ['product_code_1'],
+                    'product_models' => [],
+                    'groups' => ['group_code_2']
+                ],
+                'UPSELL' => [
+                    'products' => [],
+                    'product_models' => ['product_model_5'],
+                    'groups' => ['group_code_3']
+                ]
+            ]
+        );
+    }
 }

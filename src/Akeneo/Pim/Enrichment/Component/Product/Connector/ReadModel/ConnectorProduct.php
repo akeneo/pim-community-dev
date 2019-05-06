@@ -204,6 +204,35 @@ final class ConnectorProduct
         return $result;
     }
 
+    public function filterAssociatedProductsByProductIdentifiers($productIdentifiersToFilter): ConnectorProduct
+    {
+        $filteredAssociations = [];
+        foreach ($this->associations as $associationType => $association) {
+            $filteredAssociations[$associationType]['products'] = array_intersect(
+                $association['products'],
+                $productIdentifiersToFilter
+            );
+            $filteredAssociations[$associationType]['groups'] = $association['groups'];
+            $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
+
+        }
+
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $filteredAssociations,
+            $this->metadata,
+            $this->values
+        );
+    }
+
     public function filterByCategoryCodes(array $categoryCodesToFilter): ConnectorProduct
     {
         $categoryCodes =  array_intersect($this->categoryCodes, $categoryCodesToFilter);
