@@ -198,9 +198,6 @@ services:
             $valueCollectionFactory: '@pim_catalog.factory.value_collection'
             $attributeRepository: '@pim_catalog.repository.attribute'
 
-    akeneo.pim.enrichment.query.get_metadata_for_product:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadata'
-
     akeneo.pim.enrichment.product.connector.get_product_models_from_codes:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductModels'
         arguments:

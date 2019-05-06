@@ -57,6 +57,7 @@ class NormalizedProductCleaner
         foreach ($associations as &$association) {
             sort($association['groups']);
             sort($association['products']);
+            sort($association['product_models']);
         }
     }
 
