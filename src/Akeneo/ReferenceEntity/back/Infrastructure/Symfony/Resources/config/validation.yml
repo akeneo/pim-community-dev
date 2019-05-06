@@ -98,6 +98,11 @@ Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionCo
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditOptionCollectionValueCommand: ~
 
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditNumberValueCommand:
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditNumberValueCommand: ~
+
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~

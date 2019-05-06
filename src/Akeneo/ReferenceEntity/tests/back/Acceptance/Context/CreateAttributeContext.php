@@ -549,6 +549,8 @@ class CreateAttributeContext implements Context
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
         $attributeData['is_decimal'] = json_decode($attributeData['is_decimal']);
+        $attributeData['min'] = json_decode($attributeData['min']);
+        $attributeData['max'] = json_decode($attributeData['max']);
 
         $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));

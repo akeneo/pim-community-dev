@@ -44,6 +44,10 @@ pim_reference_entity:
                 is_not_expected: 'A locale is not expected for attribute "%attribute_code%" because it has not a value per locale.'
                 is_not_activated: 'The locale "%locale_identifier%" is not activated.'
                 is_not_activated_for_channel: 'The locale "%locale_identifier%" is not activated for the channel "%channel_identifier%".'
+            number:
+                should_be_string: 'This field should be a string'
+                should_not_be_decimal: 'This field accepts only non-decimal number'
+                should_be_numeric: 'This field should be a numeric value'
     attribute:
         validation:
             options:
