@@ -48,7 +48,11 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
                 if ($multiSelectValues !== []) {
                     $filteredValues[AttributeTypes::REFERENCE_DATA_MULTI_SELECT][$attributeCode][] = [
                         'identifier' => $productValues['identifier'],
-                        'values' => $multiSelectValues
+                        'values' => $multiSelectValues,
+                        // Is it needed?
+                        'properties' => [
+                            'reference_data_name' => 'some_reference_data'
+                        ]
                     ];
                 }
             }
@@ -61,6 +65,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
     {
         $options = $this->getOptions($selectValues);
 
+        //get all options before running the query
         $existingOptionCodes = [];
 
         foreach ($options as $attributeCode => $option) {
@@ -69,6 +74,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
                 $option['values']
             );
         }
+
 
         $caseInsensitiveOptionsCodes = [];
 
@@ -89,9 +95,9 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
             foreach ($valueCollection as $values) {
                 $optionCodes[$attributeCode]['reference_data_name'] = $values['properties']['reference_data_name'];
                 foreach ($values['values'] as $channel => $channelValues) {
-                    foreach ($channelValues as $locale => $value) {
-                        if (is_array($value)) {
-                            $optionCodes[$attributeCode]['values'] = array_unique($value);
+                    foreach ($channelValues as $locale => $values) {
+                        foreach($values as $value) {
+                            $optionCodes[$attributeCode]['values'][] = $value;
                         }
                     }
                 }
