@@ -106,7 +106,7 @@ class ConnectorProductSpec extends ObjectBehavior
 
     function it_gets_associated_product_identifiers()
     {
-        $this->associatedProductIdentifiers()->shouldReturn(['product_code_1', 'product_code_2', 'product_code_4']);
+        $this->associatedProductModelCodes()->shouldReturn(['product_model_5', 'product_model_6']);
 
     }
 }

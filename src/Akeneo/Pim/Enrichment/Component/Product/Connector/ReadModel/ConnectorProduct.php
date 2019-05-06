@@ -177,6 +177,16 @@ final class ConnectorProduct
         return array_unique(array_merge(...$associatedProducts));
     }
 
+    public function associatedProductModelCodes(): array
+    {
+        $associatedProductModels = [];
+        foreach ($this->associations as $associationType => $associations) {
+            $associatedProductModels[] = $associations['product_models'];
+        }
+
+        return array_unique(array_merge(...$associatedProductModels));
+    }
+
     /**
      * Returns the associations property, with only the product codes as parameter
      *
