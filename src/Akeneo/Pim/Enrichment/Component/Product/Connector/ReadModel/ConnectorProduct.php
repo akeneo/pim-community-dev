@@ -194,28 +194,6 @@ final class ConnectorProduct
         return array_unique(array_merge(...$associatedProductModels));
     }
 
-    /**
-     * Returns the associations property, with only the product codes as parameter
-     *
-     * @param string[] $productCodesToFilter
-     *
-     * @return array
-     */
-    public function associationsWithFilteredProductCodes($productCodesToFilter)
-    {
-        $result = [];
-        foreach ($this->associations as $associationType => $association) {
-            $result[$associationType]['groups'] = $association['groups'];
-            $result[$associationType]['product_models'] = $association['product_models'];
-            $result[$associationType]['products'] = array_intersect(
-                $association['products'],
-                $productCodesToFilter
-            );
-        }
-
-        return $result;
-    }
-
     public function filterAssociatedProductModelsByProductModelCodes($productModelCodesToFilter): ConnectorProduct
     {
         $filteredAssociations = [];
