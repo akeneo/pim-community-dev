@@ -14,7 +14,7 @@ class ExportProductsByFilesIntegration extends AbstractExportTestCase
         $this->createProduct('product_1', [
             'values'     => [
                 'an_image' => [
-                    ['data' => $this->getFixturePath('akeneo.png'), 'locale' => null, 'scope' => null]
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.png')), 'locale' => null, 'scope' => null]
                 ]
             ]
         ]);

@@ -110,7 +110,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
                         [
                             'locale' => null,
                             'scope'  => null,
-                            'data'   => $this->getFixturePath('akeneo.txt'),
+                            'data'   => $this->getFileInfoKey($this->getFixturePath('akeneo.txt')),
                         ],
                     ],
 

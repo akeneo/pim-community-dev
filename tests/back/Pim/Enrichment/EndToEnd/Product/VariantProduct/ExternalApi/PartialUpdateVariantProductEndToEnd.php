@@ -1307,7 +1307,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $files = [
-            'akeneo_pdf' => $this->getFixturePath('akeneo.pdf'),
+            'akeneo_pdf' => $this->getFileInfoKey($this->getFixturePath('akeneo.pdf')),
             'akeneo_jpg' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
             'ziggy_png'  => $this->getFileInfoKey($this->getFixturePath('ziggy.png')),
         ];
@@ -1491,7 +1491,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $files = [
-            'akeneo_pdf' => $this->getFixturePath('akeneo.pdf'),
+            'akeneo_pdf' => $this->getFileInfoKey($this->getFixturePath('akeneo.pdf')),
             'akeneo_jpg' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
             'ziggy_png'  => $this->getFileInfoKey($this->getFixturePath('ziggy.png')),
         ];
