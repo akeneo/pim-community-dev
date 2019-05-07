@@ -176,7 +176,7 @@ final class ConnectorProduct
         $attributeCodes = array_flip($attributeCodesToKeep);
         $localeCodes = array_flip($localeCodesToKeep);
 
-        $values = $this->values->filter(function(ValueInterface $value) use ($attributeCodes, $localeCodes) {
+        $values = $this->values->filter(function (ValueInterface $value) use ($attributeCodes, $localeCodes) {
             return isset($attributeCodes[$value->getAttributeCode()])
                 && (!$value->isLocalizable() || isset($localeCodes[$value->getLocaleCode()]));
         });
