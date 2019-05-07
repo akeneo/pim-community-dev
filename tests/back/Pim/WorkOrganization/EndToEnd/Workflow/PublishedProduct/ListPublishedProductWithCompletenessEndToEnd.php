@@ -37,7 +37,7 @@ class ListPublishedProductWithCompletenessEndToEnd extends AbstractPublishedProd
             'categories' => ['categoryA', 'master', 'master_china'],
             'values'     => [
                 'a_localizable_image' => [
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
                 ],
                 'a_date' => [
                     ['data' => '2016-06-28', 'locale' => null, 'scope' => null]
