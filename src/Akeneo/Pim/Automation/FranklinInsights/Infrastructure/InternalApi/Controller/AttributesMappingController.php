@@ -144,7 +144,7 @@ class AttributesMappingController
 
         try {
             $familyCode = new FamilyCode($identifier);
-        $command = new SaveAttributesMappingByFamilyCommand($familyCode, $data['mapping']);
+            $command = new SaveAttributesMappingByFamilyCommand($familyCode, $data['mapping']);
             $this->saveAttributesMappingByFamilyHandler->handle($command);
         } catch (AttributeMappingException | DataProviderException $e) {
             return new JsonResponse([[$e->getMessage()]], Response::HTTP_BAD_REQUEST);
