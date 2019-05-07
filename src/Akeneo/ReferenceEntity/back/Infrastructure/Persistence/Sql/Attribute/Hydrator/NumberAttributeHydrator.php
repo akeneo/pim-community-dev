@@ -9,21 +9,14 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxValue;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMinValue;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -80,17 +73,17 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
         ];
     }
 
-    private function minValue(array $row): AttributeMinValue
+    private function minValue(array $row): AttributeLimit
     {
         $min = $row['min_value'];
 
-        return null !== $min ? AttributeMinValue::fromString($min) : AttributeMinValue::noMinimum();
+        return null !== $min ? AttributeLimit::fromString($min) : AttributeLimit::limitLess();
     }
 
-    private function maxValue(array $row): AttributeMaxValue
+    private function maxValue(array $row): AttributeLimit
     {
         $max = $row['max_value'];
 
-        return null !== $max ? AttributeMaxValue::fromString($max) : AttributeMaxValue::noMaximum();
+        return null !== $max ? AttributeLimit::fromString($max) : AttributeLimit::limitLess();
     }
 }

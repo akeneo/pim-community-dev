@@ -11,8 +11,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxValue;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMinValue;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -63,7 +62,7 @@ class NumberUpdaterSpec extends ObjectBehavior
 
     private function getAttribute(): NumberAttribute
     {
-        $textAttribute = NumberAttribute::create(
+        return NumberAttribute::create(
             AttributeIdentifier::create('designer', 'age', 'test'),
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('age'),
@@ -73,10 +72,8 @@ class NumberUpdaterSpec extends ObjectBehavior
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeIsDecimal::fromBoolean(false),
-            AttributeMinValue::noMinimum(),
-            AttributeMaxValue::noMaximum()
+            AttributeLimit::limitLess(),
+            AttributeLimit::limitLess()
         );
-
-        return $textAttribute;
     }
 }

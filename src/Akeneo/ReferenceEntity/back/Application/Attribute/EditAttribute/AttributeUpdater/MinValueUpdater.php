@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater;
 
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinValueCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMinValue;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 
 /**
@@ -20,7 +20,7 @@ class MinValueUpdater implements AttributeUpdaterInterface
 
     public function supports(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): bool
     {
-        return $attribute instanceof NumberAttribute && $command instanceof EditMinCommand;
+        return $attribute instanceof NumberAttribute && $command instanceof EditMinValueCommand;
     }
 
     public function __invoke(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): AbstractAttribute
@@ -36,9 +36,9 @@ class MinValueUpdater implements AttributeUpdaterInterface
         return $attribute;
     }
 
-    private function minValue(AbstractEditAttributeCommand $command): AttributeMinValue
+    private function minValue(AbstractEditAttributeCommand $command): AttributeLimit
     {
         return null === $command->minValue ?
-            AttributeMinValue::noMinimum() : AttributeMinValue::fromString($command->minValue);
+            AttributeLimit::limitLess() : AttributeLimit::fromString($command->minValue);
     }
 }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater;
 
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxValueCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxValue;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 
 /**
@@ -20,7 +20,7 @@ class MaxValueUpdater implements AttributeUpdaterInterface
 
     public function supports(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): bool
     {
-        return $attribute instanceof NumberAttribute && $command instanceof EditMaxCommand;
+        return $attribute instanceof NumberAttribute && $command instanceof EditMaxValueCommand;
     }
 
     public function __invoke(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): AbstractAttribute
@@ -36,9 +36,9 @@ class MaxValueUpdater implements AttributeUpdaterInterface
         return $attribute;
     }
 
-    private function maxValue(AbstractEditAttributeCommand $command): AttributeMaxValue
+    private function maxValue(AbstractEditAttributeCommand $command): AttributeLimit
     {
         return null === $command->maxValue ?
-            AttributeMaxValue::noMaximum() : AttributeMaxValue::fromString($command->maxValue);
+            AttributeLimit::limitLess() : AttributeLimit::fromString($command->maxValue);
     }
 }

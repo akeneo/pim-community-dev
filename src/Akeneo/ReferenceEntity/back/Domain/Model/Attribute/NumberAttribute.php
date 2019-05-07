@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -27,10 +28,10 @@ class NumberAttribute extends AbstractAttribute
     /** @var AttributeIsDecimal */
     private $isDecimal;
 
-    /** @var AttributeMinValue */
+    /** @var AttributeLimit */
     private $minValue;
 
-    /** @var AttributeMaxValue */
+    /** @var AttributeLimit */
     private $maxValue;
 
     private function __construct(
@@ -43,8 +44,8 @@ class NumberAttribute extends AbstractAttribute
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeIsDecimal $isDecimal,
-        AttributeMinValue $minValue,
-        AttributeMaxValue $maxValue
+        AttributeLimit $minValue,
+        AttributeLimit $maxValue
     ) {
         parent::__construct(
             $identifier,
@@ -57,6 +58,9 @@ class NumberAttribute extends AbstractAttribute
             $valuePerLocale
         );
 
+        if (!$minValue->isLimitLess() && !$maxValue->isLimitLess()) {
+            Assert::false($minValue->isGreater($maxValue), 'Cannot create attribute with a min limit greater than the max limit');
+        }
         $this->isDecimal = $isDecimal;
         $this->minValue = $minValue;
         $this->maxValue = $maxValue;
@@ -72,8 +76,8 @@ class NumberAttribute extends AbstractAttribute
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeIsDecimal $isDecimal,
-        AttributeMinValue $minValue,
-        AttributeMaxValue $maxValue
+        AttributeLimit $minValue,
+        AttributeLimit $maxValue
     ) {
         return new self(
             $identifier,
@@ -96,8 +100,8 @@ class NumberAttribute extends AbstractAttribute
             parent::normalize(),
             [
                 'is_decimal' => $this->isDecimal->normalize(),
-                'min' => $this->minValue->normalize(),
-                'max' => $this->maxValue->normalize(),
+                'min_value' => $this->minValue->normalize(),
+                'max_value' => $this->maxValue->normalize(),
             ]
         );
     }
@@ -115,5 +119,39 @@ class NumberAttribute extends AbstractAttribute
     public function allowsDecimalValues(): bool
     {
         return $this->isDecimal->normalize();
+    }
+
+    public function setMinValue(AttributeLimit $newMinValue): void
+    {
+        if (!$this->maxValue->isLimitLess() &&
+            !$newMinValue->isLimitLess() &&
+            $newMinValue->isGreater($this->maxValue)
+        ) {
+            $message = sprintf(
+                'Min value %s, cannot be greater than the current max value (%s)',
+                $newMinValue->normalize(),
+                $this->maxValue->normalize()
+            );
+            throw new \InvalidArgumentException($message);
+        }
+
+        $this->minValue = $newMinValue;
+    }
+
+    public function setMaxValue(AttributeLimit $newMaxValue): void
+    {
+        if (!$this->minValue->isLimitLess() &&
+            !$newMaxValue->isLimitLess() &&
+            $newMaxValue->isLower($this->minValue)
+        ) {
+            $message = sprintf(
+                'Max value %s, cannot be lower than the current min value (%s)',
+                $newMaxValue->normalize(),
+                $this->minValue->normalize()
+            );
+            throw new \InvalidArgumentException($message);
+        }
+
+        $this->maxValue = $newMaxValue;
     }
 }

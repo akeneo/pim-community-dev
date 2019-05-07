@@ -7,8 +7,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxValue;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMinValue;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -38,8 +37,8 @@ class NumberAttributeSpec extends ObjectBehavior
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeIsDecimal::fromBoolean(false),
-                AttributeMinValue::fromString('10'),
-                AttributeMaxValue::fromString('20')
+                AttributeLimit::fromString('10'),
+                AttributeLimit::fromString('20')
             ]
         );
     }
@@ -69,8 +68,8 @@ class NumberAttributeSpec extends ObjectBehavior
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeIsDecimal::fromBoolean(true),
-                AttributeMinValue::fromString('10'),
-                AttributeMaxValue::fromString('20')
+                AttributeLimit::fromString('10'),
+                AttributeLimit::fromString('20')
             ]
         );
 
@@ -91,8 +90,8 @@ class NumberAttributeSpec extends ObjectBehavior
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeIsDecimal::fromBoolean(false),
-                AttributeMinValue::fromString('10'),
-                AttributeMaxValue::fromString('20')
+                AttributeLimit::fromString('10'),
+                AttributeLimit::fromString('20')
             ]
         );
     }
@@ -117,6 +116,27 @@ class NumberAttributeSpec extends ObjectBehavior
         );
     }
 
+    function it_cannot_be_created_with_a_min_greater_than_the_max()
+    {
+        $this->beConstructedThrough(
+            'create',
+            [
+                AttributeIdentifier::create('city', 'area', 'test'),
+                ReferenceEntityIdentifier::fromString('city'),
+                AttributeCode::fromString('area'),
+                LabelCollection::fromArray(['fr_FR' => 'Superficie', 'en_US' => 'Area']),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeIsDecimal::fromBoolean(false),
+                AttributeLimit::fromString('2'),
+                AttributeLimit::fromString('1')
+            ]
+        );
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
     function it_can_have_its_is_decimal_flag_updated()
     {
         $this->setIsDecimal(AttributeIsDecimal::fromBoolean(true));
@@ -124,17 +144,31 @@ class NumberAttributeSpec extends ObjectBehavior
         $this->normalize()['is_decimal']->shouldBe(true);
     }
 
-    function it_can_have_its_min_value_updated()
+    function it_can_have_its_min_value_updated_with_a_limit()
     {
-        $this->setMinValue(AttributeMinValue::fromString('99'));
+        $this->setMinValue(AttributeLimit::fromString('-1'));
 
-        $this->normalize()['min_value']->shouldBe('99');
+        $this->normalize()['min_value']->shouldBe('-1');
     }
 
-    function it_can_have_its_max_value_updated()
+    function it_can_have_its_min_value_updated_without_a_limit()
     {
-        $this->setMaxValue(AttributeMaxValue::fromString('99'));
+        $this->setMinValue(AttributeLimit::limitLess());
+
+        $this->normalize()['min_value']->shouldBe(null);
+    }
+
+    function it_can_have_its_max_value_updated_with_a_limit()
+    {
+        $this->setMaxValue(AttributeLimit::fromString('99'));
 
         $this->normalize()['max_value']->shouldBe('99');
+    }
+
+    function it_can_have_its_max_value_updated_without_a_limit()
+    {
+        $this->setMaxValue(AttributeLimit::limitLess());
+
+        $this->normalize()['max_value']->shouldBe(null);
     }
 }

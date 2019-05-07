@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxValueCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxValueCommandFactory;
 use PhpSpec\ObjectBehavior;
 
@@ -25,7 +25,7 @@ class EditMaxValueCommandFactorySpec extends ObjectBehavior
     {
         $command = $this->create(['identifier' => 'number', 'max_value' => '172']);
 
-        $command->shouldBeAnInstanceOf(EditMaxCommand::class);
+        $command->shouldBeAnInstanceOf(EditMaxValueCommand::class);
         $command->identifier->shouldBeEqualTo('number');
         $command->maxValue->shouldBeEqualTo('172');
     }

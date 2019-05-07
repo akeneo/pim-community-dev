@@ -16,6 +16,16 @@ Feature: Edit a number attribute of a reference entity
     Then 'area' could have decimal values
 
   @acceptance-back
+  Scenario Outline: Invalid is decimal edit
+    Given a reference entity with a number attribute 'area' non decimal
+    When the user sets the is decimal property of the 'area' attribute to '<invalid_is_decimal>'
+    Then there should be a validation error on the property 'isDecimal' with message '<message>'
+
+    Examples:
+      | invalid_is_decimal | message                            |
+      | null               | This value should not be null.     |
+
+  @acceptance-back
   Scenario: Updating the min value property
     Given a reference entity with a number attribute 'area' no min value
     When the user sets the min value of 'area' to 10
@@ -28,6 +38,17 @@ Feature: Edit a number attribute of a reference entity
     Then 'area' should not have a min value
 
   @acceptance-back
+  Scenario Outline: Invalid min value edit
+    Given a reference entity with a number attribute 'area' no min value
+    When the user sets the min value of the 'area' attribute to '<invalid_min_value>'
+    Then there should be a validation error with message '<message>'
+
+    Examples:
+      | invalid_min_value | message                        |
+      | "not an integer"  | This value should be a number. |
+      | ""                | This value should be a number. |
+
+  @acceptance-back
   Scenario: Updating the max value property
     Given a reference entity with a number attribute 'area' no max value
     When the user sets the max value of 'area' to 10
@@ -38,3 +59,26 @@ Feature: Edit a number attribute of a reference entity
     Given a reference entity with a number attribute 'area' with a max value
     When the user unsets the max value of 'area'
     Then 'area' should not have a max value
+
+  @acceptance-back
+  Scenario Outline: Invalid max value edit
+    Given a reference entity with a number attribute 'area' no min value
+    When the user sets the max value of the 'area' attribute to '<invalid_max_value>'
+    Then there should be a validation error with message '<message>'
+
+    Examples:
+      | invalid_max_value | message                        |
+      | "not an integer"  | This value should be a number. |
+      | ""                | This value should be a number. |
+
+  @acceptance-back
+  Scenario: Min value should not be greater than the max value
+    Given a reference entity with a number attribute 'area' with a max value set to 200
+    When the user sets the min value of 'area' to 201
+    Then there should be a validation error with message 'The min cannot be greater than the max'
+
+  @acceptance-back
+  Scenario: Max value should not be lower than the min value
+    Given a reference entity with a number attribute 'area' with a min value set to 150
+    When the user sets the max value of 'area' to 149
+    Then there should be a validation error with message 'The max cannot be lower than the min'
