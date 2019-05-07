@@ -1,5 +1,9 @@
 # 3.0.x
 
+# Improvements
+
+- AOB-472: Add missing check template bootstrap modal
+
 # Bug fixes
 
 - PIM-8329: Add Serbian flag for CS region
