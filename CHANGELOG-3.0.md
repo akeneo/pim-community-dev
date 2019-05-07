@@ -3,6 +3,7 @@
 # Bug fixes
 
 - PIM-8283: Command `akeneo:batch:purge-job-execution` now works with option `--days=0`.
+- PIM-8329: Add Serbian flag for CS region
 
 # 3.0.16 (2019-05-06)
 
