@@ -17,4 +17,4 @@ Feature: Display the attribute history localized values
     Then there should be 2 update
     And I should see history:
       | version | author                              | property   | value      |
-      | 2       | Julien Février - Julien@example.com | number_max | 12 456,789 |
+      | 2       | Julien Février - Julien@example.com | number_max | 12 456,789 |
