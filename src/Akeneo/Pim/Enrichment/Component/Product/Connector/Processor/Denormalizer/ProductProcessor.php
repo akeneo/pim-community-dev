@@ -154,7 +154,9 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             }
         }
 
-        $filteredItem['values'] = $this->storeMedias($filteredItem['values']);
+        if (isset($filteredItem['values'])) {
+            $filteredItem['values'] = $this->storeMedias($filteredItem['values']);
+        }
 
         try {
             $this->updateProduct($product, $filteredItem);
