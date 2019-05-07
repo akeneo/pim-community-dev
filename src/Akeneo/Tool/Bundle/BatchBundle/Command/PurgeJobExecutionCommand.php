@@ -32,7 +32,8 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
             'days',
             'd',
             InputOption::VALUE_OPTIONAL,
-            'How many days of jobs execution you want to keep'
+            'How many days of jobs execution you want to keep',
+            self::DEFAULT_NUMBER_OF_DAYS
         );
     }
 
@@ -41,7 +42,14 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $days = $this->getNumberOfDaysOption($input);
+        $days = $input->getOption('days');
+        if (!is_numeric($days)) {
+            $output->writeln(
+                sprintf('<error>Option --days must be a number, "%s" given.</error>', $input->getOption('days'))
+            );
+
+            return;
+        }
 
         $jobsExecutions = $this->getJobExecutionRepository()->findPurgeables($days);
 
@@ -50,20 +58,6 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
             $this->getJobExecutionRepository()->remove($jobsExecutions);
             $output->write(sprintf("%s jobs execution deleted ...\n", count($jobsExecutions)));
         }
-    }
-
-    /**
-     * @param InputInterface $input
-     *
-     * @return int
-     */
-    protected function getNumberOfDaysOption(InputInterface $input)
-    {
-        if ($input->getOption('days') && (int) $input->getOption('days')) {
-            return (int) $input->getOption('days');
-        }
-
-        return self::DEFAULT_NUMBER_OF_DAYS;
     }
 
     /**
