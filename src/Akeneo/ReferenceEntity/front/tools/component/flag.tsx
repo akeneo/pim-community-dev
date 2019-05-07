@@ -14,7 +14,7 @@ const Flag = ({
     return null;
   }
 
-  const region = locale.code.split('_')[1];
+  const region = locale.code.split('_')[locale.code.split('_').length - 1];
   const iconClass = `flag flag-${region.toLowerCase()}`;
 
   return (
