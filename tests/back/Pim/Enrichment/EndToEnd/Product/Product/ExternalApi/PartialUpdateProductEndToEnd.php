@@ -40,8 +40,8 @@ class PartialUpdateProductEndToEnd extends AbstractProductTestCase
         $this->createProduct('localizable', [
             'values'     => [
                 'a_localizable_image' => [
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
                 ]
             ]
         ]);
@@ -929,8 +929,8 @@ JSON;
 
         $files = [
             'akeneo_pdf' => $this->getFixturePath('akeneo.pdf'),
-            'akeneo_jpg' => $this->getFixturePath('akeneo.jpg'),
-            'ziggy_png'  => $this->getFixturePath('ziggy.png'),
+            'akeneo_jpg' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
+            'ziggy_png'  => $this->getFileInfoKey($this->getFixturePath('ziggy.png')),
         ];
 
         $data =
