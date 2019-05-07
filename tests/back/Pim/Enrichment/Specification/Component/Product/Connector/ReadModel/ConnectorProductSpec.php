@@ -127,4 +127,11 @@ class ConnectorProductSpec extends ObjectBehavior
         $this->associatedProductModelCodes()->shouldReturn(['product_model_5', 'product_model_6']);
 
     }
+
+    function it_adds_a_metadata()
+    {
+        $connectorProduct = $this->addMetadata('key', 'value');
+
+        $connectorProduct->metadata()->shouldReturn(['key' => 'value']);
+    }
 }

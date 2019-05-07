@@ -148,6 +148,29 @@ final class ConnectorProduct
         return $this->values->getAttributeCodes();
     }
 
+    /**
+     * The value cannot be an object.
+     *
+     * @param string|string[] $value
+     */
+    public function addMetadata(string $key, $value)
+    {
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $this->associations,
+            array_merge($this->metadata, [$key => $value]),
+            $this->values
+        );
+    }
+
     public function filterValuesByAttributeCodes(array $attributeCodesToFilter): ConnectorProduct
     {
         $attributeCodes = array_flip($attributeCodesToFilter);
