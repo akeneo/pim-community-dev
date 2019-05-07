@@ -124,11 +124,11 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         return new ConnectorProductList($result->count(), $products);
     }
 
-    private function removeIdentifierValue($raw_values, $identifierAttributeCode)
+    private function removeIdentifierValue(array $rawValues, string $identifierAttributeCode): array
     {
-        unset($raw_values[$identifierAttributeCode]);
+        unset($rawValues[$identifierAttributeCode]);
 
-        return $raw_values;
+        return $rawValues;
     }
 
     private function filterByAttributeCodes(array $rawValues, array $attributeCodes): array
