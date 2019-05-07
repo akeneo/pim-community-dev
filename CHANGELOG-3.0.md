@@ -3,6 +3,8 @@
 # Bug fixes
 
 - PIM-8329: Add Serbian flag for CS region
+- PIM-8254: Attributes, attribute groups, groups, group types and channels edit page are not accessible anymore
+    and remove action is disabled from grid if they are not granted.
 
 # 3.0.16 (2019-05-06)
 
