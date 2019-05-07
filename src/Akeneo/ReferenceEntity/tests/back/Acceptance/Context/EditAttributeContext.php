@@ -13,10 +13,9 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxValue;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMinValue;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
@@ -1442,8 +1441,8 @@ class EditAttributeContext implements Context
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeIsDecimal::fromBoolean(false),
-                AttributeMinValue::noMinimum(),
-                AttributeMaxValue::noMaximum()
+                AttributeLimit::limitLess(),
+                AttributeLimit::limitLess()
             )
         );
     }
@@ -1469,8 +1468,8 @@ class EditAttributeContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeIsDecimal::fromBoolean(false),
-                AttributeMinValue::noMinimum(),
-                AttributeMaxValue::noMaximum()
+                AttributeLimit::limitLess(),
+                AttributeLimit::limitLess()
             )
         );
     }
@@ -1526,6 +1525,7 @@ class EditAttributeContext implements Context
 
     /**
      * @Given /^a reference entity with a number attribute \'([^\']*)\' with a min value$/
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' with a min value set to 150$/
      */
     public function aReferenceEntityWithANumberAttributeWithAMinValue(string $attributeCode)
     {
@@ -1543,8 +1543,8 @@ class EditAttributeContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeIsDecimal::fromBoolean(false),
-                AttributeMinValue::fromString('150'),
-                AttributeMaxValue::noMaximum()
+                AttributeLimit::fromString('150'),
+                AttributeLimit::limitLess()
             )
         );
     }
@@ -1597,6 +1597,7 @@ class EditAttributeContext implements Context
 
     /**
      * @Given /^a reference entity with a number attribute \'([^\']*)\' with a max value$/
+     * @Given /^a reference entity with a number attribute \'([^\']*)\' with a max value set to 200$/
      */
     public function aReferenceEntityWithANumberAttributeWithAMaxValue(string $attributeCode)
     {
@@ -1614,8 +1615,8 @@ class EditAttributeContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeIsDecimal::fromBoolean(false),
-                AttributeMinValue::noMinimum(),
-                AttributeMaxValue::fromString('200')
+                AttributeLimit::limitLess(),
+                AttributeLimit::fromString('200')
             )
         );
     }
@@ -1641,5 +1642,44 @@ class EditAttributeContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
         Assert::assertNull($attribute->normalize()['max_value']);
+    }
+
+    /**
+     * @When /^the user sets the is decimal property of the \'([^\']*)\' attribute to \'([^\']*)\'$/
+     */
+    public function theUserSetsTheAttributeTo(string $attributeCode, $invalidValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+        $updateIsDecimal = [
+            'identifier'  => (string)$identifier,
+            'is_decimal' => json_decode($invalidValue),
+        ];
+        $this->updateAttribute($updateIsDecimal);
+    }
+
+    /**
+     * @When /^the user sets the min value of the \'([^\']*)\' attribute to \'([^\']*)\'$/
+     */
+    public function theUserSetsTheMinValueOfTheAttributeTo(string $attributeCode, $invalidValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+        $updateMinValue = [
+            'identifier' => (string)$identifier,
+            'min_value'  => json_decode($invalidValue),
+        ];
+        $this->updateAttribute($updateMinValue);
+    }
+
+    /**
+     * @When /^the user sets the max value of the \'([^\']*)\' attribute to \'([^\']*)\'$/
+     */
+    public function theUserSetsTheMaxValueOfTheAttributeTo(string $attributeCode, $invalidValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+        $updateMinValue = [
+            'identifier' => (string)$identifier,
+            'max_value'  => json_decode($invalidValue),
+        ];
+        $this->updateAttribute($updateMinValue);
     }
 }

@@ -61,6 +61,12 @@ pim_reference_entity:
                 should_be_an_integer: 'This value should be an integer.'
             max_file_size:
                 should_be_a_number: 'This value should be a number.'
+            min_value:
+                should_be_a_number: 'This value should be a number.'
+                cannot_be_greater_than_max: 'The min cannot be greater than the max'
+            max_value:
+                should_be_a_number: 'This value should be a number.'
+                cannot_be_lower_than_min: 'The max cannot be lower than the min'
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 reserved_codes: 'The code cannot be any of those values: "{{ comma_separated_reserved_keywords }}"'

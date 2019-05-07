@@ -20,8 +20,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxValue;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMinValue;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -71,15 +70,15 @@ class NumberAttributeFactory implements AttributeFactoryInterface
         );
     }
 
-    private function minValue(CreateNumberAttributeCommand $command): AttributeMinValue
+    private function minValue(CreateNumberAttributeCommand $command): AttributeLimit
     {
        return null !== $command->minValue
-           ? AttributeMinValue::fromString($command->minValue) : AttributeMinValue::noMinimum();
+           ? AttributeLimit::fromString($command->minValue) : AttributeLimit::limitLess();
     }
 
-    private function maxValue(CreateNumberAttributeCommand $command): AttributeMaxValue
+    private function maxValue(CreateNumberAttributeCommand $command): AttributeLimit
     {
         return null !== $command->maxValue
-            ? AttributeMaxValue::fromString($command->maxValue) : AttributeMaxValue::noMaximum();
+            ? AttributeLimit::fromString($command->maxValue) : AttributeLimit::limitLess();
     }
 }

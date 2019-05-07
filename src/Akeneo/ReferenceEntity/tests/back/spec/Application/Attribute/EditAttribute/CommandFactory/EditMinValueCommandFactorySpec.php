@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinValueCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinValueCommandFactory;
 use PhpSpec\ObjectBehavior;
 
@@ -25,7 +25,7 @@ class EditMinValueCommandFactorySpec extends ObjectBehavior
     {
         $command = $this->create(['identifier' => 'number', 'min_value' => '172']);
 
-        $command->shouldBeAnInstanceOf(EditMinCommand::class);
+        $command->shouldBeAnInstanceOf(EditMinValueCommand::class);
         $command->identifier->shouldBeEqualTo('number');
         $command->minValue->shouldBeEqualTo('172');
     }

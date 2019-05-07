@@ -23,6 +23,6 @@ class EditMaxValueCommandFactory implements EditAttributeCommandFactoryInterface
             throw new \RuntimeException('Impossible to create an edit min value property command.');
         }
 
-        return new EditMaxCommand($normalizedCommand['identifier'], $normalizedCommand['max_value']);
+        return new EditMaxValueCommand($normalizedCommand['identifier'], $normalizedCommand['max_value'] ?? null);
     }
 }

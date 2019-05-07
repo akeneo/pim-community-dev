@@ -6,9 +6,9 @@ namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\Attrib
 
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\AttributeUpdaterInterface;
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\MinValueUpdater;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinValueCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMinValue;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
@@ -25,7 +25,7 @@ class MinValueUpdaterSpec extends ObjectBehavior
         NumberAttribute $numberAttribute,
         TextAttribute $textAtttribute
     ) {
-        $editMinCommand = new EditMinCommand('number', '10');
+        $editMinCommand = new EditMinValueCommand('number', '10');
         $notEditMinCommand = new EditLabelsCommand('name', []);
 
         $this->supports($numberAttribute, $editMinCommand)->shouldReturn(true);
@@ -35,20 +35,20 @@ class MinValueUpdaterSpec extends ObjectBehavior
 
     function it_edits_the_min_value_of_an_attribute(NumberAttribute $numberAttribute)
     {
-        $editMin = new EditMinCommand( 'min', '10');
+        $editMin = new EditMinValueCommand('min', '10');
 
         $this->__invoke($numberAttribute, $editMin)->shouldReturn($numberAttribute);
 
-        $numberAttribute->setMinValue(AttributeMinValue::fromString('10'))->shouldBeCalled();
+        $numberAttribute->setMinValue(AttributeLimit::fromString('10'))->shouldBeCalled();
     }
 
     function it_unsets_the_min_value_of_an_attribute(NumberAttribute $numberAttribute)
     {
-        $editMin = new EditMinCommand( 'min', null);
+        $editMin = new EditMinValueCommand('min', null);
 
         $this->__invoke($numberAttribute, $editMin)->shouldReturn($numberAttribute);
 
-        $numberAttribute->setMinValue(AttributeMinValue::noMinimum())->shouldBeCalled();
+        $numberAttribute->setMinValue(AttributeLimit::limitLess())->shouldBeCalled();
     }
 
     function it_throws_if_the_command_is_not_supported(NumberAttribute $numberAttribute)
@@ -61,7 +61,7 @@ class MinValueUpdaterSpec extends ObjectBehavior
 
     function it_throws_if_the_attribute_is_not_supported(TextAttribute $unsupportedAttribute)
     {
-        $supportedCommand = new EditMinCommand( 'min', null);
+        $supportedCommand = new EditMinValueCommand('min', null);
 
         $this->shouldThrow(\RuntimeException::class)
             ->during('__invoke', [$unsupportedAttribute, $supportedCommand]);

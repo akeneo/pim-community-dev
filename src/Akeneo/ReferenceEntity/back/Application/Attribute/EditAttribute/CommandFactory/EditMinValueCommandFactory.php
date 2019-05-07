@@ -23,6 +23,6 @@ class EditMinValueCommandFactory implements EditAttributeCommandFactoryInterface
             throw new \RuntimeException('Impossible to create an edit min value property command.');
         }
 
-        return new EditMinCommand($normalizedCommand['identifier'], $normalizedCommand['min_value']);
+        return new EditMinValueCommand($normalizedCommand['identifier'], $normalizedCommand['min_value']);
     }
 }
