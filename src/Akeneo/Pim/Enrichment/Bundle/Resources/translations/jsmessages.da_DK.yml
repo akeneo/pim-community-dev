@@ -29,6 +29,8 @@ pim_enrich.entity.product:
     create:
       success: Produktet blev oprettet
       fail: Ingen attribut er konfigureret som et produkt-id, eller du har ikke rettigheder til at redigere den.
+  page_title:
+    index: "] -Inf, 1] {{ count }} resultat |] 1, Inf [{{ count }} resultater"
   module:
     create:
       subtitle: Opret produkt
@@ -66,6 +68,7 @@ pim_enrich.entity.product:
       remove_optional: Fjern denne attribut
       locale_specific_unavailable: Dette landestandard specifikke felt er ikke tilgængeligt i denne landestandard
       locale_unavailable: Dette landespecifik felt er ikke tilgængeligt for locale '{{ locale }}' og '{{ channel }}'-kanal
+      to_fill_count: "{1}1 mangler kræved attribut |] 1, Inf [{{ count }} manglende krævede attributter"
       add_attribute_option: Tilføj attribut tilvalg
       add_option: Tilføje en mulighed
     completeness:
@@ -73,6 +76,7 @@ pim_enrich.entity.product:
       complete: Fuldført
       no_family: Ingen familie defineret. Definér venligst en familie for at beregne fuldstændigheden af dette produkt.
       no_completeness: Du har lige ændret familie af produktet. Gem det første for at beregne fuldstændighed for den nye familie.
+      missing_values: "{1} 1 mangler værdi |] 1, Inf [{{ count }} manglende værdier"
     sequential_edit:
       item_limit: Kun de første 1000 poster vist i dette sekventiel redigere ({{ count }} udvalgte)
       empty: Dit valg er tom, skal du ændre dine søgekriterier
@@ -114,6 +118,7 @@ pim_enrich.entity.product:
       header_reply: '{{ user }} svar på kommentar'
       delete_confirm: Er du sikker på du vil slette denne kommentar?
 pim_enrich.entity.product_model:
+  label: produktmodel
   uppercase_label: Produktmodel
   plural_label: Produktmodeller
   flash:
@@ -127,6 +132,7 @@ pim_enrich.entity.product_model:
       fields_not_ready: "Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
     delete:
       success: Produktmodellen slettet.
+      fail: Kan ikke slette dette produkt
   choose: Vælg en produktmodel
   property:
     family_variant: Variant
@@ -138,6 +144,7 @@ pim_enrich.entity.product_model:
       read_only_parent_attribute_from_common: Denne attribut kan opdateres på de fælles attributter.
       read_only_parent_attribute_from_model: "Denne attribut kan opdateres på attributterne af {{ axes }}"
     variant_axis:
+      label: 'variant akse'
       create: Tilføj ny
       create_label: "Tilføje en ny {{ axes }}"
       required_label: '(variant akse)'

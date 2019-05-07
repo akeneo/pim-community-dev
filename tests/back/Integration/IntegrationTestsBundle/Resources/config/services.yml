@@ -87,6 +87,13 @@ services:
             - '@pim_catalog.updater.product_model'
             - '@validator'
 
+    akeneo_integration_tests.base.attribute.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+
     akeneo_integration_tests.catalog.product_model.builder:
         class: 'Akeneo\Test\Common\EntityWithValue\Builder\ProductModel'
         shared: false
