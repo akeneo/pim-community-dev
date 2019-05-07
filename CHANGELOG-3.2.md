@@ -3,5 +3,6 @@
 ## Bug fixes
 
 ## Technical improvement
+DAPI-242: Improve queue to consume specific jobs
 
 ## BC breaks

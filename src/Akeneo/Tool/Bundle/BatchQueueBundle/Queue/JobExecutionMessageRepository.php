@@ -123,6 +123,41 @@ SQL;
     }
 
     /**
+     * Gets a job execution message that has not been consumed yet.
+     * If there is no job execution available, it returns null.
+     *
+     * @param string[] $jobInstanceCodes
+     *
+     * @return JobExecutionMessage|null
+     */
+    public function getAvailableJobExecutionMessageFilteredByCodes(array $jobInstanceCodes): ?JobExecutionMessage
+    {
+        $sql = <<<SQL
+SELECT 
+    q.id, q.job_execution_id, q.create_time, q.updated_time, q.options, q.consumer
+FROM
+    akeneo_batch_job_execution_queue q
+INNER JOIN akeneo_batch_job_execution je ON je.id = q.job_execution_id
+INNER JOIN akeneo_batch_job_instance ji ON ji.id = je.job_instance_id
+WHERE
+    q.consumer IS NULL
+AND ji.code IN (:job_instance_codes)
+ORDER BY
+    q.create_time, id
+LIMIT 1;
+SQL;
+
+        $stmt = $this->entityManager->getConnection()->executeQuery(
+            $sql,
+            ['job_instance_codes' => $jobInstanceCodes],
+            ['job_instance_codes' => Connection::PARAM_STR_ARRAY]
+        );
+        $row = $stmt->fetch();
+
+        return false !== $row ? $this->jobExecutionHydrator->hydrate($row) : null;
+    }
+
+    /**
      * Gets the job instance code associated to a job execution message.
      *
      * @param JobExecutionMessage $jobExecutionMessage
