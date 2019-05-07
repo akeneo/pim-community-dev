@@ -49,10 +49,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
                     $filteredValues[AttributeTypes::REFERENCE_DATA_MULTI_SELECT][$attributeCode][] = [
                         'identifier' => $productValues['identifier'],
                         'values' => $multiSelectValues,
-                        // Is it needed?
-                        'properties' => [
-                            'reference_data_name' => 'some_reference_data'
-                        ]
+                        'properties' => $productValues['properties']
                     ];
                 }
             }
@@ -65,16 +62,16 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
     {
         $options = $this->getOptions($selectValues);
 
-        //get all options before running the query
         $existingOptionCodes = [];
 
         foreach ($options as $attributeCode => $option) {
-            $existingOptionCodes[$attributeCode] = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes(
-                $option['reference_data_name'],
-                $option['values']
-            );
+            foreach ($option as $referenceDataName => $values) {
+                $existingOptionCodes[$attributeCode] = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes(
+                    $referenceDataName,
+                    $values
+                );
+            }
         }
-
 
         $caseInsensitiveOptionsCodes = [];
 
@@ -93,11 +90,11 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
 
         foreach ($selectValues as $attributeCode => $valueCollection) {
             foreach ($valueCollection as $values) {
-                $optionCodes[$attributeCode]['reference_data_name'] = $values['properties']['reference_data_name'];
+                $referenceDataName = $values['properties']['reference_data_name'];
                 foreach ($values['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $values) {
                         foreach ($values as $value) {
-                            $optionCodes[$attributeCode]['values'][] = $value;
+                            $optionCodes[$attributeCode][$referenceDataName][] = $value;
                         }
                     }
                 }

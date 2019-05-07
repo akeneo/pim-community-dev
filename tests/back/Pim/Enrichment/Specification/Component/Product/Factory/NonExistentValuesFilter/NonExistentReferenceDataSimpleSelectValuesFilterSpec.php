@@ -76,9 +76,9 @@ class NonExistentReferenceDataSimpleSelectValuesFilterSpec extends ObjectBehavio
                                 '<all_channels>' => [
                                     '<all_locales>' => 'plop'
                                 ]
-                            ]
+                            ],
+                            'properties' => []
                         ],
-                        'properties' => []
                     ]
                 ]
             ]

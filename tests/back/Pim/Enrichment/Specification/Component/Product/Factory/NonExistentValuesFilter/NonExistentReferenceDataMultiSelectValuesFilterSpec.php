@@ -46,6 +46,23 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
                             'properties' => [
                                 'reference_data_name' => 'some_reference_data'
                             ]
+                        ],
+                    ],
+                    'another_reference_data_multi_select' => [
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                'mobile' => [
+                                    'en_US' => ['des', 'damm'],
+                                ],
+                                'tablet' => [
+                                    'en_US' => ['Claude', 'fRaises'],
+
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'another_reference_data'
+                            ]
                         ]
                     ]
                 ],
@@ -79,6 +96,10 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
             ['michel', 'fraises']
         );
 
+        $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('another_reference_data', ['des', 'damm', 'Claude', 'fRaises'])->willReturn(
+            ['claude', 'damm']
+        );
+
         /** @var OnGoingFilteredRawValues $filteredCollection */
         $filteredCollection = $this->filter($ongoingFilteredRawValues);
 
@@ -100,6 +121,23 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
                             ],
                             'properties' => [
                                 'reference_data_name' => 'some_reference_data'
+                            ]
+                        ]
+                    ],
+                    'another_reference_data_multi_select' => [
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                'mobile' => [
+                                    'en_US' => ['damm'],
+                                ],
+                                'tablet' => [
+                                    'en_US' => ['claude'],
+
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'another_reference_data'
                             ]
                         ]
                     ]
