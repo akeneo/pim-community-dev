@@ -152,6 +152,7 @@ class ProductGridController
      */
     private function formatAttributesAsFilters(array $attributes): array
     {
+        //TODO: LOOK ON THIS METHOD, THIS IS THE ROOT PROBLEM
         $configurationAttributes = [];
         foreach ($attributes as $index => $attribute) {
             $attribute['sortOrder'] = $attribute['order'];
