@@ -51,7 +51,7 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
     );
 
     if (!(isDecimal instanceof IsDecimal)) {
-      throw new Error('Attribute expect a IsDecimal as isDecimal');
+      throw new Error('Attribute expects a IsDecimal as isDecimal');
     }
 
     Object.freeze(this);
