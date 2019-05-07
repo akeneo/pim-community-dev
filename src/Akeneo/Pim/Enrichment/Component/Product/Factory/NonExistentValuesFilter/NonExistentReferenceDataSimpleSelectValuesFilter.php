@@ -48,7 +48,8 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
                 if ($simpleSelectValues !== []) {
                     $filteredValues[AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT][$attributeCode][] = [
                         'identifier' => $productValues['identifier'],
-                        'values' => $simpleSelectValues
+                        'values' => $simpleSelectValues,
+                        'properties' => $productValues['properties']
                     ];
                 }
             }
@@ -64,10 +65,12 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
         $existingOptionCodes = [];
 
         foreach ($options as $attributeCode => $option) {
-            $existingOptionCodes[$attributeCode] = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes(
-                $option['reference_data_name'],
-                [$option['value']]
-            );
+            foreach ($option as $referenceDataName => $values) {
+                $existingOptionCodes[$attributeCode] = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes(
+                    $referenceDataName,
+                    $values
+                );
+            }
         }
 
         $caseInsensitiveOptionsCodes = [];
@@ -87,23 +90,17 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
 
         foreach ($selectValues as $attributeCode => $valueCollection) {
             foreach ($valueCollection as $values) {
-                $optionCodes[$attributeCode]['reference_data_name'] = $values['properties']['reference_data_name'];
+                $referenceDataName = $values['properties']['reference_data_name'];
                 foreach ($values['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (!is_array($value)) {
-                            $optionCodes[$attributeCode]['value'] = $value;
+                            $optionCodes[$attributeCode][$referenceDataName][] = $value;
                         }
                     }
                 }
             }
         }
 
-        $uniqueOptionCodes = [];
-
-        foreach ($optionCodes as $attributeCode => $optionCodeForThisAttribute) {
-            $uniqueOptionCodes[$attributeCode] = array_unique($optionCodeForThisAttribute);
-        }
-
-        return $uniqueOptionCodes;
+        return $optionCodes;
     }
 }
