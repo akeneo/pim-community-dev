@@ -171,15 +171,15 @@ final class ConnectorProduct
         );
     }
 
-    public function filterValuesByAttributeCodes(array $attributeCodesToFilter): ConnectorProduct
+    public function filterValuesByAttributeCodesAndLocaleCodes(array $attributeCodesToKeep, array $localeCodesToKeep): ConnectorProduct
     {
-        $attributeCodes = array_flip($attributeCodesToFilter);
-        $values = new ValueCollection();
-        foreach ($this->values as $value) {
-            if (isset($attributeCodes[$value->getAttributeCode()])) {
-                $values->add($value);
-            }
-        }
+        $attributeCodes = array_flip($attributeCodesToKeep);
+        $localeCodes = array_flip($localeCodesToKeep);
+
+        $values = $this->values->filter(function(ValueInterface $value) use ($attributeCodes, $localeCodes) {
+            return isset($attributeCodes[$value->getAttributeCode()])
+                && (!$value->isLocalizable() || isset($localeCodes[$value->getLocaleCode()]));
+        });
 
         return new self(
             $this->id,

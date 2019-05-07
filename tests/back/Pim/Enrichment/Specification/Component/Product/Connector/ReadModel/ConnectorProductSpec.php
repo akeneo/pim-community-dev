@@ -36,7 +36,11 @@ class ConnectorProductSpec extends ObjectBehavior
                 ]
             ],
             [],
-            new ValueCollection([ScalarValue::value('attribute_code_1', 'data')])
+            new ValueCollection([
+                ScalarValue::value('attribute_code_1', 'data'),
+                ScalarValue::localizableValue('attribute_code_2', 'data', 'en_US'),
+                ScalarValue::localizableValue('attribute_code_2', 'data', 'fr_FR')
+            ])
         );
     }
 
@@ -47,7 +51,7 @@ class ConnectorProductSpec extends ObjectBehavior
 
     function it_gets_attribute_codes_in_values()
     {
-        $this->attributeCodesInValues()->shouldReturn(['attribute_code_1']);
+        $this->attributeCodesInValues()->shouldReturn(['attribute_code_1', 'attribute_code_2']);
     }
 
     function it_filters_by_category_codes()
@@ -106,19 +110,42 @@ class ConnectorProductSpec extends ObjectBehavior
 
     function it_filters_values_by_attribute_codes()
     {
-        $connectorProduct = $this->filterValuesByAttributeCodes(['attribute_code_1', 'attribute_code_2']);
+        $connectorProduct = $this->filterValuesByAttributeCodesAndLocaleCodes(['attribute_code_1', 'attribute_code_4'], ['en_US', 'fr_FR']);
 
         $connectorProduct->values()->shouldBeLike(
             new ValueCollection([ScalarValue::value('attribute_code_1', 'data')])
         );
     }
 
-    function it_filters_values_by_emtpty_list_of_attribute_codes()
+    function it_filters_values_by_empty_list_of_attribute_codes()
     {
-        $connectorProduct = $this->filterValuesByAttributeCodes([]);
+        $connectorProduct = $this->filterValuesByAttributeCodesAndLocaleCodes([], ['en_US', 'fr_FR']);
 
         $connectorProduct->values()->shouldBeLike(
             new ValueCollection([])
+        );
+    }
+
+    function it_filters_values_by_locale_codes()
+    {
+        $connectorProduct = $this->filterValuesByAttributeCodesAndLocaleCodes(['attribute_code_1', 'attribute_code_2'], ['en_US']);
+
+        $connectorProduct->values()->shouldBeLike(
+            new ValueCollection([
+                ScalarValue::value('attribute_code_1', 'data'),
+                ScalarValue::localizableValue('attribute_code_2', 'data', 'en_US')
+            ])
+        );
+    }
+
+    function it_filters_values_by_empty_list_of_locale_codes()
+    {
+        $connectorProduct = $this->filterValuesByAttributeCodesAndLocaleCodes(['attribute_code_1', 'attribute_code_2'], []);
+
+        $connectorProduct->values()->shouldBeLike(
+            new ValueCollection([
+                ScalarValue::value('attribute_code_1', 'data'),
+            ])
         );
     }
 
