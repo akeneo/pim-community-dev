@@ -19,6 +19,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttribut
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesMappingStatusNormalizer;
@@ -125,8 +127,6 @@ class AttributesMappingController
      * @param string $identifier
      * @param Request $request
      *
-     * @throws \Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\InvalidMappingException
-     *
      * @return Response
      */
     public function updateAction(string $identifier, Request $request): Response
@@ -142,9 +142,13 @@ class AttributesMappingController
             throw new BadRequestHttpException('No mapping have been sent');
         }
 
-        $familyCode = new FamilyCode($identifier);
+        try {
+            $familyCode = new FamilyCode($identifier);
         $command = new SaveAttributesMappingByFamilyCommand($familyCode, $data['mapping']);
-        $this->saveAttributesMappingByFamilyHandler->handle($command);
+            $this->saveAttributesMappingByFamilyHandler->handle($command);
+        } catch (AttributeMappingException | DataProviderException $e) {
+            return new JsonResponse([[$e->getMessage()]], Response::HTTP_BAD_REQUEST);
+        }
 
         return new JsonResponse($data);
     }

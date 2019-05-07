@@ -24,8 +24,8 @@ extensions:
         config:
             labels:
                 pending: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.pending
-                mapped: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.mapped
-                unmapped: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.unmapped
+                active: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.active
+                inactive: akeneo_franklin_insights.entity.attributes_mapping.fields.franklin_insights.inactive
                 franklinAttributeOption: akeneo_franklin_insights.entity.attribute_options_mapping.fields.franklin_attribute_option
                 catalogAttributeOption: akeneo_franklin_insights.entity.attribute_options_mapping.fields.catalog_attribute_option
                 attributeOptionStatus: akeneo_franklin_insights.entity.attribute_options_mapping.fields.attribute_option_status
