@@ -43,7 +43,7 @@ class ListPublishedProductWithCompletenessEndToEnd extends AbstractPublishedProd
                     ['data' => '2016-06-28', 'locale' => null, 'scope' => null]
                 ],
                 'a_file' => [
-                    ['data' => $this->getFixturePath('akeneo.txt'), 'locale' => null, 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.txt')), 'locale' => null, 'scope' => null],
                 ]
             ]
         ]);
@@ -54,7 +54,7 @@ class ListPublishedProductWithCompletenessEndToEnd extends AbstractPublishedProd
             'categories' => ['categoryA', 'master', 'master_china'],
             'values'     => [
                 'a_file' => [
-                    ['data' => $this->getFixturePath('akeneo.txt'), 'locale' => null, 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.txt')), 'locale' => null, 'scope' => null],
                 ]
             ]
         ]);
