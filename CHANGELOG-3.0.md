@@ -1,5 +1,9 @@
 # 3.0.x
 
+# Improvements
+
+- AOB-472: Fix modal display when using illustration class
+
 # Bug fixes
 
 - PIM-8283: Command `akeneo:batch:purge-job-execution` now works with option `--days=0`.

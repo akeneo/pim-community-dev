@@ -15,7 +15,7 @@
 (function($, _, Backbone) {
   var template = _.template('\
     <div class="AknFullPage">\
-      <div class="AknFullPage-content<% if (typeof picture !== \'undefined\') { %>AknFullPage-content--withIllustration<% } %>">\
+      <div class="AknFullPage-content<% if (typeof picture !== \'undefined\' || typeof illustrationClass !== \'undefined\') { %> AknFullPage-content--withIllustration<% } %>">\
         <div>\
           <% if (typeof picture !== \'undefined\') { %>\
             <img src="bundles/pimui/images/<%- picture %>" alt="<%- picture %>"/>\
