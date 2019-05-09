@@ -2,6 +2,7 @@
 
 namespace Akeneo\Channel\Component\Model;
 
+use Akeneo\Channel\Component\Event\ChannelEvent;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
@@ -144,4 +145,9 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface, Tra
      * @return string
      */
     public function __toString();
+
+    /**
+     * @return ChannelEvent[]
+     */
+    public function popEvents(): array;
 }

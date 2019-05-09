@@ -82,11 +82,10 @@ services:
             - '%pim_catalog.entity.channel.class%'
 
     pim_catalog.saver.channel:
-        class: 'Akeneo\Channel\Bundle\Doctrine\Saver\ChannelSaver'
+        class: 'Akeneo\Channel\Bundle\Storage\Orm\ChannelSaver'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@akeneo_channel.infrastructure.persistence.query.find_channel_category_code'
 
     pim_catalog.repository.channel:
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository'

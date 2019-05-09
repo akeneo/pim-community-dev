@@ -1,8 +1,0 @@
-services:
-
-    # Channel query functions
-
-    akeneo_channel.infrastructure.persistence.query.find_channel_category_code:
-        class: 'Akeneo\Channel\Bundle\Persistence\Sql\Channel\SqlFindChannelCategoryCode'
-        arguments:
-            - '@database_connection'

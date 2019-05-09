@@ -34,6 +34,5 @@ class AkeneoChannelExtension extends Extension
         $loader->load('validators.yml');
         $loader->load('writers.yml');
         $loader->load('view_elements/attribute.yml');
-        $loader->load('persistence.yml');
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -34,7 +33,7 @@ final class ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTre
     public static function getSubscribedEvents(): array
     {
         return [
-            ChannelCategoryHasBeenUpdated::EVENT_NAME => 'onChannelCategoryHasBeenUpdatedEvent',
+            ChannelCategoryHasBeenUpdated::class => 'onChannelCategoryHasBeenUpdatedEvent',
         ];
     }
 
@@ -55,7 +54,7 @@ final class ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTre
 
     public function onChannelCategoryHasBeenUpdatedEvent(ChannelCategoryHasBeenUpdated $event): void
     {
-        $this->updateExports($event->getChannelCode(), $event->getCategoryCode());
+        $this->updateExports($event->channelCode(), $event->newCategoryCode());
     }
 
     private function updateExports(string $channelCode, string $categoryCode): void
@@ -98,7 +97,7 @@ final class ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTre
                 if ($data['field'] === 'categories') {
                     return [
                         'field' => 'categories',
-                        'operator' => Operators::IN_CHILDREN_LIST,
+                        'operator' => $data['operator'],
                         'value' => [$categoryCode],
                     ];
                 }

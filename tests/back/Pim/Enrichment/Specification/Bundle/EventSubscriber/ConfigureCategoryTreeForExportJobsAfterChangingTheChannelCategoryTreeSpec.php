@@ -46,7 +46,7 @@ class ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTreeSpec 
     function it_subscribes_to_channel_category_has_been_updated_event()
     {
         $this->getSubscribedEvents()->shouldReturn(
-            [ChannelCategoryHasBeenUpdated::EVENT_NAME => 'onChannelCategoryHasBeenUpdatedEvent']
+            [ChannelCategoryHasBeenUpdated::class => 'onChannelCategoryHasBeenUpdatedEvent']
         );
     }
 
@@ -95,7 +95,7 @@ class ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTreeSpec 
 
         $jobInstanceSaver->saveAll([$jobInstance])->shouldBeCalled();
 
-        $event = new ChannelCategoryHasBeenUpdated('channel_code', 'other_category_code');
+        $event = new ChannelCategoryHasBeenUpdated('channel_code', 'previous-category-code', 'other_category_code');
         $this->onChannelCategoryHasBeenUpdatedEvent($event);
     }
 }
