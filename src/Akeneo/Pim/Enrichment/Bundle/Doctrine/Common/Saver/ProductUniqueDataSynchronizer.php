@@ -159,7 +159,7 @@ class ProductUniqueDataSynchronizer
 
         foreach ($product->getValues() as $value) {
             $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
-            if (null !== $attribute && $attribute->isUnique()) {
+            if (null !== $attribute && $attribute->isUnique() && $value->hasData()) {
                 $uniqueData[] = $this->factory->create($product, $attribute, $value->__toString());
             }
         }

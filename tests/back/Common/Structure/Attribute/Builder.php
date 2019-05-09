@@ -23,10 +23,22 @@ class Builder
     /** @var string */
     private $type;
 
+    /** @var bool */
+    private $isUnique;
+
+    /** @var bool */
+    private $localizable;
+
+    /** @var bool */
+    private $scopable;
+
     public function __construct()
     {
         $this->code = Code::fromString('code');
         $this->type = new Type(AttributeTypes::IDENTIFIER);
+        $this->isUnique = false;
+        $this->localizable = false;
+        $this->scopable = false;
     }
 
     /**
@@ -37,6 +49,9 @@ class Builder
         $attribute = new Model\Attribute();
         $attribute->setCode((string) $this->code);
         $attribute->setType((string) $this->type);
+        $attribute->setUnique($this->isUnique);
+        $attribute->setScopable($this->scopable);
+        $attribute->setLocalizable($this->localizable);
 
         return $attribute;
     }
@@ -53,12 +68,33 @@ class Builder
         return $this;
     }
 
+    public function aTextAttribute(): Builder
+    {
+        $this->type = new Type(AttributeTypes::TEXT);
+
+        return $this;
+    }
+
+    public function aUniqueAttribute(): Builder
+    {
+        $this->type = new Type(AttributeTypes::TEXT);
+        $this->isUnique = true;
+        $this->localizable = false;
+        $this->scopable = false;
+        $this->isUnique = true;
+
+        return $this;
+    }
+
     /**
      * @return Builder
      */
     public function aIdentifier(): Builder
     {
         $this->type = new Type(AttributeTypes::IDENTIFIER);
+        $this->localizable = false;
+        $this->scopable = false;
+        $this->isUnique = true;
 
         return $this;
     }

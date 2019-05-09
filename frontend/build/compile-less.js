@@ -1,6 +1,6 @@
 require('colors')
 const { dirname, resolve } = require('path')
-const { writeFileSync, readFileSync, existsSync } = require('fs')
+const { writeFileSync, readFileSync, existsSync, mkdirSync } = require('fs')
 const rootDir = process.cwd()
 const isDev = process.argv && process.argv.indexOf('--dev') > -1;
 const lessc = require('less')
@@ -77,8 +77,14 @@ function formatParseError(error) {
  * @param {String} css The combined CSS from each bundle
  */
 function writeCSSOutput(css) {
+    const folderPath = resolve(rootDir, 'web/css')
+    const filePath = resolve(rootDir, OUTPUT_CSS_PATH);
+
     try {
-        writeFileSync(resolve(rootDir, OUTPUT_CSS_PATH), css, 'utf-8')
+        if (existsSync(folderPath) === false) {
+            mkdirSync(folderPath, { recursive: true });
+        }
+        writeFileSync(filePath, css, 'utf-8')
         console.log(`✓ Saved CSS to ${OUTPUT_CSS_PATH}`.green)
     } catch (e) {
         console.log(`❌ Error writing CSS ${e.message}`.red)
