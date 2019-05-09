@@ -28,15 +28,6 @@ class RegisterGetMetadataServicesPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('akeneo.pim.enrichment.product.connector.get_product_from_identifiers')) {
-            return;
-        }
-
-        $definition = $container->getDefinition('akeneo.pim.enrichment.product.connector.get_product_from_identifiers');
-        $metadata = $container->getDefinition('pimee_workflow.query.get_metadata_for_product');
-
-        $definition->replaceArgument('$getMetadata', $metadata);
-
         if (!$container->hasDefinition('akeneo.pim.enrichment.product.connector.get_product_models_from_codes')) {
             return;
         }

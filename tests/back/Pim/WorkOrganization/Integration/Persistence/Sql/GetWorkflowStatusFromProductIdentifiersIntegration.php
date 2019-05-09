@@ -34,13 +34,13 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
 
         $query = $this->getQuery();
         $userId = $this->getUserIdfromName('mary');
-        $result = $query->fromProductIdentifiers($userId, [
+        $result = $query->fromProductIdentifiers([
             'product_without_category',
             'product_owned_by_admin',
             'product_viewable_by_redactor',
             'redactor_can_apply_draft_on_product',
             'product_non_viewable_by_redactor',
-        ]);
+        ], $userId);
 
         Assert::assertArrayNotHasKey('non_viewable_category', $result);
         Assert::assertEqualsCanonicalizing([
@@ -58,10 +58,10 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
     {
         $query = $this->getQuery();
         $userId = $this->getUserIdfromName('admin');
-        $result = $query->fromProductIdentifiers($userId, [
+        $result = $query->fromProductIdentifiers([
             'product_without_category',
             'product_owned_by_admin'
-        ]);
+        ], $userId);
 
         Assert::assertEqualsCanonicalizing([
             'product_without_category' => 'working_copy',
@@ -76,9 +76,9 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
     {
         $query = $this->getQuery();
         $userId = $this->getUserIdfromName('mary');
-        $result = $query->fromProductIdentifiers($userId, [
+        $result = $query->fromProductIdentifiers([
             'product_viewable_by_redactor'
-        ]);
+        ], $userId);
 
         Assert::assertEqualsCanonicalizing([
             'product_viewable_by_redactor' => 'read_only'
@@ -96,9 +96,9 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
 
         $query = $this->getQuery();
         $userId = $this->getUserIdfromName('mary');
-        $result = $query->fromProductIdentifiers($userId, [
+        $result = $query->fromProductIdentifiers([
             'redactor_can_apply_draft_on_product'
-        ]);
+        ], $userId);
 
         Assert::assertEqualsCanonicalizing([
             'redactor_can_apply_draft_on_product' => 'working_copy'
@@ -130,8 +130,8 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
         $query = $this->getQuery();
 
         $resultForMary = $query->fromProductIdentifiers(
-            $this->getUserIdfromName('mary'),
-            ['redactor_can_apply_draft_on_product']
+            ['redactor_can_apply_draft_on_product'],
+            $this->getUserIdfromName('mary')
         );
         Assert::assertEqualsCanonicalizing([
             'redactor_can_apply_draft_on_product' => 'proposal_waiting_for_approval',
@@ -139,8 +139,8 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
 
         // draft status is relative to the current user
         $resultForKevin = $query->fromProductIdentifiers(
-            $this->getUserIdfromName('kevin'),
-            ['redactor_can_apply_draft_on_product']
+            ['redactor_can_apply_draft_on_product'],
+            $this->getUserIdfromName('kevin')
         );
         Assert::assertEqualsCanonicalizing([
             'redactor_can_apply_draft_on_product' => 'working_copy',
@@ -172,8 +172,8 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
         $query = $this->getQuery();
 
         $resultForMary = $query->fromProductIdentifiers(
-            $this->getUserIdfromName('mary'),
-            ['redactor_can_apply_draft_on_product']
+            ['redactor_can_apply_draft_on_product'],
+            $this->getUserIdfromName('mary')
         );
 
         Assert::assertEqualsCanonicalizing([
@@ -182,8 +182,8 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
 
         // draft status is relative to the current user
         $resultForKevin = $query->fromProductIdentifiers(
-            $this->getUserIdfromName('kevin'),
-            ['redactor_can_apply_draft_on_product']
+            ['redactor_can_apply_draft_on_product'],
+            $this->getUserIdfromName('kevin')
         );
         Assert::assertEqualsCanonicalizing([
             'redactor_can_apply_draft_on_product' => 'working_copy',
@@ -197,10 +197,10 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
     {
         $query = $this->getQuery();
         $userId = $this->getUserIdfromName('admin');
-        $result = $query->fromProductIdentifiers($userId, [
+        $result = $query->fromProductIdentifiers([
             'product_without_category',
             'non_viewable_category'
-        ]);
+        ], $userId);
 
         Assert::assertArrayNotHasKey('non_viewable_category', $result);
         Assert::assertEqualsCanonicalizing([
@@ -254,6 +254,8 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
         array $changes,
         bool $ready = false
     ) : EntityWithValuesDraftInterface {
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 
         $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, $userName);
@@ -281,8 +283,6 @@ class GetWorkflowStatusFromProductIdentifiersIntegration extends TestCase
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
-
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
 
         return $product;
     }

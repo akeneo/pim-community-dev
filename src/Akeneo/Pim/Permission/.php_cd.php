@@ -26,6 +26,10 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts',
+        'Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductIdentifiers',
 
         // TIP-1000: Permissions should not be linked to Locale
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',

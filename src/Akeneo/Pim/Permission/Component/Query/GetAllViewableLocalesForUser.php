@@ -12,9 +12,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-
-interface IsValueViewableByUserForLocaleInterface
+interface GetAllViewableLocalesForUser
 {
-    public function isViewable(ValueInterface $value, int $userId): bool;
+    /**
+     * @return string[] viewable locale codes
+     */
+    public function fetchAll(int $userId): array;
 }

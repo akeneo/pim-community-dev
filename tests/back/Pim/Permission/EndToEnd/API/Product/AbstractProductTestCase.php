@@ -209,7 +209,28 @@ abstract class AbstractProductTestCase extends ApiTestCase
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
+    "associations": {
+        "PACK": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "SUBSTITUTION": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "UPSELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "X_SELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        }
+    },
     "metadata": {
         "workflow_status": "working_copy"
     }
@@ -232,7 +253,28 @@ JSON;
     "values": {},
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
+    "associations": {
+        "PACK": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "SUBSTITUTION": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "UPSELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "X_SELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        }
+    },
     "metadata": {
         "workflow_status": "working_copy"
     }
@@ -255,7 +297,28 @@ JSON;
     "values": {},
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
+    "associations": {
+        "PACK": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "SUBSTITUTION": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "UPSELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "X_SELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        }
+    },
     "metadata": {
         "workflow_status": "working_copy"
     }

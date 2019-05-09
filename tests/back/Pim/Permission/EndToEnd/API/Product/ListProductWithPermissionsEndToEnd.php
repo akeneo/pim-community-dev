@@ -104,7 +104,28 @@ JSON;
                 },
                 "created": "2017-03-11T10:39:38+01:00",
                 "updated": "2017-03-11T10:39:38+01:00",
-                "associations": {},
+                "associations": {
+                    "X_SELL": {
+                        "products": [],
+                        "groups": [],
+                        "product_models": []
+                    },
+                    "PACK": {
+                        "products": [],
+                        "groups": [],
+                        "product_models": []
+                    },
+                    "UPSELL": {
+                        "products": [],
+                        "groups": [],
+                        "product_models": []
+                    },
+                    "SUBSTITUTION": {
+                        "products": [],
+                        "groups": [],
+                        "product_models": []
+                    }
+                },
                 "metadata": {
                     "workflow_status": "read_only"
                 }
@@ -124,7 +145,28 @@ JSON;
                 "values": {},
                 "created": "2017-03-11T10:39:38+01:00",
                 "updated": "2017-03-11T10:39:38+01:00",
-                "associations": {},
+                "associations": {
+                    "X_SELL": {
+                        "products": [],
+                        "groups": [],
+                        "product_models": []
+                    },
+                    "PACK": {
+                        "products": [],
+                        "groups": [],
+                        "product_models": []
+                    },
+                    "UPSELL": {
+                        "products": [],
+                        "groups": [],
+                        "product_models": []
+                    },
+                    "SUBSTITUTION": {
+                        "products": [],
+                        "groups": [],
+                        "product_models": []
+                    }
+                },
                 "metadata": {
                     "workflow_status": "read_only"
                 }

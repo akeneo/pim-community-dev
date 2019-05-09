@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -22,7 +23,7 @@ use Doctrine\DBAL\Connection;
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  */
-final class GetWorkflowStatusFromProductIdentifiers
+final class GetWorkflowStatusFromProductIdentifiers implements PublicApi\GetWorkflowStatusFromProductIdentifiers
 {
     /** @var Connection */
     private $sqlConnection;
@@ -32,13 +33,7 @@ final class GetWorkflowStatusFromProductIdentifiers
         $this->sqlConnection = $sqlConnection;
     }
 
-    /**
-     * @param int $userId
-     * @param string[] $productIdentifiers
-     *
-     * @return array
-     */
-    public function fromProductIdentifiers(int $userId, array $productIdentifiers): array
+    public function fromProductIdentifiers(array $productIdentifiers, int $userId): array
     {
         if (empty($productIdentifiers)) {
             return [];

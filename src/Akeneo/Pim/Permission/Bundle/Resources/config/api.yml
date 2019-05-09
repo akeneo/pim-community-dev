@@ -71,6 +71,7 @@ services:
             - '%pim_api.configuration%'
             - '@pim_enrich.connector.use_cases.handler.list_products'
             - '@pim_api.normalizer.connector_products'
+            - '@security.token_storage'
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
@@ -124,3 +125,16 @@ services:
         arguments:
             - '@pim_catalog.repository.cached_attribute'
             - '@pimee_security.cached_authorization_checker'
+
+    akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_permissions:
+        class: Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\SqlGetConnectorProductsWithPermissions
+        decorates: akeneo.pim.enrichment.product.connector.get_product_from_identifiers
+        decoration_inner_name: akeneo.pim.enrichment.product.connector.get_product_from_identifiers_without_permissions
+        arguments:
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers_without_permissions'
+            - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@pimee_security.query.get_all_viewable_locales_for_user'
+            - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
+            - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product_model'
+            - '@pimee_workflow.query.get_workflow_status_from_product_identifiers'

@@ -94,8 +94,8 @@ services:
         arguments:
             - '@database_connection'
 
-    pimee_security.query.is_value_viewable_by_user_for_locale:
-        class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\IsValueViewableByUserForLocale'
+    pimee_security.query.get_all_viewable_locales_for_user:
+        class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\GetAllViewableLocalesForUser'
         arguments:
             - '@database_connection'
 
