@@ -2,7 +2,7 @@
 
 # Improvements
 
-- AOB-472: Add missing check template bootstrap modal
+- AOB-472: Fix modal display when using illustration class
 
 # Bug fixes
 
