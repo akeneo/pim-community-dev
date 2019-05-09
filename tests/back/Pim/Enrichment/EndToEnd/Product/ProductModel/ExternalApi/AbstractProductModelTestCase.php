@@ -95,7 +95,28 @@ class AbstractProductModelTestCase extends AbstractProductTestCase
     },
     "created":"2017-10-04T18:04:10+02:00",
     "updated":"2017-10-04T18:04:10+02:00",
-    "associations": {}
+    "associations": {
+        "PACK": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "SUBSTITUTION": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "UPSELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        },
+        "X_SELL": {
+            "products": [],
+            "product_models": [],
+            "groups": []
+        }
+    }
 }
 JSON;
         }

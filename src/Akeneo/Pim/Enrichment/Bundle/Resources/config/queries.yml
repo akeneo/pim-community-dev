@@ -199,10 +199,12 @@ services:
             $attributeRepository: '@pim_catalog.repository.attribute'
 
     akeneo.pim.enrichment.product.connector.get_product_models_from_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductModels'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductModels'
         arguments:
-            $productModelRepository: '@pim_catalog.repository.product_model'
-            $getMetadata: '@akeneo.pim.enrichment.query.get_metadata_for_product_model'
+            - '@akeneo.pim.enrichment.product_model.query.get_values_and_properties_from_product_model_codes'
+            - '@akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes'
+            - '@akeneo.pim.enrichment.product_model.query.get_product_associations_by_product_model_codes'
+            - '@akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes'
+            - '@akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes'
+            - '@pim_catalog.factory.value_collection'
 
-    akeneo.pim.enrichment.query.get_metadata_for_product_model:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetMetadataForProductModel'

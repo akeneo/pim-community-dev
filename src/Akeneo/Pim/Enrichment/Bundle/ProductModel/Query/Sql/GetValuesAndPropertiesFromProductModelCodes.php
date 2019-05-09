@@ -37,6 +37,7 @@ final class GetValuesAndPropertiesFromProductModelCodes
 
         $query = <<<SQL
 SELECT
+       product_model.id as id,
        product_model.code as 'code',
        family_variant.code as 'family_variant',
        parent_product_model.code as 'parent',
@@ -62,6 +63,7 @@ SQL;
         $results = [];
         foreach ($rows as $row) {
             $results[$row['code']] = [
+                'id' => Type::getType(Type::INTEGER)->convertToPHPValue($row['id'], $platform),
                 'code' => Type::getType(Type::STRING)->convertToPHPValue($row['code'], $platform),
                 'family_variant' => Type::getType(Type::STRING)->convertToPHPValue($row['family_variant'], $platform),
                 'parent' => Type::getType(Type::STRING)->convertToPHPValue($row['parent'], $platform),

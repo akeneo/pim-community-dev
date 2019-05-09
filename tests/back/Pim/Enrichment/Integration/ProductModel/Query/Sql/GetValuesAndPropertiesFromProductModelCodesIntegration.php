@@ -128,6 +128,12 @@ class GetValuesAndPropertiesFromProductModelCodesIntegration extends TestCase
             'sub_product_model_2_1',
         ]);
 
+        foreach ($actual as $productModelCode => $propertiesAndValues) {
+            Assert::true(isset($propertiesAndValues['id']));
+            Assert::integer($propertiesAndValues['id']);
+            unset($actual[$productModelCode]['id']);
+        }
+
         $this->assertEquals($expected, $actual);
     }
 
