@@ -287,6 +287,11 @@ class Client
         return $this->indexName;
     }
 
+    public function getConfigurationLoader(): Loader
+    {
+        return $this->configurationLoader;
+    }
+
     /**
      * @param array $body an array containing a query compatible with https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docs-delete-by-query.html
      */
