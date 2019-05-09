@@ -9,8 +9,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
-use Webmozart\Assert\Assert;
 use PHPUnit\Framework\Assert as PHPUnitAssert;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -22,7 +22,79 @@ class GetProductModelsAssociationsByProductModelCodesIntegration extends TestCas
     /** @var EntityBuilder */
     private $entityBuilder;
 
-    public function setUp(): void
+    public function testWithoutAnyProductModels(): void
+    {
+        $expected = [];
+        $actual = $this->getQuery()->fromProductModelCodes([]);
+
+        PHPUnitAssert::assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    public function testWithMixingAllKindsOfModelsForProductModelsAssociationsAndInheritance()
+    {
+        $expected = [
+            'root_product_model_1' => [
+                'PACK' => ['product_models' => ['productModelA', 'productModelC']],
+                'UPSELL' => ['product_models' => []],
+                'X_SELL' => ['product_models' => ['productModelF']],
+                'A_NEW_TYPE' => ['product_models' => []],
+                'SUBSTITUTION' => ['product_models' => []],
+            ],
+            'root_product_model_2' => [
+                'PACK' => ['product_models' => []],
+                'UPSELL' => ['product_models' => []],
+                'X_SELL' => ['product_models' => []],
+                'A_NEW_TYPE' => ['product_models' => []],
+                'SUBSTITUTION' => ['product_models' => []],
+            ],
+            'sub_product_model_1_1' => [
+                'PACK' => ['product_models' => ['productModelA', 'productModelC']],
+                'UPSELL' => ['product_models' => []],
+                'X_SELL' => ['product_models' => ['productModelD', 'productModelF']],
+                'A_NEW_TYPE' => ['product_models' => []],
+                'SUBSTITUTION' => ['product_models' => ['productModelB']],
+            ],
+            'sub_product_model_1_2' => [
+                'PACK' => ['product_models' => ['productModelA', 'productModelG', 'productModelC']],
+                'UPSELL' => ['product_models' => ['productModelE']],
+                'X_SELL' => ['product_models' => ['productModelF']],
+                'A_NEW_TYPE' => ['product_models' => []],
+                'SUBSTITUTION' => ['product_models' => []],
+            ],
+            'sub_product_model_2_1' => [
+                'PACK' => ['product_models' => []],
+                'UPSELL' => ['product_models' => []],
+                'X_SELL' => ['product_models' => []],
+                'A_NEW_TYPE' => ['product_models' => []],
+                'SUBSTITUTION' => ['product_models' => []],
+            ],
+            'sub_product_model_2_2' => [
+                'PACK' => ['product_models' => ['productModelC']],
+                'UPSELL' => ['product_models' => []],
+                'X_SELL' => ['product_models' => []],
+                'A_NEW_TYPE' => ['product_models' => []],
+                'SUBSTITUTION' => ['product_models' => []],
+            ],
+        ];
+
+        $actual = $this->getQuery()->fromProductModelCodes(
+            [
+                'root_product_model_1',
+                'sub_product_model_1_1',
+                'sub_product_model_1_2',
+                'root_product_model_2',
+                'sub_product_model_2_1',
+                'sub_product_model_2_2',
+            ]
+        );
+
+        $this->recursiveSort($expected);
+        $this->recursiveSort($actual);
+
+        PHPUnitAssert::assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -75,76 +147,6 @@ class GetProductModelsAssociationsByProductModelCodesIntegration extends TestCas
         ]);
 
         $this->givenAssociationTypes(['A_NEW_TYPE']);
-    }
-
-    public function testWithoutAnyProductModels(): void
-    {
-        $expected = [];
-        $actual = $this->getQuery()->fromProductModelCodes([]);
-
-        PHPUnitAssert::assertEqualsCanonicalizing($expected, $actual);
-    }
-
-    public function testWithMixingAllKindsOfModelsForProductModelsAssociationsAndInheritance()
-    {
-        $expected = [
-            'root_product_model_1' => [
-                'PACK' => ['productModelA', 'productModelC'],
-                'UPSELL' => [],
-                'X_SELL' => ['productModelF'],
-                'A_NEW_TYPE' => [],
-                'SUBSTITUTION' => [],
-            ],
-            'root_product_model_2' => [
-                'PACK' => [],
-                'UPSELL' => [],
-                'X_SELL' => [],
-                'A_NEW_TYPE' => [],
-                'SUBSTITUTION' => [],
-            ],
-            'sub_product_model_1_1' => [
-                'PACK' => ['productModelA', 'productModelC'],
-                'UPSELL' => [],
-                'X_SELL' => ['productModelD', 'productModelF'],
-                'A_NEW_TYPE' => [],
-                'SUBSTITUTION' => ['productModelB'],
-            ],
-            'sub_product_model_1_2' => [
-                'PACK' => ['productModelA', 'productModelG', 'productModelC'],
-                'UPSELL' => ['productModelE'],
-                'X_SELL' => ['productModelF'],
-                'A_NEW_TYPE' => [],
-                'SUBSTITUTION' => [],
-            ],
-            'sub_product_model_2_1' => [
-                'PACK' => [],
-                'UPSELL' => [],
-                'X_SELL' => [],
-                'A_NEW_TYPE' => [],
-                'SUBSTITUTION' => [],
-            ],
-            'sub_product_model_2_2' => [
-                'PACK' => ['productModelC'],
-                'UPSELL' => [],
-                'X_SELL' => [],
-                'A_NEW_TYPE' => [],
-                'SUBSTITUTION' => [],
-            ]
-        ];
-
-        $actual = $this->getQuery()->fromProductModelCodes([
-            'root_product_model_1',
-            'sub_product_model_1_1',
-            'sub_product_model_1_2',
-            'root_product_model_2',
-            'sub_product_model_2_1',
-            'sub_product_model_2_2',
-        ]);
-
-        $this->recursiveSort($expected);
-        $this->recursiveSort($actual);
-
-        PHPUnitAssert::assertEqualsCanonicalizing($expected, $actual);
     }
 
     private function recursiveSort(&$array): bool
