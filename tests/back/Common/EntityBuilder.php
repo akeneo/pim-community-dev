@@ -38,39 +38,37 @@ final class EntityBuilder
     }
 
     /**
-     * Build an entity
-     *
-     * @param array $data
-     *
-     * @return object
-     *
      * @throws \InvalidArgumentException
      */
-    public function build(array $data)
+    public function build(array $data, bool $withValidation = false): object
     {
         $entity = $this->resourceFactory->create();
         $this->resourceUpdater->update($entity, $data);
 
-        // @todo revert that when it possible
+        // @todo remove condition and always perfom validation
         // Several validation constraints are couple to doctrine. That's means it is impossible to use this builder
         // for creating object for acceptance tests. For instance, UniqueEntity constraint will always use the
         // doctrine repository instead of the in memory one.
-//        $errors = $this->validator->validate($entity);
-//
-//        if (0 !== $errors->count()) {
-//            $errorMessages = [];
-//            foreach ($errors as $error) {
-//                $errorMessages[] = sprintf(
-//                    "\n- property path: %s\n- message: %s",
-//                    $error->getPropertyPath(),
-//                    $error->getMessage()
-//                );
-//            }
-//
-//            throw new \InvalidArgumentException(
-//                "An error occurred on resource creation:".implode("\n", $errorMessages)
-//            );
-//        }
+        if (true === $withValidation) {
+            $errors = $this->validator->validate($entity);
+
+            if (0 !== $errors->count()) {
+                $errorMessages = [];
+                foreach ($errors as $error) {
+                    $errorMessages[] = sprintf(
+                        "\n- property path: %s\n- message: %s",
+                        $error->getPropertyPath(),
+                        $error->getMessage()
+                    );
+                }
+
+                throw new \InvalidArgumentException(
+                    "An error occurred on resource creation:".implode("\n", $errorMessages)
+                );
+            }
+        }
+
+
 
         return $entity;
     }

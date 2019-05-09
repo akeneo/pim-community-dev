@@ -48,6 +48,8 @@ pim_enrich.entity.channel:
     delete:
       success: Kanalen blev fjernet
       fail: Kan ikke slette denne kanal
+  page_title:
+    index: "] -Inf, 1] {{ count }} kanal |] 1, Inf [{{ count }} kanaler"
   property:
     category_tree: Kategoritræstrukturen
     do_not_convert: Konvertér ikke
@@ -61,5 +63,9 @@ pim_enrich.entity.locale:
   label: landestandard
   uppercase_label: Landestandard
   plural_label: Landestandarder
+  page_title:
+    index: "] -Inf, 1] {{ count }} land |] 1, Inf [{{ count }} landestandarder"
 pim_enrich.entity.currency:
   plural_label: Valutaer
+  page_title:
+    index: "] -Inf, 1] {{ count }} valuta |] 1, Inf [{{ count }} valutaer"

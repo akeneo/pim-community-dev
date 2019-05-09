@@ -89,6 +89,7 @@ class VersionManager
 
     /**
      * @param bool $mode
+     * @deprecated To remove for the 4.0. Not used anymore and not anymore a bottleneck
      */
     public function setRealTimeVersioning($mode)
     {
@@ -97,6 +98,7 @@ class VersionManager
 
     /**
      * @return bool
+     * @deprecated To remove for the 4.0. Not anymore a bottleneck
      */
     public function isRealTimeVersioning()
     {
