@@ -39,6 +39,7 @@ final class GetConnectorProductModels implements Query\GetConnectorProductModels
      */
     public function fromProductQueryBuilder(
         ProductQueryBuilderInterface $productQueryBuilder,
+        int $userId,
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
         ?array $localesToFilterOn

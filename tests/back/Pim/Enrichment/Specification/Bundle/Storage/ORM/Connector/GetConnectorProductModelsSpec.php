@@ -54,7 +54,7 @@ final class GetConnectorProductModelsSpec extends ObjectBehavior
                 $identifierResultsArrayCollection = new ArrayCollection([
                     new IdentifierResult('jambon', ProductModelInterface::class),
                 ]);
-                
+
                 $this->identifierResults = $identifierResultsArrayCollection->getIterator();
             }
 
@@ -65,7 +65,7 @@ final class GetConnectorProductModelsSpec extends ObjectBehavior
             public function valid() { return $this->identifierResults->valid(); }
             public function rewind() { $this->identifierResults->rewind(); }
         });
-        
+
         $productModelRepository->findOneByIdentifier('jambon')->willReturn($productModel);
         $attributesToFilterOn = [];
         $channelToFilterOn = null;
@@ -90,6 +90,7 @@ final class GetConnectorProductModelsSpec extends ObjectBehavior
 
         $this->fromProductQueryBuilder(
             $productQueryBuilder,
+            42,
             $attributesToFilterOn,
             $channelToFilterOn,
             $localesToFilterOn

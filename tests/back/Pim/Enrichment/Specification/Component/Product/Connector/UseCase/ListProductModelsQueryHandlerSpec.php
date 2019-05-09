@@ -53,6 +53,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         $query->channelCode = 'tablet';
         $query->localeCodes = ['en_US'];
         $query->attributeCodes = ['name'];
+        $query->userId = 42;
 
         $fromSizePqbFactory->create([
             'limit' => 42,
@@ -60,7 +61,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn($productQueryBuilder);
 
         $productQueryBuilder->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
-        
+
         $connectorProductModel1 = new ConnectorProductModel(
             1234,
             'code_1',
@@ -89,7 +90,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
 
 
         $getConnectorProductModels
-            ->fromProductQueryBuilder($productQueryBuilder, ['name'], 'tablet', ['en_US'])
+            ->fromProductQueryBuilder($productQueryBuilder, 42, ['name'], 'tablet', ['en_US'])
             ->willReturn(new ConnectorProductModelList(2, [$connectorProductModel1, $connectorProductModel2]));
 
         $searchAfterPqbFactory->create(Argument::cetera())->shouldNotBeCalled();
@@ -108,6 +109,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
         $query->limit = 42;
         $query->searchAfter = '69';
+        $query->userId = 42;
 
         $primaryKeyEncrypter->decrypt('69')->shouldBeCalled()->willReturn('encoded69');
 
@@ -147,7 +149,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
 
 
         $getConnectorProductModels
-            ->fromProductQueryBuilder($productQueryBuilder, null, null, null)
+            ->fromProductQueryBuilder($productQueryBuilder, 42, null, null, null)
             ->willReturn(new ConnectorProductModelList(2, [$connectorProductModel1, $connectorProductModel2]));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
@@ -168,6 +170,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
         $query->limit = 42;
         $query->channelCode = 'tablet';
+        $query->userId = 42;
 
         $channel->getLocaleCodes()->willReturn(['en_US']);
         $channel->getCategory()->willReturn($category);
@@ -182,7 +185,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         $pqb->addFilter('categories', 'IN CHILDREN', ['master'], ['locale' => null, 'scope' => null])->shouldBeCalled();
 
         $getConnectorProductModels
-            ->fromProductQueryBuilder($pqb, null, 'tablet', ['en_US'])
+            ->fromProductQueryBuilder($pqb, 42, null, 'tablet', ['en_US'])
             ->willReturn(new ConnectorProductModelList(0, []));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
@@ -202,6 +205,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         $query->searchAfter = null;
         $query->channelCode = null;
         $query->localeCodes = ['en_US', 'fr_FR'];
+        $query->userId = 42;
 
         $searchAfterPqbFactory->create([
             'limit' => 42
@@ -210,7 +214,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
 
         $getConnectorProductModels
-            ->fromProductQueryBuilder($pqb, null, null, ['en_US', 'fr_FR'])
+            ->fromProductQueryBuilder($pqb, 42, null, null, ['en_US', 'fr_FR'])
             ->willReturn(new ConnectorProductModelList(0, []));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
@@ -230,6 +234,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         $query->searchAfter = null;
         $query->channelCode = 'tablet';
         $query->localeCodes = ['en_US', 'fr_FR'];
+        $query->userId = 42;
 
         $searchAfterPqbFactory->create([
             'limit' => 42
@@ -239,7 +244,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
 
 
         $getConnectorProductModels
-            ->fromProductQueryBuilder($pqb, null, 'tablet', ['en_US', 'fr_FR'])
+            ->fromProductQueryBuilder($pqb, 42, null, 'tablet', ['en_US', 'fr_FR'])
             ->willReturn(new ConnectorProductModelList(0, []));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
