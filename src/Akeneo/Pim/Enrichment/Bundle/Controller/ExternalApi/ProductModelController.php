@@ -14,7 +14,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProd
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -24,7 +23,6 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -40,6 +38,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -111,6 +110,9 @@ class ProductModelController
     /** @var ConnectorProductModelNormalizer */
     private $connectorProductModelNormalizer;
 
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ProductQueryBuilderFactoryInterface $pqbSearchAfterFactory,
@@ -130,6 +132,7 @@ class ProductModelController
         ListProductModelsQueryValidator $listProductModelsQueryValidator,
         ListProductModelsQueryHandler $listProductModelsQueryHandler,
         ConnectorProductModelNormalizer $connectorProductModelNormalizer,
+        TokenStorageInterface $tokenStorage,
         array $apiConfiguration
     ) {
         $this->pqbFactory = $pqbFactory;
@@ -150,6 +153,7 @@ class ProductModelController
         $this->listProductModelsQueryValidator = $listProductModelsQueryValidator;
         $this->listProductModelsQueryHandler = $listProductModelsQueryHandler;
         $this->connectorProductModelNormalizer = $connectorProductModelNormalizer;
+        $this->tokenStorage = $tokenStorage;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -259,6 +263,7 @@ class ProductModelController
         $query->page = $request->query->get('page', 1);
         $query->searchChannelCode = $request->query->get('search_scope', null);
         $query->searchAfter = $request->query->get('search_after', null);
+        $query->userId = $this->tokenStorage->getToken()->getUser()->getId();
 
         try {
             $this->listProductModelsQueryValidator->validate($query);
