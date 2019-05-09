@@ -70,18 +70,10 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             addSaveButton: function () {
-                var objectSet    = this.model.get('objectSet');
-                var currentIndex = findObjectIndex(
-                    objectSet,
-                    this.getFormData().meta.id,
-                    this.getFormData().meta.model_type
-                );
-                var nextObject = objectSet[currentIndex + 1];
-
                 this.trigger('save-buttons:register-button', {
                     className: 'save-and-continue',
                     priority: 250,
-                    label: undefined !== nextObject ?
+                    label: undefined !== this.getNextObject() ?
                         __('pim_enrich.entity.product.module.sequential_edit.save_and_next') :
                         __('pim_enrich.entity.product.module.sequential_edit.save_and_finish'),
                     events: {
@@ -99,6 +91,11 @@ define(
                 }
 
                 this.addSaveButton();
+
+                this.getRoot().trigger(
+                    'pim_enrich:form:sequential-edit',
+                    {isLast: undefined === this.getNextObject()}
+                )
 
                 this.getTemplateParameters().done(function (templateParameters) {
                     this.$el.html(this.template(templateParameters));
@@ -156,20 +153,15 @@ define(
                 }
             },
             saveAndContinue: function () {
-                this.parent.getExtension('save').save({ silent: true }).done(function () {
-                    var objectSet = this.model.get('objectSet');
-                    var currentIndex = findObjectIndex(
-                        objectSet,
-                        this.getFormData().meta.id,
-                        this.getFormData().meta.model_type
-                    );
-                    var nextObject = objectSet[currentIndex + 1];
-                    if (nextObject) {
-                        this.goToProduct(nextObject.type, nextObject.id);
-                    } else {
-                        this.finish();
-                    }
-                }.bind(this));
+                this.parent.getExtension('save').save({ silent: true }).done(this.continue.bind(this));
+            },
+            continue: function () {
+                var nextObject = this.getNextObject();
+                if (nextObject) {
+                    this.goToProduct(nextObject.type, nextObject.id);
+                } else {
+                    this.finish();
+                }
             },
             followLink: function (event) {
                 this.getRoot().trigger('pim_enrich:form:state:confirm', {
@@ -189,6 +181,16 @@ define(
             },
             getEntity(type, id) {
                 return FetcherRegistry.getFetcher(type.replace('_', '-')).fetch(id);
+            },
+            getNextObject: function () {
+                var objectSet    = this.model.get('objectSet');
+                var currentIndex = findObjectIndex(
+                    objectSet,
+                    this.getFormData().meta.id,
+                    this.getFormData().meta.model_type
+                );
+
+                return objectSet[currentIndex + 1];
             }
         });
     }
