@@ -12,9 +12,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OroAsseticDumpCommand extends ContainerAwareCommand
 {
-    /**
-     * @var OroAssetManager
-     */
+    private const URL_PATTERN = '`url\((["\']?)(?P<url>.*?)(\\1)\)`';
+
+    /** @var string */
+    protected $basePath;
+
+    /** @var OroAssetManager */
     protected $am;
 
     protected function configure()
@@ -127,7 +130,10 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
                 )
             );
 
-            if (false === @file_put_contents($target, $asset->dump())) {
+            $fileContent = $asset->dump();
+            $this->checkResourcePaths($fileContent, $output);
+
+            if (false === @file_put_contents($target, $fileContent)) {
                 throw new \RuntimeException('Unable to write file ' . $target);
             }
         }
@@ -139,5 +145,54 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
             $asset->getVars(),
             $this->getContainer()->getParameter('assetic.variables')
         );
+    }
+
+    private function checkResourcePaths(string $fileContent, OutputInterface $output): void
+    {
+        preg_match_all(self::URL_PATTERN, $fileContent, $matches);
+
+        foreach ($matches['url'] as $url) {
+            if (0 === strpos($url, 'data:')) {
+                continue;
+            }
+
+            if (0 !== strpos($url, '/')) {
+                $output->writeln(
+                    sprintf(
+                        '<comment>Please use absolute resource paths to avoid wrong path resolution during less files import in other bundles ("%s" given).</comment>',
+                        $url
+                    )
+                );
+
+                continue;
+            }
+
+            $path = $this->basePath.$url;
+            $cleanedPath = $this->cleanResourcePath($path);
+
+            if (!file_exists($cleanedPath)) {
+                $output->writeln(
+                    sprintf(
+                        '<comment>Resource path "%s" does not point to any file inside web directory.</comment>',
+                        $url
+                    )
+                );
+
+                continue;
+            }
+        }
+    }
+
+    private function cleanResourcePath(string $path): string
+    {
+        if (false !== strpos($path, '?')) {
+            $path = substr($path, 0, strpos($path, '?'));
+        }
+
+        if (false !== strpos($path, '#')) {
+            $path = substr($path, 0, strpos($path, '#'));
+        }
+
+        return $path;
     }
 }
