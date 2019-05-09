@@ -153,7 +153,7 @@ final class ConnectorProduct
      *
      * @param string|string[] $value
      */
-    public function addMetadata(string $key, $value)
+    public function addMetadata(string $key, $value): ConnectorProduct
     {
         return new self(
             $this->id,
@@ -217,7 +217,7 @@ final class ConnectorProduct
         return array_unique(array_merge(...$associatedProductModels));
     }
 
-    public function filterAssociatedProductModelsByProductModelCodes($productModelCodesToFilter): ConnectorProduct
+    public function filterAssociatedProductModelsByProductModelCodes(array $productModelCodesToFilter): ConnectorProduct
     {
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
@@ -245,7 +245,7 @@ final class ConnectorProduct
         );
     }
 
-    public function filterAssociatedProductsByProductIdentifiers($productIdentifiersToFilter): ConnectorProduct
+    public function filterAssociatedProductsByProductIdentifiers(array $productIdentifiersToFilter): ConnectorProduct
     {
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
