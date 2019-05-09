@@ -35,6 +35,7 @@ mappings:
                 normalizer: 'identifier_normalizer'
             ancestors.codes:
                 type: 'keyword'
+                normalizer: 'identifier_normalizer'
             ancestors.ids:
                 type: 'keyword'
         dynamic_templates:
@@ -47,6 +48,13 @@ mappings:
             -
                 label:
                     path_match: 'label.*'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'text_normalizer'
+            -
+                ancestor_label:
+                    path_match: 'ancestors.labels.*'
+                    match_mapping_type: 'string'
                     mapping:
                         type: 'keyword'
                         normalizer: 'text_normalizer'
