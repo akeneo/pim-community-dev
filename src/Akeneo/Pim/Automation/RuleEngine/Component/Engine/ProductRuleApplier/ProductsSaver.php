@@ -93,7 +93,7 @@ class ProductsSaver
         );
         $versioningState = $this->versionManager->isRealTimeVersioning();
         $this->versionContext->addContextInfo($savingContext, 'default');
-        $this->versionManager->setRealTimeVersioning(false);
+        $this->versionManager->setRealTimeVersioning(true);
 
         $products = array_filter($entityWithValues, function ($item) {
             return $item instanceof ProductInterface;
