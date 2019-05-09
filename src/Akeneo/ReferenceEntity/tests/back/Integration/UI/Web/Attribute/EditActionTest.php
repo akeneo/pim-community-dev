@@ -9,7 +9,9 @@ use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
@@ -18,6 +20,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -199,9 +202,24 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
+
+        $age = NumberAttribute::create(
+            AttributeIdentifier::create('designer', 'age', md5('fingerprint')),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('age'),
+            LabelCollection::fromArray(['fr_FR' => 'Age', 'en_US' => 'Age']),
+            AttributeOrder::fromInteger(5),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeIsDecimal::fromBoolean(false),
+            AttributeLimit::fromString('0'),
+            AttributeLimit::fromString('999')
+        );
         $attributeRepository->create($name);
         $attributeRepository->create($portrait);
         $attributeRepository->create($favoriteColor);
+        $attributeRepository->create($age);
 
         $activatedLocales = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
         $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
@@ -217,11 +235,12 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function getValidationErrorsRequests(): array
     {
         return [
-            'Invalid allowed extension'                 => ['Attribute/Edit/allowed_extensions_is_invalid.json'],
-            'Max file size is invalid'                  => ['Attribute/Edit/max_file_size_is_invalid.json'],
-            'Invalid option codes regular expression'   => ['Attribute/Edit/Option' . DIRECTORY_SEPARATOR . 'invalid_option_code_regular_expression.json'],
-            'Option code is blank'                      => ['Attribute/Edit/Option' . DIRECTORY_SEPARATOR . 'invalid_option_code_blank.json'],
-            'Some options are duplicated'               => ['Attribute/Edit/Option' . DIRECTORY_SEPARATOR . 'invalid_options_duplicated.json'],
+//            'Invalid allowed extension'                 => ['Attribute/Edit/allowed_extensions_is_invalid.json'],
+//            'Max file size is invalid'                  => ['Attribute/Edit/max_file_size_is_invalid.json'],
+//            'Invalid option codes regular expression'   => ['Attribute/Edit/Option/invalid_option_code_regular_expression.json'],
+//            'Option code is blank'                      => ['Attribute/Edit/Option/invalid_option_code_blank.json'],
+//            'Some options are duplicated'               => ['Attribute/Edit/Option/invalid_options_duplicated.json'],
+            'Number: min and max incoherent'            => ['Attribute/Edit/Number/min_max_incoherent.json']
             // Todo: Override parameter 'reference_entity_option_limit_per_list_attribute' in kernel
             // 'Limit of options per attribute is reached' => ['Option' . DIRECTORY_SEPARATOR . 'limit_of_options_reached.json'],
         ];
