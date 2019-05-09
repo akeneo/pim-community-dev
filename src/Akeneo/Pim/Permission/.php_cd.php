@@ -30,6 +30,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList',
         'Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductIdentifiers',
+        'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels',
+        'Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductModelCodes',
 
         // TIP-1000: Permissions should not be linked to Locale
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',

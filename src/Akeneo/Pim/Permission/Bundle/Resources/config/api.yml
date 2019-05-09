@@ -94,6 +94,7 @@ services:
             - '@pim_enrich.connector.use_cases.validator.list_product_models'
             - '@pim_enrich.connector.use_cases.handler.list_product_models'
             - '@pim_api.normalizer.connector_product_models'
+            - '@security.token_storage'
             - '%pim_api.configuration%'
 
     akeneo.pim.enrichment.use_cases.validator.validate_granted_search_locale:
@@ -138,3 +139,16 @@ services:
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product_model'
             - '@pimee_workflow.query.get_workflow_status_from_product_identifiers'
+
+    akeneo.pim.enrichment.product.connector.get_product_model_from_codes_with_permissions:
+        class: Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel\SqlGetConnectorProductModelsWithPermissions
+        decorates: akeneo.pim.enrichment.product.connector.get_product_models_from_codes
+        decoration_inner_name: akeneo.pim.enrichment.product.connector.get_product_models_from_codes_without_permissions
+        arguments:
+            - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes_without_permissions'
+            - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@pimee_security.query.get_all_viewable_locales_for_user'
+            - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
+            - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product_model'
+            - '@pimee_workflow.query.get_workflow_status_from_product_model_codes'
