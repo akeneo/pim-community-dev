@@ -66,8 +66,8 @@ SQL;
                 'family_variant' => Type::getType(Type::STRING)->convertToPHPValue($row['family_variant'], $platform),
                 'parent' => Type::getType(Type::STRING)->convertToPHPValue($row['parent'], $platform),
                 'raw_values' => json_decode($row['raw_values'], true),
-                'created' => Type::getType(Type::DATETIME)->convertToPhpValue($row['created'], $platform),
-                'updated' => Type::getType(Type::DATETIME)->convertToPhpValue($row['updated'], $platform),
+                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['created'], $platform),
+                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated'], $platform),
             ];
         }
 
