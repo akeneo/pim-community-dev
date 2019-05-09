@@ -24,9 +24,7 @@ use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
-use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -43,6 +41,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -123,6 +122,9 @@ class ProductController
     /** @var ConnectorProductNormalizer */
     private $connectorProductNormalizer;
 
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -146,7 +148,8 @@ class ProductController
         ListProductsQueryValidator $listProductsQueryValidator,
         array $apiConfiguration,
         ListProductsQueryHandler $listProductsQueryHandler,
-        ConnectorProductNormalizer $connectorProductNormalizer
+        ConnectorProductNormalizer $connectorProductNormalizer,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -171,6 +174,7 @@ class ProductController
         $this->listProductsQueryValidator = $listProductsQueryValidator;
         $this->listProductsQueryHandler = $listProductsQueryHandler;
         $this->connectorProductNormalizer = $connectorProductNormalizer;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -205,6 +209,7 @@ class ProductController
         $query->page = $request->query->get('page', 1);
         $query->searchChannelCode = $request->query->get('search_scope', null);
         $query->searchAfter = $request->query->get('search_after', null);
+        $query->userId = $this->tokenStorage->getToken()->getUser()->getId();
 
         try {
             $this->listProductsQueryValidator->validate($query);

@@ -54,22 +54,22 @@ FROM (
                       association_type.code as association_type_code,
                       associated_product.identifier as associated_product_identifier
                   FROM pim_catalog_product product
-                           CROSS JOIN pim_catalog_association_type association_type
-                           LEFT JOIN pim_catalog_association product_association ON product_association.owner_id = product.id AND association_type.id = product_association.association_type_id
-                           LEFT JOIN pim_catalog_association_product association_to_product ON association_to_product.association_id = product_association.id
-                           LEFT JOIN pim_catalog_product associated_product ON associated_product.id = association_to_product.product_id
+                       CROSS JOIN pim_catalog_association_type association_type
+                       LEFT JOIN pim_catalog_association product_association ON product_association.owner_id = product.id AND association_type.id = product_association.association_type_id
+                       LEFT JOIN pim_catalog_association_product association_to_product ON association_to_product.association_id = product_association.id
+                       LEFT JOIN pim_catalog_product associated_product ON associated_product.id = association_to_product.product_id
                   WHERE product.identifier IN (?) 
                   UNION ALL
                   SELECT
                       product.identifier as product_identifier,
                       association_type.code as association_type_code,
                       associated_product.identifier as associated_product_identifier
-                      FROM pim_catalog_product product
-                           INNER JOIN pim_catalog_product_model product_model ON product_model.id = product.product_model_id
-                           INNER JOIN pim_catalog_product_model_association product_model_association ON product_model_association.owner_id = product_model.id
-                           INNER JOIN pim_catalog_association_type association_type ON product_model_association.association_type_id = association_type.id
-                           INNER JOIN pim_catalog_association_product_model_to_product association_to_product ON association_to_product.association_id = product_model_association.id
-                           INNER JOIN pim_catalog_product associated_product ON associated_product.id = association_to_product.product_id
+                  FROM pim_catalog_product product
+                       INNER JOIN pim_catalog_product_model product_model ON product_model.id = product.product_model_id
+                       INNER JOIN pim_catalog_product_model_association product_model_association ON product_model_association.owner_id = product_model.id
+                       INNER JOIN pim_catalog_association_type association_type ON product_model_association.association_type_id = association_type.id
+                       INNER JOIN pim_catalog_association_product_model_to_product association_to_product ON association_to_product.association_id = product_model_association.id
+                       INNER JOIN pim_catalog_product associated_product ON associated_product.id = association_to_product.product_id
                   WHERE product.identifier IN (?)
                   UNION ALL
                   SELECT
@@ -77,12 +77,12 @@ FROM (
                       association_type.code as association_type_code,
                       associated_product.identifier as associated_product_identifier
                   FROM pim_catalog_product product
-                           INNER JOIN pim_catalog_product_model child_product_model ON child_product_model.id = product.product_model_id
-                           INNER JOIN pim_catalog_product_model product_model ON product_model.id = child_product_model.parent_id
-                           INNER JOIN pim_catalog_product_model_association product_model_association ON product_model_association.owner_id = product_model.id
-                           INNER JOIN pim_catalog_association_type association_type ON product_model_association.association_type_id = association_type.id
-                           INNER JOIN pim_catalog_association_product_model_to_product association_to_product ON association_to_product.association_id = product_model_association.id
-                           INNER JOIN pim_catalog_product associated_product ON associated_product.id = association_to_product.product_id
+                       INNER JOIN pim_catalog_product_model child_product_model ON child_product_model.id = product.product_model_id
+                       INNER JOIN pim_catalog_product_model product_model ON product_model.id = child_product_model.parent_id
+                       INNER JOIN pim_catalog_product_model_association product_model_association ON product_model_association.owner_id = product_model.id
+                       INNER JOIN pim_catalog_association_type association_type ON product_model_association.association_type_id = association_type.id
+                       INNER JOIN pim_catalog_association_product_model_to_product association_to_product ON association_to_product.association_id = product_model_association.id
+                       INNER JOIN pim_catalog_product associated_product ON associated_product.id = association_to_product.product_id
                   WHERE product.identifier IN (?)
               ) all_associations
          GROUP BY all_associations.product_identifier, association_type_code
@@ -99,7 +99,14 @@ SQL;
         $results = [];
 
         foreach ($rows as $row) {
-            $results[$row['product_identifier']] = array_map('array_filter', json_decode($row['associations'], true));
+            $associations = json_decode($row['associations'], true);
+
+            $filteredAssociations = [];
+            foreach ($associations as $associationType => $productAssociations) {
+                $filteredAssociations[$associationType]['products'] = array_filter($productAssociations);
+            }
+
+            $results[$row['product_identifier']] = $filteredAssociations;
         }
 
         return $results;

@@ -7,7 +7,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * This read model is dedicated to export product data for the connector, such as the API.
@@ -141,41 +143,153 @@ final class ConnectorProduct
         return $this->values;
     }
 
-    public static function fromProductWriteModel(ProductInterface $product, ValueCollectionInterface $values, array $metadata = []): ConnectorProduct
+    public function attributeCodesInValues(): array
+    {
+        return $this->values->getAttributeCodes();
+    }
+
+    /**
+     * The value cannot be an object.
+     *
+     * @param string|string[] $value
+     */
+    public function addMetadata(string $key, $value): ConnectorProduct
     {
         return new self(
-            $product->getId(),
-            $product->getIdentifier(),
-            \DateTimeImmutable::createFromMutable($product->getCreated()),
-            \DateTimeImmutable::createFromMutable($product->getUpdated()),
-            $product->isEnabled(),
-            $product->getFamily() !== null ? $product->getFamily()->getCode() : null,
-            $product->getCategoryCodes(),
-            $product->getGroupCodes(),
-            $product->isVariant() ? $product->getParent()->getCode() : null,
-            self::productAssociationsAsArray($product),
-            $metadata,
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $this->associations,
+            array_merge($this->metadata, [$key => $value]),
+            $this->values
+        );
+    }
+
+    public function filterValuesByAttributeCodesAndLocaleCodes(array $attributeCodesToKeep, array $localeCodesToKeep): ConnectorProduct
+    {
+        $attributeCodes = array_flip($attributeCodesToKeep);
+        $localeCodes = array_flip($localeCodesToKeep);
+
+        $values = $this->values->filter(function (ValueInterface $value) use ($attributeCodes, $localeCodes) {
+            return isset($attributeCodes[$value->getAttributeCode()])
+                && (!$value->isLocalizable() || isset($localeCodes[$value->getLocaleCode()]));
+        });
+
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $this->associations,
+            $this->metadata,
             $values
         );
     }
 
-    public static function productAssociationsAsArray(ProductInterface $product): array
+    public function associatedProductIdentifiers(): array
     {
-        $associations = [];
-        foreach ($product->getAllAssociations() as $association) {
-            $associations[$association->getAssociationType()->getCode()] = [
-                'products' => array_map(function (ProductInterface $product) {
-                    return $product->getIdentifier();
-                }, $association->getProducts()->toArray()),
-                'product_models' => array_map(function (ProductModelInterface $productModel) {
-                    return $productModel->getCode();
-                }, $association->getProductModels()->toArray()),
-                'groups' => array_map(function (GroupInterface $group) {
-                    return $group->getCode();
-                }, $association->getGroups()->toArray())
-            ];
+        $associatedProducts = [];
+        foreach ($this->associations as $associationType => $associations) {
+            $associatedProducts[] = $associations['products'];
         }
 
-        return $associations;
+        return array_unique(array_merge(...$associatedProducts));
+    }
+
+    public function associatedProductModelCodes(): array
+    {
+        $associatedProductModels = [];
+        foreach ($this->associations as $associationType => $associations) {
+            $associatedProductModels[] = $associations['product_models'];
+        }
+
+        return array_unique(array_merge(...$associatedProductModels));
+    }
+
+    public function filterAssociatedProductModelsByProductModelCodes(array $productModelCodesToFilter): ConnectorProduct
+    {
+        $filteredAssociations = [];
+        foreach ($this->associations as $associationType => $association) {
+            $filteredAssociations[$associationType]['products'] = $association['products'];
+            $filteredAssociations[$associationType]['product_models'] = array_intersect(
+                $association['product_models'],
+                $productModelCodesToFilter
+            );
+            $filteredAssociations[$associationType]['groups'] = $association['groups'];
+        }
+
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $filteredAssociations,
+            $this->metadata,
+            $this->values
+        );
+    }
+
+    public function filterAssociatedProductsByProductIdentifiers(array $productIdentifiersToFilter): ConnectorProduct
+    {
+        $filteredAssociations = [];
+        foreach ($this->associations as $associationType => $association) {
+            $filteredAssociations[$associationType]['products'] = array_intersect(
+                $association['products'],
+                $productIdentifiersToFilter
+            );
+            $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
+            $filteredAssociations[$associationType]['groups'] = $association['groups'];
+        }
+
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $filteredAssociations,
+            $this->metadata,
+            $this->values
+        );
+    }
+
+    public function filterByCategoryCodes(array $categoryCodesToFilter): ConnectorProduct
+    {
+        $categoryCodes =  array_intersect($this->categoryCodes, $categoryCodesToFilter);
+
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $this->associations,
+            $this->metadata,
+            $this->values
+        );
     }
 }

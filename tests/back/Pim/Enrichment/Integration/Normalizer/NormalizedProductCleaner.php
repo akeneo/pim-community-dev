@@ -27,6 +27,9 @@ class NormalizedProductCleaner
         self::sanitizeMediaAttributeData($productNormalized);
         self::sortValues($productNormalized['values']);
         self::sortAssociations($productNormalized['associations']);
+        if (isset($productNormalized['categories'])) {
+            self::sortCategories($productNormalized['categories']);
+        }
     }
 
     /**
@@ -54,7 +57,18 @@ class NormalizedProductCleaner
         foreach ($associations as &$association) {
             sort($association['groups']);
             sort($association['products']);
+            sort($association['product_models']);
         }
+    }
+
+    /**
+     * Sorts the category codes by alphanumerical order.
+     *
+     * @param array $categoryCodes
+     */
+    private static function sortCategories(&$categoryCodes): void
+    {
+        sort($categoryCodes);
     }
 
     /**
@@ -122,7 +136,7 @@ class NormalizedProductCleaner
                 $locale = null === $value['locale'] ? 'locale' : $value['locale'];
                 $attributeIndexedValues[$channel . '-' . $locale] = $value;
             }
-            ksort($attributeIndexedValues);
+            self::ksortRecursive($attributeIndexedValues);
             $sortedValues[$attributeCode] = array_values($attributeIndexedValues);
         }
 

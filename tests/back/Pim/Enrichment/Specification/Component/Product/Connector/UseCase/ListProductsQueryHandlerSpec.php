@@ -53,6 +53,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->channelCode = 'tablet';
         $query->localeCodes = ['en_US'];
         $query->attributeCodes = ['name'];
+        $query->userId = 1;
 
         $fromSizePqbFactory->create([
             'limit' => 42,
@@ -92,7 +93,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $getConnectorProducts
-            ->fromProductQueryBuilder($pqb, ['name'], 'tablet', ['en_US'])
+            ->fromProductQueryBuilder($pqb, 1, ['name'], 'tablet', ['en_US'])
             ->willReturn(new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]));
 
         $searchAfterPqbFactory->create(Argument::cetera())->shouldNotBeCalled();
@@ -111,6 +112,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
         $query->limit = 42;
         $query->searchAfter = '69';
+        $query->userId = 1;
 
         $primaryKeyEncrypter->decrypt('69')->shouldBeCalled()->willReturn('encoded69');
 
@@ -153,7 +155,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $getConnectorProducts
-            ->fromProductQueryBuilder($pqb, null, null, null)
+            ->fromProductQueryBuilder($pqb, 1, null, null, null)
             ->willReturn(new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
@@ -174,6 +176,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
         $query->limit = 42;
         $query->channelCode = 'tablet';
+        $query->userId = 1;
 
         $channel->getLocaleCodes()->willReturn(['en_US']);
         $channel->getCategory()->willReturn($category);
@@ -188,7 +191,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $pqb->addFilter('categories', 'IN CHILDREN', ['master'], ['locale' => null, 'scope' => null])->shouldBeCalled();
 
         $getConnectorProducts
-            ->fromProductQueryBuilder($pqb, null, 'tablet', ['en_US'])
+            ->fromProductQueryBuilder($pqb, 1, null, 'tablet', ['en_US'])
             ->willReturn(new ConnectorProductList(0, []));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
@@ -208,6 +211,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->searchAfter = null;
         $query->channelCode = null;
         $query->localeCodes = ['en_US', 'fr_FR'];
+        $query->userId = 1;
 
         $searchAfterPqbFactory->create([
             'limit' => 42
@@ -216,7 +220,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
 
         $getConnectorProducts
-            ->fromProductQueryBuilder($pqb, null, null, ['en_US', 'fr_FR'])
+            ->fromProductQueryBuilder($pqb, 1, null, null, ['en_US', 'fr_FR'])
             ->willReturn(new ConnectorProductList(0, []));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
@@ -236,6 +240,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->searchAfter = null;
         $query->channelCode = 'tablet';
         $query->localeCodes = ['en_US', 'fr_FR'];
+        $query->userId = 1;
 
         $searchAfterPqbFactory->create([
             'limit' => 42
@@ -245,7 +250,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
 
 
         $getConnectorProducts
-            ->fromProductQueryBuilder($pqb, null, 'tablet', ['en_US', 'fr_FR'])
+            ->fromProductQueryBuilder($pqb, 1, null, 'tablet', ['en_US', 'fr_FR'])
             ->willReturn(new ConnectorProductList(0, []));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();

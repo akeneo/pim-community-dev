@@ -88,11 +88,12 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
         $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
             'productA' => [
+                'id' => 'doc: we can not check the id',
                 'identifier' => 'productA',
                 'is_enabled' => true,
                 'product_model_code' => null,
-                'created' => Type::getType(Type::DATETIME)->convertToPhpValue(self::CREATED, $platform),
-                'updated' => Type::getType(Type::DATETIME)->convertToPhpValue(self::UPDATED, $platform),
+                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
+                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
                 'family_code' => 'family',
                 'group_codes' => [],
                 'raw_values' => [
@@ -101,6 +102,9 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
             ]
         ];
         $actual = $this->getQuery()->fetchByProductIdentifiers(['productA']);
+
+        Assert::integer($actual['productA']['id']);
+        unset($expected['productA']['id'], $actual['productA']['id']);
 
         $this->assertEquals($expected, $actual);
     }
@@ -118,11 +122,12 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
         $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
             'VariantProductA' => [
+                'id' => 'doc: we can not check the id',
                 'identifier' => 'VariantProductA',
                 'is_enabled' => true,
                 'product_model_code' => 'SubProductModel',
-                'created' => Type::getType(Type::DATETIME)->convertToPhpValue(self::CREATED, $platform),
-                'updated' => Type::getType(Type::DATETIME)->convertToPhpValue(self::UPDATED, $platform),
+                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
+                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
                 'family_code' => 'FamilyWithVariant',
                 'group_codes' => [],
                 'raw_values' => [
@@ -133,6 +138,9 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
             ]
         ];
         $actual = $this->getQuery()->fetchByProductIdentifiers(['VariantProductA']);
+
+        Assert::integer($actual['VariantProductA']['id']);
+        unset($expected['VariantProductA']['id'], $actual['VariantProductA']['id']);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }

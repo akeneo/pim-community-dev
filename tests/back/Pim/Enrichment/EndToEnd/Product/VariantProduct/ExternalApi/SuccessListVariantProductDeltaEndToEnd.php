@@ -123,9 +123,28 @@ JSON;
                 },
                 "created":"2018-01-11T14:49:20+01:00",
                 "updated":"2018-01-11T14:49:20+01:00",
-                "associations":{
-
-                }
+                "associations": {
+		            "PACK": {
+		                "products": [],
+		                "product_models": [],
+		                "groups": []
+                    },
+                    "SUBSTITUTION": {
+		                "products": [],
+		                "product_models": [],
+		                "groups": []
+                    },
+                    "UPSELL": {
+		                "products": [],
+		                "product_models": [],
+		                "groups": []
+                    },
+                    "X_SELL": {
+		                "products": [],
+		                "product_models": [],
+		                "groups": []
+                    }
+		        }
             },
             {
                 "_links":{
@@ -194,9 +213,28 @@ JSON;
                 },
                 "created":"2018-01-11T14:49:20+01:00",
                 "updated":"2018-01-11T14:49:20+01:00",
-                "associations":{
-
-                }
+                "associations": {
+		            "PACK": {
+		                "products": [],
+		                "product_models": [],
+		                "groups": []
+                    },
+                    "SUBSTITUTION": {
+		                "products": [],
+		                "product_models": [],
+		                "groups": []
+                    },
+                    "UPSELL": {
+		                "products": [],
+		                "product_models": [],
+		                "groups": []
+                    },
+                    "X_SELL": {
+		                "products": [],
+		                "product_models": [],
+		                "groups": []
+                    }
+		        }
             }
         ]
     }

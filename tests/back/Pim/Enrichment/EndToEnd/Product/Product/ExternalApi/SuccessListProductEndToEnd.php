@@ -242,7 +242,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -268,7 +273,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -287,7 +297,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             }
         ]
     }
@@ -356,7 +371,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -382,7 +402,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -402,7 +427,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             }
         ]
     }
@@ -461,7 +491,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -487,7 +522,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -506,7 +546,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             }
         ]
     }
@@ -554,7 +599,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -569,7 +619,12 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             }
         ]
     }
@@ -637,7 +692,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -671,7 +731,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -692,7 +757,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {$standardizedProducts['product_china']},
             {$standardizedProducts['product_without_category']}
@@ -739,7 +809,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -754,7 +829,12 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -769,7 +849,12 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -784,7 +869,12 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -799,7 +889,12 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -814,7 +909,12 @@ JSON;
                 "values"        : [],
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             }
         ]
     }
@@ -862,7 +962,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -877,7 +982,12 @@ JSON;
                 "values"        : [],
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -903,7 +1013,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -922,7 +1037,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             }
         ]
     }
@@ -961,7 +1081,12 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             },
             {
                 "_links" : {
@@ -976,7 +1101,12 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             }
         ]
     }
@@ -1056,7 +1186,12 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                }
             }
         ]
     }
@@ -1391,7 +1526,12 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {
+        "PACK": { "products" : [], "product_models": [], "groups": [] },
+        "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+        "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+        "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+    }
 }
 JSON;
 
@@ -1440,7 +1580,12 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {
+        "PACK": { "products" : [], "product_models": [], "groups": [] },
+        "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+        "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+        "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+    }
 }
 JSON;
 
@@ -1482,7 +1627,12 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {
+        "PACK": { "products" : [], "product_models": [], "groups": [] },
+        "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+        "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+        "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+    }
 }
 JSON;
 
@@ -1524,7 +1674,12 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {
+        "PACK": { "products" : [], "product_models": [], "groups": [] },
+        "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+        "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+        "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+    }
 }
 JSON;
 
@@ -1544,7 +1699,12 @@ JSON;
    "values": {},
    "created": "2017-03-11T10:39:38+01:00",
    "updated": "2017-03-11T10:39:38+01:00",
-   "associations": {}
+   "associations": {
+        "PACK": { "products" : [], "product_models": [], "groups": [] },
+        "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+        "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+        "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+    }
 }
 JSON;
 
@@ -1570,7 +1730,12 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {
+        "PACK": { "products" : [], "product_models": [], "groups": [] },
+        "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+        "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+        "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+    }
 }
 JSON;
 
