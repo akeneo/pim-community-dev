@@ -92,6 +92,7 @@ SQL;
             [Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]
         );
 
+        $results = [];
         foreach ($rows as $row) {
             $associations = json_decode($row['associations'], true);
 

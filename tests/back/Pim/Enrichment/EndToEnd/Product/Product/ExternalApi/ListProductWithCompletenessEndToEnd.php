@@ -208,18 +208,4 @@ JSON;
     {
         return $this->catalog->useTechnicalCatalog();
     }
-
-
-    /**
-     * @param string $productIdentifier
-     */
-    private function getEncryptedId($productIdentifier)
-    {
-        $encrypter = $this->getFromTestContainer('pim_api.security.primary_key_encrypter');
-        $productRepository = $this->getFromTestContainer('pim_catalog.repository.product');
-
-        $product = $productRepository->findOneByIdentifier($productIdentifier);
-
-        return $encrypter->encrypt($product->getId());
-    }
 }

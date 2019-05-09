@@ -17,220 +17,42 @@ class GetProductEndToEnd extends AbstractProductTestCase
     /**
      * @group critical
      */
-    public function testGetACompleteProduct()
+    public function test_it_gets_a_product()
     {
-        $products = $this->get('pim_catalog.repository.product')->findAll();
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
-
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
-
-        $association = $product->getAssociationForTypeCode('X_SELL');
-        $association->addProductModel(
-            $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('bar')
-        );
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-
-        Assert::assertCount(0, $errors);
-
-        $this->get('pim_catalog.saver.product')->save($product);
+        $this->createProduct('product', [
+            'family'     => 'familyA1',
+            'enabled'       => true,
+            'categories' => ['categoryA', 'master', 'master_china'],
+            'groups'     => ['groupA', 'groupB'],
+            'values'     => [
+                'a_date' => [
+                    ['data' => '2016-06-28', 'locale' => null, 'scope' => null]
+                ],
+            ],
+        ]);
 
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/products/foo');
+        $client->request('GET', 'api/rest/v1/products/product');
 
         $standardProduct = [
-            'identifier'    => 'foo',
-            'family'        => 'familyA',
+            'identifier'    => 'product',
+            'family'        => 'familyA1',
             'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'categories'    => ['categoryA1', 'categoryB'],
+            'categories'    => ['categoryA', 'master', 'master_china'],
             'enabled'       => true,
             'values'        => [
-                'a_file'                             => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => '4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_fileA.txt',
-                        '_links' => [
-                            'download' => [
-                                'href' => 'http://localhost/api/rest/v1/media-files/4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_fileA.txt/download'
-                            ]
-                        ]
-                    ],
-                ],
-                'an_image'                           => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => '1/5/7/5/15757827125efa686c1c0f1e7930ca0c528f1c2c_imageA.jpg',
-                        '_links' => [
-                            'download' => [
-                                'href' => 'http://localhost/api/rest/v1/media-files/1/5/7/5/15757827125efa686c1c0f1e7930ca0c528f1c2c_imageA.jpg/download'
-                            ]
-                        ]
-                    ],
-                ],
-                'a_date'                             => [
-                    ['locale' => null, 'scope' => null, 'data' => '2016-06-13T00:00:00+02:00'],
-                ],
-                'a_metric'                           => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => ['amount' => '987654321987.1234', 'unit' => 'KILOWATT'],
-                    ],
-                ],
-                'a_metric_without_decimal' => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => ['amount' => 98, 'unit' => 'CENTIMETER'],
-                    ],
-                ],
-                'a_metric_without_decimal_negative' => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => ['amount' => -20, 'unit' => 'CELSIUS'],
-                    ],
-                ],
-                'a_metric_negative'        => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => ['amount' => '-20.5000', 'unit' => 'CELSIUS'],
-                    ],
-                ],
-                'a_multi_select'                     => [
-                    ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
-                ],
-                'a_number_float'                     => [
-                    ['locale' => null, 'scope' => null, 'data' => '12.5678'],
-                ],
-                'a_number_float_negative'            => [
-                    ['locale' => null, 'scope' => null, 'data' => '-99.8732'],
-                ],
-                'a_number_integer'                   => [
-                    ['locale' => null, 'scope' => null, 'data' => 42]
-                ],
-                'a_number_integer_negative' => [
-                    ['locale' => null, 'scope' => null, 'data' => -42]
-                ],
-                'a_price'                            => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => [
-                            ['amount' => '56.53', 'currency' => 'EUR'],
-                            ['amount' => '45.00', 'currency' => 'USD'],
-                        ],
-                    ],
-                ],
-                'a_price_without_decimal'            => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => [
-                            ['amount' => 56, 'currency' => 'EUR'],
-                            ['amount' => -45, 'currency' => 'USD'],
-                        ],
-                    ],
-                ],
-                'a_ref_data_multi_select'            => [
-                    ['locale' => null, 'scope' => null, 'data' => ['fabricA', 'fabricB']]
-                ],
-                'a_ref_data_simple_select'           => [
-                    ['locale' => null, 'scope' => null, 'data' => 'colorB'],
-                ],
-                'a_simple_select'                    => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
-                ],
-                'a_text'                             => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'this is a text',
-                    ],
-                ],
-                '123'                                => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'a text for an attribute with numerical code',
-                    ],
-                ],
-                'a_text_area'                        => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'this is a very very very very very long  text',
-                    ],
-                ],
-                'a_yes_no'                           => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
-                ],
-                'a_localizable_image'                => [
-                    [
-                        'locale' => 'en_US',
-                        'scope'  => null,
-                        'data'   => '6/2/e/3/62e376e75300d27bfec78878db4d30ff1490bc53_imageB_en_US.jpg',
-                        '_links' => [
-                            'download' => [
-                                'href' => 'http://localhost/api/rest/v1/media-files/6/2/e/3/62e376e75300d27bfec78878db4d30ff1490bc53_imageB_en_US.jpg/download'
-                            ]
-                        ]
-                    ],
-                    [
-                        'locale' => 'fr_FR',
-                        'scope'  => null,
-                        'data'   => '0/f/5/0/0f5058de76f68446bb6b2371f19cd2234b245c00_imageB_fr_FR.jpg',
-                        '_links' => [
-                            'download' => [
-                                'href' => 'http://localhost/api/rest/v1/media-files/0/f/5/0/0f5058de76f68446bb6b2371f19cd2234b245c00_imageB_fr_FR.jpg/download'
-                            ]
-                        ]
-                    ],
-                ],
-                'a_scopable_price'                   => [
-                    [
-                        'locale' => null,
-                        'scope'  => 'ecommerce',
-                        'data'   => [
-                            ['amount' => '20.00', 'currency' => 'USD'],
-                        ],
-                    ],
-                    [
-                        'locale' => null,
-                        'scope'  => 'tablet',
-                        'data'   => [
-                            ['amount' => '17.00', 'currency' => 'EUR'],
-                        ],
-                    ],
-                ],
-                'a_localized_and_scopable_text_area' => [
-                    [
-                        'locale' => 'en_US',
-                        'scope'  => 'ecommerce',
-                        'data'   => 'a text area for ecommerce in English',
-                    ],
-                    [
-                        'locale' => 'en_US',
-                        'scope'  => 'tablet',
-                        'data'   => 'a text area for tablets in English'
-                    ],
-                    [
-                        'locale' => 'fr_FR',
-                        'scope'  => 'tablet',
-                        'data'   => 'une zone de texte pour les tablettes en français',
-                    ],
+                'a_date' => [
+                    ['data' => '2016-06-28T00:00:00+02:00', 'locale' => null, 'scope' => null]
                 ],
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
+                'PACK'   => ['groups' => [], 'products' => [], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
-                'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
-                'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => ['bar']],
+                'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'X_SELL' => ['groups' => [], 'products' => [], 'product_models' => []],
             ]
         ];
 
@@ -239,7 +61,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         $this->assertResponse($response, $standardProduct);
     }
 
-    public function testNotFoundAProduct()
+    public function test_it_throws_a_404_response_when_the_product_is_not_found()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -258,13 +80,9 @@ class GetProductEndToEnd extends AbstractProductTestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useTechnicalSqlCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 
-    /**
-     * @param Response $response
-     * @param array    $expected
-     */
     private function assertResponse(Response $response, array $expected)
     {
         $result = json_decode($response->getContent(), true);
@@ -272,6 +90,6 @@ class GetProductEndToEnd extends AbstractProductTestCase
         NormalizedProductCleaner::clean($expected);
         NormalizedProductCleaner::clean($result);
 
-        $this->assertSame($expected, $result);
+        $this->assertEquals($expected, $result);
     }
 }

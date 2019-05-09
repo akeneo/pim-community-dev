@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductModelAssociationsBy
 use Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
@@ -78,17 +79,38 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             return $identifier->getIdentifier();
         }, iterator_to_array($result));
 
+        $products = $this->fromProductIdentifiers($identifiers, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
+
+        return new ConnectorProductList($result->count(), $products);
+    }
+
+    public function fromProductIdentifier(string $productIdentifier): ConnectorProduct
+    {
+        $products = $this->fromProductIdentifiers([$productIdentifier], null, null, null);
+        if (empty($products)) {
+            throw new ObjectNotFoundException(sprintf('Product "%s" was not found.', $productIdentifier));
+        }
+
+        return $products[0];
+    }
+
+    private function fromProductIdentifiers(
+        array $productIdentifiers,
+        ?array $attributesToFilterOn,
+        ?string $channelToFilterOn,
+        ?array $localesToFilterOn
+    ): array {
         $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
 
         $rows = array_replace_recursive(
-            $this->getValuesAndPropertiesFromProductIdentifiers->fetchByProductIdentifiers($identifiers),
-            $this->fetchAssociationsIndexedByProductIdentifier($identifiers),
-            $this->fetchCategoryCodesIndexedByProductIdentifier($identifiers)
+            $this->getValuesAndPropertiesFromProductIdentifiers->fetchByProductIdentifiers($productIdentifiers),
+            $this->fetchAssociationsIndexedByProductIdentifier($productIdentifiers),
+            $this->fetchCategoryCodesIndexedByProductIdentifier($productIdentifiers)
         );
 
         $products = [];
-        foreach ($identifiers as $identifier) {
-            if (!isset($rows[$identifier])) {
+        foreach ($productIdentifiers as $identifier) {
+            if (!isset($rows[$identifier]['identifier'])) {
                 continue;
             }
             $row = $rows[$identifier];
@@ -121,7 +143,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             );
         }
 
-        return new ConnectorProductList($result->count(), $products);
+        return $products;
     }
 
     private function removeIdentifierValue(array $rawValues, string $identifierAttributeCode): array

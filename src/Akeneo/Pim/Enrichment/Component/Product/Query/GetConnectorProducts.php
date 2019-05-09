@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -23,4 +25,9 @@ interface GetConnectorProducts
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
     ): ConnectorProductList;
+
+    /**
+     * @throws ObjectNotFoundException when the product does not exist
+     */
+    public function fromProductIdentifier(string $productIdentifier): ConnectorProduct;
 }

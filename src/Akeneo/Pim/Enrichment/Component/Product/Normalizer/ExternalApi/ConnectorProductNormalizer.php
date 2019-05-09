@@ -40,20 +40,20 @@ final class ConnectorProductNormalizer
         return $normalizedProducts;
     }
 
-    private function normalizeConnectorProduct(ConnectorProduct $connectorProduct): array
+    public function normalizeConnectorProduct(ConnectorProduct $connectorProduct): array
     {
         $values = $this->valuesNormalizer->normalize($connectorProduct->values(), 'standard');
 
         $normalizedProduct =  [
             'identifier' => $connectorProduct->identifier(),
-            'created' => $this->dateTimeNormalizer->normalize($connectorProduct->createdDate()),
-            'updated' => $this->dateTimeNormalizer->normalize($connectorProduct->updatedDate()),
             'enabled' => $connectorProduct->enabled(),
             'family' => $connectorProduct->familyCode(),
             'categories' => $connectorProduct->categoryCodes(),
             'groups' => $connectorProduct->groupCodes(),
             'parent' => $connectorProduct->parentProductModelCode(),
             'values' => empty($values) ? (object) [] : $values,
+            'created' => $this->dateTimeNormalizer->normalize($connectorProduct->createdDate()),
+            'updated' => $this->dateTimeNormalizer->normalize($connectorProduct->updatedDate()),
             'associations' => empty($connectorProduct->associations()) ? (object) [] : $connectorProduct->associations()
         ];
 
