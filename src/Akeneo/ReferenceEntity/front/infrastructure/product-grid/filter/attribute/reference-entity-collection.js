@@ -218,9 +218,9 @@ define(
                   value: this.choiceUrlParams.referenceEntityIdentifier,
                 },
                 {
-                  field: 'code_label',
+                  field: 'code',
                   operator: 'IN',
-                  value: identifiers.join(),
+                  value: identifiers,
                 }
               ],
             };

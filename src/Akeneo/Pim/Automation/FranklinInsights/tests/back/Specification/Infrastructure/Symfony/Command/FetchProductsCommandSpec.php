@@ -29,7 +29,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class LaunchFetchProductsJobInstanceCommandSpec extends ObjectBehavior
+class FetchProductsCommandSpec extends ObjectBehavior
 {
     public function let(
         ContainerInterface $container,
@@ -68,7 +68,7 @@ class LaunchFetchProductsJobInstanceCommandSpec extends ObjectBehavior
 
     public function it_has_a_name(): void
     {
-        $this->getName()->shouldReturn('pimee:franklin-insights:launch-fetch-products-job-instance');
+        $this->getName()->shouldReturn('pimee:franklin-insights:fetch-products');
     }
 
     public function it_launches_the_job_when_the_connection_is_active(
