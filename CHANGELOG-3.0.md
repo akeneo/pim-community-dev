@@ -2,10 +2,6 @@
 
 # 3.0.17 (2019-05-10)
 
-# Improvements
-
-- AOB-472: Fix modal display when using illustration class
-
 # Bug fixes
 
 - PIM-8283: Command `akeneo:batch:purge-job-execution` now works with option `--days=0`.
@@ -15,6 +11,7 @@
 
 # Improvements
 
+- AOB-472: Fix modal display when using illustration class
 - AOB-479: Resource paths in less files are now absolute and are checked when executing the "oro:assetic:dump" command to avoid wrong path resolution by Assetic.
 
 # 3.0.16 (2019-05-06)
