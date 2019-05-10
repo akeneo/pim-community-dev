@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-final class GetWorkflowStatusFromProductModelCodes
+final class GetWorkflowStatusFromProductModelCodes implements PublicApi\GetWorkflowStatusFromProductModelCodes
 {
     /** @var Connection */
     private $connection;
@@ -32,12 +33,9 @@ final class GetWorkflowStatusFromProductModelCodes
     }
 
     /**
-     * @param int $userId
-     * @param string[] $productModelCodes
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function fromProductModelCodes(int $userId, array $productModelCodes): array
+    public function fromProductModelCodes(array $productModelCodes, int $userId): array
     {
         if (empty($productModelCodes)) {
             return [];

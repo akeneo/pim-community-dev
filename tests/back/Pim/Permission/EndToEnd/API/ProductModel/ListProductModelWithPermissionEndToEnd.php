@@ -102,7 +102,28 @@ class ListProductModelWithPermissionEndToEnd extends ApiTestCase
                 },
                 "created": "2016-06-14T13:12:50+02:00",
                 "updated": "2016-06-14T13:12:50+02:00",
-                "associations": [],
+                "associations": {
+                    "PACK": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
+                    },
+                    "SUBSTITUTION": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
+                    },
+                    "UPSELL": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
+                    },
+                    "X_SELL": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
+                    }
+                },
                 "metadata": {
                     "workflow_status": "working_copy"
                 }
@@ -140,7 +161,28 @@ class ListProductModelWithPermissionEndToEnd extends ApiTestCase
                 },
                 "created": "2016-06-14T13:12:50+02:00",
                 "updated": "2016-06-14T13:12:50+02:00",
-                "associations": [],
+                "associations": {
+                    "PACK": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
+                    },
+                    "SUBSTITUTION": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
+                    },
+                    "UPSELL": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
+                    },
+                    "X_SELL": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
+                    }
+                },
                 "metadata": {
                     "workflow_status": "working_copy"
                 }

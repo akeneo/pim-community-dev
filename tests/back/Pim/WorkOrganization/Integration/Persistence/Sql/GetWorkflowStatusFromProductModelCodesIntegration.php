@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Storage\Sql;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Persistence\Sql;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -228,7 +227,7 @@ class GetWorkflowStatusFromProductModelCodesIntegration extends TestCase
         $userId = $this->getUserIdFromName($userName);
 
         $actualStatuses = $this->get('pimee_workflow.query.get_workflow_status_from_product_model_codes')
-                        ->fromProductModelCodes($userId, $productModelCodes);
+                        ->fromProductModelCodes($productModelCodes, $userId);
         Assert::assertEqualsCanonicalizing(
             $expectedStatuses,
             $actualStatuses
