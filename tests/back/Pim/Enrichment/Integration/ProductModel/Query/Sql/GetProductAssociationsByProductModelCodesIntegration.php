@@ -19,7 +19,6 @@ use PHPUnit\Framework\Assert as PHPUnitAssert;
  */
 class GetProductAssociationsByProductModelCodesIntegration extends TestCase
 {
-
     /**
      * @test
      */
@@ -175,10 +174,10 @@ class GetProductAssociationsByProductModelCodesIntegration extends TestCase
     private function getAssociationsFormattedAfterFetch(array $crossSell = [], array $pack = [], array $substitutions = [], array $upsell = []): array
     {
         return [
-            'X_SELL' => $crossSell,
-            'PACK' => $pack,
-            'SUBSTITUTION' => $substitutions,
-            'UPSELL' => $upsell
+            'X_SELL' => ['products' => $crossSell],
+            'PACK' => ['products' => $pack],
+            'SUBSTITUTION' => ['products' => $substitutions],
+            'UPSELL' => ['products' => $upsell],
         ];
     }
 

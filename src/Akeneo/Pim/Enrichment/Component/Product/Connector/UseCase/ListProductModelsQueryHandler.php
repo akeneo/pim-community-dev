@@ -81,9 +81,10 @@ class ListProductModelsQueryHandler
 
         $pqb->addSorter('id', Directions::ASCENDING);
 
-        
+
         return $this->getConnectorProductModelsQuery->fromProductQueryBuilder(
             $pqb,
+            $query->userId,
             $query->attributeCodes,
             $query->channelCode,
             $this->getLocales($query->channelCode, $query->localeCodes)

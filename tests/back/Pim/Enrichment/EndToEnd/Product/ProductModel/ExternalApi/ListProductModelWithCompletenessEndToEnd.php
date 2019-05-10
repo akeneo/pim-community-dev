@@ -59,7 +59,28 @@ class ListProductModelWithCompletenessEndToEnd extends AbstractProductModelTestC
 		        },
 		        "created": "2017-03-17T16:11:46+01:00",
 		        "updated": "2017-03-17T16:11:46+01:00",
-		        "associations": {}
+		        "associations": {
+                    "PACK": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
+                    },
+                    "SUBSTITUTION": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
+                    },
+                    "UPSELL": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
+                    },
+                    "X_SELL": {
+                        "products": [],
+                        "product_models": [],
+                        "groups": []
+                    }
+                }
 		    }
 		]
     }

@@ -27,7 +27,7 @@ class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
         parent::setUp();
 
         $this->entityBuilder = new EntityBuilder($this->testKernel->getContainer());
-        
+
         $this->givenGroup(['groupA', 'groupB', 'groupC', 'groupD', 'groupE', 'groupF', 'groupG']);
 
         $this->givenTheFollowingProductModelsWithGroupAssociations([
@@ -81,46 +81,46 @@ class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
     {
         $expected = [
             'root_product_model_1' => [
-                'PACK' => ['groupA', 'groupC'],
-                'UPSELL' => [],
-                'X_SELL' => ['groupF'],
-                'A_NEW_TYPE' => [],
-                'SUBSTITUTION' => [],
+                'PACK' => ['groups' => ['groupA', 'groupC']],
+                'UPSELL' => ['groups' => []],
+                'X_SELL' => ['groups' => ['groupF']],
+                'A_NEW_TYPE' => ['groups' => []],
+                'SUBSTITUTION' => ['groups' => []],
             ],
             'root_product_model_2' => [
-                'PACK' => [],
-                'UPSELL' => [],
-                'X_SELL' => [],
-                'A_NEW_TYPE' => [],
-                'SUBSTITUTION' => [],
+                'PACK' => ['groups' => []],
+                'UPSELL' => ['groups' => []],
+                'X_SELL' => ['groups' => []],
+                'A_NEW_TYPE' => ['groups' => []],
+                'SUBSTITUTION' => ['groups' => []],
             ],
             'sub_product_model_1_1' => [
-                'PACK' => ['groupA', 'groupC'],
-                'UPSELL' => [],
-                'X_SELL' => ['groupD', 'groupF'],
-                'A_NEW_TYPE' => [],
-                'SUBSTITUTION' => ['groupB'],
+                'PACK' => ['groups' => ['groupA', 'groupC']],
+                'UPSELL' => ['groups' => []],
+                'X_SELL' => ['groups' => ['groupD', 'groupF']],
+                'A_NEW_TYPE' => ['groups' => []],
+                'SUBSTITUTION' => ['groups' => ['groupB']],
             ],
             'sub_product_model_1_2' => [
-                'PACK' => ['groupA', 'groupG', 'groupC'],
-                'UPSELL' => ['groupE'],
-                'X_SELL' => ['groupF'],
-                'A_NEW_TYPE' => [],
-                'SUBSTITUTION' => [],
+                'PACK' => ['groups' => ['groupA', 'groupG', 'groupC']],
+                'UPSELL' => ['groups' => ['groupE']],
+                'X_SELL' => ['groups' => ['groupF']],
+                'A_NEW_TYPE' => ['groups' => []],
+                'SUBSTITUTION' => ['groups' => []],
             ],
             'sub_product_model_2_1' => [
-                'PACK' => [],
-                'UPSELL' => [],
-                'X_SELL' => [],
-                'A_NEW_TYPE' => [],
-                'SUBSTITUTION' => [],
+                'PACK' => ['groups' => []],
+                'UPSELL' => ['groups' => []],
+                'X_SELL' => ['groups' => []],
+                'A_NEW_TYPE' => ['groups' => []],
+                'SUBSTITUTION' => ['groups' => []],
             ],
             'sub_product_model_2_2' => [
-                'PACK' => ['groupC'],
-                'UPSELL' => [],
-                'X_SELL' => [],
-                'A_NEW_TYPE' => [],
-                'SUBSTITUTION' => [],
+                'PACK' => ['groups' => ['groupC']],
+                'UPSELL' => ['groups' => []],
+                'X_SELL' => ['groups' => []],
+                'A_NEW_TYPE' => ['groups' => []],
+                'SUBSTITUTION' => ['groups' => []],
             ]
         ];
 
@@ -194,12 +194,12 @@ class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
             ]);
 
             $errors = $this->get('validator')->validate($group);
-            
+
             Assert::count($errors, 0);
-            
+
             return $group;
         }, $codes);
-        
+
         $this->get('pim_catalog.saver.group')->saveAll($groups);
     }
 
