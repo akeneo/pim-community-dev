@@ -549,8 +549,8 @@ class CreateAttributeContext implements Context
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
         $attributeData['is_decimal'] = json_decode($attributeData['is_decimal']);
-        $attributeData['min'] = json_decode($attributeData['min']);
-        $attributeData['max'] = json_decode($attributeData['max']);
+        $attributeData['min_value'] = $attributeData['min_value'];
+        $attributeData['max_value'] = $attributeData['max_value'];
 
         $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));
@@ -565,28 +565,31 @@ class CreateAttributeContext implements Context
     /**
      * @Then /^there is a number attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
      */
-    public function thereIsANumberAttributeInTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
+    public function thereIsANumberAttributeInTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $expected): void
     {
-        $attributeData = current($attributeData->getHash());
+        $attributeIdentifier = $this->attributeRepository->nextIdentifier(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
 
-        $attributeData['identifier']['identifier'] = $attributeCode;
-        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
-        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
-        $attributeData['code'] = $attributeCode;
-        $attributeData['order'] = (int) $attributeData['order'];
-        $attributeData['is_required'] = json_decode($attributeData['is_required']);
-        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
-        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
-        $attributeData['labels'] = json_decode($attributeData['labels'], true);
-        $attributeData['is_decimal'] = json_decode($attributeData['is_decimal']);
+        $expected = current($expected->getHash());
+        $expected['identifier'] = (string) $attributeIdentifier;
+        $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $expected['code'] = $attributeCode;
+        $expected['order'] = (int)$expected['order'];
+        $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
+        $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
+        $expected['labels'] = json_decode($expected['labels'], true);
+        $expected['is_decimal'] = json_decode($expected['is_decimal']);
+        $expected['min_value'] = $expected['min_value'];
+        $expected['max_value'] = $expected['max_value'];
 
-        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
-        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
+        $actual = $attribute->normalize();
+        ksort($actual);
+        ksort($expected);
 
-        try {
-            ($this->handler)($command);
-        } catch (\Exception $e) {
-            $this->exceptionContext->setException($e);
-        }
+        Assert::assertEquals($expected, $actual);
     }
 }

@@ -39,10 +39,15 @@ class CreateNumberAttributeCommandFactory extends AbstractCreateAttributeCommand
             $normalizedCommand['value_per_channel'],
             $normalizedCommand['value_per_locale'],
             $normalizedCommand['is_decimal'] ?? false,
-            $normalizedCommand['min_value'] ?? null,
-            $normalizedCommand['max_value'] ?? null
+            $this->stringOrNull($normalizedCommand, 'min_value'),
+            $this->stringOrNull($normalizedCommand, 'max_value')
         );
 
         return $command;
+    }
+
+    private function stringOrNull(array $normalizedCommand, string $key)
+    {
+        return isset($normalizedCommand[$key]) ? (string)$normalizedCommand[$key] : null;
     }
 }
