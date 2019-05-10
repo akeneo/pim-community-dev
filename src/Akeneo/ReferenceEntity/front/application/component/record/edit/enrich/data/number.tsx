@@ -32,22 +32,22 @@ const View = ({
 
   return (
     <React.Fragment>
-        <input
-          id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
-          autoComplete="off"
-          className={`AknTextField AknTextField--narrow AknTextField--light
+      <input
+        id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
+        autoComplete="off"
+        className={`AknTextField AknTextField--narrow AknTextField--light
           ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}
           ${!canEditData ? 'AknTextField--disabled' : ''}`}
-          value={value.data.stringValue()}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            onValueChange(event.currentTarget.value);
-          }}
-          onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-            if (Key.Enter === event.key) onSubmit();
-          }}
-          disabled={!canEditData}
-          readOnly={!canEditData}
-        />
+        value={value.data.stringValue()}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          onValueChange(event.currentTarget.value);
+        }}
+        onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+          if (Key.Enter === event.key) onSubmit();
+        }}
+        disabled={!canEditData}
+        readOnly={!canEditData}
+      />
     </React.Fragment>
   );
 };

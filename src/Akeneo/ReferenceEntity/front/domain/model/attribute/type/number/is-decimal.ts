@@ -1,4 +1,4 @@
-import {InvalidArgumentError} from "../number";
+import {InvalidArgumentError} from '../number';
 
 export type NormalizedIsDecimal = boolean;
 
