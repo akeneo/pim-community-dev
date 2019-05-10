@@ -6,6 +6,7 @@ namespace Akeneo\Bundle\ElasticsearchBundle;
 use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
+use Pim\Bundle\CatalogBundle\Version;
 
 /**
  * This class is meant to update an index mapping or can used for an upgrade
@@ -15,7 +16,7 @@ use Elasticsearch\Namespaces\IndicesNamespace;
  * It means that it cannot be executed while the prod is alive
  * Still it is faster than before!
  *
- * @author    Anael Chardan <anael.chardan@gmail.com>
+ * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -24,7 +25,7 @@ final class UpdateIndexMapping
     public function updateIndexMapping(Client $client, string $indexNameOrAlias, Loader $indexConfiguration): void
     {
         // We don't care about the index name anymore as we use alias
-        $newIndexName = $indexNameOrAlias . '_' . time();
+        $newIndexName = $indexNameOrAlias . '_' . str_replace('.', '_', Version::VERSION) . '_' . time();
 
         $this
             ->createIndexReadyForNewConfiguration($client->indices(), $newIndexName, $indexConfiguration)
@@ -126,6 +127,8 @@ final class UpdateIndexMapping
                 ]
             ]);
         }
+
+        $indicesClient->refresh(['index' => $newIndexName]);
 
         return $this;
     }

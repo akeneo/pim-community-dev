@@ -38,8 +38,6 @@ class UpdateIndexMappingIntegration extends TestCase
         $updateIndexMapping = new UpdateIndexMapping();
         $updateIndexMapping->updateIndexMapping($client, $akeneoProductClient->getIndexName(), $akeneoProductClient->getConfigurationLoader());
 
-        $akeneoProductClient->refreshIndex();
-
         $newIndices = array_map(function (array $index) : string {
             return $index['index'];
         }, $client->cat()->indices());
