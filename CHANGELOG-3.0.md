@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.17 (2019-05-10)
+
 # Improvements
 
 - AOB-472: Fix modal display when using illustration class
