@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetViewableCategoryCodes;
@@ -85,15 +86,39 @@ class SqlGetConnectorProductModelsWithPermissions implements GetConnectorProduct
             $localesToFilterOn
         );
         $productModels = $connectorProductModelList->connectorProductModels();
-        $filteredProductModels = $this->filterNotGrantedCategoryCodes($productModels, $userId);
+        $filteredProductModels = $this->filterConnectorProductModelsGivenPermissions($productModels, $userId);
+
+        return new ConnectorProductModelList(
+            $connectorProductModelList->totalNumberOfProductModels(), $filteredProductModels
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fromProductModelCode(string $productModelCode, int $userId): ConnectorProductModel
+    {
+        $connectorProductModel = $this->getConnectorProductModels->fromProductModelCode($productModelCode, $userId);
+
+        $userRights = $this->fetchUserRightsOnProductModel->fetchByIdentifier($productModelCode, $userId);
+        if (!$userRights->isProductModelViewable()) {
+            throw new ObjectNotFoundException(sprintf('product model "%s" was not found', $productModelCode));
+        }
+
+        $filteredProductModels = $this->filterConnectorProductModelsGivenPermissions([$connectorProductModel], $userId);
+
+        return $filteredProductModels[0];
+    }
+
+    private function filterConnectorProductModelsGivenPermissions(array $connectorProductModels, int $userId): array
+    {
+        $filteredProductModels = $this->filterNotGrantedCategoryCodes($connectorProductModels, $userId);
         $filteredProductModels = $this->filterNotGrantedAttributeAndLocalesCodes($filteredProductModels, $userId);
         $filteredProductModels = $this->filterNotGrantedAssociatedProducts($filteredProductModels, $userId);
         $filteredProductModels = $this->filterNotGrantedAssociatedProductModels($filteredProductModels, $userId);
         $filteredProductModels = $this->addWorkflowStatusInMetadata($filteredProductModels, $userId);
 
-        return new ConnectorProductModelList(
-            $connectorProductModelList->totalNumberOfProductModels(), $filteredProductModels
-        );
+        return $filteredProductModels;
     }
 
     private function filterNotGrantedCategoryCodes(array $productModels, int $userId): array
@@ -186,7 +211,7 @@ class SqlGetConnectorProductModelsWithPermissions implements GetConnectorProduct
 
     private function addWorkflowStatusInMetadata(array $productModels, int $userId): array
     {
-        $productModelCodes = $productIdentifiers = array_map(
+        $productModelCodes = array_map(
             function (ConnectorProductModel $connectorProductModel) {
                 return $connectorProductModel->code();
             },
@@ -199,7 +224,11 @@ class SqlGetConnectorProductModelsWithPermissions implements GetConnectorProduct
 
         return array_map(
             function (ConnectorProductModel $productModel) use ($workflowStatuses) {
-                return $productModel->addMetadata('workflow_status', $workflowStatuses[$productModel->code()]);
+                if (isset($workflowStatuses[$productModel->code()])) {
+                    return $productModel->addMetadata('workflow_status', $workflowStatuses[$productModel->code()]);
+                }
+
+                return $productModel;
             },
             $productModels
         );
