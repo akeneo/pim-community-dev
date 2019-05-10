@@ -1,5 +1,9 @@
 # 3.0.x
 
+# Bug fixes
+
+- PIM-8013: Fix 401 redirection on non authorized page
+
 # 3.0.17 (2019-05-10)
 
 # Bug fixes
