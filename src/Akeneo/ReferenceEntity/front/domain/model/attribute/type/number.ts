@@ -10,17 +10,23 @@ import {
   ConcreteAttribute,
 } from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {IsDecimal, NormalizedIsDecimal} from 'akeneoreferenceentity/domain/model/attribute/type/number/is-decimal';
+import {MinValue, NormalizedMinValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/min-value';
+import {MaxValue, NormalizedMaxValue} from 'akeneoreferenceentity/domain/model/attribute/type/number/max-value';
 
-export type NumberAdditionalProperty = IsDecimal;
-export type NormalizedNumberAdditionalProperty = NormalizedIsDecimal;
+export type NumberAdditionalProperty = IsDecimal | MinValue | MaxValue;
+export type NormalizedNumberAdditionalProperty = NormalizedIsDecimal | NormalizedMinValue | NormalizedMaxValue;
 
 export interface NormalizedNumberAttribute extends NormalizedAttribute {
   type: 'number';
   is_decimal: NormalizedIsDecimal;
+  min_value: NormalizedMinValue;
+  max_value: NormalizedMaxValue;
 }
 
 export interface NumberAttribute extends Attribute {
   isDecimal: IsDecimal;
+  minValue: MinValue;
+  maxValue: MaxValue;
   normalize(): NormalizedNumberAttribute;
 }
 
@@ -36,7 +42,9 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
     valuePerChannel: boolean,
     order: number,
     is_required: boolean,
-    readonly isDecimal: IsDecimal
+    readonly isDecimal: IsDecimal,
+    readonly minValue: MinValue,
+    readonly maxValue: MaxValue
   ) {
     super(
       identifier,
@@ -54,6 +62,14 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       throw new Error('Attribute expects a IsDecimal as isDecimal');
     }
 
+    if (!(minValue instanceof MinValue)) {
+      throw new Error('Attribute expects a MinValue as minValue');
+    }
+
+    if (!(maxValue instanceof MaxValue)) {
+      throw new Error('Attribute expects a MaxValue as maxValue');
+    }
+
     Object.freeze(this);
   }
 
@@ -67,7 +83,9 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       normalizedNumberAttribute.value_per_channel,
       normalizedNumberAttribute.order,
       normalizedNumberAttribute.is_required,
-      new IsDecimal(normalizedNumberAttribute.is_decimal)
+      new IsDecimal(normalizedNumberAttribute.is_decimal),
+      new MinValue(normalizedNumberAttribute.min_value),
+      new MaxValue(normalizedNumberAttribute.max_value)
     );
   }
 
@@ -75,7 +93,9 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
     return {
       ...super.normalize(),
       type: 'number',
-      is_decimal: this.isDecimal.normalize()
+      is_decimal: this.isDecimal.normalize(),
+      min_value: this.minValue.normalize(),
+      max_value: this.maxValue.normalize()
     };
   }
 }
