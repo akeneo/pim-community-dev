@@ -102,12 +102,7 @@ services:
         tags:
             - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
 
-    akeneo_referenceentity.application.factory.edit_min_value_command_factory:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinValueCommandFactory
-        tags:
-            - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }
-
-    akeneo_referenceentity.application.factory.edit_max_value_command_factory:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxValueCommandFactory
+    akeneo_referenceentity.application.factory.edit_min_max_value_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommandFactory
         tags:
             - { name: akeneo_referenceentity.edit_attribute_command_factory, priority: 120 }

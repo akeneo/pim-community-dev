@@ -58,13 +58,8 @@ services:
         tags:
             - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
 
-    akeneo_referenceentity.application.edit_attribute.attribute_updater.min_value:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\MinValueUpdater
-        tags:
-            - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
-
-    akeneo_referenceentity.application.edit_attribute.attribute_updater.max_value:
-        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxValueUpdater
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.min_max_value:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\MinMaxValueUpdater
         tags:
             - { name: akeneo_referenceentity.attribute_updater, priority: 120 }
 

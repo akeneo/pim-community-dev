@@ -35,8 +35,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxValue;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMinValue;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
@@ -2567,8 +2566,8 @@ final class EditRecordContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeIsDecimal::fromBoolean(true),
-                AttributeMinValue::noMinimum(),
-                AttributeMaxValue::noMaximum()
+                AttributeLimit::limitLess(),
+                AttributeLimit::limitLess()
             )
         );
     }
@@ -2658,8 +2657,8 @@ final class EditRecordContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeIsDecimal::fromBoolean(false),
-                AttributeMinValue::noMinimum(),
-                AttributeMaxValue::noMaximum()
+                AttributeLimit::limitLess(),
+                AttributeLimit::limitLess()
             )
         );
     }

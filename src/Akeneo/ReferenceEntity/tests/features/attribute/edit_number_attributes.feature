@@ -73,12 +73,6 @@ Feature: Edit a number attribute of a reference entity
 
   @acceptance-back
   Scenario: Min value should not be greater than the max value
-    Given a reference entity with a number attribute 'area' with a max value set to 200
-    When the user sets the min value of 'area' to 201
+    Given a reference entity with a number attribute 'area'
+    When the user sets the min value of 'area' to 201 and the max value to 0
     Then there should be a validation error with message 'The min cannot be greater than the max'
-
-  @acceptance-back
-  Scenario: Max value should not be lower than the min value
-    Given a reference entity with a number attribute 'area' with a min value set to 150
-    When the user sets the max value of 'area' to 149
-    Then there should be a validation error with message 'The max cannot be lower than the min'

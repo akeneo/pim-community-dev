@@ -144,31 +144,19 @@ class NumberAttributeSpec extends ObjectBehavior
         $this->normalize()['is_decimal']->shouldBe(true);
     }
 
-    function it_can_have_its_min_value_updated_with_a_limit()
+    function it_can_have_its_min_and_max_value_updated_with_a_limit()
     {
-        $this->setMinValue(AttributeLimit::fromString('-1'));
+        $this->setLimit(AttributeLimit::fromString('-1'), AttributeLimit::fromString('1'));
 
         $this->normalize()['min_value']->shouldBe('-1');
+        $this->normalize()['max_value']->shouldBe('1');
     }
 
-    function it_can_have_its_min_value_updated_without_a_limit()
+    function it_can_have_its_min_and_max_value_updated_with_no_limit()
     {
-        $this->setMinValue(AttributeLimit::limitLess());
+        $this->setLimit(AttributeLimit::limitLess(), AttributeLimit::limitLess());
 
         $this->normalize()['min_value']->shouldBe(null);
-    }
-
-    function it_can_have_its_max_value_updated_with_a_limit()
-    {
-        $this->setMaxValue(AttributeLimit::fromString('99'));
-
-        $this->normalize()['max_value']->shouldBe('99');
-    }
-
-    function it_can_have_its_max_value_updated_without_a_limit()
-    {
-        $this->setMaxValue(AttributeLimit::limitLess());
-
         $this->normalize()['max_value']->shouldBe(null);
     }
 }

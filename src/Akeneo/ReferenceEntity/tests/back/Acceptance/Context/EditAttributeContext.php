@@ -1596,6 +1596,7 @@ class EditAttributeContext implements Context
     }
 
     /**
+     * @Given /^a reference entity with a number attribute \'([^\']*)\'$/
      * @Given /^a reference entity with a number attribute \'([^\']*)\' with a max value$/
      * @Given /^a reference entity with a number attribute \'([^\']*)\' with a max value set to 200$/
      */
@@ -1681,5 +1682,20 @@ class EditAttributeContext implements Context
             'max_value'  => json_decode($invalidValue),
         ];
         $this->updateAttribute($updateMinValue);
+    }
+
+    /**
+     * @When /^the user sets the min value of \'([^\']*)\' to (\d+) and the max value to (\d+)$/
+     */
+    public function theUserSetsTheMinValueOfToAndTheMaxValueTo(string $attributeCode, string $minValue, string $maxValue)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
+
+        $updateMaxValue = [
+            'identifier' => (string) $identifier,
+            'min_value' => $minValue,
+            'max_value' => $maxValue
+        ];
+        $this->updateAttribute($updateMaxValue);
     }
 }

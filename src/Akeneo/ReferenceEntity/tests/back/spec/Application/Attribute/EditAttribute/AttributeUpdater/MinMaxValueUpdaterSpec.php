@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater;
 
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\AttributeUpdaterInterface;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\MinValueUpdater;
-use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinValueCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\MinMaxValueUpdater;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
-class MinValueUpdaterSpec extends ObjectBehavior
+class MinMaxValueUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(MinValueUpdater::class);
+        $this->shouldHaveType(MinMaxValueUpdater::class);
         $this->shouldBeAnInstanceOf(AttributeUpdaterInterface::class);
     }
 
@@ -25,7 +25,7 @@ class MinValueUpdaterSpec extends ObjectBehavior
         NumberAttribute $numberAttribute,
         TextAttribute $textAtttribute
     ) {
-        $editMinCommand = new EditMinValueCommand('number', '10');
+        $editMinCommand = new EditMinMaxValueCommand('number', '10', null);
         $notEditMinCommand = new EditLabelsCommand('name', []);
 
         $this->supports($numberAttribute, $editMinCommand)->shouldReturn(true);
@@ -33,22 +33,23 @@ class MinValueUpdaterSpec extends ObjectBehavior
         $this->supports($textAtttribute, $editMinCommand)->shouldReturn(false);
     }
 
-    function it_edits_the_min_value_of_an_attribute(NumberAttribute $numberAttribute)
+    function it_edits_the_min_max_value_of_an_attribute(NumberAttribute $numberAttribute)
     {
-        $editMin = new EditMinValueCommand('min', '10');
+        $editMinMax = new EditMinMaxValueCommand('min', '10', '12');
 
-        $this->__invoke($numberAttribute, $editMin)->shouldReturn($numberAttribute);
+        $this->__invoke($numberAttribute, $editMinMax)->shouldReturn($numberAttribute);
 
-        $numberAttribute->setMinValue(AttributeLimit::fromString('10'))->shouldBeCalled();
+        $numberAttribute->setLimit(AttributeLimit::fromString('10'),AttributeLimit::fromString('12'))
+            ->shouldBeCalled();
     }
 
-    function it_unsets_the_min_value_of_an_attribute(NumberAttribute $numberAttribute)
+    function it_unsets_the_min_max_max_value_of_an_attribute(NumberAttribute $numberAttribute)
     {
-        $editMin = new EditMinValueCommand('min', null);
+        $editMin = new EditMinMaxValueCommand('min', null, null);
 
         $this->__invoke($numberAttribute, $editMin)->shouldReturn($numberAttribute);
 
-        $numberAttribute->setMinValue(AttributeLimit::limitLess())->shouldBeCalled();
+        $numberAttribute->setLimit(AttributeLimit::limitLess(),AttributeLimit::limitLess())->shouldBeCalled();
     }
 
     function it_throws_if_the_command_is_not_supported(NumberAttribute $numberAttribute)
@@ -61,7 +62,7 @@ class MinValueUpdaterSpec extends ObjectBehavior
 
     function it_throws_if_the_attribute_is_not_supported(TextAttribute $unsupportedAttribute)
     {
-        $supportedCommand = new EditMinValueCommand('min', null);
+        $supportedCommand = new EditMinMaxValueCommand('min', null, null);
 
         $this->shouldThrow(\RuntimeException::class)
             ->during('__invoke', [$unsupportedAttribute, $supportedCommand]);

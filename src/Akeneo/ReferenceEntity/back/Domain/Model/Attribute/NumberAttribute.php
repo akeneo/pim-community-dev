@@ -121,37 +121,21 @@ class NumberAttribute extends AbstractAttribute
         return $this->isDecimal->normalize();
     }
 
-    public function setMinValue(AttributeLimit $newMinValue): void
+    public function setLimit(AttributeLimit $minValue, AttributeLimit $maxValue): void
     {
-        if (!$this->maxValue->isLimitLess() &&
-            !$newMinValue->isLimitLess() &&
-            $newMinValue->isGreater($this->maxValue)
+        if (!$minValue->isLimitLess()
+            && !$maxValue->isLimitLess()
+            && $minValue->isGreater($maxValue)
         ) {
             $message = sprintf(
                 'Min value %s, cannot be greater than the current max value (%s)',
-                $newMinValue->normalize(),
-                $this->maxValue->normalize()
+                $minValue->normalize(),
+                $maxValue->normalize()
             );
             throw new \InvalidArgumentException($message);
         }
 
-        $this->minValue = $newMinValue;
-    }
-
-    public function setMaxValue(AttributeLimit $newMaxValue): void
-    {
-        if (!$this->minValue->isLimitLess() &&
-            !$newMaxValue->isLimitLess() &&
-            $newMaxValue->isLower($this->minValue)
-        ) {
-            $message = sprintf(
-                'Max value %s, cannot be lower than the current min value (%s)',
-                $newMaxValue->normalize(),
-                $this->minValue->normalize()
-            );
-            throw new \InvalidArgumentException($message);
-        }
-
-        $this->maxValue = $newMaxValue;
+        $this->minValue = $minValue;
+        $this->maxValue = $maxValue;
     }
 }
