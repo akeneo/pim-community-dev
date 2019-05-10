@@ -24,6 +24,8 @@ $rules = [
         // TODO: dependencies related to the front end, remove twig screens
         'Twig_SimpleFunction', // used by the category tree
 
+        'Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated',
+
         // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
 

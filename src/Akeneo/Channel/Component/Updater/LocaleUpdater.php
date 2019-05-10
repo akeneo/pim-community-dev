@@ -20,9 +20,9 @@ class LocaleUpdater implements ObjectUpdaterInterface
      * {@inheritdoc}
      *
      * Expected input format :
-     * {
-     *     'code': 'en_US'
-     * }
+     * [
+     *     'code' => 'en_US'
+     * ]
      */
     public function update($locale, array $data, array $options = [])
     {
