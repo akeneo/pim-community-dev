@@ -16,6 +16,41 @@
   },
   "response": {
     "status": 400,
-    "body": []
+    "body": [
+      {
+        "messageTemplate": "The min cannot be greater than the max",
+        "parameters": [],
+        "plural": null,
+        "message": "The min cannot be greater than the max",
+        "root": {
+          "editCommands": [
+            {
+              "isDecimal": true,
+              "identifier": "age_designer_52609e00b7ee307e79eb100099b9a8bf"
+            },
+            {
+              "minValue": "5",
+              "maxValue": "1",
+              "identifier": "age_designer_52609e00b7ee307e79eb100099b9a8bf"
+            }
+          ],
+          "identifier": "age_designer_52609e00b7ee307e79eb100099b9a8bf"
+        },
+        "propertyPath": "",
+        "invalidValue": {
+          "minValue": "5",
+          "maxValue": "1",
+          "identifier": "age_designer_52609e00b7ee307e79eb100099b9a8bf"
+        },
+        "constraint": {
+          "targets": "class",
+          "defaultOption": null,
+          "requiredOptions": [],
+          "payload": null
+        },
+        "cause": null,
+        "code": null
+      }
+    ]
   }
 }

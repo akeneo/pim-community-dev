@@ -62,8 +62,7 @@ class MinMaxValueValidator extends ConstraintValidator
             $updateMinValueCommand,
             [
                 new Constraints\Callback(
-                    function ($minValue, ExecutionContextInterface $context, $payload)
-                    {
+                    function ($minValue, ExecutionContextInterface $context, $payload) {
                         if (null !== $minValue && !is_numeric($minValue)) {
                             $context->buildViolation(MinMaxValue::MESSAGE_SHOULD_BE_A_NUMBER)->addViolation();
                         }

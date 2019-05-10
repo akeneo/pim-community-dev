@@ -147,7 +147,9 @@
             "value_per_channel": false,
             "value_per_locale": false,
             "type": "number",
-            "is_decimal": false
+            "is_decimal": false,
+            "min_value": "10",
+            "max_value": "20"
           },
           "channel": null,
           "locale": null,
