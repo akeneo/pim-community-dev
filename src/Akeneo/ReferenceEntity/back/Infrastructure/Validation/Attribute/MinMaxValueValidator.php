@@ -51,7 +51,9 @@ class MinMaxValueValidator extends ConstraintValidator
         }
 
         if ($this->isMinIsGreaterThanMax($minValue, $maxValue)) {
-            $this->context->buildViolation(MinMaxValue::MESSAGE_MIN_CANNOT_BE_GREATER_THAN_MAX)->addViolation();
+            $this->context->buildViolation(MinMaxValue::MESSAGE_MIN_CANNOT_BE_GREATER_THAN_MAX)
+                ->atPath('minValue')
+                ->addViolation();
         }
     }
 

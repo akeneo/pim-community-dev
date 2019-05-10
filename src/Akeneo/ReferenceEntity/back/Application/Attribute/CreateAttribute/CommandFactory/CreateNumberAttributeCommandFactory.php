@@ -48,6 +48,6 @@ class CreateNumberAttributeCommandFactory extends AbstractCreateAttributeCommand
 
     private function stringOrNull(array $normalizedCommand, string $key)
     {
-        return isset($normalizedCommand[$key]) ? (string)$normalizedCommand[$key] : null;
+        return isset($normalizedCommand[$key]) && !empty($normalizedCommand[$key]) ? (string)$normalizedCommand[$key] : null;
     }
 }
