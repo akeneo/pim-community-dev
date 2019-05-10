@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
-use mysql_xdevapi\Exception;
 use Webmozart\Assert\Assert;
 
 /**

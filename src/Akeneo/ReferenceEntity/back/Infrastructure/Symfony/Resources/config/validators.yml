@@ -213,19 +213,3 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.attribute_option_should_exist' }
-
-    akeneo_referenceentity.infrastructure.validation.attribute.number_attribute.min_value:
-        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MinValueValidator
-        arguments:
-            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.number_attribute.min_value' }
-
-    akeneo_referenceentity.infrastructure.validation.attribute.number_attribute.max_value:
-        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MaxValueValidator
-        arguments:
-            - '@akeneo.referencentity.infrastructure.persistence.query.get_attribute_identifier'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-        tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.number_attribute.max_value' }

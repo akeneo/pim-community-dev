@@ -365,6 +365,10 @@ Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIs
         isDecimal:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsDecimal: ~
 
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommand:
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MinMaxValue: ~
+
 Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinValueCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MinValue: ~

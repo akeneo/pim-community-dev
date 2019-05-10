@@ -19,18 +19,13 @@ use Symfony\Component\Validator\Constraint;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class MaxValue extends Constraint
+class MinMaxValue extends Constraint
 {
-    public const MESSAGE_SHOULD_BE_A_NUMBER = 'pim_reference_entity.attribute.validation.max_value.should_be_a_number';
-    public const MESSAGE_MAX_CANNOT_BE_LOWER_THAN_MIN = 'pim_reference_entity.attribute.validation.max_value.cannot_be_lower_than_min';
+    public const MESSAGE_SHOULD_BE_A_NUMBER = 'pim_reference_entity.attribute.validation.min_value.should_be_a_number';
+    public const MESSAGE_MIN_CANNOT_BE_GREATER_THAN_MAX = 'pim_reference_entity.attribute.validation.min_value.cannot_be_greater_than_max';
 
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
-    }
-
-    public function validatedBy()
-    {
-        return 'akeneo_referenceentity.validator.attribute.number_attribute.max_value';
     }
 }
