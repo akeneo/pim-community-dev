@@ -72,7 +72,7 @@ class NumberAttributeFactory implements AttributeFactoryInterface
 
     private function minValue(CreateNumberAttributeCommand $command): AttributeLimit
     {
-       return null !== $command->minValue
+        return null !== $command->minValue
            ? AttributeLimit::fromString($command->minValue) : AttributeLimit::limitLess();
     }
 

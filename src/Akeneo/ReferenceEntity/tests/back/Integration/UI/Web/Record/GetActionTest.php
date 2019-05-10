@@ -18,8 +18,10 @@ use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsDecimal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
@@ -28,6 +30,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
@@ -145,6 +148,22 @@ class GetActionTest extends ControllerIntegrationTestCase
         );
         $this->attributeRepository->create($portraitAttribute);
 
+        // image attribute
+        $age = NumberAttribute::create(
+            AttributeIdentifier::create('designer', 'age', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('age'),
+            LabelCollection::fromArray(['fr_FR' => 'Age', 'en_US' => 'Age']),
+            AttributeOrder::fromInteger(4),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeIsDecimal::fromBoolean(false),
+            AttributeLimit::fromString('10'),
+            AttributeLimit::fromString('20')
+        );
+        $this->attributeRepository->create($age);
+
         $values = [
             [
                 'attribute' => $textAttribute->normalize(),
@@ -175,6 +194,12 @@ class GetActionTest extends ControllerIntegrationTestCase
                 'channel' => null,
                 'locale' => null,
                 'data' => null,
+            ],
+            [
+                'attribute' => $age->normalize(),
+                'channel'   => null,
+                'locale'    => null,
+                'data'      => null,
             ]
         ];
 
