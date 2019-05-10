@@ -1,4 +1,4 @@
-import {InvalidArgumentError} from "akeneoreferenceentity/domain/model/attribute/type/number";
+import {InvalidArgumentError} from 'akeneoreferenceentity/domain/model/attribute/type/number';
 
 export type NormalizedMinValue = string | null;
 
@@ -11,7 +11,7 @@ export class MinValue {
   }
 
   public static isValid(value: any): boolean {
-    return typeof value === 'string' && !isNaN(Number(value)) || null === value;
+    return (typeof value === 'string' && !isNaN(Number(value))) || null === value;
   }
 
   public static createFromNormalized(normalizedMinValue: NormalizedMinValue) {

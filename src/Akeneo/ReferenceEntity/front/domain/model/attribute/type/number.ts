@@ -95,7 +95,7 @@ export class ConcreteNumberAttribute extends ConcreteAttribute implements Number
       type: 'number',
       is_decimal: this.isDecimal.normalize(),
       min_value: this.minValue.normalize(),
-      max_value: this.maxValue.normalize()
+      max_value: this.maxValue.normalize(),
     };
   }
 }
