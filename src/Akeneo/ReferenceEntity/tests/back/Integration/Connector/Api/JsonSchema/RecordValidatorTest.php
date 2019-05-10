@@ -460,7 +460,7 @@ class RecordValidatorTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(false),
             AttributeIsDecimal::fromBoolean(false),
             AttributeLimit::fromString('0'),
-            AttributeLimit::limitLess()
+            AttributeLimit::limitless()
         );
 
         $this->attributeRepository->create($attribute);

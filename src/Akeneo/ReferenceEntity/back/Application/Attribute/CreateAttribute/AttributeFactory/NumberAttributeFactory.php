@@ -73,12 +73,12 @@ class NumberAttributeFactory implements AttributeFactoryInterface
     private function minValue(CreateNumberAttributeCommand $command): AttributeLimit
     {
         return null !== $command->minValue
-           ? AttributeLimit::fromString($command->minValue) : AttributeLimit::limitLess();
+           ? AttributeLimit::fromString($command->minValue) : AttributeLimit::limitless();
     }
 
     private function maxValue(CreateNumberAttributeCommand $command): AttributeLimit
     {
         return null !== $command->maxValue
-            ? AttributeLimit::fromString($command->maxValue) : AttributeLimit::limitLess();
+            ? AttributeLimit::fromString($command->maxValue) : AttributeLimit::limitless();
     }
 }

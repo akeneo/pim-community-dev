@@ -49,7 +49,7 @@ class MinMaxValueUpdaterSpec extends ObjectBehavior
 
         $this->__invoke($numberAttribute, $editMin)->shouldReturn($numberAttribute);
 
-        $numberAttribute->setLimit(AttributeLimit::limitLess(),AttributeLimit::limitLess())->shouldBeCalled();
+        $numberAttribute->setLimit(AttributeLimit::limitless(),AttributeLimit::limitless())->shouldBeCalled();
     }
 
     function it_throws_if_the_command_is_not_supported(NumberAttribute $numberAttribute)

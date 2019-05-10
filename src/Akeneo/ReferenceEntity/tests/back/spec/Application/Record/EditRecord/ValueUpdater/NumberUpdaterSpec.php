@@ -72,8 +72,8 @@ class NumberUpdaterSpec extends ObjectBehavior
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeIsDecimal::fromBoolean(false),
-            AttributeLimit::limitLess(),
-            AttributeLimit::limitLess()
+            AttributeLimit::limitless(),
+            AttributeLimit::limitless()
         );
     }
 }
