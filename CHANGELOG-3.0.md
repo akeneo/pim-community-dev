@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.17 (2019-05-10)
+
 ## Bug fixes
 
 - PIM-8328: Fix flag display on reference entities locales with multiple underscore
