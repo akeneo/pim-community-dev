@@ -1441,8 +1441,8 @@ class EditAttributeContext implements Context
                 AttributeValuePerChannel::fromBoolean(true),
                 AttributeValuePerLocale::fromBoolean(true),
                 AttributeIsDecimal::fromBoolean(false),
-                AttributeLimit::limitLess(),
-                AttributeLimit::limitLess()
+                AttributeLimit::limitless(),
+                AttributeLimit::limitless()
             )
         );
     }
@@ -1468,8 +1468,8 @@ class EditAttributeContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeIsDecimal::fromBoolean(false),
-                AttributeLimit::limitLess(),
-                AttributeLimit::limitLess()
+                AttributeLimit::limitless(),
+                AttributeLimit::limitless()
             )
         );
     }
@@ -1544,7 +1544,7 @@ class EditAttributeContext implements Context
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeIsDecimal::fromBoolean(false),
                 AttributeLimit::fromString('150'),
-                AttributeLimit::limitLess()
+                AttributeLimit::limitless()
             )
         );
     }
@@ -1616,7 +1616,7 @@ class EditAttributeContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeIsDecimal::fromBoolean(false),
-                AttributeLimit::limitLess(),
+                AttributeLimit::limitless(),
                 AttributeLimit::fromString('200')
             )
         );

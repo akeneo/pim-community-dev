@@ -154,7 +154,7 @@ class NumberAttributeSpec extends ObjectBehavior
 
     function it_can_have_its_min_and_max_value_updated_with_no_limit()
     {
-        $this->setLimit(AttributeLimit::limitLess(), AttributeLimit::limitLess());
+        $this->setLimit(AttributeLimit::limitless(), AttributeLimit::limitless());
 
         $this->normalize()['min_value']->shouldBe(null);
         $this->normalize()['max_value']->shouldBe(null);

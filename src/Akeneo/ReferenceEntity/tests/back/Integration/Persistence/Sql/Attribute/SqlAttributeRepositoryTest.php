@@ -263,7 +263,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(false),
             AttributeIsDecimal::fromBoolean(true),
             AttributeLimit::fromString('10'),
-            AttributeLimit::limitLess()
+            AttributeLimit::limitless()
         );
 
         $this->attributeRepository->create($expectedNumber);

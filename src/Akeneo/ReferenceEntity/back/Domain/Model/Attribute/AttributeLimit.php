@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  */
 class AttributeLimit
 {
-    private const LIMIT_LESS = null;
+    private const LIMITLESS = null;
 
     /** @var ?string */
     private $limit;
@@ -21,7 +21,7 @@ class AttributeLimit
     private function __construct(?string $limit)
     {
         Assert::nullOrStringNotEmpty($limit, 'The limit cannot be empty');
-        if (self::LIMIT_LESS !== $limit) {
+        if (self::LIMITLESS !== $limit) {
             Assert::numeric($limit);
         }
         $this->limit = $limit;
@@ -32,9 +32,9 @@ class AttributeLimit
         return new self($minValue);
     }
 
-    public static function limitLess(): self
+    public static function limitless(): self
     {
-        return new self(self::LIMIT_LESS);
+        return new self(self::LIMITLESS);
     }
 
     public function normalize(): ?string
@@ -58,7 +58,7 @@ class AttributeLimit
 
     public function isLimitLess(): bool
     {
-        return self::LIMIT_LESS === $this->limit;
+        return self::LIMITLESS === $this->limit;
     }
 
     private function checkEitherLimitAreNotLimitless(AttributeLimit $otherLimit): void

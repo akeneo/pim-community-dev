@@ -28,7 +28,7 @@ class AttributeLimitSpec extends ObjectBehavior
 
     public function it_can_be_limit_less()
     {
-        $this->beConstructedThrough('limitLess');
+        $this->beConstructedThrough('limitless');
         $this->normalize()->shouldReturn(null);
     }
 
@@ -40,7 +40,7 @@ class AttributeLimitSpec extends ObjectBehavior
 
     public function it_tells_if_it_is_limitless()
     {
-        $this->beConstructedThrough('limitLess');
+        $this->beConstructedThrough('limitless');
         $this->isLimitLess()->shouldReturn(true);
     }
 
@@ -62,7 +62,7 @@ class AttributeLimitSpec extends ObjectBehavior
 
     public function it_cannot_tell_whether_a_limit_less_value_is_greater_than_another_one()
     {
-        $this->beConstructedThrough('limitLess', []);
+        $this->beConstructedThrough('limitless', []);
         $this->shouldThrow(\LogicException::class)
             ->during('isGreater', [AttributeLimit::fromString('-1')]);
     }
@@ -71,12 +71,12 @@ class AttributeLimitSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('fromString', ['1']);
         $this->shouldThrow(\LogicException::class)
-            ->during('isGreater', [AttributeLimit::limitLess()]);
+            ->during('isGreater', [AttributeLimit::limitless()]);
     }
 
     public function it_cannot_tell_whether_a_limit_less_value_is_lower_than_another_one()
     {
-        $this->beConstructedThrough('limitLess', []);
+        $this->beConstructedThrough('limitless', []);
         $this->shouldThrow(\LogicException::class)
             ->during('isLower', [AttributeLimit::fromString('-1')]);
     }
@@ -85,6 +85,6 @@ class AttributeLimitSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('fromString', ['1']);
         $this->shouldThrow(\LogicException::class)
-            ->during('isLower', [AttributeLimit::limitLess()]);
+            ->during('isLower', [AttributeLimit::limitless()]);
     }
 }

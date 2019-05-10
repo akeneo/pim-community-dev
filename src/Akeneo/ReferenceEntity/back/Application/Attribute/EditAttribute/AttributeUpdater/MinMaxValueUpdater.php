@@ -39,6 +39,6 @@ class MinMaxValueUpdater implements AttributeUpdaterInterface
     private function value(?string $value): AttributeLimit
     {
         return null === $value ?
-            AttributeLimit::limitLess() : AttributeLimit::fromString($value);
+            AttributeLimit::limitless() : AttributeLimit::fromString($value);
     }
 }

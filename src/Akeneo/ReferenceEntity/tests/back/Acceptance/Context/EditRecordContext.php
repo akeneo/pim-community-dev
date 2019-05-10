@@ -2566,8 +2566,8 @@ final class EditRecordContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeIsDecimal::fromBoolean(true),
-                AttributeLimit::limitLess(),
-                AttributeLimit::limitLess()
+                AttributeLimit::limitless(),
+                AttributeLimit::limitless()
             )
         );
     }
@@ -2657,8 +2657,8 @@ final class EditRecordContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeIsDecimal::fromBoolean(false),
-                AttributeLimit::limitLess(),
-                AttributeLimit::limitLess()
+                AttributeLimit::limitless(),
+                AttributeLimit::limitless()
             )
         );
     }

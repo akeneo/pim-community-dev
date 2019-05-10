@@ -77,13 +77,13 @@ class NumberAttributeHydrator extends AbstractAttributeHydrator
     {
         $min = $row['min_value'];
 
-        return null !== $min ? AttributeLimit::fromString($min) : AttributeLimit::limitLess();
+        return null !== $min ? AttributeLimit::fromString($min) : AttributeLimit::limitless();
     }
 
     private function maxValue(array $row): AttributeLimit
     {
         $max = $row['max_value'];
 
-        return null !== $max ? AttributeLimit::fromString($max) : AttributeLimit::limitLess();
+        return null !== $max ? AttributeLimit::fromString($max) : AttributeLimit::limitless();
     }
 }
