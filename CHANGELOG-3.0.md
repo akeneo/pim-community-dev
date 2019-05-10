@@ -11,6 +11,10 @@
 - PIM-8254: Attributes, attribute groups, groups, group types and channels edit page are not accessible anymore
     and remove action is disabled from grid if they are not granted.
 
+# Improvements
+
+- AOB-479: Resource paths in less files are now absolute and are checked when executing the "oro:assetic:dump" command to avoid wrong path resolution by Assetic.
+
 # 3.0.16 (2019-05-06)
 
 # Bug fixes
