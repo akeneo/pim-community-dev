@@ -57,6 +57,9 @@ SQL;
         $platform = $this->connection->getDatabasePlatform();
         $results = [];
         foreach ($rows as $row) {
+            $groupCodes = array_values(array_filter(json_decode($row['group_codes'])));
+            sort($groupCodes);
+
             $results[$row['identifier']] = [
                 'id' => Type::getType(Type::INTEGER)->convertToPHPValue($row['id'], $platform),
                 'identifier' => Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $platform),
@@ -65,7 +68,7 @@ SQL;
                 'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['created'], $platform),
                 'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated'], $platform),
                 'family_code' => Type::getType(Type::STRING)->convertToPHPValue($row['family_code'], $platform),
-                'group_codes' => array_filter(json_decode($row['group_codes'])),
+                'group_codes' => $groupCodes,
                 'raw_values' => json_decode($row['raw_values'], true)
             ];
         }

@@ -29,5 +29,5 @@ interface GetConnectorProducts
     /**
      * @throws ObjectNotFoundException when the product does not exist
      */
-    public function fromProductIdentifier(string $productIdentifier): ConnectorProduct;
+    public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct;
 }

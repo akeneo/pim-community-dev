@@ -84,7 +84,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         return new ConnectorProductList($result->count(), $products);
     }
 
-    public function fromProductIdentifier(string $productIdentifier): ConnectorProduct
+    public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct
     {
         $products = $this->fromProductIdentifiers([$productIdentifier], null, null, null);
         if (empty($products)) {

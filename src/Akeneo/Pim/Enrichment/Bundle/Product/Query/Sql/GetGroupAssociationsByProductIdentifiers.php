@@ -13,7 +13,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetGroupAssociationsByProductIdentifiers
+final class GetGroupAssociationsByProductIdentifiers
 {
     /** @var Connection */
     private $connection;
@@ -98,7 +98,9 @@ SQL;
 
             $filteredAssociations = [];
             foreach ($associations as $associationType => $productAssociations) {
-                $filteredAssociations[$associationType]['groups'] = array_filter($productAssociations);
+                $association = array_values(array_filter($productAssociations));
+                sort($association);
+                $filteredAssociations[$associationType]['groups'] = $association;
             }
 
             $results[$row['product_identifier']] = $filteredAssociations;

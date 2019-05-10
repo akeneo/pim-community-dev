@@ -222,10 +222,10 @@ final class ConnectorProduct
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
             $filteredAssociations[$associationType]['products'] = $association['products'];
-            $filteredAssociations[$associationType]['product_models'] = array_intersect(
+            $filteredAssociations[$associationType]['product_models'] = array_values(array_intersect(
                 $association['product_models'],
                 $productModelCodesToFilter
-            );
+            ));
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
         }
 
@@ -249,10 +249,10 @@ final class ConnectorProduct
     {
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
-            $filteredAssociations[$associationType]['products'] = array_intersect(
+            $filteredAssociations[$associationType]['products'] = array_values(array_intersect(
                 $association['products'],
                 $productIdentifiersToFilter
-            );
+            ));
             $filteredAssociations[$associationType]['product_models'] = $association['product_models'];
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
         }
@@ -275,7 +275,7 @@ final class ConnectorProduct
 
     public function filterByCategoryCodes(array $categoryCodesToFilter): ConnectorProduct
     {
-        $categoryCodes =  array_intersect($this->categoryCodes, $categoryCodesToFilter);
+        $categoryCodes =  array_values(array_intersect($this->categoryCodes, $categoryCodesToFilter));
 
         return new self(
             $this->id,
