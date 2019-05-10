@@ -1,0 +1,17 @@
+{
+  "request": {
+      "method": "GET",
+      "route": "akeneo_reference_entities_product_get_linked_product",
+      "query": {
+          "attributeCode": "designers",
+          "recordCode": "starck",
+          "referenceEntityIdentifier": "designer",
+          "channel": "ecommerce",
+          "locale": "en_US"
+      }
+  },
+  "response": {
+      "status": 200,
+      "body": []
+  }
+}

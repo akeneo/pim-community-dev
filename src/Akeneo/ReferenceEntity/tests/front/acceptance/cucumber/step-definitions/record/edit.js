@@ -1,6 +1,8 @@
 const Edit = require('../../decorators/record/edit.decorator');
+const Product = require('../../decorators/record/product.decorator');
 const {getRequestContract, listenRequest, answerLocaleList, answerChannelList} = require('../../tools');
 const Header = require('../../decorators/reference-entity/app/header.decorator');
+const Sidebar = require('../../decorators/reference-entity/app/sidebar.decorator');
 const Modal = require('../../decorators/delete/modal.decorator');
 const path = require('path');
 
@@ -16,6 +18,10 @@ module.exports = async function(cucumber) {
   const assert = require('assert');
 
   const config = {
+    Sidebar: {
+      selector: '.AknColumn',
+      decorator: Sidebar,
+    },
     Header: {
       selector: '.AknTitleContainer',
       decorator: Header,
@@ -23,6 +29,10 @@ module.exports = async function(cucumber) {
     Edit: {
       selector: '.AknDefault-contentWithColumn',
       decorator: Edit,
+    },
+    Product: {
+      selector: '.AknDefault-contentWithColumn',
+      decorator: Product,
     },
     Modal: {
       selector: '.modal',
@@ -57,10 +67,67 @@ module.exports = async function(cucumber) {
 
   Given('the user asks for the list of linked product', async function() {
     await answerLocaleList.apply(this);
-    const requestContract = getRequestContract('Record/RecordDetails/ok/option_collection.json');
-    currentRequestContract = requestContract;
+    const productRequestContract = getRequestContract('Record/Product/ok.json');
 
-    return await listenRequest(this.page, requestContract);
+    await listenRequest(this.page, productRequestContract);
+    const attributeRequestContract = getRequestContract('Record/Product/Attribute/ok.json');
+
+    await listenRequest(this.page, attributeRequestContract);
+    return await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
+  });
+
+  Given('the user asks for the list of linked product without any reference entity attribute', async function() {
+    await answerLocaleList.apply(this);
+    const productRequestContract = getRequestContract('Record/Product/ok.json');
+
+    await listenRequest(this.page, productRequestContract);
+    const attributeRequestContract = getRequestContract('Record/Product/Attribute/empty.json');
+
+    await listenRequest(this.page, attributeRequestContract);
+    return await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
+  });
+
+  Given('the user asks for the list of linked product without any linked product', async function() {
+    await answerLocaleList.apply(this);
+    const productRequestContract = getRequestContract('Record/Product/empty.json');
+
+    await listenRequest(this.page, productRequestContract);
+    const attributeRequestContract = getRequestContract('Record/Product/Attribute/ok.json');
+
+    await listenRequest(this.page, attributeRequestContract);
+    return await loadEditRecord.apply(this, ['Record/Edit/details_ok.json']);
+  });
+
+  Given('the user should see the list of products linked to the record', async function() {
+    const sidebar = await getElement(this.page, 'Sidebar');
+    await sidebar.clickOnTab('product');
+
+    const products = await getElement(this.page, 'Product');
+    const product1 = await products.productExists('1111111292');
+    const product2 = await products.productExists('1111111304');
+    const product3 = await products.productExists('model-braided-hat');
+
+    assert.strictEqual(product1, true);
+    assert.strictEqual(product2, true);
+    assert.strictEqual(product3, true);
+  });
+
+  Given('the user should not see any linked product', async function() {
+    const sidebar = await getElement(this.page, 'Sidebar');
+    await sidebar.clickOnTab('product');
+
+    const products = await getElement(this.page, 'Product');
+    const noLinkedProduct = await products.noLinkedProduct();
+    assert.strictEqual(noLinkedProduct, true);
+  });
+
+  Given('the user should not see any linked product attribute', async function() {
+    const sidebar = await getElement(this.page, 'Sidebar');
+    await sidebar.clickOnTab('product');
+
+    const products = await getElement(this.page, 'Product');
+    const noLinkedAttribute = await products.noLinkedAttribute();
+    assert.strictEqual(noLinkedAttribute, true);
   });
 
   Given('an invalid record', async function() {

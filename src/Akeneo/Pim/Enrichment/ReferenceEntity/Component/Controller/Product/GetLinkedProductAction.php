@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Get the first 16 products linked to a record on an attribute
@@ -43,18 +44,23 @@ class GetLinkedProductAction
         $this->normalizer = $normalizer;
     }
 
-    public function __invoke(string $referenceEntityIdentifier, string $recordCode, string $attributeCode): JsonResponse
+    public function __invoke(Request $request, string $referenceEntityIdentifier, string $recordCode, string $attributeCode): JsonResponse
     {
         $recordCode = $this->getRecordCodeOr404($recordCode);
-        // $queryBuilder = $this->pqbFactory->create(['limit' => 16]);
-        $queryBuilder = $this->pqbFactory->create();
+        $queryBuilder = $this->pqbFactory->create([
+            'default_locale' => $request->query->get('locale'),
+            'default_scope' => $request->query->get('channel')
+        ]);
 
         $queryBuilder->addFilter($attributeCode, Operators::IN_LIST, [(string) $recordCode]);
         $products = $queryBuilder->execute();
 
         $normalizedProducts = [];
-        foreach ($products as $product) {
+        foreach ($products as $index => $product) {
           $normalizedProducts[] = $this->normalizer->normalize($product, 'internal_api', []);
+          if ($index >= 16) {
+              break;
+          }
         }
 
         return new JsonResponse($normalizedProducts);
@@ -70,16 +76,5 @@ class GetLinkedProductAction
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
-    }
-
-    private function hydratePermissions(RecordDetails $recordDetails): RecordDetails
-    {
-        $canEditQuery = new CanEditReferenceEntityQuery(
-            (string) $recordDetails->referenceEntityIdentifier,
-            $this->tokenStorage->getToken()->getUser()->getUsername()
-        );
-        $recordDetails->isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($canEditQuery);
-
-        return $recordDetails;
     }
 }

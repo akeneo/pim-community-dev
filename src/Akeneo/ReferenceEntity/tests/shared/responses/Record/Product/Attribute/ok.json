@@ -1,0 +1,52 @@
+{
+    "request": {
+        "method": "POST",
+        "route": "pim_enrich_attribute_rest_index",
+        "query": {},
+        "body": "types=akeneo_reference_entity%2Cakeneo_reference_entity_collection"
+    },
+    "response": {
+        "status": 200,
+        "body": [
+            {
+                "code": "designers",
+                "type": "akeneo_reference_entity",
+                "group": "marketing",
+                "unique": false,
+                "useable_as_grid_filter": false,
+                "allowed_extensions": [],
+                "metric_family": null,
+                "default_metric_unit": null,
+                "reference_data_name": "designer",
+                "available_locales": [],
+                "max_characters": null,
+                "validation_rule": null,
+                "validation_regexp": null,
+                "wysiwyg_enabled": null,
+                "number_min": null,
+                "number_max": null,
+                "decimals_allowed": null,
+                "negative_allowed": null,
+                "date_min": null,
+                "date_max": null,
+                "max_file_size": null,
+                "minimum_input_length": null,
+                "sort_order": 0,
+                "localizable": false,
+                "scopable": false,
+                "labels": [],
+                "auto_option_sorting": null,
+                "is_read_only": null,
+                "empty_value": null,
+                "field_type": "akeneo-reference-entity-field",
+                "filter_types": {
+                    "product-export-builder": "akeneo-attribute-reference-entity-collection-filter"
+                },
+                "is_locale_specific": false,
+                "meta": {
+                    "id": 83
+                }
+            }
+        ]
+    }
+}

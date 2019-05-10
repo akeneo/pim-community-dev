@@ -1,0 +1,12 @@
+{
+  "request": {
+      "method": "POST",
+      "route": "pim_enrich_attribute_rest_index",
+      "query": {},
+      "body": "types=akeneo_reference_entity%2Cakeneo_reference_entity_collection"
+  },
+  "response": {
+      "status": 200,
+      "body": []
+  }
+}

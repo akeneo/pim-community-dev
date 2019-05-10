@@ -26,7 +26,8 @@ const listenRequest = async function(page, requestContract, once = false) {
     if (
       url === request.url() &&
       requestContract.request.method === request.method() &&
-      JSON.stringify(requestContract.request.body) === request.postData()
+      (JSON.stringify(requestContract.request.body) === request.postData() ||
+        requestContract.request.body === request.postData())
     ) {
       answerJson(request, requestContract.response.body, requestContract.response.status);
       page.removeListener('request', answerRequest);
