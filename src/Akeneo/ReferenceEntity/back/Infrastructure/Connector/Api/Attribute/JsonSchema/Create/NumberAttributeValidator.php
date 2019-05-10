@@ -41,7 +41,7 @@ class NumberAttributeValidator implements AttributeValidatorInterface
     {
         return [
             'type' => 'object',
-            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel', 'is_decimal'],
+            'required' => ['code', 'type', 'value_per_locale', 'value_per_channel', 'min_value', 'max_value'],
             'properties' => [
                 'code' => [
                     'type' => ['string'],
@@ -66,6 +66,12 @@ class NumberAttributeValidator implements AttributeValidatorInterface
                 ],
                 'is_decimal' => [
                     'type' => [ 'boolean'],
+                ],
+                'min_value' => [
+                    'type' => [ 'string', 'integer', 'null'],
+                ],
+                'max_value' => [
+                    'type' => [ 'string', 'integer', 'null'],
                 ],
             ],
             'additionalProperties' => false,
