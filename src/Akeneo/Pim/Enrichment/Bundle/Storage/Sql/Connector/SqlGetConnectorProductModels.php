@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductModelsAssociat
 use Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
@@ -75,6 +76,36 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
             iterator_to_array($result)
         );
 
+        $connectorProductModels = $this->fromProductModelCodes(
+            $productModelCodes,
+            $attributesToFilterOn,
+            $channelToFilterOn,
+            $localesToFilterOn
+        );
+
+        return new ConnectorProductModelList($result->count(), $connectorProductModels);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fromProductModelCode(string $productModelCode, int $userId): ConnectorProductModel
+    {
+        $connectorProductModels = $this->fromProductModelCodes([$productModelCode], null, null, null);
+
+        if (empty($connectorProductModels)) {
+            throw new ObjectNotFoundException(sprintf('Product model "%s" was not found', $productModelCode));
+        }
+
+        return $connectorProductModels[0];
+    }
+
+    private function fromProductModelCodes(
+        array $productModelCodes,
+        ?array $attributesToFilterOn,
+        ?string $channelToFilterOn,
+        ?array $localesToFilterOn
+    ): array {
         $rows = array_replace_recursive(
             $this->getValuesAndPropertiesFromProductModelCodes->fromProductModelCodes($productModelCodes),
             $this->fetchAssociationsIndexedByProductModelCode($productModelCodes),
@@ -110,7 +141,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
             );
         }
 
-        return new ConnectorProductModelList($result->count(), $productModels);
+        return $productModels;
     }
 
     private function fetchCategoryCodesIndexedByProductModelCode(array $productModelCodes): array

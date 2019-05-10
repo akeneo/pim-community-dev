@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 
 /**
@@ -25,4 +27,9 @@ interface GetConnectorProductModels
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
     ): ConnectorProductModelList;
+
+    /**
+     * @throws ObjectNotFoundException if the product model was not found
+     */
+    public function fromProductModelCode(string $productModelCode, int $userId): ConnectorProductModel;
 }
