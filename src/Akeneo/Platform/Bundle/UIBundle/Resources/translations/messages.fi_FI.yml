@@ -77,7 +77,7 @@ pim_enrich:
       categories_view: Katso tuotteen kategorioita
       associations_view: Näytä tuotteen assosiaatiot
       associations_edit: Lisää tuotteelle assosiaatioita
-      change_family: Vaihda tuoteryhmää
+      change_family: Vaihda perhettä
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
       mass_edit: Tuotteen massamuokkaustoiminnot
