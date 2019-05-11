@@ -149,7 +149,7 @@ pim_enrich:
       remove_attribute: Poista attribuutti tuotteelta
       categories_view: Katso tuotteen kategorioita
       associations_view: Tarkastele tuotteen assosiaatiotyyppejä
-      change_family: Vaihda tuoteryhmää
+      change_family: Vaihda perhettä
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
       mass_edit: Tuotteen massamuokkaus-toiminnot
