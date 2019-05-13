@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
@@ -33,12 +33,12 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
 
         $filteredValues = [];
 
-        foreach ($selectValues as $attributeCode => $productValueCollection) {
-            foreach ($productValueCollection as $productValues) {
+        foreach ($selectValues as $attributeCode => $productData) {
+            foreach ($productData as $productValues) {
                 $multiSelectValues = [];
 
-                foreach ($productValues['values'] as $channel => $channelValues) {
-                    foreach ($channelValues as $locale => $value) {
+                foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
+                    foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (is_array($value)) {
                             $multiSelectValues[$channel][$locale] = $this->arrayIntersectCaseInsensitive($value, $optionCodes[$attributeCode] ?? []);
                         }
