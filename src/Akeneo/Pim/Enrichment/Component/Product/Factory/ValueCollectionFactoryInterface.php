@@ -26,9 +26,7 @@ interface ValueCollectionFactoryInterface
      *
      * @param array $rawValues
      *
-     * @param string|null $identifier
-     *
      * @return ValueCollectionInterface
      */
-    public function createFromStorageFormat(array $rawValues, ?string $identifier = null);
+    public function createFromStorageFormat(array $rawValues);
 }

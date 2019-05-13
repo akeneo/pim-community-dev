@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\Chai
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributeByCodes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -31,7 +31,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var GetAttributeByCodes */
+    /** @var GetAttributes */
     private $getAttributeByCodes;
 
     /** @var ChainedNonExistentValuesFilterInterface */
@@ -44,7 +44,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
         ValueFactory $valueFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger,
-        GetAttributeByCodes $getAttributeByCodes,
+        GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
         EmptyValuesCleaner $emptyValuesCleaner
     ) {
@@ -58,19 +58,10 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
 
     /**
      * {@inheritdoc}
-     *
-     * Raw values that correspond to a non existing attribute (that was deleted
-     * for instance) are NOT loaded.
-     *
-     * @see \Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\ProductValuesNormalizer.php
-     *
-     * @param array $rawValues
-     *
-     * @return ValueCollectionInterface
      */
-    public function createFromStorageFormat(array $rawValues, ?string $identifier = null)
+    public function createFromStorageFormat(array $rawValues)
     {
-        $notUsedIdentifier = $identifier ?? uniqid();
+        $notUsedIdentifier = 'not_used_identifier';
 
         return $this->createMultipleFromStorageFormat([$notUsedIdentifier => $rawValues])[$notUsedIdentifier];
     }

@@ -22,16 +22,19 @@ final class GetExistingAttributeOptionCodes implements GetExistingAttributeOptio
         $this->connection = $connection;
     }
 
-    public function fromOptionCodesByAttributeCode(array $attributeCodesToOptionCodes): array
+    /**
+     * @param array $optionCodesIndexedByAttributeCodes ['color' => ['blue', 'red'], 'brand' => ['abscscd', 'weryet']]
+     */
+    public function fromOptionCodesByAttributeCode(array $optionCodesIndexedByAttributeCodes): array
     {
-        if (empty($attributeCodesToOptionCodes)) {
+        if (empty($optionCodesIndexedByAttributeCodes)) {
             return [];
         }
 
         $queryParams = [];
         $queryStringParams = [];
 
-        foreach ($attributeCodesToOptionCodes as $attributeCode => $optionCodes) {
+        foreach ($optionCodesIndexedByAttributeCodes as $attributeCode => $optionCodes) {
             foreach ($optionCodes as $optionCode) {
                 $queryParams[] = $attributeCode;
                 $queryParams[] = $optionCode;

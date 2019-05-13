@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\Chai
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributeByCodes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -27,7 +27,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         ValueFactory $valueFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger,
-        GetAttributeByCodes $getAttributeByCodes,
+        GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $this->beConstructedWith(
@@ -54,7 +54,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         ValueInterface $value2,
         ValueInterface $value3,
         ValueInterface $value4,
-        GetAttributeByCodes $getAttributeByCodes,
+        GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValues = [
@@ -84,7 +84,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             AttributeTypes::IDENTIFIER => [
                 'sku' => [
                     [
-                        'identifier' => 'productA',
+                        'identifier' => 'not_used_identifier',
                         'values' => [
                             '<all_channels>' => [
                                 '<all_locales>' => 'foo'
@@ -96,7 +96,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             AttributeTypes::TEXTAREA => [
                 'description' => [
                     [
-                        'identifier' => 'productA',
+                        'identifier' => 'not_used_identifier',
                         'values' => [
                             'ecommerce' => [
                                 'en_US' => 'a text area for ecommerce in English',
@@ -152,7 +152,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             ->create($description, 'tablet', 'fr_FR', 'une zone de texte pour les tablettes en français', true)
             ->willReturn($value4);
 
-        $actualValues = $this->createFromStorageFormat($rawValues, 'productA');
+        $actualValues = $this->createFromStorageFormat($rawValues);
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(4);
@@ -164,7 +164,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
     }
 
     function it_skips_unknown_attributes_when_creating_a_values_collection_from_the_storage_format(
-        GetAttributeByCodes $getAttributeByCodes
+        GetAttributes $getAttributeByCodes
     ) {
         $rawValues = [
             'attribute_that_does_not_exists' => [
@@ -176,7 +176,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $getAttributeByCodes->forCodes(['attribute_that_does_not_exists'])->willReturn([]);
 
-        $this->createFromStorageFormat($rawValues, 'productA')->shouldBeLike(new ValueCollection([]));
+        $this->createFromStorageFormat($rawValues)->shouldBeLike(new ValueCollection([]));
     }
 
     function it_skips_unknown_attributes_when_there_are_multiple_product(
@@ -184,7 +184,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $attributeRepository,
         AttributeInterface $color,
         ValueInterface $value,
-        GetAttributeByCodes $getAttributeByCodes,
+        GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValueCollection = [
@@ -241,7 +241,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
     }
 
     function it_skips_unknown_option_when_creating_a_values_collection_from_the_storage_format(
-        GetAttributeByCodes $getAttributeByCodes,
+        GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValues = [
@@ -260,7 +260,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             AttributeTypes::OPTION_SIMPLE_SELECT => [
                 'color' => [
                     [
-                        'identifier' => 'productA',
+                        'identifier' => 'not_used_identifier',
                         'values' => [
                             '<all_channels>' => [
                                 '<all_locales>' => 'red'
@@ -277,7 +277,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             AttributeTypes::OPTION_SIMPLE_SELECT => [
                 'color' => [
                     [
-                        'identifier' => 'productA',
+                        'identifier' => 'not_used_identifier',
                         'values' => [
                             '<all_channels>' => [
                                 '<all_locales>' => ''
@@ -291,7 +291,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             new OnGoingFilteredRawValues($filteredRawValues, [])
         );
 
-        $this->createFromStorageFormat($rawValues, 'productA')->shouldBeLike(new ValueCollection([]));
+        $this->createFromStorageFormat($rawValues)->shouldBeLike(new ValueCollection([]));
     }
 
     function it_skips_invalid_attributes_when_creating_a_values_collection_from_the_storage_format_single(
@@ -299,7 +299,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger,
         AttributeInterface $color,
-        GetAttributeByCodes $getAttributeByCodes,
+        GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValues = [
@@ -318,7 +318,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             AttributeTypes::OPTION_MULTI_SELECT => [
                 'color' => [
                     [
-                        'identifier' => 'productA',
+                        'identifier' => 'not_used_identifier',
                         'values' => [
                             '<all_channels>' => [
                                 '<all_locales>' => 'red'
@@ -340,7 +340,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $logger->warning(Argument::containingString('Tried to load a product value with an invalid attribute "color".'));
 
-        $actualValues = $this->createFromStorageFormat($rawValues, 'productA');
+        $actualValues = $this->createFromStorageFormat($rawValues);
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(0);
@@ -351,7 +351,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger,
         AttributeInterface $referenceData,
-        GetAttributeByCodes $getAttributeByCodes,
+        GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValues = [
@@ -370,7 +370,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             AttributeTypes::IMAGE => [
                 'image' => [
                     [
-                        'identifier' => 'productA',
+                        'identifier' => 'not_used_identifier',
                         'values' => [
                             '<all_channels>' => [
                                 '<all_locales>' => 'my_image'
@@ -394,7 +394,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             Argument::containingString('Tried to load a product value with the property "image" that does not exist.')
         );
 
-        $actualValues = $this->createFromStorageFormat($rawValues, 'productA');
+        $actualValues = $this->createFromStorageFormat($rawValues);
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(0);
@@ -407,7 +407,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         AttributeInterface $image,
         ValueInterface $value1,
         AttributeInterface $referenceData,
-        GetAttributeByCodes $getAttributeByCodes,
+        GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValues = [
@@ -426,7 +426,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             AttributeTypes::IMAGE => [
                 'image' => [
                     [
-                        'identifier' => 'productA',
+                        'identifier' => 'not_used_identifier',
                         'values' => [
                             '<all_channels>' => [
                                 '<all_locales>' => 'empty_image'
@@ -458,7 +458,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             Argument::containingString('Tried to load a product value for attribute "image" that does not have the good type.')
         );
 
-        $actualValues = $this->createFromStorageFormat($rawValues, 'productA');
+        $actualValues = $this->createFromStorageFormat($rawValues);
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(1);
@@ -473,7 +473,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         ValueInterface $numberValue,
         ValueInterface $textValue,
         ValueInterface $yesnoValue,
-        GetAttributeByCodes $getAttributeByCodes,
+        GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
     ) {
         $rawValues = [
@@ -504,7 +504,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             AttributeTypes::NUMBER => [
                 'number' => [
                     [
-                        'identifier' => 'productA',
+                        'identifier' => 'not_used_identifier',
                         'values' => [
                             '<all_channels>' => [
                                 '<all_locales>' => 0.0,
@@ -516,7 +516,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             AttributeTypes::TEXTAREA => [
                 'text' => [
                     [
-                        'identifier' => 'productA',
+                        'identifier' => 'not_used_identifier',
                         'values' => [
                             '<all_channels>' => [
                                 '<all_locales>' => '0',
@@ -528,7 +528,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             AttributeTypes::BOOLEAN => [
                 'yes_no' => [
                     [
-                        'identifier' => 'productA',
+                        'identifier' => 'not_used_identifier',
                         'values' => [
                             '<all_channels>' => [
                                 '<all_locales>' => false,
@@ -585,7 +585,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             ->create($yesNo, null, null, false, true)
             ->willReturn($yesnoValue);
 
-        $actualValues = $this->createFromStorageFormat($rawValues, 'productA');
+        $actualValues = $this->createFromStorageFormat($rawValues);
 
         $actualValues->shouldBeAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(3);
