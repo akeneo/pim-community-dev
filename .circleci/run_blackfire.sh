@@ -10,16 +10,16 @@ DOCKER_BRIDGE_IP=$(ip address show | grep "global docker" | cut -c10- | cut -d '
 WORKING_DIRECTORY="$SCRIPT_DIR/../var/benchmarks"
 
 PIM_PATH="$SCRIPT_DIR/.."
-CONFIG_PATH="$PIM_PATH/tests/benchmarks/"
+# CONFIG_PATH="$PIM_PATH/tests/benchmarks/"
 
-if [ $# -eq 0 ]; then
-    REFERENCE_CATALOG_FILE="$CONFIG_PATH/product_api_catalog.yml"
-else
-    if [ ! -f "$CONFIG_PATH/$1" ]; then
-        echo >&2 "The file does not exist"; exit 1;
-    fi;
-    REFERENCE_CATALOG_FILE="$CONFIG_PATH/$1"
-fi;
+# if [ $# -eq 0 ]; then
+#     REFERENCE_CATALOG_FILE="$CONFIG_PATH/product_api_catalog.yml"
+# else
+#     if [ ! -f "$CONFIG_PATH/$1" ]; then
+#         echo >&2 "The file does not exist"; exit 1;
+#     fi;
+#     REFERENCE_CATALOG_FILE="$CONFIG_PATH/$1"
+# fi;
 
 message()
 {
@@ -51,7 +51,7 @@ generate_reference_catalog()
     docker run \
         -t \
         -e API_CLIENT -e API_SECRET -e API_URL -e API_USER -e API_PASSWORD \
-        -v "$REFERENCE_CATALOG_FILE:/app/akeneo-data-generator/app/catalog/product_api_catalog.yml" \
+        -v "/srv/pim/tests/benchmarks/product_api_catalog:/app/akeneo-data-generator/app/catalog/product_api_catalog.yml" \
         akeneo/data-generator:3.0 akeneo:api:generate-catalog --with-products --check-minimal-install product_api_catalog.yml
 }
 
