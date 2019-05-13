@@ -9,7 +9,7 @@ use Elasticsearch\Namespaces\IndicesNamespace;
 use Pim\Bundle\CatalogBundle\Version;
 
 /**
- * This class is meant to update an index mapping or can used for an upgrade
+ * This class is meant to update an index mapping or can be used for an upgrade
  * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/reindex-upgrade-inplace.html
  *
  * A little problem of synchronized data can happen during the reindex operation
