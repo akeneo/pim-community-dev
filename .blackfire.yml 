@@ -1,0 +1,5 @@
+tests:
+    "API Product export should have x queries":
+        path: "/api/products/*"
+        assertions:
+            - "metrics.sql.queries.count > 1"

@@ -247,6 +247,18 @@ jobs:
             command: docker-compose run --rm node yarn run integration
             when: always
 
+  blackfire_assertions:
+    machine:
+        enabled: true
+        docker_layer_caching: true
+    steps:
+        - attach_workspace:
+            at: ~/
+        - run:
+                name: Run blackfire profiling
+                command: .circleci/run_blackfire.sh
+                when: always
+
 workflows:
   version: 2
   pull_request:
@@ -303,3 +315,17 @@ workflows:
           - back_behat_legacy:
                 requires:
                     - back_phpunit_end_to_end
+
+  blackfire:
+    jobs:
+        - wait_for_user_approval:
+            type: approval
+            filters:
+                branches:
+                    only:
+                        - blackfire-ci
+                    ignore:
+                        - master
+        - blackfire_assertions:
+            requires:
+                - wait_for_user_approval
