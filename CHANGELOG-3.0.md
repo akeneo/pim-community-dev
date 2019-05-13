@@ -4,6 +4,10 @@
 
 - PIM-8013: Fix 401 redirection on non authorized page
 
+# Improvements
+
+- PIM-8232: fix error message when removing category tree linked to a channel
+
 # 3.0.17 (2019-05-10)
 
 # Bug fixes
