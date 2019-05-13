@@ -199,6 +199,9 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.find_record_link_value_keys:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordLinkValueKeys
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_identifiers:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordLabelsByIdentifiers
+
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
         class: Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy

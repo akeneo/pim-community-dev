@@ -23,6 +23,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersByReferenceEntityAndCodesInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
@@ -49,6 +50,9 @@ class SqlRecordRepository implements RecordRepositoryInterface
     /** @var FindAttributesIndexedByIdentifierInterface */
     private $findAttributesIndexedByIdentifier;
 
+    /** @var FindIdentifiersByReferenceEntityAndCodesInterface  */
+    private $findIdentifiersByReferenceEntityAndCodes;
+
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
@@ -57,12 +61,14 @@ class SqlRecordRepository implements RecordRepositoryInterface
         RecordHydratorInterface $recordHydrator,
         FindValueKeyCollectionInterface $findValueKeyCollection,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->recordHydrator = $recordHydrator;
         $this->findValueKeyCollection = $findValueKeyCollection;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
+        $this->findIdentifiersByReferenceEntityAndCodes = $findIdentifiersByReferenceEntityAndCodes;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -100,7 +106,14 @@ SQL;
             );
         }
 
-        $this->eventDispatcher->dispatch(RecordUpdatedEvent::class, new RecordUpdatedEvent($record->getIdentifier()));
+        $this->eventDispatcher->dispatch(
+            RecordUpdatedEvent::class,
+            new RecordUpdatedEvent(
+                $record->getIdentifier(),
+                $record->getCode(),
+                $record->getReferenceEntityIdentifier()
+            )
+        );
     }
 
     public function update(Record $record): void
@@ -127,7 +140,14 @@ SQL;
             );
         }
 
-        $this->eventDispatcher->dispatch(RecordUpdatedEvent::class, new RecordUpdatedEvent($record->getIdentifier()));
+        $this->eventDispatcher->dispatch(
+            RecordUpdatedEvent::class,
+            new RecordUpdatedEvent(
+                $record->getIdentifier(),
+                $record->getCode(),
+                $record->getReferenceEntityIdentifier()
+            )
+        );
     }
 
     public function getByReferenceEntityAndCode(
@@ -203,6 +223,8 @@ SQL;
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code
     ): void {
+        $identifiers = $this->findIdentifiersByReferenceEntityAndCodes->find($referenceEntityIdentifier, [$code]);
+
         $sql = <<<SQL
         DELETE FROM akeneo_reference_entity_record
         WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
@@ -221,7 +243,11 @@ SQL;
 
         $this->eventDispatcher->dispatch(
             RecordDeletedEvent::class,
-            new RecordDeletedEvent($code, $referenceEntityIdentifier)
+            new RecordDeletedEvent(
+                $identifiers[$code->normalize()],
+                $code,
+                $referenceEntityIdentifier
+            )
         );
     }
 

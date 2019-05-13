@@ -8,6 +8,7 @@ use Akeneo\ReferenceEntity\Application\Record\Subscribers\IndexByReferenceEntity
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
@@ -44,7 +45,11 @@ class IndexRecordSubscriberSpec extends ObjectBehavior
         $recordIdentifier = RecordIdentifier::fromString('starck');
         $recordIndexer->index($recordIdentifier)->shouldBeCalled();
 
-        $this->whenRecordUpdated(new RecordUpdatedEvent($recordIdentifier));
+        $this->whenRecordUpdated(new RecordUpdatedEvent(
+            $recordIdentifier,
+            RecordCode::fromString('starck'),
+            ReferenceEntityIdentifier::fromString('designer')
+        ));
     }
 
     function it_runs_a_reindexing_command_when_an_attribute_is_removed(
