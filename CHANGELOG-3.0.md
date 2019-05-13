@@ -4,6 +4,10 @@
 
 - PIM-8307: Create public API services/events for records synchronisation with Onboarder
 
+## Bug fixes
+
+- PIM-8339: Add missing translations
+
 # 3.0.17 (2019-05-10)
 
 ## Bug fixes
@@ -40,7 +44,7 @@
 ## BC breaks
 
 - Changed constructor of `Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent`. Added `Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode` and `Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier` as last arguments.
-- Changed constructor of `Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent`. Added `Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier` as first argument. 
+- Changed constructor of `Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent`. Added `Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier` as first argument.
 
 # 3.0.14 (2019-04-19)
 
