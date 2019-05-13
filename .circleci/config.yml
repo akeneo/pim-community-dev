@@ -254,7 +254,13 @@ jobs:
     steps:
         - attach_workspace:
             at: ~/
-        - run:
+          - run:
+                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: docker-compose up -d fpm
+          - run:
                 name: Run blackfire profiling
                 command: .circleci/run_blackfire.sh
                 when: always
