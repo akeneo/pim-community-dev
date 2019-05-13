@@ -30,17 +30,16 @@ message()
 
 boot_and_install_pim()
 {
-    # Remove these steps depending on the setup
     message "Boot and install PIM in test environment"
     cd $PIM_PATH
     export ES_JAVA_OPTS='-Xms2g -Xmx2g'
-    docker-compose up -d --remove-orphans
+    # docker-compose up -d --remove-orphans
     PUBLIC_PIM_HTTP_PORT=$(docker-compose port httpd-behat 80 | cut -d ':' -f 2)
-    rm -rf var/cache/*
-    rm -f app/config/parameters_test.yml
-    bin/docker/pim-setup.sh
-    docker-compose exec -T fpm bin/console cache:warmup -e behat
-    docker-compose exec -T fpm bin/console pim:installer:db -e behat
+    # rm -rf var/cache/*
+    # rm -f app/config/parameters_test.yml
+    # bin/docker/pim-setup.sh
+    # docker-compose exec -T fpm bin/console cache:warmup -e behat
+    # docker-compose exec -T fpm bin/console pim:installer:db -e behat
     CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
     export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)
     export API_SECRET=$(echo $CREDENTIALS | cut -d " " -f 3 | cut -d ":" -f 2)
