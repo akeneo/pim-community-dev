@@ -58,7 +58,6 @@ class UpdateMappingIndexCommand extends Command
         $indices = $input->getOption('all') ? [] : $input->getArgument('indices');
 
         $io = new SymfonyStyle($input, $output);
-        $questionHelper = $this->getHelper('question');
 
         $warning = <<<TXT
 This command will move your elasticsearch indices to new indices to take into account the new mapping.
