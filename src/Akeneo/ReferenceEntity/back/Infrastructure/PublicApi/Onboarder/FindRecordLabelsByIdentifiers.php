@@ -35,7 +35,23 @@ class FindRecordLabelsByIdentifiers
     }
 
     /**
-     * {@inheritdoc}
+     * Find records by their $recordIdentifiers then returns their labels by their record identifier:
+     * [
+     *      'designer_starck_abcdef123456789' => [
+     *          'labels' => [
+     *              'fr_FR' => 'Un label',
+     *              'en_US' => 'A label'
+     *          ],
+     *          'code' => 'starck'
+     *      ],
+     *      'designer_dyson_abcdef123456789' => [
+     *          'labels' => [
+     *              'fr_FR' => 'Un label',
+     *              'en_US' => 'A label'
+     *          ],
+     *          'code' => 'dyson'
+     *      ],
+     * ]
      */
     public function find(array $recordIdentifiers): array
     {
