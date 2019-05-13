@@ -37,6 +37,7 @@ Most Viewed: Most Viewed
 "Yes": "Yes"
 "No": "No"
 required: (required)
+The element could not be deleted: The element could not be deleted
 
 pim_ui.system_config:
     form:
@@ -284,9 +285,7 @@ Unique value:                        Unique value
 Attribute group:                     Attribute group
 Other:                               Other
 Variants behavior when edited:       Variants behavior when edited
-Edit:                                Edit
 Remove:                              Remove
-Delete:                              Delete
 Parameters:                          Parameters
 System:                              System
 Values:                              Values
@@ -310,7 +309,6 @@ Locale specific:                     Locale specific
 default:                             Default
 Axis:                                Axis
 Add attributes:                      Add attributes
-Translate from:                      Translate from
 switch_on:                           "Yes"
 switch_off:                          "No"
 Close:                               Close
@@ -330,7 +328,6 @@ Create:               Create
 Choose a family:      Choose a family
 Choose a unit:        Choose a unit
 No matches found:     No matches found
-Create:               Create
 
 Category tree: Category tree
 Completeness: Completeness
@@ -546,5 +543,3 @@ job_tracker:
         title: Process tracker
     filter:
         started_at: Started at
-
-
