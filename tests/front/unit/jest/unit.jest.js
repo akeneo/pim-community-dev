@@ -21,6 +21,13 @@ const unitConfig = {
     },
   },
   coverageReporters: ['text-summary'],
+  coverageThreshold: {
+    global: {
+      statements: 100,
+      functions: 100,
+      lines: 100,
+    },
+  },
   setupFiles: [`${__dirname}/enzyme.js`],
 };
 
