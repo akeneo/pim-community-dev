@@ -69,7 +69,7 @@ launch_bench()
     docker run -t -e API_CLIENT -e API_SECRET -e API_URL -e API_USER -e API_PASSWORD fpm bash echo 'Bench stuff'
 }
 
-boot_and_install_pim
+generate_api_user
 generate_reference_catalog
 setup_blackfire
 launch_bench "get_many_products"
