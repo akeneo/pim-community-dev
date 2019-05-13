@@ -28,18 +28,12 @@ message()
     echo ""
 }
 
-boot_and_install_pim()
+generate_api_user()
 {
-    message "Boot and install PIM in test environment"
+    message "Generates an API user for the benchmarks in test environment"
     cd $PIM_PATH
     export ES_JAVA_OPTS='-Xms2g -Xmx2g'
-    # docker-compose up -d --remove-orphans
     PUBLIC_PIM_HTTP_PORT=$(docker-compose port httpd-behat 80 | cut -d ':' -f 2)
-    # rm -rf var/cache/*
-    # rm -f app/config/parameters_test.yml
-    # bin/docker/pim-setup.sh
-    # docker-compose exec -T fpm bin/console cache:warmup -e behat
-    # docker-compose exec -T fpm bin/console pim:installer:db -e behat
     CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
     export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)
     export API_SECRET=$(echo $CREDENTIALS | cut -d " " -f 3 | cut -d ":" -f 2)
@@ -62,6 +56,12 @@ generate_reference_catalog()
         akeneo/data-generator:3.0 akeneo:api:generate-catalog --with-products --check-minimal-install product_api_catalog.yml
 }
 
+setup_blackfire()
+{
+    # install blackfire in the container
+    message "Install blackfire in the container"
+}
+
 launch_bench()
 {
     message "Start benchmarks"
@@ -71,6 +71,8 @@ launch_bench()
 
 boot_and_install_pim
 generate_reference_catalog
+setup_blackfire
+launch_bench "get_many_products"
 
 cd $PIM_PATH
 PRODUCT_SIZE=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT AVG(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) avg_product_values FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
@@ -79,5 +81,4 @@ message "Start bench products with 120 attributes"
 
 sleep 10
 
-GET=$(launch_bench "get_many_products")
 
