@@ -30,6 +30,7 @@ message()
 
 boot_and_install_pim()
 {
+    # Remove these steps depending on the setup
     message "Boot and install PIM in test environment"
     cd $PIM_PATH
     export ES_JAVA_OPTS='-Xms2g -Xmx2g'

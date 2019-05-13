@@ -326,6 +326,9 @@ workflows:
                         - blackfire-ci
                     ignore:
                         - master
-        - blackfire_assertions:
+        - setup:
             requires:
                 - wait_for_user_approval
+        - blackfire_assertions:
+            requires:
+                - setup
