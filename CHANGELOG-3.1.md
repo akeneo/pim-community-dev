@@ -1,5 +1,9 @@
 # 3.1.x
 
+## Bug fixes
+
+- PIM-8337: fix duplicate 'View' type in view selector 
+
 # 3.1.2 (2019-05-03)
 
 ## Bug fixes
