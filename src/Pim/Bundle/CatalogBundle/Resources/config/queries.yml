@@ -71,3 +71,15 @@ services:
         class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\DescendantProductModelIdsQuery
         arguments:
             - '@database_connection'
+
+    # @todo pull-up 3.x Rename to `akeneo.pim.enrichment.product_model.query.count_product_model_children`
+    pim_catalog.query.count_product_model_children:
+        class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountProductModelChildren
+        arguments:
+            - '@database_connection'
+
+    # @todo pull-up 3.x Rename to `akeneo.pim.enrichment.product_model.query.count_product_variants`
+    pim_catalog.query.count_product_variants:
+        class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountProductVariants
+        arguments:
+            - '@database_connection'

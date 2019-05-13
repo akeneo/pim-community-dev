@@ -10,6 +10,8 @@ use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\ProductAndProductModel\Query\CountProductVariantsInterface;
+use Pim\Component\Catalog\ProductModel\Query\CountProductModelChildrenInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
@@ -44,13 +46,15 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
     /** @var int */
     protected $batchSize;
 
+    /** @var CountProductModelChildrenInterface|null */
+    private $countProductModelChildren;
+
+    /** @var CountProductVariantsInterface|null */
+    private $countProductVariants;
+
     /**
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param BulkRemoverInterface                $productRemover
-     * @param BulkRemoverInterface                $productModelRemover
-     * @param EntityManagerClearerInterface       $cacheClearer
-     * @param ObjectFilterInterface               $filter
-     * @param int                                 $batchSize
+     * @todo pull-up 3.x Remove `null` on dependencies injection for `$countProductModelChildren` and
+     *      `$countProductVariants` and check `doDelete` function for more
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -58,7 +62,9 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         BulkRemoverInterface $productModelRemover,
         EntityManagerClearerInterface $cacheClearer,
         ObjectFilterInterface $filter,
-        int $batchSize = 100
+        int $batchSize = 100,
+        CountProductModelChildrenInterface $countProductModelChildren = null,
+        CountProductVariantsInterface $countProductVariants = null
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->productRemover = $productRemover;
@@ -66,6 +72,8 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         $this->cacheClearer = $cacheClearer;
         $this->batchSize = $batchSize;
         $this->filter = $filter;
+        $this->countProductModelChildren = $countProductModelChildren;
+        $this->countProductVariants = $countProductVariants;
     }
 
     /**
@@ -176,11 +184,31 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         $products = $this->filterProducts($entities);
         $productModels = $this->filterProductModels($entities);
 
+        /* @todo pull-up 3.x Remove `if-else` */
+        if (null !== $this->countProductVariants) {
+            $deletedProducts = count($products);
+            if (count($productModels) > 0) {
+                $deletedProducts += $this->countProductVariants->forProductModels($productModels);
+            }
+        } else {
+            $deletedProducts = count($products); // to remove
+        }
+
+        /* @todo pull-up 3.x Remove `if-else` */
+        if (null !== $this->countProductModelChildren) {
+            $deletedProductModels = 0;
+            if (count($productModels) > 0) {
+                $deletedProductModels = $this->countProductModelChildren->forProductModels($productModels);
+            }
+        } else {
+            $deletedProductModels = count($productModels); // to remove
+        }
+
         $this->productRemover->removeAll($products);
-        $this->stepExecution->incrementSummaryInfo('deleted_products', count($products));
+        $this->stepExecution->incrementSummaryInfo('deleted_products', $deletedProducts);
 
         $this->productModelRemover->removeAll($productModels);
-        $this->stepExecution->incrementSummaryInfo('deleted_product_models', count($productModels));
+        $this->stepExecution->incrementSummaryInfo('deleted_product_models', $deletedProductModels);
 
         $this->cacheClearer->clear();
     }
