@@ -28,24 +28,21 @@ message()
     echo ""
 }
 
-generate_api_user()
+generate_reference_catalog()
 {
     message "Generates an API user for the benchmarks in test environment"
     cd $PIM_PATH
     export ES_JAVA_OPTS='-Xms2g -Xmx2g'
-    PUBLIC_PIM_HTTP_PORT=$(docker-compose port fpm 80 | cut -d ':' -f 2)
     CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
+
     export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)
     export API_SECRET=$(echo $CREDENTIALS | cut -d " " -f 3 | cut -d ":" -f 2)
-    export API_URL="http://$DOCKER_BRIDGE_IP:$PUBLIC_PIM_HTTP_PORT"
+    export API_URL="http://$DOCKER_BRIDGE_IP:8080"
     export API_USER="admin"
     export API_PASSWORD="admin"
 
     docker pull akeneo/data-generator:3.0
-}
 
-generate_reference_catalog()
-{
     message "Generate the catalog"
 
     docker run \
@@ -68,7 +65,6 @@ launch_bench()
     docker run -t -e API_CLIENT -e API_SECRET -e API_URL -e API_USER -e API_PASSWORD fpm bash echo 'Bench stuff'
 }
 
-generate_api_user
 generate_reference_catalog
 setup_blackfire
 launch_bench "get_many_products"
