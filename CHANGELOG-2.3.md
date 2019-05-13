@@ -4,6 +4,7 @@
 
 - PIM-8329: Add Serbian Flag for CS Region
 - PIM-8276: Label or identifier search input is now limited to 255 characters.
+- PIM-8322: Add a command to update elasticsearch mapping without having the need to reindex everything.
 - PIM-8334: When a translation choice is not correct, it does not break the page anymore.
 
 # 2.3.42 (2019-05-06)
