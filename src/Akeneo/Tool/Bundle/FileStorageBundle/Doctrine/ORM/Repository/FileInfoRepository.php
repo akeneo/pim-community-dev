@@ -20,14 +20,15 @@ class FileInfoRepository extends EntityRepository implements FileInfoRepositoryI
      */
     public function getIdentifierProperties()
     {
-        return ['key'];
+        return ['id'];
     }
 
-    /**
-     * @return FileInfo | null
-     */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier($identifier): ?FileInfo
     {
-        return $this->findOneBy(['key' => $identifier]);
+        if (!is_numeric($identifier)) {
+            throw new \RuntimeException('temporary exception');
+        }
+
+        return $this->findOneBy(['id' => $identifier]);
     }
 }
