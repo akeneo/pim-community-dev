@@ -2,13 +2,10 @@
 
 set -eu
 
-command -v jq >/dev/null 2>&1 || { echo >&2 "I require jq but it's not installed.  Aborting."; exit 1; }
-
 START=$(date +%s)
 SCRIPT_DIR=$(dirname $0)
 DOCKER_BRIDGE_IP=$(ip address show | grep "global docker" | cut -c10- | cut -d '/' -f1)
 WORKING_DIRECTORY="$SCRIPT_DIR/../var/benchmarks"
-
 PIM_PATH="$SCRIPT_DIR/.."
 CONFIG_PATH="$PIM_PATH/tests/benchmarks/"
 
@@ -21,20 +18,11 @@ else
     REFERENCE_CATALOG_FILE="$CONFIG_PATH/$1"
 fi;
 
-message()
-{
-    echo ""
-    echo "[$(date +"%H:%M:%S")] ========== $1 =========="
-    echo ""
-}
-
 generate_reference_catalog()
 {
-    message "Generates an API user for the benchmarks in test environment"
+    echo "Generates an API user for the benchmarks in test environment"
 
     cd $PIM_PATH
-    export ES_JAVA_OPTS='-Xms2g -Xmx2g'
-    PUBLIC_PIM_HTTP_PORT='$(docker-compose port httpd-behat 80 | cut -d ':' -f 2)'
     CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
     export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)
     export API_SECRET=$(echo $CREDENTIALS | cut -d " " -f 3 | cut -d ":" -f 2)
@@ -43,7 +31,7 @@ generate_reference_catalog()
     export API_PASSWORD="admin"
     export API_AUTH="echo -n $API_CLIENT:$API_SECRET | base64"
 
-    message "Generate the catalog"
+    echo "Generate the catalog"
 
     docker pull akeneo/data-generator:3.0
 
@@ -58,7 +46,7 @@ generate_reference_catalog()
 
 setup_blackfire()
 {
-    message "Install blackfire"
+    echo "Install blackfire"
 
     docker-compose exec -T fpm bash -c "wget -q -O - https://packages.blackfire.io/gpg.key | sudo apt-key add -"
     docker-compose exec -T fpm bash -c 'echo "deb http://packages.blackfire.io/debian any main" | sudo tee /etc/apt/sources.list.d/blackfire.list'
@@ -74,7 +62,7 @@ setup_blackfire()
 
 launch_bench()
 {
-    message "Start benchmarks"
+    echo "Start benchmarks"
 
     docker-compose exec -T fpm blackfire --samples 10 curl -X GET "${API_URL}/api/rest/v1/products?limit=100" -H "authorization: Bearer ${API_AUTH}" -H 'cache-control: no-cache' -H 'content-type: application/json'
 }
