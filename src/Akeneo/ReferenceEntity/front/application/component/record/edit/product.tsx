@@ -10,10 +10,14 @@ import {getLabel} from 'pimui/js/i18n';
 import {attributeSelected} from 'akeneoreferenceentity/application/action/product/attribute';
 import NoResult from 'akeneoreferenceentity/application/component/app/no-result';
 import {NormalizedCode} from 'akeneoreferenceentity/domain/model/record/code';
-import {createCode, NormalizedCode as NormalizedAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
+import {
+  createCode,
+  NormalizedCode as NormalizedAttributeCode,
+} from 'akeneoreferenceentity/domain/model/product/attribute/code';
 import {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
 import NoAttribute from 'akeneoreferenceentity/application/component/record/edit/product/no-attribute';
+import Key from 'akeneoreferenceentity/tools/key';
 
 interface StateProps {
   context: {
@@ -23,8 +27,8 @@ interface StateProps {
   products: ProductModel[];
   attributes: DropdownElement[];
   selectedAttribute: NormalizedAttributeCode | null;
-  recordCode: NormalizedCode
-  referenceEntityIdentifier: NormalizedIdentifier
+  recordCode: NormalizedCode;
+  referenceEntityIdentifier: NormalizedIdentifier;
 }
 
 interface DispatchProps {
@@ -35,11 +39,32 @@ interface DispatchProps {
   };
 }
 
+const AttributeButtonView = ({selectedElement, onClick}: {selectedElement: DropdownElement; onClick: () => void}) => (
+  <div
+    className="AknActionButton AknActionButton--light AknActionButton--withoutBorder"
+    data-identifier={selectedElement.identifier}
+    onClick={onClick}
+    tabIndex={0}
+    onKeyPress={event => {
+      if (Key.Space === event.key) onClick();
+    }}
+  >
+    {__('pim_reference_entity.record.product.dropdown.attribute')}
+    :&nbsp;
+    <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
+      {selectedElement.label}
+    </span>
+    <span className="AknActionButton-caret" />
+  </div>
+);
+
 class Product extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
   render() {
-    const selectedAttribute = this.props.attributes.find((attribute: DropdownElement) => attribute.identifier === this.props.selectedAttribute);
+    const selectedAttribute = this.props.attributes.find(
+      (attribute: DropdownElement) => attribute.identifier === this.props.selectedAttribute
+    );
 
     return (
       <React.Fragment>
@@ -55,9 +80,10 @@ class Product extends React.Component<StateProps & DispatchProps> {
                   onSelectionChange={(selectedElement: DropdownElement) => {
                     this.props.events.onLinkedAttributeChange(selectedElement.identifier);
                   }}
+                  ButtonView={AttributeButtonView}
                   isOpenLeft={true}
-                  />
-                  ) : null}
+                />
+              ) : null}
             </header>
             {0 < this.props.products.length && null !== this.props.selectedAttribute ? (
               <div className="AknSubsection">
@@ -80,7 +106,7 @@ class Product extends React.Component<StateProps & DispatchProps> {
               </div>
             ) : (
               <React.Fragment>
-                {null !== this.props.selectedAttribute && undefined !== selectedAttribute? (
+                {null !== this.props.selectedAttribute && undefined !== selectedAttribute ? (
                   <NoResult
                     entityLabel={selectedAttribute.label}
                     title="pim_reference_entity.record.product.no_product.title"
@@ -96,7 +122,7 @@ class Product extends React.Component<StateProps & DispatchProps> {
             referenceEntityLabel={this.props.referenceEntityIdentifier}
             onRedirectAttributeCreation={this.props.events.onRedirectAttributeCreation}
           />
-        ) }
+        )}
       </React.Fragment>
     );
   }
@@ -121,7 +147,7 @@ export default connect(
       })),
       selectedAttribute: state.products.selectedAttribute,
       recordCode: state.form.data.code,
-      referenceEntityIdentifier: state.form.data.reference_entity_identifier
+      referenceEntityIdentifier: state.form.data.reference_entity_identifier,
     };
   },
   (dispatch: any): DispatchProps => {

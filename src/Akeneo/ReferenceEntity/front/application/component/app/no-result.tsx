@@ -5,12 +5,12 @@ const NoResult = ({
   entityLabel,
   title = 'pim_reference_entity.record.no_result.title',
   subtitle = 'pim_reference_entity.record.no_result.subtitle',
-  type = 'reference-entity'
+  type = 'reference-entity',
 }: {
   entityLabel: string;
   title?: string;
   subtitle?: string;
-  type?: string
+  type?: string;
 }) => {
   return (
     <div className="AknGridContainer-noData">

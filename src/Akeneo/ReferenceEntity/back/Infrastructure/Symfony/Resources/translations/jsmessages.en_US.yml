@@ -113,6 +113,8 @@ pim_reference_entity:
       back: Back to list
     product:
       attribute: Linked attribute
+      dropdown:
+        attribute: Product Attribute
       title: Products
       no_attribute:
         title: There is no product attribute linked to the reference entity "{{ entityLabel }}"

@@ -59,7 +59,7 @@ module.exports = async function(cucumber) {
 
   Given('a valid record with an option collection attribute', async function() {
     await answerLocaleList.apply(this);
-    const requestContract = getRequestContract('Record/Product/ok/list.json');
+    const requestContract = getRequestContract('Record/RecordDetails/ok/option_collection.json');
     currentRequestContract = requestContract;
 
     return await listenRequest(this.page, requestContract);

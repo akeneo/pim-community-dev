@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
-const securityContext = require('pim/security-context');
+import securityContext from 'akeneoreferenceentity/tools/security-context';
 
 class SibebarMissConfigurationError extends Error {}
 
