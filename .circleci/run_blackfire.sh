@@ -43,9 +43,11 @@ generate_reference_catalog()
     echo 'export API_PASSWORD="admin"' >> $BASH_ENV
 
     message 'API Client'
-    echo $API_CLIENT;
 
     source $BASH_ENV
+
+    echo $API_CLIENT;
+
 
     docker pull akeneo/data-generator:3.0
 
