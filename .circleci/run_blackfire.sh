@@ -33,9 +33,9 @@ generate_reference_catalog()
     message "Generates an API user for the benchmarks in test environment"
     cd $PIM_PATH
     export ES_JAVA_OPTS='-Xms2g -Xmx2g'
-    PUBLIC_PIM_HTTP_PORT=$(docker-compose port fpm 80 | cut -d ':' -f 2)
+    PUBLIC_PIM_HTTP_PORT='$(docker-compose port fpm 80 | cut -d ':' -f 2)'
 
-    export CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
+    CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi generator | tr -d '\r ')
     export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)
     export API_SECRET=$(echo $CREDENTIALS | cut -d " " -f 3 | cut -d ":" -f 2)
     export API_URL="http://$DOCKER_BRIDGE_IP:8080"
@@ -43,7 +43,8 @@ generate_reference_catalog()
     export API_PASSWORD="admin"
 
     message 'API Client'
-    echo $API_CLIENT;
+    echo $CREDENTIALS
+    echo $API_CLIENT
 
     message "Generate the catalog"
 
