@@ -607,6 +607,16 @@ Feature: Edit an record
     When the user saves the valid record with a number value
     Then the user should see a success message on the edit page
 
+  @acceptance-front
+  Scenario: Updating a record with a number value out of range
+    Given a valid record
+    And the user has the locale permission to edit the record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_edit | true |
+    When the user saves the valid record with a number out of range
+    Then the user should see the validation error on the edit page : "This value should be -10 or more."
+
+
 #  Todo : Fix random call for the preview image
 #  @acceptance-front
 #  Scenario: Updating a record with an image value

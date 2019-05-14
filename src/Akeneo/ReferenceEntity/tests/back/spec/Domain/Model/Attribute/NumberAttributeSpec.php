@@ -110,8 +110,8 @@ class NumberAttributeSpec extends ObjectBehavior
                 'value_per_locale'            => true,
                 'type'                        => 'number',
                 'is_decimal'                  => false,
-                'min_value'                         => '10',
-                'max_value'                         => '20'
+                'min_value'                   => '10',
+                'max_value'                   => '20'
             ]
         );
     }
@@ -158,5 +158,16 @@ class NumberAttributeSpec extends ObjectBehavior
 
         $this->normalize()['min_value']->shouldBe(null);
         $this->normalize()['max_value']->shouldBe(null);
+    }
+
+    function it_tells_if_its_min_or_min_are_limitless()
+    {
+        $this->setLimit(AttributeLimit::limitless(), AttributeLimit::limitless());
+        $this->isMinLimitless()->shouldReturn(true);
+        $this->isMaxLimitless()->shouldReturn(true);
+
+        $this->setLimit(AttributeLimit::fromString('12'), AttributeLimit::fromString('12'));
+        $this->isMinLimitless()->shouldReturn(false);
+        $this->isMaxLimitless()->shouldReturn(false);
     }
 }
