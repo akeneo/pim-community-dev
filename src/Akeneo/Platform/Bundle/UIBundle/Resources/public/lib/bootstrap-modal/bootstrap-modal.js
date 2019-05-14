@@ -100,6 +100,7 @@
      * @param {Boolean} [options.escape]      Whether the 'esc' key can dismiss the modal. Default: true, but false if options.cancellable is true
      * @param {Boolean} [options.animate]     Whether to animate in/out. Default: false
      * @param {Function} [options.template]   Compiled underscore template to override the default one
+     * @param {string} [options.picture]      Image filename to load for a custom illustration.
      */
     initialize: function(options) {
       this.options = _.extend({
@@ -112,7 +113,8 @@
         escape: true,
         animate: false,
         buttons: true,
-        template: template
+        template: template,
+        picture: undefined
       }, options);
     },
 
