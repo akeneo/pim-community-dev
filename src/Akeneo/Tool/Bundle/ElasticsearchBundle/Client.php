@@ -235,7 +235,14 @@ class Client
      */
     public function deleteIndex()
     {
-        return $this->client->indices()->delete(['index' => $this->indexName]);
+        $indices = $this->client->indices();
+        $indexName = $this->indexName;
+        if ($indices->existsAlias(['name' => $indexName])) {
+            $aliases = $indices->getAlias(['name' => $indexName]);
+            $indexName = array_keys($aliases)[0];
+        }
+
+        return $indices->delete(['index' => $indexName]);
     }
 
     /**

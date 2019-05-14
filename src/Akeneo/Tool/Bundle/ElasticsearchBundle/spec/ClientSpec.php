@@ -33,9 +33,9 @@ class ClientSpec extends ObjectBehavior
         $client->index(
             [
                 'index' => 'an_index_name',
-                'type'  => 'an_index_type',
-                'id'    => 'identifier',
-                'body'  => ['a key' => 'a value'],
+                'type' => 'an_index_type',
+                'id' => 'identifier',
+                'body' => ['a key' => 'a value'],
                 'refresh' => 'wait_for',
             ]
         )->willReturn(['errors' => false]);
@@ -59,8 +59,8 @@ class ClientSpec extends ObjectBehavior
             [
                 'errors' => true,
                 'items' => [
-                    ['index' => ['error' => 'foo']]
-                ]
+                    ['index' => ['error' => 'foo']],
+                ],
             ]
         );
 
@@ -75,8 +75,8 @@ class ClientSpec extends ObjectBehavior
         $client->get(
             [
                 'index' => 'an_index_name',
-                'type'  => 'an_index_type',
-                'id'    => 'identifier',
+                'type' => 'an_index_type',
+                'id' => 'identifier',
             ]
         )->shouldBeCalled();
 
@@ -88,8 +88,8 @@ class ClientSpec extends ObjectBehavior
         $client->search(
             [
                 'index' => 'an_index_name',
-                'type'  => 'an_index_type',
-                'body'  => ['a key' => 'a value']
+                'type' => 'an_index_type',
+                'body' => ['a key' => 'a value'],
             ]
         )->shouldBeCalled();
 
@@ -101,13 +101,13 @@ class ClientSpec extends ObjectBehavior
         $client->msearch(
             [
                 'index' => 'an_index_name',
-                'type'  => 'an_index_type',
-                'body'  => [
+                'type' => 'an_index_type',
+                'body' => [
                     ['index' => 'another_index_name', 'type' => 'another_index_type'],
-                    ['size' => 0, 'query' => ['match_all' => (object)[]]],
+                    ['size' => 0, 'query' => ['match_all' => (object) []]],
                     [],
-                    ['size' => 0, 'query' => ['match_all' => (object)[]]],
-                ]
+                    ['size' => 0, 'query' => ['match_all' => (object) []]],
+                ],
             ]
         )->willReturn([
             [
@@ -116,7 +116,7 @@ class ClientSpec extends ObjectBehavior
                 '_shards' => [
                     'total' => 5,
                     'successful' => 5,
-                    'failed' => 0
+                    'failed' => 0,
                 ],
                 [
                     'took' => 53,
@@ -124,17 +124,17 @@ class ClientSpec extends ObjectBehavior
                     '_shards' => [
                         'total' => 7,
                         'successful' => 5,
-                        'failed' => 0
-                    ]
-                ]
-            ]
+                        'failed' => 0,
+                    ],
+                ],
+            ],
         ]);
 
         $this->msearch('an_index_type', [
             ['index' => 'another_index_name', 'type' => 'another_index_type'],
-            ['size' => 0, 'query' => ['match_all' => (object)[]]],
+            ['size' => 0, 'query' => ['match_all' => (object) []]],
             [],
-            ['size' => 0, 'query' => ['match_all' => (object)[]]],
+            ['size' => 0, 'query' => ['match_all' => (object) []]],
         ])->shouldReturn([
             [
                 'took' => 51,
@@ -142,7 +142,7 @@ class ClientSpec extends ObjectBehavior
                 '_shards' => [
                     'total' => 5,
                     'successful' => 5,
-                    'failed' => 0
+                    'failed' => 0,
                 ],
                 [
                     'took' => 53,
@@ -150,10 +150,10 @@ class ClientSpec extends ObjectBehavior
                     '_shards' => [
                         'total' => 7,
                         'successful' => 5,
-                        'failed' => 0
-                    ]
-                ]
-            ]
+                        'failed' => 0,
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -162,8 +162,8 @@ class ClientSpec extends ObjectBehavior
         $client->delete(
             [
                 'index' => 'an_index_name',
-                'type'  => 'an_index_type',
-                'id'    => 'identifier',
+                'type' => 'an_index_type',
+                'id' => 'identifier',
             ]
         )->shouldBeCalled();
 
@@ -179,27 +179,43 @@ class ClientSpec extends ObjectBehavior
                         'delete' => [
                             '_index' => 'an_index_name',
                             '_type' => 'an_index_type',
-                            '_id' => 40
+                            '_id' => 40,
                         ],
                     ],
                     [
                         'delete' => [
                             '_index' => 'an_index_name',
                             '_type' => 'an_index_type',
-                            '_id' => 33
+                            '_id' => 33,
                         ],
                     ],
-                ]
+                ],
             ]
         )->shouldBeCalled();
 
         $this->bulkDelete('an_index_type', [40, 33]);
     }
 
-    public function it_deletes_an_index($client, IndicesNamespace $indices)
+    public function it_deletes_an_index_without_alias($client, IndicesNamespace $indices)
     {
         $client->indices()->willReturn($indices);
+        $indices->existsAlias(['name' => 'an_index_name'])->willReturn(false);
         $indices->delete(['index' => 'an_index_name'])->shouldBeCalled();
+
+        $this->deleteIndex();
+    }
+
+    public function it_deletes_an_index_with_alias($client, IndicesNamespace $indices)
+    {
+        $client->indices()->willReturn($indices);
+        $indices->existsAlias(['name' => 'an_index_name'])->willReturn(true);
+        $expectedAlias = [
+            'an_index_name_foo_20190514' => [
+                'an_index_name' => ['index_data']
+            ]
+        ];
+        $indices->getAlias(['name' => 'an_index_name'])->willReturn($expectedAlias);
+        $indices->delete(['index' => 'an_index_name_foo_20190514'])->shouldBeCalled();
 
         $this->deleteIndex();
     }
@@ -217,7 +233,7 @@ class ClientSpec extends ObjectBehavior
         $indices->create(
             [
                 'index' => 'an_index_name',
-                'body'  => ['index configuration'],
+                'body' => ['index configuration'],
             ]
         )->shouldBeCalled();
 
@@ -248,23 +264,23 @@ class ClientSpec extends ObjectBehavior
                     ['index' => [
                         '_index' => 'an_index_name',
                         '_type' => 'an_index_type',
-                        '_id' => 'foo'
+                        '_id' => 'foo',
                     ]],
                     ['identifier' => 'foo', 'name' => 'a name'],
                     ['index' => [
                         '_index' => 'an_index_name',
                         '_type' => 'an_index_type',
-                        '_id' => 'bar'
+                        '_id' => 'bar',
                     ]],
-                    ['identifier' => 'bar', 'name' => 'a name']
+                    ['identifier' => 'bar', 'name' => 'a name'],
                 ],
-                'refresh' => 'wait_for'
+                'refresh' => 'wait_for',
             ]
         )->willReturn(['errors' => false]);;
 
         $documents = [
             ['identifier' => 'foo', 'name' => 'a name'],
-            ['identifier' => 'bar', 'name' => 'a name']
+            ['identifier' => 'bar', 'name' => 'a name'],
         ];
 
         $this->bulkIndexes('an_index_type', $documents, 'identifier', Refresh::waitFor());
@@ -276,7 +292,7 @@ class ClientSpec extends ObjectBehavior
 
         $documents = [
             ['identifier' => 'foo', 'name' => 'a name'],
-            ['identifier' => 'bar', 'name' => 'a name']
+            ['identifier' => 'bar', 'name' => 'a name'],
         ];
 
         $this->shouldThrow(IndexationException::class)->during(
@@ -292,13 +308,13 @@ class ClientSpec extends ObjectBehavior
                 'errors' => true,
                 'items' => [
                     ['index' => []],
-                    ['index' => ['error' => 'foo']]                ]
+                    ['index' => ['error' => 'foo']]],
             ]
         );
 
         $documents = [
             ['identifier' => 'foo', 'name' => 'a name'],
-            ['identifier' => 'bar', 'name' => 'a name']
+            ['identifier' => 'bar', 'name' => 'a name'],
         ];
 
         $this->shouldThrow(IndexationException::class)->during(
@@ -313,7 +329,7 @@ class ClientSpec extends ObjectBehavior
 
         $documents = [
             ['name' => 'a name'],
-            ['identifier' => 'bar', 'name' => 'a name']
+            ['identifier' => 'bar', 'name' => 'a name'],
         ];
 
         $this->shouldThrow(new MissingIdentifierException('Missing "identifier" key in document'))
