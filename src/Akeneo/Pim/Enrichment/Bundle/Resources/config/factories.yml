@@ -85,6 +85,9 @@ services:
             - '@pim_catalog.factory.value'
             - '@pim_catalog.repository.cached_attribute'
             - '@logger'
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
+            - '@akeneo.pim.enrichment.factory.empty_values_cleaner'
 
     pim_catalog.factory.value:
         class: '%pim_catalog.factory.value.class%'
@@ -161,7 +164,6 @@ services:
         class: '%pim_catalog.factory.value.option.class%'
         public: false
         arguments:
-            - '@pim_catalog.repository.cached_attribute_option'
             - '%pim_catalog.entity.value.option.class%'
             - 'pim_catalog_simpleselect'
         tags:
@@ -171,7 +173,6 @@ services:
         class: '%pim_catalog.factory.value.options.class%'
         public: false
         arguments:
-            - '@pim_catalog.repository.cached_attribute_option'
             - '%pim_catalog.entity.value.options.class%'
             - 'pim_catalog_multiselect'
         tags:
@@ -225,3 +226,25 @@ services:
             - 'pim_reference_data_multiselect'
         tags:
             - { name: pim_catalog.factory.value }
+
+    akeneo.pim.enrichment.factory.non_existent_values_filter.chained:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilter'
+        arguments:
+            - !tagged akeneo.pim.enrichment.factory.non_existent_values_filter
+
+    akeneo.pim.enrichment.factory.non_existent_values_filter.simple_select:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentSimpleSelectValuesFilter'
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    akeneo.pim.enrichment.factory.non_existent_values_filter.multi_select:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentMultiSelectValuesFilter'
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    akeneo.pim.enrichment.factory.empty_values_cleaner:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner'

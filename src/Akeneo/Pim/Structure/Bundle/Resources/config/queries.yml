@@ -3,3 +3,8 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\GetExistingAttributeOptionCodes'
         arguments:
             $connection: '@database_connection'
+
+    akeneo.pim.structure.query.get_attributes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeTypes\Sql\SqlGetAttributes'
+        arguments:
+            $connection: '@database_connection'

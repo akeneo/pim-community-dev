@@ -14,6 +14,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 interface ValueCollectionFactoryInterface
 {
     /**
+     * Create product values for multiple product at once.
+     *
+     * @param array $rawValueCollections
+     * @return array
+     */
+    public function createMultipleFromStorageFormat(array $rawValueCollections): array;
+
+    /**
      * Create product values from raw values described in the storage format.
      *
      * @param array $rawValues
