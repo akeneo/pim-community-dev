@@ -1,6 +1,5 @@
-# Diff with previous commit
 tests:
     "API Product export should have x queries":
-        path: "/api/products/*"
+        path: "/.*"
         assertions:
             - "metrics.sql.queries.count > 1"
