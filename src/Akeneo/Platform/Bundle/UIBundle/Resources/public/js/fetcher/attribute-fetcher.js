@@ -37,7 +37,7 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, B
      *
      * @return {Promise}
      */
-    fetchByTypes: function(attributeTypes, cached = true) {
+    fetchByTypes: function(attributeTypes, useCache = true) {
       var cacheKey = attributeTypes.sort().join('');
 
       if (!_.has(this.fetchByTypesPromises, cacheKey) || !cached) {
