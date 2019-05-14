@@ -6,7 +6,7 @@
 
 # Improvements
 
-- PIM-8282: fix error message when removing category tree linked to a channel
+- PIM-8282: Fix error message when removing category tree linked to a channel
 
 # 3.0.17 (2019-05-10)
 
