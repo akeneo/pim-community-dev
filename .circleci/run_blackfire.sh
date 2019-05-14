@@ -10,7 +10,7 @@ DOCKER_BRIDGE_IP=$(ip address show | grep "global docker" | cut -c10- | cut -d '
 WORKING_DIRECTORY="$SCRIPT_DIR/../var/benchmarks"
 
 PIM_PATH="$SCRIPT_DIR/.."
-CONFIG_PATH="$SCRIPT_DIR"
+CONFIG_PATH="$PIM_PATH/tests/benchmarks/"
 
 if [ $# -eq 0 ]; then
     REFERENCE_CATALOG_FILE="$CONFIG_PATH/product_api_catalog.yml"
