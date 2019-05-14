@@ -72,6 +72,7 @@ services:
             - '@pim_enrich.connector.use_cases.handler.list_products'
             - '@pim_api.normalizer.connector_products'
             - '@security.token_storage'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'

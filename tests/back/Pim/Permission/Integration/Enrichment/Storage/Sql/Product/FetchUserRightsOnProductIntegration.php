@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\Sql\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTestEnterprise\Pim\Permission\Integration\Persistence\Sql\UserRightsFixturesLoader;
@@ -118,6 +119,22 @@ class FetchUserRightsOnProductIntegration extends TestCase
             $userId
         );
         Assert::assertCount(2, $productRights);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_when_product_does_not_exist()
+    {
+        $this->expectException(ObjectNotFoundException::class);
+
+        $fetchUserRightOnProduct = $this->get('akeneo.pim.permission.product.query.fetch_user_rights_on_product');
+
+        $userId = (int) $this
+            ->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
+
+        $fetchUserRightOnProduct->fetchByIdentifier('foo', $userId);
     }
 
     /**

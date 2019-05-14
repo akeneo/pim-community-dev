@@ -17,7 +17,6 @@ $rules = [
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Pim\Permission\Component',
         'Symfony\Bundle\FrameworkBundle\Templating\EngineInterface',
-
         // it implements a CE query differently for permissions
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query',
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
@@ -29,6 +28,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList',
         'Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts',
+        'Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductIdentifiers',
         'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductModelCodes',

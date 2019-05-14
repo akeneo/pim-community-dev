@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
 use Doctrine\DBAL\Connection;
 
@@ -29,8 +30,16 @@ class FetchUserRightsOnProduct
         $this->connection = $connection;
     }
 
+
     public function fetchByIdentifier(string $productIdentifier, int $userId): UserRightsOnProduct
     {
+        $rights = $this->fetchByIdentifiers([$productIdentifier], $userId);
+        if (empty($rights)) {
+            throw new ObjectNotFoundException(
+                sprintf('UserRights does not exist for product identifier "%s" user id "%s".', $productIdentifier, $userId)
+            );
+        }
+
         return $this->fetchByIdentifiers([$productIdentifier], $userId)[0];
     }
 

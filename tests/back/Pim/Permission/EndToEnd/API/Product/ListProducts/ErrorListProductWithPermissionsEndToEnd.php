@@ -1,7 +1,8 @@
 <?php
 
-namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product;
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Products\ListProducts;
 
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
