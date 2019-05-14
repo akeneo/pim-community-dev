@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListProducts;
 
 use Akeneo\Test\Integration\Configuration;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -207,19 +208,5 @@ JSON;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
-    }
-
-
-    /**
-     * @param string $productIdentifier
-     */
-    private function getEncryptedId($productIdentifier)
-    {
-        $encrypter = $this->getFromTestContainer('pim_api.security.primary_key_encrypter');
-        $productRepository = $this->getFromTestContainer('pim_catalog.repository.product');
-
-        $product = $productRepository->findOneByIdentifier($productIdentifier);
-
-        return $encrypter->encrypt($product->getId());
     }
 }

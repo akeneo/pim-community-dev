@@ -72,7 +72,9 @@ SQL;
 
 
         foreach ($queryResults as $queryResult) {
-            $results[$queryResult['product_identifier']] = json_decode($queryResult['category_codes']);
+            $categoryCodes = json_decode($queryResult['category_codes']);
+            sort($categoryCodes);
+            $results[$queryResult['product_identifier']] = $categoryCodes;
         }
 
         return $results;
