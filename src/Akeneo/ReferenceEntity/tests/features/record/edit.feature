@@ -374,31 +374,36 @@ Feature: Edit an record
 
   # Number value
   @acceptance-back
-  Scenario: Updating the number value of a record
+  Scenario Outline: Updating the number value of a record with decimals
     Given a reference entity with a number attribute
     And a record belonging to this reference entity with values of "33" for the number attribute
-    When the user updates the number attribute of the record to "59"
+    When the user updates the number attribute of the record to "<new_value>"
     Then there is no exception thrown
     And there is no violations errors
-    And the record should have the number value "59" for this attribute
+    And the record should have the number value "<new_value>" for this attribute
+
+    Examples:
+      | new_value |
+      | 0         |
+      | 59        |
+      | -159      |
+      | 59.12     |
+      | -0.5      |
 
   @acceptance-back
-  Scenario: Updating the number value of a record with a decimal value
-    Given a reference entity with a number attribute
-    And a record belonging to this reference entity with values of "10" for the number attribute
-    When the user updates the number attribute of the record to "9.99"
+  Scenario Outline: Updating the number value of a record with no decimal
+    Given a reference entity with a number attribute with no decimal value
+    And a record belonging to this reference entity with values of "33" for the number attribute
+    When the user updates the number attribute of the record to "<new_value>"
     Then there is no exception thrown
     And there is no violations errors
-    And the record should have the number value "9.99" for this attribute
+    And the record should have the number value "<new_value>" for this attribute
 
-  @acceptance-back
-  Scenario: Updating the number value of a record with zero value
-    Given a reference entity with a number attribute
-    And a record belonging to this reference entity with values of "10" for the number attribute
-    When the user updates the number attribute of the record to "0"
-    Then there is no exception thrown
-    And there is no violations errors
-    And the record should have the number value "0" for this attribute
+    Examples:
+      | new_value |
+      | 0         |
+      | 59        |
+      | -159      |
 
   @acceptance-back
   Scenario: Updating the number value of a record with a forbidden decimal value
@@ -407,6 +412,40 @@ Feature: Edit an record
     When the user updates the number attribute of the record to "9.99"
     Then there should be a validation error on the property is decimal attribute with message "This field accepts only non-decimal number"
     And the record should have the number value "10" for this attribute
+
+  @acceptance-back
+  Scenario: Updating the number value with a number with the minimum number allowed
+    Given a reference entity with a number attribute with min "-10" and max "10"
+    And a record belonging to this reference entity with values of "0" for the number attribute
+    When the user updates the number attribute of the record to "-10"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the number value "-10" for this attribute
+
+  @acceptance-back
+  Scenario: Updating the number value with a number lower than the minimum allowed
+    Given a reference entity with a number attribute with min "-10" and max "10"
+    And a record belonging to this reference entity with values of "0" for the number attribute
+    When the user updates the number attribute of the record to "-25"
+    Then there should be a validation error on the property is decimal attribute with message "This value should be -10 or more."
+    And the record should have the number value "0" for this attribute
+
+  @acceptance-back
+  Scenario: Updating the number value with a number with the maximum number allowed
+    Given a reference entity with a number attribute with min "-10" and max "10"
+    And a record belonging to this reference entity with values of "0" for the number attribute
+    When the user updates the number attribute of the record to "10"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the number value "10" for this attribute
+
+  @acceptance-back
+  Scenario: Updating the number value with a number lower than the minimum allowed
+    Given a reference entity with a number attribute with min "-10" and max "10"
+    And a record belonging to this reference entity with values of "0" for the number attribute
+    When the user updates the number attribute of the record to "25"
+    Then there should be a validation error on the property is decimal attribute with message "This value should be 10 or less."
+    And the record should have the number value "0" for this attribute
 
   @acceptance-front
   Scenario: Updating a record details

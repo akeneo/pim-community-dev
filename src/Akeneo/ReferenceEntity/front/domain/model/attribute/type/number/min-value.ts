@@ -4,8 +4,8 @@ export type NormalizedMinValue = string | null;
 
 export class MinValue {
   public constructor(readonly minValue: string | null) {
-    if (!(null === minValue || typeof minValue === 'string')) {
-      throw new InvalidArgumentError('MinValue need to be a string');
+    if (null !== minValue && typeof minValue !== 'string') {
+      throw new InvalidArgumentError('MinValue needs to be a string');
     }
     Object.freeze(this);
   }
@@ -31,6 +31,6 @@ export class MinValue {
   }
 
   public isNull(): boolean {
-    return null === this.minValue;
+    return null === this.minValue || '' === this.minValue;
   }
 }

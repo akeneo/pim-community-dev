@@ -23,11 +23,28 @@ class EditMinMaxValueCommandFactorySpec extends ObjectBehavior
 
     function it_creates_a_command_to_edit_the_min_value_property_of_an_attribute()
     {
-        $command = $this->create(['identifier' => 'number', 'min_value' => '172', 'max_value' => '172']);
+        $command = $this->create(['identifier' => 'number', 'min_value' => '0', 'max_value' => '172']);
 
         $command->shouldBeAnInstanceOf(EditMinMaxValueCommand::class);
         $command->identifier->shouldBeEqualTo('number');
-        $command->minValue->shouldBeEqualTo('172');
+        $command->minValue->shouldBeEqualTo('0');
+        $command->maxValue->shouldBeEqualTo('172');
+    }
+
+    function it_creates_a_command_to_remove_the_min_or_max_value_property_of_an_attribute_with_empty_string()
+    {
+        $command = $this->create(['identifier' => 'number', 'min_value' => '', 'max_value' => '']);
+        $command->identifier->shouldBeEqualTo('number');
+        $command->minValue->shouldBeEqualTo(null);
+        $command->minValue->shouldBeEqualTo(null);
+    }
+
+    function it_creates_a_command_to_remove_the_min_or_max_value_property_of_an_attribute_with_null()
+    {
+        $command = $this->create(['identifier' => 'number', 'min_value' => null, 'max_value' => null]);
+        $command->identifier->shouldBeEqualTo('number');
+        $command->minValue->shouldBeEqualTo(null);
+        $command->maxValue->shouldBeEqualTo(null);
     }
 
     function it_throws_if_it_cannot_create_the_command()

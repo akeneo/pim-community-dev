@@ -59,7 +59,10 @@ class NumberAttribute extends AbstractAttribute
         );
 
         if (!$minValue->isLimitLess() && !$maxValue->isLimitLess()) {
-            Assert::false($minValue->isGreater($maxValue), 'Cannot create attribute with a min limit greater than the max limit');
+            Assert::false(
+                $minValue->isGreater($maxValue),
+                'Cannot create attribute with a min limit greater than the max limit'
+            );
         }
         $this->isDecimal = $isDecimal;
         $this->minValue = $minValue;
@@ -100,8 +103,8 @@ class NumberAttribute extends AbstractAttribute
             parent::normalize(),
             [
                 'is_decimal' => $this->isDecimal->normalize(),
-                'min_value' => $this->minValue->normalize(),
-                'max_value' => $this->maxValue->normalize(),
+                'min_value'  => $this->minValue->normalize(),
+                'max_value'  => $this->maxValue->normalize(),
             ]
         );
     }
@@ -120,6 +123,27 @@ class NumberAttribute extends AbstractAttribute
     {
         return $this->isDecimal->normalize();
     }
+
+    public function isMinLimitless(): bool
+    {
+        return $this->minValue->isLimitLess();
+    }
+
+    public function isMaxLimitless(): bool
+    {
+        return $this->maxValue->isLimitLess();
+    }
+
+    public function minValue(): string
+    {
+        return $this->minValue->normalize();
+    }
+
+    public function maxValue(): string
+    {
+        return $this->maxValue->normalize();
+    }
+
 
     public function setLimit(AttributeLimit $minValue, AttributeLimit $maxValue): void
     {

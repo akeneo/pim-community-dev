@@ -36,7 +36,7 @@
           ],
           "identifier": "age_designer_52609e00b7ee307e79eb100099b9a8bf"
         },
-        "propertyPath": "",
+        "propertyPath": "minValue",
         "invalidValue": {
           "minValue": "5",
           "maxValue": "1",

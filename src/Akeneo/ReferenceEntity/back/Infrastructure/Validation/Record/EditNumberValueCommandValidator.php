@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditNumberValueComma
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
@@ -43,7 +44,8 @@ class EditNumberValueCommandValidator extends ConstraintValidator
         if (!$command instanceof EditNumberValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', EditNumberValueCommand::class,
+                    'Expected argument to be of class "%s", "%s" given',
+                    EditNumberValueCommand::class,
                     get_class($command)
                 )
             );
@@ -71,7 +73,7 @@ class EditNumberValueCommandValidator extends ConstraintValidator
             foreach ($violations as $violation) {
                 $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
-                    ->atPath((string) $command->attribute->getCode())
+                    ->atPath((string)$command->attribute->getCode())
                     ->setCode($violation->getCode())
                     ->setPlural($violation->getPlural())
                     ->setInvalidValue($violation->getInvalidValue())
@@ -83,37 +85,107 @@ class EditNumberValueCommandValidator extends ConstraintValidator
     private function checkType(EditNumberValueCommand $command): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate($command->number, [
-            new Constraints\Type([
-                'type' => 'string',
-                'message' => EditNumberValueCommandConstraint::NUMBER_SHOULD_BE_STRING,
-            ]),
-        ]);
+        $violations = $validator->validate(
+            $command->number,
+            [
+                new Constraints\Type(
+                    [
+                        'type'    => 'string',
+                        'message' => EditNumberValueCommandConstraint::NUMBER_SHOULD_BE_STRING,
+                    ]
+                ),
+            ]
+        );
 
         return $violations;
     }
 
     private function checkNumericValue(EditNumberValueCommand $command): ConstraintViolationListInterface
     {
-        $validator = Validation::createValidator();
+        if ($command->attribute->allowsDecimalValues()) {
+            $violations = $this->checkIsFloat($command);
+        } else {
+            $violations = $this->checkIsInteger($command);
+        }
 
-        if (!$command->attribute->allowsDecimalValues()) {
-            $violations = $validator->validate($command->number, [
-                new Constraints\Type([
-                    'type' => 'digit',
-                    'message' => EditNumberValueCommandConstraint::NUMBER_SHOULD_NOT_BE_DECIMAL,
-                ]),
-            ]);
-
+        if ($violations->count() > 0) {
             return $violations;
         }
 
-        $violations = $validator->validate($command->number, [
-            new Constraints\Type([
-                'type' => 'numeric',
-                'message' => EditNumberValueCommandConstraint::NUMBER_SHOULD_BE_NUMERIC,
-            ]),
-        ]);
+        $violations = $this->checkMinBoundary($command);
+        $violations->addAll($this->checkMaxBoundary($command));
+
+        return $violations;
+    }
+
+    private function isInteger(EditNumberValueCommand $command): bool
+    {
+        return false !== filter_var($command->number, FILTER_VALIDATE_INT);
+    }
+
+    private function checkMinBoundary(EditNumberValueCommand $command): ConstraintViolationListInterface
+    {
+        $violations = new ConstraintViolationList();
+
+        if (!$command->attribute->isMinLimitless()) {
+            $validator = Validation::createValidator();
+            $violations = $validator->validate(
+                $command->number,
+                [
+                    new Constraints\Range(['min' => (float)$command->attribute->minValue()])
+                ]
+            );
+        }
+
+        return $violations;
+    }
+
+    private function checkMaxBoundary(EditNumberValueCommand $command): ConstraintViolationListInterface
+    {
+        $violations = new ConstraintViolationList();
+
+        if (!$command->attribute->isMaxLimitless()) {
+            $validator = Validation::createValidator();
+            $violations = $validator->validate(
+                $command->number,
+                [
+                    new Constraints\Range(['max' => (float)$command->attribute->maxValue()])
+                ]
+            );
+        }
+
+        return $violations;
+    }
+
+    private function checkIsFloat(EditNumberValueCommand $command): ConstraintViolationListInterface
+    {
+        $validator = Validation::createValidator();
+        $violations = $validator->validate(
+            $command->number,
+            [
+                new Constraints\Type(
+                    [
+                        'type'    => 'numeric',
+                        'message' => EditNumberValueCommandConstraint::NUMBER_SHOULD_BE_NUMERIC,
+                    ]
+                ),
+            ]
+        );
+
+        return $violations;
+    }
+
+    private function checkIsInteger(EditNumberValueCommand $command): ConstraintViolationListInterface
+    {
+        $validator = Validation::createValidator();
+        $violations = $validator->validate(
+            $this->isInteger($command),
+            new Constraints\IsTrue(
+                [
+                    'message' => EditNumberValueCommandConstraint::NUMBER_SHOULD_NOT_BE_DECIMAL,
+                ]
+            )
+        );
 
         return $violations;
     }

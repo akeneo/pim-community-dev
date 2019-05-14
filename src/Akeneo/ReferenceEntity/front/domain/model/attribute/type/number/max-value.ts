@@ -4,8 +4,8 @@ export type NormalizedMaxValue = string | null;
 
 export class MaxValue {
   public constructor(readonly maxValue: string | null) {
-    if (!(null === maxValue || typeof maxValue === 'string')) {
-      throw new InvalidArgumentError('MaxValue need to be a string');
+    if (null !== maxValue && typeof maxValue !== 'string') {
+      throw new InvalidArgumentError('MaxValue needs to be a string');
     }
     Object.freeze(this);
   }
@@ -31,6 +31,6 @@ export class MaxValue {
   }
 
   public isNull(): boolean {
-    return null === this.maxValue;
+    return null === this.maxValue || '' === this.maxValue;
   }
 }

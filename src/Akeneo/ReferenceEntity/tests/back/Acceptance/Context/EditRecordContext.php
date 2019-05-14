@@ -2547,6 +2547,7 @@ final class EditRecordContext implements Context
 
     /**
      * @Given /^a reference entity with a number attribute$/
+     * @Given /^a reference entity with a number attribute with decimals$/
      */
     public function aReferenceEntityWithANumberAttribute()
     {
@@ -2672,6 +2673,33 @@ final class EditRecordContext implements Context
         $this->violationsContext->assertViolationOnPropertyWithMesssage(
             'values.' . self::NUMBER_ATTRIBUTE_CODE,
             $expectedMessage
+        );
+    }
+
+    /**
+     * @Given /^a reference entity with a number attribute with min "([^\']*)" and max "([^\']*)"$/
+     */
+    public function aReferenceEntityWithANumberAttributeWithMinAndMax(string $minValue, string $maxValue)
+    {
+        $this->createReferenceEntity();
+        $this->attributeRepository->create(
+            NumberAttribute::create(
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::NUMBER_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::NUMBER_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(2),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeIsDecimal::fromBoolean(false),
+                AttributeLimit::fromString($minValue),
+                AttributeLimit::fromString($maxValue)
+            )
         );
     }
 }

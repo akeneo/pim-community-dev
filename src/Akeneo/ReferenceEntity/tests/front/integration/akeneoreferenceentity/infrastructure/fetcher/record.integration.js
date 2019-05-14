@@ -135,6 +135,25 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               data: {fileData: {}},
               locale: {localeReference: null},
             },
+            {
+              attribute: {
+                code: {code: 'age'},
+                referenceEntityIdentifier: {identifier: 'designer'},
+                identifier: {identifier: 'age_designer_fingerprint'},
+                isDecimal: {isDecimal: false},
+                isRequired: false,
+                labelCollection: {labels: {en_US: 'Age', fr_FR: 'Age'}},
+                maxValue: {maxValue: '20'},
+                minValue: {minValue: '10'},
+                order: 4,
+                type: 'number',
+                valuePerChannel: false,
+                valuePerLocale: false,
+              },
+              channel: {channelReference: null},
+              data: {numberData: ''},
+              locale: {localeReference: null},
+            },
           ],
         },
       },
@@ -197,13 +216,13 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               channel: null,
               context: {
                 labels: {
-                  "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717": {
-                    "labels": {
-                      "en_US": "Paris"
+                  'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717': {
+                    labels: {
+                      en_US: 'Paris',
                     },
-                    "code": "paris"
-                  }
-                }
+                    code: 'paris',
+                  },
+                },
               },
               data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
               locale: null,
@@ -244,13 +263,13 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               channel: null,
               context: {
                 labels: {
-                  "city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717": {
-                    "labels": {
-                      "en_US": "Paris"
+                  'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717': {
+                    labels: {
+                      en_US: 'Paris',
                     },
-                    "code": "paris"
-                  }
-                }
+                    code: 'paris',
+                  },
+                },
               },
               data: 'city_paris_bf11a6b3-3e46-4bbf-b35c-814a0020c717',
               locale: null,
