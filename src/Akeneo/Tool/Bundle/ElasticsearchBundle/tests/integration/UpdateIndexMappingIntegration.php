@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace src\Akeneo\Bundle\ElasticsearchBundle\tests\integration;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\tests\integration;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\UpdateIndexMapping;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductQueryBuilderFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMapping;
 use Elasticsearch\ClientBuilder;
 use PHPUnit\Framework\Assert;
-use Pim\Bundle\CatalogBundle\Elasticsearch\ProductQueryBuilderFactory;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 class UpdateIndexMappingIntegration extends TestCase
 {
@@ -19,7 +19,7 @@ class UpdateIndexMappingIntegration extends TestCase
         $indexHost = $this->getParameter('index_hosts');
         /** @var Client $akeneoProductClient */
         $akeneoProductClient = $this->get('akeneo_elasticsearch.client.product');
-        
+
         $clientBuilder = new ClientBuilder();
         $clientBuilder->setHosts(is_string($indexHost) ? [$indexHost] : $indexHost);
 

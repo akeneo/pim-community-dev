@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Bundle\ElasticsearchBundle\Command;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Command;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\ClientRegistry;
-use Akeneo\Bundle\ElasticsearchBundle\UpdateIndexMapping;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMapping;
 use Elasticsearch\ClientBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**

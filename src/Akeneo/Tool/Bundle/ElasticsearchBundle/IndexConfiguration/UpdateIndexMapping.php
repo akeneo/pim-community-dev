@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Bundle\ElasticsearchBundle;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration;
 
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
+use Akeneo\Platform\CommunityVersion;
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
-use Pim\Bundle\CatalogBundle\Version;
 
 /**
  * This class is meant to update an index mapping or can be used for an upgrade
@@ -25,7 +24,7 @@ final class UpdateIndexMapping
     public function updateIndexMapping(Client $client, string $indexNameOrAlias, Loader $indexConfiguration): void
     {
         // We don't care about the index name anymore as we use alias
-        $newIndexName = $indexNameOrAlias . '_' . str_replace('.', '_', Version::VERSION) . '_' . time();
+        $newIndexName = $indexNameOrAlias . '_' . str_replace('.', '_', CommunityVersion::VERSION) . '_' . time();
 
         $this
             ->createIndexReadyForNewConfiguration($client->indices(), $newIndexName, $indexConfiguration)
