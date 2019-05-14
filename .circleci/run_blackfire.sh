@@ -88,6 +88,6 @@ PRODUCT_SIZE=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pi
 PRODUCT_COUNT=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT COUNT(*) FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
 message "Start bench products with 120 attributes"
 
-sleep 10
+sleep 11
 
 
