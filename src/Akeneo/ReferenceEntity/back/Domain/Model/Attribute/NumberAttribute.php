@@ -58,12 +58,7 @@ class NumberAttribute extends AbstractAttribute
             $valuePerLocale
         );
 
-        if (!$minValue->isLimitLess() && !$maxValue->isLimitLess()) {
-            Assert::false(
-                $minValue->isGreater($maxValue),
-                'Cannot create attribute with a min limit greater than the max limit'
-            );
-        }
+        $this->checkMinIsLessThanMax($minValue, $maxValue);
         $this->isDecimal = $isDecimal;
         $this->minValue = $minValue;
         $this->maxValue = $maxValue;
@@ -144,22 +139,20 @@ class NumberAttribute extends AbstractAttribute
         return $this->maxValue->normalize();
     }
 
-
     public function setLimit(AttributeLimit $minValue, AttributeLimit $maxValue): void
     {
-        if (!$minValue->isLimitLess()
-            && !$maxValue->isLimitLess()
-            && $minValue->isGreater($maxValue)
-        ) {
-            $message = sprintf(
-                'Min value %s, cannot be greater than the current max value (%s)',
-                $minValue->normalize(),
-                $maxValue->normalize()
-            );
-            throw new \InvalidArgumentException($message);
-        }
-
+        $this->checkMinIsLessThanMax($minValue, $maxValue);
         $this->minValue = $minValue;
         $this->maxValue = $maxValue;
+    }
+
+    private function checkMinIsLessThanMax(AttributeLimit $minValue, AttributeLimit $maxValue): void
+    {
+        if (!$minValue->isLimitLess() && !$maxValue->isLimitLess()) {
+            Assert::false(
+                $minValue->isGreater($maxValue),
+                'Cannot create attribute with a min limit greater than the max limit'
+            );
+        }
     }
 }
