@@ -62,19 +62,12 @@ setup_blackfire()
 
 launch_bench()
 {
-    echo "Start benchmarks"
+    echo "Start blackfire profiling"
 
     API_RESPONSE=$(docker-compose exec -T fpm curl -s -X POST $API_URL/api/oauth/v1/token -H "authorization: Basic ${API_AUTH}" -H 'content-type: application/json' -d '{ "grant_type": "password", "username": "admin", "password": "admin" }')
-
-    echo 'response'
-    echo $API_RESPONSE
-
     API_TOKEN=$(echo $API_RESPONSE | jq -r '.access_token')
 
-    echo $API_TOKEN
-
     docker-compose exec -T fpm curl "${API_URL}/api/rest/v1/products?limit=100" -H "authorization: Bearer ${API_TOKEN}" -H 'content-type: application/json'
-
     docker-compose exec -T fpm blackfire --samples 2 curl -X GET "${API_URL}/api/rest/v1/products?limit=100" -H "authorization: Bearer ${API_TOKEN}" -H 'content-type: application/json'
 }
 
