@@ -24,15 +24,17 @@ class EditMinMaxValueCommandFactory implements EditAttributeCommandFactoryInterf
             throw new \RuntimeException('Impossible to create an edit min value property command.');
         }
 
+        $minValue = $this->stringOrNull($normalizedCommand, 'min_value');
+        $maxValue = $this->stringOrNull($normalizedCommand, 'max_value');
         return new EditMinMaxValueCommand(
             $normalizedCommand['identifier'],
-            $this->stringOrNull($normalizedCommand, 'min_value'),
-            $this->stringOrNull($normalizedCommand, 'max_value')
+            $minValue,
+            $maxValue
         );
     }
 
     private function stringOrNull(array $normalizedCommand, string $key)
     {
-        return isset($normalizedCommand[$key]) && !empty($normalizedCommand[$key]) ? (string)$normalizedCommand[$key] : null;
+        return isset($normalizedCommand[$key]) && "" !== $normalizedCommand[$key] ? (string)$normalizedCommand[$key] : null;
     }
 }
