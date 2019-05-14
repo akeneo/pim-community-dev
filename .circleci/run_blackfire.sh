@@ -76,18 +76,10 @@ launch_bench()
 {
     message "Start benchmarks"
 
-    docker-compose exec -T fpm blackfire --samples 10 curl -X GET "${API_URL}/api/rest/v1/products?limit=100" -H 'authorization: Bearer $API_AUTH' -H 'cache-control: no-cache' -H 'content-type: application/json'
+    docker-compose exec -T fpm blackfire --samples 10 curl -X GET "${API_URL}/api/rest/v1/products?limit=100" -H "authorization: Bearer ${API_AUTH}" -H 'cache-control: no-cache' -H 'content-type: application/json'
 }
 
 generate_reference_catalog
 setup_blackfire
 launch_bench
-
-cd $PIM_PATH
-PRODUCT_SIZE=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT AVG(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) avg_product_values FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
-PRODUCT_COUNT=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT COUNT(*) FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
-message "Start bench products with 120 attributes"
-
-sleep 11
-
 
