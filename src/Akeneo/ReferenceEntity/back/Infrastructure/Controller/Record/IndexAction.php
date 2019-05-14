@@ -53,7 +53,6 @@ class IndexAction
             );
         }
 
-
         $searchResult = ($this->searchRecord)($query);
 
         return new JsonResponse($searchResult->normalize());

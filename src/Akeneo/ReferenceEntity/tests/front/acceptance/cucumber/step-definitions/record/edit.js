@@ -374,7 +374,6 @@ module.exports = async function(cucumber) {
   Then('the user should see the validation error on the edit page : {string}', async function(expectedError) {
     const edit = await await getElement(this.page, 'Edit');
     const error = await edit.getValidationMessageForCode();
-
     assert.strictEqual(error, expectedError);
   });
 
