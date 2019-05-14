@@ -64,7 +64,7 @@ launch_bench()
 {
     echo "Start benchmarks"
 
-    docker-compose exec -T fpm blackfire --samples 10 curl -X GET "${API_URL}/api/rest/v1/products?limit=100" -H "authorization: Bearer ${API_AUTH}" -H 'cache-control: no-cache' -H 'content-type: application/json'
+    docker-compose exec -T fpm blackfire --samples 2 curl -X GET "${API_URL}/api/rest/v1/products?limit=100" -H "authorization: Bearer ${API_AUTH}" -H 'cache-control: no-cache' -H 'content-type: application/json'
 }
 
 generate_reference_catalog
