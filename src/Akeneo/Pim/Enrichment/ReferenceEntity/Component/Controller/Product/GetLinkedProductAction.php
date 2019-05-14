@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\ReferenceEntity\Component\Controller\Product;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Get the first 16 products linked to a record on an attribute
@@ -44,7 +43,7 @@ class GetLinkedProductAction
         $this->normalizer = $normalizer;
     }
 
-    public function __invoke(Request $request, string $referenceEntityIdentifier, string $recordCode, string $attributeCode): JsonResponse
+    public function __invoke(Request $request, string $recordCode, string $attributeCode): JsonResponse
     {
         $recordCode = $this->getRecordCodeOr404($recordCode);
         $queryBuilder = $this->pqbFactory->create([
@@ -57,10 +56,10 @@ class GetLinkedProductAction
 
         $normalizedProducts = [];
         foreach ($products as $index => $product) {
-          $normalizedProducts[] = $this->normalizer->normalize($product, 'internal_api', []);
-          if ($index >= 16) {
-              break;
-          }
+            $normalizedProducts[] = $this->normalizer->normalize($product, 'internal_api', []);
+            if ($index >= 16) {
+                break;
+            }
         }
 
         return new JsonResponse($normalizedProducts);

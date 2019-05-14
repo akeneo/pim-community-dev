@@ -5,6 +5,8 @@ import LabelCollection, {
 } from 'akeneoreferenceentity/domain/model/label-collection';
 import File, {NormalizedFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 
+export const PRODUCT_TYPE = 'product';
+export const PRODUCT_MODEL_TYPE = 'product_model';
 type ProductType = 'product' | 'product_model';
 
 type NormalizedProductIdentifier = string;
