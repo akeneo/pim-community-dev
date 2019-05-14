@@ -72,6 +72,10 @@
 - PIM-8187: Add the possibility to fetch descendant products and product models
 - PIM-8214: Be able to save and launch job even if filter values refer to deleted entities.
 
+## BC breaks
+
+- PIM-8214: Remove validators `Pim\Component\Connector\Validator\Constraints\ProductFilterData` and `Pim\Component\Connector\Validator\Constraints\ProductModelFilterData`
+
 # 2.3.33 (2019-03-13)
 
 ## Bug fixes
