@@ -6,6 +6,7 @@
 - PIM-8276: Label or identifier search input is now limited to 255 characters.
 - PIM-8322: Add a command to update elasticsearch mapping without having the need to reindex everything.
 - PIM-8334: When a translation choice is not correct, it does not break the page anymore.
+- PIM-8275: Set default attribute group filter to "All" when selecting attributes on product mass actions
 
 # 2.3.42 (2019-05-06)
 
@@ -37,14 +38,14 @@
 
 ## Bug fixes
 
-- PIM-8290: Fix flat to standard conversion of metrics, with unit filled and empty amount 
+- PIM-8290: Fix flat to standard conversion of metrics, with unit filled and empty amount
 - PIM-8288: keep locale-specific but non-localizable attribute values in the flat normalization to make them appear in the product changeset
 
 # 2.3.37 (2019-04-15)
 
 ## Bug fixes
 
-- PIM-8269: Do not create empty product values if it relies on an attribute which has been removed from family 
+- PIM-8269: Do not create empty product values if it relies on an attribute which has been removed from family
 
 # 2.3.36 (2019-04-02)
 
