@@ -64,9 +64,9 @@ launch_bench()
 {
     echo "Start benchmarks"
 
-    API_RESPONSE=$(docker-compose exec -T fpm curl -X POST $API_URL/api/oauth/v1/token -H "authorization: Basic ${API_AUTH}" -H 'content-type: application/json' -d '{ "grant_type": "password", "username": "admin", "password": "admin" }')
+    API_RESPONSE=$(docker-compose exec -T fpm curl -s -X POST $API_URL/api/oauth/v1/token -H "authorization: Basic ${API_AUTH}" -H 'content-type: application/json' -d '{ "grant_type": "password", "username": "admin", "password": "admin" }')
 
-    echo 'token\n'
+    echo 'response'
     echo $API_RESPONSE
 
     API_TOKEN=$(echo $API_RESPONSE | jq -r '.access_token')
