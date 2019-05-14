@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\LocalizationBundle\Translator;
+namespace Specification\Akeneo\Platform\Bundle\UIBundle\Translator;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Translation\TranslatorInterface;

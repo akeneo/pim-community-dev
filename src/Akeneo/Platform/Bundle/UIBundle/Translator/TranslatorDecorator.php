@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Bundle\LocalizationBundle\Translator;
+namespace Akeneo\Platform\Bundle\UIBundle\Translator;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
