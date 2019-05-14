@@ -29,7 +29,7 @@ generate_reference_catalog()
     export API_URL="http://$DOCKER_BRIDGE_IP:8081"
     export API_USER="admin"
     export API_PASSWORD="admin"
-    export API_AUTH="echo -n $API_CLIENT:$API_SECRET | base64"
+    export API_AUTH="$(echo -n $API_CLIENT:$API_SECRET | base64 -w 0 )"
 
     echo "Generate the catalog"
 
@@ -64,7 +64,9 @@ launch_bench()
 {
     echo "Start benchmarks"
 
-    docker-compose exec -T fpm blackfire --samples 2 curl -X GET "${API_URL}/api/rest/v1/products?limit=100" -H "authorization: Bearer ${API_AUTH}" -H 'cache-control: no-cache' -H 'content-type: application/json'
+    export API_TOKEN=$(docker-compose exec -T fpm curl -X POST $API_URL/api/oauth/v1/token -H "authorization: Basic ${API_AUTH}" -H 'content-type: application/json' -d '{ "grant_type": "password", "username": "admin", "password": "admin" }' | jq -r '.access_token')
+
+    docker-compose exec -T fpm blackfire --samples 2 curl -X GET "${API_URL}/api/rest/v1/products?limit=100" -H "authorization: Bearer ${API_TOKEN}" -H 'content-type: application/json'
 }
 
 generate_reference_catalog
