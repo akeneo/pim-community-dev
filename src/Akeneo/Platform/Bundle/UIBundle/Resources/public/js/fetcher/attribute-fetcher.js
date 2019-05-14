@@ -40,7 +40,7 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, B
     fetchByTypes: function(attributeTypes, useCache = true) {
       var cacheKey = attributeTypes.sort().join('');
 
-      if (!_.has(this.fetchByTypesPromises, cacheKey) || !cached) {
+      if (!_.has(this.fetchByTypesPromises, cacheKey) || !useCache) {
         this.fetchByTypesPromises[cacheKey] = this.getJSON(this.options.urls.list, {types: attributeTypes.join(',')})
           .then(_.identity)
           .promise();
