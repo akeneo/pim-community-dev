@@ -391,6 +391,14 @@ Feature: Edit an record
       | -0.5      |
 
   @acceptance-back
+  Scenario: Updating the number value of a record with decimals with an invalid value
+    Given a reference entity with a number attribute
+    And a record belonging to this reference entity with values of "33" for the number attribute
+    When the user updates the number attribute of the record to "aze"
+    Then there should be a validation error on the property is decimal attribute with message "This field should be a numeric value"
+    And the record should have the number value "33" for this attribute
+
+  @acceptance-back
   Scenario Outline: Updating the number value of a record with no decimal
     Given a reference entity with a number attribute with no decimal value
     And a record belonging to this reference entity with values of "33" for the number attribute
@@ -406,12 +414,18 @@ Feature: Edit an record
       | -159      |
 
   @acceptance-back
-  Scenario: Updating the number value of a record with a forbidden decimal value
+  Scenario Outline: Updating the number value of a record with a forbidden decimal value
     Given a reference entity with a number attribute with no decimal value
     And a record belonging to this reference entity with values of "10" for the number attribute
-    When the user updates the number attribute of the record to "9.99"
-    Then there should be a validation error on the property is decimal attribute with message "This field accepts only non-decimal number"
+    When the user updates the number attribute of the record to "<invalid_value>"
+    Then there should be a validation error on the property is decimal attribute with message "<error_message>"
     And the record should have the number value "10" for this attribute
+
+    Examples:
+      | invalid_value | error_message                              |
+      | 9.99          | This field accepts only non-decimal number |
+      | abc           | This field accepts only non-decimal number |
+
 
   @acceptance-back
   Scenario: Updating the number value with a number with the minimum number allowed
@@ -423,14 +437,6 @@ Feature: Edit an record
     And the record should have the number value "-10" for this attribute
 
   @acceptance-back
-  Scenario: Updating the number value with a number lower than the minimum allowed
-    Given a reference entity with a number attribute with min "-10" and max "10"
-    And a record belonging to this reference entity with values of "0" for the number attribute
-    When the user updates the number attribute of the record to "-25"
-    Then there should be a validation error on the property is decimal attribute with message "This value should be -10 or more."
-    And the record should have the number value "0" for this attribute
-
-  @acceptance-back
   Scenario: Updating the number value with a number with the maximum number allowed
     Given a reference entity with a number attribute with min "-10" and max "10"
     And a record belonging to this reference entity with values of "0" for the number attribute
@@ -438,6 +444,14 @@ Feature: Edit an record
     Then there is no exception thrown
     And there is no violations errors
     And the record should have the number value "10" for this attribute
+
+  @acceptance-back
+  Scenario: Updating the number value with a number lower than the minimum allowed
+    Given a reference entity with a number attribute with min "-10" and max "10"
+    And a record belonging to this reference entity with values of "0" for the number attribute
+    When the user updates the number attribute of the record to "-25"
+    Then there should be a validation error on the property is decimal attribute with message "This value should be -10 or more."
+    And the record should have the number value "0" for this attribute
 
   @acceptance-back
   Scenario: Updating the number value with a number lower than the minimum allowed

@@ -14,36 +14,42 @@
         "fr_FR": "Philippe Starck"
       },
       "image": null,
-      "values":[
+      "values": [
         {
-          "attribute":"name_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":"Starck"
+          "attribute": "name_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": "Starck"
         },
         {
-          "attribute":"description_designer_fingerprint",
-          "channel":null,
-          "locale":"en_US",
-          "data":null
+          "attribute": "description_designer_fingerprint",
+          "channel": null,
+          "locale": "en_US",
+          "data": null
         },
         {
-          "attribute":"description_designer_fingerprint",
-          "channel":null,
-          "locale":"fr_FR",
-          "data":null
+          "attribute": "description_designer_fingerprint",
+          "channel": null,
+          "locale": "fr_FR",
+          "data": null
         },
         {
-          "attribute":"website_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":null
+          "attribute": "website_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": null
         },
         {
-          "attribute":"portrait_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":null
+          "attribute": "portrait_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": null
+        },
+        {
+          "attribute": "age_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": null
         }
       ]
     }

@@ -14,36 +14,42 @@
         "fr_FR": "Philippe Starck"
       },
       "image": null,
-      "values":[
+      "values": [
         {
-          "attribute":"name_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":"Philippe Starck"
+          "attribute": "name_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": "Philippe Starck"
         },
         {
-          "attribute":"description_designer_fingerprint",
-          "channel":null,
-          "locale":"en_US",
-          "data":null
+          "attribute": "description_designer_fingerprint",
+          "channel": null,
+          "locale": "en_US",
+          "data": null
         },
         {
-          "attribute":"description_designer_fingerprint",
-          "channel":null,
-          "locale":"fr_FR",
-          "data":null
+          "attribute": "description_designer_fingerprint",
+          "channel": null,
+          "locale": "fr_FR",
+          "data": null
         },
         {
-          "attribute":"website_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":"hello world"
+          "attribute": "website_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": "hello world"
         },
         {
-          "attribute":"portrait_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":null
+          "attribute": "portrait_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": null
+        },
+        {
+          "attribute": "age_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": null
         }
       ]
     }
@@ -52,243 +58,226 @@
     "status": 400,
     "body": [
       {
-        "messageTemplate":"This value is not a valid URL.",
-        "parameters":{
-          "{{ value }}":"\u0022hello world\u0022"
+        "messageTemplate": "This value is not a valid URL.",
+        "parameters": {
+          "{{ value }}": "\u0022hello world\u0022"
         },
-        "plural":null,
-        "message":"This value is not a valid URL.",
-        "root":{
-          "referenceEntityIdentifier":"designer",
-          "code":"starck",
-          "labels":[
-
+        "plural": null,
+        "message": "This value is not a valid URL.",
+        "root": {
+          "referenceEntityIdentifier": "designer",
+          "code": "starck",
+          "labels": [
           ],
-          "image":null,
-          "editRecordValueCommands":[
+          "image": null,
+          "editRecordValueCommands": [
             {
-              "text":"Philippe Starck",
-              "attribute":{
-                "regularExpression":{
-                  "empty":true
+              "text": "Philippe Starck",
+              "attribute": {
+                "regularExpression": {
+                  "empty": true
                 },
-                "maxLength":[
-
+                "maxLength": [
                 ],
-                "textarea":false,
-                "validationRuleSetToRegularExpression":false,
-                "validationRuleSetToEmail":false,
-                "validationRuleSetToUrl":false,
-                "validationRule":true,
-                "type":"text",
-                "identifier":[
-
+                "textarea": false,
+                "validationRuleSetToRegularExpression": false,
+                "validationRuleSetToEmail": false,
+                "validationRuleSetToUrl": false,
+                "validationRule": true,
+                "type": "text",
+                "identifier": [
                 ],
-                "referenceEntityIdentifier":[
-
+                "referenceEntityIdentifier": [
                 ],
-                "code":[
-
+                "code": [
                 ],
-                "labelCodes":[
+                "labelCodes": [
                   "fr_FR"
                 ],
-                "order":[
-
+                "order": [
                 ],
-                "valuePerChannel":false,
-                "valuePerLocale":false
+                "valuePerChannel": false,
+                "valuePerLocale": false
               },
-              "channel":null,
-              "locale":null
+              "channel": null,
+              "locale": null
             },
             {
-              "attribute":{
-                "regularExpression":{
-                  "empty":true
+              "attribute": {
+                "regularExpression": {
+                  "empty": true
                 },
-                "maxLength":[
-
+                "maxLength": [
                 ],
-                "textarea":true,
-                "validationRuleSetToRegularExpression":false,
-                "validationRuleSetToEmail":false,
-                "validationRuleSetToUrl":false,
-                "validationRule":true,
-                "type":"text",
-                "identifier":[
-
+                "textarea": true,
+                "validationRuleSetToRegularExpression": false,
+                "validationRuleSetToEmail": false,
+                "validationRuleSetToUrl": false,
+                "validationRule": true,
+                "type": "text",
+                "identifier": [
                 ],
-                "referenceEntityIdentifier":[
-
+                "referenceEntityIdentifier": [
                 ],
-                "code":[
-
+                "code": [
                 ],
-                "labelCodes":[
+                "labelCodes": [
                   "fr_FR"
                 ],
-                "order":[
-
+                "order": [
                 ],
-                "valuePerChannel":false,
-                "valuePerLocale":true
+                "valuePerChannel": false,
+                "valuePerLocale": true
               },
-              "channel":null,
-              "locale":"en_US"
+              "channel": null,
+              "locale": "en_US"
             },
             {
-              "attribute":{
-                "regularExpression":{
-                  "empty":true
+              "attribute": {
+                "regularExpression": {
+                  "empty": true
                 },
-                "maxLength":[
-
+                "maxLength": [
                 ],
-                "textarea":true,
-                "validationRuleSetToRegularExpression":false,
-                "validationRuleSetToEmail":false,
-                "validationRuleSetToUrl":false,
-                "validationRule":true,
-                "type":"text",
-                "identifier":[
-
+                "textarea": true,
+                "validationRuleSetToRegularExpression": false,
+                "validationRuleSetToEmail": false,
+                "validationRuleSetToUrl": false,
+                "validationRule": true,
+                "type": "text",
+                "identifier": [
                 ],
-                "referenceEntityIdentifier":[
-
+                "referenceEntityIdentifier": [
                 ],
-                "code":[
-
+                "code": [
                 ],
-                "labelCodes":[
+                "labelCodes": [
                   "fr_FR"
                 ],
-                "order":[
-
+                "order": [
                 ],
-                "valuePerChannel":false,
-                "valuePerLocale":true
+                "valuePerChannel": false,
+                "valuePerLocale": true
               },
-              "channel":null,
-              "locale":"fr_FR"
+              "channel": null,
+              "locale": "fr_FR"
             },
             {
-              "text":"hello world",
-              "attribute":{
-                "regularExpression":{
-                  "empty":true
+              "text": "hello world",
+              "attribute": {
+                "regularExpression": {
+                  "empty": true
                 },
-                "maxLength":[
-
+                "maxLength": [
                 ],
-                "textarea":false,
-                "validationRuleSetToRegularExpression":false,
-                "validationRuleSetToEmail":false,
-                "validationRuleSetToUrl":true,
-                "validationRule":false,
-                "type":"text",
-                "identifier":[
-
+                "textarea": false,
+                "validationRuleSetToRegularExpression": false,
+                "validationRuleSetToEmail": false,
+                "validationRuleSetToUrl": true,
+                "validationRule": false,
+                "type": "text",
+                "identifier": [
                 ],
-                "referenceEntityIdentifier":[
-
+                "referenceEntityIdentifier": [
                 ],
-                "code":[
-
+                "code": [
                 ],
-                "labelCodes":[
+                "labelCodes": [
                   "fr_FR"
                 ],
-                "order":[
-
+                "order": [
                 ],
-                "valuePerChannel":false,
-                "valuePerLocale":false
+                "valuePerChannel": false,
+                "valuePerLocale": false
               },
-              "channel":null,
-              "locale":null
+              "channel": null,
+              "locale": null
             },
             {
-              "attribute":{
-                "maxFileSizeLimit":false,
-                "type":"image",
-                "maxFileSize":{
-                  "limit":false
+              "attribute": {
+                "maxFileSizeLimit": false,
+                "type": "image",
+                "maxFileSize": {
+                  "limit": false
                 },
-                "allowedExtensions":{
-                  "allAllowed":false
+                "allowedExtensions": {
+                  "allAllowed": false
                 },
-                "identifier":[
-
-                ],
-                "referenceEntityIdentifier":[
-
-                ],
-                "code":[
-
-                ],
-                "labelCodes":[
+                "identifier": [],
+                "referenceEntityIdentifier": [],
+                "code": [],
+                "labelCodes": [
                   "fr_FR",
                   "en_US"
                 ],
-                "order":[
-
-                ],
-                "valuePerChannel":false,
-                "valuePerLocale":false
+                "order": [],
+                "valuePerChannel": false,
+                "valuePerLocale": false
               },
-              "channel":null,
-              "locale":null
+              "channel": null,
+              "locale": null
+            },
+            {
+              "attribute": {
+                "type": "number",
+                "minLimitless": false,
+                "maxLimitless": false,
+                "identifier": [],
+                "referenceEntityIdentifier": [],
+                "code": [],
+                "labelCodes": [
+                  "en_US"
+                ],
+                "order": [],
+                "valuePerChannel": false,
+                "valuePerLocale": false
+              },
+              "channel": null,
+              "locale": null
             }
           ]
         },
-        "propertyPath":"values.website",
-        "invalidValue":{
-          "text":"hello world",
-          "attribute":{
-            "regularExpression":{
-              "empty":true
+        "propertyPath": "values.website",
+        "invalidValue": {
+          "text": "hello world",
+          "attribute": {
+            "regularExpression": {
+              "empty": true
             },
-            "maxLength":[
-
+            "maxLength": [
             ],
-            "textarea":false,
-            "validationRuleSetToRegularExpression":false,
-            "validationRuleSetToEmail":false,
-            "validationRuleSetToUrl":true,
-            "validationRule":false,
-            "type":"text",
-            "identifier":[
-
+            "textarea": false,
+            "validationRuleSetToRegularExpression": false,
+            "validationRuleSetToEmail": false,
+            "validationRuleSetToUrl": true,
+            "validationRule": false,
+            "type": "text",
+            "identifier": [
             ],
-            "referenceEntityIdentifier":[
-
+            "referenceEntityIdentifier": [
             ],
-            "code":[
-
+            "code": [
             ],
-            "labelCodes":[
+            "labelCodes": [
               "fr_FR"
             ],
-            "order":[
-
+            "order": [
             ],
-            "valuePerChannel":false,
-            "valuePerLocale":false
+            "valuePerChannel": false,
+            "valuePerLocale": false
           },
-          "channel":null,
-          "locale":null
+          "channel": null,
+          "locale": null
         },
-        "constraint":{
-          "targets":"class",
-          "defaultOption":null,
-          "requiredOptions":[
-
+        "constraint": {
+          "targets": "class",
+          "defaultOption": null,
+          "requiredOptions": [
           ],
-          "payload":null
+          "payload": null
         },
-        "cause":null,
-        "code":"57c2f299-1154-4870-89bb-ef3b1f5ad229"
+        "cause": null,
+        "code": "57c2f299-1154-4870-89bb-ef3b1f5ad229"
       }
     ]
   }
