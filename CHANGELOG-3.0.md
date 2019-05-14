@@ -3,6 +3,7 @@
 # Bug fixes
 
 - PIM-8013: Fix 401 redirection on non authorized page
+- PIM-8242: Fix the search result rendering of the product grid filters when a filter is unselected
 
 # Improvements
 
