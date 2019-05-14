@@ -74,7 +74,7 @@
 
 ## BC breaks
 
-- PIM-8214: Remove validators `Pim\Component\Connector\Validator\Constraints\ProductFilterData` and `Pim\Component\Connector\Validator\Constraints\ProductModelFilterData`
+- PIM-8214: Remove validators `Pim\Component\Connector\Validator\Constraints\FilterDataValidator`, `Pim\Component\Connector\Validator\Constraints\ProductFilterData` and `Pim\Component\Connector\Validator\Constraints\ProductModelFilterData`
 
 # 2.3.33 (2019-03-13)
 
