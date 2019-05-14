@@ -10,16 +10,16 @@ DOCKER_BRIDGE_IP=$(ip address show | grep "global docker" | cut -c10- | cut -d '
 WORKING_DIRECTORY="$SCRIPT_DIR/../var/benchmarks"
 
 PIM_PATH="$SCRIPT_DIR/.."
-# CONFIG_PATH="$PIM_PATH/tests/benchmarks/"
+CONFIG_PATH="$SCRIPT_DIR"
 
-# if [ $# -eq 0 ]; then
-#     REFERENCE_CATALOG_FILE="$CONFIG_PATH/product_api_catalog.yml"
-# else
-#     if [ ! -f "$CONFIG_PATH/$1" ]; then
-#         echo >&2 "The file does not exist"; exit 1;
-#     fi;
-#     REFERENCE_CATALOG_FILE="$CONFIG_PATH/$1"
-# fi;
+if [ $# -eq 0 ]; then
+    REFERENCE_CATALOG_FILE="$CONFIG_PATH/product_api_catalog.yml"
+else
+    if [ ! -f "$CONFIG_PATH/$1" ]; then
+        echo >&2 "The file does not exist"; exit 1;
+    fi;
+    REFERENCE_CATALOG_FILE="$CONFIG_PATH/$1"
+fi;
 
 message()
 {
@@ -33,8 +33,7 @@ generate_reference_catalog()
     message "Generates an API user for the benchmarks in test environment"
     cd $PIM_PATH
     export ES_JAVA_OPTS='-Xms2g -Xmx2g'
-    PUBLIC_PIM_HTTP_PORT='$(docker-compose port fpm 80 | cut -d ':' -f 2)'
-
+    PUBLIC_PIM_HTTP_PORT='$(docker-compose port httpd-behat 80 | cut -d ':' -f 2)'
     CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
     export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)
     export API_SECRET=$(echo $CREDENTIALS | cut -d " " -f 3 | cut -d ":" -f 2)
@@ -42,18 +41,16 @@ generate_reference_catalog()
     export API_USER="admin"
     export API_PASSWORD="admin"
 
-    message 'API Client'
-    echo $CREDENTIALS
-    echo $API_CLIENT
-
     message "Generate the catalog"
 
     docker pull akeneo/data-generator:3.0
 
+    echo $REFERENCE_CATALOG_FILE
+
     docker run \
         -t \
         -e API_CLIENT -e API_SECRET -e API_URL -e API_USER -e API_PASSWORD \
-        -v "/srv/pim/tests/benchmarks/product_api_catalog:/app/akeneo-data-generator/app/catalog/product_api_catalog.yml" \
+        -v "/$REFERENCE_CATALOG_FILE:/app/akeneo-data-generator/app/catalog/product_api_catalog.yml" \
         akeneo/data-generator:3.0 akeneo:api:generate-catalog --with-products --check-minimal-install product_api_catalog.yml
 }
 
