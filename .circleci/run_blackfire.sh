@@ -34,15 +34,17 @@ generate_reference_catalog()
     cd $PIM_PATH
     export ES_JAVA_OPTS='-Xms2g -Xmx2g'
     PUBLIC_PIM_HTTP_PORT=$(docker-compose port fpm 80 | cut -d ':' -f 2)
-    CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
 
+    echo 'export CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')' >> $BASH_ENV
     echo 'export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)' >> $BASH_ENV
     echo 'export API_SECRET=$(echo $CREDENTIALS | cut -d " " -f 3 | cut -d ":" -f 2)' >> $BASH_ENV
     echo 'export API_URL="http://$DOCKER_BRIDGE_IP:8080"' >> $BASH_ENV
     echo 'export API_USER="admin"' >> $BASH_ENV
     echo 'export API_PASSWORD="admin"' >> $BASH_ENV
 
-    which bash
+    message 'API Client'
+    echo $API_CLIENT;
+
     source $BASH_ENV
 
     docker pull akeneo/data-generator:3.0
