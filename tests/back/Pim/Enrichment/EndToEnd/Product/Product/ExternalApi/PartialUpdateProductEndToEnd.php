@@ -776,7 +776,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $akeneoJpgPath = $this->getFixturePath('akeneo.jpg');
+        $akeneoJpgPath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
 
         $data =
 <<<JSON
@@ -828,7 +828,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $ziggyPngPath = $this->getFixturePath('ziggy.png');
+        $ziggyPngPath = $this->getFileInfoKey($this->getFixturePath('ziggy.png'));
 
         $data =
 <<<JSON
