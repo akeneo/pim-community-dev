@@ -45,12 +45,12 @@ generate_reference_catalog()
 
     docker pull akeneo/data-generator:3.0
 
-    echo $REFERENCE_CATALOG_FILE
+    ABSOLUTE_CATALOG_FILE=$(readlink -f -- $REFERENCE_CATALOG_FILE)
 
     docker run \
         -t \
         -e API_CLIENT -e API_SECRET -e API_URL -e API_USER -e API_PASSWORD \
-        -v "/$REFERENCE_CATALOG_FILE:/app/akeneo-data-generator/app/catalog/product_api_catalog.yml" \
+        -v "$ABSOLUTE_CATALOG_FILE:/app/akeneo-data-generator/app/catalog/product_api_catalog.yml" \
         akeneo/data-generator:3.0 akeneo:api:generate-catalog --with-products --check-minimal-install product_api_catalog.yml
 }
 
