@@ -7,6 +7,7 @@
 ## Bug fixes
 
 - PIM-8339: Add missing translations
+- DAPI-226: Do not create a subscription if there's already one for the same identifiers
 
 # 3.0.17 (2019-05-10)
 

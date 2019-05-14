@@ -22,6 +22,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
@@ -249,6 +250,27 @@ class DataFixturesContext implements Context
     }
 
     /**
+     * @Given the product ":identifier" that has the same ASIN that the product ":existingIdentifier"
+     */
+    public function theProductThatHasTheSameAsinThatTheProduct(string $cloneIdentifier, string $originalIdentifier)
+    {
+        $originalProduct = $this->productRepository->findOneByIdentifier($originalIdentifier);
+        if (!$originalProduct instanceof ProductInterface) {
+            throw new \InvalidArgumentException(sprintf('The product "%s" does not exist', $originalIdentifier));
+        }
+
+        $asin = $originalProduct->getValue('asin');
+        if (!$asin instanceof ValueInterface) {
+            throw new \InvalidArgumentException(sprintf('The product %s has no value for the attribute ASIN', $originalProduct));
+        }
+
+        $cloneProduct = $this->productBuilder->createProduct($cloneIdentifier, $originalProduct->getFamily()->getCode());
+        $cloneProduct->addValue($asin);
+
+        $this->productRepository->save($cloneProduct);
+    }
+
+    /**
      * @Given there is suggested data for subscribed product :identifier
      *
      * @param string $identifier
@@ -441,6 +463,10 @@ class DataFixturesContext implements Context
 
         $product = $this->productBuilder->createProduct($identifier, $familyCode);
         $this->setValuesFromRawDataToProduct($product, $normalizedProduct);
+
+        if (isset($normalizedProduct['id'])) {
+            $product->setId(intval($normalizedProduct['id']));
+        }
 
         $this->productRepository->save($product);
     }
