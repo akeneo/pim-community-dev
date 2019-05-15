@@ -247,6 +247,8 @@ pim_reference_entity:
         allowed_extensions: Allowed extensions
         validation_rule: Validation rule
         regular_expression: Regular expression
+        min_value: Min number
+        max_value: Max number
         manage_options:
           confirmation:
             discard_changes: You will lose changes made to the list of options if you leave the page
