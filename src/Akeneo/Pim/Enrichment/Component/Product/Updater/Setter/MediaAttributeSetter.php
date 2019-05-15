@@ -58,7 +58,11 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         if (null === $data) {
             $file = null;
         } elseif (null === $file = $this->repository->findOneByIdentifier($data)) {
-            throw new \Exception("file info should exist.");
+            throw InvalidPropertyException::validPathExpected(
+                $attribute->getCode(),
+                MediaAttributeSetter::class,
+                $data
+            );
         }
 
         $this->entityWithValuesBuilder->addOrReplaceValue(
