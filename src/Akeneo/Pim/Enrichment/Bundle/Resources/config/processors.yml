@@ -103,3 +103,9 @@ services:
             - '@pim_catalog.repository.cached_family'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.cached_attribute'
+
+    pim_connector.processor.denormalization.media_storer:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer'
+        arguments:
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@pim_catalog.repository.attribute'
