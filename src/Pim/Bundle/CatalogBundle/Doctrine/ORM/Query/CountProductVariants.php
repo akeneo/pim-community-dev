@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Doctrine\DBAL\Connection;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\ProductAndProductModel\Query\CountProductVariantsInterface;
 
 /**
- * @todo pull-up 3.x Move to `Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql`
- *
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @todo pull-up 3.x Move to `Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql`
  */
 final class CountProductVariants implements CountProductVariantsInterface
 {
@@ -24,29 +23,26 @@ final class CountProductVariants implements CountProductVariantsInterface
         $this->connection = $connection;
     }
 
-    public function forProductModels(array $productModels): int
+    public function forProductModels(array $productModelCodes): int
     {
-        $productModelIds = \array_map(
-            function (ProductModelInterface $productModel) {
-                return $productModel->getId();
-            },
-            $productModels
-        );
+        if (0 === count($productModelCodes)) {
+            return 0;
+        }
 
         $sql = <<<'SQL'
-            select count(product.id)
+            select count(distinct product.id)
             from pim_catalog_product_model level_1
             left join pim_catalog_product_model level_2 on level_2.parent_id = level_1.id
             left join pim_catalog_product product
                 on product.product_model_id = level_1.id
                 or product.product_model_id = level_2.id
-            where level_1.id in (:productModelIds)
+            where level_1.code in (:productModelCodes)
 SQL;
 
         $stmt = $this->connection->executeQuery(
             $sql,
-            ['productModelIds' => $productModelIds],
-            ['productModelIds' => Connection::PARAM_INT_ARRAY]
+            ['productModelCodes' => $productModelCodes],
+            ['productModelCodes' => Connection::PARAM_STR_ARRAY]
         );
 
         return (int)$stmt->fetchColumn();

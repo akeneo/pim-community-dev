@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\ProductAndProductModel\Query\CountProductVariantsInterface;
-use Pim\Component\Catalog\ProductModel\Query\CountProductModelChildrenInterface;
+use Pim\Component\Catalog\ProductModel\Query\CountProductModelsAndChildrenProductModelsInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
@@ -46,15 +46,15 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
     /** @var int */
     protected $batchSize;
 
-    /** @var CountProductModelChildrenInterface|null */
-    private $countProductModelChildren;
+    /** @var CountProductModelsAndChildrenProductModelsInterface|null */
+    private $countProductModelsAndChildrenProductModels;
 
     /** @var CountProductVariantsInterface|null */
     private $countProductVariants;
 
     /**
-     * @todo pull-up 3.x Remove `null` on dependencies injection for `$countProductModelChildren` and
-     *      `$countProductVariants` and check `doDelete` function for more
+     * @todo pull-up 3.x Remove `null` on dependencies injection for `$countProductModelsAndChildrenProductModels` and
+     *      `$countProductVariants` and check `countProductsToDelete` and `countProductModelsToDelete` functions for more.
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -63,8 +63,8 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         EntityManagerClearerInterface $cacheClearer,
         ObjectFilterInterface $filter,
         int $batchSize = 100,
-        CountProductModelChildrenInterface $countProductModelChildren = null,
-        CountProductVariantsInterface $countProductVariants = null
+        ?CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels = null,
+        ?CountProductVariantsInterface $countProductVariants = null
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->productRemover = $productRemover;
@@ -72,7 +72,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         $this->cacheClearer = $cacheClearer;
         $this->batchSize = $batchSize;
         $this->filter = $filter;
-        $this->countProductModelChildren = $countProductModelChildren;
+        $this->countProductModelsAndChildrenProductModels = $countProductModelsAndChildrenProductModels;
         $this->countProductVariants = $countProductVariants;
     }
 
@@ -184,33 +184,57 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         $products = $this->filterProducts($entities);
         $productModels = $this->filterProductModels($entities);
 
-        /* @todo pull-up 3.x Remove `if-else` */
-        if (null !== $this->countProductVariants) {
-            $deletedProducts = count($products);
-            if (count($productModels) > 0) {
-                $deletedProducts += $this->countProductVariants->forProductModels($productModels);
-            }
-        } else {
-            $deletedProducts = count($products); // to remove
-        }
-
-        /* @todo pull-up 3.x Remove `if-else` */
-        if (null !== $this->countProductModelChildren) {
-            $deletedProductModels = 0;
-            if (count($productModels) > 0) {
-                $deletedProductModels = $this->countProductModelChildren->forProductModels($productModels);
-            }
-        } else {
-            $deletedProductModels = count($productModels); // to remove
-        }
+        $deletedProductsCount = $this->countProductsToDelete($products, $productModels);
+        $deletedProductModelsCount = $this->countProductModelsToDelete($productModels);
 
         $this->productRemover->removeAll($products);
-        $this->stepExecution->incrementSummaryInfo('deleted_products', $deletedProducts);
+        $this->stepExecution->incrementSummaryInfo('deleted_products', $deletedProductsCount);
 
         $this->productModelRemover->removeAll($productModels);
-        $this->stepExecution->incrementSummaryInfo('deleted_product_models', $deletedProductModels);
+        $this->stepExecution->incrementSummaryInfo('deleted_product_models', $deletedProductModelsCount);
 
         $this->cacheClearer->clear();
+    }
+
+    /**
+     * @param ProductInterface[] $products
+     * @param ProductModelInterface[] $productModels
+     */
+    private function countProductsToDelete(array $products, array $productModels): int
+    {
+        /* @todo pull-up 3.x To remove */
+        if (null === $this->countProductVariants) {
+            return count($products);
+        }
+
+        return count($products) + $this->countProductVariants->forProductModels(
+            \array_map(
+                function (ProductModelInterface $productModel) {
+                    return $productModel->getCode();
+                },
+                $productModels
+            )
+        );
+    }
+
+    /**
+     * @param ProductModelInterface[] $productModels
+     */
+    private function countProductModelsToDelete(array $productModels): int
+    {
+        /* @todo pull-up 3.x To remove */
+        if (null === $this->countProductModelsAndChildrenProductModels) {
+            return count($productModels);
+        }
+
+        return $this->countProductModelsAndChildrenProductModels->forProductModels(
+            \array_map(
+                function (ProductModelInterface $productModel) {
+                    return $productModel->getCode();
+                },
+                $productModels
+            )
+        );
     }
 
     /**
