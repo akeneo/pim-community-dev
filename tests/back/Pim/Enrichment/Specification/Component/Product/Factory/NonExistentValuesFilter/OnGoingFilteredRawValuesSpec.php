@@ -24,7 +24,8 @@ final class OnGoingFilteredRawValuesSpec extends ObjectBehavior
                             '<all_channels>' => [
                                 '<all_locales>' => 'option_toto'
                             ],
-                        ]
+                        ],
+                        'properties' => [],
                     ],
                     [
                         'identifier' => 'product_B',
@@ -32,7 +33,8 @@ final class OnGoingFilteredRawValuesSpec extends ObjectBehavior
                             'ecommerce' => [
                                 'en_US' => 'option_tata'
                             ],
-                        ]
+                        ],
+                        'properties' => [],
                     ]
                 ]
             ],
@@ -49,7 +51,8 @@ final class OnGoingFilteredRawValuesSpec extends ObjectBehavior
                                 'fr_FR' => ['des', 'fraises'],
 
                             ],
-                        ]
+                        ],
+                        'properties' => [],
                     ]
                 ]
             ],
@@ -61,7 +64,8 @@ final class OnGoingFilteredRawValuesSpec extends ObjectBehavior
                             '<all_channels>' => [
                                 '<all_locales>' => 'plop'
                             ]
-                        ]
+                        ],
+                        'properties' => [],
                     ]
                 ]
             ]
@@ -90,7 +94,8 @@ final class OnGoingFilteredRawValuesSpec extends ObjectBehavior
                             'fr_FR' => ['des', 'fraises'],
 
                         ],
-                    ]
+                    ],
+                    'properties' => [],
                 ]
             ],
             'a_select' => [
@@ -100,7 +105,8 @@ final class OnGoingFilteredRawValuesSpec extends ObjectBehavior
                         '<all_channels>' => [
                             '<all_locales>' => 'option_toto'
                         ],
-                    ]
+                    ],
+                    'properties' => [],
                 ],
                 [
                     'identifier' => 'product_B',
@@ -108,7 +114,8 @@ final class OnGoingFilteredRawValuesSpec extends ObjectBehavior
                         'ecommerce' => [
                             'en_US' => 'option_tata'
                         ],
-                    ]
+                    ],
+                    'properties' => [],
                 ]
             ],
         ];
@@ -128,7 +135,8 @@ final class OnGoingFilteredRawValuesSpec extends ObjectBehavior
                             '<all_channels>' => [
                                 '<all_locales>' => 'option_toto'
                             ],
-                        ]
+                        ],
+                        'properties' => [],
                     ],
                     [
                         'identifier' => 'product_B',
@@ -136,7 +144,8 @@ final class OnGoingFilteredRawValuesSpec extends ObjectBehavior
                             'ecommerce' => [
                                 'en_US' => ''
                             ],
-                        ]
+                        ],
+                        'properties' => [],
                     ]
                 ]
             ],
@@ -153,7 +162,8 @@ final class OnGoingFilteredRawValuesSpec extends ObjectBehavior
                                 'fr_FR' => ['des'],
 
                             ],
-                        ]
+                        ],
+                        'properties' => [],
                     ]
                 ]
             ]
@@ -168,7 +178,8 @@ final class OnGoingFilteredRawValuesSpec extends ObjectBehavior
                             '<all_channels>' => [
                                 '<all_locales>' => 'plop'
                             ]
-                        ]
+                        ],
+                        'properties' => [],
                     ]
                 ]
             ]

@@ -40,9 +40,11 @@ SQL;
         )->fetchAll();
 
         return array_map(function (array $attribute): Attribute {
-            $properties = unserialize($attribute['properties']);
-
-            return new Attribute($attribute['code'], $attribute['attribute_type'], $properties);
+            return new Attribute(
+                $attribute['code'],
+                $attribute['attribute_type'],
+                unserialize($attribute['properties'])
+            );
         }, $rawResults);
     }
 }
