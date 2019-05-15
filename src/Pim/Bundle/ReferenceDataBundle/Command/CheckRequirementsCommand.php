@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Command;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker\ReferenceDataUniqueCodeChecker;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\CheckerInterface;
-use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ProductValueAccessorsChecker;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataInterfaceChecker;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataNameChecker;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;

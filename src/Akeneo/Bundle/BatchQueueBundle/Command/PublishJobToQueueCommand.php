@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Bundle\BatchQueueBundle\Command;
 
-use Akeneo\Bundle\BatchBundle\Notification\MailNotifier;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\JobParameters;

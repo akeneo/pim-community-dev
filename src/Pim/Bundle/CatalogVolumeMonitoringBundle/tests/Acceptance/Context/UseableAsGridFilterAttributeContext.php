@@ -6,7 +6,6 @@ namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context;
 
 use Behat\Behat\Context\Context;
 use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery;
-use Webmozart\Assert\Assert;
 
 final class UseableAsGridFilterAttributeContext implements Context
 {

@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
-use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
-use Pim\Bundle\AnalyticsBundle\Doctrine\Query;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 

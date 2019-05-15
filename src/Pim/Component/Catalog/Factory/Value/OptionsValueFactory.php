@@ -4,10 +4,8 @@ namespace Pim\Component\Catalog\Factory\Value;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Pim\Component\Catalog\Exception\InvalidOptionsException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**
  * Factory that creates options (multi-select) product values.

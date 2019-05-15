@@ -2,7 +2,6 @@
 
 namespace Context\Page\Category;
 
-use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Form;
 
 /**

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ConnectorBundle\tests\integration\Export;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Pim\Component\Catalog\Model\AttributeInterface;

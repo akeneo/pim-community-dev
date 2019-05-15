@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\FamilyFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;

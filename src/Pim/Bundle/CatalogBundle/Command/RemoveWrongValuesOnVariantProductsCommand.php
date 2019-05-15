@@ -6,7 +6,6 @@ namespace Pim\Bundle\CatalogBundle\Command;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;

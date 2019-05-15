@@ -3,7 +3,6 @@
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

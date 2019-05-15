@@ -4,7 +4,6 @@ namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;

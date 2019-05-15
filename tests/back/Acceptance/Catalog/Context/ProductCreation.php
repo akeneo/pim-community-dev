@@ -9,10 +9,7 @@ use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityWithValue\Builder;
 use Akeneo\Test\Common\Structure\Attribute;
 use Behat\Behat\Context\Context;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Use this context to create products

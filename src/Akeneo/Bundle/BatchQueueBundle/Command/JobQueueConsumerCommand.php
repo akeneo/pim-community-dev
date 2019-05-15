@@ -6,21 +6,16 @@ namespace Akeneo\Bundle\BatchQueueBundle\Command;
 
 use Akeneo\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
-use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
-use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * This command is a daemon to consume job execution messages and launch the associated job execution in background.
