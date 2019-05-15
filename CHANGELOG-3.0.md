@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-8314: Add missing translation
+
 # 3.0.18 (2019-05-15)
 
 ## Improvements
