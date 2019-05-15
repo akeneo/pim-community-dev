@@ -108,15 +108,13 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             $this->fetchCategoryCodesIndexedByProductIdentifier($productIdentifiers)
         );
 
-        $products = [];
+        $rawValuesIndexedByProductIdentifier = [];
         foreach ($productIdentifiers as $identifier) {
             if (!isset($rows[$identifier]['identifier'])) {
                 continue;
             }
-            $row = $rows[$identifier];
-            $rawValues = $row['raw_values'];
 
-            $rawValues = $this->removeIdentifierValue($rawValues, $identifierAttributeCode);
+            $rawValues = $this->removeIdentifierValue($rows[$identifier]['raw_values'], $identifierAttributeCode);
             if (null !== $attributesToFilterOn) {
                 $rawValues = $this->filterByAttributeCodes($rawValues, $attributesToFilterOn);
             }
@@ -126,6 +124,19 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             if (null !== $localesToFilterOn) {
                 $rawValues = $this->filterByLocaleCodes($rawValues, $localesToFilterOn);
             }
+
+            $rows[$identifier]['raw_values'] = $rawValues;
+            $rawValuesIndexedByProductIdentifier[$identifier] = $rawValues;
+        }
+
+        $filteredRawValuesIndexedByProductIdentifier = $this->valueCollectionFactory->createMultipleFromStorageFormat($rawValuesIndexedByProductIdentifier);
+
+        $products = [];
+        foreach ($productIdentifiers as $identifier) {
+            if (!isset($rows[$identifier]['identifier'])) {
+                continue;
+            }
+            $row = $rows[$identifier];
 
             $products[] = new ConnectorProduct(
                 $row['id'],
@@ -139,7 +150,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 $row['product_model_code'],
                 $row['associations'],
                 [],
-                $this->valueCollectionFactory->createFromStorageFormat($rawValues)
+                $filteredRawValuesIndexedByProductIdentifier[$identifier]
             );
         }
 
