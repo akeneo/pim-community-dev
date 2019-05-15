@@ -14,8 +14,8 @@ namespace Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\NonExistentVal
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentValuesFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
-use Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\FindAllExistentRecordsForReferenceEntityIdentifiers;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\FindAllExistentRecordsForReferenceEntityIdentifiers;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -33,31 +33,56 @@ final class NonExistingReferenceEntitiesSimpleSelectFilter implements NonExisten
 
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
     {
-        $selectValues = $onGoingFilteredRawValues->notFilteredValuesOfTypes(ReferenceEntityType::REFERENCE_ENTITY);
+        $singleRecordLinkValues = $onGoingFilteredRawValues->notFilteredValuesOfTypes(ReferenceEntityType::REFERENCE_ENTITY);
 
-        if (empty($selectValues)) {
+        if (empty($singleRecordLinkValues)) {
             return $onGoingFilteredRawValues;
         }
 
-        $recordCodes = $this->findAllExistentRecordsForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes($selectValues);
+        $recordCodesIndexedByReferenceEntityIdentifier = [];
+
+        foreach ($singleRecordLinkValues as $attributeCode => $productData) {
+            foreach ($productData as $productValues) {
+                $referenceEntityIdentifier = $productValues['properties']['reference_data_name'];
+                foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
+                    foreach ($valuesIndexedByLocale as $locale => $value) {
+                        if (!is_array($value)) {
+                            $recordCodesIndexedByReferenceEntityIdentifier[$referenceEntityIdentifier][] = $value;
+                        }
+                    }
+                }
+            }
+        }
+
+        $uniqueRecordCodesIndexedByReferenceEntityIdentifier = [];
+        foreach ($recordCodesIndexedByReferenceEntityIdentifier as $referenceEntityIdentifier => $recordCodes) {
+            $uniqueRecordCodesIndexedByReferenceEntityIdentifier[$referenceEntityIdentifier] = array_unique($recordCodes);
+        }
+
+        $recordCodes = $this->findAllExistentRecordsForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes($uniqueRecordCodesIndexedByReferenceEntityIdentifier);
 
         $filteredValues = [];
 
-        foreach ($selectValues as $attributeCode => $productData) {
+        foreach ($singleRecordLinkValues as $attributeCode => $productData) {
             foreach ($productData as $productValues) {
-                $simpleSelectValues = [];
+                $singleLinkValues = [];
+                $referenceEntityIdentifier = $productValues['properties']['reference_data_name'];
                 foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
-                        if (is_array($value)) {
-                            $simpleSelectValues[$channel][$locale] = array_intersect($value, $recordCodes[$attributeCode] ?? []);
+                        if (!is_array($value)) {
+                            if (in_array($value, $recordCodes[$referenceEntityIdentifier])) {
+                                $singleLinkValues[$channel][$locale] = $value;
+                            } else {
+                                $singleLinkValues[$channel][$locale] = '';
+                            }
                         }
                     }
                 }
 
-                if ($simpleSelectValues !== []) {
+                if ($singleLinkValues !== []) {
                     $filteredValues[ReferenceEntityType::REFERENCE_ENTITY][$attributeCode][] = [
                         'identifier' => $productValues['identifier'],
-                        'values' => $simpleSelectValues,
+                        'values' => $singleLinkValues,
                         'properties' => $productValues['properties']
                     ];
                 }

@@ -14,8 +14,8 @@ namespace Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\NonExistentVal
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentValuesFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
-use Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\FindAllExistentRecordsForReferenceEntityIdentifiers;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Query\FindAllExistentRecordsForReferenceEntityIdentifiers;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -33,23 +33,44 @@ final class NonExistingReferenceEntitiesMultiSelectFilter implements NonExistent
 
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
     {
-        $selectValues = $onGoingFilteredRawValues->notFilteredValuesOfTypes(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION);
+        $multipleRecordLinkValues = $onGoingFilteredRawValues->notFilteredValuesOfTypes(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION);
 
-        if (empty($selectValues)) {
+        if (empty($multipleRecordLinkValues)) {
             return $onGoingFilteredRawValues;
         }
 
-        $recordCodes = $this->findAllExistentRecordsForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes($selectValues);
+        $recordCodesIndexedByReferenceEntityIdentifier = [];
 
-        $filteredValues = [];
-
-        foreach ($selectValues as $attributeCode => $productData) {
+        foreach ($multipleRecordLinkValues as $attributeCode => $productData) {
             foreach ($productData as $productValues) {
-                $multiSelectValues = [];
+                $referenceEntityIdentifier = $productValues['properties']['reference_data_name'];
                 foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (is_array($value)) {
-                            $multiSelectValues[$channel][$locale] = array_intersect($value, $recordCodes[$attributeCode] ?? []);
+                            $recordCodesIndexedByReferenceEntityIdentifier[$referenceEntityIdentifier][] = $value;
+                        }
+                    }
+                }
+            }
+        }
+
+        $uniqueRecordCodesIndexedByReferenceEntityIdentifier = [];
+        foreach ($recordCodesIndexedByReferenceEntityIdentifier as $referenceEntityIdentifier => $recordCodes) {
+            $uniqueRecordCodesIndexedByReferenceEntityIdentifier[$referenceEntityIdentifier] = array_unique(array_merge(...$recordCodes));
+        }
+
+        $recordCodes = $this->findAllExistentRecordsForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes($uniqueRecordCodesIndexedByReferenceEntityIdentifier);
+
+        $filteredValues = [];
+
+        foreach ($multipleRecordLinkValues as $attributeCode => $productData) {
+            foreach ($productData as $productValues) {
+                $multiSelectValues = [];
+                $referenceEntityIdentifier = $productValues['properties']['reference_data_name'];
+                foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
+                    foreach ($valuesIndexedByLocale as $locale => $value) {
+                        if (is_array($value)) {
+                            $multiSelectValues[$channel][$locale] = array_intersect($value, $recordCodes[$referenceEntityIdentifier] ?? []);
                         }
                     }
                 }
