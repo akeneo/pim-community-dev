@@ -13,6 +13,8 @@ services:
             - '@pimee_workflow.applier.draft'
             - '@pimee_workflow.repository.product_draft'
             - '@security.token_storage'
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
 
     pimee_workflow.connector.processor.quick_export.published_product:
         class: '%pim_enrich.connector.processor.quick_export.product_and_product_model.class%'
