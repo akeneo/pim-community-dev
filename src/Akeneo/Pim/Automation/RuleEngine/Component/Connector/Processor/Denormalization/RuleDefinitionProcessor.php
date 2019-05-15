@@ -104,29 +104,9 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
     protected function buildRuleFromItemAndDefinition(array $item, RuleDefinitionInterface $definition = null)
     {
         try {
-            foreach ($item['actions'] as $key => $action) {
-                /** @var AttributeInterface $attribute */
-                if (isset($action['field'])) {
-                    $attribute = $this->attributeRepository->findOneByIdentifier($action['field']);
-                } else {
-                    $attribute = $this->attributeRepository->findOneByIdentifier($action['from_field']);
-                }
-
-                if (null !== $attribute &&
-                    in_array($attribute->getType(), [AttributeTypes::FILE, AttributeTypes::IMAGE]) &&
-                    file_exists($action['value'])) {
-                    $fileInfo = $this->fileStorer->store(
-                        new \SplFileInfo($action['value']),
-                        FileStorage::CATALOG_STORAGE_ALIAS
-                    );
-
-                    $item['actions'][$key]['value'] = $fileInfo->getKey();
-                }
-            }
-
+            $item = $this->storeMedias($item);
             $rule = $this->denormalizer
                 ->denormalize($item, $this->ruleClass, null, ['definitionObject' => $definition]);
-
         } catch (\LogicException $e) {
             $this->skipItemWithMessage($item, $e->getMessage());
         }
@@ -167,5 +147,34 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
     protected function detachObject($object)
     {
         $this->detacher->detach($object);
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return array
+     * @throws \Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException
+     * @throws \Akeneo\Tool\Component\FileStorage\Exception\FileTransferException
+     * @throws \Exception
+     */
+    private function storeMedias(array $item): array
+    {
+        foreach ($item['actions'] as $key => $action) {
+            $actionField = $action['field'] ?? $action['from_field'];
+            $attribute = $this->attributeRepository->findOneByIdentifier($actionField);
+
+            if (null !== $attribute &&
+                in_array($attribute->getCode(), $this->attributeRepository->findMediaAttributeCodes()) &&
+                file_exists($action['value'])) {
+                $fileInfo = $this->fileStorer->store(
+                    new \SplFileInfo($action['value']),
+                    FileStorage::CATALOG_STORAGE_ALIAS
+                );
+
+                $item['actions'][$key]['value'] = $fileInfo->getKey();
+            }
+        }
+
+        return $item;
     }
 }
