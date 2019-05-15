@@ -20,13 +20,11 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 {
     function let(
         EntityWithValuesBuilderInterface $builder,
-        FileStorerInterface $storer,
-        FileInfoRepositoryInterface $repository
+        FileInfoRepositoryInterface $fileInfoRepository
     ) {
         $this->beConstructedWith(
             $builder,
-            $storer,
-            $repository,
+            $fileInfoRepository,
             ['pim_catalog_file', 'pim_catalog_image']
         );
     }
@@ -75,8 +73,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
     }
 
     function it_does_not_create_product_value_if_attribute_media_data_is_null(
-        $repository,
-        $storer,
+        $fileInfoRepository,
         $builder,
         ProductInterface $product,
         AttributeInterface $fileAttribute,
@@ -85,8 +82,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $fileAttribute->getCode()->willReturn('file');
         $imageAttribute->getCode()->willReturn('image');
 
-        $repository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
-        $storer->store(Argument::cetera())->shouldNotBeCalled();
+        $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $builder->addOrReplaceValue($product, $fileAttribute, null, null, null);
         $builder->addOrReplaceValue($product, $imageAttribute, 'en_US', 'ecommerce', null);
@@ -96,67 +92,19 @@ class MediaAttributeSetterSpec extends ObjectBehavior
     }
 
     function it_sets_an_attribute_data_media_to_a_product(
-        $repository,
-        $storer,
-        $builder,
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        FileInfoInterface $fileInfo
-    ) {
-        $data = realpath(__DIR__ . '/../../../../../../../../../tests/legacy/features/Context/fixtures/akeneo.jpg');
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $repository->findOneByIdentifier(Argument::any())->willReturn(null);
-        $storer->store(Argument::cetera())->willReturn($fileInfo);
-        $fileInfo->getKey()->willReturn($data);
-
-        $builder->addOrReplaceValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
-
-        $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
-    }
-
-    function it_sets_an_attribute_data_media_to_a_product_that_has_no_value(
-        $storer,
-        $repository,
+        $fileInfoRepository,
         $builder,
         AttributeInterface $attribute,
         ProductInterface $product,
         FileInfoInterface $fileInfo
     ) {
         $attribute->getCode()->willReturn('attributeCode');
-        $product->getValue('attributeCode', Argument::cetera())->willReturn(null);
 
-        $data = realpath(__DIR__.'/../../../../../../../../../tests/legacy/features/Context/fixtures/akeneo.jpg');
+        $fileInfoRepository->findOneByIdentifier(Argument::any())->willReturn($fileInfo);
+        $fileInfo->getKey()->willReturn('file/key');
 
-        $repository->findOneByIdentifier(Argument::any())->willReturn(null);
-        $storer->store(Argument::cetera())->willReturn($fileInfo);
-        $fileInfo->getKey()->willReturn($data);
+        $builder->addOrReplaceValue($product, $attribute, 'fr_FR', 'mobile', 'file/key')->shouldBeCalled();
 
-        $builder->addOrReplaceValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
-
-        $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
-    }
-
-    function it_does_not_store_an_attribute_data_that_has_already_been_stored_as_media(
-        $repository,
-        $storer,
-        $builder,
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        ValueInterface $value,
-        FileInfoInterface $fileInfo
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-        $product->getValue('attributeCode', Argument::cetera())->willReturn($value);
-
-        $data = '4/e/6/c/4e6cb2788fa565037745ee01e48102780cc4d52b_my_file.jpg';
-
-        $repository->findOneByIdentifier(Argument::any())->willReturn($fileInfo);
-        $storer->store(Argument::cetera())->shouldNotBeCalled();
-        $fileInfo->getKey()->willReturn($data);
-
-        $builder->addOrReplaceValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
-
-        $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
+        $this->setAttributeData($product, $attribute, 'file/key', ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 }

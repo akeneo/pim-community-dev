@@ -277,7 +277,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $this->detacher->detach($product);
     }
 
-    private function storeMedias(array $productValues)
+    private function storeMedias(array $productValues): array
     {
         $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
 
