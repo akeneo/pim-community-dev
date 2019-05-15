@@ -137,7 +137,7 @@ Feature: Show all rules related to an attribute
       | Action    | Then 800 is set into number_in_stock [ tablet ]                     |
       | Action    | Then 05/26/2015 is set into release_date [ mobile ]                 |
       | Action    | Then €12.00 is set into price                                       |
-      | Action    | Then akeneo.jpg is set into side_view                               |
+      | Action    | akeneo.jpg is set into side_view                               |
       | Action    | Then 10 Centimeter is set into length                               |
       | Action    | Then name [ en ] is copied into name [ fr ]                         |
       | Action    | Then name [ en ] is copied into name [ de ]                         |

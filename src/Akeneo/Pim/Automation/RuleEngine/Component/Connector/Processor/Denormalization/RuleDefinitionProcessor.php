@@ -11,11 +11,16 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -45,19 +50,19 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
     /** @var string */
     protected $class;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param DenormalizerInterface                 $denormalizer
-     * @param ValidatorInterface                    $validator
-     * @param ObjectDetacherInterface               $detacher
-     * @param string                                $ruleDefinitionClass
-     * @param string                                $ruleClass
-     */
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var FileStorerInterface */
+    private $fileStorer;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
+        AttributeRepositoryInterface $attributeRepository,
+        FileStorerInterface $fileStorer,
         $ruleDefinitionClass,
         $ruleClass
     ) {
@@ -67,6 +72,8 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
         $this->detacher = $detacher;
         $this->ruleClass = $ruleClass;
         $this->class = $ruleDefinitionClass;
+        $this->attributeRepository = $attributeRepository;
+        $this->fileStorer = $fileStorer;
     }
 
     /**
@@ -97,8 +104,29 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
     protected function buildRuleFromItemAndDefinition(array $item, RuleDefinitionInterface $definition = null)
     {
         try {
+            foreach ($item['actions'] as $key => $action) {
+                /** @var AttributeInterface $attribute */
+                if (isset($action['field'])) {
+                    $attribute = $this->attributeRepository->findOneByIdentifier($action['field']);
+                } else {
+                    $attribute = $this->attributeRepository->findOneByIdentifier($action['from_field']);
+                }
+
+                if (null !== $attribute &&
+                    in_array($attribute->getType(), [AttributeTypes::FILE, AttributeTypes::IMAGE]) &&
+                    file_exists($action['value'])) {
+                    $fileInfo = $this->fileStorer->store(
+                        new \SplFileInfo($action['value']),
+                        FileStorage::CATALOG_STORAGE_ALIAS
+                    );
+
+                    $item['actions'][$key]['value'] = $fileInfo->getKey();
+                }
+            }
+
             $rule = $this->denormalizer
                 ->denormalize($item, $this->ruleClass, null, ['definitionObject' => $definition]);
+
         } catch (\LogicException $e) {
             $this->skipItemWithMessage($item, $e->getMessage());
         }
