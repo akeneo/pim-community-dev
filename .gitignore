@@ -57,6 +57,9 @@ npm-debug.log
 /docker/object_storage/catalog/*
 !/docker/object_storage/catalog
 !/docker/object_storage/catalog/.gitkeep
+/docker/object_storage/jobs/*
+!/docker/object_storage/jobs
+!/docker/object_storage/jobs/.gitkeep
 .env
 docker-compose.override.yml
 .web-server-pid
