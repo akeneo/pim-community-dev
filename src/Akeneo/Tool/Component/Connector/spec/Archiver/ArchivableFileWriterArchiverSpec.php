@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Step\AbstractStep;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
-use League\Flysystem\Adapter\Local as LocalAdapter;
+use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\Archiver\ZipFilesystemFactory;
@@ -20,14 +20,15 @@ use Prophecy\Argument;
 class ArchivableFileWriterArchiverSpec extends ObjectBehavior
 {
     function let(
-        ZipFilesystemFactory $factory,
-        Filesystem $filesystem,
-        LocalAdapter $adapter,
+        ZipFilesystemFactory $zipFactory,
+        Filesystem $zipFilesystem,
+        Filesystem $archivistFilesystem,
+        ZipArchiveAdapter $zipAdapter,
         JobRegistry $jobRegistry
     ) {
-        $filesystem->getAdapter()->willReturn($adapter);
-        $adapter->getPathPrefix()->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'archivist');
-        $this->beConstructedWith($factory, $filesystem, $jobRegistry);
+        $zipFilesystem->getAdapter()->willReturn($zipAdapter);
+        $zipFactory->createZip(Argument::any())->willReturn($zipFilesystem);
+        $this->beConstructedWith($zipFactory, $archivistFilesystem, $jobRegistry);
     }
 
     function it_is_initializable()
@@ -36,7 +37,7 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_doesnt_create_a_file_when_writer_is_invalid(
-        $filesystem,
+        $zipFilesystem,
         $jobRegistry,
         Writer $writer,
         JobExecution $jobExecution,
@@ -55,7 +56,7 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $writer->getWrittenFiles()->willReturn([]);
         $writer->getPath()->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR  . 'file.csv');
 
-        $filesystem->put(Argument::any())->shouldNotBeCalled();
+        $zipFilesystem->put(Argument::any())->shouldNotBeCalled();
 
         $this->archive($jobExecution);
     }
@@ -106,7 +107,7 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     }
 
     function it_doesnt_create_a_file_if_step_is_not_an_item_step(
-        $filesystem,
+        $zipFilesystem,
         $jobRegistry,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -120,42 +121,60 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('type');
         $job->getSteps()->willReturn([$step]);
 
-        $filesystem->put(Argument::any())->shouldNotBeCalled();
+        $zipFilesystem->put(Argument::any())->shouldNotBeCalled();
 
         $this->archive($jobExecution);
     }
 
     function it_creates_a_file_if_writer_is_correct(
         $jobRegistry,
+        $zipAdapter,
+        $zipFactory,
+        $zipFilesystem,
+        $archivistFilesystem,
         Writer $writer,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
         ItemStep $step,
-        $factory,
-        $filesystem
+        \ZipArchive $zipArchive
     ) {
         $file1 = tempnam(sys_get_temp_dir(), 'spec');
         $file2 = tempnam(sys_get_temp_dir(), 'spec');
+
+        $zipFile = $file2.'.zip';
+        touch($zipFile);
 
         $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getType()->willReturn('type');
+
+        $executionContext = new \Akeneo\Tool\Component\Batch\Item\ExecutionContext();
+        $executionContext->put('working_directory', sys_get_temp_dir());
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
         $writer->getWrittenFiles()->willReturn([$file1 => 'file1', $file2 => 'file2']);
-        $writer->getPath()->willReturn(sys_get_temp_dir());
-        $filesystem->has('type/my_job_name/12/archive')->willReturn(false);
-        $filesystem->createDir('type/my_job_name/12/archive')->shouldBeCalled();
 
-        $factory->createZip(Argument::any())->willReturn($filesystem);
-        $filesystem->putStream('file1', Argument::type('resource'))->shouldBeCalled();
-        $filesystem->putStream('file2', Argument::type('resource'))->shouldBeCalled();
+        $writer->getPath()->willReturn($zipFile);
+
+        $archivistFilesystem->has('type/my_job_name/12/archive')->willReturn(false);
+        $archivistFilesystem->createDir('type/my_job_name/12/archive')->shouldBeCalled();
+
+        $zipFilesystem->putStream('file1', Argument::type('resource'))->shouldBeCalled();
+        $zipFilesystem->putStream('file2', Argument::type('resource'))->shouldBeCalled();
+
+        $zipAdapter->getArchive()->willReturn($zipArchive);
+
+        $archivistFilesystem->writeStream('type/my_job_name/12/archive/'.basename($zipFile), Argument::any())->shouldBeCalled();
 
         $this->archive($jobExecution);
 
+        unlink($zipFile);
         unlink($file1);
         unlink($file2);
     }

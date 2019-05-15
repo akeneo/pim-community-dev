@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
@@ -51,13 +52,40 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
             }
             $writer = $step->getWriter();
             if ($this->isWriterUsable($writer)) {
-                $filesystem = $this->getZipFilesystem(
-                    $jobExecution,
-                    sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME))
+                $zipName = sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME));
+
+                $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
+                $localZipPath = $workingDirectory.DIRECTORY_SEPARATOR.$zipName;
+
+                $localZipFilesystem = $this->factory->createZip(
+                    $localZipPath
                 );
 
                 foreach ($writer->getWrittenFiles() as $fullPath => $localPath) {
-                    $filesystem->putStream($localPath, fopen($fullPath, 'r'));
+                    $stream = fopen($fullPath, 'r');
+                    $localZipFilesystem->putStream($localPath, $stream);
+
+                    if (is_resource($stream)) {
+                        fclose($stream);
+                    }
+                }
+
+                $zipPath = strtr(
+                    $this->getRelativeArchivePath($jobExecution),
+                    ['%filename%' => $zipName]
+                );
+
+                if (!$this->filesystem->has(dirname($zipPath))) {
+                    $this->filesystem->createDir(dirname($zipPath));
+                }
+
+                $localZipFilesystem->getAdapter()->getArchive()->close();
+
+                $zipArchive = fopen($localZipPath, 'r');
+                $this->filesystem->writeStream($zipPath, $zipArchive);
+
+                if (is_resource($zipArchive)) {
+                    fclose($zipArchive);
                 }
             }
         }
@@ -69,31 +97,6 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
     public function getName()
     {
         return 'archive';
-    }
-
-    /**
-     * Get a fresh zip filesystem for the given job execution
-     *
-     * @param JobExecution $jobExecution
-     * @param string       $zipName
-     *
-     * @return Filesystem
-     */
-    protected function getZipFilesystem(JobExecution $jobExecution, $zipName)
-    {
-        $zipPath = strtr(
-            $this->getRelativeArchivePath($jobExecution),
-            ['%filename%' => $zipName]
-        );
-
-        if (!$this->filesystem->has(dirname($zipPath))) {
-            $this->filesystem->createDir(dirname($zipPath));
-        }
-
-        return $this->factory->createZip(
-            $this->filesystem->getAdapter()->getPathPrefix() .
-            $zipPath
-        );
     }
 
     /**

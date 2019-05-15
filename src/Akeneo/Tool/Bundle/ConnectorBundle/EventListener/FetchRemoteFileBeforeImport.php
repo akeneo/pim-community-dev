@@ -61,7 +61,7 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
         if (true === $jobFileLocation->isRemote()) {
             $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
-            $localFilePath = $jobFileLocation->generateLocalTemporaryName($workingDirectory);
+            $localFilePath = $workingDirectory.DIRECTORY_SEPARATOR.basename($jobFileLocation->path());
 
             $remoteStream =  $this->filesystem->readStream($jobFileLocation->path());
 
