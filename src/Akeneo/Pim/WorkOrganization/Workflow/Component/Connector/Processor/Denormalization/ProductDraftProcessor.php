@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
@@ -23,6 +24,7 @@ use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -59,11 +61,8 @@ class ProductDraftProcessor extends AbstractProcessor implements
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var FileStorer */
-    private $fileStorer;
+    /** @var MediaStorer */
+    private $mediaStorer;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -73,8 +72,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
         DraftApplierInterface $productDraftApplier,
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         TokenStorageInterface $tokenStorage,
-        AttributeRepositoryInterface $attributeRepository,
-        FileStorer $fileStorer
+        MediaStorer $mediaStorer
     ) {
         parent::__construct($repository);
 
@@ -84,8 +82,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
         $this->productDraftApplier = $productDraftApplier;
         $this->productDraftRepo = $productDraftRepo;
         $this->tokenStorage = $tokenStorage;
-        $this->attributeRepository = $attributeRepository;
-        $this->fileStorer = $fileStorer;
+        $this->mediaStorer = $mediaStorer;
     }
 
     /**
@@ -103,7 +100,12 @@ class ProductDraftProcessor extends AbstractProcessor implements
         $product = $this->applyDraftToProduct($product);
 
         if (isset($item['values'])) {
-            $item['values'] = $this->storeMedias($item['values']);
+            try {
+                $item['values'] = $this->mediaStorer->store($item['values']);
+            } catch (InvalidPropertyException $e) {
+                $this->detachProduct($product);
+                $this->skipItemWithMessage($item, $e->getMessage(), $e);
+            }
         }
 
         try {
@@ -206,24 +208,5 @@ class ProductDraftProcessor extends AbstractProcessor implements
     protected function getUsername(): string
     {
         return $this->tokenStorage->getToken()->getUsername();
-    }
-
-    private function storeMedias(array $productValues): array
-    {
-        $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
-
-        foreach ($productValues as $attributeCode => $values) {
-            if (in_array($attributeCode, $mediaAttributes)) {
-                foreach ($values as $index => $value) {
-                    if (empty($value['data'])) {
-                        continue;
-                    }
-                    $file = $this->fileStorer->store(new \SplFileInfo($value['data']), FileStorage::CATALOG_STORAGE_ALIAS);
-                    $productValues[$attributeCode][$index]["data"] = $file->getKey();
-                }
-            }
-        }
-
-        return $productValues;
     }
 }

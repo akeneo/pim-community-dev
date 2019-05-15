@@ -2,14 +2,13 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -34,8 +33,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         StepExecution $stepExecution,
         TokenStorageInterface $tokenStorage,
-        AttributeRepositoryInterface $attributeRepository,
-        FileStorer $fileStorer
+        MediaStorer $mediaStorer
     ) {
         $this->beConstructedWith(
             $repository,
@@ -45,8 +43,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             $productDraftApplier,
             $productDraftRepo,
             $tokenStorage,
-            $attributeRepository,
-            $fileStorer
+            $mediaStorer
         );
         $this->setStepExecution($stepExecution);
     }
@@ -64,7 +61,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $productDraftBuilder,
         $stepExecution,
         $tokenStorage,
-        $attributeRepository,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
@@ -77,6 +74,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
 
+        $mediaStorer->store($values['values'])->willReturn($values['values']);
+
         $updater
             ->update($product, $values)
             ->shouldBeCalled();
@@ -85,7 +84,6 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violationList);
 
-        $attributeRepository->findMediaAttributeCodes()->willreturn([]);
         $productDraftBuilder->build($product, 'mary')->willReturn($productDraft);
 
         $tokenStorage->getToken()->willReturn($token);
@@ -141,16 +139,17 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $productDraftBuilder,
         $stepExecution,
         $tokenStorage,
-        $attributeRepository,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
-        JobInstance $jobInstance,
         TokenInterface $token
     ) {
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
         $values = $this->getValues();
+
+        $mediaStorer->store($values['values'])->willReturn($values['values']);
 
         $updater
             ->update($product, $values)
@@ -160,7 +159,6 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violationList);
 
-        $attributeRepository->findMediaAttributeCodes()->willreturn([]);
         $productDraftBuilder->build($product, 'mary')->willReturn(null);
 
         $tokenStorage->getToken()->willReturn($token);
