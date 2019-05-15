@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -59,22 +60,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     /** @var string */
     private $importType;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    /** @var MediaStorer */
+    private $mediaStorer;
 
-    /** @var FileStorer */
-    private $fileStorer;
-
-    /**
-     * @param SimpleFactoryInterface                $productModelFactory
-     * @param ObjectUpdaterInterface                $productModelUpdater
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param ValidatorInterface                    $validator
-     * @param FilterInterface                       $productModelFilter
-     * @param ObjectDetacherInterface               $objectDetacher
-     * @param AttributeFilterInterface              $productModelAttributeFilter
-     * @param string                                $importType
-     */
     public function __construct(
         SimpleFactoryInterface $productModelFactory,
         ObjectUpdaterInterface $productModelUpdater,
@@ -83,9 +71,8 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         FilterInterface $productModelFilter,
         ObjectDetacherInterface $objectDetacher,
         AttributeFilterInterface $productModelAttributeFilter,
-        string $importType,
-        AttributeRepositoryInterface $attributeRepository,
-        FileStorer $fileStorer
+        MediaStorer $mediaStorer,
+        string $importType
     ) {
         parent::__construct($productModelRepository);
 
@@ -97,8 +84,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         $this->objectDetacher = $objectDetacher;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
         $this->importType = $importType;
-        $this->attributeRepository = $attributeRepository;
-        $this->fileStorer = $fileStorer;
+        $this->mediaStorer = $mediaStorer;
     }
 
     /**
@@ -141,7 +127,12 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         }
 
         if (isset($standardProductModel['values'])) {
-            $standardProductModel['values'] = $this->storeMedias($standardProductModel['values']);
+            try {
+                $standardProductModel['values'] = $this->mediaStorer->store($standardProductModel['values']);
+            } catch (InvalidPropertyException $e) {
+                $this->detachProduct($productModel);
+                $this->skipItemWithMessage($standardProductModel, $e->getMessage(), $e);
+            }
         }
 
         try {
@@ -190,24 +181,5 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         unset($item['associations']);
 
         return $item;
-    }
-
-    private function storeMedias(array $productValues)
-    {
-        $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
-
-        foreach ($productValues as $attributeCode => $values) {
-            if (in_array($attributeCode, $mediaAttributes)) {
-                foreach ($values as $index => $value) {
-                    if (empty($value['data'])) {
-                        continue;
-                    }
-                    $file = $this->fileStorer->store(new \SplFileInfo($value['data']), FileStorage::CATALOG_STORAGE_ALIAS);
-                    $productValues[$attributeCode][$index]["data"] = $file->getKey();
-                }
-            }
-        }
-
-        return $productValues;
     }
 }

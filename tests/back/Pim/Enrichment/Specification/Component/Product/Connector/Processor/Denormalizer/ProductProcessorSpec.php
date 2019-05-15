@@ -2,14 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -38,8 +37,7 @@ class ProductProcessorSpec extends ObjectBehavior
         ObjectDetacherInterface $productDetacher,
         FilterInterface $productFilter,
         AttributeFilterInterface $productAttributeFilter,
-        AttributeRepositoryInterface $attributeRepository,
-        FileStorer $fileStorer
+        MediaStorer $mediaStorer
     ) {
         $this->beConstructedWith(
             $productRepository,
@@ -50,8 +48,7 @@ class ProductProcessorSpec extends ObjectBehavior
             $productDetacher,
             $productFilter,
             $productAttributeFilter,
-            $attributeRepository,
-            $fileStorer
+            $mediaStorer
         );
         $this->setStepExecution($stepExecution);
     }
@@ -71,7 +68,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productAttributeFilter,
         $productToImport,
         $addParent,
-        $attributeRepository,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -88,8 +85,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productToImport->fromFlatData('tshirt', 'Summer Tshirt')->willReturn($product);
         $product->getId()->willReturn(42);
-
-        $attributeRepository->findMediaAttributeCodes()->willreturn([]);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -153,6 +148,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -177,7 +174,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
-        $attributeRepository,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -196,8 +193,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $addParent->to($product, '')->willReturn($product);
-
-        $attributeRepository->findMediaAttributeCodes()->willreturn([]);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -260,6 +255,9 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
 
         unset($filteredData['family'], $filteredData['name'][1]);
+
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+
         $productFilter->filter($product, $preFilteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -284,7 +282,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
-        $attributeRepository,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -303,8 +301,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $addParent->to($product, '')->willReturn($product);
-
-        $attributeRepository->findMediaAttributeCodes()->willreturn([]);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -366,6 +362,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+
         $productFilter->filter($product, [])->shouldNotBeCalled();
 
         $productUpdater
@@ -426,7 +424,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
-        $attributeRepository,
+        $mediaStorer,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -444,8 +442,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $addParent->to($product, '')->willReturn($product);
-
-        $attributeRepository->findMediaAttributeCodes()->willreturn([]);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -508,6 +504,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => true
         ];
+
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
 
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
@@ -536,7 +534,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
-        $attributeRepository,
+        $mediaStorer,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -554,8 +552,6 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
         $addParent->to($product, '')->willReturn($product);
-
-        $attributeRepository->findMediaAttributeCodes()->willreturn([]);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -618,6 +614,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => true
         ];
+
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
 
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
@@ -650,6 +648,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
+        $mediaStorer,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -727,6 +726,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+
         $productFilter->filter($product, $filteredData)->willReturn([]);
 
         $productUpdater
@@ -749,7 +750,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
-        $attributeRepository,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -768,8 +769,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $addParent->to($product, '')->willReturn($product);
-
-        $attributeRepository->findMediaAttributeCodes()->willreturn([]);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -833,6 +832,8 @@ class ProductProcessorSpec extends ObjectBehavior
             'enabled' => false,
         ];
 
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -857,6 +858,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -898,6 +900,8 @@ class ProductProcessorSpec extends ObjectBehavior
             'values' => [],
         ];
 
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -922,6 +926,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution,
         $productAttributeFilter,
         $addParent,
+        $mediaStorer,
         ProductInterface $product,
         ProductInterface $productInDB,
         ConstraintViolationListInterface $violationList,
@@ -990,6 +995,8 @@ class ProductProcessorSpec extends ObjectBehavior
             'enabled' => true,
             'values' => [],
         ];
+
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
 
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 

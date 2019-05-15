@@ -57,24 +57,9 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var AttributeFilterInterface */
     private $productAttributeFilter;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    /** @var MediaStorer */
+    private $mediaStorer;
 
-    /** @var FileStorer */
-    private $fileStorer;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param FindProductToImport                   $findProductToImport
-     * @param AddParent                             $addParent
-     * @param ObjectUpdaterInterface                $updater
-     * @param ValidatorInterface                    $validator
-     * @param ObjectDetacherInterface               $detacher
-     * @param FilterInterface                       $productFilter
-     * @param AttributeFilterInterface              $productAttributeFilter
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param FileStorer                            $fileStorer
-     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         FindProductToImport $findProductToImport,
@@ -84,8 +69,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         ObjectDetacherInterface $detacher,
         FilterInterface $productFilter,
         AttributeFilterInterface $productAttributeFilter,
-        AttributeRepositoryInterface $attributeRepository,
-        FileStorer $fileStorer
+        MediaStorer $mediaStorer
     ) {
         parent::__construct($repository);
 
@@ -96,8 +80,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $this->detacher = $detacher;
         $this->productFilter = $productFilter;
         $this->productAttributeFilter = $productAttributeFilter;
-        $this->attributeRepository = $attributeRepository;
-        $this->fileStorer = $fileStorer;
+        $this->repository = $repository;
+        $this->mediaStorer = $mediaStorer;
     }
 
     /**
@@ -158,7 +142,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
 
         if (isset($filteredItem['values'])) {
             try {
-                $filteredItem['values'] = $this->storeMedias($filteredItem['values'], $item);
+                $filteredItem['values'] = $this->mediaStorer->store($filteredItem['values']);
             } catch (InvalidPropertyException $e) {
                 $this->detachProduct($product);
                 $this->skipItemWithMessage($item, $e->getMessage(), $e);
@@ -282,30 +266,5 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     protected function detachProduct(ProductInterface $product)
     {
         $this->detacher->detach($product);
-    }
-
-    private function storeMedias(array $productValues): array
-    {
-        $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
-
-        foreach ($productValues as $attributeCode => $values) {
-            if (in_array($attributeCode, $mediaAttributes)) {
-                foreach ($values as $index => $value) {
-                    if (empty($value['data'])) {
-                        continue;
-                    }
-                    if (!is_file($value['data'])) {
-                        throw InvalidPropertyException::validPathExpected($attributeCode, self::class, $value['data']);
-                    }
-                    $file = $this->fileStorer->store(
-                        new \SplFileInfo($value['data']),
-                        FileStorage::CATALOG_STORAGE_ALIAS
-                    );
-                    $productValues[$attributeCode][$index]["data"] = $file->getKey();
-                }
-            }
-        }
-
-        return $productValues;
     }
 }
