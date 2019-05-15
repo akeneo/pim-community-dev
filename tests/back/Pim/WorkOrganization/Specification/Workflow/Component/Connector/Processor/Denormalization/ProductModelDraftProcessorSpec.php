@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -33,7 +34,8 @@ class ProductModelDraftProcessorSpec extends ObjectBehavior
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         StepExecution $stepExecution,
         TokenStorageInterface $tokenStorage,
-        AttributeFilterInterface $productModelAttributeFilter
+        AttributeFilterInterface $productModelAttributeFilter,
+        MediaStorer $mediaStorer
     ) {
         $this->beConstructedWith(
             $repository,
@@ -43,7 +45,8 @@ class ProductModelDraftProcessorSpec extends ObjectBehavior
             $productDraftApplier,
             $productDraftRepo,
             $tokenStorage,
-            $productModelAttributeFilter
+            $productModelAttributeFilter,
+            $mediaStorer
         );
         $this->setStepExecution($stepExecution);
     }
@@ -62,6 +65,7 @@ class ProductModelDraftProcessorSpec extends ObjectBehavior
         $stepExecution,
         $tokenStorage,
         $productModelAttributeFilter,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
@@ -74,6 +78,8 @@ class ProductModelDraftProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
         $productModelAttributeFilter->filter($values)->willReturn($values);
+
+        $mediaStorer->store($values['values'])->willReturn($values['values']);
 
         $updater
             ->update($product, $values)
@@ -139,6 +145,7 @@ class ProductModelDraftProcessorSpec extends ObjectBehavior
         $stepExecution,
         $tokenStorage,
         $productModelAttributeFilter,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
@@ -148,6 +155,8 @@ class ProductModelDraftProcessorSpec extends ObjectBehavior
 
         $values = $this->getValues();
         $productModelAttributeFilter->filter($values)->willReturn($values);
+
+        $mediaStorer->store($values['values'])->willReturn($values['values']);
 
         $updater
             ->update($product, $values)
