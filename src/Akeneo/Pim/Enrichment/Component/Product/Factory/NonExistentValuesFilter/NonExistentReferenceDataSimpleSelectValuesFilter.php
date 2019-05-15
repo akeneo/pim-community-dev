@@ -29,7 +29,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
             return $onGoingFilteredRawValues;
         }
 
-        $optionCodes = $this->getExistingCaseInsensitiveOptionCodes($selectValues);
+        $referenceDataCodes = $this->getExistingCaseInsensitiveReferenceDataCodes($selectValues);
 
         $filteredValues = [];
 
@@ -40,7 +40,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (!is_array($value)) {
-                            $simpleSelectValues[$channel][$locale] = ($optionCodes[$attributeCode] ?? [])[strtolower($value ?? '')] ?? '';
+                            $simpleSelectValues[$channel][$locale] = ($referenceDataCodes[$attributeCode] ?? [])[strtolower($value ?? '')] ?? '';
                         }
                     }
                 }
@@ -58,35 +58,35 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
     }
 
-    private function getExistingCaseInsensitiveOptionCodes(array $selectValues): array
+    private function getExistingCaseInsensitiveReferenceDataCodes(array $selectValues): array
     {
-        $options = $this->getOptions($selectValues);
+        $referenceData = $this->getReferenceData($selectValues);
 
-        $existingOptionCodes = [];
+        $existingReferenceDataCodes = [];
 
-        foreach ($options as $attributeCode => $option) {
-            foreach ($option as $referenceDataName => $values) {
-                $existingOptionCodes[$attributeCode] = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes(
+        foreach ($referenceData as $attributeCode => $data) {
+            foreach ($data as $referenceDataName => $values) {
+                $existingReferenceDataCodes[$attributeCode] = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes(
                     $referenceDataName,
                     $values
                 );
             }
         }
 
-        $caseInsensitiveOptionsCodes = [];
+        $caseInsensitiveReferenceDataCodes = [];
 
-        foreach ($existingOptionCodes as $attributeCode => $optionCodesForThisAttribute) {
-            foreach ($optionCodesForThisAttribute as $optionCodeForThisAttribute) {
-                $caseInsensitiveOptionsCodes[$attributeCode][strtolower($optionCodeForThisAttribute)] = $optionCodeForThisAttribute;
+        foreach ($existingReferenceDataCodes as $attributeCode => $referenceDataCodesForThisAttribute) {
+            foreach ($referenceDataCodesForThisAttribute as $referenceDataCodeForThisAttribute) {
+                $caseInsensitiveReferenceDataCodes[$attributeCode][strtolower($referenceDataCodeForThisAttribute)] = $referenceDataCodeForThisAttribute;
             }
         }
 
-        return $caseInsensitiveOptionsCodes;
+        return $caseInsensitiveReferenceDataCodes;
     }
 
-    private function getOptions(array $selectValues): array
+    private function getReferenceData(array $selectValues): array
     {
-        $optionCodes = [];
+        $referenceDataCodes = [];
 
         foreach ($selectValues as $attributeCode => $valueCollection) {
             foreach ($valueCollection as $values) {
@@ -94,13 +94,13 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
                 foreach ($values['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (!is_array($value)) {
-                            $optionCodes[$attributeCode][$referenceDataName][] = $value;
+                            $referenceDataCodes[$attributeCode][$referenceDataName][] = $value;
                         }
                     }
                 }
             }
         }
 
-        return $optionCodes;
+        return $referenceDataCodes;
     }
 }

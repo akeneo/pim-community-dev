@@ -75,9 +75,9 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
 
         $caseInsensitiveReferenceDataCodes = [];
 
-        foreach ($existingReferenceDataCodes as $attributeCode => $optionCodesForThisAttribute) {
-            foreach ($optionCodesForThisAttribute as $optionCodeForThisAttribute) {
-                $caseInsensitiveReferenceDataCodes[$attributeCode][strtolower($optionCodeForThisAttribute)] = $optionCodeForThisAttribute;
+        foreach ($existingReferenceDataCodes as $attributeCode => $referenceDataCodesForThisAttribute) {
+            foreach ($referenceDataCodesForThisAttribute as $referenceDataCodeForThisAttribute) {
+                $caseInsensitiveReferenceDataCodes[$attributeCode][strtolower($referenceDataCodeForThisAttribute)] = $referenceDataCodeForThisAttribute;
             }
         }
 
