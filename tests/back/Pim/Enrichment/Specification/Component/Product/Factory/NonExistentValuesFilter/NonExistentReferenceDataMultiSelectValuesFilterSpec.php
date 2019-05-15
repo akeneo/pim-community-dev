@@ -38,8 +38,8 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
                                     'en_US' => ['MiChel', 'sardou'],
                                 ],
                                 'tablet' => [
-                                    'en_US' => ['jean', 'claude', 'van', 'damm'],
-                                    'fr_FR' => ['des', 'fraises'],
+                                    'en_US' => ['jean', 'Claude', 'van', 'damm'],
+                                    'fr_FR' => ['des', 'fRaises'],
 
                                 ],
                             ],
@@ -85,19 +85,19 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
             'MiChel',
             'sardou',
             'jean',
-            'claude',
+            'Claude',
             'van',
             'damm',
             'des',
-            'fraises'
+            'fRaises'
         ];
 
         $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('some_reference_data', $referenceDataCodes)->willReturn(
-            ['michel', 'fraises']
+            ['MiChel', 'fRaises', 'whatever']
         );
 
         $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('another_reference_data', ['des', 'damm', 'Claude', 'fRaises'])->willReturn(
-            ['claude', 'damm']
+            ['Claude', 'damm']
         );
 
         /** @var OnGoingFilteredRawValues $filteredCollection */
@@ -111,11 +111,11 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => ['michel'],
+                                    'en_US' => ['MiChel'],
                                 ],
                                 'tablet' => [
                                     'en_US' => [],
-                                    'fr_FR' => ['fraises'],
+                                    'fr_FR' => ['fRaises'],
 
                                 ],
                             ],
@@ -132,7 +132,7 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
                                     'en_US' => ['damm'],
                                 ],
                                 'tablet' => [
-                                    'en_US' => ['claude'],
+                                    'en_US' => ['Claude'],
 
                                 ],
                             ],

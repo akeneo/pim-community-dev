@@ -29,7 +29,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
             return $onGoingFilteredRawValues;
         }
 
-        $referenceDataCodes = $this->getExistingCaseInsensitiveReferenceDataCodes($selectValues);
+        $existingReferenceDataCodes = $this->getExistingCodes($selectValues);
 
         $filteredValues = [];
 
@@ -38,9 +38,9 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
                 $multiSelectValues = [];
 
                 foreach ($productData['values'] as $channel => $valuesIndexedByLocale) {
-                    foreach ($valuesIndexedByLocale as $locale => $value) {
-                        if (is_array($value)) {
-                            $multiSelectValues[$channel][$locale] = $this->arrayIntersectCaseInsensitive($value, $referenceDataCodes[$attributeCode] ?? []);
+                    foreach ($valuesIndexedByLocale as $locale => $values) {
+                        if (is_array($values)) {
+                            $multiSelectValues[$channel][$locale] = array_values(array_intersect($values, $existingReferenceDataCodes[$attributeCode] ?? []));
                         }
                     }
                 }
@@ -58,7 +58,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
     }
 
-    private function getExistingCaseInsensitiveReferenceDataCodes(array $selectValues): array
+    private function getExistingCodes(array $selectValues): array
     {
         $referenceData = $this->getReferenceData($selectValues);
 
@@ -73,15 +73,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
             }
         }
 
-        $caseInsensitiveReferenceDataCodes = [];
-
-        foreach ($existingReferenceDataCodes as $attributeCode => $referenceDataCodesForThisAttribute) {
-            foreach ($referenceDataCodesForThisAttribute as $referenceDataCodeForThisAttribute) {
-                $caseInsensitiveReferenceDataCodes[$attributeCode][strtolower($referenceDataCodeForThisAttribute)] = $referenceDataCodeForThisAttribute;
-            }
-        }
-
-        return $caseInsensitiveReferenceDataCodes;
+        return $existingReferenceDataCodes;
     }
 
     private function getReferenceData(array $selectValues): array
@@ -102,22 +94,5 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
         }
 
         return $referenceData;
-    }
-
-    private function arrayIntersectCaseInsensitive(array $givenOptionCodes, array $existentOptionCodesIndexedInsensitive): array
-    {
-        $result = [];
-
-        if (empty($existentOptionCodesIndexedInsensitive)) {
-            return [];
-        }
-
-        foreach ($givenOptionCodes as $optionCode) {
-            if (isset($existentOptionCodesIndexedInsensitive[strtolower($optionCode ?? '')])) {
-                $result[] = $existentOptionCodesIndexedInsensitive[strtolower($optionCode)];
-            }
-        }
-
-        return $result;
     }
 }
