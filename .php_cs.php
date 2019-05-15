@@ -8,6 +8,7 @@ return PhpCsFixer\Config::create()
         'method_argument_space' => [
             'ensure_fully_multiline' => false
         ],
+        'no_unused_imports' => true,
     ))
     ->setFinder(
         PhpCsFixer\Finder::create()

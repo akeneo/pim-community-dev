@@ -3,8 +3,6 @@
 namespace Pim\Component\Catalog\Normalizer\Indexing;
 
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -6,7 +6,6 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
-use Pim\Component\Enrich\Converter\ConverterInterface;
 
 /**
  * @author    Julien Sanchez <julien@akeneo.com>

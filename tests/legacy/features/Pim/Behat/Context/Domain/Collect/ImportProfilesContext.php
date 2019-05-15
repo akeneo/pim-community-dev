@@ -5,13 +5,10 @@ namespace Pim\Behat\Context\Domain\Collect;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Exception\ExpectationException;
 use Box\Spout\Common\Type;
-use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Writer\WriterFactory;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\ImportExportContext;
-use Pim\Behat\Context\PimContext;
 
 class ImportProfilesContext extends ImportExportContext
 {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 
 use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>

@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Catalog\Context;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityWithValue\Builder;
-use Akeneo\Test\Common\Structure\Attribute;
 use Behat\Behat\Context\Context;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;

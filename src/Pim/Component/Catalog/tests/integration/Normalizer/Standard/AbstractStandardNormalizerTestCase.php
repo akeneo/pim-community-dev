@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\tests\integration\Normalizer\Standard;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 /**

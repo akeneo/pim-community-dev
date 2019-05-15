@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\ProductAndProductModel\Query;
 
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * Find the number of product and product models count belonging to the given family variant

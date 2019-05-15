@@ -4,7 +4,6 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Validator;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>

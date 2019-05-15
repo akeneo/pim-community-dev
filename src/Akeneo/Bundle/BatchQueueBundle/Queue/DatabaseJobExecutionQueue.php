@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Bundle\BatchQueueBundle\Queue;
 
-use Akeneo\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Provider\NodeProviderInterface;
 
 /**
  * Aims to publish and consume job execution messages in a queue stored in database.
