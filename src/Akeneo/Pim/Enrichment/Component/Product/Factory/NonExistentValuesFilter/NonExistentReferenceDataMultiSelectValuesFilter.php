@@ -29,7 +29,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
             return $onGoingFilteredRawValues;
         }
 
-        $optionCodes = $this->getExistingCaseInsensitiveOptionCodes($selectValues);
+        $referenceDataCodes = $this->getExistingCaseInsensitiveOptionCodes($selectValues);
 
         $filteredValues = [];
 
@@ -40,7 +40,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
                 foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (is_array($value)) {
-                            $multiSelectValues[$channel][$locale] = $this->arrayIntersectCaseInsensitive($value, $optionCodes[$attributeCode] ?? []);
+                            $multiSelectValues[$channel][$locale] = $this->arrayIntersectCaseInsensitive($value, $referenceDataCodes[$attributeCode] ?? []);
                         }
                     }
                 }
@@ -86,7 +86,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
 
     private function getOptions(array $selectValues): array
     {
-        $optionCodes = [];
+        $referenceData = [];
 
         foreach ($selectValues as $attributeCode => $valueCollection) {
             foreach ($valueCollection as $values) {
@@ -94,14 +94,14 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
                 foreach ($values['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $values) {
                         foreach ($values as $value) {
-                            $optionCodes[$attributeCode][$referenceDataName][] = $value;
+                            $referenceData[$attributeCode][$referenceDataName][] = $value;
                         }
                     }
                 }
             }
         }
 
-        return $optionCodes;
+        return $referenceData;
     }
 
     private function arrayIntersectCaseInsensitive(array $givenOptionCodes, array $existentOptionCodesIndexedInsensitive): array
