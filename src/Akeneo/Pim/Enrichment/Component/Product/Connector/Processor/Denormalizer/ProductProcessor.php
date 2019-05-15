@@ -151,6 +151,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             try {
                 $product = $this->addParent->to($product, $parentProductModelCode);
             } catch (\InvalidArgumentException $e) {
+                $this->detachProduct($product);
                 $this->skipItemWithMessage($item, $e->getMessage(), $e);
             }
         }
@@ -159,6 +160,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             try {
                 $filteredItem['values'] = $this->storeMedias($filteredItem['values'], $item);
             } catch (InvalidPropertyException $e) {
+                $this->detachProduct($product);
                 $this->skipItemWithMessage($item, $e->getMessage(), $e);
             }
         }
