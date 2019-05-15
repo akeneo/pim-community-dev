@@ -140,7 +140,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
             }
         }
 
-        $standardProductModel['values'] = $this->storeMedias($standardProductModel['values']);
+        if (isset($standardProductModel['values'])) {
+            $standardProductModel['values'] = $this->storeMedias($standardProductModel['values']);
+        }
 
         try {
             $this->productModelUpdater->update($productModel, $standardProductModel);
