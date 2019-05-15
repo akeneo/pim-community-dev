@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.18 (2019-05-15)
+
 ## Improvements
 
 - PIM-8307: Create public API services/events for records synchronisation with Onboarder
