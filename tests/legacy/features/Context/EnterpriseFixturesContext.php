@@ -934,22 +934,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         foreach ($definitions as $key => $definition) {
             $definition['code'] = $key;
 
-//            foreach ($definition['actions'] as $key => $action) {
-//                /** @var AttributeInterface $attribute */
-//                $attribute = $this->getContainer()
-//                    ->get('pim_catalog.repository.attribute')
-//                    ->findOneByIdentifier($action['field']);
-//
-//
-//                if (null !== $attribute && in_array($attribute->getType(), [AttributeTypes::FILE, AttributeTypes::IMAGE])) {
-//                    $fileInfo = $this->getContainer()
-//                        ->get('akeneo_file_storage.file_storage.file.file_storer')
-//                        ->store(new \SplFileInfo($action['value']), FileStorage::CATALOG_STORAGE_ALIAS);
-//
-//                    $definition['actions'][$key]['value'] = $fileInfo->getKey();
-//                }
-//            }
-
             $ruleDefinition = $this->getRuleDefinitionProcessor()->process($definition);
             $manager = $this->getRuleSaver();
             $manager->save($ruleDefinition);
