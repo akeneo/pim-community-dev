@@ -155,7 +155,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         }
 
         if (isset($filteredItem['values'])) {
-            $filteredItem['values'] = $this->storeMedias($filteredItem['values']);
+            $filteredItem['values'] = $this->storeMedias($filteredItem['values'], $item);
         }
 
         try {
@@ -277,7 +277,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $this->detacher->detach($product);
     }
 
-    private function storeMedias(array $productValues): array
+    private function storeMedias(array $productValues, array $product): array
     {
         $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
 
@@ -287,6 +287,10 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
                     if (empty($value['data'])) {
                         continue;
                     }
+                    if (!is_file($value['data'])) {
+                        $this->skipItemWithMessage($product, sprintf('Property "%s" expects a valid pathname as data, "%s" given.', $attributeCode, $value['data']));
+                    }
+
                     $file = $this->fileStorer->store(new \SplFileInfo($value['data']), FileStorage::CATALOG_STORAGE_ALIAS);
                     $productValues[$attributeCode][$index]["data"] = $file->getKey();
                 }
