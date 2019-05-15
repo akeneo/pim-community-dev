@@ -138,19 +138,19 @@ Feature: List all rules
       | Action    | Then description [ en \| mobile ] is copied into description [ fr \| tablet ] |
 
     And the row "update_tees_collection" should contain the texts:
-      | column    | value                                                                          |
-      | Condition | If categories in tees                                                          |
-      | Condition | If enabled equals false                                                        |
-      | Condition | If description is empty [ en \| mobile ]                                       |
-      | Action    | Then une belle description is set into description [ fr \| mobile ]            |
-      | Action    | Then 800 is set into number_in_stock [ tablet ]                                |
-      | Action    | Then 05/26/2015 is set into release_date [ mobile ]                            |
-      | Action    | Then €12.00 is set into price                                                  |
-      | Action    | Then akeneo.jpg is set into side_view |
-      | Action    | Then 10 Centimeter is set into length                                          |
-      | Action    | Then name [ en ] is copied into name [ fr ]                                    |
-      | Action    | Then name [ en ] is copied into name [ de ]                                    |
-      | Action    | Then true is set into enabled                                                  |
+      | column    | value                                                               |
+      | Condition | If categories in tees                                               |
+      | Condition | If enabled equals false                                             |
+      | Condition | If description is empty [ en \| mobile ]                            |
+      | Action    | Then une belle description is set into description [ fr \| mobile ] |
+      | Action    | Then 800 is set into number_in_stock [ tablet ]                     |
+      | Action    | Then 05/26/2015 is set into release_date [ mobile ]                 |
+      | Action    | Then €12.00 is set into price                                       |
+      | Action    | Then akeneo.jpg is set into side_view                               |
+      | Action    | Then 10 Centimeter is set into length                               |
+      | Action    | Then name [ en ] is copied into name [ fr ]                         |
+      | Action    | Then name [ en ] is copied into name [ de ]                         |
+      | Action    | Then true is set into enabled                                       |
 
     And the row "unclassify_2014_collection_tees" should contain the texts:
       | column    | value                                                               |
