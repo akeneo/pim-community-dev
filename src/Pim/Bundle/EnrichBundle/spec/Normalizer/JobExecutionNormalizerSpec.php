@@ -44,9 +44,10 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $jobExecution = new JobExecution();
 
         $userContext->getUserTimezone()->willReturn('Europe/Paris');
+        $userContext->getUiLocaleCode()->willReturn('en_US');
 
         $jobExecutionStandardNormalizer
-            ->normalize($jobExecution, 'standard', ['timezone' => 'Europe/Paris'])
+            ->normalize($jobExecution, 'standard', ['locale' => 'en_US', 'timezone' => 'Europe/Paris'])
             ->willReturn([
                 'failures'       => ['Such error'],
                 'stepExecutions' => ['**exportExecution**', '**cleanExecution**'],
