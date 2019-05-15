@@ -2,10 +2,8 @@
 
 namespace Pim\Component\Catalog\tests\integration\Updater\Copier;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)

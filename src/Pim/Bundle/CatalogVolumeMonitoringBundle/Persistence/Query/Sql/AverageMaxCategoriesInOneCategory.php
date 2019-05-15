@@ -7,7 +7,6 @@ namespace Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 use Doctrine\DBAL\Connection;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 
 /**
  * @author    Elodie Raposo <elodie.raposo@akeneo.com>

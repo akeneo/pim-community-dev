@@ -2,10 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Factory\ProductUniqueDataFactory;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
 use Pim\Component\Catalog\Model\ValueInterface;

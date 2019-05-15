@@ -13,7 +13,6 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Mass action dispatcher

@@ -6,8 +6,6 @@ namespace Pim\Component\Api\Normalizer;
 
 use Pim\Component\Api\Hal\Link;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;

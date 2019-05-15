@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\ProductModel\Query;
 
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
 
 /**
  * Query data regarding the variant product completenesses to build the completeness variant product ratio

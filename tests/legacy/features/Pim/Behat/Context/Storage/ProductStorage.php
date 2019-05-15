@@ -4,7 +4,6 @@ namespace Pim\Behat\Context\Storage;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;

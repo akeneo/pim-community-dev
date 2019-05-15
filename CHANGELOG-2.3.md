@@ -4,6 +4,10 @@
 
 - PIM-8341: Use user locale for job execution normalization
 
+## Improvement
+
+- PIM-8342: Fix unused imports
+
 # 2.3.43 (2019-05-14)
 
 ## Bug fixes

@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
 use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 
 /**

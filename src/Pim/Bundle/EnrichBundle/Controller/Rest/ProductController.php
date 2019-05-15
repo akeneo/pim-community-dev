@@ -16,7 +16,6 @@ use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Normalizer\Storage\Product\ProductValueNormalizer;
 use Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
