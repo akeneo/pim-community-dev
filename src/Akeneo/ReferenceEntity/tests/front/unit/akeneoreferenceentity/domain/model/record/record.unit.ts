@@ -3,7 +3,7 @@ import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-co
 import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
 import {createIdentifier as createRecordIdentifier} from 'akeneoreferenceentity/domain/model/record/identifier';
 import {createRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import File, {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
+import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
 import {createValueCollection} from 'akeneoreferenceentity/domain/model/record/value-collection';
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';

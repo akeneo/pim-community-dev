@@ -308,3 +308,10 @@ services:
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@router'
+
+    # Enrich
+    akeneo_referenceentity.infrastructure.action.product.get_linked_product:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Controller\Product\GetLinkedProductAction
+        arguments:
+            - '@pimee_catalog.query.product_and_product_model_query_builder_factory.product_and_product_model_cursor_with_permissions'
+            - '@pim_internal_api_serializer'

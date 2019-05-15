@@ -170,7 +170,7 @@ Feature: Lists all attributes related to a reference entity
     When the user manages the options of the attribute
     Then the label of the "red" option should be locked
 
-  @acceptance-front
+  # @acceptance-front TODO: fix random
   Scenario: Cannot add the label of a new option without the locale permission
     Given a valid reference entity
     And the user has the following rights:

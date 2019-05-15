@@ -111,6 +111,18 @@ pim_reference_entity:
       delete: Delete
       delete_all: Delete all records
       back: Back to list
+    product:
+      attribute: Linked attribute
+      dropdown:
+        attribute: Product Attribute
+      title: Products
+      no_attribute:
+        title: There is no product attribute linked to the reference entity "{{ entityLabel }}"
+        subtitle: "To start linking products to this reference entity you can create a new one: "
+        link: Create a new product attribute
+      no_product:
+        title: There are no product linked for the product attribute "{{ entityLabel }}"
+        subtitle: "Start linking products to this attribute to see them here"
     enrich:
       title: Record attributes
       code: Code
@@ -161,6 +173,7 @@ pim_reference_entity:
         title_complete: All {{ required }} attributes complete
     tab:
       enrich: Enrich
+      product: Products
     notification:
       save:
         success: Record successfully updated.

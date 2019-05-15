@@ -101,6 +101,7 @@ interface Props {
   placeholder?: string;
   readOnly?: boolean;
   isOpenUp?: boolean;
+  isOpenLeft?: boolean;
 }
 
 interface State {
@@ -145,6 +146,7 @@ class Dropdown extends React.Component<Props, State> {
   render() {
     const openClass = this.state.isOpen ? 'AknDropdown-menu--open' : '';
     const dropdownTopClass = this.props.isOpenUp ? 'AknDropdown-menu--top' : '';
+    const dropdownLeftClass = this.props.isOpenLeft ? 'AknDropdown-menu--right' : '';
     const dropdownButton = (
       selectedElement: string,
       label: string,
@@ -191,7 +193,9 @@ class Dropdown extends React.Component<Props, State> {
           this.props.readOnly
         )}
         {!this.props.readOnly ? (
-          <div className={`AknDropdown-menu AknDropdown-menu--heightLimited ${openClass} ${dropdownTopClass}`}>
+          <div
+            className={`AknDropdown-menu AknDropdown-menu--heightLimited ${openClass} ${dropdownTopClass} ${dropdownLeftClass}`}
+          >
             <div className="AknDropdown-menuTitle">{this.props.label}</div>
             {ElementViews}
           </div>

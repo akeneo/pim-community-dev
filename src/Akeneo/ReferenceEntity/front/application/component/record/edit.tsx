@@ -18,7 +18,7 @@ import {deleteRecord} from 'akeneoreferenceentity/application/action/record/dele
 import EditState from 'akeneoreferenceentity/application/component/app/edit-state';
 import File from 'akeneoreferenceentity/domain/model/file';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
-import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
+import {localeChanged, channelChanged} from 'akeneoreferenceentity/application/action/record/user';
 import LocaleSwitcher from 'akeneoreferenceentity/application/component/app/locale-switcher';
 import ChannelSwitcher from 'akeneoreferenceentity/application/component/app/channel-switcher';
 import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
@@ -296,10 +296,10 @@ export default connect(
           dispatch(saveRecord());
         },
         onLocaleChanged: (locale: Locale) => {
-          dispatch(catalogLocaleChanged(locale.code));
+          dispatch(localeChanged(locale.code));
         },
         onChannelChanged: (channel: Channel) => {
-          dispatch(catalogChannelChanged(channel.code));
+          dispatch(channelChanged(channel.code));
         },
         onImageUpdated: (image: File) => {
           dispatch(recordImageUpdated(image));
