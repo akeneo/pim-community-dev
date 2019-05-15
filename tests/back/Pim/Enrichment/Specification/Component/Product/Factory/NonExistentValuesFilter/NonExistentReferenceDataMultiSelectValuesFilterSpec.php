@@ -81,7 +81,7 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
             ]
         );
 
-        $optionCodes = [
+        $referenceDataCodes = [
             'MiChel',
             'sardou',
             'jean',
@@ -92,7 +92,7 @@ class NonExistentReferenceDataMultiSelectValuesFilterSpec extends ObjectBehavior
             'fraises'
         ];
 
-        $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('some_reference_data', $optionCodes)->willReturn(
+        $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('some_reference_data', $referenceDataCodes)->willReturn(
             ['michel', 'fraises']
         );
 

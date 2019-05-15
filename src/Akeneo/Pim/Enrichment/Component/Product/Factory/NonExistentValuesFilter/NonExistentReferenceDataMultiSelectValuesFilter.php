@@ -33,11 +33,11 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
 
         $filteredValues = [];
 
-        foreach ($selectValues as $attributeCode => $productData) {
-            foreach ($productData as $productValues) {
+        foreach ($selectValues as $attributeCode => $productDataList) {
+            foreach ($productDataList as $productData) {
                 $multiSelectValues = [];
 
-                foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
+                foreach ($productData['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (is_array($value)) {
                             $multiSelectValues[$channel][$locale] = $this->arrayIntersectCaseInsensitive($value, $referenceDataCodes[$attributeCode] ?? []);
@@ -47,9 +47,9 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
 
                 if ($multiSelectValues !== []) {
                     $filteredValues[AttributeTypes::REFERENCE_DATA_MULTI_SELECT][$attributeCode][] = [
-                        'identifier' => $productValues['identifier'],
+                        'identifier' => $productData['identifier'],
                         'values' => $multiSelectValues,
-                        'properties' => $productValues['properties']
+                        'properties' => $productData['properties']
                     ];
                 }
             }
