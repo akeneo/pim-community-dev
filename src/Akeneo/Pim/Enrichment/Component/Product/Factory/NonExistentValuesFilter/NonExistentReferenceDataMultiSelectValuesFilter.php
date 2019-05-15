@@ -29,7 +29,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
             return $onGoingFilteredRawValues;
         }
 
-        $referenceDataCodes = $this->getExistingCaseInsensitiveOptionCodes($selectValues);
+        $referenceDataCodes = $this->getExistingCaseInsensitiveReferenceDataCodes($selectValues);
 
         $filteredValues = [];
 
@@ -58,33 +58,33 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
     }
 
-    private function getExistingCaseInsensitiveOptionCodes(array $selectValues): array
+    private function getExistingCaseInsensitiveReferenceDataCodes(array $selectValues): array
     {
-        $options = $this->getOptions($selectValues);
+        $referenceData = $this->getReferenceData($selectValues);
 
-        $existingOptionCodes = [];
+        $existingReferenceDataCodes = [];
 
-        foreach ($options as $attributeCode => $option) {
-            foreach ($option as $referenceDataName => $values) {
-                $existingOptionCodes[$attributeCode] = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes(
+        foreach ($referenceData as $attributeCode => $data) {
+            foreach ($data as $referenceDataName => $values) {
+                $existingReferenceDataCodes[$attributeCode] = $this->getExistingReferenceDataCodes->fromReferenceDataNameAndCodes(
                     $referenceDataName,
                     $values
                 );
             }
         }
 
-        $caseInsensitiveOptionsCodes = [];
+        $caseInsensitiveReferenceDataCodes = [];
 
-        foreach ($existingOptionCodes as $attributeCode => $optionCodesForThisAttribute) {
+        foreach ($existingReferenceDataCodes as $attributeCode => $optionCodesForThisAttribute) {
             foreach ($optionCodesForThisAttribute as $optionCodeForThisAttribute) {
-                $caseInsensitiveOptionsCodes[$attributeCode][strtolower($optionCodeForThisAttribute)] = $optionCodeForThisAttribute;
+                $caseInsensitiveReferenceDataCodes[$attributeCode][strtolower($optionCodeForThisAttribute)] = $optionCodeForThisAttribute;
             }
         }
 
-        return $caseInsensitiveOptionsCodes;
+        return $caseInsensitiveReferenceDataCodes;
     }
 
-    private function getOptions(array $selectValues): array
+    private function getReferenceData(array $selectValues): array
     {
         $referenceData = [];
 
