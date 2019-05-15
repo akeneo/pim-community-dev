@@ -13,6 +13,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -155,7 +156,11 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         }
 
         if (isset($filteredItem['values'])) {
-            $filteredItem['values'] = $this->storeMedias($filteredItem['values'], $item);
+            try {
+                $filteredItem['values'] = $this->storeMedias($filteredItem['values'], $item);
+            } catch (InvalidPropertyException $e) {
+                $this->skipItemWithMessage($item, $e->getMessage(), $e);
+            }
         }
 
         try {
@@ -277,7 +282,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $this->detacher->detach($product);
     }
 
-    private function storeMedias(array $productValues, array $product): array
+    private function storeMedias(array $productValues): array
     {
         $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
 
@@ -288,10 +293,12 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
                         continue;
                     }
                     if (!is_file($value['data'])) {
-                        $this->skipItemWithMessage($product, sprintf('Property "%s" expects a valid pathname as data, "%s" given.', $attributeCode, $value['data']));
+                        throw InvalidPropertyException::validPathExpected($attributeCode, self::class, $value['data']);
                     }
-
-                    $file = $this->fileStorer->store(new \SplFileInfo($value['data']), FileStorage::CATALOG_STORAGE_ALIAS);
+                    $file = $this->fileStorer->store(
+                        new \SplFileInfo($value['data']),
+                        FileStorage::CATALOG_STORAGE_ALIAS
+                    );
                     $productValues[$attributeCode][$index]["data"] = $file->getKey();
                 }
             }
