@@ -208,7 +208,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
         return $this->tokenStorage->getToken()->getUsername();
     }
 
-    private function storeMedias(array $productValues)
+    private function storeMedias(array $productValues): array
     {
         $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
 

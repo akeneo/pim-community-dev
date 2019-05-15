@@ -2,12 +2,14 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -31,7 +33,9 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         DraftApplierInterface $productDraftApplier,
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         StepExecution $stepExecution,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        AttributeRepositoryInterface $attributeRepository,
+        FileStorer $fileStorer
     ) {
         $this->beConstructedWith(
             $repository,
@@ -40,7 +44,9 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             $productDraftBuilder,
             $productDraftApplier,
             $productDraftRepo,
-            $tokenStorage
+            $tokenStorage,
+            $attributeRepository,
+            $fileStorer
         );
         $this->setStepExecution($stepExecution);
     }
@@ -58,6 +64,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $productDraftBuilder,
         $stepExecution,
         $tokenStorage,
+        $attributeRepository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
@@ -78,6 +85,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violationList);
 
+        $attributeRepository->findMediaAttributeCodes()->willreturn([]);
         $productDraftBuilder->build($product, 'mary')->willReturn($productDraft);
 
         $tokenStorage->getToken()->willReturn($token);
@@ -133,6 +141,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $productDraftBuilder,
         $stepExecution,
         $tokenStorage,
+        $attributeRepository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
@@ -151,6 +160,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violationList);
 
+        $attributeRepository->findMediaAttributeCodes()->willreturn([]);
         $productDraftBuilder->build($product, 'mary')->willReturn(null);
 
         $tokenStorage->getToken()->willReturn($token);
