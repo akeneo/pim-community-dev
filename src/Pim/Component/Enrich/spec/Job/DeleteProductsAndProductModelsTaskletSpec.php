@@ -11,6 +11,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\ProductAndProductModel\Query\CountVariantProductsInterface;
+use Pim\Component\Catalog\ProductModel\Query\CountProductModelsAndChildrenProductModelsInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -25,7 +27,9 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         BulkRemoverInterface $productRemover,
         BulkRemoverInterface $productModelRemover,
         ObjectFilterInterface $filter,
-        EntityManagerClearerInterface $cacheClearer
+        EntityManagerClearerInterface $cacheClearer,
+        CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels,
+        CountVariantProductsInterface $countVariantProducts
     ) {
         $this->beConstructedWith(
             $pqbFactory,
@@ -33,7 +37,9 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
             $productModelRemover,
             $cacheClearer,
             $filter,
-            2
+            2,
+            $countProductModelsAndChildrenProductModels,
+            $countVariantProducts
         );
     }
 
@@ -49,6 +55,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $productModelRemover,
         $filter,
         $cacheClearer,
+        $countProductModelsAndChildrenProductModels,
+        $countVariantProducts,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         ProductQueryBuilderInterface $rootProductModelPQB,
@@ -98,6 +106,9 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(false);
 
+        $countProductModelsAndChildrenProductModels->forProductModelCodes([])->willReturn(0);
+        $countVariantProducts->forProductModelCodes([])->willReturn(0);
+
         $productRemover->removeAll([$product789])->shouldBeCalled();
         $productRemover->removeAll([$product123, $product456])->shouldBeCalled();
         $productModelRemover->removeAll([])->shouldBeCalled();
@@ -122,6 +133,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $productModelRemover,
         $cacheClearer,
         $filter,
+        $countProductModelsAndChildrenProductModels,
+        $countVariantProducts,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         ProductQueryBuilderInterface $rootProductModelPQB,
@@ -171,6 +184,15 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(false);
 
+        $productModel123->getCode()->willReturn('product_model_123_code');
+        $productModel456->getCode()->willReturn('product_model_456_code');
+        $productModel789->getCode()->willReturn('product_model_789_code');
+
+        $countVariantProducts->forProductModelCodes(['product_model_789_code'])->willReturn(0);
+        $countVariantProducts->forProductModelCodes(['product_model_123_code', 'product_model_456_code'])->willReturn(0);
+        $countProductModelsAndChildrenProductModels->forProductModelCodes(['product_model_789_code'])->willReturn(2);
+        $countProductModelsAndChildrenProductModels->forProductModelCodes(['product_model_123_code', 'product_model_456_code'])->willReturn(1);
+
         $productModelRemover->removeAll([$productModel123, $productModel456])->shouldBeCalled();
         $productModelRemover->removeAll([$productModel789])->shouldBeCalled();
         $productRemover->removeAll([])->shouldBeCalled();
@@ -195,6 +217,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $productModelRemover,
         $cacheClearer,
         $filter,
+        $countProductModelsAndChildrenProductModels,
+        $countVariantProducts,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         ProductQueryBuilderInterface $rootProductModelPQB,
@@ -256,6 +280,17 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(false);
 
+        $productModel1->getCode()->willReturn('product_model_1_code');
+        $productModel2->getCode()->willReturn('product_model_2_code');
+        $productModel3->getCode()->willReturn('product_model_3_code');
+
+        $countVariantProducts->forProductModelCodes([])->willReturn(0);
+        $countVariantProducts->forProductModelCodes(['product_model_3_code'])->willReturn(0);
+        $countVariantProducts->forProductModelCodes(['product_model_1_code', 'product_model_2_code'])->willReturn(0);
+        $countProductModelsAndChildrenProductModels->forProductModelCodes([])->willReturn(0);
+        $countProductModelsAndChildrenProductModels->forProductModelCodes(['product_model_3_code'])->willReturn(1);
+        $countProductModelsAndChildrenProductModels->forProductModelCodes(['product_model_1_code', 'product_model_2_code'])->willReturn(2);
+
         $stepExecution->addSummaryInfo('deleted_products', 0)->shouldBeCalled();
         $stepExecution->addSummaryInfo('deleted_product_models', 0)->shouldBeCalled();
 
@@ -290,6 +325,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $productModelRemover,
         $cacheClearer,
         $filter,
+        $countProductModelsAndChildrenProductModels,
+        $countVariantProducts,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         ProductQueryBuilderInterface $rootProductModelPQB,
@@ -362,8 +399,16 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $stepExecution->addSummaryInfo('deleted_products', 0)->shouldBeCalled();
         $stepExecution->addSummaryInfo('deleted_product_models', 0)->shouldBeCalled();
 
+        $productModel1->getCode()->willReturn('product_model_1_code');
+
+        $countVariantProducts->forProductModelCodes(['product_model_1_code'])->willReturn(0);
+        $countProductModelsAndChildrenProductModels->forProductModelCodes(['product_model_1_code'])->willReturn(1);
+
         $productRemover->removeAll([$product1])->shouldBeCalled();
         $productModelRemover->removeAll([$productModel1])->shouldBeCalled();
+
+        $countVariantProducts->forProductModelCodes([])->willReturn(0);
+        $countProductModelsAndChildrenProductModels->forProductModelCodes([])->willReturn(0);
 
         $productModelRemover->removeAll([])->shouldBeCalled();
         $productRemover->removeAll([])->shouldBeCalled([]);

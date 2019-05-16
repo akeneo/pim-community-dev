@@ -17,6 +17,7 @@
 - PIM-8322: Add a command to update elasticsearch mapping without having the need to reindex everything.
 - PIM-8334: When a translation choice is not correct, it does not break the page anymore.
 - PIM-8275: Set default attribute group filter to "All" when selecting attributes on product mass actions
+- PIM-8305: Display the correct amount of products and product models deleted by the "Mass delete products" process.
 
 # 2.3.42 (2019-05-06)
 

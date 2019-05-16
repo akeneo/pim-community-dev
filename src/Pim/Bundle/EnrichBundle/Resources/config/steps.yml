@@ -204,6 +204,8 @@ services:
             - '@pim_connector.doctrine.cache_clearer'
             - '@pim_catalog.filter.chained'
             - 100
+            - '@pim_catalog.query.count_product_models_and_children_product_models'
+            - '@pim_catalog.query.count_variant_products'
 
     # Cleaner steps -------------------------------------------------------------------------------------------------
     pim_enrich.step.clean:
