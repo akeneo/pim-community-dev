@@ -33,4 +33,4 @@ services:
             - '@akeneo_storage_utils.doctrine.orm_mappings_override_configurator'
             - '%akeneo_storage_utils.mapping_overrides%'
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: doctrine.event_subscriber, priority: 200 }
