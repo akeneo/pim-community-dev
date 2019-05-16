@@ -18,7 +18,8 @@ services:
             - '@security.password_encoder'
             - '@event_dispatcher'
             - '@session'
-            - '@doctrine.orm.entity_manager'
+            - '@doctrine.orm.entity_manager' # todo merge 3.2: remove this line
+            - '@pim_user.remover.user'
 
     pim_user.controller.security_rest:
         class: '%pim_user.controller.security_rest.class%'
