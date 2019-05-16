@@ -3,6 +3,7 @@
 # Bug fixes
 
 - PIM-8343: Use BaseRemover instead of ObjectManager to delete a user
+- PIM-8340: Allow to delete a user who authored or replied to a comment
 
 # 3.0.18 (2019-05-15)
 
