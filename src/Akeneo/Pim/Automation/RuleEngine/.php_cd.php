@@ -44,6 +44,7 @@ $rules = [
         'Doctrine\Common',
 
         // TIP-960: Rule Engine should not be linked to Attribute
+        'Akeneo\Pim\Enrichment\Component\FileStorage',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
 
         // TIP-961: Remove dependency to ProductRepositoryInterface

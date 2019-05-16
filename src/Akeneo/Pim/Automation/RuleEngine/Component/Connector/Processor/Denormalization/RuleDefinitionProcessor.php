@@ -12,8 +12,6 @@
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
