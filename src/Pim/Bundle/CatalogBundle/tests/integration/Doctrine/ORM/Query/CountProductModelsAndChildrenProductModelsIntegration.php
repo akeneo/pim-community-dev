@@ -24,39 +24,39 @@ class CountProductModelsAndChildrenProductModelsIntegration extends TestCase
     public function test_it_counts_the_number_of_product_models_and_children_product_models_for_product_models(): void
     {
         // No product model.
-        $result = $this->getQuery()->forProductModels([]);
+        $result = $this->getQuery()->forProductModelCodes([]);
         self::assertEquals(0, $result);
 
         // Product model with 1 level of variant.
-        $result = $this->getQuery()->forProductModels(['a_shoes']);
+        $result = $this->getQuery()->forProductModelCodes(['a_shoes']);
         self::assertEquals(1, $result);
 
         // Product model with 2 levels of variant.
-        $result = $this->getQuery()->forProductModels(['a_shirt']);
+        $result = $this->getQuery()->forProductModelCodes(['a_shirt']);
         self::assertEquals(3, $result);
 
         // Multiple product models with multiple levels of variant.
-        $result = $this->getQuery()->forProductModels(['a_shoes', 'a_shirt']);
+        $result = $this->getQuery()->forProductModelCodes(['a_shoes', 'a_shirt']);
         self::assertEquals(4, $result);
 
         // Level 1 product model of a product model with 2 levels of variant.
-        $result = $this->getQuery()->forProductModels(['a_small_shirt']);
+        $result = $this->getQuery()->forProductModelCodes(['a_small_shirt']);
         self::assertEquals(1, $result);
 
         // Multiple levels 1 product models of the same product model with 2 levels of variant.
-        $result = $this->getQuery()->forProductModels(['a_small_shirt', 'a_medium_shirt']);
+        $result = $this->getQuery()->forProductModelCodes(['a_small_shirt', 'a_medium_shirt']);
         self::assertEquals(2, $result);
 
         // Duplicate of product models with 2 level of variant.
-        $result = $this->getQuery()->forProductModels(['a_shirt', 'a_shirt']);
+        $result = $this->getQuery()->forProductModelCodes(['a_shirt', 'a_shirt']);
         self::assertEquals(3, $result);
 
         // Level 2 product model and level 1 product model of the same product model with 2 levels of variant.
-        $result = $this->getQuery()->forProductModels(['a_small_shirt', 'a_shirt']);
+        $result = $this->getQuery()->forProductModelCodes(['a_small_shirt', 'a_shirt']);
         self::assertEquals(3, $result);
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

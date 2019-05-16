@@ -78,8 +78,8 @@ services:
         arguments:
             - '@database_connection'
 
-    # @todo pull-up 3.x Rename to `akeneo.pim.enrichment.product_model.query.count_product_variants`
-    pim_catalog.query.count_product_variants:
-        class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountProductVariants
+    # @todo pull-up 3.x Rename to `akeneo.pim.enrichment.product_model.query.count_variant_products`
+    pim_catalog.query.count_variant_products:
+        class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountVariantProducts
         arguments:
             - '@database_connection'

@@ -23,7 +23,7 @@ final class CountProductModelsAndChildrenProductModels implements CountProductMo
         $this->connection = $connection;
     }
 
-    public function forProductModels(array $productModelCodes): int
+    public function forProductModelCodes(array $productModelCodes): int
     {
         if (0 === count($productModelCodes)) {
             return 0;

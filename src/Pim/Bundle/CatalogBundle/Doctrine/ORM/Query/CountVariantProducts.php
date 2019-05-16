@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Doctrine\DBAL\Connection;
-use Pim\Component\Catalog\ProductAndProductModel\Query\CountProductVariantsInterface;
+use Pim\Component\Catalog\ProductAndProductModel\Query\CountVariantProductsInterface;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -13,7 +13,7 @@ use Pim\Component\Catalog\ProductAndProductModel\Query\CountProductVariantsInter
  *
  * @todo pull-up 3.x Move to `Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql`
  */
-final class CountProductVariants implements CountProductVariantsInterface
+final class CountVariantProducts implements CountVariantProductsInterface
 {
     /** @var Connection */
     private $connection;
@@ -23,7 +23,7 @@ final class CountProductVariants implements CountProductVariantsInterface
         $this->connection = $connection;
     }
 
-    public function forProductModels(array $productModelCodes): int
+    public function forProductModelCodes(array $productModelCodes): int
     {
         if (0 === count($productModelCodes)) {
             return 0;

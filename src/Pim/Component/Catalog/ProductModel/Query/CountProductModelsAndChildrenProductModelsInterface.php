@@ -17,5 +17,5 @@ interface CountProductModelsAndChildrenProductModelsInterface
     /**
      * @param string[] $productModelCodes
      */
-    public function forProductModels(array $productModelCodes): int;
+    public function forProductModelCodes(array $productModelCodes): int;
 }

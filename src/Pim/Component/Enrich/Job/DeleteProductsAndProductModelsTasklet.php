@@ -10,7 +10,7 @@ use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\ProductAndProductModel\Query\CountProductVariantsInterface;
+use Pim\Component\Catalog\ProductAndProductModel\Query\CountVariantProductsInterface;
 use Pim\Component\Catalog\ProductModel\Query\CountProductModelsAndChildrenProductModelsInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -49,12 +49,12 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
     /** @var CountProductModelsAndChildrenProductModelsInterface|null */
     private $countProductModelsAndChildrenProductModels;
 
-    /** @var CountProductVariantsInterface|null */
-    private $countProductVariants;
+    /** @var CountVariantProductsInterface|null */
+    private $countVariantProducts;
 
     /**
      * @todo pull-up 3.x Remove `null` on dependencies injection for `$countProductModelsAndChildrenProductModels` and
-     *      `$countProductVariants` and check `countProductsToDelete` and `countProductModelsToDelete` functions for more.
+     *      `$countVariantProducts` and check `countProductsToDelete` and `countProductModelsToDelete` functions for more.
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -64,7 +64,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         ObjectFilterInterface $filter,
         int $batchSize = 100,
         ?CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels = null,
-        ?CountProductVariantsInterface $countProductVariants = null
+        ?CountVariantProductsInterface $countVariantProducts = null
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->productRemover = $productRemover;
@@ -73,7 +73,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         $this->batchSize = $batchSize;
         $this->filter = $filter;
         $this->countProductModelsAndChildrenProductModels = $countProductModelsAndChildrenProductModels;
-        $this->countProductVariants = $countProductVariants;
+        $this->countVariantProducts = $countVariantProducts;
     }
 
     /**
@@ -203,11 +203,11 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
     private function countProductsToDelete(array $products, array $productModels): int
     {
         /* @todo pull-up 3.x To remove */
-        if (null === $this->countProductVariants) {
+        if (null === $this->countVariantProducts) {
             return count($products);
         }
 
-        return count($products) + $this->countProductVariants->forProductModels(
+        return count($products) + $this->countVariantProducts->forProductModelCodes(
             \array_map(
                 function (ProductModelInterface $productModel) {
                     return $productModel->getCode();
@@ -227,7 +227,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
             return count($productModels);
         }
 
-        return $this->countProductModelsAndChildrenProductModels->forProductModels(
+        return $this->countProductModelsAndChildrenProductModels->forProductModelCodes(
             \array_map(
                 function (ProductModelInterface $productModel) {
                     return $productModel->getCode();
