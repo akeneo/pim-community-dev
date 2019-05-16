@@ -130,7 +130,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
             try {
                 $standardProductModel['values'] = $this->mediaStorer->store($standardProductModel['values']);
             } catch (InvalidPropertyException $e) {
-                $this->detachProduct($productModel);
+                $this->objectDetacher->detach($productModel);
                 $this->skipItemWithMessage($standardProductModel, $e->getMessage(), $e);
             }
         }
