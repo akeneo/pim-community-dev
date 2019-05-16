@@ -100,7 +100,6 @@ class ProductDraftProcessor extends AbstractProcessor implements
             try {
                 $item['values'] = $this->mediaStorer->store($item['values']);
             } catch (InvalidPropertyException $e) {
-                $this->detachProduct($product);
                 $this->skipItemWithMessage($item, $e->getMessage(), $e);
             }
         }
