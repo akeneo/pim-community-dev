@@ -307,7 +307,10 @@ class FakeClient implements ClientInterface
             );
         }
 
-        return $jsonContent;
+        $fakeResponse = json_decode($jsonContent, true);
+        $fakeResponse['_embedded']['subscription'][0]['extra']['tracker_id'] = $options['form_params'][0]['tracker_id'];
+
+        return json_encode($fakeResponse);
     }
 
     /**
