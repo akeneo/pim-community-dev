@@ -84,6 +84,7 @@ define(
                             __: __,
                             comments: this.comments,
                             username: UserContext.get('username'),
+                            removedAuthor: '[' + __('pim_enrich.entity.product.module.comment.removed_author') + ']',
                             emptyLabel: __('pim_enrich.entity.product.module.comment.empty')
                         })
                     );
