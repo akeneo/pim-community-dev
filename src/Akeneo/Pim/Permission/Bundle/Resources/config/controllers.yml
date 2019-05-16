@@ -121,4 +121,4 @@ services:
             - '@akeneo_batch.job_instance_factory'
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
-            - '%upload_tmp_dir%'
+            - '@oneup_flysystem.jobs_storage_filesystem'
