@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Oro\Bundle\PimDataGridBundle\Normalizer;
 
-use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 /**
  * Id encoder to manipulate product and product model ids
  *

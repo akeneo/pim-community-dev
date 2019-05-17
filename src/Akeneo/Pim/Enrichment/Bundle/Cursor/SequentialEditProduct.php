@@ -2,10 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Cursor;
 
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\Cursor;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
  * Iterator for sequential edit

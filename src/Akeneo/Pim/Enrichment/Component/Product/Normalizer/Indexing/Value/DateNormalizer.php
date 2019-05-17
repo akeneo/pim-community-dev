@@ -7,7 +7,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductN
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValueInterface;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

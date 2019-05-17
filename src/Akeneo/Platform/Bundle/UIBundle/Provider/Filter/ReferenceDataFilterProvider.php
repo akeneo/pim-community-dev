@@ -3,7 +3,6 @@
 namespace Akeneo\Platform\Bundle\UIBundle\Provider\Filter;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface;
 
 /**
  * Filter provider for reference data

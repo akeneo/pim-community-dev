@@ -2,8 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-
 /**
  * Product value interface
  *

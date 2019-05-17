@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\tests\integration;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use Doctrine\DBAL\Schema\Table;
 
 /**
  * Checks that Utf8mb4Support is properly taken into account by Doctrine ORM
