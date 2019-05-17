@@ -116,20 +116,22 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
             return [];
         }
 
-        $codesToTypes = [];
+        $attributesIndexedByCodes = [];
 
         foreach ($attributes as $attribute) {
-            $codesToTypes[$attribute->code()]= $attribute->type();
+            $attributesIndexedByCodes[$attribute->code()]['type'] = $attribute->type();
+            $attributesIndexedByCodes[$attribute->code()]['properties'] = $attribute->properties();
         }
 
         $typesToValues = [];
 
         foreach ($rawValueCollections as $productIdentifier => $rawValues) {
             foreach ($rawValues as $attributeCode => $values) {
-                if (isset($codesToTypes[$attributeCode])) {
-                    $typesToValues[$codesToTypes[$attributeCode]][$attributeCode][] = [
+                if (isset($attributesIndexedByCodes[$attributeCode])) {
+                    $typesToValues[$attributesIndexedByCodes[$attributeCode]['type']][$attributeCode][] = [
                         'identifier' => $productIdentifier,
                         'values' => $values,
+                        'properties' => $attributesIndexedByCodes[$attributeCode]['properties']
                     ];
                 }
             }
