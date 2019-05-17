@@ -107,7 +107,7 @@ class RuleExtension extends \Twig_Extension
 
         $mediaCodes = $this->attributeRepository->findMediaAttributeCodes();
         if (in_array($code, $mediaCodes)) {
-            return sprintf('<i class="icon-file"></i> %s', $value);
+            return sprintf('<i class="icon-file"></i> %s', basename($value));
         }
 
         if (null !== $presenter) {
