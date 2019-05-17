@@ -15,10 +15,14 @@ final class Attribute
     /** @var string */
     private $attributeType;
 
-    public function __construct(string $attributeCode, string $attributeType)
+    /** @var array */
+    private $attributeProperties;
+
+    public function __construct(string $attributeCode, string $attributeType, array $attributeProperties)
     {
         $this->attributeCode = $attributeCode;
         $this->attributeType = $attributeType;
+        $this->attributeProperties = $attributeProperties;
     }
 
     public function code(): string
@@ -29,5 +33,10 @@ final class Attribute
     public function type(): string
     {
         return $this->attributeType;
+    }
+
+    public function properties(): array
+    {
+        return $this->attributeProperties;
     }
 }
