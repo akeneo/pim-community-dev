@@ -40,7 +40,11 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (!is_array($value)) {
-                            $simpleSelectValues[$channel][$locale] = ($referenceDataCodes[$attributeCode] ?? [])[strtolower($value ?? '')] ?? '';
+                            if (in_array($value, $referenceDataCodes[$attributeCode])) {
+                                $simpleSelectValues[$channel][$locale] = $value;
+                            } else {
+                                $simpleSelectValues[$channel][$locale] = '';
+                            }
                         }
                     }
                 }
@@ -54,7 +58,6 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
                 }
             }
         }
-
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
     }
 
@@ -73,15 +76,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
             }
         }
 
-        $caseInsensitiveReferenceDataCodes = [];
-
-        foreach ($existingReferenceDataCodes as $attributeCode => $referenceDataCodesForThisAttribute) {
-            foreach ($referenceDataCodesForThisAttribute as $referenceDataCodeForThisAttribute) {
-                $caseInsensitiveReferenceDataCodes[$attributeCode][strtolower($referenceDataCodeForThisAttribute)] = $referenceDataCodeForThisAttribute;
-            }
-        }
-
-        return $caseInsensitiveReferenceDataCodes;
+        return $existingReferenceDataCodes;
     }
 
     private function getReferenceData(array $selectValues): array

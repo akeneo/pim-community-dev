@@ -35,7 +35,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilterSpec extends ObjectBehavio
                             'identifier' => 'product_A',
                             'values' => [
                                 '<all_channels>' => [
-                                    '<all_locales>' => 'option_ToTo'
+                                    '<all_locales>' => 'option_toto'
                                 ],
                             ],
                             'properties' => [
@@ -84,7 +84,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilterSpec extends ObjectBehavio
             ]
         );
 
-        $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('some_reference_data', ['option_ToTo', 'non_existent_option'])->willReturn(
+        $getExistingReferenceDataCodes->fromReferenceDataNameAndCodes('some_reference_data', ['option_toto', 'non_existent_option'])->willReturn(
             ['option_toto']
         );
 
