@@ -22,8 +22,10 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
     /**
      * AttributeTypeForOptionValidator constructor.
      * @param array $supportedAttributeTypes
+     *
+     * TODO on merge 3.2, remove = null
      */
-    public function __construct(array $supportedAttributeTypes)
+    public function __construct(array $supportedAttributeTypes = [])
     {
         $this->supportedAttributeTypes = $supportedAttributeTypes;
     }
@@ -34,11 +36,18 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
      */
     public function validate($attributeOption, Constraint $constraint)
     {
+        /* TODO on merge 3.2, remove condition - replace $authorizedTypes by $this->supportedAttributeTypes */
+        if (!empty($this->supportedAttributeTypes)) {
+            $authorizedTypes = $this->supportedAttributeTypes;
+        } else {
+            $authorizedTypes = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT];
+        }
+
         /** @var AttributeOptionInterface */
         if ($attributeOption instanceof AttributeOptionInterface) {
             $attribute = $attributeOption->getAttribute();
-            if (null !== $attribute && !in_array($attribute->getType(), $this->supportedAttributeTypes)) {
-                $this->addInvalidAttributeViolation($constraint, $attributeOption, $this->supportedAttributeTypes);
+            if (null !== $attribute && !in_array($attribute->getType(), $authorizedTypes)) {
+                $this->addInvalidAttributeViolation($constraint, $attributeOption, $authorizedTypes);
             }
         }
     }
