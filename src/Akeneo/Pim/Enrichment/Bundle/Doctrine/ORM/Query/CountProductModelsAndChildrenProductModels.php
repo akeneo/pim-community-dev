@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CountProductModelsAndChildrenProductModelsInterface;
 use Doctrine\DBAL\Connection;
-use Pim\Component\Catalog\ProductModel\Query\CountProductModelsAndChildrenProductModelsInterface;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @todo pull-up 3.x Move to `Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql`
  */
 final class CountProductModelsAndChildrenProductModels implements CountProductModelsAndChildrenProductModelsInterface
 {

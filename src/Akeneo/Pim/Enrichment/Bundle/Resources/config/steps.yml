@@ -275,6 +275,8 @@ services:
             - '@pim_connector.doctrine.cache_clearer'
             - '@pim_catalog.filter.chained'
             - 100
+            - '@akeneo.pim.enrichment.product_model.query.count_product_models_and_children_product_models'
+            - '@akeneo.pim.enrichment.product_model.query.count_variant_products'
 
     # CSV Quick Export steps ------------------------------------------------------------------------------------------
     pim_enrich.step.csv_product.quick_export:

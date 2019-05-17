@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
+use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountVariantProductsInterface;
 use Doctrine\DBAL\Connection;
-use Pim\Component\Catalog\ProductAndProductModel\Query\CountVariantProductsInterface;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
