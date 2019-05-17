@@ -29,7 +29,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
             return $onGoingFilteredRawValues;
         }
 
-        $referenceDataCodes = $this->getExistingCaseInsensitiveReferenceDataCodes($selectValues);
+        $referenceDataCodes = $this->getExistingCodes($selectValues);
 
         $filteredValues = [];
 
@@ -61,7 +61,7 @@ class NonExistentReferenceDataSimpleSelectValuesFilter implements NonExistentVal
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
     }
 
-    private function getExistingCaseInsensitiveReferenceDataCodes(array $selectValues): array
+    private function getExistingCodes(array $selectValues): array
     {
         $referenceData = $this->getReferenceData($selectValues);
 
