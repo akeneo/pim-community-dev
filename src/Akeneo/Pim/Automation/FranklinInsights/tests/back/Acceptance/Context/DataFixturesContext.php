@@ -388,17 +388,21 @@ class DataFixturesContext implements Context
      *
      * @param array $attributeCodes
      */
-    private function loadAttributes(array $attributeCodes): void
+    private function loadAttributes(array $attributeCodes)
     {
         $normalizedAttributes = $this->loadJsonFileAsArray('attributes/attributes.json');
 
         $attributeGroup = $this->attributeGroupBuilder->build(['code' => 'other']);
         $this->attributeGroupRepository->save($attributeGroup);
 
+        $attributes = [];
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeBuilder->build($normalizedAttributes[$attributeCode]);
             $this->attributeRepository->save($attribute);
+            $attributes[] = $attribute;
         }
+
+        return $attributes;
     }
 
     /**
@@ -411,10 +415,14 @@ class DataFixturesContext implements Context
     {
         $normalizedFamily = $this->loadJsonFileAsArray(sprintf('families/family-%s.json', $familyCode));
 
-        $this->loadAttributes($normalizedFamily['attributes']);
+        $attributes = $this->loadAttributes($normalizedFamily['attributes']);
 
         $family = $this->familyBuilder->build($normalizedFamily);
         $this->familyRepository->save($family);
+
+        foreach ($attributes as $attribute) {
+            $attribute->addFamily($family);
+        }
     }
 
     /**

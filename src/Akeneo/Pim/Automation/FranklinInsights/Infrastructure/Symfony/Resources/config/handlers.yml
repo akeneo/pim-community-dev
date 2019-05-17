@@ -111,3 +111,9 @@ services:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetIdentifiersMappingHandler'
         arguments:
             - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
+
+    akeneo.pim.automation.franklin_insights.handler.get_attribute_mapping_with_suggestions:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsHandler'
+        arguments:
+            - '@akeneo.pim.automation.franklin_insights.handler.get_attributes_mapping_by_family'
+            - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_exact_match_attribute_codes'

@@ -55,3 +55,8 @@ services:
             - '@database_connection'
             - '@akeneo.pim.automation.franklin_insights.repository.family'
             - '@akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.product.select_product_identifier_values_query'
+
+    akeneo.pim.automation.franklin_insights.infrastructure.persistence.query.select_exact_match_attribute_codes:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Persistence\Query\Doctrine\SelectExactMatchAttributeCodeQuery'
+        arguments:
+            - '@database_connection'

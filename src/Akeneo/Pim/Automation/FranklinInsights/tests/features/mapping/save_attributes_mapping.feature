@@ -132,7 +132,7 @@ Feature: Map the PIM attributes with Franklin attributes
     And Franklin is configured with a valid token
     When the attributes are mapped for the family "router" as follows:
       | target_attribute_code | pim_attribute_code |
-      | product_weight        | name               |
+      | product_weight        | description        |
     Then the attributes mapping should not be saved
     And an invalid localizable attribute message should be sent
 

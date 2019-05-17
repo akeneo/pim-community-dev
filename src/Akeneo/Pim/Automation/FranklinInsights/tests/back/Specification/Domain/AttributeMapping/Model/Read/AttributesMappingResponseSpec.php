@@ -77,4 +77,25 @@ class AttributesMappingResponseSpec extends ObjectBehavior
 
         $this->isEmpty()->shouldReturn(false);
     }
+
+    public function it_gets_pending_attributes_franklin_labels()
+    {
+        $attrWeight = new AttributeMapping('weight', 'Weight', 'metric', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
+        $attrSize = new AttributeMapping('size', 'Size', 'select', 'pim_size', AttributeMappingStatus::ATTRIBUTE_ACTIVE);
+        $attrColor = new AttributeMapping('color', 'Color', 'select', null, AttributeMappingStatus::ATTRIBUTE_PENDING);
+        $attrLabel = new AttributeMapping('label', 'Label', 'text', null, AttributeMappingStatus::ATTRIBUTE_INACTIVE);
+        $attrHeight = new AttributeMapping('height', 'Height', 'metric', null, AttributeMappingStatus::ATTRIBUTE_ACTIVE);
+
+        $this
+            ->addAttribute($attrWeight)
+            ->addAttribute($attrSize)
+            ->addAttribute($attrColor)
+            ->addAttribute($attrLabel)
+            ->addAttribute($attrHeight);
+
+        $this->getPendingAttributesFranklinLabels()->shouldBeLike([
+            0 => 'Color',
+            2 => 'Weight',
+        ]);
+    }
 }

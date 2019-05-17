@@ -27,12 +27,12 @@ services:
     akeneo.pim.automation.franklin_insights.controller.attributes_mapping:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\AttributesMappingController'
         arguments:
-            - '@akeneo.pim.automation.franklin_insights.handler.get_attributes_mapping_by_family'
             - '@akeneo.pim.automation.franklin_insights.handler.update_attributes_mapping_by_family'
             - '@akeneo.pim.automation.franklin_insights.handler.get_families'
             - '@akeneo.pim.automation.franklin_insights.normalizers.families_mapping_status'
             - '@akeneo.pim.automation.franklin_insights.normalizers.attributes_mapping'
             - '@oro_security.security_facade'
+            - '@akeneo.pim.automation.franklin_insights.handler.get_attribute_mapping_with_suggestions'
 
     akeneo.pim.automation.franklin_insights.controller.attribute_options_mapping:
         class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\AttributeOptionsMappingController'

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
-use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Controller\AttributesMappingController;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\FamiliesMappingStatusNormalizer;
@@ -19,20 +19,20 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class AttributesMappingControllerSpec extends ObjectBehavior
 {
     public function let(
-        GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
         SearchFamiliesHandler $searchFamiliesHandler,
         FamiliesMappingStatusNormalizer $familiesNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        GetAttributesMappingWithSuggestionsHandler $getAttributesMappingWithSuggestions
     ): void {
         $this->beConstructedWith(
-            $getAttributesMappingByFamilyHandler,
             $saveAttributesMappingByFamilyHandler,
             $searchFamiliesHandler,
             $familiesNormalizer,
             $attributesMappingNormalizer,
-            $securityFacade
+            $securityFacade,
+            $getAttributesMappingWithSuggestions
         );
     }
 

@@ -17,6 +17,8 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttri
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Command\SaveAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsHandler;
+use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\GetAttributesMappingWithSuggestionsQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Exception\AttributeMappingException;
@@ -25,6 +27,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\At
 use Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Client\Franklin\FakeClient;
+use Akeneo\Test\Pim\Automation\FranklinInsights\Acceptance\Persistence\InMemory\Query\InMemorySelectExactMatchAttributeCodeQuery;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -55,22 +58,26 @@ final class AttributesMappingContext implements Context
     /** @var array */
     private $originalAttributesMapping;
 
-    /**
-     * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
-     * @param SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler
-     * @param SearchFamiliesHandler $searchFamiliesHandler
-     * @param FakeClient $fakeClient
-     */
+    /** @var GetAttributesMappingWithSuggestionsHandler */
+    private $getAttributesMappingWithSuggestionsHandler;
+
+    /** @var InMemorySelectExactMatchAttributeCodeQuery */
+    private $inMemorySelectExactMatchAttributeCodeQuery;
+
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         SaveAttributesMappingByFamilyHandler $saveAttributesMappingByFamilyHandler,
         SearchFamiliesHandler $searchFamiliesHandler,
-        FakeClient $fakeClient
+        FakeClient $fakeClient,
+        GetAttributesMappingWithSuggestionsHandler $getAttributesMappingWithSuggestionsHandler,
+        InMemorySelectExactMatchAttributeCodeQuery $inMemorySelectExactMatchAttributeCodeQuery
     ) {
         $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
         $this->saveAttributesMappingByFamilyHandler = $saveAttributesMappingByFamilyHandler;
         $this->searchFamiliesHandler = $searchFamiliesHandler;
         $this->fakeClient = $fakeClient;
+        $this->getAttributesMappingWithSuggestionsHandler = $getAttributesMappingWithSuggestionsHandler;
+        $this->inMemorySelectExactMatchAttributeCodeQuery = $inMemorySelectExactMatchAttributeCodeQuery;
 
         $this->originalAttributesMapping = null;
         $this->retrievedFamilies = [];
@@ -146,6 +153,17 @@ final class AttributesMappingContext implements Context
     }
 
     /**
+     * @When I retrieve the attributes mapping with suggestions for the family :familyCode
+     *
+     * @param string $familyCode
+     */
+    public function iRetrieveTheAttributesMappingWithSuggestionsForTheFamily($familyCode): void
+    {
+        $query = new GetAttributesMappingWithSuggestionsQuery(new FamilyCode($familyCode));
+        $this->retrievedAttributesMapping = $this->getAttributesMappingWithSuggestionsHandler->handle($query);
+    }
+
+    /**
      * @When the attributes mapping for the family :familyCode is updated with an empty mapping
      *
      * @param string $familyCode
@@ -170,13 +188,24 @@ final class AttributesMappingContext implements Context
     {
         $expectedAttributes = $table->getHash();
 
-        foreach ($this->retrievedAttributesMapping as $index => $attributeMapping) {
-            /* @var AttributeMapping $attributeMapping */
-            Assert::eq($attributeMapping->getTargetAttributeCode(), $expectedAttributes[$index]['target_attribute_code']);
-            Assert::eq($attributeMapping->getTargetAttributeLabel(), $expectedAttributes[$index]['target_attribute_label']);
-            Assert::eq($attributeMapping->getTargetAttributeType(), $expectedAttributes[$index]['target_attribute_type']);
-            Assert::eq($attributeMapping->getPimAttributeCode(), $expectedAttributes[$index]['pim_attribute_code']);
-            Assert::eq($attributeMapping->getStatus(), $this->getAttributeMappingStatus($expectedAttributes[$index]['status']));
+        Assert::same(iterator_count($this->retrievedAttributesMapping->getIterator()), count($expectedAttributes));
+
+        foreach ($expectedAttributes as $expectedAttribute) {
+            $found = false;
+            foreach ($this->retrievedAttributesMapping as $attributeMapping) {
+                if ($expectedAttribute['target_attribute_code'] === $attributeMapping->getTargetAttributeCode()) {
+                    $found = true;
+                    Assert::eq($attributeMapping->getTargetAttributeCode(), $expectedAttribute['target_attribute_code']);
+                    Assert::eq($attributeMapping->getTargetAttributeLabel(), $expectedAttribute['target_attribute_label']);
+                    Assert::eq($attributeMapping->getTargetAttributeType(), $expectedAttribute['target_attribute_type']);
+                    Assert::eq($attributeMapping->getPimAttributeCode(), $expectedAttribute['pim_attribute_code']);
+                    Assert::eq($attributeMapping->getStatus(), $this->getAttributeMappingStatus($expectedAttribute['status']));
+                    break;
+                }
+            }
+            if (false === $found) {
+                throw new \Exception('attribute not found');
+            }
         }
     }
 

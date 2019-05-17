@@ -10,6 +10,16 @@ Feature: Retrieve some family attributes from Franklin
     Then the retrieved attributes mapping for the family "router" should be:
       | target_attribute_code | target_attribute_label | target_attribute_type | pim_attribute_code | status  |
       | product_weight        | Product Weight         | metric                |                    | pending |
+      | name                  | Name                   | text                  |                    | pending |
+      | color                 | Color                  | multiselect           | color              | active  |
+
+  Scenario: Successfully retrieve an attributes mapping with a suggestion on one pending attribute
+    Given the family "router"
+    When I retrieve the attributes mapping with suggestions for the family "router"
+    Then the retrieved attributes mapping for the family "router" should be:
+      | target_attribute_code | target_attribute_label | target_attribute_type | pim_attribute_code | status  |
+      | product_weight        | Product Weight         | metric                |                    | pending |
+      | name                  | Name                   | text                  | name               | pending |
       | color                 | Color                  | multiselect           | color              | active  |
 
   Scenario: Successfully retrieve an attributes mapping with unknown attribute type
