@@ -2,8 +2,6 @@
 
 namespace Pim\Behat\Context\Domain\Spread;
 
-use Behat\Mink\Exception\ExpectationException;
-use Context\Page\Base\Grid;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;

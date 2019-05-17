@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Collections\Collection;

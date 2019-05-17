@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator;
 
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
-use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Attribute;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\AttributeGroupInterface;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
 use Akeneo\Test\Common\EntityBuilder;
 use Behat\Behat\Context\Context;
