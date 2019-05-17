@@ -158,6 +158,10 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
     private function storeMedias(array $item): array
     {
         foreach ($item['actions'] as $key => $action) {
+            if (!isset($action['value'])) {
+                continue;
+            }
+
             $actionField = $action['field'] ?? $action['from_field'];
             $attribute = $this->attributeRepository->findOneByIdentifier($actionField);
 

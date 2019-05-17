@@ -651,7 +651,7 @@ Feature: Import rules
     And I should see the text "actions[0]: Property \"side_view\" expects a valid pathname as data, \"invalid/path/to/image\" given.: Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetAction"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
-    Then I should see the text "SNKRS_1R"
+    Then I should see the text "SNKRS-1R"
 
   Scenario: Skip rules with array values for attribute of type media in conditions and actions
     Given the following product rule definitions:
@@ -700,7 +700,7 @@ Feature: Import rules
     And I should see the text "actions[0]: Property \"side_view\" expects a string as data, \"array\" given"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
-    Then I should see the text "SNKRS_1R"
+    Then I should see the text "SNKRS-1R"
 
   Scenario: Skip rules with missing conditions key
     Given the following product rule definitions:

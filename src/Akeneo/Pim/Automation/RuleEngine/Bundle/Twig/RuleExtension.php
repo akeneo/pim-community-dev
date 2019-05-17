@@ -14,8 +14,6 @@ namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Twig;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -37,21 +35,16 @@ class RuleExtension extends \Twig_Extension
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var FileInfoRepositoryInterface */
-    private $fileInfoRepository;
-
     public function __construct(
         PresenterRegistryInterface $presenterRegistry,
         LocaleResolver $localeResolver,
         AttributeRepositoryInterface $attributeRepository,
-        TranslatorInterface $translator,
-        FileInfoRepositoryInterface $fileInfoRepository
+        TranslatorInterface $translator
     ) {
         $this->presenterRegistry   = $presenterRegistry;
         $this->localeResolver      = $localeResolver;
         $this->attributeRepository = $attributeRepository;
         $this->translator = $translator;
-        $this->fileInfoRepository = $fileInfoRepository;
     }
 
     /**
@@ -114,8 +107,7 @@ class RuleExtension extends \Twig_Extension
 
         $mediaCodes = $this->attributeRepository->findMediaAttributeCodes();
         if (in_array($code, $mediaCodes)) {
-            $fileInfo = $this->fileInfoRepository->findOneByIdentifier($value);
-            return sprintf('<i class="icon-file"></i> %s', $fileInfo->getOriginalFilename());
+            return sprintf('<i class="icon-file"></i> %s', $value);
         }
 
         if (null !== $presenter) {
