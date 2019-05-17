@@ -4,7 +4,6 @@ namespace Context\Page\Element;
 
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
-use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 

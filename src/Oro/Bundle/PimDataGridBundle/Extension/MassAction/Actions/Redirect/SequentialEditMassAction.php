@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect;
 
-use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Action\Actions\AbstractAction;
 
 /**

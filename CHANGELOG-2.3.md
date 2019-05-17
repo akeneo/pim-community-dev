@@ -1,5 +1,13 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8341: Use user locale for job execution normalization
+
+## Improvement
+
+- PIM-8342: Fix unused imports
+
 # 2.3.43 (2019-05-14)
 
 ## Bug fixes
@@ -9,6 +17,7 @@
 - PIM-8322: Add a command to update elasticsearch mapping without having the need to reindex everything.
 - PIM-8334: When a translation choice is not correct, it does not break the page anymore.
 - PIM-8275: Set default attribute group filter to "All" when selecting attributes on product mass actions
+- PIM-8305: Display the correct amount of products and product models deleted by the "Mass delete products" process.
 
 # 2.3.42 (2019-05-06)
 
@@ -71,6 +80,10 @@
 - PIM-8222: Fix product model issues when code contains `/` (create variant through UI and get product models via API)
 - PIM-8187: Add the possibility to fetch descendant products and product models
 - PIM-8214: Be able to save and launch job even if filter values refer to deleted entities.
+
+## BC breaks
+
+- PIM-8214: Remove validators `Pim\Component\Connector\Validator\Constraints\FilterDataValidator`, `Pim\Component\Connector\Validator\Constraints\ProductFilterData` and `Pim\Component\Connector\Validator\Constraints\ProductModelFilterData`
 
 # 2.3.33 (2019-03-13)
 

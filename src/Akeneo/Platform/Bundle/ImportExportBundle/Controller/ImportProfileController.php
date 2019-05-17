@@ -5,7 +5,6 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Import controller

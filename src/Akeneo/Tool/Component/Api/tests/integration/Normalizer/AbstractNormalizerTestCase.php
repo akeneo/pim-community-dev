@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Component\Api\tests\integration\Normalizer;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 /**
