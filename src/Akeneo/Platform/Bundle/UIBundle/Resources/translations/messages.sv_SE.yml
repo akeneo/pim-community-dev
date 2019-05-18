@@ -250,7 +250,6 @@ Unique value: Unikt värde
 Attribute group: Attributgrupp
 Other: Övrigt
 Variants behavior when edited: Variant beteende när redigeras
-Edit: Redigera
 Remove: Ta bort
 Parameters: Parametrar
 System: System
@@ -274,7 +273,6 @@ Locale specific: Specifik språk
 default: Standard
 Axis: Axel
 Add attributes: Lägg till attribut
-Translate from: Översätt från
 switch_on: "Ja"
 switch_off: "Nej"
 Close: Stäng
@@ -344,12 +342,14 @@ pim_catalog_metric: Metrisk
 pim_reference_data_simpleselect: Referensdata enkel Välj
 pim_reference_data_multiselect: Referens data multi Välj
 Activated: Aktiverad
+Edit: Redigera
 Disable: Avaktivera
 To enable: Aktivera
 Select attributes: Välj attribut
 Select: Välj
 Remove this attribute: Ta bort detta attributet
 Copy: Kopiera
+Translate from: Översätt från
 Current tab: Aktuell flik
 Group: Grupp
 View group: Visa grupp
@@ -455,5 +455,3 @@ job_tracker:
     title: Spåra process
   filter:
     started_at: Startade den
-
-

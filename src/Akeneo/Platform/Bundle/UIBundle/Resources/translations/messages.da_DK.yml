@@ -263,7 +263,6 @@ Unique value: Unik værdi
 Attribute group: Attributgruppe
 Other: Andet
 Variants behavior when edited: Varianters opførsel når redigeret
-Edit: Redigér
 Remove: Fjern
 Parameters: Parametre
 System: System
@@ -287,7 +286,6 @@ Locale specific: Landestandard specifik
 default: Standard
 Axis: Akse
 Add attributes: Tilføj egenskab
-Translate from: Oversæt fra
 switch_on: "Ja"
 switch_off: "Nej"
 Close: Luk
@@ -358,12 +356,14 @@ pim_catalog_metric: Metrisk
 pim_reference_data_simpleselect: Referencedata simpel Vælg
 pim_reference_data_multiselect: Reference data multi Vælg
 Activated: Aktiveret
+Edit: Redigér
 Disable: Deaktivér
 To enable: At aktivere
 Select attributes: Vælg attributter
 Select: Vælg
 Remove this attribute: Fjern denne attribut
 Copy: Kopi
+Translate from: Oversæt fra
 Current tab: Aktuelle fane
 Group: Gruppe
 View group: Se gruppe
@@ -476,5 +476,3 @@ job_tracker:
     title: Processen overvågning
   filter:
     started_at: Startede på
-
-

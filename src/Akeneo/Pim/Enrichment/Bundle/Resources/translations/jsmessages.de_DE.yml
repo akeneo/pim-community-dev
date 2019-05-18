@@ -111,6 +111,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} kommentiert das Produkt'
       header_reply: '{{ user }} antwortet auf den Kommentar'
       delete_confirm: Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?
+      removed_author: Benutzer gelöscht
 pim_enrich.entity.product_model:
   plural_label: Produktmodelle
   flash:

@@ -117,6 +117,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} kommentoi tuotetta'
       header_reply: '{{ user }} vastaa kommenttiin'
       delete_confirm: Oletko varma että haluat poistaa tämän kommentin?
+      removed_author: Poistettu käyttäjä
 pim_enrich.entity.product_model:
   label: tuotemalli
   uppercase_label: Tuotemalli

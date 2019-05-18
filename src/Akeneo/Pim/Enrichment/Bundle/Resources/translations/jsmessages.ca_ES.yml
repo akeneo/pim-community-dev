@@ -117,6 +117,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} comenta el producte'
       header_reply: '{{ user }} contesta al comentari'
       delete_confirm: Està segur que vol suprimir aquest comentari?
+      removed_author: Usuari suprimit
 pim_enrich.entity.product_model:
   label: model de producte
   uppercase_label: Model de producte

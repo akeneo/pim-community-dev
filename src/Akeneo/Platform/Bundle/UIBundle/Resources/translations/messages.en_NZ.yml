@@ -267,7 +267,6 @@ Unique value: Unique value
 Attribute group: Attribute group
 Other: Other
 Variants behavior when edited: Variants behavior when edited
-Edit: Edit
 Remove: Remove
 Parameters: Parameters
 System: System
@@ -292,7 +291,6 @@ Locale specific: Locale specific
 default: Default
 Axis: Axis
 Add attributes: Add attributes
-Translate from: Translate from
 switch_on: "Yes"
 switch_off: "No"
 Close: Close
@@ -363,12 +361,14 @@ pim_catalog_metric: Metric
 pim_reference_data_simpleselect: Reference data simple select
 pim_reference_data_multiselect: Reference data multi select
 Activated: Activated
+Edit: Edit
 Disable: Disable
 To enable: To enable
 Select attributes: Select attributes
 Select: Select
 Remove this attribute: Remove this attribute
 Copy: Copy
+Translate from: Translate from
 Current tab: Current tab
 Group: Group
 View group: View group
@@ -481,5 +481,3 @@ job_tracker:
     title: Process tracker
   filter:
     started_at: Started at
-
-

@@ -246,7 +246,6 @@ Unique value: Уникальное значение
 Attribute group: Группа атрибутов
 Other: Другие
 Variants behavior when edited: Варианты поведения при редактировании
-Edit: Редактировать
 Remove: Удалить
 Parameters: Параметры
 System: Система
@@ -270,7 +269,6 @@ Locale specific: Специфично для локали
 default: По умолчанию
 Axis: Ось
 Add attributes: Добавить атрибуты
-Translate from: Перевести с
 switch_on: "Да"
 switch_off: "Нет"
 Close: Закрыть
@@ -340,12 +338,14 @@ pim_catalog_metric: Метрическая
 pim_reference_data_simpleselect: Простой раскрывающийся список справочныx данныx
 pim_reference_data_multiselect: Множественный раскрывающийся список справочныx данныx
 Activated: Активированный
+Edit: Редактировать
 Disable: Отключить
 To enable: Включить
 Select attributes: Выберите атрибуты
 Select: Выбрать
 Remove this attribute: Удалить этот атрибут
 Copy: Копия
+Translate from: Перевести с
 Current tab: Текущая вкладка
 Group: Группа
 View group: Посмотреть группу
@@ -457,5 +457,3 @@ job_tracker:
     title: Трекер процессов
   filter:
     started_at: Запущеннo в
-
-

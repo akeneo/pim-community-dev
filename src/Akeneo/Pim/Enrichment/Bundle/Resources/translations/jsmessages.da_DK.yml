@@ -117,6 +117,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} kommenterede produktet'
       header_reply: '{{ user }} svar på kommentar'
       delete_confirm: Er du sikker på du vil slette denne kommentar?
+      removed_author: Slet bruger
 pim_enrich.entity.product_model:
   label: produktmodel
   uppercase_label: Produktmodel

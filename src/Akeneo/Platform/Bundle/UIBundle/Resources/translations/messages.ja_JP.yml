@@ -255,7 +255,6 @@ Unique value: ユニーク値
 Attribute group: 属性グループ
 Other: その他
 Variants behavior when edited: 編集時のバリアント動作
-Edit: 編集
 Remove: 削除
 Parameters: パラメータ
 System: システム
@@ -279,7 +278,6 @@ Locale specific: ロケール固有
 default: デフォルト
 Axis: 軸
 Add attributes: 属性を追加
-Translate from: 言語の選択
 switch_on: "はい"
 switch_off: "いいえ"
 Close: 閉じる
@@ -350,12 +348,14 @@ pim_catalog_metric: メトリック
 pim_reference_data_simpleselect: データの単純な選択を参照
 pim_reference_data_multiselect: データの複数の選択を参照
 Activated: アクティベート
+Edit: 編集
 Disable: 無効
 To enable: 有効にするには
 Select attributes: 属性の選択
 Select: 選択
 Remove this attribute: 属性を削除
 Copy: コピー
+Translate from: 言語の選択
 Current tab: 現在のタブ
 Group: グループ
 View group: 表示グループ
@@ -461,5 +461,3 @@ job_tracker:
     title: プロセストラッカー
   filter:
     started_at: 開始日時
-
-

@@ -107,6 +107,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} 製品をコメントします。'
       header_reply: '{{ user }} さんがコメントに返信'
       delete_confirm: コメントを削除しますか？
+      removed_author: 削除されたユーザ
 pim_enrich.entity.product_model:
   uppercase_label: 製品モデル
   plural_label: 製品モデル

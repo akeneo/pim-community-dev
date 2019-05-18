@@ -99,6 +99,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} kommentarer produkt'
       header_reply: '{{ user }} svar till kommentar'
       delete_confirm: Är du säker på att du vill ta bort den här kommentaren?
+      removed_author: Raderad användare
 pim_enrich.entity.product_model:
   uppercase_label: Produktmodell
   plural_label: Produktmodeller

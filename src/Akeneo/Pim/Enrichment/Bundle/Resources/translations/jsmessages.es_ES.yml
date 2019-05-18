@@ -117,6 +117,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} comenta el producto'
       header_reply: '{{ user }} contesta al comentario'
       delete_confirm: '¿Está seguro de que desea borrar este comentario?'
+      removed_author: Usuario eliminado
 pim_enrich.entity.product_model:
   label: modelo del producto
   uppercase_label: Modelo de producto

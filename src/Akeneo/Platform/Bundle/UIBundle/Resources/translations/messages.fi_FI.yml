@@ -77,7 +77,7 @@ pim_enrich:
       categories_view: Katso tuotteen kategorioita
       associations_view: Näytä tuotteen assosiaatiot
       associations_edit: Lisää tuotteelle assosiaatioita
-      change_family: Vaihda tuoteryhmää
+      change_family: Vaihda perhettä
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
       mass_edit: Tuotteen massamuokkaustoiminnot
@@ -269,7 +269,6 @@ Unique value: Yksilöllinen arvo
 Attribute group: Attribuuttiryhmä
 Other: Muu
 Variants behavior when edited: Tuotevariaatioiden käytös kun niitä muokataan
-Edit: Muokkaa
 Remove: Poista
 Parameters: Parametrit
 System: Järjestelmä
@@ -294,7 +293,6 @@ Locale specific: Aluespesifi
 default: Oletusarvo
 Axis: Akseli
 Add attributes: Lisää attribuutteja
-Translate from: Käännä kielestä
 switch_on: "Kyllä"
 switch_off: "Ei"
 Close: Sulje
@@ -365,12 +363,14 @@ pim_catalog_metric: Metriikka
 pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
 pim_reference_data_multiselect: Viitetiedot monivalinta
 Activated: Aktivoitu
+Edit: Muokkaa
 Disable: Poista käytöstä
 To enable: Ottaa käyttöön
 Select attributes: Valitse attribuutit
 Select: Valitse
 Remove this attribute: Poista tämä attribuutti
 Copy: Kopioi
+Translate from: Käännä kielestä
 Current tab: Nykyinen välilehti
 Group: Ryhmä
 View group: Näytä ryhmä
@@ -483,5 +483,3 @@ job_tracker:
     title: Prosessiseurain
   filter:
     started_at: Alkoi
-
-

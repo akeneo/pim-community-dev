@@ -269,7 +269,6 @@ Unique value: Valor único
 Attribute group: Grupo de atributos
 Other: Otro
 Variants behavior when edited: Comportamiento de las variantes al editarlas
-Edit: Editar
 Remove: Quitar
 Parameters: Parámetros
 System: Sistema
@@ -294,7 +293,6 @@ Locale specific: Local específico
 default: Predefinido
 Axis: Eje
 Add attributes: Agregar atributos
-Translate from: Traducir desde
 switch_on: "SÍ"
 switch_off: "No"
 Close: Cerrar
@@ -365,12 +363,14 @@ pim_catalog_metric: Métrica
 pim_reference_data_simpleselect: Selección simple de datos de referencia
 pim_reference_data_multiselect: Selección múltiple de datos de referencia
 Activated: Habilitado
+Edit: Editar
 Disable: Inhabilitar
 To enable: Para habilitar
 Select attributes: Seleccionar atributos
 Select: Seleccione
 Remove this attribute: Quitar este atributo
 Copy: Copiar
+Translate from: Traducir desde
 Current tab: Pestaña actual
 Group: Grupo
 View group: Ver grupo
@@ -483,5 +483,3 @@ job_tracker:
     title: Seguimiento de procesos
   filter:
     started_at: Ejecutado el
-
-

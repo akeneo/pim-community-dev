@@ -103,6 +103,7 @@ pim_enrich.entity.product:
       empty: Комментариев не найдено
       header_comment: 'Комментарий пользователя {{ user }} к продукту'
       delete_confirm: Вы уверены, что хотите удалить комментарий?
+      removed_author: Удаленный пользователь
 pim_enrich.entity.product_model:
   property:
     family_variant: Вариант
