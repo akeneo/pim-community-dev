@@ -10,7 +10,6 @@ pim_connector:
           title: Valda kategorier
           cancel: Avbryt
           confirm: Bekräfta
-        label: "{0} alla produkter |{1} en kategori vald |] 1 Inf [{{ count }} kategorier valda"
         edit: Redigera
         title: Välj kategorier
     locales:
