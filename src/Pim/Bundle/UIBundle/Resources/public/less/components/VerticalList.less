@@ -15,10 +15,14 @@
     line-height: 50px;
     margin: 0 0 -1px 0;
     padding: 0 10px;
-    display: flex;
     justify-content: space-between;
     flex-shrink: 0;
     align-items: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 28vw;
+    white-space: nowrap;
+    display: block;
 
     &--selectable {
       cursor: pointer;

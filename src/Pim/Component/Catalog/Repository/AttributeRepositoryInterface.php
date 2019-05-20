@@ -126,7 +126,6 @@ interface AttributeRepositoryInterface extends
      */
     public function findAttributesByFamily(FamilyInterface $family);
 
-
     /**
      * Find axis label for a locale
      *
