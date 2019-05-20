@@ -19,6 +19,7 @@
 ## Bug fixes
 
 - PIM-8328: Fix flag display on reference entities locales with multiple underscore
+- DAPI-234: Fix query that retrieves the users to notify for missing mapping
 
 # 3.0.16 (2019-05-06)
 
