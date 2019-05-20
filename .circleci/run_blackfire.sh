@@ -61,17 +61,6 @@ setup_blackfire()
     docker-compose exec fpm php -d memory_limit=3G /usr/local/bin/composer require blackfire/php-sdk
 }
 
-launch_bench()
-{
-    echo "Start blackfire profiling"
-
-    API_RESPONSE=$(docker-compose exec -T fpm curl -s -X POST $API_URL/api/oauth/v1/token -H "authorization: Basic ${API_AUTH}" -H 'content-type: application/json' -d '{ "grant_type": "password", "username": "admin", "password": "admin" }')
-    API_TOKEN=$(echo $API_RESPONSE | jq -r '.access_token')
-
-    docker-compose exec -T fpm blackfire --samples 2 curl -X GET "${API_URL}/api/rest/v1/products?limit=100" -H "authorization: Bearer ${API_TOKEN}" -H 'content-type: application/json'
-}
-
 generate_reference_catalog
 setup_blackfire
-# launch_bench
 

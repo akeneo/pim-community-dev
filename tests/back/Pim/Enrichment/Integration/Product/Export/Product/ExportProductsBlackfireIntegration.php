@@ -1,16 +1,13 @@
 <?php
 
 use Blackfire\Bridge\PhpUnit\TestCaseTrait;
-use Blackfire\Client;
-use Blackfire\ClientConfiguration;
 use Blackfire\Profile\Configuration;
-use PHPUnit\Framework\TestCase;
-use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use PHPUnit\Framework\Assert;
 
 
 /**
@@ -134,22 +131,24 @@ class IntegrationTest extends WebTestCase
 
     public function testSomething()
     {
-        $config = new ClientConfiguration(getenv('BLACKFIRE_CLIENT_ID'), getenv('BLACKFIRE_CLIENT_TOKEN'));
-        $blackfire = new Client($config);
-
         $profileConfig = new Configuration();
         $profileConfig->setTitle('Export products with the API');
-        $profileConfig ->assert('metrics.sql.queries.count > 5', 'SQL queries') ;
+
+        $profileConfig->assert('metrics.sql.queries.count < 1000', 'SQL queries') ;
+        $profileConfig->assert('main.wall_time < 15s', 'Total time') ;
+        $profileConfig->assert('main.peak_memory < 100mb', 'Memory') ;
+
         $client = $this->createAuthenticatedClient();
 
         $profile = $this->assertBlackfire($profileConfig, function () use ($client) {
-           $response = $client->request('GET', 'api/rest/v1/products?limit=100');
-
+           $client->request('GET', 'api/rest/v1/products?limit=100');
         });
 
+        $response = $client->getResponse();
+        Assert::assertSame(200, $response->getStatusCode());
+        $products = json_decode($response->getContent(), true)['_embedded']['items'];
+        Assert::assertSame(100, count($products));
+
         echo 'Profile complete:'.$profile->getUrl();
-        $tests = $profile->getTests();
-        $isErrored = $profile->isErrored();
-        var_dump($isErrored);
     }
 }

@@ -266,9 +266,12 @@ jobs:
                 sleep 25 # wait mysql to be up
                 docker-compose exec fpm bin/console pim:installer:db -e behat
         - run:
-            name: Run blackfire profiling
+            name: Set up blackfire profiling
             command: .circleci/run_blackfire.sh
             when: always
+        - run:
+            name: Run blackfire profiling
+            command: docker-compose exec -T fpm phpunit -c app/phpunit.xml.dist tests/back/Pim/Enrichment/Integration/Product/Export/Product/ExportProductsBlackfireIntegration.php
 
 workflows:
   version: 2
