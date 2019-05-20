@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Acceptance\Locale;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;

@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Event\UserEvent;
@@ -72,19 +73,13 @@ class UserController
     /** @var ObjectManager */
     private $objectManager;
 
+    /** @var RemoverInterface */
+    private $remover;
+
     /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param NormalizerInterface $normalizer
-     * @param ObjectRepository $repository
-     * @param ObjectUpdaterInterface $updater
-     * @param ValidatorInterface $validator
-     * @param SaverInterface $saver
-     * @param NormalizerInterface $constraintViolationNormalizer
-     * @param SimpleFactoryInterface $factory
-     * @param UserPasswordEncoderInterface $encoder
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param Session $session
-     * @param ObjectManager $objectManager
+     * @todo merge 3.2:
+     *       - remove the $objectManager argument
+     *       - the last argument ($remover) must not be nullable anymore
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -98,7 +93,8 @@ class UserController
         UserPasswordEncoderInterface $encoder,
         EventDispatcherInterface $eventDispatcher,
         Session $session,
-        ObjectManager $objectManager
+        ObjectManager $objectManager,
+        ?RemoverInterface $remover = null
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
@@ -112,6 +108,7 @@ class UserController
         $this->eventDispatcher = $eventDispatcher;
         $this->session = $session;
         $this->objectManager = $objectManager;
+        $this->remover = $remover;
     }
 
     /**
@@ -271,8 +268,13 @@ class UserController
             return new Response(null, Response::HTTP_FORBIDDEN);
         }
 
-        $this->objectManager->remove($user);
-        $this->objectManager->flush();
+        // todo merge 3.2: remove the condition, and the whole "else" body
+        if (null !== $this->remover) {
+            $this->remover->remove($user);
+        } else {
+            $this->objectManager->remove($user);
+            $this->objectManager->flush();
+        }
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

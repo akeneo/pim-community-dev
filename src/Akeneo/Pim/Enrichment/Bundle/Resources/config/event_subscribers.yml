@@ -129,3 +129,11 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
+
+    # todo merge 3.2: remove the following service and the associated class
+    pim_catalog.event_subscriber.remove_user:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\RemoveUserSubscriber'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }

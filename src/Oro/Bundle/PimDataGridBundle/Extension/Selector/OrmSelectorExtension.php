@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Extension\Selector;
 
-use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;

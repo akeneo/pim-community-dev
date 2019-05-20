@@ -18,6 +18,7 @@ define([
     'pim/router',
     'pim/user-context',
     'pim/i18n',
+    'pim/security-context',
     'pim/template/form/attribute-group/list'
 ],
     function (
@@ -31,6 +32,7 @@ define([
         router,
         UserContext,
         i18n,
+        securityContext,
         template
     ) {
         return BaseForm.extend({
@@ -114,10 +116,12 @@ define([
              * @param {event} event
              */
             redirectToGroup: function (event) {
-                router.redirectToRoute(
-                    'pim_enrich_attributegroup_edit',
-                    {identifier: event.target.dataset.attributeGroupCode}
-                )
+                if (securityContext.isGranted('pim_enrich_attributegroup_edit')) {
+                    router.redirectToRoute(
+                        'pim_enrich_attributegroup_edit',
+                        {identifier: event.target.dataset.attributeGroupCode}
+                    )
+                }
             }
         });
     }

@@ -2,7 +2,6 @@
 
 namespace Context\Page\Batch;
 
-use Behat\Mink\Element\Element;
 use Context\Page\Base\Wizard;
 
 /**

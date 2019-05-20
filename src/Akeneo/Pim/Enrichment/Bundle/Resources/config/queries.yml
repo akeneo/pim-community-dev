@@ -132,70 +132,80 @@ services:
             - '@database_connection'
 
     akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetCategoryCodesByProductIdentifiers'
-        arguments:
-            - '@database_connection'
+      class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetCategoryCodesByProductIdentifiers'
+      arguments:
+        - '@database_connection'
 
     akeneo.pim.enrichment.product.query.get_values_and_properties_from_product_identifiers:
-        class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductIdentifiers
-        arguments:
-            - '@database_connection'
+      class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductIdentifiers
+      arguments:
+        - '@database_connection'
 
     akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductAssociationsByProductIdentifiers'
-        arguments:
-            - '@database_connection'
+      class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductAssociationsByProductIdentifiers'
+      arguments:
+        - '@database_connection'
 
     akeneo.pim.enrichment.product.query.get_group_associations_by_product_identifiers:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetGroupAssociationsByProductIdentifiers'
-        arguments:
-            - '@database_connection'
+      class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetGroupAssociationsByProductIdentifiers'
+      arguments:
+        - '@database_connection'
 
     akeneo.pim.enrichment.product.query.get_product_models_association_by_product_identifiers:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductModelAssociationsByProductIdentifiers'
-        arguments:
-            - '@database_connection'
+      class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductModelAssociationsByProductIdentifiers'
+      arguments:
+        - '@database_connection'
 
     akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetCategoryCodesByProductModelCodes'
-        arguments:
-            - '@database_connection'
+      class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetCategoryCodesByProductModelCodes'
+      arguments:
+        - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductModelsAssociationsByProductModelCodes'
-        arguments:
-            - '@database_connection'
+      class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductModelsAssociationsByProductModelCodes'
+      arguments:
+        - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetGroupAssociationsByProductModelCodes'
-        arguments:
-            - '@database_connection'
+      class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetGroupAssociationsByProductModelCodes'
+      arguments:
+        - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_values_and_properties_from_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes'
-        arguments:
-            - '@database_connection'
+      class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetValuesAndPropertiesFromProductModelCodes'
+      arguments:
+        - '@database_connection'
 
     akeneo.pim.enrichment.product_model.query.get_product_associations_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductAssociationsByProductModelCodes'
+      class: 'Akeneo\Pim\Enrichment\Bundle\ProductModel\Query\Sql\GetProductAssociationsByProductModelCodes'
+      arguments:
+        - '@database_connection'
+
+    akeneo.pim.enrichment.product.connector.get_product_from_identifiers:
+      class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductsFromWriteModel'
+      arguments:
+        $productRepository: '@pim_api.repository.product'
+        $attributeRepository: '@pim_catalog.repository.attribute'
+        $getMetadata: '@akeneo.pim.enrichment.query.get_metadata_for_product'
+
+    akeneo.pim.enrichment.query.get_metadata_for_product:
+      class: 'Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadata'
+
+    akeneo.pim.enrichment.product.connector.get_product_models_from_codes:
+      class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductModels'
+      arguments:
+        $productModelRepository: '@pim_catalog.repository.product_model'
+        $getMetadata: '@akeneo.pim.enrichment.query.get_metadata_for_product_model'
+
+    akeneo.pim.enrichment.query.get_metadata_for_product_model:
+      class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetMetadataForProductModel'
+
+    akeneo.pim.enrichment.product_model.query.count_product_models_and_children_product_models:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountProductModelsAndChildrenProductModels
         arguments:
             - '@database_connection'
 
-    akeneo.pim.enrichment.product.connector.get_product_from_identifiers:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductsFromWriteModel'
+    akeneo.pim.enrichment.product_model.query.count_variant_products:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountVariantProducts
         arguments:
-            $productRepository: '@pim_api.repository.product'
-            $attributeRepository: '@pim_catalog.repository.attribute'
-            $getMetadata: '@akeneo.pim.enrichment.query.get_metadata_for_product'
-
-    akeneo.pim.enrichment.query.get_metadata_for_product:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadata'
-
-    akeneo.pim.enrichment.product.connector.get_product_models_from_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetConnectorProductModels'
-        arguments:
-            $productModelRepository: '@pim_catalog.repository.product_model'
-            $getMetadata: '@akeneo.pim.enrichment.query.get_metadata_for_product_model'
-
-    akeneo.pim.enrichment.query.get_metadata_for_product_model:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ORM\Connector\GetMetadataForProductModel'
+            - '@database_connection'

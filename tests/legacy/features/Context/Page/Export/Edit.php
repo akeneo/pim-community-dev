@@ -3,7 +3,6 @@
 namespace Context\Page\Export;
 
 use Context\Page\Base\Form;
-use Pim\Behat\Decorator\Common\AddSelect\AttributeAddSelectDecorator;
 use Pim\Behat\Decorator\Export\Structure\AttributesDecorator;
 use Pim\Behat\Decorator\Tree\JsTreeDecorator;
 

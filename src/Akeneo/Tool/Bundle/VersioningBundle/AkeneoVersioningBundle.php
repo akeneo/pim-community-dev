@@ -3,7 +3,6 @@
 namespace Akeneo\Tool\Bundle\VersioningBundle;
 
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
-use Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
 use Akeneo\Tool\Bundle\VersioningBundle\DependencyInjection\Compiler\RegisterUpdateGuessersPass;
 use Akeneo\Tool\Bundle\VersioningBundle\DependencyInjection\Compiler\RegisterVersionPurgerAdvisorPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
