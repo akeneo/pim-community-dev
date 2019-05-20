@@ -31,6 +31,7 @@ use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityBuilder;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -89,27 +90,13 @@ class DataFixturesContext implements Context
     /** @var FakeClient */
     private $fakeClient;
 
-    /**
-     * @param InMemoryProductRepository $productRepository
-     * @param ProductBuilderInterface $productBuilder
-     * @param ValueCollectionFactoryInterface $valueCollectionFactory
-     * @param InMemoryFamilyRepository $familyRepository
-     * @param FamilyFactory $familyFactory
-     * @param InMemoryAttributeRepository $attributeRepository
-     * @param EntityBuilder $familyBuilder
-     * @param EntityBuilder $attributeBuilder
-     * @param InMemoryAttributeGroupRepository $attributeGroupRepository
-     * @param EntityBuilder $attributeGroupBuilder
-     * @param InMemoryProductSubscriptionRepository $subscriptionRepository
-     * @param EntityBuilder $categoryBuilder
-     * @param InMemoryCategoryRepository $categoryRepository
-     * @param InMemoryAttributeOptionRepository $attributeOptionRepository
-     * @param InMemoryIdentifiersMappingRepository $identifiersMappingRepository
-     * @param FakeClient $fakeClient
-     */
+    /** @var ObjectUpdaterInterface */
+    private $productUpdater;
+
     public function __construct(
         InMemoryProductRepository $productRepository,
         ProductBuilderInterface $productBuilder,
+        ObjectUpdaterInterface $productUpdater,
         ValueCollectionFactoryInterface $valueCollectionFactory,
         InMemoryFamilyRepository $familyRepository,
         FamilyFactory $familyFactory,
@@ -141,6 +128,7 @@ class DataFixturesContext implements Context
         $this->attributeOptionRepository = $attributeOptionRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->fakeClient = $fakeClient;
+        $this->productUpdater = $productUpdater;
     }
 
     /**
@@ -246,6 +234,14 @@ class DataFixturesContext implements Context
 
         $subscription = new ProductSubscription($product->getId(), uniqid(), ['sku' => '72527273070']);
         $this->subscriptionRepository->save($subscription);
+    }
+
+    /**
+     * @Given the product ":identifier" that has the same ASIN that the product ":existingIdentifier"
+     */
+    public function theProductThatHasTheSameAsinThatTheProduct(string $identifier)
+    {
+        $this->loadProduct($identifier, 'router');
     }
 
     /**
@@ -441,6 +437,10 @@ class DataFixturesContext implements Context
 
         $product = $this->productBuilder->createProduct($identifier, $familyCode);
         $this->setValuesFromRawDataToProduct($product, $normalizedProduct);
+
+        if (isset($normalizedProduct['id'])) {
+            $product->setId(intval($normalizedProduct['id']));
+        }
 
         $this->productRepository->save($product);
     }

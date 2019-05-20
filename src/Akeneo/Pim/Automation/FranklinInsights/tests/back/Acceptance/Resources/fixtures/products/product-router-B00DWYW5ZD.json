@@ -1,12 +1,12 @@
 {
-    "id": 50,
-    "identifier": "B00EYZY6AC",
+    "id": 5678,
+    "identifier": "B00DWYW5ZD",
     "family": "router",
     "categories": [],
     "enabled": true,
     "values": {
         "asin": [
-            {"locale": null, "scope": null, "data": "B00EYZY6AC"}
+            {"locale": null, "scope": null, "data": "duplicated"}
         ]
     }
 }

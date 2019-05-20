@@ -101,10 +101,14 @@ class SubscribeProductHandler
     private function subscribe(ProductInterface $product): void
     {
         $subscriptionRequest = new ProductSubscriptionRequest($product);
+        $subscriptionResponse = $this->subscriptionProvider->subscribe($subscriptionRequest);
+
+        if ($subscriptionResponse->getProductId() !== intval($product->getId())) {
+            throw ProductSubscriptionException::productSubscriptionWithSameIdentifierAlreadyExist();
+        }
 
         $identifiersMapping = $this->identifiersMappingRepository->find();
 
-        $subscriptionResponse = $this->subscriptionProvider->subscribe($subscriptionRequest);
         $subscription = new ProductSubscription(
             $product->getId(),
             $subscriptionResponse->getSubscriptionId(),
