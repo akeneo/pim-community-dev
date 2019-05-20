@@ -26,9 +26,6 @@ class SqlFindRecordLabelsByIdentifiers implements FindRecordLabelsByIdentifiersI
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var string[] */
-    private $attributesAsLabel;
-
     public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
