@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -85,7 +86,7 @@ class MediaController
         );
     }
 
-    protected function storeFile(UploadedFile $uploadedFile)
+    protected function storeFile(UploadedFile $uploadedFile): FileInfoInterface
     {
         return $this->fileStorer->store($uploadedFile, FileStorage::CATALOG_STORAGE_ALIAS);
     }

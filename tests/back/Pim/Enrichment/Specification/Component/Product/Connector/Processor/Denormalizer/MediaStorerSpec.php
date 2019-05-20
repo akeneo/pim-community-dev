@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -58,8 +59,9 @@ class MediaStorerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throws_an_exception_if_the_path_does_not_exist($attributeRepository)
+    function it_throws_an_exception_if_the_path_does_not_exist($fileStorer, $attributeRepository)
     {
+        $fileStorer->store(Argument::cetera())->willThrow(InvalidFile::class);
         $attributeRepository->findMediaAttributeCodes()->willReturn(['a_media']);
 
         $this->shouldThrow(InvalidPropertyException::class)->during('store', [

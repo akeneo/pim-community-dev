@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormaliz
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
@@ -31,13 +32,14 @@ class MediaStorer
                     if (empty($value['data'])) {
                         continue;
                     }
-                    if (!is_file($value['data'])) {
+                    try {
+                        $file = $this->fileStorer->store(
+                            new \SplFileInfo($value['data']),
+                            FileStorage::CATALOG_STORAGE_ALIAS
+                        );
+                    } catch (InvalidFile $e) {
                         throw InvalidPropertyException::validPathExpected($attributeCode, self::class, $value['data']);
                     }
-                    $file = $this->fileStorer->store(
-                        new \SplFileInfo($value['data']),
-                        FileStorage::CATALOG_STORAGE_ALIAS
-                    );
                     $rawProductValues[$attributeCode][$index]['data'] = $file->getKey();
                 }
             }
