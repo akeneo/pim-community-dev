@@ -4,7 +4,7 @@
     <span class="AknVariantNavigation-item <% if (navigation[level].selected && navigation[level].selected.id === entity.meta.id) { %>AknVariantNavigation-item--highlight<% } %>">
         <% if (level > 0) { %>
             <span class="AknVariantNavigation-itemLabel" data-action="navigateToLevel" data-level="<%- level %>">
-                <span class="AknVariantNavigation-axisName <%- navigation[level].selected ? 'AknVariantNavigation-axisName--selected' : '' %>" data-level="<%- level %>"><%- navigation[level].axes[currentLocale] %></span>
+                <span class="AknVariantNavigation-axisName <%- navigation[level].selected ? 'AknVariantNavigation-axisName--selected' : '' %>" data-level="<%- level %>" title="<%- navigation[level].axes[currentLocale] %>"><%- navigation[level].axes[currentLocale] %></span>
 
                 <% if (navigation[level].selected) { %>
                     <span class="AknVariantNavigation-axisValue" data-level="<%- level %>">
