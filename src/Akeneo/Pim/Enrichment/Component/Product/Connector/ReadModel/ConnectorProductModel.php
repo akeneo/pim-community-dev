@@ -221,9 +221,11 @@ final class ConnectorProductModel
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
             $filteredAssociations[$associationType]['products'] = $association['products'];
-            $filteredAssociations[$associationType]['product_models'] = array_intersect(
-                $association['product_models'],
-                $productModelCodesToFilter
+            $filteredAssociations[$associationType]['product_models'] = array_values(
+                array_intersect(
+                    $association['product_models'],
+                    $productModelCodesToFilter
+                )
             );
             $filteredAssociations[$associationType]['groups'] = $association['groups'];
         }

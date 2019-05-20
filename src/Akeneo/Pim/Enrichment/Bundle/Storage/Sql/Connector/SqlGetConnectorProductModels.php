@@ -165,6 +165,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
         );
         $associationsIndexedByCode = [];
         foreach ($associations as $productModelCode => $association) {
+            ksort($association);
             $associationsIndexedByCode[$productModelCode]['associations'] = $association;
         }
 

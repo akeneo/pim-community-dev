@@ -29,6 +29,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +44,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Willy MESNAGE <willy.mesnage@akeneo.com>
@@ -173,10 +175,10 @@ class ProductModelController
     public function getAction(string $code): JsonResponse
     {
         try {
-            $productModel = $this->getConnectorProductModels->fromProductModelCode(
-                $code,
-                $this->tokenStorage->getToken()->getUser()->getId()
-            );
+            $user = $this->tokenStorage->getToken()->getUser();
+            Assert::isInstanceOf($user, UserInterface::class);
+
+            $productModel = $this->getConnectorProductModels->fromProductModelCode($code, $user->getId());
         } catch (ObjectNotFoundException $e) {
             throw new NotFoundHttpException(sprintf('Product model "%s" does not exist.', $code));
         }
@@ -248,6 +250,9 @@ class ProductModelController
      */
     public function listAction(Request $request): JsonResponse
     {
+        $user = $this->tokenStorage->getToken()->getUser();
+        Assert::isInstanceOf($user, UserInterface::class);
+
         $query = new ListProductModelsQuery();
 
         if ($request->query->has('attributes')) {
@@ -270,7 +275,7 @@ class ProductModelController
         $query->page = $request->query->get('page', 1);
         $query->searchChannelCode = $request->query->get('search_scope', null);
         $query->searchAfter = $request->query->get('search_after', null);
-        $query->userId = $this->tokenStorage->getToken()->getUser()->getId();
+        $query->userId = $user->getId();
 
         try {
             $this->listProductModelsQueryValidator->validate($query);
