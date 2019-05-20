@@ -70,24 +70,34 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
                     }
                 }
 
-                $zipPath = strtr(
-                    $this->getRelativeArchivePath($jobExecution),
-                    ['%filename%' => $zipName]
-                );
-
-                if (!$this->filesystem->has(dirname($zipPath))) {
-                    $this->filesystem->createDir(dirname($zipPath));
-                }
-
                 $localZipFilesystem->getAdapter()->getArchive()->close();
 
-                $zipArchive = fopen($localZipPath, 'r');
-                $this->filesystem->writeStream($zipPath, $zipArchive);
+                $this->archiveZip($jobExecution, $localZipPath, $zipName);
 
-                if (is_resource($zipArchive)) {
-                    fclose($zipArchive);
-                }
+                unlink($localZipPath);
             }
+        }
+    }
+
+    /**
+     * Put the generated zip file to the archive destination location
+     */
+    protected function archiveZip(JobExecution $jobExecution, string $localZipPath, string $destName)
+    {
+        $destPath = strtr(
+            $this->getRelativeArchivePath($jobExecution),
+            ['%filename%' => $destName]
+        );
+
+        if (!$this->filesystem->has(dirname($destPath))) {
+            $this->filesystem->createDir(dirname($destPath));
+        }
+
+        $zipArchive = fopen($localZipPath, 'r');
+        $this->filesystem->writeStream($destPath, $zipArchive);
+
+        if (is_resource($zipArchive)) {
+            fclose($zipArchive);
         }
     }
 
