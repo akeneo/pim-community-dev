@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8341: Use user locale for job execution normalization
+- PIM-8347: Fix variant navigation display in case of long attribute labels
 
 ## Improvement
 
