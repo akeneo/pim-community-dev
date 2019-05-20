@@ -1,0 +1,7 @@
+services:
+    # Query functions
+    akeneo_referenceentity.infrastructure.persistence.query.onboarder.find_record_labels_by_identifiers:
+            class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder\FindRecordLabelsByIdentifiers
+            arguments:
+                - '@database_connection'
+                - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_identifiers'
