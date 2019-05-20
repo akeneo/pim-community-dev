@@ -52,11 +52,11 @@ class SqlRecordRepository implements RecordRepositoryInterface
     /** @var FindAttributesIndexedByIdentifierInterface */
     private $findAttributesIndexedByIdentifier;
 
-    /** @var FindIdentifiersByReferenceEntityAndCodesInterface  */
-    private $findIdentifiersByReferenceEntityAndCodes;
-
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
+
+    /** @var FindIdentifiersByReferenceEntityAndCodesInterface */
+    private $findIdentifiersByReferenceEntityAndCodes;
 
     /** @var FindValueKeysByAttributeTypeInterface */
     private $findValueKeysByAttributeType;
@@ -74,7 +74,6 @@ class SqlRecordRepository implements RecordRepositoryInterface
         $this->recordHydrator = $recordHydrator;
         $this->findValueKeyCollection = $findValueKeyCollection;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->findIdentifiersByReferenceEntityAndCodes = $findIdentifiersByReferenceEntityAndCodes;
         $this->eventDispatcher = $eventDispatcher;
         $this->findIdentifiersByReferenceEntityAndCodes = $findIdentifiersByReferenceEntityAndCodes;
         $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;

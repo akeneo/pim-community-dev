@@ -78,8 +78,7 @@ pim_enrich:
                 type:
                     pim_assets_collection: Assets collection
 
-# TODO merge in 3.1: `pim_dashboard` should be renamed in `pim_import_export`
-pim_dashboard:
+pim_import_export:
     widget:
         last_operations:
             job_type:
