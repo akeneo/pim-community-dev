@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.44 (2019-05-20)
+
 ## Bug fixes
 
 - PIM-8341: Use user locale for job execution normalization
