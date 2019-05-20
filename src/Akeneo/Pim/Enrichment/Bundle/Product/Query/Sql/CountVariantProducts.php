@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql;
 
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountVariantProductsInterface;
 use Doctrine\DBAL\Connection;
@@ -10,8 +10,6 @@ use Doctrine\DBAL\Connection;
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @todo pull-up 3.1 Move to `Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql`
  */
 final class CountVariantProducts implements CountVariantProductsInterface
 {
