@@ -23,7 +23,7 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
      * AttributeTypeForOptionValidator constructor.
      * @param array $supportedAttributeTypes
      *
-     * TODO on merge 3.2, remove = null
+     * TODO on merge 3.2, remove = null and add BC BREAK in changelog
      */
     public function __construct(array $supportedAttributeTypes = [])
     {
