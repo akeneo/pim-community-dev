@@ -45,7 +45,7 @@ class JobExecutionNormalizer implements NormalizerInterface
         return $this->jobExecutionStandardNormalizer->normalize(
             $jobExecution,
             'standard',
-            array_merge($context, ['timezone' => $timezone])
+            array_merge($context, ['locale' => $this->userContext->getUiLocaleCode(), 'timezone' => $timezone])
         );
     }
 

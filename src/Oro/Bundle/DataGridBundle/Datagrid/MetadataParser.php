@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
-use Oro\Bundle\DataGridBundle\Datagrid\Manager;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouterInterface;
 

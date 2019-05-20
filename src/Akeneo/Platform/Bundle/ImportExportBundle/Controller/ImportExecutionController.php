@@ -3,7 +3,6 @@
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Import execution controller

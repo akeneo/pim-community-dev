@@ -24,8 +24,8 @@ Feature: Delete many products and product models at once
       | success | Mass delete Mass delete products finished |
     When I go on the last executed job resume of "delete_products_and_product_models"
     Then I should see the text "COMPLETED"
-    And I should see the text "Deleted products 2"
-    And I should see the text "Deleted product models 2"
+    And I should see the text "Deleted products 11"
+    And I should see the text "Deleted product models 4"
 
   Scenario: Successfully "mass" delete one product
     Given I select row Bag
@@ -46,8 +46,8 @@ Feature: Delete many products and product models at once
     And I wait for the "delete_products_and_product_models" job to finish
     And I go on the last executed job resume of "delete_products_and_product_models"
     Then I should see the text "COMPLETED"
-    And I should see the text "Deleted products 5"
-    And I should see the text "Deleted product models 20"
+    And I should see the text "Deleted products 117"
+    And I should see the text "Deleted product models 37"
 
   Scenario: Successfully mass delete all products and product models
     Given I select rows Bag

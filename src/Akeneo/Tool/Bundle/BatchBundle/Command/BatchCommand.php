@@ -13,7 +13,6 @@ use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

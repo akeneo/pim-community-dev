@@ -1,0 +1,8 @@
+services:
+    akeneo.elasticsearch.update_mapping_command:
+        class: 'Akeneo\Tool\Bundle\ElasticsearchBundle\Command\UpdateMappingIndexCommand'
+        arguments:
+            $clientRegistry: '@akeneo_elasticsearch.registry.clients'
+            $hosts: '%index_hosts%'
+        tags:
+            - {name: console.command}
