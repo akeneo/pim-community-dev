@@ -123,11 +123,11 @@ Feature: Subscribe a product to Franklin
 
   Scenario: Fail to subscribe a product that has an identical identifier to another subscribed product
     Given Franklin is configured with a valid token
+    And the product "B00EYZY6AC" of the family "router"
     And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |
       | asin          | asin           |
       | upc           | pim_upc        |
-    And the product "B00EYZY6AC" of the family "router"
     And the product "B00EYZY6AC" is subscribed to Franklin
     And the product "B00DWYW5ZD" that has the same ASIN that the product "B00EYZY6AC"
     When I subscribe the product "B00DWYW5ZD" to Franklin
