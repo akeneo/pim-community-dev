@@ -101,7 +101,8 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
                         )
                     );
                 } else {
-                    // TODO: real check rather than guess
+                    // If there's no subscription and no warning for the product id,
+                    // it means that there's already a subscription with the same identifiers, but with another tracker id (i.e. another product)
                     $this->stepExecution->addWarning(
                         ProductSubscriptionException::productSubscriptionWithSameIdentifierAlreadyExist()->getMessage(),
                         [],
