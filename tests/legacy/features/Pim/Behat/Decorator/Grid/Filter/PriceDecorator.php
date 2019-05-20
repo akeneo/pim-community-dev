@@ -15,47 +15,52 @@ class PriceDecorator extends ElementDecorator
      * @param string $operator
      * @param string $value
      */
-    public function filter($operator, $value)
+    public function filter($operator, $value = '')
     {
+        $currency = null;
+        $amount = null;
+
+        if ('' !== $value) {
+            // Split '10.5 EUR' -> $data = 10.5;  $currency = 'EUR'
+            // or    ' EUR'     -> $data = 'EUR'; $currency = null
+            $result = explode(' ', $value);
+            if (count($result) === 2) {
+                $currency = $result[1];
+                $amount = $result[0];
+            } else {
+                $currency = $result[0];
+            }
+        }
+
         $operatorDropdown = $this->decorate(
             $this->find('css', '.operator *[data-toggle="dropdown"]'),
             ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
         );
-        $currencyDropdown = $this->decorate(
-            $this->find('css', '.currency *[data-toggle="dropdown"]'),
-            ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
-        );
-
-        // Split '10.5 EUR' -> $data = 10.5; $currency = 'EUR'
-        $value = '' !== $value ? explode(' ', $value) : [];
-        switch (count($value)) {
-            case 0:
-            case 1:
-                list($data, $currency) = ['', reset($value)];
-                break;
-            case 2:
-                list($data, $currency) = $value;
-                break;
-            default:
-                throw new \InvalidArgumentException('You must specify a currency and a value');
-        }
-
-        // Set the value:
-        if ('' !== $data) {
-            $this->find('css', 'input[name="value"]')->setValue($data);
-        }
-
         $operatorDropdown->setValue($operator);
-        $currencyDropdown->setValue($currency);
+
+        if (null !== $currency) {
+            $currencyDropdown = $this->decorate(
+                $this->find('css', '.currency *[data-toggle="dropdown"]'),
+                ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+            );
+            $currencyDropdown->setValue($currency);
+        }
+
+        if (null !== $amount) {
+            $this->find('css', 'input[name="value"]')->setValue($amount);
+        }
 
         // Update the filter
-        $this->spin(function () {
-            if (!$this->find('css', '.filter-criteria')->isVisible()) {
-                return true;
-            }
-            $this->find('css', '.filter-update')->click();
+        $this->spin(
+            function () {
+                if (!$this->find('css', '.filter-criteria')->isVisible()) {
+                    return true;
+                }
+                $this->find('css', '.filter-update')->click();
 
-            return false;
-        }, 'Cannot update the filter');
+                return false;
+            },
+            'Cannot update the filter'
+        );
     }
 }

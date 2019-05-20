@@ -85,6 +85,12 @@ define(
                     })
                 );
 
+                if (true === _.contains(['empty', 'not empty'], this._getDisplayValue().type)) {
+                    this._disableInput();
+                } else {
+                    this._enableInput();
+                }
+
                 return this;
             },
 
@@ -117,8 +123,8 @@ define(
              */
             _getCriteriaHint: function () {
                 var value = this._getDisplayValue();
-                if (_.contains(['empty', 'not empty'], value.type) && value.currency) {
-                    return this._getChoiceOption(value.type).label + ': ' + value.currency;
+                if (_.contains(['empty', 'not empty'], value.type)) {
+                    return this._getChoiceOption(value.type).label;
                 }
                 if (!value.value) {
                     return this.placeholder;
@@ -143,12 +149,6 @@ define(
              */
             _onValueUpdated: function(newValue, oldValue) {
                 this._highlightDropdown(newValue.currency, '.currency');
-                if (_.contains(['empty', 'not empty'], newValue.type)) {
-                    this._disableInput();
-                } else {
-                    this._enableInput();
-                }
-
                 this._triggerUpdate(newValue, oldValue);
                 this._updateCriteriaHint();
             },
@@ -166,20 +166,6 @@ define(
                 }
 
                 return this;
-            },
-
-            /**
-             * @inheritDoc
-             */
-            _onClickChoiceValue: function(e) {
-                NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
-                if ($(e.currentTarget).attr('data-input-toggle')) {
-                    if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
-                        this._disableInput();
-                    } else {
-                        this._enableInput();
-                    }
-                }
             },
 
             /**
@@ -209,18 +195,14 @@ define(
              * {@inheritdoc}
              */
             _disableInput() {
-                this.$el.find(this.criteriaValueSelectors.value).hide();
-                this.$el.find('.AknFilterChoice-currency')
-                    .addClass('AknFilterChoice-currency--centered');
+                this.$el.find('.AknFilterChoice-inputContainer').hide();
             },
 
             /**
              * {@inheritdoc}
              */
             _enableInput() {
-                this.$el.find(this.criteriaValueSelectors.value).show();
-                this.$el.find('.AknFilterChoice-currency')
-                    .removeClass('AknFilterChoice-currency--centered');
+                this.$el.find('.AknFilterChoice-inputContainer').show();
             }
         });
     }
