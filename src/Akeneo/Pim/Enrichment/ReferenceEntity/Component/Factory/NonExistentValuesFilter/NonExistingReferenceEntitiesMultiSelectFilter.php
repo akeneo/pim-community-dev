@@ -39,12 +39,21 @@ final class NonExistingReferenceEntitiesMultiSelectFilter implements NonExistent
             return $onGoingFilteredRawValues;
         }
 
+        $recordCodes = $this->findExistentRecordCodesIndexedByReferenceEntityIdentifier($multipleRecordLinkValues);
+
+        $filteredValues = $this->buildRawValuesWithExistingRecordCodes($multipleRecordLinkValues, $recordCodes);
+
+        return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
+    }
+
+    private function findExistentRecordCodesIndexedByReferenceEntityIdentifier(array $multipleRecordLinkValues): array
+    {
         $recordCodesIndexedByReferenceEntityIdentifier = [];
 
-        foreach ($multipleRecordLinkValues as $attributeCode => $productData) {
-            foreach ($productData as $productValues) {
-                $referenceEntityIdentifier = $productValues['properties']['reference_data_name'];
-                foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
+        foreach ($multipleRecordLinkValues as $attributeCode => $productListData) {
+            foreach ($productListData as $productData) {
+                $referenceEntityIdentifier = $productData['properties']['reference_data_name'];
+                foreach ($productData['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (is_array($value)) {
                             $recordCodesIndexedByReferenceEntityIdentifier[$referenceEntityIdentifier][] = $value;
@@ -61,13 +70,18 @@ final class NonExistingReferenceEntitiesMultiSelectFilter implements NonExistent
 
         $recordCodes = $this->findAllExistentRecordsForReferenceEntityIdentifiers->forReferenceEntityIdentifiersAndRecordCodes($uniqueRecordCodesIndexedByReferenceEntityIdentifier);
 
+        return $recordCodes;
+    }
+
+    private function buildRawValuesWithExistingRecordCodes(array $multipleRecordLinkValues, array $recordCodes): array
+    {
         $filteredValues = [];
 
-        foreach ($multipleRecordLinkValues as $attributeCode => $productData) {
-            foreach ($productData as $productValues) {
+        foreach ($multipleRecordLinkValues as $attributeCode => $productListData) {
+            foreach ($productListData as $productData) {
                 $multiSelectValues = [];
-                $referenceEntityIdentifier = $productValues['properties']['reference_data_name'];
-                foreach ($productValues['values'] as $channel => $valuesIndexedByLocale) {
+                $referenceEntityIdentifier = $productData['properties']['reference_data_name'];
+                foreach ($productData['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (is_array($value)) {
                             $multiSelectValues[$channel][$locale] = array_intersect($value, $recordCodes[$referenceEntityIdentifier] ?? []);
@@ -77,14 +91,13 @@ final class NonExistingReferenceEntitiesMultiSelectFilter implements NonExistent
 
                 if ($multiSelectValues !== []) {
                     $filteredValues[ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION][$attributeCode][] = [
-                        'identifier' => $productValues['identifier'],
+                        'identifier' => $productData['identifier'],
                         'values' => $multiSelectValues,
-                        'properties' => $productValues['properties']
+                        'properties' => $productData['properties']
                     ];
                 }
             }
         }
-
-        return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
+        return $filteredValues;
     }
 }
