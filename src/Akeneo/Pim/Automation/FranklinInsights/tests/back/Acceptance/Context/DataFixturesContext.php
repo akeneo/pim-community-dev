@@ -22,7 +22,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
@@ -32,6 +31,7 @@ use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityBuilder;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -90,27 +90,13 @@ class DataFixturesContext implements Context
     /** @var FakeClient */
     private $fakeClient;
 
-    /**
-     * @param InMemoryProductRepository $productRepository
-     * @param ProductBuilderInterface $productBuilder
-     * @param ValueCollectionFactoryInterface $valueCollectionFactory
-     * @param InMemoryFamilyRepository $familyRepository
-     * @param FamilyFactory $familyFactory
-     * @param InMemoryAttributeRepository $attributeRepository
-     * @param EntityBuilder $familyBuilder
-     * @param EntityBuilder $attributeBuilder
-     * @param InMemoryAttributeGroupRepository $attributeGroupRepository
-     * @param EntityBuilder $attributeGroupBuilder
-     * @param InMemoryProductSubscriptionRepository $subscriptionRepository
-     * @param EntityBuilder $categoryBuilder
-     * @param InMemoryCategoryRepository $categoryRepository
-     * @param InMemoryAttributeOptionRepository $attributeOptionRepository
-     * @param InMemoryIdentifiersMappingRepository $identifiersMappingRepository
-     * @param FakeClient $fakeClient
-     */
+    /** @var ObjectUpdaterInterface */
+    private $productUpdater;
+
     public function __construct(
         InMemoryProductRepository $productRepository,
         ProductBuilderInterface $productBuilder,
+        ObjectUpdaterInterface $productUpdater,
         ValueCollectionFactoryInterface $valueCollectionFactory,
         InMemoryFamilyRepository $familyRepository,
         FamilyFactory $familyFactory,
@@ -142,6 +128,7 @@ class DataFixturesContext implements Context
         $this->attributeOptionRepository = $attributeOptionRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->fakeClient = $fakeClient;
+        $this->productUpdater = $productUpdater;
     }
 
     /**
@@ -252,22 +239,9 @@ class DataFixturesContext implements Context
     /**
      * @Given the product ":identifier" that has the same ASIN that the product ":existingIdentifier"
      */
-    public function theProductThatHasTheSameAsinThatTheProduct(string $cloneIdentifier, string $originalIdentifier)
+    public function theProductThatHasTheSameAsinThatTheProduct(string $identifier)
     {
-        $originalProduct = $this->productRepository->findOneByIdentifier($originalIdentifier);
-        if (!$originalProduct instanceof ProductInterface) {
-            throw new \InvalidArgumentException(sprintf('The product "%s" does not exist', $originalIdentifier));
-        }
-
-        $asin = $originalProduct->getValue('asin');
-        if (!$asin instanceof ValueInterface) {
-            throw new \InvalidArgumentException(sprintf('The product %s has no value for the attribute ASIN', $originalProduct));
-        }
-
-        $cloneProduct = $this->productBuilder->createProduct($cloneIdentifier, $originalProduct->getFamily()->getCode());
-        $cloneProduct->addValue($asin);
-
-        $this->productRepository->save($cloneProduct);
+        $this->loadProduct($identifier, 'router');
     }
 
     /**
