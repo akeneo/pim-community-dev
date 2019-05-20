@@ -141,9 +141,9 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
     ) {
         $file1 = tempnam(sys_get_temp_dir(), 'spec');
         $file2 = tempnam(sys_get_temp_dir(), 'spec');
-
-        $zipFile = $file2.'.zip';
-        touch($zipFile);
+        $zipFile = tempnam(sys_get_temp_dir(), 'spec');
+        rename($zipFile, $zipFile.'.zip');
+        $zipFile = $zipFile.'.zip';
 
         $jobInstance->getJobName()->willReturn('my_job_name');
         $jobRegistry->get('my_job_name')->willReturn($job);
@@ -174,7 +174,6 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
 
         $this->archive($jobExecution);
 
-        unlink($zipFile);
         unlink($file1);
         unlink($file2);
     }

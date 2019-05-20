@@ -200,7 +200,7 @@ class JobContext extends PimContext
      *
      * @return string
      */
-    public function getJobInstancePath($code, $number = null)
+    public function getJobInstanceArchivePath($code, $number = null)
     {
         $archives = $this->getJobInstanceArchives($code);
         $filePath = null;
@@ -227,9 +227,7 @@ class JobContext extends PimContext
             }
         }
 
-        $archivePath = $this->getMainContext()->getContainer()->getParameter('archive_dir');
-
-        return sprintf('%s%s%s', $archivePath, DIRECTORY_SEPARATOR, $filePath);
+        return $filePath;
     }
 
     /**
@@ -256,30 +254,21 @@ class JobContext extends PimContext
     }
 
     /**
-     * @param string $code
-     *
      * @throws \Exception
-     *
-     * @return array
      */
-    public function getAllJobInstancePaths($code)
+    public function getAllJobInstanceArchivePaths(string $code): array
     {
         $archivesCount = count($this->getJobInstanceArchives($code));
         $filePaths = [];
 
         for ($i = 1; $i < $archivesCount + 1; $i++) {
-            $filePaths[] = $this->getJobInstancePath($code, $i);
+            $filePaths[] = $this->getJobInstanceArchivePath($code, $i);
         }
 
         return $filePaths;
     }
 
-    /**
-     * @param string $code
-     *
-     * @return array
-     */
-    protected function getJobInstanceArchives($code)
+    protected function getJobInstanceArchives(string $code): array
     {
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
         $this->getFixturesContext()->refresh($jobInstance);
@@ -292,6 +281,33 @@ class JobContext extends PimContext
         $archives = $archiver->getArchives($jobExecution);
 
         return $archives;
+    }
+
+    /**
+     * Load the archive in memory and return its in-memory path
+     */
+    public function copyArchiveLocally(string $archivePath): string
+    {
+        $tmpDir =  getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat';
+
+        if (!is_dir($tmpDir)) {
+            mkdir($tmpDir);
+        }
+
+        $tmpFile = tempnam($tmpDir, 'archive');
+
+        $archivistFilesystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.archivist_filesystem');
+
+        $archiveStream = $archivistFilesystem->readStream($archivePath);
+        $archiveContent = stream_get_contents($archiveStream);
+
+        if (is_resource($archiveStream)) {
+            fclose($archiveStream);
+        }
+
+        file_put_contents($tmpFile, $archiveContent);
+
+        return $tmpFile;
     }
 
     /**

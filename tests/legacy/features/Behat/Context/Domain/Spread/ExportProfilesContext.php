@@ -34,14 +34,14 @@ class ExportProfilesContext extends ImportExportContext
         }
 
         $lines = $this->spin(function () use ($code, $csv, $intNumber) {
-            $path = $this->getExportedFile($code, $intNumber);
+            $archivePath = $this->getExportedArchivedFile($code, $intNumber);
 
             $config = $this->getCsvJobConfiguration($code);
 
             return [
                 'expectedLines' => $this->getExpectedLines($csv, $config),
-                'actualLines' => $this->getActualLines($path, 'csv', $config),
-                'path' => $path
+                'actualLines' => $this->getActualLinesFromArchive($archivePath, 'csv', $config),
+                'path' => $archivePath
             ];
         }, sprintf('Can not find lines of the file %s', $code));
 
@@ -66,14 +66,14 @@ class ExportProfilesContext extends ImportExportContext
         }
 
         $lines = $this->spin(function () use ($code, $csv, $intNumber) {
-            $path = $this->getExportedFile($code, $intNumber);
+            $archivePath = $this->getExportedArchivedFile($code, $intNumber);
 
             $config = $this->getCsvJobConfiguration($code);
 
             return [
                 'expectedLines' => $this->getExpectedLines($csv, $config),
-                'actualLines' => $this->getActualLines($path, 'csv', $config),
-                'path' => $path
+                'actualLines' => $this->getActualLinesFromArchive($archivePath, 'csv', $config),
+                'path' => $archivePath
             ];
         }, sprintf('Can not find lines of the file %s', $code));
 
@@ -90,8 +90,15 @@ class ExportProfilesContext extends ImportExportContext
     public function exportedFileOfShouldBeEmpty($code)
     {
         $this->spin(function () use ($code) {
-            $path = $this->getExportedFile($code);
-            $content = trim(file_get_contents($path));
+            $archivePath = $this->getExportedArchivedFile($code);
+
+            $archivistFilesystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.archivist_filesystem');
+
+            $archiveStream = $archivistFilesystem->readStream($archivePath);
+            $archiveContents = stream_get_contents($archiveStream);
+            fclose($archiveStream);
+
+            $content = trim($archiveContents);
             Assert::assertEmpty($content);
 
             return true;
@@ -110,11 +117,11 @@ class ExportProfilesContext extends ImportExportContext
     public function exportedFileOfShouldContainsTheFollowingHeaders($code, PyStringNode $csv)
     {
         $this->spin(function () use ($code, $csv) {
-            $path = $this->getExportedFile($code);
+            $archivePath = $this->getExportedArchivedFile($code);
             $config = $this->getCsvJobConfiguration($code);
 
             $expectedLines = $this->getExpectedLines($csv, $config);
-            $actualLines = $this->getActualLines($path, 'csv', $config);
+            $actualLines = $this->getActualLinesFromArchive($archivePath, 'csv', $config);
 
             $this->compareFileHeadersOrder(current($expectedLines), current($actualLines));
 
@@ -133,9 +140,15 @@ class ExportProfilesContext extends ImportExportContext
     public function exportedYamlFileOfShouldContain($code, PyStringNode $yaml)
     {
         $this->spin(function () use ($code, $yaml) {
-            $path = $this->getExportedFile($code);
+            $archivePath = $this->getExportedArchiedFile($code);
 
-            $actualLines = Yaml::parse(file_get_contents($path));
+            $archivistFilesystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.archivist_filesystem');
+
+            $archiveStream = $archivistFilesystem->readStream($archivePath);
+            $archiveContents = stream_get_contents($archiveStream);
+            fclose($archiveStream);
+
+            $actualLines = Yaml::parse($archiveContents);
             $expectedLines = Yaml::parse($yaml->getRaw());
 
             $isValidYamlFile = function ($expectedLines, $actualLines) use (&$isValidYamlFile) {
@@ -320,15 +333,18 @@ class ExportProfilesContext extends ImportExportContext
      * @return string
      *
      */
-    protected function getExportedFile($code, $number = null)
+    protected function getExportedArchivedFile($code, $number = null)
     {
-        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);
-        if (!is_file($filePath)) {
+        $archivePath = $this->getMainContext()->getSubcontext('job')->getJobInstanceArchivePath($code, $number);
+
+        $archivistFilesystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.archivist_filesystem');
+
+        if (!$archivistFilesystem->has($archivePath)) {
             throw $this->getMainContext()->createExpectationException(
-                sprintf('File "%s" doesn\'t exist', $filePath)
+                sprintf('Archived File "%s" doesn\'t exist', $archivePath)
             );
         }
 
-        return $filePath;
+        return $archivePath;
     }
 }

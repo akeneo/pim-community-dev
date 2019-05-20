@@ -179,15 +179,10 @@ class ImportExportContext extends PimContext
         return $expectedLines;
     }
 
-    /**
-     * @param string $path
-     * @param string $fileType
-     * @param array  $config
-     *
-     * @return array
-     */
-    protected function getActualLines($path, $fileType, array $config)
+    protected function getActualLinesFromArchive(string $archivePath, string $fileType, array $config): array
     {
+        $jobContext = $this->getMainContext()->getSubcontext('job');
+
         $reader = ReaderFactory::create($fileType);
 
         if (Type::CSV === $fileType && $reader instanceof CsvReader) {
@@ -197,7 +192,7 @@ class ImportExportContext extends PimContext
             ;
         }
 
-        $reader->open($path);
+        $reader->open($jobContext->copyArchiveLocally($archivePath));
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $lines = iterator_to_array($sheet->getRowIterator());
         $reader->close();

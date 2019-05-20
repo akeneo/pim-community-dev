@@ -22,15 +22,16 @@ class XlsxFileContext extends PimContext
     public function exportedXlsxFileOfShouldContain($number = null, $code, TableNode $expectedLines)
     {
         $number = '' === $number ? null : trim($number);
-        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);
+        $jobContext = $this->getMainContext()->getSubcontext('job');
+        $archivePath = $jobContext->getJobInstanceArchivePath($code, $number);
 
         $reader = ReaderFactory::create(Type::XLSX);
-        $reader->open($path);
+        $reader->open($jobContext->copyArchiveLocally($archivePath));
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = iterator_to_array($sheet->getRowIterator());
         $reader->close();
 
-        $this->compareFile(array_values($expectedLines->getRows()), array_values($actualLines), $path);
+        $this->compareFile(array_values($expectedLines->getRows()), array_values($actualLines), $archivePath);
     }
 
     /**
@@ -43,15 +44,16 @@ class XlsxFileContext extends PimContext
     public function exportedXlsxFileOfShouldContainTheLines($number = null, $code, TableNode $expectedLines)
     {
         $number = '' === $number ? null : trim($number);
-        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);
+        $jobContext = $this->getMainContext()->getSubcontext('job');
+        $archivePath = $jobContext->getJobInstanceArchivePath($code, $number);
 
         $reader = ReaderFactory::create(Type::XLSX);
-        $reader->open($path);
+        $reader->open($jobContext->copyArchiveLocally($archivePath));
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = iterator_to_array($sheet->getRowIterator());
         $reader->close();
 
-        $this->compareLines(array_values($expectedLines->getRows()), array_values($actualLines), $path);
+        $this->compareLines(array_values($expectedLines->getRows()), array_values($actualLines), $archivePath);
     }
 
     /**
@@ -62,15 +64,16 @@ class XlsxFileContext extends PimContext
      */
     public function exportedXlsxFilesOfShouldContain($code, TableNode $expectedLines)
     {
-        $filePaths = $this->getMainContext()->getSubcontext('job')->getAllJobInstancePaths($code);
+        $jobContext = $this->getMainContext()->getSubcontext('job');
+        $archivePaths = $jobContext->getAllJobInstanceArchivePaths($code);
 
         $expectedLines = $expectedLines->getRows();
         unset($expectedLines[0]);
 
         $reader = ReaderFactory::create(Type::XLSX);
 
-        foreach ($filePaths as $path) {
-            $reader->open($path);
+        foreach ($archivePaths as $archivePath) {
+            $reader->open($jobContext->copyArchiveLocally($archivePath));
             $sheet = current(iterator_to_array($reader->getSheetIterator()));
             $actualLines = iterator_to_array($sheet->getRowIterator());
 
@@ -99,10 +102,11 @@ class XlsxFileContext extends PimContext
      */
     public function exportedXlsxFileOfShouldContainsTheFollowingHeaders($code, TableNode $expectedLines)
     {
-        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        $jobContext = $this->getMainContext()->getSubcontext('job');
+        $archivePath = $jobContext->getJobInstanceArchivePath($code, $number);
 
         $reader = ReaderFactory::create(Type::XLSX);
-        $reader->open($path);
+        $reader->open($jobContext->copyArchiveLocally($archivePath));
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
         $actualLines = iterator_to_array($sheet->getRowIterator());
         $reader->close();
@@ -122,7 +126,7 @@ class XlsxFileContext extends PimContext
     {
         $fileName = $this->replacePlaceholders($fileName);
         if (!file_exists($fileName)) {
-            throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
+            throw new ExpectationException(sprintf('File %s does not exist.', $fileName), $this->getSession());
         }
 
         $reader = ReaderFactory::create(Type::XLSX);
@@ -145,8 +149,12 @@ class XlsxFileContext extends PimContext
      */
     public function exportedXlsxFileOfShouldContainItems($number, $code, $itemsCount)
     {
-        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);
-        $this->xlsxFileShouldContainRows($path, $itemsCount);
+        $jobContext = $this->getMainContext()->getSubcontext('job');
+
+        $archivePath = $jobContext->getJobInstanceArchivePath($code, $number);
+        $localPath = $jobContext->copyArchiveLocally($archivePath);
+
+        $this->xlsxFileShouldContainRows($localPath, $itemsCount);
     }
 
     /**
@@ -156,7 +164,7 @@ class XlsxFileContext extends PimContext
     {
         $fileName = $this->replacePlaceholders($fileName);
         if (!file_exists($fileName)) {
-            throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
+            throw new ExpectationException(sprintf('File %s does not exist.', $fileName), $this->getSession());
         }
 
         $categories = [];
