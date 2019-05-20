@@ -20,8 +20,10 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -169,7 +171,10 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
             $actionField = $action['field'] ?? $action['from_field'];
             $attribute = $this->attributeRepository->findOneByIdentifier($actionField);
 
-            if (null !== $attribute && in_array($attribute->getCode(), $mediaAttributeCodes)) {
+            if (null !== $attribute &&
+                in_array($attribute->getCode(), $mediaAttributeCodes) &&
+                file_exists($action['value'])
+            ) {
                 $fileInfo = $this->fileStorer->store(
                     new \SplFileInfo($action['value']),
                     FileStorage::CATALOG_STORAGE_ALIAS
