@@ -146,3 +146,17 @@ services:
             - '@pimee.reference_entity.datagrid.query.get_record_information'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
+
+    akeneo_referenceentity.factory.non_existent_values_filter.reference_entities_multi_select_filter:
+        class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\NonExistentValuesFilter\NonExistingReferenceEntitiesMultiSelectFilter'
+        arguments:
+            - '@pimee.reference_entity.enrichment.find_all_existent_records_for_record_identifiers'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    akeneo_referenceentity.factory.non_existent_values_filter.reference_entities_simple_select_filter:
+        class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\NonExistentValuesFilter\NonExistingReferenceEntitiesSimpleSelectFilter'
+        arguments:
+            - '@pimee.reference_entity.enrichment.find_all_existent_records_for_record_identifiers'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
