@@ -58,6 +58,7 @@ setup_blackfire()
     docker-compose exec -T fpm sudo apt-get install -y --allow-unauthenticated blackfire-php
     docker-compose restart fpm
     docker-compose exec -T fpm sudo /etc/init.d/blackfire-agent restart
+    docker-compose exec fpm php -d memory_limit=3G /usr/local/bin/composer require blackfire/php-sdk
 }
 
 launch_bench()
@@ -72,5 +73,5 @@ launch_bench()
 
 generate_reference_catalog
 setup_blackfire
-launch_bench
+# launch_bench
 
