@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes
+
+- PIM-6869: Fix bad label on the asset grid category tree
+
 # 3.0.19 (2019-05-21)
 
 ## Bug fixes
