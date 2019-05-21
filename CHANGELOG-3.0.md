@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8314: Add missing translation
+- PIM-8358: Fix inconsistent label for the product save button
 
 # 3.0.18 (2019-05-15)
 

@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Save extension that adds a save draft button if ownership rights are not granted
+ * Save extension to adapt messages if ownership rights are not granted
  *
  * @author Filips Alpe <filips@akeneo.com>
  */
@@ -18,14 +18,6 @@ define(
                 if (!isOwner) {
                     this.updateSuccessMessage = _.__('pimee_enrich.entity.product_draft.flash.update.success');
                     this.updateFailureMessage = _.__('pimee_enrich.entity.product_draft.flash.update.fail');
-
-                    if (this.parent.getExtension('save-buttons')) {
-                        var buttons = this.parent.getExtension('save-buttons').model.get('buttons');
-                        var saveButton = _.findWhere(buttons, {className: 'save'});
-                        if (saveButton) {
-                            saveButton.label = _.__('pimee_enrich.entity.product_draft.module.create.label');
-                        }
-                    }
                 }
 
                 return Save.prototype.render.apply(this, arguments);

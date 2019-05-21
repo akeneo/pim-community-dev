@@ -173,8 +173,6 @@ pimee_enrich.entity.product_draft:
             success: Product draft sent for approval
             fail: You cannot send this draft for approval
     module:
-        create:
-            label: Save draft
         proposal:
             accept: Accept proposal
             accept_selected: Accept selected proposal(s)
