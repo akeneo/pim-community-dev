@@ -10,7 +10,7 @@ DOCKER_BRIDGE_IP=$(ip address show | grep "global docker" | cut -c10- | cut -d '
 WORKING_DIRECTORY="$SCRIPT_DIR/../var/benchmarks"
 
 PIM_PATH="$SCRIPT_DIR/.."
-CONFIG_PATH="$PIM_PATH/tests/benchmarks/"
+CONFIG_PATH="$PIM_PATH/tests/benchmarks"
 
 if [ $# -eq 0 ]; then
     REFERENCE_CATALOG_FILE="$CONFIG_PATH/product_api_catalog.yml"
@@ -31,7 +31,7 @@ message()
 boot_and_install_pim()
 {
     message "Boot and install PIM in test environment"
-    cd $PIM_PATH
+    cd "$PIM_PATH/../../.."
     export ES_JAVA_OPTS='-Xms2g -Xmx2g'
     docker-compose up -d --remove-orphans
     PUBLIC_PIM_HTTP_PORT=$(docker-compose port httpd-behat 80 | cut -d ':' -f 2)
@@ -54,28 +54,28 @@ boot_and_install_pim()
 generate_reference_catalog()
 {
     message "Generate the catalog"
-    ABSOLUTE_CATALOG_FILE=$(realpath $REFERENCE_CATALOG_FILE)
+#    ABSOLUTE_CATALOG_FILE=$(realpath $REFERENCE_CATALOG_FILE)
 
     docker run \
         -t \
         -e API_CLIENT -e API_SECRET -e API_URL -e API_USER -e API_PASSWORD \
-        -v "$ABSOLUTE_CATALOG_FILE:/app/akeneo-data-generator/app/catalog/product_api_catalog.yml" \
+        -v "/home/nanou/Developer/akeneo_pim/pim-enterprise-dev-master/vendor/akeneo/pim-community-dev/tests/benchmarks/product_api_catalog.yml:/app/akeneo-data-generator/app/catalog/product_api_catalog.yml" \
         akeneo/data-generator:3.0 akeneo:api:generate-catalog --with-products --check-minimal-install product_api_catalog.yml
 }
 
 launch_bench()
 {
-    docker run -t -e API_CLIENT -e API_SECRET -e API_URL -e API_USER -e API_PASSWORD akeneo/benchmark-api:3.0 akeneo:api:launch-benchmarks -i 10 -b $1 -vv > "$WORKING_DIRECTORY/raw_results/$1.txt"
+    docker run -t -e API_CLIENT -e API_SECRET -e API_URL -e API_USER -e API_PASSWORD akeneo/benchmark-api:3.0 akeneo:api:launch-benchmarks -i 10 -b $1 -vv > "/home/nanou/Developer/akeneo_pim/pim-enterprise-dev-master/var/tests/raw_results/$1.txt"
 
-    echo $(cat "$WORKING_DIRECTORY/raw_results/$1.txt" | grep 'Mean speed' | cut -d '"' -f 2)
+    echo $(cat "/home/nanou/Developer/akeneo_pim/pim-enterprise-dev-master/var/tests/raw_results/$1.txt" | grep 'Mean speed' | cut -d '"' -f 2)
 }
 
-mkdir -p "$WORKING_DIRECTORY/raw_results"
+mkdir -p "/home/nanou/Developer/akeneo_pim/pim-enterprise-dev-master/var/tests/raw_results"
 
 boot_and_install_pim
 generate_reference_catalog
 
-cd $PIM_PATH
+cd "/home/nanou/Developer/akeneo_pim/pim-enterprise-dev-master"
 PRODUCT_SIZE=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT AVG(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) avg_product_values FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
 PRODUCT_COUNT=$(docker-compose exec -T mysql-behat mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT COUNT(*) FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
 message "Start bench products with 120 attributes"

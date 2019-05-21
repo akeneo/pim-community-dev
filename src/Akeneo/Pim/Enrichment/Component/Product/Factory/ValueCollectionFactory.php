@@ -11,6 +11,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use const FILE_APPEND;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -68,6 +69,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
 
     public function createMultipleFromStorageFormat(array $rawValueCollections): array
     {
+        $top = microtime(true);
         $rawValueCollectionsIndexedByType = $this->sortRawValueCollectionsToValueCollectionsIndexedByType($rawValueCollections);
         $valueCollections = [];
 
@@ -79,22 +81,37 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
             return $valueCollections;
         }
 
+//        $filtered = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($rawValueCollectionsIndexedByType);
+//        $filtered = $filtered->addFilteredValuesIndexedByType($filtered->nonFilteredRawValuesCollectionIndexedByType());
+
+        $before = microtime(true);
         $filtered = $this->chainedObsoleteValueFilter->filterAll(
             OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($rawValueCollectionsIndexedByType)
         );
+        $after = microtime(true);
+        $time = $after - $before;
+        file_put_contents("/srv/pim/var/toto.txt", "FILTER TIME : {$time}\n", FILE_APPEND);
 
         $rawValueCollection = $filtered->toRawValueCollection();
 
+        $before = microtime(true);
         $cleanRawValueCollection = $this->emptyValuesCleaner->cleanAllValues($rawValueCollection);
+//        $cleanRawValueCollection = $rawValueCollection;
+        $after = microtime(true);
+        $time = $after - $before;
+        file_put_contents("/srv/pim/var/toto.txt", "CLEANING TIME {$time}\n", FILE_APPEND);
 
-        $valueCollections = $this->createValues($cleanRawValueCollection);
+//        $valueCollections = $this->createValues($cleanRawValueCollection);
+        $valueCollections = $this->createValuesStandardFormat($cleanRawValueCollection);
+//        $identifiersWithOnlyUnknownAttributes = array_diff(array_keys($rawValueCollections), array_keys($valueCollections));
+//
+//        foreach ($identifiersWithOnlyUnknownAttributes as $identifier) {
+//            $valueCollections[$identifier] = new ValueCollection([]);
+//        }
 
-        $identifiersWithOnlyUnknownAttributes = array_diff(array_keys($rawValueCollections), array_keys($valueCollections));
-
-        foreach ($identifiersWithOnlyUnknownAttributes as $identifier) {
-            $valueCollections[$identifier] = new ValueCollection([]);
-        }
-
+        $bottom = microtime(true);
+        $time = $bottom - $top;
+        file_put_contents("/srv/pim/var/toto.txt", "COST TIME VALUE COLLECTION FACTORY {$time}\n", FILE_APPEND);
         return $valueCollections;
     }
 
@@ -140,9 +157,35 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
         return $typesToValues;
     }
 
+    private function createValuesStandardFormat(array $rawValueCollections): array
+    {
+        $standardFormattedValueCollectionsIndexedByProductIdentifier = [];
+
+        foreach ($rawValueCollections as $productIdentifier => $rawValueCollection) {
+            $standardFormattedValueCollectionsIndexedByProductIdentifier[$productIdentifier] = [];
+
+            foreach ($rawValueCollection as $attributeCode => $rawValuesIndexByChannel) {
+                $standardFormattedValueCollectionsIndexedByProductIdentifier[$productIdentifier][$attributeCode] = [];
+                foreach ($rawValuesIndexByChannel as $channelCode => $rawValueIndexedByLocale) {
+                    foreach ($rawValueIndexedByLocale as $localeCode => $data) {
+                        $standardFormattedValueCollectionsIndexedByProductIdentifier[$productIdentifier][$attributeCode][] = [
+                            'data' => $data,
+                            'locale' => $localeCode,
+                            'scope' => $channelCode,
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $standardFormattedValueCollectionsIndexedByProductIdentifier;
+    }
+
     private function createValues(array $rawValueCollections): array
     {
         $entities = [];
+
+        $time = 0;
 
         foreach ($rawValueCollections as $productIdentifier => $valueCollection) {
             $values = [];
@@ -161,7 +204,9 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
                         }
 
                         try {
+                            $before = microtime(true);
                             $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data, true);
+                            $time += microtime(true) - $before;
                         } catch (InvalidAttributeException $e) {
                             $this->logger->warning(
                                 sprintf(
@@ -193,6 +238,9 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
 
             $entities[$productIdentifier] = new ValueCollection($values);
         }
+
+        file_put_contents("/srv/pim/var/toto.txt", "CREATE ALL VALUES WITHOUT QUERY {$time}\n", FILE_APPEND);
+
 
         return $entities;
     }

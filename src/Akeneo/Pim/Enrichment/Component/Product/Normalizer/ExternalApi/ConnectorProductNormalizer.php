@@ -42,7 +42,8 @@ final class ConnectorProductNormalizer
 
     public function normalizeConnectorProduct(ConnectorProduct $connectorProduct): array
     {
-        $values = $this->valuesNormalizer->normalize($connectorProduct->values(), 'standard');
+//        $values = $this->valuesNormalizer->normalize($connectorProduct->values(), 'standard');
+        $values = $connectorProduct->values();
 
         $normalizedProduct =  [
             'identifier' => $connectorProduct->identifier(),

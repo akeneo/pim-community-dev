@@ -34,6 +34,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
+use const FILE_APPEND;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -195,6 +196,8 @@ class ProductController
      */
     public function listAction(Request $request): JsonResponse
     {
+        $listBefore = microtime(true);
+        file_put_contents("/srv/pim/var/toto.txt", "------ LIST ACTION ----------\n", FILE_APPEND);
         $query = new ListProductsQuery();
 
         if ($request->query->has('attributes')) {
@@ -225,7 +228,10 @@ class ProductController
 
         try {
             $this->listProductsQueryValidator->validate($query);
+            $before = microtime(true);
             $products = $this->listProductsQueryHandler->handle($query); // in try block as PQB is doing validation also
+            $time = microtime(true) - $before;
+            file_put_contents("/srv/pim/var/toto.txt", "COST TIME VALUE HANDLING {$time}\n", FILE_APPEND);
         } catch (InvalidQueryException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (ServerErrorResponseException $e) {
@@ -242,7 +248,13 @@ class ProductController
             throw new ServerErrorResponseException($e->getMessage(), $e->getCode(), $e);
         }
 
-        return new JsonResponse($this->normalizeProductsList($products, $query));
+        $before = microtime(true);
+        $normalize = $this->normalizeProductsList($products, $query);
+        $time = microtime(true) - $before;
+        file_put_contents("/srv/pim/var/toto.txt", "COST TIME NORMALIZE {$time}\n", FILE_APPEND);
+        $listAfterTime = microtime(true) - $listBefore;
+        file_put_contents("/srv/pim/var/toto.txt", "TOTAL TIME {$listAfterTime}\n", FILE_APPEND);
+        return new JsonResponse($normalize);
     }
 
     /**

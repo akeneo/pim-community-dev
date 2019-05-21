@@ -52,7 +52,7 @@ final class ConnectorProduct
     /** @var array medata are for the status of the product in enterprise edition */
     private $metadata;
 
-    /** @var ValueCollectionInterface */
+    /** @var array */
     private $values;
 
     public function __construct(
@@ -67,7 +67,7 @@ final class ConnectorProduct
         ?string $parentProductModelCode,
         array $associations,
         array $metadata,
-        ValueCollectionInterface $values
+        array $values
     ) {
         $this->id = $id;
         $this->identifier = $identifier;
@@ -138,14 +138,14 @@ final class ConnectorProduct
         return $this->metadata;
     }
 
-    public function values(): ValueCollectionInterface
+    public function values(): array
     {
         return $this->values;
     }
 
     public function attributeCodesInValues(): array
     {
-        return $this->values->getAttributeCodes();
+        return array_keys($this->values);
     }
 
     /**
@@ -176,11 +176,21 @@ final class ConnectorProduct
         $attributeCodes = array_flip($attributeCodesToKeep);
         $localeCodes = array_flip($localeCodesToKeep);
 
-        $values = $this->values->filter(function (ValueInterface $value) use ($attributeCodes, $localeCodes) {
-            return isset($attributeCodes[$value->getAttributeCode()])
-                && (!$value->isLocalizable() || isset($localeCodes[$value->getLocaleCode()]));
-        });
-
+        $filteredValues = [];
+        foreach ($this->values as $attributeCode => $values) {
+            if (isset($attributeCodes[$attributeCode])) {
+                foreach ($values as $value) {
+                    if ($value['locale'] === null || isset($localeCodes[$value['locale']])) {
+                        $filteredValues[$attributeCode][] = $value;
+                    }
+                }
+            }
+        }
+//        $values = $this->values->filter(function (ValueInterface $value) use ($attributeCodes, $localeCodes) {
+//            return isset($attributeCodes[$value->getAttributeCode()])
+//                && (!$value->isLocalizable() || isset($localeCodes[$value->getLocaleCode()]));
+//        });
+        
         return new self(
             $this->id,
             $this->identifier,
@@ -193,7 +203,7 @@ final class ConnectorProduct
             $this->parentProductModelCode,
             $this->associations,
             $this->metadata,
-            $values
+            $filteredValues
         );
     }
 
