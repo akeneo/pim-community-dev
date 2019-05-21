@@ -18,6 +18,10 @@ config:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/text'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/text.tsx'
                 cell: '@akeneoreferenceentity/application/component/record/index/cell/text.tsx'
+            number:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/number'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/number.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/index/cell/number.tsx'
             record:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/record'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/record.tsx'
@@ -38,10 +42,6 @@ config:
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/option-collection.tsx'
                 cell: '@akeneoreferenceentity/application/component/record/index/cell/option-collection.tsx'
                 filter: '@akeneoreferenceentity/application/component/record/index/filter/option.tsx'
-            number:
-                denormalize: '@akeneoreferenceentity/domain/model/record/data/number'
-                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/number.tsx'
-                cell: '@akeneoreferenceentity/application/component/record/index/cell/number.tsx'
 
         akeneoreferenceentity/application/configuration/attribute:
             image:
@@ -54,6 +54,11 @@ config:
                 denormalize: '@akeneoreferenceentity/domain/model/attribute/type/text'
                 reducer: '@akeneoreferenceentity/application/reducer/attribute/type/text'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'
+            number:
+                icon: bundles/pimui/images/attribute/icon-number.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/number'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/number'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/number.tsx'
             record:
                 icon: bundles/pimui/images/attribute/icon-reference-entity.svg
                 denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record'
@@ -74,11 +79,6 @@ config:
                 denormalize: '@akeneoreferenceentity/domain/model/attribute/type/option-collection'
                 reducer: '@akeneoreferenceentity/application/reducer/attribute/type/option'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/option.tsx'
-            number:
-                icon: bundles/pimui/images/attribute/icon-number.svg
-                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/number'
-                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/number'
-                view: '@akeneoreferenceentity/application/component/attribute/edit/number.tsx'
 
         akeneoreferenceentity/application/configuration/sidebar:
             akeneo_reference_entities_reference_entity_edit:
