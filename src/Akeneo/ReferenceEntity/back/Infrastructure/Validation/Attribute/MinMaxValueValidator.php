@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
 
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMinMaxValueCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeLimit;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -88,8 +89,11 @@ class MinMaxValueValidator extends ConstraintValidator
         return null === $minValue;
     }
 
-    private function isMinIsGreaterThanMax(string $minValue, string $currentMaxValue): bool
+    private function isMinIsGreaterThanMax(string $minValue, string $maxValue): bool
     {
-        return (float) $minValue > (float) $currentMaxValue;
+        $min = AttributeLimit::fromString($minValue);
+        $max = AttributeLimit::fromString($maxValue);
+
+        return $min->isGreater($max);
     }
 }

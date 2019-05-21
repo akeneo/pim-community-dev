@@ -26,7 +26,7 @@ class MinMaxValueUpdater implements AttributeUpdaterInterface
     {
         if (!$this->supports($attribute, $command)) {
             throw new \RuntimeException(
-                'Impossible to update the min value property of the given attribute with the given command.'
+                'Impossible to update the property of the given attribute with the given command.'
             );
         }
         $minValue = $this->value($command->minValue);

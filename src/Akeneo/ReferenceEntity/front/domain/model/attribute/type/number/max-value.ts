@@ -11,7 +11,7 @@ export class MaxValue {
   }
 
   public static isValid(value: any): boolean {
-    return (typeof value === 'string' && !isNaN(Number(value))) || null === value;
+    return (typeof value === 'string' && !isNaN(Number(value))) || null === value || '-' === value;
   }
 
   public static createFromNormalized(normalizedMaxValue: NormalizedMaxValue) {
