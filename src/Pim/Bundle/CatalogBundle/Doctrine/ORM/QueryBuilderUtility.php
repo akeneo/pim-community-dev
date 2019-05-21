@@ -72,7 +72,7 @@ class QueryBuilderUtility
     }
 
     /**
-     * @todo Merge master: Dead code, to be removed.
+     * @deprecated Will be removed in 4.0
      *
      * Get metadata of product value table
      *
