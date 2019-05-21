@@ -52,17 +52,18 @@ class GetLinkedProductAction
         ]);
 
         $queryBuilder->addFilter($attributeCode, Operators::IN_LIST, [(string) $recordCode]);
+        $queryBuilder->addSorter('updated', 'DESC');
         $products = $queryBuilder->execute();
 
         $normalizedProducts = [];
         foreach ($products as $index => $product) {
             $normalizedProducts[] = $this->normalizer->normalize($product, 'internal_api', []);
-            if ($index >= 16) {
+            if ($index > 16) {
                 break;
             }
         }
 
-        return new JsonResponse($normalizedProducts);
+        return new JsonResponse(['items' => $normalizedProducts, 'total_count' => count($products)]);
     }
 
     /**

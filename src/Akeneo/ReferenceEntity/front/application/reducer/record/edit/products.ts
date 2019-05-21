@@ -6,17 +6,19 @@ export interface ProductsState {
   selectedAttribute: NormalizedAttributeCode | null;
   attributes: NormalizedAttribute[];
   products: NormalizedProduct[];
+  totalCount: number;
 }
 
 const initProductsState = (): ProductsState => ({
   selectedAttribute: null,
   attributes: [],
   products: [],
+  totalCount: 0,
 });
 
 export default (
   state: ProductsState = initProductsState(),
-  action: {type: string; attributeCode: string; attributes: any[]; products: NormalizedProduct[]}
+  action: {type: string; attributeCode: string; attributes: any[]; products: NormalizedProduct[]; totalCount: number}
 ) => {
   switch (action.type) {
     case 'PRODUCT_LIST_ATTRIBUTE_LIST_UPDATED':
@@ -27,6 +29,7 @@ export default (
       state = {
         ...state,
         products: action.products,
+        totalCount: action.totalCount,
       };
 
       break;

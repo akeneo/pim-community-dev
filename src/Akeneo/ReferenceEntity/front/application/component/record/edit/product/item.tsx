@@ -7,7 +7,6 @@ export default ({
   product,
   locale,
   isLoading = false,
-  onRedirectToProduct,
 }: {
   product: Product;
   locale: string;
@@ -31,13 +30,6 @@ export default ({
         isLoading ? 'AknLoadingPlaceHolder' : ''
       } ${product.getType() === 'product_model' ? 'AknGrid-bodyRow--withLayer' : ''}`}
       data-identifier={product.getIdentifier().stringValue()}
-      onClick={event => {
-        event.preventDefault();
-
-        onRedirectToProduct(product);
-
-        return false;
-      }}
     >
       <span
         className="AknGrid-fullImage"

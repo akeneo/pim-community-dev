@@ -11,7 +11,6 @@ import ReferenceEntityIdentifier, {
 } from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
 import {createCode as createAttributeCode} from 'akeneoreferenceentity/domain/model/product/attribute/code';
-import Product from 'akeneoreferenceentity/domain/model/product/product';
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
 import hydrate from 'akeneoreferenceentity/application/hydrator/product/attribute';
 import AttributeCode from 'akeneoreferenceentity/domain/model/product/attribute/code';
@@ -62,7 +61,7 @@ export const updateProductList = () => async (dispatch: any, getState: () => Edi
     locale
   );
 
-  dispatch(productListProductListUpdated(products.map((product: Product) => product.normalize())));
+  dispatch(productListProductListUpdated(products.items, products.totalCount));
 };
 
 export const attributeSelected = (attributeCode: AttributeCode) => async (dispatch: any): Promise<void> => {

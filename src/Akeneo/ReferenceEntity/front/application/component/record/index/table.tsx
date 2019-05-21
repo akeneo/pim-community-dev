@@ -204,7 +204,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
         <div className="AknFilterBox AknFilterBox--search">
           <div className="AknFilterBox-list filter-box">
             <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
-            <ItemsCounter matchesCount={grid.matchesCount} />
+            <ItemsCounter count={grid.matchesCount} />
             <div className="AknFilterBox-filterContainer AknFilterBox-filterContainer--inline">
               {Object.keys(filterViews).map((attributeCode: NormalizedAttributeIdentifier) => {
                 const View = filterViews[attributeCode].view;

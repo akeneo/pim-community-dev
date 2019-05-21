@@ -18,6 +18,7 @@ import {NormalizedIdentifier} from 'akeneoreferenceentity/domain/model/reference
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/product/attribute';
 import NoAttribute from 'akeneoreferenceentity/application/component/record/edit/product/no-attribute';
 import Key from 'akeneoreferenceentity/tools/key';
+import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
 
 interface StateProps {
   context: {
@@ -25,6 +26,7 @@ interface StateProps {
     channel: string;
   };
   products: ProductModel[];
+  totalCount: number;
   attributes: DropdownElement[];
   selectedAttribute: NormalizedAttributeCode | null;
   recordCode: NormalizedCode;
@@ -58,6 +60,33 @@ const AttributeButtonView = ({selectedElement, onClick}: {selectedElement: Dropd
   </div>
 );
 
+
+{/* <div className="AknFilterBox AknFilterBox--search">
+  <div className="AknFilterBox-list filter-box">
+    <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
+    <ItemsCounter count={grid.matchesCount} />
+    <div className="AknFilterBox-filterContainer AknFilterBox-filterContainer--inline">
+      {Object.keys(filterViews).map((attributeCode: NormalizedAttributeIdentifier) => {
+        const View = filterViews[attributeCode].view;
+        const attribute = filterViews[attributeCode].attribute;
+        const filter = grid.filters.find((filter: Filter) => filter.field === getAttributeFilterKey(attribute));
+
+        return (
+          <div
+            key={attribute.getCode().stringValue()}
+            className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin"
+            data-attribute={attribute.getCode().stringValue()}
+            data-type={attribute.getType()}
+          >
+            <View attribute={attribute} filter={filter} onFilterUpdated={onFilterUpdated} />
+          </div>
+        );
+      })}
+    </div>
+    <CompletenessFilter value={completenessValue} onChange={this.props.onCompletenessFilterUpdated} />
+  </div>
+</div> */}
+
 class Product extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
@@ -70,21 +99,30 @@ class Product extends React.Component<StateProps & DispatchProps> {
       <React.Fragment>
         {0 < this.props.attributes.length ? (
           <React.Fragment>
-            <header className="AknSubsection-title">
-              <span className="group-label">{__('pim_reference_entity.record.product.title')}</span>
-              {null !== this.props.selectedAttribute ? (
-                <Dropdown
-                  elements={this.props.attributes}
-                  selectedElement={this.props.selectedAttribute}
-                  label={__('pim_reference_entity.record.product.attribute')}
-                  onSelectionChange={(selectedElement: DropdownElement) => {
-                    this.props.events.onLinkedAttributeChange(selectedElement.identifier);
-                  }}
-                  ButtonView={AttributeButtonView}
-                  isOpenLeft={true}
-                />
-              ) : null}
-            </header>
+            <div className="AknFilterBox AknFilterBox--search">
+              <div className="AknFilterBox-list">
+                  <span className="AknFilterBox-title">
+                    {__('pim_reference_entity.record.product.title')}
+                </span>
+                <ItemsCounter count={this.props.totalCount} />
+                {null !== this.props.selectedAttribute ? (
+                  <div className="AknFilterBox-filterContainer AknFilterBox-filterContainer--inline">
+                    <div className="AknFilterBox-filter AknFilterBox-filter--relative AknFilterBox-filter--smallMargin">
+                      <Dropdown
+                        elements={this.props.attributes}
+                        selectedElement={this.props.selectedAttribute}
+                        label={__('pim_reference_entity.record.product.attribute')}
+                        onSelectionChange={(selectedElement: DropdownElement) => {
+                          this.props.events.onLinkedAttributeChange(selectedElement.identifier);
+                        }}
+                        ButtonView={AttributeButtonView}
+                        isOpenLeft={true}
+                        />
+                      </div>
+                  </div>
+                ) : null}
+              </div>
+            </div>
             {0 < this.props.products.length && null !== this.props.selectedAttribute ? (
               <div className="AknSubsection">
                 <div className="AknGrid--gallery">
@@ -140,6 +178,7 @@ export default connect(
       products: state.products.products.map((normalizedProduct: NormalizedProduct) =>
         denormalizeProduct(normalizedProduct)
       ),
+      totalCount: state.products.totalCount,
       attributes: state.products.attributes.map((attribute: NormalizedAttribute) => ({
         identifier: attribute.code,
         label: getLabel(attribute.labels, state.user.catalogLocale, attribute.code),

@@ -9,6 +9,7 @@ import Product from 'akeneoreferenceentity/domain/model/product/product';
 import AttributeCode from 'akeneoreferenceentity/domain/model/product/attribute/code';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
+import {SearchResult} from 'akeneoreferenceentity/domain/fetcher/fetcher';
 
 const routing = require('routing');
 
@@ -19,7 +20,7 @@ export class ProductFetcherImplementation implements ProductFetcher {
     attributeCode: AttributeCode,
     channel: ChannelReference,
     locale: LocaleReference
-  ): Promise<Product[]> {
+  ): Promise<SearchResult<Product>> {
     const backendProducts = await getJSON(
       routing.generate('akeneo_reference_entities_product_get_linked_product', {
         referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
@@ -30,7 +31,11 @@ export class ProductFetcherImplementation implements ProductFetcher {
       })
     ).catch(errorHandler);
 
-    return hydrateAll<Product>(hydrator)(backendProducts);
+    return {
+      items: hydrateAll<Product>(hydrator)(backendProducts.items),
+      matchesCount: backendProducts.items.length,
+      totalCount: backendProducts.total_count,
+    };
   }
 }
 
