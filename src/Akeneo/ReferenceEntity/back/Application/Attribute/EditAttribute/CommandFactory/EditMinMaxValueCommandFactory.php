@@ -26,6 +26,7 @@ class EditMinMaxValueCommandFactory implements EditAttributeCommandFactoryInterf
 
         $minValue = $this->stringOrNull($normalizedCommand, 'min_value');
         $maxValue = $this->stringOrNull($normalizedCommand, 'max_value');
+
         return new EditMinMaxValueCommand(
             $normalizedCommand['identifier'],
             $minValue,
@@ -35,6 +36,6 @@ class EditMinMaxValueCommandFactory implements EditAttributeCommandFactoryInterf
 
     private function stringOrNull(array $normalizedCommand, string $key)
     {
-        return isset($normalizedCommand[$key]) && "" !== $normalizedCommand[$key] ? (string)$normalizedCommand[$key] : null;
+        return isset($normalizedCommand[$key]) && '' !== $normalizedCommand[$key] ? (string)$normalizedCommand[$key] : null;
     }
 }

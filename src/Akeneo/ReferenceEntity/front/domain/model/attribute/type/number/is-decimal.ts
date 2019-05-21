@@ -1,4 +1,4 @@
-import {InvalidArgumentError} from '../number';
+import {InvalidArgumentError} from 'akeneoreferenceentity/domain/model/attribute/type/number';
 
 export type NormalizedIsDecimal = boolean;
 
