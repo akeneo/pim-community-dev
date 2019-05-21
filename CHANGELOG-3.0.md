@@ -1,5 +1,7 @@
 # 3.0.x
 
+# 3.0.19 (2019-05-21)
+
 # Bug fixes
 
 - PIM-8343: Use BaseRemover instead of ObjectManager to delete a user
