@@ -58,7 +58,7 @@ class CacheFindActivatedLocalesByIdentifiers implements FindActivatedLocalesById
             $this->localesCache[$locale] = null;
         }
 
-        $activatedLocales = ($this->findActivatedLocalesByIdentifiers)(LocaleIdentifierCollection::fromNormalized($locales));
+        $activatedLocales = $this->findActivatedLocalesByIdentifiers->find(LocaleIdentifierCollection::fromNormalized($locales));
         foreach ($activatedLocales as $activatedLocale) {
             $this->localesCache[$activatedLocale->normalize()] = $activatedLocale;
         }

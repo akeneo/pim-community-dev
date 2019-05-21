@@ -61,7 +61,7 @@ class RecordValuesValidator
 
     private function getAttributeCodesIndexedByType(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        $attributes = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
+        $attributes = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
         $attributeCodesIndexedByTypes = [];
 
         foreach ($attributes as $attribute) {

@@ -38,7 +38,7 @@ class CacheChannelExists implements ChannelExistsInterface
     {
         $channel = $channelIdentifier->normalize();
         if (!array_key_exists($channel, $this->channels)) {
-            $this->channels[$channel] = ($this->channelExists)($channelIdentifier);
+            $this->channels[$channel] = $this->channelExists->exists($channelIdentifier);
         }
 
         return $this->channels[$channel];

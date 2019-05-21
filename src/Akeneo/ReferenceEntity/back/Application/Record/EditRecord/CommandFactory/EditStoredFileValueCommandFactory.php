@@ -46,7 +46,7 @@ class EditStoredFileValueCommandFactory implements EditValueCommandFactoryInterf
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
         $fileKey = $normalizedValue['data']['filePath'] ?? $normalizedValue['data'];
-        $storedFile = is_string($fileKey) ? ($this->findFileData)($fileKey) : [];
+        $storedFile = is_string($fileKey) ? $this->findFileData->find($fileKey) : [];
 
         $command = new EditStoredFileValueCommand(
             $attribute,

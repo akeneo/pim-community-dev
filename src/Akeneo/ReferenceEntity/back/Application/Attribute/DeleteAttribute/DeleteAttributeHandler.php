@@ -77,11 +77,11 @@ class DeleteAttributeHandler
 
     private function findAttributeAsLabel(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsLabelReference
     {
-        return ($this->findReferenceEntityAttributeAsLabel)($referenceEntityIdentifier);
+        return $this->findReferenceEntityAttributeAsLabel->find($referenceEntityIdentifier);
     }
 
     private function findAttributeAsImage(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsImageReference
     {
-        return ($this->findReferenceEntityAttributeAsImage)($referenceEntityIdentifier);
+        return $this->findReferenceEntityAttributeAsImage->find($referenceEntityIdentifier);
     }
 }

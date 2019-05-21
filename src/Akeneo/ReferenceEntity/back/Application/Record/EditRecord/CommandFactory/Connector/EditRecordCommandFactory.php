@@ -75,7 +75,7 @@ class EditRecordCommandFactory
 
     private function getAttributesIndexedByCodes(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        $attributesIndexedByIdentifier = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
+        $attributesIndexedByIdentifier = $this->findAttributesIndexedByIdentifier->find($referenceEntityIdentifier);
 
         $attributesIndexedByCodes = [];
         foreach ($attributesIndexedByIdentifier as $attribute) {

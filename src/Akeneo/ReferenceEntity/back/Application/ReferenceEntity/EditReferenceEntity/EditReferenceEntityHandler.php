@@ -74,7 +74,7 @@ class EditReferenceEntityHandler
 
     private function getStoredImage(array $imageData): Image
     {
-        $fileExists = ($this->fileExists)($imageData['filePath']);
+        $fileExists = $this->fileExists->exists($imageData['filePath']);
 
         if (true === $fileExists) {
             $storedFile = (new FileInfo())
