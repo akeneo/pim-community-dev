@@ -38,7 +38,7 @@ class SqlFindConnectorReferenceEntityItems implements FindConnectorReferenceEnti
         $this->referenceEntityHydrator = $hydrator;
     }
 
-    public function __invoke(ReferenceEntityQuery $query): array
+    public function find(ReferenceEntityQuery $query): array
     {
         $sql = <<<SQL
         SELECT

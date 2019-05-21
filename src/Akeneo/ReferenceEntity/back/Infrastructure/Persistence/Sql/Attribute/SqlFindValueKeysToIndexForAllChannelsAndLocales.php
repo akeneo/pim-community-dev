@@ -34,7 +34,7 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysTo
         $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         if (!isset($this->cachedResult[$referenceEntityIdentifier->normalize()])) {
             $this->cachedResult[$referenceEntityIdentifier->normalize()] = $this->generateSearchMatrixWithValueKeys($referenceEntityIdentifier);

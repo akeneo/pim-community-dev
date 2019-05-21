@@ -45,7 +45,7 @@ class SqlFindImageAttributeCodes implements FindImageAttributeCodesInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $sqlQuery = <<<SQL
             SELECT code

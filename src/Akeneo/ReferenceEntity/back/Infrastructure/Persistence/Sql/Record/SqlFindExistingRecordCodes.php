@@ -30,7 +30,7 @@ class SqlFindExistingRecordCodes implements FindExistingRecordCodesInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
     {
         $query = <<<SQL
         SELECT code

@@ -53,7 +53,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCode implements FindConnectorRec
         $this->recordHydrator = $hydrator;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?ConnectorRecord
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?ConnectorRecord
     {
         $sql = <<<SQL
             SELECT 

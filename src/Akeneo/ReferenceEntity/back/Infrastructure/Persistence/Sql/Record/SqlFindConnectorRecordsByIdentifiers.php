@@ -56,7 +56,7 @@ class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIden
     /**
      * {@inheritdoc}
      */
-    public function __invoke(array $identifiers, RecordQuery $recordQuery): array
+    public function find(array $identifiers, RecordQuery $recordQuery): array
     {
         $sql = <<<SQL
             SELECT 

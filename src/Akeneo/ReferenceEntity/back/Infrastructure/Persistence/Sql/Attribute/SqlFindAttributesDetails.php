@@ -43,7 +43,7 @@ class SqlFindAttributesDetails implements FindAttributesDetailsInterface
     /**
      * @return AttributeDetails[]
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $results = $this->fetchResult($referenceEntityIdentifier);
 

@@ -62,7 +62,7 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?RecordDetails
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?RecordDetails
     {
         $result = $this->fetchResult($referenceEntityIdentifier, $recordCode);
 

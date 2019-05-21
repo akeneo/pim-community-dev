@@ -71,7 +71,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(RecordQuery $recordQuery): IdentifiersForQueryResult
+    public function find(RecordQuery $recordQuery): IdentifiersForQueryResult
     {
         $elasticSearchQuery = $this->getElasticSearchQuery($recordQuery);
         $matches = $this->recordClient->search(self::INDEX_TYPE, $elasticSearchQuery);

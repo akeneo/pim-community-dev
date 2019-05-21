@@ -35,7 +35,7 @@ class CacheFindActivatedLocalesByIdentifiers implements FindActivatedLocalesById
         $this->localesCache = [];
     }
 
-    public function __invoke(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection
+    public function find(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection
     {
         $requestedLocales = array_flip($localeIdentifiers->normalize());
         $missingLocalesInCache = array_keys(array_diff_key($requestedLocales, $this->localesCache));

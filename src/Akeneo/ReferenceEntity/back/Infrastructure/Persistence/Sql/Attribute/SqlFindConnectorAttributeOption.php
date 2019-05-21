@@ -41,7 +41,7 @@ class SqlFindConnectorAttributeOption implements FindConnectorAttributeOptionInt
     /**
      * @return ConnectorAttribute
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode, OptionCode $optionCode): ?ConnectorAttributeOption
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode, OptionCode $optionCode): ?ConnectorAttributeOption
     {
         return $this->fetch($referenceEntityIdentifier, $attributeCode, $optionCode);
     }

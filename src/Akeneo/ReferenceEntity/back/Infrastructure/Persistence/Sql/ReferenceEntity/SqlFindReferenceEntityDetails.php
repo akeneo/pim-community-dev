@@ -57,7 +57,7 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function __invoke(ReferenceEntityIdentifier $identifier): ?ReferenceEntityDetails
+    public function find(ReferenceEntityIdentifier $identifier): ?ReferenceEntityDetails
     {
         $result = $this->fetchResult($identifier);
 
