@@ -55,11 +55,13 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
                     ]
                 );
 
-                $fileResource = fopen($filePath, 'r');
-                $this->filesystem->putStream($archivePath, $fileResource);
+                if (is_readable($filePath)) {
+                    $fileResource = fopen($filePath, 'r');
+                    $this->filesystem->putStream($archivePath, $fileResource);
 
-                if (is_resource($fileResource)) {
-                    fclose($fileResource);
+                    if (is_resource($fileResource)) {
+                        fclose($fileResource);
+                    }
                 }
             }
         }

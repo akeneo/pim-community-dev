@@ -5,9 +5,11 @@ namespace Akeneo\Tool\Component\Connector\Archiver;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory;
 use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -125,6 +127,26 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
         }
 
         $this->writer->flush();
+
+        $fileKey = strtr(
+            $this->getRelativeArchivePath($jobExecution),
+            ['%filename%' => $this->getFilename()]
+        );
+
+        $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
+        $localFilePath = $workingDirectory.$this->getFilename();
+
+        if (is_readable($localFilePath)) {
+            $localStream = fopen($localFilePath, 'r');
+
+            $this->filesystem->writeStream($fileKey, $localStream);
+
+            if (is_resource($localStream)) {
+                fclose($localStream);
+            }
+        } else {
+            $this->filesystem->put($fileKey, '');
+        }
     }
 
     /**
@@ -142,10 +164,24 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
     /**
      * Setup the writer with a new JobExecution to write the invalid_items file.
      * We need to setup the writer manually because it's usually set up by the ItemStep.
-     *
-     * @param JobExecution $jobExecution
      */
-    abstract protected function setupWriter(JobExecution $jobExecution);
+    protected function setupWriter(JobExecution $jobExecution)
+    {
+        $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
+        $localFilePath = $workingDirectory.$this->getFilename();
+
+        $writeParams = $this->defaultValuesProvider->getDefaultValues();
+        $writeParams['filePath'] = $localFilePath;
+        $writeParams['withHeader'] = true;
+
+        $writeJobParameters = new JobParameters($writeParams);
+        $writeJobExecution = new JobExecution();
+        $writeJobExecution->setJobParameters($writeJobParameters);
+
+        $stepExecution = new StepExecution('processor', $writeJobExecution);
+        $this->writer->setStepExecution($stepExecution);
+        $this->writer->initialize();
+    }
 
     /**
      * Get the input file iterator to iterate on all the items of the file.
@@ -156,4 +192,9 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
      * @return FileIteratorInterface
      */
     abstract protected function getInputFileIterator(JobParameters $jobParameters);
+
+    /**
+     * Get the final invalid data filename
+     */
+    abstract protected function getFilename(): string;
 }
