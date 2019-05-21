@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -31,7 +32,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         DraftApplierInterface $productDraftApplier,
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         StepExecution $stepExecution,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        MediaStorer $mediaStorer
     ) {
         $this->beConstructedWith(
             $repository,
@@ -40,7 +42,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             $productDraftBuilder,
             $productDraftApplier,
             $productDraftRepo,
-            $tokenStorage
+            $tokenStorage,
+            $mediaStorer
         );
         $this->setStepExecution($stepExecution);
     }
@@ -58,6 +61,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $productDraftBuilder,
         $stepExecution,
         $tokenStorage,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
@@ -69,6 +73,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
 
         $values = $this->getValues();
+
+        $mediaStorer->store($values['values'])->willReturn($values['values']);
 
         $updater
             ->update($product, $values)
@@ -133,15 +139,17 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $productDraftBuilder,
         $stepExecution,
         $tokenStorage,
+        $mediaStorer,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
-        JobInstance $jobInstance,
         TokenInterface $token
     ) {
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
         $values = $this->getValues();
+
+        $mediaStorer->store($values['values'])->willReturn($values['values']);
 
         $updater
             ->update($product, $values)

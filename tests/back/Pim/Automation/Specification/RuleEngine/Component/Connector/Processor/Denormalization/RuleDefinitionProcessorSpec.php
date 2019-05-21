@@ -3,12 +3,14 @@
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -25,13 +27,17 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher
+        ObjectDetacherInterface $detacher,
+        AttributeRepositoryInterface $attributeRepository,
+        FileStorerInterface $fileStorer
     ) {
         $this->beConstructedWith(
             $repository,
             $denormalizer,
             $validator,
             $detacher,
+            $attributeRepository,
+            $fileStorer,
             RuleDefinition::class,
             Rule::class
         );

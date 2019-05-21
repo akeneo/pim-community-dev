@@ -10,5 +10,6 @@ services:
             - '@pim_enrich.resolver.locale'
             - '@pim_catalog.repository.attribute'
             - '@translator'
+            - '@akeneo_file_storage.repository.file_info'
         tags:
             - { name: twig.extension }
