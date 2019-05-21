@@ -33,7 +33,7 @@ class QueryBuilderUtility
     }
 
     /**
-     * @todo Merge master: Dead code, to be removed.
+     * @deprecated Will be removed in 4.0
      *
      * Replaces name of tables in DBAL queries
      *
