@@ -46,7 +46,7 @@ class CanEditReferenceEntityQueryHandlerSpec extends ObjectBehavior
             )
         )->willReturn($referenceEntityPermission);
 
-        $findUserGroupsForSecurityIdentifier->__invoke(
+        $findUserGroupsForSecurityIdentifier->find(
             Argument::that(
                 function (SecurityIdentifier $securityIdentifier) {
                     return 'julia' === $securityIdentifier->stringValue();

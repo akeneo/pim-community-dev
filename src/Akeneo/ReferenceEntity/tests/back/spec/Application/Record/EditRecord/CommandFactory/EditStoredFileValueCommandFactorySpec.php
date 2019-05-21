@@ -140,7 +140,7 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             ]
         ];
 
-        $findFileData->__invoke('/tmp/stark_portrait.png')->willReturn([
+        $findFileData->find('/tmp/stark_portrait.png')->willReturn([
             'filePath' => '/tmp/stark_portrait.png',
             'originalFilename' => 'stark_portrait.png',
             'size' => 1024,
@@ -172,7 +172,7 @@ class EditStoredFileValueCommandFactorySpec extends ObjectBehavior
             'data' => '/tmp/stark_portrait.png'
         ];
 
-        $findFileData->__invoke('/tmp/stark_portrait.png')->willReturn([
+        $findFileData->find('/tmp/stark_portrait.png')->willReturn([
             'filePath' => '/tmp/stark_portrait.png',
             'originalFilename' => 'stark_portrait.png',
             'size' => 1024,

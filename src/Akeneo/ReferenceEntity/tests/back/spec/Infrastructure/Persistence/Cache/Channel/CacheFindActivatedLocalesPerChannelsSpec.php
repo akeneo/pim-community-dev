@@ -34,18 +34,19 @@ class CacheFindActivatedLocalesPerChannelsSpec extends ObjectBehavior
         $this->shouldHaveType(CacheFindActivatedLocalesPerChannels::class);
     }
 
-    function it_keeps_in_cache_the_activated_locales_per_channels_found($findActivatedLocalesPerChannels)
-    {
+    function it_keeps_in_cache_the_activated_locales_per_channels_found(
+        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels
+    ) {
         $activatedLocalesPerChannels = [
             'ecommerce' => ['fr_FR', 'en_US'],
             'mobile'    => ['en_US'],
         ];
 
-        $findActivatedLocalesPerChannels->__invoke()
+        $findActivatedLocalesPerChannels->findAll()
             ->shouldBeCalledOnce()
             ->willReturn($activatedLocalesPerChannels);
 
-        $this->__invoke()->shouldReturn($activatedLocalesPerChannels);
-        $this->__invoke()->shouldReturn($activatedLocalesPerChannels);
+        $this->findAll()->shouldReturn($activatedLocalesPerChannels);
+        $this->findAll()->shouldReturn($activatedLocalesPerChannels);
     }
 }

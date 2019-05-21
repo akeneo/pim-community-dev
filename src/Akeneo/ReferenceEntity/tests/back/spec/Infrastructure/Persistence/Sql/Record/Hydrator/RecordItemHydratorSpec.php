@@ -64,13 +64,13 @@ class RecordItemHydratorSpec extends ObjectBehavior
             'description-fr_FR',
         ]);
 
-        $findRequiredValueKeyCollectionForChannelAndLocales->__invoke(
+        $findRequiredValueKeyCollectionForChannelAndLocales->find(
             ReferenceEntityIdentifier::fromString('wash_instruction'),
             ChannelIdentifier::fromCode('ecommerce'),
             LocaleIdentifierCollection::fromNormalized(['fr_FR'])
         )->willReturn($valueKeyCollection);
 
-        $findAttributesIndexedByIdentifier->__invoke(ReferenceEntityIdentifier::fromString('wash_instruction'))
+        $findAttributesIndexedByIdentifier->find(ReferenceEntityIdentifier::fromString('wash_instruction'))
             ->willReturn([
                 'label' => $labelAttribute,
                 'image' => $imageAttribute,
