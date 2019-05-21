@@ -79,4 +79,4 @@ class SimpleSelectAttributeWithWarning extends SimpleSelectAttribute {
   }
 }
 
-export = SimpleSelectAttributeWithWarning;
+export default SimpleSelectAttributeWithWarning;

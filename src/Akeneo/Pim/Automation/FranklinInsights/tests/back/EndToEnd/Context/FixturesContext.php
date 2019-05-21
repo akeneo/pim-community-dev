@@ -67,18 +67,12 @@ class FixturesContext extends PimContext
     /** @var BulkSaverInterface */
     private $optionSaver;
 
-    /**
-     * @param string $mainContextClass
-     * @param SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler
-     * @param SubscribeProductHandler $subscribeProductHandler
-     * @param EntityBuilder $attributeBuilder
-     * @param BulkSaverInterface $attributeSaver
-     * @param EntityBuilder $familyBuilder
-     * @param SaverInterface $familySaver
-     * @param Builder\Product $productBuilder
-     * @param SaverInterface $productSaver
-     * @param ProductRepositoryInterface $productRepository
-     */
+    /** @var EntityBuilder */
+    private $attributeGroupBuilder;
+
+    /** @var SaverInterface */
+    private $attributeGroupSaver;
+
     public function __construct(
         string $mainContextClass,
         SaveIdentifiersMappingHandler $saveIdentifiersMappingHandler,
@@ -91,7 +85,9 @@ class FixturesContext extends PimContext
         SaverInterface $productSaver,
         ProductRepositoryInterface $productRepository,
         EntityBuilder $optionBuilder,
-        BulkSaverInterface $optionSaver
+        BulkSaverInterface $optionSaver,
+        EntityBuilder $attributeGroupBuilder,
+        SaverInterface $attributeGroupSaver
     ) {
         parent::__construct($mainContextClass);
 
@@ -106,6 +102,8 @@ class FixturesContext extends PimContext
         $this->productRepository = $productRepository;
         $this->optionBuilder = $optionBuilder;
         $this->optionSaver = $optionSaver;
+        $this->attributeGroupBuilder = $attributeGroupBuilder;
+        $this->attributeGroupSaver = $attributeGroupSaver;
     }
 
     /**
@@ -220,6 +218,15 @@ class FixturesContext extends PimContext
         $product = $this->productBuilder->build();
 
         $this->productSaver->save($product);
+    }
+
+    /**
+     * @Given the attribute group :attrGroupCode
+     */
+    public function theAttributeGroup(string $attrGroupCode): void
+    {
+        $attrGroup = $this->attributeGroupBuilder->build(['code' => $attrGroupCode]);
+        $this->attributeGroupSaver->save($attrGroup);
     }
 
     /**

@@ -4,12 +4,14 @@ Feature: Create an attribute and add it to the family
   As a system administrator
   I want to quickly create an attribute and add it to a family to facilitate its mapping
 
-  @critical
+  @critical @end-to-end @javascript
   Scenario: Successfully create a text attribute and add it to a family
-    Given the family "router"
+    Given Franklin is configured with a valid token
+    And the product "B00EYZY6AC" of the family "router"
+    And the product "B00EYZY6AC" is subscribed to Franklin
     And the attribute group "franklin"
-    When I create the text attribute "Product name" in the family "router"
-    Then the family "router" should have the text attribute "Product_name"
+    When I create the text attribute "Warranty" in the family "router"
+    Then the family "router" should have the text attribute "Warranty"
 
   Scenario: Succesfully create a numeric attribute and add it to a family
     Given the family "router"

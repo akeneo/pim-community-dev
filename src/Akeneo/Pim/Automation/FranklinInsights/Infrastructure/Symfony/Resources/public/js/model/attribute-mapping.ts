@@ -7,8 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import AttributeMapping from "./attribute-mapping";
-
-export default interface AttributesMapping {
-  [franklinAttributeCode: string]: AttributeMapping
-}
+export default interface AttributeMapping {
+  franklinAttribute: {
+    label: string;
+    type: string;
+    summary: string[];
+  };
+  attribute: string | null;
+  status: number;
+};

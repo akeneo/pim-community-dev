@@ -3,6 +3,7 @@
     <tr class="AknGrid-header">
         <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- franklinAttribute %></th>
         <th class="AknGrid-headerCell"><%- catalogAttribute %></th>
+        <th class="AknGrid-headerCell"></th>
         <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- attributeMappingStatus %></th>
     </tr>
     <% Object.keys(mapping).forEach((franklin_attribute_code) => { %>
@@ -31,6 +32,8 @@
                 </div>
             </td>
             <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- franklin_attribute_code %>">
+            </td>
+            <td class="AknGrid-bodyCell create-attribute-button" data-franklin-attribute-code="<%- franklin_attribute_code %>">
             </td>
             <td class="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--big">
                 <%- statuses[mapping[franklin_attribute_code].status] %>

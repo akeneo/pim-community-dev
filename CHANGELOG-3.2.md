@@ -2,6 +2,8 @@
 
 ## Improvements
 
+- DAPI-262: Add a create attribute action on the Franklin Insights mapping screen.
+
 ## Bug fixes
 
 - GITHUB-10083: Fix proposal datagrid render when deleting values

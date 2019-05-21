@@ -7,17 +7,24 @@
  * file that was distributed with this source code.
  */
 
-import {EventsHash} from 'backbone';
 import * as Backbone from 'backbone';
+import {EventsHash} from 'backbone';
+import * as _ from 'underscore';
 import * as $ from 'jquery';
 import NormalizedAttribute from 'pim/model/attribute';
-import BaseView = require('pimui/js/view/base');
-import * as _ from 'underscore';
+
 import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
-import AttributesMappingForFamily from '../../model/attributes-mapping-for-family';
-import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
-import SimpleSelectAttributeWithWarning = require('./simple-select-attribute-with-warning');
+
+import IAttributesMappingForFamily from '../../model/attributes-mapping-for-family';
+import IAttributesMapping from '../../model/attributes-mapping';
+import IAttributeMapping from '../../model/attribute-mapping';
+import AttributeMappingStatus from "../../model/attribute-mapping-status";
+
+import CreateAttributeButton from './create-attribute-button';
+import AttributeOptionsMapping from '../attribute-options-mapping/edit';
+import SimpleSelectAttributeWithWarning from './simple-select-attribute-with-warning';
+import BaseView = require('pimui/js/view/base');
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -28,19 +35,47 @@ const modalTemplate = require('pim/template/common/modal-centered');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 const Property = require('pim/common/property');
+const Messenger = require('oro/messenger');
 
 interface Config {
   labels: {
-    pending: string,
-    active: string,
-    inactive: string,
-    franklinAttribute: string,
-    catalogAttribute: string,
-    attributeMappingStatus: string,
-    valuesSummary: string,
-    type: string,
+    pending: string;
+    active: string;
+    inactive: string;
+    franklinAttribute: string;
+    catalogAttribute: string;
+    attributeMappingStatus: string;
+    valuesSummary: string;
+    type: string;
   };
 }
+
+/** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping */
+const PERFECT_MAPPINGS: {
+  [attributeType: string]: string[];
+} = {
+  metric: ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_metric'],
+  select: ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_simpleselect', 'pim_catalog_multiselect'],
+  multiselect: ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_multiselect', 'pim_catalog_simpleselect'],
+  number: ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number'],
+  text: ['pim_catalog_text', 'pim_catalog_textarea'],
+};
+
+const ALLOWED_CATALOG_TYPES: string[] = [
+  'pim_catalog_metric',
+  'pim_catalog_simpleselect',
+  'pim_catalog_multiselect',
+  'pim_catalog_number',
+  'pim_catalog_text',
+  'pim_catalog_textarea',
+  'pim_catalog_boolean',
+];
+
+const ATTRIBUTE_TYPES_BUTTONS_VISIBILITY = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
+
+const DISALLOWED_CREATE_ATTRIBUTE_FRANKLIN_TYPES: string[] = [
+  'metric',
+];
 
 /**
  * This module will allow user to map the attributes from Franklin to the catalog attributes.
@@ -49,37 +84,6 @@ interface Config {
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class AttributeMapping extends BaseView {
-  /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\AttributeMappingStatus */
-  public static readonly ATTRIBUTE_PENDING: number = 0;
-  public static readonly ATTRIBUTE_ACTIVE: number = 1;
-  public static readonly ATTRIBUTE_INACTIVE: number = 2;
-
-  /** Defined in Akeneo\Pim\Automation\FranklinInsights\Domain\AttributeMapping\Model\Write\AttributeMapping */
-  private static readonly PERFECT_MAPPINGS: { [attributeType: string]: string[] } = {
-    metric: [ 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_metric' ],
-    select: [ 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_simpleselect', 'pim_catalog_multiselect' ],
-    multiselect: [ 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_multiselect', 'pim_catalog_simpleselect' ],
-    number: [ 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number' ],
-    text: [ 'pim_catalog_text', 'pim_catalog_textarea' ],
-  };
-  private static readonly ALLOWED_CATALOG_TYPES: string[] = [
-    'pim_catalog_metric',
-    'pim_catalog_simpleselect',
-    'pim_catalog_multiselect',
-    'pim_catalog_number',
-    'pim_catalog_text',
-    'pim_catalog_textarea',
-    'pim_catalog_boolean',
-  ];
-  private static readonly ATTRIBUTE_TYPES_BUTTONS_VISIBILITY = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
-
-  /**
-   * Get the family code from current URL
-   */
-  private static getFamilyCode() {
-    return Router.match(window.location.hash).params.familyCode;
-  }
-
   private readonly template = _.template(template);
   private readonly modalTemplate = _.template(modalTemplate);
   private readonly config: Config = {
@@ -110,6 +114,15 @@ class AttributeMapping extends BaseView {
   /**
    * {@inheritdoc}
    */
+  public events(): EventsHash {
+    return {
+      'click .option-mapping': this.openAttributeOptionsMappingModal,
+    };
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public configure(): JQueryPromise<any> {
     Filterable.set(this);
 
@@ -123,45 +136,59 @@ class AttributeMapping extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    const familyMapping: AttributesMappingForFamily = this.getFormData();
-    const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
+    const familyMapping: IAttributesMappingForFamily = this.getFormData();
+    const attributesMapping: IAttributesMapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
 
-    this.$el.html(this.template({
-      __,
-      mapping,
-      escapeHtml: EscapeHtml.escapeHtml,
-      statuses: this.getMappingStatuses(),
-      franklinAttribute: __(this.config.labels.franklinAttribute),
-      catalogAttribute: __(this.config.labels.catalogAttribute),
-      attributeMappingStatus: __(this.config.labels.attributeMappingStatus),
-      type: __(this.config.labels.type),
-      valuesSummaryKey: this.config.labels.valuesSummary,
-    }));
+    this.$el.html(
+      this.template({
+        __,
+        mapping: attributesMapping,
+        escapeHtml: EscapeHtml.escapeHtml,
+        statuses: this.getMappingStatuses(),
+        franklinAttribute: __(this.config.labels.franklinAttribute),
+        catalogAttribute: __(this.config.labels.catalogAttribute),
+        attributeMappingStatus: __(this.config.labels.attributeMappingStatus),
+        type: __(this.config.labels.type),
+        valuesSummaryKey: this.config.labels.valuesSummary,
+      })
+    );
 
-    const catalogAttributes = Object.keys(mapping).reduce((acc, franklinAttributeCode: string) => {
-      const catalogAttribute = mapping[franklinAttributeCode].attribute;
-      if ('' !== catalogAttribute && null !== catalogAttribute) {
-        acc.push(catalogAttribute);
-      }
-
-      return acc;
-    }, [] as string[]);
-
-    FetcherRegistry
-      .getFetcher('attribute')
-      .fetchByIdentifiers(catalogAttributes)
+    FetcherRegistry.getFetcher('attribute')
+      .fetchByIdentifiers(this.getCatalogAttributeCodesFromAttibutesMapping(attributesMapping))
       .then((attributes: NormalizedAttribute[]) => {
-        Object.keys(mapping).forEach((franklinAttributeCode: string) => {
-          const attribute: NormalizedAttribute | undefined = attributes
-            .find((attr: NormalizedAttribute) => {
-                return attr.code === mapping[franklinAttributeCode].attribute;
-              },
-            );
-          const type = undefined === attribute ? '' : attribute.type;
-          const isAttributeOptionsButtonVisible =
-            AttributeMapping.ATTRIBUTE_TYPES_BUTTONS_VISIBILITY.indexOf(type) >= 0;
+        Object.keys(attributesMapping).forEach((franklinAttributeCode: string) => {
+          const attributeMapping: IAttributeMapping = attributesMapping[franklinAttributeCode];
 
-          this.appendAttributeSelector(mapping, franklinAttributeCode, isAttributeOptionsButtonVisible);
+          const attribute: NormalizedAttribute | undefined = attributes.find((attr: NormalizedAttribute) => {
+            return attr.code === attributeMapping.attribute;
+          });
+          const type = undefined === attribute ? '' : attribute.type;
+          const isAttributeOptionsButtonVisible = ATTRIBUTE_TYPES_BUTTONS_VISIBILITY.indexOf(type) >= 0;
+
+          const attributeSelector = this.appendAttributeSelector(
+              attributesMapping,
+              franklinAttributeCode,
+              isAttributeOptionsButtonVisible
+          );
+
+          if (true === this.isAllowedToCreateAttribute(attributeMapping)) {
+            const createAttributeButton = this.appendCreateAttributeButton(
+              franklinAttributeCode,
+              familyMapping.code,
+              attributeMapping.franklinAttribute.label,
+              attributeMapping.franklinAttribute.type
+            );
+
+            createAttributeButton.on(
+              'attribute_created',
+              (catalogAttributeCode: string) => {
+                createAttributeButton.remove();
+
+                this.suggestAttributeMapping(franklinAttributeCode, catalogAttributeCode);
+                attributeSelector.render();
+              }
+            );
+          }
         });
 
         Filterable.afterRender(this, __(this.config.labels.franklinAttribute));
@@ -174,36 +201,57 @@ class AttributeMapping extends BaseView {
     return this;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public events(): EventsHash {
-    return {
-      'click .option-mapping': this.openAttributeOptionsMappingModal,
-    };
+  private getCatalogAttributeCodesFromAttibutesMapping(attributesMapping: IAttributesMapping) {
+    return Object.keys(attributesMapping).reduce(
+        (acc: string[], franklinAttributeCode: string) => {
+          const catalogAttribute = attributesMapping[franklinAttributeCode].attribute;
+          if ('' !== catalogAttribute && null !== catalogAttribute) {
+            acc.push(catalogAttribute);
+          }
+
+          return acc;
+        },
+        []
+    );
   }
 
-  /**
-   * @param mapping
-   * @param {string} franklinAttributeCode
-   * @param {boolean} isAttributeOptionsButtonVisible
-   */
+  private suggestAttributeMapping(franklinAttributeCode: string, catalogAttributeCode: string): void {
+    const familyMapping = (this.getFormData() as IAttributesMappingForFamily);
+
+    const alreadyMappedAttributeMapping = Object.values(familyMapping.mapping)
+      .find((mapping) => mapping.attribute === catalogAttributeCode);
+
+    if (undefined !== alreadyMappedAttributeMapping) {
+      Messenger.notify(
+        'warning',
+        __('akeneo_franklin_insights.entity.attributes_mapping.flash.suggest_attribute_mapping_error', {
+          catalogAttributeCode: catalogAttributeCode,
+          franklinAttributeLabel: alreadyMappedAttributeMapping.franklinAttribute.label
+        })
+      );
+
+      return;
+    }
+
+    familyMapping.mapping[franklinAttributeCode].attribute = catalogAttributeCode;
+
+    this.setData(familyMapping);
+  }
+
   private appendAttributeSelector(
-    mapping: any,
+    mapping: IAttributesMapping,
     franklinAttributeCode: string,
-    isAttributeOptionsButtonVisible: boolean,
+    isAttributeOptionsButtonVisible: boolean
   ) {
-    const $dom = this.$el.find(
-      '.attribute-selector[data-franklin-attribute-code="' + franklinAttributeCode + '"]',
-    );
+    const $dom = this.$el.find('.attribute-selector[data-franklin-attribute-code="' + franklinAttributeCode + '"]');
     const attributeSelector = new SimpleSelectAttributeWithWarning({
       config: {
         fieldName: Property.propertyPath(['mapping', franklinAttributeCode, 'attribute']),
         label: '',
         choiceRoute: 'pim_enrich_attribute_rest_index',
-        types: AttributeMapping.ALLOWED_CATALOG_TYPES,
-        perfectMappings: AttributeMapping.PERFECT_MAPPINGS[mapping[franklinAttributeCode].franklinAttribute.type],
-        families: [AttributeMapping.getFamilyCode()],
+        types: ALLOWED_CATALOG_TYPES,
+        perfectMappings: PERFECT_MAPPINGS[mapping[franklinAttributeCode].franklinAttribute.type],
+        families: [this.getFamilyCode()],
       },
       className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
     });
@@ -218,50 +266,80 @@ class AttributeMapping extends BaseView {
           $('<div>')
             .addClass('AknIconButton AknIconButton--small AknIconButton--edit AknGrid-onHoverElement option-mapping')
             .attr('data-franklin-attribute-code', franklinAttributeCode)
-            .attr('title', __('pim_common.edit')),
+            .attr('title', __('pim_common.edit'))
         );
       }
 
       $dom.prepend(attributeSelector.$el);
     });
+
+    return attributeSelector;
+  }
+
+  private appendCreateAttributeButton(
+    franklinAttributeCode: string,
+    familyCode: string,
+    franklinAttributeLabel: string,
+    franklinAttributeType: string
+  ) {
+    const createAttributeButton = new CreateAttributeButton(familyCode, franklinAttributeLabel, franklinAttributeType);
+
+    const $host = this.$el.find(`.create-attribute-button[data-franklin-attribute-code="${franklinAttributeCode}"]`);
+    $host.append(createAttributeButton.render().el);
+
+    return createAttributeButton;
+  }
+
+  private isAllowedToCreateAttribute(franklinAttributeMapping: IAttributeMapping): boolean {
+    if (AttributeMappingStatus.ATTRIBUTE_PENDING !== franklinAttributeMapping.status) {
+      return false;
+    }
+    if (true === DISALLOWED_CREATE_ATTRIBUTE_FRANKLIN_TYPES.includes(franklinAttributeMapping.franklinAttribute.type)) {
+      return false;
+    }
+    if (null !== franklinAttributeMapping.attribute && '' !== franklinAttributeMapping.attribute) {
+      return false;
+    }
+
+    return true;
   }
 
   /**
-   * @returns { [ status: number ]: string }
+   * Get the family code from current URL
    */
-  private getMappingStatuses(): { [ status: number ]: string } {
-    const statuses: { [status: number]: string } = {};
-    statuses[AttributeMapping.ATTRIBUTE_PENDING] = __(this.config.labels.pending);
-    statuses[AttributeMapping.ATTRIBUTE_ACTIVE] = __(this.config.labels.active);
-    statuses[AttributeMapping.ATTRIBUTE_INACTIVE] = __(this.config.labels.inactive);
+  private getFamilyCode() {
+    return Router.match(window.location.hash).params.familyCode;
+  }
+
+  private getMappingStatuses(): {[status: number]: string} {
+    const statuses: {[status: number]: string} = {};
+    statuses[AttributeMappingStatus.ATTRIBUTE_PENDING] = __(this.config.labels.pending);
+    statuses[AttributeMappingStatus.ATTRIBUTE_ACTIVE] = __(this.config.labels.active);
+    statuses[AttributeMappingStatus.ATTRIBUTE_INACTIVE] = __(this.config.labels.inactive);
 
     return statuses;
   }
 
   /**
    * Open the modal for the attribute options mapping
-   *
-   * @param { { currentTarget: any } } event
    */
-  private openAttributeOptionsMappingModal(event: { currentTarget: any }) {
+  private openAttributeOptionsMappingModal(event: {currentTarget: any}) {
     const $line = $(event.currentTarget).closest('.line');
     const franklinAttributeLabel = $line.data('franklin-attribute') as string;
     const franklinAttributeCode = $line.find('.attribute-selector').data('franklin-attribute-code');
-    const catalogAttributeCode =
-        $line.find('input[name="' + Property.propertyPath(['mapping', franklinAttributeCode, 'attribute']) + '"]').val() as string;
-    const familyCode = AttributeMapping.getFamilyCode();
+    const catalogAttributeCode = $line
+      .find('input[name="' + Property.propertyPath(['mapping', franklinAttributeCode, 'attribute']) + '"]')
+      .val() as string;
+    const familyCode = this.getFamilyCode();
 
     $.when(
       FormBuilder.build('akeneo-franklin-insights-settings-attribute-options-mapping-edit'),
-      FetcherRegistry.getFetcher('family').fetch(familyCode),
-    ).then((
-      form: BaseView,
-      normalizedFamily: any,
-    ) => {
+      FetcherRegistry.getFetcher('family').fetch(familyCode)
+    ).then((form: BaseView, normalizedFamily: any) => {
       const familyLabel = i18n.getLabel(
         normalizedFamily.labels,
         UserContext.get('catalogLocale'),
-        normalizedFamily.code,
+        normalizedFamily.code
       );
 
       const formContent = form.getExtension('content') as AttributeOptionsMapping;

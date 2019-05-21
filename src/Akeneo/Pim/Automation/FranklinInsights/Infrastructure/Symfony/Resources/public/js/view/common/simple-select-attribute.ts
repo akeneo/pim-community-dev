@@ -85,7 +85,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
             i18n.getLabel(
               this.attributeGroups[item.group].labels,
               UserContext.get('catalogLocale'),
-              this.attributeGroups[item.group],
+              item.group,
             ) : ''
         ),
       },

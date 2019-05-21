@@ -187,6 +187,8 @@ legacy:
                     - '@pim_catalog.repository.product'
                     - '@akeneo_e2e.context.franklin_insights.builder.attribute_option'
                     - '@pim_catalog.saver.attribute_option'
+                    - '@akeneo_e2e.context.franklin_insights.builder.attribute_group'
+                    - '@pim_catalog.saver.attribute_group'
                 - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FranklinConfigurationContext:
                     - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
                     - '@akeneo.pim.automation.franklin_insights.repository.configuration'

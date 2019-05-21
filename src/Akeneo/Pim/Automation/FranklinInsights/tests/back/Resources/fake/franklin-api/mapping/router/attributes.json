@@ -67,6 +67,18 @@
       "to": null,
       "summary": [],
       "status": "pending"
+    },
+    {
+      "from": {
+        "id": "warranty",
+        "label": {
+          "en_us": "Warranty"
+        },
+        "type": "text"
+      },
+      "to": null,
+      "summary": [],
+      "status": "pending"
     }
   ]
 }
