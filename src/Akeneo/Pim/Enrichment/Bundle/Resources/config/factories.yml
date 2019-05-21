@@ -260,5 +260,12 @@ services:
         tags:
             - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
 
+    akeneo.pim.enrichment.factory.non_existent_values_filter.price_collection:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentPriceCollectionValueFilter'
+        arguments:
+            - '@pim_catalog.query.find_activated_currencies'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
     akeneo.pim.enrichment.factory.empty_values_cleaner:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner'
