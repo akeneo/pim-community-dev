@@ -103,7 +103,7 @@ class XlsxFileContext extends PimContext
     public function exportedXlsxFileOfShouldContainsTheFollowingHeaders($code, TableNode $expectedLines)
     {
         $jobContext = $this->getMainContext()->getSubcontext('job');
-        $archivePath = $jobContext->getJobInstanceArchivePath($code, $number);
+        $archivePath = $jobContext->getJobInstanceArchivePath($code);
 
         $reader = ReaderFactory::create(Type::XLSX);
         $reader->open($jobContext->copyArchiveLocally($archivePath));
