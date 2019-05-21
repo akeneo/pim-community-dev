@@ -60,6 +60,15 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
 
         if (!$this->filesystem->getAdapter() instanceof LocalAdapter ||
             !('/' === $this->filesystem->getAdapter()->getPathPrefix())) {
+            if (!$this->filesystem->has($filePath)) {
+                throw new \InvalidArgumentException(
+                    sprintf('Unable to find the file %s on the configured filesystem adapter %s',
+                        $filePath,
+                        get_class($this->filesystem->getAdapter())
+                    )
+                );
+            }
+
             $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
             $localFilePath = $workingDirectory.DIRECTORY_SEPARATOR.basename($filePath);
 

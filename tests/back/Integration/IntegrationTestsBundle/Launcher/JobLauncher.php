@@ -182,17 +182,20 @@ class JobLauncher
         $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
         $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.csv';
 
-        $fs = new Filesystem();
-        $fs->remove($importDirectoryPath);
-        $fs->remove($fixturesDirectoryPath);
-        $fs->mkdir($importDirectoryPath);
-        $fs->mkdir($fixturesDirectoryPath);
+        $jobsFilesystem = $this->kernel->getContainer()->get('oneup_flysystem.jobs_storage_filesystem');
+        if ($jobsFilesystem->has($filePath)) {
+            $jobsFilesystem->delete($filePath);
+        }
 
-        file_put_contents($filePath, $content);
+        $jobsFilesystem->put($filePath, $content);
+
+        $fixturesFilesystem = new Filesystem();
+        $fixturesFilesystem->remove($fixturesDirectoryPath);
+        $fixturesFilesystem->mkdir($fixturesDirectoryPath);
 
         foreach ($fixturePaths as $fixturePath) {
             $fixturesPath = $fixturesDirectoryPath . DIRECTORY_SEPARATOR . basename($fixturePath);
-            $fs->copy($fixturePath, $fixturesPath, true);
+            $fixturesFilesystem->copy($fixturePath, $fixturesPath, true);
         }
 
         $config['filePath'] = $filePath;
@@ -351,15 +354,20 @@ class JobLauncher
         $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
         $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.csv';
 
-        $fs = new Filesystem();
-        $fs->remove($importDirectoryPath);
-        $fs->remove($fixturesDirectoryPath);
-        $fs->mkdir($importDirectoryPath);
-        $fs->mkdir($fixturesDirectoryPath);
+        $jobsFilesystem = $this->kernel->getContainer()->get('oneup_flysystem.jobs_storage_filesystem');
+        if ($jobsFilesystem->has($filePath)) {
+            $jobsFilesystem->delete($filePath);
+        }
+
+        $jobsFilesystem->put($filePath, $content);
+
+        $fixturesFilesystem = new Filesystem();
+        $fixturesFilesystem->remove($fixturesDirectoryPath);
+        $fixturesFilesystem->mkdir($fixturesDirectoryPath);
 
         foreach ($fixturePaths as $fixturePath) {
             $fixturesPath = $fixturesDirectoryPath . DIRECTORY_SEPARATOR . basename($fixturePath);
-            $fs->copy($fixturePath, $fixturesPath, true);
+            $fixturesFilesystem->copy($fixturePath, $fixturesPath, true);
         }
 
         file_put_contents($filePath, $content);
