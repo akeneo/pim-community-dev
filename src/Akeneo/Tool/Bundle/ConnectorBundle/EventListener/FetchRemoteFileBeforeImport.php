@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\Connector\Job\JobFileLocation;
+use League\Flysystem\Adapter\Local as LocalAdapter;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -56,14 +56,14 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
             return;
         }
 
-        $jobFileLocation = JobFileLocation::parseUrl($jobParameters->get('filePath'));
+        $filePath = $jobParameters->get('filePath');
 
-        if (true === $jobFileLocation->isRemote()) {
+        if (!$this->filesystem->getAdapter() instanceof LocalAdapter ||
+            !('/' === $this->filesystem->getAdapter()->getPathPrefix())) {
             $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
+            $localFilePath = $workingDirectory.DIRECTORY_SEPARATOR.basename($filePath);
 
-            $localFilePath = $jobFileLocation->generateLocalTemporaryName($workingDirectory);
-
-            $remoteStream =  $this->filesystem->readStream($jobFileLocation->path());
+            $remoteStream = $this->filesystem->readStream($filePath);
 
             file_put_contents($localFilePath, $remoteStream);
             fclose($remoteStream);

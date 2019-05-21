@@ -77,6 +77,7 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
             - '@oneup_flysystem.jobs_storage_filesystem'
+            - '%upload_dir%'
 
     pim_enrich.controller.rest.job_execution:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobExecutionController'

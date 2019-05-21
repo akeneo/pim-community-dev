@@ -5,7 +5,7 @@ oneup_flysystem:
                 directory: '%catalog_storage_dir%'
         jobs_storage_adapter:
             local:
-                directory: '%tmp_storage_dir%'
+                directory: '/'
         tmp_storage_adapter:
             local:
                 directory: '%tmp_storage_dir%'

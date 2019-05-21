@@ -13,7 +13,6 @@ use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\Connector\Job\JobFileLocation;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -101,27 +100,9 @@ class JobInstanceController
     /** @var FilesystemInterface */
     protected $filesystem;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param JobRegistry                           $jobRegistry
-     * @param NormalizerInterface                   $jobInstanceNormalizer
-     * @param ObjectUpdaterInterface                $updater
-     * @param SaverInterface                        $saver
-     * @param RemoverInterface                      $remover
-     * @param ValidatorInterface                    $validator
-     * @param JobParametersValidator                $jobParameterValidator
-     * @param JobParametersFactory                  $jobParamsFactory
-     * @param JobLauncherInterface                  $jobLauncher
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param RouterInterface                       $router
-     * @param FormProviderInterface                 $formProvider
-     * @param ObjectFilterInterface                 $objectFilter
-     * @param NormalizerInterface                   $constraintViolationNormalizer
-     * @param JobInstanceFactory                    $jobInstanceFactory
-     * @param EventDispatcherInterface              $eventDispatcher
-     * @param CollectionFilterInterface             $inputFilter
-     * @param string                                $uploadTmpDir
-     */
+    /** @var string */
+    protected $uploadDir;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         JobRegistry $jobRegistry,
@@ -141,7 +122,8 @@ class JobInstanceController
         JobInstanceFactory $jobInstanceFactory,
         EventDispatcherInterface $eventDispatcher,
         CollectionFilterInterface $inputFilter,
-        FilesystemInterface $filesystem
+        FilesystemInterface $filesystem,
+        string $uploadDir
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -162,6 +144,7 @@ class JobInstanceController
         $this->eventDispatcher       = $eventDispatcher;
         $this->inputFilter           = $inputFilter;
         $this->filesystem            = $filesystem;
+        $this->uploadDir = $uploadDir;
     }
 
     /**
@@ -419,20 +402,20 @@ class JobInstanceController
                 return new JsonResponse($errors, 400);
             }
 
-            $jobFileLocation = new JobFileLocation($code.DIRECTORY_SEPARATOR. $file->getClientOriginalName(), true);
+            $destFilePath = $this->uploadDir.DIRECTORY_SEPARATOR.$code.DIRECTORY_SEPARATOR. $file->getClientOriginalName();
 
-            if ($this->filesystem->has($jobFileLocation->path())) {
-                $this->filesystem->delete($jobFileLocation->path());
+            if ($this->filesystem->has($destFilePath)) {
+                $this->filesystem->delete($destFilePath);
             }
 
             $fileContent = fopen($file->getPathname(), 'r');
-            $this->filesystem->writeStream($jobFileLocation->path(), $fileContent);
+            $this->filesystem->writeStream($destFilePath, $fileContent);
             if (is_resource($fileContent)) {
                 fclose($fileContent);
             }
 
             $rawParameters = $jobInstance->getRawParameters();
-            $rawParameters['filePath'] = $jobFileLocation->url();
+            $rawParameters['filePath'] = $destFilePath;
             $jobInstance->setRawParameters($rawParameters);
         }
 
