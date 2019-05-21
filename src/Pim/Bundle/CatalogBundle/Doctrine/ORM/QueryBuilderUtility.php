@@ -33,6 +33,8 @@ class QueryBuilderUtility
     }
 
     /**
+     * @todo Merge master: Dead code, to be removed.
+     *
      * Replaces name of tables in DBAL queries
      *
      * @param EntityManager $em
@@ -70,6 +72,8 @@ class QueryBuilderUtility
     }
 
     /**
+     * @todo Merge master: Dead code, to be removed.
+     *
      * Get metadata of product value table
      *
      * @param EntityManager $em
