@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-8351: Fix entity overriding priority
+
 # 2.3.44 (2019-05-20)
 
 ## Bug fixes
