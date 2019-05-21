@@ -19,13 +19,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
-/**
- * @group ce
- */
 class SqlGetConnectorProductModelsIntegration extends TestCase
 {
     /**
      * @test
+     *
+     * @group ce
      */
     public function it_gets_several_connector_product_models_from_PQB(): void
     {
@@ -187,6 +186,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
 
     /**
      * @test
+     *
+     * @group ce
      */
     public function it_gets_connector_product_models_by_filtering_on_values(): void
     {
@@ -332,6 +333,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
 
     /**
      * @test
+     *
+     * @group ce
      */
     public function it_gets_a_single_connector_product_model_from_its_code(): void
     {
@@ -394,6 +397,19 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
             $expectedProductModel,
             $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserIdFromUsername('admin'))
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_empty_associations_if_there_is_no_asociation_type(): void
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM akeneo_pim.pim_catalog_association_type_translation');
+        $this->get('database_connection')->executeQuery('DELETE FROM akeneo_pim.pim_catalog_association_type');
+
+        $subProductModel = $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserIdFromUsername('admin'));
+
+        Assert::assertSame([], $subProductModel->associations());
     }
 
     /**
