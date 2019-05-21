@@ -18,12 +18,12 @@ final class ProductGridFixturesLoader
 
     /**
      * @param ContainerInterface $container
-     * @param string             $akeneoImagePath
+     * @param string             $akeneoImageKey
      */
-    public function __construct(ContainerInterface $container, string $akeneoImagePath)
+    public function __construct(ContainerInterface $container, string $akeneoImageKey)
     {
         $this->container = $container;
-        $this->akeneoImagePath = $akeneoImagePath;
+        $this->akeneoImagePath = $akeneoImageKey;
     }
 
     public function createProductModelsWithLabelInProduct(): ProductModelInterface

@@ -31,8 +31,8 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->createProduct('product_one', [
             'values' => [
                 'a_scopable_image' => [
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'scope' => 'ecommerce', 'locale' => null],
-                    ['data' => $this->getFixturePath('ziggy.png'), 'scope' => 'tablet', 'locale' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'scope' => 'ecommerce', 'locale' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'scope' => 'tablet', 'locale' => null],
                 ]
             ]
         ]);
@@ -40,8 +40,8 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->createProduct('product_two', [
             'values' => [
                 'a_scopable_image' => [
-                    ['data' => $this->getFixturePath('ziggy.png'), 'scope' => 'ecommerce', 'locale' => null],
-                    ['data' => $this->getFixturePath('ziggy.png'), 'scope' => 'tablet', 'locale' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'scope' => 'ecommerce', 'locale' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'scope' => 'tablet', 'locale' => null],
                 ]
             ]
         ]);

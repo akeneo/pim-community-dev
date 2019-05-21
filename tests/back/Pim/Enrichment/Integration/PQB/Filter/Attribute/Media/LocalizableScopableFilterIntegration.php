@@ -23,10 +23,10 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         $this->createProduct('product_one', [
             'values' => [
                 'a_localizable_scopable_image' => [
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => $this->getFixturePath('ziggy.png'), 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => $this->getFixturePath('ziggy.png'), 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => 'fr_FR', 'scope' => 'tablet'],
                 ]
             ]
         ]);
@@ -34,9 +34,9 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         $this->createProduct('product_two', [
             'values' => [
                 'a_localizable_scopable_image' => [
-                    ['data' => $this->getFixturePath('ziggy.png'), 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => $this->getFixturePath('ziggy.png'), 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => $this->getFixturePath('ziggy.png'), 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
                 ]
             ]
         ]);

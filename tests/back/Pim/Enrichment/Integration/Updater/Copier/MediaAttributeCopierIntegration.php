@@ -19,7 +19,7 @@ class MediaAttributeCopierIntegration extends AbstractCopierTestCase
             'values' => [
                 'a_scopable_image' => [
                     [
-                        'data'   => $this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png',
+                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
                         'locale' => null,
                         'scope'  => 'tablet',
                     ],
@@ -59,7 +59,7 @@ class MediaAttributeCopierIntegration extends AbstractCopierTestCase
             'values' => [
                 'a_localizable_image' => [
                     [
-                        'data'   => $this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png',
+                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
                         'locale' => 'fr_FR',
                         'scope'  => null,
                     ],
@@ -99,7 +99,7 @@ class MediaAttributeCopierIntegration extends AbstractCopierTestCase
             'values' => [
                 'an_image' => [
                     [
-                        'data'   => $this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png',
+                        'data'   => $this->getFileInfoKey($this->getParameter('kernel.root_dir').'/../tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
                         'locale' => null,
                         'scope'  => null,
                     ],

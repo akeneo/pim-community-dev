@@ -31,8 +31,8 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->createProduct('product_one', [
             'values' => [
                 'a_localizable_image' => [
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFixturePath('ziggy.png'), 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => 'fr_FR', 'scope' => null],
                 ]
             ]
         ]);
@@ -40,8 +40,8 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->createProduct('product_two', [
             'values' => [
                 'a_localizable_image' => [
-                    ['data' => $this->getFixturePath('ziggy.png'), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFixturePath('ziggy.png'), 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => 'en_US', 'scope' => null],
+                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => 'fr_FR', 'scope' => null],
                 ]
             ]
         ]);

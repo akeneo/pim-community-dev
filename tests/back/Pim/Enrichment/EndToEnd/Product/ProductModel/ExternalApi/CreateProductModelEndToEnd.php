@@ -714,7 +714,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $pdfPath = $this->getFixturePath('akeneo.jpg');
+        $pdfPath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
 
         $data =
             <<<JSON
