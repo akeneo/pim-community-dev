@@ -111,13 +111,14 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
             $this->fetchAssociationsIndexedByProductModelCode($productModelCodes),
             $this->fetchCategoryCodesIndexedByProductModelCode($productModelCodes)
         );
-        $productModels = [];
+
+        $rawValuesIndexedByProductModelCode = [];
         foreach ($productModelCodes as $productModelCode) {
             if (!isset($rows[$productModelCode]['code'])) {
                 continue;
             }
-            $row = $rows[$productModelCode];
-            $rawValues = $row['raw_values'];
+
+            $rawValues = $rows[$productModelCode]['raw_values'];
             if (null !== $attributesToFilterOn) {
                 $rawValues = $this->filterOnAttributeCodes($rawValues, $attributesToFilterOn);
             }
@@ -127,6 +128,22 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
             if (null !== $localesToFilterOn) {
                 $rawValues = $this->filterOnLocaleCodes($rawValues, $localesToFilterOn);
             }
+
+            $rawValuesIndexedByProductModelCode[$productModelCode] = $rawValues;
+        }
+
+        $filteredValuesIndexedByProductModelCode = $this->valueCollectionFactory->createMultipleFromStorageFormat(
+            $rawValuesIndexedByProductModelCode
+        );
+
+        $productModels = [];
+        foreach ($productModelCodes as $productModelCode) {
+            if (!isset($rows[$productModelCode]['code'])) {
+                continue;
+            }
+
+            $row = $rows[$productModelCode];
+
             $productModels[] = new ConnectorProductModel(
                 $row['id'],
                 $row['code'],
@@ -137,7 +154,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
                 [],
                 $row['associations'],
                 $row['category_codes'],
-                $this->valueCollectionFactory->createFromStorageFormat($rawValues)
+                $filteredValuesIndexedByProductModelCode[$productModelCode]
             );
         }
 
