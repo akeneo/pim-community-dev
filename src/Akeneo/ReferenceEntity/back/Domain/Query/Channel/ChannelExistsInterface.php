@@ -23,5 +23,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
  */
 interface ChannelExistsInterface
 {
-    public function __invoke(ChannelIdentifier $channelIdentifier): bool;
+    public function exists(ChannelIdentifier $channelIdentifier): bool;
 }

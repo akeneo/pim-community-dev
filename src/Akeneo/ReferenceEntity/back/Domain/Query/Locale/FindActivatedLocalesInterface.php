@@ -11,5 +11,5 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Locale;
  */
 interface FindActivatedLocalesInterface
 {
-    public function __invoke(): array;
+    public function findAll(): array;
 }

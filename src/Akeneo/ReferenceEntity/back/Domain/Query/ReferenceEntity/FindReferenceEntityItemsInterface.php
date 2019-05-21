@@ -24,5 +24,5 @@ interface FindReferenceEntityItemsInterface
     /**
      * @return ReferenceEntityItem[]
      */
-    public function __invoke(): array;
+    public function find(): array;
 }

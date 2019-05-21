@@ -18,5 +18,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 
 interface FindReferenceEntityAttributeAsImageInterface
 {
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsImageReference;
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsImageReference;
 }

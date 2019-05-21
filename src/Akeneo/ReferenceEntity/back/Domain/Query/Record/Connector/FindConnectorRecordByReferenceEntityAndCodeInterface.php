@@ -24,5 +24,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 interface FindConnectorRecordByReferenceEntityAndCodeInterface
 {
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?ConnectorRecord;
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?ConnectorRecord;
 }
