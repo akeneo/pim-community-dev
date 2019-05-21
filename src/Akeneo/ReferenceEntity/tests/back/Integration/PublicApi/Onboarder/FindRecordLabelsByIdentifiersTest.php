@@ -26,6 +26,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByIdentifiersInterface;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder\RecordLabels;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 /**
@@ -50,7 +51,7 @@ class FindRecordLabelsByIdentifiersTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->query = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_identifiers');
+        $this->query = $this->get('akeneo_referenceentity.infrastructure.persistence.query.onboarder.find_record_labels_by_identifiers');
         $this->resetDB();
         $this->loadReferenceEntityAndRecords();
     }
@@ -62,22 +63,28 @@ class FindRecordLabelsByIdentifiersTest extends SqlIntegrationTestCase
     {
         $result = $this->query->find([(string) $this->michaelIdentifier, (string) $this->dysonIdentifier]);
         $this->assertEquals([
-            (string) $this->michaelIdentifier => [
-                'labels' => ['fr_FR' => null, 'en_US' => null, 'de_DE' => null],
-                'code' => 'michael'
-            ],
-            (string) $this->dysonIdentifier => [
-                'labels' => ['fr_FR' => 'Dyson', 'en_US' => null, 'de_DE' => null],
-                'code' => 'dyson'
-            ],
+            new RecordLabels(
+                (string) $this->dysonIdentifier,
+                ['fr_FR' => 'Dyson', 'en_US' => null, 'de_DE' => null],
+                'dyson',
+                'designer'
+            ),
+            new RecordLabels(
+                (string) $this->michaelIdentifier,
+                ['fr_FR' => null, 'en_US' => null, 'de_DE' => null],
+                'michael',
+                'designer'
+            ),
         ], $result);
 
         $result = $this->query->find([(string) $this->starckIdentifier]);
         $this->assertEquals([
-            (string) $this->starckIdentifier => [
-                'labels' => ['fr_FR' => 'Philippe Starck', 'en_US' => 'Philippe Starck', 'de_DE' => null],
-                'code' => 'starck'
-            ],
+            new RecordLabels(
+                (string) $this->starckIdentifier,
+                ['fr_FR' => 'Philippe Starck', 'en_US' => 'Philippe Starck US', 'de_DE' => null],
+                'starck',
+                'designer'
+            ),
         ], $result);
     }
 
@@ -117,7 +124,7 @@ class FindRecordLabelsByIdentifiersTest extends SqlIntegrationTestCase
             $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-            TextData::fromString('Philippe Starck')
+            TextData::fromString('Philippe Starck US')
         );
         $recordRepository->create(
             Record::create(

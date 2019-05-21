@@ -27,6 +27,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder\FindAllRecordLabels;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder\RecordLabels;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
@@ -62,24 +63,26 @@ class FindAllRecordLabelsTest extends SqlIntegrationTestCase
      */
     public function it_finds_all_record_labels()
     {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $michaelCode = RecordCode::fromString('michael');
         $records = $this->query->find();
         $records = iterator_to_array($records);
-        Assert::assertCount(3, $records);
-        Assert::assertContains([
-            'identifier' => (string) $this->michaelIdentifier,
-            'labels' => ['fr_FR' => null, 'en_US' => null, 'de_DE' => null],
-            'code' => 'michael',
-            'reference_entity_identifier' => 'designer',
-        ], $records);
-        Assert::assertContains([
-           'identifier' => (string) $this->starckIdentifier,
-           'labels' => ['fr_FR' => 'Philippe Starck', 'en_US' => 'Philippe Starck US', 'de_DE' => null],
-           'code' => 'starck',
-           'reference_entity_identifier' => 'designer',
-        ], $records);
+        Assert::assertContains(new RecordLabels(
+            (string) $this->michaelIdentifier,
+            ['fr_FR' => null, 'en_US' => null, 'de_DE' => null],
+            'michael',
+            'designer'
+        ), $records, '', false, false);
+        Assert::assertContains(new RecordLabels(
+           (string) $this->starckIdentifier,
+           ['fr_FR' => 'Philippe Starck', 'en_US' => 'Philippe Starck US', 'de_DE' => null],
+           'starck',
+           'designer'
+        ), $records, '', false, false);
+        Assert::assertContains(new RecordLabels(
+           (string) $this->dysonIdentifier,
+           ['fr_FR' => 'Dyson', 'en_US' => null, 'de_DE' => null],
+           'dyson',
+           'designer'
+        ), $records, '', false, false);
     }
 
     private function resetDB(): void

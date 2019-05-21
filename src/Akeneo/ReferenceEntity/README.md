@@ -3,7 +3,7 @@
 For the Bounded Context Reference Entities, we are following the Hexagonal Architecture (Application/Domain/Infrastructure).
 
 So to permit the other Bounded Context to communicate with us, we created a PublicApi Port in the Infrastructure Layer. 
-You will be able to find all the class you have access in this directory `Akeneo/ReferenceEntity/back/Infrastructure/PublicApi`.
+You will be able to find all the classes you have access to the directory `Akeneo/ReferenceEntity/back/Infrastructure/PublicApi`.
 
 In this Port, we have separated the communication with the others Bounded Context with different Adapters (ex : Analytics, Onboarder...).
 

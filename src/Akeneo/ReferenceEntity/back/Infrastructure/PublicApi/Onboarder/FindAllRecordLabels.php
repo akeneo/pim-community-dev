@@ -57,12 +57,12 @@ SQL;
         $statement = $this->sqlConnection->executeQuery($fetch);
 
         foreach ($statement->fetchAll() as $record) {
-            yield [
-                'identifier' => $record['identifier'],
-                'labels' => json_decode($record['labels'], true),
-                'code' => $record['code'],
-                'reference_entity_identifier' => $record['reference_entity_identifier']
-            ];
+            yield new RecordLabels(
+                $record['identifier'],
+                json_decode($record['labels'], true),
+                $record['code'],
+                $record['reference_entity_identifier']
+            );
         }
     }
 }
