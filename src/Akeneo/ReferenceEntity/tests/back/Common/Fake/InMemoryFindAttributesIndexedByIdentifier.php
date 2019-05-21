@@ -35,7 +35,7 @@ class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexed
     /**
      * @return AttributeDetails[]
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $attributes = $this->attributeRepository->findByReferenceEntity($referenceEntityIdentifier);
 

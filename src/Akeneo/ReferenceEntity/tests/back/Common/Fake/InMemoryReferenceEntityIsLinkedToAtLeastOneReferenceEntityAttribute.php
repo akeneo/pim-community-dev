@@ -32,7 +32,7 @@ class InMemoryReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute implem
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $identifier): bool
+    public function isLinked(ReferenceEntityIdentifier $identifier): bool
     {
         foreach ($this->attributeRepository->getAttributes() as $attribute) {
             if ($attribute instanceof RecordAttribute || $attribute instanceof RecordCollectionAttribute) {

@@ -21,7 +21,7 @@ class InMemoryFindFileDataByFileKey implements FindFileDataByFileKeyInterface
     /** @var array */
     private $files = [];
 
-    public function __invoke(string $fileKey): ?array
+    public function find(string $fileKey): ?array
     {
         return $this->files[$fileKey] ?? null;
     }

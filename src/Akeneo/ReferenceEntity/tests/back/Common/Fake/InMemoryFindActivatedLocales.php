@@ -30,7 +30,7 @@ class InMemoryFindActivatedLocales implements FindActivatedLocalesInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(): array
+    public function findAll(): array
     {
         return $this->activatedLocales;
     }

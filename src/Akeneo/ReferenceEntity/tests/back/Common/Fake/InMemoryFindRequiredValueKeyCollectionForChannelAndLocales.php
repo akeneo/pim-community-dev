@@ -28,7 +28,7 @@ class InMemoryFindRequiredValueKeyCollectionForChannelAndLocales implements Find
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function __invoke(
+    public function find(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ChannelIdentifier $channelIdentifier,
         LocaleIdentifierCollection $localeIdentifierCollection

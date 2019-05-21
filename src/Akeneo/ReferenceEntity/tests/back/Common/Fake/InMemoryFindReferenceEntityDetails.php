@@ -44,7 +44,7 @@ class InMemoryFindReferenceEntityDetails implements FindReferenceEntityDetailsIn
     /**
      * {@inheritdoc}
      */
-    public function __invoke(
+    public function find(
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ): ?ReferenceEntityDetails {
         $key = $this->getKey($referenceEntityIdentifier);

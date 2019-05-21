@@ -69,7 +69,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     /**
      * {@inheritdoc}
      */
-    public function __invoke(RecordQuery $query): IdentifiersForQueryResult
+    public function find(RecordQuery $query): IdentifiersForQueryResult
     {
         $currentRequest = $this->requestStack->getCurrentRequest();
         if (null !== $currentRequest && self::API_REST_PREFIX_URL === substr($currentRequest->getPathInfo(), 0, 10)) {

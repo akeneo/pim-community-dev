@@ -31,7 +31,7 @@ class InMemoryFindExistingRecordCodes implements FindExistingRecordCodesInterfac
         $this->recordRepository = $recordRepository;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
     {
         $existingRecords = $this->recordRepository->getByReferenceEntityAndCodes($referenceEntityIdentifier, $recordCodes);
         $existingCodes = array_map(function (Record $record) {

@@ -28,7 +28,7 @@ class InMemoryFindReferenceEntityAttributeAsImage implements FindReferenceEntity
         $this->referenceEntityRepository = $referenceEntityRepository;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsImageReference
+    public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsImageReference
     {
         try {
             $referenceEntity = $this->referenceEntityRepository->getByIdentifier($referenceEntityIdentifier);
