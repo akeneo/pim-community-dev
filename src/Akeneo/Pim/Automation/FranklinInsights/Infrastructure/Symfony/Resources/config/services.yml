@@ -47,3 +47,11 @@ services:
         arguments:
             - '@pim_notification.factory.notification'
             - '@pim_notification.notifier'
+
+    akeneo.pim.automation.franklin_insights.application.structure.service.create_attribute:
+        class: 'Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Structure\Service\CreateAttribute'
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@validator'
