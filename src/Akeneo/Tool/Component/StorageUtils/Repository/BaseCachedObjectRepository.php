@@ -38,6 +38,18 @@ class BaseCachedObjectRepository implements CachedObjectRepositoryInterface
         return $this->objectsCache[$identifier];
     }
 
+    //TODO : REMOVE THAT
+    public function findByCodes(array $codes) {
+        $objects = $this->repository->findBy(['code' => $codes]);
+        $result = [];
+        foreach ($objects as $object) {
+            $result[$object->getCode()] = $object;
+            $this->objectsCache[$object->getCode()] = $object;
+        }
+
+        return $result;
+    }
+
     /**
      * {@inheritdoc}
      */

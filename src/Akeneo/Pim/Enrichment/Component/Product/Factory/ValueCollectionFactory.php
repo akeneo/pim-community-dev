@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\Chai
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -144,11 +145,28 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     {
         $entities = [];
 
+        $attributeCodes = [];
+
+        foreach ($rawValueCollections as $productIdentifier => $valueCollection) {
+            foreach ($valueCollection as $attributeCode => $channelRawValue) {
+                $attributeCodes[] = $attributeCode;
+            }
+        }
+
+        $attributeCodes = array_unique($attributeCodes);
+        $attributes = $this->attributeRepository->findByCodes($attributeCodes);
+        $attributesIndexedByCode = [];
+
+        /** @var AttributeInterface $attribute */
+        foreach ($attributes as $attribute) {
+            $attributesIndexedByCode[$attribute->getCode()] = $attribute;
+        }
+
         foreach ($rawValueCollections as $productIdentifier => $valueCollection) {
             $values = [];
 
             foreach ($valueCollection as $attributeCode => $channelRawValue) {
-                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+                $attribute = $attributesIndexedByCode[$attributeCode];
 
                 foreach ($channelRawValue as $channelCode => $localeRawValue) {
                     if ('<all_channels>' === $channelCode) {
