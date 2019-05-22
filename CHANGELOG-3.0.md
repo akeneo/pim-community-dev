@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-8257: Fix user grid filter set when creating a new user
+- PIM-8364: Fix bootstrap modal having illustration
 
 # 3.0.19 (2019-05-21)
 
