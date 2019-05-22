@@ -26,6 +26,8 @@ class ValueFactory
     /** @var ValueFactoryInterface[] */
     protected $factories;
 
+    protected $factoriesIndexedByType = [];
+
     /**
      * @param AttributeValidatorHelper $attributeValidatorHelper
      * @param ValueFactoryInterface[]  $factories
@@ -83,8 +85,13 @@ class ValueFactory
      */
     protected function getFactory($attributeType)
     {
+        if (isset($this->factoriesIndexedByType[$attributeType])) {
+            return $this->factoriesIndexedByType[$attributeType];
+        }
+
         foreach ($this->factories as $factory) {
             if ($factory->supports($attributeType)) {
+                $this->factoriesIndexedByType[$attributeType] = $factory;
                 return $factory;
             }
         }
