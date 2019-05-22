@@ -9,38 +9,6 @@ class ListOffsetProductModelEndToEnd extends AbstractProductModelTestCase
     /**
      * @group ce
      */
-    public function testSuccessfullyGetListOfProductModelWithoutParameter()
-    {
-        $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/product-models');
-
-        $standardizedProducts = $this->getStandardizedProductModels();
-        $expected = <<<JSON
-{
-    "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/product-models?page=1&with_count=false&pagination_type=page&limit=10"},
-        "first" : {"href": "http://localhost/api/rest/v1/product-models?page=1&with_count=false&pagination_type=page&limit=10"}
-    },
-    "current_page" : 1,
-    "_embedded"    : {
-		"items": [
-            {$standardizedProducts['sweat']},
-            {$standardizedProducts['shoes']},
-            {$standardizedProducts['tshirt']},
-            {$standardizedProducts['trousers']},
-            {$standardizedProducts['hat']},
-            {$standardizedProducts['handbag']}
-		]
-    }
-}
-JSON;
-
-        $this->assertListResponse($client->getResponse(), $expected);
-    }
-
-    /**
-     * @group ce
-     */
     public function testSuccessfullyGetListOfProductModelFirstPageWithCount()
     {
         $client = $this->createAuthenticatedClient();
@@ -56,36 +24,6 @@ JSON;
     },
     "current_page" : 1,
     "items_count"  : 6,
-    "_embedded"    : {
-		"items": [
-            {$standardizedProducts['sweat']},
-            {$standardizedProducts['shoes']},
-            {$standardizedProducts['tshirt']}
-		]
-    }
-}
-JSON;
-
-        $this->assertListResponse($client->getResponse(), $expected);
-    }
-
-    /**
-     * @group ce
-     */
-    public function testSuccessfullyGetListOfProductModelFirstPageWithoutCount()
-    {
-        $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/product-models?with_count=false&limit=3');
-
-        $standardizedProducts = $this->getStandardizedProductModels();
-        $expected = <<<JSON
-{
-    "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/product-models?page=1&with_count=false&pagination_type=page&limit=3"},
-        "first" : {"href": "http://localhost/api/rest/v1/product-models?page=1&with_count=false&pagination_type=page&limit=3"},
-        "next"  : {"href": "http://localhost/api/rest/v1/product-models?page=2&with_count=false&pagination_type=page&limit=3"}
-    },
-    "current_page" : 1,
     "_embedded"    : {
 		"items": [
             {$standardizedProducts['sweat']},
@@ -173,20 +111,6 @@ JSON;
     public function testMaxPageWithOffsetPaginationType()
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $productModels = [];
-        for ($i = 0; $i <= 201; $i++) {
-            $productModel = $this->get('pim_catalog.factory.product_model')->create();
-            $this->get('pim_catalog.updater.product_model')
-                ->update($productModel, [
-                    'code' => 'prod-model-' . $i,
-                    'family_variant' => 'familyVariantA1'
-                ]);
-            $productModels[] = $productModel;
-        }
-
-        $this->get('pim_catalog.saver.product_model')->saveAll($productModels);
-
         $client->request('GET', 'api/rest/v1/product-models?page=101&limit=100');
 
         $message = addslashes('You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead');
